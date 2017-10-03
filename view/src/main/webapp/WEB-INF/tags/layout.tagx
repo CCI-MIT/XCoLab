@@ -138,6 +138,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+
+
+
     <xcolab:stylesheet href="${_themeCssFolder}/main.css" />
 
 
@@ -378,10 +382,7 @@
     <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="${_libJsFolder}/jquery.ddslick.min.js" />
 
     <xcolab:loadScript shouldLoad="${_librariesToLoad['clipboard.js']}" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js" />
-
-    <!-- Add this -->
-    <script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-597f702bfab33060"><!-- --></script>
-
+    
     <xcolab:script src="${_themeJsFolder}/initScript.js" />
 
     <!-- ============ Analytics and tracking ============ -->

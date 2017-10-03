@@ -3,7 +3,9 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
+>
 
     <!--@elvariable id="linkedProposalContestTypeProposalWrappersByContestTypeId" type="java.util.Map<java.lang.Long, org.xcolab.wrappers.ContestTypeProposalWrapper>"-->
 
@@ -75,11 +77,9 @@
             </div> <!-- /c-Box -->
             <div class="c-Box boxColor--light clearfix">
                 <c:if test="${showShareButtons}">
-                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                    <div class="addthis_inline_share_toolbox" data-url="${shareLink}"
-                         data-title="${proposal.name}"
-                         data-description="${proposal.pitch}">
-                        <!-- --></div>
+                    <div>
+                        <xcolab-social:socialShareButton title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
+                    </div>
                 </c:if>
                 <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
 

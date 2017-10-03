@@ -1,5 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
+>
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <!--@elvariable id="balloonText" type="org.xcolab.client.balloons.pojo.BalloonText"-->
@@ -15,11 +17,8 @@
             Copy link
         </button>
         <br/>
-        <!-- Go to www.addthis.com/dashboard to customize your tools -->
-        <div class="addthis_inline_share_toolbox" data-url="${shareLink}"
-             data-title="${balloonText.shareTitle}"
-             data-description="${balloonText.shareDescription}">
-            <!-- --></div>
+
+        <div><xcolab-social:socialShareButton title="${balloonText.shareTitle}" url="${shareLink}" size="xs"/></div>
 	</div>
 
     <xcolab:requireLibrary name="clipboard.js" />

@@ -1,0 +1,59 @@
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page">
+
+    <jsp:directive.attribute name="socialEngine" type="java.lang.String" required="true"
+                             rtexprvalue="true" description="Available engines : facebook, twitter, google, linkedin, youtube"/>
+    <jsp:directive.attribute name="type" type="java.lang.String" required="true"
+                             rtexprvalue="true" description="Types available: share, follow"/>
+    <jsp:directive.attribute name="size" type="java.lang.String" description="Available sizes: lg,sm, xm for regular leave blank" />
+    <jsp:directive.attribute name="followMeUrl" type="java.lang.String" description="The social link for the follow me function" />
+    <jsp:directive.attribute name="shareUrl" type="java.lang.String" description="Share url override, if not passed the current URL will be used" />
+    <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
+    <jsp:directive.attribute name="dataReference" type="java.lang.String" description="Extra reference to compose URL" />
+
+    <c:choose>
+        <c:when test="${not empty shareUrl}"><c:set var="finalShareUrl" value="${shareUrl}"/></c:when>
+        <c:otherwise><c:set var="finalShareUrl" value="${_shareRequestUri}"/></c:otherwise>
+    </c:choose>
+
+    <c:choose>
+        <c:when test="${not empty size}"><c:set var="sizeClass" value="btn-${size}"/></c:when>
+        <c:otherwise><c:set var="sizeClass" value=""/></c:otherwise>
+    </c:choose>
+    <c:choose>
+        <c:when test="${type.equals('follow')}">
+            <c:if test="${not empty followMeUrl}">
+                <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" href="${followMeUrl}" target="_blank">
+                    <span class="fa fa-${socialEngine}"></span>
+                </a>
+            </c:if>
+        </c:when>
+        <c:when test="${type.equals('share')}">
+            <c:set var="socialIcon" value="fa-${socialEngine}"/>
+            <c:choose>
+                <c:when test="${socialEngine.equals('facebook')}">
+                    <c:set var="dataEngineUrl" value="https://www.facebook.com/dialog/share?app_id=${_facebookId}&amp;display=popup&amp;href="/>
+                </c:when>
+                <c:when test="${socialEngine.equals('twitter')}">
+                    <c:set var="dataEngineUrl" value="https://twitter.com/intent/tweet?text=${title}&amp;display=popup&amp;url="/>
+                </c:when>
+                <c:when test="${socialEngine.equals('google')}">
+                    <c:set var="dataEngineUrl" value="https://plus.google.com/share?url="/>
+                </c:when>
+                <c:when test="${socialEngine.equals('linkedin')}">
+                    <c:set var="dataEngineUrl" value="https://www.linkedin.com/shareArticle?mini=true&amp;title=${title}&amp;url="/>
+                </c:when>
+                <c:when test="${socialEngine.equals('email')}">
+                    <c:set var="dataEngineUrl" value="mailto:info@example.com?subject=${title}&amp;body="/>
+                    <c:set var="socialIcon" value="fa-envelope"/>
+                </c:when>
+            </c:choose>
+            <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="${dataEngineUrl}" data-engine="${socialEngine}" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
+                <span class="fa ${socialIcon}" style="font-weight: normal;"></span>
+            </a>
+        </c:when>
+    </c:choose>
+
+
+
+</jsp:root>

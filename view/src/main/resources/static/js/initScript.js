@@ -25,7 +25,7 @@ function deferUntilLoginTargeted(targetLocation) {
 }
 
 // To allow a dropdown toggle to exist outside the bootstrap dropdown
-jQuery('.js-DropdownToggle').click(function() {
+jQuery('.js-DropdownToggle').click(function () {
     var targetSelector = jQuery(this).data('target');
     jQuery(targetSelector).dropdown("toggle");
     return false;
@@ -36,10 +36,9 @@ function showForgotPasswordModal() {
     jQuery('#forgotPasswordModal').modal();
 }
 
-
 function enableDirtyCheck() {
     window.oldOnBeforeUnload = window.onbeforeunload;
-    window.onbeforeunload = function() {
+    window.onbeforeunload = function () {
         if (jQuery(".editorDirty").length > 0) {
             return 'You have modified this page but have not saved your changes.';
         }
@@ -79,7 +78,7 @@ function disableDirtyCheck() {
         setTimeout(poll, POLLING_INTERVAL_MINUTES * 60 * 1000);
     }
 
-    jQuery(function() {
+    jQuery(function () {
         setTimeout(poll, POLLING_INITIAL_DELAY_SECONDS * 1000);
     });
 }());
@@ -137,7 +136,8 @@ jQuery(function () {
         jQuery(".jsTreeExpandDefaultToggle").toggle();
         treeContainer.find(".externallink").each(function () {
             var linkSpan = jQuery(this);
-            var linkAnchor = jQuery("<a href=\"" + linkSpan.attr("href") + "\" class=\"externallink\">"
+            var linkAnchor = jQuery("<a href=\"" + linkSpan.attr("href")
+                    + "\" class=\"externallink\">"
                     + linkSpan.text() + "</a>");
             linkAnchor.click(function () {
                 window.location.href = linkAnchor.attr("href");
@@ -166,4 +166,18 @@ function submitenter(myfield, e) {
     } else {
         return true;
     }
+}
+
+<!-- Social Share Script -->
+function shareThis(event) {
+
+    var engineUrl = $(event).data("engine-url");
+    var shareUrl = $(event).data("share-url");
+    var engine = $(event).data("engine");
+    var dataReference = $(event).data("reference");
+
+    window.open(engineUrl +
+            encodeURIComponent(
+                    shareUrl.replace("socialMediaEngine", engine) +
+                    ((dataReference != "") ? (dataReference) : (""))), '_blank');
 }
