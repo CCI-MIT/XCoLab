@@ -99,7 +99,6 @@ public class ContestAdminTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        setPageAttributes(request, model, tab);
         model.addAttribute("contestAdminBean", new ContestAdminBean(getContest()));
         return TAB_VIEW;
     }

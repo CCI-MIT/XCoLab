@@ -18,8 +18,7 @@ public class SeoController {
     public void handleRenderRequest(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         StringBuilder sb = new StringBuilder();
-        final ServerEnvironment serverEnvironment =
-                PlatformAttributeKey.SERVER_ENVIRONMENT.get();
+        final ServerEnvironment serverEnvironment = PlatformAttributeKey.SERVER_ENVIRONMENT.get();
         if (serverEnvironment == ServerEnvironment.PRODUCTION) {
             sb.append("User-agent: *\n");
             sb.append("Disallow: \n");

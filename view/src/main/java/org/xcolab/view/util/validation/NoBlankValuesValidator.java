@@ -41,6 +41,7 @@ public class NoBlankValuesValidator extends CustomValidator<NoBlankValues> {
     }
 
     private static class InvalidTargetException extends RuntimeException {
+
         InvalidTargetException() {
             super("Target must be a collection of String values");
         }

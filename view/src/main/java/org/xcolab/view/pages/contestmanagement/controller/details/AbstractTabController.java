@@ -8,7 +8,6 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.taglibs.xcolab.controller.BaseTabController;
-import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
 import java.util.List;
@@ -30,15 +29,6 @@ public abstract class AbstractTabController extends BaseTabController {
     @ModelAttribute("currentTabWrapped")
     @Override
     public abstract TabWrapper populateCurrentTabWrapped(HttpServletRequest request);
-
-    @Override
-    public void setPageAttributes(HttpServletRequest request, Model model, TabEnum tab) {
-
-        String pageTitle = contest.getContestShortName();
-        String pageSubTitle = tab.getDisplayName() + " - " + pageTitle;
-        String pageDescription = "Contest details for " + pageTitle;
-        setSeoTexts(request, pageTitle, pageSubTitle, pageDescription);
-    }
 
     @ModelAttribute("contestWrapper")
     public Contest populateContestWrapper(Model model, HttpServletRequest request,

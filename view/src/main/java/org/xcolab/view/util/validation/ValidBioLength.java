@@ -14,6 +14,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = ValidBioLengthValidator.class)
 @Documented
 public @interface ValidBioLength {
+
     String bioProperty();
 
     boolean allowNull() default false;

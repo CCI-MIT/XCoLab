@@ -46,17 +46,17 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
         this.activityEntry = activityEntry;
 
         try {
-            if(this.getSecondaryType().equals(ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId())){
+            if (this.getSecondaryType()
+                    .equals(ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId())) {
                 try {
                     Long proposalId = new Long(this.activityEntry.getExtraData());
-                    rawProposal =
-                            ProposalClientUtil.getProposal(proposalId);
-                }catch (NumberFormatException e){
+                    rawProposal = ProposalClientUtil.getProposal(proposalId);
+                } catch (NumberFormatException e) {
                     //legacy support
                     rawProposal =
                             ProposalClientUtil.getProposal(this.activityEntry.getClassPrimaryKey());
                 }
-            }else {
+            } else {
                 rawProposal =
                         ProposalClientUtil.getProposal(this.activityEntry.getClassPrimaryKey());
             }
@@ -67,18 +67,21 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
                     LocaleContextHolder.getLocale().getLanguage());
 
             proposalName = ProposalAttributeClientUtil
-                    .getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
+                    .getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,
+                            null).getStringValue();
 
-        } catch (ContestNotFoundException| ProposalNotFoundException e){
+        } catch (ContestNotFoundException | ProposalNotFoundException e) {
             _log.error("Error: {}", e.getMessage());
         }
 
     }
+
     @Override
     public Long getPrimaryType() {
-        if(this.getSecondaryType().equals(ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId())){
+        if (this.getSecondaryType()
+                .equals(ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId())) {
             return ActivityEntryType.CONTEST.getPrimaryTypeId();
-        }else {
+        } else {
             return ActivityEntryType.PROPOSAL.getPrimaryTypeId();
         }
     }
@@ -86,19 +89,15 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
     @Override
     public String getBody() {
-
-
-        String[] params = { getUserLink(),contestType.getProposalName(),
-                getProposalLink()};
-
-        return resourceMessageResolver.getLocalizedMessage(getBodyTemplate(),params);
-
+        String[] params = {getUserLink(), contestType.getProposalName(), getProposalLink()};
+        return resourceMessageResolver.getLocalizedMessage(getBodyTemplate(), params);
     }
 
     @Override
     public String getTitle() {
         return getTitleTemplate().replaceAll("<proposal/>", contestType.getProposalName());
     }
+
     @Override
     public String getName() {
         return null;
@@ -106,11 +105,9 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
     abstract protected String getTitleTemplate();
 
-    //abstract protected String getNameTemplate();
-
     abstract protected String getBodyTemplate();
 
-    protected String getUserLink() {
+    private String getUserLink() {
         try {
             Member member = MembersClient.getMember(activityEntry.getMemberId());
             return member.generateUserURL();
@@ -119,11 +116,12 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
         }
         return "<user removed>";
     }
-    private String getProposalLink(){
-        return "<a href='" + rawProposal.getProposalLinkUrl(contest)+ "'>" + proposalName + "</a>";
+
+    private String getProposalLink() {
+        return "<a href='" + rawProposal.getProposalLinkUrl(contest) + "'>" + proposalName + "</a>";
     }
 
-    public enum ProposalActivitySubType{
+    public enum ProposalActivitySubType {
         PROPOSAL_ATTRIBUTE_REMOVED(2L),
         PROPOSAL_ATTRIBUTE_UPDATE(1L),
         PROPOSAL_CREATED(0L),
@@ -136,13 +134,13 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
         PROPOSAL_VOTE_SWITCH(5L);
 
         private final Long secondaryTypeId;
+
         ProposalActivitySubType(Long type) {
             this.secondaryTypeId = type;
         }
 
-        public Long getSecondaryTypeId(){
+        public Long getSecondaryTypeId() {
             return this.secondaryTypeId;
         }
     }
-
 }

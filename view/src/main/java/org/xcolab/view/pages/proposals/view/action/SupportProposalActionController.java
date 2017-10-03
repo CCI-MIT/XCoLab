@@ -12,6 +12,8 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -58,9 +60,7 @@ public class SupportProposalActionController {
                         .publishEvent(request, memberId, SUPPORT_ANALYTICS_KEY + analyticsValue,
                                 SUPPORT_ANALYTICS_CATEGORY, SUPPORT_ANALYTICS_ACTION,
                                 SUPPORT_ANALYTICS_LABEL, analyticsValue);
-
-                GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_SUPPORT);
-
+				GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_SUPPORT);
             }
             try {
                 Contest contest = proposalContext.getClients().getProposalClient()
@@ -71,6 +71,7 @@ public class SupportProposalActionController {
 
             }
         }
+        ServiceRequestUtils.clearCache(CacheName.MISC_REQUEST);
         String proposalLinkUrl =
                 proposalContext.getProposal().getProposalLinkUrl(proposalContext.getContest());
         if (!StringUtils.isBlank(forwardToTab)) {

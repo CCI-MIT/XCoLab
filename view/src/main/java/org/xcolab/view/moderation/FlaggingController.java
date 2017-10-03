@@ -10,7 +10,6 @@ import org.xcolab.util.enums.flagging.TargetType;
 
 import java.io.UnsupportedEncodingException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,18 +20,18 @@ public class FlaggingController {
     public ResponseJson report(HttpServletRequest request, HttpServletResponse response,
             @RequestParam TargetType targetType, @RequestParam long targetAdditionalId,
             @RequestParam String reason, @RequestParam String comment, @RequestParam long targetId,
-            Member loggedInMember)
-            throws ServletException, UnsupportedEncodingException {
+            Member loggedInMember) throws UnsupportedEncodingException {
 
         request.setCharacterEncoding("UTF-8");
 
-        FlaggingClient.report(loggedInMember, targetId,
-                targetAdditionalId, targetType, reason, comment);
+        FlaggingClient
+                .report(loggedInMember, targetId, targetAdditionalId, targetType, reason, comment);
 
         return new ResponseJson(true);
     }
 
     private static class ResponseJson {
+
         private final boolean success;
 
         private ResponseJson(boolean success) {

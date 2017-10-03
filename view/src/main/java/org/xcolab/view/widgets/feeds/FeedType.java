@@ -13,7 +13,7 @@ public enum FeedType {
     ACTIVITIES("Activities", new ActivitiesFeedDataProvider()),
     RECENTLY_ACTIVE("Recently active users", new RecentlyActiveUsersFeedDataProvider());
     /*
-	RECENTLY_JOINED("Recently joined users", null), 
+    RECENTLY_JOINED("Recently joined users", null),
 	MOST_ACTIVE("Most active users", null);
 	*/
 

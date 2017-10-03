@@ -129,7 +129,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public String getContestStatusStr() {
-        return contestClient.getContestPhaseType(getContestPhaseType()).getStatus();
+        return getContestPhaseTypeObject().getStatus();
     }
 
     public ContestPhaseType getContestPhaseTypeObject() {
@@ -160,10 +160,7 @@ public class ContestPhase extends AbstractContestPhase {
 
     public ContestStatus getStatus() {
         if (status == null) {
-            String statusStr = getContestStatusStr();
-            if (StringUtils.isNotEmpty(statusStr)) {
-                status = ContestStatus.valueOf(statusStr);
-            }
+            status = ContestStatus.valueOf(getContestStatusStr());
         }
         return status;
     }

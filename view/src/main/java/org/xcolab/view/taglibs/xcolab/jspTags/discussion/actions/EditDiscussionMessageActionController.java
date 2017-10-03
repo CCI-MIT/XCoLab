@@ -1,5 +1,6 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,8 +26,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
 
     @PostMapping("/discussions/editComment")
     public void handleAction(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long commentId,
-            @RequestParam("comment") String content,
+            @RequestParam long commentId, @RequestParam("comment") String content,
             @RequestParam(value = "contestId", required = false) Long contestId)
             throws IOException, DiscussionAuthorizationException, CommentNotFoundException {
 
@@ -34,7 +34,8 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
             checkPermissions(request, "User isn't allowed to edit message", commentId);
         } catch (DiscussionAuthorizationException e) {
             AlertMessage.danger("You are not allowed to edit this message.").flash(request);
-            redirectToReferrer(request, response);
+            String redirectUrl = request.getHeader(HttpHeaders.REFERER);
+            response.sendRedirect(redirectUrl);
             return;
         }
 
@@ -51,7 +52,8 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
         comment.setContent(HtmlUtil.cleanSome(content, baseUri));
         commentClient.updateComment(comment);
 
-        redirectToReferrer(request, response);
+        String redirectUrl = request.getHeader(HttpHeaders.REFERER);
+        response.sendRedirect(redirectUrl);
     }
 
     @Override

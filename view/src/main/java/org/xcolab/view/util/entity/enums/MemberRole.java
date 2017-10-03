@@ -15,7 +15,7 @@ public enum MemberRole {
      * Whenever these roles are modified (which should never happen) these Ids should be updated as well
      */
     DEFAULT(0L, "Default"),
-	ALL(0L, "All"),
+    ALL(0L, "All"),
     GUEST(10119L, "Guest"),
     MEMBER(10122L, "User", "Member"),
     FELLOW(193261L, "Fellow"),
@@ -88,16 +88,18 @@ public enum MemberRole {
     public static MemberRole getHighestRole(List<Role_> roles) {
         MemberRole role = MemberRole.MEMBER;
 
-        for (Role_ r: roles) {
+        for (Role_ r : roles) {
             final String roleString = r.getName();
             try {
                 MemberRole currentRole = MemberRole.fromRoleName(roleString);
                 if (currentRole != null) {
-                    if (currentRole.getMemberCategory().getSortOrder() > role.getMemberCategory().getSortOrder()) {
+                    if (currentRole.getMemberCategory().getSortOrder() > role.getMemberCategory()
+                            .getSortOrder()) {
                         role = currentRole;
                     }
                 }
-            } catch (NoSuchMemberRoleException ignored) { }
+            } catch (NoSuchMemberRoleException ignored) {
+            }
         }
 
         if (role == MemberRole.MODERATOR) {
@@ -121,6 +123,7 @@ public enum MemberRole {
     }
 
     public static class NoSuchMemberRoleException extends IllegalStateException {
+
         public NoSuchMemberRoleException(String message) {
             super(message);
         }

@@ -15,5 +15,4 @@ public interface ActivityEntryContentProvider {
     String getName();
 
     void setActivityEntry(ActivityEntry activityEntry);
-
 }

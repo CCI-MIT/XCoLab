@@ -18,7 +18,8 @@ public abstract class ConstraintValidatorHelper {
 
     private static final Logger _log = LoggerFactory.getLogger(ConstraintValidatorHelper.class);
 
-    public static <T> T getPropertyValue(Class<T> requiredType, String propertyName, Object instance) {
+    public static <T> T getPropertyValue(Class<T> requiredType, String propertyName,
+            Object instance) {
         if (requiredType == null) {
             throw new IllegalArgumentException("Invalid argument. requiredType must NOT be null!");
         }
@@ -26,15 +27,18 @@ public abstract class ConstraintValidatorHelper {
             throw new IllegalArgumentException("Invalid argument. PropertyName must NOT be null!");
         }
         if (instance == null) {
-            throw new IllegalArgumentException("Invalid argument. Object instance must NOT be null!");
+            throw new IllegalArgumentException(
+                    "Invalid argument. Object instance must NOT be null!");
         }
         T returnValue = null;
         try {
-            PropertyDescriptor descriptor = new PropertyDescriptor(propertyName, instance.getClass());
+            PropertyDescriptor descriptor =
+                    new PropertyDescriptor(propertyName, instance.getClass());
             Method readMethod = descriptor.getReadMethod();
             if (readMethod == null) {
                 throw new IllegalStateException(
-                        "Property '" + propertyName + "' of " + instance.getClass().getName() + " is NOT readable!");
+                        "Property '" + propertyName + "' of " + instance.getClass().getName()
+                                + " is NOT readable!");
             }
             if (requiredType.isAssignableFrom(readMethod.getReturnType())) {
                 try {
@@ -46,12 +50,14 @@ public abstract class ConstraintValidatorHelper {
             }
         } catch (IntrospectionException e) {
             throw new IllegalArgumentException(
-                    "Property '" + propertyName + "' is NOT defined in " + instance.getClass().getName() + "!", e);
+                    "Property '" + propertyName + "' is NOT defined in " + instance.getClass()
+                            .getName() + "!", e);
         }
         return returnValue;
     }
 
-    public static boolean isValid(Collection<String> propertyValues, StringComparisonMode comparisonMode) {
+    public static boolean isValid(Collection<String> propertyValues,
+            StringComparisonMode comparisonMode) {
         boolean ignoreCase = false;
         switch (comparisonMode) {
             case EQUAL_IGNORE_CASE:

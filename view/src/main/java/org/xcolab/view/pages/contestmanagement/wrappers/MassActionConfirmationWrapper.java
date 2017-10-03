@@ -18,8 +18,7 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
     private List<Contest> contestWrappers;
     private List<Long> contestIds;
     private List<Boolean> selectedContest;
-    private int massActionId;
-    private ContestMassAction selectedMassAction;
+    private ContestMassActions selectedMassAction;
     private Integer itemCount;
     private Long memberId;
 
@@ -29,10 +28,11 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
         this.contestIds = new ArrayList<>();
     }
 
-    public MassActionConfirmationWrapper(List<Long> contestIds, int massActionId) {
+    public MassActionConfirmationWrapper(List<Long> contestIds,
+            ContestMassActions selectedMassAction) {
         this.selectedContest = new ArrayList<>();
         this.contestWrappers = new ArrayList<>();
-        this.setMassActionId(massActionId);
+        this.selectedMassAction= selectedMassAction;
         this.itemCount = contestIds.size();
         this.contestIds = contestIds;
         populateValidContestWrapper(contestIds);
@@ -82,13 +82,12 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
         this.itemCount = itemCount;
     }
 
-    public Integer getMassActionId() {
-        return massActionId;
+    public ContestMassActions getSelectedMassAction() {
+        return selectedMassAction;
     }
 
-    public void setMassActionId(Integer massActionId) {
-        this.massActionId = massActionId;
-        this.selectedMassAction = ContestMassActions.values()[massActionId].getAction();
+    public void setSelectedMassAction(ContestMassActions selectedMassAction) {
+        this.selectedMassAction = selectedMassAction;
     }
 
     @Override
@@ -98,10 +97,6 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
 
     public void setMemberId(Long memberId) {
         this.memberId = memberId;
-    }
-
-    public ContestMassAction getSelectedMassAction() {
-        return selectedMassAction;
     }
 
     public List<Long> getSelectedContestIds() {

@@ -40,8 +40,7 @@ public class OntologyEditorController {
 
     @GetMapping("/ontology-editor/ontologyEditorList")
     public void ontologyEditorList(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) String node)
-            throws IOException {
+            @RequestParam(required = false) String node) throws IOException {
 
         Long ontologySpaceId = null;
         Long ontologyTermParentId = null;
@@ -55,15 +54,11 @@ public class OntologyEditorController {
         JSONArray responseArray = new JSONArray();
         if (ontologySpaceId != null) {
             //
-            if (ontologyTermParentId == null) {
-                ontologyTermParentId = 0L;
-            }
             List<OntologyTerm> ontologyTerms =
                     OntologyClientUtil.getOntologyTerms(ontologyTermParentId, ontologySpaceId);
             for (OntologyTerm ot : ontologyTerms) {
                 responseArray
-                        .put(ontologyTermNode(ot.getName(), ot.getOntologySpaceId(),
-                                ot.getId()));
+                        .put(ontologyTermNode(ot.getName(), ot.getOntologySpaceId(), ot.getId()));
             }
 
         } else {
@@ -80,8 +75,7 @@ public class OntologyEditorController {
 
     @GetMapping("/ontology-editor/ontologyEditorGetOntologyTerm")
     public void contentEditorGetLatestArticleVersion(HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestParam(required = false) Long ontologyTermId)
+            HttpServletResponse response, @RequestParam(required = false) Long ontologyTermId)
             throws IOException {
         JSONObject articleVersion = new JSONObject();
 
@@ -99,14 +93,11 @@ public class OntologyEditorController {
         response.getOutputStream().write(articleVersion.toString().getBytes());
     }
 
-
-
-
-    private void deleteOntologyTermAndChildren(Long id){
+    private void deleteOntologyTermAndChildren(Long id) {
         OntologyTerm ot = OntologyClientUtil.getOntologyTerm(id);
         List<OntologyTerm> children = ot.getChildren();
-        if(children!=null){
-            for(OntologyTerm child : children){
+        if (children != null) {
+            for (OntologyTerm child : children) {
                 deleteOntologyTermAndChildren(child.getId_());
             }
         }
@@ -116,11 +107,12 @@ public class OntologyEditorController {
     @PostMapping("/ontology-editor/deleteOntologyTerm")
     public void deleteOntologyTerm(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) Long id) throws IOException {
-        if(id !=null && id != 0L) {
+        if (id != null && id != 0L) {
             deleteOntologyTermAndChildren(id);
         }
         defaultOperationReturnMessage(true, "Ontology term deleted successfully", response);
     }
+
     @PostMapping("/ontology-editor/saveOntologyTerm")
     public void saveOntologyTerm(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) Long id,
@@ -134,15 +126,14 @@ public class OntologyEditorController {
     ) throws IOException {
 
 
-
-        if(id !=null && id != 0L) {
+        if (id != null && id != 0L) {
             OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(id);
             ontologyTerm.setDescriptionUrl(descriptionUrl);
             ontologyTerm.setOrder_(order);
             ontologyTerm.setName(name);
 
             OntologyClientUtil.updateOntologyTerm(ontologyTerm);
-        }else{
+        } else {
             OntologyTerm ontologyTerm = new OntologyTerm();
             ontologyTerm.setOntologySpaceId(ontologySpaceId);
             ontologyTerm.setParentId(parentId);
@@ -192,8 +183,7 @@ public class OntologyEditorController {
 
     private JSONObject ontologyTermNode(String label, Long ontologySpaceId,
             Long ontologyTermParentId) {
-        return treeNode(label, ontologyTermParentId, (ontologySpaceId),
-                 "folder", true);
+        return treeNode(label, ontologyTermParentId, (ontologySpaceId), "folder", true);
     }
 
     private JSONObject ontologySpaceNode(String label, Long ontologySpaceId) {
@@ -201,7 +191,7 @@ public class OntologyEditorController {
     }
 
     private void printOntologyHierarchy() {
-        for(OntologyTerm oTerm : OntologyClientUtil.getAllOntologyTerms()) {
+        for (OntologyTerm oTerm : OntologyClientUtil.getAllOntologyTerms()) {
             if (oTerm.getParent() == null) {
                 printOntologies(OntologyClientUtil.getOntologyTerm(oTerm.getId_()), 0);
             } else if (oTerm.getParent().getId() == 0) {
@@ -211,13 +201,13 @@ public class OntologyEditorController {
     }
 
     private void printOntologies(OntologyTerm term, int depth) {
-        for(OntologyTerm child : OntologyClientUtil.getChildOntologyTerms(term.getId())) {
+        for (OntologyTerm child : OntologyClientUtil.getChildOntologyTerms(term.getId())) {
             StringBuilder prefix = new StringBuilder();
-            for(int i = 0 ; i <depth; i++) {
+            for (int i = 0; i < depth; i++) {
                 prefix.append("; ");
             }
             System.out.println(prefix.toString() + child.getId() + "; " + child.getName());
-            printOntologies(child, depth +1);
+            printOntologies(child, depth + 1);
         }
     }
 }

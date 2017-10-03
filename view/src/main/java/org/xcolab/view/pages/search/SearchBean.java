@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchBean implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private final static int PAGER_RANGE = 5;
@@ -30,12 +31,13 @@ public class SearchBean implements Serializable {
         } else {
             try {
                 this.searchPhrase = HtmlUtil.cleanAll(URLDecoder.decode(searchPhrase, "UTF-8"));
-            }catch (UnsupportedEncodingException ignored){
+            } catch (UnsupportedEncodingException ignored) {
 
             }
         }
 
-        this.dataPage = new SearchDataPage(pageNumber != null ? pageNumber : 1, searchPhrase, searchLocation);
+        this.dataPage = new SearchDataPage(pageNumber != null ? pageNumber : 1, searchPhrase,
+                searchLocation);
     }
 
     public String getSearchPhrase() {
@@ -73,16 +75,19 @@ public class SearchBean implements Serializable {
         List<PageLinkWrapper> pageLinks = new ArrayList<>();
         pageLinks.add(new PageLinkWrapper("<< First", 1, searchPhrase, searchLocation));
         if (pageNumber > 1) {
-            pageLinks.add(new PageLinkWrapper("< Previous", pageNumber - 1, searchPhrase, searchLocation));
+            pageLinks.add(new PageLinkWrapper("< Previous", pageNumber - 1, searchPhrase,
+                    searchLocation));
         }
         for (int i = Math.max(1, pageNumber - PAGER_RANGE), stop =
-             Math.min(dataPage.getNumberOfPages(), pageNumber + PAGER_RANGE); i <= stop; i++) {
+                Math.min(dataPage.getNumberOfPages(), pageNumber + PAGER_RANGE); i <= stop; i++) {
             pageLinks.add(new PageLinkWrapper("", i, searchPhrase, searchLocation));
         }
         if (pageNumber < dataPage.getNumberOfPages()) {
-            pageLinks.add(new PageLinkWrapper("Next >", pageNumber + 1, searchPhrase, searchLocation));
+            pageLinks.add(new PageLinkWrapper("Next >", pageNumber + 1, searchPhrase,
+                    searchLocation));
         }
-        pageLinks.add(new PageLinkWrapper("Last >>", dataPage.getNumberOfPages(), searchPhrase, searchLocation));
+        pageLinks.add(new PageLinkWrapper("Last >>", dataPage.getNumberOfPages(), searchPhrase,
+                searchLocation));
         return pageLinks;
     }
 

@@ -12,6 +12,7 @@ public class TomcatProperties {
     }
 
     public static class Ajp {
+
         /**
          * Enable tomcat AJP connector.
          */

@@ -37,12 +37,14 @@ public final class FilesClient {
     }
 
     public static Optional<FileEntry> getFileEntry(Long fileEntryId) {
-        try {
-            return Optional.of(fileEntryResource.get(fileEntryId)
-                    .withCache(CacheKeys.of(FileEntry.class, fileEntryId), CacheName.MISC_LONG)
-                    .executeChecked());
-        } catch (EntityNotFoundException e) {
-            return Optional.empty();
+        if (fileEntryId != null && fileEntryId > 0) {
+            try {
+                return Optional.of(fileEntryResource.get(fileEntryId)
+                        .withCache(CacheKeys.of(FileEntry.class, fileEntryId), CacheName.MISC_LONG)
+                        .executeChecked());
+            } catch (EntityNotFoundException ignored) {
+            }
         }
+        return Optional.empty();
     }
 }

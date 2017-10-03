@@ -30,7 +30,7 @@ public class UserSearchItem extends AbstractSearchItem {
 
     @Override
     public String getTitle() {
-        return highlight(member.getDisplayName(),searchQuery);
+        return highlight(member.getDisplayName(), searchQuery);
     }
 
     @Override
@@ -41,8 +41,9 @@ public class UserSearchItem extends AbstractSearchItem {
 
     @Override
     public String getContent() {
-        return getContent(member.getFirstName() + " " + member.getLastName() + " " + member.getShortBio(),searchQuery);
+        return getContent(
+                member.getFirstName() + " " + member.getLastName() + " " + member.getShortBio(),
+                searchQuery);
     }
-
 
 }

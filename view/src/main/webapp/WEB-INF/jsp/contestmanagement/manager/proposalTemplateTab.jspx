@@ -108,6 +108,15 @@
 								</form:select>
 							</div>
 
+                            <div class="checkbox">
+                                <label>
+                                    <form:checkbox path="sections[${x.index}].includeInJudgingReport"
+                                                   id="sections${x.index}.includeInJudgingReport"
+                                                   data-form-name="includeInJudgingReport"/>
+                                    <strong>Should the content of this section be included in the judging report CSV?</strong>
+                                </label>
+                            </div>
+
                             <div class="js-sectionTypeDependent" data-section-type="PROPOSAL"
                                     style="display: none">
                                 <div class="levelVisible">
@@ -140,11 +149,10 @@
 
                                     <div class="checkbox">
                                         <label>
-                                            <strong>Is this proposal reference field used for contest integration?</strong><br/>
                                             <form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
                                                            id="sections${x.index}.contestIntegrationRelevance"
-                                                           data-form-name="contestIntegrationRelevance">
-                                            </form:checkbox>
+                                                           data-form-name="contestIntegrationRelevance"/>
+                                            <strong>Is this proposal reference field used for contest integration?</strong>
                                         </label>
                                     </div>
                                 </div>

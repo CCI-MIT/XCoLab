@@ -30,14 +30,14 @@ public class BounceEventProcessor implements SendGridEventProcessor {
                 // ignore bounces from verified members
                 return;
             }
-            
+
             final boolean isHardBounce = event.getStatus().startsWith("5");
             if (isHardBounce && !member.getIsEmailBounced()) {
                 member.setIsEmailBounced(true);
                 MembersClient.updateMember(member);
                 ProposalMemberRatingClientUtil.invalidateVotesForMember(member.getId_());
-                log.debug("Marked {}'s email {} as bounced ({}).",
-                        member.getScreenName(), email, event.getReason());
+                log.debug("Marked {}'s email {} as bounced ({}).", member.getScreenName(), email,
+                        event.getReason());
             }
         } catch (MemberNotFoundException e) {
             //we don't care about bounces from non-member emails

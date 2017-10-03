@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ContestsResult {
+
     private final List<SimpleContest> contests;
     private final int totalNumberOfContests;
 
@@ -25,6 +26,7 @@ public class ContestsResult {
     }
 
     private static class SimpleContest {
+
         private final long id;
         private final String contestShortName;
         private final String contestName;

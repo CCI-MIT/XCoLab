@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/contests/{contestYear}/{contestUrlName}")
+@RequestMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}")
 public class VoteOnProposalActionController {
 
     private final static String VOTE_ANALYTICS_KEY = "VOTE_CONTEST_ENTRIES";
@@ -41,15 +41,15 @@ public class VoteOnProposalActionController {
     private final static String VOTE_ANALYTICS_ACTION = "Vote contest entry";
     private final static String VOTE_ANALYTICS_LABEL = "";
 
-    @PostMapping("c/{proposalUrlString}/{proposalId}/voteOnProposalAction")
+    @PostMapping("voteOnProposalAction")
     public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, Member member)
             throws ProposalsAuthorizationException, IOException {
         final Proposal proposal = proposalContext.getProposal();
         final Contest contest = proposalContext.getContest();
         final ClientHelper clients = proposalContext.getClients();
-        ProposalMemberRatingClient proposalMemberRatingClient = clients
-                .getProposalMemberRatingClient();
+        ProposalMemberRatingClient proposalMemberRatingClient =
+                clients.getProposalMemberRatingClient();
 
         boolean hasVoted = false;
         if (proposalContext.getPermissions().getCanVote()) {
@@ -61,40 +61,38 @@ public class VoteOnProposalActionController {
                 proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
             } else {
                 if (proposalMemberRatingClient.hasUserVoted(contestPhaseId, memberId)) {
-                    // User has voted for a different proposal. Vote will be retracted and converted to a vote of this proposal.
+                    // User has voted for a different proposal. Vote will be retracted and
+                    // converted to a vote of this proposal.
                     proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
                 }
 
                 proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
-                VoteValidator voteValidator = new VoteValidator(member, proposal, contest,
-                        request.getRemoteAddr(), clients.getProposalMemberRatingClient());
+                VoteValidator voteValidator =
+                        new VoteValidator(member, proposal, contest, request.getRemoteAddr(),
+                                clients.getProposalMemberRatingClient());
                 final ValidationResult validationResult = voteValidator.validate();
                 if (validationResult == ValidationResult.INVALID_BLACKLISTED
                         || validationResult == ValidationResult.INVALID_BOUNCED_EMAIL) {
                     //TODO: decide if we want to inform users of this
-//                    AlertMessage.danger("Your vote was NOT counted because it violates our email policy. "
-//                            + "Please refer to the Voting Rules for additional information.")
-//                            .flash(request);
+                    //                    AlertMessage.danger("Your vote was NOT counted because
+                    // it violates our email policy. "
+                    //                            + "Please refer to the Voting Rules for
+                    // additional information.")
+                    //                            .flash(request);
                 } else {
                     try {
-                        new ProposalVoteNotification(proposal, contest, member)
-                                .sendMessage();
+                        new ProposalVoteNotification(proposal, contest, member).sendMessage();
                     } catch (ContestNotFoundException ignored) {
 
                     }
                     hasVoted = true;
                 }
 
-                //publish event per contestPhaseId to allow voting on exactly one proposal per contest(phase)
+                //publish event per contestPhaseId to allow voting on exactly one proposal per
+                // contest(phase)
                 AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
-                        VOTE_ANALYTICS_CATEGORY,
-                        VOTE_ANALYTICS_ACTION,
-                        VOTE_ANALYTICS_LABEL,
-                        1);
-
-
-                GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
-
+                        VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
+				GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
             }
         } else {
             if (member == null) {
@@ -102,7 +100,8 @@ public class VoteOnProposalActionController {
                 request.setAttribute("promptLoginWindow", "true");
                 return;
             } else {
-                throw new ProposalsAuthorizationException("User isn't allowed to vote on proposal ");
+                throw new ProposalsAuthorizationException(
+                        "User isn't allowed to vote on proposal ");
             }
         }
         // Redirect to prevent page-refreshing from influencing the vote
@@ -110,7 +109,7 @@ public class VoteOnProposalActionController {
         response.sendRedirect(proposal.getProposalLinkUrl(contest) + arguments);
     }
 
-    @GetMapping("c/{proposalUrlString}/{proposalId}/confirmVote/{proposalId}/{userId}/{confirmationToken}")
+    @GetMapping("confirmVote/{proposalId}/{userId}/{confirmationToken}")
     public String confirmVote(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, @PathVariable long proposalId,
             @PathVariable long userId, @PathVariable String confirmationToken) {
@@ -120,8 +119,8 @@ public class VoteOnProposalActionController {
         final ProposalMemberRatingClient proposalMemberRatingClient =
                 clients.getProposalMemberRatingClient();
 
-        ProposalVote vote = proposalMemberRatingClient
-                .getProposalVoteByProposalIdUserId(proposalId, userId);
+        ProposalVote vote =
+                proposalMemberRatingClient.getProposalVoteByProposalIdUserId(proposalId, userId);
         if (vote != null && isValidToken(confirmationToken, vote)) {
             final Member member = MembersClient.getMemberUnchecked(vote.getUserId());
             member.setIsEmailConfirmed(true);
@@ -141,7 +140,7 @@ public class VoteOnProposalActionController {
     }
 
     private boolean isValidToken(@PathVariable String confirmationToken, ProposalVote vote) {
-        return StringUtils.isNotEmpty(vote.getConfirmationToken())
-                && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken);
+        return StringUtils.isNotEmpty(vote.getConfirmationToken()) && vote.getConfirmationToken()
+                .equalsIgnoreCase(confirmationToken);
     }
 }

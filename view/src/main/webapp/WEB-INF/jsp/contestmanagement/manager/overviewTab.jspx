@@ -6,7 +6,7 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-    <!--@elvariable id="massActionsItems" type="java.util.List<org.xcolab.util.html.LabelValue>"-->
+    <!--@elvariable id="massActionsItems" type="java.util.Map<String, String>"-->
 	<!--@elvariable id="contestOverviewWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper"-->
 
 	<jsp:directive.include file="../init.jspx" />
@@ -45,7 +45,7 @@
 			<div class="outerVerticalCenter">
 				<div class="innerVerticalCenter">
 					<form:select path="selectedMassAction" id="selectedMassAction" cssClass="form-control">
-						<form:options items="${massActionsItems}" itemValue="value" itemLabel="lable"/>
+						<form:options items="${massActionsItems}" />
 					</form:select>
 				</div>
 				<a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">SUBMIT</a>

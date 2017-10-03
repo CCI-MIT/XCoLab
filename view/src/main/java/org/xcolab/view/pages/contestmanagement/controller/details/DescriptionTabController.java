@@ -86,7 +86,6 @@ public class DescriptionTabController extends AbstractTabController {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        setPageAttributes(request, model, tab);
         if (!model.containsAttribute("contestDescriptionBean")) {
             Contest contest = getContest();
             model.addAttribute("contestDescriptionBean", new ContestDescriptionBean(contest));

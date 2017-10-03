@@ -22,8 +22,8 @@ public class MessagingPermissions {
     }
 
     public boolean getCanSendMessage() {
-        return getCanAdminAll()
-                || (isLoggedIn && MessagingClient.canMemberSendMessage(loggedInMember.getId_(), 1));
+        return getCanAdminAll() || (isLoggedIn && MessagingClient
+                .canMemberSendMessage(loggedInMember.getId_(), 1));
     }
 
     public boolean getCanViewMessage() {
@@ -31,14 +31,13 @@ public class MessagingPermissions {
     }
 
     public boolean isSender() {
-        return isLoggedIn && message != null
-                && message.getFrom().getUserId() == loggedInMember.getId_();
+        return isLoggedIn && message != null && message.getFrom().getUserId() == loggedInMember
+                .getId_();
     }
 
     public boolean isRecipient() {
-        return isLoggedIn && message != null
-                && message.getTo().stream()
-                    .anyMatch(recipient -> recipient.getId_() == loggedInMember.getId_());
+        return isLoggedIn && message != null && message.getTo().stream()
+                .anyMatch(recipient -> recipient.getId_() == loggedInMember.getId_());
     }
 
     public boolean getCanAdminAll() {

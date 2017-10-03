@@ -45,8 +45,8 @@ public class CacheConfig {
                 } else {
                     cacheProvider = provider.getConstructor().newInstance();
                 }
-            } catch (InstantiationException | IllegalAccessException
-                    | NoSuchMethodException | InvocationTargetException e) {
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                    | InvocationTargetException e) {
                 throw new CacheConfigException("Could not configure cache provider", e);
             }
             cacheProvider.init(cacheProperties.getCaches(), cacheProperties.getDiskStorage());
@@ -58,6 +58,7 @@ public class CacheConfig {
     }
 
     private static class CacheConfigException extends RuntimeException {
+
         public CacheConfigException(String msg, Throwable cause) {
             super(msg, cause);
         }

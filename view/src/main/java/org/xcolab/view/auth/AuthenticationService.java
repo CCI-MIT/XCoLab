@@ -74,7 +74,7 @@ public class AuthenticationService {
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         final Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
-        logoutHandlers.forEach(
-                logoutHandler -> logoutHandler.logout(request, response, authentication));
+        logoutHandlers.forEach(logoutHandler
+                -> logoutHandler.logout(request, response, authentication));
     }
 }

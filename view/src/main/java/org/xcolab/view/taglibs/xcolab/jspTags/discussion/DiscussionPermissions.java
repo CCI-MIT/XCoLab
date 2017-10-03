@@ -38,9 +38,9 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanReportMessage(Comment comment) {
-        return getCanReport() && comment.getAuthorId() != memberId
-                && FlaggingClient.countReports(memberId, TargetType.COMMENT,
-                comment.getCommentId(), null, null) == 0;
+        return getCanReport() && comment.getAuthorId() != memberId && FlaggingClient
+                .countReports(memberId, TargetType.COMMENT, comment.getCommentId(), null, null)
+                == 0;
     }
 
     public boolean getCanSeeAddThreadButton() {
@@ -60,14 +60,14 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanAdminMessage(Comment comment) {
-        final boolean canAdminMessage = isAuthor(comment)
-                && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES + 5);
+        final boolean canAdminMessage =
+                isAuthor(comment) && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES + 5);
         return canAdminMessage || getCanAdminAll();
     }
 
     public boolean getCanViewAdminMessage(Comment comment) {
-        final boolean canViewAdminMessage = isAuthor(comment)
-                && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES);
+        final boolean canViewAdminMessage =
+                isAuthor(comment) && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES);
         return canViewAdminMessage || getCanAdminAll();
     }
 
@@ -77,8 +77,8 @@ public class DiscussionPermissions {
 
     private boolean isRecent(Comment comment, int recencyInMinutes) {
         Instant now = Instant.now();
-        return comment.getCreateDate().toInstant()
-                .plus(recencyInMinutes, ChronoUnit.MINUTES).isAfter(now);
+        return comment.getCreateDate().toInstant().plus(recencyInMinutes, ChronoUnit.MINUTES)
+                .isAfter(now);
     }
 
     public boolean getCanCreateCategory() {

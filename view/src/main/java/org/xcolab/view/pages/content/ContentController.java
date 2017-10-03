@@ -34,8 +34,8 @@ public class ContentController {
             final ContentPage contentPage = ContentsClient.getContentPage(pageTitle);
             model.addAttribute("contentPage", contentPage);
 
-            final ContentArticle contentArticle = ContentsClient
-                    .getContentArticle(contentPage.getContentArticleId());
+            final ContentArticle contentArticle =
+                    ContentsClient.getContentArticle(contentPage.getContentArticleId());
 
             if (!contentArticle.canView(member)) {
                 return new AccessDeniedPage(member).toViewName(response);

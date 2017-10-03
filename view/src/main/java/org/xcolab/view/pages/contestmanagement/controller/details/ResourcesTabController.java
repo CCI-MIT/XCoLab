@@ -51,7 +51,6 @@ public class ResourcesTabController extends AbstractTabController {
 
         long memberId = MemberAuthUtil.getMemberId(request);
         wikiPageWrapper = new WikiPageWrapper(getContest(), memberId);
-        setPageAttributes(request, model, tab);
         model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
         return TAB_VIEW;
     }

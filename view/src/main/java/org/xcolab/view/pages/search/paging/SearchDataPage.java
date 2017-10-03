@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SearchDataPage {
+
     private final static int PAGE_SIZE = 10;
 
     private final int page;
@@ -26,7 +27,7 @@ public class SearchDataPage {
         this(1, "", "");
     }
 
-    public SearchDataPage(int page, String searchPhrase, String searchLocation){
+    public SearchDataPage(int page, String searchPhrase, String searchLocation) {
         this.page = page;
         this.searchPhrase = StringUtils.trim(searchPhrase);
         this.searchLocation = searchLocation;
@@ -49,13 +50,15 @@ public class SearchDataPage {
         final int endRow = page * PAGE_SIZE;
         final int startRow = endRow - PAGE_SIZE;
 
-        List<SearchPojo> searchPojoList = SearchClient.search(startRow, endRow, searchLocation, queryStr);
+        List<SearchPojo> searchPojoList =
+                SearchClient.search(startRow, endRow, searchLocation, queryStr);
         totalResults = SearchClient.searchCount(searchLocation, queryStr);
 
         items = new ArrayList<>();
         int i = 0;
         for (SearchPojo pojo : searchPojoList) {
-            final SearchResultItem resultItem = new SearchResultItem(pojo, queryStr, (i++ % 2) == 0);
+            final SearchResultItem resultItem =
+                    new SearchResultItem(pojo, queryStr, (i++ % 2) == 0);
             if (resultItem.isVisible()) {
                 items.add(resultItem);
             }

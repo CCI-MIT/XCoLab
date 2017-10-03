@@ -45,28 +45,29 @@ public class MessagingController {
     }
 
     @GetMapping
-    public String showMessagesDefault(HttpServletRequest request, HttpServletResponse response, Model model,
+    public String showMessagesDefault(HttpServletResponse response, Model model,
             @RequestParam(defaultValue = "1") Integer pageNumber, Member loggedInMember) {
-        return showMessages(request, response, model, "INBOX" , pageNumber, loggedInMember);
-
+        return showMessages(response, model, "INBOX", pageNumber, loggedInMember);
     }
+
     @GetMapping("mailbox/{mailboxType}")
-    public String showMessagesBoxType(HttpServletRequest request, HttpServletResponse response, Model model,
-            @PathVariable String mailboxType,
-            @RequestParam(defaultValue = "1") Integer pageNumber, Member loggedInMember) {
-        return showMessages(request, response, model, mailboxType, pageNumber, loggedInMember);
+    public String showMessagesBoxType(HttpServletResponse response, Model model,
+            @PathVariable String mailboxType, @RequestParam(defaultValue = "1") Integer pageNumber,
+            Member loggedInMember) {
+        return showMessages(response, model, mailboxType, pageNumber, loggedInMember);
     }
 
-    private String showMessages(HttpServletRequest request, HttpServletResponse response, Model model,
-             String mailboxType, Integer pageNumber, Member loggedInMember) {
+    private String showMessages(HttpServletResponse response, Model model, String mailboxType,
+            Integer pageNumber, Member loggedInMember) {
 
         if (loggedInMember == null) {
             return new AccessDeniedPage(null).toViewName(response);
         }
 
-        final MessagingBean messagingBean = new MessagingBean(loggedInMember,
-                pageNumber != null ? pageNumber : 1,
-                StringUtils.isNotBlank(mailboxType) ? MessageType.valueOf(mailboxType) : MessageType.INBOX);
+        final MessagingBean messagingBean =
+                new MessagingBean(loggedInMember, pageNumber != null ? pageNumber : 1,
+                        StringUtils.isNotBlank(mailboxType) ? MessageType.valueOf(mailboxType)
+                                : MessageType.INBOX);
         model.addAttribute("messagingBean", messagingBean);
 
         model.addAttribute("_activePageLink", "community");
@@ -75,7 +76,7 @@ public class MessagingController {
 
     @GetMapping("message/{messageId}")
     public String showMessage(HttpServletRequest request, HttpServletResponse response, Model model,
-            @PathVariable  Integer messageId, Member loggedInMember)
+            @PathVariable Integer messageId, Member loggedInMember)
             throws MessageNotFoundException {
 
         final MessageBean messageBean = new MessageBean(MessagingClient.getMessage(messageId));
@@ -98,11 +99,10 @@ public class MessagingController {
         return "/messaging/message";
     }
 
-
     @PostMapping("archiveMessages")
-    public String archiveMessages(HttpServletRequest request, HttpServletResponse response, Model model,
-            @ModelAttribute("messagingBean") MessagingBean messagingBean, Member loggedInMember)
-            throws MessageNotFoundException, IOException {
+    public String archiveMessages(HttpServletRequest request, HttpServletResponse response,
+            Model model, @ModelAttribute("messagingBean") MessagingBean messagingBean,
+            Member loggedInMember) throws MessageNotFoundException, IOException {
 
         if (loggedInMember == null) {
             return new AccessDeniedPage(null).toViewName(response);
@@ -113,21 +113,21 @@ public class MessagingController {
             for (MessageBean item : items) {
                 if (item.isSelected()) {
                     Message message = item.getMessage();
-                    MessagingClient.setArchived(message.getMessageId(), loggedInMember.getId_(), true);
+                    MessagingClient
+                            .setArchived(message.getMessageId(), loggedInMember.getId_(), true);
                 }
             }
         }
         AlertMessage.success("The message(s) have been archived!").flash(request);
-        return showMessages(request, response, model, "INBOX", 1, loggedInMember);
+        return showMessages(response, model, "INBOX", 1, loggedInMember);
     }
 
     @PostMapping("sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
-            @RequestParam String messageContent, Member loggedInMember)
-            throws IOException {
+            @RequestParam String messageContent, Member loggedInMember) throws IOException {
 
-        if (loggedInMember == null ) {
+        if (loggedInMember == null) {
             return new AccessDeniedPage(null).toViewName(response);
         }
 
@@ -138,8 +138,8 @@ public class MessagingController {
             try {
                 final String baseUri = PlatformAttributeKey.COLAB_URL.get();
                 MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
-                        HtmlUtil.cleanSome(messageContent, baseUri),
-                        loggedInMember.getUserId(), recipientIds);
+                        HtmlUtil.cleanSome(messageContent, baseUri), loggedInMember.getUserId(),
+                        recipientIds);
                 AlertMessage.success("The message has been sent!").flash(request);
             } catch (MessageLimitExceededException e) {
                 AlertMessage.danger("You have exceeded your daily message limit. "
@@ -155,6 +155,6 @@ public class MessagingController {
         if (StringUtils.isNotBlank(refererHeader)) {
             return "redirect:" + UriComponentsBuilder.fromHttpUrl(refererHeader).build().getPath();
         }
-        return showMessages(request, response, model, "INBOX", 1, loggedInMember);
+        return showMessages(response, model, "INBOX", 1, loggedInMember);
     }
 }

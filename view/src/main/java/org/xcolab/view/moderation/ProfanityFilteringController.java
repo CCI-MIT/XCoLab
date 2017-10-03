@@ -20,13 +20,12 @@ public class ProfanityFilteringController {
 
     @PostMapping
     public ResponseJson filter(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String fullText, @RequestParam String source,
-            Member loggedInMember) {
+            @RequestParam String fullText, @RequestParam String source, Member loggedInMember) {
 
         FilteredEntry filteredEntry = new FilteredEntry();
         filteredEntry.setAuthorId(loggedInMember.getId_());
         filteredEntry.setFullText(fullText);
-        if (source.equals(FilteringSource.DISCUSSION.getSource())){
+        if (source.equals(FilteringSource.DISCUSSION.getSource())) {
             filteredEntry.setSource(FilteringSource.DISCUSSION.getId());
         } else {
             filteredEntry.setSource(FilteringSource.PROPOSAL.getId());
@@ -35,10 +34,12 @@ public class ProfanityFilteringController {
         filteredEntry = FilteringClient.createFilteredEntry(filteredEntry);
 
         final boolean isValid = filteredEntry.getStatus().equals(FilteringStatus.APPROVED.getId());
-        return new ResponseJson(isValid, filteredEntry.getUuid(), filteredEntry.getResponseFullText());
+        return new ResponseJson(isValid, filteredEntry.getUuid(),
+                filteredEntry.getResponseFullText());
     }
 
     private static class ResponseJson {
+
         private final boolean valid;
         private final String uuid;
         private final String offensiveTerm;

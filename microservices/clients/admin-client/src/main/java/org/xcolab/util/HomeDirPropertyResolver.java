@@ -38,13 +38,16 @@ public class HomeDirPropertyResolver extends StandardEnvironment {
     protected void customizePropertySources(MutablePropertySources propertySources) {
         super.customizePropertySources(propertySources);
         try {
-            propertySources.addLast(
-                    new ResourcePropertySource(new FileSystemResource(PROPERTIES_FILE)));
-            propertySources.addLast(
-                    new ResourcePropertySource(new FileSystemResource(YAML_FILE)));
-
+            if (PROPERTIES_FILE.exists()) {
+                FileSystemResource fileSystemResource = new FileSystemResource(PROPERTIES_FILE);
+                propertySources.addLast(new ResourcePropertySource(fileSystemResource));
+            }
+            if (YAML_FILE.exists()) {
+                FileSystemResource fileSystemResource = new FileSystemResource(YAML_FILE);
+                propertySources.addLast(new ResourcePropertySource(fileSystemResource));
+            }
         } catch (IOException e) {
-            _log.warn("No properties file with allowed extension found in {}", PROPERTIES_FILE_PATH);
+            _log.warn("Couldn't load properties file(s) {}.yml/properties", FILE_BASE_PATH, e);
         }
     }
 }

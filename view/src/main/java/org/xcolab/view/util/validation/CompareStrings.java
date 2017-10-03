@@ -14,6 +14,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = CompareStringsValidator.class)
 @Documented
 public @interface CompareStrings {
+
     String[] propertyNames();
 
     StringComparisonMode matchMode() default StringComparisonMode.EQUAL;

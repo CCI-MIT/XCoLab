@@ -5,6 +5,8 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
 import org.xcolab.model.tables.pojos.PlanSectionDefinition;
 import org.xcolab.model.tables.records.PlanSectionDefinitionRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -17,9 +19,13 @@ import static org.xcolab.model.Tables.PLAN_TEMPLATE_SECTION;
 @Repository
 public class PlanSectionDefinitionDaoImpl implements PlanSectionDefinitionDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public PlanSectionDefinitionDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext, "DSLContext is required");
+        this.dslContext = dslContext;
+    }
 
     @Override
     public List<PlanSectionDefinition> findByGiven(Long planTemplateId, Boolean weight) {
@@ -68,6 +74,7 @@ public class PlanSectionDefinitionDaoImpl implements PlanSectionDefinitionDao {
                 .set(PLAN_SECTION_DEFINITION.ADDITIONAL_IDS, planSectionDefinition.getAdditionalIds())
                 .set(PLAN_SECTION_DEFINITION.LOCKED, planSectionDefinition.getLocked())
                 .set(PLAN_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, planSectionDefinition.getContestIntegrationRelevance())
+                .set(PLAN_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, planSectionDefinition.getIncludeInJudgingReport())
                 .returning(PLAN_SECTION_DEFINITION.ID_)
                 .fetchOne();
         if (ret != null) {
@@ -102,8 +109,8 @@ public class PlanSectionDefinitionDaoImpl implements PlanSectionDefinitionDao {
                 .set(PLAN_SECTION_DEFINITION.ADDITIONAL_IDS, planSectionDefinition.getAdditionalIds())
                 .set(PLAN_SECTION_DEFINITION.LOCKED, planSectionDefinition.getLocked())
                 .set(PLAN_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, planSectionDefinition.getContestIntegrationRelevance())
+                .set(PLAN_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, planSectionDefinition.getIncludeInJudgingReport())
                 .where(PLAN_SECTION_DEFINITION.ID_.eq(planSectionDefinition.getId_()))
                 .execute() > 0;
     }
-
 }

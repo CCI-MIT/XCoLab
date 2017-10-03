@@ -45,7 +45,7 @@ public class NotificationCron {
 
     @Controller
     @ConditionalOnProperty(prefix = "xcolab.crons", matchIfMissing = true,
-        name = "notifications.http-endpoint.enabled")
+            name = "notifications.http-endpoint.enabled")
     public static class TriggerController {
 
         private final NotificationCron notificationCron;

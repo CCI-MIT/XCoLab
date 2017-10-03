@@ -17,6 +17,8 @@ import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.PlanTemplateClient;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.enums.ContestRole;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
@@ -25,6 +27,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -52,7 +55,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 public class Contest extends AbstractContest implements Serializable {
 
@@ -63,6 +65,7 @@ public class Contest extends AbstractContest implements Serializable {
     private final OntologyClient ontologyClient;
     private final CommentClient commentClient;
     private final ThreadClient threadClient;
+    private final PlanTemplateClient planTemplateClient;
 
 
     private final static Map<Long, FocusArea> faCache = new HashMap<>();
@@ -91,28 +94,26 @@ public class Contest extends AbstractContest implements Serializable {
 
     private RestService restService;
 
-    public Contest(Long contestId) {
-        contestClient = ContestClientUtil.getClient();
-        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
-        ontologyClient = OntologyClientUtil.getClient();
-        commentClient = CommentClientUtil.getClient();
-        threadClient = ThreadClientUtil.getClient();
-    }
-
     public Contest() {
         contestClient = ContestClientUtil.getClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
+        planTemplateClient = PlanTemplateClientUtil.getClient();
         commentClient = CommentClientUtil.getClient();
         threadClient = ThreadClientUtil.getClient();
     }
 
     public Contest(Contest value) {
+        this(value, value.getRestService());
+    }
+
+    public Contest(AbstractContest value, RestService restService) {
         super(value);
-        if (value.getRestService() != null) {
+        if (restService != null) {
             contestClient = ContestClient.fromService(restService);
             contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
             ontologyClient = OntologyClient.fromService(restService);
+            planTemplateClient = PlanTemplateClient.fromService(restService);
             RestService commentService = restService.withServiceName(CoLabService.COMMENT.getServiceName());
             commentClient = CommentClient.fromService(commentService);
             threadClient = ThreadClient.fromService(commentService);
@@ -120,20 +121,11 @@ public class Contest extends AbstractContest implements Serializable {
             contestClient = ContestClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
             ontologyClient = OntologyClientUtil.getClient();
+            planTemplateClient = PlanTemplateClientUtil.getClient();
             commentClient = CommentClientUtil.getClient();
             threadClient = ThreadClientUtil.getClient();
         }
-    }
-
-    public Contest(AbstractContest abstractContest, RestService restService) {
-        super(abstractContest);
         this.restService = restService;
-        contestClient = ContestClient.fromService(this.restService);
-        contestTeamMemberClient = ContestTeamMemberClient.fromService(this.restService);
-        ontologyClient = OntologyClient.fromService(this.restService);
-        RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
-        commentClient = CommentClient.fromService(commentService);
-        threadClient = ThreadClient.fromService(commentService);
     }
 
     public String getContestDiscussionLinkUrl() {
@@ -190,26 +182,20 @@ public class Contest extends AbstractContest implements Serializable {
             return "";
         }
     }
+
     public String getCleanContestDescription() {
         return HtmlUtil.cleanAll(this.getContestDescription());
     }
-    public String getLogoPath() {
-        if (this.getIsSharedContestInForeignColab()) {
 
-            Long imgId = this.getContestLogoId();
-            if (imgId != null) {
-                return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
-                        + "/image/contest/" + imgId;
-            }
-            return "";
+    public String getLogoPath() {
+        long imgId = this.getContestLogoId() != null ? this.getContestLogoId() : 0;
+        String imageDomain;
+        if (this.getIsSharedContestInForeignColab()) {
+            imageDomain = ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get();
         } else {
-            Long imgId = this.getContestLogoId();
-            if (imgId != null) {
-                final String imageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
-                return imageDomain + "/image/contest/" + imgId;
-            }
-            return "";
+            imageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
         }
+        return imageDomain + "/image/contest/" + imgId;
     }
 
     public boolean getShowInTileView(){
@@ -259,13 +245,15 @@ public class Contest extends AbstractContest implements Serializable {
 
     public String getContestShortNameWithEndYear() {
         final String contestShortName = getContestShortName();
-        final char lastCharOfName = contestShortName.charAt(contestShortName.length() - 1);
-        final boolean nameEndsInNumber = Character.isDigit(lastCharOfName);
-        if (isContestCompleted() && !nameEndsInNumber) {
-            ContestPhase activePhase = getActivePhase();
-            if (activePhase != null) {
-                int phaseEndYear = DateUtil.getYearFromDate(activePhase.getPhaseStartDate());
-                return contestShortName + " " + phaseEndYear;
+        if (ConfigurationAttributeKey.CONTESTS_SHOW_YEAR_WHEN_COMPLETED.get()) {
+            final char lastCharOfName = contestShortName.charAt(contestShortName.length() - 1);
+            final boolean nameEndsInNumber = Character.isDigit(lastCharOfName);
+            if (isContestCompleted() && !nameEndsInNumber) {
+                ContestPhase activePhase = getActivePhase();
+                if (activePhase != null) {
+                    int phaseEndYear = DateUtil.getYearFromDate(activePhase.getPhaseStartDate());
+                    return contestShortName + " " + phaseEndYear;
+                }
             }
         }
         return contestShortName;
@@ -780,4 +768,8 @@ public class Contest extends AbstractContest implements Serializable {
         }
     }
 
+    public List<PlanSectionDefinition> getSections() {
+        return planTemplateClient.getPlanSectionDefinitionByPlanTemplateId(getPlanTemplateId(),
+                        true);
+    }
 }

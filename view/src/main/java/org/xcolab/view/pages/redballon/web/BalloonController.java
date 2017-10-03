@@ -51,13 +51,14 @@ public class BalloonController {
     }
 
     @GetMapping("/snp/socialnetworkprize")
-    public String showBalloon(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
+    public String showBalloon(HttpServletRequest request, HttpServletResponse response, Model model,
+            Member member) {
 
-        BalloonUserTracking but = balloonService.getOrCreateBalloonUserTracking(request, response,
-                null, null);
+        BalloonUserTracking but =
+                balloonService.getOrCreateBalloonUserTracking(request, response, null, null);
         try {
-            BalloonLink balloonLink = BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
+            BalloonLink balloonLink =
+                    BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
             return "redirect:" + balloonLink.getTargetUrl();
         } catch (BalloonLinkNotFoundException e) {
             // user has no link -> continue and show page
@@ -88,8 +89,8 @@ public class BalloonController {
     }
 
     @PostMapping("/snp/socialnetworkprize")
-    public String requestLink(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @RequestParam(required = false) String redirect,
+    public String requestLink(HttpServletRequest request, HttpServletResponse response, Model model,
+            Member member, @RequestParam(required = false) String redirect,
             @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
             throws BalloonTextNotFoundException {
 
@@ -99,11 +100,12 @@ public class BalloonController {
             return showBalloon(request, response, model, member);
         }
 
-        BalloonUserTracking but = balloonService
-                .getOrCreateBalloonUserTracking(request, response, null, null);
+        BalloonUserTracking but =
+                balloonService.getOrCreateBalloonUserTracking(request, response, null, null);
 
         try {
-            BalloonLink balloonLink = BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
+            BalloonLink balloonLink =
+                    BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
             return "redirect:" + balloonLink.getTargetUrl();
         } catch (BalloonLinkNotFoundException e) {
             // user has no link -> continue and create one
@@ -115,8 +117,7 @@ public class BalloonController {
         BalloonsClient.updateBalloonUserTracking(but);
 
         // create link to be used by user
-        final BalloonLink link = balloonService
-                .createBalloonLink(userEmailBean.getEmail(), but);
+        final BalloonLink link = balloonService.createBalloonLink(userEmailBean.getEmail(), but);
 
         final String redirectUrl = StringUtils.isEmpty(redirect) ? link.getTargetUrl() : redirect;
         return "redirect:" + redirectUrl;
@@ -124,8 +125,7 @@ public class BalloonController {
 
     @GetMapping(BalloonService.SNP_LINK_URL)
     public String showLink(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member, @PathVariable String linkUuid)
-            throws ParserConfigurationException {
+            Member member, @PathVariable String linkUuid) throws ParserConfigurationException {
 
         populateModelWithModalTexts(model);
 
@@ -133,7 +133,8 @@ public class BalloonController {
 
         model.addAttribute("balloonLink", link);
 
-        // get user tracking information, if user is new, then owner of this link should be set as a parent
+        // get user tracking information, if user is new, then owner of this link should be set
+        // as a parent
 
         BalloonUserTracking but = balloonService
                 .getOrCreateBalloonUserTracking(request, response, link.getBalloonUserUuid(),
@@ -188,9 +189,8 @@ public class BalloonController {
     }
 
     private BalloonLink getBalloonLink(@PathVariable String linkUuid) {
-        return getOptional(() -> BalloonsClient.getBalloonLink(linkUuid))
-                    .orElseThrow(() -> ReferenceResolutionException
-                            .toObject(BalloonLink.class, linkUuid).build());
+        return getOptional(() -> BalloonsClient.getBalloonLink(linkUuid)).orElseThrow(
+                () -> ReferenceResolutionException.toObject(BalloonLink.class, linkUuid).build());
     }
 
     private void populateModelWithModalTexts(Model model) {

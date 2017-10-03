@@ -24,7 +24,7 @@ public class MembersStatsController {
     @GetMapping
     public MembersStats getStats(HttpServletResponse response) {
         response.setHeader(HttpHeaders.CACHE_CONTROL,
-            CacheControl.maxAge(1, TimeUnit.DAYS).getHeaderValue());
+                CacheControl.maxAge(1, TimeUnit.DAYS).getHeaderValue());
         List<Member> members = MembersClient.listAllMembers();
         final Map<String, Long> countryCounts = members.stream()
                 .filter(member -> StringUtils.isNotBlank(member.getCountry()))

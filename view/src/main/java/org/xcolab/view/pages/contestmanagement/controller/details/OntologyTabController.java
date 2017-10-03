@@ -64,7 +64,6 @@ public class OntologyTabController extends AbstractTabController {
         model.addAttribute("ontologySpaces", ontologyWrapper.getSortedOntologySpaces());
         model.addAttribute("contestOntologyTerms",
                 ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(getContest()));
-        setPageAttributes(request, model, tab);
         return TAB_VIEW;
     }
 

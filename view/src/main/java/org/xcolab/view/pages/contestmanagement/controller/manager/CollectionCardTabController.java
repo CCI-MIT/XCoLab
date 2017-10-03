@@ -71,7 +71,6 @@ public class CollectionCardTabController extends AbstractTabController {
         }
         model.addAttribute("ontologyTermsWhat", whatTerms);
         model.addAttribute("ontologyTermsWhere", whereTerms);
-        setPageAttributes(request, model, tab);
         return TAB_VIEW;
     }
 

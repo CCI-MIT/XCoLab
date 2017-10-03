@@ -16,11 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 public class ThemeResourceResolver extends PathResourceResolver {
 
     @Override
-    protected Resource resolveResourceInternal(HttpServletRequest request,
-            String requestPath,
+    protected Resource resolveResourceInternal(HttpServletRequest request, String requestPath,
             List<? extends Resource> locations, ResourceResolverChain chain) {
-        Resource themedResource = super.resolveResourceInternal(request,
-                requestPath, getOverrideResourceLocations(), chain);
+        Resource themedResource =
+                super.resolveResourceInternal(request, requestPath, getOverrideResourceLocations(),
+                        chain);
         if (themedResource != null) {
             return themedResource;
         }

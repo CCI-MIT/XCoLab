@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contents.ContentsClient;
-import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -39,32 +38,35 @@ public class ContentEditorResourceController extends BaseContentEditor {
     }
 
     @GetMapping("/content-editor/contentEditorGetLatestResourceArticleVersion")
-    public void contentEditorGetLatestArticleVersion(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) Long articleId)
-            throws IOException, ContentNotFoundException {
+    public void contentEditorGetLatestArticleVersion(HttpServletRequest request,
+            HttpServletResponse response, @RequestParam(required = false) Long articleId)
+            throws IOException {
 
-        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
+        ContentArticleVersion contentArticleVersion =
+                ContentsClient.getLatestContentArticleVersion(articleId);
 
         Contest contest = ContestClientUtil.getContestByResourceArticleId(articleId);
 
 
-        JSONObject articleVersion = getContentArticleVersion(articleId, contentArticleVersion,
-                contest.getContestUrl(), contest.getResourceArticleUrl());
+        JSONObject articleVersion =
+                getContentArticleVersion(articleId, contentArticleVersion, contest.getContestUrl(),
+                        contest.getResourceArticleUrl());
 
         response.getOutputStream().write(articleVersion.toString().getBytes());
     }
 
     private JSONObject getContentArticleVersion(Long articleId,
-            ContentArticleVersion contentArticleVersion, String contestURL, String contestArticleUrl) {
+            ContentArticleVersion contentArticleVersion, String contestURL,
+            String contestArticleUrl) {
 
         JSONArray versions = new JSONArray();
         List<ContentArticleVersion> cavs = ContentsClient
-                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null, null);
+                .getContentArticleVersions(0, Integer.MAX_VALUE, null, articleId, null, null, null);
 
         JSONObject articleVersion;
-        for(ContentArticleVersion cav: cavs){
+        for (ContentArticleVersion cav : cavs) {
             articleVersion = new JSONObject();
-            articleVersion.put("createdDate",cav.getCreateDate());
+            articleVersion.put("createdDate", cav.getCreateDate());
             articleVersion.put("contentArticleVersionId", cav.getContentArticleVersionId());
             versions.put(articleVersion);
         }
@@ -74,22 +76,19 @@ public class ContentEditorResourceController extends BaseContentEditor {
             articleVersion.put("folderId", contentArticleVersion.getFolderId());
             articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
             articleVersion.put("content", contentArticleVersion.getContent());
-            articleVersion.put("createdDate",contentArticleVersion.getCreateDate());
-            articleVersion.put("versions",versions);
-            articleVersion.put("contestURL",contestURL);
-            articleVersion.put("contestArticleURL",contestArticleUrl);
+            articleVersion.put("createdDate", contentArticleVersion.getCreateDate());
+            articleVersion.put("versions", versions);
+            articleVersion.put("contestURL", contestURL);
+            articleVersion.put("contestArticleURL", contestArticleUrl);
         }
         return articleVersion;
     }
 
     @GetMapping("/content-editor/resourcePagesListFolder")
     public void contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) String node)
-            throws IOException {
-
+            @RequestParam(required = false) String node) throws IOException {
 
         JSONArray responseArray = new JSONArray();
-
 
         if (node == null || node.isEmpty()) {//root
             List<Contest> allContests = ContestClientUtil.getAllContests();
@@ -112,15 +111,11 @@ public class ContentEditorResourceController extends BaseContentEditor {
             for (Contest c : contestsInYear) {
                 if (c.getResourceArticleId() != null && c.getResourceArticleId() != 0L) {
                     responseArray
-                            .put(articleNode(c.getContestShortName(),
-                                    c.getResourceArticleId()));
+                            .put(articleNode(c.getContestShortName(), c.getResourceArticleId()));
                 }
             }
         }
 
         response.getOutputStream().write(responseArray.toString().getBytes());
-
     }
-
-
 }

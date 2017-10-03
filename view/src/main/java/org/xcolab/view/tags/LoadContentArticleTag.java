@@ -21,24 +21,22 @@ public class LoadContentArticleTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
         if (articleId > 0) {
             try {
-                final ContentArticle contentArticle = ContentsClient
-                        .getContentArticle(articleId);
+                final ContentArticle contentArticle = ContentsClient.getContentArticle(articleId);
 
                 Locale locale = LocaleContextHolder.getLocale();
                 String localeString = "en";
-                if(locale.getLanguage()!=null) {
+                if (locale.getLanguage() != null) {
                     localeString = locale.getLanguage();
                 }
 
-                final long version = contentArticle.getMaxVersionId();
-            //public static ContentArticleVersion getLatestVersionByArticleIdAndLanguage(Long contentArticleId, String language) {
-                 ContentArticleVersion contentArticleVersion = ContentsClient
-                        .getLatestVersionByArticleIdAndLanguage(contentArticle.getContentArticleId(), localeString);
-                 if (contentArticleVersion == null) {
-                     contentArticleVersion = ContentsClient
-                             .getLatestVersionByArticleIdAndLanguage(contentArticle.getContentArticleId(),
-                                     I18nUtils.DEFAULT_LOCALE.getLanguage());
-                 }
+                ContentArticleVersion contentArticleVersion = ContentsClient
+                        .getLatestVersionByArticleIdAndLanguage(
+                                contentArticle.getContentArticleId(), localeString);
+                if (contentArticleVersion == null) {
+                    contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(
+                            contentArticle.getContentArticleId(),
+                            I18nUtils.DEFAULT_LOCALE.getLanguage());
+                }
 
                 pageContext.setAttribute("contentArticle", contentArticle);
                 pageContext.setAttribute("contentArticleVersion", contentArticleVersion);

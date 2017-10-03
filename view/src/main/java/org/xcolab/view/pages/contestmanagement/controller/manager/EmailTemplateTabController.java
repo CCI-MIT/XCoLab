@@ -62,7 +62,6 @@ public class EmailTemplateTabController extends AbstractTabController {
                     emailTemplate.getType_()));
         }
         model.addAttribute("templateSelectionItems", templateSelectionItems);
-        setPageAttributes(request, model, tab);
         return TAB_VIEW;
     }
 

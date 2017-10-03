@@ -11,12 +11,9 @@ import org.xcolab.view.pages.search.paging.PageLinkWrapper;
 public enum SearchItemType {
 
     PLAN(1368503L, ProposalSearchItem.class),
-
     CONTEST(39701L, ContestSearchItem.class),
-
-    USER(10038L,
-            UserSearchItem.class),
-//    CONTENT(1L, ContentSearchItem.class),
+    USER(10038L, UserSearchItem.class),
+    // CONTENT(1L, ContentSearchItem.class),
     DISCUSSION(39202L, DiscussionSearchItem.class);
 
     private final Long id;
