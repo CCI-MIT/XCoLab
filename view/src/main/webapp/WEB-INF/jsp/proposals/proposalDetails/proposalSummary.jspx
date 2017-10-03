@@ -78,7 +78,7 @@
             <div class="c-Box boxColor--light clearfix">
                 <c:if test="${showShareButtons}">
                     <div>
-                        <xcolab-social:socialShare  title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
+                        <xcolab-social:socialShareButton title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
                     </div>
                 </c:if>
                 <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">

@@ -185,7 +185,7 @@
                 <div class="p-ContestProposals__header__shareButtons">
                     <div class="" id="shareProposalToolbox"
                          style="float: left;width: 35px;">
-                        <xcolab-social:socialShare  title="${_colabName.concat('-').concat(contest.contestShortName)}"/>
+                        <xcolab-social:socialShareButton title="${_colabName.concat(' - ').concat(contest.contestShortName)}"/>
                     </div>
                 </div>
             </c:if>

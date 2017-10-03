@@ -2,14 +2,12 @@
           xmlns:jsp="http://java.sun.com/JSP/Page">
 
     <jsp:directive.attribute name="socialEngine" type="java.lang.String" required="true"
-                             rtexprvalue="true" description="Available engines : facebook, twitter, gplus, linkedin, youtube"/>
+                             rtexprvalue="true" description="Available engines : facebook, twitter, google, linkedin, youtube"/>
     <jsp:directive.attribute name="type" type="java.lang.String" required="true"
                              rtexprvalue="true" description="Types available: share, follow"/>
     <jsp:directive.attribute name="size" type="java.lang.String" description="Available sizes: lg,sm, xm for regular leave blank" />
     <jsp:directive.attribute name="followMeUrl" type="java.lang.String" description="The social link for the follow me function" />
-
     <jsp:directive.attribute name="shareUrl" type="java.lang.String" description="Share url override, if not passed the current URL will be used" />
-
     <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
     <jsp:directive.attribute name="dataReference" type="java.lang.String" description="Extra reference to compose URL" />
 
@@ -22,7 +20,6 @@
         <c:when test="${not empty size}"><c:set var="sizeClass" value="btn-${size}"/></c:when>
         <c:otherwise><c:set var="sizeClass" value=""/></c:otherwise>
     </c:choose>
-    <c:set var="utmParams" value="utm_source=${socialEngine}&#38;utm_medium=Social&#38;utm_campaign=Share"/>
     <c:choose>
         <c:when test="${type.equals('follow')}">
             <c:if test="${not empty followMeUrl}">
@@ -32,33 +29,28 @@
             </c:if>
         </c:when>
         <c:when test="${type.equals('share')}">
+            <c:set var="socialIcon" value="fa-${socialEngine}"/>
             <c:choose>
                 <c:when test="${socialEngine.equals('facebook')}">
-                    <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://www.facebook.com/dialog/share?app_id=${_facebookId}&#38;display=popup&#38;href=" data-engine="facebook" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
-                        <span class="fa fa-${socialEngine}" style="font-weight: normal;"></span>
-                    </a>
+                    <c:set var="dataEngineUrl" value="https://www.facebook.com/dialog/share?app_id=${_facebookId}&amp;display=popup&amp;href="/>
                 </c:when>
                 <c:when test="${socialEngine.equals('twitter')}">
-                    <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://twitter.com/intent/tweet?text=${title}&#38;display=popup&#38;url=" data-engine="twitter" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
-                        <span class="fa fa-${socialEngine}" style="font-weight: normal;"></span>
-                    </a>
+                    <c:set var="dataEngineUrl" value="https://twitter.com/intent/tweet?text=${title}&amp;display=popup&amp;url="/>
                 </c:when>
                 <c:when test="${socialEngine.equals('google')}">
-                        <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://plus.google.com/share?url=" data-engine="google+"  data-share-url="${finalShareUrl}" onclick="shareThis(this)">
-                            <span class="fa fa-${socialEngine}" style="font-weight: normal;"></span>
-                        </a>
+                    <c:set var="dataEngineUrl" value="https://plus.google.com/share?url="/>
                 </c:when>
                 <c:when test="${socialEngine.equals('linkedin')}">
-                    <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://www.linkedin.com/shareArticle?mini=true&#38;title=${title}&#38;url=" data-engine="linkedin" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
-                        <span class="fa fa-${socialEngine}" style="font-weight: normal;"></span>
-                    </a>
+                    <c:set var="dataEngineUrl" value="https://www.linkedin.com/shareArticle?mini=true&amp;title=${title}&amp;url="/>
                 </c:when>
                 <c:when test="${socialEngine.equals('email')}">
-                    <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="mailto:info@example.com?subject=${title}&#38;body=" data-share-url="${finalShareUrl}" data-engine="email" onclick="shareThis(this)">
-                        <span class="fa fa-envelope" style="font-weight: normal;"></span>
-                    </a>
+                    <c:set var="dataEngineUrl" value="mailto:info@example.com?subject=${title}&amp;body="/>
+                    <c:set var="socialIcon" value="fa-envelope"/>
                 </c:when>
             </c:choose>
+            <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="${dataEngineUrl}" data-engine="${socialEngine}" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
+                <span class="fa ${socialIcon}" style="font-weight: normal;"></span>
+            </a>
         </c:when>
     </c:choose>
 

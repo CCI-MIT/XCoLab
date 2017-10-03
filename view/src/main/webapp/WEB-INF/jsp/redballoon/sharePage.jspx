@@ -18,7 +18,7 @@
         </button>
         <br/>
 
-        <div><xcolab-social:socialShare  title="${balloonText.shareTitle}" url="${shareLink}" size="xs"/></div>
+        <div><xcolab-social:socialShareButton title="${balloonText.shareTitle}" url="${shareLink}" size="xs"/></div>
 	</div>
 
     <xcolab:requireLibrary name="clipboard.js" />

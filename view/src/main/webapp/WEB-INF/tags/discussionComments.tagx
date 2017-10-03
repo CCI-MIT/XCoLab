@@ -10,11 +10,13 @@
     <jsp:directive.attribute name="categoryId" type="java.lang.Long" required="false" rtexprvalue="true" description="Category id" />
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="false" rtexprvalue="true" description="Proposal id" />
     <jsp:directive.attribute name="sharedColabId" type="java.lang.Long" required="false" rtexprvalue="true" description="The id of the partner CoLab, if applicable" />
-    <jsp:directive.attribute name="shareTitle" type="java.lang.String" required="false" rtexprvalue="true" description="The shareTitle for the discussion" />
+    <jsp:directive.attribute name="shareTitle" type="java.lang.String" required="false" rtexprvalue="true" description="The shareTitle for the discussion"  />
 
+    <c:set var="shareTitlePageScope" scope="page" value="${shareTitle}" />
     <c:set var="categoryGroupId" value="${empty categoryGroupId ? 0 : categoryGroupId}" />
     <c:set var="categoryId" value="${empty categoryId ? 0 : categoryId}" />
     <c:set var="proposalId" value="${empty proposalId ? 0 : proposalId}" />
+
 
 	<discussions:loadThread threadId="${threadId}" categoryGroupId="${categoryGroupId }" categoryId="${categoryId}" sharedColabId="${sharedColabId}">
         <!--@elvariable id="thread" type="org.xcolab.client.comment.pojo.CommentThread"-->
@@ -92,7 +94,7 @@
 							<spring:message code="discussion.commmentstag.share"/>:
 
                         <div>
-                            <xcolab-social:socialShare  title="${shareTitle}" size="xs"/>
+                            <xcolab-social:socialShareButton title="${shareTitlePageScope}" size="xs"/>
                         </div>
 
 					</div>
@@ -148,7 +150,7 @@
 
                                         <div style="float: left">
                                             <div>
-                                                <xcolab-social:socialShare  title="${shareTitle}" dataReference="#_message_${message.commentId}" size="xs"/>
+                                                <xcolab-social:socialShareButton title="${shareTitlePageScope}" dataReference="#_message_${message.commentId}" size="xs"/>
                                             </div>
                                         </div>
 

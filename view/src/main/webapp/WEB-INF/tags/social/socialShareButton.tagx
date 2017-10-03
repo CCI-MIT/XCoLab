@@ -8,7 +8,7 @@
     <jsp:directive.attribute name="size" type="java.lang.String" description="Available sizes: lg,sm, xm for regular leave blank" />
 
     <c:forEach var="followSocialMedia" items="${_shearableSocialMediaUrls}">
-        <xcolabSocial:socialMedia type="share" socialEngine="${followSocialMedia.name}"  title="${title}" size="${size}" shareUrl="${url}"/>
+        <xcolabSocial:socialMediaButton type="share" socialEngine="${followSocialMedia.name}" title="${title}" size="${size}" shareUrl="${url}"/>
     </c:forEach>
 
 </jsp:root>

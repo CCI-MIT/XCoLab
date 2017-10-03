@@ -14,7 +14,7 @@ public enum SocialMediaEngine {
     LINKEDIN(ConfigurationAttributeKey.LINKEDIN_URL.get(), true, true),
     GOOGLE(ConfigurationAttributeKey.GOOGLE_URL.get(), true, true),
     STORIFY(ConfigurationAttributeKey.STORIFY_URL.get(), false, false),
-    YOUTUBE(ConfigurationAttributeKey.YOUTUBE_URL.get(), true, true),
+    YOUTUBE(ConfigurationAttributeKey.YOUTUBE_URL.get(), false, true),
     EMAIL(null, true, true);
 
     public static String SOCIAL_MEDIA_SPACE_HOLDER = "socialMediaEngine";

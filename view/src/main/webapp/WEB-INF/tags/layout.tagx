@@ -403,23 +403,6 @@
     </c:if>
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
 
-    <!-- Social Share Script -->
-    <script>
-        function shareThis(event) {
-
-            var engineUrl = $(event).data("engine-url");
-            var shareUrl = $(event).data("share-url");
-            var engine = $(event).data("engine");
-            var dataReference = $(event).data("reference");
-            console.log('engineUrl> ' + engineUrl);
-            console.log('shareUrl> ' + shareUrl);
-            console.log('engine> ' + engine);
-            console.log('dataReference> ' + dataReference);
-
-            window.open(engineUrl+ encodeURIComponent(shareUrl.replace("socialMediaEngine",engine)+((dataReference!="")?(dataReference):(""))),'_blank');
-        }
-
-    </script>
 
     <!-- ============ Structured data (schema.org) ============ -->
 

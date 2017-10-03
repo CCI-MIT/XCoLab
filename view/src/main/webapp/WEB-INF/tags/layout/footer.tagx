@@ -46,9 +46,7 @@
 
                 <!-- TODO : better styling; get rid of style attribute -->
                 <div class="pull-right" style="margin-top: 4px;">
-
-                        <xcolab-social:socialFollow />
-
+                        <xcolab-social:socialFollowButton />
                 </div>
 
 
