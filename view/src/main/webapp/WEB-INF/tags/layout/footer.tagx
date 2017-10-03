@@ -2,7 +2,9 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
+>
 
     <jsp:directive.attribute name="currentLanguage" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="Language selection items" />
@@ -43,14 +45,16 @@
                 </nav>
 
                 <!-- TODO : better styling; get rid of style attribute -->
-                <div class="pull-right" style="margin-top: -12px;">
-                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                    <div class="addthis_inline_follow_toolbox"><!-- --></div>
+                <div class="pull-right" style="margin-top: 4px;">
+                        <xcolab-social:socialFollowButton />
                 </div>
+
+
             </div>
 
         </div> <!-- #c-Footer__menu -->
 
+        
         <div class="bs-container-fixed">
             <!-- footer content -->
             <xcolab:content articleId="${footerArticleId}"/>

@@ -2,7 +2,9 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:spring="http://www.springframework.org/tags">
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
+>
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
@@ -284,11 +286,7 @@
                         <c:when test="${not empty balloonLink}">
                             <c:set var="shareLink" value="${_colabUrl}${balloonLink.targetUrl}" />
                             <c:if test="${not empty balloonText}" >
-                                <!-- See "Inline share buttons (small)" at www.addthis.com/dashboard -->
-                                <div class="addthis_inline_share_toolbox_j4be text-center" data-url="${shareLink}"
-                                     data-title="${balloonText.shareTitle}"
-                                     data-description="${balloonText.shareDescription}">
-                                    <!-- --></div>
+                                <div><xcolab-social:socialShareButton title="${balloonText.shareTitle}" size="xs"/></div>
                             </c:if>
                             <input id="snpLink" readonly="true" value="${shareLink}" class="form-control" />
                             <button class="c-Button__primary" id="copyButton"

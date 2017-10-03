@@ -1,8 +1,8 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:discussions="urn:jsptld:/WEB-INF/tlds/xcolab-discussions.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
           xmlns:spring="http://www.springframework.org/tags">
 
     <jsp:directive.attribute name="threadId" type="java.lang.Long" required="true" rtexprvalue="true" description="Thread id" />
@@ -10,9 +10,13 @@
     <jsp:directive.attribute name="categoryId" type="java.lang.Long" required="false" rtexprvalue="true" description="Category id" />
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="false" rtexprvalue="true" description="Proposal id" />
     <jsp:directive.attribute name="sharedColabId" type="java.lang.Long" required="false" rtexprvalue="true" description="The id of the partner CoLab, if applicable" />
+    <jsp:directive.attribute name="shareTitle" type="java.lang.String" required="false" rtexprvalue="true" description="The shareTitle for the discussion"  />
+
+    <c:set var="shareTitlePageScope" scope="page" value="${shareTitle}" />
     <c:set var="categoryGroupId" value="${empty categoryGroupId ? 0 : categoryGroupId}" />
     <c:set var="categoryId" value="${empty categoryId ? 0 : categoryId}" />
     <c:set var="proposalId" value="${empty proposalId ? 0 : proposalId}" />
+
 
 	<discussions:loadThread threadId="${threadId}" categoryGroupId="${categoryGroupId }" categoryId="${categoryId}" sharedColabId="${sharedColabId}">
         <!--@elvariable id="thread" type="org.xcolab.client.comment.pojo.CommentThread"-->
@@ -88,10 +92,11 @@
 					<div class="c-Comment__share">
 							<img src="${_themeImageFolder}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
 							<spring:message code="discussion.commmentstag.share"/>:
-                            <div  class="addthis_inline_share_toolbox_n86t message_add_this"
-                                  addthis:title="${shareTitle}" addthis:description="${shareTitle}"
-                                  addthis:url="${shareUrl}"
-                            ><!-- --></div>
+
+                        <div>
+                            <xcolab-social:socialShareButton title="${shareTitlePageScope}" size="xs"/>
+                        </div>
+
 					</div>
 				</c:if>
 
@@ -142,25 +147,14 @@
                                             </a>
                                             |
                                         </div>
-                                        <!--  http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab -->
-                                        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+
                                         <div style="float: left">
-                                            <div  class="addthis_inline_share_toolbox_n86t message_add_this"
-                                                  addthis:title="${shareTitle}" addthis:description="${message.contentPlain}"
-                                                  addthis:url="${shareUrl}"
-                                                  data-hash="#_message_${message.commentId}"
-                                                  ><!-- --></div>
+                                            <div>
+                                                <xcolab-social:socialShareButton title="${shareTitlePageScope}" dataReference="#_message_${message.commentId}" size="xs"/>
+                                            </div>
                                         </div>
 
                                     </div>
-									<!-- This is the old fashioned way of displaying items with a menu
-									    <a href="" class="addthis_button_compact message_add_this"
-
-									   addthis:title="${shareTitle}" addthis:description="${message.contentPlain}"
-									   addthis:url="${shareUrl}"
-									   data-hash="#_message_${message.commentId}">
-										<span><spring:message code="discussion.commmentstag.sharesmall"/> </span>
-									</a -->
 								</td>
 								<td class="c-Comment ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
 									<c:choose>

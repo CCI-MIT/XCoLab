@@ -1,0 +1,92 @@
+$line-height-computed : 10px;
+$padding-base-vertical : 10px;
+$padding-base-horizontal :14px;
+$font-size-small: 8px;
+$padding-small-vertical: 10px;
+$padding-small-horizontal:10px;
+$bs-height-base: ($line-height-computed + $padding-base-vertical * 2) !default;
+$bs-height-xs:   (floor($font-size-small * 1.2) + $padding-small-vertical + 1) !default;
+
+.c-SocialButton {
+  position: relative;
+  padding-left: ($bs-height-base + $padding-base-horizontal); //44px
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  border: 0px solid transparent;
+  border-radius: 0;
+  margin: 2px;
+  text-overflow: ellipsis;
+  display: inline-block;
+  cursor: pointer;
+  > :first-child {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: $bs-height-base;
+    line-height: ($bs-height-base + 2);
+    font-size: 1.6em;
+    text-align: center;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  &.btn-xs {
+    padding-left: ($bs-height-xs + $padding-small-horizontal);
+    > :first-child {
+      line-height: $bs-height-xs;
+      width: $bs-height-xs;
+      font-size: 1.2em;
+    }
+  }
+}
+.c-SocialButton:hover {
+
+}
+.c-SocialButton-icon {
+  @extend .c-SocialButton;
+  height: ($bs-height-base + 2);
+  width: ($bs-height-base + 2);
+  padding: 0;
+  > :first-child {
+    border: none;
+    text-align: center;
+    width: 100%!important;
+  }
+  &.btn-xs {
+    height: ($bs-height-xs + 2);
+    width: ($bs-height-xs + 2);
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@mixin c-SocialButton-engine($background, $color: #fff,$border : rgba(0,0,0,.2)) {
+
+  color: $color;
+  background-color: $background;
+  border-color: $border;
+  transition: all .2s ease-in-out;
+  animation-fill-mode: both;
+  &:focus,
+  &.focus {
+    color: $color;
+    background-color: darken($background, 10%);
+    border-color: darken($border, 25%);
+  }
+  &:hover {
+    color: $color;
+    background-color: darken($background, 10%);
+    border-color: darken($border, 12%);
+    -webkit-transform: translateY(-4px);
+    transform: translateY(-4px);
+    transition: all .2s ease-in-out;
+  }
+}
+
+.c-SocialButton-facebook      { @include c-SocialButton-engine(#3b5998); }
+.c-SocialButton-google        { @include c-SocialButton-engine(#dd4b39); }
+.c-SocialButton-linkedin      { @include c-SocialButton-engine(#007bb6); }
+.c-SocialButton-youtube       { @include c-SocialButton-engine(#DC2725); }
+.c-SocialButton-email         { @include c-SocialButton-engine(#A7A7A7); }
+.c-SocialButton-twitter       { @include c-SocialButton-engine(#55acee); }
