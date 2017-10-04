@@ -71,7 +71,7 @@
 										<img src="${_themeImageFolder}/icon-activity-edit.png"
 											 height="15" style="vertical-align: middle" alt="edit" />
 									</a>
-									<a href="/impersonate?memberId=${user.memberId}">
+									<a data-url="/impersonate?memberId=${user.memberId}" class="js-PostLink">
 										<img src="${_themeImageFolder}/icon-request-membership.png"
 											 height="15" style="vertical-align: middle" alt="impersonate" />
 									</a>
