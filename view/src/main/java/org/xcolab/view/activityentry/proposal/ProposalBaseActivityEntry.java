@@ -18,6 +18,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
@@ -42,7 +43,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
     }
 
     @Override
-    public void setActivityEntry(ActivityEntry activityEntry) {
+    public void setActivityEntry(ActivityEntry activityEntry) throws ActivityInitializationException {
         this.activityEntry = activityEntry;
 
         try {
@@ -71,9 +72,8 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
                             null).getStringValue();
 
         } catch (ContestNotFoundException | ProposalNotFoundException e) {
-            _log.error("Error: {}", e.getMessage());
+            throw new ActivityInitializationException(activityEntry.getActivityEntryId(), e);
         }
-
     }
 
     @Override

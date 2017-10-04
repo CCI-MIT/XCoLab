@@ -25,6 +25,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
@@ -50,7 +51,8 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
     }
 
     @Override
-    public void setActivityEntry(ActivityEntry activityEntry) {
+    public void setActivityEntry(ActivityEntry activityEntry)
+            throws ActivityInitializationException {
         this.activityEntry = activityEntry;
         if (this.getSecondaryType()
                 .equals(DiscussionActivitySubType.DISCUSSION_ADDED_COMMENT.getSecondaryTypeId())
@@ -65,7 +67,7 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
                 category = CategoryClientUtil.getCategory(thread.getCategoryId());
             } catch (CategoryNotFoundException | ThreadNotFoundException |
                     CommentNotFoundException e) {
-                //_log.warn("Could not initialize discussion from " + activityEntry);
+                throw new ActivityInitializationException(activityEntry.getActivityEntryId(), e);
             }
             return;
         }
