@@ -111,8 +111,6 @@ public class ContestProposalsController extends BaseProposalsController {
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
         model.addAttribute("defaultTimeZoneId",
             ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get());
-        model.addAttribute("showShareButtons",
-            ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
         model.addAttribute("showContributorsColumn",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 

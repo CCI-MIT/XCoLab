@@ -88,15 +88,14 @@
                         <img src="${_themeImageFolder}/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="${addAComment}" /><spring:message code="discussion.commmentstag.jumptocomment"/>
                     </a>
 				</c:if>
-				<c:if test="${discussionPermissions.canSeeShareButtons}">
+				<c:if test="${_showShareButtons}">
 					<div class="c-Comment__share">
-							<img src="${_themeImageFolder}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
-							<spring:message code="discussion.commmentstag.share"/>:
+                        <img src="${_themeImageFolder}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
+                        <spring:message code="discussion.commmentstag.share"/>:
 
                         <div>
                             <xcolab-social:socialShareButton title="${shareTitlePageScope}" size="xs"/>
                         </div>
-
 					</div>
 				</c:if>
 
@@ -148,11 +147,11 @@
                                             |
                                         </div>
 
-                                        <div style="float: left">
-                                            <div>
+                                        <c:if test="${_showShareButtons}">
+                                            <div style="float: left">
                                                 <xcolab-social:socialShareButton title="${shareTitlePageScope}" dataReference="#_message_${message.commentId}" size="xs"/>
                                             </div>
-                                        </div>
+                                        </c:if>
 
                                     </div>
 								</td>

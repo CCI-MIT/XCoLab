@@ -180,8 +180,7 @@
                 </div>
             </div>
 
-            <c:if test="${showShareButtons}">
-
+            <c:if test="${_showShareButtons}">
                 <div class="p-ContestProposals__header__shareButtons">
                     <div class="" id="shareProposalToolbox"
                          style="float: left;width: 35px;">

@@ -3,8 +3,7 @@
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
->
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
 
     <jsp:directive.attribute name="currentLanguage" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="Language selection items" />
@@ -44,12 +43,12 @@
                     </ul>
                 </nav>
 
-                <!-- TODO : better styling; get rid of style attribute -->
-                <div class="pull-right" style="margin-top: 4px;">
+                <c:if test="${_showShareButtons}">
+                    <!-- TODO : better styling; get rid of style attribute -->
+                    <div class="pull-right" style="margin-top: 4px;">
                         <xcolab-social:socialFollowButton />
-                </div>
-
-
+                    </div>
+                </c:if>
             </div>
 
         </div> <!-- #c-Footer__menu -->

@@ -76,7 +76,7 @@
                 </div>
             </div> <!-- /c-Box -->
             <div class="c-Box boxColor--light clearfix">
-                <c:if test="${showShareButtons}">
+                <c:if test="${_showShareButtons}">
                     <div>
                         <xcolab-social:socialShareButton title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
                     </div>
