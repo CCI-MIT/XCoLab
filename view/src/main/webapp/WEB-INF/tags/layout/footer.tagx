@@ -21,12 +21,28 @@
                         <li><a href="/wiki/Help"><spring:message code="homepage.bottom.menu.help"/></a></li>
                         <c:choose>
                             <c:when test="${showProfileLink}">
-                                <li><a href="/logout"><spring:message code="homepage.bottom.menu.signout" /></a></li>
-                                <li><a href="/members/profile"><spring:message code="homepage.bottom.menu.myprofile"/></a></li>
+                                <li>
+                                    <a data-url="/logout" class="js-PostLink">
+                                        <spring:message code="homepage.bottom.menu.signout" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/members/profile">
+                                        <spring:message code="homepage.bottom.menu.myprofile"/>
+                                    </a>
+                                </li>
                             </c:when>
                             <c:otherwise>
-                                <li><a href="/register" class="openreg"><spring:message code="homepage.bottom.menu.register"/></a></li>
-                                <li><a href="#" data-toggle="modal" data-target="#loginModal"><spring:message code="homepage.bottom.menu.signin"/></a></li>
+                                <li>
+                                    <a href="/register" class="openreg">
+                                        <spring:message code="homepage.bottom.menu.register"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#loginModal">
+                                        <spring:message code="homepage.bottom.menu.signin"/>
+                                    </a>
+                                </li>
                             </c:otherwise>
                         </c:choose>
                         <c:if test="${showLanguageDropdown}">
