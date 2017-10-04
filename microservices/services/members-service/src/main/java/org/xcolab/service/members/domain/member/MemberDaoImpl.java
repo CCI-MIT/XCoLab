@@ -7,7 +7,6 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
-import org.jooq.impl.TableImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +14,6 @@ import org.xcolab.model.tables.MemberCategoryTable;
 import org.xcolab.model.tables.MemberTable;
 import org.xcolab.model.tables.Users_RolesTable;
 import org.xcolab.model.tables.pojos.Member;
-import org.xcolab.model.tables.pojos.Users_Roles;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
