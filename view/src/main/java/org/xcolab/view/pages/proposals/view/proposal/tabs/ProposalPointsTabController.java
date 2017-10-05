@@ -93,6 +93,8 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         AssignPointsBean assignPointsBean = new AssignPointsBean(proposal.getProposalId());
         assignPointsBean.addAllAssignments((contestParentPointType), members);
 
+        List<Points> pointsForThisProposal = PointsClientUtil.getPointsByProposalId(proposal.getProposalId());
+
         model.addAttribute("pointsHelpText", ConfigurationAttributeKey.POINTS_HELP_TEXT.get(lang));
         model.addAttribute("assignPointsBean", assignPointsBean);
         model.addAttribute("pointsToDistribute", contest.getPoints());
@@ -108,6 +110,9 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         model.addAttribute("contest", contest);
         model.addAttribute("linkingProposals", linkingProposalsWrapped);
         model.addAttribute("usersPoints", usersPoints);
+
+        model.addAttribute("pointsForThisProposal", pointsForThisProposal);
+
 
         return "/proposals/proposalPoints";
     }

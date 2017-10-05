@@ -26,11 +26,12 @@ public class PointsDaoImpl implements PointsDao {
     public List<Points> findByGiven(Long userId, Long proposalId) {
         final SelectQuery<Record> query = dslContext.select().from(POINTS).getQuery();
 
-        if (userId != null) {
+        if (userId != null && proposalId == null) {
             query.addConditions(POINTS.USER_ID.eq(userId));
         }
-        if (proposalId != null) {
+        if (proposalId != null && userId == null) {
             query.addConditions(POINTS.PROPOSAL_ID.eq(proposalId));
+            query.addConditions(POINTS.USER_ID.eq(0l));
         }
 
         return query.fetchInto(Points.class);
