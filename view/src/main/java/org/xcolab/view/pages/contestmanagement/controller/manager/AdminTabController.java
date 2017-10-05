@@ -105,7 +105,6 @@ public class AdminTabController extends AbstractTabController {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        setPageAttributes(request, model, tab);
         model.addAttribute("votingReportBean", new VotingReportBean());
 
         List<Notification> list = AdminClient.getNotifications();

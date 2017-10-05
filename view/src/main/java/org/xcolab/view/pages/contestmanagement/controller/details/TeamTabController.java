@@ -45,7 +45,6 @@ public class TeamTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        setPageAttributes(request, model, ContestDetailsTabs.TEAM);
         model.addAttribute("contestTeamBean", new ContestTeamBean(getContest()));
         return TAB_VIEW;
     }

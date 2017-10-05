@@ -1,4 +1,3 @@
-//Regular "bree"  400 normal
 //Regular "proxima-nova"  400 normal
 //Regular Italic  "proxima-nova"  400 italic
 //Bold    "proxima-nova"  700 normal
@@ -10,8 +9,7 @@
 $b-Typography__lineHeight: normal !default;
 $b-Typography__lineHeight__h1: 1em !default;
 
-$b-Typography__fontFamily: "proxima-nova", "proxima-nova-1", Arial, Helvetica, sans-serif !default;
-$b-Typography__fontFamily__h1: "Bree serif", Verdana, sans-serif !default;
+$b-Typography__fontFamily: "proxima-nova", Arial, Helvetica, sans-serif !default;
 
 $b-Typography__fontWeight: 400 !default;
 $b-Typography__fontWeight--bold: 700 !default;
@@ -64,7 +62,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-family: $b-Typography__fontFamily__h1;
   font-weight: $b-Typography__fontWeight__h1;
   font-size: $b-Typography__fontSize__h1;
   color: $b-Typography__textColor__h1;

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
@@ -19,21 +20,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
+@RequestMapping("/notifications/unsubscribe")
 public class UnsubscribeController {
 
     private static final String UNSUBSCRIBE_TITLE = "You have been unsubscribed";
     private static final String UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT =
             "You may still receive email notifications if you are subscribed to other activity on"
                     + " the Climate CoLab.  "
-                    +
-                    "To manage your subscriptions, please log in to your account, select “My "
+                    + "To manage your subscriptions, please log in to your account, select “My "
                     + "profile”, and select the “Manage” "
-                    +
-                    "button underneath “Subscribed Activity” on the right-hand side.";
+                    + "button underneath “Subscribed Activity” on the right-hand side.";
 
 
-    @GetMapping("/notifications/unsubscribe/member/{memberId"
-            + "}/subscription/{subscriptionId}/token/{token}/type/{typeId}")
+    @GetMapping("member/{memberId}/subscription/{subscriptionId}/token/{token}/type/{typeId}")
     public String unsubscribe(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable long memberId, @PathVariable long subscriptionId,
             @PathVariable String token, @PathVariable long typeId) {
@@ -43,12 +42,11 @@ public class UnsubscribeController {
         if (memberId > 0) {
             try {
                 member = MembersClient.getMember(memberId);
-                error = !NotificationUnregisterUtils.isTokenValid(token, member) ||
-                        typeId != NotificationUnregisterUtils.ACTIVITY_TYPE;
+                error = !NotificationUnregisterUtils.isTokenValid(token, member)
+                        || typeId != NotificationUnregisterUtils.ACTIVITY_TYPE;
             } catch (MemberNotFoundException e) {
                 return ErrorMessage.error("Please make sure you copied the link correctly or "
-                        + "contact an administrator.")
-                        .withTitle("Invalid unsubscribe link")
+                        + "contact an administrator.").withTitle("Invalid unsubscribe link")
                         .flashAndReturnView(request);
             }
         }
@@ -65,8 +63,7 @@ public class UnsubscribeController {
 
         if (error) {
             return ErrorMessage.error("Please make sure you copied the link correctly or "
-                    + "contact an administrator.")
-                    .withTitle("Your unsubscribe token is invalid")
+                    + "contact an administrator.").withTitle("Your unsubscribe token is invalid")
                     .flashAndReturnView(request);
         }
 
@@ -85,9 +82,7 @@ public class UnsubscribeController {
             }
         }
 
-        if (!error) {
-            AlertMessage.success("You have successfully unsubscribed!").flash(request);
-        }
+        AlertMessage.success("You have successfully unsubscribed!").flash(request);
         model.addAttribute("responseTitle", UNSUBSCRIBE_TITLE);
         model.addAttribute("responseText", responseText);
 

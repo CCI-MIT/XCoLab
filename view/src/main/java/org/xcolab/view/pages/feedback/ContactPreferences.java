@@ -83,7 +83,7 @@ public class ContactPreferences extends WidgetPreference implements Serializable
         prefs.put(MESSAGE_SUBJECT_PREF, messageSubject);
         prefs.put(EXPAND_LINK_TEXT_PREF, expandLinkText);
         prefs.put(RECIPIENTS_PREF, recipients);
-        savePreferencesInternal(prefs,null);
+        savePreferencesInternal(prefs, null);
     }
 
     public String getRecipients() {

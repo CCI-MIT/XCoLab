@@ -16,7 +16,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 @SessionAttributes("tabContext")
-public abstract class BaseTabController extends BaseController {
+public abstract class BaseTabController {
 
     @Autowired
     protected TabContext tabContext;
@@ -32,23 +32,17 @@ public abstract class BaseTabController extends BaseController {
     @ModelAttribute("currentTabWrapped")
     public abstract TabWrapper populateCurrentTabWrapped(HttpServletRequest request);
 
-    public abstract void setPageAttributes(HttpServletRequest request, Model model, TabEnum tab);
-
-    public List<TabWrapper> getAllVisibleTabsWrapped(HttpServletRequest request, TabEnum[] Tabs) {
+    protected List<TabWrapper> getAllVisibleTabsWrapped(HttpServletRequest request,
+            TabEnum[] Tabs) {
 
         List<TabWrapper> availableTabs = new ArrayList<>();
-        for (TabEnum tab: Tabs) {
+        for (TabEnum tab : Tabs) {
             TabWrapper tabWrapper = new TabWrapper(tab, request, tabContext);
-            if (tabWrapper.getCanView() && (!tab.getName().equals("COLLECTION_CARDS") || ConfigurationAttributeKey.COLAB_USES_CARDS.get())) {
+            if (tabWrapper.getCanView() && (!tab.getName().equals("COLLECTION_CARDS")
+                    || ConfigurationAttributeKey.COLAB_USES_CARDS.get())) {
                 availableTabs.add(tabWrapper);
             }
         }
         return availableTabs;
     }
-
-    public static long getContestIdFromRequest(HttpServletRequest request){
-        String contestIdParameter = request.getParameter("contestId");
-        return Long.parseLong(contestIdParameter);
-    }
-
 }

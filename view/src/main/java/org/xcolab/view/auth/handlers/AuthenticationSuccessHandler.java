@@ -5,7 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication
+        .SavedRequestAwareAuthenticationSuccessHandler;
 
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
@@ -30,7 +31,8 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
     private final AuthenticationService authenticationService;
     private final boolean allowLogin;
 
-    public AuthenticationSuccessHandler(AuthenticationService authenticationService, boolean allowLogin) {
+    public AuthenticationSuccessHandler(AuthenticationService authenticationService,
+            boolean allowLogin) {
         this.authenticationService = authenticationService;
         this.allowLogin = allowLogin;
         setDefaultTargetUrl("/");
@@ -52,8 +54,8 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         if (balloonCookieOpt.isPresent()) {
             final BalloonCookie balloonCookie = balloonCookieOpt.get();
             try {
-                BalloonUserTracking but = BalloonsClient
-                        .getBalloonUserTracking(balloonCookie.getUuid());
+                BalloonUserTracking but =
+                        BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
                 if (but != null) {
                     but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
                 }

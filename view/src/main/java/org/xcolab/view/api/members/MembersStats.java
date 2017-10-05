@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MembersStats {
+
     private long membersCount;
     private List<CountryCount> countries;
 
@@ -21,8 +22,7 @@ public class MembersStats {
         return countries;
     }
 
-    public void setCountries(
-            List<CountryCount> countries) {
+    public void setCountries(List<CountryCount> countries) {
         this.countries = countries;
     }
 
@@ -35,6 +35,7 @@ public class MembersStats {
     }
 
     public static class CountryCount {
+
         private String countryCode;
         private String countryName;
         private long membersCount;

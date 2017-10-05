@@ -89,7 +89,6 @@ public final class ConfigurationAttributeKey {
 
     public static final AttributeGetter<String> TYPEKIT_KIT_ID =
             ConfigurationAttributes.newStringAttribute("TYPEKIT_KIT_ID")
-                    .withCache()
                     .defaultValue("")
                     .build();
 
@@ -100,13 +99,11 @@ public final class ConfigurationAttributeKey {
 
     public static final AttributeGetter<String> PINGDOM_RUM_ID =
             ConfigurationAttributes.newStringAttribute("PINGDOM_RUM_ID")
-                    .withCache()
                     .defaultValue("")
                     .build();
 
     public static final AttributeGetter<String> GOOGLE_ANALYTICS_KEY =
             ConfigurationAttributes.newStringAttribute("GOOGLE_ANALYTICS_KEY")
-                    .withCache()
                     .defaultValue("")
                     .build();
 
@@ -375,11 +372,15 @@ public final class ConfigurationAttributeKey {
                     .build();
 
     public static final AttributeGetter<Boolean> CONTESTS_ALLOW_OPEN_PROPOSALS =
-        ConfigurationAttributes.newBooleanAttribute("CONTESTS_ALLOW_OPEN_PROPOSALS")
+            ConfigurationAttributes.newBooleanAttribute("CONTESTS_ALLOW_OPEN_PROPOSALS")
                     .defaultValue(true)
                     .build();
     public static final AttributeGetter<Boolean> CONTESTS_SHOW_PROPOSAL_EDIT_HELP_TEXT =
             ConfigurationAttributes.newBooleanAttribute("CONTESTS_SHOW_PROPOSAL_EDIT_HELP_TEXT")
+                    .defaultValue(true)
+                    .build();
+    public static final AttributeGetter<Boolean> CONTESTS_SHOW_YEAR_WHEN_COMPLETED =
+            ConfigurationAttributes.newBooleanAttribute("CONTESTS_SHOW_YEAR_WHEN_COMPLETED")
                     .defaultValue(true)
                     .build();
     public static final AttributeGetter<Boolean> FLAGGING_ALLOW_MEMBERS =

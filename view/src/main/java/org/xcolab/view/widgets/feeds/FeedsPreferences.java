@@ -63,7 +63,8 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         title = jsonPreferences.optString(PORTLET_TITLE, DEFAULT_PORTLET_TITLE);
 
         removeAdmin = jsonPreferences.optBoolean(FEED_REMOVE_ADMIN, DEFAULT_REMOVE_ADMIN);
-        seeMoreLinkShown = jsonPreferences.optBoolean(FEED_SEE_MORE_LINK_SHOWN, DEFAULT_SEE_MORE_SHOWN);
+        seeMoreLinkShown =
+                jsonPreferences.optBoolean(FEED_SEE_MORE_LINK_SHOWN, DEFAULT_SEE_MORE_SHOWN);
         feedMaxLength = jsonPreferences.optInt(FEED_MAX_LENGTH, DEFAULT_FEED_MAX_LENGTH);
     }
 

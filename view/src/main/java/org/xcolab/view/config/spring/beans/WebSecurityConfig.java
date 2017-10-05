@@ -7,14 +7,17 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.builders
+        .AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration
+        .WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.header.writers.DelegatingRequestMatcherHeaderWriter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter.XFrameOptionsMode;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter
+        .XFrameOptionsMode;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
@@ -52,8 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public WebSecurityConfig(RememberMeServices rememberMeServices,
-            MemberDetailsService memberDetailsService,
-            WebProperties webProperties, XCoLabProperties xCoLabProperties,
+            MemberDetailsService memberDetailsService, WebProperties webProperties,
+            XCoLabProperties xCoLabProperties,
             AuthenticationSuccessHandler authenticationSuccessHandler) {
         this.rememberMeServices = rememberMeServices;
         this.memberDetailsService = memberDetailsService;
@@ -147,13 +150,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-    private List<RequestMatcher> getWhiteList(){
+    private List<RequestMatcher> getWhiteList() {
         List<RequestMatcher> whitelist = new ArrayList<>();
         whitelist.add(new RegexRequestMatcher(".*localhost*", HttpMethod.POST.name()));
         whitelist.add(new RegexRequestMatcher(".*climatecolab.org.*", HttpMethod.POST.name()));
-        whitelist.add(new RegexRequestMatcher(".*solvecolab.mit.edu.*",HttpMethod.POST.name()));
-        whitelist.add(new RegexRequestMatcher(".*kcc.mit.edu.org.*",HttpMethod.POST.name()));
-        whitelist.add(new RegexRequestMatcher(".*colab2.mit.edu.org.*",HttpMethod.POST.name()));
+        whitelist.add(new RegexRequestMatcher(".*solvecolab.mit.edu.*", HttpMethod.POST.name()));
+        whitelist.add(new RegexRequestMatcher(".*kcc.mit.edu.org.*", HttpMethod.POST.name()));
+        whitelist.add(new RegexRequestMatcher(".*colab2.mit.edu.org.*", HttpMethod.POST.name()));
         return whitelist;
     }
 }

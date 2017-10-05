@@ -30,16 +30,16 @@ public class ProposalSitemapGenerator {
 
     public XmlUrlSet generateForAwardedProposals() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
-        final List<Proposal> proposals = ProposalClientUtil
-                .listProposalsInCompletedContests(Arrays.asList(1, 2, 3));
+        final List<Proposal> proposals =
+                ProposalClientUtil.listProposalsInCompletedContests(Arrays.asList(1, 2, 3));
         addProposals(xmlUrlSet, proposals, ChangeFrequency.NEVER, Priority.HIGH);
         return xmlUrlSet;
     }
 
     public XmlUrlSet generateForOtherProposals() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
-        final List<Proposal> proposals = ProposalClientUtil.listProposalsInCompletedContests(
-                Collections.singletonList(0));
+        final List<Proposal> proposals =
+                ProposalClientUtil.listProposalsInCompletedContests(Collections.singletonList(0));
         addProposals(xmlUrlSet, proposals, ChangeFrequency.NEVER, Priority.LOW);
 
         return xmlUrlSet;
@@ -48,12 +48,12 @@ public class ProposalSitemapGenerator {
     private void addProposals(XmlUrlSet xmlUrlSet, List<Proposal> proposals,
             ChangeFrequency changeFrequency, Priority priority) {
         for (Proposal proposal : proposals) {
-            xmlUrlSet.addUrl(
-                    XmlUrl.Builder.forLocation(siteUrl + proposal.getProposalUrl())
-                            .lastModified(toLocalDateTime(proposal.getLastModifiedDate()))
-                            .changeFrequency(changeFrequency)
-                            .priority(priority)
-                            .build());
+            xmlUrlSet.addUrl(XmlUrl.Builder
+                    .forLocation(siteUrl + proposal.getProposalUrl())
+                    .lastModified(toLocalDateTime(proposal.getLastModifiedDate()))
+                    .changeFrequency(changeFrequency)
+                    .priority(priority)
+                    .build());
         }
     }
 }

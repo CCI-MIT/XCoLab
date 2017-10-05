@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +21,6 @@ import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.entities.SectionTypes;
 import org.xcolab.view.pages.contestmanagement.wrappers.SectionDefinitionWrapper;
 import org.xcolab.view.taglibs.xcolab.controller.BaseTabController;
-import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 
@@ -32,7 +30,6 @@ import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class AbstractProposalTemplateTabController extends BaseTabController {
@@ -255,9 +252,4 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
         nameStr.append("- ").append(currentTerm.getName());
         return nameStr.toString();
     }
-
-    @Override
-    public void setPageAttributes(HttpServletRequest request, Model model, TabEnum tab) {
-    }
-
 }

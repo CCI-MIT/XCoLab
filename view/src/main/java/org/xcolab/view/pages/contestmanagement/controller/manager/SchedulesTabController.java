@@ -100,7 +100,6 @@ public class SchedulesTabController extends AbstractTabController {
         }
         model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(scheduleId,
                 ContestScheduleLifecycleUtil.getAllScheduleTemplateSelectionItems()));
-        setPageAttributes(request, model, tab);
         return TAB_VIEW;
     }
 

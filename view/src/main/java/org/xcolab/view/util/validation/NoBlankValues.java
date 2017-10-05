@@ -14,6 +14,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = NoBlankValuesValidator.class)
 @Documented
 public @interface NoBlankValues {
+
     String message() default "";
 
     Class<?>[] groups() default {};

@@ -3,6 +3,7 @@ package org.xcolab.view.util.entity.flash;
 import javax.servlet.http.HttpServletRequest;
 
 public class InfoMessage {
+
     private static final FlashMessageStore MESSAGE_STORE = new FlashMessageStore();
     private static final String MESSAGE_VIEW = "message";
 

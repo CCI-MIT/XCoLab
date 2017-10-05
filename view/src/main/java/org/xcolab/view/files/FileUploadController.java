@@ -41,14 +41,14 @@ public class FileUploadController {
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) Boolean resize) {
 
-            if (request.getParameter("resize") == null) {
-                resize = false;
-            }
+        if (request.getParameter("resize") == null) {
+            resize = false;
+        }
         return uploadImageResponse(file, request, resize);
     }
 
-    private ImageResponse uploadImageResponse(MultipartFile file,
-            HttpServletRequest request, Boolean resize) {
+    private ImageResponse uploadImageResponse(MultipartFile file, HttpServletRequest request,
+            Boolean resize) {
         try {
             String path = request.getSession().getServletContext().getRealPath("/");
 
@@ -56,7 +56,7 @@ public class FileUploadController {
 
             byte[] bytes = file.getBytes();
 
-            if (resize!= null) {
+            if (resize != null) {
                 bytes = FileUploadUtil
                         .resizeAndCropImage(ImageIO.read(new ByteArrayInputStream(bytes)),
                                 IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
@@ -91,15 +91,15 @@ public class FileUploadController {
         try {
             response.setContentType("text/html");
             response.getOutputStream()
-                    .write(("<script>window.parent.CKEDITOR.tools.callFunction("
-                            + ckEditorFuncNum + ", \"" + ir.getImageUrl()
-                            + "\");</script>").getBytes());
+                    .write(("<script>window.parent.CKEDITOR.tools.callFunction(" + ckEditorFuncNum
+                            + ", \"" + ir.getImageUrl() + "\");</script>").getBytes());
         } catch (IOException ignored) {
 
         }
     }
 
     private static class ImageResponse {
+
         private final String imageId;
         private final String imageUrl;
         private final boolean success;

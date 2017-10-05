@@ -2,6 +2,7 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,8 +52,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AddDiscussionMessageActionController extends BaseDiscussionsActionController {
 
-    private final static Logger _log = LoggerFactory
-            .getLogger(AddDiscussionMessageActionController.class);
+    private final static Logger _log =
+            LoggerFactory.getLogger(AddDiscussionMessageActionController.class);
 
     private final static String COMMENT_ANALYTICS_KEY = "COMMENT_CONTEST_ENTRIES";
     private final static String COMMENT_ANALYTICS_CATEGORY = "User";
@@ -63,11 +64,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     @PostMapping("/discussions/addDiscussionMessage")
     public void handleAction(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(value = "contestId", required = false) String contestId,
-            NewMessageWrapper newMessage)
-            throws IOException, DiscussionAuthorizationException {
+            NewMessageWrapper newMessage) throws IOException, DiscussionAuthorizationException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
-
 
         try {
             final CommentClient commentClient;
@@ -82,19 +81,16 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                 Contest contest = ContestClientUtil.getContest(contestIdLong);
                 if (contest.getIsSharedContestInForeignColab()) {
                     RestService activitiesService = new RefreshingRestService(CoLabService.ACTIVITY,
-                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-                    );
+                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
                     activityClient = ActivitiesClient.fromService(activitiesService);
                     RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
-                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-                    );
+                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
                     commentClient = CommentClient.fromService(commentsService);
                     threadClient = ThreadClient.fromService(commentsService);
                     RestService proposalsService = new RefreshingRestService(CoLabService.CONTEST,
-                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-                    );
+                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
                     proposalClient = ProposalClient.fromService(proposalsService);
                 } else {
@@ -132,12 +128,11 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                 if (commentThread.getCategory() == null) {
                     try {
                         final Proposal proposal =
-                            proposalClient.getProposalByThreadId(commentThread.getThreadId());
+                                proposalClient.getProposalByThreadId(commentThread.getThreadId());
 
                         //proposal
                         ActivityEntryHelper.createActivityEntry(activityClient, memberId,
-                                commentThread.getThreadId(),
-                                comment.getCommentId() + "",
+                                commentThread.getThreadId(), comment.getCommentId() + "",
                                 ActivityProvidersType.DiscussionAddProposalCommentActivityEntry
                                         .getType());
                         try {
@@ -150,8 +145,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     } catch (ProposalNotFoundException e) {
                         //contest
                         ActivityEntryHelper.createActivityEntry(activityClient, memberId,
-                                commentThread.getThreadId(),
-                                comment.getCommentId() + "",
+                                commentThread.getThreadId(), comment.getCommentId() + "",
                                 ActivityProvidersType.DiscussionAddContestCommentActivityEntry
                                         .getType());
 
@@ -165,8 +159,8 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             }
             if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {
                 try {
-                    FilteredEntry filteredEntry = FilteringClient
-                            .getFilteredEntryByUuid(newMessage.getUuid());
+                    FilteredEntry filteredEntry =
+                            FilteringClient.getFilteredEntryByUuid(newMessage.getUuid());
                     filteredEntry.setSourceId(comment.getCommentId());
                     filteredEntry.setAuthorId(memberId);
                     FilteringClient.updateFilteredEntry(filteredEntry);
@@ -195,7 +189,8 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         } catch (ThreadNotFoundException ignored) {
         }
 
-        redirectToReferrer(request, response);
+        String redirectUrl = request.getHeader(HttpHeaders.REFERER);
+        response.sendRedirect(redirectUrl);
     }
 
     public void updateAnalyticsAndActivities(CommentThread thread, Comment comment, long userId,
@@ -204,9 +199,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         if (commentCount > 0) {
             int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(commentCount);
             AnalyticsUtil.publishEvent(request, userId, COMMENT_ANALYTICS_KEY + analyticsValue,
-                    COMMENT_ANALYTICS_CATEGORY,
-                    COMMENT_ANALYTICS_ACTION,
-                    COMMENT_ANALYTICS_LABEL,
+                    COMMENT_ANALYTICS_CATEGORY, COMMENT_ANALYTICS_ACTION, COMMENT_ANALYTICS_LABEL,
                     analyticsValue);
         }
     }

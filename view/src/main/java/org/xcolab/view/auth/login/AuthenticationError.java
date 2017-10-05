@@ -10,8 +10,8 @@ import org.xcolab.client.members.exceptions.PasswordLoginException;
 
 public enum AuthenticationError {
     CREDENTIALS("Authentication failed, please check your screen name and password.",
-            BadCredentialsException.class,
-            MemberNotFoundException.class, PasswordLoginException.class),
+            BadCredentialsException.class, MemberNotFoundException.class,
+            PasswordLoginException.class),
     LOCKOUT("This account has been locked", LockedException.class, LockoutLoginException.class),
     UNKNOWN("An error occurred");
 

@@ -16,11 +16,11 @@ public class PlaceholderAwareMessageTag extends MessageTag {
     private ContestType contestType;
 
     /**
-     * Resolve the specified message into a concrete message String.
-     * The returned message String should be unescaped.
+     * Resolve the specified message into a concrete message String. The returned message String
+     * should be unescaped.
      *
-     * Unlike its super method, this method also resolves placeholders
-     * for platform constants and ContestTypes.
+     * Unlike its super method, this method also resolves placeholders for platform constants and
+     * ContestTypes.
      */
     @Override
     protected String resolveMessage() throws JspException, NoSuchMessageException {

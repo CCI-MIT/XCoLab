@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 public class SearchController {
 
     @GetMapping("/search")
-    public String showCategories(HttpServletRequest request, HttpServletResponse response, Model model,
-                                 @RequestParam(required = false) String searchPhrase,
-                                 @RequestParam(required = false) String searchLocation,
-                                 @RequestParam(required = false) Integer page) {
+    public String showCategories(HttpServletRequest request, HttpServletResponse response,
+            Model model, @RequestParam(required = false) String searchPhrase,
+            @RequestParam(required = false) String searchLocation,
+            @RequestParam(required = false) Integer page) {
 
         model.addAttribute("searchBean", new SearchBean(searchPhrase, searchLocation, page));
 

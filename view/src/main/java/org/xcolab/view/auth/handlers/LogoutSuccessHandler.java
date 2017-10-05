@@ -5,6 +5,11 @@ import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuc
 
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
     public LogoutSuccessHandler() {
@@ -12,16 +17,9 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
     }
 
     @Override
-    public void onLogoutSuccess(javax.servlet.http.HttpServletRequest request,
-            javax.servlet.http.HttpServletResponse response,
-            Authentication authentication)
-            throws java.io.IOException,
-            javax.servlet.ServletException{
-
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) throws IOException {
         AlertMessage.success("We hope you come back soon!").flash(request);
         response.sendRedirect("/");
-
-
     }
-
 }

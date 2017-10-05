@@ -14,6 +14,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = UniqueEmailValidator.class)
 @Documented
 public @interface UniqueEmail {
+
     String emailProperty();
 
     String message() default "";

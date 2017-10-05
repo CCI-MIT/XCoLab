@@ -27,7 +27,7 @@ public class SearchResultItem {
 
         if (itemType != null) {
             AbstractSearchItem searchItem = itemType.getSearchItem();
-            searchItem.init(searchPojo,query);
+            searchItem.init(searchPojo, query);
             content = searchItem.getContent();
             url = searchItem.getLinkUrl();
             title = searchItem.getTitle();
@@ -69,6 +69,7 @@ public class SearchResultItem {
     }
 
     public static class Pair {
+
         private String key;
         private String value;
 

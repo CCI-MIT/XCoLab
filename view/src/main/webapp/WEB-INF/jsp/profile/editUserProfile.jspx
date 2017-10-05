@@ -172,6 +172,19 @@
 							</td>
 						</tr>
 
+                        <c:if test="${not empty currentUserProfile.user.loginTokenId}">
+                            <tr>
+                                <th class="b m nowrap">
+                                    <spring:message code="profile.form.fields.newlink"/>
+                                </th>
+                                <td>
+                                    <button type="button" class="c-Button__primary" onclick="sendNewLoginLink()">
+                                        <spring:message code="profile.form.button.sendlink"/>
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:if>
+
                         <c:choose>
                             <c:when test="${currentUserProfile.viewingOwnProfile and empty currentUserProfile.user.hashedPassword}">
                                 <!-- User has no password yet - allow sending reset link -->
@@ -438,6 +451,10 @@
     <spring:message code="profile.sso.notification.successufull" var="ssoSuccess"/>
     <spring:message code="profile.sso.notification.failed" var="ssoFailed"/>
 
+    <script>
+        var profileUserId = ${userBean.userId};
+    </script>
+
 	<script type="text/javascript">
 
 		jQuery("#email").keyup(function(){
@@ -468,6 +485,17 @@
 			}
 		});
 
+		function sendNewLoginLink() {
+		    jQuery.post({
+                url: '/members/profile/' + profileUserId + '/api/login/generateNewToken',
+                success: function() {
+                    noty({text: 'New login link sent.', type: 'success'});
+                },
+                error: function() {
+                    noty({text: 'Error sending login link!', type: 'error'});
+                }
+            });
+        }
 
 		function updateMessageSettingsOnServer(updateUrl, formData){
 			var deferred = jQuery.Deferred();

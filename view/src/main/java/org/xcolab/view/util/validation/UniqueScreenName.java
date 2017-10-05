@@ -14,6 +14,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = UniqueScreenNameValidator.class)
 @Documented
 public @interface UniqueScreenName {
+
     String screenNameProperty();
 
     String message() default "";

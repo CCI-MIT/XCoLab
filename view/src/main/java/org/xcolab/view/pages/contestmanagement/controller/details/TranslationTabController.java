@@ -44,7 +44,6 @@ public class TranslationTabController extends AbstractTabController {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        setPageAttributes(request, model, tab);
         if (!model.containsAttribute("contestTranslationBean")) {
             Contest contest = getContest();
             model.addAttribute("contestTranslationBean", new ContestTranslationBean(contest));

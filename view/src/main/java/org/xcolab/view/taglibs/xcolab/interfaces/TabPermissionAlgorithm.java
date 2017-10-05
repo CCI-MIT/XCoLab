@@ -6,24 +6,32 @@ import org.xcolab.view.util.entity.enums.MemberRole;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 public interface TabPermissionAlgorithm {
+
     boolean canView(TabPermissions permissions, TabContext context, HttpServletRequest request);
+
     boolean canEdit(TabPermissions permissions, TabContext context, HttpServletRequest request);
-    boolean getCanAddComment(TabPermissions permissions, TabContext context, HttpServletRequest request);
+
+    boolean getCanAddComment(TabPermissions permissions, TabContext context,
+            HttpServletRequest request);
 
     TabPermissionAlgorithm alwaysTrueViewAndEdit = new TabPermissionAlgorithm() {
 
         @Override
-        public boolean canView(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean canView(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return true;
         }
+
         @Override
-        public boolean canEdit(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean canEdit(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return true;
         }
+
         @Override
-        public boolean getCanAddComment(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean getCanAddComment(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return true;
         }
     };
@@ -31,15 +39,20 @@ public interface TabPermissionAlgorithm {
     TabPermissionAlgorithm alwaysFalseViewAndEdit = new TabPermissionAlgorithm() {
 
         @Override
-        public boolean canView(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean canView(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return false;
         }
+
         @Override
-        public boolean canEdit(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean canEdit(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return false;
         }
+
         @Override
-        public boolean getCanAddComment(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean getCanAddComment(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return false;
         }
     };
@@ -47,15 +60,20 @@ public interface TabPermissionAlgorithm {
     TabPermissionAlgorithm adminOnlyViewAndEdit = new TabPermissionAlgorithm() {
 
         @Override
-        public boolean canView(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean canView(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return permissions.getCanAdmin();
         }
+
         @Override
-        public boolean canEdit(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean canEdit(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return permissions.getCanAdmin();
         }
+
         @Override
-        public boolean getCanAddComment(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean getCanAddComment(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return permissions.getCanAdmin();
         }
     };
@@ -63,16 +81,21 @@ public interface TabPermissionAlgorithm {
     TabPermissionAlgorithm contestCreationViewAndEdit = new TabPermissionAlgorithm() {
 
         @Override
-        public boolean canView(TabPermissions permissions, TabContext context, HttpServletRequest request) {
-            return permissions.getCanRole(MemberRole.CONTEST_MANAGER) || permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanAdmin();
+        public boolean canView(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
+            return permissions.getCanRole(MemberRole.CONTEST_MANAGER) || permissions
+                    .getCanRole(MemberRole.FELLOW) || permissions.getCanAdmin();
         }
+
         @Override
-        public boolean canEdit(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean canEdit(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return canView(permissions, context, request);
         }
 
         @Override
-        public boolean getCanAddComment(TabPermissions permissions, TabContext context, HttpServletRequest request) {
+        public boolean getCanAddComment(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
             return canView(permissions, context, request);
         }
     };

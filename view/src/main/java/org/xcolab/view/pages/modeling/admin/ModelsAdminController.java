@@ -49,9 +49,9 @@ public class ModelsAdminController {
             RomaClientUtil.client().getManager().clearCache();
         }
 
-        List<ModelWrapper> simulationsSorted = RomaClientUtil.client().getAllSimulations().stream()
-                .map(ModelWrapper::new)
-                .collect(Collectors.toList());
+        List<ModelWrapper> simulationsSorted =
+                RomaClientUtil.client().getAllSimulations().stream().map(ModelWrapper::new)
+                        .collect(Collectors.toList());
         simulationsSorted.sort((o1, o2) -> (int) (o2.getId() - o1.getId()));
         model.addAttribute("models", simulationsSorted);
         return BASE_MODEL_PATH + "modelsIndex";
@@ -60,7 +60,8 @@ public class ModelsAdminController {
     @GetMapping("model/{modelId}")
     public String showModelDetails(Model model, @PathVariable long modelId) throws IOException {
 
-        model.addAttribute("model", new ModelWrapper(RomaClientUtil.client().getSimulation(modelId)));
+        model.addAttribute("model",
+                new ModelWrapper(RomaClientUtil.client().getSimulation(modelId)));
 
         model.addAttribute("tab", "details");
         model.addAttribute("modelPreferences", ModelingClientUtil.getModelPreference(modelId));
@@ -74,8 +75,7 @@ public class ModelsAdminController {
         Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 
-        List<ModelInputGroupDisplayItem> groupsAndTabs =
-                new ArrayList<>();
+        List<ModelInputGroupDisplayItem> groupsAndTabs = new ArrayList<>();
         for (ModelInputGroupDisplayItem tab : modelDisplay.getTabs()) {
             groupsAndTabs.addAll(getSubGroups(tab));
         }
@@ -146,8 +146,7 @@ public class ModelsAdminController {
             individualInputsById.put(item.getMetaData().getId(), item.getName());
         }
 
-        List<ModelInputGroupDisplayItem> groupsAndTabs =
-                new ArrayList<>();
+        List<ModelInputGroupDisplayItem> groupsAndTabs = new ArrayList<>();
         //groupsAndTabs.addAll(modelDisplay.getTabs());
 
         for (ModelInputGroupDisplayItem tab : modelDisplay.getTabs()) {

@@ -30,12 +30,14 @@ public class ProposalSearchItem extends AbstractSearchItem {
         try {
             searchPojo = pojo;
             this.searchQuery = searchQuery;
-            proposalAttribute = ProposalAttributeClientUtil.getProposalAttribute(searchPojo.getClassPrimaryKey());
-            proposal = ProposalClientUtil.getProposal(proposalAttribute.getProposalId(),true);
-            ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(proposal,
-                    ProposalAttributeClientUtil.getClient());
+            proposalAttribute = ProposalAttributeClientUtil
+                    .getProposalAttribute(searchPojo.getClassPrimaryKey());
+            proposal = ProposalClientUtil.getProposal(proposalAttribute.getProposalId(), true);
+            ProposalAttributeHelper proposalAttributeHelper =
+                    new ProposalAttributeHelper(proposal, ProposalAttributeClientUtil.getClient());
 
-            proposalName = proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
+            proposalName =
+                    proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         } catch (ProposalAttributeNotFoundException | ProposalNotFoundException ignored) {
 
@@ -45,11 +47,9 @@ public class ProposalSearchItem extends AbstractSearchItem {
     @Override
     public String getPrintName() {
 
-            final long contestTypeId =
-                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
-            final ContestType contestType = ContestTypeClient
-                    .getContestType(contestTypeId);
-            return contestType.getProposalNamePlural();
+        final long contestTypeId = ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
+        final ContestType contestType = ContestTypeClient.getContestType(contestTypeId);
+        return contestType.getProposalNamePlural();
 
     }
 
@@ -60,9 +60,9 @@ public class ProposalSearchItem extends AbstractSearchItem {
 
     @Override
     public String getLinkUrl() {
-        if(proposal!=null) {
+        if (proposal != null) {
             return proposal.getProposalUrl();
-        }else {
+        } else {
             return "";
         }
 
@@ -72,13 +72,13 @@ public class ProposalSearchItem extends AbstractSearchItem {
     @Override
     public String getContent() {
 
-        return getContent(proposalAttribute.getStringValue(),searchQuery);
+        return getContent(proposalAttribute.getStringValue(), searchQuery);
 
     }
+
     @Override
     public boolean isVisible() {
         return proposal.getVisible();
     }
-
 
 }

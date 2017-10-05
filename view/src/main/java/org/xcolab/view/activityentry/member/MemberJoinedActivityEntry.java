@@ -11,7 +11,6 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
@@ -19,12 +18,18 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 @Component
 public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {
 
-    private ActivityEntry activityEntry;
-
     private static final Logger _log = LoggerFactory.getLogger(MemberJoinedActivityEntry.class);
 
+    private static final String MESSAGE_CODE = "activities.members.message";
+
+    private final ResourceMessageResolver resourceMessageResolver;
+
+    private ActivityEntry activityEntry;
+
     @Autowired
-    private ResourceMessageResolver resourceMessageResolver;
+    public MemberJoinedActivityEntry(ResourceMessageResolver resourceMessageResolver) {
+        this.resourceMessageResolver = resourceMessageResolver;
+    }
 
     @Override
     public String getBody() {
@@ -33,8 +38,7 @@ public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {
             Member member = MembersClient.getMember(activityEntry.getMemberId());
             String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
             String[] params = {getUserLink(member), colabName};
-            return resourceMessageResolver.getLocalizedMessage("activities.members.message",params);
-            //return String.format("%s joined the %s community", );
+            return resourceMessageResolver.getLocalizedMessage(MESSAGE_CODE, params);
 
         } catch (MemberNotFoundException e) {
             _log.error("Member not found {}", activityEntry.getMemberId());
@@ -44,9 +48,7 @@ public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {
     }
 
     private String getUserLink(Member user) {
-
-        return (user.generateUserURL()==null)?("<user removed>"):(user.generateUserURL());
-
+        return (user.generateUserURL() == null) ? ("<user removed>") : (user.generateUserURL());
     }
 
     @Override
@@ -75,14 +77,16 @@ public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {
         return MemberSubActivityType.MEMBER_JOINED.getSecondaryTypeId();
     }
 
-    public enum MemberSubActivityType{
+    public enum MemberSubActivityType {
         MEMBER_JOINED(1L);
+
         private final Long secondaryTypeId;
+
         MemberSubActivityType(Long type) {
             this.secondaryTypeId = type;
         }
 
-        public Long getSecondaryTypeId(){
+        public Long getSecondaryTypeId() {
             return this.secondaryTypeId;
         }
     }

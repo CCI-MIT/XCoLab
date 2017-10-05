@@ -22,15 +22,12 @@ public class ToggleCustomModelInputWidgetAction {
 
     @PostMapping("model/{modelId}/toggleCustomInputs")
     public void update(HttpServletRequest request, HttpServletResponse response,
-            UpdateModelInputWidgetsBean updateModelWidgetsBean,
-            @PathVariable long modelId)
+            UpdateModelInputWidgetsBean updateModelWidgetsBean, @PathVariable long modelId)
             throws IllegalUIConfigurationException, IOException {
 
         ModelGlobalPreference modelPreferences = ModelingClientUtil.getModelPreference(modelId);
         modelPreferences.setUsesCustomInputs(!modelPreferences.getUsesCustomInputs());
         ModelingClientUtil.updateModelPreference(modelPreferences);
         response.sendRedirect(ModelsAdminController.getTabMapping(modelId, "inputWidgets"));
-
     }
-
 }

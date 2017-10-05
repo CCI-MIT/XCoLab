@@ -54,8 +54,8 @@ public class UpdateModelDisplayFromJSONAction {
         }
 
         for (ModelOutputDisplayItem modi : modelDisplay.getOutputs()) {
-            ModelOutputChartOrder
-                    moco = ModelingClientUtil.getModelOutputChartOrder(simulation, modi.getName());
+            ModelOutputChartOrder moco =
+                    ModelingClientUtil.getModelOutputChartOrder(simulation, modi.getName());
             ModelingClientUtil.deleteModelOutputChartOrder(moco);
         }
 
@@ -136,8 +136,7 @@ public class UpdateModelDisplayFromJSONAction {
     }
 
 
-    private void configureOutputArray(ModelDisplay modelDisplay, JSONArray jsonArray,
-            int order) {
+    private void configureOutputArray(ModelDisplay modelDisplay, JSONArray jsonArray, int order) {
         for (Object aJsonArray : jsonArray) {
             JSONObject outputObj = (JSONObject) aJsonArray;
 

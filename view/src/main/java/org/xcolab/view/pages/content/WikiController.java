@@ -36,8 +36,8 @@ public class WikiController {
 
         if (folderId > 0 && PermissionsClient.canAdminAll(member)) {
             final List<ContentArticleVersion> contentArticleVersions = ContentsClient
-                    .getContentArticleVersions(0, Integer.MAX_VALUE, folderId, null, null,
-                            null, null);
+                    .getContentArticleVersions(0, Integer.MAX_VALUE, folderId,
+                            null, null, null, null);
             model.addAttribute("contentArticleVersions", contentArticleVersions);
         }
         return "content/wikiList";
@@ -45,14 +45,13 @@ public class WikiController {
 
     @GetMapping("/wiki/{pageTitle:.*}")
     public String showWikiPage(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable String pageTitle)
-            throws IOException {
+            Model model, Member member, @PathVariable String pageTitle) throws IOException {
         final long folderId = ConfigurationAttributeKey.WIKI_CONTENT_FOLDER_ID.get();
 
         if (folderId > 0 && StringUtils.isNotBlank(pageTitle)) {
             try {
-                final ContentArticleVersion contentArticleVersion =
-                        ContentsClient.getLatestContentArticleVersion(folderId, pageTitle.replace('+', ' '));
+                final ContentArticleVersion contentArticleVersion = ContentsClient
+                        .getLatestContentArticleVersion(folderId, pageTitle.replace('+', ' '));
                 final ContentArticle contentArticle = ContentsClient
                         .getContentArticle(contentArticleVersion.getContentArticleId());
 
@@ -81,8 +80,8 @@ public class WikiController {
         }
         try {
             if (contest.getResourceArticleId() > 0) {
-                final ContentArticle contentArticle = ContentsClient
-                        .getContentArticle(contest.getResourceArticleId());
+                final ContentArticle contentArticle =
+                        ContentsClient.getContentArticle(contest.getResourceArticleId());
                 ContentArticleVersion contentArticleVersion =
                         ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
                 model.addAttribute("contentArticleVersion", contentArticleVersion);

@@ -51,7 +51,7 @@ public class FeedsController extends AbstractWidgetController<FeedsPreferences> 
         feedDisplayStyles.put("SHORT", "SHORT");
         model.addAttribute("feedDisplayStyles", feedDisplayStyles);
 
-        return showPreferencesInternal(response, model,  member, preferenceId, language,
+        return showPreferencesInternal(response, model, member, preferenceId, language,
                 "/feedswidget/editPreferences");
     }
 

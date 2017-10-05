@@ -61,19 +61,19 @@ public class GetRoleNameStartTag extends BodyTagSupport {
         try {
             Member member = MembersClient.getMember(userId);
             MemberRole role = MemberRole.getHighestRole(member.getRoles());
-            if(contestId > 0){
-                try{
+            if (contestId > 0) {
+                try {
                     Contest c = ContestClientUtil.getContest(contestId);
-                    if(c.getIsSharedContestInForeignColab()){
-                        RestService proposalsService = new RefreshingRestService(CoLabService.CONTEST,
-                                ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-                        );
+                    if (c.getIsSharedContestInForeignColab()) {
+                        RestService proposalsService =
+                                new RefreshingRestService(CoLabService.CONTEST,
+                                        ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
                         proposalClient = ProposalClient.fromService(proposalsService);
                     }
-                }catch (ContestNotFoundException cnfe){
+                } catch (ContestNotFoundException cnfe) {
                     proposalClient = ProposalClientUtil.getClient();
                 }
-            }else{
+            } else {
                 proposalClient = ProposalClientUtil.getClient();
             }
             pageContext.setAttribute("role", role);
@@ -90,7 +90,6 @@ public class GetRoleNameStartTag extends BodyTagSupport {
                 }
             }
             pageContext.setAttribute("isContributing", isContributing);
-
 
         } catch (MemberNotFoundException e) {
             throw ReferenceResolutionException.toObject(Member.class, userId)

@@ -286,6 +286,7 @@ public class Proposal extends AbstractProposal {
     public String getCleanPitch() {
         return HtmlUtil.cleanAll(getPitch());
     }
+
     public String getPitch() {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.PITCH, "");
     }

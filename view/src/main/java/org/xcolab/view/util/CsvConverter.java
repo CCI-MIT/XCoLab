@@ -33,18 +33,17 @@ public class CsvConverter {
         this.rows = new ArrayList<>();
     }
 
-    public void addRow(List<String> cols) {
+    protected void addRow(List<String> cols) {
         checkLength(cols);
-        final String[] colArray = cols.stream()
-                .map(this::clean)
-                .collect(Collectors.toList()).toArray(new String[numColumns]);
+        final String[] colArray = cols.stream().map(this::clean).collect(Collectors.toList())
+                .toArray(new String[numColumns]);
         rows.add(colArray);
     }
 
     private void checkLength(List<String> cols) {
         if (cols.size() != numColumns) {
-            throw new IllegalArgumentException("Illegal column length: " + cols.size()
-                    + " - expected " + numColumns);
+            throw new IllegalArgumentException(
+                    "Illegal column length: " + cols.size() + " - expected " + numColumns);
         }
     }
 

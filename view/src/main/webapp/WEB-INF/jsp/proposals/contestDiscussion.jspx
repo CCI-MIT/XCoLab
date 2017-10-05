@@ -24,12 +24,13 @@
 		</div>
 		<!-- /proposal-head -->
 		<div id="content">
+
 			<c:choose>
 				<c:when test="${contest.isSharedContestInForeignColab}">
-					<xcolab:discussionComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" />
+					<xcolab:discussionComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" shareTitle="${contest.contestShortName} Discussion" />
 				</c:when>
 				<c:otherwise>
-                    <xcolab:discussionComments threadId="${discussionId }"  />
+                    <xcolab:discussionComments threadId="${discussionId }" shareTitle="${contest.contestShortName} Discussion"  />
 				</c:otherwise>
 			</c:choose>
 		</div>

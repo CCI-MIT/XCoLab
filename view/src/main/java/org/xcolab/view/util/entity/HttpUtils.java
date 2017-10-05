@@ -16,15 +16,15 @@ public final class HttpUtils {
             String anchor = urlArray[1];
             StringBuilder sb = new StringBuilder(7);
             sb.append(url);
-            if(url.indexOf(63) == -1) {
+            if (url.indexOf(63) == -1) {
                 sb.append("?");
-            } else if(!url.endsWith("?") && !url.endsWith("&")) {
+            } else if (!url.endsWith("?") && !url.endsWith("&")) {
                 sb.append("&");
             }
 
             sb.append(name);
             sb.append("=");
-            sb.append( encodeURL(value));
+            sb.append(encodeURL(value));
             sb.append(anchor);
             return sb.toString();
         }
@@ -42,7 +42,7 @@ public final class HttpUtils {
     public static String[] stripURLAnchor(String url, String separator) {
         String anchor = "";
         int pos = url.indexOf(separator);
-        if(pos != -1) {
+        if (pos != -1) {
             anchor = url.substring(pos);
             url = url.substring(0, pos);
         }

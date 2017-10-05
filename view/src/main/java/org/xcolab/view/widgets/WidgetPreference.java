@@ -122,6 +122,7 @@ public abstract class WidgetPreference {
 
 
     public interface Supplier<T extends WidgetPreference> {
+
         T get(String id, String language);
     }
 

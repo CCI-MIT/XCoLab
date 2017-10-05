@@ -21,6 +21,7 @@ import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.login.AuthenticationError;
+import org.xcolab.view.socialmedia.SocialMediaEngine;
 import org.xcolab.view.util.MetaKeys;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.util.entity.flash.AnalyticsAttribute;
@@ -29,7 +30,6 @@ import org.xcolab.view.util.entity.flash.InfoMessage;
 
 import java.util.Locale;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -221,15 +221,14 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("__errorMessage", ErrorMessage.extract(request));
             modelAndView.addObject("__infoMessage", InfoMessage.extract(request));
 
-            modelAndView.addObject("_socialMediaUrls",
-                    Stream.of(ConfigurationAttributeKey.FACEBOOK_URL.get(),
-                            ConfigurationAttributeKey.TWITTER_URL.get(),
-                            ConfigurationAttributeKey.YOUTUBE_URL.get(),
-                            ConfigurationAttributeKey.LINKEDIN_URL.get(),
-                            ConfigurationAttributeKey.GOOGLE_URL.get(),
-                            ConfigurationAttributeKey.STORIFY_URL.get())
-                    .filter(StringUtils::isNotEmpty)
-                    .collect(Collectors.toList()));
+            modelAndView.addObject("_shareRequestUri", SocialMediaEngine.getUtmParameters(ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get() + request.getRequestURI()));
+            modelAndView.addObject("_facebookId", ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get());
+
+            modelAndView.addObject("_showShareButtons",
+                    ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
+
+            modelAndView.addObject("_shearableSocialMediaUrls", SocialMediaEngine.getShearableSocialMediaEngines());
+            modelAndView.addObject("_followableSocialMediaUrls", SocialMediaEngine.getFollowableSocialMediaEngines());
         }
     }
 

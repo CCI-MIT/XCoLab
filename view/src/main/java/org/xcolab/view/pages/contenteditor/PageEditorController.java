@@ -46,11 +46,8 @@ public class PageEditorController extends BaseContentEditor {
 
     @GetMapping("/content-editor/previewContentPage")
     public String previewContentPage(HttpServletRequest request, HttpServletResponse response,
-            Member member,
-            @RequestParam(required = false) Long mainContentArticleId,
-            @RequestParam(required = false) Long menuArticleId,
-            Model model
-    ) throws IOException {
+            Member member, @RequestParam(required = false) Long mainContentArticleId,
+            @RequestParam(required = false) Long menuArticleId, Model model) throws IOException {
 
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -66,16 +63,14 @@ public class PageEditorController extends BaseContentEditor {
 
     @PostMapping("/content-editor/saveContentPage")
     public void saveContentArticleVersion(HttpServletRequest request, HttpServletResponse response,
-            Member member,
-            @RequestParam(required = false) Long pageId,
+            Member member, @RequestParam(required = false) Long pageId,
             @RequestParam(required = false) String pageTitle,
             @RequestParam(required = false) Long mainContentArticleId,
             @RequestParam(required = false) Long menuArticleId,
-            @RequestParam(required = false) String metaDescription
-    ) throws IOException {
+            @RequestParam(required = false) String metaDescription) throws IOException {
 
         if (!PermissionsClient.canAdminAll(member)) {
-            defaultOperationReturnMessage(false, "Not allowed to save page","", response);
+            defaultOperationReturnMessage(false, "Not allowed to save page", "", response);
         }
 
         ContentPage contentPage;
@@ -102,7 +97,7 @@ public class PageEditorController extends BaseContentEditor {
             ContentsClient.updateContentPage(contentPage);
         }
 
-        defaultOperationReturnMessage(true, "Content page created successfully","", response);
+        defaultOperationReturnMessage(true, "Content page created successfully", "", response);
     }
 
     private Map<String, String> getArticles(Long folderId, String path, Map<String, String> map) {
@@ -119,8 +114,7 @@ public class PageEditorController extends BaseContentEditor {
                 ContentsClient.getChildArticleVersions(folderId);
         if (contentArticles != null) {
             for (ContentArticleVersion ca : contentArticles) {
-                map.put(path + "/" + ca.getTitle(),
-                        ca.getContentArticleId().toString());
+                map.put(path + "/" + ca.getTitle(), ca.getContentArticleId().toString());
             }
         }
         return map;
@@ -135,14 +129,11 @@ public class PageEditorController extends BaseContentEditor {
 
     @GetMapping("/content-editor/pageEditorListFolder")
     public void contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) String node)
-            throws IOException {
+            @RequestParam(required = false) String node) throws IOException {
         List<ContentPage> pages = ContentsClient.getContentPages(null);
         JSONArray responseArray = new JSONArray();
         for (ContentPage cp : pages) {
-            responseArray
-                    .put(articleNode(cp.getTitle(),
-                            cp.getPageId()));
+            responseArray.put(articleNode(cp.getTitle(), cp.getPageId()));
         }
         response.getOutputStream().write(responseArray.toString().getBytes());
     }

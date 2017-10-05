@@ -115,10 +115,7 @@ jQuery(function() {
         if (baseLocation.indexOf("#") >= 0) {
             baseLocation = baseLocation.substring(0, baseLocation.indexOf("#"));
         }
-        jQuery(".message_add_this").each(function() {
-            var self = jQuery(this);
-            self.attr("addthis:url", baseLocation + self.attr("data-hash"));
-        });
+
 
         //restore comment content from a previously set cookie.
         if ($messageContent.val() == "" && Cookies.get("proposal-comment-body")) {

@@ -46,7 +46,8 @@ public class MemberLocaleResolver extends AbstractLocaleContextResolver {
             final Member realMember = authenticationService.getRealMemberOrNull();
 
             final String localeString = localeContext.getLocale().toString();
-            if (realMember != null && !localeString.equalsIgnoreCase(realMember.getDefaultLocale())) {
+            if (realMember != null && !localeString
+                    .equalsIgnoreCase(realMember.getDefaultLocale())) {
                 realMember.setDefaultLocale(localeString);
                 MembersClient.updateMember(realMember);
             }
