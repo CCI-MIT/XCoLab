@@ -20,13 +20,14 @@ public final class IdListUtil {
 
     /**
      * Converts a string representation of id lists into an actual list
-     * The list should only consists of numbers, commas, and (optionally) any amount of spaces.
+     * The list should only consists of numbers, commas (or semi-colons),
+     * and (optionally) any amount of spaces.
      */
     public static List<Long> getIdsFromString(String commaSeparated) {
         if (StringUtils.isEmpty(commaSeparated)) {
             return Collections.emptyList();
         }
-        String[] stringIds = commaSeparated.trim().split("\\s*,\\s*");
+        String[] stringIds = commaSeparated.trim().split("\\s*[,;]\\s*");
         return Stream.of(stringIds)
                 .filter(StringUtils::isNumeric)
                 .map(Long::valueOf)

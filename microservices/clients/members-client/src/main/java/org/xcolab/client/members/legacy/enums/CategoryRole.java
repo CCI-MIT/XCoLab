@@ -6,7 +6,7 @@ public enum CategoryRole {
     JUDGE(10L, MemberRole.JUDGE, true),
     FELLOW(14L, MemberRole.FELLOW, true),
     IMPACT_FELLOW(15L, MemberRole.IMPACT_ASSESSMENT_FELLOW, true),
-    CATALYST(16L, MemberRole.CATALYST, true),
+    CATALYST(16L, MemberRole.CATALYST, false),
     EXPERT_ADVISORY(3L, null, false),
     EXPERT_COUNCIL(4L, null, false),
     TEAM(5L, null, false),
