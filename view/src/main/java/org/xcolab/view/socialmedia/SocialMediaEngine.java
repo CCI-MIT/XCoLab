@@ -49,15 +49,20 @@ public enum SocialMediaEngine {
     }
 
 
-    public static String getUtmParameters(String productionURL ,HttpServletRequest request) {
+    public static String getUtmParameters(String productionURL, HttpServletRequest request) {
         String url = productionURL;
-        String currentTab = ((HttpRewriteWrappedRequest) request).getParameter("tab");
 
-        if (currentTab != null) {
-            url += request.getRequestURI() + "/" + TAB_IDENTIFIER + "/" + currentTab;
+        if (request instanceof HttpRewriteWrappedRequest) {
+            String currentTab = ((HttpRewriteWrappedRequest) request).getParameter("tab");
+            if (currentTab != null) {
+                url += request.getRequestURI() + "/" + TAB_IDENTIFIER + "/" + currentTab;
+            } else {
+                url += request.getRequestURI();
+            }
         } else {
             url += request.getRequestURI();
         }
+
         String urlToReturn = url;
         if (!url.contains("?")) {
             urlToReturn += "?";
@@ -66,6 +71,7 @@ public enum SocialMediaEngine {
         }
         return urlToReturn + "utm_source=" + SOCIAL_MEDIA_SPACE_HOLDER
                 + "&utm_medium=Social&utm_campaign=Share";
+
     }
 
     public String getFollowMeUrl() {
