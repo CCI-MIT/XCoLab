@@ -221,7 +221,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("__errorMessage", ErrorMessage.extract(request));
             modelAndView.addObject("__infoMessage", InfoMessage.extract(request));
 
-            modelAndView.addObject("_shareRequestUri", SocialMediaEngine.getUtmParameters(ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get() + request.getRequestURI()));
+            modelAndView.addObject("_shareRequestUri", SocialMediaEngine.getUtmParameters(ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get(), request));
             modelAndView.addObject("_facebookId", ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get());
 
             modelAndView.addObject("_shearableSocialMediaUrls", SocialMediaEngine.getShearableSocialMediaEngines());

@@ -1,12 +1,15 @@
 package org.xcolab.view.socialmedia;
 
 import org.apache.commons.lang.StringUtils;
+import org.ocpsoft.rewrite.servlet.impl.HttpRewriteWrappedRequest;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 public enum SocialMediaEngine {
     FACEBOOK(ConfigurationAttributeKey.FACEBOOK_URL.get(), true, true),
@@ -18,6 +21,7 @@ public enum SocialMediaEngine {
     EMAIL(null, true, true);
 
     public static String SOCIAL_MEDIA_SPACE_HOLDER = "socialMediaEngine";
+    private static String TAB_IDENTIFIER = "tab";
     private final String followMeUrl;
 
     private final boolean isShareable;
@@ -45,7 +49,15 @@ public enum SocialMediaEngine {
     }
 
 
-    public static String getUtmParameters(String url) {
+    public static String getUtmParameters(String productionURL ,HttpServletRequest request) {
+        String url = productionURL;
+        String currentTab = ((HttpRewriteWrappedRequest) request).getParameter("tab");
+
+        if (currentTab != null) {
+            url += request.getRequestURI() + "/" + TAB_IDENTIFIER + "/" + currentTab;
+        } else {
+            url += request.getRequestURI();
+        }
         String urlToReturn = url;
         if (!url.contains("?")) {
             urlToReturn += "?";
