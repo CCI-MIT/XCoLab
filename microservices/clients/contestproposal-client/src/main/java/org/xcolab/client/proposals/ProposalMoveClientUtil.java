@@ -1,7 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;

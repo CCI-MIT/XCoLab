@@ -5,7 +5,7 @@ import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateFocusAreaList;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateMaxFocusArea;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateSeries;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 

@@ -56,7 +56,7 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.enums.modeling.ModelRegions;

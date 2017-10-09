@@ -17,7 +17,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;

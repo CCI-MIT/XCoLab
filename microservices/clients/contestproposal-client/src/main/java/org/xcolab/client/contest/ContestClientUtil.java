@@ -9,7 +9,7 @@ import org.xcolab.client.contest.pojo.ContestTranslation;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 

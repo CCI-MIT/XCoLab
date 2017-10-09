@@ -3,7 +3,7 @@ package org.xcolab.client.comment.util;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 

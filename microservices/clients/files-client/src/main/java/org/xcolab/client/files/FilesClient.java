@@ -3,7 +3,7 @@ package org.xcolab.client.files;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.files.providers.FileSystemPersistenceProvider;
 import org.xcolab.client.files.providers.PersistenceProvider;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;

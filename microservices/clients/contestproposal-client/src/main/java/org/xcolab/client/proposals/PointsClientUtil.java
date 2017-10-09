@@ -2,7 +2,7 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 

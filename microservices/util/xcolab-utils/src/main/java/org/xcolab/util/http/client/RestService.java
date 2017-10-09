@@ -3,7 +3,6 @@ package org.xcolab.util.http.client;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.util.Assert;
 
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
 

@@ -2,7 +2,7 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 

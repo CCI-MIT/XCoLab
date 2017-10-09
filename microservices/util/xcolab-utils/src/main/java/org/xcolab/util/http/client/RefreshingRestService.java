@@ -1,7 +1,6 @@
 package org.xcolab.util.http.client;
 
 import org.xcolab.util.attributes.AttributeGetter;
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.UriProvider;
 
 import java.util.Objects;

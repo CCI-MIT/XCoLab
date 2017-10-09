@@ -1,7 +1,7 @@
 package org.xcolab.client.emails;
 
 import org.xcolab.client.emails.pojo.Email;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.ServiceResource;

@@ -3,7 +3,7 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 

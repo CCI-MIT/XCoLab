@@ -19,7 +19,7 @@ import org.xcolab.client.proposals.pojo.group.GroupDto;
 import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReferenceDto;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.ServiceRequestUtils;
