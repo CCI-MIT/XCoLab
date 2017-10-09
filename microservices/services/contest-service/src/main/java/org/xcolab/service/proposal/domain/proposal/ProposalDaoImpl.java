@@ -116,16 +116,15 @@ public class ProposalDaoImpl implements ProposalDao {
         return query.fetchInto(Proposal.class);
     }
 
-    private void addJoins(SelectQuery<Record> query, boolean requiresContest,
-            boolean requiresPhase) {
-        if (requiresPhase || requiresContest) {
-            //TODO: these joins causes duplicate entries
+    private void addJoins(SelectQuery<Record> query, boolean addContest, boolean addPhase) {
+        if (addPhase || addContest) {
+            //TODO COLAB-2331: these joins cause duplicate entries
             query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
             query.addJoin(CONTEST_PHASE,
                     CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
         }
 
-        if (requiresContest) {
+        if (addContest) {
             query.addJoin(CONTEST, CONTEST.CONTEST_PK.eq(CONTEST_PHASE.CONTEST_PK));
         }
     }
