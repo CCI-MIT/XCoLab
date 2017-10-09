@@ -18,10 +18,10 @@ public class RestResource1<ResourceT, IdT> extends AbstractRestResource<Resource
         this.resourceName = resourceName;
     }
 
-    public <ResourceT2, IdT2> RestResource<ResourceT2, IdT2> nestedResource(final IdT resourceId, String subResourceName,
-            TypeProvider<ResourceT2> typeProvider) {
-        return new RestResource2<ResourceT, IdT, ResourceT2, IdT2>(this, subResourceName, typeProvider)
-                .resolveParent(id(resourceId));
+    public <ResourceT2, IdT2> RestResource<ResourceT2, IdT2> nestedResource(final IdT resourceId,
+            String subResourceName, TypeProvider<ResourceT2> typeProvider) {
+        return new RestResource2<ResourceT, IdT, ResourceT2, IdT2>(this, subResourceName,
+                typeProvider).resolveParent(id(resourceId));
     }
 
     @Override

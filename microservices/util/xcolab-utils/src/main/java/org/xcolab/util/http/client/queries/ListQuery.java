@@ -1,5 +1,6 @@
 package org.xcolab.util.http.client.queries;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.util.CollectionUtils;
 
@@ -13,6 +14,7 @@ import org.xcolab.util.http.client.RestResource;
 import java.util.List;
 
 public class ListQuery<T> implements CacheableQuery<T, List<T>> {
+
     private final UriBuilder uriBuilder;
     private final Class<T> entityType;
     private final ParameterizedTypeReference<List<T>> typeReference;
@@ -35,8 +37,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
                 cacheKey = CacheKeys.withClass(entityType)
                         .withParameter("list-path", uriBuilder.getPathString())
                         .withParameter("list-uri-variables", uriBuilder.getUriVariableString())
-                        .withParameter("list-parameters", uriBuilder.getParameterString())
-                        .asList();
+                        .withParameter("list-parameters", uriBuilder.getParameterString()).asList();
             }
             return ServiceRequestUtils.getList(uriBuilder, typeReference, cacheKey, cacheName);
         }
@@ -85,15 +86,16 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
 
     @Override
     public String toString() {
-        return "ListQuery{" +
-                "uriBuilder=" + uriBuilder.buildAndExpandString() +
-                ", typeReference=" + typeReference.toString() +
-                ", cacheKey=" + cacheKey +
-                ", cacheRetention=" + cacheName +
-                '}';
+        return new ToStringBuilder(this)
+                .append("uriBuilder", uriBuilder.buildAndExpandString())
+                .append("entityType", entityType)
+                .append("typeReference", typeReference)
+                .append("cacheKey", cacheKey)
+                .append("cacheName", cacheName).toString();
     }
 
     public static class ListResult<T> {
+
         private final ListQuery<T> query;
 
         private ListResult(ListQuery<T> query) {
@@ -110,7 +112,8 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
             if (result.size() == 1) {
                 return result.get(0);
             }
-            throw new IndexOutOfBoundsException("Expected exactly one element, found " + result.size());
+            throw new IndexOutOfBoundsException(
+                    "Expected exactly one element, found " + result.size());
         }
 
         public T getOneIfExists() {
@@ -149,6 +152,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
         }
 
         private static class EmptyQueryResultException extends IllegalStateException {
+
             EmptyQueryResultException(ListQuery<?> query) {
                 super("Got empty result for " + query);
             }

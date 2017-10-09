@@ -1,6 +1,7 @@
 package org.xcolab.util.http.client.queries;
 
 import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
@@ -11,6 +12,7 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import java.util.List;
 
 public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
+
     private final UriBuilder uriBuilder;
     private final Class<R> returnType;
     private final ParameterizedTypeReference<List<T>> typeReference;
@@ -37,8 +39,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
         this.uriBuilder = httpResource.getResourceUrl(id);
     }
 
-    public ServiceQuery(HttpResource httpResource, String serviceNameOrId,
-            Class<R> returnType) {
+    public ServiceQuery(HttpResource httpResource, String serviceNameOrId, Class<R> returnType) {
         this.returnType = returnType;
         this.typeReference = null;
         this.uriBuilder = httpResource.getResourceUrl().path("/" + serviceNameOrId);
@@ -52,33 +53,35 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
 
 
     public ServiceQuery(HttpResource httpResource, long id, String serviceName,
-                        ParameterizedTypeReference<List<T>> typeReference) {
+            ParameterizedTypeReference<List<T>> typeReference) {
         this.returnType = null;
         this.typeReference = typeReference;
         this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
     }
 
     public ServiceQuery(HttpResource httpResource, String id, String serviceName,
-                        ParameterizedTypeReference<List<T>> typeReference) {
+            ParameterizedTypeReference<List<T>> typeReference) {
         this.returnType = null;
         this.typeReference = typeReference;
         this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
     }
 
-    public ServiceQuery(HttpResource httpResource, long id, ParameterizedTypeReference<List<T>> typeReference) {
+    public ServiceQuery(HttpResource httpResource, long id,
+            ParameterizedTypeReference<List<T>> typeReference) {
         this.typeReference = typeReference;
         this.returnType = null;
         this.uriBuilder = httpResource.getResourceUrl(id);
     }
 
     public ServiceQuery(HttpResource httpResource, String serviceNameOrId,
-                        ParameterizedTypeReference<List<T>> typeReference) {
+            ParameterizedTypeReference<List<T>> typeReference) {
         this.typeReference = typeReference;
         this.returnType = null;
         this.uriBuilder = httpResource.getResourceUrl().path("/" + serviceNameOrId);
     }
 
-    public ServiceQuery(HttpResource httpResource, ParameterizedTypeReference<List<T>> typeReference) {
+    public ServiceQuery(HttpResource httpResource,
+            ParameterizedTypeReference<List<T>> typeReference) {
         this.typeReference = typeReference;
         this.returnType = null;
         this.uriBuilder = httpResource.getResourceUrl();
@@ -107,7 +110,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
 
     public List<T> getList() {
         if (cacheKey == null) {
-            return ServiceRequestUtils.getList(uriBuilder,typeReference);
+            return ServiceRequestUtils.getList(uriBuilder, typeReference);
         } else {
             //TODO : Implement cache for service lists
             return ServiceRequestUtils.getList(uriBuilder, typeReference);

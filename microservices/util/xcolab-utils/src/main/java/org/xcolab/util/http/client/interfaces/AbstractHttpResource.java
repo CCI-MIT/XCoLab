@@ -17,6 +17,7 @@ public abstract class AbstractHttpResource implements HttpResource {
 
     @Override
     public UriBuilder getResourceUrl(Object resourceId) {
-        return getBaseUrl().cloneUriBuilder().path("/" + resourceName + "/" + resourceId.toString());
+        return getBaseUrl().cloneUriBuilder()
+                .path("/" + resourceName + "/" + resourceId.toString());
     }
 }

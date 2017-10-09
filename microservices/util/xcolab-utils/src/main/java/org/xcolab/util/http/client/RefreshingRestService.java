@@ -4,6 +4,8 @@ import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.UriProvider;
 
+import java.util.Objects;
+
 public class RefreshingRestService extends RestService {
 
     private final AttributeGetter<String> namespaceAttributeGetter;
@@ -31,9 +33,7 @@ public class RefreshingRestService extends RestService {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + namespaceAttributeGetter.hashCode();
-        return result;
+        return Objects.hash(super.hashCode(), namespaceAttributeGetter);
     }
 
     @Override
@@ -44,9 +44,7 @@ public class RefreshingRestService extends RestService {
         if (!(obj instanceof RefreshingRestService)) {
             return false;
         }
-        RefreshingRestService other = (RefreshingRestService) obj;
-
-        return super.equals(obj)
-                && namespaceAttributeGetter.equals(other.namespaceAttributeGetter);
+        RefreshingRestService that = (RefreshingRestService) obj;
+        return super.equals(obj) && Objects.equals(namespaceAttributeGetter, that.namespaceAttributeGetter);
     }
 }
