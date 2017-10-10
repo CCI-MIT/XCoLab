@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DataTransferObject;
 
@@ -27,7 +27,7 @@ public class PointTypeDto extends AbstractPointType implements DataTransferObjec
     }
 
     @Override
-    public PointType toPojo(RestService restService) {
-        return new PointType(this, restService);
+    public PointType toPojo(ServiceNamespace serviceNamespace) {
+        return new PointType(this, serviceNamespace);
     }
 }
