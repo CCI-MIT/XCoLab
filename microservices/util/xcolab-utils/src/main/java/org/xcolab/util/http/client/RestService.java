@@ -1,10 +1,12 @@
 package org.xcolab.util.http.client;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.util.Assert;
 
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
+
+import java.util.Objects;
 
 public class RestService implements HttpEndpoint {
 
@@ -26,8 +28,13 @@ public class RestService implements HttpEndpoint {
         this.uriProvider = getBaseUrl(namespace);
     }
 
+    public UriProvider getBaseUrl(String namespace) {
+        return new UriProvider(SCHEMA + namespace + "-" + serviceName);
+    }
+
     /**
-     * Creates a new RestService instance that is identical to this one except for the new service name.
+     * Creates a new RestService instance that is identical to this one except for the new service
+     * name.
      *
      * Has to be overridden in child classes to copy all other internal state, if present.
      *
@@ -41,10 +48,6 @@ public class RestService implements HttpEndpoint {
     @Override
     public UriProvider getBaseUrl() {
         return uriProvider;
-    }
-
-    public UriProvider getBaseUrl(String namespace) {
-        return new UriProvider(SCHEMA + namespace + "-" + serviceName);
     }
 
     @Override
@@ -61,13 +64,14 @@ public class RestService implements HttpEndpoint {
             return false;
         }
         final RestService other = (RestService) obj;
-        return serviceName.equals(other.serviceName)
-                && namespace.equals(other.namespace);
+        return Objects.equals(serviceName, other.serviceName)
+                && Objects.equals(namespace, other.namespace);
     }
 
     @Override
     public String toString() {
-        final String className = getClass().getSimpleName();
-        return className + "[" + getBaseUrl() +"]";
+        return new ToStringBuilder(this)
+                .append("baseUrl", getBaseUrl())
+                .toString();
     }
 }

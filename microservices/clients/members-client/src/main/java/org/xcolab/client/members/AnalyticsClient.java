@@ -2,7 +2,7 @@ package org.xcolab.client.members;
 
 import org.xcolab.client.members.pojo.AnalyticsUserEvent;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;

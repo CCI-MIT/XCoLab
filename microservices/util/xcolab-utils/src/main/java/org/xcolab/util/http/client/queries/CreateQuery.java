@@ -10,7 +10,8 @@ public class CreateQuery<ElementT> implements Query<ElementT, ElementT> {
     private final ElementT pojo;
     private final Class<ElementT> entityType;
 
-    public CreateQuery(RestResource<ElementT, ?> restResource, ElementT pojo, Class<ElementT> entityType) {
+    public CreateQuery(RestResource<ElementT, ?> restResource, ElementT pojo,
+            Class<ElementT> entityType) {
         this.pojo = pojo;
         this.entityType = entityType;
         this.uriBuilder = restResource.getResourceUrl();

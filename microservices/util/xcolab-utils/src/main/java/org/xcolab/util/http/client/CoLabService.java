@@ -1,14 +1,12 @@
-package org.xcolab.util.clients;
+package org.xcolab.util.http.client;
 
 public enum CoLabService {
     ACTIVITY("activities-service"),
     ADMIN("admin-service"),
-    BALLOON("balloons-service"),
     COMMENT("comment-service"),
     CONTENT("content-service"),
     CONTEST("contest-service"),
     EMAIL("emails-service"),
-    FILE("files-service"),
     MODERATION("moderation-service"),
     MEMBER("members-service"),
     MODEL("modeling-service"),

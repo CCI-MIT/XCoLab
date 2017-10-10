@@ -2,7 +2,7 @@
 
 # Set additional environment variables for travis
 
-if [ ${RUN_SLOW_TESTS} == 'false' ] && ([ ${TRAVIS_BRANCH} == 'homolog' ] || [ ${TRAVIS_BRANCH} == 'master' ] || [[ $TRAVIS_BRANCH =~ ^deploy-.*$ ]]); then
+if [ ${RUN_SLOW_TESTS} == 'false' ] && ([ ${TRAVIS_BRANCH} == 'homolog' ] || [ ${TRAVIS_BRANCH} == 'master' ] || [[ $TRAVIS_BRANCH =~ ^deploy/.*$ ]]); then
     export BUILD_TYPE=deploy
     echo "Running deploy build"
 else

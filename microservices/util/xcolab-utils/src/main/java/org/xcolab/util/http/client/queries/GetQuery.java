@@ -9,6 +9,7 @@ import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public class GetQuery<ElementT, IdT> implements CacheableQuery<ElementT, ElementT> {
+
     private final UriBuilder uriBuilder;
     private final IdT id;
     private final Class<ElementT> entityType;
@@ -57,7 +58,8 @@ public class GetQuery<ElementT, IdT> implements CacheableQuery<ElementT, Element
     }
 
     @Override
-    public GetQuery<ElementT, IdT> withCache(CacheKey<ElementT, ElementT> cacheKey, CacheName cacheName) {
+    public GetQuery<ElementT, IdT> withCache(CacheKey<ElementT, ElementT> cacheKey,
+            CacheName cacheName) {
         this.cacheKey = cacheKey;
         this.cacheName = cacheName;
         return this;

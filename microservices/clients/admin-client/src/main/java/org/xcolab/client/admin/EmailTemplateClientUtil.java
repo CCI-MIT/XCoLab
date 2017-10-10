@@ -1,7 +1,7 @@
 package org.xcolab.client.admin;
 
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 

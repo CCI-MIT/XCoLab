@@ -11,8 +11,8 @@ public class RestResource2<ResourceT1, IdT1, ResourceT2, IdT2> {
     private final String resourceName;
     private final TypeProvider<ResourceT2> typeProvider;
 
-    public RestResource2(RestResource1<ResourceT1, IdT1> parent,
-            String resourceName, TypeProvider<ResourceT2> typeProvider) {
+    public RestResource2(RestResource1<ResourceT1, IdT1> parent, String resourceName,
+            TypeProvider<ResourceT2> typeProvider) {
         this.parent = parent;
         this.resourceName = resourceName;
         this.typeProvider = typeProvider;

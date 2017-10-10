@@ -8,6 +8,7 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 
 public class CountQuery<ElementT> implements CacheableQuery<ElementT, Integer> {
+
     private final UriBuilder uriBuilder;
     private final Class<ElementT> entityType;
     private CacheKey<ElementT, Integer> cacheKey;
@@ -32,7 +33,8 @@ public class CountQuery<ElementT> implements CacheableQuery<ElementT, Integer> {
     }
 
     @Override
-    public CountQuery<ElementT> withCache(CacheKey<ElementT, Integer> cacheKey, CacheName cacheName) {
+    public CountQuery<ElementT> withCache(CacheKey<ElementT, Integer> cacheKey,
+            CacheName cacheName) {
         this.cacheKey = cacheKey;
         this.cacheName = cacheName;
         return this;

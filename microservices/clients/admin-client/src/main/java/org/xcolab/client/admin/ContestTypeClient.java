@@ -3,7 +3,7 @@ package org.xcolab.client.admin;
 import org.xcolab.client.admin.exceptions.ContestTypeAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.admin.pojo.ContestTypeAttribute;
-import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
