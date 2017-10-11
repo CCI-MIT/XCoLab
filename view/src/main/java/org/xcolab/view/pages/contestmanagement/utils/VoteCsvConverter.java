@@ -29,7 +29,6 @@ public class VoteCsvConverter extends CsvConverter {
 
     private static final Logger log = LoggerFactory.getLogger(VoteCsvConverter.class);
 
-    private static final int NUM_COLUMNS = 19;
     private static final List<String> COLUMN_NAMES = Arrays.asList(
             "Proposal id",
             "Contest name",
@@ -53,8 +52,7 @@ public class VoteCsvConverter extends CsvConverter {
             "confirmationEmailSendDate");
 
     public VoteCsvConverter() {
-        super(NUM_COLUMNS);
-        addRow(COLUMN_NAMES);
+        super(COLUMN_NAMES);
     }
 
     public void addVotes(List<ProposalVote> proposalVotes) {

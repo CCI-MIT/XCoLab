@@ -22,6 +22,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.html.LabelValue;
+import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
@@ -62,12 +63,14 @@ public class AdminTabController extends AbstractTabController {
 
     private final LoginRegisterService loginRegisterService;
     private final ServletContext servletContext;
+    private final ActivityEntryHelper activityEntryHelper;
 
     @Autowired
     public AdminTabController(LoginRegisterService loginRegisterService,
-            ServletContext servletContext) {
+            ServletContext servletContext, ActivityEntryHelper activityEntryHelper) {
         this.loginRegisterService = loginRegisterService;
         this.servletContext = servletContext;
+        this.activityEntryHelper = activityEntryHelper;
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -160,7 +163,7 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        ActivityCsvConverter csvConverter = new ActivityCsvConverter();
+        ActivityCsvConverter csvConverter = new ActivityCsvConverter(activityEntryHelper);
         ActivitiesClientUtil.getActivityEntries(0, Integer.MAX_VALUE, null, null)
                 .forEach(csvConverter::addActivity);
 

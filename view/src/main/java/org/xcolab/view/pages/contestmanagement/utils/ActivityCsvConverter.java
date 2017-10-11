@@ -8,37 +8,48 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.CsvConverter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class ActivityCsvConverter extends CsvConverter {
 
     private static final Logger log = LoggerFactory.getLogger(ActivityCsvConverter.class);
 
-    private static final int NUM_COLUMNS = 8;
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
     private static final List<String> COLUMN_NAMES = Arrays.asList(
-            "Member ID",
+            "User Id",
             "screenName",
             "firstName",
             "lastName",
-            "emailAddress",
             "activityType",
             "activityCreateDate",
             "activityBody"
             );
 
-    public ActivityCsvConverter() {
-        super(NUM_COLUMNS);
-        addRow(COLUMN_NAMES);
+    private final ActivityEntryHelper activityEntryHelper;
+
+    public ActivityCsvConverter(ActivityEntryHelper activityEntryHelper) {
+        super(COLUMN_NAMES);
+        this.activityEntryHelper = activityEntryHelper;
     }
 
-    public void addActivity(ActivityEntry activityEntry){
+    public void addActivities(Collection<ActivityEntry> activityEntries) {
+        activityEntries.forEach(this::addActivity);
+    }
 
-        ActivityEntryType cet = ActivityEntryType.getActivityEntryTypeByPrimaryType(activityEntry.getPrimaryType());
-        if (cet != null) {
+    public void addActivity(ActivityEntry activityEntry) {
+
+        ActivityEntryType activityType = ActivityEntryType
+                .getActivityEntryTypeByPrimaryType(activityEntry.getPrimaryType());
+        if (activityType != null) {
             Member member = getMemberOrNull(activityEntry);
 
             List<String> row = new ArrayList<>();
@@ -46,12 +57,14 @@ public class ActivityCsvConverter extends CsvConverter {
             addValue(row, member != null ? member.getScreenName() : "Member not found");
             addValue(row, member != null ? member.getFirstName() : "Member not found");
             addValue(row, member != null ? member.getLastName() : "Member not found");
-            addValue(row, member != null ? member.getEmailAddress() : "Member not found");
-            addValue(row, cet.name());
-            addValue(row, activityEntry.getCreateDate());
-            addValue(row, activityEntry.getActivityEntryBody());
+            addValue(row, activityType.name());
+            addValue(row, DATE_FORMAT.format(activityEntry.getCreateDate()));
+            addValue(row, activityEntryHelper.getActivityBody(activityEntry));
 
             addRow(row);
+        } else {
+            log.warn("Unknown ActivityEntryType {} found when generating report",
+                    activityEntry.getPrimaryType());
         }
     }
 

@@ -9,7 +9,6 @@ import java.util.function.Function;
 
 public class MemberListCsvConverter extends CsvConverter {
 
-    private static final int NUM_COLUMNS = 5;
     private static final List<String> COLUMN_NAMES = Arrays.asList("Screen name", "First name",
             "Last name", "Email address", "Country");
     private static final Function<Member, List<String>> COLUMN_EXTRACTION_FUNCTION
@@ -22,8 +21,7 @@ public class MemberListCsvConverter extends CsvConverter {
             ));
 
     public MemberListCsvConverter() {
-        super(NUM_COLUMNS);
-        addRow(COLUMN_NAMES);
+        super(COLUMN_NAMES);
     }
 
     public void addMembers(List<Member> members) {

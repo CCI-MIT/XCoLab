@@ -2,6 +2,7 @@ package org.xcolab.view.util;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import org.springframework.http.HttpHeaders;
+import org.springframework.util.Assert;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,30 +21,35 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CsvConverter {
 
-    private final int numColumns;
-    private final List<String[]> rows;
+    private final String[] headerRow;
+    private final List<String[]> rows = new ArrayList<>();
 
-    public CsvConverter(int numColumns, int numRows) {
-        this.numColumns = numColumns;
-        this.rows = new ArrayList<>(numRows);
+    public CsvConverter(List<String> headerRow) {
+        Assert.notEmpty(headerRow, "The CSV converter must have at least one entry");
+        this.headerRow = headerRow.toArray(new String[headerRow.size()]);
     }
 
-    public CsvConverter(int numColumns) {
-        this.numColumns = numColumns;
-        this.rows = new ArrayList<>();
+    public int getColumnCount() {
+        return headerRow.length;
+    }
+
+    public int getRowsCount() {
+        return rows.size();
     }
 
     protected void addRow(List<String> cols) {
         checkLength(cols);
-        final String[] colArray = cols.stream().map(this::clean).collect(Collectors.toList())
-                .toArray(new String[numColumns]);
+        final String[] colArray = cols.stream()
+                .map(this::clean)
+                .collect(Collectors.toList())
+                .toArray(new String[headerRow.length]);
         rows.add(colArray);
     }
 
     private void checkLength(List<String> cols) {
-        if (cols.size() != numColumns) {
+        if (cols.size() != headerRow.length) {
             throw new IllegalArgumentException(
-                    "Illegal column length: " + cols.size() + " - expected " + numColumns);
+                    "Illegal column length: " + cols.size() + " - expected " + headerRow.length);
         }
     }
 
@@ -68,6 +74,7 @@ public class CsvConverter {
         StringWriter writer = new StringWriter();
         CSVWriter csvWriter = new CSVWriter(writer, CSVWriter.DEFAULT_SEPARATOR,
                 CSVWriter.DEFAULT_QUOTE_CHARACTER);
+        csvWriter.writeNext(headerRow);
         csvWriter.writeAll(rows);
         csvWriter.close();
         String separatorIndicationForExcel =
