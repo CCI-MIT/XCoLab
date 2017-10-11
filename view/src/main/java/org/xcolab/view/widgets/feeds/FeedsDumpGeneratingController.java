@@ -1,22 +1,16 @@
 package org.xcolab.view.widgets.feeds;
 
-import au.com.bytecode.opencsv.CSVWriter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
+import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvConverter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,68 +18,34 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class FeedsDumpGeneratingController {
 
-    private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private final ActivityEntryHelper activityEntryHelper;
 
-    private byte[] generatedActivities = {};
-    private int activitiesInGeneratedDump;
+    private ActivityCsvConverter lastGeneratedCsv;
 
-    private ActivityEntryHelper activityEntryHelper;
+    @Autowired
+    public FeedsDumpGeneratingController(ActivityEntryHelper activityEntryHelper) {
+        this.activityEntryHelper = activityEntryHelper;
+    }
 
-    @GetMapping("/feedswidget/generateDump")
+    @GetMapping("/activities/downloadCsv")
     public void showFeed(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        generateActivitiesDump(request);
-        response.setContentType("application/zip");
-        response.getOutputStream().write(generatedActivities);
-        response.addHeader("Content-Disposition", "inline");
-        response.addHeader("filename", "myfile.txt");
 
-        //
-    }
+        final int currentActivityCount = ActivitiesClientUtil.countActivities(null, null);
+        ActivityCsvConverter csvConverter;
+        if (lastGeneratedCsv != null && lastGeneratedCsv.getRowsCount() == currentActivityCount) {
+            csvConverter = lastGeneratedCsv;
+        } else {
+            csvConverter = new ActivityCsvConverter(activityEntryHelper);
+            final List<ActivityEntry> activityEntries = ActivitiesClientUtil
+                    .getActivityEntries(0, Integer.MAX_VALUE, null, null);
+            csvConverter.addActivities(activityEntries);
 
-    private synchronized void generateActivitiesDump(HttpServletRequest request)
-            throws IOException {
-
-        int currentCount = ActivitiesClientUtil.countActivities(null, null);
-        if (currentCount > activitiesInGeneratedDump) {
-            // regenerate
-
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ZipOutputStream zos = new ZipOutputStream(bos);
-
-            zos.putNextEntry(new ZipEntry("activities.csv"));
-
-            Writer fw = new OutputStreamWriter(zos);
-            CSVWriter csvWriter = new CSVWriter(fw);
-
-            for (ActivityEntry activity : ActivitiesClientUtil
-                    .getActivityEntries(0, Integer.MAX_VALUE, null, null)) {
-                try {
-
-                    String body = activityEntryHelper.getActivityBody(activity);
-
-
-                    if (body != null && !body.trim().isEmpty()) {
-                        //TODO: this doesn't work post-liferay
-                        body = body.replace("/web/guest", "http://climatecolab.org/web/guest");
-                        csvWriter.writeNext(new String[]{body,
-                                df.format(new Date(activity.getCreateDate().getTime())),
-                                activity.getActivityEntryId() + ""});
-
-                    }
-                } catch (Throwable t) {
-                    // ignore
-                }
-            }
-            fw.flush();
-            zos.closeEntry();
-            csvWriter.close();
-            fw.close();
-
-            generatedActivities = bos.toByteArray();
-            activitiesInGeneratedDump = currentCount;
+            // update the cached CSV (we don't care about potential race conditions as each call
+            // independently checks the recency)
+            lastGeneratedCsv = csvConverter;
         }
 
+        csvConverter.initiateDownload("activities.csv", response);
     }
-
 }
