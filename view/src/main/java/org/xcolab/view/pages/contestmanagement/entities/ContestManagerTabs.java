@@ -21,6 +21,9 @@ public enum ContestManagerTabs implements TabEnum {
     EMAIL_TEMPLATES("Emails", "emailTemplate",
             TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
+    TEAMS("Teams", "team",
+            TabPermissionAlgorithm.adminOnlyViewAndEdit,
+            TabActivityCountAlgorithm.alwaysZero),
     FLAGGING("Flagging", "flagging",
             TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero), //TODO: activate flag count
