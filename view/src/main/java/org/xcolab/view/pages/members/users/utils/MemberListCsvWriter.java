@@ -1,13 +1,16 @@
 package org.xcolab.view.pages.members.users.utils;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.util.CsvConverter;
+import org.xcolab.view.util.CsvResponseWriter;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-public class MemberListCsvConverter extends CsvConverter {
+import javax.servlet.http.HttpServletResponse;
+
+public class MemberListCsvWriter extends CsvResponseWriter {
 
     private static final List<String> COLUMN_NAMES = Arrays.asList("Screen name", "First name",
             "Last name", "Email address", "Country");
@@ -20,13 +23,13 @@ public class MemberListCsvConverter extends CsvConverter {
                     member.getCountry()
             ));
 
-    public MemberListCsvConverter() {
-        super(COLUMN_NAMES);
+    public MemberListCsvWriter(HttpServletResponse response) throws IOException {
+        super("membersList", COLUMN_NAMES, response);
     }
 
-    public void addMembers(List<Member> members) {
+    public void writeMembers(List<Member> members) {
         members.stream()
                 .map(COLUMN_EXTRACTION_FUNCTION)
-                .forEach(this::addRow);
+                .forEach(this::writeRow);
     }
 }

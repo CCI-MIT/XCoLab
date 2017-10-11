@@ -19,7 +19,7 @@ import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.pages.members.users.utils.MemberItem;
-import org.xcolab.view.pages.members.users.utils.MemberListCsvConverter;
+import org.xcolab.view.pages.members.users.utils.MemberListCsvWriter;
 import org.xcolab.view.pages.members.users.utils.MembersPermissions;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
@@ -178,11 +178,10 @@ public class MembersController {
         MembersPermissions membersPermissions = new MembersPermissions(request);
 
         if (membersPermissions.getCanDownloadMemberList()) {
-            MemberListCsvConverter csvConverter = new MemberListCsvConverter();
+            MemberListCsvWriter csvWriter = new MemberListCsvWriter(response);
             List<Member> memberList = MembersClient.listMembers(null, null, null,
                             null, true, 0, Integer.MAX_VALUE);
-            csvConverter.addMembers(removeDuplicates(memberList));
-            csvConverter.initiateDownload("membersList", response);
+            csvWriter.writeMembers(removeDuplicates(memberList));
         }
     }
     private List<Member>  removeDuplicates(List<Member> members) {

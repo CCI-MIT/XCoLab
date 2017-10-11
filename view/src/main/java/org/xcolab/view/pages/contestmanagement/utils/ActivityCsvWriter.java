@@ -9,8 +9,9 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
-import org.xcolab.view.util.CsvConverter;
+import org.xcolab.view.util.CsvResponseWriter;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,11 +19,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class ActivityCsvConverter extends CsvConverter {
+import javax.servlet.http.HttpServletResponse;
 
-    private static final Logger log = LoggerFactory.getLogger(ActivityCsvConverter.class);
+public class ActivityCsvWriter extends CsvResponseWriter {
+
+    private static final Logger log = LoggerFactory.getLogger(ActivityCsvWriter.class);
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private static final String FILE_NAME = "activityReport";
 
     private static final List<String> COLUMN_NAMES = Arrays.asList(
             "User Id",
@@ -36,16 +40,17 @@ public class ActivityCsvConverter extends CsvConverter {
 
     private final ActivityEntryHelper activityEntryHelper;
 
-    public ActivityCsvConverter(ActivityEntryHelper activityEntryHelper) {
-        super(COLUMN_NAMES);
+    public ActivityCsvWriter(HttpServletResponse response,
+            ActivityEntryHelper activityEntryHelper) throws IOException {
+        super(FILE_NAME, COLUMN_NAMES, response);
         this.activityEntryHelper = activityEntryHelper;
     }
 
-    public void addActivities(Collection<ActivityEntry> activityEntries) {
-        activityEntries.forEach(this::addActivity);
+    public void writeActivities(Collection<ActivityEntry> activityEntries) {
+        activityEntries.forEach(this::writeActivity);
     }
 
-    public void addActivity(ActivityEntry activityEntry) {
+    public void writeActivity(ActivityEntry activityEntry) {
 
         ActivityEntryType activityType = ActivityEntryType
                 .getActivityEntryTypeByPrimaryType(activityEntry.getPrimaryType());
@@ -61,7 +66,7 @@ public class ActivityCsvConverter extends CsvConverter {
             addValue(row, DATE_FORMAT.format(activityEntry.getCreateDate()));
             addValue(row, activityEntryHelper.getActivityBody(activityEntry));
 
-            addRow(row);
+            writeRow(row);
         } else {
             log.warn("Unknown ActivityEntryType {} found when generating report",
                     activityEntry.getPrimaryType());

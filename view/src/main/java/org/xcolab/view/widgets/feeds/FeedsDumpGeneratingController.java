@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
-import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvConverter;
+import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,8 +20,6 @@ public class FeedsDumpGeneratingController {
 
     private final ActivityEntryHelper activityEntryHelper;
 
-    private ActivityCsvConverter lastGeneratedCsv;
-
     @Autowired
     public FeedsDumpGeneratingController(ActivityEntryHelper activityEntryHelper) {
         this.activityEntryHelper = activityEntryHelper;
@@ -31,21 +29,10 @@ public class FeedsDumpGeneratingController {
     public void showFeed(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        final int currentActivityCount = ActivitiesClientUtil.countActivities(null, null);
-        ActivityCsvConverter csvConverter;
-        if (lastGeneratedCsv != null && lastGeneratedCsv.getRowsCount() == currentActivityCount) {
-            csvConverter = lastGeneratedCsv;
-        } else {
-            csvConverter = new ActivityCsvConverter(activityEntryHelper);
-            final List<ActivityEntry> activityEntries = ActivitiesClientUtil
-                    .getActivityEntries(0, Integer.MAX_VALUE, null, null);
-            csvConverter.addActivities(activityEntries);
-
-            // update the cached CSV (we don't care about potential race conditions as each call
-            // independently checks the recency)
-            lastGeneratedCsv = csvConverter;
-        }
-
-        csvConverter.initiateDownload("activities.csv", response);
+        ActivityCsvWriter
+                csvWriter = new ActivityCsvWriter(response, activityEntryHelper);
+        final List<ActivityEntry> activityEntries = ActivitiesClientUtil
+                .getActivityEntries(0, Integer.MAX_VALUE, null, null);
+        csvWriter.writeActivities(activityEntries);
     }
 }
