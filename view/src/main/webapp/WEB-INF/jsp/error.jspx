@@ -46,7 +46,7 @@
                 <c:otherwise>
                     <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0;">
                         <form:form id="signInForm_form" method="post" action="/reportError">
-                            <input name="url" type="hidden" />
+                            <input name="url" type="hidden" value="${_requestUri}" />
                             <input id="stackTrackeInput" name="stackTrace" type="hidden" value="${trace}"/>
                             <input name="referer" type="hidden" value="${header.get('referer')}"/>
                             <div class="c-Alert__error__message" role="alert">
