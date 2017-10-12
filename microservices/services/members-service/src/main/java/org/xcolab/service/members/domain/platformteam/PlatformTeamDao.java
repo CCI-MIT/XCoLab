@@ -12,5 +12,7 @@ public interface PlatformTeamDao {
     void createPlatformTeam(String name);
     List<PlatformTeam> getUserTeams(long userId);
     List<Member> getTeamMembers(long teamId);
-
+    int delete(long teamId);
+    void addMember(long teamId, long memberId);
+    void removeMember(long teamId, long memberId);
 }

@@ -70,4 +70,27 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
                 .where(PLATFORM_TEAM_MEMBER.TEAM_ID.eq(teamId))
                 .fetchInto(Member.class);
     }
+
+    @Override
+    public int delete(long teamId) {
+        return this.dslContext.deleteFrom(PLATFORM_TEAM)
+                .where(PLATFORM_TEAM.ID_.eq(teamId))
+                .execute();
+    }
+
+    @Override
+    public void addMember(long teamId, long memberId) {
+        dslContext.insertInto(PLATFORM_TEAM_MEMBER)
+                .set(PLATFORM_TEAM_MEMBER.TEAM_ID, teamId)
+                .set(PLATFORM_TEAM_MEMBER.USER_ID, memberId)
+                .execute();
+    }
+
+    @Override
+    public void removeMember(long teamId, long memberId) {
+        dslContext.deleteFrom(PLATFORM_TEAM_MEMBER)
+                .where(PLATFORM_TEAM_MEMBER.TEAM_ID.eq(teamId))
+                .and(PLATFORM_TEAM_MEMBER.USER_ID.eq(memberId))
+                .execute();
+    }
 }
