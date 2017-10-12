@@ -999,7 +999,7 @@ public class Proposal extends AbstractProposal {
                 membership = MembershipClient.fromService(restService);
 
                 RestService membersService = restService.withServiceName(CoLabService.MEMBER.getServiceName());
-                usersGroup = UsersGroupsClient.fromService(membersService);
+                usersGroup = UsersGroupsClient.fromNamespace(membersService);
             } else {
                 contest = ContestClientUtil.getClient();
                 proposal = ProposalClientUtil.getClient();

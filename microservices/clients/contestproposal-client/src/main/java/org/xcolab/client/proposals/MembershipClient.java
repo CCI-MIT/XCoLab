@@ -114,7 +114,7 @@ public class MembershipClient {
                 updateMembershipRequest(membershipRequest);
 
                 RestService memberService  = proposalService.withServiceName(CoLabService.MEMBER.getServiceName());
-                UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromService(memberService);
+                UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromNamespace(memberService);
 
                 try {
                     usersGroupsClient.addMemberToGroup(userId, membershipRequest.getGroupId());
