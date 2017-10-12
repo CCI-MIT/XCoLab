@@ -1,7 +1,8 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:form="http://www.springframework.org/tags/form">
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
@@ -44,8 +45,7 @@
                 </c:when>
                 <c:otherwise>
                     <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0;">
-                        <form id="signInForm_form" method="post" action="/reportError">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <form:form id="signInForm_form" method="post" action="/reportError">
                             <input name="url" type="hidden" />
                             <input id="stackTrackeInput" name="stackTrace" type="hidden" value="${trace}"/>
                             <input name="referer" type="hidden" value="${header.get('referer')}"/>
@@ -60,9 +60,9 @@
                             <input type="text" name="email" class="form-control" placeholder="Email address" />
                             <div class="clearfix"><!-- --></div>
                             <div class="b-Spacing">
-                                <a class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').find('input[type=hidden]').filter(':first').val(document.location.href);jQuery(this).parents('form').submit();" id="errorReportPopupSubmit">Submit</a>
+                                <button type="submit" class="c-Button__primary">Submit</button>
                             </div>
-                        </form>
+                        </form:form>
                     </div>
                 </c:otherwise>
             </c:choose>
