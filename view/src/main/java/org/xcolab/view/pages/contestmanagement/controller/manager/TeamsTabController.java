@@ -115,6 +115,46 @@ public class TeamsTabController extends AbstractTabController {
         return TAB_VIEW;
     }
 
+    @PostMapping("tab/TEAMS")
+    public void updateTeam(HttpServletRequest request, HttpServletResponse response,
+            @ModelAttribute PlatformTeamBean teamBean) throws IOException {
+
+        if (!tabWrapper.getCanEdit()) {
+            response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl());
+        }
+
+        PlatformTeam team = null;
+        if (teamBean != null) {
+            team = getTeamWithId(teamBean.getTeamId());
+            team.setName(teamBean.getName());
+        } else {
+            addNewTeam();
+        }
+
+        response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(team.getId_()));
+    }
+
+    private void addNewTeam() {
+        String NEW_TEAM_NAME = "New team";
+        PlatformTeam team = new PlatformTeam();
+        team.setName(NEW_TEAM_NAME);
+        teams.add(team);
+    }
+
+    @PostMapping("tab/TEAMS/{teamId}/delete")
+    public void deleteTeam(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long teamId) throws IOException {
+
+        if (!tabWrapper.getCanEdit()) {
+            response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl());
+        }
+
+        PlatformTeam team = getTeamWithId(teamId);
+        teams.remove(team);
+
+        response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(team.getId_()));
+    }
+
     @PostMapping("tab/TEAMS/{teamId}/removeMember/{memberId}")
     public void removeMember(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
@@ -127,7 +167,7 @@ public class TeamsTabController extends AbstractTabController {
         PlatformTeam team = getTeamWithId(teamId);
         try {
             Member teamMember = MembersClient.getMember(memberId);
-            team.getMembers().remove(teamMember);
+            team.remove(teamMember);
         } catch (MemberNotFoundException e) {
             e.printStackTrace();
         }
@@ -147,7 +187,7 @@ public class TeamsTabController extends AbstractTabController {
         PlatformTeam team = getTeamWithId(teamId);
         try {
             Member teamMember = MembersClient.getMember(userId);
-            team.getMembers().add(teamMember);
+            team.add(teamMember);
         } catch (MemberNotFoundException e) {
             e.printStackTrace();
         }
@@ -190,16 +230,13 @@ public class TeamsTabController extends AbstractTabController {
         team1.setName("Team Uno");
         team2.setName("Team Dos");
         team3.setName("Team Tres");
-        team1.setMembers(new ArrayList<>());
-        team2.setMembers(new ArrayList<>());
-        team3.setMembers(new ArrayList<>());
         try {
             Member aleks = MembersClient.getMember(2666734);
             Member schwanzo = MembersClient.getMember(2666735);
             Member schmibo = MembersClient.getMember(2666736);
-            team1.getMembers().add(aleks);
-            team1.getMembers().add(schwanzo);
-            team1.getMembers().add(schmibo);
+            team1.add(aleks);
+            team1.add(schwanzo);
+            team1.add(schmibo);
         } catch (MemberNotFoundException e) {
             e.printStackTrace();
         }

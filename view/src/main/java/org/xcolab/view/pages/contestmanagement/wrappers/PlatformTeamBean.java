@@ -21,7 +21,7 @@ import static org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean.CRE
 
 
 public class PlatformTeamBean {
-    private PlatformTeam team;
+    private final PlatformTeam team;
 
     public PlatformTeamBean(PlatformTeam team) {
         this.team = team;

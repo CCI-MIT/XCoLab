@@ -2,6 +2,7 @@ package org.xcolab.view.pages.contestmanagement.controller.manager;
 
 import org.xcolab.client.members.pojo.Member;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -13,6 +14,7 @@ public class PlatformTeam {
 
     public PlatformTeam(Long id) {
         this.id_ = id;
+        this.members = new ArrayList<>();
     }
 
     public PlatformTeam() {
@@ -31,13 +33,21 @@ public class PlatformTeam {
         this.name = name;
     }
 
-    public List<Member> getMembers() {
-        return members;
+    public void add(Member member) {
+        members.add(member);
     }
 
-    public void setMembers(List<Member> members) {
-        this.members = members;
+    public void remove(Member member) {
+        members.remove(member);
     }
+
+//    public List<Member> getMembers() {
+//        return members;
+//    }
+
+//    public void setMembers(List<Member> members) {
+//        this.members = members;
+//    }
 }
 
 
