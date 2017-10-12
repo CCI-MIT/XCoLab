@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.dto.DataTransferObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class CategoryDto extends AbstractCategory {
+public class CategoryDto extends AbstractCategory implements DataTransferObject<Category> {
 
     public CategoryDto() {
     }
@@ -20,15 +22,8 @@ public class CategoryDto extends AbstractCategory {
         super(category);
     }
 
-    public Category toPojo(RestService commentService) {
-        return new Category(this, commentService);
-    }
-
-    public static List<Category> toPojos(List<CategoryDto> categoryDtos, RestService commentService) {
-        final List<Category>  categories = new ArrayList<>(categoryDtos.size());
-        for (CategoryDto categoryDto : categoryDtos) {
-            categories.add(categoryDto.toPojo(commentService));
-        }
-        return categories;
+    @Override
+    public Category toPojo(ServiceNamespace serviceNamespace) {
+        return new Category(this, serviceNamespace);
     }
 }

@@ -5,13 +5,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.dto.DataTransferObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class CommentThreadDto extends AbstractCommentThread {
+public class CommentThreadDto extends AbstractCommentThread
+        implements DataTransferObject<CommentThread> {
 
     public CommentThreadDto() {
     }
@@ -20,15 +23,8 @@ public class CommentThreadDto extends AbstractCommentThread {
         super(thread);
     }
 
-    public CommentThread toPojo(RestService commentService) {
-        return new CommentThread(this, commentService);
-    }
-
-    public static List<CommentThread> toPojos(List<CommentThreadDto> threadDtos, RestService commentService) {
-        final List<CommentThread>  threads = new ArrayList<>(threadDtos.size());
-        for (CommentThreadDto threadDto : threadDtos) {
-            threads.add(threadDto.toPojo(commentService));
-        }
-        return threads;
+    @Override
+    public CommentThread toPojo(ServiceNamespace serviceNamespace) {
+        return new CommentThread(this, serviceNamespace);
     }
 }
