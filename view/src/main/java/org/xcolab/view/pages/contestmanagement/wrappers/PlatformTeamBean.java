@@ -21,21 +21,35 @@ import static org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean.CRE
 
 
 public class PlatformTeamBean {
-    private final PlatformTeam team;
+    private PlatformTeam team;
+
+    private Long teamId;
+    private String teamName;
+    private List<Member> teamMembers;
+
+    public PlatformTeamBean() { }
 
     public PlatformTeamBean(PlatformTeam team) {
         this.team = team;
     }
 
     public Long getTeamId() {
-        return team.getId_();
+        return team == null ? teamId : team.getId_();
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
     public String getName() {
-        return team.getName();
+        return team == null ? teamName : team.getName();
+    }
+
+    public void setName(String name) {
+        this.teamName = name;
     }
 
     public List<Member> getMembers() {
-        return team.getMembers();
+        return team == null ? teamMembers : team.getMembers();
     }
 }

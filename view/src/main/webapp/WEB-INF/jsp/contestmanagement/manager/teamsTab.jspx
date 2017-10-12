@@ -34,8 +34,8 @@
         <div style="margin-bottom: 40px;">
             <div class="floatRight outerVerticalCenter">
                 <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveTeam()">SAVE team</a>
-                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="createTeam()">CREATE new team</a>
-                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="deleteTeam()">DELETE team</a>
+                <a class="c-Button__primary innerVerticalCenter js-PostLink" data-url="TEAMS">CREATE new team</a>
+                <a class="c-Button__primary innerVerticalCenter js-PostLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</a>
             </div>
         </div>
     </div>
@@ -125,26 +125,26 @@
             bindElementSelectChange();
         });
 
-        // jQuery autocomplete
         $(function() {
-            var cache = {};
-            var $recipientInput = $( "#add-member" );
-            $recipientInput.autocomplete({
+            var $memberInput = $( "#add-member" );
+            $memberInput.autocomplete({
                 minLength: 3,
                 source: "/api/members/getUserByScreenName",
                 select: function (event, ui) {
-                    var userId = ui.item.id; //currentUserMap[jQuery.trim(ui.item.value)]; //userMap
-                    console.log(userId);
+                    var userId = ui.item.id;
                     addMember(userId);
-                    this.value = "";
                     return false;
                 }
             });
 
-            $recipientInput.bind("autocompleteselect", "select", function(event) {
+            $memberInput.bind("autocompleteselect", "select", function(event) {
 
             });
         });
+
+        function saveTeam() {
+            $("#editForm").submit();
+        }
 
         function addMember(userId) {
             $.post("TEAMS/${teamId}/addMember", {'userId': userId}, function() {

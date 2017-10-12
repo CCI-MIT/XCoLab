@@ -100,10 +100,10 @@ public class TeamsTabController extends AbstractTabController {
 
         Long teamId = -1L;
         PlatformTeam team = null;
-        if (elementId == null) {
-            team = this.teams.get(0);
-        } else {
+        if (elementId != null) {
             team = getTeamWithId(elementId);
+        } else {
+            team = getFirstTeam();
         }
         if (!this.teams.isEmpty() && !model.containsAttribute(CONTEST_TEAM_BEAN_ATTRIBUTE_KEY)) {
             model.addAttribute(CONTEST_TEAM_BEAN_ATTRIBUTE_KEY, new PlatformTeamBean(team));
@@ -115,6 +115,14 @@ public class TeamsTabController extends AbstractTabController {
         return TAB_VIEW;
     }
 
+    private PlatformTeam getFirstTeam() {
+        if (!this.teams.isEmpty()) {
+            return this.teams.get(0);
+        } else {
+            return null;
+        }
+    }
+
     @PostMapping("tab/TEAMS")
     public void updateTeam(HttpServletRequest request, HttpServletResponse response,
             @ModelAttribute PlatformTeamBean teamBean) throws IOException {
@@ -124,21 +132,22 @@ public class TeamsTabController extends AbstractTabController {
         }
 
         PlatformTeam team = null;
-        if (teamBean != null) {
+        if (teamBean != null && teamBean.getTeamId() != null) {
             team = getTeamWithId(teamBean.getTeamId());
             team.setName(teamBean.getName());
         } else {
-            addNewTeam();
+            team = addNewTeam();
         }
 
         response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(team.getId_()));
     }
 
-    private void addNewTeam() {
+    private PlatformTeam addNewTeam() {
         String NEW_TEAM_NAME = "New team";
         PlatformTeam team = new PlatformTeam();
         team.setName(NEW_TEAM_NAME);
         teams.add(team);
+        return team;
     }
 
     @PostMapping("tab/TEAMS/{teamId}/delete")
@@ -152,14 +161,14 @@ public class TeamsTabController extends AbstractTabController {
         PlatformTeam team = getTeamWithId(teamId);
         teams.remove(team);
 
-        response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(team.getId_()));
+        response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl());
     }
 
     @PostMapping("tab/TEAMS/{teamId}/removeMember/{memberId}")
     public void removeMember(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
             @PathVariable long teamId, @PathVariable long memberId) throws IOException {
-        if (!tabWrapper.getCanView()) {
+        if (!tabWrapper.getCanEdit()) {
             response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(teamId));
             return;
         }
@@ -180,7 +189,7 @@ public class TeamsTabController extends AbstractTabController {
     public void addMember(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
             @PathVariable long teamId, @RequestParam long userId) throws IOException {
-        if (!tabWrapper.getCanView()) {
+        if (!tabWrapper.getCanEdit()) {
             return;
         }
 
