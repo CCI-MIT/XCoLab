@@ -79,7 +79,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     }
 
     @Override
-    public void addMember(long teamId, long memberId) {
+    public int addMember(long teamId, long memberId) {
         dslContext.insertInto(PLATFORM_TEAM_MEMBER)
                 .set(PLATFORM_TEAM_MEMBER.TEAM_ID, teamId)
                 .set(PLATFORM_TEAM_MEMBER.USER_ID, memberId)
@@ -87,7 +87,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     }
 
     @Override
-    public void removeMember(long teamId, long memberId) {
+    public int removeMember(long teamId, long memberId) {
         dslContext.deleteFrom(PLATFORM_TEAM_MEMBER)
                 .where(PLATFORM_TEAM_MEMBER.TEAM_ID.eq(teamId))
                 .and(PLATFORM_TEAM_MEMBER.USER_ID.eq(memberId))

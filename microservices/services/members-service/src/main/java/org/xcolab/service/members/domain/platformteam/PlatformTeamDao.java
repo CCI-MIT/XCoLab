@@ -13,6 +13,6 @@ public interface PlatformTeamDao {
     List<PlatformTeam> getUserTeams(long userId);
     List<Member> getTeamMembers(long teamId);
     int delete(long teamId);
-    void addMember(long teamId, long memberId);
-    void removeMember(long teamId, long memberId);
+    int addMember(long teamId, long memberId);
+    int removeMember(long teamId, long memberId);
 }
