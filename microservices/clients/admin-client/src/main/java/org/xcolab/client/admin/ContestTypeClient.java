@@ -18,12 +18,8 @@ import java.util.stream.Collectors;
 
 public final class ContestTypeClient {
 
-    private static final RestService adminService = new RestService(CoLabService.ADMIN,
-            ServiceRequestUtils.getNamespace());
-
     private static final RestResource<ContestTypeAttribute, String> contestTypeAttributeResource =
-            new RestResource1<>(adminService, "contestTypeAttributes",
-                    ContestTypeAttribute.TYPES);
+            new RestResource1<>(AdminResource.CONTEST_TYPE_ATTRIBUTE, ContestTypeAttribute.TYPES);
 
     private ContestTypeClient() {
     }

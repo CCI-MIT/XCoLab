@@ -14,15 +14,13 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import java.util.List;
 
 public class AdminClient {
-    private static final RestService adminService = new RestService(CoLabService.ADMIN,
-            ServiceRequestUtils.getNamespace());
 
-    private static final RestResource<ConfigurationAttribute, String> configurationAttributeResource =
-            new RestResource1<>(adminService, "attributes", ConfigurationAttribute.TYPES);
+    private static final RestResource<ConfigurationAttribute, String>
+            configurationAttributeResource = new RestResource1<>(
+                    AdminResource.CONFIGURATION_ATTRIBUTE, ConfigurationAttribute.TYPES);
 
     private static final RestResource<Notification, String> notificationResource =
-            new RestResource1<> (
-                    adminService, "notifications", Notification.TYPES);
+            new RestResource1<> (AdminResource.NOTIFICATIONS, Notification.TYPES);
 
     public static List<Notification> getNotifications() {
         return notificationResource.list().execute();

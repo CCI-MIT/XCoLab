@@ -19,6 +19,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,12 +62,10 @@ public class ContestNotification extends EmailNotification {
         }
 
         final EmailTemplateClient emailTemplateClient;
-        if(contest.getIsSharedContestInForeignColab()){
-            RestService adminService = new RefreshingRestService(CoLabService.ADMIN,
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-
-            emailTemplateClient = EmailTemplateClient.fromService(adminService);
-        }else{
+        if (contest.getIsSharedContestInForeignColab()) {
+            emailTemplateClient = EmailTemplateClient.fromNamespace(
+                    ServiceNamespace.instance(ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE));
+        } else {
             emailTemplateClient = EmailTemplateClientUtil.getClient();
         }
 
