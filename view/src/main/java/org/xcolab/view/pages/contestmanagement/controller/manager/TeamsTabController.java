@@ -54,38 +54,6 @@ public class TeamsTabController extends AbstractTabController {
         return tabWrapper;
     }
 
-//    @ModelAttribute("contestPhaseTypesSelectionItems")
-//    public List<LabelValue> populateContestPhaseTypesSelectionItems() {
-//        return getContestPhaseTypesSelectionItems();
-//    }
-//
-//    private List<LabelValue> getContestPhaseTypesSelectionItems() {
-//        List<LabelValue> contestPhaseTypesSelectionItems = new ArrayList<>();
-//
-//        List<ContestPhaseType> contestPhases = ContestClientUtil.getAllContestPhaseTypes();
-//        for (ContestPhaseType contestPhaseType : contestPhases) {
-//            contestPhaseTypesSelectionItems
-//                    .add(new LabelValue(contestPhaseType.getId_(), contestPhaseType.getName()));
-//        }
-//
-//        return contestPhaseTypesSelectionItems;
-//    }
-//
-//    @ModelAttribute("contestPhaseAutopromoteSelectionItems")
-//    public List<LabelStringValue> populateContestPhaseAutopromoteSelectionItems() {
-//        return getContestPhaseAutopromoteSelectionItems();
-//    }
-//
-//    private List<LabelStringValue> getContestPhaseAutopromoteSelectionItems() {
-//        List<LabelStringValue> contestPhaseAutopromoteSelectionItems = new ArrayList<>();
-//        for (ContestPhasePromoteType contestPhasePromoteType : ContestPhasePromoteType.values()) {
-//            contestPhaseAutopromoteSelectionItems
-//                    .add(new LabelStringValue(contestPhasePromoteType.getValue(),
-//                            contestPhasePromoteType.getValue()));
-//        }
-//        return contestPhaseAutopromoteSelectionItems;
-//    }
-
     @GetMapping("tab/TEAMS")
     public String showTeamTabController(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
@@ -105,7 +73,7 @@ public class TeamsTabController extends AbstractTabController {
         } else {
             team = getFirstTeam();
         }
-        if (!this.teams.isEmpty() && !model.containsAttribute(CONTEST_TEAM_BEAN_ATTRIBUTE_KEY)) {
+        if (!this.teams.isEmpty() && team != null && !model.containsAttribute(CONTEST_TEAM_BEAN_ATTRIBUTE_KEY)) {
             model.addAttribute(CONTEST_TEAM_BEAN_ATTRIBUTE_KEY, new PlatformTeamBean(team));
             teamId = team.getId_();
         }
@@ -113,14 +81,6 @@ public class TeamsTabController extends AbstractTabController {
         model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(teamId,
                 getAllTeamItems()));
         return TAB_VIEW;
-    }
-
-    private PlatformTeam getFirstTeam() {
-        if (!this.teams.isEmpty()) {
-            return this.teams.get(0);
-        } else {
-            return null;
-        }
     }
 
     @PostMapping("tab/TEAMS")
@@ -142,24 +102,16 @@ public class TeamsTabController extends AbstractTabController {
         response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(team.getId_()));
     }
 
-    private PlatformTeam addNewTeam() {
-        String NEW_TEAM_NAME = "New team";
-        PlatformTeam team = new PlatformTeam();
-        team.setName(NEW_TEAM_NAME);
-        teams.add(team);
-        return team;
-    }
-
     @PostMapping("tab/TEAMS/{teamId}/delete")
     public void deleteTeam(HttpServletRequest request, HttpServletResponse response,
             @PathVariable long teamId) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
             response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl());
+            return;
         }
 
-        PlatformTeam team = getTeamWithId(teamId);
-        teams.remove(team);
+        deleteTeam(teamId);
 
         response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl());
     }
@@ -168,18 +120,13 @@ public class TeamsTabController extends AbstractTabController {
     public void removeMember(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
             @PathVariable long teamId, @PathVariable long memberId) throws IOException {
+
         if (!tabWrapper.getCanEdit()) {
             response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(teamId));
             return;
         }
 
-        PlatformTeam team = getTeamWithId(teamId);
-        try {
-            Member teamMember = MembersClient.getMember(memberId);
-            team.remove(teamMember);
-        } catch (MemberNotFoundException e) {
-            e.printStackTrace();
-        }
+        removeMember(teamId, memberId);
 
         response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(teamId));
 
@@ -189,27 +136,46 @@ public class TeamsTabController extends AbstractTabController {
     public void addMember(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
             @PathVariable long teamId, @RequestParam long userId) throws IOException {
+
         if (!tabWrapper.getCanEdit()) {
             return;
         }
 
-        PlatformTeam team = getTeamWithId(teamId);
-        try {
-            Member teamMember = MembersClient.getMember(userId);
-            team.add(teamMember);
-        } catch (MemberNotFoundException e) {
-            e.printStackTrace();
-        }
+        addMember(teamId, userId);
 
     }
 
-    private Long getFirstTeamId() {
-        final List<PlatformTeam> teams = this.teams;
-//                ContestClientUtil.getAllContestSchedules();
-        if (!teams.isEmpty()) {
-            return teams.get(0).getId_();
+    private void addMember(Long teamId, Long memberId) {
+        PlatformTeam team = getTeamWithId(teamId);
+        if (team != null) {
+            try {
+                Member teamMember = MembersClient.getMember(memberId);
+                team.add(teamMember);
+            } catch (MemberNotFoundException ignored) {}
         }
-        return -1L;
+    }
+
+    private void removeMember(Long teamId, Long memberId) {
+        PlatformTeam team = getTeamWithId(teamId);
+        if (team != null) {
+            try {
+                Member teamMember = MembersClient.getMember(memberId);
+                team.remove(teamMember);
+            } catch (MemberNotFoundException ignored) {}
+        }
+    }
+
+    private void deleteTeam(Long teamId) {
+        PlatformTeam team = getTeamWithId(teamId);
+        teams.remove(team);
+    }
+
+    private PlatformTeam addNewTeam() {
+        String NEW_TEAM_NAME = "New team";
+        PlatformTeam team = new PlatformTeam();
+        team.setName(NEW_TEAM_NAME);
+        teams.add(team);
+        return team;
     }
 
     private PlatformTeam getTeamWithId(long teamId) {
@@ -231,6 +197,14 @@ public class TeamsTabController extends AbstractTabController {
         return teamItems;
     }
 
+    private PlatformTeam getFirstTeam() {
+        if (!this.teams.isEmpty()) {
+            return this.teams.get(0);
+        } else {
+            return null;
+        }
+    }
+
     private List<PlatformTeam> getMockTeamList() {
         List<PlatformTeam> teams = new ArrayList<>();
         PlatformTeam team1 = new PlatformTeam();
@@ -246,86 +220,10 @@ public class TeamsTabController extends AbstractTabController {
             team1.add(aleks);
             team1.add(schwanzo);
             team1.add(schmibo);
-        } catch (MemberNotFoundException e) {
-            e.printStackTrace();
-        }
+        } catch (MemberNotFoundException ignored) {}
         teams.add(team1);
         teams.add(team2);
         teams.add(team3);
         return teams;
     }
-
-//    @PostMapping("tab/TEAMS")
-//    public String performAction(HttpServletRequest request, HttpServletResponse response,
-//            Model model, Member member, Action action,
-//            @RequestParam(required = false) Long elementId,
-//            @ModelAttribute ContestScheduleBean contestScheduleBean, BindingResult result) {
-//
-//        if (!tabWrapper.getCanEdit()) {
-//            return new AccessDeniedPage(member).toViewName(response);
-//        }
-//
-//        switch (action) {
-//            case CREATE:
-//                return createSchedule(request, response, model, member);
-//            case UPDATE:
-//                return updateSchedule(request, response, model, member,
-//                        contestScheduleBean, result);
-//            case DELETE:
-//                if (elementId == null) {
-//                    throw new IllegalArgumentException("Schedule id missing");
-//                }
-//                return deleteSchedule(request, response, model, member, elementId);
-//            default:
-//                throw new IllegalArgumentException("unknown action");
-//        }
-//    }
-
-//    private String createSchedule(HttpServletRequest request, HttpServletResponse response,
-//            Model model, Member member) {
-//        ContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
-//
-//        AlertMessage.CREATED.flash(request);
-//        model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
-//        return showTeamTabController(request, response, model, member, newContestSchedule.getId_());
-//    }
-//
-//    private String updateSchedule(HttpServletRequest request, HttpServletResponse response,
-//            Model model, Member member, ContestScheduleBean contestScheduleBean, BindingResult result) {
-//
-//        if (!contestScheduleBean.areContestsCompatibleWithSchedule()) {
-//            result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_ERROR_MESSAGE);
-//        }
-//
-//        if (!contestScheduleBean.isValidSchedule()) {
-//            result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_INVALID_MESSAGE);
-//        }
-//
-//        if (result.hasErrors()) {
-//            AlertMessage.NOT_SAVED.flash(request);
-//            return showTeamTabController(request, response, model, member,
-//                    contestScheduleBean.getScheduleId());
-//        }
-//
-//        contestScheduleBean.persist();
-//
-//        AlertMessage.CHANGES_SAVED.flash(request);
-//        model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
-//        return showTeamTabController(request, response, model, member,
-//                contestScheduleBean.getScheduleId());
-//    }
-//
-//    private String deleteSchedule(HttpServletRequest request, HttpServletResponse response,
-//            Model model, Member member, Long scheduleId) {
-//
-//        ContestScheduleLifecycleUtil.deleteContestSchedule(scheduleId);
-//
-//        AlertMessage.DELETED.flash(request);
-//        model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
-//        return showTeamTabController(request, response, model, member, null);
-//    }
-//
-//    private enum Action {
-//        CREATE, UPDATE, DELETE
-//    }
 }
