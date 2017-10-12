@@ -135,6 +135,7 @@
                 select: function (event, ui) {
                     var userId = ui.item.id; //currentUserMap[jQuery.trim(ui.item.value)]; //userMap
                     console.log(userId);
+                    addMember(userId);
                     this.value = "";
                     return false;
                 }
@@ -144,6 +145,12 @@
 
             });
         });
+
+        function addMember(userId) {
+            $.post("TEAMS/${teamId}/addMember", {'userId': userId}, function() {
+                window.location.reload();
+            });
+        }
 
         function bindElementSelectChange() {
 

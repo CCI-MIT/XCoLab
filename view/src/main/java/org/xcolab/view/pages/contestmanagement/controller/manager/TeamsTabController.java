@@ -136,6 +136,24 @@ public class TeamsTabController extends AbstractTabController {
 
     }
 
+    @PostMapping("tab/TEAMS/{teamId}/addMember")
+    public void addMember(HttpServletRequest request,
+            HttpServletResponse response, Model model, Member member,
+            @PathVariable long teamId, @RequestParam long userId) throws IOException {
+        if (!tabWrapper.getCanView()) {
+            return;
+        }
+
+        PlatformTeam team = getTeamWithId(teamId);
+        try {
+            Member teamMember = MembersClient.getMember(userId);
+            team.getMembers().add(teamMember);
+        } catch (MemberNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private Long getFirstTeamId() {
         final List<PlatformTeam> teams = this.teams;
 //                ContestClientUtil.getAllContestSchedules();
