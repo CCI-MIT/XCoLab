@@ -9,7 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 final class ServiceNamespaceValueImpl implements ServiceNamespace {
 
-    private static final Map<String, ServiceNamespaceValueImpl> INSTANCES = new ConcurrentHashMap<>();;
+    private static final Map<String, ServiceNamespaceValueImpl> INSTANCES =
+            new ConcurrentHashMap<>();
 
     private final String namespace;
 
