@@ -33,10 +33,10 @@ public final class ActivitiesClient {
 
     private ActivitiesClient(RestService activityService) {
         this.activitiesService = activityService;
-        activityEntryResource = new RestResource1<>(activitiesService, "activityEntries", ActivityEntry.TYPES);
-        activitySubscriptionResource =
-                new RestResource1<>(activitiesService, "activitySubscriptions",
-                        ActivitySubscription.TYPES);
+        activityEntryResource = new RestResource1<>(ActivityResource.ACTIVITY_ENTRY,
+                ActivityEntry.TYPES);
+        activitySubscriptionResource = new RestResource1<>(ActivityResource.ACTIVITY_SUBSCRIPTION,
+                ActivitySubscription.TYPES);
     }
     public  ActivityEntry createActivityEntry(Long memberId,
                                                     Long classPrimaryKey,
