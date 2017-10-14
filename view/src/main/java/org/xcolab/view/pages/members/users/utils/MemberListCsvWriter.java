@@ -13,14 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 public class MemberListCsvWriter extends CsvResponseWriter {
 
     private static final List<String> COLUMN_NAMES = Arrays.asList("Screen name", "First name",
-            "Last name", "Email address", "Country");
+            "Last name", "Email address", "Country", "Bio");
     private static final Function<Member, List<String>> COLUMN_EXTRACTION_FUNCTION
             = (member -> Arrays.asList(
                     member.getScreenName(),
                     member.getFirstName(),
                     member.getLastName(),
                     member.getEmailAddress(),
-                    member.getCountry()
+                    member.getCountry(),
+                    member.getShortBio()
             ));
 
     public MemberListCsvWriter(HttpServletResponse response) throws IOException {
