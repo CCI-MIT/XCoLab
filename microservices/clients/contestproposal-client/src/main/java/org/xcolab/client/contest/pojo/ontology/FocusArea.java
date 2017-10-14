@@ -1,6 +1,7 @@
 package org.xcolab.client.contest.pojo.ontology;
 
-import org.xcolab.util.http.client.RestService;
+
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class FocusArea extends AbstractFocusArea implements Serializable {
         super(id_, name, order_);
     }
 
-    public FocusArea(AbstractFocusArea abstractFocusArea, RestService restService) {
+    public FocusArea(AbstractFocusArea abstractFocusArea, ServiceNamespace serviceNamespace) {
         super(abstractFocusArea);
     }
 

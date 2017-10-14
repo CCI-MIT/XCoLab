@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.team;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ContestTeamMember extends AbstractContestTeamMember {
 
@@ -14,7 +14,7 @@ public class ContestTeamMember extends AbstractContestTeamMember {
         super(id_, contestid, userid, roleid);
     }
 
-    public ContestTeamMember(AbstractContestTeamMember abstractContestTeamMember, RestService restService) {
+    public ContestTeamMember(AbstractContestTeamMember abstractContestTeamMember, ServiceNamespace serviceNamespace) {
         super(abstractContestTeamMember);
     }
 }

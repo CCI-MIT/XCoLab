@@ -9,7 +9,7 @@ import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.Iterator;

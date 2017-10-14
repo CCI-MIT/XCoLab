@@ -4,20 +4,16 @@ import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.activity.ActivityEntryType;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.Date;
 import java.util.List;
 
 public class ActivitiesClientUtil {
 
-    private static final RestService activitiesService = new RestService(CoLabService.ACTIVITY,
-            ServiceRequestUtils.getNamespace());
-
-    private static final ActivitiesClient activitiesClient = ActivitiesClient.fromService(activitiesService);
+    private static final ActivitiesClient activitiesClient = ActivitiesClient.fromNamespace(
+            ServiceNamespace.instance());
 
     public static ActivitiesClient getClient() {
         return activitiesClient;

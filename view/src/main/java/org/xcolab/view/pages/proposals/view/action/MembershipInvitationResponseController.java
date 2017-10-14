@@ -21,9 +21,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
@@ -63,12 +61,12 @@ public class MembershipInvitationResponseController {
         ProposalClient proposalClient;
         ProposalAttributeClient proposalAttributeClient;
         if (contest.getIsSharedContestInForeignColab()) {
-            RestService proposalService = new RefreshingRestService(CoLabService.CONTEST,
+            ServiceNamespace proposalService = ServiceNamespace.instance(
                     ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
-            proposalClient = ProposalClient.fromService(proposalService);
-            membershipClient = MembershipClient.fromService(proposalService);
-            proposalAttributeClient = ProposalAttributeClient.fromService(proposalService);
+            proposalClient = ProposalClient.fromNamespace(proposalService);
+            membershipClient = MembershipClient.fromNamespace(proposalService);
+            proposalAttributeClient = ProposalAttributeClient.fromNamespace(proposalService);
         } else {
             membershipClient = MembershipClientUtil.getClient();
             proposalClient = ProposalClientUtil.getClient();

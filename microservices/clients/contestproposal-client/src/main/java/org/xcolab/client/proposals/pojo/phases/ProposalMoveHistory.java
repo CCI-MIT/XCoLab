@@ -10,7 +10,7 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.proposal.MoveType;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.sql.Timestamp;
 
@@ -39,7 +39,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory {
     }
 
     public ProposalMoveHistory(AbstractProposalMoveHistory abstractProposalMoveHistory,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractProposalMoveHistory);
     }
     public Proposal getSourceProposal() {

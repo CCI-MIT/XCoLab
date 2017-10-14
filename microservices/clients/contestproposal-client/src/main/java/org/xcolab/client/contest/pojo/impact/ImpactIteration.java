@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.impact;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ImpactIteration extends AbstractImpactIteration {
 
@@ -11,7 +11,7 @@ public class ImpactIteration extends AbstractImpactIteration {
     }
 
     public ImpactIteration(AbstractImpactIteration abstractImpactIteration,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractImpactIteration);
     }
 }

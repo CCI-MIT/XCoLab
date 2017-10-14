@@ -28,7 +28,7 @@ public class ProposalJudgingCommentHelper {
 
     public ProposalJudgingCommentHelper(Proposal proposal, ContestPhase contestPhase) {
         this.proposal = proposal;
-        proposalPhaseClient = ProposalPhaseClient.fromService(proposal.getRestService());
+        proposalPhaseClient = ProposalPhaseClient.fromNamespace(proposal.getServiceNamespace());
         this.contestPhase = contestPhase;
     }
 

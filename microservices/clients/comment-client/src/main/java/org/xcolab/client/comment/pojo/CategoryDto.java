@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import org.xcolab.util.http.client.RestService;
+
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.dto.DataTransferObject;
 

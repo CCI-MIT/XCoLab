@@ -2,7 +2,7 @@ package org.xcolab.client.proposals.pojo;
 
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.sql.Timestamp;
 
@@ -26,9 +26,9 @@ public class ProposalVersion extends AbstractProposalVersion {
     }
 
     public ProposalVersion(AbstractProposalVersion abstractProposalVersion,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractProposalVersion);
-        proposalPhaseClient = ProposalPhaseClient.fromService(restService);
+        proposalPhaseClient = ProposalPhaseClient.fromNamespace(serviceNamespace);
     }
 
     public long getContestPhaseId() {

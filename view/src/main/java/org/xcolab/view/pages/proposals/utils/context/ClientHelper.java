@@ -36,15 +36,10 @@ import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ClientHelper {
 
-    // Proposal
-    private final RestService proposalService;
     private final ProposalClient proposalClient;
     private final MembershipClient membershipClient;
     private final PointsClient pointsClient;
@@ -55,7 +50,6 @@ public class ClientHelper {
     private final ProposalMemberRatingClient proposalMemberRatingClient;
 
     // Contest
-    private final RestService contestService;
     private final ContestClient contestClient;
     private final ContestTeamMemberClient contestTeamMemberClient;
     private final ImpactClient impactClient;
@@ -63,52 +57,38 @@ public class ClientHelper {
     private final PlanTemplateClient planTemplateClient;
 
     // Comment
-    private final RestService commentService;
     private final CommentClient commentClient;
     private final ThreadClient threadClient;
     private final CategoryClient categoryClient;
 
     // Activity
-    private final RestService activitiesService;
     private final ActivitiesClient activitiesClient;
 
     public ClientHelper(Contest contest) {
         if (contest != null && contest.getIsSharedContestInForeignColab()) {
-            proposalService = new RefreshingRestService(CoLabService.CONTEST,
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-            );
-            proposalClient = ProposalClient.fromService(proposalService);
-            membershipClient = MembershipClient.fromService(proposalService);
-            pointsClient = PointsClient.fromService(proposalService);
-            proposalPhaseClient = ProposalPhaseClient.fromService(proposalService);
-            proposalAttributeClient = ProposalAttributeClient.fromService(proposalService);
-            proposalMoveClient = ProposalMoveClient.fromService(proposalService);
-            proposalJudgeRatingClient = ProposalJudgeRatingClient.fromService(proposalService);
-            proposalMemberRatingClient = ProposalMemberRatingClient.fromService(proposalService);
+            ServiceNamespace serviceNamespace = ServiceNamespace.instance(
+                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
+            proposalClient = ProposalClient.fromNamespace(serviceNamespace);
+            membershipClient = MembershipClient.fromNamespace(serviceNamespace);
+            pointsClient = PointsClient.fromNamespace(serviceNamespace);
+            proposalPhaseClient = ProposalPhaseClient.fromNamespace(serviceNamespace);
+            proposalAttributeClient = ProposalAttributeClient.fromNamespace(serviceNamespace);
+            proposalMoveClient = ProposalMoveClient.fromNamespace(serviceNamespace);
+            proposalJudgeRatingClient = ProposalJudgeRatingClient.fromNamespace(serviceNamespace);
+            proposalMemberRatingClient = ProposalMemberRatingClient.fromNamespace(serviceNamespace);
 
-            contestService = new RefreshingRestService(CoLabService.CONTEST,
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-            );
-            contestClient = ContestClient.fromService(contestService);
-            contestTeamMemberClient = ContestTeamMemberClient.fromService(contestService);
-            impactClient = ImpactClient.fromService(contestService);
-            ontologyClient = OntologyClient.fromService(contestService);
-            planTemplateClient = PlanTemplateClient.fromService(contestService);
+            contestClient = ContestClient.fromNamespace(serviceNamespace);
+            contestTeamMemberClient = ContestTeamMemberClient.fromService(serviceNamespace);
+            impactClient = ImpactClient.fromService(serviceNamespace);
+            ontologyClient = OntologyClient.fromService(serviceNamespace);
+            planTemplateClient = PlanTemplateClient.fromNamespace(serviceNamespace);
 
-            commentService = new RefreshingRestService(CoLabService.COMMENT,
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-            );
-            commentClient = new CommentClient(commentService);
-            threadClient = new ThreadClient(commentService);
-            categoryClient = new CategoryClient(commentService);
+            commentClient = new CommentClient(serviceNamespace);
+            threadClient = new ThreadClient(serviceNamespace);
+            categoryClient = new CategoryClient(serviceNamespace);
 
-            activitiesService = new RefreshingRestService(CoLabService.ACTIVITY,
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-            );
-            activitiesClient = ActivitiesClient.fromService(activitiesService);
+            activitiesClient = ActivitiesClient.fromNamespace(serviceNamespace);
         } else {
-            proposalService = new RestService(CoLabService.CONTEST,
-                    ServiceRequestUtils.getNamespace());
             proposalClient = ProposalClientUtil.getClient();
             membershipClient = MembershipClientUtil.getClient();
             pointsClient = PointsClientUtil.getClient();
@@ -118,22 +98,16 @@ public class ClientHelper {
             proposalJudgeRatingClient = ProposalJudgeRatingClientUtil.getClient();
             proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
 
-            contestService = new RestService(CoLabService.CONTEST,
-                    ServiceRequestUtils.getNamespace());
             contestClient = ContestClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
             impactClient = ImpactClientUtil.getClient();
             ontologyClient = OntologyClientUtil.getClient();
             planTemplateClient = PlanTemplateClientUtil.getClient();
 
-            commentService = new RestService(CoLabService.COMMENT,
-                    ServiceRequestUtils.getNamespace());
             commentClient = CommentClientUtil.getClient();
             threadClient = ThreadClientUtil.getClient();
             categoryClient = CategoryClientUtil.getClient();
 
-            activitiesService = new RestService(CoLabService.ACTIVITY,
-                    ServiceRequestUtils.getNamespace());
             activitiesClient = ActivitiesClientUtil.getClient();
         }
     }
@@ -204,21 +178,5 @@ public class ClientHelper {
 
     public CategoryClient getCategoryClient() {
         return categoryClient;
-    }
-
-    public RestService getProposalService() {
-        return proposalService;
-    }
-
-    public RestService getContestService() {
-        return contestService;
-    }
-
-    public RestService getCommentService() {
-        return commentService;
-    }
-
-    public RestService getActivitiesService() {
-        return activitiesService;
     }
 }

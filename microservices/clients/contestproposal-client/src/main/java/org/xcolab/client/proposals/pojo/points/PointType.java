@@ -1,10 +1,9 @@
 package org.xcolab.client.proposals.pojo.points;
 
-import org.xcolab.client.proposals.PointsClient;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,7 @@ public class PointType extends AbstractPointType {
         initChildren();
     }
 
-    public PointType(AbstractPointType abstractPointType, RestService restService) {
+    public PointType(AbstractPointType abstractPointType, ServiceNamespace serviceNamespace) {
         super(abstractPointType);
         initChildren();
     }

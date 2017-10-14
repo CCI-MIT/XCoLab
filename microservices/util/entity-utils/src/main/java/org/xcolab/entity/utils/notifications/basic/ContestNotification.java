@@ -16,9 +16,6 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.text.DateFormat;
@@ -84,9 +81,9 @@ public class ContestNotification extends EmailNotification {
     private Date getActivePhaseDeadline() {
         ContestClient contestClient;
         if(contest.getIsSharedContestInForeignColab()) {
-            RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-            contestClient = ContestClient.fromService(contestService);
+            final ServiceNamespace serviceNamespace =
+                    ServiceNamespace.instance(ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
+            contestClient = ContestClient.fromNamespace(serviceNamespace);
         }else{
             contestClient = ContestClientUtil.getClient();
         }

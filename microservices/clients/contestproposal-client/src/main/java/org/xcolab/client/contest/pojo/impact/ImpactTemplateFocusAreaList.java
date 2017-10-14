@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.impact;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ImpactTemplateFocusAreaList extends AbstractImpactTemplateFocusAreaList {
 
@@ -12,7 +12,7 @@ public class ImpactTemplateFocusAreaList extends AbstractImpactTemplateFocusArea
 
     public ImpactTemplateFocusAreaList(AbstractImpactTemplateFocusAreaList
             abstractImpactTemplateFocusAreaList,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractImpactTemplateFocusAreaList);
     }
 }

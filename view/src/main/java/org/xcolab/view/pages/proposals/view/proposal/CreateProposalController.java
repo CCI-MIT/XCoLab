@@ -17,10 +17,8 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
@@ -74,7 +72,7 @@ public class CreateProposalController extends BaseProposalsController {
         Proposal proposal;
 
         if (contest.getIsSharedContestInForeignColab()) {
-            RestService proposalService = new RefreshingRestService(CoLabService.CONTEST,
+            ServiceNamespace proposalService = ServiceNamespace.instance(
                     ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
             );
             proposal = new Proposal(proposalService);
