@@ -74,7 +74,7 @@ public class ContestClient {
         contestPhaseRibbonTypeResource = new RestResource1<>(ContestResource.CONTEST_PHASE_RIBBON_TYPE, ContestPhaseRibbonTypeDto.TYPES);
         contestScheduleResource = new RestResource1<>(ContestResource.CONTEST_SCHEDULE, ContestScheduleDto.TYPES);
         contestPhaseTypesResource = new RestResource1<>(ContestResource.CONTEST_PHASE_TYPE, ContestPhaseTypeDto.TYPES);
-        contestPhasesResource = new RestResource1<>(ContestResource.CONTEST_SCHEDULE, ContestPhaseDto.TYPES);
+        contestPhasesResource = new RestResource1<>(ContestResource.CONTEST_PHASE, ContestPhaseDto.TYPES);
         contestResource = new RestResource1<>(ContestResource.CONTEST, ContestDto.TYPES);
         visiblePhasesResource = new RestResource2L<>(
                 contestResource, "visiblePhases", ContestPhaseDto.TYPES);

@@ -4,8 +4,7 @@ import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.client.enums.ResourceEnum;
 
 public enum FilesResource implements ResourceEnum {
-    FILE_ENTRY("fileEntries")
-    ;
+    FILE_ENTRY("fileEntries");
 
     private final String resourceName;
 
@@ -20,6 +19,6 @@ public enum FilesResource implements ResourceEnum {
 
     @Override
     public CoLabService getCoLabService() {
-        return null;
+        return CoLabService.CONTENT;
     }
 }
