@@ -119,7 +119,7 @@
                 </div>
 
                 <form:hidden path="sponsorLogoId" id="logoImageId"/>
-                <xcolab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true"
+                <xcolab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true" preserveAspectRatio="true"
                                     defaultImage="CONTEST" defaultImageId="${contestWrapper.sponsorLogoId}" />
             </div>
 

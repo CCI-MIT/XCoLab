@@ -82,7 +82,7 @@ public final class ActivitiesClient {
                 .execute();
     }
 
-    public  Integer countActivities(Long memberId, List<Long> memberIdsToExclude) {
+    public int countActivities(Long memberId, List<Long> memberIdsToExclude) {
         try {
             return activityEntryResource.<ActivityEntry, Integer>service("count", Integer.class)
                     .optionalQueryParam("memberId", memberId)
