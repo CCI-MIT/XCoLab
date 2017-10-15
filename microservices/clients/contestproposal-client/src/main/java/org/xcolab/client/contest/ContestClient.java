@@ -3,7 +3,6 @@ package org.xcolab.client.contest;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -83,11 +82,7 @@ public class ContestClient {
         contestDiscussionResource =
                 new RestResource1<>(ContestResource.CONTEST_DISCUSSION, ContestDiscussionDto.TYPES);
 
-        contestYearResource = new RestResource1<>(
-                ContestResource.CONTEST_YEAR, new TypeProvider<>(Long.class,
-                new ParameterizedTypeReference<List<Long>>() {
-                })
-        );
+        contestYearResource = new RestResource1<>(ContestResource.CONTEST_YEAR, TypeProvider.LONG);
         contestTranslationResource = new RestResource2<>(contestResource,
                 "translations", ContestTranslationDto.TYPES);
     }

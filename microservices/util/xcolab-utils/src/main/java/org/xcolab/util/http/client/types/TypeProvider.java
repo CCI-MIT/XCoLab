@@ -6,6 +6,9 @@ import java.util.List;
 
 public class TypeProvider<T> {
 
+    public static final TypeProvider<Long> LONG = new TypeProvider<>(Long.class,
+            new ParameterizedTypeReference<List<Long>>() {});
+
     private final Class<T> entityType;
     private final ParameterizedTypeReference<List<T>> typeReference;
 

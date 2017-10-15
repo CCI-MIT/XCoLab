@@ -1,7 +1,5 @@
 package org.xcolab.client.proposals;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.ProposalDto;
@@ -48,7 +46,7 @@ public final class ProposalPhaseClient {
         proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
 
         proposalPhaseIdResource = new RestResource2L<>(proposalResource, "phaseIds",
-                new TypeProvider<>(Long.class, new ParameterizedTypeReference<List<Long>>() {}));
+                TypeProvider.LONG);
     }
 
     public static ProposalPhaseClient fromNamespace(ServiceNamespace serviceNamespace) {
