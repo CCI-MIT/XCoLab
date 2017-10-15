@@ -1,6 +1,7 @@
 package org.xcolab.service.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,15 +13,23 @@ import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.model.tables.pojos.ProposalSupporter;
 import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
+import org.xcolab.service.proposal.service.ProposalSupportService;
+import org.xcolab.service.proposal.service.ProposalSupportService.SupportedProposal;
 
 import java.util.List;
 
 @RestController
 public class ProposalSupporterController {
 
-    @Autowired
-    private ProposalSupporterDao proposalSupporterDao;
+    private final ProposalSupporterDao proposalSupporterDao;
+    private final ProposalSupportService proposalSupportService;
 
+    @Autowired
+    private ProposalSupporterController(ProposalSupporterDao proposalSupporterDao,
+            ProposalSupportService proposalSupportService) {
+        this.proposalSupporterDao = proposalSupporterDao;
+        this.proposalSupportService = proposalSupportService;
+    }
 
     @RequestMapping(value = "/proposalSupporters", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ProposalSupporter> getProposalSupporters(
@@ -30,6 +39,14 @@ public class ProposalSupporterController {
         return proposalSupporterDao.findByGiven(proposalId, userId);
     }
 
+    @RequestMapping(value = "/members/{userId}/supportedProposals",
+            method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<SupportedProposal> getSupportedProposalsForUser(@PathVariable long userId,
+            @RequestParam(defaultValue = "true") boolean onlyVisible,
+            @RequestParam(defaultValue = "true") boolean excludePrivateContests) {
+        return proposalSupportService.getSupportedProposalsForUser(userId, onlyVisible,
+                excludePrivateContests);
+    }
 
     @RequestMapping(value = "/proposalSupporters/count", method = {RequestMethod.GET, RequestMethod.HEAD})
     public Integer getProposalSupportersCount(

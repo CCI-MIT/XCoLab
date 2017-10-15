@@ -16,6 +16,7 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,12 +86,7 @@ public class ProposalDaoImpl implements ProposalDao {
                             .and(PROPOSAL_ATTRIBUTE.NAME.eq("NAME")));
         }
 
-        if (visible != null) {
-            query.addConditions(PROPOSAL.VISIBLE.eq(visible));
-            if (visible) {
-                isVisibleInCurrentPhase(query);
-            }
-        }
+        addVisibilityConditions(visible, contestPrivate, query);
 
         if (threadId != null) {
             query.addConditions(PROPOSAL.DISCUSSION_ID.eq(threadId));
@@ -108,9 +104,6 @@ public class ProposalDaoImpl implements ProposalDao {
         if (contestActive != null) {
             query.addConditions(CONTEST.CONTEST_ACTIVE.eq(contestActive));
         }
-        if (contestPrivate != null) {
-            query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
-        }
 
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Proposal.class);
@@ -126,6 +119,20 @@ public class ProposalDaoImpl implements ProposalDao {
 
         if (addContest) {
             query.addJoin(CONTEST, CONTEST.CONTEST_PK.eq(CONTEST_PHASE.CONTEST_PK));
+        }
+    }
+
+    private void addVisibilityConditions(Boolean visible, Boolean contestPrivate,
+            SelectQuery<Record> query) {
+        if (visible != null) {
+            query.addConditions(PROPOSAL.VISIBLE.eq(visible));
+            if (visible) {
+                isVisibleInCurrentPhase(query);
+            }
+        }
+
+        if (contestPrivate != null) {
+            query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
         }
     }
 
@@ -312,16 +319,7 @@ public class ProposalDaoImpl implements ProposalDao {
         final boolean requiresPhase = visible != null;
         addJoins(query, requiresContest, requiresPhase);
 
-        if (visible != null) {
-            query.addConditions(PROPOSAL.VISIBLE.eq(visible));
-            if (visible) {
-                isVisibleInCurrentPhase(query);
-            }
-        }
-
-        if (contestPrivate != null) {
-            query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
-        }
+        addVisibilityConditions(visible, contestPrivate, query);
 
         final Record record = query
                         .fetchOne();
@@ -330,5 +328,21 @@ public class ProposalDaoImpl implements ProposalDao {
             return Optional.empty();
         }
         return Optional.of(record.into(Proposal.class));
+    }
+
+    @Override
+    public List<Proposal> filterByGiven(Collection<Long> proposalIds, Boolean visible,
+            Boolean contestPrivate) {
+        final SelectQuery<Record> query = dslContext.selectDistinct(PROPOSAL.fields())
+                        .from(PROPOSAL)
+                        .getQuery();
+
+        final boolean requiresContest = contestPrivate != null;
+        final boolean requiresPhase = visible != null;
+        addJoins(query, requiresContest, requiresPhase);
+
+        addVisibilityConditions(visible, contestPrivate, query);
+
+        return query.fetchInto(Proposal.class);
     }
 }

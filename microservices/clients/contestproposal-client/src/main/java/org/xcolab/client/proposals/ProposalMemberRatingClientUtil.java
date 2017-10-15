@@ -1,5 +1,6 @@
 package org.xcolab.client.proposals;
 
+import org.xcolab.client.proposals.pojo.SupportedProposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.util.http.caching.CacheName;
@@ -24,6 +25,10 @@ public final class ProposalMemberRatingClientUtil {
     public static List<ProposalSupporter> getProposalSupportersByUserId(
             Long userId) {
         return client.getProposalSupportersByUserId(userId);
+    }
+
+    public static List<SupportedProposal> getSupportedProposals(long userId) {
+        return client.getSupportedProposals(userId);
     }
 
     public static Integer getProposalSupportersCount(Long proposalId) {
