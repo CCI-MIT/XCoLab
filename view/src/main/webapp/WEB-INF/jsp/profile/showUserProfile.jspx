@@ -229,9 +229,9 @@
 			<table class="colab">
 				<c:forEach var="supportedProposal" items="${currentUserProfile.supportedProposals}">
 					<tr class="colabRow">
-						<td> <xcolab:proposalLink proposal="${supportedProposal.proposalWrapper}" /> </td>
+						<td> <xcolab:proposalLink proposal="${supportedProposal}" /> </td>
 						<td style="text-align: right;">
-                            <xcolab:formatDateTime millis="${supportedProposal.supportedSinceDate.time}" type="date"/>
+                            <xcolab:formatDateTime millis="${supportedProposal.supportDate.time}" type="date"/>
                         </td>
 					</tr>
 				</c:forEach>

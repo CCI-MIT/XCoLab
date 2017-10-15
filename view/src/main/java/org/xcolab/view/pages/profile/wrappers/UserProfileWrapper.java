@@ -20,7 +20,7 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
+import org.xcolab.client.proposals.pojo.SupportedProposal;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.pages.profile.beans.BadgeBean;
 import org.xcolab.view.pages.profile.beans.MessageBean;
@@ -57,7 +57,7 @@ public class UserProfileWrapper implements Serializable {
 
     private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
-    private final List<SupportedProposalWrapper> supportedProposals = new ArrayList<>();
+    private final List<SupportedProposal> supportedProposals = new ArrayList<>();
     private final Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
     private List<Proposal> linkingProposals;
     private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
@@ -106,11 +106,8 @@ public class UserProfileWrapper implements Serializable {
         highestRole = MemberRole.getHighestRole(member.getRoles());
 
         userSubscriptions = new UserSubscriptionsWrapper(member);
-        supportedProposals.clear();
         userActivities.clear();
-        for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupportersByUserId(member.getId_())) {
-            supportedProposals.add(new SupportedProposalWrapper(ps));
-        }
+        supportedProposals.addAll(ProposalMemberRatingClientUtil.getSupportedProposals(member.getId_()));
 
         for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
                 .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId_(), null))) {
@@ -282,7 +279,7 @@ public class UserProfileWrapper implements Serializable {
         return subscribedActivities;
     }
 
-    public List<SupportedProposalWrapper> getSupportedProposals() {
+    public List<SupportedProposal> getSupportedProposals() {
         return supportedProposals;
     }
 
