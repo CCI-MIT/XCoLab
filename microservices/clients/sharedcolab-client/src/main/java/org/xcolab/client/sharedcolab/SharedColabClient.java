@@ -16,6 +16,8 @@ import java.util.List;
 
 public class SharedColabClient {
 
+    //TODO COLAB-1857: the naming in this client is very confusing
+
     private static final ServiceNamespace PARTNER_COLAB_NAMESPACE = ServiceNamespace
             .instance(ConfigurationAttributeKey.SHARED_COLAB_NAMESPACE
                     .withDefaultValue(ServiceRequestUtils.getNamespace()));
@@ -24,19 +26,19 @@ public class SharedColabClient {
 
 
     private static final RestResource<Member, Long> partnerMemberResource = new RestResource1<>(
-            SharedUserResource.USERS, Member.TYPES, PARTNER_COLAB_NAMESPACE);
+            SharedUserResource.USERS, Member.TYPES, PARTNER_MEMBER_SERVICE);
 
-    //TODO: this doesn't look right - it's the same endpoint as above
+    //TODO COLAB-1857: this doesn't look right - it's the same endpoint as above
     private static final RestResource<SharedMember, Long> sharedMemberResource =
             new RestResource1<>(SharedUserResource.USERS, SharedMember.TYPES,
-                    PARTNER_COLAB_NAMESPACE);
+                    PARTNER_MEMBER_SERVICE);
 
     private static final RestResource<SharedContest, Long> sharedContestResource =
             new RestResource1<>(SharedColabResource.CONTESTS, SharedContest.TYPES,
-                    PARTNER_MEMBER_SERVICE);
+                    PARTNER_COLAB_NAMESPACE);
 
     private static final ServiceResource sharedColabResource = new ServiceResource1(
-            SharedColabResource.USERS, PARTNER_MEMBER_SERVICE);
+            SharedColabResource.USERS, PARTNER_COLAB_NAMESPACE);
 
 
     public static boolean isScreenNameUsed(String screenName) {
