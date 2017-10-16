@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
+import javafx.application.Platform;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +14,9 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.PlatformTeam;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -30,6 +33,10 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalUpdateHelper;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -132,6 +139,9 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("proposalPickerDefaultTabIsContests",
                 ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
         model.addAttribute("saveUrl", contest.getNewProposalLinkUrl());
+        List<PlatformTeam> teams = new ArrayList<>(PlatformTeamsClient.getTeams(loggedInMember));
+        teams.add(0, new PlatformTeam());
+        model.addAttribute("userTeams", teams);
 
         AnalyticsUtil.publishEvent(request, memberId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,
