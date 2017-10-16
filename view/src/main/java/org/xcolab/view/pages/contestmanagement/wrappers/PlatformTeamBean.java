@@ -1,36 +1,23 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean;
-import org.xcolab.view.pages.contestmanagement.controller.manager.PlatformTeam;
+import org.xcolab.client.members.pojo.PlatformTeam;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean.CREATE_CONTEST_PHASE_PK;
 
 
 public class PlatformTeamBean {
     private PlatformTeam team;
+    private List<Member> members;
 
     private Long teamId;
     private String teamName;
-    private List<Member> teamMembers;
 
     public PlatformTeamBean() { }
 
-    public PlatformTeamBean(PlatformTeam team) {
+    public PlatformTeamBean(PlatformTeam team, List<Member> members) {
         this.team = team;
+        this.members = members;
     }
 
     public Long getTeamId() {
@@ -50,6 +37,6 @@ public class PlatformTeamBean {
     }
 
     public List<Member> getMembers() {
-        return team == null ? teamMembers : team.getMembers();
+        return members;
     }
 }
