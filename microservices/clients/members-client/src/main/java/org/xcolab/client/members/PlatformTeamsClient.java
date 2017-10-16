@@ -63,6 +63,13 @@ public class PlatformTeamsClient {
                 .getList();
     }
 
+    public static List<PlatformTeam> getTeams(Member member) {
+        return platformTeamResource.list()
+                .queryParam("userId", member.getId_())
+                .withCache(CacheName.PLATFORMTEAM)
+                .execute();
+    }
+
     public static boolean addMember(PlatformTeam team, Member member) {
         return platformTeamResource
                 .service(team.getId_(), "members/" + member.getId_(), Boolean.class)

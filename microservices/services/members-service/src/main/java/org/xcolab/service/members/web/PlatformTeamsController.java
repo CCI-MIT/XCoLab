@@ -32,8 +32,12 @@ public class PlatformTeamsController {
     }
 
     @GetMapping
-    public List<PlatformTeam> listPlatformTeams() {
-        return platformTeamDao.getPlatformTeams();
+    public List<PlatformTeam> listPlatformTeams(@RequestParam(required = false) Long userId) {
+        if (userId == null) {
+            return platformTeamDao.getPlatformTeams();
+        } else {
+            return platformTeamDao.getUserTeams(userId);
+        }
     }
 
     @PostMapping
@@ -64,11 +68,6 @@ public class PlatformTeamsController {
     @GetMapping("{teamId}/members")
     public List<Member> listTeamMembers(@PathVariable Long teamId) {
         return platformTeamDao.getTeamMembers(teamId);
-    }
-
-    @GetMapping("teams/{userId}")
-    public List<PlatformTeam> listTeamsForUser(@PathVariable Long userId) {
-        return platformTeamDao.getUserTeams(userId);
     }
 
     @PutMapping("{teamId}/members/{userId}")
