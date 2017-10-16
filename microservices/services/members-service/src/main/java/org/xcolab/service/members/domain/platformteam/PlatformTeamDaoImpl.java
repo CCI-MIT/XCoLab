@@ -47,10 +47,21 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     }
 
     @Override
-    public void createPlatformTeam(String name) {
+    public PlatformTeam updatePlatformTeam(PlatformTeam team) {
+        this.dslContext.insertInto(PLATFORM_TEAM, PLATFORM_TEAM.ID_, PLATFORM_TEAM.NAME)
+                .values(team.getId_(), team.getName())
+                .onDuplicateKeyUpdate()
+                .set(PLATFORM_TEAM.NAME, team.getName())
+                .execute();
+        return getPlatformTeam(team.getId_()).orElse(null);
+    }
+
+    @Override
+    public PlatformTeam createPlatformTeam(String name) {
         this.dslContext.insertInto(PLATFORM_TEAM)
                 .set(PLATFORM_TEAM.NAME, name)
                 .execute();
+        return getPlatformTeam(this.dslContext.lastID().longValue()).orElse(null);
     }
 
     @Override
@@ -83,6 +94,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
         return dslContext.insertInto(PLATFORM_TEAM_MEMBER)
                 .set(PLATFORM_TEAM_MEMBER.TEAM_ID, teamId)
                 .set(PLATFORM_TEAM_MEMBER.USER_ID, memberId)
+                .onDuplicateKeyIgnore()
                 .execute();
     }
 
