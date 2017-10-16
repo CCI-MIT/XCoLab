@@ -21,8 +21,9 @@ public enum CacheName {
     MEMBER(100, CacheDuration.SHORT),
     MEMBER_LIST(20, CacheDuration.MEDIUM),
     ROLES(100, CacheDuration.MEDIUM),
-    CONTENT(50, CacheDuration.DAILY)
-    ;
+    CONTENT(50, CacheDuration.DAILY),
+    PLATFORMTEAM(50, CacheDuration.DAILY),
+    PLATFORMTEAM_MEMBER(200, CacheDuration.DAILY);
 
     private final int numberOfEntries;
     private final CacheDuration duration;
