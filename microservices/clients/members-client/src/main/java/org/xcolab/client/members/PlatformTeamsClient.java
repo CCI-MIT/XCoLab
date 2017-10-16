@@ -71,12 +71,14 @@ public class PlatformTeamsClient {
     }
 
     public static boolean addMember(PlatformTeam team, Member member) {
+        ServiceRequestUtils.clearCache(CacheName.PLATFORMTEAM);
         return platformTeamResource
                 .service(team.getId_(), "members/" + member.getId_(), Boolean.class)
                 .put();
     }
 
     public static boolean removeMember(PlatformTeam team, Member member) {
+        ServiceRequestUtils.clearCache(CacheName.PLATFORMTEAM);
         return platformTeamResource
                 .service(team.getId_(), "members/" + member.getId_(), Boolean.class)
                 .delete();
