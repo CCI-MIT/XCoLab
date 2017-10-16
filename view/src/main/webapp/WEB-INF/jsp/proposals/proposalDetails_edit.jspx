@@ -198,7 +198,7 @@
                         <div class="clearfix"><!-- --></div>
                         <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">20</span> characters</div>
                     </div>
-                    <c:if test="${userTeams.size() > 0}">
+                    <c:if test="${userTeams.size() > 1}">
                         <div class="addprophelp">Alternatively, you can select your team here.</div>
 
                         <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
