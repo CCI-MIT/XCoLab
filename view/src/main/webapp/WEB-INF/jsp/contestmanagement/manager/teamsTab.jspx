@@ -125,8 +125,16 @@
         }
 
         function addMember(userId) {
-            $.post("TEAMS/${teamId}/addMember", {'userId': userId}, function() {
-                window.location.reload();
+            $.ajax({
+                type: "POST",
+                url: "TEAMS/${teamId}/addMember",
+                data: {'userId': userId},
+                success: function() {
+                    window.location.reload();
+                },
+                error: function() {
+                    noty({text: "User could not be added.", type: 'error'});
+                }
             });
         }
 
