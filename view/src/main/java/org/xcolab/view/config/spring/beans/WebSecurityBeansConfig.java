@@ -15,7 +15,7 @@ import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.config.spring.properties.WebProperties;
-import org.xcolab.view.pages.redballon.utils.BalloonService;
+import org.xcolab.view.pages.redballoon.utils.BalloonService;
 
 import java.util.UUID;
 

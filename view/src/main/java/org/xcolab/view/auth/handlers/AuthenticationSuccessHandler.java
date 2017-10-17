@@ -12,7 +12,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.AuthenticationService;
-import org.xcolab.view.pages.redballon.utils.BalloonService;
+import org.xcolab.view.pages.redballoon.utils.BalloonService;
 
 import java.io.IOException;
 

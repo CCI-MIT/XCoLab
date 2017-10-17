@@ -29,7 +29,7 @@ import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
-import org.xcolab.view.pages.redballon.utils.BalloonCookie;
+import org.xcolab.view.pages.redballoon.utils.BalloonCookie;
 import org.xcolab.view.util.entity.HttpUtils;
 
 import java.io.IOException;
