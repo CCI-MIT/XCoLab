@@ -135,7 +135,7 @@ public class ProposalImpactSeries {
                         // Set author and modification date
                         this.lastModifiedVersion = ProposalClientUtil
                                 .getProposalVersionByProposalIdVersion(proposal.getProposalId(),
-                                        attribute.getVersionWhenCreated());
+                                        attribute.getVersion());
                     }
                 }
 

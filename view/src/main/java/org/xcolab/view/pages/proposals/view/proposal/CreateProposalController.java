@@ -83,7 +83,6 @@ public class CreateProposalController extends BaseProposalsController {
         }
 
         proposal.setProposalId(0L);
-        proposal.setCurrentVersion(0);
         proposal.setVisible(true);
         proposal.setAuthorId(memberId);
 

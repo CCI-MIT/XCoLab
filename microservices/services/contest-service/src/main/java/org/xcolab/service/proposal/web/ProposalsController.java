@@ -264,6 +264,11 @@ public class ProposalsController {
         return proposalVersionDao.findByGiven(proposalId, null);
     }
 
+    @GetMapping(value = "/proposals/{proposalId}/maxVersion")
+    public Integer getMaxVersion(@PathVariable Long proposalId) {
+        return proposalVersionDao.findMaxVersion(proposalId);
+    }
+
     @RequestMapping(value = "/proposalVersions/getGroupedVersionsByContest",
             method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ProposalVersion> getGroupedVersionsByContest(

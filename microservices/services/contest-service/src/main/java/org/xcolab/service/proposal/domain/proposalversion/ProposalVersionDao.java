@@ -10,6 +10,8 @@ public interface ProposalVersionDao {
 
     List<ProposalVersion> findByGiven(Long proposalId, Integer version);
 
+    Integer findMaxVersion(Long proposalId);
+
     ProposalVersion create(ProposalVersion proposalVersion);
 
     ProposalVersion getByProposalIdVersion(Long proposalId, Integer version);

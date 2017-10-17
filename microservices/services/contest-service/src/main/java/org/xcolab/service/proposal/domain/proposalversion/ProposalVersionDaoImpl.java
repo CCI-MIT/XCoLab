@@ -58,6 +58,14 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
     }
 
     @Override
+    public Integer findMaxVersion(Long proposalId) {
+        return dslContext.select(PROPOSAL_VERSION.VERSION.max())
+                .from(PROPOSAL_VERSION)
+                .where(PROPOSAL_VERSION.PROPOSAL_ID.eq(proposalId))
+                .fetchOne().into(Integer.class);
+    }
+
+    @Override
     public ProposalVersion getByProposalIdVersion(Long proposalId, Integer version) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_VERSION).getQuery();

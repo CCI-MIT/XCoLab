@@ -393,6 +393,10 @@ public final class ProposalClient {
                 .getList(),proposalService);
 
     }
+    public Integer getMaxVersion(Long proposalId) {
+        return proposalResource.service(proposalId, "maxVersion", Integer.class)
+                .get();
+    }
     public Integer countProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId) {
         return proposalVersionResource.service("countGroupedVersionsByContest", Integer.class)
                 .queryParam("proposalId", proposalId)
