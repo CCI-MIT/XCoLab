@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ActivityCsvWriter extends CsvResponseWriter {
 
-    private static final Logger log = LoggerFactory.getLogger(ActivityCsvWriter.class);
+    private static final Logger _log = LoggerFactory.getLogger(ActivityCsvWriter.class);
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private static final String FILE_NAME = "activityReport";
@@ -68,7 +68,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
 
             writeRow(row);
         } else {
-            log.warn("Unknown ActivityEntryType {} found when generating report",
+            _log.warn("Unknown ActivityEntryType {} found when generating report",
                     activityEntry.getPrimaryType());
         }
     }
@@ -77,7 +77,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
         try {
             return MembersClient.getMember(activityEntry.getMemberId());
         } catch (MemberNotFoundException e) {
-            log.warn("Member {} not found when generating report", activityEntry.getMemberId());
+            _log.warn("Member {} not found when generating report", activityEntry.getMemberId());
             return null;
         }
     }
