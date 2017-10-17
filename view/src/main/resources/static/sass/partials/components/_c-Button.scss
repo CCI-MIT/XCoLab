@@ -110,3 +110,7 @@ a.c-Button__admin {
   font-size: 12px;
   float: right;
 }
+
+.c-Button__accent {
+  @include theme-button($t-Color__accent);
+}
