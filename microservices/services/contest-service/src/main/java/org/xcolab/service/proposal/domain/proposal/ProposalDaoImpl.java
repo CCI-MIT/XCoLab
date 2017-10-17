@@ -17,6 +17,7 @@ import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.jooq.impl.DSL.sum;
 import static org.xcolab.model.Tables.CONTEST;
@@ -50,20 +51,9 @@ public class ProposalDaoImpl implements ProposalDao {
 
         boolean requiresContest = contestTypeIds != null || contestTierIds != null
                 || contestActive != null || contestPrivate != null;
-
-        boolean requiresPhase = requiresContest || contestIds != null || contestPhaseId != null
-                || ribbon != null || (visible != null && visible);
-
-        if (requiresPhase) {
-            //TODO: these joins causes duplicate entries
-            query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
-            query.addJoin(CONTEST_PHASE,
-                    CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
-        }
-
-        if (requiresContest) {
-            query.addJoin(CONTEST, CONTEST.CONTEST_PK.eq(CONTEST_PHASE.CONTEST_PK));
-        }
+        boolean requiresPhase = contestIds != null || contestPhaseId != null || ribbon != null
+                || (visible != null && visible);
+        addJoins(query, requiresContest, requiresPhase);
 
         if (ribbon != null) {
             final ProposalContestPhaseAttributeTable ribbonAttribute =
@@ -124,6 +114,19 @@ public class ProposalDaoImpl implements ProposalDao {
 
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Proposal.class);
+    }
+
+    private void addJoins(SelectQuery<Record> query, boolean addContest, boolean addPhase) {
+        if (addPhase || addContest) {
+            //TODO COLAB-2331: these joins cause duplicate entries
+            query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
+            query.addJoin(CONTEST_PHASE,
+                    CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
+        }
+
+        if (addContest) {
+            query.addJoin(CONTEST, CONTEST.CONTEST_PK.eq(CONTEST_PHASE.CONTEST_PK));
+        }
     }
 
     private void isVisibleInCurrentPhase(SelectQuery<?> query) {
@@ -298,16 +301,34 @@ public class ProposalDaoImpl implements ProposalDao {
     }
 
     @Override
-    public Proposal getByGroupId(Long groupId) throws NotFoundException {
+    public Optional<Proposal> getByGroupId(Long groupId, Boolean visible, Boolean contestPrivate) {
+        final SelectQuery<Record> query =
+                dslContext.selectDistinct(PROPOSAL.fields())
+                        .from(PROPOSAL)
+                        .where(PROPOSAL.GROUP_ID.eq(groupId))
+                        .getQuery();
 
-        final Record record =
-                this.dslContext.selectFrom(PROPOSAL).where(PROPOSAL.GROUP_ID.eq(groupId))
+        final boolean requiresContest = contestPrivate != null;
+        final boolean requiresPhase = visible != null;
+        addJoins(query, requiresContest, requiresPhase);
+
+        if (visible != null) {
+            query.addConditions(PROPOSAL.VISIBLE.eq(visible));
+            if (visible) {
+                isVisibleInCurrentPhase(query);
+            }
+        }
+
+        if (contestPrivate != null) {
+            query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
+        }
+
+        final Record record = query
                         .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("Proposal with groupid " + groupId + " does not exist");
+            return Optional.empty();
         }
-        return record.into(Proposal.class);
-
+        return Optional.of(record.into(Proposal.class));
     }
 }
