@@ -15,6 +15,7 @@ import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.config.spring.properties.WebProperties;
+import org.xcolab.view.pages.redballon.utils.BalloonService;
 
 import java.util.UUID;
 
@@ -61,8 +62,8 @@ public class WebSecurityBeansConfig {
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler(
-            AuthenticationService authenticationService) {
+            AuthenticationService authenticationService, BalloonService balloonService) {
         final boolean allowLogin = webProperties.getGuestAccess().isAllowLogin();
-        return new AuthenticationSuccessHandler(authenticationService, allowLogin);
+        return new AuthenticationSuccessHandler(authenticationService, balloonService, allowLogin);
     }
 }
