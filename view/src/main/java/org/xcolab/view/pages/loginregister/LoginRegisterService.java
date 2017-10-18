@@ -37,7 +37,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Optional;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -214,7 +213,7 @@ public class LoginRegisterService {
             Authentication authentication = authenticationService
                     .authenticate(request, response, member);
             authenticationSuccessHandler.onAuthenticationSuccess(request, response, authentication);
-        } catch (ServletException | IOException e) {
+        } catch (IOException e) {
             authenticationService.logout(request, response);
             throw new InternalException(e);
         }
