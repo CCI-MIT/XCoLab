@@ -127,7 +127,10 @@
             $.ajax({
                 type: "POST",
                 url: "TEAMS/${teamId}/addMember",
-                data: {'userId': userId},
+                data: {
+                    'userId': userId,
+                    'teamName': $('#name').val()
+                },
                 success: function() {
                     window.location.reload();
                 },

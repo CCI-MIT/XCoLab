@@ -94,9 +94,7 @@ public class TeamsTabController extends AbstractTabController {
 
         PlatformTeam team;
         if (teamBean != null && teamBean.getTeamId() != null) {
-            team = PlatformTeamsClient.getPlatformTeam(teamBean.getTeamId());
-            team.setName(teamBean.getName());
-            PlatformTeamsClient.updatePlatformTeam(team);
+            team = updateTeamName(teamBean.getTeamId(), teamBean.getName());
         } else {
             team = addNewTeam();
         }
@@ -135,14 +133,26 @@ public class TeamsTabController extends AbstractTabController {
 
     @PostMapping("tab/TEAMS/{teamId}/addMember")
     public void addMember(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member, @PathVariable long teamId, @RequestParam long userId)
-            throws IOException {
+            Member member, @PathVariable long teamId, @RequestParam long userId,
+            @RequestParam(required = false) String teamName) throws EntityNotFoundException {
 
         if (!tabWrapper.getCanEdit()) {
             return;
         }
 
         addMember(teamId, userId);
+
+        if (teamName != null) {
+            updateTeamName(teamId, teamName);
+        }
+    }
+
+    private PlatformTeam updateTeamName(Long teamId, String teamName) throws EntityNotFoundException {
+        PlatformTeam team = PlatformTeamsClient.getPlatformTeam(teamId);
+        team.setName(teamName);
+        PlatformTeamsClient.updatePlatformTeam(team);
+        return team;
+
     }
 
     private List<LabelValue> getTeamItems(List<PlatformTeam> teams) {
