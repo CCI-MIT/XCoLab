@@ -85,11 +85,12 @@ public class TeamsTabController extends AbstractTabController {
     }
 
     @PostMapping("tab/TEAMS")
-    public void updateTeam(HttpServletRequest request, HttpServletResponse response,
-            @ModelAttribute PlatformTeamBean teamBean) throws IOException, EntityNotFoundException {
+    public String updateTeam(HttpServletRequest request, HttpServletResponse response,
+            Member member, @ModelAttribute PlatformTeamBean teamBean)
+            throws IOException, EntityNotFoundException {
 
         if (!tabWrapper.getCanEdit()) {
-            response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl());
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         PlatformTeam team;
@@ -99,36 +100,34 @@ public class TeamsTabController extends AbstractTabController {
             team = addNewTeam();
         }
 
-        response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(team.getId_()));
+        return "redirect:" + ContestManagerTabs.TEAMS.getTabUrl(team.getId_());
     }
 
     @PostMapping("tab/TEAMS/{teamId}/delete")
-    public void deleteTeam(HttpServletRequest request, HttpServletResponse response,
-            @PathVariable long teamId) throws IOException {
+    public String deleteTeam(HttpServletRequest request, HttpServletResponse response,
+            Member member, @PathVariable long teamId) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
-            response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl());
-            return;
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         deleteTeam(teamId);
 
-        response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl());
+        return "redirect:" + ContestManagerTabs.TEAMS.getTabUrl();
     }
 
     @PostMapping("tab/TEAMS/{teamId}/removeMember/{memberId}")
-    public void removeMember(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member, @PathVariable long teamId, @PathVariable long memberId)
+    public String removeMember(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, @PathVariable long teamId, @PathVariable long memberId)
             throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
-            response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(teamId));
-            return;
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         removeMember(teamId, memberId);
 
-        response.sendRedirect(ContestManagerTabs.TEAMS.getTabUrl(teamId));
+        return "redirect:" + ContestManagerTabs.TEAMS.getTabUrl(teamId);
     }
 
     @PostMapping("tab/TEAMS/{teamId}/addMember")
@@ -147,7 +146,8 @@ public class TeamsTabController extends AbstractTabController {
         }
     }
 
-    private PlatformTeam updateTeamName(Long teamId, String teamName) throws EntityNotFoundException {
+    private PlatformTeam updateTeamName(Long teamId, String teamName)
+            throws EntityNotFoundException {
         PlatformTeam team = PlatformTeamsClient.getPlatformTeam(teamId);
         team.setName(teamName);
         PlatformTeamsClient.updatePlatformTeam(team);
@@ -193,7 +193,7 @@ public class TeamsTabController extends AbstractTabController {
         }
     }
 
-    private org.xcolab.client.members.pojo.PlatformTeam addNewTeam() {
+    private PlatformTeam addNewTeam() {
         return PlatformTeamsClient.createPlatformTeam(NEW_TEAM_NAME);
     }
 }
