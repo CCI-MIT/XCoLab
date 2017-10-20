@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
-import javafx.application.Platform;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,12 +15,11 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.PlatformTeam;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
+import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -33,10 +31,6 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalUpdateHelper;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
