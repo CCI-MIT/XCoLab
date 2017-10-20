@@ -4,8 +4,6 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.contest.resources.ProposalResource;
-import org.xcolab.client.members.UserResource;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.SupportedProposal;
 import org.xcolab.client.proposals.pojo.SupportedProposalDto;
@@ -17,8 +15,6 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.VirtualRestResource;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -35,12 +31,9 @@ public final class ProposalMemberRatingClient {
 
     private final ServiceNamespace serviceNamespace;
 
-    private final VirtualRestResource<Member, Long> virtualUserResource =
-            VirtualRestResource.of(UserResource.USER);
-
     private final RestResource1<ProposalSupporterDto, Long> proposalSupporterResource;
     private final RestResource<ProposalVoteDto, Long> proposalVoteResource;
-    private final RestResource2L<Member, SupportedProposalDto> supportedProposalsResource;
+    private final RestResource<SupportedProposalDto, Long> supportedProposalsResource;
 
     private ProposalMemberRatingClient(ServiceNamespace serviceNamespace) {
         proposalSupporterResource = new RestResource1<>(ProposalResource.PROPOSAL_SUPPORTER,
@@ -48,8 +41,8 @@ public final class ProposalMemberRatingClient {
         proposalVoteResource = new RestResource1<>(ProposalResource.PROPOSAL_VOTE,
                 ProposalVoteDto.TYPES, serviceNamespace);
 
-        supportedProposalsResource = new RestResource2L<>(virtualUserResource,
-                "supportedProposals", SupportedProposalDto.TYPES);
+        supportedProposalsResource = new RestResource1<>(ProposalResource.SUPPORTED_PROPOSALS,
+                 SupportedProposalDto.TYPES);
 
         this.serviceNamespace = serviceNamespace;
     }
@@ -73,8 +66,9 @@ public final class ProposalMemberRatingClient {
 
     public List<SupportedProposal> getSupportedProposals(long userId) {
         return DtoUtil.toPojos(supportedProposalsResource
-                .resolveParent(virtualUserResource.id(userId))
-                .list().execute(), serviceNamespace);
+                .list()
+                .queryParam("userId", userId)
+                .execute(), serviceNamespace);
     }
 
     public Integer getProposalSupportersCount(Long proposalId) {

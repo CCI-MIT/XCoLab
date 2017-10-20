@@ -1,7 +1,6 @@
 package org.xcolab.service.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,9 +38,9 @@ public class ProposalSupporterController {
         return proposalSupporterDao.findByGiven(proposalId, userId);
     }
 
-    @RequestMapping(value = "/members/{userId}/supportedProposals",
+    @RequestMapping(value = "/supportedProposals",
             method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<SupportedProposal> getSupportedProposalsForUser(@PathVariable long userId,
+    public List<SupportedProposal> getSupportedProposalsForUser(@RequestParam long userId,
             @RequestParam(defaultValue = "true") boolean onlyVisible,
             @RequestParam(defaultValue = "true") boolean excludePrivateContests) {
         return proposalSupportService.getSupportedProposalsForUser(userId, onlyVisible,
