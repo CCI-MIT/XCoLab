@@ -335,10 +335,12 @@ public class ProposalDaoImpl implements ProposalDao {
             Boolean contestPrivate) {
         final SelectQuery<Record> query = dslContext.selectDistinct(PROPOSAL.fields())
                         .from(PROPOSAL)
+                        .where(PROPOSAL.PROPOSAL_ID.in(proposalIds))
                         .getQuery();
 
         final boolean requiresContest = contestPrivate != null;
         final boolean requiresPhase = visible != null;
+
         addJoins(query, requiresContest, requiresPhase);
 
         addVisibilityConditions(visible, contestPrivate, query);
