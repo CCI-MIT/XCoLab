@@ -139,9 +139,7 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("proposalPickerDefaultTabIsContests",
                 ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
         model.addAttribute("saveUrl", contest.getNewProposalLinkUrl());
-        List<PlatformTeam> teams = new ArrayList<>(PlatformTeamsClient.getTeams(loggedInMember));
-        teams.add(0, new PlatformTeam());
-        model.addAttribute("userTeams", teams);
+        model.addAttribute("userTeams", PlatformTeamsClient.getTeams(loggedInMember));
 
         AnalyticsUtil.publishEvent(request, memberId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,

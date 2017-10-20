@@ -160,9 +160,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     ConfigurationAttributeKey.PROPOSALS_SAVE_HELP_TEXT.get());
             model.addAttribute("proposalPickerDefaultTabIsContests",
                     ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
-            List<PlatformTeam> teams = new ArrayList<>(PlatformTeamsClient.getTeams(currentMember));
-            teams.add(0, new PlatformTeam());
-            model.addAttribute("userTeams", teams);
+            model.addAttribute("userTeams", PlatformTeamsClient.getTeams(currentMember));
 
             return "proposals/proposalDetails_edit";
         }
