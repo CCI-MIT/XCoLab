@@ -23,8 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ActivityCsvWriter extends CsvResponseWriter {
 
-    private static final Logger log = LoggerFactory.getLogger(ActivityCsvWriter.class);
+    private static final Logger _log = LoggerFactory.getLogger(ActivityCsvWriter.class);
 
+    private static final String MEMBER_NOT_FOUND_MESSAGE = "Member not found";
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private static final String FILE_NAME = "activityReport";
 
@@ -58,17 +59,17 @@ public class ActivityCsvWriter extends CsvResponseWriter {
             Member member = getMemberOrNull(activityEntry);
 
             List<String> row = new ArrayList<>();
-            addValue(row, member != null ? member.getId_() : "Member not found");
-            addValue(row, member != null ? member.getScreenName() : "Member not found");
-            addValue(row, member != null ? member.getFirstName() : "Member not found");
-            addValue(row, member != null ? member.getLastName() : "Member not found");
+            addValue(row, member != null ? member.getId_() : MEMBER_NOT_FOUND_MESSAGE);
+            addValue(row, member != null ? member.getScreenName() : MEMBER_NOT_FOUND_MESSAGE);
+            addValue(row, member != null ? member.getFirstName() : MEMBER_NOT_FOUND_MESSAGE);
+            addValue(row, member != null ? member.getLastName() : MEMBER_NOT_FOUND_MESSAGE);
             addValue(row, activityType.name());
             addValue(row, DATE_FORMAT.format(activityEntry.getCreateDate()));
             addValue(row, activityEntryHelper.getActivityBody(activityEntry));
 
             writeRow(row);
         } else {
-            log.warn("Unknown ActivityEntryType {} found when generating report",
+            _log.warn("Unknown ActivityEntryType {} found when generating report",
                     activityEntry.getPrimaryType());
         }
     }
@@ -77,7 +78,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
         try {
             return MembersClient.getMember(activityEntry.getMemberId());
         } catch (MemberNotFoundException e) {
-            log.warn("Member {} not found when generating report", activityEntry.getMemberId());
+            _log.warn("Member {} not found when generating report", activityEntry.getMemberId());
             return null;
         }
     }
