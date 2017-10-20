@@ -22,7 +22,6 @@ import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.PlatformTeamBean;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +86,7 @@ public class TeamsTabController extends AbstractTabController {
     @PostMapping("tab/TEAMS")
     public String updateTeam(HttpServletRequest request, HttpServletResponse response,
             Member member, @ModelAttribute PlatformTeamBean teamBean)
-            throws IOException, EntityNotFoundException {
+            throws EntityNotFoundException {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -105,7 +104,7 @@ public class TeamsTabController extends AbstractTabController {
 
     @PostMapping("tab/TEAMS/{teamId}/delete")
     public String deleteTeam(HttpServletRequest request, HttpServletResponse response,
-            Member member, @PathVariable long teamId) throws IOException {
+            Member member, @PathVariable long teamId) {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -118,8 +117,7 @@ public class TeamsTabController extends AbstractTabController {
 
     @PostMapping("tab/TEAMS/{teamId}/removeMember/{memberId}")
     public String removeMember(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable long teamId, @PathVariable long memberId)
-            throws IOException {
+            Model model, Member member, @PathVariable long teamId, @PathVariable long memberId) {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
