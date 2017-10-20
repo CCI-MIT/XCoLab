@@ -1,3 +1,5 @@
+ALTER TABLE members_Member ENGINE=InnoDB;
+
 CREATE TABLE xcolab_PlatformTeam
 (
     id_ BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
