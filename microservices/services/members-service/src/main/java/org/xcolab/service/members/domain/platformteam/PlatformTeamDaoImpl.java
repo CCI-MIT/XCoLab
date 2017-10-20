@@ -28,10 +28,9 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
 
     @Override
     public List<PlatformTeam> getPlatformTeams() {
-        final SelectQuery<Record> query = dslContext.select(PLATFORM_TEAM.fields())
+        return dslContext.select(PLATFORM_TEAM.fields())
                 .from(PLATFORM_TEAM)
-                .getQuery();
-        return query.fetchInto(PlatformTeam.class);
+                .fetchInto(PlatformTeam.class);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     }
 
     @Override
-    public PlatformTeam updatePlatformTeam(PlatformTeam team) {
+    public PlatformTeam updateOrInsertPlatformTeam(PlatformTeam team) {
         this.dslContext.insertInto(PLATFORM_TEAM, PLATFORM_TEAM.ID_, PLATFORM_TEAM.NAME)
                 .values(team.getId_(), team.getName())
                 .onDuplicateKeyUpdate()
@@ -58,10 +57,17 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
 
     @Override
     public PlatformTeam createPlatformTeam(String name) {
-        this.dslContext.insertInto(PLATFORM_TEAM)
+        Long teamId = this.dslContext.insertInto(PLATFORM_TEAM)
                 .set(PLATFORM_TEAM.NAME, name)
-                .execute();
-        return getPlatformTeam(this.dslContext.lastID().longValue()).orElse(null);
+                .returning(PLATFORM_TEAM.ID_, PLATFORM_TEAM.NAME)
+                .fetchOne()
+                .getId_();
+
+        if (teamId != null) {
+            return new PlatformTeam(teamId, name);
+        } else {
+            return null;
+        }
     }
 
     @Override

@@ -1,7 +1,6 @@
 package org.xcolab.service.members.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -62,7 +61,7 @@ public class PlatformTeamsController {
     public PlatformTeam updatePlatformTeam(@RequestBody PlatformTeam platformTeam, @PathVariable
             Long teamId) {
         assert (platformTeam.getId_().equals(teamId));
-        return platformTeamDao.updatePlatformTeam(platformTeam);
+        return platformTeamDao.updateOrInsertPlatformTeam(platformTeam);
     }
 
     @GetMapping("{teamId}/members")

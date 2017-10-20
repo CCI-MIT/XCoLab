@@ -12,7 +12,7 @@ public interface PlatformTeamDao {
 
     Optional<PlatformTeam> getPlatformTeam(long teamId);
 
-    PlatformTeam updatePlatformTeam(PlatformTeam team);
+    PlatformTeam updateOrInsertPlatformTeam(PlatformTeam team);
 
     PlatformTeam createPlatformTeam(String name);
 
