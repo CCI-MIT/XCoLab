@@ -203,10 +203,10 @@ public class ProposalUpdateHelper {
             filledAll = false;
         }
 
-        if (updateProposalSectionsBean.getChooseTeam() != null) {
+        if (updateProposalSectionsBean.getSelectedTeam() != null) {
             try {
                 // Setup team stuff
-                PlatformTeam team = PlatformTeamsClient.getPlatformTeam(updateProposalSectionsBean.getChooseTeam());
+                PlatformTeam team = PlatformTeamsClient.getPlatformTeam(updateProposalSectionsBean.getSelectedTeam());
                 List<Member> members = PlatformTeamsClient.getTeamMembers(team);
                 Long groupId = proposalWrapper.getGroupId();
                 Long proposalId = proposalWrapper.getProposalId();

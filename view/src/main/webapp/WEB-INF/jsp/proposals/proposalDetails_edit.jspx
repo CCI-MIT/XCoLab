@@ -202,8 +202,8 @@
                         <div class="addprophelp">Alternatively, you can select your team here.</div>
 
                         <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                            <form:select path="chooseTeam" items="${userTeams}" itemLabel="name" itemValue="id_" />
-                            <form:errors path="chooseTeam" />
+                            <form:select path="selectedTeam" items="${userTeams}" itemLabel="name" itemValue="id_" />
+                            <form:errors path="selectedTeam" />
                         </div>
                     </c:if>
                 </div>
