@@ -3,7 +3,6 @@ package org.xcolab.client.members;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.PlatformTeam;
 import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.client.RestResource;
@@ -26,12 +25,12 @@ public class PlatformTeamsClient {
 
     public static List<PlatformTeam> listAllPlatformTeams() {
         return platformTeamResource.list().addRange(0, Integer.MAX_VALUE)
-                .withCache(CacheName.PLATFORMTEAM).execute();
+                .withCache(CacheName.PLATFORM_TEAM).execute();
     }
 
     public static PlatformTeam getPlatformTeam(long teamId) throws EntityNotFoundException {
         return platformTeamResource.get(teamId)
-                .withCache(CacheName.PLATFORMTEAM)
+                .withCache(CacheName.PLATFORM_TEAM)
                 .executeChecked();
     }
 
@@ -39,21 +38,21 @@ public class PlatformTeamsClient {
         PlatformTeam team = new PlatformTeam();
         team.setName(name);
         team = platformTeamResource.create(team).execute();
-        ServiceRequestUtils.clearCache(CacheName.PLATFORMTEAM);
+        ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
         return team;
     }
 
     public static boolean deletePlatformTeam(PlatformTeam team) {
         boolean result = platformTeamResource.delete(team.getId_())
                 .execute();
-        ServiceRequestUtils.clearCache(CacheName.PLATFORMTEAM);
+        ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
         return result;
     }
 
     public static boolean updatePlatformTeam(PlatformTeam team) {
-        ServiceRequestUtils.clearCache(CacheName.PLATFORMTEAM);
+        ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
         return platformTeamResource.update(team, team.getId_())
-                .cacheName(CacheName.PLATFORMTEAM)
+                .cacheName(CacheName.PLATFORM_TEAM)
                 .execute();
     }
 
@@ -66,19 +65,19 @@ public class PlatformTeamsClient {
     public static List<PlatformTeam> getTeams(Member member) {
         return platformTeamResource.list()
                 .queryParam("userId", member.getId_())
-                .withCache(CacheName.PLATFORMTEAM)
+                .withCache(CacheName.PLATFORM_TEAM)
                 .execute();
     }
 
     public static boolean addMember(PlatformTeam team, Member member) {
-        ServiceRequestUtils.clearCache(CacheName.PLATFORMTEAM);
+        ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
         return platformTeamResource
                 .service(team.getId_(), "members/" + member.getId_(), Boolean.class)
                 .put();
     }
 
     public static boolean removeMember(PlatformTeam team, Member member) {
-        ServiceRequestUtils.clearCache(CacheName.PLATFORMTEAM);
+        ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
         return platformTeamResource
                 .service(team.getId_(), "members/" + member.getId_(), Boolean.class)
                 .delete();
