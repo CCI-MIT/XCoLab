@@ -7,13 +7,22 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PlatformTeamDao {
+
     List<PlatformTeam> getPlatformTeams();
+
     Optional<PlatformTeam> getPlatformTeam(long teamId);
+
     PlatformTeam updatePlatformTeam(PlatformTeam team);
+
     PlatformTeam createPlatformTeam(String name);
+
     List<PlatformTeam> getUserTeams(long userId);
+
     List<Member> getTeamMembers(long teamId);
+
     int delete(long teamId);
+
     int addMember(long teamId, long memberId);
+
     int removeMember(long teamId, long memberId);
 }
