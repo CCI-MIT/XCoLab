@@ -14,7 +14,6 @@ import java.text.Normalizer;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -57,7 +56,7 @@ public abstract class CsvResponseWriter implements Closeable {
         try {
             // Excel needs this as different regional versions except different separators
             outWriter.append(EXCEL_SEPARATOR_META_DATA);
-            csvWriter.writeNext(headerRow.toArray(new String[headerRow.size()]));
+            csvWriter.writeNext(cleanRow(headerRow));
         } catch (IOException e) {
             // make sure the streams get closed if we get an exception while writing
             csvWriter.close();
@@ -67,11 +66,7 @@ public abstract class CsvResponseWriter implements Closeable {
 
     protected void writeRow(List<String> cols) {
         checkLength(cols);
-        final String[] colArray = cols.stream()
-                .map(this::clean)
-                .collect(Collectors.toList())
-                .toArray(new String[numColumns]);
-        csvWriter.writeNext(colArray);
+        csvWriter.writeNext(cleanRow(cols));
     }
 
     private void checkLength(List<String> cols) {
@@ -79,6 +74,12 @@ public abstract class CsvResponseWriter implements Closeable {
             throw new IllegalArgumentException(
                     "Illegal column length: " + cols.size() + " - expected " + numColumns);
         }
+    }
+
+    private String[] cleanRow(List<String> row) {
+        return row.stream()
+                .map(this::clean)
+                .toArray(String[]::new);
     }
 
     private String clean(String string) {
