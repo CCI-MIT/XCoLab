@@ -247,6 +247,12 @@
         </script>
     </c:if>
 
-    <xcolab:sendMessageModal subject="I want to share a ${contestType.proposalName} with you!" content='Check out the ${contestType.proposalName} "${proposal.name}" in the "${contest.contestName}" ${contestType.contestName}.' />
+    <c:set var="shareMessageBody">
+        Check out the ${contestType.proposalNameLowercase} &quot;<a href="${proposal.proposalUrl}">${proposal.name}</a>&quot;
+        in the &quot;<a href="${contest.contestUrl}">${contest.contestShortNameWithEndYear}</a>&quot; ${contestType.contestNameLowercase}.
+    </c:set>
+
+    <xcolab:sendMessageModal subject="I want to share a ${contestType.proposalNameLowercase} with you!"
+                             content="${shareMessageBody}" />
 
 </jsp:root>
