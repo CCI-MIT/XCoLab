@@ -17,21 +17,26 @@ public class SortedProposalList {
     private final List<Proposal> proposalsWithoutRibbons = new ArrayList<>();
 
     public SortedProposalList(List<Proposal> proposals, final SortFilterPage sortFilterPage,
-            ProposalSortColumn defaultSortColumn) {
+            ProposalSortColumn defaultSortColumn, boolean proposalsCanHaveRibbons) {
         if (sortFilterPage == null) {
             throw new IllegalArgumentException("SortFilterPage can't be null");
         }
 
-        initProposalLists(proposals);
+        initProposalLists(proposals, proposalsCanHaveRibbons);
         sortProposalLists(sortFilterPage, defaultSortColumn);
     }
 
-    private void initProposalLists(List<Proposal> proposals) {
-        for (Proposal contest : proposals) {
-            if (contest.getRibbonWrapper().getRibbon() > 0) {
-                proposalsWithRibbons.add(contest);
-            } else {
-                proposalsWithoutRibbons.add(contest);
+    private void initProposalLists(List<Proposal> proposals, boolean proposalsCanHaveRibbons) {
+        if (!proposalsCanHaveRibbons) {
+            // skip expensive ribbon check if proposals can't have ribbons
+            proposalsWithoutRibbons.addAll(proposals);
+        } else {
+            for (Proposal contest : proposals) {
+                if (contest.getRibbonWrapper().getRibbon() > 0) {
+                    proposalsWithRibbons.add(contest);
+                } else {
+                    proposalsWithoutRibbons.add(contest);
+                }
             }
         }
     }

@@ -120,7 +120,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new SortedProposalList(proposals, sortFilterPage,
-                defaultSortColumn));
+                defaultSortColumn, contest.isContestCompleted()));
         model.addAttribute("showCountdown",
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
         model.addAttribute("defaultTimeZoneId",
