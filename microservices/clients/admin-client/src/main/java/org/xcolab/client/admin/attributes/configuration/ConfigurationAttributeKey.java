@@ -341,6 +341,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS")
                     .defaultValue(true)
                     .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_USER_CAN_PROMOTE_TO_OWNER =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_USER_CAN_PROMOTE_TO_OWNER")
+                    .defaultValue(true)
+                    .build();
 
     // Points
     public static final AttributeGetter<Boolean> POINTS_IS_ACTIVE =
