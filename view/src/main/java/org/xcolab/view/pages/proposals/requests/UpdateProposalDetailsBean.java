@@ -20,7 +20,7 @@ public class UpdateProposalDetailsBean {
     @Length(max = 80, message = "The title is limited to 80 characters.")
     private String name;
 
-    @Length(max = 20, message = "The team name is limited to 20 characters.")
+    @Length(max = 35, message = "The team name is limited to 35 characters.")
     private String team;
     private long imageId;
     private long baseProposalId;
