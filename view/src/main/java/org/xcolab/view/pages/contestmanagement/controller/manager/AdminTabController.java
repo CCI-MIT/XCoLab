@@ -148,10 +148,11 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        VoteCsvWriter csvConverter = new VoteCsvWriter(response);
-        votingReportBean.getVotingPhaseIds().stream()
-                .map(ProposalMemberRatingClientUtil::getProposalVotesInPhase)
-                .forEach(csvConverter::addVotes);
+        try (VoteCsvWriter csvWriter = new VoteCsvWriter(response)) {
+            votingReportBean.getVotingPhaseIds().stream()
+                    .map(ProposalMemberRatingClientUtil::getProposalVotesInPhase)
+                    .forEach(csvWriter::addVotes);
+        }
     }
 
     @PostMapping("tab/ADMIN/exportActivities")
@@ -162,9 +163,10 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        ActivityCsvWriter csvWriter = new ActivityCsvWriter(response, activityEntryHelper);
-        ActivitiesClientUtil.getActivityEntries(0, Integer.MAX_VALUE, null, null)
-                .forEach(csvWriter::writeActivity);
+        try (ActivityCsvWriter csvWriter = new ActivityCsvWriter(response, activityEntryHelper)) {
+            ActivitiesClientUtil.getActivityEntries(0, Integer.MAX_VALUE, null, null)
+                    .forEach(csvWriter::writeActivity);
+        }
     }
 
     @PostMapping("tab/ADMIN/batchRegister")
