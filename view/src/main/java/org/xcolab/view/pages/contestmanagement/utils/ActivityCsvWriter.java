@@ -26,7 +26,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
     private static final Logger _log = LoggerFactory.getLogger(ActivityCsvWriter.class);
 
     private static final String MEMBER_NOT_FOUND_MESSAGE = "Member not found";
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final String FILE_NAME = "activityReport";
 
     private static final List<String> COLUMN_NAMES = Arrays.asList(
