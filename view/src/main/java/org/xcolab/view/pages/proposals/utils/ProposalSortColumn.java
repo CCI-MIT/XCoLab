@@ -16,7 +16,7 @@ public enum ProposalSortColumn {
         catch (Exception e) {
             return (int) (o1.getProposalId() - o2.getProposalId());
         }
-    }),
+    }, SUPPORTERS),
     COMMENTS((o1, o2) -> (int) (o1.getCommentsCount() - o2.getCommentsCount())),
     JUDGESTATUS(
             (o1, o2) -> (o1.getJudgeStatus().getStatusValue() - o2.getJudgeStatus().getStatusValue())),
@@ -47,9 +47,13 @@ public enum ProposalSortColumn {
     });
     
     private final Comparator<Proposal> proposalsComparator;
-    
+
     ProposalSortColumn(Comparator<Proposal> comparator) {
         proposalsComparator = comparator;
+    }
+
+    ProposalSortColumn(Comparator<Proposal> comparator, ProposalSortColumn secondarySortColumn) {
+        proposalsComparator = comparator.thenComparing(secondarySortColumn.getComparator());
     }
 
     public Comparator<Proposal> getComparator() {

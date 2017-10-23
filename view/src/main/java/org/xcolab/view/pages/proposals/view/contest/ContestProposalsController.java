@@ -20,6 +20,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
+import org.xcolab.view.pages.proposals.utils.ProposalSortColumn;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
@@ -72,15 +73,18 @@ public class ContestProposalsController extends BaseProposalsController {
         final ProposalClient proposalClient = clients.getProposalClient();
 
         final List<Proposal> activeProposals;
+        final boolean isClosedPhase;
         switch (contestPhase.getContestPhaseTypeObject().getStatusEnum()) {
             case OPEN_FOR_SUBMISSION:
             case OPEN_FOR_EDIT:
                 activeProposals = proposalClient.getActiveProposalsInContestPhase(
                         contestPhase.getContestPhasePK());
+                isClosedPhase = false;
                 break;
             default:
                 activeProposals = proposalClient.getActiveProposalsInContestPhase(
                         contestPhase.getContestPhasePK(), CacheName.PROPOSAL_LIST_CLOSED);
+                isClosedPhase = true;
         }
 
         List<Proposal> proposals = new ArrayList<>();
@@ -104,9 +108,19 @@ public class ContestProposalsController extends BaseProposalsController {
             }
         }
 
+
+        final ProposalSortColumn defaultSortColumn;
+        if (contest.isContestCompleted()) {
+            defaultSortColumn = ProposalSortColumn.VOTES;
+        } else if (isClosedPhase) {
+            defaultSortColumn = ProposalSortColumn.SUPPORTERS;
+        } else {
+            defaultSortColumn = ProposalSortColumn.MODIFIED;
+        }
+
         model.addAttribute("sortFilterPage", sortFilterPage);
-        model.addAttribute("proposals",
-            new SortedProposalList(proposals, sortFilterPage));
+        model.addAttribute("proposals", new SortedProposalList(proposals, sortFilterPage,
+                defaultSortColumn));
         model.addAttribute("showCountdown",
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
         model.addAttribute("defaultTimeZoneId",
