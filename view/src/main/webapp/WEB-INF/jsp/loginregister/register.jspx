@@ -63,7 +63,9 @@
             </c:if>
 
 
-            <form:hidden path="language" />
+            <c:if test="${not isI18NActive}">
+                <form:hidden path="language" />
+            </c:if>
 
             <div class="reg_errors"><!--  --></div>
             <form:errors cssClass="c-Alert c-Alert__error" htmlEscape="false"/>
