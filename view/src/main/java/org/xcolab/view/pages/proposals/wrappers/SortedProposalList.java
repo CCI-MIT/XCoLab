@@ -11,12 +11,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ProposalsSortFilterBean {
+public class SortedProposalList {
 
     private final List<Proposal> proposalsWithRibbons = new ArrayList<>();
     private final List<Proposal> proposalsWithoutRibbons = new ArrayList<>();
 
-    public ProposalsSortFilterBean(List<Proposal> proposals, final SortFilterPage sortFilterPage) {
+    public SortedProposalList(List<Proposal> proposals, final SortFilterPage sortFilterPage) {
         if (sortFilterPage == null) {
             throw new IllegalArgumentException("SortFilterPage can't be null");
         }

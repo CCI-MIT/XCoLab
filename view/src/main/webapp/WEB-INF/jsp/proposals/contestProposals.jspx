@@ -15,7 +15,7 @@
 
         <jsp:directive.include file="./init_contest.jspx"/>
 
-        <!--@elvariable id="proposals" type="org.xcolab.view.pages.proposals.wrappers.ProposalsSortFilterBean"-->
+        <!--@elvariable id="proposals" type="org.xcolab.view.pages.proposals.wrappers.SortedProposalList"-->
         <!--@elvariable id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage"-->
 
         <c:set var="showJudgingStatus" scope="request"
