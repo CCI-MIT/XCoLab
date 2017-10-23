@@ -195,7 +195,7 @@
                         <form:errors path="team" />
 
                         <div class="clearfix"><!-- --></div>
-                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">20</span> characters</div>
+                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">35</span> characters</div>
                     </div>
                 </div>
                 <div class="notation">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
