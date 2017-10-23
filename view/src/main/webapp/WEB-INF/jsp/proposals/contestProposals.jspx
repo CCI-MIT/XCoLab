@@ -15,8 +15,8 @@
 
         <jsp:directive.include file="./init_contest.jspx"/>
 
-        <jsp:useBean id="proposals" type="org.xcolab.view.pages.proposals.wrappers.ProposalsSortFilterBean" scope="request" />
-        <jsp:useBean id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage" scope="request" />
+        <!--@elvariable id="proposals" type="org.xcolab.view.pages.proposals.wrappers.ProposalsSortFilterBean"-->
+        <!--@elvariable id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage"-->
 
         <c:set var="showJudgingStatus" scope="request"
                value="${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}"/>
@@ -37,9 +37,9 @@
             </div>
             <div class="c-Headline c-Headline__subhead">
                 <h2>
-                    <span>${fn:length(proposals.proposals)}</span>
+                    <span>${proposals.totalSize}</span>
                     <c:choose>
-                        <c:when test="${fn:length(proposals.proposals) == 1}">
+                        <c:when test="${proposals.totalSize == 1}">
                             &#160;${contestType.proposalName}
                         </c:when>
                         <c:otherwise>
@@ -200,7 +200,7 @@
                 </thead>
                 <tbody>
                     <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithRibbons }" showShadebar="true"/>
-                    <proposalsPortlet:proposalsList proposals="${proposals.proposalsNormal }" showShadebar="${fn:length(proposals.proposalsWithRibbons) > 0 and not contest.hideRibbons}"/>
+                    <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithoutRibbons }" showShadebar="${proposals.sizeWithRibbons > 0 and not contest.hideRibbons}"/>
                 </tbody>
             </table>
         </div>
