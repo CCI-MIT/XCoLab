@@ -41,9 +41,7 @@ public class SortedProposalList {
         Comparator<Proposal> proposalComparator;
         boolean sortColumnSet = StringUtils.isBlank(sortColumn);
         if (!sortColumnSet) {
-            final ProposalSortColumn proposalsColumn = ProposalSortColumn.valueOf(sortColumn);
-            proposalComparator = sortFilterPage.isSortAscending() ? proposalsColumn.getComparator()
-                    : proposalsColumn.getComparator().reversed();
+            proposalComparator = getComparator(sortColumn, sortFilterPage.isSortAscending());
         } else {
             proposalComparator = ProposalSortColumn.MODIFIED.getComparator().reversed();
         }
@@ -51,6 +49,12 @@ public class SortedProposalList {
         proposalsWithRibbons.sort(sortColumnSet ? proposalComparator
                 : ProposalSortColumn.RIBBONS.getComparator().thenComparing(proposalComparator));
         proposalsWithoutRibbons.sort(proposalComparator);
+    }
+
+    private Comparator<Proposal> getComparator(String sortColumn, boolean isSortAscending) {
+        final ProposalSortColumn proposalsColumn = ProposalSortColumn.valueOf(sortColumn);
+        return isSortAscending ? proposalsColumn.getComparator()
+                : proposalsColumn.getComparator().reversed();
     }
 
     public List<Proposal> getProposalsWithRibbons() {
