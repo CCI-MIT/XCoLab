@@ -41,7 +41,7 @@ import org.xcolab.view.pages.profile.beans.NewsletterBean;
 import org.xcolab.view.pages.profile.beans.UserBean;
 import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
 import org.xcolab.view.pages.profile.wrappers.UserProfileWrapper;
-import org.xcolab.view.pages.redballon.utils.BalloonService;
+import org.xcolab.view.pages.redballoon.utils.BalloonService;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.util.entity.flash.ErrorMessage;
 

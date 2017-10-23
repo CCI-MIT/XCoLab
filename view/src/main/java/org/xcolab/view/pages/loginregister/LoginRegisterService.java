@@ -29,7 +29,7 @@ import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
-import org.xcolab.view.pages.redballon.utils.BalloonCookie;
+import org.xcolab.view.pages.redballoon.utils.BalloonCookie;
 import org.xcolab.view.util.entity.HttpUtils;
 
 import java.io.IOException;
@@ -37,7 +37,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Optional;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -214,7 +213,7 @@ public class LoginRegisterService {
             Authentication authentication = authenticationService
                     .authenticate(request, response, member);
             authenticationSuccessHandler.onAuthenticationSuccess(request, response, authentication);
-        } catch (ServletException | IOException e) {
+        } catch (IOException e) {
             authenticationService.logout(request, response);
             throw new InternalException(e);
         }
