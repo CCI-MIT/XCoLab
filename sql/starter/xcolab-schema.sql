@@ -37,9 +37,6 @@ CREATE TABLE `xcolab_ProposalVote` (
   `confirmationToken` varchar(75) DEFAULT NULL,
   PRIMARY KEY (`proposalId`, `contestPhaseId`,`userId`),
   KEY `IX_A4D26028` (`contestPhaseId`,`userId`),
-  KEY `IX_EA28CF99` (`proposalId`),
-  KEY `IX_43559ACF` (`proposalId`,`contestPhaseId`),
-  KEY `IX_562EB409` (`proposalId`,`contestPhaseId`,`userId`),
   KEY `IX_5E8D7ED3` (`proposalId`,`userId`),
   KEY `IX_497348F2` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
