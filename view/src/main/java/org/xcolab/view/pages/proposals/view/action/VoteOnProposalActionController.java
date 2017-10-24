@@ -23,8 +23,7 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator.ValidationResult;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
-
-import java.io.IOException;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,70 +38,72 @@ public class VoteOnProposalActionController {
     private final static String VOTE_ANALYTICS_LABEL = "";
 
     @PostMapping("voteOnProposalAction")
-    public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
+    public String handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, Member member)
-            throws ProposalsAuthorizationException, IOException {
-        final Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
+            throws ProposalsAuthorizationException {
+
         final ClientHelper clients = proposalContext.getClients();
-        ProposalMemberRatingClient proposalMemberRatingClient =
+        final ProposalMemberRatingClient proposalMemberRatingClient =
                 clients.getProposalMemberRatingClient();
 
-        boolean hasVoted = false;
-        if (proposalContext.getPermissions().getCanVote()) {
-            long proposalId = proposal.getProposalId();
-            long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
-            long memberId = member.getUserId();
-            if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, memberId)) {
-                // User has voted for this proposal and would like to retract the vote
-                proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
-            } else {
-                if (proposalMemberRatingClient.hasUserVoted(contestPhaseId, memberId)) {
-                    // User has voted for a different proposal. Vote will be retracted and
-                    // converted to a vote of this proposal.
-                    proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
-                }
+        final Proposal proposal = proposalContext.getProposal();
+        final Contest contest = proposalContext.getContest();
+        final String proposalLinkUrl = proposal.getProposalLinkUrl(contest);
 
-                proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
-                VoteValidator voteValidator =
-                        new VoteValidator(member, proposal, contest, request.getRemoteAddr(),
-                                clients.getProposalMemberRatingClient());
-                final ValidationResult validationResult = voteValidator.validate();
-                if (validationResult == ValidationResult.INVALID_BLACKLISTED
-                        || validationResult == ValidationResult.INVALID_BOUNCED_EMAIL) {
-                    //TODO: decide if we want to inform users of this
-                    //                    AlertMessage.danger("Your vote was NOT counted because
-                    // it violates our email policy. "
-                    //                            + "Please refer to the Voting Rules for
-                    // additional information.")
-                    //                            .flash(request);
-                } else {
-                    try {
-                        new ProposalVoteNotification(proposal, contest, member).sendMessage();
-                    } catch (ContestNotFoundException ignored) {
-
-                    }
-                    hasVoted = true;
-                }
-
-                //publish event per contestPhaseId to allow voting on exactly one proposal per
-                // contest(phase)
-                AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
-                        VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
-            }
-        } else {
+        if (!proposalContext.getPermissions().getCanVote()) {
             if (member == null) {
                 /* User is not logged in - don't count vote and let user log in*/
-                request.setAttribute("promptLoginWindow", "true");
-                return;
+                AlertMessage.danger("You must be logged in to vote.").flash(request);
+                return "redirect:" + proposalLinkUrl;
             } else {
-                throw new ProposalsAuthorizationException(
-                        "User isn't allowed to vote on proposal ");
+                throw new ProposalsAuthorizationException("User not allowed to vote on proposal.");
             }
+        }
+
+        boolean hasVoted = false;
+        long proposalId = proposal.getProposalId();
+        long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
+        long memberId = member.getUserId();
+        if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, memberId)) {
+            // User has voted for this proposal and would like to retract the vote
+            proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
+        } else {
+            if (proposalMemberRatingClient.hasUserVoted(contestPhaseId, memberId)) {
+                // User has voted for a different proposal. Vote will be retracted and
+                // converted to a vote of this proposal.
+                proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
+            }
+
+            proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
+            VoteValidator voteValidator =
+                    new VoteValidator(member, proposal, contest, request.getRemoteAddr(),
+                            clients.getProposalMemberRatingClient());
+            final ValidationResult validationResult = voteValidator.validate();
+            if (validationResult == ValidationResult.INVALID_BLACKLISTED
+                    || validationResult == ValidationResult.INVALID_BOUNCED_EMAIL) {
+                //TODO: decide if we want to inform users of this
+                //                    AlertMessage.danger("Your vote was NOT counted because
+                // it violates our email policy. "
+                //                            + "Please refer to the Voting Rules for
+                // additional information.")
+                //                            .flash(request);
+            } else {
+                try {
+                    new ProposalVoteNotification(proposal, contest, member).sendMessage();
+                } catch (ContestNotFoundException ignored) {
+
+                }
+                hasVoted = true;
+            }
+
+            //publish event per contestPhaseId to allow voting on exactly one proposal per
+            // contest(phase)
+            AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
+                    VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
         }
         // Redirect to prevent page-refreshing from influencing the vote
         final String arguments = hasVoted ? "/voted" : "";
-        response.sendRedirect(proposal.getProposalLinkUrl(contest) + arguments);
+        return "redirect:" + proposalLinkUrl + arguments;
     }
 
     @GetMapping("confirmVote/{proposalId}/{userId}/{confirmationToken}")
