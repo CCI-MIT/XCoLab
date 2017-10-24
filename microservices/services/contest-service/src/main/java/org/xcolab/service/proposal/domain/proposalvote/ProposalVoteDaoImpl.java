@@ -4,11 +4,13 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -31,6 +33,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
                 .set(PROPOSAL_VOTE.PROPOSAL_ID, proposalVote.getProposalId())
                 .set(PROPOSAL_VOTE.CONTEST_PHASE_ID, proposalVote.getContestPhaseId())
                 .set(PROPOSAL_VOTE.USER_ID, proposalVote.getUserId())
+                .set(PROPOSAL_VOTE.VALUE, proposalVote.getValue())
                 .set(PROPOSAL_VOTE.CREATE_DATE, proposalVote.getCreateDate())
                 .set(PROPOSAL_VOTE.IS_VALID, proposalVote.getIsValid())
                 .set(PROPOSAL_VOTE.CONFIRMATION_EMAIL_SEND_DATE, proposalVote.getConfirmationEmailSendDate())
@@ -58,6 +61,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
     @Override
     public boolean update(ProposalVote proposalVote) {
         return dslContext.update(PROPOSAL_VOTE)
+                .set(PROPOSAL_VOTE.VALUE, proposalVote.getValue())
                 .set(PROPOSAL_VOTE.CREATE_DATE, proposalVote.getCreateDate())
                 .set(PROPOSAL_VOTE.IS_VALID, proposalVote.getIsValid())
                 .set(PROPOSAL_VOTE.CONFIRMATION_EMAIL_SEND_DATE, proposalVote.getConfirmationEmailSendDate())
@@ -65,7 +69,6 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
                 .where(PROPOSAL_VOTE.PROPOSAL_ID.eq(proposalVote.getProposalId()))
                 .and(PROPOSAL_VOTE.CONTEST_PHASE_ID.eq(proposalVote.getContestPhaseId()))
                 .and(PROPOSAL_VOTE.USER_ID.eq(proposalVote.getUserId()))
-
                 .execute() > 0;
     }
 
@@ -90,7 +93,8 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
 
     @Override
     public Integer countByGiven(Long proposalId, Long contestPhaseId, Long userId) {
-        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
+        final SelectQuery<Record1<BigDecimal>> query = dslContext
+                .select(DSL.sum(PROPOSAL_VOTE.VALUE))
                 .from(PROPOSAL_VOTE).getQuery();
 
         if (proposalId != null) {
@@ -107,10 +111,11 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
     }
 
     @Override
-    public int delete(long memberId, long contestPhaseId) {
+    public int delete(long proposalId, long memberId, long contestPhaseId) {
         return dslContext.deleteFrom(PROPOSAL_VOTE)
-                .where(PROPOSAL_VOTE.USER_ID.eq(memberId))
-                .and(PROPOSAL_VOTE.CONTEST_PHASE_ID.eq(contestPhaseId))
+                .where(PROPOSAL_VOTE.PROPOSAL_ID.eq(proposalId)
+                        .and(PROPOSAL_VOTE.USER_ID.eq(memberId))
+                        .and(PROPOSAL_VOTE.CONTEST_PHASE_ID.eq(contestPhaseId)))
                 .execute();
     }
 }

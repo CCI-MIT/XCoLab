@@ -191,16 +191,23 @@ public final class ProposalMemberRatingClient {
                 .execute(), proposalService);
     }
 
+    public List<ProposalVote> getProposalVotesByUserInPhase(long userId, long contestPhaseId) {
+        return getProposalVotes(contestPhaseId, null, userId);
+    }
+
     public boolean updateProposalVote(ProposalVote proposalVote) {
         return proposalVoteResource.service("updateVote", Boolean.class)
                 .post(proposalVote);
     }
-    public boolean deleteProposalVote(Long contestPhaseId , Long memberId) {
+
+    public boolean deleteProposalVote(long proposalId, long contestPhaseId, long memberId) {
         return proposalVoteResource.service("deleteVote", Boolean.class)
+                .queryParam("proposalId", proposalId)
                 .queryParam("memberId", memberId)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .delete();
     }
+
     public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId) {
         ProposalVote pv = new ProposalVote();
         pv.setProposalId(proposalId);

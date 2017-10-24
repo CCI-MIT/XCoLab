@@ -1,7 +1,10 @@
 package org.xcolab.client.proposals.pojo.evaluation.members;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 class AbstractProposalVote implements Serializable {
 
@@ -10,6 +13,7 @@ class AbstractProposalVote implements Serializable {
     private Long proposalid;
     private Long contestphaseid;
     private Long userid;
+    private Integer value;
     private Timestamp createdate;
     private Boolean isvalid;
     private Timestamp confirmationemailsenddate;
@@ -25,24 +29,6 @@ class AbstractProposalVote implements Serializable {
         this.isvalid = value.isvalid;
         this.confirmationemailsenddate = value.confirmationemailsenddate;
         this.confirmationtoken = value.confirmationtoken;
-    }
-
-    public AbstractProposalVote(
-            Long proposalid,
-            Long contestphaseid,
-            Long userid,
-            Timestamp createdate,
-            Boolean isvalid,
-            Timestamp confirmationemailsenddate,
-            String confirmationtoken
-    ) {
-        this.proposalid = proposalid;
-        this.contestphaseid = contestphaseid;
-        this.userid = userid;
-        this.createdate = createdate;
-        this.isvalid = isvalid;
-        this.confirmationemailsenddate = confirmationemailsenddate;
-        this.confirmationtoken = confirmationtoken;
     }
 
     public Long getProposalId() {
@@ -67,6 +53,14 @@ class AbstractProposalVote implements Serializable {
 
     public void setUserId(Long userid) {
         this.userid = userid;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
     }
 
     public Timestamp getCreateDate() {
@@ -102,90 +96,41 @@ class AbstractProposalVote implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((proposalid == null) ? 0 : proposalid.hashCode());
-        result = prime * result + ((contestphaseid == null) ? 0 : contestphaseid.hashCode());
-        result = prime * result + ((userid == null) ? 0 : userid.hashCode());
-        result = prime * result + ((createdate == null) ? 0 : createdate.hashCode());
-        result = prime * result + ((isvalid == null) ? 0 : isvalid.hashCode());
-        result = prime * result + ((confirmationemailsenddate == null) ? 0
-                : confirmationemailsenddate.hashCode());
-        result = prime * result + ((confirmationtoken == null) ? 0 : confirmationtoken.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AbstractProposalVote)) {
+            return false;
+        }
+        AbstractProposalVote that = (AbstractProposalVote) o;
+        return Objects.equals(proposalid, that.proposalid)
+                && Objects.equals(contestphaseid, that.contestphaseid)
+                && Objects.equals(userid, that.userid)
+                && Objects.equals(value, that.value)
+                && Objects.equals(createdate, that.createdate)
+                && Objects.equals(isvalid, that.isvalid)
+                && Objects.equals(confirmationemailsenddate, that.confirmationemailsenddate)
+                && Objects.equals(confirmationtoken, that.confirmationtoken);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final AbstractProposalVote other = (AbstractProposalVote) obj;
-        if (proposalid == null) {
-            if (other.proposalid != null) {
-                return false;
-            }
-        } else if (!proposalid.equals(other.proposalid)) {
-            return false;
-        }
-        if (contestphaseid == null) {
-            if (other.contestphaseid != null) {
-                return false;
-            }
-        } else if (!contestphaseid.equals(other.contestphaseid)) {
-            return false;
-        }
-        if (userid == null) {
-            if (other.userid != null) {
-                return false;
-            }
-        } else if (!userid.equals(other.userid)) {
-            return false;
-        }
-        if (createdate == null) {
-            if (other.createdate != null) {
-                return false;
-            }
-        } else if (!createdate.equals(other.createdate)) {
-            return false;
-        }
-        if (isvalid == null) {
-            if (other.isvalid != null) {
-                return false;
-            }
-        } else if (!isvalid.equals(other.isvalid)) {
-            return false;
-        }
-        if (confirmationemailsenddate == null) {
-            if (other.confirmationemailsenddate != null) {
-                return false;
-            }
-        } else if (!confirmationemailsenddate.equals(other.confirmationemailsenddate)) {
-            return false;
-        }
-        if (confirmationtoken == null) {
-            if (other.confirmationtoken != null) {
-                return false;
-            }
-        } else if (!confirmationtoken.equals(other.confirmationtoken)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(proposalid, contestphaseid, userid, value, createdate, isvalid,
+                confirmationemailsenddate, confirmationtoken);
     }
 
     @Override
     public String toString() {
-        String sb = "ProposalVote (" + proposalid + ", " + contestphaseid + ", " + userid + ", "
-                + createdate + ", " + isvalid + ", " + confirmationemailsenddate + ", "
-                + confirmationtoken + ")";
-
-        return sb;
+        return new ToStringBuilder(this)
+                .append("proposalid", proposalid)
+                .append("contestphaseid", contestphaseid)
+                .append("userid", userid)
+                .append("value", value)
+                .append("createdate", createdate)
+                .append("isvalid", isvalid)
+                .append("confirmationemailsenddate", confirmationemailsenddate)
+                .append("confirmationtoken", confirmationtoken)
+                .toString();
     }
 }

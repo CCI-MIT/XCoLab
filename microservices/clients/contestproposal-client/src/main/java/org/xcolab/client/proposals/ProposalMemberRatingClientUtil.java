@@ -78,8 +78,8 @@ public final class ProposalMemberRatingClientUtil {
         return client.hasUserVoted(contestPhaseId, memberId);
     }
 
-    public static boolean deleteProposalVote(Long contestPhaseId, Long memberId) {
-        return client.deleteProposalVote(contestPhaseId, memberId);
+    public static boolean deleteProposalVote(long proposalId, long contestPhaseId, long memberId) {
+        return client.deleteProposalVote(proposalId, contestPhaseId, memberId);
     }
 
     public static ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId){

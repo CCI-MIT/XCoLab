@@ -25,6 +25,8 @@ import org.xcolab.view.pages.proposals.utils.voting.VoteValidator.ValidationResu
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -66,12 +68,18 @@ public class VoteOnProposalActionController {
         long memberId = member.getUserId();
         if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, memberId)) {
             // User has voted for this proposal and would like to retract the vote
-            proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
+            proposalMemberRatingClient.deleteProposalVote(proposalId, contestPhaseId, memberId);
         } else {
             if (proposalMemberRatingClient.hasUserVoted(contestPhaseId, memberId)) {
                 // User has voted for a different proposal. Vote will be retracted and
                 // converted to a vote of this proposal.
-                proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
+                final List<ProposalVote> userVotesInPhase = proposalMemberRatingClient
+                        .getProposalVotesByUserInPhase(memberId, contestPhaseId);
+                final ProposalVote oldVote = userVotesInPhase.get(0);
+                proposalMemberRatingClient.deleteProposalVote(oldVote.getProposalId(),
+                        contestPhaseId, memberId);
+                //TODO COLAB-2373: handle the case where a user has voted for more than one proposal
+
             }
 
             proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
