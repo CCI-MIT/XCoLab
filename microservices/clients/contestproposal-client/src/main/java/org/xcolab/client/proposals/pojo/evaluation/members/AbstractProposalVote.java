@@ -25,6 +25,7 @@ class AbstractProposalVote implements Serializable {
         this.proposalid = value.proposalid;
         this.contestphaseid = value.contestphaseid;
         this.userid = value.userid;
+        this.value = value.value;
         this.createdate = value.createdate;
         this.isvalid = value.isvalid;
         this.confirmationemailsenddate = value.confirmationemailsenddate;
