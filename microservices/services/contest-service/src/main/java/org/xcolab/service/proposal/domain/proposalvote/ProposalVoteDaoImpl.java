@@ -7,12 +7,12 @@ import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
-import java.math.BigDecimal;
+import java.io.Serializable;
 import java.util.List;
-
 
 import static org.xcolab.model.Tables.PROPOSAL_VOTE;
 
@@ -93,8 +93,8 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
 
     @Override
     public Integer countByGiven(Long proposalId, Long contestPhaseId, Long userId) {
-        final SelectQuery<Record1<BigDecimal>> query = dslContext
-                .select(DSL.sum(PROPOSAL_VOTE.VALUE))
+        final SelectQuery<Record1<Serializable>> query = dslContext
+                .select(DSL.coalesce(DSL.sum(PROPOSAL_VOTE.VALUE), 0))
                 .from(PROPOSAL_VOTE).getQuery();
 
         if (proposalId != null) {
