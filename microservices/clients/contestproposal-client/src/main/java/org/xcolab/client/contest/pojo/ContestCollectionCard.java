@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ContestCollectionCard extends AbstractContestCollectionCard {
 
@@ -11,7 +11,7 @@ public class ContestCollectionCard extends AbstractContestCollectionCard {
     }
 
     public ContestCollectionCard(AbstractContestCollectionCard abstractContestCollectionCard,
-            RestService contestService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractContestCollectionCard);
     }
 }

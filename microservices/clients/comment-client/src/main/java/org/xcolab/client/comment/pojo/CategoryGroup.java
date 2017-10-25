@@ -8,12 +8,13 @@ import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.comment.util.ThreadSortColumn;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
 
 public class CategoryGroup extends AbstractCategoryGroup {
+
     public static final TypeProvider<CategoryGroupDto> TYPES = new TypeProvider<>(CategoryGroupDto.class,
                     new ParameterizedTypeReference<List<CategoryGroupDto>>() {});
 
@@ -31,10 +32,10 @@ public class CategoryGroup extends AbstractCategoryGroup {
         categoryClient = CategoryClientUtil.getClient();
     }
 
-    CategoryGroup(AbstractCategoryGroup abstractCategoryGroup, RestService commentService) {
+    CategoryGroup(AbstractCategoryGroup abstractCategoryGroup, ServiceNamespace serviceNamespace) {
         super(abstractCategoryGroup);
-        threadClient = new ThreadClient(commentService);
-        categoryClient = new CategoryClient(commentService);
+        threadClient = new ThreadClient(serviceNamespace);
+        categoryClient = new CategoryClient(serviceNamespace);
     }
 
     @JsonIgnore

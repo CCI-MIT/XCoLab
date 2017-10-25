@@ -1,6 +1,7 @@
 package org.xcolab.client.proposals.pojo.evaluation.judges;
 
-import org.xcolab.util.http.client.RestService;
+
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ProposalRatingValue extends AbstractProposalRatingValue {
 
@@ -21,7 +22,7 @@ public class ProposalRatingValue extends AbstractProposalRatingValue {
     }
 
     public ProposalRatingValue(AbstractProposalRatingValue abstractProposalRatingValue,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractProposalRatingValue);
     }
 }

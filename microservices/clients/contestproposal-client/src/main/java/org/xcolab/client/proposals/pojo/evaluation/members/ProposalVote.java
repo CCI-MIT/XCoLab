@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.evaluation.members;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ProposalVote extends AbstractProposalVote {
 
@@ -10,7 +10,8 @@ public class ProposalVote extends AbstractProposalVote {
         super(value);
     }
 
-    public ProposalVote(AbstractProposalVote abstractProposalVote, RestService restService) {
+    public ProposalVote(AbstractProposalVote abstractProposalVote,
+            ServiceNamespace serviceNamespace) {
         super(abstractProposalVote);
     }
 }

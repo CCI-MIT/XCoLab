@@ -6,26 +6,20 @@ import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundExceptio
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public final class BalloonsClient {
 
-    private static final RestService trackingService = new RestService(CoLabService.TRACKING,
-            ServiceRequestUtils.getNamespace());
     private static final RestResource<BalloonLink, String> balloonLinkResource = new RestResource1<>(
-
-            trackingService, "balloonLinks", BalloonLink.TYPES);
+            BalloonResource.BALLOON_LINK, BalloonLink.TYPES);
     private static final RestResource<BalloonUserTracking, String> balloonUserTrackingResource =
-            new RestResource1<>(trackingService, "balloonUserTrackings", BalloonUserTracking.TYPES);
+            new RestResource1<>(BalloonResource.BALLOON_USER_TRACKING, BalloonUserTracking.TYPES);
     private static final RestResource<BalloonText, Long> balloonTextResource = new RestResource1<>(
-            trackingService, "balloonTexts", BalloonText.TYPES);
+            BalloonResource.BALLOON_TEXT, BalloonText.TYPES);
 
     public static BalloonLink getBalloonLink(String uuid) throws BalloonLinkNotFoundException {
         try {

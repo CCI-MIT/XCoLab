@@ -10,8 +10,9 @@ import org.xcolab.client.contest.pojo.impact.ImpactTemplateMaxFocusAreaDto;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateSeries;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateSeriesDto;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.resources.ImpactResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.dto.DtoUtil;
 
 import java.util.HashMap;
@@ -20,9 +21,9 @@ import java.util.Map;
 
 public class ImpactClient {
 
-    private static final Map<RestService, ImpactClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, ImpactClient> instances = new HashMap<>();
 
-    private final RestService contestService;
+    private final ServiceNamespace serviceNamespace;
 
     private final RestResource1<ImpactTemplateSeriesDto, Long> impactTemplateSeriesResource;
     private final RestResource1<ImpactIterationDto, Long> impactIterationResource;
@@ -31,20 +32,21 @@ public class ImpactClient {
     private final RestResource1<ImpactTemplateMaxFocusAreaDto, Long>
             impactTemplateMaxFocusAreaResource;
 
-    private ImpactClient(RestService contestService) {
-        this.contestService = contestService;
-        impactTemplateSeriesResource = new RestResource1<>(this.contestService,
-                "impactTemplateSeries", ImpactTemplateSeriesDto.TYPES);
-        impactIterationResource = new RestResource1<>(this.contestService,
-                "impactIterations", ImpactIterationDto.TYPES);
-        impactTemplateFocusAreaListResource = new RestResource1<>(this.contestService,
-                "impactTemplateFocusAreaLists", ImpactTemplateFocusAreaListDto.TYPES);
-        impactTemplateMaxFocusAreaResource = new RestResource1<>(this.contestService,
-                "impactTemplateMaxFocusAreas", ImpactTemplateMaxFocusAreaDto.TYPES);
+    private ImpactClient(ServiceNamespace serviceNamespace) {
+        this.serviceNamespace = serviceNamespace;
+        impactTemplateSeriesResource = new RestResource1<>(ImpactResource.IMPACT_TEMPLATE_SERIES,
+                ImpactTemplateSeriesDto.TYPES);
+        impactIterationResource = new RestResource1<>(ImpactResource.IMPACT_ITERATION,
+                ImpactIterationDto.TYPES);
+        impactTemplateFocusAreaListResource = new RestResource1<>(
+                ImpactResource.IMPACT_TEMPLATE_FOCUS_AREA_LIST,
+                ImpactTemplateFocusAreaListDto.TYPES);
+        impactTemplateMaxFocusAreaResource = new RestResource1<>(
+                ImpactResource.IMPACT_TEMPLATE_MAX_FOCUS_AREA, ImpactTemplateMaxFocusAreaDto.TYPES);
     }
 
-    public static ImpactClient fromService(RestService contestService) {
-        return instances.computeIfAbsent(contestService, ImpactClient::new);
+    public static ImpactClient fromService(ServiceNamespace serviceNamespace) {
+        return instances.computeIfAbsent(serviceNamespace, ImpactClient::new);
     }
 
     public List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) {
@@ -60,13 +62,13 @@ public class ImpactClient {
 
     public ImpactTemplateFocusAreaList getImpactTemplateFocusAreaList(long focusAreaListId) {
         return impactTemplateFocusAreaListResource.get(focusAreaListId)
-                .execute().toPojo(contestService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public List<ImpactTemplateMaxFocusArea> getImpactTemplateMaxFocusArea(Long focusAreaListId) {
         return DtoUtil.toPojos(impactTemplateMaxFocusAreaResource.list()
                 .optionalQueryParam("focusAreaListId", focusAreaListId)
-                .execute(), contestService);
+                .execute(), serviceNamespace);
     }
 
     public List<ImpactIteration> getContestImpactIterations(Contest contest) {
@@ -84,12 +86,12 @@ public class ImpactClient {
 
     public ImpactTemplateSeries getImpactTemplateSeries(long seriesId) {
         return impactTemplateSeriesResource.get(seriesId)
-                .execute().toPojo(contestService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public List<ImpactIteration> getContestImpactIterations(Long iterationId) {
         return DtoUtil.toPojos(impactIterationResource.list()
                 .optionalQueryParam("iterationId", iterationId)
-                .execute(), contestService);
+                .execute(), serviceNamespace);
     }
 }

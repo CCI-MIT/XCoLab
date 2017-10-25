@@ -18,6 +18,10 @@ public class UriBuilder {
     private final StringBuilder pathBuilder;
     private final Map<String, Object> uriVariables;
 
+    public UriBuilder(String httpUrl) {
+         this(UriComponentsBuilder.fromHttpUrl(httpUrl));
+    }
+
     public UriBuilder(UriComponentsBuilder uriComponentsBuilder) {
         this.uriComponentsBuilder = uriComponentsBuilder;
         uriVariables = new TreeMap<>();
@@ -25,7 +29,7 @@ public class UriBuilder {
         sortedParameters = new TreeMap<>();
     }
 
-    public UriBuilder(UriBuilder uriBuilderToClone) {
+    protected UriBuilder(UriBuilder uriBuilderToClone) {
         this.uriComponentsBuilder = uriBuilderToClone.uriComponentsBuilder.cloneBuilder();
         this.uriVariables = new TreeMap<>(uriBuilderToClone.uriVariables);
         this.pathBuilder = new StringBuilder(uriBuilderToClone.pathBuilder);

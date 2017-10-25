@@ -10,13 +10,14 @@ import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.comment.util.ThreadSortColumn;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 public class Category extends AbstractCategory {
+
     public static final TypeProvider<CategoryDto> TYPES =
             new TypeProvider<>(CategoryDto.class, new ParameterizedTypeReference<List<CategoryDto>>() {});
 
@@ -36,10 +37,10 @@ public class Category extends AbstractCategory {
         threadClient = ThreadClientUtil.getClient();
     }
 
-    public Category(AbstractCategory abstractCategory, RestService commentService) {
+    public Category(AbstractCategory abstractCategory, ServiceNamespace serviceNamespace) {
         super(abstractCategory);
-        categoryClient = new CategoryClient(commentService);
-        threadClient = new ThreadClient(commentService);
+        categoryClient = new CategoryClient(serviceNamespace);
+        threadClient = new ThreadClient(serviceNamespace);
     }
 
     @JsonIgnore

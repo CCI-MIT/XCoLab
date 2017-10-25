@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.evaluation.members;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.sql.Timestamp;
 
@@ -21,7 +21,7 @@ public class ProposalSupporter extends AbstractProposalSupporter {
     }
 
     public ProposalSupporter(AbstractProposalSupporter abstractProposalSupporter,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractProposalSupporter);
     }
 }

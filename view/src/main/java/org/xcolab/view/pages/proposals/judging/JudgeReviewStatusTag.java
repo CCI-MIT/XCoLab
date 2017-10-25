@@ -11,9 +11,7 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 
 import javax.servlet.jsp.JspException;
@@ -69,10 +67,10 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
             ProposalClient proposalClient;
 
             if (contest.getIsSharedContestInForeignColab()) {
-                RestService proposalsService = new RefreshingRestService(CoLabService.CONTEST,
+                ServiceNamespace proposalsService = ServiceNamespace.instance(
                         ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
                 );
-                proposalClient = ProposalClient.fromService(proposalsService);
+                proposalClient = ProposalClient.fromNamespace(proposalsService);
             } else {
                 proposalClient = ProposalClientUtil.getClient();
             }

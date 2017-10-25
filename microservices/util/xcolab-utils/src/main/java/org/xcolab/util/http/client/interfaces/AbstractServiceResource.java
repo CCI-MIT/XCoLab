@@ -2,12 +2,29 @@ package org.xcolab.util.http.client.interfaces;
 
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.ServiceResource;
 import org.xcolab.util.http.client.queries.ServiceQuery;
 
 import java.util.List;
 
 public abstract class AbstractServiceResource implements ServiceResource {
+
+    private final String resourceName;
+
+    public AbstractServiceResource(String resourceName) {
+        this.resourceName = resourceName;
+    }
+
+    @Override
+    public UriBuilder getResourceUrl() {
+        return getBaseUrl().resource(resourceName);
+    }
+
+    @Override
+    public UriBuilder getResourceUrl(Object resourceId) {
+        return getBaseUrl().resource(resourceName, resourceId);
+    }
 
     @Override
     public <T, R> ServiceQuery<T, R> service(long id, String serviceEndpoint, Class<R> returnType) {
