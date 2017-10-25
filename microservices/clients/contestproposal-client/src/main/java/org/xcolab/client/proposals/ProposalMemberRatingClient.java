@@ -99,6 +99,8 @@ public final class ProposalMemberRatingClient {
             ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
                     ActivityProvidersType.ProposalSupporterAddedActivityEntry.getType());
         }
+
+
     }
 
     public ProposalSupporter createProposalSupporter(ProposalSupporter proposalSupporter) {
