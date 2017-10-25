@@ -117,7 +117,8 @@ public class ContestPhaseService {
             try {
                 Member member = MembersClient.getMember(user.getUserId());
                 if (proposals.size() == 1) {
-                    ProposalMemberRatingClientUtil.addProposalVote(proposals.get(0).getProposalId(),lastOrActivePhase.getContestPhasePK(),user.getUserId());
+                    ProposalMemberRatingClientUtil.addProposalVote(proposals.get(0).getProposalId(),
+                            lastOrActivePhase.getContestPhasePK(), user.getUserId(), 1);
 
                     org.xcolab.client.contest.pojo.Contest c = ContestClientUtil.getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
                     new ContestVoteNotification(member, c, proposals.get(0),
