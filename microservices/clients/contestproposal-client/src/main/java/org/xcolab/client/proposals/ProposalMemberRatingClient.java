@@ -137,6 +137,13 @@ public final class ProposalMemberRatingClient {
         }
     }
 
+    public int countVotesByUserInPhase(long userId, long phaseId) {
+        return proposalVoteResource.<ProposalVoteDto, Integer>service("count", Integer.class)
+                .queryParam("userId", userId)
+                .queryParam("contestPhaseId", phaseId)
+                .get();
+    }
+
     public Integer countProposalVotesInContestPhaseProposalId(long contestPhaseId, long proposalId,
             CacheName cacheName) {
         return proposalVoteResource.<ProposalVoteDto, Integer>service("count", Integer.class)

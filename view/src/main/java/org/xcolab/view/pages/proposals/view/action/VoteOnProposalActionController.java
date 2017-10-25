@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
@@ -46,12 +48,17 @@ public class VoteOnProposalActionController {
             @RequestParam(defaultValue = "1") int voteValue)
             throws ProposalsAuthorizationException {
 
+        final long maxContestVotes = ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_CONTEST.get();
+        final long maxProposalVotes = ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_PROPOSAL
+                .get();
+
         final ClientHelper clients = proposalContext.getClients();
         final ProposalMemberRatingClient proposalMemberRatingClient =
                 clients.getProposalMemberRatingClient();
 
         final Proposal proposal = proposalContext.getProposal();
         final Contest contest = proposalContext.getContest();
+        final ContestType contestType = proposalContext.getContestType();
         final String proposalLinkUrl = proposal.getProposalLinkUrl(contest);
 
         if (!proposalContext.getPermissions().getCanVote()) {
@@ -72,7 +79,9 @@ public class VoteOnProposalActionController {
             // User has voted for this proposal and would like to retract the vote
             proposalMemberRatingClient.deleteProposalVote(proposalId, contestPhaseId, memberId);
         } else {
-            if (proposalMemberRatingClient.hasUserVoted(contestPhaseId, memberId)) {
+            final int votesInContest = proposalMemberRatingClient
+                    .countVotesByUserInPhase(memberId, contestPhaseId);
+            if (votesInContest > 0 && maxContestVotes == 1 && voteValue == 1) {
                 // User has voted for a different proposal. Vote will be retracted and
                 // converted to a vote of this proposal.
                 final List<ProposalVote> userVotesInPhase = proposalMemberRatingClient
@@ -80,8 +89,16 @@ public class VoteOnProposalActionController {
                 final ProposalVote oldVote = userVotesInPhase.get(0);
                 proposalMemberRatingClient.deleteProposalVote(oldVote.getProposalId(),
                         contestPhaseId, memberId);
-                //TODO COLAB-2373: handle the case where a user has voted for more than one proposal
-
+            } else if (voteValue > maxProposalVotes) {
+                AlertMessage.danger(String.format("You cannot assign more than %d votes per %s.",
+                        maxProposalVotes, contestType.getProposalNameLowercase()))
+                        .flash(request);
+                return "redirect:" + proposalLinkUrl;
+            } else if (votesInContest + voteValue > maxContestVotes) {
+                AlertMessage.danger(String.format("You cannot assign more than %d votes per %s.",
+                        maxContestVotes, contestType.getContestNameLowercase()))
+                        .flash(request);
+                return "redirect:" + proposalLinkUrl;
             }
 
             proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId,
