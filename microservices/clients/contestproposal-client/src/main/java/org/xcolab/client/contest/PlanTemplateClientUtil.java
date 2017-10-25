@@ -3,18 +3,14 @@ package org.xcolab.client.contest;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class PlanTemplateClientUtil {
 
-    private static final RestService contestService = new RestService(CoLabService.CONTEST,
-            ServiceRequestUtils.getNamespace());
-
-    private static final PlanTemplateClient client = PlanTemplateClient.fromService(contestService);
+    private static final PlanTemplateClient client = PlanTemplateClient.fromNamespace(
+            ServiceNamespace.instance());
 
     private PlanTemplateClientUtil() {
     }

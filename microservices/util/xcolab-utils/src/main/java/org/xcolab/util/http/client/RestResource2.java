@@ -1,18 +1,18 @@
 package org.xcolab.util.http.client;
 
 import org.xcolab.util.http.UriBuilder;
-import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.AbstractRestResource;
+import org.xcolab.util.http.client.interfaces.IdentifiableHttpResource;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 public class RestResource2<ResourceT1, IdT1, ResourceT2, IdT2> {
 
-    private final RestResource1<ResourceT1, IdT1> parent;
+    private final IdentifiableHttpResource<ResourceT1, IdT1> parent;
     private final String resourceName;
     private final TypeProvider<ResourceT2> typeProvider;
 
-    public RestResource2(RestResource1<ResourceT1, IdT1> parent,
-            String resourceName, TypeProvider<ResourceT2> typeProvider) {
+    public RestResource2(IdentifiableHttpResource<ResourceT1, IdT1> parent, String resourceName,
+            TypeProvider<ResourceT2> typeProvider) {
         this.parent = parent;
         this.resourceName = resourceName;
         this.typeProvider = typeProvider;
@@ -27,7 +27,7 @@ public class RestResource2<ResourceT1, IdT1, ResourceT2, IdT2> {
         private final QueryId<ResourceT1, IdT1> queryId;
 
         NestedResource(QueryId<ResourceT1, IdT1> queryId) {
-            super(typeProvider);
+            super(resourceName, typeProvider);
             this.queryId = queryId;
         }
 
@@ -42,7 +42,7 @@ public class RestResource2<ResourceT1, IdT1, ResourceT2, IdT2> {
         }
 
         @Override
-        public UriProvider getBaseUrl() {
+        public UriBuilder getBaseUrl() {
             return parent.getBaseUrl();
         }
     }

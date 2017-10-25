@@ -16,11 +16,9 @@ import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 
 import java.util.List;
@@ -47,11 +45,11 @@ public class LoadThreadStartTag extends BodyTagSupport {
             ThreadClient threadClient;
             CategoryClient categoryClient;
             if (sharedColabId != null && sharedColabId > 0) {
-                RestService contestService = new RefreshingRestService(CoLabService.COMMENT,
+                ServiceNamespace serviceNamespace = ServiceNamespace.instance(
                         ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
-                threadClient = ThreadClient.fromService(contestService);
-                categoryClient = CategoryClient.fromService(contestService);
+                threadClient = ThreadClient.fromService(serviceNamespace);
+                categoryClient = CategoryClient.fromService(serviceNamespace);
             } else {
                 threadClient = ThreadClientUtil.getClient();
                 categoryClient = CategoryClientUtil.getClient();

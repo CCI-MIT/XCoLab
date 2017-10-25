@@ -2,18 +2,14 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public class MembershipClientUtil {
 
-    private static final RestService contestService = new RestService(CoLabService.CONTEST,
-            ServiceRequestUtils.getNamespace());
-
-    private static final MembershipClient client = MembershipClient.fromService(contestService);
+    private static final MembershipClient client = MembershipClient.fromNamespace(
+            ServiceNamespace.instance());
 
     public static MembershipClient getClient() {
         return client;

@@ -8,9 +8,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ProposalNotification extends ContestNotification {
 
@@ -39,13 +37,10 @@ public class ProposalNotification extends ContestNotification {
                 getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         final EmailTemplateClient emailTemplateClient;
-        if(contest.getIsSharedContestInForeignColab()){
-            RestService adminService = new RefreshingRestService(CoLabService.ADMIN,
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-            );
-
-            emailTemplateClient = EmailTemplateClient.fromService(adminService);
-        }else{
+        if (contest.getIsSharedContestInForeignColab()) {
+            emailTemplateClient = EmailTemplateClient.fromNamespace(
+                    ServiceNamespace.instance(ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE));
+        } else {
             emailTemplateClient = EmailTemplateClientUtil.getClient();
         }
 

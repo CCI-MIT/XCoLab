@@ -1,17 +1,14 @@
 package org.xcolab.client.admin;
 
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public class EmailTemplateClientUtil {
 
-    private static final RestService adminService = new RestService(CoLabService.ADMIN,
-            ServiceRequestUtils.getNamespace());
-    private static final EmailTemplateClient emailTemplateClient = EmailTemplateClient.fromService(adminService);
+    private static final EmailTemplateClient emailTemplateClient = EmailTemplateClient.fromNamespace(
+            ServiceNamespace.instance());
 
     public static List<ContestEmailTemplate> listAllContestEmailTemplates() {
         return emailTemplateClient.listAllContestEmailTemplates();

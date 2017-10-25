@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.impact;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ImpactDefaultSeriesData extends AbstractImpactDefaultSeriesData {
 
@@ -11,7 +11,7 @@ public class ImpactDefaultSeriesData extends AbstractImpactDefaultSeriesData {
     }
 
     public ImpactDefaultSeriesData(AbstractImpactDefaultSeriesData abstractImpactDefaultSeriesData,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractImpactDefaultSeriesData);
     }
 }

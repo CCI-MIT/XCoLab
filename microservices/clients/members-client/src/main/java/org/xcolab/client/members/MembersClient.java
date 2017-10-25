@@ -13,7 +13,6 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.client.members.pojo.TokenValidity;
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -21,7 +20,6 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.Http401UnauthorizedException;
@@ -34,23 +32,20 @@ import java.util.List;
 
 public final class MembersClient {
 
-    private static final RestService memberService = new RestService(CoLabService.MEMBER,
-            ServiceRequestUtils.getNamespace());
-
-    private static final RestResource1<Member, Long> memberResource = new RestResource1<>(memberService,
-            "members", Member.TYPES);
+    private static final RestResource1<Member, Long> memberResource =
+            new RestResource1<>(UserResource.USER, Member.TYPES);
 
     private static final RestResource2L<Member, Role_> memberRoleResource =
             new RestResource2L<>(memberResource, "roles", Role_.TYPES);
 
     private static final RestResource<MemberCategory, Long> memberCategoryResource =
-            new RestResource1<>(memberService, "membercategories", MemberCategory.TYPES);
+            new RestResource1<>(UserResource.USER_CATEGORY, MemberCategory.TYPES);
 
-    private static final RestResource<LoginLog, Long> loginLogResource = new RestResource1<>(memberService,
-            "loginLogs", LoginLog.TYPES);
+    private static final RestResource<LoginLog, Long> loginLogResource =
+            new RestResource1<>(UserResource.LOGIN_LOG, LoginLog.TYPES);
 
-    private static final RestResource<LoginToken, String> loginTokenResource = new RestResource1<>(
-            memberService, "loginTokens", LoginToken.TYPES);
+    private static final RestResource<LoginToken, String> loginTokenResource =
+            new RestResource1<>(UserResource.LOGIN_TOKEN, LoginToken.TYPES);
 
     private MembersClient() {
     }

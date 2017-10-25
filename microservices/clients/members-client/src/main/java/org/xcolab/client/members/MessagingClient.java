@@ -9,13 +9,10 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.client.members.pojo.SendMessageBean;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.Http429TooManyRequestsException;
 
@@ -24,12 +21,10 @@ import java.util.List;
 
 public final class MessagingClient {
 
-    private static final RestService memberService = new RestService(CoLabService.MEMBER,
-            ServiceRequestUtils.getNamespace());
-    private static final RestResource1<Member, Long> memberResource = new RestResource1<>(memberService,
-            "members", Member.TYPES);
-    private static final RestResource1<Message, Long> messageResource = new RestResource1<>(memberService,
-            "messages", Message.TYPES);
+    private static final RestResource1<Member, Long> memberResource =
+            new RestResource1<>(UserResource.USER, Member.TYPES);
+    private static final RestResource1<Message, Long> messageResource =
+            new RestResource1<>(UserResource.MESSAGES, Message.TYPES);
 
     private static final RestResource2L<Member, MessagingUserPreferences> messagePreferencesResource
             = new RestResource2L<>(memberResource, "messagingPreferences", MessagingUserPreferences.TYPES);

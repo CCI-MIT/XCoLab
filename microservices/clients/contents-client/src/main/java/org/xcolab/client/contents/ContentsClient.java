@@ -5,30 +5,28 @@ import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.contents.pojo.ContentPage;
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public final class ContentsClient {
 
-    private static final RestService contentService = new RestService(CoLabService.CONTENT,
-            ServiceRequestUtils.getNamespace());
-
     private static final RestResource<ContentArticle, Long> contentArticleResource =
-            new RestResource1<>(contentService, "contentArticles", ContentArticle.TYPES);
+            new RestResource1<>(ContentResource.CONTENT_ARTICLE, ContentArticle.TYPES);
+
     private static final RestResource<ContentArticleVersion, Long> contentArticleVersionResource =
-            new RestResource1<>(contentService, "contentArticleVersions",
+            new RestResource1<>(ContentResource.CONTENT_ARTICLE_VERSION,
                     ContentArticleVersion.TYPES);
+
     private static final RestResource1<ContentFolder, Long> contentFolderResource =
-            new RestResource1<>(contentService, "contentFolders", ContentFolder.TYPES);
+            new RestResource1<>(ContentResource.CONTENT_FOLDER, ContentFolder.TYPES);
+
     private static final RestResource<ContentPage, Long> contentPageResource =
-            new RestResource1<>(contentService, "contentPages", ContentPage.TYPES);
+            new RestResource1<>(ContentResource.CONTENT_PAGE, ContentPage.TYPES);
 
     private ContentsClient() {
     }

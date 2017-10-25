@@ -9,19 +9,15 @@ import org.xcolab.client.contest.pojo.ContestTranslation;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 import java.util.Map;
 
 public final class ContestClientUtil {
 
-    private static final RestService contestService = new RestService(CoLabService.CONTEST,
-            ServiceRequestUtils.getNamespace());
-
-    private static final ContestClient contestClient = ContestClient.fromService(contestService);
+    private static final ContestClient contestClient = ContestClient.fromNamespace(
+            ServiceNamespace.instance());
 
     private ContestClientUtil() {
     }
@@ -325,8 +321,8 @@ public final class ContestClientUtil {
     public static boolean isContestNameYearUnique(String contestShortName, Long year,Long currentContestId) {
         return contestClient.isContestNameYearUnique(contestShortName, year, currentContestId);
     }
-    public static ContestClient fromService(RestService contestService) {
-        return ContestClient.fromService(contestService);
+    public static ContestClient fromService(ServiceNamespace serviceNamespace) {
+        return ContestClient.fromNamespace(serviceNamespace);
     }
 
     public static List<ContestCollectionCard> getSubContestCollectionCards(

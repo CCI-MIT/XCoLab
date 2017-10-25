@@ -6,29 +6,24 @@ import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.Report;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
-import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public final class FlaggingClient {
 
-    private static final RestService moderationService = new RestService(CoLabService.MODERATION,
-            ServiceRequestUtils.getNamespace());
-    private static final RestResource<Report, Long> reportResource = new RestResource1<>(
-            moderationService, "reports", Report.TYPES);
-    private static final RestResource<AggregatedReport, Long> aggregatedReportResource = new RestResource1<>(
-            moderationService, "aggregatedReports", AggregatedReport.TYPES);
-    private static final RestResource<ReportTarget, Long> reportTargetResource = new RestResource1<>(
-            moderationService, "reportTargets", ReportTarget.TYPES);
+    private static final RestResource<Report, Long> reportResource =
+            new RestResource1<>(FlaggingResource.REPORT, Report.TYPES);
+    private static final RestResource<AggregatedReport, Long> aggregatedReportResource =
+            new RestResource1<>(FlaggingResource.AGGREGATED_REPORT, AggregatedReport.TYPES);
+    private static final RestResource<ReportTarget, Long> reportTargetResource =
+            new RestResource1<>(FlaggingResource.REPORT_TARGET, ReportTarget.TYPES);
 
     private FlaggingClient() {
     }

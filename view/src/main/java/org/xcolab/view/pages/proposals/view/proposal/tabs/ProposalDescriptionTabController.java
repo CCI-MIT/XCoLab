@@ -18,7 +18,9 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.PlatformTeam;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
@@ -44,6 +46,8 @@ import org.xcolab.view.util.entity.flash.AlertMessage;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -89,7 +93,6 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         model.addAttribute("edit", editValidated);
         model.addAttribute("voted", voted);
         model.addAttribute("reportTargets", FlaggingClient.listReportTargets(TargetType.PROPOSAL));
-        model.addAttribute("showShareButtons", ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
         model.addAttribute("showOpennessStatus",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
@@ -157,6 +160,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     ConfigurationAttributeKey.PROPOSALS_SAVE_HELP_TEXT.get());
             model.addAttribute("proposalPickerDefaultTabIsContests",
                     ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
+            model.addAttribute("userTeams", PlatformTeamsClient.getTeams(currentMember));
 
             return "proposals/proposalDetails_edit";
         }

@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.group;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class Group_ extends AbstractGroup_ {
 
@@ -8,7 +8,7 @@ public class Group_ extends AbstractGroup_ {
 
     }
 
-    public Group_(AbstractGroup_ abstractGroup_, RestService restService) {
+    public Group_(AbstractGroup_ abstractGroup_, ServiceNamespace serviceNamespace) {
         super(abstractGroup_);
     }
 }

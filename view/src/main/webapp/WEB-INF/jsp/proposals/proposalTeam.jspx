@@ -80,7 +80,8 @@
 
                     <spring:message var="ownerText" code="contests.proposal.team.role.owner"/>
                     <spring:message var="memberText" code="contests.proposal.team.role.member"/>
-                    <spring:message var="confirmPromoteText" code="contests.proposal.team.confirmPromote" arguments="${member.screenName}"/>
+                    <collab:message var="confirmPromoteText" code="contests.proposal.team.confirmPromote"
+                                    arguments="${member.screenName}" contestType="${contestType}"/>
                     <tr class="${status.index mod 2 > 0 ? 'even' : 'odd'}">
                         <td><proposalsPortlet:proposalTeamMember member="${member }" /></td>
                         <td>${member.memberType == 'OWNER' ? ownerText : memberText}</td>
@@ -94,15 +95,17 @@
                                     </a>
                                 </c:if>
                             </td>
-                            <td>
-                                <c:if test="${member.memberType != 'OWNER'}">
-                                    <c:set var="promoteMemberToOwner" value="${proposal.proposalUrl}/tab/TEAM/promoteMemberToOwner?memberId=${member.userId}" />
+                            <c:if test="${proposalsPermissions.canPromoteToOwner}">
+                                <td>
+                                    <c:if test="${member.memberType != 'OWNER'}">
+                                        <c:set var="promoteMemberToOwner" value="${proposal.proposalUrl}/tab/TEAM/promoteMemberToOwner?memberId=${member.userId}" />
 
-                                    <a data-url="${promoteMemberToOwner }" data-confirm="${confirmPromoteText}" class="js-PostLink">
-                                        <spring:message code="contests.proposal.team.promote" />
-                                    </a>
-                                </c:if>
-                            </td>
+                                        <a data-url="${promoteMemberToOwner }" data-confirm="${confirmPromoteText}" class="js-PostLink">
+                                            <spring:message code="contests.proposal.team.promote" />
+                                        </a>
+                                    </c:if>
+                                </td>
+                            </c:if>
                         </c:if>
                     </tr>
                 </c:forEach>

@@ -1,7 +1,6 @@
 
 $c-Badge__textColor: white !default;
 $c-Badge__title__textColor: $t-Color__grey--darkest !default;
-$c-Badge__fontFamily: "bree", "bree-1", Verdana, sans-serif !default;
 
 //TODO: this is page-specific -> move to _p-userprofile.scss
 .c-Badge__container {
@@ -43,7 +42,6 @@ $c-Badge__fontFamily: "bree", "bree-1", Verdana, sans-serif !default;
 }
 
 %c-Badge__title {
-  font-family: $c-Badge__fontFamily;
   font-weight: $b-Typography__fontWeight--bold;
   color: $c-Badge__title__textColor;
   position: absolute;
@@ -66,7 +64,6 @@ $c-Badge__fontFamily: "bree", "bree-1", Verdana, sans-serif !default;
 }
 
 %c-Badge__year {
-  font-family: $c-Badge__fontFamily;
   color: $c-Badge__textColor;
   font-weight: $b-Typography__fontWeight--bold;
   position: absolute;
@@ -88,7 +85,6 @@ $c-Badge__fontFamily: "bree", "bree-1", Verdana, sans-serif !default;
 }
 
 %c-Badge__text {
-  font-family: $c-Badge__fontFamily;
   font-weight: $b-Typography__fontWeight--bold;
   color: $c-Badge__textColor;
   position: absolute;

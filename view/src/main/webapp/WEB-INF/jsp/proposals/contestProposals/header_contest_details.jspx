@@ -3,7 +3,9 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:spring="http://www.springframework.org/tags"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
+>
 
     <div class="p-ContestProposals__header">
         <div class="p-ContestProposals__header__content">
@@ -178,13 +180,11 @@
                 </div>
             </div>
 
-            <c:if test="${showShareButtons}">
-                <!-- TODO: migrate to new addthis toolbox -->
+            <c:if test="${_showShareButtons}">
                 <div class="p-ContestProposals__header__shareButtons">
-                    <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox"
+                    <div class="" id="shareProposalToolbox"
                          style="float: left;width: 35px;">
-                        <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                        <div class="addthis_inline_share_toolbox"><!-- --></div>
+                        <xcolab-social:socialShareButton title="${_colabName.concat(' - ').concat(contest.contestShortName)}"/>
                     </div>
                 </div>
             </c:if>

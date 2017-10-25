@@ -24,7 +24,7 @@ import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.view.pages.proposals.wrappers.ProposalsSortFilterBean;
+import org.xcolab.view.pages.proposals.wrappers.SortedProposalList;
 import org.xcolab.view.util.entity.enums.MemberRole;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
@@ -106,13 +106,11 @@ public class ContestProposalsController extends BaseProposalsController {
 
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals",
-            new ProposalsSortFilterBean(proposals, sortFilterPage));
+            new SortedProposalList(proposals, sortFilterPage));
         model.addAttribute("showCountdown",
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
         model.addAttribute("defaultTimeZoneId",
             ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get());
-        model.addAttribute("showShareButtons",
-            ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
         model.addAttribute("showContributorsColumn",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 

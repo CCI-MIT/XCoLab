@@ -13,7 +13,8 @@ public class DeleteQuery<ElementT, IdT> implements Query<ElementT, Boolean> {
     private final IdT id;
     private CacheName cacheName;
 
-    public DeleteQuery(RestResource<ElementT, IdT> restResource, Class<ElementT> entityType, IdT id) {
+    public DeleteQuery(RestResource<ElementT, IdT> restResource, Class<ElementT> entityType,
+            IdT id) {
         this.entityType = entityType;
         this.id = id;
         this.uriBuilder = restResource.getResourceUrl(id);

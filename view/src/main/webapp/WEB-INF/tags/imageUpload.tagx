@@ -17,6 +17,8 @@
                              rtexprvalue="true" description="Fallback image type"/>
     <jsp:directive.attribute name="compactView" type="java.lang.Boolean" required="false"
                              rtexprvalue="true" description="If true, compact view will be used"/>
+    <jsp:directive.attribute name="preserveAspectRatio" type="java.lang.Boolean" required="false"
+                             rtexprvalue="true" description="If false, the image will be cropped to square"/>
     <jsp:directive.attribute name="buttonText" type="java.lang.String" required="false"
                              rtexprvalue="true" description="Text for the upload button"/>
 
@@ -74,6 +76,7 @@
         fileUploadVars['${uniqueName}'].previewImgId = "#" + "${previewImgId}";
         fileUploadVars['${uniqueName}'].imageIdInputId = '#' + '${imageIdInput}';
         fileUploadVars['${uniqueName}'].urlDisplayDiv = '#' + '${urlDisplayDiv}';
+        fileUploadVars['${uniqueName}'].shouldBeCropped = !'${preserveAspectRatio}';
     </script>
 
     <c:if test="${not empty imageIdInput}">
@@ -111,7 +114,7 @@
         jQuery(function() {
             var vars = fileUploadVars['${uniqueName}'];
             jQuery(vars.fileUploadInputId).fileupload({
-                url: FILE_UPLOAD_URL,
+                url: FILE_UPLOAD_URL + (vars.shouldBeCropped ? '?crop=true' : ''),
                 dataType: 'json',
                 autoUpload: true,
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)\$/i,
@@ -123,10 +126,10 @@
                     .test(window.navigator.userAgent),
                 imageMaxWidth: FILE_UPLOAD_MAX_WIDTH,
                 imageMaxHeight: FILE_UPLOAD_MAX_HEIGHT,
-                imageCrop: true,
+                imageCrop: vars.shouldBeCropped,
                 previewMaxWidth: FILE_UPLOAD_MAX_WIDTH,
                 previewMaxHeight: FILE_UPLOAD_MAX_HEIGHT,
-                previewCrop: true
+                previewCrop: vars.shouldBeCropped
             }).on('fileuploaddone', function (e, data) {
                 if (!data.result.error) {
                     jQuery(vars.previewImgId).attr('src', data.result.imageUrl);

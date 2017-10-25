@@ -14,14 +14,16 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -36,43 +38,43 @@ import java.util.stream.Stream;
 
 public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
 
-    private final Proposal wrappedProposal;
+    private final Proposal proposal;
 
-    private final RestService restService;
+    private final ServiceNamespace serviceNamespace;
 
     public PlanSectionDefinition() {
-        wrappedProposal = null;
-        restService = null;
+        proposal = null;
+        serviceNamespace = null;
     }
 
     public PlanSectionDefinition(PlanSectionDefinition value) {
         super(value);
-        if(value.getRestService() != null){
-            restService = value.getRestService();
+        if(value.getServiceNamespace() != null){
+            serviceNamespace = value.getServiceNamespace();
         }else{
-            restService = null;
+            serviceNamespace = null;
         }
-        wrappedProposal = null;
+        proposal = null;
     }
 
     public PlanSectionDefinition(PlanSectionDefinition value, Proposal proposal) {
         super(value);
-        if(value.getRestService() != null){
-            restService = value.getRestService();
-        }else{
-            if(proposal.getRestService()!=null){
-                restService = proposal.getRestService();
-            }else {
-                restService = null;
+        if (value.getServiceNamespace() != null) {
+            serviceNamespace = value.getServiceNamespace();
+        } else {
+            if (proposal.getServiceNamespace() != null) {
+                serviceNamespace = proposal.getServiceNamespace();
+            } else {
+                serviceNamespace = null;
             }
         }
-        this.wrappedProposal = proposal;
+        this.proposal = proposal;
     }
     public PlanSectionDefinition(AbstractPlanSectionDefinition abstractPlanSectionDefinition,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractPlanSectionDefinition);
-        wrappedProposal = null;
-        this.restService = restService;
+        proposal = null;
+        this.serviceNamespace = serviceNamespace;
     }
 
     public List<Long> getAdditionalIdsAsList() {
@@ -354,12 +356,23 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "or");
     }
 
-    public RestService getRestService() {
-        return restService;
+    public ServiceNamespace getServiceNamespace() {
+        return serviceNamespace;
     }
 
-
     private ProposalAttribute getSectionAttribute() {
-        return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", this.getId_());
+        if (proposal == null) {
+            throw new ProposalFieldNotInitializedException();
+        }
+        ProposalAttributeHelper proposalAttributeHelper = proposal.getProposalAttributeHelper();
+        return proposalAttributeHelper
+                .getAttributeOrNull(ProposalAttributeKeys.SECTION, this.getId_());
+    }
+
+    public static class ProposalFieldNotInitializedException extends RuntimeException {
+
+        public ProposalFieldNotInitializedException() {
+            super("A value in the proposal field is required to perform this action.");
+        }
     }
 }

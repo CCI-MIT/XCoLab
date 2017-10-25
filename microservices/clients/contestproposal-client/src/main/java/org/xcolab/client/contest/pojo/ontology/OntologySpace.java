@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.ontology;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,8 @@ public class OntologySpace extends AbstractOntologySpace {
         super(value);
     }
 
-    public OntologySpace(AbstractOntologySpace abstractOntologySpace, RestService restService) {
+    public OntologySpace(AbstractOntologySpace abstractOntologySpace,
+            ServiceNamespace serviceNamespace) {
         super(abstractOntologySpace);
     }
 

@@ -3,26 +3,19 @@ package org.xcolab.client.tracking;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.client.tracking.pojo.TrackedVisit;
 import org.xcolab.client.tracking.pojo.TrackedVisitor;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
 
 public final class TrackingClient {
 
-    private static final RestService trackingService = new RestService(CoLabService.TRACKING,
-            ServiceRequestUtils.getNamespace());
-
-    private static final RestResource<TrackedVisit, Long> trackedVisitResource = new RestResource1<>(
-            trackingService, "trackedVisits", TrackedVisit.TYPES);
-    private static final RestResource<TrackedVisitor, Long> trackedVisitorResource = new RestResource1<>(
-            trackingService, "trackedVisitors", TrackedVisitor.TYPES);
-
-    private static final RestResource<Location, Long> locationResource = new RestResource1<>(
-            trackingService, "locations", Location.TYPES);
+    private static final RestResource<TrackedVisit, Long> trackedVisitResource =
+            new RestResource1<>(TrackingResource.TRACKED_VISITS, TrackedVisit.TYPES);
+    private static final RestResource<TrackedVisitor, Long> trackedVisitorResource =
+            new RestResource1<>(TrackingResource.TRACKED_VISITORS, TrackedVisitor.TYPES);
+    private static final RestResource<Location, Long> locationResource =
+            new RestResource1<>(TrackingResource.LOCATIONS, Location.TYPES);
 
 
     public static TrackedVisit addTrackedVisit(String uuid, String url, String ip,

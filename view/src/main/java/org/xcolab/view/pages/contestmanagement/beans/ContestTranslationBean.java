@@ -23,7 +23,7 @@ public class ContestTranslationBean implements Serializable {
     }
 
     public ContestTranslationBean(Contest contest) {
-        ContestClient contestClient = ContestClient.fromService(contest.getRestService());
+        ContestClient contestClient = ContestClient.fromNamespace(contest.getServiceNamespace());
         final Map<String, ContestTranslation> translations =
                 contestClient.getTranslationsForContestId(contest.getContestPK())
                 .stream()
@@ -49,7 +49,7 @@ public class ContestTranslationBean implements Serializable {
     }
 
     public void persist(Contest contest) {
-        ContestClient contestClient = ContestClient.fromService(contest.getRestService());
+        ContestClient contestClient = ContestClient.fromNamespace(contest.getServiceNamespace());
         translations.stream()
                 .filter(translation -> !StringUtils.isAllEmpty(translation.getContestName(),
                         translation.getContestShortName(), translation.getContestDescription()))

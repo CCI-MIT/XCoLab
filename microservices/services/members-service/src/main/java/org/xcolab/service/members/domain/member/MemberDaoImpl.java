@@ -84,15 +84,15 @@ public class MemberDaoImpl implements MemberDao {
             query.addConditions(member.GOOGLE_ID.eq(googleId));
         }
         if (roleName != null) {
-            Users_RolesTable uc = USERS_ROLES.as("ur");
-            MemberCategoryTable mc = MEMBER_CATEGORY.as("mc");
+            Users_RolesTable userRolesInner = USERS_ROLES.as("userRolesInner");
+            MemberCategoryTable memberCategoryInner = MEMBER_CATEGORY.as("memberCategoryInner");
 
             query.addConditions(usersRoles.ROLE_ID.eq(
-                    dslContext.select(uc.ROLE_ID)
-                    .from(uc)
-                    .innerJoin(mc).on(uc.ROLE_ID.eq(mc.ROLE_ID))
-                    .where(uc.USER_ID.eq(member.ID_))
-                    .orderBy(mc.SORT_ORDER.desc())
+                    dslContext.select(userRolesInner.ROLE_ID)
+                    .from(userRolesInner)
+                    .innerJoin(memberCategoryInner).on(userRolesInner.ROLE_ID.eq(memberCategoryInner.ROLE_ID))
+                    .where(userRolesInner.USER_ID.eq(member.ID_))
+                    .orderBy(memberCategoryInner.SORT_ORDER.desc())
                     .limit(0,1)
             ));
         }

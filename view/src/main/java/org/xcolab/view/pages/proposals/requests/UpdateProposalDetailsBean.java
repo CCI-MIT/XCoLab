@@ -22,6 +22,7 @@ public class UpdateProposalDetailsBean {
 
     @Length(max = 20, message = "The team name is limited to 20 characters.")
     private String team;
+    private Long selectedTeam;
     private long imageId;
     private long baseProposalId;
     private long baseProposalContestId;
@@ -105,6 +106,14 @@ public class UpdateProposalDetailsBean {
 
     public String getTeam() {
         return team;
+    }
+
+    public void setSelectedTeam(Long selectedTeam) {
+        this.selectedTeam = selectedTeam;
+    }
+
+    public Long getSelectedTeam() {
+        return selectedTeam;
     }
 
     public void setTeam(String team) {

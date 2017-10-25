@@ -2,7 +2,7 @@ package org.xcolab.client.contest.pojo.ontology;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class OntologyTerm extends AbstractOntologyTerm {
         super(id_, parentid, ontologyspaceid, name, descriptionurl, order_);
     }
 
-    public OntologyTerm(AbstractOntologyTerm abstractOntologyTerm, RestService restService) {
+    public OntologyTerm(AbstractOntologyTerm abstractOntologyTerm, ServiceNamespace serviceNamespace) {
         super(abstractOntologyTerm);
     }
 

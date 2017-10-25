@@ -7,11 +7,10 @@ import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
+        .DiscussionAuthorizationException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,7 +40,7 @@ public abstract class BaseDiscussionsActionController {
 
             }
             if (contest != null && contest.getIsSharedContestInForeignColab()) {
-                RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
+                ServiceNamespace commentsService = ServiceNamespace.instance(
                         ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
                 commentClient = CommentClient.fromService(commentsService);

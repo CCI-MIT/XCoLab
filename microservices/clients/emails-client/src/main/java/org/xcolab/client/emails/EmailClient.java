@@ -1,9 +1,6 @@
 package org.xcolab.client.emails;
 
 import org.xcolab.client.emails.pojo.Email;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.ServiceResource;
 import org.xcolab.util.http.client.ServiceResource1;
 
@@ -11,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class EmailClient {
-    private static final RestService emailService = new RestService(CoLabService.EMAIL,
-            ServiceRequestUtils.getNamespace());
-    private static final ServiceResource emailResource = new ServiceResource1(emailService, "emails");
+
+    private static final ServiceResource emailResource =
+            new ServiceResource1(EmailResource.EMAIL);
 
     private EmailClient() {
     }

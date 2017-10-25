@@ -2,7 +2,8 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
 
     <jsp:directive.attribute name="currentLanguage" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="Language selection items" />
@@ -20,12 +21,28 @@
                         <li><a href="/wiki/Help"><spring:message code="homepage.bottom.menu.help"/></a></li>
                         <c:choose>
                             <c:when test="${showProfileLink}">
-                                <li><a href="/logout"><spring:message code="homepage.bottom.menu.signout" /></a></li>
-                                <li><a href="/members/profile"><spring:message code="homepage.bottom.menu.myprofile"/></a></li>
+                                <li>
+                                    <a data-url="/logout" class="js-PostLink">
+                                        <spring:message code="homepage.bottom.menu.signout" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/members/profile">
+                                        <spring:message code="homepage.bottom.menu.myprofile"/>
+                                    </a>
+                                </li>
                             </c:when>
                             <c:otherwise>
-                                <li><a href="/register" class="openreg"><spring:message code="homepage.bottom.menu.register"/></a></li>
-                                <li><a href="#" data-toggle="modal" data-target="#loginModal"><spring:message code="homepage.bottom.menu.signin"/></a></li>
+                                <li>
+                                    <a href="/register" class="openreg">
+                                        <spring:message code="homepage.bottom.menu.register"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#loginModal">
+                                        <spring:message code="homepage.bottom.menu.signin"/>
+                                    </a>
+                                </li>
                             </c:otherwise>
                         </c:choose>
                         <c:if test="${showLanguageDropdown}">
@@ -42,15 +59,17 @@
                     </ul>
                 </nav>
 
-                <!-- TODO : better styling; get rid of style attribute -->
-                <div class="pull-right" style="margin-top: -12px;">
-                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                    <div class="addthis_inline_follow_toolbox"><!-- --></div>
-                </div>
+                <c:if test="${_showShareButtons}">
+                    <!-- TODO : better styling; get rid of style attribute -->
+                    <div class="pull-right" style="margin-top: 4px;">
+                        <xcolab-social:socialFollowButton />
+                    </div>
+                </c:if>
             </div>
 
         </div> <!-- #c-Footer__menu -->
 
+        
         <div class="bs-container-fixed">
             <!-- footer content -->
             <xcolab:content articleId="${footerArticleId}"/>

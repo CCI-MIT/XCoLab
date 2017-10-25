@@ -9,10 +9,8 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.util.entity.enums.MemberRole;
 
 import java.util.List;
@@ -65,10 +63,10 @@ public class GetRoleNameStartTag extends BodyTagSupport {
                 try {
                     Contest c = ContestClientUtil.getContest(contestId);
                     if (c.getIsSharedContestInForeignColab()) {
-                        RestService proposalsService =
-                                new RefreshingRestService(CoLabService.CONTEST,
+                        ServiceNamespace proposalsService =
+                                ServiceNamespace.instance(
                                         ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-                        proposalClient = ProposalClient.fromService(proposalsService);
+                        proposalClient = ProposalClient.fromNamespace(proposalsService);
                     }
                 } catch (ContestNotFoundException cnfe) {
                     proposalClient = ProposalClientUtil.getClient();

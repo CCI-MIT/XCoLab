@@ -4,7 +4,7 @@ import org.xcolab.client.admin.exceptions.EmailTemplateNotFoundException;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.HashMap;
@@ -13,17 +13,13 @@ import java.util.Map;
 
 public final class EmailTemplateClient {
 
-    private final RestService adminService;
-
-    private static final Map<RestService, EmailTemplateClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, EmailTemplateClient> instances = new HashMap<>();
     private final RestResource<ContestEmailTemplate, String> emailTemplatesResource;
 
-    private EmailTemplateClient(RestService restService){
-        this.adminService = restService;
-        emailTemplatesResource = new RestResource1<>(adminService, "emailTemplates", ContestEmailTemplate.TYPES);
+    private EmailTemplateClient(ServiceNamespace serviceNamespace) {
+        emailTemplatesResource = new RestResource1<>(
+                AdminResource.EMAIL_TEMPLATE, ContestEmailTemplate.TYPES, serviceNamespace);
     }
-
-
 
     public  List<ContestEmailTemplate> listAllContestEmailTemplates() {
         return emailTemplatesResource.list().execute();
@@ -46,8 +42,7 @@ public final class EmailTemplateClient {
         return emailTemplatesResource.create(template).execute();
     }
 
-    public static EmailTemplateClient fromService(RestService contestService) {
-        return instances.computeIfAbsent(contestService, EmailTemplateClient::new);
+    public static EmailTemplateClient fromNamespace(ServiceNamespace serviceNamespace) {
+        return instances.computeIfAbsent(serviceNamespace, EmailTemplateClient::new);
     }
-
 }

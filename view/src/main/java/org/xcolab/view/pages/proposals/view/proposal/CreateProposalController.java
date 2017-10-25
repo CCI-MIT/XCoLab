@@ -13,14 +13,13 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
@@ -74,7 +73,7 @@ public class CreateProposalController extends BaseProposalsController {
         Proposal proposal;
 
         if (contest.getIsSharedContestInForeignColab()) {
-            RestService proposalService = new RefreshingRestService(CoLabService.CONTEST,
+            ServiceNamespace proposalService = ServiceNamespace.instance(
                     ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
             );
             proposal = new Proposal(proposalService);
@@ -132,6 +131,7 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("proposalPickerDefaultTabIsContests",
                 ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
         model.addAttribute("saveUrl", contest.getNewProposalLinkUrl());
+        model.addAttribute("userTeams", PlatformTeamsClient.getTeams(loggedInMember));
 
         AnalyticsUtil.publishEvent(request, memberId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,

@@ -16,7 +16,8 @@ public class UpdateQuery<ElementT, IdT> implements Query<ElementT, Boolean> {
     private CacheKey<ElementT, ElementT> cacheKey;
     private CacheName cacheName;
 
-    public UpdateQuery(RestResource<ElementT, IdT> restResource, Class<ElementT> entityType, IdT id, ElementT pojo) {
+    public UpdateQuery(RestResource<ElementT, IdT> restResource, Class<ElementT> entityType, IdT id,
+            ElementT pojo) {
         this.entityType = entityType;
         this.id = id;
         this.pojo = pojo;

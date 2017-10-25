@@ -2,13 +2,13 @@ package org.xcolab.view.util.entity;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.util.GroupingUtil;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,17 +22,10 @@ public class ActivityUtil {
     }
 
     public static List<ActivityEntry> groupActivities(List<ActivityEntry> activities) {
-        //find all activities of same type
-        Map<String, List<ActivityEntry>> activitiesMap = new HashMap<>(10000);
-        for (ActivityEntry a : activities) {
-            if (!activitiesMap.containsKey(getSocialActivityKey(a))) {
-                activitiesMap.put(getSocialActivityKey(a), new LinkedList<>());
-            }
-            activitiesMap.get(getSocialActivityKey(a)).add(a);
-        }
+        Map<String, List<ActivityEntry>> activitiesMap = GroupingUtil
+                .groupByWithDuplicates(activities, ActivityUtil::getSocialActivityKey);
         return clusterActivities(activitiesMap);
     }
-
 
     public static int getAllActivitiesCount() {
         return ActivitiesClientUtil.countActivities(null, null);

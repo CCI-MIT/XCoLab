@@ -30,15 +30,12 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
-        .DiscussionAuthorizationException;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
@@ -51,7 +48,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-
 public class AddDiscussionMessageActionController extends BaseDiscussionsActionController {
 
     private final static Logger _log =
@@ -82,19 +78,13 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
                 Contest contest = ContestClientUtil.getContest(contestIdLong);
                 if (contest.getIsSharedContestInForeignColab()) {
-                    RestService activitiesService = new RefreshingRestService(CoLabService.ACTIVITY,
+                    ServiceNamespace serviceNamespace = ServiceNamespace.instance(
                             ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
-                    activityClient = ActivitiesClient.fromService(activitiesService);
-                    RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
-                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-
-                    commentClient = CommentClient.fromService(commentsService);
-                    threadClient = ThreadClient.fromService(commentsService);
-                    RestService proposalsService = new RefreshingRestService(CoLabService.CONTEST,
-                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-
-                    proposalClient = ProposalClient.fromService(proposalsService);
+                    activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
+                    commentClient = CommentClient.fromService(serviceNamespace);
+                    threadClient = ThreadClient.fromService(serviceNamespace);
+                    proposalClient = ProposalClient.fromNamespace(serviceNamespace);
                 } else {
                     threadClient = ThreadClientUtil.getClient();
                     commentClient = CommentClientUtil.getClient();

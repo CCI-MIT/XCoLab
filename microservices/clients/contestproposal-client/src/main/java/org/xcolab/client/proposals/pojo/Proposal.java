@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
@@ -18,7 +19,6 @@ import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
@@ -56,7 +56,6 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.enums.modeling.ModelRegions;
@@ -65,7 +64,7 @@ import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,7 +83,7 @@ public class Proposal extends AbstractProposal {
 
     private final Clients clients;
 
-    private RestService restService;
+    private ServiceNamespace serviceNamespace;
 
     protected final Contest contest;
     protected final ContestPhase contestPhase;
@@ -112,14 +111,14 @@ public class Proposal extends AbstractProposal {
     }
 
     public Proposal() {
-        this((RestService) null);
+        this((ServiceNamespace) null);
     }
 
     public Proposal(Proposal value) {
         super(value);
-        if (value.getRestService() != null) {
-            this.restService = value.getRestService();
-            this.clients = new Clients(restService);
+        if (value.getServiceNamespace() != null) {
+            this.serviceNamespace = value.getServiceNamespace();
+            this.clients = new Clients(serviceNamespace);
         } else {
             this.clients = new Clients();
         }
@@ -146,9 +145,9 @@ public class Proposal extends AbstractProposal {
             ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         super(proposal);
 
-        if (proposal.getRestService() != null) {
-            this.restService = proposal.getRestService();
-            this.clients = new Clients(restService);
+        if (proposal.getServiceNamespace() != null) {
+            this.serviceNamespace = proposal.getServiceNamespace();
+            this.clients = new Clients(serviceNamespace);
         } else {
             this.clients = new Clients();
         }
@@ -166,11 +165,11 @@ public class Proposal extends AbstractProposal {
                 clients.proposalAttribute);
     }
 
-    public Proposal(RestService restService) {
+    public Proposal(ServiceNamespace serviceNamespace) {
         super();
-        if (restService != null) {
-            this.restService = restService;
-            this.clients = new Clients(restService);
+        if (serviceNamespace != null) {
+            this.serviceNamespace = serviceNamespace;
+            this.clients = new Clients(serviceNamespace);
         } else {
             this.clients = new Clients();
         }
@@ -190,11 +189,11 @@ public class Proposal extends AbstractProposal {
                 clients.proposalAttribute);
     }
 
-    public Proposal(AbstractProposal abstractProposal, RestService restService) {
+    public Proposal(AbstractProposal abstractProposal, ServiceNamespace serviceNamespace) {
         super(abstractProposal);
-        this.restService = restService;
+        this.serviceNamespace = serviceNamespace;
 
-        this.clients = new Clients(restService);
+        this.clients = new Clients(serviceNamespace);
 
         ContestAssociation contestAssociation = new ContestAssociation();
         this.contestPhase =  contestAssociation.getContestPhase();
@@ -940,13 +939,13 @@ public class Proposal extends AbstractProposal {
         return this.proposalRatings.getShouldAdvance();
     }
 
-    public RestService getRestService() {
-        return restService;
+    public ServiceNamespace getServiceNamespace() {
+        return serviceNamespace;
     }
 
     public ProposalRibbon getRibbonWrapper() {
         if (ribbonWrapper == null) {
-            ribbonWrapper = new ProposalRibbon(this, restService);
+            ribbonWrapper = new ProposalRibbon(this, serviceNamespace);
         }
         return ribbonWrapper;
     }
@@ -981,25 +980,19 @@ public class Proposal extends AbstractProposal {
             this(null);
         }
 
-        Clients(RestService restService) {
-            if (restService != null) {
-                RestService contestService = restService.withServiceName(CoLabService.CONTEST.getServiceName());
-                contest = ContestClient.fromService(contestService);
-                planTemplate = PlanTemplateClient.fromService(contestService);
-                proposal = ProposalClient.fromService(restService);
-                proposalAttribute = ProposalAttributeClient.fromService(restService);
-                proposalPhase = ProposalPhaseClient.fromService(restService);
-
-                contestTeamMember =  ContestTeamMemberClient.fromService(contestService);
-
-                RestService commentService = restService.withServiceName(CoLabService.COMMENT.getServiceName());
-                comment = CommentClient.fromService(commentService);
-                proposalMemberRating = ProposalMemberRatingClient.fromService(restService);
-                proposalJudgeRating = ProposalJudgeRatingClient.fromService(restService);
-                membership = MembershipClient.fromService(restService);
-
-                RestService membersService = restService.withServiceName(CoLabService.MEMBER.getServiceName());
-                usersGroup = UsersGroupsClient.fromService(membersService);
+        Clients(ServiceNamespace serviceNamespace) {
+            if (serviceNamespace != null) {
+                contest = ContestClient.fromNamespace(serviceNamespace);
+                planTemplate = PlanTemplateClient.fromNamespace(serviceNamespace);
+                proposal = ProposalClient.fromNamespace(serviceNamespace);
+                proposalAttribute = ProposalAttributeClient.fromNamespace(serviceNamespace);
+                proposalPhase = ProposalPhaseClient.fromNamespace(serviceNamespace);
+                contestTeamMember =  ContestTeamMemberClient.fromService(serviceNamespace);
+                comment = CommentClient.fromService(serviceNamespace);
+                proposalMemberRating = ProposalMemberRatingClient.fromNamespace(serviceNamespace);
+                proposalJudgeRating = ProposalJudgeRatingClient.fromNamespace(serviceNamespace);
+                membership = MembershipClient.fromNamespace(serviceNamespace);
+                usersGroup = UsersGroupsClient.fromNamespace(serviceNamespace);
             } else {
                 contest = ContestClientUtil.getClient();
                 proposal = ProposalClientUtil.getClient();

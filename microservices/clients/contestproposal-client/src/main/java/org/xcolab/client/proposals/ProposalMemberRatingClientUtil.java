@@ -2,19 +2,15 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class ProposalMemberRatingClientUtil {
 
-    private static final RestService contestService = new RestService(CoLabService.CONTEST,
-            ServiceRequestUtils.getNamespace());
     private static final ProposalMemberRatingClient client =
-            ProposalMemberRatingClient.fromService(contestService);
+            ProposalMemberRatingClient.fromNamespace(ServiceNamespace.instance());
 
     public static ProposalMemberRatingClient getClient() {
         return client;

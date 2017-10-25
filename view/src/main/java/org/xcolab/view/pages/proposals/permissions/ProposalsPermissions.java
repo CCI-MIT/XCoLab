@@ -124,6 +124,11 @@ public class ProposalsPermissions {
         return getCanAdminProposal();
     }
 
+    public boolean getCanPromoteToOwner() {
+        return getCanManageUsers() && (getCanAdminAll()
+                || ConfigurationAttributeKey.PROPOSALS_USER_CAN_PROMOTE_TO_OWNER.get());
+    }
+
     public boolean getCanSupportProposal() {
         return isLoggedIn && !isGuest && !isVotingEnabled();
     }

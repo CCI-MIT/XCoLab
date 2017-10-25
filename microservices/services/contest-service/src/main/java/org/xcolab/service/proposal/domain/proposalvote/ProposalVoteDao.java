@@ -5,9 +5,14 @@ import org.xcolab.model.tables.pojos.ProposalVote;
 import java.util.List;
 
 public interface ProposalVoteDao {
-    int delete(Long proposalId, Long contestPhaseId);
+
+    int delete(long proposalId, long contestPhaseId);
+
     List<ProposalVote> findByGiven(Long proposalId, Long contestPhaseId, Long userId);
+
     Integer countByGiven(Long proposalId, Long contestPhaseId, Long userId);
+
     boolean update(ProposalVote proposalVote);
+
     ProposalVote create(ProposalVote proposalVote);
 }

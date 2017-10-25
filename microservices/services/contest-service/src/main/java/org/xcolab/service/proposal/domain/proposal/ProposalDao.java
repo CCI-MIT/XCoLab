@@ -5,6 +5,7 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProposalDao {
 
@@ -28,5 +29,5 @@ public interface ProposalDao {
 
     Integer getProposalMaterializedPoints(Long proposalId);
 
-    Proposal getByGroupId(Long groupId) throws NotFoundException;
+    Optional<Proposal> getByGroupId(Long groupId, Boolean visible, Boolean contestPrivate);
 }

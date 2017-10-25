@@ -85,7 +85,7 @@ public class ContestControllerTest {
     private ContestCollectionCardDao contestCollectionCardDao;
 
     @Mock
-    private ContestService contestService;
+    private ContestService serviceNamespace;
 
     @Mock
     private CollectionCardService collectionCardService;

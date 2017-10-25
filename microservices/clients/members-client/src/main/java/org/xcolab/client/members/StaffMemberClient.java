@@ -1,22 +1,17 @@
 package org.xcolab.client.members;
 
 import org.xcolab.client.members.pojo.StaffMember;
-import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
 public class StaffMemberClient {
-    private static final RestService memberService = new RestService(CoLabService.MEMBER,
-            ServiceRequestUtils.getNamespace());
 
-    private static final RestResource<StaffMember, Long> staffMemberResource = new RestResource1<>(memberService,
-            "staffMembers", StaffMember.TYPES);
+    private static final RestResource<StaffMember, Long> staffMemberResource =
+            new RestResource1<>(UserResource.STAFF_MEMBER, StaffMember.TYPES);
 
     public static List<StaffMember> getStaffMembersByCategoryId(long categoryId) {
         return staffMemberResource.list()
