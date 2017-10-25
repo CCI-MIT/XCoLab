@@ -345,6 +345,14 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_USER_CAN_PROMOTE_TO_OWNER")
                     .defaultValue(true)
                     .build();
+    public static final AttributeGetter<Long> PROPOSALS_MAX_VOTES_PER_CONTEST =
+            ConfigurationAttributes.newLongAttribute("PROPOSALS_MAX_VOTES_PER_CONTEST")
+                    .defaultValue(1L)
+                    .build();
+    public static final AttributeGetter<Long> PROPOSALS_MAX_VOTES_PER_PROPOSAL =
+            ConfigurationAttributes.newLongAttribute("PROPOSALS_MAX_VOTES_PER_PROPOSAL")
+                    .defaultValue(1L)
+                    .build();
 
     // Points
     public static final AttributeGetter<Boolean> POINTS_IS_ACTIVE =

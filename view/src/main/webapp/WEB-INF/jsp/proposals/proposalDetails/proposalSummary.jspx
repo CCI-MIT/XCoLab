@@ -3,9 +3,9 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:form="http://www.springframework.org/tags/form"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
->
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
 
     <!--@elvariable id="linkedProposalContestTypeProposalWrappersByContestTypeId" type="java.util.Map<java.lang.Long, org.xcolab.wrappers.ContestTypeProposalWrapper>"-->
 
@@ -19,16 +19,30 @@
                             <img src="${_themeImageFolder}/icon-proposal-vote.png" width="22" height="18" alt="Vote" />
                             <span>${proposal.votesCount}</span> <spring:message code="contests.votes" />
                             <c:if test="${proposalsPermissions.votingEnabled}">
-                                <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+                                <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction" />
 
-                                <a class="c-Button__primary js-PostLink" data-url="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }"
-                                        rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;">
-                                    <collab:message var="voteForText" code="contests.voting.vote" contestType="${contestType}" />
-                                    <spring:message var="retractVoteText" code="contests.voting.retract" />
-                                    ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : retractVoteText}
-                                </a>
+                                <form:form action="${voteOnProposalURL}" method="post">
+                                    <c:if test="${proposalsDisplayPermissions.canSeeVoteButton and contest.maxVotesPerProposal > 1}">
+                                        <input name="voteValue" class="form-control bs-form-control-inline bs-form-control--xs"
+                                               type="number" min="1" max="${contest.maxVotesPerProposal}" value="1"/>
+                                    </c:if>
+                                    <button class="c-Button__primary" type="submit"
+                                            onclick="if(!deferUntilLogin(this)){return false;}">
+                                        <collab:message var="voteForText" code="contests.voting.vote" contestType="${contestType}"/>
+                                        <spring:message var="retractVoteText" code="contests.voting.retract"/>
+                                        ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : retractVoteText}
+                                    </button>
+                                </form:form>
                                 <p style="margin:15px 0 15px 0;font-size:17px">
-                                    <collab:message code="contests.voting.onevote" contestType="${contestType}" />
+                                    <c:choose>
+                                        <c:when test="${contest.maxVotesPerContest == 1}">
+                                            <collab:message code="contests.voting.onevote" contestType="${contestType}" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <collab:message code="contests.voting.xvotes" arguments="${contest.maxVotesPerContest}"
+                                                            contestType="${contestType}" />
+                                        </c:otherwise>
+                                    </c:choose>
                                 </p>
                             </c:if>
                         </div>

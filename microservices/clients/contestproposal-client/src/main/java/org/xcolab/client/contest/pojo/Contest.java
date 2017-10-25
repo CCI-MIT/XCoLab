@@ -772,4 +772,12 @@ public class Contest extends AbstractContest implements Serializable {
         return planTemplateClient.getPlanSectionDefinitionByPlanTemplateId(getPlanTemplateId(),
                         true);
     }
+
+    public int getMaxVotesPerContest() {
+        return ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_CONTEST.get().intValue();
+    }
+
+    public int getMaxVotesPerProposal() {
+        return ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_PROPOSAL.get().intValue();
+    }
 }
