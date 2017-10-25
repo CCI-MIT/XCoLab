@@ -1,7 +1,8 @@
 package org.xcolab.client.contest.pojo.phases;
 
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+
 
 public class ContestPhaseType extends AbstractContestPhaseType {
 
@@ -12,7 +13,7 @@ public class ContestPhaseType extends AbstractContestPhaseType {
     }
 
     public ContestPhaseType(AbstractContestPhaseType abstractContestPhaseType,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractContestPhaseType);
     }
 

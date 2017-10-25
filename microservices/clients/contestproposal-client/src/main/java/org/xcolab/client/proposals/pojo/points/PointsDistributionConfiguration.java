@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.points;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.sql.Timestamp;
 
@@ -29,7 +29,7 @@ public class PointsDistributionConfiguration extends AbstractPointsDistributionC
 
     public PointsDistributionConfiguration(
             AbstractPointsDistributionConfiguration abstractPointsDistributionConfiguration,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractPointsDistributionConfiguration);
     }
 }

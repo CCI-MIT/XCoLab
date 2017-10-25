@@ -40,19 +40,19 @@ public class ContestController {
     private final ContestDiscussionDao contestDiscussionDao;
     private final ContestCollectionCardDao contestCollectionCardDao;
 
-    private final ContestService contestService;
+    private final ContestService serviceNamespace;
     private final CollectionCardService collectionCardService;
     private final OntologyService ontologyService;
 
     @Autowired
-    public ContestController(ContestTranslationDao contestTranslationDao, ContestService contestService,
+    public ContestController(ContestTranslationDao contestTranslationDao, ContestService serviceNamespace,
             CollectionCardService collectionCardService, ContestDao contestDao,
             ContestCollectionCardDao contestCollectionCardDao,
             ContestDiscussionDao contestDiscussionDao, OntologyService ontologyService) {
 
 
         this.contestTranslationDao = contestTranslationDao;
-        this.contestService = contestService;
+        this.serviceNamespace = serviceNamespace;
         this.collectionCardService = collectionCardService;
         this.contestDao = contestDao;
         this.contestCollectionCardDao = contestCollectionCardDao;
@@ -126,7 +126,7 @@ public class ContestController {
                         contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
                         contestTypeIds, contestPrivate, searchTerm);
         if (StringUtils.isNotEmpty(lang) && !"en".equalsIgnoreCase(lang)) {
-            return contestService.resolveTranslations(contests, lang);
+            return serviceNamespace.resolveTranslations(contests, lang);
         }
         return contests;
     }
@@ -134,7 +134,7 @@ public class ContestController {
     @RequestMapping(value = "/contests/getContestMatchingOntologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContestMatchingOntologyTerms(
             @RequestParam(required = false) List<Long> focusAreaOntologyTerms){
-        return contestService.getContestsMatchingOntologyTerms(focusAreaOntologyTerms);
+        return serviceNamespace.getContestsMatchingOntologyTerms(focusAreaOntologyTerms);
     }
 
     @RequestMapping(value = "/contestyears", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -152,19 +152,19 @@ public class ContestController {
             @RequestParam(required = false) Long year,
             @RequestParam(required = false) Long currentContestId){
 
-        return contestService.isContestNameYearUnique(contestShortName, year,currentContestId);
+        return serviceNamespace.isContestNameYearUnique(contestShortName, year,currentContestId);
     }
 
     @RequestMapping(value = "/contests/getContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContestsByOntologyTerm(
             @RequestParam(required = false) Long focusAreaOntologyTerm, @RequestParam(required = false) Boolean getActive, @RequestParam(required = false) Boolean onlyPrivate){
-        return contestService.getContestsByOntologyTerm(focusAreaOntologyTerm, getActive, onlyPrivate);
+        return serviceNamespace.getContestsByOntologyTerm(focusAreaOntologyTerm, getActive, onlyPrivate);
     }
 
     @RequestMapping(value = "/contests/getNumberOfContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
     public int getNumberOfContestsByOntologyTerm(
             @RequestParam(required = false) Long focusAreaOntologyTerm){
-        return contestService.getNumberOfContestsByOntologyTerm(focusAreaOntologyTerm);
+        return serviceNamespace.getNumberOfContestsByOntologyTerm(focusAreaOntologyTerm);
     }
 
     @RequestMapping(value = "contests/getNumberOfActiveContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -193,7 +193,7 @@ public class ContestController {
             @PathVariable long contestId,
             @RequestParam Long ontologySpaceId) {
 
-        return contestService.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);
+        return serviceNamespace.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);
     }
 
     @PostMapping("/contests")
@@ -208,7 +208,7 @@ public class ContestController {
             @RequestParam(required = false) String lang) throws NotFoundException {
         final Contest contest = contestDao.get(contestId);
         if (StringUtils.isNotEmpty(lang) && !"en".equalsIgnoreCase(lang)) {
-            return contestService.resolveTranslation(contest, lang);
+            return serviceNamespace.resolveTranslation(contest, lang);
         }
         return contest;
     }
@@ -307,7 +307,7 @@ public class ContestController {
     @RequestMapping(value = "/contests/{contestId}/activePhase", method = RequestMethod.GET)
     public ContestPhase getActivePhaseForContest(@PathVariable long contestId) throws NotFoundException {
 
-        ContestPhase activePhase = contestService.getActiveOrLastPhase(contestId);
+        ContestPhase activePhase = serviceNamespace.getActiveOrLastPhase(contestId);
         if (activePhase == null) {
             throw new NotFoundException();
         }
@@ -322,6 +322,6 @@ public class ContestController {
 
     @GetMapping("/contests/{contestId}/visiblePhases")
     public List<ContestPhase> getVisiblePhases(@PathVariable Long contestId) {
-        return contestService.getVisiblePhases(contestId);
+        return serviceNamespace.getVisiblePhases(contestId);
     }
 }

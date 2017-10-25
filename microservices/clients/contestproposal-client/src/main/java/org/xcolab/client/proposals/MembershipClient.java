@@ -3,20 +3,20 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.client.proposals.pojo.team.MembershipRequestDto;
-import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.Http409ConflictException;
 
@@ -29,21 +29,21 @@ import java.util.Map;
 
 public class MembershipClient {
 
-    private static final Map<RestService, MembershipClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, MembershipClient> instances = new HashMap<>();
 
-    private final RestService proposalService;
+    private final ServiceNamespace serviceNamespace;
     private final RestResource1<MembershipRequestDto, Long> membershipRequestResource;
 
     private final ProposalClient proposalClient;
 
-    private MembershipClient(RestService proposalService) {
-        membershipRequestResource = new RestResource1<>(proposalService,
-                "membershipRequests", MembershipRequestDto.TYPES);
-        proposalClient = ProposalClient.fromService(proposalService);
-        this.proposalService = proposalService;
+    private MembershipClient(ServiceNamespace serviceNamespace) {
+        membershipRequestResource = new RestResource1<>(ProposalResource.MEMBERSHIP_REQUEST,
+                MembershipRequestDto.TYPES);
+        proposalClient = ProposalClient.fromNamespace(serviceNamespace);
+        this.serviceNamespace = serviceNamespace;
     }
 
-    public static MembershipClient fromService(RestService proposalService) {
+    public static MembershipClient fromNamespace(ServiceNamespace proposalService) {
         return instances
                 .computeIfAbsent(proposalService, MembershipClient::new);
     }
@@ -91,13 +91,13 @@ public class MembershipClient {
                         .withParameter("userId", userId).asList(), CacheName.MISC_MEDIUM)
                 .optionalQueryParam("groupId", groupId)
                 .optionalQueryParam("userId", userId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
     public MembershipRequest getMembershipRequest(long MembershipRequestId)
             throws MembershipRequestNotFoundException {
         return membershipRequestResource.get(MembershipRequestId)
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public void approveMembershipRequest(long proposalId, Long userId, MembershipRequest request,
@@ -120,14 +120,13 @@ public class MembershipClient {
     }
 
     public void addUserToProposalTeam(Long userId, Long groupId, Long proposalId) {
-        RestService memberService  = proposalService.withServiceName(CoLabService.MEMBER.getServiceName());
-        UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromService(memberService);
+        UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromNamespace(
+                serviceNamespace);
 
         try {
             usersGroupsClient.addMemberToGroup(userId, groupId);
 
-            RestService activitiesService  = proposalService.withServiceName(CoLabService.ACTIVITY.getServiceName());
-            ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
+            ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
 
             ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
                     ActivityProvidersType.ProposalMemberAddedActivityEntry.getType());
@@ -171,7 +170,7 @@ public class MembershipClient {
 
     public MembershipRequest createMembershipRequest(MembershipRequest membershipRequest) {
         return membershipRequestResource.create(new MembershipRequestDto(membershipRequest))
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public MembershipRequest addRequestedMembershipRequest(Long proposalId, Long userId,
@@ -214,7 +213,7 @@ public class MembershipClient {
                         .withParameter("statusId", statusId).asList(), CacheName.MISC_REQUEST)
                 .optionalQueryParam("groupId", groupId)
                 .optionalQueryParam("statusId", statusId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
 }

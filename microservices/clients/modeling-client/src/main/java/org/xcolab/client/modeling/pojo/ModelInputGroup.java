@@ -1,6 +1,6 @@
 package org.xcolab.client.modeling.pojo;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ModelInputGroup extends AbstractModelInputGroup {
 
@@ -10,7 +10,8 @@ public class ModelInputGroup extends AbstractModelInputGroup {
         super(value);
     }
 
-    public ModelInputGroup(AbstractModelInputGroup modelInputGroup, RestService restService) {
+    public ModelInputGroup(AbstractModelInputGroup modelInputGroup,
+            ServiceNamespace serviceNamespace) {
         super(modelInputGroup);
     }
 }

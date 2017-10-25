@@ -2,7 +2,7 @@ package org.xcolab.client.modeling.pojo;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DataTransferObject;
 
@@ -24,7 +24,7 @@ public class ModelOutputChartOrderDto extends AbstractModelOutputChartOrder
     }
 
     @Override
-    public ModelOutputChartOrder toPojo(RestService restService) {
-        return new ModelOutputChartOrder(this, restService);
+    public ModelOutputChartOrder toPojo(ServiceNamespace serviceNamespace) {
+        return new ModelOutputChartOrder(this, serviceNamespace);
     }
 }

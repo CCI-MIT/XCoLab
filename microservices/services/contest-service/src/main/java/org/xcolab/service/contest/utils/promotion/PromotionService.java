@@ -53,18 +53,18 @@ public class PromotionService {
     private final ContestDao contestDao;
     private final ContestPhaseTypeDao contestPhaseTypeDao;
     private final ContestPhaseService contestPhaseService;
-    private final ContestService contestService;
+    private final ContestService serviceNamespace;
 
     @Autowired
     public PromotionService( ContestPhaseDao contestPhaseDao, ContestDao contestDao,
             ContestPhaseService contestPhaseService, ContestPhaseTypeDao contestPhaseTypeDao,
-            ContestService contestService) {
+            ContestService serviceNamespace) {
 
         this.contestPhaseDao = contestPhaseDao;
         this.contestDao = contestDao;
         this.contestPhaseTypeDao = contestPhaseTypeDao;
         this.contestPhaseService = contestPhaseService;
-        this.contestService = contestService;
+        this.serviceNamespace = serviceNamespace;
     }
 
     public synchronized int doPromotion(Date now) {
@@ -239,7 +239,7 @@ public class PromotionService {
                     Contest contest = contestDao.get(phase.getContestPK());
                     ContestPhase nextPhase = contestPhaseService.getNextContestPhase(phase);
 
-                    List<ContestPhase> contestPhases = contestService.getAllContestPhases(contest.getContestPK());
+                    List<ContestPhase> contestPhases = serviceNamespace.getAllContestPhases(contest.getContestPK());
                     ContestPhase finalistSelection = null;
                     ContestPhase semifinalistSelection = null;
                     Set<ContestPhase> proposalCreationPhases = new HashSet<>();

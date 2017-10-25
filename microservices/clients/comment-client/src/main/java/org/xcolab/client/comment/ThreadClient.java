@@ -5,7 +5,8 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.pojo.CommentThreadDto;
 import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.dto.DtoUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -15,24 +16,24 @@ import java.util.Map;
 public class ThreadClient {
 
     private final CommentServiceWrapper commentServiceWrapper;
-    private final RestService commentService;
+    private final ServiceNamespace serviceNamespace;
 
-    private static final Map<RestService, ThreadClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, ThreadClient> instances = new HashMap<>();
 
-    public ThreadClient(RestService commentService) {
-        commentServiceWrapper = CommentServiceWrapper.fromService(commentService);
-        this.commentService = commentService;
+    public ThreadClient(ServiceNamespace serviceNamespace) {
+        commentServiceWrapper = CommentServiceWrapper.fromService(serviceNamespace);
+        this.serviceNamespace = serviceNamespace;
     }
 
     public List<CommentThread> listThreads(int start, int last, Long categoryId,
             Long groupId, ThreadSortColumn sortColumn, boolean ascending) {
-        return CommentThreadDto.toPojos(commentServiceWrapper.listThreads(start, last, sortColumn.getIdentifier(ascending),
-                null, categoryId, groupId), commentService);
+        return DtoUtil.toPojos(commentServiceWrapper.listThreads(start, last, sortColumn.getIdentifier(ascending),
+                null, categoryId, groupId), serviceNamespace);
     }
 
     public CommentThread getThread(long threadId) throws ThreadNotFoundException {
         return commentServiceWrapper.getThread(threadId, CacheName.MISC_MEDIUM)
-                .toPojo(commentService);
+                .toPojo(serviceNamespace);
     }
 
     public boolean updateThread(CommentThread thread) {
@@ -41,7 +42,7 @@ public class ThreadClient {
 
     public CommentThread createThread(CommentThread thread) {
         return commentServiceWrapper.createThread(new CommentThreadDto(thread))
-                .toPojo(commentService);
+                .toPojo(serviceNamespace);
     }
 
     public Date getLastActivityDate(long threadId) {
@@ -52,7 +53,7 @@ public class ThreadClient {
         return commentServiceWrapper.getLastActivityAuthorId(threadId, CacheName.MISC_REQUEST);
     }
 
-    public static ThreadClient fromService(RestService contestService) {
-        return instances.computeIfAbsent(contestService, ThreadClient::new);
+    public static ThreadClient fromService(ServiceNamespace serviceNamespace) {
+        return instances.computeIfAbsent(serviceNamespace, ThreadClient::new);
     }
 }

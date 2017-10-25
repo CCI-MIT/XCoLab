@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.ontology;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class FocusAreaOntologyTerm extends AbstractFocusAreaOntologyTerm {
 
@@ -15,7 +15,7 @@ public class FocusAreaOntologyTerm extends AbstractFocusAreaOntologyTerm {
     }
 
     public FocusAreaOntologyTerm(AbstractFocusAreaOntologyTerm abstractFocusAreaOntologyTerm,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractFocusAreaOntologyTerm);
     }
 }

@@ -4,21 +4,16 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.PlatformTeam;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public class PlatformTeamsClient {
 
-    private static final RestService platformTeamService =
-            new RestService(CoLabService.MEMBER, ServiceRequestUtils.getNamespace());
-
     private static final RestResource<PlatformTeam, Long> platformTeamResource =
-            new RestResource1<>(platformTeamService, "platformteams", PlatformTeam.TYPES);
+            new RestResource1<>(UserResource.PLATFORM_TEAM, PlatformTeam.TYPES);
 
     private PlatformTeamsClient() {
     }

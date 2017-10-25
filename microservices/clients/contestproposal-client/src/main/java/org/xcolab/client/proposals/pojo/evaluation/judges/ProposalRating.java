@@ -3,7 +3,7 @@ package org.xcolab.client.proposals.pojo.evaluation.judges;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.text.DecimalFormat;
 
@@ -35,7 +35,8 @@ public class ProposalRating extends AbstractProposalRating {
                 otherdatastring, onlyforinternalusage);
     }
 
-    public ProposalRating(AbstractProposalRating abstractProposalRating, RestService restService) {
+    public ProposalRating(AbstractProposalRating abstractProposalRating,
+            ServiceNamespace serviceNamespace) {
         super(abstractProposalRating);
     }
 

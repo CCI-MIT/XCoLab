@@ -2,18 +2,14 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class PointsClientUtil {
-    private static final RestService contestService = new RestService(CoLabService.CONTEST,
-            ServiceRequestUtils.getNamespace());
 
-    private static final PointsClient client
-            = PointsClient.fromService(contestService);
+    private static final PointsClient client = PointsClient.fromNamespace(
+            ServiceNamespace.instance());
 
     public static PointsClient getClient() {
         return client;

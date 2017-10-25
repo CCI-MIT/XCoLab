@@ -4,7 +4,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.sql.Timestamp;
 
@@ -37,7 +37,7 @@ public class MembershipRequest extends AbstractMembershipRequest {
     }
 
     public MembershipRequest(AbstractMembershipRequest abstractMembershipRequest,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractMembershipRequest);
 
     }

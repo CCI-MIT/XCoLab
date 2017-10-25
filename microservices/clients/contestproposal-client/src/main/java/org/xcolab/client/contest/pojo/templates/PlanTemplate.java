@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.templates;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class PlanTemplate extends AbstractPlanTemplate {
 
@@ -10,7 +10,8 @@ public class PlanTemplate extends AbstractPlanTemplate {
         super(value);
     }
 
-    public PlanTemplate(AbstractPlanTemplate abstractPlanTemplate, RestService restService) {
+    public PlanTemplate(AbstractPlanTemplate abstractPlanTemplate,
+            ServiceNamespace serviceNamespace) {
         super(abstractPlanTemplate);
     }
 }
