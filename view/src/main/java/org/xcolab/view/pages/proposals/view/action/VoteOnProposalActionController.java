@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -40,8 +41,9 @@ public class VoteOnProposalActionController {
     private final static String VOTE_ANALYTICS_LABEL = "";
 
     @PostMapping("voteOnProposalAction")
-    public String handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, Member member)
+    public String handleAction(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member member,
+            @RequestParam(defaultValue = "1") int voteValue)
             throws ProposalsAuthorizationException {
 
         final ClientHelper clients = proposalContext.getClients();
@@ -82,7 +84,8 @@ public class VoteOnProposalActionController {
 
             }
 
-            proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
+            proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId,
+                    voteValue);
             VoteValidator voteValidator =
                     new VoteValidator(member, proposal, contest, request.getRemoteAddr(),
                             clients.getProposalMemberRatingClient());

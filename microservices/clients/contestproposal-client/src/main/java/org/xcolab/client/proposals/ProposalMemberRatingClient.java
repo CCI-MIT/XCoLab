@@ -208,11 +208,13 @@ public final class ProposalMemberRatingClient {
                 .delete();
     }
 
-    public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId) {
+    public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId,
+            int value) {
         ProposalVote pv = new ProposalVote();
         pv.setProposalId(proposalId);
         pv.setContestPhaseId(contestPhaseId);
         pv.setUserId(memberId);
+        pv.setValue(value);
         pv.setCreateDate(new Timestamp(new Date().getTime()));
         pv.setIsValid(true);// should this default to true?
         return createProposalVote(pv);

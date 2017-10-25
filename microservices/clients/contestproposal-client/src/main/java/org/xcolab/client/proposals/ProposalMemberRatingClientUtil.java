@@ -82,8 +82,9 @@ public final class ProposalMemberRatingClientUtil {
         return client.deleteProposalVote(proposalId, contestPhaseId, memberId);
     }
 
-    public static ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId){
-        return client.addProposalVote(proposalId,contestPhaseId, memberId);
+    public static ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId,
+            int value) {
+        return client.addProposalVote(proposalId,contestPhaseId, memberId, value);
     }
 
     public static List<ProposalVote> getProposalVotesInPhase(
