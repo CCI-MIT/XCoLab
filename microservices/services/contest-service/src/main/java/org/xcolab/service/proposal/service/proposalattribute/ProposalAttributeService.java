@@ -41,7 +41,7 @@ public class ProposalAttributeService {
         try {
             Proposal proposal = proposalDao.get(proposalAttribute.getProposalId());
 
-            int currentVersion = proposal.getCurrentVersion();
+            int currentVersion = proposalVersionDao.findMaxVersion(proposalAttribute.getProposalId());
             int newVersion = currentVersion + 1;
 
             List<ProposalAttribute> currentProposalAttributes =
@@ -73,7 +73,6 @@ public class ProposalAttributeService {
                     .create(proposalAttribute);//setAttributeValue(proposalId, newVersion,
             // attributeName, additionalId, stringValue, numericValue, realValue);
 
-            proposal.setCurrentVersion(newVersion);
             Timestamp updatedDate = new Timestamp((new Date()).getTime());
             proposal.setUpdatedDate(updatedDate);
 

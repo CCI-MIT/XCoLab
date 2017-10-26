@@ -1,0 +1,1 @@
+ALTER TABLE xcolab.xcolab_Proposal DROP currentVersion;

@@ -836,7 +836,6 @@ CREATE TABLE `xcolab_Proposal` (
   `proposalId` bigint(20) NOT NULL AUTO_INCREMENT,
   `createDate` datetime DEFAULT NULL,
   `updatedDate` datetime DEFAULT NULL,
-  `currentVersion` int(11) DEFAULT NULL,
   `authorId` bigint(20) DEFAULT NULL,
   `visible` tinyint(4) DEFAULT NULL,
   `discussionId` bigint(20) DEFAULT NULL,

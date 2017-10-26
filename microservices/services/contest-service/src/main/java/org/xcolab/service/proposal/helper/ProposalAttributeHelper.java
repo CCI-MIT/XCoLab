@@ -13,25 +13,19 @@ import java.util.Map;
 public class ProposalAttributeHelper {
 
     private final Proposal proposal;
-    private final int version;
     private Map<String, Map<Long, ProposalAttribute>> attributesByNameAndAdditionalId;
 
     private ProposalAttributeDao proposalAttributeDao;
 
-    public ProposalAttributeHelper(Proposal proposal, int version, ProposalAttributeDao proposalAttributeDao) {
-        this.proposal = proposal;
-        this.version = version;
-        this.proposalAttributeDao = proposalAttributeDao;
-    }
-
     public ProposalAttributeHelper(Proposal proposal, ProposalAttributeDao proposalAttributeDao) {
-        this(proposal, proposal.getCurrentVersion(), proposalAttributeDao);
+        this.proposal = proposal;
+        this.proposalAttributeDao = proposalAttributeDao;
     }
 
     //initialization is expensive --> be lazy
     private void init() {
             List<ProposalAttribute> attributes = proposalAttributeDao
-                    .findByGiven(proposal.getProposalId(),null, null, version);
+                    .findByGiven(proposal.getProposalId(),null, null, null);
             if (attributesByNameAndAdditionalId == null) {
                 attributesByNameAndAdditionalId = new HashMap<>();
                 for (ProposalAttribute attribute : attributes) {
