@@ -105,8 +105,11 @@ public class VoteOnProposalActionController {
             }
         }
         // Redirect to prevent page-refreshing from influencing the vote
-        final String arguments = hasVoted ? "/voted" : "";
-        return "redirect:" + proposalLinkUrl + arguments;
+        if (ConfigurationAttributeKey.PROPOSALS_VOTING_SUCCESS_MESSAGE_IS_ACTIVE.get()
+                && hasVoted) {
+            return "redirect:" + proposalLinkUrl + "/voted";
+        }
+        return "redirect:" + proposalLinkUrl;
     }
 
     @GetMapping("confirmVote/{proposalId}/{userId}/{confirmationToken}")
