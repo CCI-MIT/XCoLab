@@ -102,27 +102,36 @@ public class VoteOnProposalActionController {
 
             proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId,
                     voteValue);
-            VoteValidator voteValidator =
-                    new VoteValidator(member, proposal, contest, request.getRemoteAddr(),
-                            clients.getProposalMemberRatingClient());
-            final ValidationResult validationResult = voteValidator.validate();
-            if (validationResult == ValidationResult.INVALID_BLACKLISTED
-                    || validationResult == ValidationResult.INVALID_BOUNCED_EMAIL) {
-                //TODO: decide if we want to inform users of this
-                //                    AlertMessage.danger("Your vote was NOT counted because
-                // it violates our email policy. "
-                //                            + "Please refer to the Voting Rules for
-                // additional information.")
-                //                            .flash(request);
+
+            final boolean isVoteValidationActive = ConfigurationAttributeKey
+                    .PROPOSALS_VOTING_VALIDATION_IS_ACTIVE.get();
+            if (isVoteValidationActive) {
+                VoteValidator voteValidator =
+                        new VoteValidator(member, proposal, contest, request.getRemoteAddr(),
+                                clients.getProposalMemberRatingClient());
+                final ValidationResult validationResult = voteValidator.validate();
+                if (validationResult == ValidationResult.INVALID_BLACKLISTED
+                        || validationResult == ValidationResult.INVALID_BOUNCED_EMAIL) {
+                    //TODO: decide if we want to inform users of this
+                    //                    AlertMessage.danger("Your vote was NOT counted because
+                    // it violates our email policy. "
+                    //                            + "Please refer to the Voting Rules for
+                    // additional information.")
+                    //                            .flash(request);
+                } else {
+                    hasVoted = true;
+                }
             } else {
-                new ProposalVoteNotification(proposal, contest, member).sendMessage();
                 hasVoted = true;
             }
 
-            //publish event per contestPhaseId to allow voting on exactly one proposal per
-            // contest(phase)
-            AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
-                    VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
+            if (hasVoted) {
+                new ProposalVoteNotification(proposal, contest, member).sendMessage();
+                //publish event per contestPhaseId to allow voting on exactly one proposal per
+                // contest(phase)
+                AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
+                        VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
+            }
         }
         // Redirect to prevent page-refreshing from influencing the vote
         final String arguments = hasVoted ? "/voted" : "";

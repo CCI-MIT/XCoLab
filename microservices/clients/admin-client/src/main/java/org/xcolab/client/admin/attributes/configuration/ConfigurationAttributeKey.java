@@ -353,6 +353,11 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newLongAttribute("PROPOSALS_MAX_VOTES_PER_PROPOSAL")
                     .defaultValue(1L)
                     .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_VOTING_VALIDATION_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_VOTING_VALIDATION_IS_ACTIVE")
+                    .defaultValue(true)
+                    .build();
+
 
     // Points
     public static final AttributeGetter<Boolean> POINTS_IS_ACTIVE =
