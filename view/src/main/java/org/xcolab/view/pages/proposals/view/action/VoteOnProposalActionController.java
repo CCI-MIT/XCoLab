@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -116,11 +115,7 @@ public class VoteOnProposalActionController {
                 // additional information.")
                 //                            .flash(request);
             } else {
-                try {
-                    new ProposalVoteNotification(proposal, contest, member).sendMessage();
-                } catch (ContestNotFoundException ignored) {
-
-                }
+                new ProposalVoteNotification(proposal, contest, member).sendMessage();
                 hasVoted = true;
             }
 
