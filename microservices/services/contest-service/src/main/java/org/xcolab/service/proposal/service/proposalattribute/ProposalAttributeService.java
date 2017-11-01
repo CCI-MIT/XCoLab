@@ -67,7 +67,6 @@ public class ProposalAttributeService {
             }
 
             // set new value for provided attribute
-            proposalAttribute.setVersionWhenCreated(newVersion);
             proposalAttribute.setVersion(newVersion);
             ProposalAttribute attribute = proposalAttributeDao
                     .create(proposalAttribute);//setAttributeValue(proposalId, newVersion,
