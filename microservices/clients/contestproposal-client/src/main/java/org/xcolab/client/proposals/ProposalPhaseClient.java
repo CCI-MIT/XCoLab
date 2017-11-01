@@ -2,9 +2,9 @@ package org.xcolab.client.proposals;
 
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.ProposalDto;
-import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeDto;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.Proposal2PhaseDto;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
@@ -16,7 +16,7 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -27,9 +27,10 @@ import java.util.Map;
 
 public final class ProposalPhaseClient {
 
-    private static final Map<RestService, ProposalPhaseClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, ProposalPhaseClient> instances = new HashMap<>();
 
-    private final RestService proposalService;
+    private final ServiceNamespace serviceNamespace;
+
     private final RestResource<Proposal2PhaseDto, Long> proposal2PhaseResource;
     private final RestResource<ProposalContestPhaseAttributeDto, Long>
             proposalContestPhaseAttributeResource;
@@ -37,20 +38,21 @@ public final class ProposalPhaseClient {
     private final RestResource2L<ProposalDto, Long> proposalPhaseIdResource;
 
 
-    private ProposalPhaseClient(RestService proposalService) {
-        proposal2PhaseResource = new RestResource1<>(
-                proposalService, "proposal2Phases", Proposal2PhaseDto.TYPES);
-        proposalContestPhaseAttributeResource = new RestResource1<>(proposalService,
-                "proposalContestPhaseAttributes", ProposalContestPhaseAttributeDto.TYPES);
-        proposalResource = new RestResource1<>(proposalService, "proposals", ProposalDto.TYPES);
+    private ProposalPhaseClient(ServiceNamespace serviceNamespace) {
+        this.serviceNamespace = serviceNamespace;
+        proposal2PhaseResource = new RestResource1<>(ProposalResource.PROPOSAL_2_PHASE,
+                Proposal2PhaseDto.TYPES);
+        proposalContestPhaseAttributeResource = new RestResource1<>(
+                ProposalResource.PROPOSAL_CONTEST_PHASE_ATTRIBUTE,
+                ProposalContestPhaseAttributeDto.TYPES);
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
+
         proposalPhaseIdResource = new RestResource2L<>(proposalResource, "phaseIds",
                 new TypeProvider<>(Long.class, new ParameterizedTypeReference<List<Long>>() {}));
-        this.proposalService = proposalService;
     }
 
-    public static ProposalPhaseClient fromService(RestService proposalService) {
-        return instances
-                .computeIfAbsent(proposalService, k -> new ProposalPhaseClient(proposalService));
+    public static ProposalPhaseClient fromNamespace(ServiceNamespace serviceNamespace) {
+        return instances.computeIfAbsent(serviceNamespace, ProposalPhaseClient::new);
     }
 
     public void invalidateProposal2PhaseCache(long proposalId, long contestPhaseId) {
@@ -73,13 +75,13 @@ public final class ProposalPhaseClient {
         if (dto == null) {
             throw new Proposal2PhaseNotFoundException(proposalId, contestPhaseId);
         }
-        return dto.toPojo(proposalService);
+        return dto.toPojo(serviceNamespace);
     }
 
     public List<Proposal2Phase> getProposal2PhaseByProposalId(Long proposalId) {
         return DtoUtil.toPojos(proposal2PhaseResource.list()
                 .optionalQueryParam("proposalId", proposalId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
     public Proposal2Phase getProposal2PhaseByProposalIdVersion(long proposalId, int version) {
@@ -88,13 +90,13 @@ public final class ProposalPhaseClient {
                  .queryParam("version", version)
                  .withCache(CacheName.PROPOSAL_PHASE)
                  .executeWithResult()
-                 .getFirst().toPojo(proposalService);
+                 .getFirst().toPojo(serviceNamespace);
     }
 
     public List<Proposal2Phase> getProposal2PhaseByContestPhaseId(Long contestPhaseId) {
         return DtoUtil.toPojos(proposal2PhaseResource.list()
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
     public void createProposal2Phase(Proposal2Phase proposal2Phase) {
@@ -139,7 +141,7 @@ public final class ProposalPhaseClient {
 //                        CacheRetention.MISC_MEDIUM)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("proposalId", proposalId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
     public Boolean isProposalContestPhaseAttributeSetAndTrue(Long proposalId, long contestPhaseId,
@@ -159,7 +161,7 @@ public final class ProposalPhaseClient {
                     .optionalQueryParam("proposalId", proposalId)
                     .optionalQueryParam("name", name)
                     .getChecked()
-                    .toPojo(proposalService);
+                    .toPojo(serviceNamespace);
         } catch (EntityNotFoundException ignored) {
             return null;
         }
@@ -253,7 +255,7 @@ public final class ProposalPhaseClient {
             ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return proposalContestPhaseAttributeResource
                 .create(new ProposalContestPhaseAttributeDto(proposalContestPhaseAttribute))
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public Boolean deleteProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId,

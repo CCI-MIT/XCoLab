@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.attributes;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.sql.Timestamp;
 
@@ -31,7 +31,7 @@ public class ProposalUnversionedAttribute extends AbstractProposalUnversionedAtt
 
     public ProposalUnversionedAttribute(AbstractProposalUnversionedAttribute
             abstractProposalUnversionedAttribute,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractProposalUnversionedAttribute);
     }
 }

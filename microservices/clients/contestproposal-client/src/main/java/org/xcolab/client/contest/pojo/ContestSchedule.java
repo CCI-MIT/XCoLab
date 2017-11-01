@@ -2,7 +2,8 @@ package org.xcolab.client.contest.pojo;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+
 
 public class ContestSchedule extends AbstractContestSchedule {
 
@@ -24,9 +25,9 @@ public class ContestSchedule extends AbstractContestSchedule {
     }
 
     public ContestSchedule(AbstractContestSchedule abstractContestSchedule,
-            RestService contestService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractContestSchedule);
-        this.contestClient = ContestClient.fromService(contestService);
+        this.contestClient = ContestClient.fromNamespace(serviceNamespace);
     }
 
     public boolean isUsedInNonEmptyContest() {

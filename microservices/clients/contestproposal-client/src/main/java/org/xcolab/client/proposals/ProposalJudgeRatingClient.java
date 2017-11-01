@@ -1,5 +1,6 @@
 package org.xcolab.client.proposals;
 
+import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.enums.ProposalJudgeType;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingDto;
@@ -8,7 +9,7 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingTypeDto;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValueDto;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.dto.DtoUtil;
 
 import java.util.HashMap;
@@ -17,27 +18,27 @@ import java.util.Map;
 
 public final class ProposalJudgeRatingClient {
 
-    private static final Map<RestService, ProposalJudgeRatingClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, ProposalJudgeRatingClient> instances =
+            new HashMap<>();
 
-    private final RestService proposalService;
+    private final ServiceNamespace serviceNamespace;
 
     private final RestResource1<ProposalRatingDto, Long> proposalRatingResource;
     private final RestResource1<ProposalRatingValueDto, Long> proposalRatingValueResource;
     private final RestResource1<ProposalRatingTypeDto, Long> proposalRatingTypeResource;
 
-    private ProposalJudgeRatingClient(RestService proposalService) {
-        proposalRatingResource = new RestResource1<>(proposalService,
-                "proposalRatings", ProposalRatingDto.TYPES);
-        proposalRatingValueResource = new RestResource1<>(proposalService,
-                "proposalRatingValues", ProposalRatingValueDto.TYPES);
-        proposalRatingTypeResource = new RestResource1<>(proposalService,
-                "proposalRatingTypes", ProposalRatingTypeDto.TYPES);
-        this.proposalService = proposalService;
+    private ProposalJudgeRatingClient(ServiceNamespace serviceNamespace) {
+        proposalRatingResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING,
+                ProposalRatingDto.TYPES);
+        proposalRatingValueResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING_VALUE,
+                ProposalRatingValueDto.TYPES);
+        proposalRatingTypeResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING_TYPE,
+                ProposalRatingTypeDto.TYPES);
+        this.serviceNamespace = serviceNamespace;
     }
 
-    public static ProposalJudgeRatingClient fromService(RestService proposalService) {
-        return instances.computeIfAbsent(proposalService,
-                k -> new ProposalJudgeRatingClient(proposalService));
+    public static ProposalJudgeRatingClient fromNamespace(ServiceNamespace serviceNamespace) {
+        return instances.computeIfAbsent(serviceNamespace, ProposalJudgeRatingClient::new);
     }
 
     public List<ProposalRating> getProposalRatingsByProposalUserContestPhase(Long proposalId,
@@ -51,7 +52,7 @@ public final class ProposalJudgeRatingClient {
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("userId", userId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
     public List<ProposalRating> getFellowRatingsForProposal(long proposalId, long contestPhaseId) {
@@ -71,7 +72,7 @@ public final class ProposalJudgeRatingClient {
         return DtoUtil.toPojos(proposalRatingTypeResource.list()
                 .queryParam("judgeType", judgeType)
                 .queryParam("active", true)
-                .execute(),proposalService);
+                .execute(), serviceNamespace);
     }
 
     protected List<ProposalRating> getRatingsForProposal(long proposalId, long contestPhaseId,
@@ -83,7 +84,7 @@ public final class ProposalJudgeRatingClient {
                 .queryParam("proposalId", proposalId)
                 .queryParam("judgeType", judgeType)
                 .queryParam("contestPhaseId", contestPhaseId)
-                .getList(), proposalService);
+                .getList(), serviceNamespace);
     }
 
     public List<ProposalRating> getJudgeRatingsForProposal(long proposalId, long contestPhaseId) {
@@ -105,7 +106,7 @@ public final class ProposalJudgeRatingClient {
                 .queryParam("judgeType", judgeType)
                 .queryParam("userId", userId)
                 .queryParam("contestPhaseId", contestPhaseId)
-                .getList(), proposalService);
+                .getList(), serviceNamespace);
 
     }
 
@@ -118,7 +119,7 @@ public final class ProposalJudgeRatingClient {
     public ProposalRating createProposalRating(ProposalRating proposalRating) {
         return proposalRatingResource
                 .create(new ProposalRatingDto(proposalRating))
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public boolean updateProposalRating(ProposalRating proposalRating) {
@@ -129,17 +130,17 @@ public final class ProposalJudgeRatingClient {
 
     public ProposalRatingValue getProposalRatingValue(long id) {
         return proposalRatingValueResource.get(id)
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public List<ProposalRatingValue> getProposalRatingValuesByProposalRatingTypeId(Long ratingTypeId) {
         return DtoUtil.toPojos(proposalRatingValueResource.list()
                 .optionalQueryParam("ratingTypeId", ratingTypeId)
-                .execute(),proposalService);
+                .execute(), serviceNamespace);
     }
 
     public ProposalRatingType getProposalRatingType(long id) {
         return proposalRatingTypeResource.get(id)
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 }

@@ -1,6 +1,6 @@
 package org.xcolab.client.modeling.pojo;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ModelGlobalPreference extends AbstractModelGlobalPreference {
 
@@ -11,7 +11,7 @@ public class ModelGlobalPreference extends AbstractModelGlobalPreference {
     }
 
     public ModelGlobalPreference(AbstractModelGlobalPreference modelGlobalPreference,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(modelGlobalPreference);
     }
 }

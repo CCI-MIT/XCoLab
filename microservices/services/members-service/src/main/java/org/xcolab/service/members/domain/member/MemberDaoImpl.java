@@ -10,6 +10,9 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import org.xcolab.model.tables.MemberCategoryTable;
+import org.xcolab.model.tables.MemberTable;
+import org.xcolab.model.tables.Users_RolesTable;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
@@ -43,58 +46,75 @@ public class MemberDaoImpl implements MemberDao {
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
             String googleId, List<Long> roleIds) {
-        final SelectQuery<Record> query = dslContext.selectDistinct(MEMBER.fields())
-                .from(MEMBER)
-                .where(MEMBER.STATUS.eq(0))
+        final MemberTable member = MEMBER.as("member");
+        final Users_RolesTable usersRoles = USERS_ROLES.as("usersRoles");
+        final MemberCategoryTable memberCategory = MEMBER_CATEGORY.as("memberCategory");
+
+        final SelectQuery<Record> query = dslContext.selectDistinct(member.fields())
+                .from(member)
+                .where(member.STATUS.eq(0))
                 .getQuery();
 
         if (roleName != null || roleIds != null) {
-            query.addJoin(USERS_ROLES, MEMBER.ID_.equal(USERS_ROLES.USER_ID));
+            query.addJoin(usersRoles, member.ID_.equal(usersRoles.USER_ID));
         }
         if (roleName != null) {
-            query.addJoin(MEMBER_CATEGORY, MEMBER_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID));
+            query.addJoin(memberCategory, memberCategory.ROLE_ID.equal(usersRoles.ROLE_ID));
         }
 
         if (partialName != null || partialEmail != null) {
-            addSearchCondition(partialName, partialEmail, query);
+            addSearchCondition(partialName, partialEmail, query,member);
         }
         if (roleName != null) {
-            query.addConditions(MEMBER_CATEGORY.DISPLAY_NAME.eq(roleName));
+            query.addConditions(memberCategory.DISPLAY_NAME.eq(roleName));
         }
         if (roleIds != null) {
-            query.addConditions(USERS_ROLES.ROLE_ID.in(roleIds));
+            query.addConditions(usersRoles.ROLE_ID.in(roleIds));
         }
         if (screenName != null) {
-            query.addConditions(MEMBER.SCREEN_NAME.eq(screenName));
+            query.addConditions(member.SCREEN_NAME.eq(screenName));
         }
         if (email != null) {
-            query.addConditions(MEMBER.EMAIL_ADDRESS.eq(email));
+            query.addConditions(member.EMAIL_ADDRESS.eq(email));
         }
         if (facebookId != null) {
-            query.addConditions(MEMBER.FACEBOOK_ID.eq(facebookId));
+            query.addConditions(member.FACEBOOK_ID.eq(facebookId));
         }
         if (googleId != null) {
-            query.addConditions(MEMBER.GOOGLE_ID.eq(googleId));
+            query.addConditions(member.GOOGLE_ID.eq(googleId));
+        }
+        if (roleName != null) {
+            Users_RolesTable userRolesInner = USERS_ROLES.as("userRolesInner");
+            MemberCategoryTable memberCategoryInner = MEMBER_CATEGORY.as("memberCategoryInner");
+
+            query.addConditions(usersRoles.ROLE_ID.eq(
+                    dslContext.select(userRolesInner.ROLE_ID)
+                    .from(userRolesInner)
+                    .innerJoin(memberCategoryInner).on(userRolesInner.ROLE_ID.eq(memberCategoryInner.ROLE_ID))
+                    .where(userRolesInner.USER_ID.eq(member.ID_))
+                    .orderBy(memberCategoryInner.SORT_ORDER.desc())
+                    .limit(0,1)
+            ));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
                 case "createDate":
                     query.addOrderBy(sortColumn.isAscending()
-                            ? MEMBER.CREATE_DATE.asc() : MEMBER.CREATE_DATE.desc());
+                            ? member.CREATE_DATE.asc() : member.CREATE_DATE.desc());
                     break;
                 case "screenName":
                     query.addOrderBy(sortColumn.isAscending()
-                            ? MEMBER.SCREEN_NAME.asc() : MEMBER.SCREEN_NAME.desc());
+                            ? member.SCREEN_NAME.asc() : member.SCREEN_NAME.desc());
                     break;
                 case "activityCount":
                     //TODO: this property is owned by the activities-service
                     Field<Object> activityCount = this.dslContext.selectCount()
                             .from(ACTIVITY_ENTRY)
-                            .where(ACTIVITY_ENTRY.MEMBER_ID.equal(MEMBER.ID_))
+                            .where(ACTIVITY_ENTRY.MEMBER_ID.equal(member.ID_))
                             .asField("activityCount");
                     query.addSelect(activityCount);
-                    query.addSelect(MEMBER.fields());
+                    query.addSelect(member.fields());
                     query.addOrderBy(sortColumn.isAscending()
                             ? activityCount.asc() : activityCount.desc());
                     break;
@@ -114,7 +134,7 @@ public class MemberDaoImpl implements MemberDao {
                     Field<Object> points =
                             this.dslContext.select(sum(POINTS.MATERIALIZED_POINTS))
                                     .from(POINTS)
-                                    .where(POINTS.USER_ID.equal(MEMBER.ID_))
+                                    .where(POINTS.USER_ID.equal(member.ID_))
                                     .asField("points");
                     query.addSelect(points);
                     query.addOrderBy(sortColumn.isAscending()
@@ -128,15 +148,15 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     private void addSearchCondition(String partialName, String partialEmail,
-            SelectQuery<?> query) {
+            SelectQuery<?> query, MemberTable memberTable) {
         Condition searchCondition = DSL.falseCondition();
         if (partialName != null) {
             String[] searchTerms = partialName.split("\\s");
             for (String searchTerm : searchTerms) {
                 searchCondition = searchCondition
-                        .or(MEMBER.SCREEN_NAME.contains(searchTerm))
-                        .or(MEMBER.FIRST_NAME.contains(searchTerm))
-                        .or(MEMBER.LAST_NAME.contains(searchTerm));
+                        .or(memberTable.SCREEN_NAME.contains(searchTerm))
+                        .or(memberTable.FIRST_NAME.contains(searchTerm))
+                        .or(memberTable.LAST_NAME.contains(searchTerm));
             }
         }
         if (partialEmail != null) {
@@ -168,18 +188,22 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public int countByGiven(String partialName, String partialEmail, String roleName) {
-        final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(MEMBER.ID_))
-                .from(MEMBER)
-                .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
-                .join(MEMBER_CATEGORY).on(MEMBER_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                .where(MEMBER.STATUS.eq(0))
+
+        final MemberTable memberTable = MEMBER.as("member");
+        final Users_RolesTable usersRoles = USERS_ROLES.as("usersRoles");
+        final MemberCategoryTable memberCategory = MEMBER_CATEGORY.as("memberCategory");
+        final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(memberTable.ID_))
+                .from(memberTable)
+                .join(usersRoles).on(memberTable.ID_.equal(usersRoles.USER_ID))
+                .join(memberCategory).on(memberCategory.ROLE_ID.equal(usersRoles.ROLE_ID))
+                .where(memberTable.STATUS.eq(0))
                 .getQuery();
 
         if (partialName != null || partialEmail != null) {
-            addSearchCondition(partialName, partialEmail, query);
+            addSearchCondition(partialName, partialEmail, query,memberTable);
         }
         if (roleName != null) {
-            query.addConditions(MEMBER_CATEGORY.DISPLAY_NAME.eq(roleName));
+            query.addConditions(memberCategory.DISPLAY_NAME.eq(roleName));
         }
         return query.fetchOne().into(Integer.class);
     }

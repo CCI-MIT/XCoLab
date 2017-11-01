@@ -24,6 +24,8 @@ import org.xcolab.view.pages.proposals.utils.voting.VoteValidator;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator.ValidationResult;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
+import org.xcolab.view.util.googleanalytics.GoogleAnalyticsUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -93,13 +95,14 @@ public class VoteOnProposalActionController {
                 } catch (ContestNotFoundException ignored) {
 
                 }
+
+                //publish event per contestPhaseId to allow voting on exactly one proposal per
+                // contest(phase)
+                AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
+                        VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
+				GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
                 hasVoted = true;
             }
-
-            //publish event per contestPhaseId to allow voting on exactly one proposal per
-            // contest(phase)
-            AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
-                    VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
         }
         // Redirect to prevent page-refreshing from influencing the vote
         final String arguments = hasVoted ? "/voted" : "";

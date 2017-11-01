@@ -1,6 +1,7 @@
 package org.xcolab.client.proposals.pojo.phases;
 
-import org.xcolab.util.http.client.RestService;
+
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class Proposal2Phase extends AbstractProposal2Phase {
 
@@ -21,7 +22,7 @@ public class Proposal2Phase extends AbstractProposal2Phase {
         super(proposalid, contestphaseid, versionfrom, versionto, sortweight, autopromotecandidate);
     }
 
-    public Proposal2Phase(AbstractProposal2Phase abstractProposal2Phase, RestService restService) {
+    public Proposal2Phase(AbstractProposal2Phase abstractProposal2Phase, ServiceNamespace serviceNamespace) {
         super(abstractProposal2Phase);
     }
 }

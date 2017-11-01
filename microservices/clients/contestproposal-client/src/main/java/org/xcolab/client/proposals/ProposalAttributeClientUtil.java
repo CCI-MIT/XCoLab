@@ -5,19 +5,14 @@ import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class ProposalAttributeClientUtil {
 
-    private static final RestService contestService = new RestService(CoLabService.CONTEST,
-            ServiceRequestUtils.getNamespace());
-
     private static final ProposalAttributeClient client =
-            ProposalAttributeClient.fromService(contestService);
+            ProposalAttributeClient.fromNamespace(ServiceNamespace.instance());
 
     public static ProposalAttributeClient getClient() {
         return client;

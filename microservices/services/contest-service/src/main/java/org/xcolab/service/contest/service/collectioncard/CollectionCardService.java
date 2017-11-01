@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class CollectionCardService {
 
-    private final ContestService contestService;
+    private final ContestService serviceNamespace;
 
     private final ContestCollectionCardDao contestCollectionCardDao;
 
@@ -24,10 +24,10 @@ public class CollectionCardService {
     private final static String VIEW_TYPE_OUTLINE = "OUTLINE";
 
     @Autowired
-    public CollectionCardService(ContestService contestService, ContestCollectionCardDao contestCollectionCardDao) {
+    public CollectionCardService(ContestService serviceNamespace, ContestCollectionCardDao contestCollectionCardDao) {
 
 
-        this.contestService = contestService;
+        this.serviceNamespace = serviceNamespace;
         this.contestCollectionCardDao=contestCollectionCardDao;
     }
 
@@ -38,7 +38,7 @@ public class CollectionCardService {
             collectionCards.add(contestCollectionCardDao.get(collectionCardId).getId_());
             List<Long> contestList = new ArrayList<>();
             while(!collectionCards.isEmpty()) {
-                for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load(), getActive, false)) {
+                for(Contest contest: serviceNamespace.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load(), getActive, false)) {
                     if(!contestList.contains(contest.getContestPK())) {
                         if(     (!onlyFeatured || contest.getFeatured_())                                   &&
                                 (   (viewType.equals(VIEW_TYPE_GRID) && contest.getShow_in_tile_view())     ||

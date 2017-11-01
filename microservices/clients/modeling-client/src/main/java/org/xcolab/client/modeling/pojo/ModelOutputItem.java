@@ -1,6 +1,6 @@
 package org.xcolab.client.modeling.pojo;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ModelOutputItem extends AbstractModelOutputItem {
 
@@ -10,7 +10,8 @@ public class ModelOutputItem extends AbstractModelOutputItem {
         super(value);
     }
 
-    public ModelOutputItem(AbstractModelOutputItem modelOutputItem, RestService restService) {
+    public ModelOutputItem(AbstractModelOutputItem modelOutputItem,
+            ServiceNamespace serviceNamespace) {
         super(modelOutputItem);
     }
 }

@@ -1,10 +1,10 @@
 package org.xcolab.client.contest.pojo;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ContestDiscussion extends AbstractContestDiscussion {
 
-    private RestService contestService;
+    private ServiceNamespace serviceNamespace;
 
     public ContestDiscussion() {}
 
@@ -16,9 +16,9 @@ public class ContestDiscussion extends AbstractContestDiscussion {
         super(discussionId, contestId, tab);
     }
 
-    public ContestDiscussion(AbstractContestDiscussion abstractContestDiscussion, RestService contestService) {
+    public ContestDiscussion(AbstractContestDiscussion abstractContestDiscussion, ServiceNamespace serviceNamespace) {
         super(abstractContestDiscussion);
-        this.contestService = contestService;
+        this.serviceNamespace = serviceNamespace;
     }
 
 }

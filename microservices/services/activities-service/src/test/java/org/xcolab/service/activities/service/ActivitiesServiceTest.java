@@ -43,7 +43,6 @@ import static org.mockito.Matchers.anyLong;
 )
 
 @PrepareForTest({
-    org.xcolab.util.http.ServiceRequestUtils.class,
     org.xcolab.client.proposals.ProposalClientUtil.class,
     org.xcolab.client.contest.ContestClientUtil.class,
     org.xcolab.client.contest.ContestClient.class,
@@ -66,7 +65,7 @@ public class ActivitiesServiceTest {
     @Before
     public void setup() throws Exception {
 
-        PowerMockito.mockStatic(ServiceRequestUtils.class);
+        ServiceRequestUtils.setInitialized(true);
 
         PowerMockito.mockStatic(ProposalClientUtil.class);
 

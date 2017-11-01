@@ -6,10 +6,8 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.html.LabelValue;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
@@ -53,10 +51,10 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         allContests.sort(Comparator.comparing(AbstractContest::getWeight));
         for (Contest contest : allContests) {
             if (contest.getIsSharedContestInForeignColab()) {
-                RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
+                ServiceNamespace serviceNamespace = ServiceNamespace.instance(
                         ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
-                Contest foreignContest = ContestClient.fromService(contestService)
+                Contest foreignContest = ContestClient.fromNamespace(serviceNamespace)
                         .getContest(contest.getContestPK());
                 foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
 
