@@ -234,6 +234,7 @@ public class ProposalImpactSeries {
 
     public void persistWithAuthor(Member author) {
         // Persist all editable attributes
+        Integer version = null;
         for (Map.Entry<String, Boolean> entry : seriesTypeToEditableMap.entrySet()) {
             final String seriesType = entry.getKey();
             final Boolean isEditable = entry.getValue();
@@ -244,11 +245,11 @@ public class ProposalImpactSeries {
                     double filteredValue = ProposalImpactValueFilterAlgorithm
                             .filterValueForImpactSeriesType(
                                     seriesValues.getValueForYear(iteration.getYear()), seriesType);
-                    ProposalAttributeClientUtil
+                    version = ProposalAttributeClientUtil
                             .setProposalAttribute(author.getUserId(), proposal.getProposalId(),
                                     seriesType,
                                     focusArea.getId_(), "", new Long(iteration.getYear()),
-                                    filteredValue);
+                                    filteredValue, version).getVersion();
                 }
 
             }

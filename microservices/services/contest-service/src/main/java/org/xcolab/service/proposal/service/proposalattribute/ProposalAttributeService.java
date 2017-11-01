@@ -42,7 +42,10 @@ public class ProposalAttributeService {
             Proposal proposal = proposalDao.get(proposalAttribute.getProposalId());
 
             int currentVersion = proposalVersionDao.findMaxVersion(proposalAttribute.getProposalId());
-            int newVersion = currentVersion + 1;
+            Integer newVersion = proposalAttribute.getVersion();
+            if (newVersion == null || newVersion < currentVersion) {
+                newVersion = currentVersion + 1;
+            }
 
             List<ProposalAttribute> currentProposalAttributes =
                     proposalAttributeDao.findByGiven(proposal.getProposalId(),
