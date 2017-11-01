@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
@@ -105,8 +106,11 @@ public class VoteOnProposalActionController {
             }
         }
         // Redirect to prevent page-refreshing from influencing the vote
-        final String arguments = hasVoted ? "/voted" : "";
-        return "redirect:" + proposalLinkUrl + arguments;
+        if (ConfigurationAttributeKey.PROPOSALS_VOTING_SUCCESS_MESSAGE_IS_ACTIVE.get()
+                && hasVoted) {
+            return "redirect:" + proposalLinkUrl + "/voted";
+        }
+        return "redirect:" + proposalLinkUrl;
     }
 
     @GetMapping("confirmVote/{proposalId}/{userId}/{confirmationToken}")
