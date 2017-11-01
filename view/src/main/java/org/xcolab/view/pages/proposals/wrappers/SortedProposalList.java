@@ -39,14 +39,14 @@ public class SortedProposalList {
         final String sortColumn = sortFilterPage.getSortColumn();
 
         Comparator<Proposal> proposalComparator;
-        boolean sortColumnSet = StringUtils.isBlank(sortColumn);
-        if (!sortColumnSet) {
+        boolean isSortColumnSet = StringUtils.isNotBlank(sortColumn);
+        if (isSortColumnSet) {
             proposalComparator = getComparator(sortColumn, sortFilterPage.isSortAscending());
         } else {
             proposalComparator = ProposalSortColumn.MODIFIED.getComparator().reversed();
         }
 
-        proposalsWithRibbons.sort(sortColumnSet ? proposalComparator
+        proposalsWithRibbons.sort(isSortColumnSet ? proposalComparator
                 : ProposalSortColumn.RIBBONS.getComparator().thenComparing(proposalComparator));
         proposalsWithoutRibbons.sort(proposalComparator);
     }
