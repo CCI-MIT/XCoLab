@@ -28,8 +28,7 @@ import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 
-import static org.springframework.security.test.web.servlet.request
-        .SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 
@@ -43,6 +42,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ComponentScan("org.xcolab.view.pages.proposals.interceptors")
 @ComponentScan("org.xcolab.view.pages.loginregister")
 @ComponentScan("org.xcolab.view.pages.proposals.utils.context")
+@ComponentScan("org.xcolab.view.pages.redballoon")
 @ComponentScan("org.xcolab.view.config")
 @ComponentScan("org.xcolab.view.i18n")
 @TestPropertySource(
@@ -116,3 +116,5 @@ public class ForgotPasswordControllerTest {
     }
 
 }
+
+

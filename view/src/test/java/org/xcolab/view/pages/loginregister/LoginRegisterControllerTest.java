@@ -55,6 +55,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.pages.proposals.interceptors")
 @ComponentScan("org.xcolab.view.pages.proposals.utils.context")
 @ComponentScan("org.xcolab.view.pages.loginregister")
+@ComponentScan("org.xcolab.view.pages.redballoon")
 @ComponentScan("org.xcolab.view.config")
 @ComponentScan("org.xcolab.view.i18n")
 

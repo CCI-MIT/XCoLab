@@ -9,6 +9,10 @@ $bs-form-control__borderRadius: 5px !default;
       vertical-align: middle;
     }
 
+    &.bs-form-control--xs {
+      width: 50px;
+    }
+
     &.bs-form-control--sm {
       width: 200px;
     }

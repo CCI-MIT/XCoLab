@@ -1,10 +1,11 @@
 package org.xcolab.view.pages.proposals.utils;
 
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 
 import java.util.Comparator;
 
-public enum ProposalsColumn {
+public enum ProposalSortColumn {
     NAME(Comparator.comparing(o -> o.getName().toLowerCase())),
     AUTHOR(Comparator.comparing(o -> o.getAuthorName().toLowerCase())),
     SUPPORTERS((o1, o2) -> (int) (o1.getSupportersCount() - o2.getSupportersCount())),
@@ -32,11 +33,22 @@ public enum ProposalsColumn {
         } else {
             return o2.isOpen() ? 1 : 0;
         }
+    }),
+    RIBBONS((o1, o2) -> {
+        final ProposalRibbon ribbon1 = o1.getRibbonWrapper();
+        final ProposalRibbon ribbon2 = o2.getRibbonWrapper();
+
+        int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
+        if (sortOrderDiff != 0) {
+            return sortOrderDiff;
+        }
+
+        return ribbon1.getRibbon() - ribbon2.getRibbon();
     });
     
     private final Comparator<Proposal> proposalsComparator;
     
-    ProposalsColumn(Comparator<Proposal> comparator) {
+    ProposalSortColumn(Comparator<Proposal> comparator) {
         proposalsComparator = comparator;
     }
 

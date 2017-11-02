@@ -1,0 +1,9 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
+
+    <jsp:directive.attribute name="condition" type="java.lang.String" required="true"
+                             rtexprvalue="true" description="The condition string, e.g. 'lt IE 9'" />
+    
+    &lt;&#33;&#45;&#45;[${condition}]&gt;
+    <jsp:doBody/>
+    &lt;&#33;[endif]--&gt;
+</jsp:root>

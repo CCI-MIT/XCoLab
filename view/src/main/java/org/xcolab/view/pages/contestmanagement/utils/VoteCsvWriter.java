@@ -17,19 +17,21 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
-import org.xcolab.view.util.CsvConverter;
+import org.xcolab.view.util.CsvResponseWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VoteCsvConverter extends CsvConverter {
+import javax.servlet.http.HttpServletResponse;
 
-    private static final Logger log = LoggerFactory.getLogger(VoteCsvConverter.class);
+public class VoteCsvWriter extends CsvResponseWriter {
 
-    private static final int NUM_COLUMNS = 19;
+    private static final Logger log = LoggerFactory.getLogger(VoteCsvWriter.class);
+
     private static final List<String> COLUMN_NAMES = Arrays.asList(
             "Proposal id",
             "Contest name",
@@ -52,9 +54,8 @@ public class VoteCsvConverter extends CsvConverter {
             "vote_is_valid",
             "confirmationEmailSendDate");
 
-    public VoteCsvConverter() {
-        super(NUM_COLUMNS);
-        addRow(COLUMN_NAMES);
+    public VoteCsvWriter(HttpServletResponse response) throws IOException {
+        super("votingReport", COLUMN_NAMES, response);
     }
 
     public void addVotes(List<ProposalVote> proposalVotes) {
@@ -113,7 +114,7 @@ public class VoteCsvConverter extends CsvConverter {
             addValue(row, vote.getCreateDate());
             addValue(row, vote.getIsValid());
             addValue(row, vote.getConfirmationEmailSendDate());
-            addRow(row);
+            writeRow(row);
         }
     }
 

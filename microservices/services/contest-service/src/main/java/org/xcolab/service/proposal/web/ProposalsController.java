@@ -308,16 +308,14 @@ public class ProposalsController {
     }
 
 
-    @RequestMapping(value = "/proposalVotes/count",
-            method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/proposalVotes/count")
     public Integer countProposalVotes(@RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long userId) {
         return proposalVoteDao.countByGiven(proposalId, contestPhaseId, userId);
     }
 
-    @RequestMapping(value = "/proposalVotes/hasUserVoted",
-            method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/proposalVotes/hasUserVoted")
     public Boolean hasUserVoted(@RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long memberId) {
@@ -330,18 +328,15 @@ public class ProposalsController {
     }
 
     @DeleteMapping("/proposalVotes/deleteVote")
-    public Boolean deleteProposalVote(@RequestParam Long contestPhaseId,
-            @RequestParam Long memberId) {
-        this.proposalVoteDao.delete(memberId, contestPhaseId);
-        return true;
+    public boolean deleteProposalVote(@RequestParam long proposalId,
+            @RequestParam long contestPhaseId, @RequestParam long memberId) {
+        return proposalVoteDao.delete(proposalId, memberId, contestPhaseId) > 0;
     }
 
     @PostMapping("/proposalVotes/updateVote")
     public boolean updateProposalVote(@RequestBody ProposalVote proposalVote)
             throws NotFoundException {
-
         return proposalVoteDao.update(proposalVote);
-
     }
 
     @GetMapping("/proposalVotes/getProposalVoteByProposalIdUserId")

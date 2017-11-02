@@ -12,7 +12,7 @@ public enum UserResource implements ResourceEnum {
     ROLE_GROUP("roleGroups"),
     STAFF_MEMBER("staffMembers"),
     USER_GROUP("usersGroups"),
-
+    PLATFORM_TEAM("platformteams")
     ;
 
     private final String resourceName;

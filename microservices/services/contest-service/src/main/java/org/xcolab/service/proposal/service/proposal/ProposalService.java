@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.members.MembersClient;
@@ -27,19 +27,21 @@ import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalReference;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.proposal.domain.group.GroupDao;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProposalService {
@@ -332,16 +334,13 @@ public class ProposalService {
     }
 
     public List<Proposal> getMemberProposals(Long memberId) {
-        List<UsersGroups> ug = UsersGroupsClientUtil.getUserGroupsByMemberId(memberId);
-        List<Proposal> proposals = new ArrayList<>();
-        for (UsersGroups ugroup : ug) {
-            try {
-                proposals.add(proposalDao.getByGroupId(ugroup.getGroupId()));
-            } catch (NotFoundException ignored) {
-
-            }
-        }
-        return proposals;
+        List<UsersGroups> userGroups = UsersGroupsClientUtil.getUserGroupsByMemberId(memberId);
+        return userGroups.stream()
+                .map(UsersGroups::getGroupId)
+                .map(groupId -> proposalDao.getByGroupId(groupId, true, false))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 
     public Boolean isUserAMember(long proposalId, long userId) {

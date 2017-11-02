@@ -1,14 +1,12 @@
 package org.xcolab.view.files;
 
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.view.util.entity.upload.FileUploadUtil;
@@ -23,40 +21,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@PropertySource({"file:${user.home}/.xcolab.application.properties"})
 public class FileUploadController {
 
     private static final int IMAGE_CROP_WIDTH_PIXELS = 300;
     private static final int IMAGE_CROP_HEIGHT_PIXELS = 300;
 
-    private final String fileUploadPath;
-
-    @Autowired
-    public FileUploadController(Environment env) {
-        fileUploadPath = env.getProperty("files.upload.dir");
-    }
+    private final String fileUploadPath = PlatformAttributeKey.FILES_UPLOAD_DIR.get();
 
     @PostMapping("/image/upload")
-    public ImageResponse singleFileUpload(@RequestParam("file") MultipartFile file,
-            HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) Boolean resize) {
-
-        if (request.getParameter("resize") == null) {
-            resize = false;
-        }
-        return uploadImageResponse(file, request, resize);
+    public ImageResponse singleFileUpload(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam MultipartFile file,
+            @RequestParam(defaultValue = "false") boolean crop) {
+        return uploadImage(file, request, crop);
     }
 
-    private ImageResponse uploadImageResponse(MultipartFile file, HttpServletRequest request,
-            Boolean resize) {
+    private ImageResponse uploadImage(MultipartFile file, HttpServletRequest request,
+            boolean crop) {
         try {
-            String path = request.getSession().getServletContext().getRealPath("/");
-
-            path = (fileUploadPath != null) ? (fileUploadPath) : (path);
+            String path;
+            if (fileUploadPath != null) {
+                path = fileUploadPath;
+            } else {
+                path = request.getSession().getServletContext().getRealPath("/");
+            }
 
             byte[] bytes = file.getBytes();
 
-            if (resize != null) {
+            if (crop) {
                 bytes = FileUploadUtil
                         .resizeAndCropImage(ImageIO.read(new ByteArrayInputStream(bytes)),
                                 IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
@@ -82,12 +73,9 @@ public class FileUploadController {
     public void singleCKEditorUpload(@RequestParam("upload") MultipartFile file,
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false, name = "CKEditorFuncNum") String ckEditorFuncNum,
-            @RequestParam(required = false) Boolean resize) {
+            @RequestParam(defaultValue = "false") boolean crop) {
 
-        if (request.getParameter("resize") == null) {
-            resize = false;
-        }
-        ImageResponse ir = uploadImageResponse(file, request, resize);
+        ImageResponse ir = uploadImage(file, request, crop);
         try {
             response.setContentType("text/html");
             response.getOutputStream()
