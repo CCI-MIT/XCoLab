@@ -19,7 +19,7 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.Date;
@@ -29,23 +29,27 @@ import java.util.Map;
 
 class CommentServiceWrapper {
 
-    private static final Map<RestService, CommentServiceWrapper> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, CommentServiceWrapper> instances = new HashMap<>();
 
     private final RestResource<CommentDto, Long> commentResource;
     private final RestResource<CommentThreadDto, Long> threadResource;
     private final RestResource<CategoryDto, Long> categoryResource;
     private final RestResource<CategoryGroupDto, Long> categoryGroupResource;
 
-    private CommentServiceWrapper(RestService commentService) {
-        Assert.notNull(commentService, "Comment service is required");
-        commentResource = new RestResource1<>(commentService, "comments", Comment.TYPES);
-        threadResource = new RestResource1<>(commentService, "threads", CommentThread.TYPES);
-        categoryResource = new RestResource1<>(commentService, "categories", Category.TYPES);
-        categoryGroupResource = new RestResource1<>(commentService, "groups", CategoryGroup.TYPES);
+    private CommentServiceWrapper(ServiceNamespace serviceNamespace) {
+        Assert.notNull(serviceNamespace, "Service namespace is required");
+        commentResource = new RestResource1<>(CommentResource.COMMENT, Comment.TYPES,
+                serviceNamespace);
+        threadResource = new RestResource1<>(CommentResource.THREAD, CommentThread.TYPES,
+                serviceNamespace);
+        categoryResource = new RestResource1<>(CommentResource.CATEGORY, Category.TYPES,
+                serviceNamespace);
+        categoryGroupResource = new RestResource1<>(CommentResource.CATEGORY_GROUP,
+                CategoryGroup.TYPES, serviceNamespace);
     }
 
-    static CommentServiceWrapper fromService(RestService commentService) {
-        return instances.computeIfAbsent(commentService, CommentServiceWrapper::new);
+    static CommentServiceWrapper fromService(ServiceNamespace serviceNamespace) {
+        return instances.computeIfAbsent(serviceNamespace, CommentServiceWrapper::new);
     }
 
     public List<CommentDto> listComments(Integer startRecord, Integer limitRecord, String sort,

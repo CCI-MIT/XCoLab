@@ -14,7 +14,7 @@ import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.time.DurationFormatter;
 
@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 public class CommentThread extends AbstractCommentThread {
+
     public static final TypeProvider<CommentThreadDto> TYPES = new TypeProvider<>(CommentThreadDto.class,
                     new ParameterizedTypeReference<List<CommentThreadDto>>() {});
 
@@ -44,12 +45,12 @@ public class CommentThread extends AbstractCommentThread {
         categoryClient = CategoryClientUtil.getClient();
     }
 
-    public CommentThread(AbstractCommentThread abstractCommentThread, RestService commentService) {
+    public CommentThread(AbstractCommentThread abstractCommentThread, ServiceNamespace serviceNamespace) {
         super(abstractCommentThread);
 
-        commentClient = CommentClient.fromService(commentService);
-        threadClient =  ThreadClient.fromService(commentService);
-        categoryClient =  CategoryClient.fromService(commentService);
+        commentClient = CommentClient.fromService(serviceNamespace);
+        threadClient =  ThreadClient.fromService(serviceNamespace);
+        categoryClient =  CategoryClient.fromService(serviceNamespace);
     }
 
     @JsonIgnore

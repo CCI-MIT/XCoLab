@@ -341,6 +341,22 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS")
                     .defaultValue(true)
                     .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_USER_CAN_PROMOTE_TO_OWNER =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_USER_CAN_PROMOTE_TO_OWNER")
+                    .defaultValue(true)
+                    .build();
+    public static final AttributeGetter<Long> PROPOSALS_MAX_VOTES_PER_CONTEST =
+            ConfigurationAttributes.newLongAttribute("PROPOSALS_MAX_VOTES_PER_CONTEST")
+                    .defaultValue(1L)
+                    .build();
+    public static final AttributeGetter<Long> PROPOSALS_MAX_VOTES_PER_PROPOSAL =
+            ConfigurationAttributes.newLongAttribute("PROPOSALS_MAX_VOTES_PER_PROPOSAL")
+                    .defaultValue(1L)
+                    .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_VOTING_SUCCESS_MESSAGE_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_VOTING_SUCCESS_MESSAGE_IS_ACTIVE")
+                    .defaultValue(true)
+                    .build();
 
     // Points
     public static final AttributeGetter<Boolean> POINTS_IS_ACTIVE =

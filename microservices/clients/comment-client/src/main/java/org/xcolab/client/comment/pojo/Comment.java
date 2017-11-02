@@ -10,13 +10,14 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 public class Comment extends AbstractComment {
+
     public static final TypeProvider<CommentDto> TYPES = new TypeProvider<>(CommentDto.class,
                     new ParameterizedTypeReference<List<CommentDto>>() {});
 
@@ -38,9 +39,9 @@ public class Comment extends AbstractComment {
         threadClient = comment.threadClient;
     }
 
-    Comment(AbstractComment abstractComment, RestService commentService) {
+    Comment(AbstractComment abstractComment, ServiceNamespace serviceNamespace) {
         super(abstractComment);
-        this.threadClient = new ThreadClient(commentService);
+        this.threadClient = new ThreadClient(serviceNamespace);
     }
 
     public String getContentPlain() {

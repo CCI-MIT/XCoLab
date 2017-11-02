@@ -2,7 +2,7 @@ package org.xcolab.client.contest.pojo;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DataTransferObject;
 
@@ -22,7 +22,7 @@ public class ContestDiscussionDto extends AbstractContestDiscussion implements D
     }
 
     @Override
-    public ContestDiscussion toPojo(RestService restService) {
-        return new ContestDiscussion(this, restService);
+    public ContestDiscussion toPojo(ServiceNamespace serviceNamespace) {
+        return new ContestDiscussion(this, serviceNamespace);
     }
 }

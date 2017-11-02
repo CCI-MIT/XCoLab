@@ -1,12 +1,13 @@
 package org.xcolab.client.proposals;
 
+import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistoryDto;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.dto.DtoUtil;
 
 import java.sql.Timestamp;
@@ -17,19 +18,19 @@ import java.util.Map;
 
 public final class ProposalMoveClient {
 
-    private static final Map<RestService, ProposalMoveClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, ProposalMoveClient> instances = new HashMap<>();
 
-    private final RestService proposalService;
+    private final ServiceNamespace serviceNamespace;
     private final RestResource1<ProposalMoveHistoryDto, Long> proposalMoveHistoryResource;
 
-    private ProposalMoveClient(RestService proposalService) {
-        proposalMoveHistoryResource = new RestResource1<>(proposalService,
-                "proposalMoveHistories", ProposalMoveHistoryDto.TYPES);
-        this.proposalService = proposalService;
+    private ProposalMoveClient(ServiceNamespace serviceNamespace) {
+        proposalMoveHistoryResource = new RestResource1<>(ProposalResource.PROPOSAL_MOVE_HISTORY,
+                ProposalMoveHistoryDto.TYPES);
+        this.serviceNamespace = serviceNamespace;
     }
 
-    public static ProposalMoveClient fromService(RestService proposalService) {
-        return instances.computeIfAbsent(proposalService, ProposalMoveClient::new);
+    public static ProposalMoveClient fromNamespace(ServiceNamespace serviceNamespace) {
+        return instances.computeIfAbsent(serviceNamespace, ProposalMoveClient::new);
     }
 
     public List<ProposalMoveHistory> getBySourceProposalIdContestId(Long sourceProposalId,
@@ -51,7 +52,7 @@ public final class ProposalMoveClient {
                 .optionalQueryParam("sourceContestId", sourceContestId)
                 .optionalQueryParam("targetProposalId", targetProposalId)
                 .optionalQueryParam("targetContestId", targetContestId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
     public ProposalMoveHistory getByTargetProposalIdContestId(Long targetProposalId,
@@ -95,7 +96,7 @@ public final class ProposalMoveClient {
     public ProposalMoveHistory createProposalMoveHistory(ProposalMoveHistory proposalMoveHistory) {
         return proposalMoveHistoryResource
                 .create(new ProposalMoveHistoryDto(proposalMoveHistory))
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public ProposalMoveHistory createCopyProposalMoveHistory(long proposalId, long srcContestId,

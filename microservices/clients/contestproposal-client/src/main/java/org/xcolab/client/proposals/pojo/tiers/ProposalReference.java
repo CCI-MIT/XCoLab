@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.tiers;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ProposalReference extends AbstractProposalReference {
 
@@ -19,7 +19,7 @@ public class ProposalReference extends AbstractProposalReference {
     }
 
     public ProposalReference(AbstractProposalReference abstractProposalReference,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractProposalReference);
     }
 }

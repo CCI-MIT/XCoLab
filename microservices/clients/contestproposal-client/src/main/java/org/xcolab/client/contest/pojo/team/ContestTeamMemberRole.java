@@ -1,7 +1,8 @@
 package org.xcolab.client.contest.pojo.team;
 
 import org.xcolab.client.contest.enums.ContestRole;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+
 
 public class ContestTeamMemberRole extends AbstractContestTeamMemberRole
         implements Comparable<ContestTeamMemberRole> {
@@ -17,7 +18,7 @@ public class ContestTeamMemberRole extends AbstractContestTeamMemberRole
     }
 
     public ContestTeamMemberRole(AbstractContestTeamMemberRole abstractContestTeamMemberRole,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractContestTeamMemberRole);
     }
 

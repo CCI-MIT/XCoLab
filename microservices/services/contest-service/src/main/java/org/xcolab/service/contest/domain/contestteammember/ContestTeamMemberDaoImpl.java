@@ -109,15 +109,14 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public List<ContestTeamMember> findContestYear(Long categoryId, Long contestYear) {
+    public List<ContestTeamMember> findByContestYear(Long roleId, Long contestYear) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_TEAM_MEMBER).getQuery();
-        query.addJoin(CONTEST,CONTEST.CONTEST_PK.eq(CONTEST_TEAM_MEMBER.CONTEST_ID));
+
+        query.addJoin(CONTEST, CONTEST.CONTEST_PK.eq(CONTEST_TEAM_MEMBER.CONTEST_ID));
 
         query.addConditions(CONTEST.CONTEST_YEAR.eq(contestYear));
-        query.addConditions(CONTEST.CONTEST_PRIVATE.eq(false));
-
-        query.addConditions(CONTEST_TEAM_MEMBER.ROLE_ID.eq(categoryId));
+        query.addConditions(CONTEST_TEAM_MEMBER.ROLE_ID.eq(roleId));
 
         return query.fetchInto(ContestTeamMember.class);
     }

@@ -2,9 +2,9 @@ package org.xcolab.client.proposals;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -12,9 +12,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +21,8 @@ import java.util.regex.Pattern;
 
 public final class ProposalClientUtil {
 
-    private static final RestService contestService = new RestService(CoLabService.CONTEST,
-            ServiceRequestUtils.getNamespace());
-    private static final ProposalClient client = ProposalClient.fromService(contestService);
+    private static final ProposalClient client = ProposalClient.fromNamespace(
+            ServiceNamespace.instance());
 
     public static ProposalClient getClient() {
         return client;

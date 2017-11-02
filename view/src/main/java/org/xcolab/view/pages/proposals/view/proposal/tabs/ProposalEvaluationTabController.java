@@ -19,7 +19,7 @@ import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
@@ -119,9 +119,9 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         boolean hasContestPassedScreeningPhaseAlready = false;
 
         Contest contest = proposalContext.getContest();
-        RestService contestRestService = contest.getRestService();
-        ContestPhase activeContestPhase = ContestClient.fromService(contestRestService).getActivePhase(contest.getContestPK());
-        List<ContestPhase> allContestPhasesForCurrentContest = ContestClient.fromService(contestRestService).getAllContestPhases(contest.getContestPK());
+        ServiceNamespace contestServiceNamespace = contest.getServiceNamespace();
+        ContestPhase activeContestPhase = ContestClient.fromNamespace(contestServiceNamespace).getActivePhase(contest.getContestPK());
+        List<ContestPhase> allContestPhasesForCurrentContest = ContestClient.fromNamespace(contestServiceNamespace).getAllContestPhases(contest.getContestPK());
 
         for (ContestPhase contestPhase : allContestPhasesForCurrentContest) {
             boolean isLastContestPhase = activeContestPhase.getPhaseEndDate() == null;

@@ -45,7 +45,7 @@ public class ContestPhaseService {
 
 
     @Autowired
-    private ContestService contestService;
+    private ContestService serviceNamespace;
 
 
     @Autowired
@@ -65,7 +65,7 @@ public class ContestPhaseService {
 
     public ContestPhase getNextContestPhase(ContestPhase contestPhase) throws NotFoundException {
         // First sort by contest phase type (the list has to be initialized as modifiable..)
-        List<ContestPhase> contestPhases = new ArrayList<>(contestService.getAllContestPhases(contestPhase.getContestPK()));
+        List<ContestPhase> contestPhases = new ArrayList<>(serviceNamespace.getAllContestPhases(contestPhase.getContestPK()));
         contestPhases.sort(Comparator.comparing(ContestPhase::getPhaseStartDate));
 
         boolean currentFound = false;
@@ -81,7 +81,7 @@ public class ContestPhaseService {
     }
 
     public void transferSupportsToVote(Contest contest) throws NotFoundException {
-        ContestPhase lastOrActivePhase = contestService.getActiveOrLastPhase(contest.getContestPK());
+        ContestPhase lastOrActivePhase = serviceNamespace.getActiveOrLastPhase(contest.getContestPK());
         // Vote is only possible in Winner Selection phase
         if (lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() &&
                 lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId() &&
@@ -117,7 +117,8 @@ public class ContestPhaseService {
             try {
                 Member member = MembersClient.getMember(user.getUserId());
                 if (proposals.size() == 1) {
-                    ProposalMemberRatingClientUtil.addProposalVote(proposals.get(0).getProposalId(),lastOrActivePhase.getContestPhasePK(),user.getUserId());
+                    ProposalMemberRatingClientUtil.addProposalVote(proposals.get(0).getProposalId(),
+                            lastOrActivePhase.getContestPhasePK(), user.getUserId(), 1);
 
                     org.xcolab.client.contest.pojo.Contest c = ContestClientUtil.getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
                     new ContestVoteNotification(member, c, proposals.get(0),

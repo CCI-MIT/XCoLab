@@ -9,8 +9,7 @@ import org.xcolab.client.modeling.pojo.ModelInputItem;
 import org.xcolab.client.modeling.pojo.ModelOutputChartOrder;
 import org.xcolab.client.modeling.pojo.ModelOutputItem;
 import org.xcolab.client.modeling.pojo.ModelPosition;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,10 +17,8 @@ import java.util.Map;
 
 public final class ModelingClientUtil {
 
-    private static final RestService modelingService = new RestService("modeling-service",
-            ServiceRequestUtils.getNamespace());
-
-    private static final ModelingClient client = ModelingClient.fromService(modelingService);
+    private static final ModelingClient client = ModelingClient
+            .fromNamespace(ServiceNamespace.instance());
 
     private ModelingClientUtil() {
     }

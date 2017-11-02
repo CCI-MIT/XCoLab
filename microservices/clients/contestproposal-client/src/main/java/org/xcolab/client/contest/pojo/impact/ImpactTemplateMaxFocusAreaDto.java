@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DataTransferObject;
 
@@ -28,7 +28,7 @@ public class ImpactTemplateMaxFocusAreaDto extends AbstractImpactTemplateMaxFocu
     }
 
     @Override
-    public ImpactTemplateMaxFocusArea toPojo(RestService restService) {
-        return new ImpactTemplateMaxFocusArea(this, restService);
+    public ImpactTemplateMaxFocusArea toPojo(ServiceNamespace serviceNamespace) {
+        return new ImpactTemplateMaxFocusArea(this, serviceNamespace);
     }
 }

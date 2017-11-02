@@ -28,13 +28,4 @@
 			</ul>
 		</div>
 	</div>
-
-    <!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
-    <c:if test="${promptLoginWindow == 'true' }">
-        <script>
-            jQuery(function() {
-                deferUntilLogin();
-            });
-        </script>
-    </c:if>
 </jsp:root>

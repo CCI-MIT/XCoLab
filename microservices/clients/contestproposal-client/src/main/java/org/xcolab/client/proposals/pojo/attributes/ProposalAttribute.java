@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.attributes;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ProposalAttribute extends AbstractProposalAttribute {
 
@@ -26,7 +26,7 @@ public class ProposalAttribute extends AbstractProposalAttribute {
     }
 
     public ProposalAttribute(AbstractProposalAttribute abstractProposalAttribute,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractProposalAttribute);
     }
 }

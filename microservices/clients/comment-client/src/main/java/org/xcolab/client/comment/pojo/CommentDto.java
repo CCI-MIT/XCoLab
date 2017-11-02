@@ -4,14 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import org.xcolab.util.http.client.RestService;
+
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.dto.DataTransferObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class CommentDto extends AbstractComment {
+public class CommentDto extends AbstractComment implements DataTransferObject<Comment> {
 
     public CommentDto() {
     }
@@ -20,15 +22,8 @@ public class CommentDto extends AbstractComment {
         super(comment);
     }
 
-    public Comment toPojo(RestService commentService) {
-        return new Comment(this, commentService);
-    }
-
-    public static List<Comment> toPojos(List<CommentDto> commentDtos, RestService commentService) {
-        final List<Comment>  comments = new ArrayList<>(commentDtos.size());
-        for (CommentDto commentDto : commentDtos) {
-            comments.add(commentDto.toPojo(commentService));
-        }
-        return comments;
+    @Override
+    public Comment toPojo(ServiceNamespace serviceNamespace) {
+        return new Comment(this, serviceNamespace);
     }
 }

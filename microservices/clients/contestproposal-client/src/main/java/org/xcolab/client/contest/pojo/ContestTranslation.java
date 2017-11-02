@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ContestTranslation extends AbstractContestTranslation {
 
@@ -12,7 +12,7 @@ public class ContestTranslation extends AbstractContestTranslation {
     }
 
     public ContestTranslation(AbstractContestTranslation contestTranslation,
-            RestService contestService) {
+            ServiceNamespace serviceNamespace) {
         super(contestTranslation);
     }
 }
