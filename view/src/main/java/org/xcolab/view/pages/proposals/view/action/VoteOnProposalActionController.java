@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -28,6 +29,8 @@ import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsUtils;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,9 +44,14 @@ public class VoteOnProposalActionController {
     private final static String VOTE_ANALYTICS_LABEL = "";
 
     @PostMapping("voteOnProposalAction")
-    public String handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, Member member)
+    public String handleAction(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member member,
+            @RequestParam(defaultValue = "1") int voteValue)
             throws ProposalsAuthorizationException {
+
+        final long maxContestVotes = ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_CONTEST.get();
+        final long maxProposalVotes = ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_PROPOSAL
+                .get();
 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalMemberRatingClient proposalMemberRatingClient =
@@ -51,6 +59,7 @@ public class VoteOnProposalActionController {
 
         final Proposal proposal = proposalContext.getProposal();
         final Contest contest = proposalContext.getContest();
+        final ContestType contestType = proposalContext.getContestType();
         final String proposalLinkUrl = proposal.getProposalLinkUrl(contest);
 
         if (!proposalContext.getPermissions().getCanVote()) {
@@ -69,15 +78,32 @@ public class VoteOnProposalActionController {
         long memberId = member.getUserId();
         if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, memberId)) {
             // User has voted for this proposal and would like to retract the vote
-            proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
+            proposalMemberRatingClient.deleteProposalVote(proposalId, contestPhaseId, memberId);
         } else {
-            if (proposalMemberRatingClient.hasUserVoted(contestPhaseId, memberId)) {
+            final int votesInContest = proposalMemberRatingClient
+                    .countVotesByUserInPhase(memberId, contestPhaseId);
+            if (votesInContest > 0 && maxContestVotes == 1 && voteValue == 1) {
                 // User has voted for a different proposal. Vote will be retracted and
                 // converted to a vote of this proposal.
-                proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
+                final List<ProposalVote> userVotesInPhase = proposalMemberRatingClient
+                        .getProposalVotesByUserInPhase(memberId, contestPhaseId);
+                final ProposalVote oldVote = userVotesInPhase.get(0);
+                proposalMemberRatingClient.deleteProposalVote(oldVote.getProposalId(),
+                        contestPhaseId, memberId);
+            } else if (voteValue > maxProposalVotes) {
+                AlertMessage.danger(String.format("You cannot assign more than %d votes per %s.",
+                        maxProposalVotes, contestType.getProposalNameLowercase()))
+                        .flash(request);
+                return "redirect:" + proposalLinkUrl;
+            } else if (votesInContest + voteValue > maxContestVotes) {
+                AlertMessage.danger(String.format("You cannot assign more than %d votes per %s.",
+                        maxContestVotes, contestType.getContestNameLowercase()))
+                        .flash(request);
+                return "redirect:" + proposalLinkUrl;
             }
 
-            proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
+            proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId,
+                    voteValue);
             VoteValidator voteValidator =
                     new VoteValidator(member, proposal, contest, request.getRemoteAddr(),
                             clients.getProposalMemberRatingClient());
@@ -91,11 +117,7 @@ public class VoteOnProposalActionController {
                 // additional information.")
                 //                            .flash(request);
             } else {
-                try {
-                    new ProposalVoteNotification(proposal, contest, member).sendMessage();
-                } catch (ContestNotFoundException ignored) {
-
-                }
+                new ProposalVoteNotification(proposal, contest, member).sendMessage();
 
                 //publish event per contestPhaseId to allow voting on exactly one proposal per
                 // contest(phase)
