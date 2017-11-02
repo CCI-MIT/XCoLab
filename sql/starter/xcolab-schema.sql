@@ -30,15 +30,13 @@ CREATE TABLE `xcolab_ProposalVote` (
   `proposalId` bigint(20) DEFAULT NULL,
   `contestPhaseId` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL,
+  `value` INT DEFAULT '1' NULL,
   `createDate` datetime DEFAULT NULL,
   `isValid` tinyint(4) DEFAULT NULL,
   `confirmationEmailSendDate` datetime DEFAULT NULL,
   `confirmationToken` varchar(75) DEFAULT NULL,
-  PRIMARY KEY (`contestPhaseId`,`userId`),
+  PRIMARY KEY (`proposalId`, `contestPhaseId`,`userId`),
   KEY `IX_A4D26028` (`contestPhaseId`,`userId`),
-  KEY `IX_EA28CF99` (`proposalId`),
-  KEY `IX_43559ACF` (`proposalId`,`contestPhaseId`),
-  KEY `IX_562EB409` (`proposalId`,`contestPhaseId`,`userId`),
   KEY `IX_5E8D7ED3` (`proposalId`,`userId`),
   KEY `IX_497348F2` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1239,5 +1237,21 @@ CREATE TABLE IF NOT EXISTS `xcolab_ColabEmail` (
   PRIMARY KEY (`colabEmailId`),
   INDEX `index2` (`emailSubject` ASC, `emailTo` ASC, `dateSent` ASC, `emailBodyHash` ASC))
 ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `xcolab_PlatformTeam`
+(
+    `id_` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(256) DEFAULT NULL,
+    PRIMARY KEY (`id_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `xcolab_PlatformTeamMember`
+(
+    `userId` BIGINT(20) NOT NULL,
+    `teamId` BIGINT(20) NOT NULL,
+    CONSTRAINT xcolab_PlatformTeamMember_userId_teamId_pk PRIMARY KEY (userId, teamId),
+    CONSTRAINT xcolab_PlatformTeamMember_members_Member_id__fk FOREIGN KEY (userId) REFERENCES members_Member (id_) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT xcolab_PlatformTeamMember_xcolab_PlatformTeam_id__fk FOREIGN KEY (teamId) REFERENCES xcolab_PlatformTeam (id_) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
 SET FOREIGN_KEY_CHECKS = 1

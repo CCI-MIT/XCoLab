@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.redballon.web.beans;
+package org.xcolab.view.pages.redballoon.web.beans;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;

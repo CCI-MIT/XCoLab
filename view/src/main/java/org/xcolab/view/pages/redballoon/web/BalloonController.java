@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.redballon.web;
+package org.xcolab.view.pages.redballoon.web;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
-import org.xcolab.view.pages.redballon.utils.BalloonService;
-import org.xcolab.view.pages.redballon.web.beans.UserEmailBean;
+import org.xcolab.view.pages.redballoon.utils.BalloonService;
+import org.xcolab.view.pages.redballoon.web.beans.UserEmailBean;
 
 import java.sql.Timestamp;
 import java.util.Date;

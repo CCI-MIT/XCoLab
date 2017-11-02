@@ -43,7 +43,7 @@ public class ActivitiesClientUtil {
         return activitiesClient.getActivityEntriesAfter(afterDate);
     }
 
-    public static Integer countActivities(Long memberId, List<Long> memberIdsToExclude) {
+    public static int countActivities(Long memberId, List<Long> memberIdsToExclude) {
         return activitiesClient.countActivities(memberId, memberIdsToExclude);
     }
 

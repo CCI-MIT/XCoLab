@@ -4,6 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.members.PlatformTeamsClient;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.PlatformTeam;
+import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -11,6 +15,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
@@ -189,6 +194,24 @@ public class ProposalUpdateHelper {
                             baseUri));
         } else {
             filledAll = false;
+        }
+
+        if (updateProposalSectionsBean.getSelectedTeam() != null) {
+            try {
+                // Setup team stuff
+                PlatformTeam team = PlatformTeamsClient.getPlatformTeam(updateProposalSectionsBean.getSelectedTeam());
+                List<Member> members = PlatformTeamsClient.getTeamMembers(team);
+                Long groupId = proposalWrapper.getGroupId();
+                Long proposalId = proposalWrapper.getProposalId();
+                for (Member member : members) {
+                    Long userId = member.getUserId();
+                    MembershipClient client = proposalContext.getClients().getMembershipClient();
+                    client.addUserToProposalTeam(userId, groupId, proposalId);
+                }
+
+                // Set team name
+                updateProposalSectionsBean.setTeam(team.getName());
+            } catch (EntityNotFoundException ignored) {}
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getTeam(), proposalWrapper.getTeam())) {

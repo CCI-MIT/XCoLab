@@ -50,7 +50,9 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
 
 
         feedSize = jsonPreferences.optInt(FEED_SIZE_PREF, DEFAULT_FEED_SIZE);
-        feedType = jsonPreferences.optEnum(FeedType.class, FEED_TYPE_PREF, DEFAULT_FEED_TYPE);
+        final String feedTypeName = jsonPreferences.optString(FEED_TYPE_PREF,
+                DEFAULT_FEED_TYPE.name());
+        feedType = FeedType.valueOf(feedTypeName);
 
         feedTitle = jsonPreferences.optString(FEED_TITLE_PREF, DEFAULT_FEED_TITLE);
         //TODO: this condition should be unreachable - verify

@@ -1,6 +1,8 @@
-package org.xcolab.view.pages.redballon.utils;
+package org.xcolab.view.pages.redballoon.utils;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,8 @@ import static org.xcolab.util.http.exceptions.ExceptionUtils.getOptional;
 
 @Service
 public class BalloonService {
+
+    private static final Logger _log = LoggerFactory.getLogger(BalloonService.class);
 
     private static final String URL_PLACEHOLDER = "URLPLACEHOLDER";
 
@@ -151,6 +155,22 @@ public class BalloonService {
                         request.getHeader(HttpHeaders.USER_AGENT));
         request.setAttribute(NEW_BALLOON_USER_TRACKING_ATTRIBUTE, but);
         return but;
+    }
+
+    public void associateBalloonTrackingWithUser(HttpServletRequest request, Member member) {
+        Optional<BalloonCookie> balloonCookieOpt = BalloonCookie.from(request.getCookies());
+        if (balloonCookieOpt.isPresent()) {
+            final BalloonCookie balloonCookie = balloonCookieOpt.get();
+            try {
+                BalloonUserTracking but =
+                        BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
+                if (but != null) {
+                    but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
+                }
+            } catch (BalloonUserTrackingNotFoundException e) {
+                _log.error("Invalid UUID: {}", balloonCookie);
+            }
+        }
     }
 
     private BalloonUserTracking getBalloonUserTrackingFromCookie(BalloonCookie cookie) {

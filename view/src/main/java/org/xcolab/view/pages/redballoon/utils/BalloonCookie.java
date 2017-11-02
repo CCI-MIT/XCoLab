@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.redballon.utils;
+package org.xcolab.view.pages.redballoon.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

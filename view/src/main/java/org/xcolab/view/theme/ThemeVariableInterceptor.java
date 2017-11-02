@@ -18,6 +18,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.theme.ColabTheme;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.util.http.servlet.RequestUtil;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.login.AuthenticationError;
@@ -213,7 +214,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("_showPasswordResetPopup", isPasswordReminder);
             modelAndView.addObject("_showSsoPopup", isSSOSigningIn);
 
-            modelAndView.addObject("_requestUri", request.getRequestURI());
+            modelAndView.addObject("_requestUri", RequestUtil.getOriginalUri(request));
             modelAndView.addObject("_isHomePage", request.getRequestURI().equals("/"));
 
             modelAndView.addObject("__alertMessage", AlertMessage.extract(request));

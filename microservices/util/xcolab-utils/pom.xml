@@ -115,6 +115,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+
         <!-- Misc -->
         <dependency>
             <groupId>org.nibor.autolink</groupId>

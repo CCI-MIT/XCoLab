@@ -71,7 +71,7 @@ public class ContestTeamMembersController {
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long contestYear
     ) {
-        return contestTeamMemberDao.findContestYear(categoryId,contestYear);
+        return contestTeamMemberDao.findByContestYear(categoryId,contestYear);
     }
 
     @DeleteMapping(value = "/contestTeamMembers/{id_}")
