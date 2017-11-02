@@ -160,7 +160,7 @@ public class MemberDaoImpl implements MemberDao {
             }
         }
         if (partialEmail != null) {
-            searchCondition = searchCondition.or(MEMBER.EMAIL_ADDRESS.contains(partialEmail));
+            searchCondition = searchCondition.or(memberTable.EMAIL_ADDRESS.contains(partialEmail));
         }
         query.addConditions(searchCondition);
     }
