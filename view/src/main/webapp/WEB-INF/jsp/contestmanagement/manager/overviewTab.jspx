@@ -199,11 +199,11 @@
 	<script type="text/javascript">
 		<![CDATA[
 
-		var MASS_MESSAGE_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('MESSAGE')}");
-		var MASS_MESSAGE_ALL_AUTHORS_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('MESSAGE_ALL_AUTHORS')}");
-		var REPORT_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('REPORT_PEOPLE_IN_CURRENT_PHASE')}");
-		var FLAG_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('FLAG')}");
-		var MODEL_SETTINGS_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('MODEL_SETTINGS')}");
+        var MASS_MESSAGE_SELECT_ID = 'MESSAGE';
+        var MASS_MESSAGE_ALL_AUTHORS_SELECT_ID = 'MESSAGE_ALL_AUTHORS';
+        var REPORT_SELECT_ID = 'REPORT_PEOPLE_IN_CURRENT_PHASE';
+        var FLAG_SELECT_ID = 'FLAG';
+        var MODEL_SETTINGS_SELECT_ID = 'MODEL_SETTINGS';
 
 		var actionURL = "/admin/contest/manager/update";
 		var massActionUrl = "/admin/contest/api/massAction";
