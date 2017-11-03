@@ -341,6 +341,15 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS")
                     .defaultValue(true)
                     .build();
+    //TODO COLAB-2405: these could be enum attributes for ProposalsSortColumn
+    public static final AttributeGetter<String> PROPOSALS_PHASE_CLOSED_SORT_ORDER =
+            ConfigurationAttributes.newStringAttribute("PROPOSALS_PHASE_CLOSED_SORT_ORDER")
+                    .defaultValue("MODIFIED")
+                    .build();
+    public static final AttributeGetter<String> PROPOSALS_PHASE_VOTING_SORT_ORDER =
+            ConfigurationAttributes.newStringAttribute("PROPOSALS_PHASE_VOTING_SORT_ORDER")
+                    .defaultValue("MODIFIED")
+                    .build();
     public static final AttributeGetter<Boolean> PROPOSALS_USER_CAN_PROMOTE_TO_OWNER =
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_USER_CAN_PROMOTE_TO_OWNER")
                     .defaultValue(true)

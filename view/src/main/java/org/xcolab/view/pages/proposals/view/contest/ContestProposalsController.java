@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.PermissionsClient;
@@ -73,18 +74,16 @@ public class ContestProposalsController extends BaseProposalsController {
         final ProposalClient proposalClient = clients.getProposalClient();
 
         final List<Proposal> activeProposals;
-        final boolean isClosedPhase;
-        switch (contestPhase.getContestPhaseTypeObject().getStatusEnum()) {
+        final ContestStatus phaseStatus = contestPhase.getContestPhaseTypeObject().getStatusEnum();
+        switch (phaseStatus) {
             case OPEN_FOR_SUBMISSION:
             case OPEN_FOR_EDIT:
                 activeProposals = proposalClient.getActiveProposalsInContestPhase(
                         contestPhase.getContestPhasePK());
-                isClosedPhase = false;
                 break;
             default:
                 activeProposals = proposalClient.getActiveProposalsInContestPhase(
                         contestPhase.getContestPhasePK(), CacheName.PROPOSAL_LIST_CLOSED);
-                isClosedPhase = true;
         }
 
         List<Proposal> proposals = new ArrayList<>();
@@ -108,19 +107,9 @@ public class ContestProposalsController extends BaseProposalsController {
             }
         }
 
-
-        final ProposalSortColumn defaultSortColumn;
-        if (contest.isContestCompleted()) {
-            defaultSortColumn = ProposalSortColumn.VOTES;
-        } else if (isClosedPhase) {
-            defaultSortColumn = ProposalSortColumn.SUPPORTERS;
-        } else {
-            defaultSortColumn = ProposalSortColumn.MODIFIED;
-        }
-
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new SortedProposalList(proposals, sortFilterPage,
-                defaultSortColumn, contest.isContestCompleted()));
+                getProposalSortColumn(phaseStatus), contest.isContestCompleted()));
         model.addAttribute("showCountdown",
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
         model.addAttribute("defaultTimeZoneId",
@@ -137,6 +126,20 @@ public class ContestProposalsController extends BaseProposalsController {
 
         setBasePageAttributes(proposalContext, model);
         return "/proposals/contestProposals";
+    }
+
+    private ProposalSortColumn getProposalSortColumn(ContestStatus phaseStatus) {
+        switch (phaseStatus) {
+            case OPEN_FOR_SUBMISSION:
+            case OPEN_FOR_EDIT:
+                return ProposalSortColumn.MODIFIED;
+            case VOTING:
+                return ProposalSortColumn.valueOf(ConfigurationAttributeKey
+                                .PROPOSALS_PHASE_VOTING_SORT_ORDER.get());
+            default:
+                return ProposalSortColumn.valueOf(ConfigurationAttributeKey
+                                .PROPOSALS_PHASE_CLOSED_SORT_ORDER.get());
+        }
     }
 
     @PostMapping("/contests/subscribeContest")
