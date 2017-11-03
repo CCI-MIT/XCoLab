@@ -18,6 +18,7 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.util.SortColumn;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -32,6 +33,7 @@ import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -109,7 +111,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new SortedProposalList(proposals, sortFilterPage,
-                getProposalSortColumn(phaseStatus), contest.isContestCompleted()));
+                getDefaultProposalComparator(phaseStatus), contest.isContestCompleted()));
         model.addAttribute("showCountdown",
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
         model.addAttribute("defaultTimeZoneId",
@@ -128,18 +130,25 @@ public class ContestProposalsController extends BaseProposalsController {
         return "/proposals/contestProposals";
     }
 
-    private ProposalSortColumn getProposalSortColumn(ContestStatus phaseStatus) {
+    private Comparator<Proposal> getDefaultProposalComparator(ContestStatus phaseStatus) {
+        final SortColumn sortColumn;
         switch (phaseStatus) {
             case OPEN_FOR_SUBMISSION:
             case OPEN_FOR_EDIT:
-                return ProposalSortColumn.MODIFIED;
+                sortColumn = new SortColumn("-" + ProposalSortColumn.MODIFIED.name());
+                break;
             case VOTING:
-                return ProposalSortColumn.valueOf(ConfigurationAttributeKey
-                                .PROPOSALS_PHASE_VOTING_SORT_ORDER.get());
+                sortColumn = new SortColumn(ConfigurationAttributeKey
+                        .PROPOSALS_PHASE_VOTING_SORT_ORDER.get());
+                break;
             default:
-                return ProposalSortColumn.valueOf(ConfigurationAttributeKey
-                                .PROPOSALS_PHASE_CLOSED_SORT_ORDER.get());
+                sortColumn = new SortColumn(ConfigurationAttributeKey
+                        .PROPOSALS_PHASE_CLOSED_SORT_ORDER.get());
+                break;
         }
+        final Comparator<Proposal> comparator =
+                ProposalSortColumn.valueOf(sortColumn.getColumnName()).getComparator();
+        return sortColumn.isAscending() ? comparator : comparator.reversed();
     }
 
     @PostMapping("/contests/subscribeContest")

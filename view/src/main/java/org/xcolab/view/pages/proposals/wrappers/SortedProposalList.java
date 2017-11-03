@@ -17,13 +17,13 @@ public class SortedProposalList {
     private final List<Proposal> proposalsWithoutRibbons = new ArrayList<>();
 
     public SortedProposalList(List<Proposal> proposals, final SortFilterPage sortFilterPage,
-            ProposalSortColumn defaultSortColumn, boolean proposalsCanHaveRibbons) {
+            Comparator<Proposal> defaultComparator, boolean proposalsCanHaveRibbons) {
         if (sortFilterPage == null) {
             throw new IllegalArgumentException("SortFilterPage can't be null");
         }
 
         initProposalLists(proposals, proposalsCanHaveRibbons);
-        sortProposalLists(sortFilterPage, defaultSortColumn);
+        sortProposalLists(sortFilterPage, defaultComparator);
     }
 
     private void initProposalLists(List<Proposal> proposals, boolean proposalsCanHaveRibbons) {
@@ -42,7 +42,7 @@ public class SortedProposalList {
     }
 
     private void sortProposalLists(SortFilterPage sortFilterPage,
-            ProposalSortColumn defaultSortColumn) {
+            Comparator<Proposal> defaultComparator) {
         final String sortColumn = sortFilterPage.getSortColumn();
 
         Comparator<Proposal> proposalComparator;
@@ -50,7 +50,7 @@ public class SortedProposalList {
         if (isSortColumnSet) {
             proposalComparator = getComparator(sortColumn, sortFilterPage.isSortAscending());
         } else {
-            proposalComparator = defaultSortColumn.getComparator().reversed();
+            proposalComparator = defaultComparator;
         }
 
         proposalsWithRibbons.sort(isSortColumnSet ? proposalComparator
