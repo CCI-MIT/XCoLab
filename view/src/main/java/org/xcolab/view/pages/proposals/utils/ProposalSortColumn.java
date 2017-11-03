@@ -45,10 +45,6 @@ public enum ProposalSortColumn {
         proposalsComparator = comparator;
     }
 
-    ProposalSortColumn(Comparator<Proposal> comparator, ProposalSortColumn secondarySortColumn) {
-        proposalsComparator = comparator.thenComparing(secondarySortColumn.getComparator());
-    }
-
     public Comparator<Proposal> getComparator() {
         return proposalsComparator;
     }
