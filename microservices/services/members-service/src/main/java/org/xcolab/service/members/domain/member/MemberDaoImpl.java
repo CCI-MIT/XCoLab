@@ -15,7 +15,7 @@ import org.xcolab.model.tables.MemberTable;
 import org.xcolab.model.tables.Users_RolesTable;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.service.utils.PaginationHelper.SortColumn;
+import org.xcolab.util.SortColumn;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -160,7 +160,7 @@ public class MemberDaoImpl implements MemberDao {
             }
         }
         if (partialEmail != null) {
-            searchCondition = searchCondition.or(MEMBER.EMAIL_ADDRESS.contains(partialEmail));
+            searchCondition = searchCondition.or(memberTable.EMAIL_ADDRESS.contains(partialEmail));
         }
         query.addConditions(searchCondition);
     }

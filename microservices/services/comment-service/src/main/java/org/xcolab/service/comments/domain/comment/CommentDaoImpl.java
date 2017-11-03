@@ -12,7 +12,7 @@ import org.xcolab.model.tables.pojos.Comment;
 import org.xcolab.model.tables.records.CommentRecord;
 import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.service.utils.PaginationHelper.SortColumn;
+import org.xcolab.util.SortColumn;
 
 import java.util.List;
 
