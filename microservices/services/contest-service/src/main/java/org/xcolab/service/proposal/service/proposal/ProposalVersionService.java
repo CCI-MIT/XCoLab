@@ -38,10 +38,10 @@ public class ProposalVersionService {
 
             if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
 
-                if(counter > start && counter < end) {
+                if(counter >= start && counter <= end) {
                     groupedProposalVersions.add(proposalVersion);
-                    oldDate = proposalVersion.getCreateDate();
                 }
+                oldDate = proposalVersion.getCreateDate();
                 counter++;
             }
         }
