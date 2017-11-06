@@ -5,6 +5,8 @@ import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.SupportedProposal;
+import org.xcolab.client.proposals.pojo.SupportedProposalDto;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporterDto;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
@@ -31,12 +33,17 @@ public final class ProposalMemberRatingClient {
 
     private final RestResource1<ProposalSupporterDto, Long> proposalSupporterResource;
     private final RestResource<ProposalVoteDto, Long> proposalVoteResource;
+    private final RestResource<SupportedProposalDto, Long> supportedProposalsResource;
 
     private ProposalMemberRatingClient(ServiceNamespace serviceNamespace) {
         proposalSupporterResource = new RestResource1<>(ProposalResource.PROPOSAL_SUPPORTER,
                 ProposalSupporterDto.TYPES, serviceNamespace);
         proposalVoteResource = new RestResource1<>(ProposalResource.PROPOSAL_VOTE,
                 ProposalVoteDto.TYPES, serviceNamespace);
+
+        supportedProposalsResource = new RestResource1<>(ProposalResource.SUPPORTED_PROPOSALS,
+                 SupportedProposalDto.TYPES);
+
         this.serviceNamespace = serviceNamespace;
     }
 
@@ -54,6 +61,13 @@ public final class ProposalMemberRatingClient {
     public List<ProposalSupporter> getProposalSupportersByUserId(Long userId) {
         return DtoUtil.toPojos(proposalSupporterResource.list()
                 .optionalQueryParam("userId", userId)
+                .execute(), serviceNamespace);
+    }
+
+    public List<SupportedProposal> getSupportedProposals(long userId) {
+        return DtoUtil.toPojos(supportedProposalsResource
+                .list()
+                .queryParam("userId", userId)
                 .execute(), serviceNamespace);
     }
 

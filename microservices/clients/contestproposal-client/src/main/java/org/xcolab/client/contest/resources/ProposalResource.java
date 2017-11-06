@@ -19,6 +19,8 @@ public enum ProposalResource implements ResourceEnum {
     PROPOSAL_RATING_VALUE("proposalRatingValues"),
     PROPOSAL_RATING_TYPE("proposalRatingTypes"),
 
+    SUPPORTED_PROPOSALS("supportedProposals"),
+
     GROUP("groups"),
     MEMBERSHIP_REQUEST("membershipRequests"),
 
