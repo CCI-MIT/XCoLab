@@ -834,7 +834,6 @@ CREATE TABLE `xcolab_Proposal` (
   `proposalId` bigint(20) NOT NULL AUTO_INCREMENT,
   `createDate` datetime DEFAULT NULL,
   `updatedDate` datetime DEFAULT NULL,
-  `currentVersion` int(11) DEFAULT NULL,
   `authorId` bigint(20) DEFAULT NULL,
   `visible` tinyint(4) DEFAULT NULL,
   `discussionId` bigint(20) DEFAULT NULL,
@@ -851,7 +850,6 @@ CREATE TABLE `xcolab_ProposalAttribute` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT,
   `proposalId` bigint(20) DEFAULT NULL,
   `version` int(11) DEFAULT NULL,
-  `versionWhenCreated` int(11) DEFAULT NULL,
   `name` varchar(75) DEFAULT NULL,
   `additionalId` bigint(20) DEFAULT NULL,
   `numericValue` bigint(20) DEFAULT NULL,
@@ -859,9 +857,7 @@ CREATE TABLE `xcolab_ProposalAttribute` (
   `realValue` double DEFAULT NULL,
   PRIMARY KEY (`id_`),
   KEY `IX_8FF24CAD` (`proposalId`,`version`),
-  KEY `IX_F4926C2` (`proposalId`,`version`,`name`,`additionalId`),
-  KEY `IX_4941177` (`proposalId`,`version`,`versionWhenCreated`),
-  KEY `IX_F612A28C` (`proposalId`,`version`,`versionWhenCreated`,`name`,`additionalId`)
+  KEY `IX_F4926C2` (`proposalId`,`version`,`name`,`additionalId`)
   /*,
   FULLTEXT KEY `stringValue_ProposalAtribute` (`stringValue`)*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

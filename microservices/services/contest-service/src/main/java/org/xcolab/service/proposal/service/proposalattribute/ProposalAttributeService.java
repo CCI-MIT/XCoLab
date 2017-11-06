@@ -41,8 +41,13 @@ public class ProposalAttributeService {
         try {
             Proposal proposal = proposalDao.get(proposalAttribute.getProposalId());
 
-            int currentVersion = proposal.getCurrentVersion();
-            int newVersion = currentVersion + 1;
+            int currentVersion = proposalVersionDao.findMaxVersion(proposalAttribute.getProposalId());
+            Integer version = proposalAttribute.getVersion();
+            boolean isNewVersion = false;
+            if (version == null || version < currentVersion) {
+                version = currentVersion + 1;
+                isNewVersion = true;
+            }
 
             List<ProposalAttribute> currentProposalAttributes =
                     proposalAttributeDao.findByGiven(proposal.getProposalId(),
@@ -60,27 +65,27 @@ public class ProposalAttributeService {
                         zeroIfNull(proposalAttribute.getNumericValue()),
                         zeroIfNull(proposalAttribute.getRealValue()))) {
                     // clone the attribute and set its version to the new value
-                    attribute.setVersion(newVersion);
+                    attribute.setVersion(version);
                     proposalAttributeDao.update(attribute);
                 } else {
                 }
             }
 
             // set new value for provided attribute
-            proposalAttribute.setVersionWhenCreated(newVersion);
-            proposalAttribute.setVersion(newVersion);
+            proposalAttribute.setVersion(version);
             ProposalAttribute attribute = proposalAttributeDao
                     .create(proposalAttribute);//setAttributeValue(proposalId, newVersion,
             // attributeName, additionalId, stringValue, numericValue, realValue);
 
-            proposal.setCurrentVersion(newVersion);
             Timestamp updatedDate = new Timestamp((new Date()).getTime());
             proposal.setUpdatedDate(updatedDate);
 
             // create newly created version descriptor
-            createProposalVersionDescription(authorId, proposalAttribute.getProposalId(),
-                    newVersion, proposalAttribute.getName(), proposalAttribute.getAdditionalId(),
-                    updatedDate);
+            if (isNewVersion) {
+                createProposalVersionDescription(authorId, proposalAttribute.getProposalId(),
+                        version, proposalAttribute.getName(), proposalAttribute.getAdditionalId(),
+                        updatedDate);
+            }
             proposalDao.update(proposal);
 
             // Update the proposal name in the discussion category

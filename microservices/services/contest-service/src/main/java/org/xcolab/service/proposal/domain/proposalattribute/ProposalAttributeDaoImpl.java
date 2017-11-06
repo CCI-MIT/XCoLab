@@ -25,7 +25,6 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
         ProposalAttributeRecord ret = this.dslContext.insertInto(PROPOSAL_ATTRIBUTE)
                 .set(PROPOSAL_ATTRIBUTE.PROPOSAL_ID, proposalAttribute.getProposalId())
                 .set(PROPOSAL_ATTRIBUTE.VERSION, proposalAttribute.getVersion())
-                .set(PROPOSAL_ATTRIBUTE.VERSION_WHEN_CREATED, proposalAttribute.getVersionWhenCreated())
                 .set(PROPOSAL_ATTRIBUTE.NAME, proposalAttribute.getName())
                 .set(PROPOSAL_ATTRIBUTE.ADDITIONAL_ID, proposalAttribute.getAdditionalId())
                 .set(PROPOSAL_ATTRIBUTE.NUMERIC_VALUE, proposalAttribute.getNumericValue())
@@ -61,7 +60,6 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
         return dslContext.update(PROPOSAL_ATTRIBUTE)
                 .set(PROPOSAL_ATTRIBUTE.PROPOSAL_ID, proposalAttribute.getProposalId())
                 .set(PROPOSAL_ATTRIBUTE.VERSION, proposalAttribute.getVersion())
-                .set(PROPOSAL_ATTRIBUTE.VERSION_WHEN_CREATED, proposalAttribute.getVersionWhenCreated())
                 .set(PROPOSAL_ATTRIBUTE.NAME, proposalAttribute.getName())
                 .set(PROPOSAL_ATTRIBUTE.ADDITIONAL_ID, proposalAttribute.getAdditionalId())
                 .set(PROPOSAL_ATTRIBUTE.NUMERIC_VALUE, proposalAttribute.getNumericValue())
@@ -87,7 +85,6 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
         }
         if (version != null) {
             query.addConditions(PROPOSAL_ATTRIBUTE.VERSION.ge(version));
-            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION_WHEN_CREATED.le(version));
         }
         return query.fetchInto(ProposalAttribute.class);
     }
@@ -104,7 +101,6 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
 
         if (version != null) {
             query.addConditions(PROPOSAL_ATTRIBUTE.VERSION.ge(version));
-            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION_WHEN_CREATED.le(version));
         }
         return query.fetchInto(ProposalAttribute.class);
     }

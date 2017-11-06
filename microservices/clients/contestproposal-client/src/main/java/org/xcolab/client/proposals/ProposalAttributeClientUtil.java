@@ -73,9 +73,10 @@ public final class ProposalAttributeClientUtil {
         return client.getAllProposalAttributes(proposalId, version);
     }
 
-    public static ProposalAttribute setProposalAttribute(
-            Long userId, Long proposalId, String name, Long additionalId, Long numericValue) {
-        return client.setProposalAttribute(userId, proposalId, name, additionalId, numericValue);
+    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
+            Long additionalId, Long numericValue, Integer version) {
+        return client.setProposalAttribute(userId, proposalId, name, additionalId, numericValue,
+                version);
     }
 
     public static ProposalAttribute setProposalAttribute(
@@ -86,15 +87,16 @@ public final class ProposalAttributeClientUtil {
 
     public static ProposalAttribute setProposalAttribute(
             Long userId, Long proposalId, String name, Long aditionalId, String stringValue,
-            Long numericValue, Double doubleValue) {
+            Long numericValue, Double doubleValue, Integer version) {
         return client.setProposalAttribute(userId, proposalId, name, aditionalId, stringValue,
                 numericValue,
-                doubleValue);
+                doubleValue, version);
     }
 
-    public static ProposalAttribute setProposalAttribute(
-            Long userId, Long proposalId, String name, Long aditionalId, String stringValue) {
-        return client.setProposalAttribute(userId, proposalId, name, aditionalId, stringValue);
+    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
+            Long aditionalId, String stringValue, Integer version) {
+        return client
+                .setProposalAttribute(userId, proposalId, name, aditionalId, stringValue, version);
     }
 
     public static Boolean deleteProposalUnversionedAttribute(Long id_) {
