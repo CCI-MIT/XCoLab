@@ -71,23 +71,23 @@ public class ContestClient {
 
     private ContestClient(ServiceNamespace serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
-        contestPhaseRibbonTypeResource = new RestResource1<>(ContestResource.CONTEST_PHASE_RIBBON_TYPE, ContestPhaseRibbonTypeDto.TYPES);
-        contestScheduleResource = new RestResource1<>(ContestResource.CONTEST_SCHEDULE, ContestScheduleDto.TYPES);
-        contestPhaseTypesResource = new RestResource1<>(ContestResource.CONTEST_PHASE_TYPE, ContestPhaseTypeDto.TYPES);
-        contestPhasesResource = new RestResource1<>(ContestResource.CONTEST_PHASE, ContestPhaseDto.TYPES);
-        contestResource = new RestResource1<>(ContestResource.CONTEST, ContestDto.TYPES);
+        contestPhaseRibbonTypeResource = new RestResource1<>(ContestResource.CONTEST_PHASE_RIBBON_TYPE, ContestPhaseRibbonTypeDto.TYPES, serviceNamespace);
+        contestScheduleResource = new RestResource1<>(ContestResource.CONTEST_SCHEDULE, ContestScheduleDto.TYPES, serviceNamespace);
+        contestPhaseTypesResource = new RestResource1<>(ContestResource.CONTEST_PHASE_TYPE, ContestPhaseTypeDto.TYPES, serviceNamespace);
+        contestPhasesResource = new RestResource1<>(ContestResource.CONTEST_PHASE, ContestPhaseDto.TYPES, serviceNamespace);
+        contestResource = new RestResource1<>(ContestResource.CONTEST, ContestDto.TYPES, serviceNamespace);
         visiblePhasesResource = new RestResource2L<>(
                 contestResource, "visiblePhases", ContestPhaseDto.TYPES);
         contestCollectionCardRestResource =
-                new RestResource1<>(ContestResource.CONTEST_COLLECTION_CARDS, ContestCollectionCardDto.TYPES);
+                new RestResource1<>(ContestResource.CONTEST_COLLECTION_CARDS, ContestCollectionCardDto.TYPES, serviceNamespace);
         contestDiscussionResource =
-                new RestResource1<>(ContestResource.CONTEST_DISCUSSION, ContestDiscussionDto.TYPES);
+                new RestResource1<>(ContestResource.CONTEST_DISCUSSION, ContestDiscussionDto.TYPES, serviceNamespace);
 
         contestYearResource = new RestResource1<>(
                 ContestResource.CONTEST_YEAR, new TypeProvider<>(Long.class,
                 new ParameterizedTypeReference<List<Long>>() {
                 })
-        );
+        , serviceNamespace);
         contestTranslationResource = new RestResource2<>(contestResource,
                 "translations", ContestTranslationDto.TYPES);
     }
