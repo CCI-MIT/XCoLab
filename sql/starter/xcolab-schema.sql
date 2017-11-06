@@ -859,9 +859,7 @@ CREATE TABLE `xcolab_ProposalAttribute` (
   `realValue` double DEFAULT NULL,
   PRIMARY KEY (`id_`),
   KEY `IX_8FF24CAD` (`proposalId`,`version`),
-  KEY `IX_F4926C2` (`proposalId`,`version`,`name`,`additionalId`),
-  KEY `IX_4941177` (`proposalId`,`version`),
-  KEY `IX_F612A28C` (`proposalId`,`version`,`name`,`additionalId`)
+  KEY `IX_F4926C2` (`proposalId`,`version`,`name`,`additionalId`)
   /*,
   FULLTEXT KEY `stringValue_ProposalAtribute` (`stringValue`)*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
