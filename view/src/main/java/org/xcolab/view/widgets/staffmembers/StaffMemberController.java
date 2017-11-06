@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.StaffMemberClient;
@@ -122,7 +123,10 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                             }
                         }
                         if (!alreadyInStaffMembers) {
-                            if (!usersInYear.contains(ctm.getUserId())) {
+                            final Contest contest =
+                                    ContestClientUtil.getContest(ctm.getContestId());
+                            if (!contest.getContestPrivate() &&
+                                    !usersInYear.contains(ctm.getUserId())) {
                                 Member member = MembersClient.getMemberUnchecked(ctm.getUserId());
                                 usersInYear.add(ctm.getUserId());
                                 membersWithRolesInYear.add(getNewStaffMember(member, categoryRole));
