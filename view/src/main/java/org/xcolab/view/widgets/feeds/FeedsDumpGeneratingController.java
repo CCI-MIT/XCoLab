@@ -29,10 +29,11 @@ public class FeedsDumpGeneratingController {
     public void showFeed(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        ActivityCsvWriter
-                csvWriter = new ActivityCsvWriter(response, activityEntryHelper);
         final List<ActivityEntry> activityEntries = ActivitiesClientUtil
                 .getActivityEntries(0, Integer.MAX_VALUE, null, null);
-        csvWriter.writeActivities(activityEntries);
+
+        try (ActivityCsvWriter csvWriter = new ActivityCsvWriter(response, activityEntryHelper)) {
+            csvWriter.writeActivities(activityEntries);
+        }
     }
 }

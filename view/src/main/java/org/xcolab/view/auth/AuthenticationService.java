@@ -10,8 +10,11 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +27,7 @@ public class AuthenticationService {
     private final AuthenticationContext authenticationContext = new AuthenticationContext();
     private final RememberMeServices rememberMeServices;
     private final List<LogoutHandler> logoutHandlers = new ArrayList<>();
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
     public AuthenticationService(RememberMeServices rememberMeServices) {
@@ -68,6 +72,16 @@ public class AuthenticationService {
                 memberDetails, null, memberDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         rememberMeServices.loginSuccess(request, response, authentication);
+        if (authenticationSuccessHandler != null) {
+            try {
+                authenticationSuccessHandler.onAuthenticationSuccess(request, response,
+                        authentication, false);
+            } catch (IOException e) {
+                // IOException can only be thrown if redirectOnSuccess == true
+                // or if login is disabled
+                throw new InternalException(e);
+            }
+        }
         return authentication;
     }
 
@@ -76,5 +90,10 @@ public class AuthenticationService {
                 SecurityContextHolder.getContext().getAuthentication();
         logoutHandlers.forEach(logoutHandler
                 -> logoutHandler.logout(request, response, authentication));
+    }
+
+    public void setAuthenticationSuccessHandler(
+            AuthenticationSuccessHandler authenticationSuccessHandler) {
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
     }
 }

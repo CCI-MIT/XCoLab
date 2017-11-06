@@ -49,6 +49,14 @@ public class MemberDaoTest {
         assertEquals("Wrong number of members with name:admin", 1, members.size());
     }
 
+    @Test
+    public void testFindByNameGiven_with_roles() {
+        final List<Member> members =
+                memberDao.findByGiven(PaginationHelper.EVERYTHING, null, null,
+                        "Member", null, null, null, null, null);
+        assertEquals("Wrong number of members with role:Member", 2, members.size());
+    }
+
 }
 
 

@@ -97,6 +97,7 @@
                                 | xcolab_MessagingUserPreferences
                                 | xcolab_Points
                                 | activities_ActivityEntry
+                                | xcolab_PlatformTeam | xcolab_PlatformTeamMember
                             </includes>
 						</database>
 					</generator>

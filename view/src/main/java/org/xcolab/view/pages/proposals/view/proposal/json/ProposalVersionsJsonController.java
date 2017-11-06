@@ -67,7 +67,7 @@ public class ProposalVersionsJsonController {
     }
 
 
-    @GetMapping("/api/proposals/{proposalId}/versions/{version}/index")
+    @GetMapping("/api/proposals/{proposalId}/versions/{version}/count")
     public void getProposalVersionIndex(HttpServletRequest request, HttpServletResponse response,
             @PathVariable("version") Integer version, @PathVariable("proposalId") Long proposalId) throws IOException {
 
@@ -79,7 +79,7 @@ public class ProposalVersionsJsonController {
                 .countProposalVersionsGroupedVersionsByContest(proposalId, c.getContestPK());
 
         final JsonObject json = Json.createObjectBuilder()
-                .add("index", index).build();
+                .add("count", index).build();
         response.getOutputStream().write(json.toString().getBytes());
     }
 

@@ -10,6 +10,7 @@
 <xcolab:layout  title="${proposal.name} - Edit">
     <!--@elvariable id="isMove" type="java.lang.Boolean"-->
     <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
+    <!--@elvariable id="userTeams" type="java.util.List<org.xcolab.client.members.pojo.PlatformTeam>"-->
     <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <jsp:directive.include file="./init_proposal.jspx"/>
@@ -179,25 +180,33 @@
                 </script>
             </div>
 
-            <c:if test="${contestType.showTeamField}">
-                <div class="addpropbox blue q2">
-                    <label>
-                    <span>
-                        <strong><spring:message code="contests.proposal.sections.team"/> </strong>
-                        <br /><em>optional</em>
-                    </span>
-                    <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
-                    <spring:message code="contests.proposal.sections.characterlimit" arguments="20"  />
-                    </label>
-                    <div class="addprophelp">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the name of its owner.</div>
-                    <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                        <form:input path="team" id="proposalTeam" cssClass="form-control" />
-                        <form:errors path="team" />
+            <div class="addpropbox blue q2 ${contestType.showTeamField ? '' : 'hidden'}">
+                <label>
+                <span>
+                    <strong><spring:message code="contests.proposal.sections.team"/> </strong>
+                    <br /><em>optional</em>
+                </span>
+                <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                <spring:message code="contests.proposal.sections.characterlimit" arguments="35"  />
+                </label>
+                <div class="addprophelp">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the name of its owner.</div>
+                <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
+                    <form:input path="team" id="proposalTeam" cssClass="form-control" />
+                    <form:errors path="team" />
 
-                        <div class="clearfix"><!-- --></div>
-                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">20</span> characters</div>
-                    </div>
+                    <div class="clearfix"><!-- --></div>
+                    <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">35</span> characters</div>
                 </div>
+                <c:if test="${userTeams.size() > 0}">
+                    <div class="addprophelp">Alternatively, you can select your team here.</div>
+
+                    <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
+                        <form:select path="selectedTeam" items="${userTeams}" itemLabel="name" itemValue="id_" />
+                        <form:errors path="selectedTeam" />
+                    </div>
+                </c:if>
+            </div>
+            <c:if test="${contestType.showTeamField}">
                 <div class="notation">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
             </c:if>
 

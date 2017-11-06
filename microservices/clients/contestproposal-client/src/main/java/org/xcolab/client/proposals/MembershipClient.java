@@ -112,31 +112,34 @@ public class MembershipClient {
                 membershipRequest.setReplyComments(reply);
                 membershipRequest.setReplyDate(new Timestamp((new Date()).getTime()));
                 updateMembershipRequest(membershipRequest);
-
-                UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromNamespace(
-                        serviceNamespace);
-
-                try {
-                    usersGroupsClient.addMemberToGroup(userId, membershipRequest.getGroupId());
-
-                    ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
-
-                    ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
-                            ActivityProvidersType.ProposalMemberAddedActivityEntry.getType());
-
-
-                    if (!activityClient.isSubscribedToActivity(userId,
-                            ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {
-                        activityClient
-                                .addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
-
-                    }
-                } catch (Http409ConflictException ignored) {
-                    // already a member - don't do anything
-                }
+                addUserToProposalTeam(userId, membershipRequest.getGroupId(), proposalId);
             } catch (MembershipRequestNotFoundException e) {
                 throw new InternalException(e);
             }
+        }
+    }
+
+    public void addUserToProposalTeam(Long userId, Long groupId, Long proposalId) {
+        UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromNamespace(
+                serviceNamespace);
+
+        try {
+            usersGroupsClient.addMemberToGroup(userId, groupId);
+
+            ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
+
+            ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
+                    ActivityProvidersType.ProposalMemberAddedActivityEntry.getType());
+
+
+            if (!activityClient.isSubscribedToActivity(userId,
+                    ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {
+                activityClient
+                        .addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+
+            }
+        } catch (Http409ConflictException ignored) {
+            // already a member - don't do anything
         }
     }
 

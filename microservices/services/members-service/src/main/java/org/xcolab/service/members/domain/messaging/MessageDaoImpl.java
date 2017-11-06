@@ -14,7 +14,7 @@ import org.xcolab.model.tables.records.MessageRecord;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.wrappers.MessageReceived;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.service.utils.PaginationHelper.SortColumn;
+import org.xcolab.util.SortColumn;
 
 import java.sql.Timestamp;
 import java.util.List;

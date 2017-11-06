@@ -44,6 +44,12 @@ public final class PlatformAttributeKey {
                     .defaultValue("")
                     .build();
 
+    public static final AttributeGetter<String> ANALYTICS_PRIVATE_KEY_PATH =
+            PlatformAttributes.newStringAttribute("analytics.privatekey.path")
+                    .withCache()
+                    .defaultValue("")
+                    .build();
+
     public static final AttributeGetter<String> FILES_UPLOAD_DIR =
             PlatformAttributes.newStringAttribute("files.upload.dir")
                     .withCache()
