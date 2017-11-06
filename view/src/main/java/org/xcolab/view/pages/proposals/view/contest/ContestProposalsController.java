@@ -18,11 +18,9 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.util.SortColumn;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.view.pages.proposals.utils.ProposalSortColumn;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
@@ -33,7 +31,6 @@ import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,7 +73,7 @@ public class ContestProposalsController extends BaseProposalsController {
         final ProposalClient proposalClient = clients.getProposalClient();
 
         final List<Proposal> activeProposals;
-        final ContestStatus phaseStatus = contestPhase.getContestPhaseTypeObject().getStatusEnum();
+        final ContestStatus phaseStatus = contestPhase.getStatus();
         switch (phaseStatus) {
             case OPEN_FOR_SUBMISSION:
             case OPEN_FOR_EDIT:
@@ -111,7 +108,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new SortedProposalList(proposals, sortFilterPage,
-                getDefaultProposalComparator(phaseStatus), contest.isContestCompleted()));
+                contestPhase));
         model.addAttribute("showCountdown",
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
         model.addAttribute("defaultTimeZoneId",
@@ -128,27 +125,6 @@ public class ContestProposalsController extends BaseProposalsController {
 
         setBasePageAttributes(proposalContext, model);
         return "/proposals/contestProposals";
-    }
-
-    private Comparator<Proposal> getDefaultProposalComparator(ContestStatus phaseStatus) {
-        final SortColumn sortColumn;
-        switch (phaseStatus) {
-            case OPEN_FOR_SUBMISSION:
-            case OPEN_FOR_EDIT:
-                sortColumn = new SortColumn("-" + ProposalSortColumn.MODIFIED.name());
-                break;
-            case VOTING:
-                sortColumn = new SortColumn(ConfigurationAttributeKey
-                        .PROPOSALS_PHASE_VOTING_SORT_ORDER.get());
-                break;
-            default:
-                sortColumn = new SortColumn(ConfigurationAttributeKey
-                        .PROPOSALS_PHASE_CLOSED_SORT_ORDER.get());
-                break;
-        }
-        final Comparator<Proposal> comparator =
-                ProposalSortColumn.valueOf(sortColumn.getColumnName()).getComparator();
-        return sortColumn.isAscending() ? comparator : comparator.reversed();
     }
 
     @PostMapping("/contests/subscribeContest")

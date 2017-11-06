@@ -2,8 +2,10 @@ package org.xcolab.view.pages.proposals.wrappers;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.contest.enums.ContestStatus;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.view.pages.proposals.utils.ProposalSortColumn;
+import org.xcolab.client.contest.enums.ProposalSortColumn;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.ArrayList;
@@ -17,16 +19,17 @@ public class SortedProposalList {
     private final List<Proposal> proposalsWithoutRibbons = new ArrayList<>();
 
     public SortedProposalList(List<Proposal> proposals, final SortFilterPage sortFilterPage,
-            Comparator<Proposal> defaultComparator, boolean proposalsCanHaveRibbons) {
+            ContestPhase contestPhase) {
         if (sortFilterPage == null) {
             throw new IllegalArgumentException("SortFilterPage can't be null");
         }
 
-        initProposalLists(proposals, proposalsCanHaveRibbons);
-        sortProposalLists(sortFilterPage, defaultComparator);
+        initProposalLists(proposals, contestPhase);
+        sortProposalLists(sortFilterPage, contestPhase.getStatus());
     }
 
-    private void initProposalLists(List<Proposal> proposals, boolean proposalsCanHaveRibbons) {
+    private void initProposalLists(List<Proposal> proposals, ContestPhase contestPhase) {
+        final boolean proposalsCanHaveRibbons = contestPhase.isCompleted();
         if (!proposalsCanHaveRibbons) {
             // skip expensive ribbon check if proposals can't have ribbons
             proposalsWithoutRibbons.addAll(proposals);
@@ -41,8 +44,7 @@ public class SortedProposalList {
         }
     }
 
-    private void sortProposalLists(SortFilterPage sortFilterPage,
-            Comparator<Proposal> defaultComparator) {
+    private void sortProposalLists(SortFilterPage sortFilterPage, ContestStatus phaseStatus) {
         final String sortColumn = sortFilterPage.getSortColumn();
 
         Comparator<Proposal> proposalComparator;
@@ -50,7 +52,7 @@ public class SortedProposalList {
         if (isSortColumnSet) {
             proposalComparator = getComparator(sortColumn, sortFilterPage.isSortAscending());
         } else {
-            proposalComparator = defaultComparator;
+            proposalComparator = phaseStatus.getDefaultProposalComparator();
         }
 
         proposalsWithRibbons.sort(isSortColumnSet ? proposalComparator

@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.utils;
+package org.xcolab.client.contest.enums;
 
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
