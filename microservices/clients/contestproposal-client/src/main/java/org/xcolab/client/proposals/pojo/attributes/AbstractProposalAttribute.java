@@ -11,7 +11,6 @@ class AbstractProposalAttribute extends AbstractAttribute {
     private Long id_;
     private Long proposalid;
     private Integer version;
-//    private Integer versionwhencreated;
 
     public AbstractProposalAttribute() {}
 
@@ -20,17 +19,15 @@ class AbstractProposalAttribute extends AbstractAttribute {
         this.id_ = value.id_;
         this.proposalid = value.proposalid;
         this.version = value.version;
-//        this.versionwhencreated = value.versionwhencreated;
     }
 
-    public AbstractProposalAttribute(Long id_, Long proposalid, Integer version,
-            Integer versionwhencreated, String name, Long additionalid, Long numericvalue,
+    public AbstractProposalAttribute(Long id_, Long proposalid, Integer version, String name,
+            Long additionalid, Long numericvalue,
             String stringvalue, Double realvalue) {
         super(name, additionalid, null, numericvalue, stringvalue, realvalue);
         this.id_ = id_;
         this.proposalid = proposalid;
         this.version = version;
-//        this.versionwhencreated = versionwhencreated;
     }
 
     public Long getId_() {
@@ -56,14 +53,6 @@ class AbstractProposalAttribute extends AbstractAttribute {
     public void setVersion(Integer version) {
         this.version = version;
     }
-
-//    public Integer getVersionWhenCreated() {
-//        return this.versionwhencreated;
-//    }
-
-//    public void setVersionWhenCreated(Integer versionwhencreated) {
-//        this.versionwhencreated = versionwhencreated;
-//    }
 
     @Override
     public String toString() {
