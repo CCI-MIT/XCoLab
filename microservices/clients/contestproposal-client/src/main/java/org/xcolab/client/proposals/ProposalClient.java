@@ -1,7 +1,5 @@
 package org.xcolab.client.proposals;
 
-import org.springframework.core.ParameterizedTypeReference;
-
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -60,12 +58,9 @@ public final class ProposalClient {
         this.serviceNamespace = serviceNamespace;
 
         proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
-        proposalIdResource = new RestResource1<>(ProposalResource.PROPOSAL_ID,
-                new TypeProvider<>(Long.class, new ParameterizedTypeReference<List<Long>>() {
-                }));
+        proposalIdResource = new RestResource1<>(ProposalResource.PROPOSAL_ID, TypeProvider.LONG);
         proposalThreadIdResource = new RestResource1<>(ProposalResource.PROPOSAL_THREAD_ID,
-                new TypeProvider<>(Long.class, new ParameterizedTypeReference<List<Long>>() {
-                }));
+                TypeProvider.LONG);
         proposalVersionResource = new RestResource1<>(ProposalResource.PROPOSAL_VERSION,
                 ProposalVersionDto.TYPES);
         proposalReferenceResource = new RestResource1<>(ProposalResource.PROPOSAL_REFERENCE,
