@@ -357,6 +357,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_VOTING_SUCCESS_MESSAGE_IS_ACTIVE")
                     .defaultValue(true)
                     .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_VOTING_VALIDATION_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_VOTING_VALIDATION_IS_ACTIVE")
+                    .defaultValue(true)
+                    .build();
 
     // Points
     public static final AttributeGetter<Boolean> POINTS_IS_ACTIVE =
