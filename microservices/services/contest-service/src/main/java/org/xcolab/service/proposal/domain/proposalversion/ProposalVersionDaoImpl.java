@@ -5,6 +5,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -58,8 +59,8 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
     }
 
     @Override
-    public Integer findMaxVersion(Long proposalId) {
-        return dslContext.select(PROPOSAL_VERSION.VERSION.max())
+    public int findMaxVersion(Long proposalId) {
+        return dslContext.select(DSL.coalesce(PROPOSAL_VERSION.VERSION.max(), 0))
                 .from(PROPOSAL_VERSION)
                 .where(PROPOSAL_VERSION.PROPOSAL_ID.eq(proposalId))
                 .fetchOne().into(Integer.class);
