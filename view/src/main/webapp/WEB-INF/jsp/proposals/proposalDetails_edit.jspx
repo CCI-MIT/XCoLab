@@ -187,7 +187,7 @@
                     <br /><em>optional</em>
                 </span>
                 <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
-                <spring:message code="contests.proposal.sections.characterlimit" arguments="35"  />
+                <spring:message code="contests.proposal.sections.characterlimit" arguments="35" />
                 </label>
                 <div class="addprophelp">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the name of its owner.</div>
                 <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">

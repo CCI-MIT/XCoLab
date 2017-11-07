@@ -128,8 +128,11 @@ public class VoteOnProposalActionController {
                     hasVoted = true;
                 }
             } else {
-                new ProposalVoteNotification(proposal, contest, member).sendMessage();
+                hasVoted = true;
+            }
 
+            if (hasVoted) {
+                new ProposalVoteNotification(proposal, contest, member).sendMessage();
                 //publish event per contestPhaseId to allow voting on exactly one proposal per
                 // contest(phase)
                 AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
@@ -142,14 +145,6 @@ public class VoteOnProposalActionController {
                 }
                 hasVoted = true;
             }
-        }
-
-        if (hasVoted) {
-            new ProposalVoteNotification(proposal, contest, member).sendMessage();
-            //publish event per contestPhaseId to allow voting on exactly one proposal per
-            // contest(phase)
-            AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
-                    VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
         }
 
         if (activityType != null) {
