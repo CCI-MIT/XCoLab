@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +36,9 @@ import org.xcolab.view.pages.proposals.impact.ProposalImpactScenarioCombinationW
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeries;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactUtil;
+import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationCategory;
+import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationImpactWrapper;
+import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationValue;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -41,8 +46,10 @@ import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -264,8 +271,29 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
         model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
         model.addAttribute("proposalsPermissions", proposalContext.getPermissions());
+        model.addAttribute("categories", Arrays.asList(AdaptationCategory.values()));
+        //TODO: retrieve stored values
+        final HashMap<String, AdaptationValue> values = new HashMap<>();
+        values.put(AdaptationCategory.ECONOMIC_DAMAGES.name(), new AdaptationValue(100, 10, 20));
+        values.put(AdaptationCategory.FATALITIES.name(), new AdaptationValue(200, 20, 30));
+        values.put(AdaptationCategory.SEVERELY_AFFECTED.name(), new AdaptationValue(300, 30, 40));
+        values.put(AdaptationCategory.AFFECTED.name(), new AdaptationValue(400, 40, 50));
+        values.put(AdaptationCategory.CULTURAL_DAMAGES.name(), new AdaptationValue(500, 50, 60));
+        model.addAttribute("wrapper", new AdaptationImpactWrapper(values));
 
         return "/proposals/basicProposalImpact";
+    }
+
+    @PostMapping("c/{proposalUrlString}/{proposalId}/saveAdaptationImpact")
+    public String saveBasicImpactTab(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member currentMember,
+            @ModelAttribute AdaptationImpactWrapper adaptationImpactWrapper,
+            BindingResult bindingResult) {
+
+        adaptationImpactWrapper.save();
+
+        AlertMessage.CHANGES_SAVED.flash(request);
+        return "redirect:" + proposalContext.getProposal().getProposalUrl() + "/tab/IMPACT";
     }
 
     private List<ProposalImpactSeries> getImpactTabBasicProposal(ProposalContext proposalContext,
