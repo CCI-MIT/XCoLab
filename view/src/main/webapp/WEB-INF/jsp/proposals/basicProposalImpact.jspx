@@ -380,7 +380,7 @@
                         <td class="gray text-center">${wrapper.values[category.name()].maxValue} (${wrapper.values[category.name()].maxPercentReduction}%)</td>
                     </tr>
                     <c:if test="${proposalsPermissions.canEditBasicImpact}">
-                        <tr class="js-Table__row--collapsible">
+                        <tr class="js-Table__row--collapsible hidden">
                             <td colspan="3">
                                 <p class="form-control-static">
                                     Predicted BAU damages [${category.unit}]
@@ -391,7 +391,7 @@
                                             cssClass="form-control input-sm text-center" type="number" />
                             </td>
                         </tr>
-                        <tr class="js-Table__row--collapsible">
+                        <tr class="js-Table__row--collapsible hidden">
                             <td colspan="3">
                                 <p class="form-control-static">
                                     Percent reduction
