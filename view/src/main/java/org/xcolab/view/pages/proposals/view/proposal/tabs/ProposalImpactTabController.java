@@ -5,12 +5,9 @@ import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,9 +34,6 @@ import org.xcolab.view.pages.proposals.impact.ProposalImpactScenarioCombinationW
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeries;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactUtil;
-import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationCategory;
-import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationImpactBean;
-import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationService;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -47,7 +41,6 @@ import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -63,13 +56,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ProposalImpactTabController extends BaseProposalTabController {
 
     private final static Logger _log = LoggerFactory.getLogger(ProposalImpactTabController.class);
-
-    private final AdaptationService adaptationService;
-
-    @Autowired
-    public ProposalImpactTabController(AdaptationService adaptationService) {
-        this.adaptationService = adaptationService;
-    }
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=IMPACT")
     public String showImpactTab(HttpServletRequest request, Model model,
@@ -267,10 +253,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private String showImpactTabBasic(Model model, ProposalContext proposalContext,
             Contest contest, Proposal proposalWrapper) {
 
-        final ClientHelper clients = proposalContext.getClients();
-        final ProposalAttributeClient attributeClient = clients.getProposalAttributeClient();
-        final Long proposalId = proposalContext.getProposal().getProposalId();
-
         List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
         model.addAttribute("impactIterations", impactIterations);
 
@@ -282,38 +264,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
         model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
         model.addAttribute("proposalsPermissions", proposalContext.getPermissions());
-        model.addAttribute("categories", Arrays.asList(AdaptationCategory.values()));
-
-        model.addAttribute("adaptationImpactBean", adaptationService.getAdaptationImpactBean(
-                attributeClient, proposalId));
 
         return "/proposals/basicProposalImpact";
-    }
-
-    //TODO: this should be a the same URL as the form
-    @PostMapping("c/{proposalUrlString}/{proposalId}/saveAdaptationImpact")
-    public String saveBasicImpactTab(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
-            @PathVariable long proposalId,
-            @ModelAttribute AdaptationImpactBean adaptationImpactBean,
-            BindingResult bindingResult) {
-
-        if (!proposalContext.getPermissions().getCanEditBasicImpact()) {
-            return new AccessDeniedPage(currentMember).toViewName(response);
-        }
-
-        final ClientHelper clients = proposalContext.getClients();
-        final ProposalAttributeClient attributeClient = clients.getProposalAttributeClient();
-
-        // make sure the proposal and author ids are set correctly
-        adaptationImpactBean.setProposalId(proposalId);
-        adaptationImpactBean.setAuthorId(currentMember.getUserId());
-
-        adaptationService.save(adaptationImpactBean,
-                attributeClient);
-
-        AlertMessage.CHANGES_SAVED.flash(request);
-        return "redirect:" + proposalContext.getProposal().getProposalUrl() + "/tab/IMPACT";
     }
 
     private List<ProposalImpactSeries> getImpactTabBasicProposal(ProposalContext proposalContext,

@@ -427,7 +427,7 @@
             </table>
 
             <c:if test="${proposalsPermissions.canEditBasicImpact}">
-                <button type="submit" class="c-Button__primary">
+                <button type="submit" class="c-Button__primary" onclick="disableDirtyCheck()">
                     SAVE adaptation table
                 </button>
             </c:if>
