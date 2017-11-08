@@ -57,19 +57,20 @@ public class ProposalAttributeService {
             // update it to the most recent version
             // if it is the one that we are changing then leave old one as it is and
             // create new one for new proposal version
-            for (ProposalAttribute attribute : currentProposalAttributes) {
-                ProposalAttributeDetectUpdateAlgorithm updateAlgorithm =
-                        new ProposalAttributeDetectUpdateAlgorithm(attribute);
-                if (!updateAlgorithm.hasBeenUpdated(proposalAttribute.getName(),
-                        zeroIfNull(proposalAttribute.getAdditionalId()),
-                        zeroIfNull(proposalAttribute.getNumericValue()),
-                        zeroIfNull(proposalAttribute.getRealValue()))) {
-                    // clone the attribute and set its version to the new value
-                    attribute.setVersion(version);
-                    proposalAttributeDao.update(attribute);
-                } else {
-                }
-            }
+            // TODO: [COLAB-2414] Fix the update detection to only update updated attributes.
+            // for (ProposalAttribute attribute : currentProposalAttributes) {
+            //     ProposalAttributeDetectUpdateAlgorithm updateAlgorithm =
+            //             new ProposalAttributeDetectUpdateAlgorithm(attribute);
+            //     if (!updateAlgorithm.hasBeenUpdated(proposalAttribute.getName(),
+            //             zeroIfNull(proposalAttribute.getAdditionalId()),
+            //             zeroIfNull(proposalAttribute.getNumericValue()),
+            //             zeroIfNull(proposalAttribute.getRealValue()))) {
+            //         // clone the attribute and set its version to the new value
+            //         attribute.setVersion(version);
+            //         proposalAttributeDao.update(attribute);
+            //     } else {
+            //     }
+            // }
 
             // set new value for provided attribute
             proposalAttribute.setVersion(version);
