@@ -6,6 +6,8 @@ import java.util.Objects;
 
 public class AdaptationValue {
 
+    private String region;
+    private String subRegion;
     private float predictedDamages;
     private float minPercentReduction;
     private float maxPercentReduction;
@@ -13,11 +15,20 @@ public class AdaptationValue {
     public AdaptationValue() {
     }
 
-    public AdaptationValue(float predictedDamages, float minPercentReduction,
-            float maxPercentReduction) {
-        this.predictedDamages = predictedDamages;
-        this.minPercentReduction = minPercentReduction;
-        this.maxPercentReduction = maxPercentReduction;
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getSubRegion() {
+        return subRegion;
+    }
+
+    public void setSubRegion(String subRegion) {
+        this.subRegion = subRegion;
     }
 
     public float getPredictedDamages() {
@@ -61,20 +72,24 @@ public class AdaptationValue {
             return false;
         }
         AdaptationValue that = (AdaptationValue) o;
-        return Float.compare(that.getPredictedDamages(), getPredictedDamages()) == 0
+        return Objects.equals(getRegion(), that.getRegion())
+                && Objects.equals(getSubRegion(), that.getSubRegion())
+                && Float.compare(that.getPredictedDamages(), getPredictedDamages()) == 0
                 && Float.compare(that.getMinPercentReduction(), getMinPercentReduction()) == 0
                 && Float.compare(that.getMaxPercentReduction(), getMaxPercentReduction()) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPredictedDamages(), getMinPercentReduction(),
-                getMaxPercentReduction());
+        return Objects.hash(getRegion(), getSubRegion(), getPredictedDamages(),
+                getMinPercentReduction(), getMaxPercentReduction());
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
+                .append("region", region)
+                .append("subRegion", subRegion)
                 .append("predictedDamages", predictedDamages)
                 .append("minPercentReduction", minPercentReduction)
                 .append("maxPercentReduction", maxPercentReduction)

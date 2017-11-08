@@ -321,8 +321,10 @@
 
         <h2>Adaptation table</h2>
 
-        <!--@elvariable id="wrapper" type="org.xcolab.view.pages.proposals.impact.adaptation.AdaptationImpactWrapper"-->
-        <form:form modelAttribute="wrapper" action="${proposal.proposalUrl}/saveAdaptationImpact">
+        <!--@elvariable id="adaptationImpactBean" type="org.xcolab.view.pages.proposals.impact.adaptation.AdaptationImpactBean"-->
+        <form:form modelAttribute="adaptationImpactBean" action="${proposal.proposalUrl}/saveAdaptationImpact">
+            <form:hidden path="proposalId" />
+            <form:hidden path="authorId" />
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -358,13 +360,20 @@
                     <tbody class="js-Table__row-group">
                     <tr>
                         <td>
-                            <select class="form-control">
-                                <option>United States</option>
-                                <option>China</option>
-                            </select>
+                            <form:select path="values[${category.name()}].region" cssClass="form-control" disabled="${!proposalsPermissions.canEditBasicImpact}">
+                                <form:option value="">Select region</form:option>
+                                <form:option value="United States">United States</form:option>
+                                <form:option value="European Union">European Union</form:option>
+                                <form:option value="China">China</form:option>
+                                <form:option value="India">India</form:option>
+                                <form:option value="Other developed countries">Other developed countries</form:option>
+                                <form:option value="Other developing countries">Other developing countries</form:option>
+                            </form:select>
                         </td>
                         <td>
-                            <input type="text" class="form-control" placeholder="Sub-region"/>
+                            <form:input path="values[${category.name()}].subRegion"
+                                        cssClass="form-control" placeholder="Sub-region"
+                                        disabled="${!proposalsPermissions.canEditBasicImpact}"/>
                         </td>
                         <td>
                             <p class="form-control-static" style="display: inline-block;">${category.title} [${category.unit}]</p>
@@ -376,11 +385,11 @@
                                 </a>
                             </c:if>
                         </td>
-                        <td class="gray text-center">${wrapper.values[category.name()].minValue} (${wrapper.values[category.name()].minPercentReduction}%)</td>
-                        <td class="gray text-center">${wrapper.values[category.name()].maxValue} (${wrapper.values[category.name()].maxPercentReduction}%)</td>
+                        <td class="gray text-center">${adaptationImpactBean.values[category.name()].minValue} (${adaptationImpactBean.values[category.name()].minPercentReduction}%)</td>
+                        <td class="gray text-center">${adaptationImpactBean.values[category.name()].maxValue} (${adaptationImpactBean.values[category.name()].maxPercentReduction}%)</td>
                     </tr>
                     <c:if test="${proposalsPermissions.canEditBasicImpact}">
-                        <tr class="js-Table__row--collapsible hidden">
+                        <tr class="js-Table__row--collapsible" style="display: none;">
                             <td colspan="3">
                                 <p class="form-control-static">
                                     Predicted BAU damages [${category.unit}]
@@ -391,7 +400,7 @@
                                             cssClass="form-control input-sm text-center" type="number" />
                             </td>
                         </tr>
-                        <tr class="js-Table__row--collapsible hidden">
+                        <tr class="js-Table__row--collapsible" style="display: none;">
                             <td colspan="3">
                                 <p class="form-control-static">
                                     Percent reduction

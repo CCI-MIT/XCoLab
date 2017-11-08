@@ -5,6 +5,7 @@ import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,8 +38,8 @@ import org.xcolab.view.pages.proposals.impact.ProposalImpactSeries;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactUtil;
 import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationCategory;
-import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationImpactWrapper;
-import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationValue;
+import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationImpactBean;
+import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationService;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -49,7 +50,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +63,13 @@ import javax.servlet.http.HttpServletResponse;
 public class ProposalImpactTabController extends BaseProposalTabController {
 
     private final static Logger _log = LoggerFactory.getLogger(ProposalImpactTabController.class);
+
+    private final AdaptationService adaptationService;
+
+    @Autowired
+    public ProposalImpactTabController(AdaptationService adaptationService) {
+        this.adaptationService = adaptationService;
+    }
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=IMPACT")
     public String showImpactTab(HttpServletRequest request, Model model,
@@ -260,6 +267,10 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private String showImpactTabBasic(Model model, ProposalContext proposalContext,
             Contest contest, Proposal proposalWrapper) {
 
+        final ClientHelper clients = proposalContext.getClients();
+        final ProposalAttributeClient attributeClient = clients.getProposalAttributeClient();
+        final Long proposalId = proposalContext.getProposal().getProposalId();
+
         List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
         model.addAttribute("impactIterations", impactIterations);
 
@@ -272,25 +283,34 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
         model.addAttribute("proposalsPermissions", proposalContext.getPermissions());
         model.addAttribute("categories", Arrays.asList(AdaptationCategory.values()));
-        //TODO: retrieve stored values
-        final HashMap<String, AdaptationValue> values = new HashMap<>();
-        values.put(AdaptationCategory.ECONOMIC_DAMAGES.name(), new AdaptationValue(100, 10, 20));
-        values.put(AdaptationCategory.FATALITIES.name(), new AdaptationValue(200, 20, 30));
-        values.put(AdaptationCategory.SEVERELY_AFFECTED.name(), new AdaptationValue(300, 30, 40));
-        values.put(AdaptationCategory.AFFECTED.name(), new AdaptationValue(400, 40, 50));
-        values.put(AdaptationCategory.CULTURAL_DAMAGES.name(), new AdaptationValue(500, 50, 60));
-        model.addAttribute("wrapper", new AdaptationImpactWrapper(values));
+
+        model.addAttribute("adaptationImpactBean", adaptationService.getAdaptationImpactBean(
+                attributeClient, proposalId));
 
         return "/proposals/basicProposalImpact";
     }
 
+    //TODO: this should be a the same URL as the form
     @PostMapping("c/{proposalUrlString}/{proposalId}/saveAdaptationImpact")
     public String saveBasicImpactTab(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member currentMember,
-            @ModelAttribute AdaptationImpactWrapper adaptationImpactWrapper,
+            @PathVariable long proposalId,
+            @ModelAttribute AdaptationImpactBean adaptationImpactBean,
             BindingResult bindingResult) {
 
-        adaptationImpactWrapper.save();
+        if (!proposalContext.getPermissions().getCanEditBasicImpact()) {
+            return new AccessDeniedPage(currentMember).toViewName(response);
+        }
+
+        final ClientHelper clients = proposalContext.getClients();
+        final ProposalAttributeClient attributeClient = clients.getProposalAttributeClient();
+
+        // make sure the proposal and author ids are set correctly
+        adaptationImpactBean.setProposalId(proposalId);
+        adaptationImpactBean.setAuthorId(currentMember.getUserId());
+
+        adaptationService.save(adaptationImpactBean,
+                attributeClient);
 
         AlertMessage.CHANGES_SAVED.flash(request);
         return "redirect:" + proposalContext.getProposal().getProposalUrl() + "/tab/IMPACT";
@@ -380,17 +400,18 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if (impactAuthorComment != null || impactIAFComment != null) {
             if (impactAuthorComment != null) {
 
-                proposalAttributeClient.createOrUpdateProposalUnversionedAttribute(currentMember.getUserId(),
-                        HtmlUtil.cleanAll(impactAuthorComment),
+                proposalAttributeClient.createOrUpdateUnversionedStringAttribute(
+                        proposal.getProposalId(),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
-                        proposal.getProposalId());
+                        currentMember.getUserId(),
+                        HtmlUtil.cleanAll(impactAuthorComment));
             }
             if (impactIAFComment != null) {
-                proposalAttributeClient.createOrUpdateProposalUnversionedAttribute(
-                        currentMember.getUserId(),
-                        HtmlUtil.cleanAll(impactIAFComment),
+                proposalAttributeClient.createOrUpdateUnversionedStringAttribute(
+                        proposal.getProposalId(),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
-                        proposal.getProposalId());
+                        currentMember.getUserId(),
+                        HtmlUtil.cleanAll(impactIAFComment));
             }
         }
         AlertMessage.CHANGES_SAVED.flash(request);
