@@ -108,20 +108,16 @@
         <!-- Content -->
         <div id="content">
             <div id="impact">
-                <div style="margin-bottom: 15px;text-align:justify !important;">
-                    <div style="margin-left:10px;float:right;"><img
-                            src="/images/beta-indicator.png"
-                            style="width: 55px;" /></div>
-                    <strong>How will this proposal reduce greenhouse gas emissions? </strong>The proposal authors can use
-                    the tools below or work with the
-                    <a target="_blank" href="/impact_fellows">Impact Assessment Fellows</a>
+                <xcolab:betaDisclaimer>
+                    <strong>How will this proposal reduce greenhouse gas emissions? </strong>
+                    The proposal authors can use the tools below or work with the
+                    <a href="/impact_fellows" target="_blank">Impact Assessment Fellows</a>
                     to estimate the greenhouse gas (GHG) reductions the proposal will cause in different economic sectors
                     around the world.
                     Once calculated, the top table will show the GHG emissions reductions from 2020 to 2050 for that sector
                     and region.
-                    <a target="_blank" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">Need
-                        help?</a>
-                </div>
+                    <a href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan" target="_blank">Need help?</a>
+                </xcolab:betaDisclaimer>
                         <table>
                             <thead>
                             <tr>

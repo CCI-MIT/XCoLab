@@ -20,7 +20,7 @@
         <!--TODO: we can use this for better formatting -->
         <!--<xcolab:script src="${_themeJsFolder}/proposals/numeral.min.js"/>-->
 
-        <p style="margin: 25px 0;">
+        <xcolab:betaDisclaimer>
             <strong>How will this proposal reduce greenhouse gas emissions? </strong>
             The proposal authors can use the tools below or work with the
             <a href="/impact_fellows" target="_blank">Impact Assessment Fellows</a>
@@ -28,9 +28,8 @@
             around the world.
             Once calculated, the top table will show the GHG emissions reductions from 2020 to 2050 for that sector
             and region.
-            <a href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan" target="_blank">Need
-                help?</a>
-        </p>
+            <a href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan" target="_blank">Need help?</a>
+        </xcolab:betaDisclaimer>
 
         <!--@elvariable id="adaptationImpactBean" type="org.xcolab.view.pages.proposals.impact.adaptation.AdaptationImpactBean"-->
         <form:form modelAttribute="adaptationImpactBean" method="post">
