@@ -8,7 +8,7 @@
 
     <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
-    <xcolab:layout title="${proposal.name} - Impact">
+    <xcolab:layout title="${proposal.name} - Impact (Mitigation)">
         <!--@elvariable id="impactIterations" type="java.util.List<ImpactIteration>"-->
         <!--@elvariable id="impactSerieses" type="java.util.List<ImpactSeries>"-->
         <!--@elvariable id="regionTerms" type="java.util.List<OntologyTerm>"-->
