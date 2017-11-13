@@ -21,13 +21,11 @@
         <!--<xcolab:script src="${_themeJsFolder}/proposals/numeral.min.js"/>-->
 
         <xcolab:betaDisclaimer>
-            <strong>How will this proposal reduce greenhouse gas emissions? </strong>
-            The proposal authors can use the tools below or work with the
+            <strong>How will this proposal prevent fatalities and damages? </strong>
+            The proposal authors can work with the
             <a href="/impact_fellows" target="_blank">Impact Assessment Fellows</a>
-            to estimate the greenhouse gas (GHG) reductions the proposal will cause in different economic sectors
-            around the world.
-            Once calculated, the top table will show the GHG emissions reductions from 2020 to 2050 for that sector
-            and region.
+            to estimate this proposal's fatality and damage prevention.
+            Once calculated, the table will show low and high estimates for fatality and damage prevention in five categories.
             <a href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan" target="_blank">Need help?</a>
         </xcolab:betaDisclaimer>
 
