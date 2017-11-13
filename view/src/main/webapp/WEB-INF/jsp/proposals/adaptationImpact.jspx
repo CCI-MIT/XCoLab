@@ -31,6 +31,30 @@
             <a href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan" target="_blank">Need help?</a>
         </xcolab:betaDisclaimer>
 
+        <c:if test="${proposalsPermissions.canEditBasicImpact}">
+            You can set all the region and sub-region for all rows here:
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="globalRegion" class="control-label">Region:</label>
+                    <select class="form-control" id="globalRegion"
+                            onchange="jQuery('.js-AdaptationImpact__region').val(jQuery(this).val())">
+                        <option value="">Select region</option>
+                        <option value="United States">United States</option>
+                        <option value="European Union">European Union</option>
+                        <option value="China">China</option>
+                        <option value="India">India</option>
+                        <option value="Other developed countries">Other developed countries</option>
+                        <option value="Other developing countries">Other developing countries</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="globalSubRegion" class="control-label">Sub-region</label>
+                    <input type="text" class="form-control" id="globalSubRegion"
+                           onchange="jQuery('.js-AdaptationImpact__subRegion').val(jQuery(this).val())"/>
+                </div>
+            </div>
+        </c:if>
+
         <!--@elvariable id="adaptationImpactBean" type="org.xcolab.view.pages.proposals.impact.adaptation.AdaptationImpactBean"-->
         <form:form modelAttribute="adaptationImpactBean" method="post">
             <form:hidden path="proposalId" />
@@ -70,7 +94,7 @@
                     <tbody class="js-Table__row-group">
                     <tr>
                         <td>
-                            <form:select path="values[${category.name()}].region" cssClass="form-control" disabled="${!proposalsPermissions.canEditBasicImpact}">
+                            <form:select path="values[${category.name()}].region" cssClass="form-control js-AdaptationImpact__region" disabled="${!proposalsPermissions.canEditBasicImpact}">
                                 <form:option value="">Select region</form:option>
                                 <form:option value="United States">United States</form:option>
                                 <form:option value="European Union">European Union</form:option>
@@ -82,7 +106,7 @@
                         </td>
                         <td>
                             <form:input path="values[${category.name()}].subRegion"
-                                        cssClass="form-control" placeholder="Sub-region"
+                                        cssClass="form-control js-AdaptationImpact__subRegion" placeholder="Sub-region"
                                         disabled="${!proposalsPermissions.canEditBasicImpact}"/>
                         </td>
                         <td>
