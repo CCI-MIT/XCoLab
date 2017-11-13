@@ -32,7 +32,7 @@ public class AdaptationImpactAccessAlgorithm implements ProposalTabCanAccessAlgo
                     && contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType()) {
                 // adapted from ImpactAccessAlgorithm
                 // this was done to hide the impact tab for adaptation proposals, we revert the condition
-                // TODO: this should explicitly look for adaptation
+                // TODO COLAB-2425: this should explicitly look for adaptation
                 long focusAreaId = contest.getFocusAreaId();
                 if (isDescendantOfExcludedOntologyTerm(focusAreaId)) {
                     return true;
