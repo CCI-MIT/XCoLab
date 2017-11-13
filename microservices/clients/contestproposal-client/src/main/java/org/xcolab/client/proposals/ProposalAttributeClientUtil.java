@@ -108,12 +108,6 @@ public final class ProposalAttributeClientUtil {
         return client.getProposalUnversionedAttributesByProposalId(proposalId);
     }
 
-    public static void createOrUpdateProposalUnversionedAttribute(long authorId,
-            String attributeValue, String attributeName, Long proposalId) {
-        client.createOrUpdateProposalUnversionedAttribute(authorId, attributeValue, attributeName,
-                proposalId);
-    }
-
     public static ProposalUnversionedAttribute createProposalUnversionedAttribute(
             ProposalUnversionedAttribute proposalUnversionedAttribute) {
         return client.createProposalUnversionedAttribute(proposalUnversionedAttribute);

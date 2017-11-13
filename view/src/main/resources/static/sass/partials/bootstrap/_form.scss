@@ -67,6 +67,21 @@ fieldset[disabled] .form-control {
   border-radius: $bs-form-control__borderRadius;
 }
 
+.form-inline {
+
+  // Keep sides aligned
+  margin: 0 -5px;
+
+  > .form-group {
+    margin: 5px;
+    margin-bottom: 15px;
+
+    > .control-label {
+      margin-right: 3px;
+    }
+  }
+}
+
 //workaround to override legacy input and label rules
 .checkbox {
   label {

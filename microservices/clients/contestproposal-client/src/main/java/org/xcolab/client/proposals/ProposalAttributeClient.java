@@ -201,26 +201,46 @@ public final class ProposalAttributeClient {
                 .execute(), serviceNamespace);
     }
 
-    public void createOrUpdateProposalUnversionedAttribute(long authorId,
-            String attributeValue,
-            String attributeName,
-            Long proposalId) {
+    public void createOrUpdateUnversionedStringAttribute(Long proposalId, String attributeName,
+            long authorId, String attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorId, null,
+                attributeValue, null);
+    }
+
+    public void createOrUpdateUnversionedDoubleAttribute(Long proposalId, String attributeName,
+            long authorId, double attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorId, null,
+                null, attributeValue);
+    }
+
+    public void createOrUpdateUnversionedLongAttribute(Long proposalId, String attributeName,
+            long authorId, long attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorId, attributeValue,
+                null, null);
+    }
+
+    public void createOrUpdateUnversionedAttribute(Long proposalId, String attributeName,
+            long authorId, Long longValue, String stringValue, Double doubleValue) {
         ProposalUnversionedAttribute pua;
         try {
              pua =
                     getProposalUnversionedAttribute(proposalId, attributeName);
                 pua.setCreateAuthorId(authorId);
                 pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
-                pua.setStringValue(attributeValue);
+                pua.setNumericValue(longValue);
+                pua.setStringValue(stringValue);
+                pua.setRealValue(doubleValue);
                 updateProposalUnversionedAttribute(pua);
 
-        }catch (EntityNotFoundException ignored){
+        } catch (EntityNotFoundException e) {
             pua = new ProposalUnversionedAttribute();
             pua.setCreateAuthorId(authorId);
             pua.setCreateDate(new Timestamp(new Date().getTime()));
             pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
             pua.setName(attributeName);
-            pua.setStringValue(attributeValue);
+            pua.setNumericValue(longValue);
+            pua.setStringValue(stringValue);
+            pua.setRealValue(doubleValue);
             pua.setProposalId(proposalId);
             createProposalUnversionedAttribute(pua);
         }
