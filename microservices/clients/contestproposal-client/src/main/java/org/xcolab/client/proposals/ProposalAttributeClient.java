@@ -137,15 +137,6 @@ public final class ProposalAttributeClient {
                 .execute(), serviceNamespace);
     }
 
-    public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
-            Long aditionalId, Long numericValue) {
-        ProposalAttribute proposalAttribute =
-                createProposalAttribute(userId, proposalId, name, aditionalId);
-        proposalAttribute.setNumericValue(numericValue);
-        return setProposalAttribute(proposalAttribute, userId);
-
-    }
-
     private ProposalAttribute createProposalAttribute(Long userId, Long proposalId, String name,
             Long additionalId) {
         ProposalAttribute proposalAttribute = new ProposalAttribute();
@@ -176,23 +167,27 @@ public final class ProposalAttributeClient {
     }
 
     public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
-            Long aditionalId, String stringValue, Long numericValue, Double doubleValue) {
+            Long additionalId, String stringValue, Long numericValue, Double doubleValue,
+            Integer version) {
         ProposalAttribute proposalAttribute =
-                createProposalAttribute(userId, proposalId, name, aditionalId);
+                createProposalAttribute(userId, proposalId, name, additionalId);
         proposalAttribute.setStringValue(stringValue);
         proposalAttribute.setNumericValue(numericValue);
         proposalAttribute.setRealValue(doubleValue);
+        proposalAttribute.setVersion(version);
         return setProposalAttribute(proposalAttribute, userId);
-
     }
 
     public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
-            Long aditionalId, String stringValue) {
-        ProposalAttribute proposalAttribute =
-                createProposalAttribute(userId, proposalId, name, aditionalId);
-        proposalAttribute.setStringValue(stringValue);
-        return setProposalAttribute(proposalAttribute, userId);
+            Long additionalId, String stringValue, Integer version) {
+        return setProposalAttribute(userId, proposalId, name, additionalId, stringValue,
+                null, null, version);
+    }
 
+    public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
+            Long additionalId, Long numericValue, Integer version) {
+        return setProposalAttribute(userId, proposalId, name, additionalId, null,
+                numericValue, null, version);
     }
 
     public Boolean deleteProposalUnversionedAttribute(Long id_) {
@@ -206,26 +201,46 @@ public final class ProposalAttributeClient {
                 .execute(), serviceNamespace);
     }
 
-    public void createOrUpdateProposalUnversionedAttribute(long authorId,
-            String attributeValue,
-            String attributeName,
-            Long proposalId) {
+    public void createOrUpdateUnversionedStringAttribute(Long proposalId, String attributeName,
+            long authorId, String attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorId, null,
+                attributeValue, null);
+    }
+
+    public void createOrUpdateUnversionedDoubleAttribute(Long proposalId, String attributeName,
+            long authorId, double attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorId, null,
+                null, attributeValue);
+    }
+
+    public void createOrUpdateUnversionedLongAttribute(Long proposalId, String attributeName,
+            long authorId, long attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorId, attributeValue,
+                null, null);
+    }
+
+    public void createOrUpdateUnversionedAttribute(Long proposalId, String attributeName,
+            long authorId, Long longValue, String stringValue, Double doubleValue) {
         ProposalUnversionedAttribute pua;
         try {
              pua =
                     getProposalUnversionedAttribute(proposalId, attributeName);
                 pua.setCreateAuthorId(authorId);
                 pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
-                pua.setStringValue(attributeValue);
+                pua.setNumericValue(longValue);
+                pua.setStringValue(stringValue);
+                pua.setRealValue(doubleValue);
                 updateProposalUnversionedAttribute(pua);
 
-        }catch (EntityNotFoundException ignored){
+        } catch (EntityNotFoundException e) {
             pua = new ProposalUnversionedAttribute();
             pua.setCreateAuthorId(authorId);
             pua.setCreateDate(new Timestamp(new Date().getTime()));
             pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
             pua.setName(attributeName);
-            pua.setStringValue(attributeValue);
+            pua.setNumericValue(longValue);
+            pua.setStringValue(stringValue);
+            pua.setRealValue(doubleValue);
             pua.setProposalId(proposalId);
             createProposalUnversionedAttribute(pua);
         }

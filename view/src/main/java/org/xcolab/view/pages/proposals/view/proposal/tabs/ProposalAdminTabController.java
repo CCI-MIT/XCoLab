@@ -121,7 +121,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
             final long proposalId = proposalContext.getProposal().getProposalId();
             final long userId = currentMember.getUserId();
             proposalContext.getClients().getProposalAttributeClient().setProposalAttribute(userId, proposalId,
-                    ProposalAttributeKeys.OPEN, 0L, planOpen ? 1L : 0L);
+                    ProposalAttributeKeys.OPEN, 0L, planOpen ? 1L : 0L, null);
             response.sendRedirect(proposalContext.getProposal().getProposalLinkUrl(proposalContext.getContest()));
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to change proposal open attribute");

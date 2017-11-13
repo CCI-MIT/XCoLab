@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.PermissionsClient;
@@ -72,7 +73,8 @@ public class ContestProposalsController extends BaseProposalsController {
         final ProposalClient proposalClient = clients.getProposalClient();
 
         final List<Proposal> activeProposals;
-        switch (contestPhase.getContestPhaseTypeObject().getStatusEnum()) {
+        final ContestStatus phaseStatus = contestPhase.getStatus();
+        switch (phaseStatus) {
             case OPEN_FOR_SUBMISSION:
             case OPEN_FOR_EDIT:
                 activeProposals = proposalClient.getActiveProposalsInContestPhase(
@@ -105,8 +107,8 @@ public class ContestProposalsController extends BaseProposalsController {
         }
 
         model.addAttribute("sortFilterPage", sortFilterPage);
-        model.addAttribute("proposals",
-            new SortedProposalList(proposals, sortFilterPage));
+        model.addAttribute("proposals", new SortedProposalList(proposals, sortFilterPage,
+                contestPhase));
         model.addAttribute("showCountdown",
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
         model.addAttribute("defaultTimeZoneId",

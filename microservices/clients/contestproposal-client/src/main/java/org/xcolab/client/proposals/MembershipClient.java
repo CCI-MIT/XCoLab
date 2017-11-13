@@ -120,8 +120,7 @@ public class MembershipClient {
     }
 
     public void addUserToProposalTeam(Long userId, Long groupId, Long proposalId) {
-        UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromNamespace(
-                serviceNamespace);
+        UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromNamespace(serviceNamespace);
 
         try {
             usersGroupsClient.addMemberToGroup(userId, groupId);

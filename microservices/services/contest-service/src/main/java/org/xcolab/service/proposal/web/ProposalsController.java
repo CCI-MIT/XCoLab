@@ -264,6 +264,11 @@ public class ProposalsController {
         return proposalVersionDao.findByGiven(proposalId, null);
     }
 
+    @GetMapping(value = "/proposals/{proposalId}/maxVersion")
+    public Integer getMaxVersion(@PathVariable Long proposalId) {
+        return proposalVersionDao.findMaxVersion(proposalId);
+    }
+
     @RequestMapping(value = "/proposalVersions/getGroupedVersionsByContest",
             method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ProposalVersion> getGroupedVersionsByContest(
@@ -328,10 +333,9 @@ public class ProposalsController {
     }
 
     @DeleteMapping("/proposalVotes/deleteVote")
-    public Boolean deleteProposalVote(@RequestParam long contestPhaseId,
-            @RequestParam long memberId) {
-        this.proposalVoteDao.delete(memberId, contestPhaseId);
-        return true;
+    public boolean deleteProposalVote(@RequestParam long proposalId,
+            @RequestParam long contestPhaseId, @RequestParam long memberId) {
+        return proposalVoteDao.delete(proposalId, memberId, contestPhaseId) > 0;
     }
 
     @PostMapping("/proposalVotes/updateVote")

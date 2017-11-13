@@ -9,6 +9,10 @@ $bs-form-control__borderRadius: 5px !default;
       vertical-align: middle;
     }
 
+    &.bs-form-control--xs {
+      width: 50px;
+    }
+
     &.bs-form-control--sm {
       width: 200px;
     }
@@ -61,6 +65,21 @@ fieldset[disabled] .form-control {
   color: $t-Color__grey--darkest;
   border: 1px solid $t-Color__grey--light;
   border-radius: $bs-form-control__borderRadius;
+}
+
+.form-inline {
+
+  // Keep sides aligned
+  margin: 0 -5px;
+
+  > .form-group {
+    margin: 5px;
+    margin-bottom: 15px;
+
+    > .control-label {
+      margin-right: 3px;
+    }
+  }
 }
 
 //workaround to override legacy input and label rules

@@ -3,6 +3,8 @@ package org.xcolab.service.utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
+import org.xcolab.util.SortColumn;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,27 +66,4 @@ public class PaginationHelper {
         return false;
     }
 
-    public static class SortColumn {
-
-        private final boolean isAscending;
-        private final String columnName;
-
-        public SortColumn(String sortString) {
-            if (sortString.startsWith("-")) {
-                isAscending = false;
-                columnName = sortString.substring(1);
-            } else {
-                isAscending = true;
-                columnName = sortString;
-            }
-        }
-
-        public boolean isAscending() {
-            return isAscending;
-        }
-
-        public String getColumnName() {
-            return columnName;
-        }
-    }
 }

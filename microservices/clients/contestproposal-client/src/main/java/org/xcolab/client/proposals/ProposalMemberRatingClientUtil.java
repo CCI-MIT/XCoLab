@@ -1,5 +1,6 @@
 package org.xcolab.client.proposals;
 
+import org.xcolab.client.proposals.pojo.SupportedProposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.util.http.caching.CacheName;
@@ -24,6 +25,10 @@ public final class ProposalMemberRatingClientUtil {
     public static List<ProposalSupporter> getProposalSupportersByUserId(
             Long userId) {
         return client.getProposalSupportersByUserId(userId);
+    }
+
+    public static List<SupportedProposal> getSupportedProposals(long userId) {
+        return client.getSupportedProposals(userId);
     }
 
     public static Integer getProposalSupportersCount(Long proposalId) {
@@ -74,12 +79,13 @@ public final class ProposalMemberRatingClientUtil {
         return client.hasUserVoted(contestPhaseId, memberId);
     }
 
-    public static boolean deleteProposalVote(Long contestPhaseId, Long memberId) {
-        return client.deleteProposalVote(contestPhaseId, memberId);
+    public static boolean deleteProposalVote(long proposalId, long contestPhaseId, long memberId) {
+        return client.deleteProposalVote(proposalId, contestPhaseId, memberId);
     }
 
-    public static ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId){
-        return client.addProposalVote(proposalId,contestPhaseId, memberId);
+    public static ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId,
+            int value) {
+        return client.addProposalVote(proposalId,contestPhaseId, memberId, value);
     }
 
     public static List<ProposalVote> getProposalVotesInPhase(

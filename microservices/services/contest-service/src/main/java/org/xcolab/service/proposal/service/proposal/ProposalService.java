@@ -33,6 +33,7 @@ import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
+import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.sql.Timestamp;
@@ -54,15 +55,18 @@ public class ProposalService {
 
     private final Proposal2PhaseDao proposal2PhaseDao;
 
+    private final ProposalVersionDao proposalVersionDao;
+
     private final GroupDao groupDao;
 
 
     @Autowired
-    public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao, ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao, GroupDao groupDao) {
+    public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao, ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao, ProposalVersionDao proposalVersionDao, GroupDao groupDao) {
         this.proposalDao = proposalDao;
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposal2PhaseDao = proposal2PhaseDao;
+        this.proposalVersionDao = proposalVersionDao;
         this.groupDao = groupDao;
     }
 
@@ -72,7 +76,6 @@ public class ProposalService {
             proposal.setVisible(true);
             proposal.setAuthorId(authorId);
             proposal.setCreateDate(new Timestamp(new Date().getTime()));
-            proposal.setCurrentVersion(1);
 
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             final Contest contest = ContestClientUtil.getContest(contestPhase.getContestPK());
@@ -126,7 +129,7 @@ public class ProposalService {
                 Proposal2Phase p2p = new Proposal2Phase();
                 p2p.setProposalId(proposalId);
                 p2p.setContestPhaseId(contestPhaseId);
-                p2p.setVersionFrom(proposal.getCurrentVersion());
+                p2p.setVersionFrom(proposalVersionDao.findMaxVersion(proposalId));
                 p2p.setVersionTo(-1);
                 proposal2PhaseDao.create(p2p);
                 if (publishActivity) {

@@ -174,7 +174,6 @@ public class Proposal extends AbstractProposal {
             this.clients = new Clients();
         }
         this.setProposalId(0L);
-        this.setCurrentVersion(0);
 
         ContestAssociation contestAssociation = new ContestAssociation();
         this.contestPhase =  contestAssociation.getContestPhase();
@@ -460,8 +459,12 @@ public class Proposal extends AbstractProposal {
         return proposalAttributeHelper;
     }
 
+    public Integer getCurrentVersion() {
+        return clients.proposal.getMaxVersion(getProposalId());
+    }
+
     public int getVersion() {
-        return this.getCurrentVersion();
+        return this.getCurrentVersion() != null ? this.getCurrentVersion() : 0;
     }
 
     public long getContestPK() {

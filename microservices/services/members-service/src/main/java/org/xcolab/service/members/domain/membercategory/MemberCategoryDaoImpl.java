@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.MemberCategory;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.service.utils.PaginationHelper.SortColumn;
+import org.xcolab.util.SortColumn;
 
 import java.util.List;
 import java.util.Optional;

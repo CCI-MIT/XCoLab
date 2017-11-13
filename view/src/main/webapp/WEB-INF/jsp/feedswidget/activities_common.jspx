@@ -7,9 +7,9 @@
     <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper>"-->
 
     <div class="alignright ${_isAdmin ? '' : 'hidden'}">
-        <a class="c-Button__primary" rel="nofollow" href="/activities/downloadCsv">
+        <button class="c-Button__admin" rel="nofollow" href="/activities/downloadCsv">
             Download activities
-        </a>
+        </button>
     </div>
     <div class="clearfix"><!--  --></div>
     <h2>${title}</h2>

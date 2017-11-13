@@ -5,6 +5,8 @@ import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.SupportedProposal;
+import org.xcolab.client.proposals.pojo.SupportedProposalDto;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporterDto;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
@@ -31,12 +33,17 @@ public final class ProposalMemberRatingClient {
 
     private final RestResource1<ProposalSupporterDto, Long> proposalSupporterResource;
     private final RestResource<ProposalVoteDto, Long> proposalVoteResource;
+    private final RestResource<SupportedProposalDto, Long> supportedProposalsResource;
 
     private ProposalMemberRatingClient(ServiceNamespace serviceNamespace) {
         proposalSupporterResource = new RestResource1<>(ProposalResource.PROPOSAL_SUPPORTER,
                 ProposalSupporterDto.TYPES, serviceNamespace);
         proposalVoteResource = new RestResource1<>(ProposalResource.PROPOSAL_VOTE,
                 ProposalVoteDto.TYPES, serviceNamespace);
+
+        supportedProposalsResource = new RestResource1<>(ProposalResource.SUPPORTED_PROPOSALS,
+                 SupportedProposalDto.TYPES);
+
         this.serviceNamespace = serviceNamespace;
     }
 
@@ -54,6 +61,13 @@ public final class ProposalMemberRatingClient {
     public List<ProposalSupporter> getProposalSupportersByUserId(Long userId) {
         return DtoUtil.toPojos(proposalSupporterResource.list()
                 .optionalQueryParam("userId", userId)
+                .execute(), serviceNamespace);
+    }
+
+    public List<SupportedProposal> getSupportedProposals(long userId) {
+        return DtoUtil.toPojos(supportedProposalsResource
+                .list()
+                .queryParam("userId", userId)
                 .execute(), serviceNamespace);
     }
 
@@ -137,6 +151,13 @@ public final class ProposalMemberRatingClient {
         }
     }
 
+    public int countVotesByUserInPhase(long userId, long phaseId) {
+        return proposalVoteResource.<ProposalVoteDto, Integer>service("count", Integer.class)
+                .queryParam("userId", userId)
+                .queryParam("contestPhaseId", phaseId)
+                .get();
+    }
+
     public Integer countProposalVotesInContestPhaseProposalId(long contestPhaseId, long proposalId,
             CacheName cacheName) {
         return proposalVoteResource.<ProposalVoteDto, Integer>service("count", Integer.class)
@@ -191,21 +212,30 @@ public final class ProposalMemberRatingClient {
                 .execute(), serviceNamespace);
     }
 
+    public List<ProposalVote> getProposalVotesByUserInPhase(long userId, long contestPhaseId) {
+        return getProposalVotes(contestPhaseId, null, userId);
+    }
+
     public boolean updateProposalVote(ProposalVote proposalVote) {
         return proposalVoteResource.service("updateVote", Boolean.class)
                 .post(proposalVote);
     }
-    public boolean deleteProposalVote(Long contestPhaseId , Long memberId) {
+
+    public boolean deleteProposalVote(long proposalId, long contestPhaseId, long memberId) {
         return proposalVoteResource.service("deleteVote", Boolean.class)
+                .queryParam("proposalId", proposalId)
                 .queryParam("memberId", memberId)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .delete();
     }
-    public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId) {
+
+    public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId,
+            int value) {
         ProposalVote pv = new ProposalVote();
         pv.setProposalId(proposalId);
         pv.setContestPhaseId(contestPhaseId);
         pv.setUserId(memberId);
+        pv.setValue(value);
         pv.setCreateDate(new Timestamp(new Date().getTime()));
         pv.setIsValid(true);// should this default to true?
         return createProposalVote(pv);
