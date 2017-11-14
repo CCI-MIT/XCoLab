@@ -26,6 +26,7 @@ import org.xcolab.view.pages.proposals.impact.ProposalImpactSeries;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactUtil;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.io.IOException;
@@ -210,19 +211,19 @@ public class ProposalImpactJSONController {
 
         if (impactAuthorComment != null || impactIAFComment != null) {
             final long memberId = currentMember.getUserId();
-            if(impactAuthorComment != null) {
-
-                proposalContext.getClients().getProposalAttributeClient().createOrUpdateProposalUnversionedAttribute(
-                        memberId,
-                        HtmlUtil.cleanAll(impactAuthorComment),
-                        ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
-                        proposal.getProposalId());
+            final ClientHelper clients = proposalContext.getClients();
+            if (impactAuthorComment != null) {
+                clients.getProposalAttributeClient().createOrUpdateUnversionedStringAttribute(
+                        proposal.getProposalId(),
+                        ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(), memberId,
+                        HtmlUtil.cleanAll(impactAuthorComment));
             }
+
             if (impactIAFComment != null) {
-                proposalContext.getClients().getProposalAttributeClient().createOrUpdateProposalUnversionedAttribute(
-                        memberId, HtmlUtil.cleanAll(impactIAFComment),
-                        ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
-                        proposal.getProposalId());
+                clients.getProposalAttributeClient().createOrUpdateUnversionedStringAttribute(
+                        proposal.getProposalId(),
+                        ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(), memberId,
+                        HtmlUtil.cleanAll(impactIAFComment));
             }
         }
 

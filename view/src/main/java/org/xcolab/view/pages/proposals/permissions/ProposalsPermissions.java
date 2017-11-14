@@ -221,6 +221,10 @@ public class ProposalsPermissions {
         return memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW;
     }
 
+    public boolean getCanEditBasicImpact() {
+        return getCanEdit() || getCanIAFActions();
+    }
+
     public boolean getCanPromoteProposalToNextPhase() {
         return contestPhase != null && getCanPromoteProposalToNextPhase(contestPhase);
     }

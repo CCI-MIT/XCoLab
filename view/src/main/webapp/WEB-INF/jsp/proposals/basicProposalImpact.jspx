@@ -1,13 +1,14 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
     
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
     <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
-    <xcolab:layout title="${proposal.name} - Impact">
+    <xcolab:layout title="${proposal.name} - Impact (Mitigation)">
         <!--@elvariable id="impactIterations" type="java.util.List<ImpactIteration>"-->
         <!--@elvariable id="impactSerieses" type="java.util.List<ImpactSeries>"-->
         <!--@elvariable id="regionTerms" type="java.util.List<OntologyTerm>"-->
@@ -107,20 +108,16 @@
         <!-- Content -->
         <div id="content">
             <div id="impact">
-                <div style="margin-bottom: 15px;text-align:justify !important;">
-                    <div style="margin-left:10px;float:right;"><img
-                            src="/images/beta-indicator.png"
-                            style="width: 55px;" /></div>
-                    <strong>How will this proposal reduce greenhouse gas emissions? </strong>The proposal authors can use
-                    the tools below or work with the
-                    <a target="_blank" href="/impact_fellows">Impact Assessment Fellows</a>
+                <xcolab:betaDisclaimer>
+                    <strong>How will this proposal reduce greenhouse gas emissions? </strong>
+                    The proposal authors can work with the
+                    <a href="/impact_fellows" target="_blank">Impact Assessment Fellows</a>
                     to estimate the greenhouse gas (GHG) reductions the proposal will cause in different economic sectors
                     around the world.
                     Once calculated, the top table will show the GHG emissions reductions from 2020 to 2050 for that sector
                     and region.
-                    <a target="_blank" href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan">Need
-                        help?</a>
-                </div>
+                    <a href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan" target="_blank">Need help?</a>
+                </xcolab:betaDisclaimer>
                         <table>
                             <thead>
                             <tr>
@@ -316,8 +313,6 @@
 
 
         </div>
-
-
 
         <script>
             // String constants

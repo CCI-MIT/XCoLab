@@ -352,17 +352,18 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if (impactAuthorComment != null || impactIAFComment != null) {
             if (impactAuthorComment != null) {
 
-                proposalAttributeClient.createOrUpdateProposalUnversionedAttribute(currentMember.getUserId(),
-                        HtmlUtil.cleanAll(impactAuthorComment),
+                proposalAttributeClient.createOrUpdateUnversionedStringAttribute(
+                        proposal.getProposalId(),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
-                        proposal.getProposalId());
+                        currentMember.getUserId(),
+                        HtmlUtil.cleanAll(impactAuthorComment));
             }
             if (impactIAFComment != null) {
-                proposalAttributeClient.createOrUpdateProposalUnversionedAttribute(
-                        currentMember.getUserId(),
-                        HtmlUtil.cleanAll(impactIAFComment),
+                proposalAttributeClient.createOrUpdateUnversionedStringAttribute(
+                        proposal.getProposalId(),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
-                        proposal.getProposalId());
+                        currentMember.getUserId(),
+                        HtmlUtil.cleanAll(impactIAFComment));
             }
         }
         AlertMessage.CHANGES_SAVED.flash(request);
