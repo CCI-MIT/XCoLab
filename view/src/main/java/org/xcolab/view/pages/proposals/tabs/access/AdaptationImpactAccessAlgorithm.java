@@ -11,9 +11,13 @@ import java.util.List;
 
 public class AdaptationImpactAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
 
+    // this feature was only introduced in the 2017 contest cycle
+    private static final int INTRODUCTION_YEAR = 2017;
+
     public static AdaptationImpactAccessAlgorithm view() {
         return new AdaptationImpactAccessAlgorithm();
     }
+
     @Override
     public boolean canAccess(ProposalContext proposalContext) {
         return getCanView(proposalContext);
@@ -26,8 +30,7 @@ public class AdaptationImpactAccessAlgorithm implements ProposalTabCanAccessAlgo
 
         final Contest contest = proposalContext.getContest();
 
-        // this feature was only introduced in the 2017 contest cycle
-        if (contest.getContestYear() < 2017) {
+        if (contest.getContestYear() < INTRODUCTION_YEAR) {
             return false;
         }
 
