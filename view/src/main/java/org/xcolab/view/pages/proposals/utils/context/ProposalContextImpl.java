@@ -63,7 +63,8 @@ public class ProposalContextImpl implements ProposalContext {
                 contestPhase = contextHelper.getContestPhase(contest, proposal);
                 if (proposal != null) {
                     proposal2Phase = contextHelper.getProposal2Phase(contestPhase);
-                    if (proposal2Phase == null && request.getParameter("isMove") == null) {
+                    final boolean isMove = request.getParameter("moveType") != null;
+                    if (proposal2Phase == null && !isMove) {
                         if (contextHelper.getGivenPhaseId() > 0) {
                             throw new InvalidAccessException();
                         }
