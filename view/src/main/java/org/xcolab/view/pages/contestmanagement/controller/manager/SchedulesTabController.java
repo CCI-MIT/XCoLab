@@ -153,6 +153,8 @@ public class SchedulesTabController extends AbstractTabController {
             result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_ERROR_MESSAGE);
         }
 
+        contestScheduleBean.setPhaseEndDates();
+
         if (!contestScheduleBean.isValidSchedule()) {
             result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_INVALID_MESSAGE);
         }
