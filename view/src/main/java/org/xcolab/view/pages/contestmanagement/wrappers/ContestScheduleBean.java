@@ -118,6 +118,16 @@ public class ContestScheduleBean {
         return contestSchedule.isUsedInNonEmptyContest();
     }
 
+    public void setPhaseEndDates() {
+        ContestPhaseBean prevContestPhase = null;
+        for (ContestPhaseBean contestPhase : schedulePhases) {
+            if (prevContestPhase != null) {
+                prevContestPhase.setPhaseEndDate(contestPhase.getPhaseStartDate());
+            }
+            prevContestPhase = contestPhase;
+        }
+    }
+
     public boolean isValidSchedule() {
         boolean isValid = true;
         Date prevEndDate = null;
