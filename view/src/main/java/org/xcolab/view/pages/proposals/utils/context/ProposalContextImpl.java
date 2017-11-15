@@ -55,7 +55,7 @@ public class ProposalContextImpl implements ProposalContext {
 
         try {
             contest = contextHelper.getContest();
-            proposal = contextHelper.getProposal();
+            proposal = contextHelper.getProposal(contest);
             clientHelper = contextHelper.getClientHelper();
 
             if (contest != null) {
