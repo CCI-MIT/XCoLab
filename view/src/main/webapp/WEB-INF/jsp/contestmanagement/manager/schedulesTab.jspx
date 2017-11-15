@@ -119,7 +119,6 @@
                             <th>Phase Type</th>
                             <!-- <th>Buffer</th> -->
                             <th>Start Date</th>
-                            <th>End Date</th>
                             <th>Autopromote</th>
                             <th>Fellow <br/>Screening</th>
                             <th><!-- --></th>
@@ -171,18 +170,6 @@
                                                 data-select-attribute="datetimepicker"
                                                 data-form-name="phaseStartDate"
                                                 readonly="${inputIsReadOnly}"
-                                            />
-
-                                </td>
-
-                                <td>
-                                    <form:input path="schedulePhases[${x.index}].phaseEndDateFormatted"
-                                                cssClass="form-control"
-                                                data-type-attribute="end"
-                                                data-index-attribute="${dateTimePickerIndex + 1}"
-                                                data-select-attribute="datetimepicker"
-                                                data-form-name="phaseEndDateFormatted"
-                                                readonly="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.ended}"
                                             />
 
                                 </td>
