@@ -20,7 +20,6 @@ import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.PlatformTeam;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
@@ -46,8 +45,6 @@ import org.xcolab.view.util.entity.flash.AlertMessage;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -127,7 +124,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             updateProposalDetailsBean.setMoveToContestId(proposalContext.getContest().getContestPK());
 
             model.addAttribute("hasUnmappedSections",
-                    hasUnmappedSections(proposal, baseProposalWrapped));
+                    hasUnmappedSections(proposalContext.getContest(), baseProposalWrapped));
             model.addAttribute("baseProposal", baseProposalWrapped);
             model.addAttribute("baseContest", baseContest);
             model.addAttribute("isMove", true);
@@ -176,8 +173,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         return "proposals/proposalDetails";
     }
 
-    private boolean hasUnmappedSections(Proposal proposalWrapped, Proposal baseProposalWrapped) {
-        Set<Long> newContestSections = proposalWrapped.getSections().stream()
+    private boolean hasUnmappedSections(Contest moveToContest, Proposal baseProposalWrapped) {
+        Set<Long> newContestSections = moveToContest.getSections().stream()
                 .map(PlanSectionDefinition::getSectionDefinitionId)
                 .collect(Collectors.toSet());
 

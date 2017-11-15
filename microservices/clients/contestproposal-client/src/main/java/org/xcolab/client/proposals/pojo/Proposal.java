@@ -141,7 +141,11 @@ public class Proposal extends AbstractProposal {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, proposal2Phase);
     }
 
-    public Proposal(Proposal proposal, int version, Contest contest,
+    public Proposal(Proposal proposal, Contest contest) {
+        this(proposal, null, contest, null, null);
+    }
+
+    public Proposal(Proposal proposal, Integer version, Contest contest,
             ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         super(proposal);
 
@@ -159,7 +163,8 @@ public class Proposal extends AbstractProposal {
 
         proposalContestPhaseAttributeHelper =
                 new ProposalContestPhaseAttributeHelper(this, this.contestPhase);
-        proposalAttributeHelper = new ProposalAttributeHelper(this, version,
+        final int currentVersion = version != null ? version : proposal.getVersion();
+        proposalAttributeHelper = new ProposalAttributeHelper(this, currentVersion,
                 clients.proposalAttribute);
         unversionedAttributeHelper = new ProposalUnversionedAttributeHelper(this,
                 clients.proposalAttribute);

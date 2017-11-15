@@ -161,18 +161,18 @@ public class ProposalContextHelper {
         }
     }
 
-    public Proposal getProposal() throws InvalidAccessException {
+    public Proposal getProposal(Contest contest) throws InvalidAccessException {
         final ProposalClient proposalClient = clientHelper.getProposalClient();
-        Proposal proposal = null;
         if (givenProposalId > 0) {
             try {
-                proposal = proposalClient.getProposal(givenProposalId);
+                Proposal proposal = proposalClient.getProposal(givenProposalId);
+                return new Proposal(proposal, contest);
             } catch (ProposalNotFoundException e) {
                 log.debug("Invalid proposal supplied: givenProposalId = {}", givenProposalId);
                 throw new InvalidAccessException();
             }
         }
-        return proposal;
+        return null;
     }
 
     public Proposal getProposalWrapper(Proposal proposal, Proposal2Phase proposal2Phase,
