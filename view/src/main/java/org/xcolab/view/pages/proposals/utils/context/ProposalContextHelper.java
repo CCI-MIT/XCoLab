@@ -134,18 +134,19 @@ public class ProposalContextHelper {
         final ProposalClient proposalClient = clientHelper.getProposalClient();
 
         ContestPhase contestPhase;
+        final long contestId = contest.getContestPK();
         if (givenPhaseId > 0) {
             contestPhase = contestClient.getContestPhase(givenPhaseId);
-        } else if (proposal != null) {
+        } else if (proposal != null && proposal.getContest().getContestPK() == contestId) {
             contestPhase = proposalClient.getLatestContestPhaseInProposal(proposal.getProposalId());
         } else {
-            contestPhase = contestClient.getActivePhase(contest.getContestPK());
+            contestPhase = contestClient.getActivePhase(contestId);
         }
 
         if (contestPhase == null) {
             throw ReferenceResolutionException
                     .toObject(ContestPhase.class, "")
-                    .fromObject(Contest.class, contest.getContestPK());
+                    .fromObject(Contest.class, contestId);
         }
         return contestPhase;
     }
