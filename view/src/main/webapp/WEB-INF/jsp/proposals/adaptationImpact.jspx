@@ -17,7 +17,7 @@
 
         <xcolab:requireLibrary name="spin.js" />
 
-        <!--TODO: we can use this for better formatting -->
+        <!--TODO COLAB-2423: we can use this for better formatting -->
         <!--<xcolab:script src="${_themeJsFolder}/proposals/numeral.min.js"/>-->
 
         <xcolab:betaDisclaimer>
@@ -165,7 +165,7 @@
             </c:if>
         </form:form>
 
-        <!--TODO: add impact comments to this tab as well -->
+        <!--TODO COLAB-2422: add impact comments to this tab as well -->
 
         <script>
             jQuery(function() {
