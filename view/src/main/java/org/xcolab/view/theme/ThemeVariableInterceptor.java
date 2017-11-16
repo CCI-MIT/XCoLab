@@ -122,6 +122,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("_colabShortName", colabShortName);
 
             modelAndView.addObject("_colabUrl", PlatformAttributeKey.COLAB_URL.get());
+            modelAndView.addObject("_colabUrlProduction", ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get());
             modelAndView.addObject("_blogAdminUrl", ConfigurationAttributeKey.BLOG_ADMIN_URL.get());
 
             final String googleAnalyticsKey = ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get();
