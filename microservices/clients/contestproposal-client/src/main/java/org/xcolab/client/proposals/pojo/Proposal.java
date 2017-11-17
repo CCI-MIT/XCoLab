@@ -431,6 +431,13 @@ public class Proposal extends AbstractProposal {
         return contest;
     }
 
+    public boolean isContestMatchesLatestContest() {
+        final long contestId = getContest().getContestPK();
+        final Contest currentContestForProposal =
+                clients.proposal.getCurrentContestForProposal(getProposalId());
+        return contestId == currentContestForProposal.getContestPK();
+    }
+
     public boolean getIsLatestVersion() {
         return getCurrentVersion() == this.getVersion();
     }

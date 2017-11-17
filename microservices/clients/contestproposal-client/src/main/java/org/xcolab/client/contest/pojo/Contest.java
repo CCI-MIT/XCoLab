@@ -37,7 +37,6 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
@@ -688,25 +687,26 @@ public class Contest extends AbstractContest implements Serializable {
      * @return 0 if judge action is incomplete, 1 judge actions completed
      */
     public boolean getJudgeStatus() {
-        try {
-            ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
-            for (Proposal proposal : ProposalClient.fromNamespace(serviceNamespace)
-                    .getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                Proposal2Phase p2p = ProposalPhaseClient.fromNamespace(serviceNamespace)
-                        .getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(),
-                                contestPhase.getContestPhasePK());
-                /*
-                final Proposal proposalWrapper =
-                        new ProposalWrapper(proposal, proposal.getCurrentVersion(), this,
-                                contestPhase, p2p);
-                if (proposalWrapper.getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
-                    return false;
-                }
-                */
-            }
-        } catch (Exception e) {
-            return false;
-        }
+        //TODO COLAB-2421: this code does nothing - remove?
+//        try {
+//            ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
+//            for (Proposal proposal : ProposalClient.fromNamespace(serviceNamespace)
+//                    .getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+//                Proposal2Phase p2p = ProposalPhaseClient.fromNamespace(serviceNamespace)
+//                        .getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(),
+//                                contestPhase.getContestPhasePK());
+//                /*
+//                final Proposal proposalWrapper =
+//                        new ProposalWrapper(proposal, proposal.getCurrentVersion(), this,
+//                                contestPhase, p2p);
+//                if (proposalWrapper.getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
+//                    return false;
+//                }
+//                */
+//            }
+//        } catch (Exception e) {
+//            return false;
+//        }
         return true;
     }
 
@@ -716,21 +716,22 @@ public class Contest extends AbstractContest implements Serializable {
      * @return 0 if fellow action is incomplete, 1 fellow action completed
      */
     public boolean getScreeningStatus() {
-        try {
-            ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
-
-            for (Proposal proposal : ProposalClient.fromNamespace(serviceNamespace)
-                    .getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                Proposal2Phase p2p = ProposalPhaseClient.fromNamespace(serviceNamespace)
-                        .getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                /*
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), this, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
-                    return false;
-                }*/
-            }
-        } catch (Exception e) {
-            return false;
-        }
+        //TODO COLAB-2421: this code does nothing - remove?
+//        try {
+//            ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
+//
+//            for (Proposal proposal : ProposalClient.fromNamespace(serviceNamespace)
+//                    .getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+//                Proposal2Phase p2p = ProposalPhaseClient.fromNamespace(serviceNamespace)
+//                        .getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+//                /*
+//                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), this, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
+//                    return false;
+//                }*/
+//            }
+//        } catch (Exception e) {
+//            return false;
+//        }
         return true;
     }
     public void setUpForeignContestVisualConfigsFromLocal(Contest c) {

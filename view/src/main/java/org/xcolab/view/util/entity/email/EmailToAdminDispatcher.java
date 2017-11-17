@@ -12,10 +12,9 @@ public class EmailToAdminDispatcher {
     private final static int VERBOSITY_DEBUG = 2;
 
     private static final Recipient[] ADMIN_EMAIL_RECIPIENTS = {
-            new Recipient("pdeboer@mit.edu", VERBOSITY_ERROR),
             new Recipient("jobachhu@mit.edu", VERBOSITY_DEBUG),
-            new Recipient("mohs@mit.edu", VERBOSITY_ERROR),
-            new Recipient("carlosbp@mit.edu", VERBOSITY_ERROR)
+            new Recipient("carlosbp@mit.edu", VERBOSITY_ERROR),
+            new Recipient("umov@mit.edu", VERBOSITY_ERROR)
     };
 
     private final String subject;
