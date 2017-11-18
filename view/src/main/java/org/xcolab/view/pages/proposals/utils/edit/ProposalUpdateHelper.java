@@ -80,7 +80,8 @@ public class ProposalUpdateHelper {
                 case TEXT:
                 case PROPOSAL_LIST_TEXT_REFERENCE:
                 case DROPDOWN_MENU:
-                    if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
+                    //TODO COLAB-2435: restore condition
+                    if (newSectionValue != null /*&& !newSectionValue.trim().equals(section.getContent())*/) {
                         final String baseUri = PlatformAttributeKey.COLAB_URL.get();
 
                         version = updateAttribute(HtmlUtil.cleanSome(newSectionValue, baseUri),
@@ -94,7 +95,8 @@ public class ProposalUpdateHelper {
                     }
                     break;
                 case CHECKBOX_OPTION:
-                    if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
+                    //TODO COLAB-2435: restore condition
+                    if (newSectionValue != null /*&& !newSectionValue.trim().equals(section.getContent())*/) {
                         String optionValues = newSectionValue.replace(",",";");
 
                         version = updateAttribute(optionValues, section, version).getVersion();
@@ -109,7 +111,8 @@ public class ProposalUpdateHelper {
                 case ONTOLOGY_REFERENCE:
                     if (StringUtils.isNumeric(newSectionValue)) {
                         long newNumericVal = Long.parseLong(newSectionValue);
-                        if (newNumericVal != section.getNumericValue()) {
+                        //TODO COLAB-2435: restore condition
+                        if (true /*newNumericVal != section.getNumericValue()*/) {
                             version = updateAttribute(newNumericVal, section, version).getVersion();
                         }
                     } else {
@@ -117,7 +120,8 @@ public class ProposalUpdateHelper {
                     }
                     break;
                 case PROPOSAL_REFERENCE:
-                    if (StringUtils.isNumeric(newSectionValue) && StringUtils.isNotBlank(newSectionValue)) {
+                    //TODO COLAB-2435: restore condition
+                    if (StringUtils.isNumeric(newSectionValue) /*&& StringUtils.isNotBlank(newSectionValue)*/) {
                         final long newNumericValue = Long.parseLong(newSectionValue);
                         if (section.getNumericValue() != newNumericValue) {
                             version = updateAttribute(newNumericValue, section, version).getVersion();
@@ -131,7 +135,8 @@ public class ProposalUpdateHelper {
                     //parse ids to make sure we only save actual ids
                     final List<Long> parsedIds = IdListUtil.getIdsFromString(newSectionValue);
                     final String cleanedReferences = IdListUtil.getStringFromIds(parsedIds);
-                    if (!section.getStringValue().equals(cleanedReferences)) {
+                    //TODO COLAB-2435: restore condition
+                    if (true /*!section.getStringValue().equals(cleanedReferences)*/) {
                         version = updateAttribute(cleanedReferences, section, version).getVersion();
                         updateProposalReferences = true;
                     }
@@ -171,7 +176,8 @@ public class ProposalUpdateHelper {
     private boolean updateBasicFields() {
         boolean filledAll = true;
 
-        if (!StringUtils.equals(updateProposalSectionsBean.getName(), proposalWrapper.getName())) {
+        //TODO COLAB-2435: restore condition
+        if (true /*!StringUtils.equals(updateProposalSectionsBean.getName(), proposalWrapper.getName())*/) {
             version = proposalContext.getClients().getProposalAttributeClient()
                     .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                             ProposalAttributeKeys.NAME, 0L,
@@ -181,7 +187,8 @@ public class ProposalUpdateHelper {
             filledAll = false;
         }
 
-        if (!StringUtils.equals(updateProposalSectionsBean.getPitch(), proposalWrapper.getPitch())) {
+        //TODO COLAB-2435: restore condition
+        if (true /*!StringUtils.equals(updateProposalSectionsBean.getPitch(), proposalWrapper.getPitch())*/) {
             final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             version = proposalContext.getClients().getProposalAttributeClient()
                     .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
@@ -192,7 +199,8 @@ public class ProposalUpdateHelper {
             filledAll = false;
         }
 
-        if (!StringUtils.equals(updateProposalSectionsBean.getDescription(), proposalWrapper.getDescription())) {
+        //TODO COLAB-2435: restore condition
+        if (true /*!StringUtils.equals(updateProposalSectionsBean.getDescription(), proposalWrapper.getDescription())*/) {
             final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             version = proposalContext.getClients().getProposalAttributeClient()
                     .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
@@ -221,7 +229,8 @@ public class ProposalUpdateHelper {
             } catch (EntityNotFoundException ignored) {}
         }
 
-        if (!StringUtils.equals(updateProposalSectionsBean.getTeam(), proposalWrapper.getTeam())) {
+        //TODO COLAB-2435: restore condition
+        if (true /*!StringUtils.equals(updateProposalSectionsBean.getTeam(), proposalWrapper.getTeam())*/) {
             version = proposalContext.getClients().getProposalAttributeClient()
                     .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                             ProposalAttributeKeys.TEAM, 0L,
@@ -231,8 +240,9 @@ public class ProposalUpdateHelper {
             filledAll = false;
         }
 
+        //TODO COLAB-2435: restore condition
         if (updateProposalSectionsBean.getImageId() > 0
-                && updateProposalSectionsBean.getImageId() != proposalWrapper.getImageId()) {
+                /*&& updateProposalSectionsBean.getImageId() != proposalWrapper.getImageId()*/) {
             version = proposalContext.getClients().getProposalAttributeClient()
                     .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                             ProposalAttributeKeys.IMAGE_ID, 0L,
