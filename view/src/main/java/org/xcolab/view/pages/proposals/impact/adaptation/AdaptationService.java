@@ -84,12 +84,12 @@ public class AdaptationService {
 
         void saveFloatValue(AdaptationCategory category, String valueType, float value) {
             attributeClient.createOrUpdateUnversionedDoubleAttribute(proposalId,
-                    category.getAttributeName() + "_" + valueType, authorId, value);
+                    attributeName(category, valueType), authorId, value);
         }
 
         void saveStringValue(AdaptationCategory category, String valueType, String value) {
             attributeClient.createOrUpdateUnversionedStringAttribute(proposalId,
-                    category.getAttributeName() + "_" + valueType, authorId, value);
+                    attributeName(category, valueType), authorId, value);
         }
 
         float getFloatValue(AdaptationCategory category, String valueType) {
@@ -105,11 +105,15 @@ public class AdaptationService {
         private ProposalUnversionedAttribute getAttributeOrNull(AdaptationCategory category,
                 String valueType) {
             try {
-                final String name = category.getAttributeName() + "_" + valueType;
+                final String name = attributeName(category, valueType);
                 return attributeClient.getProposalUnversionedAttribute(proposalId, name);
             } catch (EntityNotFoundException e) {
                 return null;
             }
+        }
+
+        private String attributeName(AdaptationCategory category, String valueType) {
+            return "IMPACT_" + category.name() + "_" + valueType;
         }
     }
 }

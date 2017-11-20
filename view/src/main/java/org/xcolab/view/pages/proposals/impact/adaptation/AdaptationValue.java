@@ -12,9 +12,6 @@ public class AdaptationValue {
     private float minPercentReduction;
     private float maxPercentReduction;
 
-    public AdaptationValue() {
-    }
-
     public String getRegion() {
         return region;
     }

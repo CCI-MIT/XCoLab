@@ -34,8 +34,4 @@ public enum AdaptationCategory {
     public String getTooltip() {
         return tooltip;
     }
-
-    public String getAttributeName() {
-        return "IMPACT_" + name();
-    }
 }

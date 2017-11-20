@@ -1,4 +1,4 @@
-// TODO: some of this is copied from bootstrap - replace with a direct call
+// TODO COLAB-2424: some of this is copied from bootstrap - replace with mixin
 
 @mixin table-row-variant($state, $background) {
   // Exact selectors below required to override `.table-striped` and prevent

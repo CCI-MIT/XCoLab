@@ -39,16 +39,31 @@ $c-TitleBar__separator__color: #B9E3FF !default;
     background: $c-TitleBar__contestSummary__backgroundColor;
     display: $c-TitleBar__contestSummary__display;
   }
+}
 
-  &.light {
+.c-TitleBar--light {
+  &.c-TitleBar {
     background: $c-TitleBar__contestSummary__backgroundColor--light;
     color: $b-Typography__textColor;
   }
 }
 
-.c-TitleBar__pageMargins {
-  width: 984px;
-  margin: 0 auto;
+.c-TitleBar.c-TitleBar--warning {
+  background: $t-Color__primary__grey--light;
+  color: $t-Color__grey--darkest;
+  border-bottom-color: $t-Color__accent;
+
+  .c-TitleBar__actionButton {
+    background: $t-Color__accent;
+
+    a, a:hover {
+      color: white;
+    }
+
+    &:hover {
+      background: hover-color($t-Color__accent);
+    }
+  }
 }
 
 .c-TitleBar__element {
@@ -118,6 +133,8 @@ $c-TitleBar__separator__color: #B9E3FF !default;
 }
 
 .c-TitleBar__actionButton {
+  @extend .c-TitleBar__element;
+
   background: $c-TitleBar__actionButton__backgroundColor;
 
   &:hover {

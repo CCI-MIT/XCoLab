@@ -8,10 +8,6 @@ public class AdaptationImpactBean {
     private Long proposalId;
     private Long authorId;
 
-    public AdaptationImpactBean() {
-
-    }
-
     public Map<String, AdaptationValue> getValues() {
         return values;
     }
