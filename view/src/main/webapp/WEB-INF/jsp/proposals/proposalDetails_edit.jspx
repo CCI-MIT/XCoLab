@@ -66,7 +66,7 @@
                         <h4 class="modal-title">Preparing for submission...</h4>
                     </div>
                     <div class="modal-body">
-                        <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
+                        <div id="loading_filtering_image" style="text-align: left"><img border="0" src="${_themeImageFolder}/loader.gif"/></div>
                         <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again</div>
                     </div>
                     <div class="modal-footer">

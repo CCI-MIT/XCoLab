@@ -148,13 +148,13 @@
                                     <div class="c-Header__socialButtons">
                                         <c:if test="${showFacebookSso}">
                                             <a href="/sso/facebook/login">
-                                                <img src="/images/facebook-logo.svg" />
+                                                <img src="${_themeImageFolder}/facebook-logo.svg" />
                                                 <span>Facebook</span>
                                             </a>
                                         </c:if>
                                         <c:if test="${showGoogleSso}">
                                             <a href="/sso/google/login">
-                                                <img src="/images/google-logo.svg" />
+                                                <img src="${_themeImageFolder}/google-logo.svg" />
                                                 <span>Google</span>
                                             </a>
                                         </c:if>

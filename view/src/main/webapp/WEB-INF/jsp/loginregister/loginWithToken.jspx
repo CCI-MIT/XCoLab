@@ -25,7 +25,7 @@
                             <input type="checkbox" id="remember-me" name="remember-me" checked="checked" />
                             Remember me
                         </label> &#160;
-                        <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
+                        <img src="${_themeImageFolder}/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
                              title="If this box is checked, you will stay logged into the site automatically for one month." />
                     </div>
                     <div class="checkbox">
@@ -33,7 +33,7 @@
                             <input type="checkbox" id="invalidate-link" name="invalidateLink" />
                             Invalidate link after login
                         </label> &#160;
-                        <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
+                        <img src="${_themeImageFolder}/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
                              title="If you are using a public computer, check this box to prevent others from being able to use your login." />
 
                     </div>
