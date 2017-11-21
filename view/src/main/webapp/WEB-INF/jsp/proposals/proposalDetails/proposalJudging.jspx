@@ -7,6 +7,7 @@
     <!--@elvariable id="proposal" type="org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
+    <!--@elvariable id="judgeProposalFeedbackBean" type="org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean"-->
 
     <c:set var="saveJudgingFeedbackURL" value="${proposal.proposalUrl}/tab/ADVANCING/saveJudgingFeedback?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId}"/>
 
