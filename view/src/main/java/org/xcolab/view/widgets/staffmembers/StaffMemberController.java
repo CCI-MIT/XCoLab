@@ -173,7 +173,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
         StaffMember sm = new StaffMember();
         sm.setUserId(member.getId_());
         sm.setCategoryId(categoryRole.getCategoryId());
-        final String userImageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
+        final String userImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
         sm.setPhotoUrl(userImageDomain + "/image/member/" + member.getPortraitId());
         sm.setFirstNames(member.getFirstName());
         sm.setLastName(member.getLastName());
