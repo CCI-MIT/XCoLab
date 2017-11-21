@@ -196,19 +196,22 @@
     </c:if>
 
     <c:if test="${!_isProduction}">
-        <div class="c-TitleBar c-TitleBar--warning">
-            <div class="bs-container-fixed">
-                <div class="c-TitleBar__element" style="padding-left: 0;">
+        <div class="c-TitleBar__container">
+            <div class="c-TitleBar c-TitleBar--warning c-TitleBar--fixed">
+                <div class="bs-container-fixed">
+                    <div class="c-TitleBar__element" style="padding-left: 0;">
                     <span style="display: inline-block">
-                        You are currently on a <b>test server</b>. Content on this server is for testing purposes only and may be deleted at any time.
+                        You are currently on a <b>test server</b>. Content on this server is for testing only and may be deleted at any time.
                     </span>
-                </div>
+                    </div>
 
-                <div class="c-TitleBar__actionButton pull-right">
-                    <a href="${_colabUrlProduction}">Take me to ${_colabUrlProduction}.</a>
+                    <div class="c-TitleBar__actionButton pull-right">
+                        <a href="${_colabUrlProduction}">Take me to ${_colabUrlProduction}.</a>
+                    </div>
                 </div>
             </div>
         </div>
+
     </c:if>
 
     <c:if test="${_showImpersonationBar}">
