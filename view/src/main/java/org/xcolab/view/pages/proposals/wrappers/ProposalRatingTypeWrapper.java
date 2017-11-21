@@ -15,7 +15,6 @@ public class ProposalRatingTypeWrapper {
     }
 
     public List<ProposalRatingValue> getRatingValues() {
-
         return ProposalJudgeRatingClientUtil.getProposalRatingValuesByProposalRatingTypeId(this.proposalRatingType.getId_());
     }
 
