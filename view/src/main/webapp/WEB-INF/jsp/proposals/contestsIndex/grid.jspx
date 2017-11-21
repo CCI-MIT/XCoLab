@@ -16,7 +16,7 @@
             </c:forEach>
         </div>
         <c:if test="${not empty contestsSorted.contestsFeatured}">
-            <div class="contest-featured-seperator" id="climateactionplans">&#160;</div>
+            <div class="contest-featured-seperator">&#160;</div>
         </c:if>
 
         <div>
@@ -35,7 +35,7 @@
                 <!--<collab:message  code="contests.selector.seeall" contestType="${contestType}" />-->
             <!--</div>-->
             <!--<div id="priorContestsContainer" style="display: none;">-->
-                <!--<div class="contest-featured-seperator" id="climateactionplans">&#160;</div>-->
+                <!--<div class="contest-featured-seperator">&#160;</div>-->
                 <!--<c:forEach var="contest" items="${priorContests}" varStatus="status">-->
                     <!--<c:if test="${contest.showInTileView}">-->
                         <!--<proposalsPortlet:contestGridElement contest="${contest }" index="${status.index}" />-->

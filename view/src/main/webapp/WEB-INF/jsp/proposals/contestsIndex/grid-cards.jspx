@@ -23,7 +23,7 @@
 		</div>
 		<c:if test="${not showOnlyFeatured}">
 			<c:if test="${not empty contestsSorted.contestsFeatured}">
-				  <div class="contest-featured-seperator" id="climateactionplans">&#160;</div>
+				  <div class="contest-featured-seperator">&#160;</div>
 			</c:if>
 			<div>
 				<c:forEach var="contest" items="${contestsSorted.contestsNormal }" varStatus="status">
