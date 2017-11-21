@@ -15,6 +15,8 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.view.pages.proposals.tabs.access.AdaptationImpactAccessAlgorithm;
+import org.xcolab.view.pages.proposals.tabs.access.ImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
 import java.util.Date;
@@ -29,6 +31,7 @@ public class ProposalsPermissions {
     private final boolean isGuest;
 
     private final Proposal proposal;
+    private final Contest contest;
     private final ContestPhase contestPhase;
     private final ContestStatus contestStatus;
 
@@ -36,7 +39,8 @@ public class ProposalsPermissions {
     private final ContestClient contestClient;
 
 
-    public ProposalsPermissions(ClientHelper clientHelper, Member member, Proposal proposal, ContestPhase contestPhase) {
+    public ProposalsPermissions(ClientHelper clientHelper, Member member, Proposal proposal,
+            Contest contest, ContestPhase contestPhase) {
         this.member = member;
 
         this.proposalClient = clientHelper.getProposalClient();
@@ -65,8 +69,9 @@ public class ProposalsPermissions {
         this.memberId = member != null ? member.getId_() : 0;
         this.isLoggedIn = this.memberId > 0;
         this.isGuest = PermissionsClient.isGuest(memberId);
-        this.contestPhase = contestPhase;
         this.proposal = proposal;
+        this.contest = contest;
+        this.contestPhase = contestPhase;
     }
 
     public Member getMember() {
@@ -219,6 +224,14 @@ public class ProposalsPermissions {
         MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
                 MembersClient.getMemberUnchecked(memberId));
         return memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW;
+    }
+
+    public boolean getCanViewMitigationImpactTab() {
+        return ImpactAccessAlgorithm.view().canAccess(this, contest);
+    }
+
+    public boolean getCanViewAdaptationImpactTab() {
+        return AdaptationImpactAccessAlgorithm.view().canAccess(contest);
     }
 
     public boolean getCanEditBasicImpact() {
