@@ -28,15 +28,20 @@ public class ImpactAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
 
     @Override
     public boolean canAccess(ProposalContext proposalContext) {
-        if (isEdit) {
-            return getCanEdit(proposalContext);
-        }
-        return getCanView(proposalContext);
+        final Contest contest = proposalContext.getContest();
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
+        return canAccess(permissions, contest);
     }
 
-    private boolean getCanView(ProposalContext proposalContext) {
+    public boolean canAccess(ProposalsPermissions permissions, Contest contest) {
+        if (isEdit) {
+            return getCanEdit(permissions, contest);
+        }
+        return getCanView(contest);
+    }
+
+    private boolean getCanView(Contest contest) {
         if (ConfigurationAttributeKey.IMPACT_TAB_IS_ACTIVE.get()) {
-            final Contest contest = proposalContext.getContest();
 
             if (contest.getContestTier() != ContestTier.NONE.getTierType()
                     && contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType()) {
@@ -63,9 +68,7 @@ public class ImpactAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
         return false;
     }
 
-    private boolean getCanEdit(ProposalContext proposalContext) {
-        ProposalsPermissions permissions = proposalContext.getPermissions();
-        Contest contest = proposalContext.getContest();
+    private boolean getCanEdit(ProposalsPermissions permissions, Contest contest) {
 
         final boolean memberCanAccess = permissions.getIsTeamMember()
                 || permissions.getCanAdminProposal()
