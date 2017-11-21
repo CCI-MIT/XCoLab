@@ -1,6 +1,6 @@
 package org.xcolab.client.modeling.pojo;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ModelCategory extends AbstractModelCategory {
 
@@ -10,7 +10,7 @@ public class ModelCategory extends AbstractModelCategory {
         super(value);
     }
 
-    public ModelCategory(AbstractModelCategory modelCategory, RestService restService) {
+    public ModelCategory(AbstractModelCategory modelCategory, ServiceNamespace serviceNamespace) {
         super(modelCategory);
     }
 }

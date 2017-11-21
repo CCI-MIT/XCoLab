@@ -5,19 +5,14 @@ import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class ProposalAttributeClientUtil {
 
-    private static final RestService contestService = new RestService(CoLabService.CONTEST,
-            ServiceRequestUtils.getNamespace());
-
     private static final ProposalAttributeClient client =
-            ProposalAttributeClient.fromService(contestService);
+            ProposalAttributeClient.fromNamespace(ServiceNamespace.instance());
 
     public static ProposalAttributeClient getClient() {
         return client;
@@ -78,9 +73,10 @@ public final class ProposalAttributeClientUtil {
         return client.getAllProposalAttributes(proposalId, version);
     }
 
-    public static ProposalAttribute setProposalAttribute(
-            Long userId, Long proposalId, String name, Long additionalId, Long numericValue) {
-        return client.setProposalAttribute(userId, proposalId, name, additionalId, numericValue);
+    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
+            Long additionalId, Long numericValue, Integer version) {
+        return client.setProposalAttribute(userId, proposalId, name, additionalId, numericValue,
+                version);
     }
 
     public static ProposalAttribute setProposalAttribute(
@@ -91,15 +87,16 @@ public final class ProposalAttributeClientUtil {
 
     public static ProposalAttribute setProposalAttribute(
             Long userId, Long proposalId, String name, Long aditionalId, String stringValue,
-            Long numericValue, Double doubleValue) {
+            Long numericValue, Double doubleValue, Integer version) {
         return client.setProposalAttribute(userId, proposalId, name, aditionalId, stringValue,
                 numericValue,
-                doubleValue);
+                doubleValue, version);
     }
 
-    public static ProposalAttribute setProposalAttribute(
-            Long userId, Long proposalId, String name, Long aditionalId, String stringValue) {
-        return client.setProposalAttribute(userId, proposalId, name, aditionalId, stringValue);
+    public static ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
+            Long aditionalId, String stringValue, Integer version) {
+        return client
+                .setProposalAttribute(userId, proposalId, name, aditionalId, stringValue, version);
     }
 
     public static Boolean deleteProposalUnversionedAttribute(Long id_) {
@@ -109,12 +106,6 @@ public final class ProposalAttributeClientUtil {
     public static List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(
             Long proposalId) {
         return client.getProposalUnversionedAttributesByProposalId(proposalId);
-    }
-
-    public static void createOrUpdateProposalUnversionedAttribute(long authorId,
-            String attributeValue, String attributeName, Long proposalId) {
-        client.createOrUpdateProposalUnversionedAttribute(authorId, attributeValue, attributeName,
-                proposalId);
     }
 
     public static ProposalUnversionedAttribute createProposalUnversionedAttribute(

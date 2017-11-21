@@ -55,13 +55,14 @@ public final class ProposalCreationUtil {
             if (baseProposalId > 0) {
                 final ProposalAttributeClient proposalAttributeClient =
                         clientHelper.getProposalAttributeClient();
-                proposalAttributeClient.setProposalAttribute(
+                Integer proposalAttributeVersion = proposalAttributeClient.setProposalAttribute(
                         memberId, proposalWrapper.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID,
-                        0L, baseProposalId);
+                        0L, baseProposalId, null).getVersion();
                 final long baseContestId = updateProposalSectionsBean.getBaseProposalContestId();
-                proposalAttributeClient
+                proposalAttributeVersion = proposalAttributeClient
                         .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
-                        ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0L, baseContestId);
+                                ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0L, baseContestId,
+                                proposalAttributeVersion).getVersion();
                 clientHelper.getProposalMoveClient()
                         .createForkProposalMoveHistory(baseProposalId, proposalWrapper.getProposalId(),
                         baseContestId, contest.getContestPK(), contestPhase.getContestPhasePK(), memberId);
@@ -71,9 +72,13 @@ public final class ProposalCreationUtil {
                     if (attributesNotToBeCopiedFromBaseProposal.contains(attribute.getName())) {
                         continue;
                     }
-                    proposalAttributeClient.setProposalAttribute(memberId,
-                            proposalWrapper.getProposalId(), attribute.getName(), attribute.getAdditionalId(),
-                            attribute.getStringValue(), attribute.getNumericValue(), attribute.getRealValue());
+
+                    proposalAttributeVersion = proposalAttributeClient
+                            .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
+                                    attribute.getName(), attribute.getAdditionalId(),
+                                    attribute.getStringValue(), attribute.getNumericValue(),
+                                    attribute.getRealValue(), proposalAttributeVersion)
+                            .getVersion();
                 }
             }
             return proposalWrapper;

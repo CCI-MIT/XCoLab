@@ -8,15 +8,15 @@ import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+
 
 public class ProposalRibbon {
 
     private final ContestPhaseRibbonType contestPhaseRibbonType;
 
-    public ProposalRibbon(Proposal proposal, RestService proposalService) {
+    public ProposalRibbon(Proposal proposal, ServiceNamespace proposalService) {
         Assert.notNull(proposal, "Proposal is required");
         if (proposalService != null) {
             this.contestPhaseRibbonType = fetchRibbonType(proposal, proposalService);
@@ -25,17 +25,16 @@ public class ProposalRibbon {
         }
     }
 
-    private ContestPhaseRibbonType fetchRibbonType(Proposal proposal, RestService proposalService) {
+    private ContestPhaseRibbonType fetchRibbonType(Proposal proposal,
+            ServiceNamespace serviceNamespace) {
         final Long proposalId = proposal.getProposalId();
         if (proposalId == null || proposalId == 0) {
             return null;
         }
 
-        final RestService contestService =
-                proposalService.withServiceName(CoLabService.CONTEST.getServiceName());
-        final ContestClient contestClient = ContestClient.fromService(contestService);
+        final ContestClient contestClient = ContestClient.fromNamespace(serviceNamespace);
         final ProposalPhaseClient proposalPhaseClient =
-                ProposalPhaseClient.fromService(proposalService);
+                ProposalPhaseClient.fromNamespace(serviceNamespace);
 
         ContestPhase contestPhase = proposal.getContestPhase();
 

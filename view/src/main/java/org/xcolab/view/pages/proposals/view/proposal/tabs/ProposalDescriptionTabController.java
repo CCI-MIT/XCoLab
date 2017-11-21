@@ -18,6 +18,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMoveClient;
@@ -123,7 +124,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             updateProposalDetailsBean.setMoveToContestId(proposalContext.getContest().getContestPK());
 
             model.addAttribute("hasUnmappedSections",
-                    hasUnmappedSections(proposal, baseProposalWrapped));
+                    hasUnmappedSections(proposalContext.getContest(), baseProposalWrapped));
             model.addAttribute("baseProposal", baseProposalWrapped);
             model.addAttribute("baseContest", baseContest);
             model.addAttribute("isMove", true);
@@ -156,6 +157,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     ConfigurationAttributeKey.PROPOSALS_SAVE_HELP_TEXT.get());
             model.addAttribute("proposalPickerDefaultTabIsContests",
                     ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
+            model.addAttribute("userTeams", PlatformTeamsClient.getTeams(currentMember));
 
             return "proposals/proposalDetails_edit";
         }
@@ -171,8 +173,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         return "proposals/proposalDetails";
     }
 
-    private boolean hasUnmappedSections(Proposal proposalWrapped, Proposal baseProposalWrapped) {
-        Set<Long> newContestSections = proposalWrapped.getSections().stream()
+    private boolean hasUnmappedSections(Contest moveToContest, Proposal baseProposalWrapped) {
+        Set<Long> newContestSections = moveToContest.getSections().stream()
                 .map(PlanSectionDefinition::getSectionDefinitionId)
                 .collect(Collectors.toSet());
 

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DataTransferObject;
 
@@ -28,7 +28,7 @@ public class ProposalVersionDto extends AbstractProposalVersion
     }
 
     @Override
-    public ProposalVersion toPojo(RestService restService) {
-        return new ProposalVersion(this, restService);
+    public ProposalVersion toPojo(ServiceNamespace serviceNamespace) {
+        return new ProposalVersion(this, serviceNamespace);
     }
 }

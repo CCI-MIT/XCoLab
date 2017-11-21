@@ -6,7 +6,6 @@
 
 	<!--@elvariable id="edit" type="java.lang.Boolean"-->
     <!--@elvariable id="tabs" type="java.util.List<org.xcolab.view.pages.proposals.tabs.ProposalTabWrapper>"-->
-	<!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
 
 	<script>
         var proposalId = ${ proposal.proposalId }; var contestId = ${contest.contestPK};
@@ -94,13 +93,6 @@
 			</div>
 		</div>
 	</c:if>
-    <c:if test="${promptLoginWindow == 'true' }">
-        <script>
-            jQuery(function() {
-                deferUntilLogin();
-            });
-        </script>
-    </c:if>
 
     <xcolab:requireLibrary name="CKEditor" />
     <xcolab:requireLibrary name="autoSuggest" />

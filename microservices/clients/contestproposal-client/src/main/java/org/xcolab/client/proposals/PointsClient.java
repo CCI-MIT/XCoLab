@@ -1,5 +1,6 @@
 package org.xcolab.client.proposals;
 
+import org.xcolab.client.contest.resources.ContestResource;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointTypeDto;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
@@ -7,7 +8,7 @@ import org.xcolab.client.proposals.pojo.points.PointsDistributionConfigurationDt
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -17,23 +18,23 @@ import java.util.Map;
 
 public final class PointsClient {
 
-    private static final Map<RestService, PointsClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, PointsClient> instances = new HashMap<>();
 
-    private final RestService proposalService;
+    private final ServiceNamespace serviceNamespace;
 
     private final RestResource1<PointsDistributionConfigurationDto, Long>
             pointsDistributionConfigurationResource;
     private final RestResource1<PointTypeDto, Long> pointTypeResource;
 
-    private PointsClient(RestService proposalService) {
-        pointsDistributionConfigurationResource = new RestResource1<>(proposalService,
-        "pointsDistributionConfigurations", PointsDistributionConfigurationDto.TYPES);
-        pointTypeResource = new RestResource1<>(proposalService,
-                "pointTypes", PointTypeDto.TYPES);
-        this.proposalService = proposalService;
+    private PointsClient(ServiceNamespace serviceNamespace) {
+        pointsDistributionConfigurationResource = new RestResource1<>(
+                ContestResource.POINTS_DISTRIBUTION_CONFIGURATION,
+                PointsDistributionConfigurationDto.TYPES);
+        pointTypeResource = new RestResource1<>(ContestResource.POINT_TYPE, PointTypeDto.TYPES);
+        this.serviceNamespace = serviceNamespace;
     }
 
-    public static PointsClient fromService(RestService proposalService) {
+    public static PointsClient fromNamespace(ServiceNamespace proposalService) {
         return instances.computeIfAbsent(proposalService, PointsClient::new);
     }
 
@@ -41,7 +42,7 @@ public final class PointsClient {
             PointsDistributionConfiguration pointsDistributionConfiguration) {
         return pointsDistributionConfigurationResource
                 .create(new PointsDistributionConfigurationDto(pointsDistributionConfiguration))
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public PointsDistributionConfiguration
@@ -52,7 +53,7 @@ public final class PointsClient {
                     .service("getByTargetPlanSectionDefinitionId",
                             PointsDistributionConfigurationDto.class)
                     .queryParam("targetPlanSectionDefinitionId", targetPlanSectionDefinitionId)
-                    .getChecked().toPojo(proposalService);
+                    .getChecked().toPojo(serviceNamespace);
         } catch (EntityNotFoundException ignored){
             return null;
         }
@@ -72,7 +73,7 @@ public final class PointsClient {
         return DtoUtil.toPojos(pointsDistributionConfigurationResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("pointTypeId", pointTypeId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
     public Boolean deletePointsDistributionConfiguration(Long pointsDistributionConfigurationId) {
@@ -93,13 +94,13 @@ public final class PointsClient {
     public PointType getPointType(long Id_) {
         return pointTypeResource.get(Id_)
                 .withCache(CacheKeys.of(PointTypeDto.class, Id_), CacheName.MISC_REQUEST)
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
 
     }
 
     public List<PointType> getAllPointTypes() {
         return DtoUtil.toPojos(pointTypeResource.list()
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
     public List<PointType> getChildrenOfPointType(Long parentPointTypeId) {
@@ -109,6 +110,6 @@ public final class PointsClient {
                                 .asList(),
                         CacheName.MISC_MEDIUM)
                 .optionalQueryParam("parentPointTypeId", parentPointTypeId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 }

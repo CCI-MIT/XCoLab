@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.tabs;
 
+import org.xcolab.view.pages.proposals.tabs.access.AdaptationImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.AdvancingAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.EvaluationAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.ImpactAccessAlgorithm;
@@ -19,6 +20,9 @@ public enum ProposalTab {
             ProposalTabActivityCountAlgorithm.alwaysZero),
     IMPACT("Impact", "contests.proposal.tabs.impact",
             Type.NORMAL, ImpactAccessAlgorithm.view(), ImpactAccessAlgorithm.edit(),
+            ProposalTabActivityCountAlgorithm.alwaysZero),
+    ADAPTATION_IMPACT("Adaptation Impact", "contests.proposal.tabs.impact",
+            Type.NORMAL, AdaptationImpactAccessAlgorithm.view(), ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.alwaysZero),
     TEAM("Contributors", "contests.proposal.tabs.contributors",
             Type.NORMAL, ProposalTabAccess.ALWAYS, ProposalTabAccess.NEVER,

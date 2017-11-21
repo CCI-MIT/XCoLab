@@ -11,9 +11,8 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.time.DurationFormatter;
 
 import java.sql.Timestamp;
@@ -26,7 +25,7 @@ public class ContestPhase extends AbstractContestPhase {
 
     private final ContestClient contestClient;
 
-    private RestService restService;
+    private ServiceNamespace serviceNamespace;
 
     protected ContestStatus status;
 
@@ -53,9 +52,9 @@ public class ContestPhase extends AbstractContestPhase {
         contestClient = ContestClientUtil.getClient();
     }
 
-    public ContestPhase(AbstractContestPhase abstractContestPhase, RestService restService) {
+    public ContestPhase(AbstractContestPhase abstractContestPhase, ServiceNamespace serviceNamespace) {
         super(abstractContestPhase);
-        contestClient = ContestClient.fromService(restService);
+        contestClient = ContestClient.fromNamespace(serviceNamespace);
     }
 
     public static ContestPhase clone(ContestPhase originalPhase) {
@@ -213,10 +212,8 @@ public class ContestPhase extends AbstractContestPhase {
 
     public Boolean getProposalVisibility(long proposalId) {
         ProposalPhaseClient proposalPhaseClient;
-        if (restService != null) {
-            RestService proposalService =
-                    restService.withServiceName(CoLabService.CONTEST.getServiceName());
-            proposalPhaseClient = ProposalPhaseClient.fromService(proposalService);
+        if (serviceNamespace != null) {
+            proposalPhaseClient = ProposalPhaseClient.fromNamespace(serviceNamespace);
         } else {
             proposalPhaseClient = ProposalPhaseClientUtil.getClient();
         }
@@ -228,8 +225,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public boolean setProposalVisibility(long proposalId, boolean visible) {
-        RestService proposalService = restService.withServiceName(CoLabService.CONTEST.getServiceName());
-        ProposalPhaseClient.fromService(proposalService)
+        ProposalPhaseClient.fromNamespace(serviceNamespace)
                 .setProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
                         ProposalContestPhaseAttributeKeys.VISIBLE, 0L, visible ? 1L : 0L, "");
         return true;
@@ -246,7 +242,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public boolean isCompleted() {
-        return getStatus() == ContestStatus.COMPLETED;
+        return getStatus() == ContestStatus.COMPLETED || getPhaseEndDate() == null;
     }
 
     public ContestPhase getWrapped() {

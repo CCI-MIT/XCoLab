@@ -1,6 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalDto;
@@ -12,7 +13,7 @@ import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
@@ -26,28 +27,29 @@ import java.util.Map;
 
 public final class ProposalAttributeClient {
 
-    private static final Map<RestService, ProposalAttributeClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, ProposalAttributeClient> instances = new HashMap<>();
 
-    private final RestService proposalService;
+    private final ServiceNamespace serviceNamespace;
     private final RestResource1<ProposalAttributeDto, Long> proposalAttributeResource;
     private final RestResource1<ProposalUnversionedAttributeDto, Long>
             proposalUnversionedAttributeResource;
 
-    private ProposalAttributeClient(RestService proposalService) {
-        proposalAttributeResource = new RestResource1<>(proposalService,
-                "proposalAttributes", ProposalAttributeDto.TYPES);
-        proposalUnversionedAttributeResource = new RestResource1<>(proposalService,
-                "proposalUnversionedAttributes", ProposalUnversionedAttributeDto.TYPES);
-        this.proposalService = proposalService;
+    private ProposalAttributeClient(ServiceNamespace serviceNamespace) {
+        proposalAttributeResource = new RestResource1<>(ProposalResource.PROPOSAL_ATTRIBUTE,
+                ProposalAttributeDto.TYPES);
+        proposalUnversionedAttributeResource = new RestResource1<>(
+                ProposalResource.PROPOSAL_UNVERSIONED_ATTRIBUTE,
+                ProposalUnversionedAttributeDto.TYPES);
+        this.serviceNamespace = serviceNamespace;
     }
 
-    public static ProposalAttributeClient fromService(RestService proposalService) {
-        return instances.computeIfAbsent(proposalService, ProposalAttributeClient::new);
+    public static ProposalAttributeClient fromNamespace(ServiceNamespace serviceNamespace) {
+        return instances.computeIfAbsent(serviceNamespace, ProposalAttributeClient::new);
     }
 
     public ProposalAttribute createProposalAttribute(ProposalAttribute proposalAttribute) {
         return proposalAttributeResource.create(new ProposalAttributeDto(proposalAttribute))
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public ProposalAttribute getImpactProposalAttributes(Long proposalId) {
@@ -63,7 +65,7 @@ public final class ProposalAttributeClient {
             listQ = listQ.queryParam("additionalId", additionalId);
         }
         final ProposalAttributeDto firstOrNull = listQ.executeWithResult().getFirstIfExists();
-        return firstOrNull != null ? firstOrNull.toPojo(proposalService) : null;
+        return firstOrNull != null ? firstOrNull.toPojo(serviceNamespace) : null;
     }
 
     public ProposalAttribute getProposalAttribute(long proposalId, long version, String name, Long additionalId) {
@@ -76,14 +78,14 @@ public final class ProposalAttributeClient {
             listQ = listQ.queryParam("additionalId", additionalId);
         }
         final ProposalAttributeDto firstOrNull = listQ.executeWithResult().getFirstIfExists();
-        return firstOrNull != null ? firstOrNull.toPojo(proposalService) : null;
+        return firstOrNull != null ? firstOrNull.toPojo(serviceNamespace) : null;
     }
 
     public ProposalAttribute getProposalAttribute(long id_)
             throws ProposalAttributeNotFoundException {
         return proposalAttributeResource.get(id_)
                 .withCache(CacheKeys.of(ProposalAttributeDto.class, id_), CacheName.MISC_REQUEST)
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public Boolean deleteProposalAttribute(Long id_) {
@@ -106,7 +108,7 @@ public final class ProposalAttributeClient {
                 .service("getImpactProposalAttributes", ProposalAttributeDto.TYPES.getTypeReference())
                 .queryParam("proposalId", proposal.getProposalId())
                 .queryParam("currentVersion", proposal.getCurrentVersion())
-                .getList(), proposalService);
+                .getList(), serviceNamespace);
     }
 
     public boolean updateProposalAttribute(ProposalAttribute proposalAttribute) {
@@ -120,7 +122,7 @@ public final class ProposalAttributeClient {
         return DtoUtil.toPojos(proposalAttributeResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .withCache(CacheName.MISC_REQUEST)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
     public List<ProposalAttribute> getAllProposalAttributes(Long proposalId, Integer version) {
@@ -132,16 +134,7 @@ public final class ProposalAttributeClient {
                         .withParameter("proposalId", proposalId)
                         .withParameter("version",version)
                         .asList(), CacheName.PROPOSAL_DETAILS)
-                .execute(), proposalService);
-    }
-
-    public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
-            Long aditionalId, Long numericValue) {
-        ProposalAttribute proposalAttribute =
-                createProposalAttribute(userId, proposalId, name, aditionalId);
-        proposalAttribute.setNumericValue(numericValue);
-        return setProposalAttribute(proposalAttribute, userId);
-
+                .execute(), serviceNamespace);
     }
 
     private ProposalAttribute createProposalAttribute(Long userId, Long proposalId, String name,
@@ -170,27 +163,31 @@ public final class ProposalAttributeClient {
         return proposalAttributeResource.service("setProposalAttribute", ProposalAttributeDto.class)
                 .queryParam("authorId", authorId)
                 .post(proposalAttribute)
-                .toPojo(proposalService);
+                .toPojo(serviceNamespace);
     }
 
     public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
-            Long aditionalId, String stringValue, Long numericValue, Double doubleValue) {
+            Long additionalId, String stringValue, Long numericValue, Double doubleValue,
+            Integer version) {
         ProposalAttribute proposalAttribute =
-                createProposalAttribute(userId, proposalId, name, aditionalId);
+                createProposalAttribute(userId, proposalId, name, additionalId);
         proposalAttribute.setStringValue(stringValue);
         proposalAttribute.setNumericValue(numericValue);
         proposalAttribute.setRealValue(doubleValue);
+        proposalAttribute.setVersion(version);
         return setProposalAttribute(proposalAttribute, userId);
-
     }
 
     public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
-            Long aditionalId, String stringValue) {
-        ProposalAttribute proposalAttribute =
-                createProposalAttribute(userId, proposalId, name, aditionalId);
-        proposalAttribute.setStringValue(stringValue);
-        return setProposalAttribute(proposalAttribute, userId);
+            Long additionalId, String stringValue, Integer version) {
+        return setProposalAttribute(userId, proposalId, name, additionalId, stringValue,
+                null, null, version);
+    }
 
+    public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
+            Long additionalId, Long numericValue, Integer version) {
+        return setProposalAttribute(userId, proposalId, name, additionalId, null,
+                numericValue, null, version);
     }
 
     public Boolean deleteProposalUnversionedAttribute(Long id_) {
@@ -201,29 +198,49 @@ public final class ProposalAttributeClient {
             Long proposalId) {
         return DtoUtil.toPojos(proposalUnversionedAttributeResource.list()
                 .optionalQueryParam("proposalId", proposalId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
-    public void createOrUpdateProposalUnversionedAttribute(long authorId,
-            String attributeValue,
-            String attributeName,
-            Long proposalId) {
+    public void createOrUpdateUnversionedStringAttribute(Long proposalId, String attributeName,
+            long authorId, String attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorId, null,
+                attributeValue, null);
+    }
+
+    public void createOrUpdateUnversionedDoubleAttribute(Long proposalId, String attributeName,
+            long authorId, double attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorId, null,
+                null, attributeValue);
+    }
+
+    public void createOrUpdateUnversionedLongAttribute(Long proposalId, String attributeName,
+            long authorId, long attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorId, attributeValue,
+                null, null);
+    }
+
+    public void createOrUpdateUnversionedAttribute(Long proposalId, String attributeName,
+            long authorId, Long longValue, String stringValue, Double doubleValue) {
         ProposalUnversionedAttribute pua;
         try {
              pua =
                     getProposalUnversionedAttribute(proposalId, attributeName);
                 pua.setCreateAuthorId(authorId);
                 pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
-                pua.setStringValue(attributeValue);
+                pua.setNumericValue(longValue);
+                pua.setStringValue(stringValue);
+                pua.setRealValue(doubleValue);
                 updateProposalUnversionedAttribute(pua);
 
-        }catch (EntityNotFoundException ignored){
+        } catch (EntityNotFoundException e) {
             pua = new ProposalUnversionedAttribute();
             pua.setCreateAuthorId(authorId);
             pua.setCreateDate(new Timestamp(new Date().getTime()));
             pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
             pua.setName(attributeName);
-            pua.setStringValue(attributeValue);
+            pua.setNumericValue(longValue);
+            pua.setStringValue(stringValue);
+            pua.setRealValue(doubleValue);
             pua.setProposalId(proposalId);
             createProposalUnversionedAttribute(pua);
         }
@@ -233,7 +250,7 @@ public final class ProposalAttributeClient {
             ProposalUnversionedAttribute proposalUnversionedAttribute) {
         return proposalUnversionedAttributeResource
                 .create(new ProposalUnversionedAttributeDto(proposalUnversionedAttribute))
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public ProposalUnversionedAttribute getProposalUnversionedAttribute(Long proposalId,
@@ -243,7 +260,7 @@ public final class ProposalAttributeClient {
                 .queryParam("proposalId", proposalId)
                 .queryParam("name", name)
                 .getChecked()
-                .toPojo(proposalService);
+                .toPojo(serviceNamespace);
     }
 
     public boolean updateProposalUnversionedAttribute(

@@ -1,0 +1,156 @@
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+    
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+    <!--@elvariable id="teamId" type="java.lang.Long"-->
+
+    <jsp:directive.include file="../init.jspx"/>
+    <jsp:directive.include file="./header.jspx"/>
+
+    <c:set var="changeElementUrl" value="/admin/contest/manager/tab/TEAMS?elementId=" />
+    <c:set var="updateTeamUrl" value="/admin/contest/manager/tab/TEAMS" />
+
+    <div class="c-ContentBox">
+        <div style="margin-bottom: 40px;">
+            <div class="floatRight outerVerticalCenter">
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveTeam()">SAVE team</a>
+                <a class="c-Button__primary innerVerticalCenter js-PostLink" data-url="TEAMS">CREATE new team</a>
+                <a class="c-Button__primary innerVerticalCenter js-PostLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="c-ContentBox">
+        <div class="reg_errors"><!--  -->
+            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
+        </div>
+
+        <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
+        <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
+                   method="post">
+
+            <div class="addpropbox">
+                <strong class="inputTitleLeft">Team:</strong>
+
+                <div class="addpropInputContainer">
+                    <form:select path="elementId" id="changeTeamSelect" cssClass="form-control">
+                        <form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value"
+                                      itemLabel="lable"/>
+                    </form:select>
+
+                    <div class="reg_errors">
+                        <form:errors cssClass="c-Alert c-Alert__error" path="elementId"/>
+                    </div>
+                </div>
+            </div>
+        </form:form>
+        <c:if test="${teamId != -1}">
+            <!--@elvariable id="teamBean" type="org.xcolab.view.pages.contestmanagement.wrappers.PlatformTeamBean"-->
+            <form:form action="${updateTeamUrl}?elementId=${teamBean.teamId}"
+                       commandName="teamBean" id="editForm" method="post">
+                <input type="hidden" name="action" value="UPDATE" />
+                <form:hidden path="teamId"/>
+
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Team name:</strong>
+                    <form:input path="name" cssClass="form-control"/>
+                </div>
+
+                <div class="addpropbox">
+                    <div>
+                        <strong class="inputTitleLeft">Team members:</strong>
+                    </div>
+
+                    <div class="clearfix"><!-- --></div>
+
+                    <table class="table-striped" id="teammembers">
+                        <c:forEach var="member" items="${teamBean.members}" varStatus="status">
+                            <tr class="${status.index mod 2 > 0 ? 'even' : 'odd'}">
+                                <td>
+                                    <xcolab:userPortrait portraitId="${member.portraitId}" memberId="${member.userId}"
+                                                         width="42" height="42"/>
+                                    <xcolab:userLinkSimple memberId="${member.userId }" text="${member.displayName }" />
+                                </td>
+                                <td style="vertical-align: middle">
+                                    <a class="js-PostLink" data-url="TEAMS/${teamId}/removeMember/${member.id_}">Remove</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+
+                        <tr class="${teamBean.members.size() mod 2 > 0 ? 'even' : 'odd'}">
+                            <td style="height: 42px; vertical-align: middle;">
+                                <label for="add-member">Add member:</label>
+                                <input type="text" name="add-member" id="add-member" />
+                            </td>
+                            <td />
+                        </tr>
+                    </table>
+                </div>
+            </form:form>
+        </c:if>
+    </div>
+
+
+
+    <script type="text/javascript">
+        <![CDATA[
+
+        jQuery(function () {
+            bindElementSelectChange();
+        });
+
+        $(function() {
+            var $memberInput = $( "#add-member" );
+            $memberInput.autocomplete({
+                minLength: 3,
+                source: "/api/members/getUserByScreenName",
+                select: function (event, ui) {
+                    var userId = ui.item.id;
+                    addMember(userId);
+                    return false;
+                }
+            });
+
+            $memberInput.bind("autocompleteselect", "select", function(event) {
+
+            });
+        });
+
+        function saveTeam() {
+            $("#editForm").submit();
+        }
+
+        function addMember(userId) {
+            $.ajax({
+                type: "POST",
+                url: "TEAMS/${teamId}/addMember",
+                data: {
+                    'userId': userId,
+                    'teamName': $('#name').val()
+                },
+                success: function() {
+                    window.location.reload();
+                },
+                error: function() {
+                    noty({text: "User could not be added.", type: 'error'});
+                }
+            });
+        }
+
+        function bindElementSelectChange() {
+
+            var dropDownElement = document.getElementById("changeTeamSelect");
+
+            dropDownElement.addEventListener("change", function (ev) {
+                var templateName = ev.target.value;
+                window.location = "${changeElementUrl}" + templateName;
+            })
+        }
+
+        ]]>
+    </script>
+</xcolab:layout>
+</jsp:root>

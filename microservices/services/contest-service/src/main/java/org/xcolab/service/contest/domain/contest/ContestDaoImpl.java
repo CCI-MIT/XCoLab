@@ -13,7 +13,7 @@ import org.springframework.util.CollectionUtils;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.service.utils.PaginationHelper.SortColumn;
+import org.xcolab.util.SortColumn;
 
 import java.util.List;
 

@@ -17,9 +17,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.http.client.RefreshingRestService;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.util.ArrayList;
@@ -80,9 +78,9 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
                 }
                 if (!contest.getContestPrivate()) {
                     if (contest.getIsSharedContestInForeignColab()) {
-                        RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
+                        ServiceNamespace serviceNamespace = ServiceNamespace.instance(
                                 ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-                        Contest foreignContest = ContestClient.fromService(contestService)
+                        Contest foreignContest = ContestClient.fromNamespace(serviceNamespace)
                                 .getContest(contest.getContestPK());
                         foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
                         contestWrappers.add(foreignContest);
@@ -100,10 +98,10 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
                 try {
                     Contest c = ContestClientUtil.getContest(contestId);
                     if (c.getIsSharedContestInForeignColab()) {
-                        RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
+                        ServiceNamespace serviceNamespace = ServiceNamespace.instance(
                                 ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
                         Contest foreignContest =
-                                ContestClient.fromService(contestService).getContest(contestId);
+                                ContestClient.fromNamespace(serviceNamespace).getContest(contestId);
                         foreignContest.setUpForeignContestVisualConfigsFromLocal(c);
                         contestWrappers.add(foreignContest);
                     } else {

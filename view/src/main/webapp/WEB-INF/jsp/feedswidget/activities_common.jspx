@@ -6,8 +6,10 @@
 
     <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper>"-->
 
-    <div class="alignright" style="display:none;">
-        <a href="/feedswidget/generateDump">activities in CSV format</a>
+    <div class="alignright ${_isAdmin ? '' : 'hidden'}">
+        <button class="c-Button__admin" rel="nofollow" href="/activities/downloadCsv">
+            Download activities
+        </button>
     </div>
     <div class="clearfix"><!--  --></div>
     <h2>${title}</h2>

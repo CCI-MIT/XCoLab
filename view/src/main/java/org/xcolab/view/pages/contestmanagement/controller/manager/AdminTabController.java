@@ -22,12 +22,13 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.html.LabelValue;
+import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
-import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvConverter;
-import org.xcolab.view.pages.contestmanagement.utils.VoteCsvConverter;
+import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.VoteCsvWriter;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.enums.MemberRole;
@@ -62,12 +63,14 @@ public class AdminTabController extends AbstractTabController {
 
     private final LoginRegisterService loginRegisterService;
     private final ServletContext servletContext;
+    private final ActivityEntryHelper activityEntryHelper;
 
     @Autowired
     public AdminTabController(LoginRegisterService loginRegisterService,
-            ServletContext servletContext) {
+            ServletContext servletContext, ActivityEntryHelper activityEntryHelper) {
         this.loginRegisterService = loginRegisterService;
         this.servletContext = servletContext;
+        this.activityEntryHelper = activityEntryHelper;
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -145,11 +148,11 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        VoteCsvConverter csvConverter = new VoteCsvConverter();
-        votingReportBean.getVotingPhaseIds().stream()
-                .map(ProposalMemberRatingClientUtil::getProposalVotesInPhase)
-                .forEach(csvConverter::addVotes);
-        csvConverter.initiateDownload("votingReport", response);
+        try (VoteCsvWriter csvWriter = new VoteCsvWriter(response)) {
+            votingReportBean.getVotingPhaseIds().stream()
+                    .map(ProposalMemberRatingClientUtil::getProposalVotesInPhase)
+                    .forEach(csvWriter::addVotes);
+        }
     }
 
     @PostMapping("tab/ADMIN/exportActivities")
@@ -160,11 +163,10 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        ActivityCsvConverter csvConverter = new ActivityCsvConverter();
-        ActivitiesClientUtil.getActivityEntries(0, Integer.MAX_VALUE, null, null)
-                .forEach(csvConverter::addActivity);
-
-        csvConverter.initiateDownload("activityReport", response);
+        try (ActivityCsvWriter csvWriter = new ActivityCsvWriter(response, activityEntryHelper)) {
+            ActivitiesClientUtil.getActivityEntries(0, Integer.MAX_VALUE, null, null)
+                    .forEach(csvWriter::writeActivity);
+        }
     }
 
     @PostMapping("tab/ADMIN/batchRegister")

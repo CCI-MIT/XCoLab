@@ -136,7 +136,7 @@ public class ProposalContextHelper {
         ContestPhase contestPhase;
         if (givenPhaseId > 0) {
             contestPhase = contestClient.getContestPhase(givenPhaseId);
-        } else if (proposal != null) {
+        } else if (proposal != null && proposal.isContestMatchesLatestContest()) {
             contestPhase = proposalClient.getLatestContestPhaseInProposal(proposal.getProposalId());
         } else {
             contestPhase = contestClient.getActivePhase(contest.getContestPK());
@@ -160,12 +160,12 @@ public class ProposalContextHelper {
         }
     }
 
-    public Proposal getProposal() throws InvalidAccessException {
+    public Proposal getProposal(Contest contest) throws InvalidAccessException {
         final ProposalClient proposalClient = clientHelper.getProposalClient();
         Proposal proposal = null;
         if (givenProposalId > 0) {
             try {
-                proposal = proposalClient.getProposal(givenProposalId);
+                proposal = new Proposal(proposalClient.getProposal(givenProposalId), contest);
             } catch (ProposalNotFoundException e) {
                 log.debug("Invalid proposal supplied: givenProposalId = {}", givenProposalId);
                 throw new InvalidAccessException();

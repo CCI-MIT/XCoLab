@@ -1,6 +1,7 @@
 package org.xcolab.client.contest.pojo.phases;
 
-import org.xcolab.util.http.client.RestService;
+
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ContestPhaseRibbonType extends AbstractContestPhaseRibbonType {
 
@@ -11,7 +12,7 @@ public class ContestPhaseRibbonType extends AbstractContestPhaseRibbonType {
     }
 
     public ContestPhaseRibbonType(AbstractContestPhaseRibbonType abstractContestPhaseRibbonType,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractContestPhaseRibbonType);
     }
 }

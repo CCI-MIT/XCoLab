@@ -9,7 +9,7 @@ import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.Iterator;
@@ -18,12 +18,8 @@ import java.util.stream.Collectors;
 
 public final class ContestTypeClient {
 
-    private static final RestService adminService = new RestService(CoLabService.ADMIN,
-            ServiceRequestUtils.getNamespace());
-
     private static final RestResource<ContestTypeAttribute, String> contestTypeAttributeResource =
-            new RestResource1<>(adminService, "contestTypeAttributes",
-                    ContestTypeAttribute.TYPES);
+            new RestResource1<>(AdminResource.CONTEST_TYPE_ATTRIBUTE, ContestTypeAttribute.TYPES);
 
     private ContestTypeClient() {
     }

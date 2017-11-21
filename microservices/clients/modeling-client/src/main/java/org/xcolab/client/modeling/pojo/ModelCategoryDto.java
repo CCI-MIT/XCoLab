@@ -2,7 +2,7 @@ package org.xcolab.client.modeling.pojo;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DataTransferObject;
 
@@ -23,7 +23,7 @@ public class ModelCategoryDto extends AbstractModelCategory
     }
 
     @Override
-    public ModelCategory toPojo(RestService restService) {
-        return new ModelCategory(this, restService);
+    public ModelCategory toPojo(ServiceNamespace serviceNamespace) {
+        return new ModelCategory(this, serviceNamespace);
     }
 }

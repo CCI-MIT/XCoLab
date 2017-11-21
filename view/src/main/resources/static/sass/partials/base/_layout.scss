@@ -49,6 +49,11 @@ ul li {
 
 img {
   max-width: 100%;
+
+  &.media-object {
+    // compatibility with bootstrap media object
+    max-width: initial;
+  }
 }
 
 a.js-PostLink {

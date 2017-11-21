@@ -3,17 +3,19 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.SupportedProposal;
+import org.xcolab.client.proposals.pojo.SupportedProposalDto;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporterDto;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVoteDto;
-import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -25,36 +27,48 @@ import java.util.Map;
 
 public final class ProposalMemberRatingClient {
 
-    private static final Map<RestService, ProposalMemberRatingClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, ProposalMemberRatingClient> instances = new HashMap<>();
 
-    private final RestService proposalService;
+    private final ServiceNamespace serviceNamespace;
+
     private final RestResource1<ProposalSupporterDto, Long> proposalSupporterResource;
     private final RestResource<ProposalVoteDto, Long> proposalVoteResource;
+    private final RestResource<SupportedProposalDto, Long> supportedProposalsResource;
 
-    private ProposalMemberRatingClient(RestService proposalService) {
-        proposalSupporterResource = new RestResource1<>(proposalService,
-                "proposalSupporters", ProposalSupporterDto.TYPES);
-        proposalVoteResource = new RestResource1<>(proposalService,
-                "proposalVotes", ProposalVoteDto.TYPES);
-        this.proposalService = proposalService;
+    private ProposalMemberRatingClient(ServiceNamespace serviceNamespace) {
+        proposalSupporterResource = new RestResource1<>(ProposalResource.PROPOSAL_SUPPORTER,
+                ProposalSupporterDto.TYPES, serviceNamespace);
+        proposalVoteResource = new RestResource1<>(ProposalResource.PROPOSAL_VOTE,
+                ProposalVoteDto.TYPES, serviceNamespace);
+
+        supportedProposalsResource = new RestResource1<>(ProposalResource.SUPPORTED_PROPOSALS,
+                 SupportedProposalDto.TYPES);
+
+        this.serviceNamespace = serviceNamespace;
     }
 
-    public static ProposalMemberRatingClient fromService(RestService proposalService) {
-        return instances.computeIfAbsent(proposalService,
-                k -> new ProposalMemberRatingClient(proposalService));
+    public static ProposalMemberRatingClient fromNamespace(ServiceNamespace serviceNamespace) {
+        return instances.computeIfAbsent(serviceNamespace, ProposalMemberRatingClient::new);
     }
 
     public List<ProposalSupporter> getProposalSupporters(long proposalId) {
         return DtoUtil.toPojos(proposalSupporterResource.list()
             .withCache(CacheName.MISC_REQUEST)
             .queryParam("proposalId", proposalId)
-            .execute(), proposalService);
+            .execute(), serviceNamespace);
     }
 
     public List<ProposalSupporter> getProposalSupportersByUserId(Long userId) {
         return DtoUtil.toPojos(proposalSupporterResource.list()
                 .optionalQueryParam("userId", userId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
+    }
+
+    public List<SupportedProposal> getSupportedProposals(long userId) {
+        return DtoUtil.toPojos(supportedProposalsResource
+                .list()
+                .queryParam("userId", userId)
+                .execute(), serviceNamespace);
     }
 
     public Integer getProposalSupportersCount(Long proposalId) {
@@ -93,25 +107,25 @@ public final class ProposalMemberRatingClient {
         supporter.setCreateDate(new Timestamp(new Date().getTime()));
         createProposalSupporter(supporter);
 
-        RestService activitiesService  = proposalService.withServiceName(CoLabService.ACTIVITY.getServiceName());
-        ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
+        ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
 
         if (publishActivity) {
             ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
                     ActivityProvidersType.ProposalSupporterAddedActivityEntry.getType());
         }
+
+
     }
 
     public ProposalSupporter createProposalSupporter(ProposalSupporter proposalSupporter) {
         return proposalSupporterResource
                 .create(new ProposalSupporterDto(proposalSupporter))
-                .execute().toPojo(proposalService);
+                .execute().toPojo(serviceNamespace);
     }
 
     public void removeProposalSupporter(long proposalId, long userId) {
         deleteProposalSupporter(proposalId, userId);
-        RestService activitiesService  = proposalService.withServiceName(CoLabService.ACTIVITY.getServiceName());
-        ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
+        ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
 
         ActivityEntryHelper.createActivityEntry(activityClient, userId, proposalId, null,
                 ActivityProvidersType.ProposalSupporterRemovedActivityEntry.getType());
@@ -135,6 +149,13 @@ public final class ProposalMemberRatingClient {
         } catch (EntityNotFoundException e) {
             return 0;
         }
+    }
+
+    public int countVotesByUserInPhase(long userId, long phaseId) {
+        return proposalVoteResource.<ProposalVoteDto, Integer>service("count", Integer.class)
+                .queryParam("userId", userId)
+                .queryParam("contestPhaseId", phaseId)
+                .get();
     }
 
     public Integer countProposalVotesInContestPhaseProposalId(long contestPhaseId, long proposalId,
@@ -170,7 +191,7 @@ public final class ProposalMemberRatingClient {
     public List<ProposalVote> getVotesByMember(long memberId) {
         return DtoUtil.toPojos(proposalVoteResource.list()
                 .queryParam("userId", memberId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
     }
 
     public void invalidateVotesForMember(long memberId) {
@@ -188,31 +209,40 @@ public final class ProposalMemberRatingClient {
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("userId", userId)
-                .execute(), proposalService);
+                .execute(), serviceNamespace);
+    }
+
+    public List<ProposalVote> getProposalVotesByUserInPhase(long userId, long contestPhaseId) {
+        return getProposalVotes(contestPhaseId, null, userId);
     }
 
     public boolean updateProposalVote(ProposalVote proposalVote) {
         return proposalVoteResource.service("updateVote", Boolean.class)
                 .post(proposalVote);
     }
-    public boolean deleteProposalVote(Long contestPhaseId , Long memberId) {
+
+    public boolean deleteProposalVote(long proposalId, long contestPhaseId, long memberId) {
         return proposalVoteResource.service("deleteVote", Boolean.class)
+                .queryParam("proposalId", proposalId)
                 .queryParam("memberId", memberId)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .delete();
     }
-    public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId) {
+
+    public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId,
+            int value) {
         ProposalVote pv = new ProposalVote();
         pv.setProposalId(proposalId);
         pv.setContestPhaseId(contestPhaseId);
         pv.setUserId(memberId);
+        pv.setValue(value);
         pv.setCreateDate(new Timestamp(new Date().getTime()));
         pv.setIsValid(true);// should this default to true?
         return createProposalVote(pv);
     }
     public ProposalVote createProposalVote(ProposalVote proposalVote) {
         return proposalVoteResource.create(new ProposalVoteDto(proposalVote)).execute()
-                .toPojo(proposalService);
+                .toPojo(serviceNamespace);
     }
 
     public ProposalVote getProposalVoteByProposalIdUserId(Long proposalId, Long userId) {
@@ -222,7 +252,7 @@ public final class ProposalMemberRatingClient {
                     .optionalQueryParam("proposalId", proposalId)
                     .optionalQueryParam("userId", userId)
                     .getChecked()
-                    .toPojo(proposalService);
+                    .toPojo(serviceNamespace);
         } catch (EntityNotFoundException ig) {
             return null;
         }

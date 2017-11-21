@@ -1,6 +1,6 @@
 package org.xcolab.client.modeling.pojo;
 
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ModelPosition extends AbstractModelPosition {
 
@@ -10,7 +10,8 @@ public class ModelPosition extends AbstractModelPosition {
         super(value);
     }
 
-    public ModelPosition(AbstractModelPosition modelPosition, RestService restService) {
+    public ModelPosition(AbstractModelPosition modelPosition,
+            ServiceNamespace serviceNamespace) {
         super(modelPosition);
     }
 }

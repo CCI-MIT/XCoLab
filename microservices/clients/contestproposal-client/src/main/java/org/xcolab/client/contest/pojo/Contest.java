@@ -37,10 +37,8 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.util.time.DateUtil;
 
@@ -92,7 +90,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     protected ContestPhase activePhase;
 
-    private RestService restService;
+    private ServiceNamespace serviceNamespace;
 
     public Contest() {
         contestClient = ContestClientUtil.getClient();
@@ -104,19 +102,18 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public Contest(Contest value) {
-        this(value, value.getRestService());
+        this(value, value.getServiceNamespace());
     }
 
-    public Contest(AbstractContest value, RestService restService) {
+    public Contest(AbstractContest value, ServiceNamespace serviceNamespace) {
         super(value);
-        if (restService != null) {
-            contestClient = ContestClient.fromService(restService);
-            contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
-            ontologyClient = OntologyClient.fromService(restService);
-            planTemplateClient = PlanTemplateClient.fromService(restService);
-            RestService commentService = restService.withServiceName(CoLabService.COMMENT.getServiceName());
-            commentClient = CommentClient.fromService(commentService);
-            threadClient = ThreadClient.fromService(commentService);
+        if (serviceNamespace != null) {
+            contestClient = ContestClient.fromNamespace(serviceNamespace);
+            contestTeamMemberClient = ContestTeamMemberClient.fromService(serviceNamespace);
+            ontologyClient = OntologyClient.fromService(serviceNamespace);
+            planTemplateClient = PlanTemplateClient.fromNamespace(serviceNamespace);
+            commentClient = CommentClient.fromService(serviceNamespace);
+            threadClient = ThreadClient.fromService(serviceNamespace);
         } else {
             contestClient = ContestClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
@@ -125,7 +122,7 @@ public class Contest extends AbstractContest implements Serializable {
             commentClient = CommentClientUtil.getClient();
             threadClient = ThreadClientUtil.getClient();
         }
-        this.restService = restService;
+        this.serviceNamespace = serviceNamespace;
     }
 
     public String getContestDiscussionLinkUrl() {
@@ -301,9 +298,8 @@ public class Contest extends AbstractContest implements Serializable {
             ContestPhase cp = contestClient.getActivePhase(this.getContestPK());
             if (cp != null) {
                 //TODO:REPLACE THIS CALL FOR SYNCD CONTEST REFERENCE
-                RestService proposalService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
 
-                return ProposalPhaseClient.fromService(proposalService)
+                return ProposalPhaseClient.fromNamespace(serviceNamespace)
                         .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
             }
         } catch (UncheckedEntityNotFoundException e) {
@@ -437,9 +433,8 @@ public class Contest extends AbstractContest implements Serializable {
         Set<Proposal> proposalList = new HashSet<>();
 
         List<ContestPhase> contestPhases = contestClient.getAllContestPhases(this.getContestPK());
-        RestService proposalService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
         for (ContestPhase contestPhase : contestPhases) {
-            List<Proposal> proposals = ProposalClient.fromService(proposalService)
+            List<Proposal> proposals = ProposalClient.fromNamespace(serviceNamespace)
                     .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
             proposalList.addAll(proposals);
 
@@ -493,9 +488,9 @@ public class Contest extends AbstractContest implements Serializable {
 
     public long getVotesCount() {
         ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
-        RestService proposalMemberRatingService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
 
-        return ProposalMemberRatingClient.fromService(proposalMemberRatingService).countProposalVotesInContestPhase(phase.getContestPhasePK());
+        return ProposalMemberRatingClient.fromNamespace(serviceNamespace)
+                .countProposalVotesInContestPhase(phase.getContestPhasePK());
     }
 
     public long getCreatedTime(){
@@ -520,8 +515,8 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
 
-    public RestService getRestService() {
-        return restService;
+    public ServiceNamespace getServiceNamespace() {
+        return serviceNamespace;
     }
 
     public String getWhoName() {
@@ -692,27 +687,26 @@ public class Contest extends AbstractContest implements Serializable {
      * @return 0 if judge action is incomplete, 1 judge actions completed
      */
     public boolean getJudgeStatus() {
-        try {
-
-            RestService proposalsService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
-
-
-
-            ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
-            for (Proposal proposal : ProposalClient.fromService(proposalsService).getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                Proposal2Phase p2p = ProposalPhaseClient.fromService(proposalsService).getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                /*
-                final Proposal proposalWrapper =
-                        new ProposalWrapper(proposal, proposal.getCurrentVersion(), this,
-                                contestPhase, p2p);
-                if (proposalWrapper.getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
-                    return false;
-                }
-                */
-            }
-        } catch (Exception e) {
-            return false;
-        }
+        //TODO COLAB-2421: this code does nothing - remove?
+//        try {
+//            ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
+//            for (Proposal proposal : ProposalClient.fromNamespace(serviceNamespace)
+//                    .getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+//                Proposal2Phase p2p = ProposalPhaseClient.fromNamespace(serviceNamespace)
+//                        .getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(),
+//                                contestPhase.getContestPhasePK());
+//                /*
+//                final Proposal proposalWrapper =
+//                        new ProposalWrapper(proposal, proposal.getCurrentVersion(), this,
+//                                contestPhase, p2p);
+//                if (proposalWrapper.getJudgeStatus() == GenericJudgingStatus.STATUS_ACCEPTED) {
+//                    return false;
+//                }
+//                */
+//            }
+//        } catch (Exception e) {
+//            return false;
+//        }
         return true;
     }
 
@@ -722,22 +716,22 @@ public class Contest extends AbstractContest implements Serializable {
      * @return 0 if fellow action is incomplete, 1 fellow action completed
      */
     public boolean getScreeningStatus() {
-        try {
-            RestService proposalsService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
-
-
-            ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
-
-            for (Proposal proposal : ProposalClient.fromService(proposalsService).getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
-                Proposal2Phase p2p = ProposalPhaseClient.fromService(proposalsService).getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                /*
-                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), this, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
-                    return false;
-                }*/
-            }
-        } catch (Exception e) {
-            return false;
-        }
+        //TODO COLAB-2421: this code does nothing - remove?
+//        try {
+//            ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());
+//
+//            for (Proposal proposal : ProposalClient.fromNamespace(serviceNamespace)
+//                    .getProposalsInContestPhase(contestPhase.getContestPhasePK())) {
+//                Proposal2Phase p2p = ProposalPhaseClient.fromNamespace(serviceNamespace)
+//                        .getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+//                /*
+//                if ((new ProposalWrapper(proposal, proposal.getCurrentVersion(), this, contestPhase, p2p)).getScreeningStatus() == GenericJudgingStatus.STATUS_UNKNOWN) {
+//                    return false;
+//                }*/
+//            }
+//        } catch (Exception e) {
+//            return false;
+//        }
         return true;
     }
     public void setUpForeignContestVisualConfigsFromLocal(Contest c) {
@@ -771,5 +765,13 @@ public class Contest extends AbstractContest implements Serializable {
     public List<PlanSectionDefinition> getSections() {
         return planTemplateClient.getPlanSectionDefinitionByPlanTemplateId(getPlanTemplateId(),
                         true);
+    }
+
+    public int getMaxVotesPerContest() {
+        return ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_CONTEST.get().intValue();
+    }
+
+    public int getMaxVotesPerProposal() {
+        return ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_PROPOSAL.get().intValue();
     }
 }

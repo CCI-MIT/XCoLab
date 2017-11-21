@@ -102,10 +102,10 @@ function getVersion(){
 }
 
 function loadHistoryForVersion(version) {
-    $.getJSON('/api/proposals/' + proposalId + '/versions/' + version + '/index', {}, function(data) {
+    $.getJSON('/api/proposals/' + proposalId + '/versions/' + version + '/count', {}, function(data) {
         var page = 0;
-        page = Math.floor(data.index / itemsPerPage);
-        totalCount= parseInt(data.index);
+        page = Math.floor((data.count - 1) / itemsPerPage);
+        totalCount= parseInt(data.count);
         load(page, defaultPhaseId);
     });
 }

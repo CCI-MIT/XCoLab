@@ -2,7 +2,7 @@ package org.xcolab.client.members;
 
 import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,17 +10,17 @@ import java.util.Map;
 
 public class UsersGroupsClient {
 
-    private static final Map<RestService, UsersGroupsClient> instances = new HashMap<>();
+    private static final Map<ServiceNamespace, UsersGroupsClient> instances = new HashMap<>();
 
     private final RestResource1<UsersGroups, Long> usersGroupsResource;
 
-    private UsersGroupsClient(RestService membersService) {
-        usersGroupsResource = new RestResource1<>(membersService,
-                "usersGroups", UsersGroups.TYPES);
+    private UsersGroupsClient(ServiceNamespace serviceNamespace) {
+        usersGroupsResource = new RestResource1<>(UserResource.USER_GROUP, UsersGroups.TYPES,
+                serviceNamespace);
     }
 
-    public static UsersGroupsClient fromService(RestService contestService) {
-        return instances.computeIfAbsent(contestService, UsersGroupsClient::new);
+    public static UsersGroupsClient fromNamespace(ServiceNamespace serviceNamespace) {
+        return instances.computeIfAbsent(serviceNamespace, UsersGroupsClient::new);
     }
 
     public UsersGroups addMemberToGroup(long memberId, long groupId) {

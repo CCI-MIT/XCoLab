@@ -4,6 +4,7 @@ import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,4 +31,6 @@ public interface ProposalDao {
     Integer getProposalMaterializedPoints(Long proposalId);
 
     Optional<Proposal> getByGroupId(Long groupId, Boolean visible, Boolean contestPrivate);
+
+    List<Proposal> filterByGiven(Collection<Long> proposalIds, Boolean visible, Boolean contestPrivate);
 }

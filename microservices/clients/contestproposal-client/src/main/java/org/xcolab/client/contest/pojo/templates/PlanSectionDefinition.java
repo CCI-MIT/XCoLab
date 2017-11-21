@@ -23,7 +23,7 @@ import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -40,41 +40,41 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
 
     private final Proposal proposal;
 
-    private final RestService restService;
+    private final ServiceNamespace serviceNamespace;
 
     public PlanSectionDefinition() {
         proposal = null;
-        restService = null;
+        serviceNamespace = null;
     }
 
     public PlanSectionDefinition(PlanSectionDefinition value) {
         super(value);
-        if(value.getRestService() != null){
-            restService = value.getRestService();
+        if(value.getServiceNamespace() != null){
+            serviceNamespace = value.getServiceNamespace();
         }else{
-            restService = null;
+            serviceNamespace = null;
         }
         proposal = null;
     }
 
     public PlanSectionDefinition(PlanSectionDefinition value, Proposal proposal) {
         super(value);
-        if(value.getRestService() != null){
-            restService = value.getRestService();
-        }else{
-            if(proposal.getRestService()!=null){
-                restService = proposal.getRestService();
-            }else {
-                restService = null;
+        if (value.getServiceNamespace() != null) {
+            serviceNamespace = value.getServiceNamespace();
+        } else {
+            if (proposal.getServiceNamespace() != null) {
+                serviceNamespace = proposal.getServiceNamespace();
+            } else {
+                serviceNamespace = null;
             }
         }
         this.proposal = proposal;
     }
     public PlanSectionDefinition(AbstractPlanSectionDefinition abstractPlanSectionDefinition,
-            RestService restService) {
+            ServiceNamespace serviceNamespace) {
         super(abstractPlanSectionDefinition);
         proposal = null;
-        this.restService = restService;
+        this.serviceNamespace = serviceNamespace;
     }
 
     public List<Long> getAdditionalIdsAsList() {
@@ -356,8 +356,8 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "or");
     }
 
-    public RestService getRestService() {
-        return restService;
+    public ServiceNamespace getServiceNamespace() {
+        return serviceNamespace;
     }
 
     private ProposalAttribute getSectionAttribute() {

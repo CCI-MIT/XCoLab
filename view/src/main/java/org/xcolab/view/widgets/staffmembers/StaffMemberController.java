@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.StaffMemberClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.legacy.enums.CategoryRole;
 import org.xcolab.client.members.legacy.enums.CategoryRole.NoSuchCategoryRoleException;
 import org.xcolab.client.members.pojo.Member;
@@ -22,10 +22,11 @@ import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -103,7 +104,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                 List<Long> years = ContestClientUtil.getContestYears();
 
                 for (Long year : years) {
-                    Map<Long, String> oneEntryPerYear = new HashMap<>();
+                    Set<Long> usersInYear = new HashSet<>();
                     List<StaffMemberWrapper> membersWithRolesInYear = new ArrayList<>();
                     List<ContestTeamMember> contestTeamMembers = ContestTeamMemberClientUtil
                             .getTeamMembers(categoryRole.getRole().getRoleId(), year);
@@ -113,8 +114,8 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                             if (smw.getMember() != null) {
                                 if (ctm.getUserId() == smw.getMember().getId_()) {
                                     alreadyInStaffMembers = true;
-                                    if (oneEntryPerYear.get(ctm.getUserId()) == null) {
-                                        oneEntryPerYear.put(ctm.getUserId(), "");
+                                    if (!usersInYear.contains(ctm.getUserId())) {
+                                        usersInYear.add(ctm.getUserId());
                                         membersWithRolesInYear.add(smw);
                                         break;
                                     }
@@ -122,15 +123,13 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                             }
                         }
                         if (!alreadyInStaffMembers) {
-                            try {
-                                if (oneEntryPerYear.get(ctm.getUserId()) == null) {
-                                    Member member = MembersClient.getMember(ctm.getUserId());
-                                    oneEntryPerYear.put(ctm.getUserId(), "");
-                                    membersWithRolesInYear
-                                            .add(getNewStaffMember(member, categoryRole));
-                                }
-                            } catch (MemberNotFoundException mnfe) {
-
+                            final Contest contest =
+                                    ContestClientUtil.getContest(ctm.getContestId());
+                            if (!contest.getContestPrivate() &&
+                                    !usersInYear.contains(ctm.getUserId())) {
+                                Member member = MembersClient.getMemberUnchecked(ctm.getUserId());
+                                usersInYear.add(ctm.getUserId());
+                                membersWithRolesInYear.add(getNewStaffMember(member, categoryRole));
                             }
                         }
                     }

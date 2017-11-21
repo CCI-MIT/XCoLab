@@ -6,6 +6,12 @@
 
 package org.xcolab.client.contest.enums;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.SortColumn;
+
+import java.util.Comparator;
+
 public enum ContestStatus {
 
     NOT_YET_OPEN("Not yet open",false, false,false),
@@ -45,6 +51,27 @@ public enum ContestStatus {
 
     public boolean isCanCreate() {
         return canCreate;
+    }
+
+    public Comparator<Proposal> getDefaultProposalComparator() {
+        final SortColumn sortColumn;
+        switch (this) {
+            case OPEN_FOR_SUBMISSION:
+            case OPEN_FOR_EDIT:
+                sortColumn = new SortColumn("-" + ProposalSortColumn.MODIFIED.name());
+                break;
+            case VOTING:
+                sortColumn = new SortColumn(ConfigurationAttributeKey
+                        .PROPOSALS_PHASE_VOTING_SORT_ORDER.get());
+                break;
+            default:
+                sortColumn = new SortColumn(ConfigurationAttributeKey
+                        .PROPOSALS_PHASE_CLOSED_SORT_ORDER.get());
+                break;
+        }
+        final Comparator<Proposal> comparator =
+                ProposalSortColumn.valueOf(sortColumn.getColumnName()).getComparator();
+        return sortColumn.isAscending() ? comparator : comparator.reversed();
     }
 
 }

@@ -12,15 +12,23 @@ import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.model.tables.pojos.ProposalSupporter;
 import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
+import org.xcolab.service.proposal.service.ProposalSupportService;
+import org.xcolab.service.proposal.service.ProposalSupportService.SupportedProposal;
 
 import java.util.List;
 
 @RestController
 public class ProposalSupporterController {
 
-    @Autowired
-    private ProposalSupporterDao proposalSupporterDao;
+    private final ProposalSupporterDao proposalSupporterDao;
+    private final ProposalSupportService proposalSupportService;
 
+    @Autowired
+    private ProposalSupporterController(ProposalSupporterDao proposalSupporterDao,
+            ProposalSupportService proposalSupportService) {
+        this.proposalSupporterDao = proposalSupporterDao;
+        this.proposalSupportService = proposalSupportService;
+    }
 
     @RequestMapping(value = "/proposalSupporters", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ProposalSupporter> getProposalSupporters(
@@ -30,6 +38,14 @@ public class ProposalSupporterController {
         return proposalSupporterDao.findByGiven(proposalId, userId);
     }
 
+    @RequestMapping(value = "/supportedProposals",
+            method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<SupportedProposal> getSupportedProposalsForUser(@RequestParam long userId,
+            @RequestParam(defaultValue = "true") boolean onlyVisible,
+            @RequestParam(defaultValue = "true") boolean excludePrivateContests) {
+        return proposalSupportService.getSupportedProposalsForUser(userId, onlyVisible,
+                excludePrivateContests);
+    }
 
     @RequestMapping(value = "/proposalSupporters/count", method = {RequestMethod.GET, RequestMethod.HEAD})
     public Integer getProposalSupportersCount(

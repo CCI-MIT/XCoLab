@@ -124,6 +124,11 @@ public class ProposalsPermissions {
         return getCanAdminProposal();
     }
 
+    public boolean getCanPromoteToOwner() {
+        return getCanManageUsers() && (getCanAdminAll()
+                || ConfigurationAttributeKey.PROPOSALS_USER_CAN_PROMOTE_TO_OWNER.get());
+    }
+
     public boolean getCanSupportProposal() {
         return isLoggedIn && !isGuest && !isVotingEnabled();
     }
@@ -214,6 +219,10 @@ public class ProposalsPermissions {
         MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
                 MembersClient.getMemberUnchecked(memberId));
         return memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW;
+    }
+
+    public boolean getCanEditBasicImpact() {
+        return getCanEdit() || getCanIAFActions();
     }
 
     public boolean getCanPromoteProposalToNextPhase() {
