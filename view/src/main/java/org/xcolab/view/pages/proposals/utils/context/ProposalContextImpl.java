@@ -76,7 +76,8 @@ public class ProposalContextImpl implements ProposalContext {
                     }
                 }
             }
-            permissions = new ProposalsPermissions(clientHelper, member, proposal, contestPhase);
+            permissions = new ProposalsPermissions(clientHelper, member, proposal, contest,
+                    contestPhase);
             displayPermissions =
                     new ProposalsDisplayPermissions(permissions, proposal, contestPhase,
                             clientHelper, MemberAuthUtil.getMemberId(request));
