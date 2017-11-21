@@ -68,7 +68,7 @@
                 </c:if>
                 <c:if test="${not empty _donateLink}">
                     <li class="bs-navitem-button">
-                        <a class="c-Button__accent" href="${_donateLink}"><spring:message code="homepage.menu.donate" /></a>
+                        <a class="c-Button__accent small" href="${_donateLink}"><spring:message code="homepage.menu.donate" /></a>
                     </li>
                 </c:if>
 
