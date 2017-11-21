@@ -53,7 +53,7 @@
             <div class="form-errors">
                 <form:errors path="shouldAdvanceProposal" cssClass="c-Alert c-Alert__error"/>
             </div>
-            <form:select path="shouldAdvanceProposal">
+            <form:select path="shouldAdvanceProposal" class="form-control">
                 <form:option value="" label="--- select one ---" />
                 <form:option value="true" label="Yes" />
                 <form:option value="false" label="No" />
@@ -65,7 +65,8 @@
             <form:errors cssClass="c-Alert c-Alert__error" path="comment" />
         </div>
 
-        <form:textarea path="comment" cssClass="c-Comment__box" style="width:100%;" placeholder="Write your review here..." />
+        <form:textarea path="comment" cssClass="c-Comment__box form-control" style="width:100%; height: 178px;"
+                       placeholder="Write your review here..." />
 
         <div class="clearfix" style="width: 100%;">
             <a class="c-Button__primary" id="saveProposalJudging" style="display:block; float:right; margin-top: 10px;" href="#">Submit</a>
