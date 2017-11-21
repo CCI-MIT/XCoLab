@@ -77,7 +77,6 @@ $_navbar__boxShadow: 0 5px 5px $t-Color__grey--light;
         color: $c-Header__menu__li__a__textColor;
         line-height: $_navbar__height;
         width: auto;
-        text-align: left;
         padding: 0 15px;
         font-weight: $c-Header__menu__li__a__fontWeight;
 
@@ -123,6 +122,22 @@ $_navbar__boxShadow: 0 5px 5px $t-Color__grey--light;
           box-shadow: inset 0 -8px 0px $t-Color__primary;
         } @else {
           border-bottom: 1px solid white;
+        }
+      }
+    }
+
+    .bs-navitem-button {
+      height: $_navbar__height;
+      border: none !important;
+
+      > a {
+        margin: 16px 15px;
+        line-height: normal;
+        padding: 8px;
+        color: white;
+
+        &:hover {
+          color: white;
         }
       }
     }

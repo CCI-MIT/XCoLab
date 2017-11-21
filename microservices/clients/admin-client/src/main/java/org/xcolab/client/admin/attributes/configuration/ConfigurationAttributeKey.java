@@ -533,4 +533,9 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("NAVBAR_SHOW_ICONS")
                     .defaultValue(true)
                     .build();
+
+    public static final AttributeGetter<String> NAVBAR_DONATE_LINK =
+            ConfigurationAttributes.newStringAttribute("NAVBAR_DONATE_LINK")
+                    .defaultValue("")
+                    .build();
 }
