@@ -31,11 +31,9 @@ public class UserTrackingController {
 
         // If UUID is not sent as parameter, try to retrieve existing token if user is logged in.
         String uuid = request.getParameter("uuid");
-        String isTrackedVisitor = request.getParameter("isTrackedVisitor");
         if (StringUtils.isBlank(uuid)) {
             if (loggedInMember != null) {
                 uuid = TrackingClient.getTrackedVisitorOrCreate(loggedInMember.getId_()).getUuid_();
-                isTrackedVisitor = "true";
             } else {
                 uuid = TrackingClient.generateUUID();
             }
@@ -43,7 +41,7 @@ public class UserTrackingController {
 
         TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers);
 
-        return new ResponseJson(uuid, Boolean.valueOf(isTrackedVisitor));
+        return new ResponseJson(uuid);
     }
 
     private String getClientIpAddress(HttpServletRequest request) {
@@ -84,19 +82,13 @@ public class UserTrackingController {
     private static class ResponseJson {
 
         private final String uuid;
-        private final boolean isTrackedVisitor;
 
-        private ResponseJson(String uuid, boolean isTrackedVisitor) {
+        private ResponseJson(String uuid) {
             this.uuid = uuid;
-            this.isTrackedVisitor = isTrackedVisitor;
         }
 
         public String getUuid() {
             return uuid;
-        }
-
-        public boolean isTrackedVisitor() {
-            return isTrackedVisitor;
         }
     }
 
