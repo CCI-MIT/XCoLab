@@ -30,10 +30,11 @@ public final class ActivitiesClient {
 
     private ActivitiesClient(ServiceNamespace serviceNamespace) {
         activityEntryResource = new RestResource1<>(ActivityResource.ACTIVITY_ENTRY,
-                ActivityEntry.TYPES);
+                ActivityEntry.TYPES, serviceNamespace);
         activitySubscriptionResource = new RestResource1<>(ActivityResource.ACTIVITY_SUBSCRIPTION,
-                ActivitySubscription.TYPES);
+                ActivitySubscription.TYPES, serviceNamespace);
     }
+
     public  ActivityEntry createActivityEntry(Long memberId,
                                                     Long classPrimaryKey,
                                                     String extraData,
