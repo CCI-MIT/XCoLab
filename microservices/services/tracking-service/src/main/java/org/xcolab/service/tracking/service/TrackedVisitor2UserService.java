@@ -1,4 +1,4 @@
-package org.xcolab.service.tracking.service.trackedvisitor2user;
+package org.xcolab.service.tracking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
