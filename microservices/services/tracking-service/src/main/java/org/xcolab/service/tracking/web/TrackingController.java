@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.TrackedVisit;
 import org.xcolab.model.tables.pojos.TrackedVisitor2User;
-import org.xcolab.service.tracking.service.trackedvisitor2user.TrackedVisitService;
-import org.xcolab.service.tracking.service.trackedvisitor2user.TrackedVisitor2UserService;
+import org.xcolab.service.tracking.service.TrackedVisitService;
+import org.xcolab.service.tracking.service.TrackedVisitor2UserService;
 
 @RestController
 public class TrackingController {

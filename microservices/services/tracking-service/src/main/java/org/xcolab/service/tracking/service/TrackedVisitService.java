@@ -1,4 +1,4 @@
-package org.xcolab.service.tracking.service.trackedvisitor2user;
+package org.xcolab.service.tracking.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
