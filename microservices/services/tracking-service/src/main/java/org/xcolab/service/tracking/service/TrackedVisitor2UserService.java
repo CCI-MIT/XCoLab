@@ -33,7 +33,7 @@ public class TrackedVisitor2UserService {
     public TrackedVisitor2User create() {
         TrackedVisitor2User trackedVisitor = new TrackedVisitor2User();
         trackedVisitor.setUuid_(generateUniqueUUID());
-        return trackedVisitor;
+        return trackedVisitor2UserDao.create(trackedVisitor);
     }
 
     private String generateUniqueUUID() {
