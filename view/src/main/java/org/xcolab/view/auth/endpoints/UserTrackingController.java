@@ -22,8 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class UserTrackingController {
 
-    private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT,
-            HttpHeaders.CONTENT_LENGTH, HttpHeaders.HOST, HttpHeaders.REFERER};
+    private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT, HttpHeaders.REFERER,
+            HttpHeaders.HOST, HttpHeaders.ORIGIN, HttpHeaders.CONNECTION,
+            HttpHeaders.CONTENT_LENGTH, "X-CSRF-TOKEN"};
+
     private static final String[] IGNORED_COOKIES = {"_ga", "_gid", "SESSION"};
 
     @PostMapping("/trackVisitor")
