@@ -56,4 +56,12 @@ public class TrackedVisitor2UserDaoImpl implements TrackedVisitor2UserDao {
 
         return trackedVisitor2User;
     }
+
+    @Override
+    public boolean update(TrackedVisitor2User pojo) {
+        return dslContext.update(TRACKED_VISITOR_2_USER)
+                .set(TRACKED_VISITOR_2_USER.USER_ID, pojo.getUserId())
+                .where(TRACKED_VISITOR_2_USER.UUID_.eq(pojo.getUuid_()))
+                .execute() > 0;
+    }
 }

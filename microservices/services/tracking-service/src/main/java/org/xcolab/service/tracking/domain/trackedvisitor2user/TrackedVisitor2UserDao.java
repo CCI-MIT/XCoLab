@@ -11,4 +11,6 @@ public interface TrackedVisitor2UserDao {
     Optional<TrackedVisitor2User> getByMemberId(long memberId);
 
     TrackedVisitor2User create(TrackedVisitor2User trackedVisitor2User);
+
+    boolean update(TrackedVisitor2User pojo);
 }

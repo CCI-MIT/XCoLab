@@ -20,7 +20,10 @@ public class TrackedVisitor2UserService {
         this.trackedVisitor2UserDao = trackedVisitor2UserDao;
     }
 
-    public TrackedVisitor2User getOrCreate(long memberId) {
+    public TrackedVisitor2User getOrCreate(Long memberId) {
+        if (memberId == null) {
+            return create();
+        }
         return trackedVisitor2UserDao.getByMemberId(memberId)
                 .orElseGet(() -> {
                     TrackedVisitor2User newInstance = new TrackedVisitor2User();
