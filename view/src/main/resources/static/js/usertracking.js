@@ -7,7 +7,7 @@ var postData = {
     uuid: uuid,
     //do not send the domain part
     url: "/"+url.replace(/^(?:\/\/|[^\/]+)*\//, ""),
-    Referer: document.referrer
+    referer: document.referrer
 };
 
 if (typeof usertracking_userId != 'undefined') {

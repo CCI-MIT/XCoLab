@@ -11,7 +11,8 @@ import java.util.UUID;
 @Service
 public class TrackedVisitor2UserService {
 
-    public static final int UUID_GENERATION_MAX_ITERATIONS = 5;
+    private static final int UUID_GENERATION_MAX_ITERATIONS = 5;
+
     private final TrackedVisitor2UserDao trackedVisitor2UserDao;
 
     @Autowired
@@ -29,7 +30,13 @@ public class TrackedVisitor2UserService {
                 });
     }
 
-    public String generateUniqueUUID() {
+    public TrackedVisitor2User create() {
+        TrackedVisitor2User trackedVisitor = new TrackedVisitor2User();
+        trackedVisitor.setUuid_(generateUniqueUUID());
+        return trackedVisitor;
+    }
+
+    private String generateUniqueUUID() {
         String uuid;
         int counter = 0;
         do {

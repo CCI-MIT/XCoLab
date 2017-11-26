@@ -5,7 +5,6 @@ import org.xcolab.util.http.client.enums.ResourceEnum;
 
 public enum TrackingResource implements ResourceEnum {
     TRACKED_VISITS("trackedVisits"),
-    TRACKED_VISITORS("trackedVisitors"),
     LOCATIONS("locations");
 
     private final String resourceName;
