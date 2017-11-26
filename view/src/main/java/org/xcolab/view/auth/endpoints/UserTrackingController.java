@@ -63,6 +63,7 @@ public class UserTrackingController {
             Enumeration<String> headers = request.getHeaders(headerName);
 
             while (headers.hasMoreElements()) {
+                headerStringBuilder.append(headerName).append(": ");
                 headerStringBuilder.append(headers.nextElement()).append("\n");
             }
         }
