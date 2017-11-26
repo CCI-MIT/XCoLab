@@ -1,5 +1,6 @@
 package org.xcolab.view.auth.endpoints;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class UserTrackingController {
 
+    private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT,
+            HttpHeaders.CONTENT_LENGTH, HttpHeaders.HOST, HttpHeaders.REFERER};
     @PostMapping("/trackVisitor")
     protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
             @RealMember Member loggedInMember, @RequestParam String uuid, @RequestParam String url,
@@ -60,8 +63,11 @@ public class UserTrackingController {
 
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
-            Enumeration<String> headers = request.getHeaders(headerName);
+            if (StringUtils.equalsAnyIgnoreCase(headerName, IGNORED_HEADERS)) {
+                continue;
+            }
 
+            Enumeration<String> headers = request.getHeaders(headerName);
             while (headers.hasMoreElements()) {
                 headerStringBuilder.append(headerName).append(": ");
                 headerStringBuilder.append(headers.nextElement()).append("\n");
