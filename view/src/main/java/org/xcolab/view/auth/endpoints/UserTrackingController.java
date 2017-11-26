@@ -1,5 +1,6 @@
 package org.xcolab.view.auth.endpoints;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +12,9 @@ import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.TrackedVisit;
 import org.xcolab.view.config.spring.resolvers.RealMember;
 
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +24,8 @@ public class UserTrackingController {
 
     private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT,
             HttpHeaders.CONTENT_LENGTH, HttpHeaders.HOST, HttpHeaders.REFERER};
+    private static final String[] IGNORED_COOKIES = {"_ga", "_gid", "SESSION"};
+
     @PostMapping("/trackVisitor")
     protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
             @RealMember Member loggedInMember, @RequestParam String uuid, @RequestParam String url,
@@ -69,11 +74,33 @@ public class UserTrackingController {
 
             Enumeration<String> headers = request.getHeaders(headerName);
             while (headers.hasMoreElements()) {
+                String headerValue = headers.nextElement();
+                if (headerName.equalsIgnoreCase(HttpHeaders.COOKIE)) {
+                    headerValue = removeCookiesByName(headerValue, IGNORED_COOKIES);
+                }
                 headerStringBuilder.append(headerName).append(": ");
-                headerStringBuilder.append(headers.nextElement()).append("\n");
+                headerStringBuilder.append(headerValue).append("\n");
             }
         }
         return headerStringBuilder.toString();
+    }
+
+    private String removeCookiesByName(String cookieHeader, String... names) {
+        return Arrays.stream(cookieHeader.split("\\s*;\\s*"))
+                .filter(c -> !matchesAnyCookieName(c, names))
+                .collect(Collectors.joining("; "));
+    }
+
+    private boolean matchesAnyCookieName(String cookieString, String... cookieNames) {
+        //noinspection SimplifiableIfStatement
+        if (StringUtils.isEmpty(cookieString) || ArrayUtils.isEmpty(cookieNames)) {
+            return false;
+        }
+        return Arrays.stream(cookieNames).anyMatch(name -> matchesCookieName(cookieString, name));
+    }
+
+    private boolean matchesCookieName(String cookieString, String cookieName) {
+        return cookieString.startsWith(cookieName + "=");
     }
 
     private static class ResponseJson {
