@@ -72,10 +72,7 @@ public class LoginRegisterController {
 //    public void initBinder(WebDataBinder binder) {
 //        binder.setValidator(validator);
 //    }
-
-    /**
-     * Main view displayed for contact form
-     */
+    
     @GetMapping("/register")
     public String register(HttpServletRequest request, HttpServletResponse response, Model model) {
 
