@@ -18,6 +18,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.client.sharedcolab.pojo.SharedMember;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.pages.loginregister.LoginRegisterController;
@@ -90,7 +91,8 @@ public class GoogleController {
         session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
 
         String redirectUrl = (String) session.getAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY);
-        if (StringUtils.isBlank(redirectUrl)) {
+        redirectUrl = LinkUtils.getRelativeUri(redirectUrl);
+        if (StringUtils.isEmpty(redirectUrl)) {
             redirectUrl = "/";
         }
         session.removeAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY);
