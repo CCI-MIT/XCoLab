@@ -42,17 +42,18 @@ public final class LinkUtils {
      * @return a relative uri
      */
     public static String getRelativeUri(String uri) {
-        if (StringUtils.isNotEmpty(uri)) {
-            if (uri.startsWith("http://") || uri.startsWith("https://")) {
-                final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(uri);
-                final UriComponents uriComponents = uriBuilder.build();
-                StringBuilder relativeUri = new StringBuilder();
-                relativeUri.append(uriComponents.getPath() != null ? uriComponents.getPath() : "/");
-                if (uriComponents.getQuery() != null) {
-                    relativeUri.append("?").append(uriComponents.getQuery());
-                }
-                return relativeUri.toString();
+        if (uri == null) {
+            return null;
+        }
+        if (uri.startsWith("http://") || uri.startsWith("https://")) {
+            final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(uri);
+            final UriComponents uriComponents = uriBuilder.build();
+            StringBuilder relativeUri = new StringBuilder();
+            relativeUri.append(uriComponents.getPath() != null ? uriComponents.getPath() : "/");
+            if (uriComponents.getQuery() != null) {
+                relativeUri.append("?").append(uriComponents.getQuery());
             }
+            return relativeUri.toString();
         }
         return uri;
     }
