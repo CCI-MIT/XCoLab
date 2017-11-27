@@ -4,6 +4,11 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
+    <!--@elvariable id="proposal" type="org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper"-->
+    <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
+    <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
+    <!--@elvariable id="judgeProposalFeedbackBean" type="org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean"-->
+
     <c:set var="saveJudgingFeedbackURL" value="${proposal.proposalUrl}/tab/ADVANCING/saveJudgingFeedback?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId}"/>
 
 
@@ -29,17 +34,42 @@
                 </c:forEach>
             </select>
         </c:if>
-        <i style="font-size:10pt;">Please <br />
-            1) Rate this ${contestType.proposalName}; <br />
-            2) Select from the dropdown whether the proposal should advance to the next round; <br />
-            3) Provide written feedback in the text box below; and <br />
-            4) Click save. <br />
+
+        <c:choose>
+            <c:when test="${proposalsPermissions.canViewMitigationImpactTab}">
+                <c:set var="impactTabUrl" value="${proposal.proposalUrl}/tab/IMPACT" />
+            </c:when>
+            <c:when test="${proposalsPermissions.canViewAdaptationImpactTab}">
+                <c:set var="impactTabUrl" value="${proposal.proposalUrl}/tab/ADAPTATION_IMPACT" />
+            </c:when>
+        </c:choose>
+
+        <div style="font-size:10pt; font-style: italic; margin-top: 10px;">
+            Please
+            <ol>
+                <li>Review the revised proposal and the Author's summary of their revisions on the <a href="${proposal.proposalUrl}/tab/EVALUATION">Evaluation Results tab</a>;</li>
+                <c:if test="${not empty impactTabUrl}">
+                    <li>Review the <a href="${impactTabUrl}">Impact Tab;</a></li>
+                </c:if>
+                <li>Rate this ${contestType.proposalName}; </li>
+                <li>Select from the dropdown whether the proposal should advance to the next round;</li>
+                <li>Provide written feedback in the text box below; and</li>
+                <li>Click save.</li>
+
+            </ol>
             Note: Ratings, dropdown selection, and feedback must be completed for the evaluation to save.
             <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
                 Your rating will be visible to the Judging team only.
             </c:if>
-        </i>
+        </div>
+
         <div class="clearfix"><!-- --></div>
+        <br/>
+        <c:if test="${not empty impactTabUrl}">
+            <div class="c-Alert c-Alert__info__message">
+                New! View <a href="${impactTabUrl}">Impact Assessment results</a> before completing the sections below.
+            </div>
+        </c:if>
         <br/>
         <form:errors cssClass="c-Alert c-Alert__error" />
 
@@ -53,7 +83,7 @@
             <div class="form-errors">
                 <form:errors path="shouldAdvanceProposal" cssClass="c-Alert c-Alert__error"/>
             </div>
-            <form:select path="shouldAdvanceProposal">
+            <form:select path="shouldAdvanceProposal" class="form-control">
                 <form:option value="" label="--- select one ---" />
                 <form:option value="true" label="Yes" />
                 <form:option value="false" label="No" />
@@ -65,7 +95,8 @@
             <form:errors cssClass="c-Alert c-Alert__error" path="comment" />
         </div>
 
-        <form:textarea path="comment" cssClass="c-Comment__box" style="width:100%;" placeholder="Write your review here..." />
+        <form:textarea path="comment" cssClass="c-Comment__box form-control" style="width:100%; height: 178px;"
+                       placeholder="Write your review here..." />
 
         <div class="clearfix" style="width: 100%;">
             <a class="c-Button__primary" id="saveProposalJudging" style="display:block; float:right; margin-top: 10px;" href="#">Submit</a>

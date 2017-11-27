@@ -52,10 +52,6 @@ public final class ProposalAttributeClient {
                 .execute().toPojo(serviceNamespace);
     }
 
-    public ProposalAttribute getImpactProposalAttributes(Long proposalId) {
-        return null;
-    }
-
     public ProposalAttribute getProposalAttribute(Long proposalId, String name, Long additionalId) {
         ListQuery<ProposalAttributeDto> listQ =
                 proposalAttributeResource.list()

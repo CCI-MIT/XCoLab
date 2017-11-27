@@ -112,3 +112,7 @@ a, button {
     float: right;
   }
 }
+
+.c-Button__accent {
+  @include theme-button($t-Color__accent, darken($t-Color__accent, 10%));
+}

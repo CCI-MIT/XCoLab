@@ -240,7 +240,7 @@ public class LoginRegisterService {
         try {
             Authentication authentication =
                     authenticationService.authenticate(request, response, member);
-            authenticationSuccessHandler.onAuthenticationSuccess(request, response, authentication);
+            authenticationSuccessHandler.onAuthenticationSuccess(request, response, authentication, false);
         } catch (IOException e) {
             authenticationService.logout(request, response);
             throw new InternalException(e);

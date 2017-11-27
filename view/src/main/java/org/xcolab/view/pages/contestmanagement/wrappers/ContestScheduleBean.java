@@ -118,16 +118,33 @@ public class ContestScheduleBean {
         return contestSchedule.isUsedInNonEmptyContest();
     }
 
+    public void setPhaseEndDates() {
+        ContestPhaseBean prevContestPhase = null;
+        for (ContestPhaseBean contestPhase : schedulePhases) {
+            if (prevContestPhase != null) {
+                prevContestPhase.setPhaseEndDate(contestPhase.getPhaseStartDate());
+            }
+            prevContestPhase = contestPhase;
+        }
+    }
+
     public boolean isValidSchedule() {
         boolean isValid = true;
-        Date prevEndDate = null;
+        ContestPhaseBean prevContestPhase = null;
         for (ContestPhaseBean contestPhase : schedulePhases) {
-            Date curStartDate = contestPhase.getPhaseStartDate();
-            if (prevEndDate != null && !curStartDate.equals(prevEndDate)) {
-                isValid = false;
-                break;
+            if (prevContestPhase != null) {
+                Date prevStartDate = prevContestPhase.getPhaseStartDate();
+                Date prevEndDate = prevContestPhase.getPhaseEndDate();
+                Date curStartDate = contestPhase.getPhaseStartDate();
+
+                if (prevStartDate != null && prevEndDate != null && curStartDate != null) {
+                    isValid &= prevStartDate.before(curStartDate);
+                    isValid &= prevEndDate.equals(curStartDate);
+                } else {
+                    isValid = false;
+                }
             }
-            prevEndDate = contestPhase.getPhaseEndDate();
+            prevContestPhase = contestPhase;
         }
         return isValid;
     }

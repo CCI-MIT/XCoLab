@@ -20,15 +20,18 @@ public class AdaptationImpactAccessAlgorithm implements ProposalTabCanAccessAlgo
 
     @Override
     public boolean canAccess(ProposalContext proposalContext) {
-        return getCanView(proposalContext);
+        final Contest contest = proposalContext.getContest();
+        return canAccess(contest);
     }
 
-    private boolean getCanView(ProposalContext proposalContext) {
+    public boolean canAccess(Contest contest) {
+        return getCanView(contest);
+    }
+
+    private boolean getCanView(Contest contest) {
         if (!ConfigurationAttributeKey.IMPACT_TAB_IS_ACTIVE.get()) {
             return false;
         }
-
-        final Contest contest = proposalContext.getContest();
 
         if (contest.getContestYear() < INTRODUCTION_YEAR) {
             return false;

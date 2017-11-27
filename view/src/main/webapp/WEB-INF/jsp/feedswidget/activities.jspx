@@ -12,7 +12,7 @@
                     <div class="memberActivitiesContainer" style="display: inline;">
                         <img alt="" height="8" src="images/arrow.gif" width="8"/>
                         <a href="/members"><spring:message code="colab.breadcrums.community"/> </a>
-                        <img alt="" height="8" src="/images/arrow.gif" width="8"/>
+                        <img alt="" height="8" src="${_themeImageFolder}/arrow.gif" width="8"/>
                         <a href="/activities"><spring:message code="colab.breadcrums.activities"/>
                         </a></div>
                 </div>

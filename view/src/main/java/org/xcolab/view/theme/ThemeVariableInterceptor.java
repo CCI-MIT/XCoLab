@@ -81,9 +81,9 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
 
-            final String scriptDomain = PlatformAttributeKey.SCRIPTS_DOMAIN.get();
-            final String themeImageDomain = PlatformAttributeKey.IMAGES_STATIC_DOMAIN.get();
-            final String userImageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
+            final String scriptDomain = PlatformAttributeKey.CDN_URL_SCRIPTS.get();
+            final String themeImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_STATIC.get();
+            final String userImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
 
             modelAndView.addObject("_libCssFolder",
                     scriptDomain + "/css/lib");
@@ -231,6 +231,8 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             modelAndView.addObject("_shearableSocialMediaUrls", SocialMediaEngine.getShearableSocialMediaEngines());
             modelAndView.addObject("_followableSocialMediaUrls", SocialMediaEngine.getFollowableSocialMediaEngines());
+
+            modelAndView.addObject("_donateLink", ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get());
         }
     }
 

@@ -164,9 +164,9 @@
     <meta property="og:site_name" content="${ not empty openGraphSiteName ? openGraphSiteName: _colabName}" />
     <meta property="og:title" content="${ not empty openGraphTitle ? openGraphTitle: _openGraphShareTitle}" />
     <meta property="og:description" content="${ not empty openGraphDescription ? openGraphDescription: _openGraphShareDescription}" />
-    <meta property="og:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathBig}" />
+    <meta property="og:image" content="${not empty openGraphImage ? openGraphImage : _logoPathBig}" />
 
-    <meta name="twitter:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathSquare}"/>
+    <meta name="twitter:image" content="${not empty openGraphImage ? openGraphImage : _logoPathSquare}"/>
 
     <c:if test="${not empty _facebookId}">
         <meta property="fb:app_id" content="${_facebookId}"/>
@@ -196,19 +196,22 @@
     </c:if>
 
     <c:if test="${!_isProduction}">
-        <div class="c-TitleBar c-TitleBar--warning">
-            <div class="bs-container-fixed">
-                <div class="c-TitleBar__element" style="padding-left: 0;">
+        <div class="c-TitleBar__container">
+            <div class="c-TitleBar c-TitleBar--warning c-TitleBar--fixed">
+                <div class="bs-container-fixed">
+                    <div class="c-TitleBar__element" style="padding-left: 0;">
                     <span style="display: inline-block">
-                        You are currently on a <b>test server</b>. Content on this server is for testing purposes only and may be deleted at any time.
+                        You are currently on a <b>test server</b>. Content on this server is for testing only and may be deleted at any time.
                     </span>
-                </div>
+                    </div>
 
-                <div class="c-TitleBar__actionButton pull-right">
-                    <a href="${_colabUrlProduction}">Take me to ${_colabUrlProduction}.</a>
+                    <div class="c-TitleBar__actionButton pull-right">
+                        <a href="${_colabUrlProduction}">Take me to ${_colabUrlProduction}.</a>
+                    </div>
                 </div>
             </div>
         </div>
+
     </c:if>
 
     <c:if test="${_showImpersonationBar}">
@@ -449,7 +452,7 @@
           "@type": "Organization",
           "name": "${_colabName}",
           "url": "${_colabUrl}",
-          "logo": "${_colabUrl}${_logoPathSquare}",
+          "logo": "${_logoPathSquare}",
           "sameAs": [${socialMediaSameAs}]
         }
     </script>

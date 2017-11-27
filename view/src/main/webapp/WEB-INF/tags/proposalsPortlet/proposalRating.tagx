@@ -6,6 +6,9 @@
     <jsp:directive.attribute name="ratingTypes" type="java.util.Collection" required="true" rtexprvalue="true" description="List of ProposalRatingTypeWrapper" />
     <jsp:directive.attribute name="ratingValuesPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to values" />
 
+    <!--@elvariable id="ratingTypes" type="java.util.Collection<org.xcolab.view.pages.proposals.wrappers.ProposalRatingTypeWrapper>"-->
+
+
     <c:forEach var="type" items="${ratingTypes}">
         <c:if test="${type.isActive}">
             <div>
@@ -21,7 +24,7 @@
                 <tr>
                     <c:forEach var="value" items="${type.ratingValues}">
                         <td>
-                            <label for="rating${value.id_}" class="js-Tooltip" title="${value.description}">
+                            <label for="rating${value.id_}" class="${not empty value.description ? 'js-Tooltip' : ''}" title="${value.description}">
                                 ${value.name}
                             </label>
                         </td>

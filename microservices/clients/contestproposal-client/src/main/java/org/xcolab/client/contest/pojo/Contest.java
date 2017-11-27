@@ -173,7 +173,7 @@ public class Contest extends AbstractContest implements Serializable {
         } else {
             Long imgId = this.getSponsorLogoId();
             if (imgId != null) {
-                final String imageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
+                final String imageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
                 return imageDomain + "/image/contest/" + imgId;
             }
             return "";
@@ -190,7 +190,7 @@ public class Contest extends AbstractContest implements Serializable {
         if (this.getIsSharedContestInForeignColab()) {
             imageDomain = ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get();
         } else {
-            imageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
+            imageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
         }
         return imageDomain + "/image/contest/" + imgId;
     }
