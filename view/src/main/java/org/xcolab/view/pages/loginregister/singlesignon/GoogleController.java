@@ -46,31 +46,30 @@ public class GoogleController {
     }
 
     @GetMapping("register")
-    public void initiateOpenIdRegistration(HttpServletRequest request,
-            HttpServletResponse HttpServletResponse, Model model)
-            throws IOException {
+    public void initiateOpenIdRegistration(HttpServletRequest request, HttpServletResponse response,
+            Model model) throws IOException {
         HttpSession session = request.getSession();
         session.setAttribute(LoginRegisterController.SSO_TARGET_KEY,
                 LoginRegisterController.SSO_TARGET_REGISTRATION);
 
-        initiateOpenIdRequest(request, HttpServletResponse);
+        initiateOpenIdRequest(request, response);
     }
 
-    private void initiateOpenIdRequest(HttpServletRequest request,
-            HttpServletResponse httpServletResponse)
+    private void initiateOpenIdRequest(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         HttpSession session = request.getSession();
+
+        final String referrer = request.getHeader(HttpHeaders.REFERER);
+        session.setAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY, referrer);
 
         final String callbackUrl = PlatformAttributeKey.COLAB_URL.get()
                 + SsoEndpoint.GOOGLE_CALLBACK.getUrl();
         GoogleAuthHelper helper = new GoogleAuthHelper(callbackUrl);
-        String requestUrl = helper.buildLoginUrl();
 
         session.setAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN, helper.getStateToken());
-        httpServletResponse.sendRedirect(requestUrl);
 
-        String referrer = request.getHeader(HttpHeaders.REFERER);
-        session.setAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY, referrer);
+        String requestUrl = helper.buildLoginUrl();
+        response.sendRedirect(requestUrl);
     }
 
     @GetMapping("login")
@@ -120,6 +119,7 @@ public class GoogleController {
                 String path = session.getServletContext().getRealPath("/");
                 ImageUploadUtils.updateProfilePicture(path, registeredMember, profilePicURL);
                 loginRegisterService.logIn(request, response, registeredMember);
+                response.sendRedirect(redirectUrl);
             } else {
                 registerMember(request, response, userInfo, country, redirectUrl);
             }

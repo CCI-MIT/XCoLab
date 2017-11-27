@@ -144,6 +144,7 @@ public class FacebookController {
                 }*/
 
                 loginRegisterService.logIn(request, response, member);
+                response.sendRedirect(redirectUrl);
                 return;
             } catch (MemberNotFoundException ignored) {
             }
@@ -166,6 +167,7 @@ public class FacebookController {
                 updateUserAccountInformation(member, jsonObject);
 
                 loginRegisterService.logIn(request, response, member);
+                response.sendRedirect(redirectUrl);
                 return;
             } catch (MemberNotFoundException ignored) {
             }
