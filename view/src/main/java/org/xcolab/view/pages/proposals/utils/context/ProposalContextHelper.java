@@ -165,7 +165,8 @@ public class ProposalContextHelper {
         Proposal proposal = null;
         if (givenProposalId > 0) {
             try {
-                proposal = new Proposal(proposalClient.getProposal(givenProposalId), contest);
+                Integer version = givenVersion > 0 ? givenVersion : null;
+                proposal = new Proposal(proposalClient.getProposal(givenProposalId), version, contest);
             } catch (ProposalNotFoundException e) {
                 log.debug("Invalid proposal supplied: givenProposalId = {}", givenProposalId);
                 throw new InvalidAccessException();
