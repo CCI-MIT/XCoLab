@@ -1,12 +1,13 @@
 package org.xcolab.view.auth.endpoints;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.TrackedVisit;
 import org.xcolab.view.config.spring.resolvers.RealMember;
 
 import java.util.Enumeration;
@@ -19,31 +20,18 @@ public class UserTrackingController {
 
     @PostMapping("/trackVisitor")
     protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
-            @RealMember Member loggedInMember) {
+            @RealMember Member loggedInMember, @RequestParam String uuid, @RequestParam String url,
+            @RequestParam(required = false) String referer) {
 
-        String ip = getClientIpAddress(request);
-        String url = request.getParameter("url");
-        String referer = request.getParameter(HttpHeaders.REFERER);
         String browser = request.getHeader(HttpHeaders.USER_AGENT);
-
-        //get headers
+        String ip = getClientIpAddress(request);
         String headers = getHeadersAsString(request);
 
-        // If UUID is not sent as parameter, try to retrieve existing token if user is logged in.
-        String uuid = request.getParameter("uuid");
-        String isTrackedVisitor = request.getParameter("isTrackedVisitor");
-        if (StringUtils.isBlank(uuid)) {
-            if (loggedInMember != null) {
-                uuid = TrackingClient.getTrackedVisitorOrCreate(loggedInMember.getId_()).getUuid_();
-                isTrackedVisitor = "true";
-            } else {
-                uuid = TrackingClient.generateUUID();
-            }
-        }
+        final Long userId = loggedInMember != null ? loggedInMember.getUserId() : null;
+        final TrackedVisit trackedVisit =
+                TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, userId);
 
-        TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers);
-
-        return new ResponseJson(uuid, Boolean.valueOf(isTrackedVisitor));
+        return new ResponseJson(trackedVisit.getUuid_());
     }
 
     private String getClientIpAddress(HttpServletRequest request) {
@@ -84,19 +72,13 @@ public class UserTrackingController {
     private static class ResponseJson {
 
         private final String uuid;
-        private final boolean isTrackedVisitor;
 
-        private ResponseJson(String uuid, boolean isTrackedVisitor) {
+        private ResponseJson(String uuid) {
             this.uuid = uuid;
-            this.isTrackedVisitor = isTrackedVisitor;
         }
 
         public String getUuid() {
             return uuid;
-        }
-
-        public boolean isTrackedVisitor() {
-            return isTrackedVisitor;
         }
     }
 
