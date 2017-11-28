@@ -16,6 +16,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.login.AuthenticationError;
@@ -96,7 +97,8 @@ public class FacebookController {
 
         String redirectUrl = (String) session
                 .getAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY);
-        if ((redirectUrl) == null || (redirectUrl.isEmpty())) {
+        redirectUrl = LinkUtils.getRelativeUri(redirectUrl);
+        if (StringUtils.isEmpty(redirectUrl)) {
             redirectUrl = "/";
         }
 
@@ -142,6 +144,7 @@ public class FacebookController {
                 }*/
 
                 loginRegisterService.logIn(request, response, member);
+                response.sendRedirect(redirectUrl);
                 return;
             } catch (MemberNotFoundException ignored) {
             }
@@ -164,6 +167,7 @@ public class FacebookController {
                 updateUserAccountInformation(member, jsonObject);
 
                 loginRegisterService.logIn(request, response, member);
+                response.sendRedirect(redirectUrl);
                 return;
             } catch (MemberNotFoundException ignored) {
             }

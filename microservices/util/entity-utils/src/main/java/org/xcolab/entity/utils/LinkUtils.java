@@ -1,6 +1,8 @@
 package org.xcolab.entity.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 
@@ -29,5 +31,22 @@ public final class LinkUtils {
 
     public static String getAbsoluteUrl(String relativeUri) {
         return PlatformAttributeKey.COLAB_URL.get() + relativeUri;
+    }
+
+    /**
+     * Takes an absolute URI and removes the scheme, host, and port (if present).
+     *
+     * @param uri some uri - absolute or relative
+     * @return a relative uri
+     */
+    public static String getRelativeUri(String uri) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
+        final UriComponents uriComponents = uriBuilder.build();
+        StringBuilder relativeUri = new StringBuilder();
+        relativeUri.append(uriComponents.getPath() != null ? uriComponents.getPath() : "/");
+        if (uriComponents.getQuery() != null) {
+            relativeUri.append("?").append(uriComponents.getQuery());
+        }
+        return relativeUri.toString();
     }
 }
