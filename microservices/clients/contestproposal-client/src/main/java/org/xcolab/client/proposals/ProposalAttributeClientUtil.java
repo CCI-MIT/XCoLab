@@ -23,11 +23,6 @@ public final class ProposalAttributeClientUtil {
         return client.createProposalAttribute(proposalAttribute);
     }
 
-    public static ProposalAttribute getImpactProposalAttributes(
-            Long proposalId) {
-        return client.getImpactProposalAttributes(proposalId);
-    }
-
     public static ProposalAttribute getProposalAttribute(
             Long proposalId, String name, Long additionalId) {
         return client.getProposalAttribute(proposalId, name, additionalId);

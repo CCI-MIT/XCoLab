@@ -55,7 +55,7 @@
                 <form:hidden path="teamId"/>
 
                 <div class="addpropbox">
-                    <strong class="inputTitleLeft">Team name:</strong>
+                    <strong class="inputTitleLeft" maxlength="35">Team name:</strong>
                     <form:input path="name" cssClass="form-control"/>
                 </div>
 
