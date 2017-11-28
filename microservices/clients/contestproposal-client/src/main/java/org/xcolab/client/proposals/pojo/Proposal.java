@@ -141,8 +141,8 @@ public class Proposal extends AbstractProposal {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, proposal2Phase);
     }
 
-    public Proposal(Proposal proposal, Contest contest) {
-        this(proposal, null, contest, null, null);
+    public Proposal(Proposal proposal, Integer version, Contest contest) {
+        this(proposal, version, contest, null, null);
     }
 
     public Proposal(Proposal proposal, Integer version, Contest contest,
