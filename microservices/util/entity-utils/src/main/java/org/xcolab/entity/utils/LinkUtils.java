@@ -36,25 +36,17 @@ public final class LinkUtils {
     /**
      * Takes an absolute URI and removes the scheme, host, and port (if present).
      *
-     * An empty, null, or already relative URI will be returned unchanged.
-     *
      * @param uri some uri - absolute or relative
      * @return a relative uri
      */
     public static String getRelativeUri(String uri) {
-        if (uri == null) {
-            return null;
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
+        final UriComponents uriComponents = uriBuilder.build();
+        StringBuilder relativeUri = new StringBuilder();
+        relativeUri.append(uriComponents.getPath() != null ? uriComponents.getPath() : "/");
+        if (uriComponents.getQuery() != null) {
+            relativeUri.append("?").append(uriComponents.getQuery());
         }
-        if (uri.startsWith("http://") || uri.startsWith("https://")) {
-            final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(uri);
-            final UriComponents uriComponents = uriBuilder.build();
-            StringBuilder relativeUri = new StringBuilder();
-            relativeUri.append(uriComponents.getPath() != null ? uriComponents.getPath() : "/");
-            if (uriComponents.getQuery() != null) {
-                relativeUri.append("?").append(uriComponents.getQuery());
-            }
-            return relativeUri.toString();
-        }
-        return uri;
+        return relativeUri.toString();
     }
 }
