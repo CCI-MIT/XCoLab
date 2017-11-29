@@ -55,11 +55,9 @@ public class TrackedVisitService {
         if (trackedVisitor == null) {
             trackedVisitor = trackedVisitor2UserService.getOrCreate(userId);
             trackedVisit.setUuid_(trackedVisitor.getUuid_());
-        } else {
-            if (trackedVisitor.getUserId() == null && userId != null) {
-                trackedVisitor.setUserId(userId);
-                trackedVisitor2UserDao.update(trackedVisitor);
-            }
+        } else if (trackedVisitor.getUserId() == null && userId != null) {
+            trackedVisitor.setUserId(userId);
+            trackedVisitor2UserDao.update(trackedVisitor);
         }
         return trackedVisitDao.create(trackedVisit);
     }
