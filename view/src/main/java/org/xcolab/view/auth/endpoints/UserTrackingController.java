@@ -1,5 +1,7 @@
 package org.xcolab.view.auth.endpoints;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,13 +12,21 @@ import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.TrackedVisit;
 import org.xcolab.view.config.spring.resolvers.RealMember;
 
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class UserTrackingController {
+
+    private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT, HttpHeaders.REFERER,
+            HttpHeaders.HOST, HttpHeaders.ORIGIN, HttpHeaders.CONNECTION,
+            HttpHeaders.CONTENT_LENGTH, "X-CSRF-TOKEN"};
+
+    private static final String[] IGNORED_COOKIES = {"_ga", "_gid", "SESSION"};
 
     @PostMapping("/trackVisitor")
     protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
@@ -60,13 +70,38 @@ public class UserTrackingController {
 
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
-            Enumeration<String> headers = request.getHeaders(headerName);
+            if (StringUtils.equalsAnyIgnoreCase(headerName, IGNORED_HEADERS)) {
+                continue;
+            }
 
+            Enumeration<String> headers = request.getHeaders(headerName);
             while (headers.hasMoreElements()) {
-                headerStringBuilder.append(headers.nextElement()).append("\n");
+                String headerValue = headers.nextElement();
+                if (headerName.equalsIgnoreCase(HttpHeaders.COOKIE)) {
+                    headerValue = removeCookiesByName(headerValue, IGNORED_COOKIES);
+                }
+                headerStringBuilder.append(headerName).append(": ");
+                headerStringBuilder.append(headerValue).append("\n");
             }
         }
         return headerStringBuilder.toString();
+    }
+
+    private String removeCookiesByName(String cookieHeader, String... names) {
+        return Arrays.stream(cookieHeader.split("\\s*;\\s*"))
+                .filter(c -> !matchesAnyCookieName(c, names))
+                .collect(Collectors.joining("; "));
+    }
+
+    private boolean matchesAnyCookieName(String cookieString, String... cookieNames) {
+        boolean isEmpty = StringUtils.isEmpty(cookieString) || ArrayUtils.isEmpty(cookieNames);
+
+        return isEmpty || Arrays.stream(cookieNames)
+                .anyMatch(name -> matchesCookieName(cookieString, name));
+    }
+
+    private boolean matchesCookieName(String cookieString, String cookieName) {
+        return cookieString.startsWith(cookieName + "=");
     }
 
     private static class ResponseJson {
