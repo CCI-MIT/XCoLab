@@ -48,17 +48,20 @@ public class TrackedVisitor2UserDaoImpl implements TrackedVisitor2UserDao {
 
     @Override
     public TrackedVisitor2User create(TrackedVisitor2User trackedVisitor2User) {
-        final Record record = dslContext
-                .insertInto(TRACKED_VISITOR_2_USER)
+        dslContext.insertInto(TRACKED_VISITOR_2_USER)
                 .set(TRACKED_VISITOR_2_USER.UUID_, trackedVisitor2User.getUuid_())
+                .set(TRACKED_VISITOR_2_USER.USER_ID, trackedVisitor2User.getUserId())
                 .set(TRACKED_VISITOR_2_USER.CREATE_DATE, DSL.currentTimestamp())
-                .returning(TRACKED_VISITOR_2_USER.ID_)
-                .fetchOne();
+                .execute();
 
-        if (record == null) {
-            throw new IllegalStateException("Could not retrieve inserted id for " + trackedVisitor2User);
-        }
-        trackedVisitor2User.setId_(record.getValue(TRACKED_VISITOR_2_USER.ID_));
         return trackedVisitor2User;
+    }
+
+    @Override
+    public boolean update(TrackedVisitor2User pojo) {
+        return dslContext.update(TRACKED_VISITOR_2_USER)
+                .set(TRACKED_VISITOR_2_USER.USER_ID, pojo.getUserId())
+                .where(TRACKED_VISITOR_2_USER.UUID_.eq(pojo.getUuid_()))
+                .execute() > 0;
     }
 }

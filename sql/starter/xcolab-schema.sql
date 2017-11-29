@@ -744,11 +744,9 @@ CREATE TABLE `xcolab_ConfigurationAttribute` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_TrackedVisitor2User` (
-  `id_` bigint(20) NOT NULL AUTO_INCREMENT,
-  `uuid_` varchar(36) DEFAULT NULL,
+  `uuid_` varchar(36) NOT NULL PRIMARY KEY,
   `userId` bigint(20) DEFAULT NULL,
-  `createDate` datetime DEFAULT NULL,
-  PRIMARY KEY (`id_`)
+  `createDate` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Users_Groups` (

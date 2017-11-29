@@ -33,14 +33,19 @@ public class LinkUtilsTest {
     }
 
     @Test
-    public void testGetRelativeUri__empty__shouldReturnEmpty() throws Exception {
+    public void testGetRelativeUri__empty__shouldReturnRoot() throws Exception {
         final String result = LinkUtils.getRelativeUri("");
-        assertEquals("Empty uri handled incorrectly", "", result);
+        assertEquals("Empty uri handled incorrectly", "/", result);
     }
 
     @Test
-    public void testGetRelativeUri__null__shouldReturnNull() throws Exception {
-        final String result = LinkUtils.getRelativeUri(null);
-        assertEquals("Null uri handled incorrectly", null, result);
+    public void testGetRelativeUri__blank__shouldReturnRoot() throws Exception {
+        final String result = LinkUtils.getRelativeUri(" ");
+        assertEquals("Blank uri handled incorrectly", "/", result);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRelativeUri__null__shouldFail() throws Exception {
+        LinkUtils.getRelativeUri(null);
     }
 }

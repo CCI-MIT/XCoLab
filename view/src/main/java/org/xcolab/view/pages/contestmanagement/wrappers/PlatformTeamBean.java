@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
+import org.hibernate.validator.constraints.Length;
+
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.PlatformTeam;
 
@@ -11,6 +13,7 @@ public class PlatformTeamBean {
     private List<Member> members;
 
     private Long teamId;
+    @Length(max = 35, message = "The team name is limited to 35 characters.")
     private String teamName;
 
     public PlatformTeamBean() { }

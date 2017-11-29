@@ -1,4 +1,4 @@
-package org.xcolab.service.tracking.service.trackedvisitor2user;
+package org.xcolab.service.tracking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,8 @@ import java.util.UUID;
 @Service
 public class TrackedVisitor2UserService {
 
-    public static final int UUID_GENERATION_MAX_ITERATIONS = 5;
+    private static final int UUID_GENERATION_MAX_ITERATIONS = 5;
+
     private final TrackedVisitor2UserDao trackedVisitor2UserDao;
 
     @Autowired
@@ -19,17 +20,25 @@ public class TrackedVisitor2UserService {
         this.trackedVisitor2UserDao = trackedVisitor2UserDao;
     }
 
-    public TrackedVisitor2User getOrCreate(long memberId) {
-        return trackedVisitor2UserDao.getByMemberId(memberId)
-                .orElseGet(() -> {
-                    TrackedVisitor2User newInstance = new TrackedVisitor2User();
-                    newInstance.setUserId(memberId);
-                    newInstance.setUuid_(generateUniqueUUID());
-                    return trackedVisitor2UserDao.create(newInstance);
-                });
+    public TrackedVisitor2User getOrCreate(Long memberId) {
+        if (memberId == null) {
+            return createUnknownVisitor();
+        }
+        return trackedVisitor2UserDao.getByMemberId(memberId).orElse(create(memberId));
     }
 
-    public String generateUniqueUUID() {
+    private TrackedVisitor2User createUnknownVisitor() {
+        return create(null);
+    }
+
+    private TrackedVisitor2User create(Long memberId) {
+        TrackedVisitor2User trackedVisitor = new TrackedVisitor2User();
+        trackedVisitor.setUserId(memberId);
+        trackedVisitor.setUuid_(generateUniqueUUID());
+        return trackedVisitor2UserDao.create(trackedVisitor);
+    }
+
+    private String generateUniqueUUID() {
         String uuid;
         int counter = 0;
         do {

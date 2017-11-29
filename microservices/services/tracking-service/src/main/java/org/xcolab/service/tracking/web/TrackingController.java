@@ -8,37 +8,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.TrackedVisit;
-import org.xcolab.model.tables.pojos.TrackedVisitor2User;
-import org.xcolab.service.tracking.service.trackedvisitor2user.TrackedVisitService;
-import org.xcolab.service.tracking.service.trackedvisitor2user.TrackedVisitor2UserService;
+import org.xcolab.service.tracking.service.TrackedVisitService;
 
 @RestController
 public class TrackingController {
 
-    private final TrackedVisitor2UserService trackedVisitor2UserService;
     private final TrackedVisitService trackedVisitService;
 
     @Autowired
-    public TrackingController(TrackedVisitor2UserService trackedVisitor2UserService,
-            TrackedVisitService trackedVisitService) {
-        this.trackedVisitor2UserService = trackedVisitor2UserService;
+    public TrackingController(TrackedVisitService trackedVisitService) {
         this.trackedVisitService = trackedVisitService;
     }
 
     @RequestMapping(value = "/trackedVisits", method = RequestMethod.POST)
-    public TrackedVisit createTrackedVisit(@RequestBody TrackedVisit trackedVisit) {
-        return trackedVisitService.createTrackedVisit(trackedVisit);
-    }
-
-    @RequestMapping(value = "/trackedVisitors", method = RequestMethod.POST)
-    public TrackedVisitor2User getOrCreateTrackedVisitor(
-            @RequestParam(required = false) Long memberId) {
-        if (memberId != null) {
-            return trackedVisitor2UserService.getOrCreate(memberId);
-        } else {
-            TrackedVisitor2User trackedVisitor = new TrackedVisitor2User();
-            trackedVisitor.setUuid_(trackedVisitor2UserService.generateUniqueUUID());
-            return trackedVisitor;
-        }
+    public TrackedVisit createTrackedVisit(@RequestBody TrackedVisit trackedVisit,
+            @RequestParam(required = false) Long userId) {
+        return trackedVisitService.createTrackedVisit(trackedVisit, userId);
     }
 }
