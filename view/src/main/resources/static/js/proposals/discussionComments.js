@@ -67,6 +67,9 @@ function editComment(commentCreationTimestamp,messageId, url){
     $message.empty();
     if (!_isAdmin) {
         $message.append('<div class="c-Alert__info__message">Please make sure you save your edit within <span id="clockdiv"> <span class="minutes"></span> minutes <span class="seconds"></span> seconds</span> of creating this comment.</div>');
+
+        var deadline = new Date((commentCreationTimestamp) +  15 * 60 * 1000);
+        initializeClock('clockdiv', deadline);
     }
     var formContent = '<form method="post" action="' + url + '">';
     formContent += '<textarea class="rte-editorPlaceholder" id="text_' + messageId + '" name="comment" style="width: 100%; height: 150px;"></textarea>';
@@ -76,9 +79,6 @@ function editComment(commentCreationTimestamp,messageId, url){
     formContent += '</form>';
     $message.append(formContent);
     $message.next().remove();
-
-    var deadline = new Date((commentCreationTimestamp) +  15 * 60 * 1000);
-    initializeClock('clockdiv', deadline);
 
     $('#text_'+messageId).html(comment);
     initializeTextEditors();
