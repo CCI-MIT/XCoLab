@@ -299,7 +299,7 @@
                 <c:choose>
                     <c:when test="${proposal.currentVersion > 0 }">
                         <xcolab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
-                                             linkId="discardChangesButton" text="DISCARD changes" />
+                                             linkId="discardChangesButton" text="DISCARD changes" edit="false" />
                     </c:when>
                     <c:otherwise>
                         <!--  proposal creation, return to contest proposals page on discard -->
