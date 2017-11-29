@@ -20,20 +20,22 @@ public class TrackedVisitor2UserService {
         this.trackedVisitor2UserDao = trackedVisitor2UserDao;
     }
 
-    public TrackedVisitor2User getOrCreate(long memberId) {
-        return trackedVisitor2UserDao.getByMemberId(memberId)
-                .orElseGet(() -> {
-                    TrackedVisitor2User newInstance = new TrackedVisitor2User();
-                    newInstance.setUserId(memberId);
-                    newInstance.setUuid_(generateUniqueUUID());
-                    return trackedVisitor2UserDao.create(newInstance);
-                });
+    public TrackedVisitor2User getOrCreate(Long memberId) {
+        if (memberId == null) {
+            return createUnknownVisitor();
+        }
+        return trackedVisitor2UserDao.getByMemberId(memberId).orElse(create(memberId));
     }
 
-    public TrackedVisitor2User create() {
+    private TrackedVisitor2User createUnknownVisitor() {
+        return create(null);
+    }
+
+    private TrackedVisitor2User create(Long memberId) {
         TrackedVisitor2User trackedVisitor = new TrackedVisitor2User();
+        trackedVisitor.setUserId(memberId);
         trackedVisitor.setUuid_(generateUniqueUUID());
-        return trackedVisitor;
+        return trackedVisitor2UserDao.create(trackedVisitor);
     }
 
     private String generateUniqueUUID() {
