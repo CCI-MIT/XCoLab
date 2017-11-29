@@ -315,7 +315,7 @@ public class UserProfileController {
                 sendUpdatedEmail(currentUserProfile.getUser());
             }
             AlertMessage.CHANGES_SAVED.flash(request);
-            return EDIT_PROFILE_VIEW;
+            return SHOW_PROFILE_VIEW;
         } else {
             return "redirect:/members/profile/" + memberId;
         }
