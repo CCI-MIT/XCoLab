@@ -13,6 +13,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.CacheControl;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -28,8 +29,10 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
+import org.xcolab.view.config.spring.filters.CdnUrlEncodingFilter;
 import org.xcolab.view.config.spring.converters.CaseInsensitiveStringToEnumConverterFactory;
 import org.xcolab.view.config.spring.properties.ServerProperties;
 import org.xcolab.view.config.spring.properties.TomcatProperties;
@@ -45,7 +48,9 @@ import org.xcolab.view.theme.ThemeResourceResolver;
 import org.xcolab.view.theme.ThemeVariableInterceptor;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -119,6 +124,18 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public FilterRegistrationBean resourceEncodingFilter() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new ResourceUrlEncodingFilter());
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean cdnUrlEncodingFilter() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        Map<String, String> cdnUrlMappings = new HashMap<>();
+        //TODO COLAB-2446: move this configuration somewhere else
+        cdnUrlMappings.put("/css", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
+        cdnUrlMappings.put("/js", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
+        registrationBean.setFilter(new CdnUrlEncodingFilter(cdnUrlMappings));
+        registrationBean.setOrder(Ordered.LOWEST_PRECEDENCE);
         return registrationBean;
     }
 

@@ -81,18 +81,16 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
 
-            final String scriptDomain = PlatformAttributeKey.CDN_URL_SCRIPTS.get();
+            //TODO COLAB-2446: move cdn resolution to CdnUrlEncodingFilter
             final String themeImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_STATIC.get();
             final String userImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
 
-            modelAndView.addObject("_libCssFolder",
-                    scriptDomain + "/css/lib");
-            modelAndView.addObject("_libJsFolder",
-                    scriptDomain + "/js/lib");
-            modelAndView.addObject("_themeCssFolder",
-                    scriptDomain + activeTheme.getCssPath());
-            modelAndView.addObject("_themeJsFolder",
-                    scriptDomain + activeTheme.getJsPath());
+            //Note: CDN for scripts is added via CdnUrlEncodingFilter
+            modelAndView.addObject("_libCssFolder", "/css/lib");
+            modelAndView.addObject("_libJsFolder", "/js/lib");
+            modelAndView.addObject("_themeCssFolder", activeTheme.getCssPath());
+            modelAndView.addObject("_themeJsFolder", activeTheme.getJsPath());
+
             modelAndView.addObject("_themeImageFolder",
                     themeImageDomain + activeTheme.getImagePath());
             modelAndView.addObject("_uploadedImageFolder",
