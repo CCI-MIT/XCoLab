@@ -94,11 +94,10 @@ public class UserTrackingController {
     }
 
     private boolean matchesAnyCookieName(String cookieString, String... cookieNames) {
-        //noinspection SimplifiableIfStatement
-        if (StringUtils.isEmpty(cookieString) || ArrayUtils.isEmpty(cookieNames)) {
-            return false;
-        }
-        return Arrays.stream(cookieNames).anyMatch(name -> matchesCookieName(cookieString, name));
+        boolean isEmpty = StringUtils.isEmpty(cookieString) || ArrayUtils.isEmpty(cookieNames);
+
+        return isEmpty || Arrays.stream(cookieNames)
+                .anyMatch(name -> matchesCookieName(cookieString, name));
     }
 
     private boolean matchesCookieName(String cookieString, String cookieName) {
