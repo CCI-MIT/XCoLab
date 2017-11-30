@@ -6,6 +6,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
+import org.jooq.SortField;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.jooq.impl.DSL.countDistinct;
+import static org.jooq.impl.DSL.ltrim;
 import static org.jooq.impl.DSL.max;
+import static org.jooq.impl.DSL.nullif;
+import static org.jooq.impl.DSL.nvl;
 import static org.jooq.impl.DSL.sum;
 import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
 import static org.xcolab.model.Tables.LOGIN_LOG;
@@ -107,6 +111,9 @@ public class MemberDaoImpl implements MemberDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? member.SCREEN_NAME.asc() : member.SCREEN_NAME.desc());
                     break;
+                case "displayName":
+                    query.addOrderBy(getDisplayNameSortFields(member, sortColumn.isAscending()));
+                    break;
                 case "activityCount":
                     //TODO: this property is owned by the activities-service
                     Field<Object> activityCount = this.dslContext.selectCount()
@@ -145,6 +152,33 @@ public class MemberDaoImpl implements MemberDao {
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Member.class);
+    }
+
+    private SortField[] getDisplayNameSortFields(MemberTable member,
+            boolean isAscendingSortOrder) {
+        // For each record:
+        // If first name != null, sort by trimmed first name (and last name),
+        // else if last name != null, sort by last name
+        // else sort by screen name.
+
+        // nvl(a, b): if (a != null): a, else: b
+        // nullif(a, b): if (a != b): a, else: null
+        // ltrim(a): trim String a from the left
+
+        Field<String> firstName = nullif(ltrim(member.FIRST_NAME), "");
+        Field<String> lastName = nullif(ltrim(member.LAST_NAME), "");
+        Field<String> sortName = nvl(firstName, nvl(lastName, member.SCREEN_NAME));
+
+        SortField[] sortFields = new SortField[2];
+        if (isAscendingSortOrder) {
+            sortFields[0] = sortName.asc();
+            sortFields[1] = member.LAST_NAME.asc();
+        } else {
+            sortFields[0] = sortName.desc();
+            sortFields[1] = member.LAST_NAME.desc();
+        }
+
+        return sortFields;
     }
 
     private void addSearchCondition(String partialName, String partialEmail,

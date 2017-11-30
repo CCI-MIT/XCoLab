@@ -1,5 +1,6 @@
 package org.xcolab.client.members;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.exceptions.LockoutLoginException;
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -85,7 +86,11 @@ public final class MembersClient {
 
             switch (sortField) {
                 case "USER_NAME":
-                    memberListQuery.queryParam("sort", prefix + "screenName");
+                    String sortType = "screenName";
+                    if (ConfigurationAttributeKey.DISPLAY_FIRST_NAME_LAST_NAME.get()) {
+                        sortType = "displayName";
+                    }
+                    memberListQuery.queryParam("sort", prefix + sortType);
                     break;
                 case "MEMBER_SINCE":
                     memberListQuery.queryParam("sort", prefix + "createDate");
