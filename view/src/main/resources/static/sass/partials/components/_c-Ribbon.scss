@@ -15,5 +15,7 @@
   -ms-transform:rotate(-45deg);
   -webkit-transform:rotate(-45deg);
   transform:rotate(-45deg);
-  z-index: 1000;
+  // higher than navbar and header bar
+  // lower than modal backdrop
+  z-index: 1075;
 }
