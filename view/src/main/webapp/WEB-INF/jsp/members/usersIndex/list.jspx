@@ -112,35 +112,35 @@
 						<td>
 							<span>
 
-							<c:set var="firstPageURL" value="/members?page=1&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;sortFilterPage.filter=${sortFilterPage.filter}" />
+							<c:set var="firstPageURL" value="/members?page=1&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;filter=${sortFilterPage.filter}" />
 
 								<a href="${firstPageURL}"><spring:message code="colab.pagination.first"/></a>&#160;
 							</span>
 
 							<span>
 
-							<c:set var="prevPageURL" value="/members?page=${startPage}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;sortFilterPage.filter=${sortFilterPage.filter}" />
+							<c:set var="prevPageURL" value="/members?page=${startPage}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;filter=${sortFilterPage.filter}" />
 
 								<a href="${prevPageURL}">&lt; <spring:message code="colab.pagination.prev"/></a>&#160;
 							</span>
 
 							<c:forEach begin="${startPage}" end="${endPage}" var="p">
 								<span>
-									<c:set var="pageURL" value="/members?page=${p}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;sortFilterPage.filter=${sortFilterPage.filter}" />
+									<c:set var="pageURL" value="/members?page=${p}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;filter=${sortFilterPage.filter}" />
 
 									<a class="${p == pageNumber ? 'c' : ''}" href="${pageURL}">${p}</a>&#160;
 								</span>
 							</c:forEach>
 
 							<span>
-							<c:set var="nextPageURL" value="/members?page=${endPage}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;sortFilterPage.filter=${sortFilterPage.filter}" />
+							<c:set var="nextPageURL" value="/members?page=${endPage}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;filter=${sortFilterPage.filter}" />
 
 								<a href="${nextPageURL}"><spring:message code="colab.pagination.next"/> &gt;</a>&#160;
 							</span>
 
 							<span>
 
-							<c:set var="lastPageURL" value="/members?page=${pagesCount}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;sortFilterPage.filter=${sortFilterPage.filter}" />
+							<c:set var="lastPageURL" value="/members?page=${pagesCount}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;filter=${sortFilterPage.filter}" />
 
 								<a href="${lastPageURL}"><spring:message code="colab.pagination.last"/></a>
 							</span>
