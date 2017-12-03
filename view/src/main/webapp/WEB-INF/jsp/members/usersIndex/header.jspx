@@ -49,7 +49,7 @@
 		<div>
 
 			<div class="users-filter" style="position: relative;">
-				<c:set var="filterURL" value="/members?sortFilterPage.sortColumn=${sortFilterPage.sortColumn}&amp;sortFilterPage.sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}" />
+				<c:set var="filterURL" value="/members?sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}" />
 
 				<form action="${filterURL }" id="filterUsersForm" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
