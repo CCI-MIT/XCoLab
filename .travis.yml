@@ -16,7 +16,6 @@ env:
 
 before_install:
 - gem install dpl --source http://rubygems.org
-- source scripts/travis/travis_rc.sh
 - openssl aes-256-cbc -K $encrypted_3721589d2908_key -iv $encrypted_3721589d2908_iv -in $TRAVIS_BUILD_DIR/scripts/travis/deploy_rsa.enc -out deploy_rsa -d
 - chmod 600 deploy_rsa
 - scripts/travis/before_script.sh
