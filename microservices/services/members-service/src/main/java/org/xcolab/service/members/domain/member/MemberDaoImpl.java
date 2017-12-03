@@ -22,9 +22,14 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import static org.jooq.impl.DSL.coalesce;
+import static org.jooq.impl.DSL.concat;
 import static org.jooq.impl.DSL.countDistinct;
+import static org.jooq.impl.DSL.ltrim;
 import static org.jooq.impl.DSL.max;
+import static org.jooq.impl.DSL.nullif;
 import static org.jooq.impl.DSL.sum;
+import static org.jooq.impl.DSL.val;
 import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
 import static org.xcolab.model.Tables.LOGIN_LOG;
 import static org.xcolab.model.Tables.MEMBER;
@@ -107,6 +112,11 @@ public class MemberDaoImpl implements MemberDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? member.SCREEN_NAME.asc() : member.SCREEN_NAME.desc());
                     break;
+                case "displayName":
+                    Field<String> displayName = getDisplayName(member);
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? displayName.asc() :  displayName.desc());
+                    break;
                 case "activityCount":
                     //TODO: this property is owned by the activities-service
                     Field<Object> activityCount = this.dslContext.selectCount()
@@ -145,6 +155,17 @@ public class MemberDaoImpl implements MemberDao {
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Member.class);
+    }
+
+    private Field<String> getDisplayName(MemberTable member) {
+        // Concatenate first name and last name to full name. If the full name is more than just a
+        // space, return the full name. Else, return the screen name.
+        Field<String> firstName = coalesce(ltrim(member.FIRST_NAME), "");
+        Field<String> lastName = coalesce(ltrim(member.LAST_NAME), "");
+        Field<String> fullName = ltrim(concat(firstName, val(" "), lastName));
+        fullName = nullif(fullName, " ");
+        Field<String> screenName = member.SCREEN_NAME;
+        return coalesce(fullName, screenName);
     }
 
     private void addSearchCondition(String partialName, String partialEmail,
