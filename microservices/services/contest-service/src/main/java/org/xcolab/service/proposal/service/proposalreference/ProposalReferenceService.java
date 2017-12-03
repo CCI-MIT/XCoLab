@@ -12,13 +12,14 @@ import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalReference;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
-import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
-import org.xcolab.service.proposal.helper.ProposalAttributeHelper;
+import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeHelper;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeKeys;
+import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeService;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,13 +35,13 @@ public class ProposalReferenceService {
 
     private final ProposalDao proposalDao;
 
-    private final ProposalAttributeDao proposalAttributeDao;
+    private final ProposalAttributeService proposalAttributeService;
 
     @Autowired
-    public ProposalReferenceService(ProposalReferenceDao proposalReferenceDao, ProposalDao proposalDao, ProposalAttributeDao proposalAttributeDao){
+    public ProposalReferenceService(ProposalReferenceDao proposalReferenceDao, ProposalDao proposalDao, ProposalAttributeService proposalAttributeService){
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalDao = proposalDao;
-        this.proposalAttributeDao = proposalAttributeDao;
+        this.proposalAttributeService = proposalAttributeService;
     }
 
     public void populateTableWithProposal(Proposal proposal)  {
@@ -60,7 +61,12 @@ public class ProposalReferenceService {
             proposalReferenceDao.delete(existingReference.getProposalId(), existingReference.getSubProposalId());
         }
         processedProposals.add(proposal.getProposalId());
-        for (ProposalAttribute attribute : new ProposalAttributeHelper(proposal,proposalAttributeDao).getAttributesByName(ProposalAttributeKeys.SECTION)) {
+        final ProposalAttributeHelper proposalAttributeHelper =
+                proposalAttributeService.getProposalAttributeHelper(proposal.getProposalId(),
+                        ProposalAttributeService.LATEST_VERSION);
+        final Collection<ProposalAttribute> sectionAttributes =
+                proposalAttributeHelper.getAttributesByName(ProposalAttributeKeys.SECTION);
+        for (ProposalAttribute attribute : sectionAttributes) {
 
                 PlanSectionDefinition psd = PlanTemplateClientUtil.getPlanSectionDefinition(attribute.getAdditionalId());
 

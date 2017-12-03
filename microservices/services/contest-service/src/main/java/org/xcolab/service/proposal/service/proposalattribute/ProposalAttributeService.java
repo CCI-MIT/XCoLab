@@ -9,10 +9,10 @@ import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalVersion;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -21,10 +21,11 @@ import java.util.List;
 @Service
 public class ProposalAttributeService {
 
+    public static final int LATEST_VERSION = Integer.MAX_VALUE;
+
     private final ProposalAttributeDao proposalAttributeDao;
 
     private final ProposalDao proposalDao;
-
 
     private final ProposalVersionDao proposalVersionDao;
 
@@ -34,6 +35,18 @@ public class ProposalAttributeService {
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposalDao = proposalDao;
         this.proposalVersionDao = proposalVersionDao;
+    }
+
+    public ProposalAttributeHelper getProposalAttributeHelper(long proposalId, int version) {
+        ProposalAttributeHelperData data = getProposalAttributeHelperData(proposalId, version);
+        return new ProposalAttributeHelper(data);
+    }
+
+    public ProposalAttributeHelperData getProposalAttributeHelperData(long proposalId,
+            int version) {
+        final List<ProposalAttribute> attributes = proposalAttributeDao.findByGiven(proposalId,
+                null, null, version);
+        return new ProposalAttributeHelperData(attributes);
     }
 
     public ProposalAttribute setAttribute(ProposalAttribute proposalAttribute, Long authorId) {
