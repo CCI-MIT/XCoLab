@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import org.xcolab.model.tables.pojos.ContestPhase;
+import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.model.tables.records.ContestPhaseRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.xcolab.model.Tables.CONTEST_PHASE;
+import static org.xcolab.model.Tables.PROPOSAL;
+import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
 
 @Repository
 public class ContestPhaseDaoImpl implements ContestPhaseDao {
@@ -82,9 +85,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
 
     @Override
     public boolean delete(Long contestPhasePK) {
-        return dslContext.deleteFrom(CONTEST_PHASE)
-                .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
-                .execute() > 0;
+        return deleteContestPhase(dslContext, contestPhasePK);
     }
 
     @Override
@@ -163,6 +164,15 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .from(CONTEST_PHASE)
                 .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
                 .fetchOne().into(Integer.class) > 0;
+    }
+
+    public static boolean deleteContestPhase(DSLContext ctx, Long contestPhasePK) {
+        ctx.deleteFrom(PROPOSAL_2_PHASE)
+                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhasePK))
+                .execute();
+        return ctx.deleteFrom(CONTEST_PHASE)
+                .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
+                .execute() > 0;
     }
 
 }

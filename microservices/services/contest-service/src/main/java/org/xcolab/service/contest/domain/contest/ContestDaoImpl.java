@@ -3,6 +3,7 @@ package org.xcolab.service.contest.domain.contest;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.Select;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,24 @@ import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.SortColumn;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.util.List;
 
+import static org.jooq.impl.DSL.val;
+import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
+import static org.xcolab.model.Tables.ACTIVITY_SUBSCRIPTION;
+import static org.xcolab.model.Tables.COMMENT;
 import static org.xcolab.model.Tables.CONTEST;
+import static org.xcolab.model.Tables.CONTEST_DISCUSSION;
+import static org.xcolab.model.Tables.CONTEST_PHASE;
+import static org.xcolab.model.Tables.CONTEST_TEAM_MEMBER;
+import static org.xcolab.model.Tables.CONTEST_TRANSLATION;
+import static org.xcolab.model.Tables.PROPOSAL;
+import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
+import static org.xcolab.model.Tables.PROPOSAL_ATTRIBUTE;
+import static org.xcolab.model.Tables.THREAD;
+import static org.xcolab.service.contest.domain.contestphase.ContestPhaseDaoImpl.deleteContestPhase;
 
 @Repository
 public class ContestDaoImpl implements ContestDao {
@@ -335,6 +350,68 @@ public class ContestDaoImpl implements ContestDao {
 
     @Override
     public boolean delete(long contestPK) {
-        return dslContext.deleteFrom(CONTEST).where(CONTEST.CONTEST_PK.eq(contestPK)).execute() > 0;
+        final boolean[] result = new boolean[1];
+        dslContext.transaction(configuration -> {
+            DSLContext ctx = DSL.using(configuration);
+
+            deleteContestData(ctx, contestPK);
+            for (Long contestPhasePK : getContestPhasePKs(ctx, contestPK)) {
+                deleteContestPhase(ctx, contestPhasePK);
+            }
+
+            result[0] = deleteContest(ctx, contestPK);
+        });
+        return result[0];
+    }
+
+
+    private static boolean deleteContest(DSLContext ctx, long contestPK) {
+        return ctx.deleteFrom(CONTEST)
+                .where(CONTEST.CONTEST_PK.eq(contestPK))
+                .execute() > 0;
+    }
+
+    private static void deleteContestData(DSLContext ctx, long contestPK) {
+        // Delete team members
+        ctx.deleteFrom(CONTEST_TEAM_MEMBER)
+                .where(CONTEST_TEAM_MEMBER.CONTEST_ID.eq(contestPK))
+                .execute();
+        // Delete contest translations
+        ctx.deleteFrom(CONTEST_TRANSLATION)
+                .where(CONTEST_TRANSLATION.CONTEST_ID.eq(contestPK))
+                .execute();
+        // Delete contest discussions
+        ctx.deleteFrom(CONTEST_DISCUSSION)
+                .where(CONTEST_DISCUSSION.CONTEST_ID.eq(contestPK))
+                .execute();
+        // Retrieve contest discussion thread id.
+        Long threadId = ctx.select(CONTEST.DISCUSSION_GROUP_ID)
+                .from(CONTEST)
+                .where(CONTEST.CONTEST_PK.eq(contestPK))
+                .fetchOne()
+                .value1();
+        // Delete contest discussion comments.
+        ctx.deleteFrom(COMMENT)
+                .where(COMMENT.THREAD_ID.eq(threadId))
+                .execute();
+        // Delete contest discussion thread.
+        ctx.deleteFrom(THREAD)
+                .where(THREAD.THREAD_ID.eq(threadId))
+                .execute();
+        // Delete contest subscriptions.
+        ctx.deleteFrom(ACTIVITY_SUBSCRIPTION)
+                .where(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(ActivityEntryType.CONTEST.getPrimaryTypeId()))
+                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(contestPK));
+        // Delete contest activity entries.
+        ctx.deleteFrom(ACTIVITY_ENTRY)
+                .where(ACTIVITY_ENTRY.PRIMARY_TYPE.eq(ActivityEntryType.CONTEST.getPrimaryTypeId()))
+                .and(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY.eq(contestPK));
+    }
+
+    private static List<Long> getContestPhasePKs(DSLContext ctx, long contestPK) {
+        return ctx.select(CONTEST_PHASE.CONTEST_PHASE_PK)
+                .from(CONTEST_PHASE)
+                .where(CONTEST_PHASE.CONTEST_PK.eq(contestPK))
+                .fetchInto(Long.class);
     }
 }
