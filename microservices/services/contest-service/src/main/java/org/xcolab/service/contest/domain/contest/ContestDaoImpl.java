@@ -4,7 +4,6 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Select;
-import org.jooq.SelectConditionStep;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -538,12 +537,5 @@ public class ContestDaoImpl implements ContestDao {
         ctx.deleteFrom(CONTEST_PHASE)
                 .where(CONTEST_PHASE.CONTEST_PK.eq(contestPK))
                 .execute();
-    }
-
-    private static List<Long> getContestPhasePKs(DSLContext ctx, long contestPK) {
-        return ctx.select(CONTEST_PHASE.CONTEST_PHASE_PK)
-                .from(CONTEST_PHASE)
-                .where(CONTEST_PHASE.CONTEST_PK.eq(contestPK))
-                .fetchInto(Long.class);
     }
 }
