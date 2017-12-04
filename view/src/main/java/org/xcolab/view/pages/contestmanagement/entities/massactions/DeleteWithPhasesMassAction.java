@@ -26,10 +26,6 @@ public class DeleteWithPhasesMassAction extends AbstractContestMassAction {
         for (Contest contest : contests) {
             if (!contest.getIsSharedContestInForeignColab()) {
                 Long contestId = contest.getContestPK();
-                List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
-                for (ContestPhase contestPhase : contestPhases) {
-                    ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
-                }
                 ContestClientUtil.deleteContest(contestId);
             }
         }
