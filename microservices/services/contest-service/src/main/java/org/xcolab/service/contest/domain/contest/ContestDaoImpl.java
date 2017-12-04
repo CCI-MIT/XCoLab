@@ -355,9 +355,7 @@ public class ContestDaoImpl implements ContestDao {
             DSLContext ctx = DSL.using(configuration);
 
             deleteContestData(ctx, contestPK);
-            for (Long contestPhasePK : getContestPhasePKs(ctx, contestPK)) {
-                deleteContestPhase(ctx, contestPhasePK);
-            }
+            deleteContestPhases(ctx, contestPK);
 
             result[0] = deleteContest(ctx, contestPK);
         });
@@ -406,6 +404,21 @@ public class ContestDaoImpl implements ContestDao {
         ctx.deleteFrom(ACTIVITY_ENTRY)
                 .where(ACTIVITY_ENTRY.PRIMARY_TYPE.eq(ActivityEntryType.CONTEST.getPrimaryTypeId()))
                 .and(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY.eq(contestPK));
+    }
+
+    private static void deleteContestPhases(DSLContext ctx, long contestPK) {
+        // Select query for contest's phases
+        Select<Record1<Long>> contestPhasePKsSelect = ctx.select(CONTEST_PHASE.CONTEST_PHASE_PK)
+                .from(CONTEST_PHASE)
+                .where(CONTEST_PHASE.CONTEST_PK.eq(contestPK));
+        // Delete Proposal2Phase rows associated with this contest.
+        ctx.deleteFrom(PROPOSAL_2_PHASE)
+                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.in(contestPhasePKsSelect))
+                .execute();
+        // Delete contest's phases.
+        ctx.deleteFrom(CONTEST_PHASE)
+                .where(CONTEST_PHASE.CONTEST_PHASE_PK.in(contestPhasePKsSelect))
+                .execute();
     }
 
     private static List<Long> getContestPhasePKs(DSLContext ctx, long contestPK) {
