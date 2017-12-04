@@ -164,9 +164,9 @@
     <meta property="og:site_name" content="${ not empty openGraphSiteName ? openGraphSiteName: _colabName}" />
     <meta property="og:title" content="${ not empty openGraphTitle ? openGraphTitle: _openGraphShareTitle}" />
     <meta property="og:description" content="${ not empty openGraphDescription ? openGraphDescription: _openGraphShareDescription}" />
-    <meta property="og:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathBig}" />
+    <meta property="og:image" content="${not empty openGraphImage ? openGraphImage : _logoPathBig}" />
 
-    <meta name="twitter:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathSquare}"/>
+    <meta name="twitter:image" content="${not empty openGraphImage ? openGraphImage : _logoPathSquare}"/>
 
     <c:if test="${not empty _facebookId}">
         <meta property="fb:app_id" content="${_facebookId}"/>
@@ -452,7 +452,7 @@
           "@type": "Organization",
           "name": "${_colabName}",
           "url": "${_colabUrl}",
-          "logo": "${_colabUrl}${_logoPathSquare}",
+          "logo": "${_logoPathSquare}",
           "sameAs": [${socialMediaSameAs}]
         }
     </script>
