@@ -24,7 +24,6 @@ public enum ContestMassActions {
     MESSAGE(new MessageActivePhaseAuthorsMassAction()),
     MESSAGE_ALL_AUTHORS(new MessageAllAuthorsMassAction()),
     REPORT_PEOPLE_IN_CURRENT_PHASE(new ReportPeopleInCurrentPhaseMassAction()),
-    DELETE(new DeleteMassAction()),
     DELETE_WITH_PHASES(new DeleteWithPhasesMassAction()),
     LAUNCH(new LaunchContestMassAction()),
     ACTIVE(new ActiveMassAction(true)),
