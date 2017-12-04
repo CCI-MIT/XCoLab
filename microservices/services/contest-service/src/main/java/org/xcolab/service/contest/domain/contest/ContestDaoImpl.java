@@ -19,7 +19,6 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.util.List;
 
-import static org.jooq.impl.DSL.val;
 import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
 import static org.xcolab.model.Tables.ACTIVITY_SUBSCRIPTION;
 import static org.xcolab.model.Tables.COMMENT;
@@ -28,24 +27,9 @@ import static org.xcolab.model.Tables.CONTEST_DISCUSSION;
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.CONTEST_TEAM_MEMBER;
 import static org.xcolab.model.Tables.CONTEST_TRANSLATION;
-import static org.xcolab.model.Tables.GROUP_;
-import static org.xcolab.model.Tables.MEMBERSHIP_REQUEST;
-import static org.xcolab.model.Tables.POINTS;
-import static org.xcolab.model.Tables.POINTS_DISTRIBUTION_CONFIGURATION;
-import static org.xcolab.model.Tables.PROPOSAL;
 import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
-import static org.xcolab.model.Tables.PROPOSAL_ATTRIBUTE;
-import static org.xcolab.model.Tables.PROPOSAL_CONTEST_PHASE_ATTRIBUTE;
-import static org.xcolab.model.Tables.PROPOSAL_MOVE_HISTORY;
-import static org.xcolab.model.Tables.PROPOSAL_RATING;
-import static org.xcolab.model.Tables.PROPOSAL_REFERENCE;
-import static org.xcolab.model.Tables.PROPOSAL_SUPPORTER;
-import static org.xcolab.model.Tables.PROPOSAL_UNVERSIONED_ATTRIBUTE;
-import static org.xcolab.model.Tables.PROPOSAL_VERSION;
-import static org.xcolab.model.Tables.PROPOSAL_VOTE;
 import static org.xcolab.model.Tables.THREAD;
-import static org.xcolab.model.Tables.USERS_GROUPS;
-import static org.xcolab.service.contest.domain.contestphase.ContestPhaseDaoImpl.deleteContestPhase;
+import static org.xcolab.service.proposal.domain.proposal.ProposalDaoImpl.deleteOrphanProposals;
 
 @Repository
 public class ContestDaoImpl implements ContestDao {
@@ -374,111 +358,6 @@ public class ContestDaoImpl implements ContestDao {
             result[0] = deleteContest(ctx, contestPK);
         });
         return result[0];
-    }
-
-    private static void deleteOrphanProposals(DSLContext ctx) {
-        // Retrieve orphaned proposals
-        Select<Record1<Long>> orphanProposals = ctx.select(PROPOSAL.PROPOSAL_ID)
-                .from(PROPOSAL)
-                .whereNotExists(ctx.select(val(1))
-                    .from(PROPOSAL_2_PHASE)
-                    .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)));
-        // Delete proposal attributes of orphaned proposals
-        ctx.deleteFrom(PROPOSAL_ATTRIBUTE)
-                .where(PROPOSAL_ATTRIBUTE.PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        // Delete unversioned proposal attributes of orphaned proposals
-        ctx.deleteFrom(PROPOSAL_UNVERSIONED_ATTRIBUTE)
-                .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        // Delete proposal versions.
-        ctx.deleteFrom(PROPOSAL_VERSION)
-                .where(PROPOSAL_VERSION.PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        // Select proposal discussion thread ids
-        List<Long> threadIDs =
-                ctx.select(THREAD.THREAD_ID).from(THREAD).join(PROPOSAL)
-                        .on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .or(PROPOSAL.ADVISOR_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .or(PROPOSAL.FELLOW_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .or(PROPOSAL.JUDGE_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .or(PROPOSAL.RESULTS_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
-                        .fetchInto(Long.class);
-        // Delete proposal discussion comments
-        ctx.deleteFrom(COMMENT)
-                .where(COMMENT.THREAD_ID.in(threadIDs))
-                .execute();
-        // Delete proposal discussion threads
-        ctx.deleteFrom(THREAD)
-                .where(THREAD.THREAD_ID.in(threadIDs))
-                .execute();
-        // Delete proposal subscriptions
-        ctx.deleteFrom(ACTIVITY_SUBSCRIPTION)
-                .where(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(ActivityEntryType.PROPOSAL.getPrimaryTypeId()))
-                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.in(orphanProposals))
-                .execute();
-        // Delete proposal activity entries
-        ctx.deleteFrom(ACTIVITY_ENTRY)
-                .where(ACTIVITY_ENTRY.PRIMARY_TYPE.eq(ActivityEntryType.PROPOSAL.getPrimaryTypeId()))
-                .and(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY.in(orphanProposals))
-                .execute();
-        // Select proposal groups.
-        List<Long> groups = ctx.select(PROPOSAL.GROUP_ID).from(PROPOSAL)
-                .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
-                .fetchInto(Long.class);
-        // Delete proposal group members
-        ctx.deleteFrom(USERS_GROUPS)
-                .where(USERS_GROUPS.GROUP_ID.in(groups))
-                .execute();
-        // Delete group membership requests
-        ctx.deleteFrom(MEMBERSHIP_REQUEST)
-                .where(MEMBERSHIP_REQUEST.GROUP_ID.in(groups))
-                .execute();
-        // Delete proposal groups
-        ctx.deleteFrom(GROUP_)
-                .where(GROUP_.GROUP_ID.in(groups))
-                .execute();
-        // Delete proposal supports
-        ctx.deleteFrom(PROPOSAL_SUPPORTER)
-                .where(PROPOSAL_SUPPORTER.PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        // Delete proposal votes
-        ctx.deleteFrom(PROPOSAL_VOTE)
-                .where(PROPOSAL_VOTE.PROPOSAL_ID.in(orphanProposals));
-        // Delete contest phase attributes
-        ctx.deleteFrom(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
-                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        // Delete proposal ratings
-        ctx.deleteFrom(PROPOSAL_RATING)
-                .where(PROPOSAL_RATING.PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        // Delete proposal references
-        ctx.deleteFrom(PROPOSAL_REFERENCE)
-                .where(PROPOSAL_REFERENCE.PROPOSAL_ID.in(orphanProposals))
-                .or(PROPOSAL_REFERENCE.SUB_PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        // Delete proposal move history entries
-        ctx.deleteFrom(PROPOSAL_MOVE_HISTORY)
-                .where(PROPOSAL_MOVE_HISTORY.SOURCE_PROPOSAL_ID.in(orphanProposals))
-                .or(PROPOSAL_MOVE_HISTORY.TARGET_PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        // Delete points distribution configuration
-        ctx.deleteFrom(POINTS_DISTRIBUTION_CONFIGURATION)
-                .where(POINTS_DISTRIBUTION_CONFIGURATION.PROPOSAL_ID.in(orphanProposals))
-                .or(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_SUB_PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        ctx.deleteFrom(POINTS)
-                .where(POINTS.PROPOSAL_ID.in(orphanProposals))
-                .or(POINTS.ORIGINATING_PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        // Delete orphaned proposals
-        ctx.deleteFrom(PROPOSAL)
-                .whereNotExists(ctx.select(val(1))
-                        .from(PROPOSAL_2_PHASE)
-                        .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)))
-                .execute();
     }
 
     private static boolean deleteContest(DSLContext ctx, long contestPK) {
