@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.entities;
 
 import org.xcolab.view.pages.contestmanagement.entities.massactions.ActiveMassAction;
-import org.xcolab.view.pages.contestmanagement.entities.massactions.DeleteMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.DeleteWithPhasesMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.FeaturedMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.FlagMassAction;
