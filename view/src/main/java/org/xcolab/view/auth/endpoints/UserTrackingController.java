@@ -1,15 +1,20 @@
 package org.xcolab.view.auth.endpoints;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.TrackedVisit;
 import org.xcolab.view.config.spring.resolvers.RealMember;
 
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,33 +22,26 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class UserTrackingController {
 
+    private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT, HttpHeaders.REFERER,
+            HttpHeaders.HOST, HttpHeaders.ORIGIN, HttpHeaders.CONNECTION,
+            HttpHeaders.CONTENT_LENGTH, "X-CSRF-TOKEN"};
+
+    private static final String[] IGNORED_COOKIES = {"_ga", "_gid", "SESSION"};
+
     @PostMapping("/trackVisitor")
     protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
-            @RealMember Member loggedInMember) {
+            @RealMember Member loggedInMember, @RequestParam String uuid, @RequestParam String url,
+            @RequestParam(required = false) String referer) {
 
-        String ip = getClientIpAddress(request);
-        String url = request.getParameter("url");
-        String referer = request.getParameter(HttpHeaders.REFERER);
         String browser = request.getHeader(HttpHeaders.USER_AGENT);
-
-        //get headers
+        String ip = getClientIpAddress(request);
         String headers = getHeadersAsString(request);
 
-        // If UUID is not sent as parameter, try to retrieve existing token if user is logged in.
-        String uuid = request.getParameter("uuid");
-        String isTrackedVisitor = request.getParameter("isTrackedVisitor");
-        if (StringUtils.isBlank(uuid)) {
-            if (loggedInMember != null) {
-                uuid = TrackingClient.getTrackedVisitorOrCreate(loggedInMember.getId_()).getUuid_();
-                isTrackedVisitor = "true";
-            } else {
-                uuid = TrackingClient.generateUUID();
-            }
-        }
+        final Long userId = loggedInMember != null ? loggedInMember.getUserId() : null;
+        final TrackedVisit trackedVisit =
+                TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, userId);
 
-        TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers);
-
-        return new ResponseJson(uuid, Boolean.valueOf(isTrackedVisitor));
+        return new ResponseJson(trackedVisit.getUuid_());
     }
 
     private String getClientIpAddress(HttpServletRequest request) {
@@ -72,31 +70,50 @@ public class UserTrackingController {
 
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
-            Enumeration<String> headers = request.getHeaders(headerName);
+            if (StringUtils.equalsAnyIgnoreCase(headerName, IGNORED_HEADERS)) {
+                continue;
+            }
 
+            Enumeration<String> headers = request.getHeaders(headerName);
             while (headers.hasMoreElements()) {
-                headerStringBuilder.append(headers.nextElement()).append("\n");
+                String headerValue = headers.nextElement();
+                if (headerName.equalsIgnoreCase(HttpHeaders.COOKIE)) {
+                    headerValue = removeCookiesByName(headerValue, IGNORED_COOKIES);
+                }
+                headerStringBuilder.append(headerName).append(": ");
+                headerStringBuilder.append(headerValue).append("\n");
             }
         }
         return headerStringBuilder.toString();
     }
 
+    private String removeCookiesByName(String cookieHeader, String... names) {
+        return Arrays.stream(cookieHeader.split("\\s*;\\s*"))
+                .filter(c -> !matchesAnyCookieName(c, names))
+                .collect(Collectors.joining("; "));
+    }
+
+    private boolean matchesAnyCookieName(String cookieString, String... cookieNames) {
+        boolean isEmpty = StringUtils.isEmpty(cookieString) || ArrayUtils.isEmpty(cookieNames);
+
+        return isEmpty || Arrays.stream(cookieNames)
+                .anyMatch(name -> matchesCookieName(cookieString, name));
+    }
+
+    private boolean matchesCookieName(String cookieString, String cookieName) {
+        return cookieString.startsWith(cookieName + "=");
+    }
+
     private static class ResponseJson {
 
         private final String uuid;
-        private final boolean isTrackedVisitor;
 
-        private ResponseJson(String uuid, boolean isTrackedVisitor) {
+        private ResponseJson(String uuid) {
             this.uuid = uuid;
-            this.isTrackedVisitor = isTrackedVisitor;
         }
 
         public String getUuid() {
             return uuid;
-        }
-
-        public boolean isTrackedVisitor() {
-            return isTrackedVisitor;
         }
     }
 
