@@ -397,14 +397,15 @@ public class ContestDaoImpl implements ContestDao {
                 .where(PROPOSAL_VERSION.PROPOSAL_ID.in(orphanProposals))
                 .execute();
         // Select proposal discussion thread ids
-        Select<Record1<Long>> threadIDs =
+        List<Long> threadIDs =
                 ctx.select(THREAD.THREAD_ID).from(THREAD).join(PROPOSAL)
                         .on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
                         .or(PROPOSAL.ADVISOR_DISCUSSION_ID.eq(THREAD.THREAD_ID))
                         .or(PROPOSAL.FELLOW_DISCUSSION_ID.eq(THREAD.THREAD_ID))
                         .or(PROPOSAL.JUDGE_DISCUSSION_ID.eq(THREAD.THREAD_ID))
                         .or(PROPOSAL.RESULTS_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals));
+                        .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
+                        .fetchInto(Long.class);
         // Delete proposal discussion comments
         ctx.deleteFrom(COMMENT)
                 .where(COMMENT.THREAD_ID.in(threadIDs))
@@ -424,8 +425,9 @@ public class ContestDaoImpl implements ContestDao {
                 .and(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY.in(orphanProposals))
                 .execute();
         // Select proposal groups.
-        Select<Record1<Long>> groups = ctx.select(PROPOSAL.GROUP_ID).from(PROPOSAL)
-                .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals));
+        List<Long> groups = ctx.select(PROPOSAL.GROUP_ID).from(PROPOSAL)
+                .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
+                .fetchInto(Long.class);
         // Delete proposal group members
         ctx.deleteFrom(USERS_GROUPS)
                 .where(USERS_GROUPS.GROUP_ID.in(groups))
@@ -474,7 +476,9 @@ public class ContestDaoImpl implements ContestDao {
                 .execute();
         // Delete orphaned proposals
         ctx.deleteFrom(PROPOSAL)
-                .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
+                .whereNotExists(ctx.select(val(1))
+                        .from(PROPOSAL_2_PHASE)
+                        .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)))
                 .execute();
     }
 
@@ -532,7 +536,7 @@ public class ContestDaoImpl implements ContestDao {
                 .execute();
         // Delete contest's phases.
         ctx.deleteFrom(CONTEST_PHASE)
-                .where(CONTEST_PHASE.CONTEST_PHASE_PK.in(contestPhases))
+                .where(CONTEST_PHASE.CONTEST_PK.eq(contestPK))
                 .execute();
     }
 
