@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -19,6 +20,7 @@ import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.SortColumn;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -385,14 +387,8 @@ public class ContestDaoImpl implements ContestDao {
                 .into(Long.class);
         // Delete contest thread and comments.
         ThreadClientUtil.deleteThread(threadId);
-        // Delete contest subscriptions.
-        ctx.deleteFrom(ACTIVITY_SUBSCRIPTION)
-                .where(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(ActivityEntryType.CONTEST.getPrimaryTypeId()))
-                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(contestPK));
-        // Delete contest activity entries.
-        ctx.deleteFrom(ACTIVITY_ENTRY)
-                .where(ACTIVITY_ENTRY.PRIMARY_TYPE.eq(ActivityEntryType.CONTEST.getPrimaryTypeId()))
-                .and(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY.eq(contestPK));
+        // Delete contest subscriptions and activity entries.
+        ActivitiesClientUtil.batchDelete(ActivityEntryType.CONTEST, Collections.singletonList(contestPK));
     }
 
     private static void deleteContestPhases(DSLContext ctx, long contestPK) {
