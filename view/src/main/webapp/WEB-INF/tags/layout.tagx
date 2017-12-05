@@ -86,6 +86,8 @@
     <!--@elvariable id="_mitHeaderBarLinkText" type="java.lang.String"-->
     <!--@elvariable id="_mitHeaderBarLinkUrl" type="java.lang.String"-->
 
+    <!--@elvariable id="_shareableSocialMediaUrls" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
+    <!--@elvariable id="_followableSocialMediaUrls" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
 
     <!--@elvariable id="_isGoogleSsoActive" type="java.lang.Boolean"-->
     <!--@elvariable id="_isFacebookSsoActive" type="java.lang.Boolean"-->

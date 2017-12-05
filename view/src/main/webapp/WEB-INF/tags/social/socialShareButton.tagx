@@ -7,7 +7,7 @@
     <jsp:directive.attribute name="url" type="java.lang.String" description="The url to be shared if passed, if not use the default one from variable interceptor" />
     <jsp:directive.attribute name="size" type="java.lang.String" description="Available sizes: lg,sm, xm for regular leave blank" />
 
-    <c:forEach var="followSocialMedia" items="${_shearableSocialMediaUrls}">
+    <c:forEach var="followSocialMedia" items="${_shareableSocialMediaUrls}">
         <xcolabSocial:socialMediaButton type="share" socialEngine="${followSocialMedia.name}" title="${title}" size="${size}" shareUrl="${url}"/>
     </c:forEach>
 
