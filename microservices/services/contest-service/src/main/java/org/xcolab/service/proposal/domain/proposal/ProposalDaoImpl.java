@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.model.tables.ProposalContestPhaseAttributeTable;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.records.ProposalRecord;
@@ -388,9 +389,7 @@ public class ProposalDaoImpl implements ProposalDao {
                 .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
                 .fetchInto(Long.class);
         // Delete proposal group members
-        ctx.deleteFrom(USERS_GROUPS)
-                .where(USERS_GROUPS.GROUP_ID.in(groups))
-                .execute();
+        UsersGroupsClientUtil.deleteGroups(groups);
         // Delete group membership requests
         ctx.deleteFrom(MEMBERSHIP_REQUEST)
                 .where(MEMBERSHIP_REQUEST.GROUP_ID.in(groups))
