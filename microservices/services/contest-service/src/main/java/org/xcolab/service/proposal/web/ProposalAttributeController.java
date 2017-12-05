@@ -15,6 +15,7 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeHelperData;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeService;
+import org.xcolab.service.proposal.service.proposalattribute.ProposalUnversionedAttributeHelperData;
 import org.xcolab.util.spring.web.annotation.ListMapping;
 
 import java.util.List;
@@ -110,6 +111,18 @@ public class ProposalAttributeController {
             @PathVariable int version) throws NotFoundException {
         final ProposalAttributeHelperData data =
                 proposalAttributeService.getProposalAttributeHelperData(proposalId, version);
+        if (data.getAttributesByNameAndAdditionalId().isEmpty()) {
+            throw new NotFoundException();
+        }
+        return data;
+    }
+
+    @GetMapping("/proposals/{proposalId}/attributeHelper")
+    public ProposalUnversionedAttributeHelperData getProposalUnversionedAttributeHelper(
+            @PathVariable long proposalId)
+            throws NotFoundException {
+        final ProposalUnversionedAttributeHelperData data =
+                proposalAttributeService.getProposalUnversionedAttributeHelperData(proposalId);
         if (data.getAttributesByNameAndAdditionalId().isEmpty()) {
             throw new NotFoundException();
         }

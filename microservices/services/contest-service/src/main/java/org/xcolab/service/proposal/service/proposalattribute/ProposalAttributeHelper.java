@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+//TODO COLAB-2456: duplicated from client
 public class ProposalAttributeHelper {
 
     private final Map<String, Map<Long, ProposalAttribute>> attributesByNameAndAdditionalId;

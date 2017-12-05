@@ -3,8 +3,9 @@ package org.xcolab.client.proposals.helpers;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
+import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttributeHelperDataDto;
 
-import java.util.List;
+import java.util.Map;
 
 public class ProposalUnversionedAttributeHelper extends AttributeHelper<ProposalUnversionedAttribute> {
 
@@ -18,9 +19,10 @@ public class ProposalUnversionedAttributeHelper extends AttributeHelper<Proposal
     }
 
     @Override
-    protected List<ProposalUnversionedAttribute> getAttributes() {
-        return proposalAttributeClient
-                .getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
+    protected Map<String, Map<Long, ProposalUnversionedAttribute>> loadAttributeData() {
+        final ProposalUnversionedAttributeHelperDataDto data = proposalAttributeClient
+                .getProposalUnversionedAttributeHelperData(proposal.getProposalId());
+        return data.getAttributesByNameAndAdditionalId();
     }
 
     @Override
