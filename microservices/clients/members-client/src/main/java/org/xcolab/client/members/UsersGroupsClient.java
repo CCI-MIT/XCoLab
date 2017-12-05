@@ -37,6 +37,12 @@ public class UsersGroupsClient {
                 .delete();
     }
 
+    public boolean deleteGroups(List<Long> groupIds) {
+        return usersGroupsResource.service("batchDelete", Boolean.class)
+                .queryParam("groupIds", groupIds)
+                .delete();
+    }
+
     public List<UsersGroups> getUserGroupsByGroupId(long groupId) {
         return usersGroupsResource.list()
                 .queryParam("groupId", groupId)

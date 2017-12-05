@@ -2,6 +2,7 @@ package org.xcolab.service.members.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,6 +47,9 @@ public class UsersGroupsController {
         return usersGroupsDao.delete(userId, groupId)> 0;
     }
 
-
+    @DeleteMapping("/batchDelete")
+    public Boolean deleteGroups(@RequestParam List<Long> groupIds) {
+        return usersGroupsDao.delete(groupIds);
+    }
 
 }

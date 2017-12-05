@@ -12,4 +12,6 @@ public interface UsersGroupsDao {
     Users_Groups create(Users_Groups usersGroups);
 
     int delete(Long userId, Long groupId);
+
+    Boolean delete(List<Long> groupIds);
 }
