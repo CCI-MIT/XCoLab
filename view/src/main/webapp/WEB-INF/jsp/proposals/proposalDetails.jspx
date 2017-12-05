@@ -12,7 +12,7 @@
     <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
     <c:choose>
         <c:when test='${proposal.imageId > 0}'>
-            <c:set var="proposalOpenGraphImage" value="${contest.proposalLogoPath}image/proposal/${proposal.imageId}"/>
+            <c:set var="proposalOpenGraphImage" value="${proposal.logoPath}"/>
         </c:when>
         <c:otherwise>
             <c:set var="proposalOpenGraphImage" value=""/>
