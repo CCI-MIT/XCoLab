@@ -105,9 +105,6 @@
                                 | MembershipRequest | xcolab_PointType
                                 | xcolab_ProposalReference | xcolab_ProposalRatingValue
                                 | xcolab_ProposalRatingType | xcolab_PointsDistributionConfiguration
-                                | comment_Comment | comment_Thread
-                                | activities_ActivityEntry | xcolab_ActivitySubscription
-                                | Users_Groups
                             </includes>
                         </database>
                     </generator>
