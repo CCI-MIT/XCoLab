@@ -38,6 +38,12 @@ public enum SocialMediaEngine {
         return SocialMediaEngine.values();
     }
 
+    public static List<SocialMediaEngine> getAllSocialMediaEngines() {
+        return Arrays.stream(getAllAvailableSocialMediaEngines())
+                .filter(e -> StringUtils.isNotEmpty(e.followMeUrl))
+                .collect(Collectors.toList());
+    }
+
     public static List<SocialMediaEngine> getShareableSocialMediaEngines() {
         return Arrays.stream(getAllAvailableSocialMediaEngines())
                 .filter(SocialMediaEngine::isShareable)

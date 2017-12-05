@@ -88,6 +88,7 @@
 
     <!--@elvariable id="_shareableSocialMediaUrls" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
     <!--@elvariable id="_followableSocialMediaUrls" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
+    <!--@elvariable id="_socialMediaEngines" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
 
     <!--@elvariable id="_isGoogleSsoActive" type="java.lang.Boolean"-->
     <!--@elvariable id="_isFacebookSsoActive" type="java.lang.Boolean"-->
@@ -436,8 +437,8 @@
     </script>
 
     <c:set var="socialMediaSameAs">
-        <c:forEach var="socialMediaUrl" items="${_socialMediaUrls}" varStatus="status">
-            "${socialMediaUrl}"${status.last ? '' : ','}
+        <c:forEach var="socialMediaEngine" items="${_socialMediaEngines}" varStatus="status">
+            "${socialMediaEngine.followMeUrl}"${status.last ? '' : ','}
         </c:forEach>
     </c:set>
 
