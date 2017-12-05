@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.util.List;
 import java.util.Optional;
@@ -117,6 +118,14 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     @Override
     public boolean delete(Long receiverId, Long classNameId, Long classPK, String extraInfo) {
         return getDeleteQuery(receiverId, classNameId, classPK, extraInfo).execute() > 0;
+    }
+
+    @Override
+    public boolean delete(ActivityEntryType activityEntryType, List<Long> classPKs) {// Delete proposal subscriptions
+        return dslContext.deleteFrom(ACTIVITY_SUBSCRIPTION)
+                .where(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(activityEntryType.getPrimaryTypeId()))
+                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.in(classPKs))
+                .execute() > 0;
     }
 
     @Override

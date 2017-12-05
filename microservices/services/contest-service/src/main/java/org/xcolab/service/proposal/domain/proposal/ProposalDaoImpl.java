@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.model.tables.ProposalContestPhaseAttributeTable;
 import org.xcolab.model.tables.pojos.Proposal;
@@ -380,16 +381,8 @@ public class ProposalDaoImpl implements ProposalDao {
         ctx.deleteFrom(PROPOSAL_VERSION)
                 .where(PROPOSAL_VERSION.PROPOSAL_ID.in(orphanProposals))
                 .execute();
-        // Delete proposal subscriptions
-        ctx.deleteFrom(ACTIVITY_SUBSCRIPTION)
-                .where(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(ActivityEntryType.PROPOSAL.getPrimaryTypeId()))
-                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.in(orphanProposals))
-                .execute();
-        // Delete proposal activity entries
-        ctx.deleteFrom(ACTIVITY_ENTRY)
-                .where(ACTIVITY_ENTRY.PRIMARY_TYPE.eq(ActivityEntryType.PROPOSAL.getPrimaryTypeId()))
-                .and(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY.in(orphanProposals))
-                .execute();
+        // Delete proposal subscriptions and activity entries.
+        ActivitiesClientUtil.batchDelete(ActivityEntryType.PROPOSAL, orphanProposals);
         // Select proposal groups.
         List<Long> groups = ctx.select(PROPOSAL.GROUP_ID).from(PROPOSAL)
                 .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
