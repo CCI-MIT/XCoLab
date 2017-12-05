@@ -45,6 +45,14 @@ public class ThreadClient {
                 .toPojo(serviceNamespace);
     }
 
+    public void deleteThread(long threadId) {
+        commentServiceWrapper.deleteThread(threadId);
+    }
+
+    public void deleteProposalThreads(List<Long> proposalPKs) {
+        commentServiceWrapper.deleteProposalThreads(proposalPKs);
+    }
+
     public Date getLastActivityDate(long threadId) {
         return commentServiceWrapper.getLastActivityDate(threadId, CacheName.MISC_REQUEST);
     }

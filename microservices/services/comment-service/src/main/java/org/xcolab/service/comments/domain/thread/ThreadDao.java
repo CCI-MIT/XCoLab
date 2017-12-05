@@ -25,4 +25,9 @@ public interface ThreadDao {
 
     Optional<Comment> getLastComment(long threadId);
 
+    void delete(Long threadId);
+
+    void deleteThreads(List<Long> threadIDs);
+
+    List<Long> getProposalThreads(List<Long> proposalPKs);
 }

@@ -32,6 +32,14 @@ public final class ThreadClientUtil {
         return threadClient.createThread(thread);
     }
 
+    public static void deleteThread(long threadId) {
+        threadClient.deleteThread(threadId);
+    }
+
+    public static void deleteProposalThreads(List<Long> proposalPKs) {
+        threadClient.deleteProposalThreads(proposalPKs);
+    }
+
     public static Date getLastActivityDate(long threadId) {
         return threadClient.getLastActivityDate(threadId);
     }

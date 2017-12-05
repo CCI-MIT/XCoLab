@@ -11,8 +11,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.proposal.domain.proposal.ProposalDaoImpl;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.SortColumn;
 import org.xcolab.util.enums.activity.ActivityEntryType;
@@ -25,7 +27,6 @@ import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.CONTEST_TEAM_MEMBER;
 import static org.xcolab.model.Tables.CONTEST_TRANSLATION;
 import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
-import static org.xcolab.service.proposal.domain.proposal.ProposalDaoImpl.deleteOrphanProposals;
 
 @Repository
 public class ContestDaoImpl implements ContestDao {
@@ -349,7 +350,7 @@ public class ContestDaoImpl implements ContestDao {
 
             deleteContestData(ctx, contestPK);
             deleteContestPhases(ctx, contestPK);
-            deleteOrphanProposals(ctx);
+            ProposalDaoImpl.deleteOrphanProposals(ctx);
 
             result[0] = deleteContest(ctx, contestPK);
         });
@@ -380,15 +381,9 @@ public class ContestDaoImpl implements ContestDao {
                 .from(CONTEST)
                 .where(CONTEST.CONTEST_PK.eq(contestPK))
                 .fetchOne()
-                .value1();
-        // Delete contest discussion comments.
-        ctx.deleteFrom(COMMENT)
-                .where(COMMENT.THREAD_ID.eq(threadId))
-                .execute();
-        // Delete contest discussion thread.
-        ctx.deleteFrom(THREAD)
-                .where(THREAD.THREAD_ID.eq(threadId))
-                .execute();
+                .into(Long.class);
+        // Delete contest thread and comments.
+        ThreadClientUtil.deleteThread(threadId);
         // Delete contest subscriptions.
         ctx.deleteFrom(ACTIVITY_SUBSCRIPTION)
                 .where(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(ActivityEntryType.CONTEST.getPrimaryTypeId()))

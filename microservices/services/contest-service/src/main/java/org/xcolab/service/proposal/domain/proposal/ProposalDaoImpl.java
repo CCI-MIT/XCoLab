@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.model.tables.ProposalContestPhaseAttributeTable;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.records.ProposalRecord;
@@ -361,11 +362,12 @@ public class ProposalDaoImpl implements ProposalDao {
 
     public static void deleteOrphanProposals(DSLContext ctx) {
         // Retrieve orphaned proposals
-        Select<Record1<Long>> orphanProposals = ctx.select(PROPOSAL.PROPOSAL_ID)
+        List<Long> orphanProposals = ctx.select(PROPOSAL.PROPOSAL_ID)
                 .from(PROPOSAL)
                 .whereNotExists(ctx.select(val(1))
                         .from(PROPOSAL_2_PHASE)
-                        .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)));
+                        .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)))
+                .fetchInto(Long.class);
         // Delete proposal attributes of orphaned proposals
         ctx.deleteFrom(PROPOSAL_ATTRIBUTE)
                 .where(PROPOSAL_ATTRIBUTE.PROPOSAL_ID.in(orphanProposals))
@@ -377,24 +379,6 @@ public class ProposalDaoImpl implements ProposalDao {
         // Delete proposal versions.
         ctx.deleteFrom(PROPOSAL_VERSION)
                 .where(PROPOSAL_VERSION.PROPOSAL_ID.in(orphanProposals))
-                .execute();
-        // Select proposal discussion thread ids
-        List<Long> threadIDs =
-                ctx.select(THREAD.THREAD_ID).from(THREAD).join(PROPOSAL)
-                        .on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .or(PROPOSAL.ADVISOR_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .or(PROPOSAL.FELLOW_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .or(PROPOSAL.JUDGE_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .or(PROPOSAL.RESULTS_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                        .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
-                        .fetchInto(Long.class);
-        // Delete proposal discussion comments
-        ctx.deleteFrom(COMMENT)
-                .where(COMMENT.THREAD_ID.in(threadIDs))
-                .execute();
-        // Delete proposal discussion threads
-        ctx.deleteFrom(THREAD)
-                .where(THREAD.THREAD_ID.in(threadIDs))
                 .execute();
         // Delete proposal subscriptions
         ctx.deleteFrom(ACTIVITY_SUBSCRIPTION)
@@ -458,9 +442,9 @@ public class ProposalDaoImpl implements ProposalDao {
                 .execute();
         // Delete orphaned proposals
         ctx.deleteFrom(PROPOSAL)
-                .whereNotExists(ctx.select(val(1))
-                        .from(PROPOSAL_2_PHASE)
-                        .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)))
+                .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
                 .execute();
+        // Delete proposal discussion threads and comments.
+        ThreadClientUtil.deleteProposalThreads(orphanProposals);
     }
 }
