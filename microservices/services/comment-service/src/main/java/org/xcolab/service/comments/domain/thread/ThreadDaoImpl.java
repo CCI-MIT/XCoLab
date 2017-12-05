@@ -185,23 +185,25 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public void delete(Long threadId) {
-        dslContext.deleteFrom(COMMENT)
+    public boolean delete(Long threadId) {
+        boolean result = dslContext.deleteFrom(COMMENT)
                 .where(COMMENT.THREAD_ID.eq(threadId))
-                .execute();
-        dslContext.deleteFrom(THREAD)
+                .execute() > 0;
+        result = result || dslContext.deleteFrom(THREAD)
                 .where(THREAD.THREAD_ID.eq(threadId))
-                .execute();
+                .execute() > 0;
+        return result;
     }
 
     @Override
-    public void deleteThreads(List<Long> threadIDs) {
-        dslContext.deleteFrom(COMMENT)
+    public boolean deleteThreads(List<Long> threadIDs) {
+        boolean result = dslContext.deleteFrom(COMMENT)
                 .where(COMMENT.THREAD_ID.in(threadIDs))
-                .execute();
-        dslContext.deleteFrom(THREAD)
+                .execute() > 0;
+        result = result || dslContext.deleteFrom(THREAD)
                 .where(THREAD.THREAD_ID.in(threadIDs))
-                .execute();
+                .execute() > 0;
+        return result;
     }
 
     @Override

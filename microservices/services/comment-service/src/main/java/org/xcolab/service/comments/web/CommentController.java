@@ -184,18 +184,22 @@ public class CommentController {
     }
 
     @DeleteMapping("/threads/{threadId}")
-    public void deleteThreads(@PathVariable Long threadId) {
+    public boolean deleteThreads(@PathVariable Long threadId) {
+        boolean result = false;
         if (threadId != null) {
-            threadDao.delete(threadId);
+            result = threadDao.delete(threadId);
         }
+        return result;
     }
 
     @DeleteMapping("/deleteProposalThreads")
-    public void deleteThreads(@RequestParam List<Long> proposalPKs) {
+    public boolean deleteThreads(@RequestParam List<Long> proposalPKs) {
+        boolean result = false;
         if (proposalPKs != null) {
             List<Long> threadIDs = threadDao.getProposalThreads(proposalPKs);
-            threadDao.deleteThreads(threadIDs);
+            result = threadDao.deleteThreads(threadIDs);
         }
+        return result;
     }
 
     @GetMapping("/threads/{threadId}")
