@@ -50,3 +50,7 @@ service name as argument:
 # Stop the content service
 ./stopServices.sh content-service
 ```
+
+If you are compiling from source, make sure to run
+`./copyBinaries.sh` after each re-compilation and
+before starting the servers.
