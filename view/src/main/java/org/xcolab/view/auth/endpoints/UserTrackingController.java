@@ -30,7 +30,8 @@ public class UserTrackingController {
 
     @PostMapping("/trackVisitor")
     protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
-            @RealMember Member loggedInMember, @RequestParam String uuid, @RequestParam String url,
+            @RealMember Member loggedInMember, @RequestParam String url,
+            @RequestParam(required = false) String uuid,
             @RequestParam(required = false) String referer) {
 
         String browser = request.getHeader(HttpHeaders.USER_AGENT);
