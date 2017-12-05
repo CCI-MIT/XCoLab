@@ -24,9 +24,6 @@ import java.util.Optional;
 
 import static org.jooq.impl.DSL.sum;
 import static org.jooq.impl.DSL.val;
-import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
-import static org.xcolab.model.Tables.ACTIVITY_SUBSCRIPTION;
-import static org.xcolab.model.Tables.COMMENT;
 import static org.xcolab.model.Tables.CONTEST;
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.CONTEST_PHASE_RIBBON_TYPE;
@@ -45,8 +42,6 @@ import static org.xcolab.model.Tables.PROPOSAL_SUPPORTER;
 import static org.xcolab.model.Tables.PROPOSAL_UNVERSIONED_ATTRIBUTE;
 import static org.xcolab.model.Tables.PROPOSAL_VERSION;
 import static org.xcolab.model.Tables.PROPOSAL_VOTE;
-import static org.xcolab.model.Tables.THREAD;
-import static org.xcolab.model.Tables.USERS_GROUPS;
 
 @Repository
 public class ProposalDaoImpl implements ProposalDao {

@@ -19,16 +19,12 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.util.List;
 
-import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
-import static org.xcolab.model.Tables.ACTIVITY_SUBSCRIPTION;
-import static org.xcolab.model.Tables.COMMENT;
 import static org.xcolab.model.Tables.CONTEST;
 import static org.xcolab.model.Tables.CONTEST_DISCUSSION;
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.CONTEST_TEAM_MEMBER;
 import static org.xcolab.model.Tables.CONTEST_TRANSLATION;
 import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
-import static org.xcolab.model.Tables.THREAD;
 import static org.xcolab.service.proposal.domain.proposal.ProposalDaoImpl.deleteOrphanProposals;
 
 @Repository
