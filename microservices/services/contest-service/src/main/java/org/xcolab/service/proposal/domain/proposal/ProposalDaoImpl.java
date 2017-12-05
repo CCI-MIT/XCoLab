@@ -370,23 +370,28 @@ public class ProposalDaoImpl implements ProposalDao {
                         .from(PROPOSAL_2_PHASE)
                         .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)))
                 .fetchInto(Long.class);
-        // Delete proposal attributes of orphaned proposals
+        // Delete all orphaned proposals
+        deleteProposals(ctx, orphanProposals);
+    }
+
+    public static void deleteProposals(DSLContext ctx, List<Long> proposalIds) {
+        // Delete proposal attributes of proposals
         ctx.deleteFrom(PROPOSAL_ATTRIBUTE)
-                .where(PROPOSAL_ATTRIBUTE.PROPOSAL_ID.in(orphanProposals))
+                .where(PROPOSAL_ATTRIBUTE.PROPOSAL_ID.in(proposalIds))
                 .execute();
-        // Delete unversioned proposal attributes of orphaned proposals
+        // Delete unversioned proposal attributes of proposals
         ctx.deleteFrom(PROPOSAL_UNVERSIONED_ATTRIBUTE)
-                .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.PROPOSAL_ID.in(orphanProposals))
+                .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal versions.
         ctx.deleteFrom(PROPOSAL_VERSION)
-                .where(PROPOSAL_VERSION.PROPOSAL_ID.in(orphanProposals))
+                .where(PROPOSAL_VERSION.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal subscriptions and activity entries.
-        ActivitiesClientUtil.batchDelete(ActivityEntryType.PROPOSAL, orphanProposals);
+        ActivitiesClientUtil.batchDelete(ActivityEntryType.PROPOSAL, proposalIds);
         // Select proposal groups.
         List<Long> groups = ctx.select(PROPOSAL.GROUP_ID).from(PROPOSAL)
-                .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
+                .where(PROPOSAL.PROPOSAL_ID.in(proposalIds))
                 .fetchInto(Long.class);
         // Delete proposal group members
         UsersGroupsClientUtil.deleteGroups(groups);
@@ -400,43 +405,43 @@ public class ProposalDaoImpl implements ProposalDao {
                 .execute();
         // Delete proposal supports
         ctx.deleteFrom(PROPOSAL_SUPPORTER)
-                .where(PROPOSAL_SUPPORTER.PROPOSAL_ID.in(orphanProposals))
+                .where(PROPOSAL_SUPPORTER.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal votes
         ctx.deleteFrom(PROPOSAL_VOTE)
-                .where(PROPOSAL_VOTE.PROPOSAL_ID.in(orphanProposals));
+                .where(PROPOSAL_VOTE.PROPOSAL_ID.in(proposalIds));
         // Delete contest phase attributes
         ctx.deleteFrom(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
-                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.PROPOSAL_ID.in(orphanProposals))
+                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal ratings
         ctx.deleteFrom(PROPOSAL_RATING)
-                .where(PROPOSAL_RATING.PROPOSAL_ID.in(orphanProposals))
+                .where(PROPOSAL_RATING.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal references
         ctx.deleteFrom(PROPOSAL_REFERENCE)
-                .where(PROPOSAL_REFERENCE.PROPOSAL_ID.in(orphanProposals))
-                .or(PROPOSAL_REFERENCE.SUB_PROPOSAL_ID.in(orphanProposals))
+                .where(PROPOSAL_REFERENCE.PROPOSAL_ID.in(proposalIds))
+                .or(PROPOSAL_REFERENCE.SUB_PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal move history entries
         ctx.deleteFrom(PROPOSAL_MOVE_HISTORY)
-                .where(PROPOSAL_MOVE_HISTORY.SOURCE_PROPOSAL_ID.in(orphanProposals))
-                .or(PROPOSAL_MOVE_HISTORY.TARGET_PROPOSAL_ID.in(orphanProposals))
+                .where(PROPOSAL_MOVE_HISTORY.SOURCE_PROPOSAL_ID.in(proposalIds))
+                .or(PROPOSAL_MOVE_HISTORY.TARGET_PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete points distribution configuration
         ctx.deleteFrom(POINTS_DISTRIBUTION_CONFIGURATION)
-                .where(POINTS_DISTRIBUTION_CONFIGURATION.PROPOSAL_ID.in(orphanProposals))
-                .or(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_SUB_PROPOSAL_ID.in(orphanProposals))
+                .where(POINTS_DISTRIBUTION_CONFIGURATION.PROPOSAL_ID.in(proposalIds))
+                .or(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_SUB_PROPOSAL_ID.in(proposalIds))
                 .execute();
         ctx.deleteFrom(POINTS)
-                .where(POINTS.PROPOSAL_ID.in(orphanProposals))
-                .or(POINTS.ORIGINATING_PROPOSAL_ID.in(orphanProposals))
+                .where(POINTS.PROPOSAL_ID.in(proposalIds))
+                .or(POINTS.ORIGINATING_PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete orphaned proposals
         ctx.deleteFrom(PROPOSAL)
-                .where(PROPOSAL.PROPOSAL_ID.in(orphanProposals))
+                .where(PROPOSAL.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal discussion threads and comments.
-        ThreadClientUtil.deleteProposalThreads(orphanProposals);
+        ThreadClientUtil.deleteProposalThreads(proposalIds);
     }
 }
