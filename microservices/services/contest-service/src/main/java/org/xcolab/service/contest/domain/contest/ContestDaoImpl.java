@@ -20,6 +20,7 @@ import org.xcolab.util.SortColumn;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.xcolab.model.Tables.CONTEST;
 import static org.xcolab.model.Tables.CONTEST_DISCUSSION;
@@ -344,7 +345,7 @@ public class ContestDaoImpl implements ContestDao {
 
     @Override
     public boolean delete(long contestPK) {
-        final boolean[] result = new boolean[1];
+        AtomicBoolean result = new AtomicBoolean();
         dslContext.transaction(configuration -> {
             DSLContext ctx = DSL.using(configuration);
 
@@ -352,9 +353,9 @@ public class ContestDaoImpl implements ContestDao {
             deleteContestPhases(ctx, contestPK);
             ProposalDaoImpl.deleteOrphanProposals(ctx);
 
-            result[0] = deleteContest(ctx, contestPK);
+            result.set(deleteContest(ctx, contestPK));
         });
-        return result[0];
+        return result.get();
     }
 
     private static boolean deleteContest(DSLContext ctx, long contestPK) {
