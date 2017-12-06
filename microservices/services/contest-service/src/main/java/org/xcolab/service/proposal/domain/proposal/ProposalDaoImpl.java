@@ -6,6 +6,7 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Select;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -296,6 +297,12 @@ public class ProposalDaoImpl implements ProposalDao {
         }
         return record.into(Proposal.class);
 
+    }
+
+    @Override
+    public boolean exists(long proposalId) {
+        return dslContext.fetchExists(DSL.selectFrom(PROPOSAL)
+                .where(PROPOSAL.PROPOSAL_ID.eq(proposalId)));
     }
 
     @Override

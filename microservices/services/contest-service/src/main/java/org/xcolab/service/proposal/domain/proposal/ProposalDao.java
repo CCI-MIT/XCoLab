@@ -26,6 +26,8 @@ public interface ProposalDao {
 
     Proposal get(Long proposalId) throws NotFoundException;
 
+    boolean exists(long proposalId);
+
     boolean update(Proposal proposal);
 
     Integer getProposalMaterializedPoints(Long proposalId);
