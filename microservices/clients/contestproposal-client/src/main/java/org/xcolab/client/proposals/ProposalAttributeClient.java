@@ -33,8 +33,6 @@ public final class ProposalAttributeClient {
 
     private static final Map<ServiceNamespace, ProposalAttributeClient> instances = new HashMap<>();
 
-    public static final int LATEST_VERSION = Integer.MAX_VALUE;
-
     private final ServiceNamespace serviceNamespace;
     private final RestResource1<ProposalAttributeDto, Long> proposalAttributeResource;
     private final RestResource1<ProposalUnversionedAttributeDto, Long>
