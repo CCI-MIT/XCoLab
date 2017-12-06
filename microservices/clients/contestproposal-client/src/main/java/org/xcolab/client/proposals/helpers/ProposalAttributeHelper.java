@@ -3,10 +3,10 @@ package org.xcolab.client.proposals.helpers;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeHelperDataDto;
 
-import java.util.List;
+import java.util.Map;
 
-//TODO: functionality is duplicated in the service
 public class ProposalAttributeHelper extends AttributeHelper<ProposalAttribute> {
 
     private final Proposal proposal;
@@ -25,8 +25,10 @@ public class ProposalAttributeHelper extends AttributeHelper<ProposalAttribute> 
     }
 
     @Override
-    protected List<ProposalAttribute> getAttributes() {
-        return proposalAttributeClient.getAllProposalAttributes(proposal.getProposalId(), version);
+    protected Map<String, Map<Long, ProposalAttribute>> loadAttributeData() {
+        final ProposalAttributeHelperDataDto data = proposalAttributeClient
+                .getProposalAttributeHelperData(proposal.getProposalId(), version);
+        return data.getAttributesByNameAndAdditionalId();
     }
 
     @Override

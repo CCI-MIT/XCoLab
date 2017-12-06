@@ -5,14 +5,18 @@ import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalDto;
+import org.xcolab.client.proposals.pojo.ProposalVersionDto;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeDto;
+import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeHelperDataDto;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttributeDto;
+import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttributeHelperDataDto;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.dto.DtoUtil;
@@ -34,12 +38,21 @@ public final class ProposalAttributeClient {
     private final RestResource1<ProposalUnversionedAttributeDto, Long>
             proposalUnversionedAttributeResource;
 
+    private final RestResource1<ProposalDto, Long> proposalResource;
+    private final RestResource2L<ProposalDto, ProposalVersionDto> proposalVersionResource;
+
     private ProposalAttributeClient(ServiceNamespace serviceNamespace) {
+        //TODO COLAB-2409: service namespace missing
         proposalAttributeResource = new RestResource1<>(ProposalResource.PROPOSAL_ATTRIBUTE,
                 ProposalAttributeDto.TYPES);
         proposalUnversionedAttributeResource = new RestResource1<>(
                 ProposalResource.PROPOSAL_UNVERSIONED_ATTRIBUTE,
                 ProposalUnversionedAttributeDto.TYPES);
+
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES,
+                serviceNamespace);
+        this.proposalVersionResource = new RestResource2L<>(proposalResource,
+                "versions", ProposalVersionDto.TYPES);
         this.serviceNamespace = serviceNamespace;
     }
 
@@ -131,6 +144,27 @@ public final class ProposalAttributeClient {
                         .withParameter("version",version)
                         .asList(), CacheName.PROPOSAL_DETAILS)
                 .execute(), serviceNamespace);
+    }
+
+    public ProposalAttributeHelperDataDto getProposalAttributeHelperData(long proposalId,
+            long version) {
+        return proposalVersionResource.resolveParent(proposalResource.id(proposalId))
+                .<ProposalAttributeHelperDataDto, ProposalAttributeHelperDataDto>service(
+                        version, "attributeHelper",
+                        ProposalAttributeHelperDataDto.class)
+                .withCache(CacheKeys.withClass(ProposalAttributeHelperDataDto.class)
+                        .withParameter("proposalId", proposalId)
+                        .withParameter("version", version)
+                        .build(), CacheName.MISC_MEDIUM)
+                .get();
+    }
+
+    public ProposalUnversionedAttributeHelperDataDto getProposalUnversionedAttributeHelperData(
+            long proposalId) {
+        return proposalResource
+                .service(proposalId,"attributeHelper",
+                        ProposalUnversionedAttributeHelperDataDto.class)
+                .get();
     }
 
     private ProposalAttribute createProposalAttribute(Long userId, Long proposalId, String name,

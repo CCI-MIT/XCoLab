@@ -8,11 +8,13 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
+import org.xcolab.model.tables.pojos.ProposalUnversionedAttribute;
 import org.xcolab.model.tables.pojos.ProposalVersion;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
+import org.xcolab.service.proposal.domain.proposalunversionedattribute.ProposalUnversionedAttributeDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -21,19 +23,43 @@ import java.util.List;
 @Service
 public class ProposalAttributeService {
 
+    public static final int LATEST_VERSION = Integer.MAX_VALUE;
+
     private final ProposalAttributeDao proposalAttributeDao;
 
-    private final ProposalDao proposalDao;
+    private final ProposalUnversionedAttributeDao proposalUnversionedAttributeDao;
 
+    private final ProposalDao proposalDao;
 
     private final ProposalVersionDao proposalVersionDao;
 
     @Autowired
     public ProposalAttributeService(ProposalDao proposalDao,
-            ProposalAttributeDao proposalAttributeDao, ProposalVersionDao proposalVersionDao) {
+            ProposalAttributeDao proposalAttributeDao,
+            ProposalUnversionedAttributeDao proposalUnversionedAttributeDao, ProposalVersionDao proposalVersionDao) {
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposalDao = proposalDao;
+        this.proposalUnversionedAttributeDao = proposalUnversionedAttributeDao;
         this.proposalVersionDao = proposalVersionDao;
+    }
+
+    public ProposalAttributeHelper getProposalAttributeHelper(long proposalId, int version) {
+        ProposalAttributeHelperData data = getProposalAttributeHelperData(proposalId, version);
+        return new ProposalAttributeHelper(data);
+    }
+
+    public ProposalAttributeHelperData getProposalAttributeHelperData(long proposalId,
+            int version) {
+        final List<ProposalAttribute> attributes = proposalAttributeDao.findByGiven(proposalId,
+                null, null, version);
+        return new ProposalAttributeHelperData(attributes);
+    }
+
+    public ProposalUnversionedAttributeHelperData getProposalUnversionedAttributeHelperData(
+            long proposalId) {
+        final List<ProposalUnversionedAttribute> attributes =
+                proposalUnversionedAttributeDao.findByGiven(proposalId);
+        return new ProposalUnversionedAttributeHelperData(attributes);
     }
 
     public ProposalAttribute setAttribute(ProposalAttribute proposalAttribute, Long authorId) {

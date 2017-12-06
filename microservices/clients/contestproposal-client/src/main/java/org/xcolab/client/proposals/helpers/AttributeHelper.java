@@ -3,35 +3,22 @@ package org.xcolab.client.proposals.helpers;
 import org.xcolab.util.attributes.Attribute;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class AttributeHelper<AttributeT extends Attribute> {
 
     private Map<String, Map<Long, AttributeT>> attributesByNameAndAdditionalId;
 
-    protected abstract List<AttributeT> getAttributes();
+    protected abstract Map<String, Map<Long, AttributeT>> loadAttributeData();
 
+    //TODO COLAB-2459: remove this once SCENARIO_ID attribute's weird usage of additionalId is fixed
+    //Duplicates service functionality
     protected abstract boolean isNewRankedHigher(AttributeT oldAttribute, AttributeT newAttribute);
 
     //initialization is expensive --> be lazy
     private void init() {
         if (attributesByNameAndAdditionalId == null) {
-            List<AttributeT> attributes = getAttributes();
-            attributesByNameAndAdditionalId = new HashMap<>();
-            for (AttributeT attribute : attributes) {
-                Map<Long, AttributeT> currentAttributes = attributesByNameAndAdditionalId
-                        .computeIfAbsent(attribute.getName(), k-> new HashMap<>());
-
-                AttributeT currentAttribute = currentAttributes
-                        .get(attribute.getAdditionalId());
-
-                //ignore older versions TODO: why are we even getting older versions from the db?
-                if (currentAttribute == null || isNewRankedHigher(currentAttribute, attribute)) {
-                    currentAttributes.put(attribute.getAdditionalId(), attribute);
-                }
-            }
+            attributesByNameAndAdditionalId = loadAttributeData();
         }
     }
 
