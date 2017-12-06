@@ -285,7 +285,7 @@
             "item": {
               "@id": "${_colabUrl}${contest.contestUrl}",
               "name": "${contestShortName}",
-              "image": "${_colabUrl}${contest.logoPath}"
+              "image": "${contest.logoPath}"
             }
           }
           ,
@@ -296,7 +296,7 @@
               "@id": "${proposal.absoluteProposalUrl}",
               "name": "${proposalName}"
               <c:if test='${proposal.imageId > 0}'>
-            ,"image": "${_colabUrl}${contest.proposalLogoPath}image/proposal/${proposal.imageId}"
+            ,"image": "${proposal.logoPath}"
              </c:if>
             }
           }
