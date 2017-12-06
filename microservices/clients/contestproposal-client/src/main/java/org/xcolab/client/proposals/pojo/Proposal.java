@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -390,6 +391,16 @@ public class Proposal extends AbstractProposal {
 
     public long getImageId() {
         return proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
+    }
+
+    public String getLogoPath() {
+        String imageDomain;
+        if (contest.getIsSharedContestInForeignColab()) {
+            imageDomain = ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get();
+        } else {
+            imageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
+        }
+        return imageDomain + "/image/proposal/" + getImageId();
     }
 
     public String getProposalUrl() {

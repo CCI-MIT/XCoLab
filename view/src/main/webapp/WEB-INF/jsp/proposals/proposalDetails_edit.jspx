@@ -114,12 +114,6 @@
         </div> <!-- /c-Headline -->
 
 
-        <form action="${contest.proposalLogoPath}images/upload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <input type="file" name="file" id="fileUploadInput" />
-        </form>
-
-
         <form:form action="${saveUrl}" commandName="updateProposalDetailsBean"
                    id="editForm"
                    cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" >
