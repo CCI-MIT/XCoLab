@@ -50,4 +50,6 @@ rebel.xml
 hs_err_pid*
 
 ### Custom ###
+# temporary folders for run scripts
 binaries/
+bundle/
