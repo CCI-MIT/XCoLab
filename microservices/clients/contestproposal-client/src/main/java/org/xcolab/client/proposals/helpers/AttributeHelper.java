@@ -11,7 +11,7 @@ public abstract class AttributeHelper<AttributeT extends Attribute> {
 
     protected abstract Map<String, Map<Long, AttributeT>> loadAttributeData();
 
-    //TODO: remove this once the SCENARIO_ID attribute's weird usage of additionalId is fixed
+    //TODO COLAB-2459: remove this once SCENARIO_ID attribute's weird usage of additionalId is fixed
     //Duplicates service functionality
     protected abstract boolean isNewRankedHigher(AttributeT oldAttribute, AttributeT newAttribute);
 
