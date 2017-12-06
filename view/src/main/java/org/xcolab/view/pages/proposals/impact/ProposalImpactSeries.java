@@ -17,6 +17,7 @@ import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
+import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
@@ -28,7 +29,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -113,30 +113,27 @@ public class ProposalImpactSeries {
         List<ImpactDefaultSeries> impactDefaultSerieses =
                 OntologyClientUtil.getAllmpactDefaultSeriesByFocusArea(focusArea.getId_());
 
-        // TODO create query to filter by additionalId?
-        List<ProposalAttribute> impactProposalAttributes =
-                ProposalAttributeClientUtil.getImpactProposalAttributes(proposal);
+        final ProposalAttributeHelper proposalAttributeHelper =
+                proposal.getProposalAttributeHelper();
 
         for (ImpactDefaultSeries defaultSeries : impactDefaultSerieses) {
 
             // Look for already entered data
             if (defaultSeries.getEditable()) {
 
-                // TODO write a separate finder for the proposal attribute that is being searched
                 boolean foundEnteredData = false;
-                for (ProposalAttribute attribute : impactProposalAttributes) {
-                    if (attribute.getName().equals(defaultSeries.getName()) && Objects
-                            .equals(attribute.getAdditionalId(), focusArea.getId_())) {
-                        foundEnteredData = true;
-                        addSeriesValueWithType(attribute.getName(),
-                                attribute.getNumericValue().intValue(),
-                                attribute.getRealValue());
+                final ProposalAttribute attribute = proposalAttributeHelper
+                        .getAttributeOrNull(defaultSeries.getName(), focusArea.getId_());
+                if (attribute != null) {
+                    foundEnteredData = true;
+                    addSeriesValueWithType(attribute.getName(),
+                            attribute.getNumericValue().intValue(),
+                            attribute.getRealValue());
 
-                        // Set author and modification date
-                        this.lastModifiedVersion = ProposalClientUtil
-                                .getProposalVersionByProposalIdVersion(proposal.getProposalId(),
-                                        attribute.getVersion());
-                    }
+                    // Set author and modification date
+                    this.lastModifiedVersion = ProposalClientUtil
+                            .getProposalVersionByProposalIdVersion(proposal.getProposalId(),
+                                    attribute.getVersion());
                 }
 
                 // Use default data if not entered
