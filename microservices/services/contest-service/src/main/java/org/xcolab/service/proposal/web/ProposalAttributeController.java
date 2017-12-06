@@ -109,23 +109,12 @@ public class ProposalAttributeController {
     @GetMapping("/proposals/{proposalId}/versions/{version}/attributeHelper")
     public ProposalAttributeHelperData getProposalAttributeHelper(@PathVariable long proposalId,
             @PathVariable int version) throws NotFoundException {
-        final ProposalAttributeHelperData data =
-                proposalAttributeService.getProposalAttributeHelperData(proposalId, version);
-        if (data.getAttributesByNameAndAdditionalId().isEmpty()) {
-            throw new NotFoundException();
-        }
-        return data;
+        return proposalAttributeService.getProposalAttributeHelperData(proposalId, version);
     }
 
     @GetMapping("/proposals/{proposalId}/attributeHelper")
     public ProposalUnversionedAttributeHelperData getProposalUnversionedAttributeHelper(
-            @PathVariable long proposalId)
-            throws NotFoundException {
-        final ProposalUnversionedAttributeHelperData data =
-                proposalAttributeService.getProposalUnversionedAttributeHelperData(proposalId);
-        if (data.getAttributesByNameAndAdditionalId().isEmpty()) {
-            throw new NotFoundException();
-        }
-        return data;
+            @PathVariable long proposalId) throws NotFoundException {
+        return proposalAttributeService.getProposalUnversionedAttributeHelperData(proposalId);
     }
 }
