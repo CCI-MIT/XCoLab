@@ -148,9 +148,16 @@ public final class ProposalAttributeClient {
                 .execute(), serviceNamespace);
     }
 
-    public ProposalAttributeHelperDataDto getProposalAttributeHelperData(long proposalId, long version) {
+    public ProposalAttributeHelperDataDto getProposalAttributeHelperData(long proposalId,
+            long version) {
         return proposalVersionResource.resolveParent(proposalResource.id(proposalId))
-                .service(version, "attributeHelper", ProposalAttributeHelperDataDto.class)
+                .<ProposalAttributeHelperDataDto, ProposalAttributeHelperDataDto>service(
+                        version, "attributeHelper",
+                        ProposalAttributeHelperDataDto.class)
+                .withCache(CacheKeys.withClass(ProposalAttributeHelperDataDto.class)
+                        .withParameter("proposalId", proposalId)
+                        .withParameter("version", version)
+                        .build(), CacheName.MISC_MEDIUM)
                 .get();
     }
 
