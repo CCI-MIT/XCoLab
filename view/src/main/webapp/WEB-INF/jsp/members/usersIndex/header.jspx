@@ -29,9 +29,11 @@
 			name below to open their profile and then selecting "Send message."
 		</div>
 		<script>
-			if (!Cookies.get("climatecolab_hide_members_msg")) {
-			    jQuery("#js-HelpBox").show();
-			}
+            jQuery(function() {
+                if (!Cookies.get("climatecolab_hide_members_msg")) {
+                    jQuery("#js-HelpBox").show();
+                }
+            });
 		</script>
 	</div>
 
