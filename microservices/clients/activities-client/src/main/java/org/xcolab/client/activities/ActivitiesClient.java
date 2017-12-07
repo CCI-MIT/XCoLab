@@ -149,9 +149,8 @@ public final class ActivitiesClient {
 
     public boolean batchDelete(ActivityEntryType activityEntryType, List<Long> classPKs) {
         return activitySubscriptionResource.service("batchDelete", Boolean.class)
-                .queryParam("classPKs", classPKs)
                 .queryParam("activityEntryType", activityEntryType)
-                .delete();
+                .post(classPKs);
     }
 
     public boolean isSubscribedToActivity(Long receiverId, Long classNameId, Long classPK,
