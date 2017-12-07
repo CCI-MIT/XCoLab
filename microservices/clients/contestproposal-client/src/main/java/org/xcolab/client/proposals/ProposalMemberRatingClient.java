@@ -42,7 +42,7 @@ public final class ProposalMemberRatingClient {
                 ProposalVoteDto.TYPES, serviceNamespace);
 
         supportedProposalsResource = new RestResource1<>(ProposalResource.SUPPORTED_PROPOSALS,
-                 SupportedProposalDto.TYPES);
+                 SupportedProposalDto.TYPES, serviceNamespace);
 
         this.serviceNamespace = serviceNamespace;
     }

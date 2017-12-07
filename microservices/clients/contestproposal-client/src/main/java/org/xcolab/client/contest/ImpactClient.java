@@ -35,14 +35,15 @@ public class ImpactClient {
     private ImpactClient(ServiceNamespace serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
         impactTemplateSeriesResource = new RestResource1<>(ImpactResource.IMPACT_TEMPLATE_SERIES,
-                ImpactTemplateSeriesDto.TYPES);
+                ImpactTemplateSeriesDto.TYPES, serviceNamespace);
         impactIterationResource = new RestResource1<>(ImpactResource.IMPACT_ITERATION,
-                ImpactIterationDto.TYPES);
+                ImpactIterationDto.TYPES, serviceNamespace);
         impactTemplateFocusAreaListResource = new RestResource1<>(
                 ImpactResource.IMPACT_TEMPLATE_FOCUS_AREA_LIST,
-                ImpactTemplateFocusAreaListDto.TYPES);
+                ImpactTemplateFocusAreaListDto.TYPES, serviceNamespace);
         impactTemplateMaxFocusAreaResource = new RestResource1<>(
-                ImpactResource.IMPACT_TEMPLATE_MAX_FOCUS_AREA, ImpactTemplateMaxFocusAreaDto.TYPES);
+                ImpactResource.IMPACT_TEMPLATE_MAX_FOCUS_AREA, ImpactTemplateMaxFocusAreaDto.TYPES,
+                serviceNamespace);
     }
 
     public static ImpactClient fromService(ServiceNamespace serviceNamespace) {

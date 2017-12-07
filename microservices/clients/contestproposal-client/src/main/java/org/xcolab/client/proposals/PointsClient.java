@@ -29,8 +29,9 @@ public final class PointsClient {
     private PointsClient(ServiceNamespace serviceNamespace) {
         pointsDistributionConfigurationResource = new RestResource1<>(
                 ContestResource.POINTS_DISTRIBUTION_CONFIGURATION,
-                PointsDistributionConfigurationDto.TYPES);
-        pointTypeResource = new RestResource1<>(ContestResource.POINT_TYPE, PointTypeDto.TYPES);
+                PointsDistributionConfigurationDto.TYPES, serviceNamespace);
+        pointTypeResource = new RestResource1<>(ContestResource.POINT_TYPE, PointTypeDto.TYPES,
+                serviceNamespace);
         this.serviceNamespace = serviceNamespace;
     }
 

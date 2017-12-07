@@ -42,12 +42,11 @@ public final class ProposalAttributeClient {
     private final RestResource2L<ProposalDto, ProposalVersionDto> proposalVersionResource;
 
     private ProposalAttributeClient(ServiceNamespace serviceNamespace) {
-        //TODO COLAB-2409: service namespace missing
         proposalAttributeResource = new RestResource1<>(ProposalResource.PROPOSAL_ATTRIBUTE,
-                ProposalAttributeDto.TYPES);
+                ProposalAttributeDto.TYPES, serviceNamespace);
         proposalUnversionedAttributeResource = new RestResource1<>(
                 ProposalResource.PROPOSAL_UNVERSIONED_ATTRIBUTE,
-                ProposalUnversionedAttributeDto.TYPES);
+                ProposalUnversionedAttributeDto.TYPES, serviceNamespace);
 
         proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES,
                 serviceNamespace);

@@ -25,7 +25,7 @@ public final class ProposalMoveClient {
 
     private ProposalMoveClient(ServiceNamespace serviceNamespace) {
         proposalMoveHistoryResource = new RestResource1<>(ProposalResource.PROPOSAL_MOVE_HISTORY,
-                ProposalMoveHistoryDto.TYPES);
+                ProposalMoveHistoryDto.TYPES, serviceNamespace);
         this.serviceNamespace = serviceNamespace;
     }
 

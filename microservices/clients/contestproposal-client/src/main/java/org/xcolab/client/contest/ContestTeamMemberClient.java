@@ -31,9 +31,10 @@ public class ContestTeamMemberClient {
     private ContestTeamMemberClient(ServiceNamespace serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
         contestTeamMemberResource = new RestResource1<>(ContestResource.CONTEST_TEAM_MEMBER,
-                ContestTeamMemberDto.TYPES);
+                ContestTeamMemberDto.TYPES, serviceNamespace);
         contestTeamMemberRoleResource = new RestResource1<>(
-                ContestResource.CONTEST_TEAM_MEMBER_ROLE, ContestTeamMemberRoleDto.TYPES);
+                ContestResource.CONTEST_TEAM_MEMBER_ROLE, ContestTeamMemberRoleDto.TYPES,
+                serviceNamespace);
     }
 
     public static ContestTeamMemberClient fromService(ServiceNamespace serviceNamespace) {

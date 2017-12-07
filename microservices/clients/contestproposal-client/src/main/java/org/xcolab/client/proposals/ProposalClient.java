@@ -57,16 +57,19 @@ public final class ProposalClient {
     private ProposalClient(ServiceNamespace serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
 
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
-        proposalIdResource = new RestResource1<>(ProposalResource.PROPOSAL_ID, TypeProvider.LONG);
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES,
+                serviceNamespace);
+        proposalIdResource = new RestResource1<>(ProposalResource.PROPOSAL_ID, TypeProvider.LONG,
+                serviceNamespace);
         proposalThreadIdResource = new RestResource1<>(ProposalResource.PROPOSAL_THREAD_ID,
-                TypeProvider.LONG);
+                TypeProvider.LONG, serviceNamespace);
         proposalVersionResource = new RestResource1<>(ProposalResource.PROPOSAL_VERSION,
-                ProposalVersionDto.TYPES);
+                ProposalVersionDto.TYPES, serviceNamespace);
         proposalReferenceResource = new RestResource1<>(ProposalResource.PROPOSAL_REFERENCE,
-                ProposalReferenceDto.TYPES);
+                ProposalReferenceDto.TYPES, serviceNamespace);
 
-        groupResource = new RestResource1<>(ProposalResource.GROUP, GroupDto.TYPES);
+        groupResource = new RestResource1<>(ProposalResource.GROUP, GroupDto.TYPES,
+                serviceNamespace);
 
         contestClient = ContestClient.fromNamespace(serviceNamespace);
         activitiesClient = ActivitiesClient.fromNamespace(serviceNamespace);
