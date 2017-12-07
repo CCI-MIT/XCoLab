@@ -192,8 +192,8 @@ public class CommentController {
         return result;
     }
 
-    @DeleteMapping("/deleteProposalThreads")
-    public boolean deleteThreads(@RequestParam List<Long> proposalPKs) {
+    @PostMapping("/threads/deleteProposalThreads")
+    public boolean deleteThreads(@RequestBody List<Long> proposalPKs) {
         boolean result = false;
         if (proposalPKs != null) {
             List<Long> threadIDs = threadDao.getProposalThreads(proposalPKs);
