@@ -39,11 +39,12 @@ public final class ProposalPhaseClient {
     private ProposalPhaseClient(ServiceNamespace serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
         proposal2PhaseResource = new RestResource1<>(ProposalResource.PROPOSAL_2_PHASE,
-                Proposal2PhaseDto.TYPES);
+                Proposal2PhaseDto.TYPES, serviceNamespace);
         proposalContestPhaseAttributeResource = new RestResource1<>(
                 ProposalResource.PROPOSAL_CONTEST_PHASE_ATTRIBUTE,
-                ProposalContestPhaseAttributeDto.TYPES);
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
+                ProposalContestPhaseAttributeDto.TYPES, serviceNamespace);
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES,
+                serviceNamespace);
 
         proposalPhaseIdResource = new RestResource2L<>(proposalResource, "phaseIds",
                 TypeProvider.LONG);

@@ -31,11 +31,14 @@ public class PlanTemplateClient {
     private PlanTemplateClient(ServiceNamespace serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
         planTemplateResource =
-                new RestResource1<>(ContestResource.PLAN_TEMPLATE, PlanTemplateDto.TYPES);
+                new RestResource1<>(ContestResource.PLAN_TEMPLATE, PlanTemplateDto.TYPES,
+                        serviceNamespace);
         planSectionDefinitionResource = new RestResource1<>(
-                ContestResource.PLAN_SECTION_DEFINITION, PlanSectionDefinitionDto.TYPES);
+                ContestResource.PLAN_SECTION_DEFINITION, PlanSectionDefinitionDto.TYPES,
+                serviceNamespace);
         planTemplateSectionResource = new RestResource1<>(
-                ContestResource.PLAN_TEMPLATE_SECTION, PlanTemplateSectionDto.TYPES);
+                ContestResource.PLAN_TEMPLATE_SECTION, PlanTemplateSectionDto.TYPES,
+                serviceNamespace);
     }
 
     public static PlanTemplateClient fromNamespace(ServiceNamespace serviceNamespace) {

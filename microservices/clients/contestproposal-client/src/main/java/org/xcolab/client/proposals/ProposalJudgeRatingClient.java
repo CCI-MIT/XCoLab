@@ -29,11 +29,11 @@ public final class ProposalJudgeRatingClient {
 
     private ProposalJudgeRatingClient(ServiceNamespace serviceNamespace) {
         proposalRatingResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING,
-                ProposalRatingDto.TYPES);
+                ProposalRatingDto.TYPES, serviceNamespace);
         proposalRatingValueResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING_VALUE,
-                ProposalRatingValueDto.TYPES);
+                ProposalRatingValueDto.TYPES, serviceNamespace);
         proposalRatingTypeResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING_TYPE,
-                ProposalRatingTypeDto.TYPES);
+                ProposalRatingTypeDto.TYPES, serviceNamespace);
         this.serviceNamespace = serviceNamespace;
     }
 

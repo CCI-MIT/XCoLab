@@ -51,16 +51,19 @@ public class OntologyClient {
     private OntologyClient(ServiceNamespace serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
         ontologySpaceResource = new RestResource1<>(OntologyResource.ONTOLOGY_SPACE,
-                OntologySpaceDto.TYPES);
+                OntologySpaceDto.TYPES, serviceNamespace);
         ontologyTermResource = new RestResource1<>(OntologyResource.ONTOLOGY_TERM,
-                OntologyTermDto.TYPES);
-        focusAreaResource = new RestResource1<>(OntologyResource.FOCUS_AREA, FocusAreaDto.TYPES);
+                OntologyTermDto.TYPES, serviceNamespace);
+        focusAreaResource = new RestResource1<>(OntologyResource.FOCUS_AREA, FocusAreaDto.TYPES,
+                serviceNamespace);
         focusAreaOntologyTermResource = new RestResource1<>(
-                OntologyResource.FOCUS_AREA_ONTOLOGY_TERM, FocusAreaOntologyTermDto.TYPES);
+                OntologyResource.FOCUS_AREA_ONTOLOGY_TERM, FocusAreaOntologyTermDto.TYPES,
+                serviceNamespace);
         impactDefaultSeriesResource = new RestResource1<>(ImpactResource.IMPACT_DEFAULT_SERIES,
                 ImpactDefaultSeriesDto.TYPES);
         impactDefaultSeriesDataResource = new RestResource1<>(
-                ImpactResource.IMPACT_DEFAULT_SERIES_DATA, ImpactDefaultSeriesDataDto.TYPES);
+                ImpactResource.IMPACT_DEFAULT_SERIES_DATA, ImpactDefaultSeriesDataDto.TYPES,
+                serviceNamespace);
     }
 
     public static OntologyClient fromService(ServiceNamespace serviceNamespace) {
