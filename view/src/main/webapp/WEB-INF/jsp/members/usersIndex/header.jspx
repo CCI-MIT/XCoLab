@@ -12,11 +12,11 @@
 	</div>
 
 	<!-- HELP DIVS -->
-	<div class="c-Helpbox" id="help1" style="display: none;">
+	<div class="c-Helpbox" id="js-HelpBox" style="display: none;">
 		<div class="c-Helpbox__header">
 			<span class="c-Helpbox__header__title"><spring:message code="community.page.help.title"/> </span>
 			<div class="c-Helpbox__header__close">
-				<a href="javascript:;" onclick="Cookies.set('climatecolab_hide_members_msg', 'true'); jQuery('#help1').hide()">
+				<a href="javascript:;" onclick="Cookies.set('climatecolab_hide_members_msg', 'true'); jQuery('#js-HelpBox').hide()">
 				<img src="${_themeImageFolder}/helpbox_close.png" width="20" height="20" alt="X" /></a>
 			</div>
 		</div>
@@ -30,7 +30,7 @@
 		</div>
 		<script>
 			if (!Cookies.get("climatecolab_hide_members_msg")) {
-			    jQuery("#help1").show();
+			    jQuery("#js-HelpBox").show();
 			}
 		</script>
 	</div>
