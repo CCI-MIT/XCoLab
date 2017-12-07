@@ -167,9 +167,8 @@ class CommentServiceWrapper {
     }
 
     public void deleteProposalThreads(List<Long> proposalPKs) {
-        threadResource.service("deleteProposalThreads", Void.class)
-                .queryParam("proposalPKs", proposalPKs)
-                .delete();
+        threadResource.service("deleteProposalThreads", Boolean.class)
+                .post(proposalPKs);
     }
 
     public Date getLastActivityDate(long threadId, CacheName cacheName) {
