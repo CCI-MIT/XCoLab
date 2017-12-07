@@ -421,6 +421,7 @@ public class ContestDaoImpl implements ContestDao {
                 .execute();
     }
 
+    // TODO: move this to ProposalDao after cross-DAO transactions are possible. [COLAB-2466]
     public static void deleteOrphanProposals(DSLContext ctx) {
         // Retrieve orphaned proposals
         List<Long> orphanProposals = ctx.select(PROPOSAL.PROPOSAL_ID)
