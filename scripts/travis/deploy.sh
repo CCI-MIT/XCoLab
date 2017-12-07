@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Fail if any steps in the deployment fail
+set -e
+
 if [ ${BUILD_TYPE} == 'deploy' ]; then
 
     eval "$(ssh-agent -s)"

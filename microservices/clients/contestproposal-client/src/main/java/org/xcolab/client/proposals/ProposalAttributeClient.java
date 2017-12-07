@@ -33,8 +33,6 @@ public final class ProposalAttributeClient {
 
     private static final Map<ServiceNamespace, ProposalAttributeClient> instances = new HashMap<>();
 
-    public static final int LATEST_VERSION = Integer.MAX_VALUE;
-
     private final ServiceNamespace serviceNamespace;
     private final RestResource1<ProposalAttributeDto, Long> proposalAttributeResource;
     private final RestResource1<ProposalUnversionedAttributeDto, Long>
@@ -44,7 +42,7 @@ public final class ProposalAttributeClient {
     private final RestResource2L<ProposalDto, ProposalVersionDto> proposalVersionResource;
 
     private ProposalAttributeClient(ServiceNamespace serviceNamespace) {
-        //TODO: service namespace missing
+        //TODO COLAB-2409: service namespace missing
         proposalAttributeResource = new RestResource1<>(ProposalResource.PROPOSAL_ATTRIBUTE,
                 ProposalAttributeDto.TYPES);
         proposalUnversionedAttributeResource = new RestResource1<>(

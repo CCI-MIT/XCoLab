@@ -227,8 +227,9 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("_showShareButtons",
                     ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
 
-            modelAndView.addObject("_shearableSocialMediaUrls", SocialMediaEngine.getShearableSocialMediaEngines());
+            modelAndView.addObject("_shareableSocialMediaUrls", SocialMediaEngine.getShareableSocialMediaEngines());
             modelAndView.addObject("_followableSocialMediaUrls", SocialMediaEngine.getFollowableSocialMediaEngines());
+            modelAndView.addObject("_socialMediaEngines", SocialMediaEngine.getAllSocialMediaEngines());
 
             modelAndView.addObject("_donateLink", ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get());
         }

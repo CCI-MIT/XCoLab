@@ -154,13 +154,6 @@ public class Contest extends AbstractContest implements Serializable {
         return getContestLinkUrl() + "/phase/" + contestPhaseId;
     }
 
-    public String getProposalLogoPath() {
-        if (this.getIsSharedContestInForeignColab()) {
-            return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get() + "/";
-        } else {
-            return "/";
-        }
-    }
     public String getSponsorLogoPath() {
         if (this.getIsSharedContestInForeignColab()) {
 

@@ -1,5 +1,4 @@
 //find existing cookie containing the uuid
-var isTrackedVisitor = null;
 var uuid = Cookies.get("userTrackingUuid");
 
 var url = document.location.href+"";
@@ -9,11 +8,6 @@ var postData = {
     url: "/"+url.replace(/^(?:\/\/|[^\/]+)*\//, ""),
     referer: document.referrer
 };
-
-if (typeof usertracking_userId != 'undefined') {
-    postData.userId = usertracking_userId;
-    postData.hash = usertracking_hash;
-}
 
 jQuery.post("/trackVisitor", postData, function(data) {
     Cookies.set("userTrackingUuid", data.uuid);

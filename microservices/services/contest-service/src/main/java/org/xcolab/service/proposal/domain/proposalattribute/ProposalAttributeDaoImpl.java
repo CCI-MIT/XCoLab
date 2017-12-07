@@ -100,7 +100,9 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
         query.addConditions(PROPOSAL_ATTRIBUTE.NAME.like("IMPACT_%"));
 
         if (version != null) {
-            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION.le(version));
+            //TODO: temporary workaround to make sure impact results are accurate
+            // (they can't handle multiple versions of an attribute yet)
+            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION.ge(version));
         }
         return query.fetchInto(ProposalAttribute.class);
     }
