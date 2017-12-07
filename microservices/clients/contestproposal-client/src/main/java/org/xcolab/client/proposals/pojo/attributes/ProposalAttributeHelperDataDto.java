@@ -4,10 +4,11 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class ProposalAttributeHelperDataDto {
+public class ProposalAttributeHelperDataDto implements Serializable {
 
     private static final long serialVersionUID = 1;
 
