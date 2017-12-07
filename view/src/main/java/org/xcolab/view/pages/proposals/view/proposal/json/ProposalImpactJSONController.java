@@ -18,7 +18,6 @@ import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
 import org.xcolab.client.proposals.enums.ProposalUnversionedAttributeName;
-import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
@@ -148,19 +147,17 @@ public class ProposalImpactJSONController {
 
         Proposal proposal = proposalContext.getProposal();
 
-        ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(proposal,
-                proposalAttributeClient);
-
+        //TODO: we need to delete *all versions* of these attributes (with the given additionalId)
         final List<ProposalAttribute> impactAttributes = new ArrayList<>();
-        impactAttributes.addAll(proposalAttributeHelper
-                .getAttributesByName(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE));
-        impactAttributes.addAll(proposalAttributeHelper
-                .getAttributesByName(ProposalImpactAttributeKeys.IMPACT_REDUCTION));
+        impactAttributes.addAll(proposalAttributeClient
+                .getAllProposalAttributesByNameAndAdditionalId(proposal.getProposalId(),
+                        ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE, focusAreaId));
+        impactAttributes.addAll(proposalAttributeClient
+                .getAllProposalAttributesByNameAndAdditionalId(proposal.getProposalId(),
+                        ProposalImpactAttributeKeys.IMPACT_REDUCTION, focusAreaId));
 
         for (ProposalAttribute proposalAttribute : impactAttributes) {
-            if (proposalAttribute.getAdditionalId() == focusAreaId) {
-                proposalAttributeClient.deleteProposalAttribute(proposalAttribute.getId_());
-            }
+            proposalAttributeClient.deleteProposalAttribute(proposalAttribute.getId_());
         }
 
         responseJSON.put("success", true);

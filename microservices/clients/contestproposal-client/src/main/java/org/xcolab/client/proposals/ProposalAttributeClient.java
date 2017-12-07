@@ -133,6 +133,15 @@ public final class ProposalAttributeClient {
                 .execute(), serviceNamespace);
     }
 
+    public List<ProposalAttribute> getAllProposalAttributesByNameAndAdditionalId(long proposalId,
+            String name, long additionalId) {
+        return DtoUtil.toPojos(proposalAttributeResource.list()
+                .optionalQueryParam("proposalId", proposalId)
+                .optionalQueryParam("name", name)
+                .optionalQueryParam("additionalId", additionalId)
+                .execute(), serviceNamespace);
+    }
+
     public ProposalAttributeHelperDataDto getProposalAttributeHelperData(long proposalId,
             long version) {
         return proposalVersionResource.resolveParent(proposalResource.id(proposalId))
