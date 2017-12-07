@@ -14,8 +14,11 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
 import org.xcolab.client.proposals.enums.ProposalUnversionedAttributeName;
+import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
@@ -128,7 +131,11 @@ public class ProposalImpactJSONController {
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactDeleteDataSeries")
     public void proposalImpactDeleteDataSeries(HttpServletRequest request,
             HttpServletResponse response, ProposalContext proposalContext,
-            @RequestParam(value = "focusAreaId") Long focusAreaId) throws IOException {
+            @RequestParam(value = "focusAreaId") long focusAreaId) throws IOException {
+
+        final ClientHelper clients = proposalContext.getClients();
+        final ProposalAttributeClient proposalAttributeClient =
+                clients.getProposalAttributeClient();
 
         JSONObject responseJSON = new JSONObject();
         ProposalsPermissions permissions = proposalContext.getPermissions();
@@ -139,12 +146,21 @@ public class ProposalImpactJSONController {
             return;
         }
 
-        FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
         Proposal proposal = proposalContext.getProposal();
 
-        for (ProposalAttribute proposalAttribute : ProposalAttributeClientUtil
-                .getImpactProposalAttributes(proposal, focusArea)) {
-            proposalContext.getClients().getProposalAttributeClient().deleteProposalAttribute(proposalAttribute.getId_());
+        ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(proposal,
+                proposalAttributeClient);
+
+        final List<ProposalAttribute> impactAttributes = new ArrayList<>();
+        impactAttributes.addAll(proposalAttributeHelper
+                .getAttributesByName(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE));
+        impactAttributes.addAll(proposalAttributeHelper
+                .getAttributesByName(ProposalImpactAttributeKeys.IMPACT_REDUCTION));
+
+        for (ProposalAttribute proposalAttribute : impactAttributes) {
+            if (proposalAttribute.getAdditionalId() == focusAreaId) {
+                proposalAttributeClient.deleteProposalAttribute(proposalAttribute.getId_());
+            }
         }
 
         responseJSON.put("success", true);

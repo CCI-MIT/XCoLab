@@ -90,13 +90,6 @@ public class ProposalAttributeController {
         }
     }
 
-    @ListMapping("/proposalAttributes/getImpactProposalAttributes")
-    public List<ProposalAttribute> getImpactProposalAttributes(
-            @RequestParam(required = false) Long proposalId,
-            @RequestParam(required = false) Integer version) {
-        return this.proposalAttributeDao.findByProposalIdVersionAndImpact(proposalId, version);
-    }
-
     @ListMapping("/proposalAttributes")
     public List<ProposalAttribute> getProposalAttributes(
             @RequestParam(required = false) Long proposalId,

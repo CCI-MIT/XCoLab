@@ -43,12 +43,6 @@ public final class ProposalAttributeClientUtil {
     }
 
     public static List<ProposalAttribute> getImpactProposalAttributes(
-            Proposal proposal,
-            FocusArea focusArea) {
-        return client.getImpactProposalAttributes(proposal, focusArea);
-    }
-
-    public static List<ProposalAttribute> getImpactProposalAttributes(
             Proposal proposal) {
         return client.getImpactProposalAttributes(proposal);
     }
