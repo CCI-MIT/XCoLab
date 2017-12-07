@@ -258,7 +258,7 @@
     <xcolab:modal modalId="acceptTosModal" title="${acceptTosModalTitle}" size="lg">
         <div class="modal-body">
             <h5>${fn:toUpperCase(contestType.rulesPageName)}:</h5>
-            <div style="overflow: auto; height:260px;">
+            <div class="c-Scrollable c-Scrollable--visibleScrollbar" style="height:260px;">
                 ${preferences.termsOfService}
             </div>
         </div>
