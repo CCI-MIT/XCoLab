@@ -4,22 +4,17 @@ import org.jooq.DSLContext;
 import org.jooq.JoinType;
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.Select;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.model.tables.ProposalContestPhaseAttributeTable;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.records.ProposalRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.util.Collection;
@@ -27,25 +22,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.jooq.impl.DSL.sum;
-import static org.jooq.impl.DSL.val;
 import static org.xcolab.model.Tables.CONTEST;
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.CONTEST_PHASE_RIBBON_TYPE;
-import static org.xcolab.model.Tables.GROUP_;
-import static org.xcolab.model.Tables.MEMBERSHIP_REQUEST;
 import static org.xcolab.model.Tables.POINTS;
-import static org.xcolab.model.Tables.POINTS_DISTRIBUTION_CONFIGURATION;
 import static org.xcolab.model.Tables.PROPOSAL;
 import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
 import static org.xcolab.model.Tables.PROPOSAL_ATTRIBUTE;
 import static org.xcolab.model.Tables.PROPOSAL_CONTEST_PHASE_ATTRIBUTE;
-import static org.xcolab.model.Tables.PROPOSAL_MOVE_HISTORY;
-import static org.xcolab.model.Tables.PROPOSAL_RATING;
-import static org.xcolab.model.Tables.PROPOSAL_REFERENCE;
-import static org.xcolab.model.Tables.PROPOSAL_SUPPORTER;
-import static org.xcolab.model.Tables.PROPOSAL_UNVERSIONED_ATTRIBUTE;
-import static org.xcolab.model.Tables.PROPOSAL_VERSION;
-import static org.xcolab.model.Tables.PROPOSAL_VOTE;
 
 @Repository
 public class ProposalDaoImpl implements ProposalDao {
