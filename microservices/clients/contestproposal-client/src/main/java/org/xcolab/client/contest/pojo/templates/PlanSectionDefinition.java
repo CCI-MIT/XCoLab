@@ -6,6 +6,8 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -37,6 +39,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
+
+    private static final Logger log = LoggerFactory.getLogger(PlanSectionDefinition.class);
 
     private final Proposal proposal;
 
@@ -78,20 +82,8 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
     }
 
     public List<Long> getAdditionalIdsAsList() {
-        List<Long> longIds = new ArrayList<>();
         final String stringOfStringIds = this.getAdditionalIds();
-        if (stringOfStringIds != null) {
-            String[] stringIds = stringOfStringIds.split(",");
-            for (String stringId : stringIds) {
-                if (!stringId.isEmpty()) {
-                    try {
-                        longIds.add(Long.parseLong(stringId));
-                    } catch (NumberFormatException e) {
-                    }
-                }
-            }
-        }
-        return longIds;
+        return IdListUtil.getIdsFromString(stringOfStringIds);
     }
 
     public String getContent() {
@@ -254,24 +246,25 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
         return (ProposalClientUtil.getProposal(attr.getNumericValue()));
     }
 
-    public Proposal[] getStringValueAsProposalArray() {
+    public List<Proposal> getStringValueAsProposalArray() {
         ProposalAttribute attr = getSectionAttribute();
-        if (attr == null || attr.getStringValue() == null || attr.getStringValue().equals("")) {
-            return null;
+        final String idsAsString = attr.getStringValue();
+        if (StringUtils.isEmpty(idsAsString)) {
+            return Collections.emptyList();
         }
 
-        String[] props = attr.getStringValue().split(",");
-        Proposal[] ret = new Proposal[props.length];
-        for (int i = 0; i < props.length; i++) {
+        final List<Long> proposalIds = IdListUtil.getIdsFromString(idsAsString);
+        final List<Proposal> proposals = new ArrayList<>(proposalIds.size());
+
+        for (Long proposalId : proposalIds) {
             try {
-                ret[i] = new Proposal(ProposalClientUtil.getProposal(Long.parseLong(props[i])));
-            } catch (NumberFormatException e) {
-                //_log.error(String.format("Could not parse proposalId %s as a number", props[i]));
+                proposals.add(new Proposal(ProposalClientUtil.getProposal(proposalId)));
             } catch (ProposalNotFoundException e) {
-                //_log.error(String.format("Could not retrieve proposal with id %s", props[i]), e);
+                log.warn(String.format("Section %d contains invalid proposal reference %d",
+                        getSectionDefinitionId(), proposalId));
             }
         }
-        return ret;
+        return proposals;
     }
 
     public long getNumericValue() {
