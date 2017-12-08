@@ -73,6 +73,10 @@ public class ActivitiesClientUtil {
                 classPK, extraInfo);
     }
 
+    public static boolean batchDelete(ActivityEntryType activityEntryType, List<Long> classPKs) {
+        return activitiesClient.batchDelete(activityEntryType, classPKs);
+    }
+
     public static boolean deleteSubscriptionById(Long subscriptionId) {
         return activitiesClient.deleteSubscriptionById( subscriptionId);
     }

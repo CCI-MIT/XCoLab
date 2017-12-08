@@ -183,6 +183,25 @@ public class CommentController {
         return threadDao.findByGiven(paginationHelper, authorId, categoryId, groupId);
     }
 
+    @DeleteMapping("/threads/{threadId}")
+    public boolean deleteThreads(@PathVariable Long threadId) {
+        boolean result = false;
+        if (threadId != null) {
+            result = threadDao.delete(threadId);
+        }
+        return result;
+    }
+
+    @PostMapping("/threads/deleteProposalThreads")
+    public boolean deleteThreads(@RequestBody List<Long> proposalPKs) {
+        boolean result = false;
+        if (proposalPKs != null) {
+            List<Long> threadIDs = threadDao.getProposalThreads(proposalPKs);
+            result = threadDao.deleteThreads(threadIDs);
+        }
+        return result;
+    }
+
     @GetMapping("/threads/{threadId}")
     public Thread getThread(@PathVariable Long threadId) throws NotFoundException {
         return threadDao.get(threadId);

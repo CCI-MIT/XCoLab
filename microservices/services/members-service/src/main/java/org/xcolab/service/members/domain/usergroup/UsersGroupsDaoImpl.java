@@ -62,4 +62,11 @@ public class UsersGroupsDaoImpl implements UsersGroupsDao {
                 .execute();
     }
 
+    @Override
+    public Boolean delete(List<Long> groupIds) {
+        return dslContext.deleteFrom(USERS_GROUPS)
+                .where(USERS_GROUPS.GROUP_ID.in(groupIds))
+                .execute() > 0;
+    }
+
 }

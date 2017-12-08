@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.xcolab.model.Tables.CATEGORY;
 import static org.xcolab.model.Tables.COMMENT;
+import static org.xcolab.model.Tables.PROPOSAL;
 import static org.xcolab.model.Tables.THREAD;
 
 @Repository
@@ -181,6 +182,42 @@ public class ThreadDaoImpl implements ThreadDao {
             return Optional.empty();
         }
         return Optional.of(record.into(Comment.class));
+    }
+
+    @Override
+    public boolean delete(Long threadId) {
+        boolean result = dslContext.deleteFrom(COMMENT)
+                .where(COMMENT.THREAD_ID.eq(threadId))
+                .execute() > 0;
+        result = result || dslContext.deleteFrom(THREAD)
+                .where(THREAD.THREAD_ID.eq(threadId))
+                .execute() > 0;
+        return result;
+    }
+
+    @Override
+    public boolean deleteThreads(List<Long> threadIDs) {
+        boolean result = dslContext.deleteFrom(COMMENT)
+                .where(COMMENT.THREAD_ID.in(threadIDs))
+                .execute() > 0;
+        result = result || dslContext.deleteFrom(THREAD)
+                .where(THREAD.THREAD_ID.in(threadIDs))
+                .execute() > 0;
+        return result;
+    }
+
+    @Override
+    public List<Long> getProposalThreads(List<Long> proposalPKs) {
+        return dslContext.select(THREAD.THREAD_ID)
+                .from(THREAD)
+                .join(PROPOSAL)
+                .on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
+                .or(PROPOSAL.ADVISOR_DISCUSSION_ID.eq(THREAD.THREAD_ID))
+                .or(PROPOSAL.FELLOW_DISCUSSION_ID.eq(THREAD.THREAD_ID))
+                .or(PROPOSAL.JUDGE_DISCUSSION_ID.eq(THREAD.THREAD_ID))
+                .or(PROPOSAL.RESULTS_DISCUSSION_ID.eq(THREAD.THREAD_ID))
+                .where(PROPOSAL.PROPOSAL_ID.in(proposalPKs))
+                .fetchInto(Long.class);
     }
 
 }

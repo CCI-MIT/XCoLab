@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.xcolab.model.Tables.CONTEST_PHASE;
+import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
 
 @Repository
 public class ContestPhaseDaoImpl implements ContestPhaseDao {
@@ -82,6 +83,9 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
 
     @Override
     public boolean delete(Long contestPhasePK) {
+        dslContext.deleteFrom(PROPOSAL_2_PHASE)
+                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhasePK))
+                .execute();
         return dslContext.deleteFrom(CONTEST_PHASE)
                 .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
                 .execute() > 0;

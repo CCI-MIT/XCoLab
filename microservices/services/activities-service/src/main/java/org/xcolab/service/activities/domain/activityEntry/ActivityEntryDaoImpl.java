@@ -11,6 +11,7 @@ import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.records.ActivityEntryRecord;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -74,6 +75,14 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
         query.addOrderBy(ACTIVITY_ENTRY.CREATE_DATE.desc());
         return query.fetchInto(ActivityEntry.class);
 
+    }
+
+    @Override
+    public boolean delete(ActivityEntryType activityEntryType, List<Long> classPKs) {
+        return dslContext.deleteFrom(ACTIVITY_ENTRY)
+                .where(ACTIVITY_ENTRY.PRIMARY_TYPE.eq(activityEntryType.getPrimaryTypeId()))
+                .and(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY.in(classPKs))
+                .execute() > 0;
     }
 
     @Override

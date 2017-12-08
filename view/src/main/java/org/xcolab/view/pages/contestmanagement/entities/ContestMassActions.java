@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.entities;
 
 import org.xcolab.view.pages.contestmanagement.entities.massactions.ActiveMassAction;
-import org.xcolab.view.pages.contestmanagement.entities.massactions.DeleteMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.DeleteWithPhasesMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.FeaturedMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.FlagMassAction;
@@ -24,7 +23,6 @@ public enum ContestMassActions {
     MESSAGE(new MessageActivePhaseAuthorsMassAction()),
     MESSAGE_ALL_AUTHORS(new MessageAllAuthorsMassAction()),
     REPORT_PEOPLE_IN_CURRENT_PHASE(new ReportPeopleInCurrentPhaseMassAction()),
-    DELETE(new DeleteMassAction()),
     DELETE_WITH_PHASES(new DeleteWithPhasesMassAction()),
     LAUNCH(new LaunchContestMassAction()),
     ACTIVE(new ActiveMassAction(true)),

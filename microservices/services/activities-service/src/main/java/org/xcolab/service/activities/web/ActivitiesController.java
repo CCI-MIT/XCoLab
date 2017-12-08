@@ -2,6 +2,7 @@ package org.xcolab.service.activities.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -130,6 +131,14 @@ public class ActivitiesController {
             @RequestParam(required = false) Integer type,
             @RequestParam(required = false) String extraInfo) {
         return activitiesService.unsubscribe(receiverId, activityEntryType, classPK, extraInfo);
+    }
+
+    @PostMapping("/activitySubscriptions/batchDelete")
+    public boolean batchDelete(
+            @RequestParam ActivityEntryType activityEntryType,
+            @RequestBody List<Long> classPKs) {
+        return activitySubscriptionDao.delete(activityEntryType, classPKs)
+                && activityEntryDao.delete(activityEntryType, classPKs);
     }
 
     @RequestMapping(value = "/activitySubscriptions/isSubscribed", method = RequestMethod.GET)

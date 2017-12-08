@@ -162,6 +162,15 @@ class CommentServiceWrapper {
         return threadResource.create(thread).execute();
     }
 
+    public void deleteThread(long threadId) {
+        threadResource.delete(threadId);
+    }
+
+    public void deleteProposalThreads(List<Long> proposalPKs) {
+        threadResource.service("deleteProposalThreads", Boolean.class)
+                .post(proposalPKs);
+    }
+
     public Date getLastActivityDate(long threadId, CacheName cacheName) {
         try {
             return threadResource.<CommentThread, Date>service(threadId, "lastActivityDate", Date.class)

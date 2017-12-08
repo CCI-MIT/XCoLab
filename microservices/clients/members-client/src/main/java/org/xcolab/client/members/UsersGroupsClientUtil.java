@@ -19,6 +19,10 @@ public class UsersGroupsClientUtil {
         client.removeMemberFromGroup(userId, groupId);
     }
 
+    public static boolean deleteGroups(List<Long> groupIds) {
+        return client.deleteGroups(groupIds);
+    }
+
     public static List<UsersGroups> getUserGroupsByMemberId(long memberId) {
         return client.getUserGroupsByMemberId(memberId);
     }
