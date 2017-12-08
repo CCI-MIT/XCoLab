@@ -147,7 +147,6 @@ public class ProposalImpactJSONController {
 
         Proposal proposal = proposalContext.getProposal();
 
-        //TODO: we need to delete *all versions* of these attributes (with the given additionalId)
         final List<ProposalAttribute> impactAttributes = new ArrayList<>();
         impactAttributes.addAll(proposalAttributeClient
                 .getAllProposalAttributesByNameAndAdditionalId(proposal.getProposalId(),
