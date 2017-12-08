@@ -149,10 +149,10 @@ public class ProposalImpactJSONController {
 
         final List<ProposalAttribute> impactAttributes = new ArrayList<>();
         impactAttributes.addAll(proposalAttributeClient
-                .getAllProposalAttributesByNameAndAdditionalId(proposal.getProposalId(),
+                .getAllProposalAttributes(proposal.getProposalId(),
                         ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE, focusAreaId));
         impactAttributes.addAll(proposalAttributeClient
-                .getAllProposalAttributesByNameAndAdditionalId(proposal.getProposalId(),
+                .getAllProposalAttributes(proposal.getProposalId(),
                         ProposalImpactAttributeKeys.IMPACT_REDUCTION, focusAreaId));
 
         for (ProposalAttribute proposalAttribute : impactAttributes) {

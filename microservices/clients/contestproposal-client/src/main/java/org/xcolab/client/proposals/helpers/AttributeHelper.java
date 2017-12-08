@@ -85,7 +85,7 @@ public abstract class AttributeHelper<AttributeT extends Attribute> {
         return newestAttributeSeen;
     }
 
-    public List<AttributeT> getAttributesByName(String attributeName) {
+    public List<AttributeT> getAttributes(String attributeName) {
         final Map<Long, AttributeT> attributesByAdditionalId =
                 attributesByNameAndAdditionalId.get(attributeName);
         if (attributesByAdditionalId != null) {

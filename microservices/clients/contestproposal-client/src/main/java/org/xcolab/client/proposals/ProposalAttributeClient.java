@@ -133,8 +133,8 @@ public final class ProposalAttributeClient {
                 .execute(), serviceNamespace);
     }
 
-    public List<ProposalAttribute> getAllProposalAttributesByNameAndAdditionalId(long proposalId,
-            String name, long additionalId) {
+    public List<ProposalAttribute> getAllProposalAttributes(long proposalId, String name,
+            long additionalId) {
         return DtoUtil.toPojos(proposalAttributeResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("name", name)
