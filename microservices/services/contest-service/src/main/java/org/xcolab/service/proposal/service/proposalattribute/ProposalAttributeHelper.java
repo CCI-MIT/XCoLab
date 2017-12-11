@@ -58,7 +58,7 @@ public class ProposalAttributeHelper {
         return pa == null ? defaultVal : pa.getRealValue();
     }
 
-    public List<ProposalAttribute> getAttributesByName(String attributeName) {
+    public List<ProposalAttribute> getAttributes(String attributeName) {
         final Map<Long, ProposalAttribute> attributesByAdditionalId =
                 attributesByNameAndAdditionalId.get(attributeName);
         if (attributesByAdditionalId != null) {

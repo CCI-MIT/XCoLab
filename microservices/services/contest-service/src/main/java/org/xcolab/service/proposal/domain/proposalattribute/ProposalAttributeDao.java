@@ -12,5 +12,4 @@ public interface ProposalAttributeDao {
     boolean update(ProposalAttribute proposalAttribute);
     List<ProposalAttribute> findByGiven(Long proposalId, String name, Long additionalId, Integer version);
     int delete(Long id_);
-    List<ProposalAttribute> findByProposalIdVersionAndImpact(Long proposalId, Integer version);
 }

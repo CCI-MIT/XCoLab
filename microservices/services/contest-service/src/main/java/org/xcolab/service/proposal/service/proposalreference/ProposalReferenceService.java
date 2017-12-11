@@ -65,7 +65,7 @@ public class ProposalReferenceService {
                 proposalAttributeService.getProposalAttributeHelper(proposal.getProposalId(),
                         ProposalAttributeService.LATEST_VERSION);
         final Collection<ProposalAttribute> sectionAttributes =
-                proposalAttributeHelper.getAttributesByName(ProposalAttributeKeys.SECTION);
+                proposalAttributeHelper.getAttributes(ProposalAttributeKeys.SECTION);
         for (ProposalAttribute attribute : sectionAttributes) {
 
                 PlanSectionDefinition psd = PlanTemplateClientUtil.getPlanSectionDefinition(attribute.getAdditionalId());
