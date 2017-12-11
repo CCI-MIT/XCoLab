@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.activities.enums.ContestActivityType;
+import org.xcolab.client.activities.enums.DiscussionActivityType;
+import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
@@ -123,10 +124,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                                 proposalClient.getProposalByThreadId(commentThread.getThreadId());
 
                         //proposal
-                        ActivityEntryHelper.createActivityEntry(activityClient, memberId,
-                                commentThread.getThreadId(), comment.getCommentId() + "",
-                                ActivityProvidersType.DiscussionAddProposalCommentActivityEntry
-                                        .getType());
+                        activityClient.createActivityEntry(ProposalActivityType.COMMENT_ADDED,
+                                memberId, commentThread.getThreadId(),
+                                Long.toString(comment.getCommentId()));
                         try {
                             Contest contest = proposal.getContest();
                             SharedColabUtil.checkTriggerForAutoUserCreationInContest(
@@ -136,20 +136,15 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                         }
                     } catch (ProposalNotFoundException e) {
                         //contest
-                        ActivityEntryHelper.createActivityEntry(activityClient, memberId,
-                                commentThread.getThreadId(), comment.getCommentId() + "",
-                                ActivityProvidersType.DiscussionAddContestCommentActivityEntry
-                                        .getType());
-
+                        activityClient.createActivityEntry(ContestActivityType.ADD_COMMENT,
+                                memberId, comment.getThreadId(),
+                                Long.toString(comment.getCommentId()));
 
                         GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.COMMENT_CONTEST);
-
                     }
                 } else {
-                    ActivityEntryHelper.createActivityEntry(activityClient, memberId,
-                            commentThread.getCategory().getCategoryId(),
-                            comment.getCommentId() + "",
-                            ActivityProvidersType.DiscussionAddCommentActivityEntry.getType());
+                    activityClient.createActivityEntry(DiscussionActivityType.COMMENT_ADDED, memberId,
+                            commentThread.getCategoryId(), Long.toString(comment.getCommentId()));
                 }
             }
             if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {

@@ -1,11 +1,9 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
@@ -91,15 +89,13 @@ public final class AddUpdateProposalControllerUtil {
 
             }
 
-		 	ActivityEntryHelper.createActivityEntry(activitiesClient, memberId,
-                    contest.getContestPK(), proposal.getProposalId().toString(),
-                    ActivityProvidersType.ProposalCreatedActivityEntry.getType());
+            activitiesClient.createActivityEntry(ProposalActivityType.CREATED, memberId,
+                    contest.getContestPK(), Long.toString(proposal.getProposalId()));
 
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_CREATION);
 
         } else {
-            ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, proposal.getProposalId(), null,
-                    ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());
+            activitiesClient.createActivityEntry(ProposalActivityType.UPDATED, memberId, proposal.getProposalId(), null);
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
 

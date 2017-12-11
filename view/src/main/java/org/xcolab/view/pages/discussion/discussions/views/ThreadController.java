@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.activities.enums.DiscussionActivityType;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
@@ -106,9 +106,10 @@ public class ThreadController extends BaseDiscussionController {
             comment.setAuthorId(memberId);
             comment = CommentClientUtil.createComment(comment);
 
-            if(!thread.getIsQuiet()) {
-                ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(),memberId, categoryId, (comment.getCommentId()+""),
-                        ActivityProvidersType.DiscussionAddedActivityEntry.getType());
+            if (!thread.getIsQuiet()) {
+                final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
+                activityClient.createActivityEntry(DiscussionActivityType.THREAD_ADDED, memberId,
+                        categoryId, Long.toString(comment.getCommentId()));
             }
 
             return "redirect:" + thread.getLinkUrl();

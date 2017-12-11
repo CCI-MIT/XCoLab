@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.enums.ActivitySubType;
+import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
@@ -78,11 +79,11 @@ public class VoteOnProposalActionController {
         long proposalId = proposal.getProposalId();
         long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
         long memberId = member.getUserId();
-        ActivityProvidersType activityType = null;
+        ActivitySubType activitySubType = null;
         if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, memberId)) {
             // User has voted for this proposal and would like to retract the vote
             proposalMemberRatingClient.deleteProposalVote(proposalId, contestPhaseId, memberId);
-            activityType = ActivityProvidersType.ProposalVoteRetractActivityEntry;
+            activitySubType = ProposalActivityType.VOTE_RETRACTED;
         } else {
             final int votesInContest = proposalMemberRatingClient
                     .countVotesByUserInPhase(memberId, contestPhaseId);
@@ -139,17 +140,17 @@ public class VoteOnProposalActionController {
                         VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
 				GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
                 if (isSwitchingVote) {
-                    activityType = ActivityProvidersType.ProposalVoteSwitchActivityEntry;
+                    activitySubType = ProposalActivityType.VOTE_SWITCHED;
                 } else {
-                    activityType = ActivityProvidersType.ProposalVoteActivityEntry;
+                    activitySubType = ProposalActivityType.VOTE_ADDED;
                 }
                 hasVoted = true;
             }
         }
 
-        if (activityType != null) {
-            ActivityEntryHelper.createActivityEntry(clients.getActivitiesClient(), memberId,
-                    proposalId, "", activityType.getType());
+        if (activitySubType != null) {
+            final ActivitiesClient activityClient = clients.getActivitiesClient();
+            activityClient.createActivityEntry(activitySubType, memberId, proposalId, null);
         }
 
         // Redirect to prevent page-refreshing from influencing the vote

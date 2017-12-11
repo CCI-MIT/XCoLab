@@ -1,8 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
@@ -127,9 +126,8 @@ public class MembershipClient {
 
             ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
 
-            ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
-                    ActivityProvidersType.ProposalMemberAddedActivityEntry.getType());
-
+            activityClient.createActivityEntry(ProposalActivityType.MEMBER_ADDED, userId,
+                    proposalId, null);
 
             if (!activityClient.isSubscribedToActivity(userId,
                     ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {
