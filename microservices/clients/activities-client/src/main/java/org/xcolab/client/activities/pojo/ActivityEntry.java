@@ -13,19 +13,18 @@ import java.util.Objects;
 public class ActivityEntry implements Serializable {
 
     public static final TypeProvider<ActivityEntry> TYPES = new TypeProvider<>(ActivityEntry.class,
-            new ParameterizedTypeReference<List<ActivityEntry>>() {
-            });
+            new ParameterizedTypeReference<List<ActivityEntry>>() {});
 
     private static final long serialVersionUID = 489920719;
 
-    private Long      activityentryid;
-    private Long      memberid;
+    private Long activityentryid;
+    private Long memberid;
     private Timestamp createdate;
-    private Long      primarytype;
-    private Long      secondarytype;
-    private Long      classprimarykey;
-    private String    extradata;
-    private String    activityentryname;
+    private Long primarytype;
+    private Long secondarytype;
+    private Long classprimarykey;
+    private String extradata;
+    private String activityentryname;
 
     public ActivityEntry() {}
 
@@ -105,6 +104,12 @@ public class ActivityEntry implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(activityentryid, memberid, createdate, primarytype, secondarytype,
+                classprimarykey, extradata, activityentryname);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -113,32 +118,21 @@ public class ActivityEntry implements Serializable {
             return false;
         }
         ActivityEntry that = (ActivityEntry) o;
-        return Objects.equals(activityentryid, that.activityentryid)
-                && Objects.equals(memberid, that.memberid)
-                && Objects.equals(createdate, that.createdate)
-                && Objects.equals(primarytype, that.primarytype)
-                && Objects.equals(secondarytype, that.secondarytype)
-                && Objects.equals(classprimarykey, that.classprimarykey)
-                && Objects.equals(extradata, that.extradata)
-                && Objects.equals(activityentryname, that.activityentryname);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(activityentryid, memberid, createdate, primarytype, secondarytype,
-                classprimarykey, extradata, activityentryname);
+        return Objects.equals(activityentryid, that.activityentryid) && Objects
+                .equals(memberid, that.memberid) && Objects.equals(createdate, that.createdate)
+                && Objects.equals(primarytype, that.primarytype) && Objects
+                .equals(secondarytype, that.secondarytype) && Objects
+                .equals(classprimarykey, that.classprimarykey) && Objects
+                .equals(extradata, that.extradata) && Objects
+                .equals(activityentryname, that.activityentryname);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this).append("activityentryid", activityentryid)
-                .append("memberid", memberid)
-                .append("createdate", createdate)
-                .append("primarytype", primarytype)
-                .append("secondarytype", secondarytype)
-                .append("classprimarykey", classprimarykey)
-                .append("extradata", extradata)
-                .append("activityentryname", activityentryname)
-                .toString();
+                .append("memberid", memberid).append("createdate", createdate)
+                .append("primarytype", primarytype).append("secondarytype", secondarytype)
+                .append("classprimarykey", classprimarykey).append("extradata", extradata)
+                .append("activityentryname", activityentryname).toString();
     }
 }
