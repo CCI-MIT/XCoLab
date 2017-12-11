@@ -7,8 +7,6 @@ CREATE TABLE `activities_ActivityEntry` (
   `secondaryType` bigint(20) DEFAULT NULL,
   `classPrimaryKey` bigint(20) DEFAULT NULL,
   `extraData` text,
-  `activityEntryTitle` varchar(255) DEFAULT NULL,
-  `activityEntryBody` text,
   `activityEntryName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`activityEntryId`),
   KEY `activityEntry_memberId` (`memberId`),

@@ -7,11 +7,10 @@ CREATE TABLE `activities_ActivityEntry` (
   `secondaryType` bigint(20) DEFAULT NULL,
   `classPrimaryKey` bigint(20) DEFAULT NULL,
   `extraData` text,
-  `activityEntryTitle` varchar(255) DEFAULT NULL,
-  `activityEntryBody` text,
   `activityEntryName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`activityEntryId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1722454 DEFAULT CHARSET=utf8;
+
 DROP TABLE `xcolab_ActivitySubscription` IF EXISTS;
 CREATE TABLE `xcolab_ActivitySubscription` (
   `pk` bigint(20) NOT NULL AUTO_INCREMENT,

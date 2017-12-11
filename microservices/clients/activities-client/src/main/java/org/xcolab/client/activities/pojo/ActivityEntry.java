@@ -1,5 +1,6 @@
 package org.xcolab.client.activities.pojo;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.types.TypeProvider;
@@ -7,6 +8,7 @@ import org.xcolab.util.http.client.types.TypeProvider;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 public class ActivityEntry implements Serializable {
 
@@ -23,8 +25,6 @@ public class ActivityEntry implements Serializable {
     private Long      secondarytype;
     private Long      classprimarykey;
     private String    extradata;
-    private String    activityentrytitle;
-    private String    activityentrybody;
     private String    activityentryname;
 
     public ActivityEntry() {}
@@ -37,33 +37,7 @@ public class ActivityEntry implements Serializable {
         this.secondarytype = value.secondarytype;
         this.classprimarykey = value.classprimarykey;
         this.extradata = value.extradata;
-        this.activityentrytitle = value.activityentrytitle;
-        this.activityentrybody = value.activityentrybody;
         this.activityentryname = value.activityentryname;
-    }
-
-    public ActivityEntry(
-        Long      activityentryid,
-        Long      memberid,
-        Timestamp createdate,
-        Long      primarytype,
-        Long      secondarytype,
-        Long      classprimarykey,
-        String    extradata,
-        String    activityentrytitle,
-        String    activityentrybody,
-        String    activityentryname
-    ) {
-        this.activityentryid = activityentryid;
-        this.memberid = memberid;
-        this.createdate = createdate;
-        this.primarytype = primarytype;
-        this.secondarytype = secondarytype;
-        this.classprimarykey = classprimarykey;
-        this.extradata = extradata;
-        this.activityentrytitle = activityentrytitle;
-        this.activityentrybody = activityentrybody;
-        this.activityentryname = activityentryname;
     }
 
     public Long getActivityEntryId() {
@@ -122,22 +96,6 @@ public class ActivityEntry implements Serializable {
         this.extradata = extradata;
     }
 
-    public String getActivityEntryTitle() {
-        return this.activityentrytitle;
-    }
-
-    public void setActivityEntryTitle(String activityentrytitle) {
-        this.activityentrytitle = activityentrytitle;
-    }
-
-    public String getActivityEntryBody() {
-        return this.activityentrybody;
-    }
-
-    public void setActivityEntryBody(String activityentrybody) {
-        this.activityentrybody = activityentrybody;
-    }
-
     public String getActivityEntryName() {
         return this.activityentryname;
     }
@@ -147,12 +105,40 @@ public class ActivityEntry implements Serializable {
     }
 
     @Override
-    public String toString() {
-        String sb = "ActivityEntry (" + activityentryid + ", " + memberid + ", " + createdate + ", "
-                + primarytype + ", " + secondarytype + ", " + classprimarykey + ", " + extradata
-                + ", " + activityentrytitle + ", " + activityentrybody + ", " + activityentryname
-                + ")";
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ActivityEntry)) {
+            return false;
+        }
+        ActivityEntry that = (ActivityEntry) o;
+        return Objects.equals(activityentryid, that.activityentryid)
+                && Objects.equals(memberid, that.memberid)
+                && Objects.equals(createdate, that.createdate)
+                && Objects.equals(primarytype, that.primarytype)
+                && Objects.equals(secondarytype, that.secondarytype)
+                && Objects.equals(classprimarykey, that.classprimarykey)
+                && Objects.equals(extradata, that.extradata)
+                && Objects.equals(activityentryname, that.activityentryname);
+    }
 
-        return sb;
+    @Override
+    public int hashCode() {
+        return Objects.hash(activityentryid, memberid, createdate, primarytype, secondarytype,
+                classprimarykey, extradata, activityentryname);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("activityentryid", activityentryid)
+                .append("memberid", memberid)
+                .append("createdate", createdate)
+                .append("primarytype", primarytype)
+                .append("secondarytype", secondarytype)
+                .append("classprimarykey", classprimarykey)
+                .append("extradata", extradata)
+                .append("activityentryname", activityentryname)
+                .toString();
     }
 }
