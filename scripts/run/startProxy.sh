@@ -7,6 +7,7 @@ SERVER=service-proxy
 echo "#####################################################################################"
 echo "[INFO] Starting proxy server..."
 
+./copyBinaries.sh
 mkdir -p ${CLOUD_DEPLOY_DIR}
 
 PID_FILE="${SERVER}.pid"
