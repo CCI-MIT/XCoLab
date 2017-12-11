@@ -19,7 +19,6 @@ import org.xcolab.service.activities.utils.Utils;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -34,29 +33,8 @@ public class ActivitiesController {
     @Autowired
     private ActivitiesService activitiesService;
 
-    @PostMapping("/activityEntries/createActivityEntry")
-    public ActivityEntry createActivity(@RequestParam Long memberId,
-            @RequestParam Long classPrimaryKey, @RequestParam String extraData,
-            @RequestParam Long primaryType, @RequestParam Long secondaryType) {
-        java.util.Date date = new java.util.Date();
-
-        ActivityEntry activityEntry = new ActivityEntry();
-        activityEntry.setMemberId(memberId);
-        activityEntry.setClassPrimaryKey(classPrimaryKey);
-        activityEntry.setExtraData(extraData);
-
-        activityEntry.setCreateDate(new Timestamp(date.getTime()));
-
-        //ActivityEntryContentProvider provider = ActivityProvidersImpl.getActivityEntryContentProviderByType(providerType);
-        //provider.setActivityEntry(activityEntry);
-
-        activityEntry.setPrimaryType(primaryType);
-        activityEntry.setSecondaryType(secondaryType);
-
-        //activityEntry.setActivityEntryBody(provider.getBody());
-        //activityEntry.setActivityEntryTitle(provider.getTitle());
-        //activityEntry.setActivityEntryName(provider.getName());
-
+    @PostMapping("/activityEntries")
+    public ActivityEntry createActivityEntry(@RequestBody ActivityEntry activityEntry) {
         return this.activityEntryDao.create(activityEntry);
     }
 

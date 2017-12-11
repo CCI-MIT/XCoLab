@@ -19,15 +19,6 @@ public class ActivitiesClientUtil {
         return activitiesClient;
     }
 
-    public static ActivityEntry createActivityEntry(Long memberId,
-            Long classPrimaryKey,
-            String extraData,
-            Long primaryType,
-            Long secondaryType) {
-        return activitiesClient.createActivityEntry(memberId, classPrimaryKey,
-                extraData,  primaryType,secondaryType);
-    }
-
     public static ActivityEntry getActivityEntry(Long activityEntryId)
             throws ActivityEntryNotFoundException {
         return activitiesClient.getActivityEntry(activityEntryId);

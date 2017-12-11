@@ -1,5 +1,6 @@
 package org.xcolab.client.activities;
 
+import org.xcolab.client.activities.enums.ActivitySubType;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
@@ -35,18 +36,15 @@ public final class ActivitiesClient {
                 ActivitySubscription.TYPES, serviceNamespace);
     }
 
-    public  ActivityEntry createActivityEntry(Long memberId,
-                                                    Long classPrimaryKey,
-                                                    String extraData,
-                                                    Long primaryType,
-                                                    Long secondaryType) {
-        return activityEntryResource.service("createActivityEntry", ActivityEntry.class)
-                .queryParam("primaryType", primaryType)
-                .queryParam("secondaryType", secondaryType)
-                .queryParam("memberId", memberId)
-                .queryParam("classPrimaryKey",classPrimaryKey)
-                .queryParam("extraData",extraData)
-                .post();
+    public ActivityEntry createActivityEntry(ActivitySubType activitySubType, long memberId,
+            long classPrimaryKey, String extraData) {
+        ActivityEntry activityEntry = new ActivityEntry();
+        activityEntry.setActivityType(activitySubType.getParentType().name());
+        activityEntry.setActivitySubType(activitySubType.name());
+        activityEntry.setMemberId(memberId);
+        activityEntry.setClassPrimaryKey(classPrimaryKey);
+        activityEntry.setExtraData(extraData);
+        return activityEntryResource.create(activityEntry).execute();
     }
 
     public  ActivityEntry getActivityEntry(Long activityEntryId)

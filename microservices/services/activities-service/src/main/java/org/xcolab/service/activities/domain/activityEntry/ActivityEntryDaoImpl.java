@@ -4,6 +4,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +32,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     public ActivityEntry create(ActivityEntry activityEntry) {
         ActivityEntryRecord ret = this.dslContext.insertInto(ACTIVITY_ENTRY)
                 .set(ACTIVITY_ENTRY.MEMBER_ID, activityEntry.getMemberId())
-                .set(ACTIVITY_ENTRY.CREATE_DATE, activityEntry.getCreateDate())
+                .set(ACTIVITY_ENTRY.CREATE_DATE, DSL.currentTimestamp())
                 .set(ACTIVITY_ENTRY.PRIMARY_TYPE, activityEntry.getPrimaryType())
                 .set(ACTIVITY_ENTRY.SECONDARY_TYPE, activityEntry.getSecondaryType())
                 .set(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY, activityEntry.getClassPrimaryKey())
