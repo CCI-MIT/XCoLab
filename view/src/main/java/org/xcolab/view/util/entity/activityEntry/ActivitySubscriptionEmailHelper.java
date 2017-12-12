@@ -292,8 +292,7 @@ public class ActivitySubscriptionEmailHelper {
 
     private void sendInstantNotifications(ActivityEntry activity) {
 
-        String subject = clearLinksInSubject(activity.getActivityEntryTitle())
-                + " ";//get old implementation for subject
+        String subject = clearLinksInSubject(activityEntryHelper.getActivityTitle(activity)) + " ";
         String messageTemplate = activityEntryHelper.getActivityBody(activity);
 
         Set<Member> recipients = new HashSet<>();
