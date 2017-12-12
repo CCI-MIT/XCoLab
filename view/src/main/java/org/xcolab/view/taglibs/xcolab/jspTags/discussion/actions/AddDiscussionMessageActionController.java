@@ -136,7 +136,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                         }
                     } catch (ProposalNotFoundException e) {
                         //contest
-                        activityClient.createActivityEntry(ContestActivityType.ADD_COMMENT,
+                        activityClient.createActivityEntry(ContestActivityType.COMMENT_ADDED,
                                 memberId, comment.getThreadId(),
                                 Long.toString(comment.getCommentId()));
 
