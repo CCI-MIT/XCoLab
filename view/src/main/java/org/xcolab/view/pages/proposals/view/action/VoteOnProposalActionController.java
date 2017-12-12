@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.enums.ActivitySubType;
+import org.xcolab.client.activities.enums.ActivityType;
 import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -79,7 +79,7 @@ public class VoteOnProposalActionController {
         long proposalId = proposal.getProposalId();
         long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
         long memberId = member.getUserId();
-        ActivitySubType activitySubType = null;
+        ActivityType activitySubType = null;
         if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, memberId)) {
             // User has voted for this proposal and would like to retract the vote
             proposalMemberRatingClient.deleteProposalVote(proposalId, contestPhaseId, memberId);

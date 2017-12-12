@@ -20,8 +20,8 @@ public class ActivityEntry implements Serializable {
     private Long activityentryid;
     private Long memberid;
     private Timestamp createdate;
+    private String activityCategory;
     private String activityType;
-    private String activitySubType;
     private Long primarytype;
     private Long secondarytype;
     private Long classprimarykey;
@@ -65,20 +65,20 @@ public class ActivityEntry implements Serializable {
         this.createdate = createdate;
     }
 
+    public String getActivityCategory() {
+        return activityCategory;
+    }
+
+    public void setActivityCategory(String activityCategory) {
+        this.activityCategory = activityCategory;
+    }
+
     public String getActivityType() {
         return activityType;
     }
 
     public void setActivityType(String activityType) {
         this.activityType = activityType;
-    }
-
-    public String getActivitySubType() {
-        return activitySubType;
-    }
-
-    public void setActivitySubType(String activitySubType) {
-        this.activitySubType = activitySubType;
     }
 
     public Long getPrimaryType() {
@@ -132,8 +132,8 @@ public class ActivityEntry implements Serializable {
         ActivityEntry that = (ActivityEntry) o;
         return Objects.equals(activityentryid, that.activityentryid)
                 && Objects.equals(memberid, that.memberid) && Objects.equals(createdate, that.createdate)
+                && Objects.equals(getActivityCategory(), that.getActivityCategory())
                 && Objects.equals(getActivityType(), that.getActivityType())
-                && Objects.equals(getActivitySubType(), that.getActivitySubType())
                 && Objects.equals(primarytype, that.primarytype)
                 && Objects.equals(secondarytype, that.secondarytype)
                 && Objects.equals(classprimarykey, that.classprimarykey)
@@ -143,8 +143,8 @@ public class ActivityEntry implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(activityentryid, memberid, createdate, getActivityType(),
-                getActivitySubType(), primarytype, secondarytype, classprimarykey, extradata,
+        return Objects.hash(activityentryid, memberid, createdate, getActivityCategory(),
+                getActivityType(), primarytype, secondarytype, classprimarykey, extradata,
                 activityentryname);
     }
 
@@ -153,8 +153,8 @@ public class ActivityEntry implements Serializable {
         return new ToStringBuilder(this).append("activityentryid", activityentryid)
                 .append("memberid", memberid)
                 .append("createdate", createdate)
+                .append("activityCategory", activityCategory)
                 .append("activityType", activityType)
-                .append("activitySubType", activitySubType)
                 .append("primarytype", primarytype)
                 .append("secondarytype", secondarytype)
                 .append("classprimarykey", classprimarykey)

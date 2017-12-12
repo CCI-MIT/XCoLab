@@ -1,8 +1,8 @@
 package org.xcolab.client.activities.enums;
 
-public enum ActivityType {
-    MEMBER,
-    DISCUSSION,
-    PROPOSAL,
-    CONTEST;
+public interface ActivityType {
+
+    ActivityCategory getCategory();
+
+    String name();
 }

@@ -1,6 +1,6 @@
 package org.xcolab.client.activities;
 
-import org.xcolab.client.activities.enums.ActivitySubType;
+import org.xcolab.client.activities.enums.ActivityType;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
@@ -36,11 +36,11 @@ public final class ActivitiesClient {
                 ActivitySubscription.TYPES, serviceNamespace);
     }
 
-    public ActivityEntry createActivityEntry(ActivitySubType activitySubType, long memberId,
+    public ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
             long classPrimaryKey, String extraData) {
         ActivityEntry activityEntry = new ActivityEntry();
-        activityEntry.setActivityType(activitySubType.getParentType().name());
-        activityEntry.setActivitySubType(activitySubType.name());
+        activityEntry.setActivityCategory(activityType.getCategory().name());
+        activityEntry.setActivityType(activityType.name());
         activityEntry.setMemberId(memberId);
         activityEntry.setClassPrimaryKey(classPrimaryKey);
         activityEntry.setExtraData(extraData);

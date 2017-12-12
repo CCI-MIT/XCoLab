@@ -1,6 +1,6 @@
 package org.xcolab.client.activities.enums;
 
-public enum ProposalActivityType implements ActivitySubType {
+public enum ProposalActivityType implements ActivityType {
 
     COMMENT_ADDED, //DiscussionAddProposalCommentActivityEntry(3, 39202L ,1L),
     UPDATED, //ProposalAttributeUpdateActivityEntry(6,1368503L, 1L),
@@ -17,7 +17,7 @@ public enum ProposalActivityType implements ActivitySubType {
     ;
 
     @Override
-    public ActivityType getParentType() {
-        return ActivityType.PROPOSAL;
+    public ActivityCategory getCategory() {
+        return ActivityCategory.PROPOSAL;
     }
 }

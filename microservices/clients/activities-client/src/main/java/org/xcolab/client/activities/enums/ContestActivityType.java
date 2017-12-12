@@ -1,13 +1,13 @@
 package org.xcolab.client.activities.enums;
 
-public enum ContestActivityType implements ActivitySubType {
+public enum ContestActivityType implements ActivityType {
 
     ADD_COMMENT, //DiscussionAddContestCommentActivityEntry(15,39202L, 6L),
     ;
 
 
     @Override
-    public ActivityType getParentType() {
-        return ActivityType.CONTEST;
+    public ActivityCategory getCategory() {
+        return ActivityCategory.CONTEST;
     }
 }
