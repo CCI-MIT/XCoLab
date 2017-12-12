@@ -251,7 +251,6 @@ public final class ProposalAttributeClient {
              pua =
                     getProposalUnversionedAttribute(proposalId, attributeName);
                 pua.setCreateAuthorId(authorId);
-                pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
                 pua.setNumericValue(longValue);
                 pua.setStringValue(stringValue);
                 pua.setRealValue(doubleValue);
@@ -260,8 +259,6 @@ public final class ProposalAttributeClient {
         } catch (EntityNotFoundException e) {
             pua = new ProposalUnversionedAttribute();
             pua.setCreateAuthorId(authorId);
-            pua.setCreateDate(new Timestamp(new Date().getTime()));
-            pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
             pua.setName(attributeName);
             pua.setNumericValue(longValue);
             pua.setStringValue(stringValue);

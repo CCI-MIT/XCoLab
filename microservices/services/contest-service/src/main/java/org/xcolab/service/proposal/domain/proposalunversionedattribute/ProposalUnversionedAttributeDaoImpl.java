@@ -3,12 +3,13 @@ package org.xcolab.service.proposal.domain.proposalunversionedattribute;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.ProposalUnversionedAttribute;
 import org.xcolab.model.tables.records.ProposalUnversionedAttributeRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-
 
 import java.util.List;
 
@@ -27,15 +28,17 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
     @Override
     public ProposalUnversionedAttribute create(ProposalUnversionedAttribute proposalUnversionedAttribute) {
 
+        final long additionalId = proposalUnversionedAttribute.getAdditionalId() != null
+                ? proposalUnversionedAttribute.getAdditionalId() : 0;
         ProposalUnversionedAttributeRecord ret = this.dslContext.insertInto(PROPOSAL_UNVERSIONED_ATTRIBUTE)
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID_, proposalUnversionedAttribute.getId_())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.PROPOSAL_ID, proposalUnversionedAttribute.getProposalId())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.CREATE_AUTHOR_ID, proposalUnversionedAttribute.getCreateAuthorId())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_AUTHOR_ID, proposalUnversionedAttribute.getLastAuthorId())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.CREATE_DATE, proposalUnversionedAttribute.getCreateDate())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_UPDATE_DATE, proposalUnversionedAttribute.getLastUpdateDate())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.CREATE_DATE, DSL.currentTimestamp())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_UPDATE_DATE, DSL.currentTimestamp())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NAME, proposalUnversionedAttribute.getName())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ADDITIONAL_ID, proposalUnversionedAttribute.getAdditionalId())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ADDITIONAL_ID, additionalId)
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NUMERIC_VALUE, proposalUnversionedAttribute.getNumericValue())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.STRING_VALUE, proposalUnversionedAttribute.getStringValue())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.REAL_VALUE, proposalUnversionedAttribute.getRealValue())
@@ -69,10 +72,8 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
         return dslContext.update(PROPOSAL_UNVERSIONED_ATTRIBUTE)
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID_, proposalUnversionedAttribute.getId_())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.PROPOSAL_ID, proposalUnversionedAttribute.getProposalId())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.CREATE_AUTHOR_ID, proposalUnversionedAttribute.getCreateAuthorId())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_AUTHOR_ID, proposalUnversionedAttribute.getLastAuthorId())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.CREATE_DATE, proposalUnversionedAttribute.getCreateDate())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_UPDATE_DATE, proposalUnversionedAttribute.getLastUpdateDate())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_UPDATE_DATE, DSL.currentTimestamp())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NAME, proposalUnversionedAttribute.getName())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ADDITIONAL_ID, proposalUnversionedAttribute.getAdditionalId())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NUMERIC_VALUE, proposalUnversionedAttribute.getNumericValue())
