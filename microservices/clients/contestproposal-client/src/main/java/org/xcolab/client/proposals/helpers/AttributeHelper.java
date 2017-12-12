@@ -2,7 +2,10 @@ package org.xcolab.client.proposals.helpers;
 
 import org.xcolab.util.attributes.Attribute;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public abstract class AttributeHelper<AttributeT extends Attribute> {
@@ -80,5 +83,14 @@ public abstract class AttributeHelper<AttributeT extends Attribute> {
             }
         }
         return newestAttributeSeen;
+    }
+
+    public List<AttributeT> getAttributes(String attributeName) {
+        final Map<Long, AttributeT> attributesByAdditionalId =
+                attributesByNameAndAdditionalId.get(attributeName);
+        if (attributesByAdditionalId != null) {
+            return new ArrayList<>(attributesByAdditionalId.values());
+        }
+        return Collections.emptyList();
     }
 }

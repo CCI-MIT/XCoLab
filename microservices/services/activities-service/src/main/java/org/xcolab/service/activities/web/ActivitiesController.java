@@ -105,8 +105,8 @@ public class ActivitiesController {
     @PostMapping("/activitySubscriptions/batchDelete")
     public boolean batchDelete(@RequestParam ActivityEntryType activityEntryType,
             @RequestBody List<Long> classPKs) {
-        return activitySubscriptionDao.delete(activityEntryType, classPKs) && activityEntryDao
-                .delete(activityEntryType, classPKs);
+        return activitySubscriptionDao.delete(activityEntryType, classPKs)
+                && activityEntryDao.delete(activityEntryType, classPKs);
     }
 
     @GetMapping("/activitySubscriptions/isSubscribed")

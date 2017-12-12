@@ -90,24 +90,6 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
     }
 
     @Override
-    public List<ProposalAttribute> findByProposalIdVersionAndImpact(Long proposalId, Integer version) {
-        final SelectQuery<Record> query = dslContext.select()
-                .from(PROPOSAL_ATTRIBUTE).getQuery();
-
-        if (proposalId != null) {
-            query.addConditions(PROPOSAL_ATTRIBUTE.PROPOSAL_ID.eq(proposalId));
-        }
-        query.addConditions(PROPOSAL_ATTRIBUTE.NAME.like("IMPACT_%"));
-
-        if (version != null) {
-            //TODO: temporary workaround to make sure impact results are accurate
-            // (they can't handle multiple versions of an attribute yet)
-            query.addConditions(PROPOSAL_ATTRIBUTE.VERSION.ge(version));
-        }
-        return query.fetchInto(ProposalAttribute.class);
-    }
-
-    @Override
     public int delete(Long id_) {
         return dslContext.deleteFrom(PROPOSAL_ATTRIBUTE)
                 .where(PROPOSAL_ATTRIBUTE.ID_.eq(id_))

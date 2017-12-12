@@ -1,6 +1,5 @@
 package org.xcolab.client.proposals;
 
-import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -23,7 +22,6 @@ import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,17 +98,6 @@ public final class ProposalAttributeClient {
         return proposalAttributeResource.delete(id_).execute();
     }
 
-    public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal,
-            FocusArea focusArea) {
-        List<ProposalAttribute> filteredProposalAttributes = new ArrayList<>();
-        for (ProposalAttribute attribute : getImpactProposalAttributes(proposal)) {
-            if (attribute.getAdditionalId() == focusArea.getId_().longValue()) {
-                filteredProposalAttributes.add(attribute);
-            }
-        }
-        return filteredProposalAttributes;
-    }
-
     public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) {
         return DtoUtil.toPojos(proposalAttributeResource
                 .service("getImpactProposalAttributes", ProposalAttributeDto.TYPES.getTypeReference())
@@ -142,6 +129,15 @@ public final class ProposalAttributeClient {
                         .withParameter("proposalId", proposalId)
                         .withParameter("version",version)
                         .asList(), CacheName.PROPOSAL_DETAILS)
+                .execute(), serviceNamespace);
+    }
+
+    public List<ProposalAttribute> getAllProposalAttributes(long proposalId, String name,
+            long additionalId) {
+        return DtoUtil.toPojos(proposalAttributeResource.list()
+                .optionalQueryParam("proposalId", proposalId)
+                .optionalQueryParam("name", name)
+                .optionalQueryParam("additionalId", additionalId)
                 .execute(), serviceNamespace);
     }
 
@@ -255,7 +251,6 @@ public final class ProposalAttributeClient {
              pua =
                     getProposalUnversionedAttribute(proposalId, attributeName);
                 pua.setCreateAuthorId(authorId);
-                pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
                 pua.setNumericValue(longValue);
                 pua.setStringValue(stringValue);
                 pua.setRealValue(doubleValue);
@@ -264,8 +259,6 @@ public final class ProposalAttributeClient {
         } catch (EntityNotFoundException e) {
             pua = new ProposalUnversionedAttribute();
             pua.setCreateAuthorId(authorId);
-            pua.setCreateDate(new Timestamp(new Date().getTime()));
-            pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
             pua.setName(attributeName);
             pua.setNumericValue(longValue);
             pua.setStringValue(stringValue);

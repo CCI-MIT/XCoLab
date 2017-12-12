@@ -187,6 +187,9 @@ public class LegacyContentRewriteRules implements RewriteRuleProvider {
         configurationBuilder
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/socialmediaguide")))
+                    .perform(Redirect.permanent("/wiki/Social+Media+Guide"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/wiki/Spread+the+word!")))
                     .perform(Redirect.permanent("/wiki/Social+Media+Guide"));
     }
 }
