@@ -101,13 +101,13 @@ public class ProposalAttributeController {
 
     @GetMapping("/proposals/{proposalId}/versions/{version}/attributeHelper")
     public ProposalAttributeHelperData getProposalAttributeHelper(@PathVariable long proposalId,
-            @PathVariable int version) throws NotFoundException {
+            @PathVariable int version) {
         return proposalAttributeService.getProposalAttributeHelperData(proposalId, version);
     }
 
     @GetMapping("/proposals/{proposalId}/attributeHelper")
     public ProposalUnversionedAttributeHelperData getProposalUnversionedAttributeHelper(
-            @PathVariable long proposalId) throws NotFoundException {
+            @PathVariable long proposalId) {
         return proposalAttributeService.getProposalUnversionedAttributeHelperData(proposalId);
     }
 }
