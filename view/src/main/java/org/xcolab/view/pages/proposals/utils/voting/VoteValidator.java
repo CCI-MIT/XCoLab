@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.utils.voting;
 
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -76,7 +75,7 @@ public class VoteValidator {
         usersWithSharedIP.remove(member);
 
         for (Member otherMember : usersWithSharedIP) {
-            if (nameMatches(otherMember)) {
+            if (member.hasSameName(otherMember)) {
                 return ValidationResult.INVALID_DUPLICATE;
             }
         }
@@ -133,11 +132,6 @@ public class VoteValidator {
     private boolean isRecentVote(ProposalVote otherVote) {
         final DateTime otherVoteTime = new DateTime(otherVote.getCreateDate());
         return otherVoteTime.plusHours(VOTE_RECENCY_THRESHOLD_HOURS).isAfterNow();
-    }
-
-    private boolean nameMatches(Member otherUser) {
-        return StringUtils.equalsIgnoreCase(member.getFirstName(), otherUser.getFirstName())
-                && StringUtils.equalsIgnoreCase(member.getLastName(), otherUser.getLastName());
     }
 
     private boolean isEmailWhitelisted() {
