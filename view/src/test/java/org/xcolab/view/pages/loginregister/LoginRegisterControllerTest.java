@@ -16,6 +16,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.MockContestType;
 import org.xcolab.client.balloons.BalloonsClient;
@@ -61,6 +63,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @PrepareForTest({
         org.xcolab.client.admin.AdminClient.class,
+        org.xcolab.client.activities.ActivitiesClient.class,
+        org.xcolab.client.activities.ActivitiesClientUtil.class,
         org.xcolab.client.admin.ContestTypeClient.class,
         org.xcolab.client.contest.ContestClientUtil.class,
         org.xcolab.client.sharedcolab.SharedColabClient.class,
@@ -80,6 +84,8 @@ public class LoginRegisterControllerTest {
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
+        PowerMockito.mockStatic(ActivitiesClient.class);
+        PowerMockito.mockStatic(ActivitiesClientUtil.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
         PowerMockito.mockStatic(SharedColabClient.class);
         PowerMockito.mockStatic(ContestTypeClient.class);

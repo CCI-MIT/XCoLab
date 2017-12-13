@@ -1,5 +1,6 @@
 package org.xcolab.client.activities;
 
+import org.xcolab.client.activities.enums.ActivityType;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
@@ -17,6 +18,12 @@ public class ActivitiesClientUtil {
 
     public static ActivitiesClient getClient() {
         return activitiesClient;
+    }
+
+    public static ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+            long classPrimaryKey, String extraData) {
+        return activitiesClient.createActivityEntry(activityType, memberId, classPrimaryKey,
+                extraData);
     }
 
     public static ActivityEntry getActivityEntry(Long activityEntryId)
