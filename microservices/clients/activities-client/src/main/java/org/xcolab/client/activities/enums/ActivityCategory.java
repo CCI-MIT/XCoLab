@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public enum ActivityCategory {
 
-    MEMBER(ContestActivityType.values()),
+    MEMBER(MemberActivityType.values()),
     DISCUSSION(DiscussionActivityType.values()),
     PROPOSAL(ProposalActivityType.values()),
     CONTEST(ContestActivityType.values());
