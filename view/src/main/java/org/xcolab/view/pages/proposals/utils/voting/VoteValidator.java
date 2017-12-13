@@ -48,8 +48,10 @@ public class VoteValidator {
         }
         final ValidationResult validationResult = getValidationResult(vote);
         if (validationResult != ValidationResult.VALID) {
-            invalidateVote(vote);
+            vote.setIsValid(false);
         }
+        vote.setInitialValidationResult(validationResult.name());
+        clients.getProposalMemberRatingClient().updateProposalVote(vote);
         return validationResult;
     }
 
@@ -59,12 +61,10 @@ public class VoteValidator {
         }
 
         if (member.getIsEmailBounced()) {
-            invalidateVote(vote);
             return ValidationResult.INVALID_BOUNCED_EMAIL;
         }
 
         if (isEmailBlacklisted()) {
-            invalidateVote(vote);
             return ValidationResult.INVALID_BLACKLISTED;
         }
 
@@ -77,7 +77,6 @@ public class VoteValidator {
 
         for (Member otherMember : usersWithSharedIP) {
             if (nameMatches(otherMember)) {
-                invalidateVote(vote);
                 return ValidationResult.INVALID_DUPLICATE;
             }
         }
@@ -123,11 +122,6 @@ public class VoteValidator {
         Member member = MembersClient.getMemberUnchecked(vote.getUserId());
         new ProposalVoteValidityConfirmation(proposal, contest, member, confirmationToken)
                 .sendEmailNotification();
-    }
-
-    private void invalidateVote(ProposalVote vote) {
-        vote.setIsValid(false);
-        clients.getProposalMemberRatingClient().updateProposalVote(vote);
     }
 
     private ProposalVote getVote(Member votingMember) {
