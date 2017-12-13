@@ -9,6 +9,7 @@ import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -36,13 +37,17 @@ public class ActivityEntryHelper {
     private ActivityEntryContentProvider getProvider(ActivityEntry entry) {
         try {
             final Optional<ActivityEntryContentProvider> providerOpt = providerList.stream()
-                    .filter(provider -> provider.getPrimaryType() == entry.getPrimaryType()
-                            .longValue())
-                    .filter(provider -> provider.getSecondaryType() == entry.getSecondaryType()
-                            .longValue()).findAny();
+                    .filter(provider ->
+                            Objects.equals(provider.getActivityType(), entry.getActivityTypeEnum()))
+                    .findAny();
             if (!providerOpt.isPresent()) {
-                throw new IllegalStateException("Activity provider for entry "
-                        + entry.getActivityEntryId() + " does not exist");
+                log.warn("Activity entry {} has no valid content provider",
+                        entry.getActivityEntryId());
+                return null;
+
+                //TODO COLAB-2486: Fix legacy activity entries and throw an exception on error
+                // throw new IllegalStateException("Activity provider for entry "
+                //        + entry.getActivityEntryId() + " does not exist");
             }
             final ActivityEntryContentProvider provider = providerOpt.get();
             provider.setActivityEntry(entry);

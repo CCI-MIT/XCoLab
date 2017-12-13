@@ -2,6 +2,9 @@ package org.xcolab.view.activityentry.discussion;
 
 import org.apache.commons.text.StringEscapeUtils;
 
+import org.xcolab.client.activities.enums.ContestActivityType;
+import org.xcolab.client.activities.enums.DiscussionActivityType;
+import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
@@ -24,7 +27,6 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
@@ -54,10 +56,8 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
     public void setActivityEntry(ActivityEntry activityEntry)
             throws ActivityInitializationException {
         this.activityEntry = activityEntry;
-        if (this.getSecondaryType()
-                .equals(DiscussionActivitySubType.DISCUSSION_ADDED_COMMENT.getSecondaryTypeId())
-                || this.getSecondaryType()
-                .equals(DiscussionActivitySubType.DISCUSSION_ADDED.getSecondaryTypeId())) {
+        if (DiscussionActivityType.COMMENT_ADDED.equals(getActivityType())
+            || DiscussionActivityType.THREAD_ADDED.equals(getActivityType())) {
 
             try {//DISCUSSION_ADDED_COMMENT
                 category = CategoryClientUtil.getCategory(activityEntry.getClassPrimaryKey());
@@ -71,8 +71,7 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
             }
             return;
         }
-        if (this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_CONTEST_COMMENT
-                .getSecondaryTypeId())) {
+        if (ContestActivityType.COMMENT_ADDED.equals(getActivityType())) {
             try {
                 thread = ThreadClientUtil.getThread(activityEntry.getClassPrimaryKey());
                 contest = ContestClientUtil.getContestByThreadId(thread.getThreadId());
@@ -82,8 +81,7 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
             }
             return;
         }
-        if (this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT
-                .getSecondaryTypeId())) {
+        if (ProposalActivityType.COMMENT_ADDED.equals(getActivityType())) {
             try {//proposal comment
                 thread = ThreadClientUtil.getThread(activityEntry.getClassPrimaryKey());
 
@@ -152,31 +150,6 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
 
         } catch (MemberNotFoundException ignored) {
             return "<user removed>";
-        }
-    }
-
-    @Override
-    public Long getPrimaryType() {
-        return ActivityEntryType.DISCUSSION.getPrimaryTypeId();
-    }
-
-
-    public enum DiscussionActivitySubType {
-        DISCUSSION_PROPOSAL_COMMENT(1L),
-        DISCUSSION_CATEGORY_ADDED(2L),
-        DISCUSSION_ADDED(3L),
-        DISCUSSION_FORUM_COMMENT(4L),
-        DISCUSSION_ADDED_COMMENT(5L),
-        DISCUSSION_CONTEST_COMMENT(6L);
-
-        private final Long secondaryTypeId;
-
-        DiscussionActivitySubType(Long type) {
-            this.secondaryTypeId = type;
-        }
-
-        public Long getSecondaryTypeId() {
-            return this.secondaryTypeId;
         }
     }
 }

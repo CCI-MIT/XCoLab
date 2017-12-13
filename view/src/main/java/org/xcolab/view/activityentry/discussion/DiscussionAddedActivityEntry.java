@@ -3,6 +3,8 @@ package org.xcolab.view.activityentry.discussion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.activities.enums.ActivityType;
+import org.xcolab.client.activities.enums.DiscussionActivityType;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 @Component
@@ -16,8 +18,8 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
     }
 
     @Override
-    public Long getSecondaryType() {
-        return DiscussionActivitySubType.DISCUSSION_ADDED.getSecondaryTypeId();
+    public ActivityType getActivityType() {
+        return DiscussionActivityType.THREAD_ADDED;
     }
 
     @Override

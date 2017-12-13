@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
 
+import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -17,7 +18,6 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
@@ -47,8 +47,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
         this.activityEntry = activityEntry;
 
         try {
-            if (this.getSecondaryType()
-                    .equals(ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId())) {
+            if (ProposalActivityType.CREATED.equals(getActivityType())) {
                 try {
                     Long proposalId = new Long(this.activityEntry.getExtraData());
                     rawProposal = ProposalClientUtil.getProposal(proposalId);
@@ -73,16 +72,6 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
         } catch (ContestNotFoundException | ProposalNotFoundException e) {
             throw new ActivityInitializationException(activityEntry.getActivityEntryId(), e);
-        }
-    }
-
-    @Override
-    public Long getPrimaryType() {
-        if (this.getSecondaryType()
-                .equals(ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId())) {
-            return ActivityEntryType.CONTEST.getPrimaryTypeId();
-        } else {
-            return ActivityEntryType.PROPOSAL.getPrimaryTypeId();
         }
     }
 
@@ -119,28 +108,5 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
     private String getProposalLink() {
         return "<a href='" + rawProposal.getProposalLinkUrl(contest) + "'>" + proposalName + "</a>";
-    }
-
-    public enum ProposalActivitySubType {
-        PROPOSAL_ATTRIBUTE_REMOVED(2L),
-        PROPOSAL_ATTRIBUTE_UPDATE(1L),
-        PROPOSAL_CREATED(0L),
-        PROPOSAL_MEMBER_ADDED(6L),
-        PROPOSAL_MEMBER_REMOVED(7L),
-        PROPOSAL_SUPPORTER_ADDED(8L),
-        PROPOSAL_SUPPORTER_REMOVED(9L),
-        PROPOSAL_VOTE(3L),
-        PROPOSAL_VOTE_RETRACT(4L),
-        PROPOSAL_VOTE_SWITCH(5L);
-
-        private final Long secondaryTypeId;
-
-        ProposalActivitySubType(Long type) {
-            this.secondaryTypeId = type;
-        }
-
-        public Long getSecondaryTypeId() {
-            return this.secondaryTypeId;
-        }
     }
 }

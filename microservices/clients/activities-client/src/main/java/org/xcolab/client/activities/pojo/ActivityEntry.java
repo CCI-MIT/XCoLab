@@ -1,8 +1,11 @@
 package org.xcolab.client.activities.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.activities.enums.ActivityCategory;
+import org.xcolab.client.activities.enums.ActivityType;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -69,12 +72,27 @@ public class ActivityEntry implements Serializable {
         return activityCategory;
     }
 
+    @JsonIgnore
+    public ActivityCategory getActivityCategoryEnum() {
+        //TODO COLAB-2486: can't be null once fixed
+        return activityCategory != null ? ActivityCategory.valueOf(activityCategory) : null;
+    }
+
     public void setActivityCategory(String activityCategory) {
         this.activityCategory = activityCategory;
     }
 
     public String getActivityType() {
         return activityType;
+    }
+
+    @JsonIgnore
+    public ActivityType getActivityTypeEnum() {
+        //TODO COLAB-2486: neither can be null once fixed
+        if (activityCategory != null && activityType != null) {
+            return getActivityCategoryEnum().getActivityType(activityType);
+        }
+        return null;
     }
 
     public void setActivityType(String activityType) {

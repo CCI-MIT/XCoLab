@@ -6,12 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.activities.enums.ActivityType;
+import org.xcolab.client.activities.enums.MemberActivityType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
@@ -68,26 +69,8 @@ public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {
     }
 
     @Override
-    public Long getPrimaryType() {
-        return ActivityEntryType.MEMBER.getPrimaryTypeId();
+    public ActivityType getActivityType() {
+        return MemberActivityType.REGISTERED;
     }
 
-    @Override
-    public Long getSecondaryType() {
-        return MemberSubActivityType.MEMBER_JOINED.getSecondaryTypeId();
-    }
-
-    public enum MemberSubActivityType {
-        MEMBER_JOINED(1L);
-
-        private final Long secondaryTypeId;
-
-        MemberSubActivityType(Long type) {
-            this.secondaryTypeId = type;
-        }
-
-        public Long getSecondaryTypeId() {
-            return this.secondaryTypeId;
-        }
-    }
 }

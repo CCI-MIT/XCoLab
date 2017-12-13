@@ -1,13 +1,12 @@
 package org.xcolab.view.activityentry.provider;
 
+import org.xcolab.client.activities.enums.ActivityType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 
 public interface ActivityEntryContentProvider {
 
-    Long getPrimaryType();
-
-    Long getSecondaryType();
+    ActivityType getActivityType();
 
     String getBody();
 
