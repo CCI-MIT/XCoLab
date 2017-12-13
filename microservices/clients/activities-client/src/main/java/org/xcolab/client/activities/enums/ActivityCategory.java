@@ -20,6 +20,6 @@ public enum ActivityCategory {
                 .filter(s -> s.name().equalsIgnoreCase(activityType))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "No enum constant " + name() + "." + activityType));
+                        "No ActivityType " + name() + "." + activityType));
     }
 }
