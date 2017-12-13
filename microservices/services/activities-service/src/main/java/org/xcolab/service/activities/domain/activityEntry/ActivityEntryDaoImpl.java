@@ -33,6 +33,8 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
         ActivityEntryRecord ret = this.dslContext.insertInto(ACTIVITY_ENTRY)
                 .set(ACTIVITY_ENTRY.MEMBER_ID, activityEntry.getMemberId())
                 .set(ACTIVITY_ENTRY.CREATE_DATE, DSL.currentTimestamp())
+                .set(ACTIVITY_ENTRY.ACTIVITY_CATEGORY, activityEntry.getActivityCategory())
+                .set(ACTIVITY_ENTRY.ACTIVITY_TYPE, activityEntry.getActivityType())
                 .set(ACTIVITY_ENTRY.PRIMARY_TYPE, activityEntry.getPrimaryType())
                 .set(ACTIVITY_ENTRY.SECONDARY_TYPE, activityEntry.getSecondaryType())
                 .set(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY, activityEntry.getClassPrimaryKey())
