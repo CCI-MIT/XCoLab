@@ -90,10 +90,9 @@ public class GoogleController {
         session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
 
         String redirectUrl = (String) session.getAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY);
-        redirectUrl = LinkUtils.getRelativeUri(redirectUrl);
-        if (StringUtils.isEmpty(redirectUrl)) {
-            redirectUrl = "/";
-        }
+        redirectUrl = StringUtils.isEmpty(redirectUrl) ? "/"
+                : LinkUtils.getRelativeUri(redirectUrl);
+
         session.removeAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY);
 
         // Check whether the state token matches => CSRF protection
