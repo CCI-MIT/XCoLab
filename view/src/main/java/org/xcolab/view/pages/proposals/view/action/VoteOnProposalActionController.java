@@ -114,7 +114,7 @@ public class VoteOnProposalActionController {
             if (isVoteValidationActive) {
                 VoteValidator voteValidator =
                         new VoteValidator(member, proposal, contest, request.getRemoteAddr(),
-                                clients.getProposalMemberRatingClient());
+                                clients);
                 final ValidationResult validationResult = voteValidator.validate();
                 if (validationResult == ValidationResult.INVALID_BLACKLISTED
                         || validationResult == ValidationResult.INVALID_BOUNCED_EMAIL) {

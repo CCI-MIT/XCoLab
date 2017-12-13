@@ -7,13 +7,14 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.entity.utils.notifications.proposal.ProposalVoteValidityConfirmation;
 import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -22,20 +23,22 @@ import java.util.regex.Pattern;
 public class VoteValidator {
 
     private static final int VOTE_RECENCY_THRESHOLD_HOURS = 12;
+    private static final int SHARED_IP_VOTE_SUSPICION_THRESHOLD = 7;
+    private static final int SHARED_IP_CONFIRMATION_THRESHOLD = 3;
 
     private final Member member;
     private final Proposal proposal;
     private final Contest contest;
     private final String remoteIp;
-    private final ProposalMemberRatingClient proposalMemberRatingClient;
+    private final ClientHelper clients;
 
     public VoteValidator(Member member, Proposal proposal, Contest contest,
-            String remoteIp, ProposalMemberRatingClient proposalMemberRatingClient) {
+            String remoteIp, ClientHelper clients) {
         this.member = member;
         this.proposal = proposal;
         this.contest = contest;
         this.remoteIp = remoteIp;
-        this.proposalMemberRatingClient = proposalMemberRatingClient;
+        this.clients = clients;
     }
 
     public ValidationResult validate() {
@@ -71,45 +74,64 @@ public class VoteValidator {
 
         List<Member> usersWithSharedIP = MembersClient.findMembersByIp(remoteIp);
         usersWithSharedIP.remove(member);
-        if (usersWithSharedIP.isEmpty()) {
-            return ValidationResult.VALID;
-        }
 
-        ValidationResult result = ValidationResult.VALID;
         for (Member otherMember : usersWithSharedIP) {
             if (nameMatches(otherMember)) {
                 invalidateVote(vote);
-                result = ValidationResult.INVALID_DUPLICATE;
-                break;
+                return ValidationResult.INVALID_DUPLICATE;
             }
         }
 
-        int recentVotesFromSharedIP = 0;
+        List<ProposalVote> recentVotesFromSharedIp = new ArrayList<>();
         for (Member otherMember : usersWithSharedIP) {
             final ProposalVote otherVote = getVote(otherMember);
             if (otherVote != null) {
                 if (isRecentVote(otherVote)) {
-                    recentVotesFromSharedIP++;
+                    recentVotesFromSharedIp.add(otherVote);
                 }
             }
+        }
 
+        if (recentVotesFromSharedIp.size() > SHARED_IP_VOTE_SUSPICION_THRESHOLD) {
+
+            if (countConfirmedVotes(recentVotesFromSharedIp) >= SHARED_IP_CONFIRMATION_THRESHOLD) {
+                return ValidationResult.VALID;
+            }
+
+            recentVotesFromSharedIp.stream()
+                    .filter(ProposalVote::getIsValid)
+                    .forEach(this::sendConfirmationEmail);
+
+            if (vote.getIsValid()) {
+                sendConfirmationEmail(vote);
+                return ValidationResult.AWAITING_RESPONSE;
+            }
         }
-        if (vote.getIsValid() && recentVotesFromSharedIP > 7) {
-            String confirmationToken = generateAndSetConfirmationToken(vote);
-            new ProposalVoteValidityConfirmation(proposal, contest, member, confirmationToken)
-                    .sendEmailNotification();
-            result = ValidationResult.AWAITING_RESPONSE;
-        }
-        return result;
+        return ValidationResult.VALID;
+    }
+
+    private long countConfirmedVotes(List<ProposalVote> recentVotesFromSharedIp) {
+        return recentVotesFromSharedIp.stream()
+                .filter(ProposalVote::getIsValid)
+                .filter(otherVote -> otherVote.getConfirmationToken() != null)
+                .count();
+    }
+
+    private void sendConfirmationEmail(ProposalVote vote) {
+        String confirmationToken = generateAndSetConfirmationToken(vote);
+        Proposal proposal = clients.getProposalClient().getProposal(vote.getProposalId());
+        Member member = MembersClient.getMemberUnchecked(vote.getUserId());
+        new ProposalVoteValidityConfirmation(proposal, contest, member, confirmationToken)
+                .sendEmailNotification();
     }
 
     private void invalidateVote(ProposalVote vote) {
         vote.setIsValid(false);
-        proposalMemberRatingClient.updateProposalVote(vote);
+        clients.getProposalMemberRatingClient().updateProposalVote(vote);
     }
 
     private ProposalVote getVote(Member votingMember) {
-        return proposalMemberRatingClient
+        return clients.getProposalMemberRatingClient()
                 .getProposalVoteByProposalIdUserId(proposal.getProposalId(),
                         votingMember.getUserId());
     }
@@ -142,7 +164,7 @@ public class VoteValidator {
         String confirmationToken = UUID.randomUUID().toString();
         vote.setConfirmationToken(confirmationToken);
         vote.setConfirmationEmailSendDate(new Timestamp(new Date().getTime()));
-        proposalMemberRatingClient.updateProposalVote(vote);
+        clients.getProposalMemberRatingClient().updateProposalVote(vote);
         return confirmationToken;
     }
 
