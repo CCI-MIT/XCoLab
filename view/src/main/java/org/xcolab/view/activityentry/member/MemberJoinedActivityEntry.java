@@ -49,7 +49,7 @@ public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {
     }
 
     private String getUserLink(Member user) {
-        return (user.generateUserURL() == null) ? ("<user removed>") : (user.generateUserURL());
+        return (user.getUserLinkTag() == null) ? ("<user removed>") : (user.getUserLinkTag());
     }
 
     @Override
