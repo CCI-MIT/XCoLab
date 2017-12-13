@@ -35,6 +35,7 @@ CREATE TABLE `xcolab_ProposalVote` (
   `isValid` tinyint(4) DEFAULT NULL,
   `confirmationEmailSendDate` datetime DEFAULT NULL,
   `confirmationToken` varchar(75) DEFAULT NULL,
+  `initialValidationResult` VARCHAR(20) NULL,
   PRIMARY KEY (`proposalId`, `contestPhaseId`,`userId`),
   KEY `IX_A4D26028` (`contestPhaseId`,`userId`),
   KEY `IX_5E8D7ED3` (`proposalId`,`userId`),
