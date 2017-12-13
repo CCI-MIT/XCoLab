@@ -37,8 +37,6 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
                 .set(ACTIVITY_ENTRY.SECONDARY_TYPE, activityEntry.getSecondaryType())
                 .set(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY, activityEntry.getClassPrimaryKey())
                 .set(ACTIVITY_ENTRY.EXTRA_DATA, activityEntry.getExtraData())
-                .set(ACTIVITY_ENTRY.ACTIVITY_ENTRY_TITLE, activityEntry.getActivityEntryTitle())
-                .set(ACTIVITY_ENTRY.ACTIVITY_ENTRY_BODY, activityEntry.getActivityEntryBody())
                 .set(ACTIVITY_ENTRY.ACTIVITY_ENTRY_NAME, activityEntry.getActivityEntryName())
                 .returning(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID)
                 .fetchOne();
