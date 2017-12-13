@@ -397,7 +397,7 @@ public class Member implements Serializable {
     }
 
     @JsonIgnore
-    public  String generateUserURL() {
+    public  String getUserLinkTag() {
         if (this.getId_() <= 0) {
             return "";
         }

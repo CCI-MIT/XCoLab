@@ -145,7 +145,7 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
         try {
             Member member = MembersClient.getMember(this.activityEntry.getMemberId());
             if (member != null) {
-                return member.generateUserURL();
+                return member.getUserLinkTag();
             } else {
                 return "&#160;";
             }

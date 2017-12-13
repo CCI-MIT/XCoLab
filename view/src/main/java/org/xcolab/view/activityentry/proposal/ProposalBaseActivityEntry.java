@@ -110,7 +110,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
     private String getUserLink() {
         try {
             Member member = MembersClient.getMember(activityEntry.getMemberId());
-            return member.generateUserURL();
+            return member.getUserLinkTag();
         } catch (MemberNotFoundException e) {
             //_log.info(e.getMessage());
         }
