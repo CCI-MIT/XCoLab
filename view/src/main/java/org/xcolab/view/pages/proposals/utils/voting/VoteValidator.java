@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
 public class VoteValidator {
 
     private static final int VOTE_RECENCY_THRESHOLD_HOURS = 12;
-    private static final int NAME_SIMILARITY_LEVENSHTEIN_THRESHOLD = 3;
 
     private final Member member;
     private final Proposal proposal;
@@ -78,7 +77,7 @@ public class VoteValidator {
 
         ValidationResult result = ValidationResult.VALID;
         for (Member otherMember : usersWithSharedIP) {
-            if (isNameSimilar(otherMember)) {
+            if (nameMatches(otherMember)) {
                 invalidateVote(vote);
                 result = ValidationResult.INVALID_DUPLICATE;
                 break;
@@ -120,11 +119,9 @@ public class VoteValidator {
         return otherVoteTime.plusHours(VOTE_RECENCY_THRESHOLD_HOURS).isAfterNow();
     }
 
-    private boolean isNameSimilar(Member otherUser) {
-        return StringUtils.getLevenshteinDistance(member.getFirstName(),
-                otherUser.getFirstName()) < NAME_SIMILARITY_LEVENSHTEIN_THRESHOLD
-                && StringUtils.getLevenshteinDistance(member.getLastName(),
-                otherUser.getLastName()) < NAME_SIMILARITY_LEVENSHTEIN_THRESHOLD;
+    private boolean nameMatches(Member otherUser) {
+        return StringUtils.equalsIgnoreCase(member.getFirstName(), otherUser.getFirstName())
+                && StringUtils.equalsIgnoreCase(member.getLastName(), otherUser.getLastName());
     }
 
     private boolean isEmailWhitelisted() {
