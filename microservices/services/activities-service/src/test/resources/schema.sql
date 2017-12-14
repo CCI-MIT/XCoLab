@@ -5,11 +5,12 @@ CREATE TABLE `activities_ActivityEntry` (
   `createDate` datetime DEFAULT NULL,
   `activityCategory` VARCHAR(30) NULL,
   `activityType` VARCHAR(75) NULL,
+  `categoryId` BIGINT(20) NOT NULL,
+  `additionalId` BIGINT(20) NULL,
   `primaryType` bigint(20) DEFAULT NULL,
   `secondaryType` bigint(20) DEFAULT NULL,
   `classPrimaryKey` bigint(20) DEFAULT NULL,
-  `extraData` text,
-  `activityEntryName` varchar(255) DEFAULT NULL,
+  `extraData` VARCHAR(75),
   PRIMARY KEY (`activityEntryId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1722454 DEFAULT CHARSET=utf8;
 

@@ -25,11 +25,12 @@ public class ActivityEntry implements Serializable {
     private Timestamp createdate;
     private String activityCategory;
     private String activityType;
+    private long categoryId;
+    private long additionalId;
     private Long primarytype;
     private Long secondarytype;
     private Long classprimarykey;
     private String extradata;
-    private String activityentryname;
 
     public ActivityEntry() {}
 
@@ -41,7 +42,6 @@ public class ActivityEntry implements Serializable {
         this.secondarytype = value.secondarytype;
         this.classprimarykey = value.classprimarykey;
         this.extradata = value.extradata;
-        this.activityentryname = value.activityentryname;
     }
 
     public Long getActivityEntryId() {
@@ -99,6 +99,22 @@ public class ActivityEntry implements Serializable {
         this.activityType = activityType;
     }
 
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public long getAdditionalId() {
+        return additionalId;
+    }
+
+    public void setAdditionalId(long additionalId) {
+        this.additionalId = additionalId;
+    }
+
     public Long getPrimaryType() {
         return this.primarytype;
     }
@@ -131,14 +147,6 @@ public class ActivityEntry implements Serializable {
         this.extradata = extradata;
     }
 
-    public String getActivityEntryName() {
-        return this.activityentryname;
-    }
-
-    public void setActivityEntryName(String activityentryname) {
-        this.activityentryname = activityentryname;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -152,18 +160,19 @@ public class ActivityEntry implements Serializable {
                 && Objects.equals(memberid, that.memberid) && Objects.equals(createdate, that.createdate)
                 && Objects.equals(getActivityCategory(), that.getActivityCategory())
                 && Objects.equals(getActivityType(), that.getActivityType())
+                && Objects.equals(categoryId, that.categoryId)
+                && Objects.equals(additionalId, that.additionalId)
                 && Objects.equals(primarytype, that.primarytype)
                 && Objects.equals(secondarytype, that.secondarytype)
                 && Objects.equals(classprimarykey, that.classprimarykey)
-                && Objects.equals(extradata, that.extradata)
-                && Objects.equals(activityentryname, that.activityentryname);
+                && Objects.equals(extradata, that.extradata);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(activityentryid, memberid, createdate, getActivityCategory(),
-                getActivityType(), primarytype, secondarytype, classprimarykey, extradata,
-                activityentryname);
+                getActivityType(), categoryId, additionalId, primarytype, secondarytype,
+                classprimarykey, extradata);
     }
 
     @Override
@@ -173,11 +182,12 @@ public class ActivityEntry implements Serializable {
                 .append("createdate", createdate)
                 .append("activityCategory", activityCategory)
                 .append("activityType", activityType)
+                .append("categoryId", categoryId)
+                .append("additionalId", additionalId)
                 .append("primarytype", primarytype)
                 .append("secondarytype", secondarytype)
                 .append("classprimarykey", classprimarykey)
                 .append("extradata", extradata)
-                .append("activityentryname", activityentryname)
                 .toString();
     }
 }
