@@ -12,7 +12,6 @@ public interface ActivityEntryContentProvider {
 
     String getTitle();
 
-    String getName();
-
-    void setActivityEntry(ActivityEntry activityEntry) throws ActivityInitializationException;
+    //TODO COLAB-2496: this method should return a new object that holds the state
+    void initialize(ActivityEntry activityEntry) throws ActivityInitializationException;
 }

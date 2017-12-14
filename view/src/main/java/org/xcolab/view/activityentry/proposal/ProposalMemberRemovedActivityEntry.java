@@ -1,6 +1,5 @@
 package org.xcolab.view.activityentry.proposal;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

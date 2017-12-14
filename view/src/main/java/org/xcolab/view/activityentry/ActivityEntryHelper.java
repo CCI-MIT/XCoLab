@@ -50,7 +50,7 @@ public class ActivityEntryHelper {
                 //        + entry.getActivityEntryId() + " does not exist");
             }
             final ActivityEntryContentProvider provider = providerOpt.get();
-            provider.setActivityEntry(entry);
+            provider.initialize(entry);
             return provider;
         } catch (ActivityInitializationException e) {
             log.warn("Error when getting activity body: {}", e.getMessage());

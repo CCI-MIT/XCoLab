@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 
 import org.xcolab.client.activities.enums.ActivityType;
 import org.xcolab.client.activities.enums.DiscussionActivityType;
+import org.xcolab.client.comment.pojo.Category;
+import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 @Component
@@ -12,9 +14,21 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
 
     private static final String MESSAGE_CODE = "activities.discussion.discussionadded.message";
 
+    private Category category;
+
     @Autowired
     public DiscussionAddedActivityEntry(ResourceMessageResolver resourceMessageResolver) {
         super(resourceMessageResolver);
+    }
+
+    @Override
+    public void initializeInternal() throws ActivityInitializationException {
+        super.initializeInternal();
+
+        category = getThread().getCategory();
+        if (category == null) {
+            throw new ActivityInitializationException(activityEntry.getActivityEntryId());
+        }
     }
 
     @Override
@@ -30,11 +44,10 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
 
     @Override
     public String getTitle() {
-        return " started a new discussion";
+        return "New discussion in " + category.getName();
     }
 
-    @Override
-    public String getName() {
-        return "Added new discussion";
+    private String getCategoryLink() {
+        return String.format(HYPERLINK_FORMAT, category.getLinkUrl(), category.getName());
     }
 }

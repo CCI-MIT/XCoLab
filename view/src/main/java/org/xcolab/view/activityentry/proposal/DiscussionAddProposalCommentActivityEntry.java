@@ -1,4 +1,4 @@
-package org.xcolab.view.activityentry.discussion;
+package org.xcolab.view.activityentry.proposal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 @Component
-public class DiscussionAddProposalCommentActivityEntry extends DiscussionBaseActivityEntry {
+public class DiscussionAddProposalCommentActivityEntry extends ProposalBaseActivityEntry {
 
     private static final String MESSAGE_CODE = "activities.discussion.discussionaddproposal.message";
 
@@ -23,18 +23,17 @@ public class DiscussionAddProposalCommentActivityEntry extends DiscussionBaseAct
     }
 
     @Override
-    public String getBody() {
-        String[] params = {getUserLink(), "Proposal", getProposalLink()};
-        return resourceMessageResolver.getLocalizedMessage(MESSAGE_CODE, params);
+    protected String getTitleTemplate() {
+        return "Comment added to <proposal/>";
     }
 
     @Override
-    public String getTitle() {
-        return getUserLink() + " added a comment to proposal";
+    protected String getBodyTemplate() {
+        return MESSAGE_CODE;
     }
 
     @Override
-    public String getName() {
-        return "Comment to proposal";
+    protected String getProposalLinkUrl() {
+        return super.getProposalLinkUrl() + "/tab/COMMENTS";
     }
 }

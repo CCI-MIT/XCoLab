@@ -10,8 +10,7 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 @Component
 public class DiscussionAddCommentActivityEntry extends DiscussionBaseActivityEntry {
 
-    private static final String MESSAGE_CODE =
-            "activities.discussion.discussionaddcomment.message";
+    private static final String MESSAGE_CODE = "activities.discussion.discussionaddcomment.message";
 
     @Autowired
     public DiscussionAddCommentActivityEntry(ResourceMessageResolver resourceMessageResolver) {
@@ -31,11 +30,6 @@ public class DiscussionAddCommentActivityEntry extends DiscussionBaseActivityEnt
 
     @Override
     public String getTitle() {
-        return getUserLink() + " added a comment to thread";
-    }
-
-    @Override
-    public String getName() {
-        return "Comment to thread";
+        return "Comment added to discussion " + getThread().getTitle();
     }
 }
