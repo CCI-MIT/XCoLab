@@ -277,10 +277,10 @@
 
     <!-- ============ Content ============ -->
 
-    <div class="bs-container-fixed clearfix" id="content">
+    <main class="bs-container-fixed clearfix" id="content">
         <!-- Include page body -->
         <jsp:doBody/>
-    </div>
+    </main>
 
 
     <!-- ============ Footer ============ -->
