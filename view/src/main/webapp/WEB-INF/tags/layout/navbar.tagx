@@ -25,7 +25,8 @@
     <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
     <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
-    <nav class="bs-navbar navbar bs-navbar-unresponsive ${isWhiteBackgound ? 'bs-navbar-white' : 'bs-navbar-default'}">
+    <nav class="bs-navbar navbar bs-navbar-unresponsive ${isWhiteBackgound ? 'bs-navbar-white' : 'bs-navbar-default'}"
+         aria-label="site wide">
         <div class="bs-container-fixed">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
