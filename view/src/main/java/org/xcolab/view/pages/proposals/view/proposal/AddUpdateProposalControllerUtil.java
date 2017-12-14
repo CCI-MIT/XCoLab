@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.enums.ContestActivityType;
 import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -89,7 +90,7 @@ public final class AddUpdateProposalControllerUtil {
 
             }
 
-            activitiesClient.createActivityEntry(ProposalActivityType.CREATED, memberId,
+            activitiesClient.createActivityEntry(ContestActivityType.PROPOSAL_CREATED, memberId,
                     contest.getContestPK(), Long.toString(proposal.getProposalId()));
 
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_CREATION);

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.activities.enums.ActivityType;
-import org.xcolab.client.activities.enums.ProposalActivityType;
+import org.xcolab.client.activities.enums.ContestActivityType;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 @Component
@@ -17,7 +17,7 @@ public class ProposalCreatedActivityEntry extends ProposalBaseActivityEntry {
 
     @Override
     public ActivityType getActivityType() {
-        return ProposalActivityType.CREATED;
+        return ContestActivityType.PROPOSAL_CREATED;
     }
 
     @Override

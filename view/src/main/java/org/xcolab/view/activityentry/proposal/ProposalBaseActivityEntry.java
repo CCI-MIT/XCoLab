@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import org.xcolab.client.activities.enums.ProposalActivityType;
+import org.xcolab.client.activities.enums.ContestActivityType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -47,7 +47,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
         this.activityEntry = activityEntry;
 
         try {
-            if (ProposalActivityType.CREATED.equals(getActivityType())) {
+            if (ContestActivityType.PROPOSAL_CREATED.equals(getActivityType())) {
                 try {
                     Long proposalId = new Long(this.activityEntry.getExtraData());
                     rawProposal = ProposalClientUtil.getProposal(proposalId);

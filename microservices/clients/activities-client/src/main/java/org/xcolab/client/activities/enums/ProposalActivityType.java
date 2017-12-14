@@ -4,7 +4,6 @@ public enum ProposalActivityType implements ActivityType {
 
     COMMENT_ADDED,
     UPDATED,
-    CREATED,
     MEMBER_ADDED,
     MEMBER_REMOVED,
     SUPPORT_ADDED,

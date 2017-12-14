@@ -15,7 +15,6 @@ update activities_ActivityEntry set activityCategory = 'PROPOSAL' where primaryT
 update activities_ActivityEntry set activityCategory = 'CONTEST' where primaryType = 39701;
 
 -- Proposal activity types
-update activities_ActivityEntry set activityCategory = 'PROPOSAL', activityType = 'CREATED' where primaryType = 39701 and secondaryType = 0;
 update activities_ActivityEntry set activityType = 'UPDATED' where primaryType = 1368503 and secondaryType = 1;
 update activities_ActivityEntry set activityType = 'UPDATED' where primaryType = 1368503 and secondaryType = 2;
 update activities_ActivityEntry set activityType = 'VOTE_ADDED' where primaryType = 1368503 and secondaryType = 3;
@@ -28,6 +27,9 @@ update activities_ActivityEntry set activityType = 'SUPPORT_REMOVED' where prima
 
 -- Member activity types
 update activities_ActivityEntry set activityType = 'REGISTERED' where primaryType = 10038 and secondaryType = 1;
+
+-- Contest activity types
+update activities_ActivityEntry set activityType = 'PROPOSAL_CREATED' where primaryType = 39701 and secondaryType = 0;
 
 -- Comments
 update activities_ActivityEntry set activityCategory = 'PROPOSAL', activityType = 'COMMENT_ADDED' where primaryType = 39202 and secondaryType = 1;
