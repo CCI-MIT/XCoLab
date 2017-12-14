@@ -31,6 +31,8 @@ update activities_ActivityEntry set activityType = 'REGISTERED' where primaryTyp
 
 -- Contest activity types
 update activities_ActivityEntry set activityType = 'PROPOSAL_CREATED' where primaryType = 39701 and secondaryType = 0;
+-- Some proposal created activities have the wrong primary type in the DB
+update activities_ActivityEntry set activityCategory = 'CONTEST', activityType = 'PROPOSAL_CREATED' where primaryType = 1368503 and secondaryType = 0;
 
 -- Comments
 update activities_ActivityEntry set activityCategory = 'PROPOSAL', activityType = 'COMMENT_ADDED' where primaryType = 39202 and secondaryType = 1;
@@ -57,3 +59,30 @@ ALTER TABLE activities_ActivityEntry
   MODIFY COLUMN additionalId BIGINT(20) AFTER categoryId;
 
 ALTER TABLE activities_ActivityEntry MODIFY extraData VARCHAR(75);
+
+-- ====
+-- Populate categoryId and additionalId fields
+
+-- Proposals
+update activities_ActivityEntry set categoryId = classPrimaryKey where activityCategory = 'PROPOSAL' and not activityType = 'COMMENT_ADDED';
+
+-- Contests
+update activities_ActivityEntry set categoryId = classPrimaryKey, additionalId = extraData where activityCategory = 'CONTEST' and activityType = 'PROPOSAL_CREATED' and extraData > 0;
+update activities_ActivityEntry set categoryId = 0, additionalId = classPrimaryKey where activityCategory = 'CONTEST' and activityType = 'PROPOSAL_CREATED' and (extraData = '' or extraData is NULL);
+
+-- Members
+update activities_ActivityEntry set categoryId = classPrimaryKey where activityCategory = 'MEMBER';
+
+-- Discussions
+-- delete activities for spam comments that were fully deleted from database
+delete from activities_ActivityEntry where activityEntryId in (1687625, 1719867, 1687626, 1720296);
+-- only convert activities in new format (category != 701)
+update activities_ActivityEntry set categoryId = (select threadId from comment_Comment where commentId = extraData) where activityCategory = 'DISCUSSION' and activityType = 'THREAD_ADDED' and not classPrimaryKey = 701;
+update activities_ActivityEntry set categoryId = (select threadId from comment_Comment where commentId = extraData), additionalId = extraData where activityCategory = 'DISCUSSION' and activityType = 'COMMENT_ADDED';
+
+-- Proposal comments
+update activities_ActivityEntry set categoryId = (select proposalId from xcolab_Proposal where discussionId = classPrimaryKey), additionalId = extraData where activityCategory = 'PROPOSAL' and activityType = 'COMMENT_ADDED';
+
+-- Contest comments
+update activities_ActivityEntry set categoryId = (select ContestPK from xcolab_Contest where discussionGroupId = classPrimaryKey), additionalId = extraData where activityCategory = 'CONTEST' and activityType = 'COMMENT_ADDED';
+
