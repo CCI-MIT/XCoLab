@@ -70,9 +70,9 @@
         </div> <!-- #c-Footer__menu -->
 
         
-        <div class="bs-container-fixed">
+        <footer class="bs-container-fixed">
             <!-- footer content -->
             <xcolab:content articleId="${footerArticleId}"/>
-        </div>
+        </footer>
     </div>
 </jsp:root>
