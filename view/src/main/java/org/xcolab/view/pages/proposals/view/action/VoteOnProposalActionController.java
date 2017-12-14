@@ -150,7 +150,7 @@ public class VoteOnProposalActionController {
 
         if (activitySubType != null) {
             final ActivitiesClient activityClient = clients.getActivitiesClient();
-            activityClient.createActivityEntry(activitySubType, memberId, proposalId, null);
+            activityClient.createActivityEntry(activitySubType, memberId, proposalId);
         }
 
         // Redirect to prevent page-refreshing from influencing the vote

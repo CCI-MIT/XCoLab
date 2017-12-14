@@ -25,7 +25,6 @@ import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,7 +79,7 @@ public class ThreadController extends BaseDiscussionController {
     public String createThreadAction(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @RequestParam long categoryId, @RequestParam String title,
             @RequestParam String body)
-            throws IOException, DiscussionAuthorizationException {
+            throws DiscussionAuthorizationException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
@@ -109,7 +108,7 @@ public class ThreadController extends BaseDiscussionController {
             if (!thread.getIsQuiet()) {
                 final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
                 activityClient.createActivityEntry(DiscussionActivityType.THREAD_ADDED, memberId,
-                        categoryId, Long.toString(comment.getCommentId()));
+                        thread.getThreadId());
             }
 
             return "redirect:" + thread.getLinkUrl();

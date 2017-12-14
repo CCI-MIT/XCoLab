@@ -115,7 +115,7 @@ public class LoginRegisterService {
         session.setAttribute("collab_user_has_registered", true);
 
         ActivitiesClientUtil.createActivityEntry(MemberActivityType.REGISTERED, member.getUserId(),
-                member.getUserId(), null);
+                member.getUserId());
 
         sendGoogleAnalytics(fbIdString, googleId, session.getAttribute("isSsoLogin"));
 

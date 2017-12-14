@@ -91,12 +91,13 @@ public final class AddUpdateProposalControllerUtil {
             }
 
             activitiesClient.createActivityEntry(ContestActivityType.PROPOSAL_CREATED, memberId,
-                    contest.getContestPK(), Long.toString(proposal.getProposalId()));
+                    contest.getContestPK(), proposal.getProposalId());
 
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_CREATION);
 
         } else {
-            activitiesClient.createActivityEntry(ProposalActivityType.UPDATED, memberId, proposal.getProposalId(), null);
+            activitiesClient.createActivityEntry(ProposalActivityType.UPDATED, memberId,
+                    proposal.getProposalId());
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
 

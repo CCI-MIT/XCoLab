@@ -81,7 +81,7 @@ public class ProposalSupporterController {
         this.proposalSupporterDao.delete(proposalId, memberId);
         final ActivitiesClient activitiesClient = ActivitiesClientUtil.getClient();
         activitiesClient.createActivityEntry(ProposalActivityType.SUPPORT_REMOVED, memberId,
-                proposalId, null);
+                proposalId);
         return true;
     }
 

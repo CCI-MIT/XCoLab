@@ -37,13 +37,18 @@ public final class ActivitiesClient {
     }
 
     public ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
-            long classPrimaryKey, String extraData) {
+            long categoryId) {
+        return createActivityEntry(activityType, memberId, categoryId, null);
+    }
+
+    public ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+            long categoryId, Long additionalId) {
         ActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setActivityCategory(activityType.getCategory().name());
         activityEntry.setActivityType(activityType.name());
         activityEntry.setMemberId(memberId);
-        activityEntry.setClassPrimaryKey(classPrimaryKey);
-        activityEntry.setExtraData(extraData);
+        activityEntry.setCategoryId(categoryId);
+        activityEntry.setAdditionalId(additionalId);
         return activityEntryResource.create(activityEntry).execute();
     }
 

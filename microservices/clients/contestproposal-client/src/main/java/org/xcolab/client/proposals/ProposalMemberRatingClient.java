@@ -110,7 +110,7 @@ public final class ProposalMemberRatingClient {
 
         if (publishActivity) {
             activityClient.createActivityEntry(ProposalActivityType.SUPPORT_ADDED, userId,
-                    proposalId, null);
+                    proposalId);
         }
     }
 

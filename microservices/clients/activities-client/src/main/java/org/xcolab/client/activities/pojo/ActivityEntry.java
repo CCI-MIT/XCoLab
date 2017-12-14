@@ -26,7 +26,7 @@ public class ActivityEntry implements Serializable {
     private String activityCategory;
     private String activityType;
     private long categoryId;
-    private long additionalId;
+    private Long additionalId;
     private Long primarytype;
     private Long secondarytype;
     private Long classprimarykey;
@@ -107,11 +107,11 @@ public class ActivityEntry implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public long getAdditionalId() {
+    public Long getAdditionalId() {
         return additionalId;
     }
 
-    public void setAdditionalId(long additionalId) {
+    public void setAdditionalId(Long additionalId) {
         this.additionalId = additionalId;
     }
 

@@ -127,7 +127,7 @@ public class MembershipClient {
             ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
 
             activityClient.createActivityEntry(ProposalActivityType.MEMBER_ADDED, userId,
-                    proposalId, null);
+                    proposalId);
 
             if (!activityClient.isSubscribedToActivity(userId,
                     ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {

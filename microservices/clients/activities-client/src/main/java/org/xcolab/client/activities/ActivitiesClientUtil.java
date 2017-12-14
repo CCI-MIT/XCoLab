@@ -21,9 +21,14 @@ public class ActivitiesClientUtil {
     }
 
     public static ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
-            long classPrimaryKey, String extraData) {
-        return activitiesClient.createActivityEntry(activityType, memberId, classPrimaryKey,
-                extraData);
+            long categoryId) {
+        return activitiesClient.createActivityEntry(activityType, memberId, categoryId);
+    }
+
+    public static ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+            long categoryId, Long additionalId) {
+        return activitiesClient.createActivityEntry(activityType, memberId, categoryId,
+                additionalId);
     }
 
     public static ActivityEntry getActivityEntry(Long activityEntryId)
