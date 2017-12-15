@@ -117,6 +117,8 @@ public class VoteValidator {
 
     private void sendConfirmationEmail(ProposalVote vote) {
         String confirmationToken = generateAndSetConfirmationToken(vote);
+        vote.setIsValid(false);
+
         Proposal proposal = clients.getProposalClient().getProposal(vote.getProposalId());
         Member member = MembersClient.getMemberUnchecked(vote.getUserId());
         new ProposalVoteValidityConfirmation(proposal, contest, member, confirmationToken)
@@ -152,7 +154,6 @@ public class VoteValidator {
         String confirmationToken = UUID.randomUUID().toString();
         vote.setConfirmationToken(confirmationToken);
         vote.setConfirmationEmailSendDate(new Timestamp(new Date().getTime()));
-        clients.getProposalMemberRatingClient().updateProposalVote(vote);
         return confirmationToken;
     }
 
