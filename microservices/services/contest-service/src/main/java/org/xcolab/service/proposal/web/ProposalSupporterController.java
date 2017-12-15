@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.enums.ProposalActivityType;
+import org.xcolab.util.activities.enums.enums.ProposalActivityType;
 import org.xcolab.model.tables.pojos.ProposalSupporter;
 import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
 import org.xcolab.service.proposal.service.ProposalSupportService;

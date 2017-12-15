@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.enums.ContestActivityType;
-import org.xcolab.client.activities.enums.ProposalActivityType;
+import org.xcolab.util.activities.enums.enums.ContestActivityType;
+import org.xcolab.util.activities.enums.enums.ProposalActivityType;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;

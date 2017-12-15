@@ -1,6 +1,6 @@
 package org.xcolab.client.activities;
 
-import org.xcolab.client.activities.enums.ActivityType;
+import org.xcolab.util.activities.enums.enums.ActivityType;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;

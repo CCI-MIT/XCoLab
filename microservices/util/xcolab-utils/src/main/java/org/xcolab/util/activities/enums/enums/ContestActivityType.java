@@ -1,4 +1,4 @@
-package org.xcolab.client.activities.enums;
+package org.xcolab.util.activities.enums.enums;
 
 public enum ContestActivityType implements ActivityType {
 

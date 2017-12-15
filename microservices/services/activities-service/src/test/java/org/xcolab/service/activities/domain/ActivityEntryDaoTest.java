@@ -12,8 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.client.activities.enums.ActivityCategory;
-import org.xcolab.client.activities.enums.MemberActivityType;
+import org.xcolab.util.activities.enums.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.enums.MemberActivityType;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activities.exceptions.NotFoundException;

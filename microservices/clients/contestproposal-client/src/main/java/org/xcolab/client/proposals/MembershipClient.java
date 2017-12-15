@@ -1,7 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.enums.ProposalActivityType;
+import org.xcolab.util.activities.enums.enums.ProposalActivityType;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
