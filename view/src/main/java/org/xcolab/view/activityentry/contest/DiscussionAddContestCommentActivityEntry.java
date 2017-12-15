@@ -27,7 +27,8 @@ public class DiscussionAddContestCommentActivityEntry extends ContestBaseActivit
 
     @Override
     public String getBody() {
-        String[] params = {getUserLink(), "Contest", getContestLink()};
+        String[] params = {getUserLink(), getContestType().getContestNameLowercase(),
+                getContestLink()};
         return resourceMessageResolver.getLocalizedMessage(MESSAGE_CODE, params);
     }
 

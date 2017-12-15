@@ -39,7 +39,7 @@ public abstract class ProposalBaseActivityEntry extends AbstractActivityEntryCon
 
     @Override
     public String getBody() {
-        String[] params = {getUserLink(), contestType.getProposalName(), getProposalLink()};
+        String[] params = {getUserLink(), contestType.getProposalNameLowercase(), getProposalLink()};
         return resourceMessageResolver.getLocalizedMessage(getBodyTemplate(), params);
     }
 
