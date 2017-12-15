@@ -1,6 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
@@ -188,10 +189,13 @@ public final class ProposalClient {
                 .getList();
     }
 
-    public void removeMemberFromProposalTeam(Long proposalId, Long memberId) {
+    public void removeMemberFromProposalTeam(Long proposalId, Long userId) {
         proposalResource.service(proposalId, "removeMemberFromProposalTeam", Boolean.class)
-                .queryParam("memberId", memberId)
+                .queryParam("memberId", userId)
                 .delete();
+
+        ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
+        activityClient.createActivityEntry(ProposalActivityType.MEMBER_REMOVED, userId, proposalId);
     }
 
     public void promoteMemberToProposalOwner(Long proposalId, Long memberId) {
