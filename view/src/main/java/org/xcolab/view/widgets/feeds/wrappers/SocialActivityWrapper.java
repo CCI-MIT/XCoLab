@@ -80,7 +80,7 @@ public class SocialActivityWrapper implements Serializable {
         switch (activity.getActivityCategoryEnum()) {
             case MEMBER:
                 return "new_user";
-            case DISCUSSION_THREAD:
+            case DISCUSSION:
                 return "comment";
             case CONTEST:
                 switch ((ContestActivityType) activity.getActivityTypeEnum()) {

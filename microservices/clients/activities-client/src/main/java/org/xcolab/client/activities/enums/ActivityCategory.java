@@ -7,7 +7,7 @@ public enum ActivityCategory {
     MEMBER(MemberActivityType.values()),
     PROPOSAL(ProposalActivityType.values()),
     CONTEST(ContestActivityType.values()),
-    DISCUSSION_THREAD(DiscussionThreadActivityType.values()),
+    DISCUSSION(DiscussionThreadActivityType.values()),
     DISCUSSION_CATEGORY(null),
     ;
 

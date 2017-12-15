@@ -8,6 +8,6 @@ public enum DiscussionThreadActivityType implements ActivityType {
 
     @Override
     public ActivityCategory getCategory() {
-        return ActivityCategory.DISCUSSION_THREAD;
+        return ActivityCategory.DISCUSSION;
     }
 }
