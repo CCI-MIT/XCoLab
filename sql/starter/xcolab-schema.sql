@@ -1,8 +1,8 @@
 SET FOREIGN_KEY_CHECKS = 0;
 CREATE TABLE `activities_ActivityEntry` (
   `activityEntryId` bigint(20) NOT NULL AUTO_INCREMENT,
-  `memberId` bigint(20) DEFAULT NULL,
-  `createDate` datetime DEFAULT NULL,
+  `memberId` bigint(20) NOT NULL,
+  `createDate` datetime NOT NULL,
   `activityCategory` VARCHAR(30) NULL,
   `activityType` VARCHAR(75) NULL,
   `categoryId` BIGINT(20) NOT NULL,

@@ -8,6 +8,9 @@ ALTER TABLE activities_ActivityEntry
   MODIFY COLUMN activityCategory VARCHAR(30) AFTER createDate,
   MODIFY COLUMN activityType VARCHAR(75) AFTER activityCategory;
 
+ALTER TABLE activities_ActivityEntry MODIFY memberId BIGINT(20) NOT NULL;
+ALTER TABLE activities_ActivityEntry MODIFY createDate DATETIME NOT NULL;
+
 -- Update activity type fields
 
 update activities_ActivityEntry set activityCategory = 'MEMBER' where primaryType = 10038;
