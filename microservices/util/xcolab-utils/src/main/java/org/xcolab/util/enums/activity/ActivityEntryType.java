@@ -1,7 +1,5 @@
 package org.xcolab.util.enums.activity;
 
-import org.springframework.util.Assert;
-
 public enum ActivityEntryType {
 
     MEMBER(10038L),
@@ -17,16 +15,5 @@ public enum ActivityEntryType {
 
     public Long getPrimaryTypeId(){
         return this.primaryTypeId;
-    }
-
-
-    public static ActivityEntryType getActivityEntryTypeByPrimaryType(Long tierType)  {
-        Assert.notNull(tierType, "ActivityEntryType cannot be null");
-        for (ActivityEntryType activityType : ActivityEntryType.values()) {
-            if (activityType.getPrimaryTypeId().longValue() == tierType) {
-                return activityType;
-            }
-        }
-        return null;
     }
 }
