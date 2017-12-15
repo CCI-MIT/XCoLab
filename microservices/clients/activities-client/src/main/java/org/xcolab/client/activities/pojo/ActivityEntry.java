@@ -38,6 +38,10 @@ public class ActivityEntry implements Serializable {
         this.activityentryid = value.activityentryid;
         this.memberid = value.memberid;
         this.createdate = value.createdate;
+        this.activityCategory = value.activityCategory;
+        this.activityType = value.activityType;
+        this.categoryId = value.categoryId;
+        this.additionalId = value.additionalId;
         this.primarytype = value.primarytype;
         this.secondarytype = value.secondarytype;
         this.classprimarykey = value.classprimarykey;
