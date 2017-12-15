@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.activities.enums.ActivityType;
-import org.xcolab.client.activities.enums.DiscussionActivityType;
+import org.xcolab.client.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.i18n.ResourceMessageResolver;
@@ -33,7 +33,7 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
 
     @Override
     public ActivityType getActivityType() {
-        return DiscussionActivityType.THREAD_ADDED;
+        return DiscussionThreadActivityType.CREATED;
     }
 
     @Override

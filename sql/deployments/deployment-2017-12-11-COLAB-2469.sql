@@ -14,7 +14,7 @@ ALTER TABLE activities_ActivityEntry MODIFY createDate DATETIME NOT NULL;
 -- Update activity type fields
 
 update activities_ActivityEntry set activityCategory = 'MEMBER' where primaryType = 10038;
-update activities_ActivityEntry set activityCategory = 'DISCUSSION' where primaryType = 39202;
+update activities_ActivityEntry set activityCategory = 'DISCUSSION_THREAD' where primaryType = 39202;
 update activities_ActivityEntry set activityCategory = 'PROPOSAL' where primaryType = 1368503;
 update activities_ActivityEntry set activityCategory = 'CONTEST' where primaryType = 39701;
 
@@ -40,8 +40,8 @@ update activities_ActivityEntry set activityCategory = 'CONTEST', activityType =
 -- Comments
 update activities_ActivityEntry set activityCategory = 'PROPOSAL', activityType = 'COMMENT_ADDED' where primaryType = 39202 and secondaryType = 1;
 update activities_ActivityEntry set activityCategory = 'CONTEST', activityType = 'COMMENT_ADDED' where primaryType = 39202 and secondaryType = 6;
-update activities_ActivityEntry set activityCategory = 'DISCUSSION', activityType = 'THREAD_ADDED' where primaryType = 39202 and secondaryType = 3;
-update activities_ActivityEntry set activityCategory = 'DISCUSSION', activityType = 'COMMENT_ADDED' where primaryType = 39202 and secondaryType = 5;
+update activities_ActivityEntry set activityCategory = 'DISCUSSION_THREAD', activityType = 'CREATED' where primaryType = 39202 and secondaryType = 3;
+update activities_ActivityEntry set activityCategory = 'DISCUSSION_THREAD', activityType = 'COMMENT_ADDED' where primaryType = 39202 and secondaryType = 5;
 
 -- Delete add category activities
 delete from activities_ActivityEntry where primaryType = 39203 and secondaryType = 1;
@@ -80,8 +80,8 @@ update activities_ActivityEntry set categoryId = classPrimaryKey where activityC
 -- delete activities for spam comments that were fully deleted from database
 delete from activities_ActivityEntry where activityEntryId in (1687625, 1719867, 1687626, 1720296);
 -- only convert activities in new format (category != 701)
-update activities_ActivityEntry set categoryId = (select threadId from comment_Comment where commentId = extraData) where activityCategory = 'DISCUSSION' and activityType = 'THREAD_ADDED' and not classPrimaryKey = 701;
-update activities_ActivityEntry set categoryId = (select threadId from comment_Comment where commentId = extraData), additionalId = extraData where activityCategory = 'DISCUSSION' and activityType = 'COMMENT_ADDED';
+update activities_ActivityEntry set categoryId = (select threadId from comment_Comment where commentId = extraData) where activityCategory = 'DISCUSSION_THREAD' and activityType = 'CREATED' and not classPrimaryKey = 701;
+update activities_ActivityEntry set categoryId = (select threadId from comment_Comment where commentId = extraData), additionalId = extraData where activityCategory = 'DISCUSSION_THREAD' and activityType = 'COMMENT_ADDED';
 
 -- Proposal comments
 update activities_ActivityEntry set categoryId = (select proposalId from xcolab_Proposal where discussionId = classPrimaryKey), additionalId = extraData where activityCategory = 'PROPOSAL' and activityType = 'COMMENT_ADDED';

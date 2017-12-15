@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.activities.enums.ActivityType;
-import org.xcolab.client.activities.enums.DiscussionActivityType;
+import org.xcolab.client.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 @Component
@@ -19,7 +19,7 @@ public class DiscussionAddCommentActivityEntry extends DiscussionBaseActivityEnt
 
     @Override
     public ActivityType getActivityType() {
-        return DiscussionActivityType.COMMENT_ADDED;
+        return DiscussionThreadActivityType.COMMENT_ADDED;
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.enums.DiscussionActivityType;
+import org.xcolab.client.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
@@ -107,7 +107,7 @@ public class ThreadController extends BaseDiscussionController {
 
             if (!thread.getIsQuiet()) {
                 final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
-                activityClient.createActivityEntry(DiscussionActivityType.THREAD_ADDED, memberId,
+                activityClient.createActivityEntry(DiscussionThreadActivityType.CREATED, memberId,
                         thread.getThreadId());
             }
 

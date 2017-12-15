@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ContestActivityType;
-import org.xcolab.client.activities.enums.DiscussionActivityType;
+import org.xcolab.client.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.client.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -119,7 +119,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             if (commentThread.getIsQuiet() != null && !commentThread.getIsQuiet()) {
 
                 if (commentThread.getCategory() != null) {
-                    activityClient.createActivityEntry(DiscussionActivityType.COMMENT_ADDED,
+                    activityClient.createActivityEntry(DiscussionThreadActivityType.COMMENT_ADDED,
                             memberId, commentThread.getThreadId(), comment.getCommentId());
                 } else {
                     final Proposal proposal = getProposal(proposalClient, commentThread);

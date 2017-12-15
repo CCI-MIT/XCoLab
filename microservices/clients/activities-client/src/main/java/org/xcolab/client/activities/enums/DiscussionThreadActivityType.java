@@ -1,13 +1,13 @@
 package org.xcolab.client.activities.enums;
 
-public enum DiscussionActivityType implements ActivityType {
+public enum DiscussionThreadActivityType implements ActivityType {
 
-    THREAD_ADDED,
+    CREATED,
     COMMENT_ADDED,
     ;
 
     @Override
     public ActivityCategory getCategory() {
-        return ActivityCategory.DISCUSSION;
+        return ActivityCategory.DISCUSSION_THREAD;
     }
 }
