@@ -490,12 +490,13 @@ CREATE TABLE `filtering_FilteredEntry` (
 
 CREATE TABLE `xcolab_ActivitySubscription` (
   `pk` bigint(20) NOT NULL AUTO_INCREMENT,
+  `receiverId` bigint(20) NOT NULL,
+  `activityCategory` VARCHAR(30) NOT NULL,
+  `categoryId` BIGINT(20) NOT NULL,
   `classNameId` bigint(20) DEFAULT NULL,
   `classPK` bigint(20) DEFAULT NULL,
-  `type_` int(11) DEFAULT NULL,
   `automaticSubscriptionCounter` int(11) DEFAULT NULL,
   `extraData` varchar(256) DEFAULT NULL,
-  `receiverId` bigint(20) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
   `modifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`pk`),

@@ -114,7 +114,7 @@ public class ActivitiesController {
             @RequestParam long classPK, @RequestParam int type,
             @RequestParam(required = false) String extraInfo) {
         return this.activitySubscriptionDao
-                .isSubscribed(receiverId, classNameId, classPK, type, extraInfo);
+                .isSubscribed(receiverId, classNameId, classPK, extraInfo);
     }
 
     @GetMapping("/activitySubscriptions")

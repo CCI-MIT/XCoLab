@@ -102,7 +102,7 @@ public class ActivitiesServiceTest {
             activitiesService.subscribe(1111, ActivityEntryType.DISCUSSION, 222, null);
 
         assertTrue(ActivitySubscriptionDao
-            .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222L, 0, null));
+            .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222L, null));
 
     }
     @Test
@@ -132,7 +132,7 @@ public class ActivitiesServiceTest {
             activitiesService.unsubscribe(1111, ActivityEntryType.DISCUSSION, 222, null);
 
         assertFalse(ActivitySubscriptionDao
-            .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222L, 0, null));
+            .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222L, null));
 
     }
 
@@ -146,7 +146,7 @@ public class ActivitiesServiceTest {
         activitiesService.unsubscribe(1111, ActivityEntryType.PROPOSAL, 222, null);
 
         assertFalse(ActivitySubscriptionDao
-            .isSubscribed(1111, ActivityEntryType.PROPOSAL.getPrimaryTypeId(), 222L, 0, null));
+            .isSubscribed(1111, ActivityEntryType.PROPOSAL.getPrimaryTypeId(), 222L, null));
 
     }
     @Test
@@ -160,7 +160,7 @@ public class ActivitiesServiceTest {
 
 
         assertFalse(ActivitySubscriptionDao
-            .isSubscribed(1111, ActivityEntryType.CONTEST.getPrimaryTypeId(), 222L, 0, null));
+            .isSubscribed(1111, ActivityEntryType.CONTEST.getPrimaryTypeId(), 222L, null));
 
     }
 }

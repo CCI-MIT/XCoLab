@@ -39,7 +39,7 @@ public class ActivitiesService {
     public ActivitySubscription subscribe(long memberId,
             ActivityEntryType activityEntryType, long classPK, String extraInfo) {
         if (activitySubscriptionDao.isSubscribed(memberId,
-                activityEntryType.getPrimaryTypeId(), classPK, 0, extraInfo)) {
+                activityEntryType.getPrimaryTypeId(), classPK, extraInfo)) {
             return activitySubscriptionDao
                     .get(memberId, activityEntryType.getPrimaryTypeId(), classPK, extraInfo)
                     .orElseThrow(IllegalStateException::new);
@@ -67,7 +67,6 @@ public class ActivitiesService {
         activitySubscription.setReceiverId(memberId);
         activitySubscription.setClassNameId(activityEntryType.getPrimaryTypeId());
         activitySubscription.setClassPK(classPK);
-        activitySubscription.setType_(0);
         activitySubscription.setAutomaticSubscriptionCounter(automaticSubscriptionCounter);
         activitySubscription.setExtraData(extraInfo);
         activitySubscription.setCreateDate(new Timestamp(new Date().getTime()));

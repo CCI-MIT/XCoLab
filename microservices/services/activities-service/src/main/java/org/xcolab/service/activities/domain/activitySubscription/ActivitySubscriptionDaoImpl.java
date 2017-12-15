@@ -6,6 +6,7 @@ import org.jooq.Query;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,14 +30,16 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
 
         ActivitySubscriptionRecord ret = this.dslContext.insertInto(ACTIVITY_SUBSCRIPTION)
                 .set(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID, activitySubscription.getClassNameId())
+                .set(ACTIVITY_SUBSCRIPTION.RECEIVER_ID, activitySubscription.getReceiverId())
+                .set(ACTIVITY_SUBSCRIPTION.ACTIVITY_CATEGORY,
+                        activitySubscription.getActivityCategory())
+                .set(ACTIVITY_SUBSCRIPTION.CATEGORY_ID, activitySubscription.getCategoryId())
                 .set(ACTIVITY_SUBSCRIPTION.CLASS_PK, activitySubscription.getClassPK())
-                .set(ACTIVITY_SUBSCRIPTION.TYPE_, activitySubscription.getType_())
                 .set(ACTIVITY_SUBSCRIPTION.AUTOMATIC_SUBSCRIPTION_COUNTER,
                         activitySubscription.getAutomaticSubscriptionCounter())
                 .set(ACTIVITY_SUBSCRIPTION.EXTRA_DATA, activitySubscription.getExtraData())
-                .set(ACTIVITY_SUBSCRIPTION.RECEIVER_ID, activitySubscription.getReceiverId())
-                .set(ACTIVITY_SUBSCRIPTION.CREATE_DATE, activitySubscription.getCreateDate())
-                .set(ACTIVITY_SUBSCRIPTION.MODIFIED_DATE, activitySubscription.getModifiedDate())
+                .set(ACTIVITY_SUBSCRIPTION.CREATE_DATE, DSL.currentTimestamp())
+                .set(ACTIVITY_SUBSCRIPTION.MODIFIED_DATE, DSL.currentTimestamp())
                 .returning(ACTIVITY_SUBSCRIPTION.PK).fetchOne();
         if (ret != null) {
             activitySubscription.setPk(ret.getValue(ACTIVITY_SUBSCRIPTION.PK));
@@ -89,14 +92,15 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     public boolean update(ActivitySubscription activitySubscription) {
         return dslContext.update(ACTIVITY_SUBSCRIPTION)
                 .set(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID, activitySubscription.getClassNameId())
+                .set(ACTIVITY_SUBSCRIPTION.RECEIVER_ID, activitySubscription.getReceiverId())
+                .set(ACTIVITY_SUBSCRIPTION.ACTIVITY_CATEGORY,
+                        activitySubscription.getActivityCategory())
+                .set(ACTIVITY_SUBSCRIPTION.CATEGORY_ID, activitySubscription.getCategoryId())
                 .set(ACTIVITY_SUBSCRIPTION.CLASS_PK, activitySubscription.getClassPK())
-                .set(ACTIVITY_SUBSCRIPTION.TYPE_, activitySubscription.getType_())
                 .set(ACTIVITY_SUBSCRIPTION.AUTOMATIC_SUBSCRIPTION_COUNTER,
                         activitySubscription.getAutomaticSubscriptionCounter())
                 .set(ACTIVITY_SUBSCRIPTION.EXTRA_DATA, activitySubscription.getExtraData())
-                .set(ACTIVITY_SUBSCRIPTION.RECEIVER_ID, activitySubscription.getReceiverId())
-                .set(ACTIVITY_SUBSCRIPTION.CREATE_DATE, activitySubscription.getCreateDate())
-                .set(ACTIVITY_SUBSCRIPTION.MODIFIED_DATE, activitySubscription.getModifiedDate())
+                .set(ACTIVITY_SUBSCRIPTION.MODIFIED_DATE, DSL.currentTimestamp())
                 .where(ACTIVITY_SUBSCRIPTION.PK.eq(activitySubscription.getPk())).execute() > 0;
     }
 
@@ -147,15 +151,13 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     }
 
     @Override
-    public boolean isSubscribed(long receiverId, long classNameId, Long classPK, int type,
-            String extraInfo) {
+    public boolean isSubscribed(long receiverId, long classNameId, Long classPK, String extraInfo) {
 
         final SelectQuery<Record1<Integer>> query =
                 dslContext.selectCount().from(ACTIVITY_SUBSCRIPTION)
                         .where(ACTIVITY_SUBSCRIPTION.RECEIVER_ID.eq(receiverId)
                                 .and(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(classNameId))
-                                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK))
-                                .and(ACTIVITY_SUBSCRIPTION.TYPE_.eq(type))).getQuery();
+                                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK))).getQuery();
 
         if (extraInfo != null && !extraInfo.isEmpty()) {
             query.addConditions((ACTIVITY_SUBSCRIPTION.EXTRA_DATA.eq(extraInfo)));

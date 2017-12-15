@@ -31,7 +31,6 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import java.nio.charset.Charset;
 import java.util.Optional;
 
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
@@ -230,8 +229,8 @@ public class ActivitiesControllerTest {
                 .contentType(contentType).accept(contentType))
             .andExpect(status().isOk());
 
-        Mockito.verify(activitySubscriptionDao,Mockito.times(1))
-            .isSubscribed(anyLong(),anyLong(),anyLong(),anyInt(),anyString());
+        Mockito.verify(activitySubscriptionDao, Mockito.times(1))
+            .isSubscribed(anyLong(), anyLong(), anyLong(), anyString());
     }
 
     @Test

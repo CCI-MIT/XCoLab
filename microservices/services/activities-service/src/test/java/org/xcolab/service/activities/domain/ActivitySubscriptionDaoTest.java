@@ -69,8 +69,8 @@ public class ActivitySubscriptionDaoTest {
 
     @Test
     public void shouldCheckIfIsSubscriber() throws Exception {
-        assertTrue(activitySubscriptionDao.isSubscribed(2664865L, 1368503L, 1333850L,0,null));
-        assertFalse(activitySubscriptionDao.isSubscribed(2694865L, 1368503L, 1333850L,0,null));
+        assertTrue(activitySubscriptionDao.isSubscribed(2664865L, 1368503L, 1333850L, null));
+        assertFalse(activitySubscriptionDao.isSubscribed(2694865L, 1368503L, 1333850L, null));
     }
     @Test
     public void shouldDeleteSubscription() throws Exception {
