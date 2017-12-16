@@ -118,6 +118,7 @@ public class VoteValidator {
     private void sendConfirmationEmail(ProposalVote vote) {
         String confirmationToken = generateAndSetConfirmationToken(vote);
         vote.setIsValid(false);
+        clients.getProposalMemberRatingClient().updateProposalVote(vote);
 
         Proposal proposal = clients.getProposalClient().getProposal(vote.getProposalId());
         Member member = MembersClient.getMemberUnchecked(vote.getUserId());
