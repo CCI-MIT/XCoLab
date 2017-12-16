@@ -120,7 +120,6 @@ public class VoteValidator {
         vote.setIsValid(false);
         clients.getProposalMemberRatingClient().updateProposalVote(vote);
 
-        Proposal proposal = clients.getProposalClient().getProposal(vote.getProposalId());
         Member member = MembersClient.getMemberUnchecked(vote.getUserId());
         new ProposalVoteValidityConfirmation(proposal, contest, member, confirmationToken)
                 .sendEmailNotification();
