@@ -31,6 +31,7 @@ class AbstractProposalVote implements Serializable {
         this.isvalid = value.isvalid;
         this.confirmationemailsenddate = value.confirmationemailsenddate;
         this.confirmationtoken = value.confirmationtoken;
+        this.initialValidationResult = value.initialValidationResult;
     }
 
     public Long getProposalId() {
