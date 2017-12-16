@@ -23,7 +23,7 @@ public class ActivityUtil {
 
     public static List<ActivityEntry> groupActivities(List<ActivityEntry> activities) {
         Map<String, List<ActivityEntry>> activitiesMap = GroupingUtil
-                .groupByWithDuplicates(activities, ActivityUtil::getSocialActivityKey);
+                .groupByWithDuplicateValues(activities, ActivityUtil::getSocialActivityKey);
         return clusterActivities(activitiesMap);
     }
 
