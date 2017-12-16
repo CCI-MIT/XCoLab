@@ -7,16 +7,13 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.entity.utils.notifications.contest.ContestVoteQuestionNotification;
 import org.xcolab.entity.utils.notifications.proposal.ContestVoteNotification;
 import org.xcolab.model.tables.pojos.Contest;
@@ -28,24 +25,24 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.utils.promotion.PhasePromotionHelper;
 import org.xcolab.service.contest.utils.promotion.enums.ContestStatus;
-import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
+import org.xcolab.util.GroupingUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ContestPhaseService {
 
     private static final Logger _log = LoggerFactory.getLogger(ContestPhaseService.class);
 
+    private static final String COLAB_URL = PlatformAttributeKey.COLAB_URL.get();
 
     @Autowired
-    private ContestService serviceNamespace;
+    private ContestService contestService;
 
 
     @Autowired
@@ -65,7 +62,7 @@ public class ContestPhaseService {
 
     public ContestPhase getNextContestPhase(ContestPhase contestPhase) throws NotFoundException {
         // First sort by contest phase type (the list has to be initialized as modifiable..)
-        List<ContestPhase> contestPhases = new ArrayList<>(serviceNamespace.getAllContestPhases(contestPhase.getContestPK()));
+        List<ContestPhase> contestPhases = new ArrayList<>(contestService.getAllContestPhases(contestPhase.getContestPK()));
         contestPhases.sort(Comparator.comparing(ContestPhase::getPhaseStartDate));
 
         boolean currentFound = false;
@@ -80,92 +77,54 @@ public class ContestPhaseService {
         throw new NotFoundException("Can't find next phase for phase with id: " + contestPhase.getContestPhasePK());
     }
 
-    public void transferSupportsToVote(Contest contest) throws NotFoundException {
-        ContestPhase lastOrActivePhase = serviceNamespace.getActiveOrLastPhase(contest.getContestPK());
-        // Vote is only possible in Winner Selection phase
-        if (lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() &&
-                lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId() &&
-                lastOrActivePhase.getContestPhaseType() != ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId()) {
-            return;
-        }
+    public void transferSupportsToVote(Contest contest, ContestPhase votingPhase) {
 
-        Set<Long> proposalsUserCanVoteOn = new HashSet<>();
-        for (Proposal proposal : ProposalClientUtil.getProposalsInContestPhase(lastOrActivePhase.getContestPhasePK())) {
-            proposalsUserCanVoteOn.add(proposal.getProposalId());
-        }
-        Map<Member, List<Proposal>> userToSupportsMap = getContestSupportingUser(contest);
-        for (Member user : userToSupportsMap.keySet()) {
-            // Do nothing if the user has already voted
-            if (ProposalMemberRatingClientUtil.hasUserVoted(lastOrActivePhase.getContestPhasePK(), user.getUserId())) {
+        final List<Proposal> proposalsInPhase = ProposalClientUtil
+                .getProposalsInContestPhase(votingPhase.getContestPhasePK());
+        Set<Long> proposalIdsInPhase = proposalsInPhase.stream()
+                .map(Proposal::getProposalId)
+                .collect(Collectors.toSet());
+
+        Map<Member, List<Proposal>> supportedProposalsByMember =
+                getSupportedProposalsByMember(contest);
+        for (Member user : supportedProposalsByMember.keySet()) {
+
+            List<Proposal> supportedProposalsInPhase = supportedProposalsByMember.get(user).stream()
+                    .filter(p -> proposalIdsInPhase.contains(p.getProposalId()))
+                    .collect(Collectors.toList());
+
+            final Boolean hasVoted = ProposalMemberRatingClientUtil
+                    .hasUserVoted(votingPhase.getContestPhasePK(), user.getUserId());
+
+            if (hasVoted || supportedProposalsInPhase.isEmpty()) {
                 continue;
             }
 
-            List<Proposal> proposals = new ArrayList<>();
-            if (userToSupportsMap.containsKey(user)) {
-                for (Proposal p : userToSupportsMap.get(user)) {
-                    if (proposalsUserCanVoteOn.contains(p.getProposalId())) {
-                        proposals.add(p);
-                    }
-                }
+            //TODO COLAB-2501: we shouldn't use client pojos in the service
+            org.xcolab.client.contest.pojo.Contest contestPojo = ContestClientUtil
+                    .getContest(contest.getContestPK());
+            if (supportedProposalsInPhase.size() == 1) {
+                final Proposal proposal = supportedProposalsInPhase.get(0);
+                ProposalMemberRatingClientUtil.addProposalVote(proposal.getProposalId(),
+                        votingPhase.getContestPhasePK(), user.getUserId(), 1);
+
+                new ContestVoteNotification(user, contestPojo, proposal, COLAB_URL).sendMessage();
+            } else {
+                new ContestVoteQuestionNotification(user, contestPojo, supportedProposalsInPhase,
+                        PlatformAttributeKey.COLAB_URL.get()).sendMessage();
             }
-            if (proposals.isEmpty()) {
-                continue;
-            }
-
-
-            // Directly transfer the support to a vote
-            try {
-                Member member = MembersClient.getMember(user.getUserId());
-                if (proposals.size() == 1) {
-                    ProposalMemberRatingClientUtil.addProposalVote(proposals.get(0).getProposalId(),
-                            lastOrActivePhase.getContestPhasePK(), user.getUserId(), 1);
-
-                    org.xcolab.client.contest.pojo.Contest c = ContestClientUtil.getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
-                    new ContestVoteNotification(member, c, proposals.get(0),
-                            PlatformAttributeKey.COLAB_URL.get()).sendMessage();
-                }
-                // Send a notification to the user
-                else {
-                    try {
-                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil
-                                .getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
-                        new ContestVoteQuestionNotification(member, contestMicro, proposals,
-                                PlatformAttributeKey.COLAB_URL.get() ).sendMessage();
-                    } catch (ContestNotFoundException ignored) {
-
-                    }
-                }
-            } catch (MemberNotFoundException e) {
-                //ignore, we know it exists
-            }
-
-
         }
     }
-    private Map<Member, List<Proposal>> getContestSupportingUser(Contest contest) {
-        List<Proposal> proposalsInContest = ProposalClientUtil.getProposalsInContest(contest.getContestPK());
 
-        HashMap<Member, List<Proposal>> userToSupportsMap = new HashMap<>();
-        // Generate a list of supporting proposals for each user
-        for(Proposal prop : proposalsInContest) {
-            for (ProposalSupporter supporter : ProposalMemberRatingClientUtil
-                    .getProposalSupporters(prop.getProposalId())) {
-                try {
-                    Member user = MembersClient.getMember(supporter.getUserId());
+    private Map<Member, List<Proposal>> getSupportedProposalsByMember(Contest contest) {
+        List<Proposal> proposalsInContest = ProposalClientUtil
+                .getProposalsInContest(contest.getContestPK());
 
-
-                    List<Proposal> proposals =
-                            userToSupportsMap.computeIfAbsent(user, k -> new ArrayList<>());
-
-                    proposals.add(ProposalClientUtil.getProposal(supporter.getProposalId()));
-
-                } catch (MemberNotFoundException | ProposalNotFoundException ignored) {
-                }
-
-            }
-        }
-
-        return userToSupportsMap;
+        return GroupingUtil.groupByWithDuplicateKeysAndValues(proposalsInContest,
+                proposal -> ProposalMemberRatingClientUtil
+                        .getProposalSupporters(proposal.getProposalId()).stream()
+                        .map(supporter -> MembersClient.getMemberUnchecked(supporter.getUserId()))
+                        .collect(Collectors.toList()));
     }
 
     public void forcePromotionOfProposalInPhase(Long proposalId, Long phaseId) throws NotFoundException {

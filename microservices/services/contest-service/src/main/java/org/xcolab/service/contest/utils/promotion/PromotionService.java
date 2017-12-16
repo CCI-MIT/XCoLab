@@ -119,9 +119,8 @@ public class PromotionService {
 
                     // if transition is to voting phase
                     if (contestPhaseService.getContestStatus(nextPhase).isCanVote()) {
-                        contestPhaseService.transferSupportsToVote(contest);
+                        contestPhaseService.transferSupportsToVote(contest, nextPhase);
                     }
-
 
                     _log.info("done promoting phase {}", phase.getContestPhasePK());
                 } catch (NotFoundException e) {
@@ -194,7 +193,7 @@ public class PromotionService {
 
                         // if transition is to voting phase
                         if (contestPhaseService.getContestStatus(nextPhase).isCanVote()) {
-                            contestPhaseService.transferSupportsToVote(contest);
+                            contestPhaseService.transferSupportsToVote(contest, nextPhase);
                         }
                         phase.setContestPhaseAutopromote("PROMOTE_DONE");
                         contestPhaseDao.update(phase);
