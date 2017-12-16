@@ -111,7 +111,7 @@ public class VoteValidator {
     private long countConfirmedVotes(List<ProposalVote> recentVotesFromSharedIp) {
         return recentVotesFromSharedIp.stream()
                 .filter(ProposalVote::getIsValid)
-                .filter(otherVote -> otherVote.getConfirmationToken() != null)
+                .filter(otherVote -> otherVote.getConfirmationEmailSendDate() != null)
                 .count();
     }
 
