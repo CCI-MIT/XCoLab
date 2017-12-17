@@ -1,63 +1,63 @@
 package org.xcolab.util;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
-public final class GroupingHelper {
+public final class GroupingHelper<ValueT> {
 
-    private GroupingHelper() {
+    private final Collection<ValueT> collection;
+
+    public GroupingHelper(Collection<ValueT> collection) {
+        this.collection = collection;
     }
 
     /**
-     * Groups a list of values by an extracted key, allowing more than one value per key.
+     * Groups a collection of values by an extracted key, allowing more than one value per key.
      *
-     * If you know that there are no duplicates in the list, you can also use
-     * {@link #groupByUnique(List, Function)}.
+     * If you know that there are no duplicates in the collection, you can also use
+     * {@link #groupUnique(Function)}.
      * If multiple keys can be extracted from a single value, use
-     * {@link #groupByWithDuplicateKeysAndValues(List, Function)}.
+     * {@link #groupWithDuplicateKeysAndValues(Function)}.
      *
-     * @param list The values to be grouped
      * @param keyExtractor A function to extract the key from a value
-     * @param <K> The type of the key
-     * @param <V> The type of the value
+     * @param <KeyT> The type of the key
      * @return A map of values grouped by their respective keys
      */
-    public static <K, V> Map<K, List<V>> groupByWithDuplicateValues(List<V> list,
-            Function<V, K> keyExtractor) {
-        Map<K, List<V>> groupedEntities = new HashMap<>();
-        for (V value : list) {
-            final K key = keyExtractor.apply(value);
-            List<V> valuesForKey = groupedEntities.computeIfAbsent(key, k -> new ArrayList<>());
+    public <KeyT> Map<KeyT, Set<ValueT>> groupWithDuplicateValues(
+            Function<ValueT, KeyT> keyExtractor) {
+        Map<KeyT, Set<ValueT>> groupedEntities = new HashMap<>();
+        for (ValueT value : collection) {
+            final KeyT key = keyExtractor.apply(value);
+            Set<ValueT> valuesForKey = groupedEntities.computeIfAbsent(key, k -> new HashSet<>());
             valuesForKey.add(value);
         }
         return groupedEntities;
     }
 
     /**
-     * Groups a list of values by an extracted key, allowing more than one value per key and more
+     * Groups a collection of values by an extracted key, allowing more than one value per key and more
      * than one key per value.
      *
-     * If you know that there are no duplicates in the list, you can also use
-     * {@link #groupByUnique(List, Function)}.
+     * If you know that there are no duplicates in the collection, you can also use
+     * {@link #groupUnique(Function)}.
      * If values always have exactly one key, use
-     * {@link #groupByWithDuplicateValues(List, Function)}.
+     * {@link #groupWithDuplicateValues(Function)}.
      *
-     * @param list The values to be grouped
      * @param keysExtractor A function to extract all possible keys from a value
-     * @param <K> The type of the key
-     * @param <V> The type of the value
+     * @param <KeyT> The type of the key
      * @return A map of values grouped by their respective keys
      */
-    public static <K, V> Map<K, List<V>> groupByWithDuplicateKeysAndValues(List<V> list,
-            Function<V, List<K>> keysExtractor) {
-        Map<K, List<V>> groupedEntities = new HashMap<>();
-        for (V value : list) {
-            final List<K> keys = keysExtractor.apply(value);
-            for (K key : keys) {
-                List<V> valuesForKey = groupedEntities.computeIfAbsent(key, k -> new ArrayList<>());
+    public <KeyT> Map<KeyT, Set<ValueT>> groupWithDuplicateKeysAndValues(Function<ValueT,
+            Set<KeyT>> keysExtractor) {
+        Map<KeyT, Set<ValueT>> groupedEntities = new HashMap<>();
+        for (ValueT value : collection) {
+            final Set<KeyT> keys = keysExtractor.apply(value);
+            for (KeyT key : keys) {
+                Set<ValueT> valuesForKey = groupedEntities.computeIfAbsent(key, k -> new HashSet<>());
                 valuesForKey.add(value);
             }
         }
@@ -65,23 +65,21 @@ public final class GroupingHelper {
     }
 
     /**
-     * Groups a list of values by an extracted key, allowing only one value per key.
+     * Groups a collection of values by an extracted key, allowing only one value per key.
      *
      * This function throws an exception if two values have the same key. If you want to allow
-     * duplicates, you an use {@link #groupByWithDuplicateValues(List, Function)} (List, Function)}.
+     * duplicates, you an use {@link #groupWithDuplicateValues(Function)}.
      *
-     * @param list The values to be grouped
      * @param keyExtractor A function to extract the key from a value
-     * @param <K> The type of the key
-     * @param <V> The type of the value
+     * @param <KeyT> The type of the key
      * @return A key-to-value map
      */
-    public static <K, V> Map<K, V> groupByUnique(List<V> list, Function<V, K> keyExtractor) {
-        Map<K, V> groupedEntities = new HashMap<>();
-        for (V value : list) {
-            final K key = keyExtractor.apply(value);
+    public <KeyT> Map<KeyT, ValueT> groupUnique(Function<ValueT, KeyT> keyExtractor) {
+        Map<KeyT, ValueT> groupedEntities = new HashMap<>();
+        for (ValueT value : collection) {
+            final KeyT key = keyExtractor.apply(value);
             if (groupedEntities.get(key) != null) {
-                throw new DuplicateElementException(key, list);
+                throw new DuplicateElementException(key, collection);
             }
             groupedEntities.put(key, value);
         }
@@ -90,7 +88,7 @@ public final class GroupingHelper {
 
     public static class DuplicateElementException extends RuntimeException {
 
-        DuplicateElementException(Object key, List<?> elements) {
+        DuplicateElementException(Object key, Collection<?> elements) {
             super("Duplicate element  for key " + key + ": " + elements);
         }
     }

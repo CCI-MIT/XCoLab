@@ -30,8 +30,8 @@ public class ProposalSupportService {
     public List<SupportedProposal> getSupportedProposalsForUser(long userId, boolean onlyVisible,
             boolean excludePrivateContests) {
         final List<ProposalSupporter> proposalSupporters = proposalSupporterDao.findByGiven(null, userId);
-        final Map<Long, ProposalSupporter> supportsByProposalId =
-                GroupingHelper.groupByUnique(proposalSupporters, ProposalSupporter::getProposalId);
+        Map<Long, ProposalSupporter> supportsByProposalId = new GroupingHelper<>(proposalSupporters)
+                .groupUnique(ProposalSupporter::getProposalId);
 
         final Boolean visible = onlyVisible ? true : null;
         final Boolean contestPrivate = excludePrivateContests ? false : null;

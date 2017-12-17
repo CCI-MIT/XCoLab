@@ -6,12 +6,12 @@ import org.xcolab.util.GroupingHelper;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ActivityUtil {
 
@@ -22,8 +22,8 @@ public class ActivityUtil {
     }
 
     public static List<ActivityEntry> groupActivities(List<ActivityEntry> activities) {
-        Map<String, List<ActivityEntry>> activitiesMap = GroupingHelper
-                .groupByWithDuplicateValues(activities, ActivityUtil::getSocialActivityKey);
+        Map<String, Set<ActivityEntry>> activitiesMap = new GroupingHelper<>(activities)
+                .groupWithDuplicateValues(ActivityUtil::getSocialActivityKey);
         return clusterActivities(activitiesMap);
     }
 
@@ -36,18 +36,16 @@ public class ActivityUtil {
     }
 
     private static List<ActivityEntry> clusterActivities(
-            Map<String, List<ActivityEntry>> activitiesMap) {
-        //cluster
+            Map<String, Set<ActivityEntry>> activitiesMap) {
         List<ActivityEntry> aggregatedActivities = new LinkedList<>();
         Comparator<ActivityEntry> sorter =
                 Comparator.comparingLong(o -> o.getCreateDate().getTime());
-        for (Collection<ActivityEntry> activitiesMapValue : activitiesMap.values()) {
-            List<ActivityEntry> socialActivities =
-                    new ArrayList<>(activitiesMapValue); //convert to array for sorting
-            socialActivities.sort(sorter);
+        for (Set<ActivityEntry> activitiesMapValue : activitiesMap.values()) {
+            List<ActivityEntry> sortedActivities = new ArrayList<>(activitiesMapValue);
+            sortedActivities.sort(sorter);
 
             ActivityEntry curMin = null;
-            for (ActivityEntry socialActivity : socialActivities) {
+            for (ActivityEntry socialActivity : sortedActivities) {
                 if (curMin == null ||
                         socialActivity.getCreateDate().getTime() - curMin.getCreateDate().getTime()
                                 < AGGREGATION_TIME_WINDOW) {

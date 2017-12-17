@@ -85,7 +85,7 @@ public class ContestPhaseService {
                 .map(Proposal::getProposalId)
                 .collect(Collectors.toSet());
 
-        Map<Member, List<Proposal>> supportedProposalsByMember =
+        Map<Member, Set<Proposal>> supportedProposalsByMember =
                 getSupportedProposalsByMember(contest);
         for (Member user : supportedProposalsByMember.keySet()) {
 
@@ -116,15 +116,15 @@ public class ContestPhaseService {
         }
     }
 
-    private Map<Member, List<Proposal>> getSupportedProposalsByMember(Contest contest) {
+    private Map<Member, Set<Proposal>> getSupportedProposalsByMember(Contest contest) {
         List<Proposal> proposalsInContest = ProposalClientUtil
                 .getProposalsInContest(contest.getContestPK());
 
-        return GroupingHelper.groupByWithDuplicateKeysAndValues(proposalsInContest,
+        return new GroupingHelper<>(proposalsInContest).groupWithDuplicateKeysAndValues(
                 proposal -> ProposalMemberRatingClientUtil
                         .getProposalSupporters(proposal.getProposalId()).stream()
                         .map(supporter -> MembersClient.getMemberUnchecked(supporter.getUserId()))
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toSet()));
     }
 
     public void forcePromotionOfProposalInPhase(Long proposalId, Long phaseId) throws NotFoundException {

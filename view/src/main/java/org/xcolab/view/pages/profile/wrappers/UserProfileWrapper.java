@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class UserProfileWrapper implements Serializable {
 
@@ -119,12 +120,12 @@ public class UserProfileWrapper implements Serializable {
         }
 
         List<Proposal> proposals = ProposalClientUtil.getMemberProposals(member.getId_());
-        Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil
+        Map<ContestType, Set<Proposal>> proposalsByContestType = EntityGroupingUtil
                 .groupByContestType(proposals);
         for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId
                     .put(contestType.getId(), new ContestTypeProposal(contestType));
-            final List<Proposal> proposalsInContestType = proposalsByContestType
+            final Set<Proposal> proposalsInContestType = proposalsByContestType
                     .get(contestType);
             if (proposalsInContestType != null) {
                 for (Proposal p : proposalsInContestType) {
