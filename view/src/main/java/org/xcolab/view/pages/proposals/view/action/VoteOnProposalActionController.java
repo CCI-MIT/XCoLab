@@ -179,6 +179,7 @@ public class VoteOnProposalActionController {
             MembersClient.updateMember(member);
 
             vote.setIsValid(true);
+            vote.setConfirmationToken(null);
             proposalMemberRatingClient.updateProposalVote(vote);
 
             model.addAttribute("proposal", proposal);

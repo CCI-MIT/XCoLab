@@ -86,6 +86,7 @@ public abstract class AttributeHelper<AttributeT extends Attribute> {
     }
 
     public List<AttributeT> getAttributes(String attributeName) {
+        init();
         final Map<Long, AttributeT> attributesByAdditionalId =
                 attributesByNameAndAdditionalId.get(attributeName);
         if (attributesByAdditionalId != null) {

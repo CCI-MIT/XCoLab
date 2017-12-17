@@ -111,13 +111,15 @@ public class VoteValidator {
     private long countConfirmedVotes(List<ProposalVote> recentVotesFromSharedIp) {
         return recentVotesFromSharedIp.stream()
                 .filter(ProposalVote::getIsValid)
-                .filter(otherVote -> otherVote.getConfirmationToken() != null)
+                .filter(otherVote -> otherVote.getConfirmationEmailSendDate() != null)
                 .count();
     }
 
     private void sendConfirmationEmail(ProposalVote vote) {
         String confirmationToken = generateAndSetConfirmationToken(vote);
-        Proposal proposal = clients.getProposalClient().getProposal(vote.getProposalId());
+        vote.setIsValid(false);
+        clients.getProposalMemberRatingClient().updateProposalVote(vote);
+
         Member member = MembersClient.getMemberUnchecked(vote.getUserId());
         new ProposalVoteValidityConfirmation(proposal, contest, member, confirmationToken)
                 .sendEmailNotification();
@@ -152,7 +154,6 @@ public class VoteValidator {
         String confirmationToken = UUID.randomUUID().toString();
         vote.setConfirmationToken(confirmationToken);
         vote.setConfirmationEmailSendDate(new Timestamp(new Date().getTime()));
-        clients.getProposalMemberRatingClient().updateProposalVote(vote);
         return confirmationToken;
     }
 

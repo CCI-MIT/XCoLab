@@ -72,6 +72,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                                     proposal.getAuthorId(), proposal.getProposalId());
                             member = null;
                         }
+                        //TODO COLAB-2505: this does not actually generate a link for direct voting
                         supportedProposalsLinks.append(getProposalLinkForDirectVoting(contest, proposal)).append(" by ").append(
                                 member != null ? member.getFullName() : "Unknown author").append("<br />");
                     }
