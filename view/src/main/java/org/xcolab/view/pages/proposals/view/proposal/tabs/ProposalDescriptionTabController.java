@@ -211,7 +211,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         final ProposalClient proposalClient = clients.getProposalClient();
         List<Proposal> linkedProposals = proposalClient
                         .getSubproposals(proposal.getProposalId(), true);
-        Map<ContestType, List<Proposal>> proposalsByContestType =
+        Map<ContestType, Set<Proposal>> proposalsByContestType =
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
@@ -219,7 +219,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 .getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId(),
                     new ContestTypeProposal(contestType));
-            final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
+            final Set<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
             if (proposalsInContestType != null) {
                 for (Proposal p : proposalsInContestType) {
                     contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
