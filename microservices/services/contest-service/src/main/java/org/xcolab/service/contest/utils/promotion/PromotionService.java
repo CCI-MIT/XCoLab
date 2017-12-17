@@ -45,24 +45,25 @@ public class PromotionService {
     private static final long SEMIFINALIST_RIBBON_ID = 3L;
     private static final long FINALIST_RIBBON_ID = 1L;
 
-    private Date now;
-
     private final ContestPhaseDao contestPhaseDao;
     private final ContestDao contestDao;
     private final ContestPhaseTypeDao contestPhaseTypeDao;
+
     private final ContestPhaseService contestPhaseService;
-    private final ContestService serviceNamespace;
+    private final ContestService contestService;
+
+    private Date now;
 
     @Autowired
-    public PromotionService( ContestPhaseDao contestPhaseDao, ContestDao contestDao,
+    public PromotionService(ContestPhaseDao contestPhaseDao, ContestDao contestDao,
             ContestPhaseService contestPhaseService, ContestPhaseTypeDao contestPhaseTypeDao,
-            ContestService serviceNamespace) {
+            ContestService contestService) {
 
         this.contestPhaseDao = contestPhaseDao;
         this.contestDao = contestDao;
         this.contestPhaseTypeDao = contestPhaseTypeDao;
         this.contestPhaseService = contestPhaseService;
-        this.serviceNamespace = serviceNamespace;
+        this.contestService = contestService;
     }
 
     public synchronized int doPromotion(Date now) {
@@ -84,7 +85,7 @@ public class PromotionService {
                 continue;
             }
 
-            if (hasValidContest(phase)) {
+            if (hasNoValidContest(phase)) {
                 continue;
             }
 
@@ -97,7 +98,9 @@ public class PromotionService {
                     Contest contest = contestDao.get(phase.getContestPK());
                     log.info("promoting contest {}", contest.getContestPK());
                     ContestPhase nextPhase = contestPhaseService.getNextContestPhase(phase);
-                    for (Proposal p : ProposalClientUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                    final List<Proposal> proposalsInPhase = ProposalClientUtil
+                            .getProposalsInContestPhase(phase.getContestPhasePK());
+                    for (Proposal p : proposalsInPhase) {
                         if (phasePromotionHelper.isProposalPromoted(p)) {
                             continue;
                         }
@@ -106,7 +109,9 @@ public class PromotionService {
                             continue;
                         }
 
-                        ProposalPhaseClientUtil.promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
+                        ProposalPhaseClientUtil
+                                .promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(),
+                                        phase.getContestPhasePK());
                         promotedProposals++;
                     }
 
@@ -115,7 +120,6 @@ public class PromotionService {
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     contestPhaseDao.update(phase);
 
-                    // if transition is to voting phase
                     if (contestPhaseService.getContestStatus(nextPhase).isCanVote()) {
                         contestPhaseService.transferSupportsToVote(contest, nextPhase);
                     }
@@ -140,11 +144,12 @@ public class PromotionService {
                 continue;
             }
 
-            if (hasValidContest(phase)) {
+            if (hasNoValidContest(phase)) {
                 continue;
             }
 
-            if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !contestPhaseDao.isPhaseActive(phase)) {
+            if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now)
+                    && !contestPhaseDao.isPhaseActive(phase)) {
                 log.info("promoting phase {} (judging)", phase.getContestPhasePK());
 
                 try {
@@ -153,11 +158,16 @@ public class PromotionService {
                         Contest contest = contestDao.get(phase.getContestPK());
                         log.info("promoting contest {} (judging) ", contest.getContestPK());
                         ContestPhase nextPhase = contestPhaseService.getNextContestPhase(phase);
-                        for (Proposal p : ProposalClientUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+                        for (Proposal p : ProposalClientUtil
+                                .getProposalsInContestPhase(phase.getContestPhasePK())) {
                             try {
                                 // check if proposal isn't already associated with requested phase
-                                if (ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(p.getProposalId(), nextPhase.getContestPhasePK()) != null) {
-                                    log.warn("Proposal is already associated with given contest phase");
+                                if (ProposalPhaseClientUtil
+                                        .getProposal2PhaseByProposalIdContestPhaseId(
+                                                p.getProposalId(), nextPhase.getContestPhasePK())
+                                        != null) {
+                                    log.warn("Proposal is already associated with given contest "
+                                            + "phase");
                                     continue;
                                 }
                             } catch (Proposal2PhaseNotFoundException e) {
@@ -172,7 +182,8 @@ public class PromotionService {
                             // Decide about the promotion
                             if (phasePromotionHelper.didJudgeDecideToPromote(p)) {
                                 log.info("Promote proposal {}", p.getProposalId());
-                                ProposalPhaseClientUtil.promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
+                                ProposalPhaseClientUtil.promoteProposal(p.getProposalId(),
+                                        nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                                 promotedProposals++;
                             }
 
@@ -189,9 +200,7 @@ public class PromotionService {
                             }
                         }
 
-                        // if transition is to voting phase
                         if (contestPhaseService.getContestStatus(nextPhase).isCanVote()) {
-                            log
                             contestPhaseService.transferSupportsToVote(contest, nextPhase);
                         }
                         phase.setContestPhaseAutopromote("PROMOTE_DONE");
@@ -200,10 +209,8 @@ public class PromotionService {
 
                         log.info("done promoting phase {}", phase.getContestPhasePK());
                     } else {
-                        log.warn(
-                                "Judge promoting failed for ContestPhase with ID {} - not all "
-                                        + "proposals have been reviewed",
-                                phase.getContestPhasePK());
+                        log.warn("Judge promoting failed for ContestPhase with ID {} - not all "
+                                + "proposals have been reviewed", phase.getContestPhasePK());
                     }
                 } catch (NotFoundException ignored) {
 
@@ -212,8 +219,6 @@ public class PromotionService {
         }
         return promotedProposals;
     }
-
-
 
     private int distributeRibbons() {
         int promotedProposals = 0;
@@ -225,11 +230,12 @@ public class PromotionService {
                 continue;
             }
 
-            if (hasValidContest(phase)) {
+            if (hasNoValidContest(phase)) {
                 continue;
             }
 
-            if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !contestPhaseDao.isPhaseActive(phase)) {
+            if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now)
+                    && !contestPhaseDao.isPhaseActive(phase)) {
                 log.info("promoting phase {} (ribbonize)", phase.getContestPhasePK());
 
                 try {
@@ -237,7 +243,8 @@ public class PromotionService {
                     Contest contest = contestDao.get(phase.getContestPK());
                     ContestPhase nextPhase = contestPhaseService.getNextContestPhase(phase);
 
-                    List<ContestPhase> contestPhases = serviceNamespace.getAllContestPhases(contest.getContestPK());
+                    List<ContestPhase> contestPhases =
+                            contestService.getAllContestPhases(contest.getContestPK());
                     ContestPhase finalistSelection = null;
                     ContestPhase semifinalistSelection = null;
                     Set<ContestPhase> proposalCreationPhases = new HashSet<>();
@@ -263,41 +270,53 @@ public class PromotionService {
                     Set<Proposal> allProposals = new HashSet<>();
                     if (!proposalCreationPhases.isEmpty()) {
                         for (ContestPhase creationPhase : proposalCreationPhases) {
-                            final List<Proposal> proposalsInContestPhase = ProposalClientUtil.getProposalsInContestPhase(creationPhase.getContestPhasePK());
-                            addAllVisibleProposalsToCollection(proposalsInContestPhase, allProposals, creationPhase);
+                            final List<Proposal> proposalsInContestPhase = ProposalClientUtil
+                                    .getProposalsInContestPhase(creationPhase.getContestPhasePK());
+                            addAllVisibleProposalsToCollection(proposalsInContestPhase,
+                                    allProposals, creationPhase);
                         }
                     } else {
-                        log.error("Can't distribute ribbons: No proposal creation phase found in contest {}", phase.getContestPK());
+                        log.error("Can't distribute ribbons: No creation phase found in contest {}",
+                                phase.getContestPK());
                     }
 
                     List<Proposal> finalists = null;
                     List<Proposal> semifinalists = null;
                     if (finalistSelection != null) {
-                        ContestPhase finalsPhase = contestPhaseService.getNextContestPhase(finalistSelection);
-                        finalists = ProposalClientUtil.getProposalsInContestPhase(finalsPhase.getContestPhasePK());
+                        ContestPhase finalsPhase =
+                                contestPhaseService.getNextContestPhase(finalistSelection);
+                        finalists = ProposalClientUtil
+                                .getProposalsInContestPhase(finalsPhase.getContestPhasePK());
                         //make sure all finalists are in the set
                         addAllVisibleProposalsToCollection(finalists, allProposals, finalsPhase);
 
                         if (semifinalistSelection != null) {
-                            ContestPhase semifinalsPhase = contestPhaseService.getNextContestPhase(semifinalistSelection);
-                            semifinalists = ProposalClientUtil.getProposalsInContestPhase(semifinalsPhase.getContestPhasePK());
+                            ContestPhase semifinalsPhase =
+                                    contestPhaseService.getNextContestPhase(semifinalistSelection);
+                            semifinalists = ProposalClientUtil.getProposalsInContestPhase(
+                                    semifinalsPhase.getContestPhasePK());
                             semifinalists.removeAll(finalists);
                             //make sure all semifinalists are in the set
-                            addAllVisibleProposalsToCollection(semifinalists, allProposals, semifinalsPhase);
+                            addAllVisibleProposalsToCollection(semifinalists, allProposals,
+                                    semifinalsPhase);
                         } else {
-                            log.warn("No semifinalist phase found in contest {}", phase.getContestPK());
+                            log.warn("No semifinalist phase found in contest {}",
+                                    phase.getContestPK());
                         }
                     } else {
-                        log.error("Can't distribute ribbons: No finalist phase found in contest {}", phase.getContestPK());
+                        log.error("Can't distribute ribbons: No finalist phase found in contest {}",
+                                phase.getContestPK());
                     }
 
                     promotedProposals += allProposals.size();
                     associateProposalsWithCompletedPhase(allProposals, phase, nextPhase);
                     if (semifinalists != null) {
-                        assignRibbonsToProposals(SEMIFINALIST_RIBBON_ID, semifinalists, nextPhase.getContestPhasePK());
+                        assignRibbonsToProposals(SEMIFINALIST_RIBBON_ID, semifinalists,
+                                nextPhase.getContestPhasePK());
                     }
                     if (finalists != null) {
-                        assignRibbonsToProposals(FINALIST_RIBBON_ID, finalists, nextPhase.getContestPhasePK());
+                        assignRibbonsToProposals(FINALIST_RIBBON_ID, finalists,
+                                nextPhase.getContestPhasePK());
                     } else {
                         log.warn("No finalists found to distribute ribbons to.");
                     }
@@ -311,7 +330,6 @@ public class PromotionService {
                     contestPhaseDao.update(phase);
 
 
-
                     log.info("done promoting phase {}", phase.getContestPhasePK());
                 } catch (NotFoundException e) {
                     log.error("Exception thrown when doing auto promotion for phase {}",
@@ -322,10 +340,10 @@ public class PromotionService {
         return promotedProposals;
     }
 
-    private boolean hasValidContest(ContestPhase phase) {
+    private boolean hasNoValidContest(ContestPhase phase) {
         try {
             contestDao.get(phase.getContestPK());
-        } catch(NotFoundException e){
+        } catch (NotFoundException e) {
             log.warn("promoting phase failed due to invalid contest ", e);
             return true;
         }
@@ -344,21 +362,23 @@ public class PromotionService {
     }
 
     private void associateProposalsWithCompletedPhase(Set<Proposal> proposals,
-            ContestPhase previousPhase, ContestPhase completedPhase)
-            throws NotFoundException {
+            ContestPhase previousPhase, ContestPhase completedPhase) throws NotFoundException {
 
         for (Proposal proposal : proposals) {
             //update the last phase association - set the end version to the current version
             final long proposalId = proposal.getProposalId();
             Integer currentProposalVersion = ProposalClientUtil.countProposalVersions(proposalId);
             if (currentProposalVersion <= 0) {
-                log.error("Proposal {} not found: version was {}", proposalId, currentProposalVersion);
+                log.error("Proposal {} not found: version was {}", proposalId,
+                        currentProposalVersion);
                 throw new NotFoundException("Proposal not found");
             }
 
             try {
                 //make sure that proposals in the phase directly before have final versions
-                Proposal2Phase oldP2p = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposalId, previousPhase.getContestPhasePK());
+                Proposal2Phase oldP2p = ProposalPhaseClientUtil
+                        .getProposal2PhaseByProposalIdContestPhaseId(proposalId,
+                                previousPhase.getContestPhasePK());
 
                 if (oldP2p != null) {
                     if (oldP2p.getVersionTo() < 0) {
@@ -373,9 +393,11 @@ public class PromotionService {
             final long completedPhasePK = completedPhase.getContestPhasePK();
             try {
                 //This is a workaround for a bug that caused two new p2p's to be created
-                p2p = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposalId, completedPhasePK);
+                p2p = ProposalPhaseClientUtil
+                        .getProposal2PhaseByProposalIdContestPhaseId(proposalId, completedPhasePK);
                 //If this succeeds, we want to log the error to help diagnose the problem
-                log.error("P2p found while associating proposal {} with phase {}.", proposalId, completedPhasePK);
+                log.error("P2p found while associating proposal {} with phase {}.", proposalId,
+                        completedPhasePK);
                 new EmailToAdminDispatcher("Duplicate primary key for P2p in auto promotion",
                         String.format("Unexpectedly found p2p. Setting versionFrom = %d and versionTo = %d: %s",
                                 currentProposalVersion, currentProposalVersion, p2p)).sendMessage();
@@ -409,15 +431,14 @@ public class PromotionService {
                                 ProposalContestPhaseAttributeKeys.RIBBON);
                     }
                 } else {
-                    log.error("Skipping ribbon (id = {}) assignment for proposal {}: "
-                                    + "this proposal already has a ribbon assigned",
+                    log.error("Skipping ribbon (id = {}) assignment for proposal {}: (already assigned)",
                             ribbonId, proposal.getProposalId());
                 }
             }
         }
     }
 
-    public void setNow(Date now) {
+    private void setNow(Date now) {
         this.now = now;
     }
 }
