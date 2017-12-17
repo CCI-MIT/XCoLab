@@ -188,10 +188,12 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<Member> findByIp(String ip) {
-        final SelectQuery<Record> query = dslContext.select()
+        final SelectQuery<Record> query = dslContext
+                .selectDistinct(MEMBER.fields())
                 .from(MEMBER)
                 .join(LOGIN_LOG).on(LOGIN_LOG.USER_ID.equal(MEMBER.ID_))
-                .where(LOGIN_LOG.IP_ADDRESS.eq(ip)).getQuery();
+                .where(LOGIN_LOG.IP_ADDRESS.eq(ip))
+                .getQuery();
         return query.fetchInto(Member.class);
     }
 

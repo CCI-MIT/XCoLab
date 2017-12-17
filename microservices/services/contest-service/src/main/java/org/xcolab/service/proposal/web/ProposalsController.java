@@ -339,8 +339,7 @@ public class ProposalsController {
     }
 
     @PostMapping("/proposalVotes/updateVote")
-    public boolean updateProposalVote(@RequestBody ProposalVote proposalVote)
-            throws NotFoundException {
+    public boolean updateProposalVote(@RequestBody ProposalVote proposalVote) {
         return proposalVoteDao.update(proposalVote);
     }
 

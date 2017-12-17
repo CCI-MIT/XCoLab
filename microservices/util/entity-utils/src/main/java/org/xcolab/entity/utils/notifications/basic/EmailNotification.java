@@ -94,17 +94,15 @@ public abstract class EmailNotification {
      * @param proposal The proposal object (must not be null)
      * @return Proposal URL as String
      */
+    //TODO COLAB-2505: remove if we just use a normal proposal link
     protected String getProposalLinkForDirectVoting(Contest contest, Proposal proposal) {
         final String proposalName = new ProposalAttributeHelper(proposal,
                 ProposalAttributeClientUtil.getClient())
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-            final String proposalLinkUrl = baseUrl
-                    + proposal.getProposalLinkUrl(contest) + "/vote";
+            final String proposalLinkUrl = baseUrl + proposal.getProposalLinkUrl(contest);
             return String.format(LINK_FORMAT_STRING, proposalLinkUrl, proposalName);
-
     }
-
 
     /**
      * Returns the HTML link for the passed contest

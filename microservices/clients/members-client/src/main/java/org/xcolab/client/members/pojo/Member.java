@@ -294,6 +294,12 @@ public class Member implements Serializable {
     }
 
     @JsonIgnore
+    public boolean hasSameName(Member otherUser) {
+        return StringUtils.equalsIgnoreCase(getFirstName(), otherUser.getFirstName())
+                && StringUtils.equalsIgnoreCase(getLastName(), otherUser.getLastName());
+    }
+
+    @JsonIgnore
     public List<Role_> getRoles() {
         return MembersClient.getMemberRoles(this.getId_());
     }

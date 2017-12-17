@@ -18,6 +18,7 @@ class AbstractProposalVote implements Serializable {
     private Boolean isvalid;
     private Timestamp confirmationemailsenddate;
     private String confirmationtoken;
+    private String initialValidationResult;
 
     public AbstractProposalVote() {}
 
@@ -30,6 +31,7 @@ class AbstractProposalVote implements Serializable {
         this.isvalid = value.isvalid;
         this.confirmationemailsenddate = value.confirmationemailsenddate;
         this.confirmationtoken = value.confirmationtoken;
+        this.initialValidationResult = value.initialValidationResult;
     }
 
     public Long getProposalId() {
@@ -96,6 +98,14 @@ class AbstractProposalVote implements Serializable {
         this.confirmationtoken = confirmationtoken;
     }
 
+    public String getInitialValidationResult() {
+        return initialValidationResult;
+    }
+
+    public void setInitialValidationResult(String initialValidationResult) {
+        this.initialValidationResult = initialValidationResult;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -112,13 +122,14 @@ class AbstractProposalVote implements Serializable {
                 && Objects.equals(createdate, that.createdate)
                 && Objects.equals(isvalid, that.isvalid)
                 && Objects.equals(confirmationemailsenddate, that.confirmationemailsenddate)
-                && Objects.equals(confirmationtoken, that.confirmationtoken);
+                && Objects.equals(confirmationtoken, that.confirmationtoken)
+                && Objects.equals(initialValidationResult, that.initialValidationResult);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(proposalid, contestphaseid, userid, value, createdate, isvalid,
-                confirmationemailsenddate, confirmationtoken);
+                confirmationemailsenddate, confirmationtoken, initialValidationResult);
     }
 
     @Override
@@ -132,6 +143,7 @@ class AbstractProposalVote implements Serializable {
                 .append("isvalid", isvalid)
                 .append("confirmationemailsenddate", confirmationemailsenddate)
                 .append("confirmationtoken", confirmationtoken)
+                .append("initialValidationResult", initialValidationResult)
                 .toString();
     }
 }

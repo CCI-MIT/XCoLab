@@ -17,7 +17,6 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
@@ -115,11 +114,11 @@ public class VoteOnProposalActionController {
             if (isVoteValidationActive) {
                 VoteValidator voteValidator =
                         new VoteValidator(member, proposal, contest, request.getRemoteAddr(),
-                                clients.getProposalMemberRatingClient());
+                                clients);
                 final ValidationResult validationResult = voteValidator.validate();
                 if (validationResult == ValidationResult.INVALID_BLACKLISTED
                         || validationResult == ValidationResult.INVALID_BOUNCED_EMAIL) {
-                    //TODO: decide if we want to inform users of this
+                    //TODO COLAB-2494: decide if we want to inform users of this
                     //                    AlertMessage.danger("Your vote was NOT counted because
                     // it violates our email policy. "
                     //                            + "Please refer to the Voting Rules for
@@ -161,27 +160,29 @@ public class VoteOnProposalActionController {
         return "redirect:" + proposalLinkUrl;
     }
 
-    @GetMapping("confirmVote/{proposalId}/{userId}/{confirmationToken}")
+    @GetMapping("confirmVote/{userId}/{confirmationToken}")
     public String confirmVote(HttpServletRequest request, HttpServletResponse response, Model model,
-            ProposalContext proposalContext, @PathVariable long proposalId,
-            @PathVariable long userId, @PathVariable String confirmationToken) {
+            ProposalContext proposalContext, @PathVariable long userId,
+            @PathVariable String confirmationToken) {
+        
         boolean success = false;
         final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
+        Proposal proposal = proposalContext.getProposal();
         final ProposalMemberRatingClient proposalMemberRatingClient =
                 clients.getProposalMemberRatingClient();
 
-        ProposalVote vote =
-                proposalMemberRatingClient.getProposalVoteByProposalIdUserId(proposalId, userId);
+        ProposalVote vote = proposalMemberRatingClient.getProposalVoteByProposalIdUserId(
+                        proposal.getProposalId(), userId);
+
         if (vote != null && isValidToken(confirmationToken, vote)) {
             final Member member = MembersClient.getMemberUnchecked(vote.getUserId());
             member.setIsEmailConfirmed(true);
             MembersClient.updateMember(member);
 
             vote.setIsValid(true);
+            vote.setConfirmationToken(null);
             proposalMemberRatingClient.updateProposalVote(vote);
 
-            Proposal proposal = new Proposal(proposalClient.getProposal(proposalId));
             model.addAttribute("proposal", proposal);
             success = true;
         } else {

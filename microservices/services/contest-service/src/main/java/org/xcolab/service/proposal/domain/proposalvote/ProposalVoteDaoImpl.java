@@ -38,6 +38,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
                 .set(PROPOSAL_VOTE.IS_VALID, proposalVote.getIsValid())
                 .set(PROPOSAL_VOTE.CONFIRMATION_EMAIL_SEND_DATE, proposalVote.getConfirmationEmailSendDate())
                 .set(PROPOSAL_VOTE.CONFIRMATION_TOKEN, proposalVote.getConfirmationToken())
+                .set(PROPOSAL_VOTE.INITIAL_VALIDATION_RESULT, proposalVote.getInitialValidationResult())
                 .execute();
 
 
@@ -66,6 +67,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
                 .set(PROPOSAL_VOTE.IS_VALID, proposalVote.getIsValid())
                 .set(PROPOSAL_VOTE.CONFIRMATION_EMAIL_SEND_DATE, proposalVote.getConfirmationEmailSendDate())
                 .set(PROPOSAL_VOTE.CONFIRMATION_TOKEN, proposalVote.getConfirmationToken())
+                .set(PROPOSAL_VOTE.INITIAL_VALIDATION_RESULT, proposalVote.getInitialValidationResult())
                 .where(PROPOSAL_VOTE.PROPOSAL_ID.eq(proposalVote.getProposalId()))
                 .and(PROPOSAL_VOTE.CONTEST_PHASE_ID.eq(proposalVote.getContestPhaseId()))
                 .and(PROPOSAL_VOTE.USER_ID.eq(proposalVote.getUserId()))

@@ -6,8 +6,9 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
+import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 
@@ -100,11 +101,17 @@ public class ProposalImpactSeriesList {
     }
 
     public List<FocusArea> getImpactProposalFocusAreas(Proposal proposal) {
+        final ProposalAttributeHelper attributeHelper = proposal.getProposalAttributeHelper();
+
+        final ArrayList<ProposalAttribute> attributes = new ArrayList<>();
+        attributes.addAll(attributeHelper.getAttributes(
+                ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE));
+        attributes.addAll(attributeHelper.getAttributes(
+                ProposalImpactAttributeKeys.IMPACT_REDUCTION));
+
         Set<Long> focusAreaIdSet = new HashSet<>();
         List<FocusArea> impactSeriesFocusAreas = new ArrayList<>();
-
-        for (ProposalAttribute attribute : ProposalAttributeClientUtil
-                .getImpactProposalAttributes(proposal)) {
+        for (ProposalAttribute attribute : attributes) {
             if (!focusAreaIdSet.contains(attribute.getAdditionalId())) {
                 focusAreaIdSet.add(attribute.getAdditionalId());
                 impactSeriesFocusAreas
