@@ -201,6 +201,8 @@ public class PromotionService {
                         }
 
                         if (contestPhaseService.getContestStatus(nextPhase).isCanVote()) {
+                            log.info("Transferring supports to votes in contest {}, phase {} ...",
+                                    contest.getContestPK(), nextPhase.getContestPhasePK());
                             contestPhaseService.transferSupportsToVote(contest, nextPhase);
                         }
                         phase.setContestPhaseAutopromote("PROMOTE_DONE");
