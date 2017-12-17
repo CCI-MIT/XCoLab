@@ -7,7 +7,7 @@ import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalSupporter;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
-import org.xcolab.util.GroupingUtil;
+import org.xcolab.util.GroupingHelper;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -31,7 +31,7 @@ public class ProposalSupportService {
             boolean excludePrivateContests) {
         final List<ProposalSupporter> proposalSupporters = proposalSupporterDao.findByGiven(null, userId);
         final Map<Long, ProposalSupporter> supportsByProposalId =
-                GroupingUtil.groupByUnique(proposalSupporters, ProposalSupporter::getProposalId);
+                GroupingHelper.groupByUnique(proposalSupporters, ProposalSupporter::getProposalId);
 
         final Boolean visible = onlyVisible ? true : null;
         final Boolean contestPrivate = excludePrivateContests ? false : null;

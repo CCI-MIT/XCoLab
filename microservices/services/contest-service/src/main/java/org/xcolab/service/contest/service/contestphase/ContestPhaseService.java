@@ -25,7 +25,7 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.utils.promotion.PhasePromotionHelper;
 import org.xcolab.service.contest.utils.promotion.enums.ContestStatus;
-import org.xcolab.util.GroupingUtil;
+import org.xcolab.util.GroupingHelper;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -120,7 +120,7 @@ public class ContestPhaseService {
         List<Proposal> proposalsInContest = ProposalClientUtil
                 .getProposalsInContest(contest.getContestPK());
 
-        return GroupingUtil.groupByWithDuplicateKeysAndValues(proposalsInContest,
+        return GroupingHelper.groupByWithDuplicateKeysAndValues(proposalsInContest,
                 proposal -> ProposalMemberRatingClientUtil
                         .getProposalSupporters(proposal.getProposalId()).stream()
                         .map(supporter -> MembersClient.getMemberUnchecked(supporter.getUserId()))

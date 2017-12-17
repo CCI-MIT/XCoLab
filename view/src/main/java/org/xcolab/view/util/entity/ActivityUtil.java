@@ -2,7 +2,7 @@ package org.xcolab.view.util.entity;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.util.GroupingUtil;
+import org.xcolab.util.GroupingHelper;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class ActivityUtil {
     }
 
     public static List<ActivityEntry> groupActivities(List<ActivityEntry> activities) {
-        Map<String, List<ActivityEntry>> activitiesMap = GroupingUtil
+        Map<String, List<ActivityEntry>> activitiesMap = GroupingHelper
                 .groupByWithDuplicateValues(activities, ActivityUtil::getSocialActivityKey);
         return clusterActivities(activitiesMap);
     }
