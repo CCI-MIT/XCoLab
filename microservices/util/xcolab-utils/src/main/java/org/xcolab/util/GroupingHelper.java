@@ -52,10 +52,10 @@ public final class GroupingHelper<ValueT> {
      * @return A map of values grouped by their respective keys
      */
     public <KeyT> Map<KeyT, Set<ValueT>> groupWithDuplicateKeysAndValues(Function<ValueT,
-            Set<KeyT>> keysExtractor) {
+            Collection<KeyT>> keysExtractor) {
         Map<KeyT, Set<ValueT>> groupedEntities = new HashMap<>();
         for (ValueT value : collection) {
-            final Set<KeyT> keys = keysExtractor.apply(value);
+            final Collection<KeyT> keys = keysExtractor.apply(value);
             for (KeyT key : keys) {
                 Set<ValueT> valuesForKey = groupedEntities.computeIfAbsent(key, k -> new HashSet<>());
                 valuesForKey.add(value);
