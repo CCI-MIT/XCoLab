@@ -330,6 +330,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.SCREEN_NAME, member.getScreenName())
                 .set(MEMBER.EMAIL_ADDRESS, member.getEmailAddress())
                 .set(MEMBER.IS_EMAIL_CONFIRMED, member.getIsEmailConfirmed())
+                .set(MEMBER.IS_EMAIL_BOUNCED, member.getIsEmailBounced())
                 .set(MEMBER.OPEN_ID, member.getOpenId())
                 .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
                 .set(MEMBER.FIRST_NAME, member.getFirstName())
