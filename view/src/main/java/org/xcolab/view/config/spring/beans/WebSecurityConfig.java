@@ -115,6 +115,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .logoutSuccessHandler(new LogoutSuccessHandler())
                     .and()
+                .csrf()
+                    .ignoringAntMatchers("/webhooks/**")
+                    .and()
                 .headers()
                     .defaultsDisabled()
                     .addHeaderWriter(
