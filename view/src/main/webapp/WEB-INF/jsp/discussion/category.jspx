@@ -13,7 +13,6 @@
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${currentCategory.name}">
-        <xcolab:script src="${_libJsFolder}/proposals/discussionComments.js"/>
 
         <script type="text/javascript">
             var hash = window.location.hash;
