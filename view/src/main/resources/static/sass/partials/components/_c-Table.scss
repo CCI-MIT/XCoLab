@@ -1,5 +1,3 @@
-$c-Table__shadebar__background: url(/images/tableshade.png) repeat-x !default;
-
 $c-Table__borderColor: $t-Color__primary__grey !default;
 
 $c-Table__title__backgroundColor: $t-Color__primary__grey--light !default;
@@ -233,13 +231,4 @@ $c-Table__cell__count__hideImage: false !default;
 
 .c-Table__sortArrow {
   display: inline;
-}
-
-//TODO: port
-.shadebar {
-  content: '';
-  background: $c-Table__shadebar__background;
-  height: 4px;
-  position: relative;
-  z-index: 9;
 }
