@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.util.activities.enums.enums.ContestActivityType;
-import org.xcolab.util.activities.enums.enums.DiscussionThreadActivityType;
-import org.xcolab.util.activities.enums.enums.ProposalActivityType;
+import org.xcolab.util.activities.enums.ContestActivityType;
+import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;

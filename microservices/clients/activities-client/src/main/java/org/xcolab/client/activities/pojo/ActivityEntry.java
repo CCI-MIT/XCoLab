@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.activities.enums.enums.ActivityCategory;
-import org.xcolab.util.activities.enums.enums.ActivityType;
+import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;

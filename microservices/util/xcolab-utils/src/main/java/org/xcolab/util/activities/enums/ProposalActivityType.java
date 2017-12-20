@@ -1,4 +1,4 @@
-package org.xcolab.util.activities.enums.enums;
+package org.xcolab.util.activities.enums;
 
 public enum ProposalActivityType implements ActivityType {
 

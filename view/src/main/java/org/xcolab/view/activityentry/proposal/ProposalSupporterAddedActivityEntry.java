@@ -3,8 +3,8 @@ package org.xcolab.view.activityentry.proposal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.util.activities.enums.enums.ActivityType;
-import org.xcolab.util.activities.enums.enums.ProposalActivityType;
+import org.xcolab.util.activities.enums.ActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 @Component

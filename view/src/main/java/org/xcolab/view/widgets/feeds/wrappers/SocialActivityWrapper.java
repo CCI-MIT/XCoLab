@@ -1,7 +1,7 @@
 package org.xcolab.view.widgets.feeds.wrappers;
 
-import org.xcolab.util.activities.enums.enums.ContestActivityType;
-import org.xcolab.util.activities.enums.enums.ProposalActivityType;
+import org.xcolab.util.activities.enums.ContestActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.util.time.DurationFormatter;
 

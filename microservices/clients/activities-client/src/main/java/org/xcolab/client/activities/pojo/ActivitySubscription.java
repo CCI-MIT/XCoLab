@@ -3,6 +3,7 @@ package org.xcolab.client.activities.pojo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;

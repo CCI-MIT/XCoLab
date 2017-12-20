@@ -22,6 +22,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.activityentry.ActivityEntryHelper;

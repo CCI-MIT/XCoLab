@@ -4,7 +4,7 @@ import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 public enum SubscriptionType {
     DISCUSSION(ActivityEntryType.DISCUSSION.getPrimaryTypeId()),
