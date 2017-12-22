@@ -23,7 +23,6 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.entity.NotificationUnregisterUtils;
@@ -209,19 +208,18 @@ public class ActivitySubscriptionEmailHelper {
                     instantToFormattedString(lastDailyEmailNotification)));
             body.append("<br/><br/>");
 
-            for (ActivityEntry socialActivity : userDigestActivities) {
+            for (ActivityEntry activityEntry : userDigestActivities) {
                 //prevent null pointer exceptions which might happen at this point
-                if (socialActivity == null) {
+                if (activityEntry == null) {
                     continue;
                 }
-                if (socialActivity.getPrimaryType()
-                        .equals(ActivityEntryType.DISCUSSION.getPrimaryTypeId())) {
+                if (activityEntry.getActivityCategoryEnum() == ActivityCategory.DISCUSSION) {
                     try {
                         StringBuilder bodyWithComment = new StringBuilder();
-                        bodyWithComment.append(activityEntryHelper.getActivityBody(socialActivity));
+                        bodyWithComment.append(activityEntryHelper.getActivityBody(activityEntry));
                         bodyWithComment.append("<br><br><div style='margin-left:20px;>");
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
-                        Long commentId = new Long(socialActivity.getExtraData());
+                        Long commentId = new Long(activityEntry.getExtraData());
                         Comment comment = CommentClientUtil.getComment(commentId, true);
                         if (comment.getDeletedDate() != null) {
                             bodyWithComment.append("<b>COMMENT ALREADY DELETED</b>");
@@ -231,13 +229,13 @@ public class ActivitySubscriptionEmailHelper {
                         body.append("<div style='margin-left: 10px'>")
                                 .append(bodyWithComment.toString()).append("</div><br/><br/>");
                     } catch (CommentNotFoundException ex) {
-                        body.append("<div style='margin-left: 10px'>").append(socialActivity)
+                        body.append("<div style='margin-left: 10px'>").append(activityEntry)
                                 .append("</div><br/><br/>");
                     }
 
                 } else {
                     body.append("<div style='margin-left: 10px'>")
-                            .append(activityEntryHelper.getActivityBody(socialActivity))
+                            .append(activityEntryHelper.getActivityBody(activityEntry))
                             .append("</div><br/><br/>");
                 }
 
@@ -286,7 +284,7 @@ public class ActivitySubscriptionEmailHelper {
         // clean list of activities first in order not to send out activities concerning the same
         // proposal multiple times
         ActivityEntryMessageLimitationHelper h = new ActivityEntryMessageLimitationHelper(
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId());
+                ActivityCategory.PROPOSAL);
 
         return h.process(activityObjects);
     }
@@ -381,13 +379,12 @@ public class ActivitySubscriptionEmailHelper {
         List<ActivitySubscription> filteredResults = new ArrayList<>();
 
         List<ActivitySubscription> ret = ActivitiesClientUtil
-                .getActivitySubscriptions(activity.getPrimaryType(), activity.getClassPrimaryKey(),
-                        null);
+                .getActivitySubscriptions(activity.getActivityCategoryEnum(),
+                        activity.getClassPrimaryKey(),null);
 
         // Check for constraints which users should receive notifications
         ActivitySubscriptionConstraint subscriptionConstraint =
-                new ActivitySubscriptionConstraint(activity.getPrimaryType(),
-                        activity.getSecondaryType());
+                new ActivitySubscriptionConstraint(activity.getActivityTypeEnum());
         if (subscriptionConstraint.areSubscribersConstrained()) {
             for (Long userId : subscriptionConstraint.getWhitelist(activity.getClassPrimaryKey())) {
                 for (ActivitySubscription as : ret) {

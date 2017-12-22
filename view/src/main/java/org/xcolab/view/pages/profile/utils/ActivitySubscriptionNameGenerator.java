@@ -18,27 +18,26 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 
 public class ActivitySubscriptionNameGenerator {
     private static final Logger _log = LoggerFactory.getLogger(ActivitySubscriptionNameGenerator.class);
     private static final String HYPERLINK = "<a href=\"%s\">%s</a>";
 
     public static String getName(ActivitySubscription subscription) {
-        if (subscription.getClassNameId().equals(ActivityEntryType.PROPOSAL.getPrimaryTypeId())) {
-            return getNameForProposalSubscription(subscription);
+        switch (subscription.getActivityCategoryEnum()) {
+            case PROPOSAL:
+                return getNameForProposalSubscription(subscription);
+            case CONTEST:
+                return getNameForContestSubscription(subscription);
+            case DISCUSSION:
+                return getNameForDiscussionSubscription(subscription);
+            default:
+                return "";
         }
-        if (subscription.getClassNameId().equals(ActivityEntryType.CONTEST.getPrimaryTypeId())) {
-            return getNameForContestSubscription(subscription);
-        }
-        if (subscription.getClassNameId().equals(ActivityEntryType.DISCUSSION.getPrimaryTypeId())) {
-            return getNameForDiscussionSubscription(subscription);
-        }
-        return "";
     }
 
     private static String getNameForProposalSubscription(ActivitySubscription subscription){
-        Long proposalId = subscription.getClassPK();
+        Long proposalId = subscription.getCategoryId();
         try {
             //TODO: figure out which client we need in case it's a shared contest!
             Proposal proposal = ProposalClientUtil.getProposal(proposalId);
@@ -54,13 +53,13 @@ public class ActivitySubscriptionNameGenerator {
     }
 
     private static String getNameForContestSubscription(ActivitySubscription subscription){
-        Contest contest = ContestClientUtil.getContest(subscription.getClassPK());
+        Contest contest = ContestClientUtil.getContest(subscription.getCategoryId());
         final String contestNameString = contest.getContestType().getContestName();
         return contest.getContestShortNameWithEndYear() + " " + StringUtils.uncapitalize(contestNameString);
     }
 
     private static String getNameForDiscussionSubscription(ActivitySubscription subscription) {
-        final Long classPK = subscription.getClassPK();
+        final Long classPK = subscription.getCategoryId();
 //        final String extraData = subscription.getExtraData();
 
 //        StringBuilder name = new StringBuilder();

@@ -19,7 +19,7 @@ import org.xcolab.client.proposals.pojo.group.GroupDto;
 import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReferenceDto;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -458,7 +458,7 @@ public final class ProposalClient {
 
     public boolean isMemberSubscribedToProposal(long proposalId, long userId) {
         return activitiesClient.isSubscribedToActivity(userId,
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "");
+                ActivityCategory.PROPOSAL, proposalId);
     }
 
     public void subscribeMemberToProposal(long proposalId, long userId) {
@@ -467,7 +467,7 @@ public final class ProposalClient {
     }
 
     private void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
-        activitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        activitiesClient.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
     }
 
     public void unsubscribeMemberFromProposal(long proposalId, long userId) {
@@ -476,7 +476,7 @@ public final class ProposalClient {
     }
 
     private void unsubscribeMemberFromProposal(long proposalId, long userId, boolean automatic) {
-        activitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        activitiesClient.deleteSubscription(userId, ActivityCategory.PROPOSAL, proposalId);
     }
     public  Group_ createGroup(Group_ group) {
         return groupResource.create(new GroupDto(group)).execute().toPojo(serviceNamespace);

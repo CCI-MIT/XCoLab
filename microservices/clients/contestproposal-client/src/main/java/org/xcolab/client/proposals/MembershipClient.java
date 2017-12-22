@@ -9,7 +9,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.client.proposals.pojo.team.MembershipRequestDto;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -129,10 +129,10 @@ public class MembershipClient {
             activityClient.createActivityEntry(ProposalActivityType.MEMBER_ADDED, userId,
                     proposalId);
 
-            if (!activityClient.isSubscribedToActivity(userId,
-                    ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {
+            if (!activityClient.isSubscribedToActivity(userId, ActivityCategory.PROPOSAL,
+                    proposalId)) {
                 activityClient
-                        .addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+                        .addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
 
             }
         } catch (Http409ConflictException ignored) {

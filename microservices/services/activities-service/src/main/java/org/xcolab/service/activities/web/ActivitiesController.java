@@ -17,7 +17,7 @@ import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.activities.service.ActivitiesService;
 import org.xcolab.service.activities.utils.Utils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.util.List;
 
@@ -75,9 +75,8 @@ public class ActivitiesController {
 
     @PostMapping("/activitySubscriptions/subscribe")
     public ActivitySubscription subscribe(@RequestParam long receiverId,
-            @RequestParam ActivityEntryType activityEntryType, @RequestParam long classPK,
-            @RequestParam String extraInfo) {
-        return activitiesService.subscribe(receiverId, activityEntryType, classPK, extraInfo);
+            @RequestParam ActivityCategory activityCategory, @RequestParam long categoryId) {
+        return activitiesService.subscribe(receiverId, activityCategory, categoryId);
     }
 
     @GetMapping("/activitySubscriptions/{activitySubscriptionId}")
@@ -95,34 +94,32 @@ public class ActivitiesController {
 
     @DeleteMapping("/activitySubscriptions/deleteIfSubscribed")
     public boolean deleteIfSubscribed(@RequestParam(required = false) Long receiverId,
-            @RequestParam(required = false) ActivityEntryType activityEntryType,
-            @RequestParam(required = false) Long classPK,
-            @RequestParam(required = false) Integer type,
-            @RequestParam(required = false) String extraInfo) {
-        return activitiesService.unsubscribe(receiverId, activityEntryType, classPK, extraInfo);
+            @RequestParam(required = false) ActivityCategory activityCategory,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Integer type) {
+        return activitiesService.unsubscribe(receiverId, activityCategory, categoryId);
     }
 
     @PostMapping("/activitySubscriptions/batchDelete")
-    public boolean batchDelete(@RequestParam ActivityEntryType activityEntryType,
-            @RequestBody List<Long> classPKs) {
-        return activitySubscriptionDao.delete(activityEntryType, classPKs)
-                && activityEntryDao.delete(activityEntryType, classPKs);
+    public boolean batchDelete(@RequestParam ActivityCategory activityCategory,
+            @RequestBody List<Long> categoryIds) {
+        return activitySubscriptionDao.delete(activityCategory, categoryIds)
+                && activityEntryDao.delete(activityCategory, categoryIds);
     }
 
     @GetMapping("/activitySubscriptions/isSubscribed")
-    public boolean isSubscribed(@RequestParam long receiverId, @RequestParam long classNameId,
-            @RequestParam long classPK, @RequestParam int type,
-            @RequestParam(required = false) String extraInfo) {
+    public boolean isSubscribed(@RequestParam ActivityCategory activityCategory,
+            @RequestParam long receiverId, @RequestParam long categoryId) {
         return this.activitySubscriptionDao
-                .isSubscribed(receiverId, classNameId, classPK, extraInfo);
+                .isSubscribed(activityCategory, receiverId, categoryId);
     }
 
     @GetMapping("/activitySubscriptions")
     public List<ActivitySubscription> getActivitySubscribers(
-            @RequestParam(required = false) Long classNameId,
-            @RequestParam(required = false) Long classPK,
+            @RequestParam(required = false) ActivityCategory activityCategory,
+            @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long receiverId) {
         return this.activitySubscriptionDao
-                .getActivitySubscribers(classNameId, classPK, receiverId);
+                .getActivitySubscribers(activityCategory, categoryId, receiverId);
     }
 }

@@ -70,7 +70,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
 
             writeRow(row);
         } else {
-            _log.warn("Unknown ActivityEntryType {} found when generating report",
+            _log.warn("Unknown ActivityCategory {} found when generating report",
                     activityEntry.getPrimaryType());
         }
     }

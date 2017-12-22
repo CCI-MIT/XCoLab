@@ -7,7 +7,7 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
@@ -71,7 +71,7 @@ public class ContestTeamWrapper {
 
     private void subscribeUsersToContest(List<Long> userIds) {
         for (Long userId : userIds) {
-            ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.CONTEST, contestId, "");
+            ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
         }
     }
 

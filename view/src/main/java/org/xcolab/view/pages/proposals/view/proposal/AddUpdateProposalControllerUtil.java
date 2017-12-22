@@ -15,7 +15,7 @@ import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -81,11 +81,11 @@ public final class AddUpdateProposalControllerUtil {
             }
 
             final List<ActivitySubscription> activitySubscriptions = activitiesClient
-                    .getActivitySubscriptions(ActivityEntryType.CONTEST.getPrimaryTypeId(),
+                    .getActivitySubscriptions(ActivityCategory.CONTEST,
                             contest.getContestPK(), null);
             for (ActivitySubscription activitySubscription : activitySubscriptions) {
                 final Long receiverId = activitySubscription.getReceiverId();
-                activitiesClient.addSubscription(receiverId, ActivityEntryType.PROPOSAL,
+                activitiesClient.addSubscription(receiverId, ActivityCategory.PROPOSAL,
                         proposal.getProposalId(), "");
 
             }

@@ -59,6 +59,10 @@ public class ActivitySubscription implements Serializable {
         this.receiverId = receiverId;
     }
 
+    public ActivityCategory getActivityCategoryEnum() {
+        return ActivityCategory.valueOf(getActivityCategory());
+    }
+
     public String getActivityCategory() {
         return activityCategory;
     }

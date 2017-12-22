@@ -34,7 +34,7 @@ import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -148,7 +148,7 @@ public class ProposalService {
     }
 
     public void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
-        ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
     }
 
     private Group_ createGroupAndSetUpPermissions(long authorId, long proposalId, Contest contest) {

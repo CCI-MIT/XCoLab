@@ -5,7 +5,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
 /**
@@ -83,8 +83,7 @@ public class ProposalsDisplayPermissions {
     private boolean isSubscribedToContest() {
         return contestPhase != null
                 && clientHelper.getActivitiesClient().isSubscribedToActivity(memberId,
-                        ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPhase.getContestPK(),
-                        0, "");
+                        ActivityCategory.CONTEST, contestPhase.getContestPK());
     }
 
     public boolean getCanSeeSubscribeProposalButton() {

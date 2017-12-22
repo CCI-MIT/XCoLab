@@ -27,4 +27,8 @@ public enum ActivityCategory {
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No ActivityType " + name() + "." + activityType));
     }
+
+    public Long getPrimaryTypeId() {
+        return null;
+    }
 }

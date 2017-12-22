@@ -17,7 +17,7 @@ import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -59,8 +59,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortAscending", sortAscending);
 
         model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(
-                memberId, ActivityEntryType.DISCUSSION.getPrimaryTypeId(),
-                categoryGroup.getGroupId(),0, ""));
+                memberId, ActivityCategory.DISCUSSION, categoryGroup.getGroupId(), ""));
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         model.addAttribute("discussionPermissions", discussionPermissions);
@@ -98,7 +97,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortAscending", sortAscending);
 
         model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(memberId,
-                ActivityEntryType.DISCUSSION.getPrimaryTypeId(), currentCategory.getCategoryId(),0,null ));
+                ActivityCategory.DISCUSSION, currentCategory.getCategoryId()));
 
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
@@ -177,11 +176,11 @@ public class CategoryController extends BaseDiscussionController {
         if (memberId > 0) {
             if (categoryId > 0) {
                 ActivitiesClientUtil.addSubscription(memberId,
-                        ActivityEntryType.DISCUSSION, categoryId, Long.toString(categoryId));
+                        ActivityCategory.DISCUSSION, categoryId, Long.toString(categoryId));
                 return "redirect:/discussion/category/"+categoryId;
             } else {
                 ActivitiesClientUtil.addSubscription(memberId,
-                        ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(), "");
+                        ActivityCategory.DISCUSSION, categoryGroup.getGroupId(), "");
                 return "redirect:/discussion";
             }
         }
@@ -205,12 +204,12 @@ public class CategoryController extends BaseDiscussionController {
         if (memberId > 0) {
             if (categoryId > 0) {
                 ActivitiesClientUtil.deleteSubscription(memberId,
-                        ActivityEntryType.DISCUSSION,categoryId,null);
+                        ActivityCategory.DISCUSSION,categoryId);
                 return "redirect:/discussion/category/"+categoryId;
 
             } else {
                 ActivitiesClientUtil.deleteSubscription(memberId,
-                        ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(), "");
+                        ActivityCategory.DISCUSSION, categoryGroup.getGroupId());
                 return "redirect:/discussion";
             }
         }

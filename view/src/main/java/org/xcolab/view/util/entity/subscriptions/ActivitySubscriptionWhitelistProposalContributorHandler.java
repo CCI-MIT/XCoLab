@@ -10,10 +10,10 @@ public class ActivitySubscriptionWhitelistProposalContributorHandler
         implements ActivitySubscriptionWhitelistHandler {
 
     @Override
-    public List<Long> getWhitelistedUsers(long classPk) {
+    public List<Long> getWhitelistedUsers(long categoryIds) {
         List<Long> contributorIds = new ArrayList<>();
 
-        List<Member> contributors = ProposalClientUtil.getProposalMembers(classPk);
+        List<Member> contributors = ProposalClientUtil.getProposalMembers(categoryIds);
         for (Member contributor : contributors) {
             contributorIds.add(contributor.getUserId());
         }
