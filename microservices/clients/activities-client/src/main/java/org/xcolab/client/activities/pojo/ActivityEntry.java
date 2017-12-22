@@ -70,8 +70,9 @@ public class ActivityEntry implements Serializable {
 
     @JsonIgnore
     public ActivityCategory getActivityCategoryEnum() {
-        //TODO COLAB-2486: can't be null once fixed
-        return activityCategory != null ? ActivityCategory.valueOf(activityCategory) : null;
+        //TODO COLAB-2486: once fixed, this can't be UNKNOWN
+        return activityCategory != null ? ActivityCategory.valueOf(activityCategory)
+                : ActivityCategory.UNKNOWN;
     }
 
     public void setActivityCategory(String activityCategory) {

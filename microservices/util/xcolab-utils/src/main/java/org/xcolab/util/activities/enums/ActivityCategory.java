@@ -9,6 +9,9 @@ public enum ActivityCategory {
     CONTEST(ContestActivityType.values()),
     DISCUSSION(DiscussionThreadActivityType.values()),
     DISCUSSION_CATEGORY(null),
+
+    //TODO COLAB-2486: delete once fixed
+    UNKNOWN(null),
     ;
 
     private final ActivityType[] activityTypes;

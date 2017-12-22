@@ -56,7 +56,9 @@ public class ActivitySubscription implements Serializable {
 
     @JsonIgnore
     public ActivityCategory getActivityCategoryEnum() {
-        return ActivityCategory.valueOf(getActivityCategory());
+        //TODO COLAB-2486: once fixed, this can't be UNKNOWN
+        return activityCategory != null ? ActivityCategory.valueOf(activityCategory)
+                : ActivityCategory.UNKNOWN;
     }
 
     public String getActivityCategory() {
