@@ -30,7 +30,7 @@ public class ActivityEntryMessageLimitationHelper {
 
     private String getKey(ActivityEntry sa) {
         if (limitedCategories.contains(sa.getActivityCategoryEnum())) {
-            return sa.getPrimaryType() + "_" + sa.getClassPrimaryKey();
+            return sa.getActivityCategory() + "_" + sa.getActivityType();
         } else {
             return "0_" + sa.getActivityEntryId();
         }

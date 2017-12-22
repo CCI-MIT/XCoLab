@@ -191,13 +191,13 @@ public class ActivitySubscriptionEmailHelper {
     }
 
     private String getDigestMessageBody(List<ActivityEntry> userDigestActivities) {
-        Comparator<ActivityEntry> socialActivityClassIdComparator =
-                (o1, o2) -> (int) (o1.getPrimaryType() - o2.getPrimaryType());
+        Comparator<ActivityEntry> activityCategoryComparator =
+                Comparator.comparing(ActivityEntry::getActivityCategory);
         Comparator<ActivityEntry> socialActivityCreateDateComparator =
                 (o1, o2) -> (int) (o1.getCreateDate().getTime() - o2.getCreateDate().getTime());
 
         ComparatorChain comparatorChain = new ComparatorChain();
-        comparatorChain.addComparator(socialActivityClassIdComparator);
+        comparatorChain.addComparator(activityCategoryComparator);
         comparatorChain.addComparator(socialActivityCreateDateComparator);
         StringBuilder body = new StringBuilder();
         try {
@@ -219,7 +219,7 @@ public class ActivitySubscriptionEmailHelper {
                         bodyWithComment.append(activityEntryHelper.getActivityBody(activityEntry));
                         bodyWithComment.append("<br><br><div style='margin-left:20px;>");
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
-                        Long commentId = new Long(activityEntry.getExtraData());
+                        Long commentId = activityEntry.getAdditionalId();
                         Comment comment = CommentClientUtil.getComment(commentId, true);
                         if (comment.getDeletedDate() != null) {
                             bodyWithComment.append("<b>COMMENT ALREADY DELETED</b>");
@@ -380,13 +380,13 @@ public class ActivitySubscriptionEmailHelper {
 
         List<ActivitySubscription> ret = ActivitiesClientUtil
                 .getActivitySubscriptions(activity.getActivityCategoryEnum(),
-                        activity.getClassPrimaryKey(),null);
+                        activity.getCategoryId(),null);
 
         // Check for constraints which users should receive notifications
         ActivitySubscriptionConstraint subscriptionConstraint =
                 new ActivitySubscriptionConstraint(activity.getActivityTypeEnum());
         if (subscriptionConstraint.areSubscribersConstrained()) {
-            for (Long userId : subscriptionConstraint.getWhitelist(activity.getClassPrimaryKey())) {
+            for (Long userId : subscriptionConstraint.getWhitelist(activity.getCategoryId())) {
                 for (ActivitySubscription as : ret) {
                     if (as.getReceiverId() == userId.longValue()) {
                         filteredResults.add(as);

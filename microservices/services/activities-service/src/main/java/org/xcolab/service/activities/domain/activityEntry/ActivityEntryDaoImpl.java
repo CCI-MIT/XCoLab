@@ -37,10 +37,6 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
                 .set(ACTIVITY_ENTRY.ACTIVITY_TYPE, activityEntry.getActivityType())
                 .set(ACTIVITY_ENTRY.CATEGORY_ID, activityEntry.getCategoryId())
                 .set(ACTIVITY_ENTRY.ADDITIONAL_ID, activityEntry.getAdditionalId())
-                .set(ACTIVITY_ENTRY.PRIMARY_TYPE, activityEntry.getPrimaryType())
-                .set(ACTIVITY_ENTRY.SECONDARY_TYPE, activityEntry.getSecondaryType())
-                .set(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY, activityEntry.getClassPrimaryKey())
-                .set(ACTIVITY_ENTRY.EXTRA_DATA, activityEntry.getExtraData())
                 .returning(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID)
                 .fetchOne();
         if (ret != null) {
