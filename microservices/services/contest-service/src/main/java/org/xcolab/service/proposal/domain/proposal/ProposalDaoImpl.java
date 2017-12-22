@@ -292,8 +292,8 @@ public class ProposalDaoImpl implements ProposalDao {
     @Override
     public boolean update(Proposal proposal) {
 
-        return dslContext.update(PROPOSAL).set(PROPOSAL.CREATE_DATE, proposal.getCreateDate())
-                .set(PROPOSAL.UPDATED_DATE, proposal.getUpdatedDate())
+        return dslContext.update(PROPOSAL)
+                .set(PROPOSAL.UPDATED_DATE, DSL.currentTimestamp())
                 .set(PROPOSAL.AUTHOR_ID, proposal.getAuthorId())
                 .set(PROPOSAL.VISIBLE, proposal.getVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
