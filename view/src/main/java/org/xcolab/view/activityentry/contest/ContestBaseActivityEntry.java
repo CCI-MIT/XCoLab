@@ -23,7 +23,7 @@ public abstract class ContestBaseActivityEntry extends AbstractActivityEntryCont
         } catch (ContestNotFoundException e) {
             //TODO COLAB-2486: This won't be needed once legacy activities are fixed
             if (ContestActivityType.PROPOSAL_CREATED.equals(getActivityType())) {
-                contest = ProposalClientUtil.getProposal(getActivityEntry().getAdditionalId())
+                contest = ProposalClientUtil.getProposal(getActivityEntry().getAdditionalId(), true)
                         .getContest();
             } else {
                 throw new ActivityInitializationException(
