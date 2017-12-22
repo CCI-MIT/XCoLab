@@ -199,8 +199,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithRibbons }" showShadebar="true"/>
-                    <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithoutRibbons }" showShadebar="${proposals.sizeWithRibbons > 0 and not contest.hideRibbons}"/>
+                    <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithRibbons }" />
+                    <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithoutRibbons }" />
                 </tbody>
             </table>
         </div>

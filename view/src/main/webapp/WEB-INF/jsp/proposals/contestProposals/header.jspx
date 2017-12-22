@@ -21,7 +21,7 @@
 	</div>
     <!-- /c-Headline -->
 
-	<div class="c-TitleBar contestSummary">
+	<div class="c-TitleBar contestSummary m-Shadebar">
 		<jsp:directive.include file="./header_contestPhases.jspx" />
 		<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">
 			<c:set var="subscribeContestURL" value="/contests/subscribeContest?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }"/>
@@ -47,5 +47,4 @@
 			</div>
 		</c:if>
 	</div>
-	<div class="shadebar"><!--  --></div>
 </jsp:root>

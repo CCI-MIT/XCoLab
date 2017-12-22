@@ -249,8 +249,8 @@ public class ProposalDaoImpl implements ProposalDao {
     public Proposal create(Proposal proposal) {
 
         ProposalRecord ret = this.dslContext.insertInto(PROPOSAL)
-                .set(PROPOSAL.CREATE_DATE, proposal.getCreateDate())
-                .set(PROPOSAL.UPDATED_DATE, proposal.getUpdatedDate())
+                .set(PROPOSAL.CREATE_DATE, DSL.currentTimestamp())
+                .set(PROPOSAL.UPDATED_DATE, DSL.currentTimestamp())
                 .set(PROPOSAL.AUTHOR_ID, proposal.getAuthorId())
                 .set(PROPOSAL.VISIBLE, proposal.getVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())

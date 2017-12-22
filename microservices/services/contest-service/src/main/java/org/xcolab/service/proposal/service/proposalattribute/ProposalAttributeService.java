@@ -16,8 +16,6 @@ import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao
 import org.xcolab.service.proposal.domain.proposalunversionedattribute.ProposalUnversionedAttributeDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -104,14 +102,10 @@ public class ProposalAttributeService {
                     .create(proposalAttribute);//setAttributeValue(proposalId, newVersion,
             // attributeName, additionalId, stringValue, numericValue, realValue);
 
-            Timestamp updatedDate = new Timestamp((new Date()).getTime());
-            proposal.setUpdatedDate(updatedDate);
-
             // create newly created version descriptor
             if (isNewVersion) {
                 createProposalVersionDescription(authorId, proposalAttribute.getProposalId(),
-                        version, proposalAttribute.getName(), proposalAttribute.getAdditionalId(),
-                        updatedDate);
+                        version, proposalAttribute.getName(), proposalAttribute.getAdditionalId());
             }
             proposalDao.update(proposal);
 
@@ -161,8 +155,7 @@ public class ProposalAttributeService {
     }
 
     private void createProposalVersionDescription(long authorId, long proposalId, int version,
-            String updateType,
-            long additionalId, Timestamp updatedDate) {
+            String updateType, long additionalId) {
 
         ProposalVersion proposalVersion = new ProposalVersion();
         proposalVersion.setProposalId(proposalId);
@@ -170,9 +163,7 @@ public class ProposalAttributeService {
         proposalVersion.setAuthorId(authorId);
         proposalVersion.setUpdateType(updateType);
         proposalVersion.setUpdateAdditionalId(additionalId);
-        proposalVersion.setCreateDate(updatedDate);
 
         proposalVersionDao.create(proposalVersion);
     }
-
 }
