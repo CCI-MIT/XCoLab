@@ -502,7 +502,7 @@ CREATE TABLE `xcolab_ActivitySubscription` (
   `modifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`pk`),
   KEY `ActivitySubscription_receiver_index` (`receiverId`),
-  KEY `ActivitySubscription_category_id_receiver_index` (`activityCategory`, `categoryId`, `receiverId`),
+  KEY `ActivitySubscription_category_id_receiver_index` (`activityCategory`, `categoryId`, `receiverId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalRating` (
