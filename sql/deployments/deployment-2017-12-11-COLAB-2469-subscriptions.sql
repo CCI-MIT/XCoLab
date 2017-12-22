@@ -7,6 +7,14 @@ ALTER TABLE xcolab_ActivitySubscription
   MODIFY COLUMN activityCategory VARCHAR(30) NOT NULL AFTER receiverId,
   MODIFY COLUMN categoryId BIGINT(20) NOT NULL AFTER activityCategory;
 
+CREATE INDEX ActivitySubscription_receiver_index ON xcolab_ActivitySubscription (receiverId);
+CREATE INDEX ActivitySubscription_category_id_receiver_index
+    ON xcolab_ActivitySubscription (activityCategory, categoryId, receiverId);
+DROP INDEX IX_33049EE6 ON xcolab_ActivitySubscription;
+DROP INDEX IX_1413A2B6 ON xcolab_ActivitySubscription;
+DROP INDEX IX_61FA63BB ON xcolab_ActivitySubscription;
+DROP INDEX IX_C2ED8710 ON xcolab_ActivitySubscription;
+
 
 -- Activity subscription cleanup
 

@@ -501,10 +501,8 @@ CREATE TABLE `xcolab_ActivitySubscription` (
   `createDate` datetime DEFAULT NULL,
   `modifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`pk`),
-  KEY `IX_61FA63BB` (`classNameId`,`classPK`,`receiverId`),
-  KEY `IX_C2ED8710` (`classNameId`,`classPK`,`type_`,`extraData`(50),`receiverId`),
-  KEY `IX_1413A2B6` (`classNameId`,`classPK`,`type_`,`receiverId`),
-  KEY `IX_33049EE6` (`receiverId`)
+  KEY `ActivitySubscription_receiver_index` (`receiverId`),
+  KEY `ActivitySubscription_category_id_receiver_index` (`activityCategory`, `categoryId`, `receiverId`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalRating` (
