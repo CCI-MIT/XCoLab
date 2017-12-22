@@ -36,7 +36,6 @@ import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,7 +74,6 @@ public class ProposalService {
             Proposal proposal = new Proposal();
             proposal.setVisible(true);
             proposal.setAuthorId(authorId);
-            proposal.setCreateDate(new Timestamp(new Date().getTime()));
 
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             final Contest contest = ContestClientUtil.getContest(contestPhase.getContestPK());
