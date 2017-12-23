@@ -1,0 +1,25 @@
+{
+  "name": "xcolab-view",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "View layer of the xCoLab",
+  "repository": "https://github.com/CCI-MIT/XCoLab",
+  "author": "xcolab@mit.edu",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bootstrap-sass": "https://github.com/jobachhu/bootstrap-sass",
+    "eyeglass-math": "^1.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.2.3",
+    "eyeglass": "^1.3.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-npm-dist": "^0.1.6",
+    "gulp-postcss": "^7.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.2",
+    "gulp-uglify": "^3.0.0"
+  }
+}
