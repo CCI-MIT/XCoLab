@@ -623,7 +623,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
     position: relative;
     right: -70px;
     text-align: center;
-    @include transform(rotate(45deg));
+    transform: rotate(45deg);
   }
 
   //top corner
