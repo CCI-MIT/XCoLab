@@ -9,11 +9,6 @@
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
 
     <jsp:directive.attribute name="proposals" type="java.util.Collection" required="true" rtexprvalue="true" description="proposals" />
-    <jsp:directive.attribute name="showShadebar" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If shadebar should be shown" />
-
-    <c:if test="${showShadebar }">
-	    <div class="shadebar"><!--  --></div>
-    </c:if>
 
     <c:forEach var="proposal" items="${proposals }" varStatus="status">
         <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->

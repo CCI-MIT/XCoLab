@@ -242,7 +242,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public boolean isCompleted() {
-        return getStatus() == ContestStatus.COMPLETED || getPhaseEndDate() == null;
+        return getStatus() == ContestStatus.COMPLETED;
     }
 
     public ContestPhase getWrapped() {

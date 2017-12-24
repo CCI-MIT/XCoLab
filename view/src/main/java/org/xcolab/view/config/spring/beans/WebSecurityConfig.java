@@ -6,22 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders
-        .AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration
-        .WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.RememberMeServices;
-import org.springframework.security.web.header.writers.DelegatingRequestMatcherHeaderWriter;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter
-        .XFrameOptionsMode;
-import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
-import org.springframework.security.web.util.matcher.OrRequestMatcher;
-import org.springframework.security.web.util.matcher.RegexRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 
 import org.xcolab.util.autoconfigure.XCoLabProperties;
@@ -33,8 +23,6 @@ import org.xcolab.view.auth.login.spring.MemberPasswordEncoder;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.spring.properties.WebProperties.GuestAccess;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.DispatcherType;
@@ -118,14 +106,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                     .ignoringAntMatchers("/webhooks/**")
                     .and()
-                .headers()
-                    .defaultsDisabled()
-                    .addHeaderWriter(
-                        new DelegatingRequestMatcherHeaderWriter(
-                                new NegatedRequestMatcher(new OrRequestMatcher(getWhiteList())),
-                                new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN))
-                    );
-
+                .headers().defaultsDisabled()
+                    .referrerPolicy(ReferrerPolicy.ORIGIN_WHEN_CROSS_ORIGIN)
+                        .and()
+                    .contentTypeOptions()
+                        .and()
+                    .xssProtection()
+                        .block(true)
+                        .and()
+                    .frameOptions()
+                        .sameOrigin();
     }
 
     @Autowired
@@ -151,15 +141,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             log.warn("No SessionRepositoryFilter found - defaulting to regular session.");
             return null;
         }
-    }
-
-    private List<RequestMatcher> getWhiteList() {
-        List<RequestMatcher> whitelist = new ArrayList<>();
-        whitelist.add(new RegexRequestMatcher(".*localhost*", HttpMethod.POST.name()));
-        whitelist.add(new RegexRequestMatcher(".*climatecolab.org.*", HttpMethod.POST.name()));
-        whitelist.add(new RegexRequestMatcher(".*solvecolab.mit.edu.*", HttpMethod.POST.name()));
-        whitelist.add(new RegexRequestMatcher(".*kcc.mit.edu.org.*", HttpMethod.POST.name()));
-        whitelist.add(new RegexRequestMatcher(".*colab2.mit.edu.org.*", HttpMethod.POST.name()));
-        return whitelist;
     }
 }

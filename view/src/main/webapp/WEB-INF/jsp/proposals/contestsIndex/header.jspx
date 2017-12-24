@@ -128,7 +128,7 @@
                     <collab:message var="messageFilterText" code="contests.filter" contestType="${contestType}" />
                     <input type="text" class="form-control" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="${messageFilterText}" name="filter" />
                     <c:if test="${not empty sortFilterPage.filter }">
-                        <a href="javascript:;" id="contestsFilterClear">&#160;</a>
+                        <a href="javascript:;" id="contestsFilterClear">&#215;</a>
                     </c:if>
                 </form>
             </div>
