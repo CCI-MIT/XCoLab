@@ -2,6 +2,12 @@ var gulp = require('gulp');
 
 var sass = require("gulp-sass");
 var eyeglass = require("eyeglass");
+var sassOptions = {
+    // put node-sass options you need here.
+    eyeglass: {
+        // put eyeglass options you need here.
+    }
+};
 
 gulp.task('default', ['sass']);
 
