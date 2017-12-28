@@ -5,9 +5,9 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.time.DateUtil;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Badge implements Serializable {
@@ -36,10 +36,7 @@ public class Badge implements Serializable {
         Date referenceDate =
                 lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate()
                         : lastPhase.getPhaseEndDate();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(referenceDate);
-
-        year = cal.get(Calendar.YEAR);
+        year = DateUtil.getYearFromDate(referenceDate) ;
     }
 
     public String getBadgeTitle() {
