@@ -1,18 +1,42 @@
 var gulp = require('gulp');
 
+var npmDist = require('gulp-npm-dist');
+var postcss      = require('gulp-postcss');
+var sourcemaps   = require('gulp-sourcemaps');
+var autoprefixer = require('autoprefixer');
+var mqpacker = require('css-mqpacker');
+var cssnano = require('cssnano');
+
 var sass = require("gulp-sass");
 var eyeglass = require("eyeglass");
+
 var sassOptions = {
-    // put node-sass options you need here.
+    // node-sass options
+    precision: 8,
     eyeglass: {
-        // put eyeglass options you need here.
+        // eyeglass options
     }
 };
 
-gulp.task('default', ['sass']);
+var RESOURCES_PATH = "./src/main/resources";
+
+gulp.task('default', ['sass', 'copy-libs']);
 
 gulp.task("sass", function () {
-    gulp.src("./src/main/resources/static/sass/**/*.scss")
+    gulp.src(RESOURCES_PATH + "/static/sass/**/*.scss")
+            .pipe(sourcemaps.init())
             .pipe(sass(eyeglass(sassOptions)).on("error", sass.logError))
-            .pipe(gulp.dest("./src/main/resources/dist/css"));
+            .pipe(postcss([
+                    autoprefixer(), // add vendor prefixes
+                    mqpacker(), // combine media queries
+                    cssnano() // minify CSS
+            ]))
+            .pipe(sourcemaps.write('.'))
+            .pipe(gulp.dest(RESOURCES_PATH + "/dist/css"));
+});
+
+gulp.task('copy-libs', function() {
+    gulp.src(npmDist({excludes: ['/**/eyeglass-exports.js', '/build/**/*']}),
+                {base:'./node_modules'})
+            .pipe(gulp.dest(RESOURCES_PATH + '/dist/vendor'));
 });

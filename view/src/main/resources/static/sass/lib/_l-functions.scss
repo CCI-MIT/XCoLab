@@ -40,5 +40,5 @@ $blue-magic-number: 0.068;
 }
 
 @function simple-gradient($base-color) {
-  @return linear-gradient(top, lighten($base-color, 5%), darken($base-color, 5%));
+  @return linear-gradient(to bottom, lighten($base-color, 5%), darken($base-color, 5%));
 }

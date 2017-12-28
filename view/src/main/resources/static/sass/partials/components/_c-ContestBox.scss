@@ -1,4 +1,4 @@
-@import "../base/b-mixins";
+@import "../../lib/l-mixins";
 
 $c-ContestBox__meta__flag__capitalization: $b-Typography__capitalization--none !default;
 $c-ContestBox__meta__flag__boxShadow: 2px 2px 1px $t-Color__grey--dark !default;

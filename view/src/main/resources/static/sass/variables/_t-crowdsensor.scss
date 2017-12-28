@@ -1,4 +1,4 @@
-@import "../partials/base/b-functions";
+@import "../lib/l-functions";
 
 $t-Color__black: #060606;
 $t-Color__grey--dark: #354046;
@@ -95,7 +95,7 @@ $c-Headline__h2__span__fontWeight: $b-Typography__fontWeight--regular;
 
 $c-Footer__backgroundColor: white;
 $c-Footer__menu__li__a--hover__color: $t-Color__primary;
-$c-Footer__menu__backgroundColor: linear-gradient(top, lighten($t-Color__grey--medium, 5%), darken($t-Color__grey--medium, 5%));
+$c-Footer__menu__backgroundColor: linear-gradient(to bottom, lighten($t-Color__grey--medium, 5%), darken($t-Color__grey--medium, 5%));
 $c-Footer__menu__boxShadow: inset 0px 5px 12px lighten($t-Color__grey--dark, 10%);
 
 $c-Button__padding: 10px 15px;
