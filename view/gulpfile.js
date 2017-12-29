@@ -36,6 +36,13 @@ var CONFIG = {
 gulp.task('default', ['copy-libs', 'sass']);
 gulp.task('build', ['copy-libs', 'sass-minified']);
 
+gulp.task('watch', function() {
+    var watcher = gulp.watch(CONFIG.sass.sourcePath, ['sass']);
+    watcher.on('change', function(event) {
+        console.log('File ' + event.path + ' was ' + event.type + ', running sass compilation...');
+    });
+});
+
 
 //=  Internal tasks
 gulp.task('copy-libs', function() {
