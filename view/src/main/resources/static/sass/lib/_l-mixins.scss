@@ -1,0 +1,12 @@
+@import "l-functions";
+
+@mixin background-gradient($base-color, $image-url: null, $image-padding: 0) {
+  background-color: $base-color;
+  @if $image-url == null {
+    background: simple-gradient($base-color);
+  } @else {
+    background: $image-url no-repeat, simple-gradient($base-color);
+    background-size: contain;
+    padding-left: $image-padding;
+  }
+}

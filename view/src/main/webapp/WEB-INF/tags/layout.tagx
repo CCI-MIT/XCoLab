@@ -137,11 +137,7 @@
 
     <!-- ============ Stylesheets ============ -->
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
-
-
 
     <xcolab:stylesheet href="${_themeCssFolder}/main.css" />
 
@@ -344,8 +340,7 @@
     <xcolab-scripts:loadMoment locale="${_locale}"/>
 
     <!-- Bootstrap -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"
-            integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"><!-- --></script>
+    <xcolab:script src="/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js" />
 
     <!-- Cookies -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js"
