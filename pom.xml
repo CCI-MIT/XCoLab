@@ -384,6 +384,11 @@
                     <artifactId>sass-maven-plugin</artifactId>
                     <version>${sass-maven-plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>1.6</version>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 
