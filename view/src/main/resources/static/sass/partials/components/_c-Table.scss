@@ -4,8 +4,8 @@ $c-Table__title__backgroundColor: $t-Color__primary__grey--light !default;
 $c-Table__title__fontColor: $t-Color__primary !default;
 $c-Table__title__textColor--hover: $t-Color__grey--dark !default;
 
-$c-Table__row__fontWeight: $b-Typography__fontWeight--bold !default;
-$c-Table__cell__fontWeight--active: $b-Typography__fontWeight--bold !default;
+$c-Table__row__fontWeight: $t-Typography__fontWeight--bold !default;
+$c-Table__cell__fontWeight--active: $t-Typography__fontWeight--bold !default;
 $c-Table__cell--title__borderRight: none !default;
 $c-Table__cell--odd__background: url(/images/pattern-tbl-6x6.png) !default;
 $c-Table__row--title__borderTop: none !default;

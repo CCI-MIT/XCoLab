@@ -1,9 +1,11 @@
+@import "../../variables/t-base";
+
 $c-Header__background: url(/images/bg-noise.png), $t-Color__grey--lightest !default;
 $c-Header__background--hover: url(/images/bg-noise.png) !default;
 $c-Header__menu__li__a__textColor: $t-Color__primary !default;
-$c-Header__menu__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
+$c-Header__menu__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
 
-$c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
+$c-Header__menu__right__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
 
 $bs-navbar__hasBoxShadow: false !default;
 $bs-navbar-navitem--active__hasBoxShadow: false !default;

@@ -6,7 +6,7 @@ $c-TitleBar__contestSummary__backgroundColor--light: $t-Color__grey--light !defa
 $c-TitleBar__textColor: $t-Color__grey--darkest !default;
 $c-TitleBar__element--active__capitalization: none !default;
 $c-TitleBar__element--disabled__textColor: $t-Color__grey--medium !default;
-$c-TitleBar__element__fontWeight: $b-Typography__fontWeight !default;
+$c-TitleBar__element__fontWeight: $t-Typography__fontWeight !default;
 $c-TitleBar__a__textColor: $t-Color__primary !default;
 $c-TitleBar__a__textColor--hover: black !default;
 $c-TitleBar__a__fontWeight: 700 !default;
@@ -114,7 +114,7 @@ $_c-TitleBar__borderWidth: 6px;
   }
 
   &.active {
-    font-weight: $b-Typography__fontWeight--bold;
+    font-weight: $t-Typography__fontWeight--bold;
     text-transform: $c-TitleBar__element--active__capitalization;
   }
 }

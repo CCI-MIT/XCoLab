@@ -8,7 +8,7 @@ $p-ContestProposals__list__element--contributor__width: 106px !default;
 $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !default;
 $p-ContestProposals__header__paddingTop: 0 !default;
 $p-ContestProposals__header__paddingBottom: 20px !default;
-$p-ContestProposals__header__title__fontWeight: $b-Typography__fontWeight !default;
+$p-ContestProposals__header__title__fontWeight: $t-Typography__fontWeight !default;
 $p-ContestProposals__header__description__padding: 20px !default;
 $p-ContestProposals__header__isTwoColumns: false !default;
 $p-ContestProposals__header__leftColumn__width: 630px !default;
@@ -23,7 +23,7 @@ $p-ContestProposals__header__team__display: inline-block !default;
 $p-ContestProposals__header__team__member__display: inline-block !default;
 $p-ContestProposals__header__team__roleName__paddingTop: 15px !default;
 
-$p-ContestProposals__header__detailButton__fontWeight: $b-Typography__fontWeight--bold !default;
+$p-ContestProposals__header__detailButton__fontWeight: $t-Typography__fontWeight--bold !default;
 $p-ContestProposals__header__detailButton__borderRadius: 5px !default;
 $p-ContestProposals__header__detailButton__padding: 0 !default;
 $p-ContestProposals__header__detailButton__backgroundColor: $t-Color__primary__grey--light !default;
@@ -192,7 +192,7 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
 %p-ContestProposals__header__ontology__term__title {
   display: inline-block;
   font-size: 16px;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   height: 24px;
   padding-top: 1px;
   padding-right: 10px;

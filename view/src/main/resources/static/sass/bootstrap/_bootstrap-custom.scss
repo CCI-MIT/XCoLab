@@ -50,3 +50,11 @@
 // Utility classes
 @import "bootstrap-sass/bootstrap/utilities";
 @import "bootstrap-sass/bootstrap/responsive-utilities";
+
+// Custom components
+@import "custom/base";
+@import "custom/modal";
+@import "custom/form";
+@import "custom/navbar";
+@import "custom/dropdown";
+@import "custom/tables";
