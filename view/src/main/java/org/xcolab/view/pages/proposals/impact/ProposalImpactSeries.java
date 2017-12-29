@@ -16,7 +16,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
+import org.xcolab.client.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
@@ -47,8 +47,8 @@ public class ProposalImpactSeries {
     private final OntologyTerm whereTerm;
     private final FocusArea focusArea;
     private final Proposal proposal;
-    private final Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
-    private final Map<String, Boolean> seriesTypeToEditableMap;
+    private final Map<ImpactSeriesType, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
+    private final Map<ImpactSeriesType, Boolean> seriesTypeToEditableMap;
     private final ImpactDefaultSeries bauSeries;
     private Proposal proposalWrapper;
     private ProposalVersion lastModifiedVersion;
@@ -71,7 +71,7 @@ public class ProposalImpactSeries {
         this.impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
         // Retrieve static serieses
         bauSeries = OntologyClientUtil
-                .getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), SERIES_TYPE_BAU_KEY);
+                .getImpactDefaultSeriesByFocusAreaAndSeriesName(focusArea.getId_(), SERIES_TYPE_BAU_KEY);
         addSeriesWithType(bauSeries, false, false);
 
         //        ddppSeries = ImpactDefaultSeriesLocalServiceUtil
@@ -94,10 +94,11 @@ public class ProposalImpactSeries {
                 }
             }
         }
-        addSeriesWithType(defaultSeries.getName(), seriesDataList, editable);
+        final ImpactSeriesType seriesType = ImpactSeriesType.valueOf(defaultSeries.getName());
+        addSeriesWithType(seriesType, seriesDataList, editable);
     }
 
-    private void addSeriesWithType(String seriesType, List<ImpactDefaultSeriesData> seriesDataList,
+    private void addSeriesWithType(ImpactSeriesType seriesType, List<ImpactDefaultSeriesData> seriesDataList,
             boolean editable) {
         ProposalImpactSeriesValues seriesValues = new ProposalImpactSeriesValues();
         seriesTypeToSeriesMap.put(seriesType, seriesValues);
@@ -122,18 +123,22 @@ public class ProposalImpactSeries {
             if (defaultSeries.getEditable()) {
 
                 boolean foundEnteredData = false;
-                final ProposalAttribute attribute = proposalAttributeHelper
-                        .getAttributeOrNull(defaultSeries.getName(), focusArea.getId_());
-                if (attribute != null) {
-                    foundEnteredData = true;
-                    addSeriesValueWithType(attribute.getName(),
-                            attribute.getNumericValue().intValue(),
-                            attribute.getRealValue());
+                final ImpactSeriesType seriesType =
+                        ImpactSeriesType.valueOf(defaultSeries.getName());
+                for (ImpactIteration iteration : impactIterations) {
+                    String attributeName = defaultSeries.getName() + "_" + iteration.getYear();
+                    final ProposalAttribute attribute = proposalAttributeHelper
+                            .getAttributeOrNull(attributeName, focusArea.getId_());
+                    if (attribute != null) {
+                        foundEnteredData = true;
+                        addSeriesValueWithType(seriesType, iteration.getYear(),
+                                attribute.getRealValue());
 
-                    // Set author and modification date
-                    this.lastModifiedVersion = ProposalClientUtil
-                            .getProposalVersionByProposalIdVersion(proposal.getProposalId(),
-                                    attribute.getVersion());
+                        // Set author and modification date
+                        this.lastModifiedVersion = ProposalClientUtil
+                                .getProposalVersionByProposalIdVersion(proposal.getProposalId(),
+                                attribute.getVersion());
+                    }
                 }
 
                 // Use default data if not entered
@@ -141,13 +146,13 @@ public class ProposalImpactSeries {
                     List<ImpactDefaultSeriesData> defaultSeriesDataList =
                             OntologyClientUtil.getImpactDefaultSeriesDataBySeries(
                                     defaultSeries.getSeriesId());
-                    addSeriesWithType(defaultSeries.getName(), defaultSeriesDataList, true);
+                    addSeriesWithType(seriesType, defaultSeriesDataList, true);
                 }
             }
         }
     }
 
-    public void addSeriesValueWithType(String seriesType, int year, double value) {
+    public void addSeriesValueWithType(ImpactSeriesType seriesType, int year, double value) {
         ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
         if (seriesValues == null) {
             seriesValues = new ProposalImpactSeriesValues();
@@ -168,24 +173,25 @@ public class ProposalImpactSeries {
                 continue;
             }
 
-            seriesTypeToEditableMap.put(defaultSeries.getName(), true);
+            final ImpactSeriesType seriesType = ImpactSeriesType.valueOf(defaultSeries.getName());
+            seriesTypeToEditableMap.put(seriesType, true);
             JSONObject seriesValues = json.getJSONObject(defaultSeries.getName());
             for (ImpactIteration iteration : impactIterations) {
                 if (Double.isNaN(seriesValues.getDouble(iteration.getYear() + ""))) {
                     throw new RuntimeException(
                             "Could not parse value for year " + iteration.getYear());
                 }
-                addSeriesValueWithType(defaultSeries.getName(), iteration.getYear(),
+                addSeriesValueWithType(seriesType, iteration.getYear(),
                         seriesValues.getDouble(iteration.getYear() + ""));
             }
         }
     }
 
-    public Map<String, ProposalImpactSeriesValues> getSeriesTypeToSeriesMap() {
+    public Map<ImpactSeriesType, ProposalImpactSeriesValues> getSeriesTypeToSeriesMap() {
         return seriesTypeToSeriesMap;
     }
 
-    public ProposalImpactSeriesValues getSeriesValuesForType(String seriesType) {
+    public ProposalImpactSeriesValues getSeriesValuesForType(ImpactSeriesType seriesType) {
         return seriesTypeToSeriesMap.get(seriesType);
     }
 
@@ -211,10 +217,10 @@ public class ProposalImpactSeries {
                                     currentYear).getValue();
 
             double reductionRate =
-                    seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_REDUCTION)
+                    seriesTypeToSeriesMap.get(ImpactSeriesType.IMPACT_REDUCTION)
                             .getValueForYear(currentYear);
             double adoptionRate =
-                    seriesTypeToSeriesMap.get(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE)
+                    seriesTypeToSeriesMap.get(ImpactSeriesType.IMPACT_ADOPTION_RATE)
                             .getValueForYear(currentYear);
 
             // Round to 2 decimal digits
@@ -225,15 +231,15 @@ public class ProposalImpactSeries {
         }
     }
 
-    public boolean getIsEditableForSeriesType(String seriesType) {
+    public boolean getIsEditableForSeriesType(ImpactSeriesType seriesType) {
         return seriesTypeToEditableMap.get(seriesType);
     }
 
     public void persistWithAuthor(Member author) {
         // Persist all editable attributes
         Integer version = null;
-        for (Map.Entry<String, Boolean> entry : seriesTypeToEditableMap.entrySet()) {
-            final String seriesType = entry.getKey();
+        for (Map.Entry<ImpactSeriesType, Boolean> entry : seriesTypeToEditableMap.entrySet()) {
+            final ImpactSeriesType seriesType = entry.getKey();
             final Boolean isEditable = entry.getValue();
             if (isEditable) {
                 ProposalImpactSeriesValues seriesValues =
@@ -241,11 +247,11 @@ public class ProposalImpactSeries {
                 for (ImpactIteration iteration : impactIterations) {
                     double filteredValue = ProposalImpactValueFilterAlgorithm
                             .filterValueForImpactSeriesType(
-                                    seriesValues.getValueForYear(iteration.getYear()), seriesType);
+                                    seriesValues.getValueForYear(iteration.getYear()), seriesType.name());
                     version = ProposalAttributeClientUtil
                             .setProposalAttribute(author.getUserId(), proposal.getProposalId(),
-                                    seriesType,
-                                    focusArea.getId_(), "", new Long(iteration.getYear()),
+                                    seriesType.getAttributeName(iteration.getYear()),
+                                    focusArea.getId_(), "", null,
                                     filteredValue, version).getVersion();
                 }
 
@@ -295,13 +301,13 @@ public class ProposalImpactSeries {
         }
 
         returnObject.put("serieses", serieses);
-        for (Map.Entry<String, ProposalImpactSeriesValues> entry : seriesTypeToSeriesMap
+        for (Map.Entry<ImpactSeriesType, ProposalImpactSeriesValues> entry : seriesTypeToSeriesMap
                 .entrySet()) {
-            String seriesType = entry.getKey();
+            ImpactSeriesType seriesType = entry.getKey();
             final ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
 
             ImpactDefaultSeries defaultSeries = OntologyClientUtil
-                    .getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), seriesType);
+                    .getImpactDefaultSeriesByFocusAreaAndSeriesName(focusArea.getId_(), seriesType.name());
 
             JSONObject series = new JSONObject();
             series.put("name", defaultSeries.getName());

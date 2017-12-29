@@ -1,13 +1,15 @@
 package org.xcolab.view.pages.proposals.impact;
 
+import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
+import org.xcolab.client.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
@@ -81,7 +83,7 @@ public class ProposalImpactSeriesList {
 
         this.impactSerieses = new ArrayList<>();
 
-        List<FocusArea> proposalFocusAreas = getImpactProposalFocusAreas(proposal);
+        List<FocusArea> proposalFocusAreas = getImpactProposalFocusAreas(contest, proposal);
 
         for (FocusArea focusArea : proposalFocusAreas) {
             // Get the impact series for the respective focus area
@@ -100,14 +102,17 @@ public class ProposalImpactSeriesList {
         });
     }
 
-    public List<FocusArea> getImpactProposalFocusAreas(Proposal proposal) {
+    public List<FocusArea> getImpactProposalFocusAreas(Contest contest, Proposal proposal) {
         final ProposalAttributeHelper attributeHelper = proposal.getProposalAttributeHelper();
-
+        final List<ImpactIteration> iterations =
+                ImpactClientUtil.getContestImpactIterations(contest);
         final ArrayList<ProposalAttribute> attributes = new ArrayList<>();
-        attributes.addAll(attributeHelper.getAttributes(
-                ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE));
-        attributes.addAll(attributeHelper.getAttributes(
-                ProposalImpactAttributeKeys.IMPACT_REDUCTION));
+        for (ImpactIteration iteration : iterations) {
+            attributes.addAll(attributeHelper.getAttributes(
+                    ImpactSeriesType.IMPACT_ADOPTION_RATE.getAttributeName(iteration.getYear())));
+            attributes.addAll(attributeHelper.getAttributes(
+                    ImpactSeriesType.IMPACT_REDUCTION.getAttributeName(iteration.getYear())));
+        }
 
         Set<Long> focusAreaIdSet = new HashSet<>();
         List<FocusArea> impactSeriesFocusAreas = new ArrayList<>();
@@ -180,7 +185,7 @@ public class ProposalImpactSeriesList {
                 ProposalImpactSeriesValues integratedSeriesValues =
                         seriesTypeToSeriesSumMap.get(seriesType);
                 ProposalImpactSeriesValues impactSeriesValues =
-                        impactSeries.getSeriesValuesForType(seriesType);
+                        impactSeries.getSeriesValuesForType(ImpactSeriesType.valueOf(seriesType));
 
                 // Add up all the impact series values
                 integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
@@ -224,7 +229,7 @@ public class ProposalImpactSeriesList {
                     ProposalImpactSeriesValues integratedSeriesValues =
                             seriesTypeToSeriesSumMap.get(seriesType);
                     ProposalImpactSeriesValues impactSeriesValues =
-                            impactSeries.getSeriesValuesForType(seriesType);
+                            impactSeries.getSeriesValuesForType(ImpactSeriesType.valueOf(seriesType));
 
                     // Add up all the impact series values
                     integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
@@ -282,7 +287,7 @@ public class ProposalImpactSeriesList {
 
                 for (String seriesType : seriesTypes) {
                     integratedSeriesValues = seriesTypeToSeriesSumMap.get(seriesType);
-                    impactSeriesValues = impactSeries.getSeriesValuesForType(seriesType);
+                    impactSeriesValues = impactSeries.getSeriesValuesForType(ImpactSeriesType.valueOf(seriesType));
                     integratedSeriesValues.addImpactSeriesValues(impactSeriesValues);
                 }
 
