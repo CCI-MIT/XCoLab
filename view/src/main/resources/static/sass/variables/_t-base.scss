@@ -29,6 +29,7 @@ $t-Color__grey--dark: #575757 !default;
 $t-Color__grey--darkest: #404040 !default;
 
 //alert and message colors:
+$t-Color__success: $t-Color__secondary;
 $t-Color__alert: #b94a48 !default;
 $t-Color__alert--light: #f2dede !default;
 $t-Color__info__background: $t-Color__primary__grey--light !default;
@@ -47,3 +48,12 @@ $t-Color__outline__level4: #aaa69f !default; // background slevel4-6
 
 $t-Typography__fontWeight: 400 !default;
 $t-Typography__fontWeight--bold: 700 !default;
+
+$b-Typography__fontFamily: "proxima-nova", Arial, Helvetica, sans-serif !default;
+
+$b-Typography__textColor__a: $t-Color__primary !default;
+$b-Typography__textColor__a--isHover: black !default;
+
+$b-Typography__textDecoration__a--hover: none !default;
+
+$t-BorderRadius: 5px;

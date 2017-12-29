@@ -5,7 +5,6 @@
 
 
 //Variables
-$b-Typography__fontFamily: "proxima-nova", Arial, Helvetica, sans-serif !default;
 
 $b-Typography__capitalization--none: none !default;
 $b-Typography__capitalization--capitalize: uppercase !default;
@@ -29,17 +28,12 @@ $t-Typography__fontWeight__h6: $t-Typography__fontWeight !default;
 
 $b-Typography__textColor: initial !default;
 $b-Typography__textColor__h1: $t-Color__grey--darkest !default;
-$b-Typography__textColor__a: $t-Color__primary !default;
-$b-Typography__textColor__a--isHover: black !default;
 
-$b-Typography__textDecoration__a: none !default;
-$b-Typography__textDecoration__a--hover: none !default;
 
 $b-Typography__margin__p: 0 0 20px 0 !default;
 
 
 body, .homespot-left h1, .proposal-head h1 {
-  font-family: $b-Typography__fontFamily;
   font-weight: $t-Typography__fontWeight;
   color: $b-Typography__textColor;
 }
@@ -84,14 +78,4 @@ h6 {
 
 p {
   margin: $b-Typography__margin__p;
-}
-
-a {
-  color: $b-Typography__textColor__a;
-  text-decoration: $b-Typography__textDecoration__a;
-}
-
-a:hover, a:focus {
-  color: $b-Typography__textColor__a--isHover;
-  text-decoration: $b-Typography__textDecoration__a--hover;
 }
