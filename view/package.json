@@ -17,8 +17,7 @@
     "Safari >= 6"
   ],
   "dependencies": {
-    "bootstrap-sass": "https://github.com/jobachhu/bootstrap-sass",
-    "eyeglass-math": "^1.0.1"
+    "bootstrap-sass": "https://github.com/jobachhu/bootstrap-sass"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.3",
