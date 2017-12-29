@@ -3,7 +3,7 @@
 # stop script if any build fails
 set -e
 
-echo "Running Climate CoLab Development Environment Installer"
+echo "[INFO] Checking your environment..."
 
 # Check Java Version and check if Java is in Path
 if type -p java; then
@@ -49,5 +49,17 @@ if [[ "$_mysql" ]]; then
     fi
 fi
 
+echo "[INFO] Environment check complete"
+
+echo "[INFO] Compiling..."
+
 # Build binaries
-mvn package -T 1C
+./mvnw package -T 1C
+
+cd scripts/run
+echo "[INFO] Copying binaries..."
+./copyBinaries.sh
+
+echo "[INFO] Starting xCoLab..."
+./startAll.sh
+cd ../..
