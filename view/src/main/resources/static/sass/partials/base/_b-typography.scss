@@ -5,17 +5,10 @@
 
 
 //Variables
-
-$b-Typography__lineHeight: normal !default;
-$b-Typography__lineHeight__h1: 1em !default;
-
 $b-Typography__fontFamily: "proxima-nova", Arial, Helvetica, sans-serif !default;
-
-$t-Typography__fontWeight__h1: 400 !default;
 
 $b-Typography__capitalization--none: none !default;
 $b-Typography__capitalization--capitalize: uppercase !default;
-$b-Typography__capitalization--lowercase: lowercase !default;
 
 $b-Typography__fontSize__h1: 32px !default;
 $b-Typography__fontSize__h2: 27px !default;
@@ -35,7 +28,6 @@ $t-Typography__fontWeight__h5: $t-Typography__fontWeight !default;
 $t-Typography__fontWeight__h6: $t-Typography__fontWeight !default;
 
 $b-Typography__textColor: initial !default;
-$b-Typography__textColor--muted: $t-Color__grey--medium !default;
 $b-Typography__textColor__h1: $t-Color__grey--darkest !default;
 $b-Typography__textColor__a: $t-Color__primary !default;
 $b-Typography__textColor__a--isHover: black !default;
@@ -46,10 +38,7 @@ $b-Typography__textDecoration__a--hover: none !default;
 $b-Typography__margin__p: 0 0 20px 0 !default;
 
 
-//CSS rules
-
 body, .homespot-left h1, .proposal-head h1 {
-  line-height: $b-Typography__lineHeight;
   font-family: $b-Typography__fontFamily;
   font-weight: $t-Typography__fontWeight;
   color: $b-Typography__textColor;
@@ -63,7 +52,7 @@ h1 {
   font-weight: $t-Typography__fontWeight__h1;
   font-size: $b-Typography__fontSize__h1;
   color: $b-Typography__textColor__h1;
-  line-height: $b-Typography__lineHeight__h1;
+  line-height: 1em;
   text-transform: $b-Typography__capitalization__h1;
 }
 
@@ -97,10 +86,6 @@ p {
   margin: $b-Typography__margin__p;
 }
 
-b, strong {
-  font-weight: $t-Typography__fontWeight--bold;
-}
-
 a {
   color: $b-Typography__textColor__a;
   text-decoration: $b-Typography__textDecoration__a;
@@ -109,12 +94,4 @@ a {
 a:hover, a:focus {
   color: $b-Typography__textColor__a--isHover;
   text-decoration: $b-Typography__textDecoration__a--hover;
-}
-
-.lowercase {
-  text-transform: $b-Typography__capitalization--lowercase;
-}
-
-.text-muted {
-  color: $b-Typography__textColor--muted;
 }
