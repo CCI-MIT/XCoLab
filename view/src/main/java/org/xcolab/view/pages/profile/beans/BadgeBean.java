@@ -16,13 +16,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
 public class BadgeBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<Badge> badges;
+    private final List<Badge> badges;
 
     public BadgeBean(long userId) {
         badges = getBadges(userId);
@@ -32,7 +31,7 @@ public class BadgeBean implements Serializable {
         final List<Badge> badges = new ArrayList<>();
         for (Proposal proposal : ProposalClientUtil.getMemberProposals(userId)) {
             final Optional<ProposalContestPhaseAttribute> ribbonAttributeOpt =
-                    getRibbonAttribute(proposal);
+                    getLatestRibbonAttribute(proposal);
             if (ribbonAttributeOpt.isPresent()) {
                 final ProposalContestPhaseAttribute ribbonAttribute = ribbonAttributeOpt.get();
                 final ContestPhaseRibbonType ribbonType = ContestClientUtil
@@ -49,24 +48,17 @@ public class BadgeBean implements Serializable {
         return badges;
     }
 
-    private Optional<ProposalContestPhaseAttribute> getRibbonAttribute(Proposal proposal) {
+    private Optional<ProposalContestPhaseAttribute> getLatestRibbonAttribute(Proposal proposal) {
         List<Long> phasesForProposal = ProposalPhaseClientUtil.getContestPhasesForProposal(
                 proposal.getProposalId());
         return phasesForProposal.stream()
-                .map(getRibbonAttributeFunction(proposal.getProposalId()))
+                .map(phaseId -> getRibbonAttribute(proposal.getProposalId(), phaseId))
                 .filter(Objects::nonNull)
-                .max(getStartDateComparator());
+                .max(Comparator.comparing(ProposalContestPhaseAttribute::getStartDate));
     }
 
-    private Comparator<ProposalContestPhaseAttribute> getStartDateComparator() {
-        return Comparator.comparing(attribute -> ContestClientUtil
-                .getContestPhase(attribute.getContestPhaseId()).getPhaseStartDateDt());
-    }
-
-    private Function<Long, ProposalContestPhaseAttribute> getRibbonAttributeFunction(
-            Long proposalId) {
-        return phaseId -> ProposalPhaseClientUtil
-                .getProposalContestPhaseAttribute(proposalId, phaseId,
+    private ProposalContestPhaseAttribute getRibbonAttribute(long proposalId, long phaseId) {
+        return ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposalId, phaseId,
                         ProposalContestPhaseAttributeKeys.RIBBON);
     }
 
