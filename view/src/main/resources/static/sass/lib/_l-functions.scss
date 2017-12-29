@@ -1,3 +1,4 @@
+// Square root using newton's method from http://www.antimath.info/css/sass-sqrt-function/
 @function sqrt($r) {
   $x0: 1;
   $x1: $x0;
@@ -41,17 +42,14 @@ $blue-magic-number: 0.068;
   }
 }
 
-@function simple-gradient($base-color) {
-  @return linear-gradient(top, lighten($base-color, 5%), darken($base-color, 5%));
+@function hover-color($color, $hover-color: null) {
+  @if $hover-color == null {
+    @return darken($color, 10%);
+  } @else {
+    @return $hover-color;
+  }
 }
 
-@mixin background-gradient($base-color, $image-url: null, $image-padding: 0) {
-  background-color: $base-color;
-  @if $image-url == null {
-    @include background(simple-gradient($base-color));
-  } @else {
-    @include background($image-url no-repeat, simple-gradient($base-color));
-    @include background-size(contain);
-    padding-left: $image-padding;
-  }
+@function simple-gradient($base-color) {
+  @return linear-gradient(to bottom, lighten($base-color, 5%), darken($base-color, 5%));
 }

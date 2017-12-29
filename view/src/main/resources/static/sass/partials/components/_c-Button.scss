@@ -1,3 +1,6 @@
+@import "../../lib/l-functions";
+@import "../../lib/l-mixins";
+
 $c-Button__padding: 8px !default;
 $c-Button__padding--large: 8px !default;
 $c-Button__padding--small: 6px !default;
@@ -46,27 +49,15 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   }
 }
 
-@function hover-color($color, $hover-color: null) {
-  @if $hover-color == null {
-    @return darken($color, 10%);
-  } @else {
-    @return $hover-color;
-  }
-}
-
 @mixin theme-button($button-color, $border-color: null, $image-url: null, $hover-color: null) {
   @extend %c-Button__base;
   font-size: 16px;
 
+  @include background-gradient($button-color, $image-url, 40px);
+
   @if $border-color == none {
-    @if $image-url == none or $image-url == null {
-      @include background($button-color);
-    } @else {
-      @include background($button-color, $image-url, 40px);
-    }
     border: none;
   } @else {
-    @include background-gradient($button-color, $image-url, 40px);
     border: 1px solid $border-color;
   }
 
@@ -77,15 +68,7 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   &:hover {
     color: contrasting-color(darken($button-color, 10%), white, $t-Color__grey--darkest, $t-Text__threshold);
     text-decoration: none;
-    @if $border-color == none {
-      @if $image-url == none or $image-url == null {
-        @include background(hover-color($button-color, $hover-color));
-      } @else {
-        @include background(hover-color($button-color), $image-url, 40px);
-      }
-    } @else {
-      @include background-gradient(hover-color($button-color), $image-url, 40px);
-    }
+    @include background-gradient(hover-color($button-color), $image-url, 40px);
   }
 }
 
