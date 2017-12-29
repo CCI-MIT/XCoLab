@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var noop = require('gulp-noop');
 
 var npmDist = require('gulp-npm-dist');
 var postcss      = require('gulp-postcss');
@@ -33,6 +34,7 @@ var CONFIG = {
 
 //= Entry point
 gulp.task('default', ['copy-libs', 'sass']);
+gulp.task('build', ['copy-libs', 'sass-minified']);
 
 
 //=  Internal tasks
@@ -42,14 +44,22 @@ gulp.task('copy-libs', function() {
 });
 
 gulp.task("sass", function () {
+    compileSass(false);
+});
+
+gulp.task("sass-minified", function () {
+    compileSass(true);
+});
+
+function compileSass(shouldPostProcess) {
     gulp.src(CONFIG.sass.sourcePath)
             .pipe(sourcemaps.init())
             .pipe(sass(eyeglass(CONFIG.sass.options)).on("error", sass.logError))
-            .pipe(postcss([
+            .pipe(shouldPostProcess ? postcss([
                 autoprefixer(), // add vendor prefixes
                 mqpacker(), // combine media queries
                 cssnano() // minify CSS
-            ]))
+            ]) : noop())
             .pipe(sourcemaps.write('.'))
             .pipe(gulp.dest(CONFIG.sass.destPath));
-});
+}
