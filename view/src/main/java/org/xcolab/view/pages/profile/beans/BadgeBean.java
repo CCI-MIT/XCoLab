@@ -1,17 +1,10 @@
 package org.xcolab.view.pages.profile.beans;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -19,64 +12,54 @@ import org.xcolab.view.pages.profile.entity.Badge;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class BadgeBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private final static Logger _log = LoggerFactory.getLogger(BadgeBean.class);
-    private final long userId;
+
     private final List<Badge> badges;
 
     public BadgeBean(long userId) {
-        this.userId = userId;
-        badges = new ArrayList<>();
-        fetchBadges();
+        badges = getBadges(userId);
     }
 
-    private void fetchBadges() {
-        for(Proposal p : ProposalClientUtil.getMemberProposals(userId)) {
-            try {
-                final ContestPhaseRibbonType ribbonType = getRibbonType(p);
+    private List<Badge> getBadges(long userId) {
+        final List<Badge> badges = new ArrayList<>();
+        for (Proposal proposal : ProposalClientUtil.getMemberProposals(userId)) {
+            final Optional<ProposalContestPhaseAttribute> ribbonAttributeOpt =
+                    getLatestRibbonAttribute(proposal);
+            if (ribbonAttributeOpt.isPresent()) {
+                final ProposalContestPhaseAttribute ribbonAttribute = ribbonAttributeOpt.get();
+                final ContestPhaseRibbonType ribbonType = ContestClientUtil
+                        .getContestPhaseRibbonType(ribbonAttribute.getNumericValue());
 
-                if (ribbonType != null  && ribbonType.getRibbon() > 0) {
-                    Contest contest = ProposalClientUtil.getCurrentContestForProposal(p.getProposalId());
-                    String proposalTitle = ProposalAttributeClientUtil
-                            .getProposalAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0L)
-                            .getStringValue();
-                    badges.add(new Badge(ribbonType, p, proposalTitle, contest));
-                }
-            } catch (ContestNotFoundException e) {
-                _log.warn("Could not add badge to user profile view for userId: {} and proposalId: {}",
-                        p.getProposalId(), e);
-            }
-        }
-    }
-
-    private ContestPhaseRibbonType getRibbonType(Proposal p) {
-        ContestPhaseRibbonType contestPhaseRibbonType = null;
-        List<Long> phasesForProposal = ProposalPhaseClientUtil.getContestPhasesForProposal(p.getProposalId());
-
-        Date phaseStartDate = p.getCreateDate();
-        for (Long phaseId : phasesForProposal) {
-            final ProposalContestPhaseAttribute ribbonAttribute =
-                    ProposalPhaseClientUtil.getProposalContestPhaseAttribute(p.getProposalId(),
-                            phaseId, ProposalContestPhaseAttributeKeys.RIBBON);
-            if (ribbonAttribute != null) {
-                long typeId = ribbonAttribute.getNumericValue();
-
-                ContestPhase contestPhase = ContestClientUtil.getContestPhase(phaseId);
-
-                //if there are several phases with ribbons, the latest takes precedence
-                if (!phaseStartDate.after(contestPhase.getPhaseStartDateDt())) {
-                    contestPhaseRibbonType = ContestClientUtil.getContestPhaseRibbonType(typeId);
-                    phaseStartDate = contestPhase.getPhaseStartDateDt();
+                if (ribbonType.getRibbon() > 0) {
+                    final ContestPhase phase = ContestClientUtil.getContestPhase(
+                            ribbonAttribute.getContestPhaseId());
+                    badges.add(new Badge(ribbonType, proposal, proposal.getName(),
+                            phase.getContest()));
                 }
             }
         }
+        return badges;
+    }
 
-        return contestPhaseRibbonType;
+    private Optional<ProposalContestPhaseAttribute> getLatestRibbonAttribute(Proposal proposal) {
+        List<Long> phasesForProposal = ProposalPhaseClientUtil.getContestPhasesForProposal(
+                proposal.getProposalId());
+        return phasesForProposal.stream()
+                .map(phaseId -> getRibbonAttribute(proposal.getProposalId(), phaseId))
+                .filter(Objects::nonNull)
+                .max(Comparator.comparing(ProposalContestPhaseAttribute::getStartDate));
+    }
+
+    private ProposalContestPhaseAttribute getRibbonAttribute(long proposalId, long phaseId) {
+        return ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposalId, phaseId,
+                        ProposalContestPhaseAttributeKeys.RIBBON);
     }
 
     public List<Badge> getBadges() {
