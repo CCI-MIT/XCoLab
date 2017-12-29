@@ -22,27 +22,31 @@ public class BadgeBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final List<Badge> badges = new ArrayList<>();
+    private List<Badge> badges;
 
     public BadgeBean(long userId) {
-        populateBadges(userId);
+        badges = getBadges(userId);
     }
 
-    private void populateBadges(long userId) {
+    private List<Badge> getBadges(long userId) {
+        final List<Badge> badges = new ArrayList<>();
         for (Proposal proposal : ProposalClientUtil.getMemberProposals(userId)) {
-            getRibbonAttribute(proposal)
-                    .ifPresent(ribbonAttribute -> {
-                        final ContestPhaseRibbonType ribbonType = ContestClientUtil
-                                .getContestPhaseRibbonType(ribbonAttribute.getNumericValue());
+            final Optional<ProposalContestPhaseAttribute> ribbonAttributeOpt =
+                    getRibbonAttribute(proposal);
+            if (ribbonAttributeOpt.isPresent()) {
+                final ProposalContestPhaseAttribute ribbonAttribute = ribbonAttributeOpt.get();
+                final ContestPhaseRibbonType ribbonType = ContestClientUtil
+                        .getContestPhaseRibbonType(ribbonAttribute.getNumericValue());
 
-                        if (ribbonType.getRibbon() > 0) {
-                            final ContestPhase phase = ContestClientUtil.getContestPhase(
-                                    ribbonAttribute.getContestPhaseId());
-                            badges.add(new Badge(ribbonType, proposal, proposal.getName(),
-                                    phase.getContest()));
-                        }
-                    });
+                if (ribbonType.getRibbon() > 0) {
+                    final ContestPhase phase = ContestClientUtil.getContestPhase(
+                            ribbonAttribute.getContestPhaseId());
+                    badges.add(new Badge(ribbonType, proposal, proposal.getName(),
+                            phase.getContest()));
+                }
+            }
         }
+        return badges;
     }
 
     private Optional<ProposalContestPhaseAttribute> getRibbonAttribute(Proposal proposal) {
