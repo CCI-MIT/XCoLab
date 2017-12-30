@@ -51,15 +51,5 @@ fi
 
 echo "[INFO] Environment check complete"
 
-echo "[INFO] Compiling..."
 
-# Build binaries
-./mvnw package -T 1C
 
-cd scripts/run
-echo "[INFO] Copying binaries..."
-./copyBinaries.sh
-
-echo "[INFO] Starting xCoLab..."
-./startAll.sh
-cd ../..
