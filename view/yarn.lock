@@ -1149,6 +1149,12 @@ graceful-fs@~1.2.0:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-1.2.3.tgz#15a4806a57547cb2d2dbf27f42e89a8c3451b364"
 
+gulp-noop@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/gulp-noop/-/gulp-noop-1.0.0.tgz#082b1142493512ce5c5ab2e1ec3e7bb48b575c79"
+  dependencies:
+    through2 "^2.0.1"
+
 gulp-npm-dist@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/gulp-npm-dist/-/gulp-npm-dist-0.1.6.tgz#f84a22c2d1556fc67872892a0107829998d60809"
@@ -3064,7 +3070,7 @@ tar@^2.0.0:
     fstream "^1.0.2"
     inherits "2"
 
-through2@2.X, through2@^2.0.0, through2@^2.0.3:
+through2@2.X, through2@^2.0.0, through2@^2.0.1, through2@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.3.tgz#0004569b37c7c74ba39c43f3ced78d1ad94140be"
   dependencies:
