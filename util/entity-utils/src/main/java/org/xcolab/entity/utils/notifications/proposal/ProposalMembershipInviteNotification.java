@@ -61,7 +61,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
 
             switch (tag.nodeName()) {
                 case MESSAGE_PLACEHOLDER:
-                    return new TextNode(message, "");
+                    return new TextNode(message);
                 default:
             }
             return null;
