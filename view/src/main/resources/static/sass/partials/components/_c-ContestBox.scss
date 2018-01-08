@@ -57,6 +57,9 @@ $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
 .c-ContestBox__image { //.contestbox .img-wrap {
   float: left;
   margin-right: 18px;
+  img {
+    display: block;
+  }
 }
 
 .c-ContestBox__text--compact {

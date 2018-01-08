@@ -15,7 +15,7 @@
             <div class="c-ContestBox backgroundLight">
                 <div class="c-ContestBox__image">
                     <a href="${contest.contestUrl}">
-                        <img src="${contest.logoPath}" width="151" height="151" alt="${contest.contestShortName}" />
+                        <img src="${contest.logoPath}" width="150" height="150" alt="${contest.contestShortName}" />
                     </a>
                 </div>
                 <div class="c-ContestBox__text">
