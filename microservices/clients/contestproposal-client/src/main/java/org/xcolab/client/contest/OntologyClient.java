@@ -284,11 +284,11 @@ public class OntologyClient {
     }
 
     public ImpactDefaultSeries getImpactDefaultSeriesByFocusAreaName(Long focusAreaId,
-            String name) {
+            String seriesName) {
         List<ImpactDefaultSeries> allImpactDefaultSeriesWithFocusAreaName = DtoUtil.toPojos(
                 impactDefaultSeriesResource.list()
                         .optionalQueryParam("focusAreaId", focusAreaId)
-                        .optionalQueryParam("name", name)
+                        .optionalQueryParam("name", seriesName)
                         .execute(),
                 serviceNamespace);
         if (allImpactDefaultSeriesWithFocusAreaName != null
