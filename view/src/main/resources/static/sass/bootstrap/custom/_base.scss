@@ -1,3 +1,5 @@
+@import "../../lib/l-mixins";
+
 //TODO: .inner is deprecated - remove from content articles then remove here
 .inner,
 .bs-container-fixed {
@@ -13,9 +15,8 @@
   background: #66b035;
 }
 
-// utility classes
-
-@media (max-width: 767px) {
+//= Utility classes
+@include phone-only {
   .pull-left-xs {
     float: left !important;
   }
@@ -25,7 +26,7 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
+@include tablet-only {
   .pull-left-sm {
     float: left !important;
   }
@@ -35,7 +36,7 @@
   }
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
+@include desktop-only {
   .pull-left-md {
     float: left !important;
   }
@@ -45,8 +46,7 @@
   }
 }
 
-
-@media (min-width: 1170px) {
+@include desktop-lg {
   .pull-left-lg {
     float: left !important;
   }

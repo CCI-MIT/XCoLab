@@ -13,7 +13,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
   line-height: 34px;
   margin-right: 55px;
   font-size: 12px;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   text-transform: uppercase;
 
   > div {
@@ -113,7 +113,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
       height: 34px;
       line-height: 34px;
       font-size: 12px;
-      font-weight: $b-Typography__fontWeight--bold;
+      font-weight: $t-Typography__fontWeight--bold;
       text-transform: uppercase;
 
       &.selected {
@@ -171,7 +171,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
   border-radius: 6px;
   margin-right: 16px;
   font-size: 12px;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   text-transform: uppercase;
 
   > div {
@@ -440,7 +440,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
 }
 
 .prop a, .comm a {
-   font-weight: $b-Typography__fontWeight--bold;
+   font-weight: $t-Typography__fontWeight--bold;
 }
 
 .nothingFound {

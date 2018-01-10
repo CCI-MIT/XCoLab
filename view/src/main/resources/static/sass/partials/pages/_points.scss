@@ -120,7 +120,7 @@ td.leftBranch.small .points-container, td.leftBranch.small .arrow-down {
 
   .highlighted {
     color: $t-Color__secondary;
-    font-weight: $b-Typography__fontWeight--bold;
+    font-weight: $t-Typography__fontWeight--bold;
     text-align: center;
   }
   span.highlighted {
@@ -136,7 +136,7 @@ td.leftBranch.small .points-container, td.leftBranch.small .arrow-down {
     cursor: pointer;
   }
   .error {
-    font-weight: $b-Typography__fontWeight--bold;
+    font-weight: $t-Typography__fontWeight--bold;
     color: $t-Color__alert;
   }
 }

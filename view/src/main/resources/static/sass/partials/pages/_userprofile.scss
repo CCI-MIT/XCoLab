@@ -35,7 +35,7 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
 
 .comm_rightcol-title {
   font-size: 19px;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   margin-bottom: 15px;
 }
 
@@ -45,7 +45,7 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
   padding: 10px 8px;
   font-size: 12px;
   line-height: normal;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   color: contrasting-color($t-Color__primary__grey--light);
   margin-bottom: 5px;
 }

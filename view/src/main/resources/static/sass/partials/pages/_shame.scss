@@ -5,17 +5,9 @@
   margin: 0 0 0 30px;
 }
 
-.aligncenter {
-  margin: 0 auto;
-}
-
 .alignleft {
   float: left;
   margin: 0 30px 0 0;
-}
-
-.centered {
-  text-align: center;
 }
 
 //TODO: is this used? Improve name/scope
@@ -23,23 +15,8 @@
 //  opacity: 0.3;
 //}
 
-.clearfix {
-  display: inline-block;
-  &:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-  }
-}
-
 * html .clearfix {
   height: 1%;
-}
-
-.clearfix {
-  display: block;
 }
 
 //TODO: is this also for admin stuff?
@@ -68,29 +45,9 @@ fieldset {
 }
 
 //TODO: where are these used?
-/** Contact addr **/
-.contact-addr {
-  background: #F7F6F2;
-  color: #666;
-  padding: 20px 15px;
-  font-size: 0.9em;
-  border-radius: 5px;
-}
-
-.right_col2 {
-  float: left;
-  width: 274px;
-  margin: 50px 0 0 30px;
-}
-
-//TODO: where are these used?
 #invalidFieldsList li {
   margin-bottom: 10px;
-  font-weight: $b-Typography__fontWeight--bold;
-}
-
-body.colab {
-  margin-top: 0;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .seeAllActivities {

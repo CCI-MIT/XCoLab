@@ -4,17 +4,17 @@ $p-community__colab__th__textColor: $t-Color__grey--darkest !default;
 $p-community__commList__marginTop: 20px !default;
 $p-community__commList__h2__paddingBottom: 0px !default;
 $p-community__commList__h2__borderBottom: none !default;
-$p-community__commList__h2__fontWeight: $b-Typography__fontWeight__h2 !default;
+$p-community__commList__h2__fontWeight: $t-Typography__fontWeight__h2 !default;
 $p-community__discHead__width: 680px !default;
 $p-community__infoLeft__fontStyle: italic !default;
 $p-community__infoLeft__capitalization: $b-Typography__capitalization--none !default;
 $p-community__infoLeft__fontSize: initial !default;
-$p-community__infoLeft__fontWeight: $b-Typography__fontWeight !default;
+$p-community__infoLeft__fontWeight: $t-Typography__fontWeight !default;
 $p-community__infoLeft__paddingTop: 0px !default;
 $p-community__infoLeft__span__textColor: $t-Color__secondary !default;
 $p-community__infoLeft__span__fontSize: 32px !default;
 $p-community__infoLeft__span__paddingRight: 5px !default;
-$p-community__infoLeft__span__fontWeight: $b-Typography__fontWeight--bold !default;
+$p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !default;
 
 $p-community__c-Message__column__width: 204px !default;
 
@@ -57,7 +57,7 @@ $p-community__c-Message__column__width: 204px !default;
   width: 500px;
   font-size: 21px;
   color: $t-Color__grey--medium;
-  font-weight: $b-Typography__fontWeight;
+  font-weight: $t-Typography__fontWeight;
 }
 
 /*.wf-active .comm_date { font-size:23px; }*/
@@ -72,7 +72,7 @@ $p-community__c-Message__column__width: 204px !default;
 
 .comm_icons a {
   font-size: 14px;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   padding-bottom: 0;
   border-bottom: none;
 }
@@ -107,7 +107,7 @@ $p-community__c-Message__column__width: 204px !default;
 .comm_disc-title h2 span {
   color: #666;
   font-size: 21px;
-  font-weight: $b-Typography__fontWeight;
+  font-weight: $t-Typography__fontWeight;
   padding-right: 5px;
   font-style: normal;
 }
@@ -190,7 +190,7 @@ $p-community__c-Message__column__width: 204px !default;
 }
 
 .comm_list li.c {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .colab .colabRow {
@@ -245,7 +245,7 @@ $p-community__c-Message__column__width: 204px !default;
   cursor: pointer;
   color: white;
   font-size: 13px;
-  font-weight: $b-Typography__fontWeight;
+  font-weight: $t-Typography__fontWeight;
 }
 
 .wf-active .comm_submit {
@@ -290,7 +290,7 @@ $p-community__c-Message__column__width: 204px !default;
 }
 
 .comm_member td.b {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .comm_member .memdiv {
@@ -352,11 +352,11 @@ $p-community__c-Message__column__width: 204px !default;
 }
 
 .iceDatPgrScrCol {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .iceDatPgr .iceDatPgrScrBtn {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   padding: 0 4px 0 4px;
 }
 

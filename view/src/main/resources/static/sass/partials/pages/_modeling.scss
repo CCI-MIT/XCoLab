@@ -13,7 +13,7 @@
 }
 
 .actboxtop a {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .wf-active .actboxtop {
@@ -47,7 +47,7 @@
   padding: 26px 0 22px 47px;
   font-size: 16px;
   color: $t-Color__grey--darkest;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .acthead-r {
@@ -55,7 +55,7 @@
   padding: 26px 0 22px 47px;
   font-size: 16px;
   color: $t-Color__grey--darkest;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .wf-active .acthead-l, .wf-active .acthead-r {
@@ -107,13 +107,13 @@
 }
 
 .act_left-list li.d ul li a {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   background: none;
   padding: 0;
 }
 
 .act_left-list li.u ul li a {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   background: none;
   padding: 0;
 }
@@ -417,7 +417,7 @@
 
 .chart_sub-description span {
   font-size: 14px;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .actions-edit_key {
@@ -483,7 +483,7 @@
 
 .control_title span {
   font-size: 18px;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   color: $t-Color__secondary;
 }
 

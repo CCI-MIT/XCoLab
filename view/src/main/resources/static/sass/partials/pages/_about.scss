@@ -1,4 +1,4 @@
-$p-About__left__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
+$p-About__left__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
 $p-About__left__li__a__padding--left: 4px !default;
 $p-About__left__li__a__current__background: $t-Color__grey--lightest !default;
 $p-About__left__li__a__current__border--left: none !default;
@@ -12,7 +12,7 @@ $p-About__ge2__background: url(/images/about/getinvolved-row-02.png) no-repeat 3
 $p-About__ge3__background: url(/images/about/getinvolved-row-03.png) no-repeat 10px 0 !default;
 $p-About__ge4__background: url(/images/about/getinvolved-row-04.png) no-repeat 20px 15px !default;
 $p-About__getinvolved__backgroundColor: $t-Color__grey--lightest !default;
-$p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !default;
+$p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !default;
 
 /* ABOUT ------------------------------------------------------------------------------------- */
 
@@ -111,7 +111,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
 
 .about-right h2.ex {
   font-size: 24px;
-  font-weight: $b-Typography__fontWeight;
+  font-weight: $t-Typography__fontWeight;
   font-style: italic;
   margin-top: 18px;
 }
@@ -169,7 +169,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
   display: inline-block;
   background: $t-Color__primary__grey--light;
   font-size: 18px;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   text-align: center;
   vertical-align: middle;
   border-radius: 12px;
@@ -264,7 +264,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
 }
 
 .one a, .two a, .three a, .four a, .five a, .six a {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .contribute {
@@ -385,7 +385,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
 }
 
 .checkout a {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .p-About__approachIllustration {
