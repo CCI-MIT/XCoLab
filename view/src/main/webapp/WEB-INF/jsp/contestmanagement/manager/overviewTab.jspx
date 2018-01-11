@@ -265,12 +265,14 @@
 			selectAllCheckboxElement.addEventListener("change", function (ev) {
 				var selectAllChecked = selectAllCheckboxElement.checked;
 				var contestsTableBody = document.getElementById('contestOverviewBody');
-				[].forEach.call(contestsTableBody.getElementsByClassName("checkbox"), function (element) {
-					var parentRow = getClosest(element, "tr");
-					if( parentRow.getAttribute("data-filter-visible")  === 'true'){
-						element.checked = !!selectAllChecked;
-					}
-				});
+                [].forEach.call(contestsTableBody.getElementsByTagName('input'), function (element) {
+                    if(element.getAttribute('type')=='checkbox' && element.getAttribute('name').includes("selectedContests")){
+                        var parentRow = getClosest(element, "tr");
+                        if(parentRow.getAttribute("data-filter-visible")  === 'true'){
+                            element.checked = !!selectAllChecked;
+                        }
+                    }
+                });
 			});
 		}
 
