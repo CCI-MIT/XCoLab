@@ -10,6 +10,8 @@
     <jsp:useBean id="date" class="java.util.Date"/>
     <c:set target="${date}" property="time" value="${millis}"/>
 
+    <!-- TODO: need to check if ${date} is zero. COLAB-2495 Creation date could be Null. -->
+
     <span class="js-DateFormat" data-type="${type}" data-millis="${millis}" data-zone-display="${zoneDisplay}">
         <c:choose>
             <c:when test="${type == 'date'}">
