@@ -18,13 +18,11 @@ function markEditorDirty(editor) {
 function countCharacters(input, editor) {
     if (editor) {
         if (editor == null || editor.document == null) return 0;
-        if (editor.document['$'].body.textContent) {
-            return jQuery.trim(editor.document['$'].body.textContent).length;
-
-        }
-        if (editor.document['$'].body.innerText) {
-            return jQuery.trim(editor.document['$'].body.innerText).length;
-        }
+        var text = (editor.document['$'].body.textContent || editor.document['$'].body.innerText);
+        // remove zero width spaces
+        text = text.replace(/\u200b/g, '');
+        text = jQuery.trim(text);
+        return text.length;
     }
     var numberOfLines = input.val().split(/\r\n|\r|\n/).length - 1 ;//java will count \n as \r\n
     input.val().replace(/&lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length
