@@ -5,15 +5,16 @@
     <jsp:directive.attribute name="sortColumn" type="java.lang.String" required="true" rtexprvalue="true" description="Sort column" />
     <jsp:directive.attribute name="currentColumn" type="java.lang.String" required="true" rtexprvalue="true" description="Current column" />
 
-    <!-- TODO COLAB-2217: use bootstrap caret class instead of images -->
     <c:if test="${sortColumn == currentColumn }">
         <div class="c-Table__sortArrow">
             <c:choose>
                 <c:when test="${sortAscending }">
-                    <img src="${_themeImageFolder}/sort-arrow-up.png" style="height: 6px; width: 8px;" />
+                    <span class="dropup">
+                        <span class="caret"></span>
+                    </span>
                 </c:when>
                 <c:otherwise>
-                    <img src="${_themeImageFolder}/sort-arrow-down.png" style="height: 6px; width: 8px;" />
+                    <span class="caret"></span>
                 </c:otherwise>
             </c:choose>
         </div>
