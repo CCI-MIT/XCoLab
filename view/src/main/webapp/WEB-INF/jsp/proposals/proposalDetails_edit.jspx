@@ -150,7 +150,7 @@
                     <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
                     <spring:message code="contests.proposal.sections.characterlimit" arguments="140"  />
                 </label>
-                <div class="addprophelp">Insert a tweet-length (140 character) message that conveys the key idea behind the ${fn:toLowerCase(contestType.proposalName)}.</div>
+                <div class="addprophelp">Add a very short (140 character) description that conveys the key idea behind the ${fn:toLowerCase(contestType.proposalName)}.</div>
                 <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
                     <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="form-control" />
                     <form:errors path="pitch" />
