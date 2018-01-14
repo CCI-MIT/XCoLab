@@ -158,7 +158,8 @@
                             <form:hidden path="contests[${contestId}].contestPK"
                                          data-form-name="contestPK" />
                             <td>
-                                <form:checkbox path="selectedContests[${contestId}]" />
+                                <form:checkbox path="selectedContests[${contestId}]"
+                                            cssClass="js-contestSelectionCheckbox" />
                             </td>
                             <td>
                                 <form:hidden path="contests[${contestId}].weight"
@@ -265,12 +266,12 @@
 			selectAllCheckboxElement.addEventListener("change", function (ev) {
 				var selectAllChecked = selectAllCheckboxElement.checked;
 				var contestsTableBody = document.getElementById('contestOverviewBody');
-				[].forEach.call(contestsTableBody.getElementsByClassName("checkbox"), function (element) {
-					var parentRow = getClosest(element, "tr");
-					if( parentRow.getAttribute("data-filter-visible")  === 'true'){
-						element.checked = !!selectAllChecked;
-					}
-				});
+                [].forEach.call(contestsTableBody.getElementsByClassName('js-contestSelectionCheckbox'), function (element) {
+                    var parentRow = getClosest(element, "tr");
+                    if(parentRow.getAttribute("data-filter-visible")  === 'true'){
+                        element.checked = !!selectAllChecked;
+                    }
+                });
 			});
 		}
 
