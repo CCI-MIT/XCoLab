@@ -3,7 +3,7 @@
 # stop script if any build fails
 set -e
 
-echo "Running Climate CoLab Development Environment Installer"
+echo "[INFO] Checking your environment..."
 
 # Check Java Version and check if Java is in Path
 if type -p java; then
@@ -42,12 +42,26 @@ if [[ "$_mysql" ]]; then
     echo "[INFO] MySQL Version" "$version"
     if [[ "$version" > "5.6" ]]; then
         echo "[INFO] MySQL version is sufficient (>=5.6)"
-	echo "[WARN] If you experience problems with your database please download the correct JDBC driver for your MySQL version from: http://dev.mysql.com/downloads/connector/j/"
+	    echo "[INFO] If you experience problems with your database please download the correct JDBC driver for your MySQL version from: http://dev.mysql.com/downloads/connector/j/"
     else         
         echo "[ERROR] MySQL version is below 5.6. Please make sure MySQL 5.6 is installed and set up in PATH."
 	exit 0
     fi
 fi
 
-# Build binaries
-mvn package -T 1C
+echo "[INFO] Environment check complete"
+
+echo "[INFO] Installing..."
+
+if [ -f /tmp/foo.txt ]; then
+    echo "[INFO] Configuration file found in $HOME/.xcolab.application.properties ..."
+else
+    echo "[INFO] Copying configuration file to $HOME/.xcolab.application.properties ..."
+    cp conf/application.properties ~/.xcolab.application.properties
+    echo "[INFO] Make sure you update the configuration with your database credentials"
+fi
+
+echo "[INFO] Setup complete"
+echo "[INFO] If you haven't, make sure to initialize the database by running the following scripts:"
+echo "       sql/starter/xcolab-schema.sql"
+echo "       sql/starter/xcolab-data.sql"

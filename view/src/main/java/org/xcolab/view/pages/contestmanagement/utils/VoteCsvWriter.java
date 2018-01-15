@@ -52,7 +52,8 @@ public class VoteCsvWriter extends CsvResponseWriter {
             "Email bounced",
             "Vote date",
             "vote_is_valid",
-            "confirmationEmailSendDate");
+            "confirmationEmailSendDate",
+            "initialValidationResult");
 
     public VoteCsvWriter(HttpServletResponse response) throws IOException {
         super("votingReport", COLUMN_NAMES, response);
@@ -114,6 +115,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, vote.getCreateDate());
             addValue(row, vote.getIsValid());
             addValue(row, vote.getConfirmationEmailSendDate());
+            addValue(row, vote.getInitialValidationResult());
             writeRow(row);
         }
     }
