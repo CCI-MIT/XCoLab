@@ -8,12 +8,35 @@ The xCoLab is a generic version of the [Climate CoLab](https://climatecolab.org)
 
 ## Getting Started
 
-To get started, please follow our [setup guide](https://github.com/CCI-MIT/XCoLab/wiki/Development-Environment-Setup).
-
 ### Prerequesites
 
 * Java 8
-* MySQL 5.7 or higher
+* MySQL 5.6 or higher
+
+### Quick Start
+
+You can set up a copy of the xCoLab like this:
+
+```bash
+# Create and initialize database
+mysql -u root -p -e 'CREATE DATABASE xcolab CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
+cat sql/starter/xcolab-schema.sql | mysql -u root -p xcolab
+cat sql/starter/xcolab-data.sql | mysql -u root -p xcolab
+
+# Check prerequesites and set up configuration file
+./INSTALL.sh
+
+# Edit the ~/.xcolab.application.properties with your database credentials
+
+# Run the xCoLab:
+./RUN.sh
+```
+
+The components may take a few minutes to start (you can use the `tailAll.sh` script in `scripts/run` to tail the log). After that, the xCoLab will be available at http://localhost:18082.
+
+### Development setup
+
+For a more comprehensive development setup guide, please check out our [setup wiki page](https://github.com/CCI-MIT/XCoLab/wiki/Development-Environment-Setup).
 
 ## Architecture
 
