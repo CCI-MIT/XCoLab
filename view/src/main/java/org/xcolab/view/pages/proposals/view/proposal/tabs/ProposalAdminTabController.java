@@ -13,12 +13,10 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
@@ -27,13 +25,6 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -135,70 +126,5 @@ public class ProposalAdminTabController extends BaseProposalTabController {
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to change proposal open attribute");
         }
-    }
-
-    @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADMIN/flattenVersions")
-    public void flattenVersions(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext) throws IOException {
-
-        ProposalsPermissions proposalsPermissions = proposalContext.getPermissions();
-        final ClientHelper clients = proposalContext.getClients();
-        final Proposal proposal = proposalContext.getProposal();
-        final Contest contest = proposalContext.getContest();
-
-        if (proposalsPermissions.getCanAdminAll()) {
-
-            int numDeleted = 0;
-
-            final ProposalAttributeClient proposalAttributeClient =
-                    clients.getProposalAttributeClient();
-            final List<ProposalAttribute> attributes =
-                    proposalAttributeClient.getAllProposalAttributes(proposal.getProposalId());
-
-            Map<String, Map<Long, SortedSet<ProposalAttribute>>> attributesByNameAndAdditionalId =
-                    getAttributeMapSortedByVersion(attributes);
-
-            for (Entry<String, Map<Long, SortedSet<ProposalAttribute>>> outerEntry
-                    : attributesByNameAndAdditionalId.entrySet()) {
-                for (Entry<Long, SortedSet<ProposalAttribute>> innerEntry
-                        : outerEntry.getValue().entrySet()) {
-
-                    final SortedSet<ProposalAttribute> attributesByVersion = innerEntry.getValue();
-
-                    // Attributes have equal identifiers and are in ascending order of version
-                    // For each succession of equivalent values, we only keep the first attribute
-                    ProposalAttribute previousAttribute = null;
-                    for (ProposalAttribute currentAttribute : attributesByVersion) {
-                        if (currentAttribute.equalsIgnoringIdentifiers(previousAttribute)) {
-                            proposalAttributeClient.deleteProposalAttribute(currentAttribute.getId_());
-                            numDeleted++;
-                        } else {
-                            previousAttribute = currentAttribute;
-                        }
-                    }
-                }
-            }
-            AlertMessage.success(String.format("Deleted %d of %d attributes",
-                    numDeleted, attributes.size())).flash(request);
-        }
-        response.sendRedirect(proposal.getProposalLinkUrl(contest) + "/tab/ADMIN");
-    }
-
-    private Map<String, Map<Long, SortedSet<ProposalAttribute>>> getAttributeMapSortedByVersion(
-            List<ProposalAttribute> attributes) {
-        Map<String, Map<Long, SortedSet<ProposalAttribute>>> attributesByNameAndAdditionalId
-                = new HashMap<>();
-        for (ProposalAttribute attribute : attributes) {
-            Map<Long, SortedSet<ProposalAttribute>> currentAttributesById =
-                    attributesByNameAndAdditionalId
-                            .computeIfAbsent(attribute.getName(), k-> new HashMap<>());
-
-            SortedSet<ProposalAttribute> currentAttributes = currentAttributesById
-                    .computeIfAbsent(attribute.getAdditionalId(), k -> new TreeSet<>(
-                            Comparator.comparing(ProposalAttribute::getVersion)));
-
-            currentAttributes.add(attribute);
-        }
-        return attributesByNameAndAdditionalId;
     }
 }
