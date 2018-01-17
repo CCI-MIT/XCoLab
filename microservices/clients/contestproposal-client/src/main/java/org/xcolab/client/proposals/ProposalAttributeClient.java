@@ -20,9 +20,8 @@ import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +94,11 @@ public final class ProposalAttributeClient {
     }
 
     public Boolean deleteProposalAttribute(Long id_) {
-        return proposalAttributeResource.delete(id_).execute();
+        try {
+            return proposalAttributeResource.delete(id_).execute();
+        } catch (UncheckedEntityNotFoundException e) {
+            return false;
+        }
     }
 
     public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) {

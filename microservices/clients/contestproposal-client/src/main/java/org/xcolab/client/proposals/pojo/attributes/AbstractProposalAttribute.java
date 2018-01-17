@@ -54,6 +54,20 @@ class AbstractProposalAttribute extends AbstractAttribute {
         this.version = version;
     }
 
+    /**
+     * Compares this attribute to another attribute by values only.
+     *
+     * This method ignores all other identifiers and only compares the three possible values:
+     * numericValue, stringValue, and realValue.
+     *
+     * @return true if all value fields are equal, false otherwise.
+     */
+    public boolean equalsIgnoringIdentifiers(ProposalAttribute other) {
+        return other != null && Objects.equals(this.getNumericValue(), other.getNumericValue())
+                && Objects.equals(this.getStringValue(), other.getStringValue())
+                && Objects.equals(this.getRealValue(), other.getRealValue());
+    }
+
     @Override
     public String toString() {
 

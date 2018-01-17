@@ -120,6 +120,26 @@
 
                 </c:if>
 
+                <c:if test="${proposalsPermissions.canAdminAll}">
+                    <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+                        <strong>Admin actions</strong>
+                        <div>
+                            <c:set var="flattenVersionsUrl" value="${proposal.proposalUrl}/tab/ADMIN/flattenVersions"/>
+
+                            <form action="${flattenVersionsUrl }" method="post"
+                                  id="flattenVersionsForm">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <button type="submit" class="c-Button__primary js-Tooltip"
+                                        title="This removes duplicate proposal attributes and can help improve performance for proposals that were edited a lot.">
+                                    Flatten versions
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <c:set var="addBlueClass" value='${not addBlueClass }'/>
+
+                </c:if>
+
 
                 <c:if test="${ proposalsPermissions.canPromoteProposalToNextPhase }">
 
