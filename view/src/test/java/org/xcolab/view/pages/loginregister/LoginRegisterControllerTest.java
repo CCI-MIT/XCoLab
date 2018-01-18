@@ -16,7 +16,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.MockContestType;
 import org.xcolab.client.balloons.BalloonsClient;
@@ -35,8 +36,7 @@ import java.util.ArrayList;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
-import static org.springframework.security.test.web.servlet.request
-        .SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -63,13 +63,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @PrepareForTest({
         org.xcolab.client.admin.AdminClient.class,
+        org.xcolab.client.activities.ActivitiesClient.class,
+        org.xcolab.client.activities.ActivitiesClientUtil.class,
         org.xcolab.client.admin.ContestTypeClient.class,
         org.xcolab.client.contest.ContestClientUtil.class,
         org.xcolab.client.sharedcolab.SharedColabClient.class,
         org.xcolab.client.members.MembersClient.class,
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.emails.EmailClient.class,
-        org.xcolab.client.activities.helper.ActivityEntryHelper.class,
         org.xcolab.client.members.MessagingClient.class,
         org.xcolab.client.balloons.BalloonsClient.class
 })
@@ -83,12 +84,13 @@ public class LoginRegisterControllerTest {
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
+        PowerMockito.mockStatic(ActivitiesClient.class);
+        PowerMockito.mockStatic(ActivitiesClientUtil.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
         PowerMockito.mockStatic(SharedColabClient.class);
         PowerMockito.mockStatic(ContestTypeClient.class);
 
         PowerMockito.mockStatic(EmailClient.class);
-        PowerMockito.mockStatic(ActivityEntryHelper.class);
 
         PowerMockito.mockStatic(MessagingClient.class);
         PowerMockito.mockStatic(BalloonsClient.class);

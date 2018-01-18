@@ -8,8 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.util.activities.enums.MemberActivityType;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.balloons.BalloonsClient;
@@ -115,11 +114,8 @@ public class LoginRegisterService {
 
         session.setAttribute("collab_user_has_registered", true);
 
-        ActivityEntryHelper
-                .createActivityEntry(ActivitiesClientUtil.getClient(), member.getUserId(),
-                        member.getUserId(), null,
-                        ActivityProvidersType.MemberJoinedActivityEntry.getType());
-
+        ActivitiesClientUtil.createActivityEntry(MemberActivityType.REGISTERED, member.getUserId(),
+                member.getUserId());
 
         sendGoogleAnalytics(fbIdString, googleId, session.getAttribute("isSsoLogin"));
 

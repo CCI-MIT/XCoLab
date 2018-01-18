@@ -65,7 +65,7 @@ public class ActivityUtil {
     }
 
     private static String getSocialActivityKey(ActivityEntry sa) {
-        return sa.getPrimaryType() + "_" + sa.getClassPrimaryKey() + "_" + sa.getSecondaryType()
+        return sa.getActivityCategory() + "_" + sa.getCategoryId() + "_" + sa.getActivityType()
                 + "_" + sa.getMemberId();
     }
 }

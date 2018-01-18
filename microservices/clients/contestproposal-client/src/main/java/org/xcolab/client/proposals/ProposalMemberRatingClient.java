@@ -1,8 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.SupportedProposal;
@@ -110,25 +109,15 @@ public final class ProposalMemberRatingClient {
         ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
 
         if (publishActivity) {
-            ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
-                    ActivityProvidersType.ProposalSupporterAddedActivityEntry.getType());
+            activityClient.createActivityEntry(ProposalActivityType.SUPPORT_ADDED, userId,
+                    proposalId);
         }
-
-
     }
 
     public ProposalSupporter createProposalSupporter(ProposalSupporter proposalSupporter) {
         return proposalSupporterResource
                 .create(new ProposalSupporterDto(proposalSupporter))
                 .execute().toPojo(serviceNamespace);
-    }
-
-    public void removeProposalSupporter(long proposalId, long userId) {
-        deleteProposalSupporter(proposalId, userId);
-        ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
-
-        ActivityEntryHelper.createActivityEntry(activityClient, userId, proposalId, null,
-                ActivityProvidersType.ProposalSupporterRemovedActivityEntry.getType());
     }
 
     public Boolean deleteProposalSupporter(Long proposalId, Long memberId) {

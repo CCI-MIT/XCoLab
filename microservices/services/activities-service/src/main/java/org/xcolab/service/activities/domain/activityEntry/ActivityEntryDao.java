@@ -3,7 +3,7 @@ package org.xcolab.service.activities.domain.activityEntry;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.util.Date;
 import java.util.List;
@@ -20,5 +20,5 @@ public interface ActivityEntryDao {
     ActivityEntry get(Long activityEntryId) throws NotFoundException;
     List<ActivityEntry> getActivitiesAfter(Date date);
 
-    boolean delete(ActivityEntryType activityEntryType, List<Long> classPKs);
+    boolean delete(ActivityCategory activityCategory, List<Long> categoryIds);
 }

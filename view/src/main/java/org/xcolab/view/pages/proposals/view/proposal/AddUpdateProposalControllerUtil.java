@@ -1,11 +1,10 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.util.activities.enums.ContestActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
@@ -16,7 +15,7 @@ import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -82,24 +81,23 @@ public final class AddUpdateProposalControllerUtil {
             }
 
             final List<ActivitySubscription> activitySubscriptions = activitiesClient
-                    .getActivitySubscriptions(ActivityEntryType.CONTEST.getPrimaryTypeId(),
+                    .getActivitySubscriptions(ActivityCategory.CONTEST,
                             contest.getContestPK(), null);
             for (ActivitySubscription activitySubscription : activitySubscriptions) {
                 final Long receiverId = activitySubscription.getReceiverId();
-                activitiesClient.addSubscription(receiverId, ActivityEntryType.PROPOSAL,
+                activitiesClient.addSubscription(receiverId, ActivityCategory.PROPOSAL,
                         proposal.getProposalId(), "");
 
             }
 
-		 	ActivityEntryHelper.createActivityEntry(activitiesClient, memberId,
-                    contest.getContestPK(), proposal.getProposalId().toString(),
-                    ActivityProvidersType.ProposalCreatedActivityEntry.getType());
+            activitiesClient.createActivityEntry(ContestActivityType.PROPOSAL_CREATED, memberId,
+                    contest.getContestPK(), proposal.getProposalId());
 
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_CREATION);
 
         } else {
-            ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, proposal.getProposalId(), null,
-                    ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());
+            activitiesClient.createActivityEntry(ProposalActivityType.UPDATED, memberId,
+                    proposal.getProposalId());
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
 

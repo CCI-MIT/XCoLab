@@ -5,7 +5,7 @@ import org.jooq.Query;
 
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,22 +15,27 @@ public interface ActivitySubscriptionDao {
     ActivitySubscription create(ActivitySubscription activitySubscription);
 
     Optional<ActivitySubscription> get(Long pk);
-    Optional<ActivitySubscription> get(Long receiverId, Long classNameId,
-            Long classPK, String extraInfo);
+
+    Optional<ActivitySubscription> get(ActivityCategory activityCategory, Long receiverId,
+            Long categoryId);
 
     boolean update(ActivitySubscription activitySubscription);
 
     void batch(List<? extends Query> queries);
+
     boolean delete(Long pk);
-    boolean delete(Long receiverId, Long classNameId, Long classPK, String extraInfo);
-    boolean delete(ActivityEntryType activityEntryType, List<Long> classPKs);
+
+    boolean delete(ActivityCategory activityCategory, Long receiverId, Long categoryId);
+
+    boolean delete(ActivityCategory activityCategory, List<Long> categoryIds);
+
     DeleteFinalStep<ActivitySubscriptionRecord> getDeleteQuery(Long pk);
-    DeleteFinalStep<ActivitySubscriptionRecord> getDeleteQuery(Long receiverId, Long classNameId,
-            Long classPK, String extraInfo);
 
-    boolean isSubscribed(long receiverId, long classNameId, Long classPK, int type,
-            String extraInfo);
+    DeleteFinalStep<ActivitySubscriptionRecord> getDeleteQuery(ActivityCategory activityCategory,
+            Long receiverId, Long categoryId);
 
-    List<ActivitySubscription> getActivitySubscribers(Long classNameId, Long classPK,
-            Long receiverId);
+    boolean isSubscribed(ActivityCategory activityCategory, long receiverId, Long categoryId);
+
+    List<ActivitySubscription> getActivitySubscribers(ActivityCategory activityCategory,
+            Long categoryId, Long receiverId);
 }

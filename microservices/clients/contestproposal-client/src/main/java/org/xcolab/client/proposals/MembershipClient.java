@@ -1,8 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
@@ -10,7 +9,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.client.proposals.pojo.team.MembershipRequestDto;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -127,14 +126,13 @@ public class MembershipClient {
 
             ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
 
-            ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
-                    ActivityProvidersType.ProposalMemberAddedActivityEntry.getType());
+            activityClient.createActivityEntry(ProposalActivityType.MEMBER_ADDED, userId,
+                    proposalId);
 
-
-            if (!activityClient.isSubscribedToActivity(userId,
-                    ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {
+            if (!activityClient.isSubscribedToActivity(userId, ActivityCategory.PROPOSAL,
+                    proposalId)) {
                 activityClient
-                        .addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+                        .addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
 
             }
         } catch (Http409ConflictException ignored) {

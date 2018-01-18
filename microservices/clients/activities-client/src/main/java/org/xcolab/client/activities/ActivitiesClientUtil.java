@@ -1,10 +1,11 @@
 package org.xcolab.client.activities;
 
+import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.Date;
@@ -19,13 +20,15 @@ public class ActivitiesClientUtil {
         return activitiesClient;
     }
 
-    public static ActivityEntry createActivityEntry(Long memberId,
-            Long classPrimaryKey,
-            String extraData,
-            Long primaryType,
-            Long secondaryType) {
-        return activitiesClient.createActivityEntry(memberId, classPrimaryKey,
-                extraData,  primaryType,secondaryType);
+    public static ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+            long categoryId) {
+        return activitiesClient.createActivityEntry(activityType, memberId, categoryId);
+    }
+
+    public static ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+            long categoryId, Long additionalId) {
+        return activitiesClient.createActivityEntry(activityType, memberId, categoryId,
+                additionalId);
     }
 
     public static ActivityEntry getActivityEntry(Long activityEntryId)
@@ -63,33 +66,37 @@ public class ActivitiesClientUtil {
     }
 
     public static ActivitySubscription addSubscription(long memberId,
-            ActivityEntryType activityEntryType, long classPK, String extraInfo) {
-        return activitiesClient.addSubscription(memberId, activityEntryType, classPK, extraInfo);
+            ActivityCategory activityCategory, long categoryId, String extraInfo) {
+        return activitiesClient.addSubscription(memberId, activityCategory, categoryId, extraInfo);
     }
 
-    public static boolean deleteSubscription(Long receiverId, ActivityEntryType activityEntryType,
-            Long classPK, String extraInfo) {
-        return activitiesClient.deleteSubscription(receiverId, activityEntryType,
-                classPK, extraInfo);
+    public static boolean deleteSubscription(Long receiverId, ActivityCategory activityCategory,
+            Long categoryId) {
+        return activitiesClient.deleteSubscription(receiverId, activityCategory,
+                categoryId);
     }
 
-    public static boolean batchDelete(ActivityEntryType activityEntryType, List<Long> classPKs) {
-        return activitiesClient.batchDelete(activityEntryType, classPKs);
+    public static boolean batchDelete(ActivityCategory activityCategory, List<Long> categoryIds) {
+        return activitiesClient.batchDelete(activityCategory, categoryIds);
     }
 
     public static boolean deleteSubscriptionById(Long subscriptionId) {
         return activitiesClient.deleteSubscriptionById( subscriptionId);
     }
 
-    public static boolean isSubscribedToActivity(Long receiverId, Long classNameId, Long classPK,
-            Integer type, String extraInfo) {
-        return activitiesClient.isSubscribedToActivity(receiverId, classNameId, classPK,
-                type, extraInfo);
+    public static boolean isSubscribedToActivity(Long receiverId,
+            ActivityCategory activityCategory, Long categoryId, String extraInfo) {
+        return isSubscribedToActivity(receiverId, activityCategory, categoryId);
     }
 
-    public static List<ActivitySubscription> getActivitySubscriptions(Long classNameId, Long classPK,
+    public static boolean isSubscribedToActivity(Long receiverId, ActivityCategory activityCategory, Long categoryId) {
+        return activitiesClient.isSubscribedToActivity(receiverId, activityCategory, categoryId);
+    }
+
+    public static List<ActivitySubscription> getActivitySubscriptions(ActivityCategory
+            activityCategory, Long categoryId,
             Long receiverId) {
-        return activitiesClient.getActivitySubscriptions(classNameId, classPK,
+        return activitiesClient.getActivitySubscriptions(activityCategory, categoryId,
                 receiverId);
     }
 

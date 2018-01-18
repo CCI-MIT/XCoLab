@@ -12,7 +12,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -35,59 +39,68 @@ public class ActivitySubscriptionDaoTest {
     private ActivitySubscriptionDao activitySubscriptionDao;
 
     @Test
-    public void shouldCreateNewActivitySubscription() throws Exception {
-
+    public void shouldCreateNewActivitySubscription() {
         ActivitySubscription as = new ActivitySubscription();
+        as.setReceiverId(300L);
+        as.setActivityCategory("PROPOSAL");
+        as.setCategoryId(3000L);
         as = activitySubscriptionDao.create(as);
         assertNotNull(activitySubscriptionDao.get(as.getPk()));
     }
 
     @Test
-    public void shouldGetEmptyForSubscriptionPKNotFound() throws Exception {
-
-        assertFalse(activitySubscriptionDao.get(-1L).isPresent());
+    public void shouldGetEmptyForSubscriptionPKNotFound() {
+        assertFalse(activitySubscriptionDao.get(40L).isPresent());
     }
 
     @Test
-    public void shouldGetSubscription() throws Exception {
+    public void shouldGetSubscription() {
+        assertTrue(activitySubscriptionDao.get(10L).isPresent());
+    }
 
-        assertTrue(activitySubscriptionDao.get(1463904L).isPresent());
+    @Test
+    public void shouldGetActivitySubscribersByReceiver() {
+        final List<ActivitySubscription> subscribers = activitySubscriptionDao
+                .getActivitySubscribers(null, null, 101L);
+        assertEquals(3, subscribers.size());
+    }
+
+    @Test
+    public void shouldGetActivitySubscribersByCategoryAndId() {
+        final List<ActivitySubscription> subscribers = activitySubscriptionDao
+                .getActivitySubscribers(ActivityCategory.PROPOSAL, 1003L, null);
+        assertEquals(2, subscribers.size());
     }
 
 
     @Test
-    public void shouldGetActivitySubscribersByReceiver() throws Exception {
-        assertTrue(activitySubscriptionDao.getActivitySubscribers(null,null, 2664871L).size()==1);
-
+    public void shouldCheckIfIsSubscriber() {
+        assertTrue(activitySubscriptionDao.isSubscribed(ActivityCategory.CONTEST, 100L, 1000L));
+        assertFalse(activitySubscriptionDao.isSubscribed(ActivityCategory.CONTEST, 100L, 4000L));
     }
 
     @Test
-    public void shouldGetActivitySubscribersByClassNameClassPK() throws Exception {
-        assertTrue(activitySubscriptionDao.getActivitySubscribers(39202L, 1366054L,null).size()==1);
-    }
+    public void shouldDeleteSubscription() {
+        final Long subscriptionId = 20L;
+        assertTrue("Precondition failed: subscription to be deleted does not exist",
+                activitySubscriptionDao.get(subscriptionId).isPresent());
 
-
-    @Test
-    public void shouldCheckIfIsSubscriber() throws Exception {
-        assertTrue(activitySubscriptionDao.isSubscribed(2664865L, 1368503L, 1333850L,0,null));
-        assertFalse(activitySubscriptionDao.isSubscribed(2694865L, 1368503L, 1333850L,0,null));
-    }
-    @Test
-    public void shouldDeleteSubscription() throws Exception {
-        Long subscId = 1463902L;
-        assertTrue(activitySubscriptionDao.get(subscId).isPresent());
-        assertTrue(activitySubscriptionDao.delete(subscId));
-        assertFalse(activitySubscriptionDao.get(subscId).isPresent());
+        assertTrue("No element was deleted",
+                activitySubscriptionDao.delete(subscriptionId));
+        assertFalse("Element still exists after deletion",
+                activitySubscriptionDao.get(subscriptionId).isPresent());
     }
 
     @Test
-    public void shouldUpdateSubscription() throws Exception {
-        ActivitySubscription as = activitySubscriptionDao.get(1463904L).get();
-        String extraData = "-";
-        as.setExtraData(extraData);
-        assertTrue(activitySubscriptionDao.update(as));
-        assertTrue(activitySubscriptionDao.get(1463904L).get().getExtraData().equals(extraData));
+    public void shouldUpdateSubscription() {
+        final Long subscriptionId = 21L;
+        final Long testCategoryId = 3001L;
+        ActivitySubscription as = activitySubscriptionDao.get(subscriptionId).get();
+        as.setCategoryId(testCategoryId);
+        assertTrue("Element not changed", activitySubscriptionDao.update(as));
+
+        final ActivitySubscription updatedSubscription =
+                activitySubscriptionDao.get(subscriptionId).get();
+        assertEquals("New value wrong", testCategoryId, updatedSubscription.getCategoryId());
     }
-
-
 }

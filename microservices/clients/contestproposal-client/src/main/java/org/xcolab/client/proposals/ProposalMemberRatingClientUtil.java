@@ -52,10 +52,6 @@ public final class ProposalMemberRatingClientUtil {
         return client.createProposalSupporter(proposalSupporter);
     }
 
-    public static void removeProposalSupporter(long proposalId, long userId) {
-        client.removeProposalSupporter(proposalId, userId);
-    }
-
     public static Boolean deleteProposalSupporter(Long proposalId, Long memberId) {
         return client.deleteProposalSupporter(proposalId, memberId);
     }

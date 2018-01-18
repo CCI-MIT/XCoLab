@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
@@ -50,7 +49,7 @@ public class SupportProposalActionController {
         ProposalMemberRatingClient proposalMemberRatingClient =
                 proposalContext.getClients().getProposalMemberRatingClient();
         if (proposalMemberRatingClient.isMemberProposalSupporter(proposalId, memberId)) {
-            proposalMemberRatingClient.removeProposalSupporter(proposalId, memberId);
+            proposalMemberRatingClient.deleteProposalSupporter(proposalId, memberId);
         } else {
             proposalMemberRatingClient.addProposalSupporter(proposalId, memberId);
             int supportedCount = proposalMemberRatingClient.getProposalSupportersCount(memberId);

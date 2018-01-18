@@ -4,22 +4,22 @@ import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 public enum SubscriptionType {
-    DISCUSSION(ActivityEntryType.DISCUSSION.getPrimaryTypeId()),
-    PROPOSAL(ActivityEntryType.PROPOSAL.getPrimaryTypeId()),
-    CONTEST(ActivityEntryType.CONTEST.getPrimaryTypeId());
+    DISCUSSION(ActivityCategory.DISCUSSION),
+    PROPOSAL(ActivityCategory.PROPOSAL),
+    CONTEST(ActivityCategory.CONTEST);
 
-    private final Long className;
+    private final ActivityCategory activityCategory;
 
-    SubscriptionType(Long className) {
-        this.className = className;
+    SubscriptionType(ActivityCategory activityCategory) {
+        this.activityCategory = activityCategory;
     }
 
     public static SubscriptionType getSubscriptionType(ActivitySubscription subscription) {
         for (SubscriptionType type : SubscriptionType.values()) {
-            if (type.className.equals(subscription.getClassNameId())) {
+            if (type.activityCategory == subscription.getActivityCategoryEnum()) {
                 return type;
             }
         }
@@ -35,10 +35,10 @@ public enum SubscriptionType {
             ContestType contestType = ContestTypeClient.getContestType(contestTypeId);
 
             if (this == SubscriptionType.PROPOSAL) {
-                return contestType != null ? contestType.getProposalName() : "Proposal";
+                return contestType.getProposalName();
             }
             if (this == SubscriptionType.CONTEST) {
-                return contestType != null ? contestType.getContestName() : "Contest";
+                return contestType.getContestName();
             }
             return "Other";
         }

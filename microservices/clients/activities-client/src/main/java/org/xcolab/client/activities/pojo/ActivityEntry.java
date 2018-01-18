@@ -1,31 +1,32 @@
 package org.xcolab.client.activities.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 public class ActivityEntry implements Serializable {
 
     public static final TypeProvider<ActivityEntry> TYPES = new TypeProvider<>(ActivityEntry.class,
-            new ParameterizedTypeReference<List<ActivityEntry>>() {
-            });
+            new ParameterizedTypeReference<List<ActivityEntry>>() {});
 
     private static final long serialVersionUID = 489920719;
 
-    private Long      activityentryid;
-    private Long      memberid;
+    private Long activityentryid;
+    private Long memberid;
     private Timestamp createdate;
-    private Long      primarytype;
-    private Long      secondarytype;
-    private Long      classprimarykey;
-    private String    extradata;
-    private String    activityentrytitle;
-    private String    activityentrybody;
-    private String    activityentryname;
+    private String activityCategory;
+    private String activityType;
+    private long categoryId;
+    private Long additionalId;
 
     public ActivityEntry() {}
 
@@ -33,37 +34,10 @@ public class ActivityEntry implements Serializable {
         this.activityentryid = value.activityentryid;
         this.memberid = value.memberid;
         this.createdate = value.createdate;
-        this.primarytype = value.primarytype;
-        this.secondarytype = value.secondarytype;
-        this.classprimarykey = value.classprimarykey;
-        this.extradata = value.extradata;
-        this.activityentrytitle = value.activityentrytitle;
-        this.activityentrybody = value.activityentrybody;
-        this.activityentryname = value.activityentryname;
-    }
-
-    public ActivityEntry(
-        Long      activityentryid,
-        Long      memberid,
-        Timestamp createdate,
-        Long      primarytype,
-        Long      secondarytype,
-        Long      classprimarykey,
-        String    extradata,
-        String    activityentrytitle,
-        String    activityentrybody,
-        String    activityentryname
-    ) {
-        this.activityentryid = activityentryid;
-        this.memberid = memberid;
-        this.createdate = createdate;
-        this.primarytype = primarytype;
-        this.secondarytype = secondarytype;
-        this.classprimarykey = classprimarykey;
-        this.extradata = extradata;
-        this.activityentrytitle = activityentrytitle;
-        this.activityentrybody = activityentrybody;
-        this.activityentryname = activityentryname;
+        this.activityCategory = value.activityCategory;
+        this.activityType = value.activityType;
+        this.categoryId = value.categoryId;
+        this.additionalId = value.additionalId;
     }
 
     public Long getActivityEntryId() {
@@ -90,69 +64,86 @@ public class ActivityEntry implements Serializable {
         this.createdate = createdate;
     }
 
-    public Long getPrimaryType() {
-        return this.primarytype;
+    public String getActivityCategory() {
+        return activityCategory;
     }
 
-    public void setPrimaryType(Long primarytype) {
-        this.primarytype = primarytype;
+    @JsonIgnore
+    public ActivityCategory getActivityCategoryEnum() {
+        //TODO COLAB-2486: once fixed, this can't be UNKNOWN
+        return activityCategory != null ? ActivityCategory.valueOf(activityCategory)
+                : ActivityCategory.UNKNOWN;
     }
 
-    public Long getSecondaryType() {
-        return this.secondarytype;
+    public void setActivityCategory(String activityCategory) {
+        this.activityCategory = activityCategory;
     }
 
-    public void setSecondaryType(Long secondarytype) {
-        this.secondarytype = secondarytype;
+    public String getActivityType() {
+        return activityType;
     }
 
-    public Long getClassPrimaryKey() {
-        return this.classprimarykey;
+    @JsonIgnore
+    public ActivityType getActivityTypeEnum() {
+        //TODO COLAB-2486: neither can be null once fixed
+        if (activityCategory != null && activityType != null) {
+            return getActivityCategoryEnum().getActivityType(activityType);
+        }
+        return null;
     }
 
-    public void setClassPrimaryKey(Long classprimarykey) {
-        this.classprimarykey = classprimarykey;
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
     }
 
-    public String getExtraData() {
-        return this.extradata;
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public void setExtraData(String extradata) {
-        this.extradata = extradata;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getActivityEntryTitle() {
-        return this.activityentrytitle;
+    public Long getAdditionalId() {
+        return additionalId;
     }
 
-    public void setActivityEntryTitle(String activityentrytitle) {
-        this.activityentrytitle = activityentrytitle;
+    public void setAdditionalId(Long additionalId) {
+        this.additionalId = additionalId;
     }
 
-    public String getActivityEntryBody() {
-        return this.activityentrybody;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ActivityEntry)) {
+            return false;
+        }
+        ActivityEntry that = (ActivityEntry) o;
+        return Objects.equals(activityentryid, that.activityentryid)
+                && Objects.equals(memberid, that.memberid) && Objects.equals(createdate, that.createdate)
+                && Objects.equals(getActivityCategory(), that.getActivityCategory())
+                && Objects.equals(getActivityType(), that.getActivityType())
+                && Objects.equals(categoryId, that.categoryId)
+                && Objects.equals(additionalId, that.additionalId);
     }
 
-    public void setActivityEntryBody(String activityentrybody) {
-        this.activityentrybody = activityentrybody;
-    }
-
-    public String getActivityEntryName() {
-        return this.activityentryname;
-    }
-
-    public void setActivityEntryName(String activityentryname) {
-        this.activityentryname = activityentryname;
+    @Override
+    public int hashCode() {
+        return Objects.hash(activityentryid, memberid, createdate, getActivityCategory(),
+                getActivityType(), categoryId, additionalId);
     }
 
     @Override
     public String toString() {
-        String sb = "ActivityEntry (" + activityentryid + ", " + memberid + ", " + createdate + ", "
-                + primarytype + ", " + secondarytype + ", " + classprimarykey + ", " + extradata
-                + ", " + activityentrytitle + ", " + activityentrybody + ", " + activityentryname
-                + ")";
-
-        return sb;
+        return new ToStringBuilder(this).append("activityentryid", activityentryid)
+                .append("memberid", memberid)
+                .append("createdate", createdate)
+                .append("activityCategory", activityCategory)
+                .append("activityType", activityType)
+                .append("categoryId", categoryId)
+                .append("additionalId", additionalId)
+                .toString();
     }
 }

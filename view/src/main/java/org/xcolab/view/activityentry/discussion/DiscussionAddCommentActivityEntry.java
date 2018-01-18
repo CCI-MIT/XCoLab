@@ -3,13 +3,14 @@ package org.xcolab.view.activityentry.discussion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.util.activities.enums.ActivityType;
+import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 @Component
 public class DiscussionAddCommentActivityEntry extends DiscussionBaseActivityEntry {
 
-    private static final String MESSAGE_CODE =
-            "activities.discussion.discussionaddcomment.message";
+    private static final String MESSAGE_CODE = "activities.discussion.discussionaddcomment.message";
 
     @Autowired
     public DiscussionAddCommentActivityEntry(ResourceMessageResolver resourceMessageResolver) {
@@ -17,8 +18,8 @@ public class DiscussionAddCommentActivityEntry extends DiscussionBaseActivityEnt
     }
 
     @Override
-    public Long getSecondaryType() {
-        return DiscussionActivitySubType.DISCUSSION_ADDED_COMMENT.getSecondaryTypeId();
+    public ActivityType getActivityType() {
+        return DiscussionThreadActivityType.COMMENT_ADDED;
     }
 
     @Override
@@ -29,11 +30,6 @@ public class DiscussionAddCommentActivityEntry extends DiscussionBaseActivityEnt
 
     @Override
     public String getTitle() {
-        return getUserLink() + " added a comment to thread";
-    }
-
-    @Override
-    public String getName() {
-        return "Comment to thread";
+        return "Comment added to discussion " + getThread().getTitle();
     }
 }

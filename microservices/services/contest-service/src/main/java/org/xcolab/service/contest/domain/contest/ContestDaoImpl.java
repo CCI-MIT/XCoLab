@@ -18,7 +18,7 @@ import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.SortColumn;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.util.Collections;
 import java.util.List;
@@ -403,7 +403,7 @@ public class ContestDaoImpl implements ContestDao {
         // Delete contest thread and comments.
         ThreadClientUtil.deleteThread(threadId);
         // Delete contest subscriptions and activity entries.
-        ActivitiesClientUtil.batchDelete(ActivityEntryType.CONTEST, Collections.singletonList(contestPK));
+        ActivitiesClientUtil.batchDelete(ActivityCategory.CONTEST, Collections.singletonList(contestPK));
     }
 
     private static void deleteContestPhases(DSLContext ctx, long contestPK) {
@@ -448,7 +448,7 @@ public class ContestDaoImpl implements ContestDao {
                 .where(PROPOSAL_VERSION.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal subscriptions and activity entries.
-        ActivitiesClientUtil.batchDelete(ActivityEntryType.PROPOSAL, proposalIds);
+        ActivitiesClientUtil.batchDelete(ActivityCategory.PROPOSAL, proposalIds);
         // Select proposal groups.
         List<Long> groups = ctx.select(PROPOSAL.GROUP_ID).from(PROPOSAL)
                 .where(PROPOSAL.PROPOSAL_ID.in(proposalIds))

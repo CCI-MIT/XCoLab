@@ -1,11 +1,12 @@
 package org.xcolab.client.activities;
 
+import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.util.IdListUtil;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
@@ -35,18 +36,20 @@ public final class ActivitiesClient {
                 ActivitySubscription.TYPES, serviceNamespace);
     }
 
-    public  ActivityEntry createActivityEntry(Long memberId,
-                                                    Long classPrimaryKey,
-                                                    String extraData,
-                                                    Long primaryType,
-                                                    Long secondaryType) {
-        return activityEntryResource.service("createActivityEntry", ActivityEntry.class)
-                .queryParam("primaryType", primaryType)
-                .queryParam("secondaryType", secondaryType)
-                .queryParam("memberId", memberId)
-                .queryParam("classPrimaryKey",classPrimaryKey)
-                .queryParam("extraData",extraData)
-                .post();
+    public ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+            long categoryId) {
+        return createActivityEntry(activityType, memberId, categoryId, null);
+    }
+
+    public ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+            long categoryId, Long additionalId) {
+        ActivityEntry activityEntry = new ActivityEntry();
+        activityEntry.setActivityCategory(activityType.getCategory().name());
+        activityEntry.setActivityType(activityType.name());
+        activityEntry.setMemberId(memberId);
+        activityEntry.setCategoryId(categoryId);
+        activityEntry.setAdditionalId(additionalId);
+        return activityEntryResource.create(activityEntry).execute();
     }
 
     public  ActivityEntry getActivityEntry(Long activityEntryId)
@@ -123,23 +126,25 @@ public final class ActivitiesClient {
         return activitySubscriptionResource.delete(pk).execute();
     }
 
-    public ActivitySubscription addSubscription(long memberId,
-            ActivityEntryType activityEntryType, long classPK, String extraInfo) {
+    public ActivitySubscription addSubscription(long memberId, ActivityCategory activityCategory,
+            long categoryId, String extraInfo) {
+        return addSubscription(memberId, activityCategory, categoryId);
+    }
+
+    public ActivitySubscription addSubscription(long memberId, ActivityCategory activityCategory, long categoryId) {
         return activitySubscriptionResource.service("subscribe", ActivitySubscription.class)
                 .queryParam("receiverId", memberId)
-                .queryParam("activityEntryType", activityEntryType)
-                .queryParam("classPK", classPK)
-                .queryParam("extraInfo", extraInfo)
+                .queryParam("activityCategory", activityCategory)
+                .queryParam("categoryId", categoryId)
                 .post();
     }
 
-    public boolean deleteSubscription(Long receiverId, ActivityEntryType activityEntryType,
-            Long classPK, String extraInfo) {
+    public boolean deleteSubscription(Long receiverId, ActivityCategory activityCategory,
+            Long categoryId) {
         return activitySubscriptionResource.service("deleteIfSubscribed", Boolean.class)
                 .queryParam("receiverId", receiverId)
-                .queryParam("activityEntryType", activityEntryType)
-                .queryParam("classPK", classPK)
-                .queryParam("extraInfo", extraInfo)
+                .queryParam("activityCategory", activityCategory)
+                .queryParam("categoryId", categoryId)
                 .delete();
     }
 
@@ -147,28 +152,26 @@ public final class ActivitiesClient {
         return activitySubscriptionResource.delete(subscriptionId).execute();
     }
 
-    public boolean batchDelete(ActivityEntryType activityEntryType, List<Long> classPKs) {
+    public boolean batchDelete(ActivityCategory activityCategory, List<Long> categoryIds) {
         return activitySubscriptionResource.service("batchDelete", Boolean.class)
-                .queryParam("activityEntryType", activityEntryType)
-                .post(classPKs);
+                .queryParam("activityCategory", activityCategory)
+                .post(categoryIds);
     }
 
-    public boolean isSubscribedToActivity(Long receiverId, Long classNameId, Long classPK,
-            Integer type, String extraInfo) {
+    public boolean isSubscribedToActivity(Long receiverId, ActivityCategory activityCategory,
+            Long categoryId) {
         return activitySubscriptionResource.service("isSubscribed", Boolean.class)
                 .queryParam("receiverId", receiverId)
-                .queryParam("classNameId", classNameId)
-                .queryParam("classPK", classPK)
-                .queryParam("extraInfo", extraInfo)
-                .queryParam("type", type)
+                .queryParam("activityCategory", activityCategory)
+                .queryParam("categoryId", categoryId)
                 .get();
     }
 
-    public List<ActivitySubscription> getActivitySubscriptions(Long classNameId, Long classPK,
-            Long receiverId) {
+    public List<ActivitySubscription> getActivitySubscriptions(ActivityCategory activityCategory,
+            Long categoryId, Long receiverId) {
         return activitySubscriptionResource.list()
-                .optionalQueryParam("classNameId", classNameId)
-                .optionalQueryParam("classPK", classPK)
+                .optionalQueryParam("activityCategory", activityCategory)
+                .optionalQueryParam("categoryId", categoryId)
                 .optionalQueryParam("receiverId", receiverId)
                 .execute();
     }

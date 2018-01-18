@@ -28,7 +28,7 @@ import org.xcolab.client.contest.resources.ContestResource;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.IdListUtil;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
@@ -682,15 +682,15 @@ public class ContestClient {
 
     public boolean isMemberSubscribedToContest(long contestPK, long userId) {
         return ActivitiesClientUtil.isSubscribedToActivity(userId,
-                ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPK, 0, "");
+                ActivityCategory.CONTEST, contestPK, "");
     }
 
     public void subscribeMemberToContest(long contestPK, long userId) {
-        ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestPK, "");
     }
 
     public void unsubscribeMemberFromContest(long contestPK, long userId) {
-        ActivitiesClientUtil.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+        ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.CONTEST, contestPK);
     }
 
     public List<ContestCollectionCard> getSubContestCollectionCards(long parentCollectionCardId) {

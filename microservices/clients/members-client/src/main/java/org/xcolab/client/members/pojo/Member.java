@@ -407,14 +407,6 @@ public class Member implements Serializable {
     }
 
     @JsonIgnore
-    public  String getUserLinkTag() {
-        if (this.getId_() <= 0) {
-            return "";
-        }
-        return "<a href='" + getProfileLinkUrl()+ "'>" + this.getDisplayName()+ "</a>";
-    }
-
-    @JsonIgnore
     public String getProfileLinkUrl()  {
         return USER_PROFILE_PATH + getId_();
     }

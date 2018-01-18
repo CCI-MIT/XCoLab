@@ -1,6 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
@@ -18,7 +19,7 @@ import org.xcolab.client.proposals.pojo.group.GroupDto;
 import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReferenceDto;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -188,10 +189,13 @@ public final class ProposalClient {
                 .getList();
     }
 
-    public void removeMemberFromProposalTeam(Long proposalId, Long memberId) {
+    public void removeMemberFromProposalTeam(Long proposalId, Long userId) {
         proposalResource.service(proposalId, "removeMemberFromProposalTeam", Boolean.class)
-                .queryParam("memberId", memberId)
+                .queryParam("memberId", userId)
                 .delete();
+
+        ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
+        activityClient.createActivityEntry(ProposalActivityType.MEMBER_REMOVED, userId, proposalId);
     }
 
     public void promoteMemberToProposalOwner(Long proposalId, Long memberId) {
@@ -454,7 +458,7 @@ public final class ProposalClient {
 
     public boolean isMemberSubscribedToProposal(long proposalId, long userId) {
         return activitiesClient.isSubscribedToActivity(userId,
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "");
+                ActivityCategory.PROPOSAL, proposalId);
     }
 
     public void subscribeMemberToProposal(long proposalId, long userId) {
@@ -463,7 +467,7 @@ public final class ProposalClient {
     }
 
     private void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
-        activitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        activitiesClient.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
     }
 
     public void unsubscribeMemberFromProposal(long proposalId, long userId) {
@@ -472,7 +476,7 @@ public final class ProposalClient {
     }
 
     private void unsubscribeMemberFromProposal(long proposalId, long userId, boolean automatic) {
-        activitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        activitiesClient.deleteSubscription(userId, ActivityCategory.PROPOSAL, proposalId);
     }
     public  Group_ createGroup(Group_ group) {
         return groupResource.create(new GroupDto(group)).execute().toPojo(serviceNamespace);
