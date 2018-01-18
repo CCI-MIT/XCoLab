@@ -35,21 +35,21 @@ public class ActivitiesService {
     }
 
     public ActivitySubscription subscribe(long memberId,
-            ActivityCategory activityCategory, long classPK) {
-        if (activitySubscriptionDao.isSubscribed(activityCategory, memberId, classPK)) {
+            ActivityCategory activityCategory, long categoryId) {
+        if (activitySubscriptionDao.isSubscribed(activityCategory, memberId, categoryId)) {
             return activitySubscriptionDao
-                    .get(activityCategory, memberId, classPK)
+                    .get(activityCategory, memberId, categoryId)
                     .orElseThrow(IllegalStateException::new);
         }
         switch (activityCategory) {
             case CONTEST:
-                return subscribeContest(memberId, classPK);
+                return subscribeContest(memberId, categoryId);
             case PROPOSAL:
-                return subscribeProposal(memberId, classPK, false);
+                return subscribeProposal(memberId, categoryId, false);
             case DISCUSSION:
-                return subscribeDiscussion(memberId, classPK, false);
+                return subscribeDiscussion(memberId, categoryId, false);
             case MEMBER:
-                return createSubscription(memberId, activityCategory, classPK, 0);
+                return createSubscription(memberId, activityCategory, categoryId, 0);
             default:
                 throw new IllegalArgumentException(
                         "ActivityCategory " + activityCategory.name() + " not supported");
@@ -138,21 +138,21 @@ public class ActivitiesService {
         return discussionSubscription;
     }
 
-    public boolean unsubscribe(long memberId, ActivityCategory activityCategory, long classPK) {
+    public boolean unsubscribe(long memberId, ActivityCategory activityCategory, long categoryId) {
         switch (activityCategory) {
             case CONTEST:
-                return unsubscribeContest(memberId, classPK);
+                return unsubscribeContest(memberId, categoryId);
             case PROPOSAL:
                 activitySubscriptionDao.batch(
-                        getProposalDeleteQueries(memberId, classPK));
+                        getProposalDeleteQueries(memberId, categoryId));
                 return true;
             case DISCUSSION:
                 activitySubscriptionDao.batch(
-                        getDiscussionDeleteQueries(memberId, classPK, false));
+                        getDiscussionDeleteQueries(memberId, categoryId, false));
                 return true;
             case MEMBER:
                 return activitySubscriptionDao
-                        .delete(activityCategory, memberId, classPK);
+                        .delete(activityCategory, memberId, categoryId);
             default:
                 throw new IllegalArgumentException("ActivityCategory " + activityCategory.name()
                         + " not supported");

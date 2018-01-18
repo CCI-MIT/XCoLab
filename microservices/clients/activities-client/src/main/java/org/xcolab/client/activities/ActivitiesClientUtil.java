@@ -66,14 +66,14 @@ public class ActivitiesClientUtil {
     }
 
     public static ActivitySubscription addSubscription(long memberId,
-            ActivityCategory activityCategory, long classPK, String extraInfo) {
-        return activitiesClient.addSubscription(memberId, activityCategory, classPK, extraInfo);
+            ActivityCategory activityCategory, long categoryId, String extraInfo) {
+        return activitiesClient.addSubscription(memberId, activityCategory, categoryId, extraInfo);
     }
 
     public static boolean deleteSubscription(Long receiverId, ActivityCategory activityCategory,
-            Long classPK) {
+            Long categoryId) {
         return activitiesClient.deleteSubscription(receiverId, activityCategory,
-                classPK);
+                categoryId);
     }
 
     public static boolean batchDelete(ActivityCategory activityCategory, List<Long> categoryIds) {

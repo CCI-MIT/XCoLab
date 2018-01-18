@@ -66,7 +66,7 @@ public class ActivitySubscriptionDaoTest {
     }
 
     @Test
-    public void shouldGetActivitySubscribersByClassNameClassPK() {
+    public void shouldGetActivitySubscribersByCategoryAndId() {
         final List<ActivitySubscription> subscribers = activitySubscriptionDao
                 .getActivitySubscribers(ActivityCategory.PROPOSAL, 1003L, null);
         assertEquals(2, subscribers.size());

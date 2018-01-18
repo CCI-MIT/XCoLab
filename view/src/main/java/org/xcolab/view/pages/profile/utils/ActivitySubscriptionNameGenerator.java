@@ -59,13 +59,13 @@ public class ActivitySubscriptionNameGenerator {
     }
 
     private static String getNameForDiscussionSubscription(ActivitySubscription subscription) {
-        final Long classPK = subscription.getCategoryId();
+        final Long categoryId = subscription.getCategoryId();
 //        final String extraData = subscription.getExtraData();
 
 //        StringBuilder name = new StringBuilder();
 
         try {
-            CommentThread thread = ThreadClientUtil.getThread(classPK);
+            CommentThread thread = ThreadClientUtil.getThread(categoryId);
             return String.format(HYPERLINK, thread.getLinkUrl(), thread.getTitle());
 
 //            CategoryGroup categoryGroup = CategoryClientUtil.getCategoryGroup(classPK);
