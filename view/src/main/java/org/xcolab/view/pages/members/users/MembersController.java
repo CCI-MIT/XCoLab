@@ -179,8 +179,7 @@ public class MembersController {
 
         if (membersPermissions.getCanDownloadMemberList()) {
             try (MemberListCsvWriter csvWriter = new MemberListCsvWriter(response)) {
-                List<Member> memberList = MembersClient.listMembers(null, null,
-                        null, null, true, 0, Integer.MAX_VALUE);
+                List<Member> memberList = MembersClient.listAllMembers();
                 csvWriter.writeMembers(removeDuplicates(memberList));
             }
         }
