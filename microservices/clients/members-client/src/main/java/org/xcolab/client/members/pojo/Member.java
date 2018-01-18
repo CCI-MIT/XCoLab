@@ -9,6 +9,7 @@ import org.apache.commons.text.WordUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
@@ -27,6 +28,9 @@ public class Member implements Serializable {
 
     @JsonIgnore
     private static final String USER_PROFILE_PATH = "/members/profile/";
+
+    @JsonIgnore
+    private static final String USER_IMAGE_PATH = "/image/member/";
 
     public static final TypeProvider<Member> TYPES =
             new TypeProvider<>(Member.class,
@@ -413,6 +417,17 @@ public class Member implements Serializable {
     @JsonIgnore
     public String getProfileLinkUrl()  {
         return USER_PROFILE_PATH + getId_();
+    }
+
+    @JsonIgnore
+    public String getImageLinkUrl() {
+        final String userImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
+        return getPortraitId() != 0 ? userImageDomain + USER_IMAGE_PATH + getPortraitId() : "";
+    }
+
+    @JsonIgnore
+    public String getLoginDateString() {
+        return getLoginDate() != null ? getLoginDate().toString() : "";
     }
 
     @JsonIgnore
