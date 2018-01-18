@@ -176,8 +176,14 @@ public class AdminTabController extends AbstractTabController {
         for (String memberString : memberStrings) {
             final String[] values = memberString.split(";");
             if (values.length != 3) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException(); // there is a row with the wrong format
             }
+
+            // TODO: check if email is in correct format
+            // TODO: do sanity checks on names, only letters
+
+            // TODO: show corresponding error messages after redirect
+
             String email = values[0];
             String firstName = values[1];
             String lastName = values[2];
