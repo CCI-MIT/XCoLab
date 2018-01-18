@@ -3,7 +3,7 @@ ALTER TABLE xcolab_ActivitySubscription DROP type_;
 ALTER TABLE xcolab_ActivitySubscription ADD activityCategory VARCHAR(30) NOT NULL;
 ALTER TABLE xcolab_ActivitySubscription ADD categoryId BIGINT(20) NOT NULL;
 ALTER TABLE xcolab_ActivitySubscription
-  MODIFY COLUMN receiverId BIGINT(20) AFTER pk;
+  MODIFY COLUMN receiverId BIGINT(20) AFTER pk,
   MODIFY COLUMN activityCategory VARCHAR(30) NOT NULL AFTER receiverId,
   MODIFY COLUMN categoryId BIGINT(20) NOT NULL AFTER activityCategory;
 
