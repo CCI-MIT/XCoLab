@@ -1,6 +1,5 @@
-@import "../../partials/base";
+@import "../../variables/t-crowdsensor";
+@import "../../variables/t-base";
 
-//import variables
-@import "../../partials/themes/t-crowdsensor";
-
+@import "../../bootstrap/bootstrap-custom";
 @import "../../partials/components";

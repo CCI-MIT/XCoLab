@@ -1,3 +1,5 @@
+@import "../../lib/l-mixins";
+
 $c-ContestBox__meta__flag__capitalization: $b-Typography__capitalization--none !default;
 $c-ContestBox__meta__flag__boxShadow: 2px 2px 1px $t-Color__grey--dark !default;
 $c-ContestBox__meta__flag--color__border: 1px solid $t-Color__secondary--light !default;
@@ -10,7 +12,7 @@ $c-ContestBox__meta__flag__marginTop: 0 !default;
 $c-ContestBox__meta__flag__isGradient: true !default;
 $c-ContestBox__meta__flag__background--color: $t-Color__secondary !default;
 $c-ContestBox__meta__flag__background--grey: $t-Color__grey--medium !default;
-$c-ContestBox__meta__flag__fontWeight: $b-Typography__fontWeight !default;
+$c-ContestBox__meta__flag__fontWeight: $t-Typography__fontWeight !default;
 
 $c-ContestBox__text__height: 125px !default;
 $c-ContestBox__text__title__textColor: $t-Color__primary !default;
@@ -55,6 +57,9 @@ $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
 .c-ContestBox__image { //.contestbox .img-wrap {
   float: left;
   margin-right: 18px;
+  img {
+    display: block;
+  }
 }
 
 .c-ContestBox__text--compact {

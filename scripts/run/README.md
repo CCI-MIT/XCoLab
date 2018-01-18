@@ -1,16 +1,16 @@
 # Run scripts
 
 These are convenience scripts that can be adapted
-to run **supplied binaries**. If you are building
-the binaries yourself, you can use the scripts
-at the root of this repository without further
-configuration (after running `mvn package`).
+to run **compiled binaries**. If you are building
+the binaries yourself, make sure you run 
+`./copyBinaries` after running `mvn package`.
 
 ## Configuration
 
-You will need to configure the directories in
-`config.sh` before using the scripts.
-`BINARY_SOURCE_DIR` is be the directory
+If you are not building from source and using the
+default directories, you will need to configure
+the directories in `config.sh` before using these
+scripts. `BINARY_SOURCE_DIR` is be the directory
 containing the XCoLab binaries you want to deploy
 and`DEPLOY_DIR` is the target directory of
 the deployment. The jars will be run from the

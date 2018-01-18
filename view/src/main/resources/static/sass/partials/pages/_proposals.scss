@@ -92,7 +92,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 }
 
 .prop-description a {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .proposal-head h1 {
@@ -112,7 +112,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 }
 
 .edit-prop a {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .edit-prop-butts {
@@ -139,7 +139,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 
 .edit-prop-butts span {
   background: $t-Color__grey--light;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .lastedited {
@@ -269,7 +269,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   float: left;
   width: 30px;
   height: 22px;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   color: black;
   padding: 4px 0 0 31px;
   border-radius: 3px;
@@ -338,7 +338,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 .votebox-top .vote span {
   font-size: 33px;
   color: $t-Color__secondary;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .votebox-top .vote img {
@@ -353,12 +353,12 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 
 .votebox-top .c-Button__primary {
   margin-top: 5px;
-  font-weight: $b-Typography__fontWeight;
+  font-weight: $t-Typography__fontWeight;
 }
 
 .votebox-bottom span {
   font-size: 20px;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .p-Proposal__subscribe {
@@ -444,14 +444,14 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 }
 
 .prop-title a, .prop-avatar a, .prop-contest a, .prop-results a {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 /* contributors table */
 
 /*
 .contributors a {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 */
 
@@ -623,7 +623,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
     position: relative;
     right: -70px;
     text-align: center;
-    @include transform(rotate(45deg));
+    transform: rotate(45deg);
   }
 
   //top corner
@@ -680,7 +680,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 }
 
 .historyTable {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .historyTable td {

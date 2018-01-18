@@ -1,3 +1,6 @@
+//TODO: might not be needed, as bootstrap includes a reset
+@import 'base/b-reset';
+
 @import 'base/b-typography';
 @import "base/b-Spacing";
 @import 'base/layout';
@@ -60,12 +63,3 @@
 
 // misc styles
 @import "pages/shame";
-
-// bootstrap components
-@import "bootstrap/base";
-@import "bootstrap/modal";
-@import "bootstrap/form";
-@import "bootstrap/navbar";
-@import "bootstrap/dropdown";
-@import "bootstrap/tables";
-

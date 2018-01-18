@@ -143,7 +143,7 @@ public final class OntologyClientUtil {
         return client.getOntologyTermFromFocusAreaWithOntologySpace(focusArea, ontologySpace);
     }
 
-    public static ImpactDefaultSeries getImpactDefaultSeriesByFocusAreaName(
+    public static ImpactDefaultSeries getImpactDefaultSeriesByFocusAreaAndSeriesName(
             Long focusAreaId, String name) {
         return client.getImpactDefaultSeriesByFocusAreaName(focusAreaId, name);
     }

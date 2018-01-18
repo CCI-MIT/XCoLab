@@ -53,7 +53,7 @@
                 </h4>
             </td>
             <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
-                <td class="c-Table__cell b-layout__center votes no-border">
+                <td class="c-Table__cell text-center votes no-border">
                     <div class="highlight">
                         <img src="${_themeImageFolder}/icon-proposal-vote-small.png" />
                         <xcolab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
@@ -61,25 +61,25 @@
                 </td>
             </c:if>
             <c:if test="${not contestPhase.canVote}">
-                <td class="c-Table__cell b-layout__center supporters no-border">
+                <td class="c-Table__cell text-center supporters no-border">
                     <div class="highlight">
                         <img src="${_themeImageFolder}/icon-proposal-support.png" />
                         <xcolab:proposalLink proposal="${proposal}" text="${proposal.supportersCountCached}" tab="TEAM"/>
                     </div>
                 </td>
             </c:if>
-            <td class="c-Table__cell b-layout__center comments no-border">
+            <td class="c-Table__cell text-center comments no-border">
                 <div class="highlight">
                     <img src="${_themeImageFolder}/icon-proposal-comments.png" />
                     <xcolab:proposalLink proposal="${proposal}" text="${proposal.commentsCount}" tab="COMMENTS" />
                 </div>
             </td>
             <c:if test="${not contestPhase.completed}">
-                <td class="c-Table__cell b-layout__center modified no-border">
+                <td class="c-Table__cell text-center modified no-border">
                     <xcolab:formatDateTime millis="${proposal.lastModifiedDateForContestPhase.time}" type="date" />
                 </td>
                 <c:if test="${showContributorsColumn}">
-                    <td class="c-Table__cell b-layout__center contributors no-border">
+                    <td class="c-Table__cell text-center contributors no-border">
                         <c:choose>
                             <c:when test="${proposal.open}">
                                 Anyone
@@ -92,7 +92,7 @@
                 </c:if>
             </c:if>
             <c:if test="${not contestPhase.completed and proposalsDisplayPermissions.canSeeReviewStatus}">
-                <td class="c-Table__cell b-layout__center advancing-status no-border">
+                <td class="c-Table__cell text-center advancing-status no-border">
                     <c:if test="${proposalsPermissions.canFellowActions or proposalsPermissions.canIAFActions}">
                         <c:choose>
                             <c:when test="${proposal.screeningStatus.statusValue == 0}">

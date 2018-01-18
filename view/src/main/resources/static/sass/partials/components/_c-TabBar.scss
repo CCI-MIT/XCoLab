@@ -1,3 +1,4 @@
+@import "../../lib/l-functions";
 
 $c-TabBar__background: transparent !default;
 $c-TabBar__borderTop: none !default;
@@ -78,7 +79,7 @@ $c-TabBar__tab--first__margin--left: 0px !default;
     padding-left: $c-TabBar__tab__paddingSides / 2;
     padding-bottom: $c-TabBar__tab__paddingBottom / 3;
     font-size: $c-TabBar__tab__fontSize--small;
-    font-weight: $b-Typography__fontWeight;
+    font-weight: $t-Typography__fontWeight;
   }
 
   &.active {

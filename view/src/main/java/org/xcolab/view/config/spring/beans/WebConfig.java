@@ -134,6 +134,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         //TODO COLAB-2446: move this configuration somewhere else
         cdnUrlMappings.put("/css", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
         cdnUrlMappings.put("/js", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
+        cdnUrlMappings.put("/vendor", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
         registrationBean.setFilter(new CdnUrlEncodingFilter(cdnUrlMappings));
         registrationBean.setOrder(Ordered.LOWEST_PRECEDENCE);
         return registrationBean;
@@ -226,7 +227,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 .setCacheControl(cacheControl)
                 .resourceChain(true)
                 .addResolver(new VersionResourceResolver()
-                        .addContentVersionStrategy("/js/**", "/css/**"));
+                        .addContentVersionStrategy("/js/**", "/css/**", "/vendor/**"));
     }
 
     private void addThemeImageResourceResolvers(ResourceHandlerRegistry registry) {

@@ -9,7 +9,7 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
+import org.xcolab.client.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.exceptions.ProposalImpactDataParserException;
 
@@ -56,9 +56,9 @@ public class ProposalImpactDataParser {
         excelSeriesTypeToSeriesTypeMap.put(EXCEL_SERIES_TYPE_BAU_KEY,
                 ProposalImpactSeries.SERIES_TYPE_BAU_KEY); // we don't need this one
         excelSeriesTypeToSeriesTypeMap
-                .put(EXCEL_SERIES_TYPE_REDUCTION_KEY, ProposalImpactAttributeKeys.IMPACT_REDUCTION);
+                .put(EXCEL_SERIES_TYPE_REDUCTION_KEY, ImpactSeriesType.IMPACT_REDUCTION.name());
         excelSeriesTypeToSeriesTypeMap.put(EXCEL_SERIES_TYPE_ADOPTION_RATE_KEY,
-                ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE);
+                ImpactSeriesType.IMPACT_ADOPTION_RATE.name());
         excelSeriesTypeToSeriesTypeMap
                 .put(EXCEL_SERIES_TYPE_RESULT_KEY, ""); // we don't need this one
     }
@@ -211,8 +211,8 @@ public class ProposalImpactDataParser {
                     long year = iterationYears.get((idx - 2) % iterationYears.size());
 
                     try {
-                        setProposalImpactSeriesValue(newProposalImpactSeries, currentSeriesType,
-                                year, dataString);
+                        setProposalImpactSeriesValue(newProposalImpactSeries,
+                                ImpactSeriesType.valueOf(currentSeriesType), year, dataString);
                     } catch (NumberFormatException e) {
                         _log.error("Could not parse string '{}' on line {} to double value",
                                 dataString, inputLineNumber);
@@ -240,13 +240,13 @@ public class ProposalImpactDataParser {
     }
 
     private void setProposalImpactSeriesValue(ProposalImpactSeries proposalImpactSeries,
-            String seriesType, long year, String valueString)
+            ImpactSeriesType seriesType, long year, String valueString)
             throws ProposalImpactDataParserException {
         double value = parseDataValue(seriesType, valueString);
         proposalImpactSeries.addSeriesValueWithType(seriesType, (int) year, value);
     }
 
-    private double parseDataValue(String seriesType, String valueString)
+    private double parseDataValue(ImpactSeriesType seriesType, String valueString)
             throws ProposalImpactDataParserException {
         // Remove comma-thousand separators
         String decimalStringValue = valueString.replaceAll(",", "");
@@ -264,8 +264,8 @@ public class ProposalImpactDataParser {
             double value = Double.parseDouble(decimalStringValue);
 
             // Interpret impact reduction and adoption values as ratios
-            if ((seriesType.equals(ProposalImpactAttributeKeys.IMPACT_REDUCTION)
-                    || seriesType.equals(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE))) {
+            if ((seriesType.equals(ImpactSeriesType.IMPACT_REDUCTION)
+                    || seriesType.equals(ImpactSeriesType.IMPACT_ADOPTION_RATE))) {
                 return value * 100.;    // impact reduction and adoption rate values are stored as percentage values (0-100%)
             } else {
                 return value;

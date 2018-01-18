@@ -1,0 +1,59 @@
+@import "../lib/l-functions";
+
+//main colors:
+$t-Color__primary: #30a3fb !default;
+$t-Color__secondary: #66b035 !default;
+$t-Color__accent: #e36f0f !default;
+$t-Color__auxiliary: #e46970 !default; // 4th color when needed (e.g. ontology)
+
+//lightness variations
+$t-Color__primary--light: lighten($t-Color__primary, 24) !default; $__hex: #aad9fd;
+$t-Color__secondary--light: lighten($t-Color__secondary, 24) !default; $__hex: #a7da85;
+
+$t-Color__primary--dark: darken($t-Color__primary, 13) !default; $__hex: #0481e1;
+$t-Color__secondary--dark: darken($t-Color__secondary, 13) !default; $__hex: #467a25;
+
+$t-Color__primary--darkest: darken($t-Color__primary, 30) !default; $__hex: #03518c;
+$t-Color__secondary--darkest: darken($t-Color__secondary, 30) !default; $__hex: #14230b;
+
+//grey variations of the primary color
+$t-Color__primary__grey--dark: desaturate($t-Color__primary, 61) !default; $__hex: #719aba;
+$t-Color__primary__grey: lighten($t-Color__primary__grey--dark, 11) !default; $__hex: #9cb6c9;
+$t-Color__primary__grey--light: lighten($t-Color__primary__grey--dark, 35) !default; $__hex: #eaf0f5;
+
+//greys
+$t-Color__grey--lightest: #efefe7 !default;
+$t-Color__grey--light: #bababa !default;
+$t-Color__grey--medium: #888 !default;
+$t-Color__grey--dark: #575757 !default;
+$t-Color__grey--darkest: #404040 !default;
+
+//alert and message colors:
+$t-Color__success: $t-Color__secondary;
+$t-Color__alert: #b94a48 !default;
+$t-Color__alert--light: #f2dede !default;
+$t-Color__info__background: $t-Color__primary__grey--light !default;
+$t-Color__success__background: $t-Color__secondary--light !default;
+
+//standard text colors
+$t-Color__text--light: white !default;
+$t-Color__text--dark: $t-Color__grey--darkest !default;
+$t-Text__threshold: (brightness($t-Color__text--light) + brightness($t-Color__text--dark)) / 2 !default;
+
+//outline view TODO: see if we can adapt this to use our colors
+$t-Color__outline__level1: #e0dacb !default; // background slevel1
+$t-Color__outline__level2: #d1cbbf !default; // background slevel2
+$t-Color__outline__level3: #c1bcb2 !default; // background slevel3
+$t-Color__outline__level4: #aaa69f !default; // background slevel4-6
+
+$t-Typography__fontWeight: 400 !default;
+$t-Typography__fontWeight--bold: 700 !default;
+
+$b-Typography__fontFamily: "proxima-nova", Arial, Helvetica, sans-serif !default;
+
+$b-Typography__textColor__a: $t-Color__primary !default;
+$b-Typography__textColor__a--isHover: black !default;
+
+$b-Typography__textDecoration__a--hover: none !default;
+
+$t-BorderRadius: 5px;

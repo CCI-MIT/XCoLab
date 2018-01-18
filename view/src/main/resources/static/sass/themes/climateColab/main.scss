@@ -1,6 +1,5 @@
-@import "../../partials/base";
+@import "../../variables/t-climateColab";
+@import "../../variables/t-base";
 
-//import variables
-@import "../../partials/themes/t-climateColab";
-
+@import "../../bootstrap/bootstrap-custom";
 @import "../../partials/components";

@@ -28,6 +28,7 @@ public class ProposalAttributeDetectUpdateAlgorithm {
         this.attributeNameToAlgorithmMap = new HashMap<>();
 
         // Init maps
+        //Note if this is ever re-activated: these names are outdated - they no include the date
         attributeNameToAlgorithmMap.put(ProposalImpactAttributeKeys.IMPACT_REDUCTION, PROPOSAL_IMPACT_ATTRIBUTE_UPDATE);
         attributeNameToAlgorithmMap.put(ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE, PROPOSAL_IMPACT_ATTRIBUTE_UPDATE);
     }

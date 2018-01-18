@@ -1,19 +1,19 @@
 package org.xcolab.view.pages.proposals.impact;
 
-import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
+import org.xcolab.client.proposals.enums.ImpactSeriesType;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class decides whether impact series values are valid for a given impact series type (i.e. ProposalImpactAttributeKeys.IMPACT_REDUCTION)
+ * This class decides whether impact series values are valid for a given impact series type (i.e. ImpactSeriesType.IMPACT_REDUCTION)
  */
 public abstract class ProposalImpactValueFilterAlgorithm {
 
-    private static final String[] impactSeriesTypes = {ProposalImpactAttributeKeys.IMPACT_REDUCTION,
-            ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE};
+    private static final String[] impactSeriesTypes = {ImpactSeriesType.IMPACT_REDUCTION.name(),
+            ImpactSeriesType.IMPACT_ADOPTION_RATE.name()};
     private static final ProposalImpactValueFilterAlgorithm[] algorithms = {
-            // ProposalImpactAttributeKeys.IMPACT_REDUCTION
+            // ImpactSeriesType.IMPACT_REDUCTION
             new ProposalImpactValueFilterAlgorithm() {
 
                 @Override
@@ -27,7 +27,7 @@ public abstract class ProposalImpactValueFilterAlgorithm {
                     return value;
                 }
             },
-            // ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE
+            // ImpactSeriesType.IMPACT_ADOPTION_RATE
             new ProposalImpactValueFilterAlgorithm() {
 
                 @Override

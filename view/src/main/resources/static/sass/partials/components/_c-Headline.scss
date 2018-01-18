@@ -31,7 +31,7 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
     color: $c-Headline__addprop__textColor;
 
     a { //.headline.addprop a
-      font-weight: $b-Typography__fontWeight--bold;
+      font-weight: $t-Typography__fontWeight--bold;
     }
   }
 
@@ -69,7 +69,7 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
     display: inline;
     float: left;
     width: auto;
-    font-weight: $b-Typography__fontWeight;
+    font-weight: $t-Typography__fontWeight;
     color: $c-Headline__h2__textColor;
 
     span { //.headline h2 span
@@ -100,7 +100,7 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
       background: $c-Headline__days-left__span__background;
 
       font-size: $c-Headline__days-left__span__fontSize;
-      font-weight: $b-Typography__fontWeight--bold;
+      font-weight: $t-Typography__fontWeight--bold;
       color: $c-Headline__days-left__span__textColor;
       vertical-align: middle;
     }

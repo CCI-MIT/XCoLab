@@ -42,7 +42,7 @@ $c-Badge__title__textColor: $t-Color__grey--darkest !default;
 }
 
 %c-Badge__title {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   color: $c-Badge__title__textColor;
   position: absolute;
 }
@@ -65,9 +65,9 @@ $c-Badge__title__textColor: $t-Color__grey--darkest !default;
 
 %c-Badge__year {
   color: $c-Badge__textColor;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   position: absolute;
-  @include rotate(323deg);
+  transform: rotate(323deg);
 }
 
 .c-Badge__year--small {
@@ -85,10 +85,10 @@ $c-Badge__title__textColor: $t-Color__grey--darkest !default;
 }
 
 %c-Badge__text {
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   color: $c-Badge__textColor;
   position: absolute;
-  @include rotate(396deg);
+  transform: rotate(396deg);
  }
 
 .c-Badge__text--small {

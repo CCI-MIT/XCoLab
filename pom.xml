@@ -63,9 +63,6 @@
         <javax-mail.version>1.4.7</javax-mail.version>
         <autolink.version>0.7.0</autolink.version>
 
-        <!-- Assets -->
-        <sass-maven-plugin.version>2.25</sass-maven-plugin.version>
-
         <!-- Monitoring -->
         <metrics.version>3.2.5</metrics.version>
         <metrics-datadog.version>1.1.13</metrics-datadog.version>
@@ -380,9 +377,9 @@
 					<version>${spring-boot.version}</version>
 				</plugin>
                 <plugin>
-                    <groupId>nl.geodienstencentrum.maven</groupId>
-                    <artifactId>sass-maven-plugin</artifactId>
-                    <version>${sass-maven-plugin.version}</version>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>1.6</version>
                 </plugin>
 			</plugins>
 		</pluginManagement>

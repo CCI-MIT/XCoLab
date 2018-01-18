@@ -256,6 +256,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -277,51 +278,69 @@
             </plugin>
 
             <plugin>
-                <groupId>nl.geodienstencentrum.maven</groupId>
-                <artifactId>sass-maven-plugin</artifactId>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+
                 <executions>
+
                     <execution>
-                        <id>sass-compilation</id>
-                        <phase>generate-resources</phase>
+                        <id>install node and yarn</id>
                         <goals>
-                            <goal>update-stylesheets</goal>
+                            <goal>install-node-and-yarn</goal>
                         </goals>
+                        <configuration>
+                            <nodeVersion>v8.9.3</nodeVersion>
+                            <yarnVersion>v1.3.2</yarnVersion>
+                        </configuration>
                     </execution>
+
+                    <execution>
+                        <id>yarn install</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>gulp build</id>
+                        <goals>
+                            <goal>gulp</goal>
+                        </goals>
+
+                        <configuration>
+                            <arguments>build</arguments>
+                        </configuration>
+                    </execution>
+
                 </executions>
-                <configuration>
-                    <useCompass>true</useCompass>
-                    <resources>
-                        <resource>
-                            <source>
-                                <directory>${basedir}/src/main/resources/static/sass</directory>
-                                <includes>
-                                    <include>*.scss</include>
-                                </includes>
-                                <excludes />
-                            </source>
-                            <destination>${basedir}/src/main/resources/dist/css</destination>
-                        </resource>
-                    </resources>
-                    <sassOptions>
-                        <style>:compressed</style>
-                    </sassOptions>
-                </configuration>
             </plugin>
         </plugins>
     </build>
 
-
     <profiles>
         <profile>
-            <id>skip-sass</id>
+            <id>skip-frontend</id>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>nl.geodienstencentrum.maven</groupId>
-                        <artifactId>sass-maven-plugin</artifactId>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>sass-compilation</id>
+                                <id>install node and yarn</id>
+                                <phase>none</phase>
+                            </execution>
+
+                            <execution>
+                                <id>yarn install</id>
+                                <phase>none</phase>
+                            </execution>
+
+                            <execution>
+                                <id>gulp build</id>
                                 <phase>none</phase>
                             </execution>
                         </executions>

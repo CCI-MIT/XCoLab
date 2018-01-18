@@ -1,0 +1,57 @@
+@import "../../lib/l-mixins";
+
+//TODO: .inner is deprecated - remove from content articles then remove here
+.inner,
+.bs-container-fixed {
+  width: 985px;
+  margin: 0 auto;
+}
+
+.bs-navbar .badge {
+  background: #03528f;
+}
+
+.bs-dropdown--dark .dropdown-menu .badge {
+  background: #66b035;
+}
+
+//= Utility classes
+@include phone-only {
+  .pull-left-xs {
+    float: left !important;
+  }
+
+  .pull-right-xs {
+    float: right !important;
+  }
+}
+
+@include tablet-only {
+  .pull-left-sm {
+    float: left !important;
+  }
+
+  .pull-right-sm {
+    float: right !important;
+  }
+}
+
+@include desktop-only {
+  .pull-left-md {
+    float: left !important;
+  }
+
+  .pull-right-md {
+    float: right !important;
+  }
+}
+
+@include desktop-lg {
+  .pull-left-lg {
+    float: left !important;
+  }
+
+  .pull-right-lg {
+    float: right !important;
+  }
+}

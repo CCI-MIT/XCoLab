@@ -6,6 +6,7 @@ services:
 - mysql
 
 cache:
+  yarn: true
   directories:
   - $HOME/.m2
 

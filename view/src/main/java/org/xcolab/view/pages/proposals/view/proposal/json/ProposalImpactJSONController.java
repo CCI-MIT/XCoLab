@@ -9,14 +9,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
+import org.xcolab.client.proposals.enums.ImpactSeriesType;
 import org.xcolab.client.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
@@ -147,13 +149,19 @@ public class ProposalImpactJSONController {
 
         Proposal proposal = proposalContext.getProposal();
 
+        final List<ImpactIteration> iterations =
+                ImpactClientUtil.getContestImpactIterations(proposalContext.getContest());
         final List<ProposalAttribute> impactAttributes = new ArrayList<>();
-        impactAttributes.addAll(proposalAttributeClient
-                .getAllProposalAttributes(proposal.getProposalId(),
-                        ProposalImpactAttributeKeys.IMPACT_ADOPTION_RATE, focusAreaId));
-        impactAttributes.addAll(proposalAttributeClient
-                .getAllProposalAttributes(proposal.getProposalId(),
-                        ProposalImpactAttributeKeys.IMPACT_REDUCTION, focusAreaId));
+        for (ImpactIteration iteration : iterations) {
+            impactAttributes.addAll(proposalAttributeClient
+                    .getAllProposalAttributes(proposal.getProposalId(),
+                            ImpactSeriesType.IMPACT_ADOPTION_RATE.getAttributeName(iteration.getYear()),
+                            focusAreaId));
+            impactAttributes.addAll(proposalAttributeClient
+                    .getAllProposalAttributes(proposal.getProposalId(),
+                            ImpactSeriesType.IMPACT_REDUCTION.getAttributeName(iteration.getYear()),
+                            focusAreaId));
+        }
 
         for (ProposalAttribute proposalAttribute : impactAttributes) {
             proposalAttributeClient.deleteProposalAttribute(proposalAttribute.getId_());

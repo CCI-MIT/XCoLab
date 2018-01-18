@@ -53,3 +53,7 @@ hs_err_pid*
 # temporary folders for run scripts
 binaries/
 bundle/
+
+# Maven frontend plugin
+node_modules/
+node/
