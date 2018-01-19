@@ -32,7 +32,7 @@ var CONFIG = {
                             }
                         },
                         eyeglass: {
-                            needs: ">1.3.0"
+                            needs: ">=1.3.0"
                         }
                     }
                 ]

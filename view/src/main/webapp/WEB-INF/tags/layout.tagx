@@ -340,7 +340,7 @@
     <xcolab-scripts:loadMoment locale="${_locale}"/>
 
     <!-- Bootstrap -->
-    <xcolab:script src="/vendor/popper/js/dist/popper.min.js" />
+    <xcolab:script src="/vendor/popper.js/dist/popper.min.js" />
     <xcolab:script src="/vendor/bootstrap/dist/js/bootstrap.min.js" />
 
     <!-- Cookies -->
