@@ -12,9 +12,9 @@ var sass = require("gulp-sass");
 var eyeglass = require("eyeglass");
 
 var RESOURCE_PATH = "./src/main/resources";
+var NODE_MODULES_PATH = "./node_modules";
 
 var CONFIG = {
-    nodeModulesPath: "./node_modules",
     sass: {
         sourcePath: RESOURCE_PATH + "/static/sass/**/*.scss",
         destPath: RESOURCE_PATH + "/dist/css",
@@ -23,6 +23,19 @@ var CONFIG = {
             precision: 8,
             eyeglass: {
                 // eyeglass options
+                modules: [
+                    {
+                        name: "bootstrap",
+                        main: function(eyeglass, sass) {
+                            return {
+                                sassDir: NODE_MODULES_PATH + '/bootstrap/scss'
+                            }
+                        },
+                        eyeglass: {
+                            needs: ">1.3.0"
+                        }
+                    }
+                ]
             }
         }
     },
@@ -46,7 +59,7 @@ gulp.task('watch', function() {
 
 //=  Internal tasks
 gulp.task('copy-libs', function() {
-    gulp.src(npmDist({excludes: CONFIG.libs.excludes}), {base: CONFIG.nodeModulesPath})
+    gulp.src(npmDist({excludes: CONFIG.libs.excludes}), {base: NODE_MODULES_PATH})
             .pipe(gulp.dest(CONFIG.libs.destPath));
 });
 

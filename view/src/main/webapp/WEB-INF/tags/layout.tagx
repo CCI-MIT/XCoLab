@@ -258,7 +258,7 @@
     <!-- ============ Load jQuery ============ -->
 
     <!-- Load jQuery early as it's used in content  -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"><!-- empty --></script>
+    <script type="text/javascript" src="/vendor/jquery/dist/jquery.min.js"><!-- empty --></script>
     <!-- Include CSRF tokens in AJAX calls. -->
     <script type="text/javascript">
         $.ajaxSetup({
@@ -340,7 +340,8 @@
     <xcolab-scripts:loadMoment locale="${_locale}"/>
 
     <!-- Bootstrap -->
-    <xcolab:script src="/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js" />
+    <xcolab:script src="/vendor/popper/js/dist/popper.min.js" />
+    <xcolab:script src="/vendor/bootstrap/dist/js/bootstrap.min.js" />
 
     <!-- Cookies -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js"

@@ -17,7 +17,9 @@
     "Safari >= 6"
   ],
   "dependencies": {
-    "bootstrap-sass": "https://github.com/jobachhu/bootstrap-sass"
+    "bootstrap": "^4.0.0",
+    "jquery": "1.12.4",
+    "popper.js": "^1.12.9"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.3",
