@@ -17,6 +17,7 @@ import org.xcolab.client.admin.pojo.Notification;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
@@ -176,21 +177,32 @@ public class AdminTabController extends AbstractTabController {
         for (String memberString : memberStrings) {
             final String[] values = memberString.split(";");
             if (values.length != 3) {
-                throw new IllegalArgumentException(); // there is a row with the wrong format
+                AlertMessage.danger("Batch registration: Three entries per row.").flash(request);
+                return "redirect:" + tab.getTabUrl();
             }
-
-            // TODO: check if email is in correct format
-            // TODO: do sanity checks on names, only letters
-
-            // TODO: show corresponding error messages after redirect
 
             String email = values[0];
             String firstName = values[1];
             String lastName = values[2];
-            Member member = loginRegisterService.autoRegister(email, firstName, lastName);
-            if (asGuests) {
-                MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
-                MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
+
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
+            java.util.regex.Matcher m = p.matcher(email);
+            if (!m.matches()) {
+                AlertMessage.danger("Batch registration: Invalid email address.").flash(request);
+                return "redirect:" + tab.getTabUrl();
+            }
+
+            try {
+                MembersClient.findMemberByEmailAddress(email);
+                // If member is found there is no exception and we continue.
+                AlertMessage.danger("Batch registration: Email address already used.").flash(request);
+                return "redirect:" + tab.getTabUrl();
+            } catch (MemberNotFoundException e) {
+                Member member = loginRegisterService.autoRegister(email, firstName, lastName);
+                if (asGuests) {
+                    MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
+                    MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
+                }
             }
         }
         AlertMessage.CHANGES_SAVED.flash(request);
