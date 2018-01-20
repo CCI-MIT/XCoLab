@@ -30,6 +30,16 @@ $t-Color__grey--medium: #888 !default;
 $t-Color__grey--dark: #575757 !default;
 $t-Color__grey--darkest: #404040 !default;
 
+$t-Color__gray-100: #f9f9f9 !default;
+$t-Color__gray-200: #eee !default;
+$t-Color__gray-300: #e0e0e0 !default;
+$t-Color__gray-400: #d0d0d0 !default;
+$t-Color__gray-500: $t-Color__grey--light;
+$t-Color__gray-600: $t-Color__grey--medium;
+$t-Color__gray-700: $t-Color__grey--dark;
+$t-Color__gray-800: $t-Color__grey--darkest;
+$t-Color__gray-900: #252525 !default;
+
 //alert and message colors:
 $t-Color__success: $t-Color__secondary;
 $t-Color__alert: #b94a48 !default;
