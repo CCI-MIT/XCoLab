@@ -21,6 +21,8 @@ $t-Color__primary__grey--dark: desaturate($t-Color__primary, 61) !default; $__he
 $t-Color__primary__grey: lighten($t-Color__primary__grey--dark, 11) !default; $__hex: #9cb6c9;
 $t-Color__primary__grey--light: lighten($t-Color__primary__grey--dark, 35) !default; $__hex: #eaf0f5;
 
+$t-Color__tan: #efefe7 !default;
+
 //greys
 $t-Color__grey--lightest: #efefe7 !default;
 $t-Color__grey--light: #bababa !default;
