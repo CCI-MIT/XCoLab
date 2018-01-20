@@ -580,10 +580,10 @@ $nav-pills-link-active-bg:          $component-active-bg !default;
 
 // Navbar
 
-$navbar-padding-y:                  ($spacer / 2) !default;
-$navbar-padding-x:                  $spacer !default;
+$navbar-padding-y:                  0;
+$navbar-padding-x:                  0;
 
-$navbar-nav-link-padding-x:         .5rem !default;
+$navbar-nav-link-padding-x:         $spacer / 2;
 
 $navbar-brand-font-size:            $font-size-lg !default;
 // Compute the navbar-brand padding-y so the navbar-brand will have the same height as navbar-text and nav-link

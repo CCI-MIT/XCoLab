@@ -39,7 +39,6 @@
 
     <!--@elvariable id="_realMember" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
-    <!--@elvariable id="_unreadMessages" type="java.lang.Integer"-->
 
     <!--@elvariable id="_themeCssFolder" type="java.lang.String"-->
     <!--@elvariable id="_libCssFolder" type="java.lang.String"-->
@@ -249,7 +248,7 @@
                           activePageLink="${_activePageLink}" contestPages="${_contestPages}"
                           member="${_isLoggedIn ? _member : null}" isWhiteBackgound="${_isHomePage}"
                           isShowIcons="${_navbarShowIcons}" uploadedImageFolder="${_uploadedImageFolder}"
-                          unreadMessages="${_unreadMessages}" blogAdminUrl="${_blogAdminUrl}"
+                          blogAdminUrl="${_blogAdminUrl}"
                           showLanguage="${_isI18NActive}" showSearch="${_showSearchMenuItem}"
                           languageSelectItems="${_languageSelectItems}" currentLocale="${_currentLocale}"
                           showGoogleSso="${_isGoogleSsoActive}" showFacebookSso="${_isFacebookSsoActive}" />
@@ -340,7 +339,7 @@
     <xcolab-scripts:loadMoment locale="${_locale}"/>
 
     <!-- Bootstrap -->
-    <xcolab:script src="/vendor/popper.js/dist/popper.min.js" />
+    <xcolab:script src="/vendor/popper.js/dist/umd/popper.min.js" />
     <xcolab:script src="/vendor/bootstrap/dist/js/bootstrap.min.js" />
 
     <!-- Cookies -->

@@ -46,7 +46,7 @@
                             </c:otherwise>
                         </c:choose>
                         <c:if test="${showLanguageDropdown}">
-                            <li class="dropup bs-dropdown--dark">
+                            <li class="dropup bs-dropdown-inverse">
                                 <a data-toggle="dropdown" class="dropdown-trigger">
                                     <img src="${themeImageFolder}/footer-language-button.png"/>&#160;
                                     <spring:message code="homepage.menu.visitor.language" />

@@ -8,17 +8,13 @@
   margin: 0 auto;
 }
 
-.bs-navbar .badge {
-  background: #03528f;
-}
-
-.bs-dropdown--dark .dropdown-menu .badge {
-  background: #66b035;
-}
-
 //TODO: migrate to bootstrap 4/flexbox
 @include media-breakpoint-up(lg) {
   .pull-right-lg {
     float: right !important;
   }
+}
+
+.bg-noise {
+  background-image: url(/images/bg-noise.png);
 }
