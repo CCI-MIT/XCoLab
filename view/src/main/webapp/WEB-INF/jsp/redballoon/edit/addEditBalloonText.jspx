@@ -101,7 +101,7 @@
 	
 	</form:form>
 	
-    <script type="text/javascript">
+    <script>
     	function initEditor(dataContainerId) {
     		var dataContainer = $(dataContainerId);
     		var val = dataContainer.val();

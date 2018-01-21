@@ -246,7 +246,7 @@
         </iframe>
 
         <c:if test="${generateScreenName}">
-            <script type="text/javascript">
+            <script>
                 function generateScreenName() {
                     var submitUrl = '/api/register/generateScreenName';
                     jQuery.ajax({

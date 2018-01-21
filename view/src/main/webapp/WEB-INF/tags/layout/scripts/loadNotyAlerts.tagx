@@ -3,7 +3,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.0/packaged/jquery.noty.packaged.min.js"><!-- empty --></script>
 
     <!-- Noty configuration -->
-    <script type="text/javascript">
+    <script>
         jQuery.noty.defaults.theme = 'relax';
         jQuery.noty.defaults.type = 'information';
         jQuery.noty.defaults.timeout = 3000;

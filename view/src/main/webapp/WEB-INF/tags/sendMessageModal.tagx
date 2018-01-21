@@ -74,7 +74,7 @@
     <spring:message code="message.modal.buttons.notification.limitexceeded" var="limitExceeded"/>
     <spring:message code="message.modal.buttons.notification.limitexceeded2" var="limitExceeded2"/>
 
-    <script type="text/javascript">
+    <script>
         <![CDATA[
         function checkMessageForm(checkRecipients) {
             var numberOfRecipients = 1;

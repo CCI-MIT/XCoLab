@@ -35,7 +35,7 @@
     </div>
 
 
-    <script type="text/javascript">
+    <script>
 
         function submitSaveAsExistingForm() {
             editButtons__disableDirtyCheckInternal();
@@ -68,14 +68,14 @@
 
     <c:choose>
         <c:when test="${dirtyCheck}">
-            <script type="text/javascript">
+            <script>
                 function editButtons__disableDirtyCheckInternal() {
                     disableDirtyCheck();
                 }
             </script>
         </c:when>
         <c:otherwise>
-            <script type="text/javascript">
+            <script>
                 function editButtons__disableDirtyCheckInternal() {
                     console.debug("Dirty check is disabled");
                 }

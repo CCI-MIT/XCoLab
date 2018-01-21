@@ -9,11 +9,11 @@
         <c:url var="encodedUrl" value="${src}" />
         <c:choose>
             <c:when test="${not empty integrity}">
-                <script src="${encodedUrl}" type="text/javascript"
+                <script src="${encodedUrl}"
                         integrity="${integrity}" crossorigin="anonymous"><!--  --></script>
             </c:when>
             <c:otherwise>
-                <script src="${encodedUrl}" type="text/javascript"><!--  --></script>
+                <script src="${encodedUrl}"><!--  --></script>
             </c:otherwise>
         </c:choose>
     </c:if>

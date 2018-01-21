@@ -57,7 +57,7 @@
     </xcolab:modal>
 
     <c:if test='${show}'>
-        <script type="text/javascript">
+        <script>
             jQuery(function() {
                 jQuery('#ssoLoginModal').modal();
             });

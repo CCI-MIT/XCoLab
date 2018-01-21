@@ -119,7 +119,7 @@
 
     <!-- ============ Globals ============ -->
 
-    <script type="text/javascript">
+    <script>
         var _firstByteDate = new Date();
         var _isLoggedIn = '${_isLoggedIn}' == 'true';
         var _isAdmin = '${_isAdmin}' == 'true';
@@ -258,9 +258,9 @@
     <!-- ============ Load jQuery ============ -->
 
     <!-- Load jQuery early as it's used in content  -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"><!-- empty --></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"><!-- empty --></script>
     <!-- Include CSRF tokens in AJAX calls. -->
-    <script type="text/javascript">
+    <script>
         $.ajaxSetup({
             beforeSend: function(xhr) {
                 var token = $("meta[name='_csrf']").attr("content");
@@ -330,7 +330,7 @@
     <xcolab-scripts:loadNotyAlerts />
     <c:if test="${not empty __alertMessage}">
         <spring:message var="notyMessage" text="${__alertMessage.message}" javaScriptEscape="true" />
-        <script type="text/javascript">
+        <script>
             noty({text: '${notyMessage}', type: '${__alertMessage.type.notyType}'});
         </script>
     </c:if>
@@ -343,7 +343,7 @@
     <xcolab:script src="/vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js" />
 
     <!-- Cookies -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js"
             integrity="sha256-NjbogQqosWgor0UBdCURR5dzcvAgHnfUZMcZ8RCwkk8=" crossorigin="anonymous"><!-- --></script>
 
 

@@ -44,7 +44,7 @@
     </xcolab:modal>
     <!-- /report popup -->
 
-    <script type="text/javascript">
+    <script>
         jQuery("#popup_flagging_form").submit(function(e) {
 
             var $popupFlaggingForm = jQuery("#popup_flagging_form");

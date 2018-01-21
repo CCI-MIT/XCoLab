@@ -196,7 +196,7 @@
                         <form:errors cssClass="alert alert-error" path="contestType" />
                     </div>
                 </div>
-                <script type="text/javascript">
+                <script>
                     <![CDATA[
                     var fieldCounter =0;
                     var validCSV = false;

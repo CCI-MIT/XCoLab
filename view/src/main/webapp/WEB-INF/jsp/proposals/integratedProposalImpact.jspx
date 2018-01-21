@@ -381,7 +381,7 @@
             </c:if>
         </div>
         <c:if test="${edit}">
-            <script type="text/javascript">
+            <script>
                 <![CDATA[
                 jQuery("#saveChangesButton").click(function () {
                     jQuery("#proposalScenarioId").val(jQuery("#modelingScenarioId").val());
@@ -416,13 +416,13 @@
             </script>
 
         </c:if>
-        <script type="text/javascript">
+        <script>
             jQuery(function() {
                 enableDirtyCheck();
             });
         </script>
 
-        <script type="text/javascript">
+        <script>
             var MODEL_DATA_ROW = "GHG emissions";
 
             /*

@@ -164,7 +164,7 @@
     </div>
 
 
-    <script type="text/javascript">
+    <script>
 
         var collectionCards = {};
         <c:forEach var="collectionCard" items="${collectionCardWrapperWhat.allCollectionCards}">

@@ -224,7 +224,7 @@
 
                                 <div id="please_choose_from_list${pointType.id}" class="error" style="display: none;">Please choose a user from the list</div>
                                 <div id="unknownUsersContainer${pointType.id}" class="error" style="display: none;">Unknown user: <p><!-- --></p></div>
-                                <script type="text/javascript">
+                                <script>
                                     jQuery(function() {
                                         initUserAutocomplete(${pointType.id}, ${currentTabWrapped.canEdit});
                                     });
