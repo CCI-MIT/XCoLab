@@ -391,13 +391,6 @@
     </c:if>
     <xcolab:loadScript shouldLoad="${_librariesToLoad['sharedColab']}" src="${_themeJsFolder}/sharedColab.js" />
 
-    <!-- Dynatree -->
-    <!-- TODO: might be unused? -->
-    <!-- jquery.cookie might be required for dynatree -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['Dynatree']}" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js" />
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['Dynatree']}" src="${_libCssFolder}/ui.dynatree.css" />
-    <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['Dynatree']}" href="${_libJsFolder}/jquery.dynatree.min.js" />
-
     <!-- Ddslick -->
     <!-- TODO: only used in proposalJuding.jspx - replace? -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="${_libJsFolder}/jquery.ddslick.min.js" />
