@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:c="http://java.sun.com/jsp/jstl/core">
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <jsp:directive.attribute name="src" type="java.lang.String" required="true" rtexprvalue="true" description="Path to script" />
     <jsp:directive.attribute name="shouldLoad" type="java.lang.String" required="true" rtexprvalue="true" description="Flag to indicate whether the script should be loaded. Fill with loadLibaryX variable." />
@@ -13,7 +14,7 @@
                         integrity="${integrity}" crossorigin="anonymous"><!--  --></script>
             </c:when>
             <c:otherwise>
-                <script src="${encodedUrl}" type="text/javascript"><!--  --></script>
+                <xcolab:script src="${encodedUrl}"/>
             </c:otherwise>
         </c:choose>
     </c:if>

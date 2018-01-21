@@ -17,8 +17,8 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"><!-- --></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.min.css" />
+    <xcolab:script src="/vendor/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js"/>
+    <xcolab:stylesheet href="/vendor/jquery-datetimepicker/build/jquery.datetimepicker.min.css" />
 
     <c:set var="changeElementUrl" value="/admin/contest/manager/tab/SCHEDULES?elementId=" />
     <c:set var="updateContestScheduleUrl" value="/admin/contest/manager/tab/SCHEDULES" />

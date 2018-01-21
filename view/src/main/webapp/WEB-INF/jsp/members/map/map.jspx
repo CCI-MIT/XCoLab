@@ -85,7 +85,7 @@
 
         //dynamically load d3.js
         var d3Script = document.createElement('script');
-        d3Script.src = "https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.4/d3.min.js";
+        d3Script.src = "/vendor/d3/build/d3.min.js";
         d3Script.onload = loadMap;
         document.head.appendChild(d3Script);
 
