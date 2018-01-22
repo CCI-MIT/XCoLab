@@ -34,7 +34,7 @@
 
         <spring:message var="textShowHistory" code="contests.proposal.versions.showhistory" />
         <spring:message var="textHideHistory" code="contests.proposal.versions.hidehistory" />
-        <script type="text/javascript">
+        <script>
             var textShowHistory = '${textShowHistory}';
             var textHideHistory = '${textHideHistory}';
         </script>
@@ -249,7 +249,7 @@
                 });
             });
         </script>
-        <!--<script type="text/javascript">-->
+        <!--<script>-->
             <!--jQuery(function() {-->
                 <!--enableDirtyCheck();-->
             <!--});-->

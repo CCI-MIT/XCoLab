@@ -59,7 +59,8 @@ gulp.task('watch', function() {
 
 //=  Internal tasks
 gulp.task('copy-libs', function() {
-    gulp.src(npmDist({excludes: CONFIG.libs.excludes}), {base: NODE_MODULES_PATH})
+    gulp.src(npmDist({copyUnminified: true, excludes: CONFIG.libs.excludes}),
+                {base: NODE_MODULES_PATH})
             .pipe(gulp.dest(CONFIG.libs.destPath));
 });
 

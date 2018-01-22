@@ -14,7 +14,7 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${currentCategory.name}">
 
-        <script type="text/javascript">
+        <script>
             var hash = window.location.hash;
             if (hash.slice(1, 11) == "discussion") {
                 //found old discussion url -> redirect to new url

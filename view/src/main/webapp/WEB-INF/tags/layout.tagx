@@ -118,7 +118,7 @@
 
     <!-- ============ Globals ============ -->
 
-    <script type="text/javascript">
+    <script>
         var _firstByteDate = new Date();
         var _isLoggedIn = '${_isLoggedIn}' == 'true';
         var _isAdmin = '${_isAdmin}' == 'true';
@@ -257,9 +257,9 @@
     <!-- ============ Load jQuery ============ -->
 
     <!-- Load jQuery early as it's used in content  -->
-    <script type="text/javascript" src="/vendor/jquery/dist/jquery.min.js"><!-- empty --></script>
+    <xcolab:script src="/vendor/jquery/dist/jquery.min.js"/>
     <!-- Include CSRF tokens in AJAX calls. -->
-    <script type="text/javascript">
+    <script>
         $.ajaxSetup({
             beforeSend: function(xhr) {
                 var token = $("meta[name='_csrf']").attr("content");
@@ -329,7 +329,7 @@
     <xcolab-scripts:loadNotyAlerts />
     <c:if test="${not empty __alertMessage}">
         <spring:message var="notyMessage" text="${__alertMessage.message}" javaScriptEscape="true" />
-        <script type="text/javascript">
+        <script>
             noty({text: '${notyMessage}', type: '${__alertMessage.type.notyType}'});
         </script>
     </c:if>
@@ -343,13 +343,14 @@
     <xcolab:script src="/vendor/bootstrap/dist/js/bootstrap.min.js" />
 
     <!-- Cookies -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js"
-            integrity="sha256-NjbogQqosWgor0UBdCURR5dzcvAgHnfUZMcZ8RCwkk8=" crossorigin="anonymous"><!-- --></script>
+    <!-- TODO COLAB-2546: not minified-->
+    <!--<xcolab:script src="/vendor/js-cookie/src/js.cookie.min.js"/>-->
+    <xcolab:script src="/vendor/js-cookie/src/js.cookie.js"/>
 
 
     <!-- ============ On demand libraries ============ -->
 
-    <!-- TODO: what are we using this for? Do we really need it on all pages? -->
+    <!-- TODO COLAB-2545: what are we using this for? Do we really need it on all pages? -->
     <xcolab:requireLibrary name="jQuery UI" />
 
     <!-- jQuery UI -->
@@ -364,22 +365,23 @@
     </c:if>
 
     <!-- Spin.js -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js" />
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="${_themeJsFolder}/proposals/jquery.spin.js"/>
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="/vendor/spin.js/spin.min.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="/vendor/spin.js/jquery.spin.js"/>
 
-    <!-- TODO: where is this used? -->
+    <!-- TODO COLAB-2545: only used in mitigration impact tab; requires jquery UI -->
     <xcolab:script src="${_themeJsFolder}/proposals/jquery.scrolltable.js"/>
 
     <!-- AutoSuggest -->
     <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['autoSuggest']}" href="${_libCssFolder}/autoSuggest.css" />
 
     <!-- Handlebars.js-->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['handlebars.js']}" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.js"
-                       integrity="sha256-nIunjfwyLHiGyWSLQHt+o16X6Z3W+zItLbf3Xgs/9YM="/>
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['handlebars.js']}" src="/vendor/handlebars/dist/handlebars.min.js"/>
 
     <!-- CkEditor -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['CKEditor']}" src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/ckeditor.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['CKEditor']}" src="/vendor/ckeditor/ckeditor.js" />
     <xcolab:loadScript shouldLoad="${_librariesToLoad['CKEditor']}" src="${_themeJsFolder}/configureCkEditor.js" />
+
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['papaparse']}" src="/vendor/papaparse/papaparse.min.js" />
 
     <!-- i18n scripts -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['i18n']}" src="${_themeJsFolder}/i18n.js" />
@@ -391,18 +393,11 @@
     </c:if>
     <xcolab:loadScript shouldLoad="${_librariesToLoad['sharedColab']}" src="${_themeJsFolder}/sharedColab.js" />
 
-    <!-- Dynatree -->
-    <!-- TODO: might be unused? -->
-    <!-- jquery.cookie might be required for dynatree -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['Dynatree']}" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js" />
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['Dynatree']}" src="${_libCssFolder}/ui.dynatree.css" />
-    <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['Dynatree']}" href="${_libJsFolder}/jquery.dynatree.min.js" />
-
     <!-- Ddslick -->
     <!-- TODO: only used in proposalJuding.jspx - replace? -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="${_libJsFolder}/jquery.ddslick.min.js" />
 
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['clipboard.js']}" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['clipboard.js']}" src="/vendor/clipboard/dist/clipboard.min.js" />
     
     <xcolab:script src="${_themeJsFolder}/initScript.js" />
 

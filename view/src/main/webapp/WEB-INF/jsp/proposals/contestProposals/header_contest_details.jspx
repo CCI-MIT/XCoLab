@@ -194,7 +194,7 @@
 
     <!-- sponsor and action possible integrations-->
 
-    <script type="text/javascript">
+    <script>
 
         jQuery(function () {
             var readMoreLink = document.querySelector("#readMoreLink");
