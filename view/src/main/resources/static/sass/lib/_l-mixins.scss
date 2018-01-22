@@ -1,4 +1,5 @@
 @import "l-functions";
+@import "bootstrap-sass/bootstrap/variables";
 
 @mixin background-gradient($base-color, $image-url: null, $image-padding: 0) {
   background-color: $base-color;
@@ -8,5 +9,43 @@
     background: $image-url no-repeat, simple-gradient($base-color);
     background-size: contain;
     padding-left: $image-padding;
+  }
+}
+
+//= Mixins for media queries
+
+@mixin phone-only {
+  @media (max-width: $screen-xs-max) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $screen-sm-min) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $screen-md-min) {
+    @content;
+  }
+}
+
+@mixin desktop-only {
+  @media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+    @content;
+  }
+}
+
+@mixin desktop-lg {
+  @media (min-width: $screen-lg-min) {
+    @content;
   }
 }

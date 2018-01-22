@@ -20,7 +20,7 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
   @if $c-Footer__menu__background__isSimple {
     background: $c-Footer__menu__backgroundColor;
   } @else {
-    background: url(/images/bg-noise.png) $c-Footer__menu__backgroundColor;
+    background: url(/images/bg-noise.png), $c-Footer__menu__backgroundColor;
   }
 
   box-shadow: $c-Footer__menu__boxShadow;
@@ -79,7 +79,7 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
       padding-bottom: 2px;
       border-bottom: 1px solid $t-Color__grey--light;
       font-size: 12px;
-      font-weight: $b-Typography__fontWeight--bold;
+      font-weight: $t-Typography__fontWeight--bold;
       color: black;
 
       &:hover {

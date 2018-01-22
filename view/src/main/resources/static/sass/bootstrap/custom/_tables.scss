@@ -1,0 +1,18 @@
+@import "../../variables/t-base";
+@import "bootstrap-sass/bootstrap/mixins/table-row";
+
+// Custom variants
+
+@include table-row-variant('primary', $t-Color__primary);
+@include table-row-variant('gray', $t-Color__grey--light);
+
+.table {
+  .primary {
+    th {
+      color: white;
+    }
+  }
+  th.primary {
+    color: white;
+  }
+}

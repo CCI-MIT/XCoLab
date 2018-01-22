@@ -21,7 +21,7 @@ $c-Form__selectBox__input__span__textColor: $t-Color__accent !default;
   span {
     font-size: 11px;
     font-style: normal;
-    font-weight: $b-Typography__fontWeight--bold;
+    font-weight: $t-Typography__fontWeight--bold;
     color: $c-Form__selectBox__span__textColor;
   }
 }
@@ -45,7 +45,7 @@ input.c-Form__selectbox, input[type='text'].c-Form__selectbox { //input.selectbo
   span {
     font-size: 13px;
     font-style: normal;
-    font-weight: $b-Typography__fontWeight--bold;
+    font-weight: $t-Typography__fontWeight--bold;
     color: $c-Form__selectBox__input__span__textColor;
   }
 }

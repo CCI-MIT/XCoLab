@@ -13,13 +13,7 @@ table, tbody, tfoot, thead, tr, th, td {
   word-break: normal !important;
 }
 
-img {
-  border: none;
-}
-
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
   width: 100%;
 }
 
@@ -30,12 +24,4 @@ td {
 td, th {
   text-align: left;
   line-height: normal;
-}
-
-a:active {
-  outline: 0;
-}
-
-:focus {
-  outline: 0;
 }

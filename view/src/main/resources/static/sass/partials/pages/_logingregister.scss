@@ -31,7 +31,7 @@
 .popupreg_txt {
   float: left;
   text-align: right;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
   width: 220px;
   height: 27px;
   padding: 6px 20px 0 0;
@@ -69,7 +69,7 @@
 
 .inputLimitContainer.overflow {
   color: #b00;
-  font-weight: $b-Typography__fontWeight--bold;
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .required-field:after {
