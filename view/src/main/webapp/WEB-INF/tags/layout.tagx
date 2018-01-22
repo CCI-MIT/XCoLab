@@ -378,8 +378,19 @@
     <xcolab:loadScript shouldLoad="${_librariesToLoad['handlebars.js']}" src="/vendor/handlebars/dist/handlebars.min.js"/>
 
     <!-- CkEditor -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['CKEditor']}" src="/vendor/ckeditor/ckeditor.js" />
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['CKEditor']}" src="${_themeJsFolder}/configureCkEditor.js" />
+    <c:if test="${_librariesToLoad['CKEditor']}">
+        <!-- URL encode to set base path correctly for CDN -->
+        <c:url var="encodedCkEditorUrl" value="/vendor/ckeditor/ckeditor.js"/>
+        <script>
+            function stripFileNameFromUrl(url) {
+                return url.substring(0, url.lastIndexOf('/') + 1);
+            }
+            var CKEDITOR_BASEPATH = stripFileNameFromUrl('${encodedCkEditorUrl}');
+        </script>
+        <xcolab:script src="${encodedCkEditorUrl}" />
+        <xcolab:script src="${_themeJsFolder}/configureCkEditor.js" />
+    </c:if>
+
 
     <xcolab:loadScript shouldLoad="${_librariesToLoad['papaparse']}" src="/vendor/papaparse/papaparse.min.js" />
 
