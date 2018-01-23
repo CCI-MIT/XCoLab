@@ -5,8 +5,8 @@
 
     <!-- Note: requires tooltipster -->
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"><!-- empty --></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data-2012-2022.min.js"><!-- empty --></script>
+    <xcolab:script src="/vendor/moment/min/moment.min.js"/>
+    <xcolab:script src="/vendor/moment-timezone/builds/moment-timezone-with-data-2012-2022.min.js"/>
 
     <script>
         var _userTimeZone = moment.tz.guess();
@@ -14,9 +14,9 @@
 
     <c:if test="${not empty locale and locale ne 'en' and locale ne 'en-US'}">
         <!--suppress JSUnresolvedLibraryURL -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/${locale}.js"><!-- empty --></script>
+        <xcolab:script src="/vendor/moment/locale/${locale}.js"/>
         <script>
-            moment.locale('${_locale}');
+            moment.locale('${locale}');
         </script>
     </c:if>
 

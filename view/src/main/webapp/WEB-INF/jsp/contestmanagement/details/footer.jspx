@@ -1,6 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
 
-	<script type="text/javascript">
+	<script>
 		jQuery(function() {
 			enableDirtyCheck();
 		});

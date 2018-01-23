@@ -10,7 +10,7 @@
             <p>
                 Use popup to login or click <a rel="nofollow" href="javascript:deferUntilLogin();">here</a>.
             </p>
-            <script type="text/javascript">
+            <script>
                 jQuery(function() {
                     $('#loginModal').modal();
                 });

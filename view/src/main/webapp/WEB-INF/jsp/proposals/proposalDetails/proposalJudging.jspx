@@ -110,7 +110,7 @@
 
     <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
         <xcolab:requireLibrary name="ddslick"/>
-        <script type="text/javascript">
+        <script>
             jQuery(function() {
                 var $judgesSelectElement = jQuery('#judges-select');
                 $judgesSelectElement.ddslick({
@@ -127,7 +127,7 @@
         </script>
     </c:if>
 
-    <script type="text/javascript">
+    <script>
         jQuery(function() {
             jQuery("#saveProposalJudging").click(function () {
                 disableDirtyCheck();

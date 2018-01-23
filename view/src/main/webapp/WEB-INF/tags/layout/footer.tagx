@@ -62,7 +62,7 @@
                 <c:if test="${_showShareButtons}">
                     <!-- TODO : better styling; get rid of style attribute -->
                     <div class="pull-right" style="margin-top: 4px;">
-                        <xcolab-social:socialFollowButton />
+                        <xcolab-social:socialFollowButtons />
                     </div>
                 </c:if>
             </div>

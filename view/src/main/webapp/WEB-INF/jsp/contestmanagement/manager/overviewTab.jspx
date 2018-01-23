@@ -197,7 +197,7 @@
 		</form:form>
 	</div>
 
-	<script type="text/javascript">
+	<script>
 		<![CDATA[
 
 		var MASS_MESSAGE_SELECT_ID = 'MESSAGE';

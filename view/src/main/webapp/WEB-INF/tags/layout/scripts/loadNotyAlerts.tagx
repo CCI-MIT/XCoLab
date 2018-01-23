@@ -1,9 +1,10 @@
-<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.0/packaged/jquery.noty.packaged.min.js"><!-- empty --></script>
+    <xcolab:script src="/vendor/noty/js/noty/packaged/jquery.noty.packaged.min.js" />
 
     <!-- Noty configuration -->
-    <script type="text/javascript">
+    <script>
         jQuery.noty.defaults.theme = 'relax';
         jQuery.noty.defaults.type = 'information';
         jQuery.noty.defaults.timeout = 3000;

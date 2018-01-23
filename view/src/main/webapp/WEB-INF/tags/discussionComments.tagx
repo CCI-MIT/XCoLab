@@ -94,7 +94,7 @@
                         <spring:message code="discussion.commmentstag.share"/>:
 
                         <div>
-                            <xcolab-social:socialShareButton title="${shareTitlePageScope}" size="xs"/>
+                            <xcolab-social:socialShareButtons title="${shareTitlePageScope}" size="xs"/>
                         </div>
 					</div>
 				</c:if>
@@ -149,7 +149,7 @@
 
                                         <c:if test="${_showShareButtons}">
                                             <div style="float: left">
-                                                <xcolab-social:socialShareButton title="${shareTitlePageScope}" dataReference="#_message_${message.commentId}" size="xs"/>
+                                                <xcolab-social:socialShareButtons title="${shareTitlePageScope}" dataReference="#_message_${message.commentId}" size="xs"/>
                                             </div>
                                         </c:if>
 
@@ -265,7 +265,7 @@
             });
         </script>
 
-		<script type="text/javascript">
+		<script>
 			jQuery(function() {
                 jQuery('#popup_flagging_form_targetType').attr('value', 'COMMENT');
                 <c:forEach items="${reportTargets}" var="reportTarget">

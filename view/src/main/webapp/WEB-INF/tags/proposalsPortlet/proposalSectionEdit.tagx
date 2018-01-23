@@ -120,7 +120,7 @@
 
 
 				<c:if test="${section.type == 'PROPOSAL_LIST_TEXT_REFERENCE'}">
-					<script type="text/javascript">
+					<script>
 						if (!sectionContestTypeNames) { var sectionContestTypeNames = {}; }
 						sectionContestTypeNames[${section.sectionDefinitionId}] = ['${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}']
 					</script>
@@ -139,7 +139,7 @@
 			</c:otherwise>
 		</c:choose>
     </div>
-    <script type="text/javascript">
+    <script>
         jQuery(".addpropform .helpTrigger").each(function() {
             var trigger = jQuery(this);
             trigger.parent().parent().find(".addprophelp").slideDown(0);

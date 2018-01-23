@@ -101,7 +101,7 @@
         </div>
     </c:if>
     <c:if test="${not empty filterUserId}">
-        <script type="text/javascript">
+        <script>
             var filterSettings = {
                 filterUserId: ${filterUserId},
                 filterUserName: '${filterUser.screenName}'

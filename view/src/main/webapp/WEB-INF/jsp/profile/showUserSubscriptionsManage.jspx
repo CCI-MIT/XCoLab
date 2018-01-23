@@ -104,7 +104,7 @@
 
     <div class="clearfix"><!-- --></div>
 
-    <script type="text/javascript">
+    <script>
         jQuery("#checkboxSelectAll").change(function () {
             if (document.getElementById('checkboxSelectAll').checked) {
                 selectAllSubscriptions();

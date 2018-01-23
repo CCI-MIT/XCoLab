@@ -54,6 +54,9 @@ hs_err_pid*
 binaries/
 bundle/
 
+# Unignore maven wrapper
+!/.mvn/wrapper/maven-wrapper.jar
+
 # Maven frontend plugin
 node_modules/
 node/

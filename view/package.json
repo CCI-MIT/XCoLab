@@ -17,12 +17,26 @@
     "Safari >= 6"
   ],
   "dependencies": {
-    "bootstrap-sass": "https://github.com/jobachhu/bootstrap-sass"
+    "blueimp-file-upload": "^9.19.3",
+    "bootstrap-sass": "https://github.com/jobachhu/bootstrap-sass",
+    "ckeditor": "4.6.1",
+    "clipboard": "^1.7.1",
+    "d3": "^4.12.2",
+    "handlebars": "1.3.0",
+    "jquery": "1.12.4",
+    "jquery-datetimepicker": "^2.5.16",
+    "js-cookie": "^2.2.0",
+    "moment": "^2.20.1",
+    "moment-timezone": "^0.5.14",
+    "noty": "^2.4.1",
+    "papaparse": "^4.3.6",
+    "spin.js": "2.3.2",
+    "tooltipster": "^4.2.5"
   },
   "devDependencies": {
-    "autoprefixer": "^7.2.3",
+    "autoprefixer": "^7.2.5",
     "css-mqpacker": "^6.0.1",
-    "cssnano": "^3.10.0",
+    "cssnano": "^4.0.0-rc.2",
     "eyeglass": "^1.3.0",
     "gulp": "^3.9.1",
     "gulp-noop": "^1.0.0",

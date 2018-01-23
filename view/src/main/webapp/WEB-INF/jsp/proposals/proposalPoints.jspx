@@ -59,7 +59,7 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <script type="text/javascript">
+            <script>
 
                 jQuery(function() {
                     initUserAssignmentInputs();

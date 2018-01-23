@@ -430,8 +430,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>${maven-surefire-plugin.version}</version>
                         <configuration combine.self="override">
-                            <forkCount>2</forkCount>
-                            <reuseForks>true</reuseForks>
+                            <forkCount>1</forkCount>
                             <argLine>-Xmx512m -Xms256m</argLine>
                             <includes>
                                 <include>**/*ControllerTest.java</include>

@@ -8,13 +8,13 @@
     <c:url var="encodedUrl" value="${src}" />
     <c:choose>
         <c:when test="${async}">
-            <script src="${encodedUrl}" type="text/javascript" async="async"><!--  --></script>
+            <script src="${encodedUrl}" async="async"><!--  --></script>
         </c:when>
         <c:when test="${defer}">
-            <script src="${encodedUrl}" type="text/javascript" defer="defer"><!--  --></script>
+            <script src="${encodedUrl}" defer="defer"><!--  --></script>
         </c:when>
         <c:otherwise>
-            <script src="${encodedUrl}" type="text/javascript"><!--  --></script>
+            <script src="${encodedUrl}"><!--  --></script>
         </c:otherwise>
     </c:choose>
 </jsp:root>

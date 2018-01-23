@@ -280,7 +280,7 @@
 		</div>
 	</c:if>
 
-	<script type="text/javascript">
+	<script>
 		<![CDATA[
 
 		jQuery(function(){

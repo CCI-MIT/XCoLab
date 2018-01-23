@@ -92,7 +92,7 @@
             <div class="c-Box boxColor--light clearfix">
                 <c:if test="${_showShareButtons}">
                     <div>
-                        <xcolab-social:socialShareButton title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
+                        <xcolab-social:socialShareButtons title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
                     </div>
                 </c:if>
                 <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
@@ -241,7 +241,7 @@
             </c:if>
         </div>
 
-        <script type="text/javascript">
+        <script>
             jQuery(function() {
                 jQuery('#popup_flagging_form_targetType').attr('value', 'PROPOSAL');
                 <c:forEach items="${reportTargets}" var="reportTarget">
