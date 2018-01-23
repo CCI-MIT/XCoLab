@@ -170,13 +170,14 @@
                     <code>emailAddress;firstName;lastName</code>
                 </div>
                 <div>
-                <form:textarea id="batchRegisterMembersList" name="members" class="form-control"
-                          placeholder="Enter members..." style="width: 100%;" value="${batchRegisterBean.batchText}"><!-- --></form:textarea>
+                <form:textarea id="batchRegisterMembersList" name="batchText" class="form-control" path="batchText"
+                               style="width: 100%;" value="${batchRegisterBean.batchText}" />
                 </div>
                 <div class="checkbox">
                     <label>
                         <!-- TODO COLAB-2204: remove style attribute once input float rule is removed -->
-                        <form:input type="checkbox" name="asGuests" style="float: none; height: initial;" value="${batchRegisterBean.asGuests}"/>
+                        <form:input type="checkbox" name="asGuests" path="asGuests"
+                                    style="float: none; height: initial;" value="${batchRegisterBean.asGuests}"/>
                         <span class="js-Tooltip" title="Guests cannot create proposals or participate in dicussions">
                             Register as guests
                         </span>
