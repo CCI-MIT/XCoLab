@@ -6,7 +6,9 @@ var postcss      = require('gulp-postcss');
 var sourcemaps   = require('gulp-sourcemaps');
 var autoprefixer = require('autoprefixer');
 var mqpacker = require('css-mqpacker');
-var cssnano = require('cssnano');
+var cssnano = require('cssnano')({
+    preset: 'default'
+});
 
 var sass = require("gulp-sass");
 var eyeglass = require("eyeglass");
@@ -65,7 +67,7 @@ function compileSass(shouldPostProcess) {
             .pipe(shouldPostProcess ? postcss([
                 autoprefixer(), // add vendor prefixes
                 mqpacker(), // combine media queries
-                cssnano() // minify CSS
+                cssnano // minify CSS
             ]) : noop())
             .pipe(sourcemaps.write('.'))
             .pipe(gulp.dest(CONFIG.sass.destPath));
