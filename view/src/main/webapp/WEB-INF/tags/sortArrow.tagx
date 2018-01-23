@@ -2,19 +2,19 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <jsp:directive.attribute name="sortAscending" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Ascending" />
-    <jsp:directive.attribute name="sortColumn" type="java.lang.String" required="true" rtexprvalue="true" description="Sort column" />
-    <jsp:directive.attribute name="currentColumn" type="java.lang.String" required="true" rtexprvalue="true" description="Current column" />
+    <jsp:directive.attribute name="sortColumn" type="java.lang.String" required="false" rtexprvalue="true" description="Sort column" />
+    <jsp:directive.attribute name="currentColumn" type="java.lang.String" required="false" rtexprvalue="true" description="Current column" />
 
-    <c:if test="${sortColumn == currentColumn }">
-        <div class="c-Table__sortArrow">
+    <c:if test="${empty sortColumn or sortColumn == currentColumn }">
+        <div class="c-Table__sortArrow js-Table__sortArrow">
             <c:choose>
                 <c:when test="${sortAscending }">
                     <span class="dropup">
-                        <span class="caret"></span>
+                        <span class="caret"><!-- --></span>
                     </span>
                 </c:when>
                 <c:otherwise>
-                    <span class="caret"></span>
+                    <span class="caret"><!-- --></span>
                 </c:otherwise>
             </c:choose>
         </div>

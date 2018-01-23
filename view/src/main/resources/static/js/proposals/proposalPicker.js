@@ -305,13 +305,10 @@ var inputHandler =  function(){
 
 // SORT ARROWS
 
-var sortArrowDown = '<div class="c-Table__sortArrow"><img src="/images/sort-arrow-down.png"></div>';
-var sortArrowUp = '<div class="c-Table__sortArrow"><img src="/images/sort-arrow-up.png"></div>';
-
 function sortByColumn(link, column){
     // remove all sort arrows
     link.parent().parent().children().each(function() {
-        $(this).children().remove('.c-Table__sortArrow');
+        $(this).children().remove('.js-Table__sortArrow');
     });
 
     if (sortOrder == 'ASC'){
