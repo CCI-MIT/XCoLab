@@ -176,7 +176,7 @@
                 <div class="checkbox">
                     <label>
                         <!-- TODO COLAB-2204: remove style attribute once input float rule is removed -->
-                        <form:input type="checkbox" name="asGuests" path="asGuests"
+                        <form:checkbox name="asGuests" path="asGuests"
                                     style="float: none; height: initial;" value="${batchRegisterBean.asGuests}"/>
                         <span class="js-Tooltip" title="Guests cannot create proposals or participate in dicussions">
                             Register as guests
