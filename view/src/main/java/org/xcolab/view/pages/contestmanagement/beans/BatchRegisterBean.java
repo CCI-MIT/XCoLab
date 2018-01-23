@@ -20,6 +20,27 @@ public class BatchRegisterBean implements Serializable {
     @NotBlank
     private String email;
 
+    @NotBlank
+    private Boolean asGuests;
+
+    @NotBlank
+    private String batchText;
+
+    public String getBatchText() {
+        return batchText;
+    }
+
+    public void setBatchText(String batchText) {
+        this.batchText = batchText;
+    }
+
+    public Boolean getAsGuests() {
+        return asGuests;
+    }
+
+    public void setAsGuest(Boolean asGuests) {
+        this.asGuests = asGuests;
+    }
 
     public String getFirstName() {
         return firstName;

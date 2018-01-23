@@ -13,6 +13,8 @@
     <!--@elvariable id="level" type="java.lang.Integer"-->
     <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
+    <!--@elvariable id="registerBatchBean" type="org.xcolab.portlets.contestmanagement.beans.BatchRegisterBean"-->
+
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
@@ -160,7 +162,7 @@
 
         <div class="addpropbox">
             <h2>Batch register members</h2>
-            <form action="/admin/contest/manager/tab/ADMIN/batchRegister" method="post">
+            <form:form action="/admin/contest/manager/tab/ADMIN/batchRegister" method="post" commandName="batchRegisterBean" id="batchRegisterForm">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="c-Alert__info__message" for="batchRegisterMembersList">
                     Each member will receive an email with a link that allows them to sign in.
@@ -168,20 +170,20 @@
                     <code>emailAddress;firstName;lastName</code>
                 </div>
                 <div>
-                <textarea id="batchRegisterMembersList" name="members" class="form-control"
-                          placeholder="Enter members..." style="width: 100%;"><!-- --></textarea>
+                <form:textarea id="batchRegisterMembersList" name="members" class="form-control"
+                          placeholder="Enter members..." style="width: 100%;" value="${batchRegisterBean.batchText}"><!-- --></form:textarea>
                 </div>
                 <div class="checkbox">
                     <label>
                         <!-- TODO COLAB-2204: remove style attribute once input float rule is removed -->
-                        <input type="checkbox" name="asGuests" style="float: none; height: initial;"/>
+                        <form:input type="checkbox" name="asGuests" style="float: none; height: initial;" value="${batchRegisterBean.asGuests}"/>
                         <span class="js-Tooltip" title="Guests cannot create proposals or participate in dicussions">
                             Register as guests
                         </span>
                     </label>
                 </div>
                 <button type="submit" class="c-Button__primary">Register members</button>
-            </form>
+            </form:form>
         </div>
 
         <div class="addpropbox">
