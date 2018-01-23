@@ -28,7 +28,7 @@ var CONFIG = {
                 modules: [
                     {
                         name: "bootstrap",
-                        main: function(eyeglass, sass) {
+                        main: function() {
                             return {
                                 sassDir: NODE_MODULES_PATH + '/bootstrap/scss'
                             }
