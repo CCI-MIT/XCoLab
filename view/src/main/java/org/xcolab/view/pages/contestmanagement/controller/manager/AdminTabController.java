@@ -26,6 +26,7 @@ import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
@@ -117,6 +118,9 @@ public class AdminTabController extends AbstractTabController {
         model.addAttribute("buildCommit", getBuildCommit());
         model.addAttribute("javaVersion", Runtime.class.getPackage().getImplementationVersion());
         model.addAttribute("javaVendor", Runtime.class.getPackage().getImplementationVendor());
+
+        BatchRegisterBean batchRegisterBean = new BatchRegisterBean();
+        model.addAttribute("batchRegisterBean", batchRegisterBean);
 
         return TAB_VIEW;
     }
