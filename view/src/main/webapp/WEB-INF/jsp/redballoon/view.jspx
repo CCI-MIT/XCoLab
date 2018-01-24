@@ -20,9 +20,9 @@
             <form:form modelAttribute="userEmailBean" id="sendUserEmailForm"
                        action="/snp/socialnetworkprize" method="post">
                 <form:errors path="acceptTos" class="c-Alert c-Alert__error"/>
-                <div class="checkbox">
-                    <label>
-                        <form:checkbox path="acceptTos" />
+                <div class="form-check">
+                    <form:checkbox path="acceptTos" class="form-check-input" id="acceptTos" />
+                    <label class="form-check-label" for="acceptTos">
                         Yes, I have read and I agree to the terms of the <a href="" data-toggle="modal" data-target="#snpConsentFormModal">consent form</a>.
                     </label>
                 </div>

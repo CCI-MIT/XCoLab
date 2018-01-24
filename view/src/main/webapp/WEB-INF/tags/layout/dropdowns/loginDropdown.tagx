@@ -38,11 +38,9 @@
                         <spring:message code="homepage.login.password" var="passwordplaceholder"/>
                         <input name="password" type="password" class="form-control" placeholder="${passwordplaceholder}" />
                     </div>
-                    <div class="checkbox">
-                        <label>
-                            <input id="header__remember-me" type="checkbox" name="remember-me" checked="checked" />
-                            <spring:message code="homepage.login.rememberme"/>
-                        </label>
+                    <div class="form-check">
+                        <input class="form-check-input" id="header__remember-me" type="checkbox" name="remember-me" checked="checked" />
+                        <label class="form-check-label" for="header__remember-me"><spring:message code="homepage.login.rememberme"/></label>
                     </div>
                     <a href="javascript:;" onclick="showForgotPasswordModal()">
                         <em><spring:message code="homepage.login.forgotyourpassword"/></em>
