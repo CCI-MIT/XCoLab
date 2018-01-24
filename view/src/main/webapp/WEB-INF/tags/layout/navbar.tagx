@@ -81,8 +81,8 @@
                         <c:set var="navItemRightClass" value="${isShowIcons ? 'bs-navitem-icon' : 'bs-navitem-text bs-navitem--small'}" />
                         <c:choose>
                             <c:when test="${member != null}">
-                                <li class="nav-item bs-navitem-merge-right">
-                                    <a class="nav-link dropdown-toggle bs-dropdown-toggle--no-caret js-DropdownToggle" data-target="#user-dropdown">
+                                <li class="nav-item bs-nav-item-multi-line c-Header__displayName d-inline-flex align-items-center">
+                                    <a class="nav-link dropdown-toggle bs-dropdown-toggle--no-caret js-DropdownToggle p-2" data-target="#user-dropdown">
                                         ${member.displayName}
                                     </a>
                                 </li>

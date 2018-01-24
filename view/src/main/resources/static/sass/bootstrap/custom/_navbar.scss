@@ -30,6 +30,14 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__grey--medium, .7);
     font-weight: $c-Header__menu__li__a__fontWeight;
   }
 
+  .nav-item {
+    &.bs-nav-item-multi-line {
+      height: $_navbar__height;
+      .nav-link {
+        line-height: normal;
+      }
+    }
+  }
 
   .bs-nav-item-icon {
 
