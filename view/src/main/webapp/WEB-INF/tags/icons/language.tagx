@@ -1,0 +1,7 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
+
+    <jsp:directive.attribute name="cssClass" type="java.lang.String" required="false" rtexprvalue="true" description="Extra CSS classes" />
+
+    <!-- TODO: update to SVG -->
+    <img src="/images/earth-grid-select-language-button.png" aria-hidden="true" />
+</jsp:root>
