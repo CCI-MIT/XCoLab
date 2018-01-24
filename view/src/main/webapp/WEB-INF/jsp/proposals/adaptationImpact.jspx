@@ -142,14 +142,18 @@
                                 <div class="input-group input-group-sm">
                                     <form:input path="values[${category.name()}].minPercentReduction"
                                                 cssClass="form-control text-center" type="number" />
-                                    <span class="input-group-addon">%</span>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
                                 </div>
                             </td>
                             <td class="gray">
                                 <div class="input-group input-group-sm">
                                     <form:input path="values[${category.name()}].maxPercentReduction"
                                                 cssClass="form-control text-center" type="number" />
-                                    <span class="input-group-addon">%</span>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
