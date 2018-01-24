@@ -58,9 +58,9 @@
             <form:hidden path="proposalId" />
             <form:hidden path="authorId" />
             <table class="table table-bordered">
-                <thead>
+                <thead class="thead-dark">
                 <tr>
-                    <th colspan="3">
+                    <th colspan="3" class="bg-white">
 
                     </th>
                     <th colspan="4" class="primary text-center">
