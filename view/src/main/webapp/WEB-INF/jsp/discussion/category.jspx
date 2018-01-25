@@ -25,16 +25,28 @@
         </script>
         <xcolab:content articleId="${communityTopContentArticleId}" />
         <div id="content">
-            <div id="bread" class="pro">
-                <a href="/members"><spring:message code="colab.breadcrums.community"/></a>&#160;
-                <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-                <a href="/discussion"><spring:message code="colab.breadcrums.discussion"/></a>
-                <c:if test="${not empty currentCategory}">
-                    &#160;
-                    <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-                    <a href="${currentCategory.linkUrl}">${currentCategory.name}</a>&#160;
-                </c:if>
-            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
+                    </li>
+                    <c:choose>
+                        <c:when test="${not empty currentCategory}">
+                            <li class="breadcrumb-item">
+                                <a href="/discussion">
+                                    <spring:message code="colab.breadcrums.discussion"/>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">${currentCategory.name}</li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <spring:message code="colab.breadcrums.discussion"/>
+                            </li>
+                        </c:otherwise>
+                    </c:choose>
+                </ol>
+            </nav>
 
             <div class="c-Comment__threads">
                 <div>
