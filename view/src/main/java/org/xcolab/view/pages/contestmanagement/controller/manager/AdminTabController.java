@@ -130,6 +130,7 @@ public class AdminTabController extends AbstractTabController {
         }
         model.addAttribute("votingReportBean", new VotingReportBean());
         model.addAttribute("proposalReportBean", new ProposalReportBean());
+        model.addAttribute("batchRegisterBean", new BatchRegisterBean());
 
         List<Notification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
@@ -137,9 +138,6 @@ public class AdminTabController extends AbstractTabController {
         model.addAttribute("buildCommit", getBuildCommit());
         model.addAttribute("javaVersion", Runtime.class.getPackage().getImplementationVersion());
         model.addAttribute("javaVendor", Runtime.class.getPackage().getImplementationVendor());
-
-        BatchRegisterBean batchRegisterBean = new BatchRegisterBean();
-        model.addAttribute("batchRegisterBean", batchRegisterBean);
 
         return TAB_VIEW;
     }
@@ -224,8 +222,8 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/batchRegister")
     public String batchRegisterMembers(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String batchText, @RequestParam(defaultValue = "false") Boolean asGuests) {
-        final String[] memberStrings = batchText.split("\\r\\n|\\n|\\r");
+            BatchRegisterBean batchRegisterBean) {
+        final String[] memberStrings = batchRegisterBean.getBatchText().split("\\r\\n|\\n|\\r");
 
         for (String memberString : memberStrings) {
             final String[] values = memberString.split(";");
@@ -261,7 +259,7 @@ public class AdminTabController extends AbstractTabController {
             String lastName = values[2];
 
             Member member = loginRegisterService.autoRegister(email, firstName, lastName);
-            if (asGuests) {
+            if (batchRegisterBean.getAsGuests()) {
                 MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
                 MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
             }
