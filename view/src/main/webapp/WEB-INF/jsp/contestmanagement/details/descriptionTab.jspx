@@ -50,18 +50,18 @@
                             class="limit_charactersMax">60</span> characters
                     </div>
                     <c:if test="${not contestWrapper.contestActive}">
-                        <div class="checkbox">
-                            <label>
-                                <form:checkbox path="shouldUpdateContestUrlName"/>
+                        <div class="form-check">
+                            <form:checkbox path="shouldUpdateContestUrlName" cssClass="form-check-input" id="shouldUpdateContestUrlName"/>
+                            <label class="form-check-label" for="shouldUpdateContestUrlName">
                                 update contest URLs (<strong>Warning:</strong> Contest URL will change if checked)<br/>
                             </label>
                         </div>
                     </c:if>
 
                     <c:if test="${not contestWrapper.contestActive}">
-                        <div class="checkbox">
-                            <label>
-                                <form:checkbox path="isSharedContest"/>
+                        <div class="form-check">
+                            <form:checkbox path="isSharedContest" cssClass="form-check-input" id="isSharedContest"/>
+                            <label class="form-check-label" for="isSharedContest">
                                 shared contest(<strong>Warning:</strong> This will create a SHARED Contest between partner colabs)<br/>
                             </label>
                         </div>

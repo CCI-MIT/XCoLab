@@ -29,9 +29,9 @@
                 <form:input path="allProposalsUrl" cssClass="form-control" />
             </div>
 
-            <div class="checkbox">
-                <label>
-                    <form:checkbox path="compact" />
+            <div class="form-check">
+                <form:checkbox path="compact" class="form-check-input" id="compact"/>
+                <label class="form-check-label" for="compact">
                     Compact display (text only)
                 </label>
             </div>

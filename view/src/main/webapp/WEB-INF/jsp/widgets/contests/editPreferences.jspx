@@ -21,9 +21,9 @@
                 <label>Enter all contests link url</label>
                 <form:input path="allContestsUrl" cssClass="form-control" />
             </div>
-            <div class="checkbox">
-                <label>
-                    <form:checkbox path="showCounts" />
+            <div class="form-check">
+                <form:checkbox path="showCounts" class="form-check-input" id="showCounts"/>
+                <label class="form-check-label" for="showCounts">
                     Show counts
                 </label>
             </div>

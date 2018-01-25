@@ -1,0 +1,46 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:spring="http://www.springframework.org/tags">
+
+    <jsp:directive.attribute name="member" type="org.xcolab.client.members.pojo.Member" required="true" rtexprvalue="true" description="The logged in member" />
+    <jsp:directive.attribute name="blogAdminUrl" type="java.lang.String" required="true" rtexprvalue="true" description="The blog admin url" />
+
+    <ul class="dropdown-menu dropdown-menu-right text-nowrap">
+        <li class="dropdown-item">
+            <a href="/members/profile/${member.userId}">
+                <spring:message code="homepage.menu.user.myprofile" />
+            </a>
+        </li>
+        <li class="dropdown-item">
+            <a href="/messaging">
+                <spring:message code="homepage.menu.user.mymessages" />
+                <c:if test="${member.unreadMessageCount > 0}">
+                    <span class="badge badge-pill badge-secondary ml-1">
+                        ${member.unreadMessageCount}
+                    </span>
+                </c:if>
+            </a>
+        </li>
+        <li class="dropdown-item">
+            <a href="/members/profile/${member.userId}/subscriptions">
+                <spring:message code="homepage.menu.user.mysubscriptions" />
+            </a>
+        </li>
+        <li class="dropdown-item">
+            <a data-url="/logout" class="js-PostLink">
+                <spring:message code="homepage.menu.user.logout" />
+            </a>
+        </li>
+        <c:if test="${member.isAdmin}">
+            <li class="dropdown-header">Admin</li>
+            <li class="dropdown-item">
+                <a href="/admin/contest">Contest manager</a>
+            </li>
+            <c:if test="${not empty blogAdminUrl}">
+                <li class="dropdown-item">
+                    <a href="${blogAdminUrl}" target="_blank">Blog (Admin)</a>
+                </li>
+            </c:if>
+        </c:if>
+    </ul>
+</jsp:root>

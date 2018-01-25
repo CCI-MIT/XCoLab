@@ -33,7 +33,7 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="c-Button__primary">
-                    <spring:message code="homepage.modals.flagging.button"/>:
+                    <spring:message code="homepage.modals.flagging.button"/>
                 </button>
             </div>
             <input type="hidden" name="targetType" id="popup_flagging_form_targetType"/>
