@@ -10,13 +10,12 @@
 
     <xcolab:requireLibrary  name="i18n"/>
 
-    <ul class="dropdown-menu bs-dropdown-box bs-dropdown-nowrap">
+    <ul class="dropdown-menu dropdown-menu-right bs-dropdown-box text-nowrap">
 
         <form>
         <c:forEach var="lang" items="${languageSelectItems}">
             <c:if test="${currentLanguage == lang['value'] }">
-                <li>
-
+                <li class="dropdown-item">
                     <div class="radio-inline">
                         <label class="active">
                             <input name="lang_top" type="radio" value="${lang['value']}" checked="checked"/>
@@ -26,11 +25,11 @@
                 </li>
             </c:if>
         </c:forEach>
-        <li role="separator" class="divider"><!-- --></li>
+        <li role="separator" class="dropdown-divider"><!-- --></li>
         <c:forEach var="lang" items="${languageSelectItems}">
             <c:if test="${currentLanguage != lang['value']}">
 
-                <li>
+                <li class="dropdown-item">
                     <div class="radio-inline">
                         <label>
                             <c:set var="languageCode" value="${lang['value']}" />

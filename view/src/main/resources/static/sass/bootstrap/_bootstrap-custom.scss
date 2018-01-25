@@ -1,42 +1,33 @@
 @import "custom_variables";
 
-// Core variables and mixins
-@import "bootstrap-sass/bootstrap/variables";
-@import "bootstrap-sass/bootstrap/mixins";
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+@import "bootstrap/reboot";
+@import "bootstrap/type";
+@import "bootstrap/images";
 
-// Reset and dependencies
-@import "bootstrap-sass/bootstrap/normalize";
-@import "bootstrap-sass/bootstrap/print";
+@import "bootstrap/grid";
+@import "bootstrap/tables";
+@import "bootstrap/forms";
+@import "bootstrap/buttons";
+@import "bootstrap/transitions";
+@import "bootstrap/dropdown";
 
-// Core CSS
-@import "bootstrap-sass/bootstrap/scaffolding";
-@import "bootstrap-sass/bootstrap/type";
-@import "bootstrap-sass/bootstrap/grid";
-@import "bootstrap-sass/bootstrap/tables";
-@import "bootstrap-sass/bootstrap/forms";
-@import "bootstrap-sass/bootstrap/buttons";
+@import "bootstrap/input-group";
+@import "bootstrap/nav";
+@import "bootstrap/navbar";
+@import "bootstrap/breadcrumb";
+@import "bootstrap/pagination";
+@import "bootstrap/badge";
+@import "bootstrap/alert";
+@import "bootstrap/media";
+@import "bootstrap/close";
+@import "bootstrap/modal";
 
-// Components
-@import "bootstrap-sass/bootstrap/component-animations";
-@import "bootstrap-sass/bootstrap/dropdowns";
-@import "bootstrap-sass/bootstrap/input-groups";
-@import "bootstrap-sass/bootstrap/navs";
-@import "bootstrap-sass/bootstrap/navbar";
-@import "bootstrap-sass/bootstrap/breadcrumbs";
-@import "bootstrap-sass/bootstrap/pagination";
-@import "bootstrap-sass/bootstrap/pager";
-@import "bootstrap-sass/bootstrap/labels";
-@import "bootstrap-sass/bootstrap/badges";
-@import "bootstrap-sass/bootstrap/alerts";
-@import "bootstrap-sass/bootstrap/media";
-@import "bootstrap-sass/bootstrap/close";
+@import "bootstrap/utilities";
+@import "bootstrap/print";
 
-// Components w/ JavaScript
-@import "bootstrap-sass/bootstrap/modals";
-
-// Utility classes
-@import "bootstrap-sass/bootstrap/utilities";
-@import "bootstrap-sass/bootstrap/responsive-utilities";
 
 // Custom components
 @import "custom/base";

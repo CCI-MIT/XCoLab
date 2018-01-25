@@ -23,10 +23,10 @@
             <div class="reg_errors"><!--  -->
                 <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
             </div>
-            <ul id="i18nTabBar" class="c-TabBar clearfix" role="tablist">
+            <ul id="i18nTabBar" class="c-TabBar clearfix nav nav-tabs" role="tablist">
                 <c:forEach var="lang" items="${i18nOptions}">
-                    <li role="presentation" class="c-TabBar__tab small">
-                        <a href="#translation_${lang['value']}" data-toogle="tab">
+                    <li role="presentation" class="c-TabBar__tab small nav-item">
+                        <a href="#translation_${lang['value']}" data-toogle="tab" class="nav-link">
                             <spring:message code="${lang['lable']}"/>
                         </a>
                     </li>
@@ -34,7 +34,7 @@
             </ul>
             <div class="tab-content">
                 <c:forEach var="lang" items="${i18nOptions}" varStatus="x">
-                    <div role="tabpanel" class="tab-pane" id="translation_${lang['value']}">
+                    <div role="tabpanel" class="tab-pane fade" id="translation_${lang['value']}">
                         <h3><spring:message code="${lang['lable']}"/> translation</h3>
                         <form:hidden path="translations[${x.index}].contestId" />
                         <form:hidden path="translations[${x.index}].lang" />

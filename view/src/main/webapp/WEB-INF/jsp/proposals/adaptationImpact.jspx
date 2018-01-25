@@ -58,9 +58,9 @@
             <form:hidden path="proposalId" />
             <form:hidden path="authorId" />
             <table class="table table-bordered">
-                <thead>
+                <thead class="thead-dark">
                 <tr>
-                    <th colspan="3">
+                    <th colspan="3" class="bg-white">
 
                     </th>
                     <th colspan="4" class="primary text-center">
@@ -142,14 +142,18 @@
                                 <div class="input-group input-group-sm">
                                     <form:input path="values[${category.name()}].minPercentReduction"
                                                 cssClass="form-control text-center" type="number" />
-                                    <span class="input-group-addon">%</span>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
                                 </div>
                             </td>
                             <td class="gray">
                                 <div class="input-group input-group-sm">
                                     <form:input path="values[${category.name()}].maxPercentReduction"
                                                 cssClass="form-control text-center" type="number" />
-                                    <span class="input-group-addon">%</span>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
                                 </div>
                             </td>
                         </tr>

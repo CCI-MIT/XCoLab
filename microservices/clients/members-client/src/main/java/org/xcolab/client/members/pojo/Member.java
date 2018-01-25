@@ -324,6 +324,11 @@ public class Member implements Serializable {
         return PermissionsClient.canAdminAll(this);
     }
 
+    @JsonIgnore
+    public int getUnreadMessageCount() {
+        return MessagingClient.countUnreadMessagesForUser(getUserId());
+    }
+
     public String getHashedPassword() {
         return this.hashedPassword == null ? "" : this.hashedPassword;
     }

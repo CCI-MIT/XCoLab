@@ -19,16 +19,16 @@
                 <form:input path="columnAmount" cssClass="form-control" />
             </div>
 
-            <div class="checkbox">
-                <label>
-                    <form:checkbox path="displayPhoto" />
+            <div class="form-check">
+                <form:checkbox path="displayPhoto" class="form-check-input" id="displayPhoto"/>
+                <label class="form-check-label" for="displayPhoto">
                     display photos
                 </label>
             </div>
 
-            <div class="checkbox">
-                <label>
-                    <form:checkbox path="displayUrl" />
+            <div class="form-check">
+                <form:checkbox path="displayUrl" class="form-check-input" id="displayUrl" />
+                <label class="form-check-label" for="displayUrl">
                     display URLs
                 </label>
             </div>
