@@ -34,11 +34,11 @@ public class SortedProposalList {
             // skip expensive ribbon check if proposals can't have ribbons
             proposalsWithoutRibbons.addAll(proposals);
         } else {
-            for (Proposal contest : proposals) {
-                if (contest.getRibbonWrapper().getRibbon() > 0) {
-                    proposalsWithRibbons.add(contest);
+            for (Proposal proposal : proposals) {
+                if (proposal.getRibbonWrapper().getRibbon() > 0) {
+                    proposalsWithRibbons.add(proposal);
                 } else {
-                    proposalsWithoutRibbons.add(contest);
+                    proposalsWithoutRibbons.add(proposal);
                 }
             }
         }
