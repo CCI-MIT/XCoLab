@@ -310,7 +310,7 @@
                                 </div>
                                 <input type="hidden" name="redirect" value="${currentUserProfile.user.profileLinkUrl}" />
                                 <input type="hidden" name="email" value="${userBean.emailStored}" />
-                                <button type="submit" class="btn btn-primary small">Generate link</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Generate link</button>
                             </form>
                         </c:otherwise>
                     </c:choose>

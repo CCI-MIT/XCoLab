@@ -90,11 +90,7 @@ $c-Footer__menu__background__isSimple: true;
 $c-Footer__menu__backgroundColor: transparent;
 $c-Footer__menu__boxShadow: none;
 
-$c-Button__padding: 7px 15px;
-$c-Button__padding--small: 5px 8px;
-$c-Button__padding--large: 7px 15px;
 $c-Button__fontWeight: $t-Typography__fontWeight--regular;
-$c-Button__borderRadius: 0;
 $c-Button__capitalization: uppercase;
 $c-Button__theme__textShadow: none;
 
@@ -345,4 +341,4 @@ $c-Box__button__boxColor--dark__backgroundColor--hover: $t-Color__blue--hover;
 
 $p-Contests__priorActiveAllWidget__a__color--isHover: white;
 
-$bs-form-control__borderRadius: 0;
+$t-Border__rounded: false;

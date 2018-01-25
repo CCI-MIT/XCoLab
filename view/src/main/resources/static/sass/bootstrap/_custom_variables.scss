@@ -52,7 +52,7 @@ $yiq-text-light: $t-Color__text--light;
 //
 // Quickly modify global styling by enabling or disabling optional features.
 
-$enable-rounded:            true !default;
+$enable-rounded:            $t-Border__rounded;
 $enable-shadows:            false !default;
 $enable-gradients:          true;
 
@@ -120,9 +120,9 @@ $line-height-sm:              1.5 !default;
 //TODO: use $t-Color__gray-500? That's the lightest gray we use consistently
 $border-color:                $gray-300 !default;
 
-$border-radius:               .3125rem;
-$border-radius-lg:            .375rem;
-$border-radius-sm:            .25rem;
+$border-radius:               $t-Border__radius;
+$border-radius-lg:            $t-Border__radius--large;
+$border-radius-sm:            $t-Border__radius--small;
 
 $component-active-color:      $white !default;
 $component-active-bg:         theme-color("primary") !default;
@@ -246,7 +246,7 @@ $btn-padding-y-lg:            $input-btn-padding-y-lg !default;
 $btn-padding-x-lg:            $input-btn-padding-x-lg !default;
 $btn-line-height-lg:          $input-btn-line-height-lg !default;
 
-$btn-font-weight:             $font-weight-bold !default;
+$btn-font-weight:             $bs-Button__fontWeight !default;
 $btn-box-shadow:              inset 0 1px 0 rgba($white, .15), 0 1px 1px rgba($black, .075) !default;
 $btn-focus-width:             $input-btn-focus-width !default;
 $btn-focus-box-shadow:        $input-btn-focus-box-shadow !default;

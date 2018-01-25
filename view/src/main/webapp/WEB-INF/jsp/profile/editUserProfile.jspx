@@ -379,7 +379,7 @@
                         <spring:message code="profile.account.delete.question" arguments="${_colabName}" var="deleteMsg"/>
 						<form action="${deleteProfileUrl}" method="post" onsubmit="confirm('${deleteMsg}')">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<button type="submit" class="btn btn-gray small"><spring:message code="profile.account.delete.button"/></button>
+							<button type="submit" class="btn btn-gray btn-sm"><spring:message code="profile.account.delete.button"/></button>
 						</form>
 					</td>
                     <td>

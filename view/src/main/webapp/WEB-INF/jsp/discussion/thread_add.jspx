@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="form-group">
-                        <a class="btn btn-primary c-Button--noMargins" id="addThreadButton" href="#"><spring:message code="discussion.threadadd.buttons.add"/></a>
+                        <a class="btn btn-primary" id="addThreadButton" href="#"><spring:message code="discussion.threadadd.buttons.add"/></a>
                         <a class="btn btn-gray" id="cancelAddThreadButton" href="/discussion"><spring:message code="discussion.threadadd.buttons.cancel" /></a>
                     </div>
                 </form>

@@ -74,7 +74,6 @@ $c-Footer__menu__boxShadow: none;
 
 $c-Button__padding: 7px 15px;
 $c-Button__padding--small: 5px 8px;
-$c-Button__padding--large: 7px 15px;
 $c-Button__borderRadius: 0;
 //$c-Button__capitalization: uppercase;
 $c-Button__theme__textShadow: none;
@@ -302,4 +301,4 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: white;
 
 $c_ControlsOverlay__backgroundColor: rgba($t-Color__grey--lightest, .9);
 
-$bs-form-control__borderRadius: 0;
+$bs-Border__rounded: false;

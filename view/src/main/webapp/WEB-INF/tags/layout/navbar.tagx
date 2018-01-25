@@ -90,7 +90,7 @@
                                         <img src="${uploadedImageFolder}/member/${member.portraitId}" alt="${member.screenName}" />
                                         <span class="caret"><!-- --></span>
                                         <c:if test="${member.unreadMessageCount > 0}">
-                                            <div class="badge badge-pill badge-primary">
+                                            <div class="badge badge-pill badge-primary-darkest">
                                                 ${member.unreadMessageCount}
                                             </div>
                                         </c:if>

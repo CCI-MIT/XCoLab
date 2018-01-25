@@ -75,7 +75,7 @@
 
                 <div class="right">
                     <c:if test="${proposalsDisplayPermissions.canSeeCreateProposalButton}">
-                        <a class="btn btn-primary large" rel="nofollow" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
+                        <a class="btn btn-primary" rel="nofollow" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
                            onclick="if(!handleOnClickAtSupportBtn()) return false;">
                             ${contestType.creationPrompt}
                         </a>

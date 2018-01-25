@@ -140,11 +140,10 @@
                                         type="date" dateStyle="short" timeZone="America/New_York"/>
                     </td>
                     <td class="c-Table__cell">
-                        <a class="btn btn-primary small margins" href="${approveContentUrl}">
+                        <a class="btn btn-primary btn-small btn-block" href="${approveContentUrl}">
                             Approve
                         </a>
-                        <br />
-                        <a class="btn btn-primary small margins" href="${removeContentUrl}">
+                        <a class="btn btn-primary btn-small btn-block" href="${removeContentUrl}">
                             Remove
                         </a>
                     </td>
