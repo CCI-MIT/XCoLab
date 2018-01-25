@@ -30,10 +30,10 @@
     <div class="c-ContentBox">
         <div style="margin-bottom: 40px;">
             <div class="floatRight outerVerticalCenter">
-                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveExistingTemplate()">SAVE template</a>
-                <!--<a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveAsNewTemplate()">SAVE as new template</a>-->
-                <!--<a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitCreateTemplateForm()">CREATE new template</a>-->
-                <!--<a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitDeleteTemplateForm()">DELETE template</a>-->
+                <a class="btn btn-primary innerVerticalCenter" href="#" onclick="saveExistingTemplate()">SAVE template</a>
+                <!--<a class="btn btn-primary innerVerticalCenter" href="#" onclick="saveAsNewTemplate()">SAVE as new template</a>-->
+                <!--<a class="btn btn-primary innerVerticalCenter" href="#" onclick="submitCreateTemplateForm()">CREATE new template</a>-->
+                <!--<a class="btn btn-primary innerVerticalCenter" href="#" onclick="submitDeleteTemplateForm()">DELETE template</a>-->
             </div>
         </div>
     </div>

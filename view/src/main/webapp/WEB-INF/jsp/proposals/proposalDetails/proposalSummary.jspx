@@ -26,7 +26,7 @@
                                         <input name="voteValue" class="form-control bs-form-control-inline bs-form-control--xs"
                                                type="number" min="1" max="${contest.maxVotesPerProposal}" value="1"/>
                                     </c:if>
-                                    <button class="c-Button__primary" type="submit"
+                                    <button class="btn btn-primary" type="submit"
                                             onclick="if(!deferUntilLogin(this)){return false;}">
                                         <collab:message var="voteForText" code="contests.voting.vote" contestType="${contestType}"/>
                                         <spring:message var="retractVoteText" code="contests.voting.retract"/>

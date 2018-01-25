@@ -20,7 +20,7 @@
 
 			<script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
 			<c:if test="${_isAdmin}">
-				<a href="/feedback/preferences" class="c-Button__admin">Edit preferences</a><br/>
+				<a href="/feedback/preferences" class="btn btn-admin btn-sm pull-right">Edit preferences</a><br/>
 			</c:if>
 			<div id="contactForm" style="${not hasError ? 'display:none;' : ''};">
 
@@ -69,7 +69,7 @@
 						<tr>
 							<th></th>
 							<td colspan="3">
-								<a class="c-Button__primary" href="javascript:;" onclick="$('#contactFormForm').submit()"><spring:message code="contact.form.buttons"/></a>
+								<a class="btn btn-primary" href="javascript:;" onclick="$('#contactFormForm').submit()"><spring:message code="contact.form.buttons"/></a>
 							</td>
 						</tr>
 					</table>

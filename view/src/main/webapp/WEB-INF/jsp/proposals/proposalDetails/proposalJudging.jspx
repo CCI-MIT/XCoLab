@@ -99,7 +99,7 @@
                        placeholder="Write your review here..." />
 
         <div class="clearfix" style="width: 100%;">
-            <a class="c-Button__primary" id="saveProposalJudging" style="display:block; float:right; margin-top: 10px;" href="#">Submit</a>
+            <a class="btn btn-primary" id="saveProposalJudging" style="display:block; float:right; margin-top: 10px;" href="#">Submit</a>
         </div>
 
     </form:form>

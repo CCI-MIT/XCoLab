@@ -40,7 +40,7 @@
                                 <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" onfocus="this.value=''" value="Optional comment" style="display:none;"/>
                                 <form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />
                                 <div id="requestButtons">
-                                    <a href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
+                                    <a href="javascript:;" class="btn btn-primary requestMembershipSubmitButton"
                                             rel="nofollow" onclick="if(deferUntilLogin()) {requestMembership();}">
                                         <spring:message code="contests.proposal.team.request" />
                                     </a>
@@ -63,7 +63,7 @@
                                 <form:textarea id="invite-comment" cssClass="requestComment" path="inviteComment" placeholder="Optional comment" style="display:none;"/>
                                 <!--<form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />-->
                                 <div id="requestButtons">
-                                    <a href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
+                                    <a href="javascript:;" class="btn btn-primary requestMembershipSubmitButton"
                                             rel="nofollow" onclick="if(deferUntilLogin()) {inviteMember();}">
                                         <spring:message code="contests.proposal.team.invite" />
                                     </a>
@@ -123,7 +123,7 @@
                     <div class="prop-butt">
                         <img src="${_themeImageFolder}/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
 
-                        <a class="c-Button__primary js-PostLink" data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
+                        <a class="btn btn-primary js-PostLink" data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
                                 rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSupportButton}">

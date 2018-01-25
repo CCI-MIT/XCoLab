@@ -62,8 +62,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="close" class="c-Button__secondary" data-dismiss="modal"><spring:message code="message.modal.buttons.cancel"/></button>
-                <button type="submit" class="c-Button__primary"><spring:message code="message.modal.buttons.send"/></button>
+                <button type="close" class="btn btn-gray" data-dismiss="modal"><spring:message code="message.modal.buttons.cancel"/></button>
+                <button type="submit" class="btn btn-primary"><spring:message code="message.modal.buttons.send"/></button>
             </div>
         </form>
     </xcolab:modal>

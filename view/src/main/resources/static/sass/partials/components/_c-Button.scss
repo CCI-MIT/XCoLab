@@ -1,6 +1,8 @@
 @import "../../lib/l-functions";
 @import "../../lib/l-mixins";
 
+@import "bootstrap/mixins/buttons";
+
 $c-Button__padding: 8px !default;
 $c-Button__padding--large: 8px !default;
 $c-Button__padding--small: 6px !default;
@@ -72,30 +74,6 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   }
 }
 
-span.c-Button__primary,
-a.c-Button__primary,
-.c-Button__primary a,
-input.c-Button__primary,
-button.c-Button__primary {
-  @include theme-button($c-Button__primary__backgroundColor, $c-Button__primary__borderColor, $hover-color: $c-Button__primary__backgroundColor--hover);
-}
-
-span.c-Button__secondary,
-a.c-Button__secondary,
-.c-Button__secondary a,
-input.c-Button__secondary,
-button.c-Button__secondary {
-  @include theme-button($c-Button__grey__backgroundColor, $c-Button__grey__borderColor);
-}
-
-a, button {
-  &.c-Button__admin {
-    @include theme-button($c-Button__primary__backgroundColor, $t-Color__accent);
-    font-size: 12px;
-    float: right;
-  }
-}
-
-.c-Button__accent {
-  @include theme-button($t-Color__accent, darken($t-Color__accent, 10%));
+.btn-admin {
+  @include button-variant($c-Button__primary__backgroundColor, $t-Color__accent);
 }

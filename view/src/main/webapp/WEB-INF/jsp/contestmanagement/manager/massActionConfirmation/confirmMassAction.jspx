@@ -28,8 +28,8 @@
                    id="editForm" method="post">
             <div class="c-ContentBox">
                 <div class="outerVerticalCenter">
-                    <a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">${massActionConfirmationWrapper.selectedMassAction.action.displayName}</a>
-                    <a class="c-Button__secondary innerVerticalCenter" href="/admin/contest/manager">DISCARD &amp; go back to overview</a>
+                    <a class="btn btn-primary innerVerticalCenter" href="#" id="submitButton">${massActionConfirmationWrapper.selectedMassAction.action.displayName}</a>
+                    <a class="btn btn-gray innerVerticalCenter" href="/admin/contest/manager">DISCARD &amp; go back to overview</a>
                 </div>
             </div>
             <div class="c-ContentBox">

@@ -242,7 +242,7 @@
 					</c:forEach>
 
 					<div class="addSection" id="addSection" name="addSection">
-						<a class="c-Button__primary" id="addSectionButton" href="#addSection">ADD section</a>
+						<a class="btn btn-primary" id="addSectionButton" href="#addSection">ADD section</a>
 					</div>
 				</form:form>
 			</div>
@@ -272,7 +272,7 @@
 						<td ><xcolab:contestLink contest="${contestWrapper}" /></td>
 						<td>Tier ${contestWrapper.contestTier}</td>
 						<td>
-							<a class="c-Button__primary innerVerticalCenter" href="/admin/contest/details/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+							<a class="btn btn-primary innerVerticalCenter" href="/admin/contest/details/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
 						</td>
 					</tr>
 				</c:forEach>

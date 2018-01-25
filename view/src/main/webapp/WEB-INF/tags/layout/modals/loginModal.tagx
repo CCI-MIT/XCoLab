@@ -74,7 +74,7 @@
                     <em><a href="/register?redirect=${redirect}" ><spring:message code="homepage.login.notregisteredyet"/></a></em><br />
                     <div class="clearfix"><!-- --></div>
                 </div>
-                <button type="submit" class="c-Button__primary">
+                <button type="submit" class="btn btn-primary">
                     <spring:message code="homepage.login.button"/>
                 </button>
             </div>

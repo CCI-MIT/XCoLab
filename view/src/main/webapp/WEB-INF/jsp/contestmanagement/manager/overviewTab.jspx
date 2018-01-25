@@ -15,13 +15,13 @@
 	<div class="c-ContentBox">
 		<div style="margin-bottom: 40px;display:inline">
 			<div class="floatRight outerVerticalCenter">
-				<a class="c-Button__primary innerVerticalCenter js-PostLink" data-url="/admin/contest/manager/createContest" target="_blank">Create new Contest</a>
+				<a class="btn btn-primary innerVerticalCenter js-PostLink" data-url="/admin/contest/manager/createContest" target="_blank">Create new Contest</a>
 			</div>
 		</div>
 
 		<div style="margin-bottom: 40px;">
 			<div class="floatRight outerVerticalCenter">
-				<a class="c-Button__primary innerVerticalCenter" href="/admin/contest/manager/batchCreateContest" >Batch Contest creation</a>
+				<a class="btn btn-primary innerVerticalCenter" href="/admin/contest/manager/batchCreateContest" >Batch Contest creation</a>
 			</div>
 		</div>
 
@@ -48,7 +48,7 @@
 						<form:options items="${massActionsItems}" />
 					</form:select>
 				</div>
-				<a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">SUBMIT</a>
+				<a class="btn btn-primary innerVerticalCenter" href="#" id="submitButton">SUBMIT</a>
 			</div>
 			<div id="massMessage" style="display: none;">
                 <div class="clearLeft"><!-- --></div>
@@ -187,7 +187,7 @@
                             <td>${contest.proposalsCount} </td>
                             <td>${contest.commentsCount} </td>
                             <td>
-                                <a class="c-Button__primary innerVerticalCenter" href="${contest.contestUrl}" target="_blank">VIEW</a>
+                                <a class="btn btn-primary innerVerticalCenter" href="${contest.contestUrl}" target="_blank">VIEW</a>
                             </td>
                         </tr>
                     </c:forEach>

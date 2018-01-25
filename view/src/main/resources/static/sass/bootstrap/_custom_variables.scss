@@ -33,8 +33,10 @@ $tan:           $t-Color__tan;
 
 $theme-colors: (
     "primary":    $primary,
+    "primary-darkest": $t-Color__primary__darkest,
     "accent":     $t-Color__accent,
     "medium":     $medium,
+    "gray":       $t-Color__gray-600,
     "tan":        $tan
 );
 // stylelint-enable
@@ -244,7 +246,7 @@ $btn-padding-y-lg:            $input-btn-padding-y-lg !default;
 $btn-padding-x-lg:            $input-btn-padding-x-lg !default;
 $btn-line-height-lg:          $input-btn-line-height-lg !default;
 
-$btn-font-weight:             $font-weight-normal !default;
+$btn-font-weight:             $font-weight-bold !default;
 $btn-box-shadow:              inset 0 1px 0 rgba($white, .15), 0 1px 1px rgba($black, .075) !default;
 $btn-focus-width:             $input-btn-focus-width !default;
 $btn-focus-box-shadow:        $input-btn-focus-box-shadow !default;

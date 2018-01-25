@@ -63,11 +63,10 @@
                                     <form action="/search" method="get">
                                         <input class="form-control bs-form-control-inline bs-form-control--sm"
                                                type="text" name="searchPhrase"/>
-                                        <button type="submit" class="c-Button__primary">
+                                        <button type="submit" class="btn btn-primary ml-2">
                                             <spring:message code="homepage.search.button" />
                                         </button>
                                     </form>
-
                                 </div>
                             </li>
                         </c:if>

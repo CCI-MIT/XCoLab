@@ -101,8 +101,8 @@ function requestMembership() {
     $('.prop-butt-popover:first').css('background', 'url('+_themeImageFolder+'/search-bg.png)');
     var $requestButtons = $('#requestButtons');
     $requestButtons.empty();
-    $requestButtons.append('<a href="javascript:;" class="c-Button__secondary" onclick="hideRequestForm(true);">Cancel</a>');
-    $requestButtons.append('<a href="javascript:;" class="c-Button__primary pull-right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a>');
+    $requestButtons.append('<a href="javascript:;" class="btn btn-gray" onclick="hideRequestForm(true);">Cancel</a>');
+    $requestButtons.append('<a href="javascript:;" class="btn btn-primary pull-right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a>');
 }
 function hideRequestForm(animate) {
     var speed = animate ? 600 : 1;
@@ -110,7 +110,7 @@ function hideRequestForm(animate) {
         $('.prop-butt-popover:first').css('background', 'none');
         var $requestButtons = $('#requestButtons');
         $requestButtons.empty();
-        $requestButtons.append('<a href="javascript:;" class="c-Button__primary" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>');
+        $requestButtons.append('<a href="javascript:;" class="btn btn-primary" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>');
     });
 }
 /* End of request membership form logic */
@@ -122,8 +122,8 @@ function inviteMember() {
     $('.prop-butt-popover:first').css('background', 'url('+_themeImageFolder+'/search-bg.png)');
     var $requestButtons = $('#requestButtons');
     $requestButtons.empty();
-    $requestButtons.append('<a href="javascript:;" class="c-Button__secondary pull-left" onclick="hideInviteForm(true);">Cancel</a>');
-    $requestButtons.append('<a href="javascript:;" class="c-Button__primary pull-right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a>');
+    $requestButtons.append('<a href="javascript:;" class="btn btn-gray pull-left" onclick="hideInviteForm(true);">Cancel</a>');
+    $requestButtons.append('<a href="javascript:;" class="btn btn-primary pull-right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a>');
 }
 
 function hideInviteForm(animate) {
@@ -133,7 +133,7 @@ function hideInviteForm(animate) {
         var $requestButtons = $('#requestButtons');
         $requestButtons.empty();
         $requestButtons.append(
-            '<a href="javascript:;" class="c-Button__primary" rel="nofollow" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>');
+            '<a href="javascript:;" class="btn btn-primary" rel="nofollow" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>');
     });
     $('#invite-recipient').slideUp('slow');
 }

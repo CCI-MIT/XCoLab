@@ -528,9 +528,9 @@
 
                             </div>
                             <br/>
-                            <div class="floatLeft outerVerticalCenter" id="previewContentArticle" ><a  class="c-Button__primary" href="#">Preview</a></div>
-                            <div class="floatRight outerVerticalCenter" id="archiveContentArticle" ><a  class="c-Button__primary" href="#">Archive</a></div>
-                            <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="c-Button__primary" href="#">Save</a></div></div>
+                            <div class="floatLeft outerVerticalCenter" id="previewContentArticle" ><a  class="btn btn-primary" href="#">Preview</a></div>
+                            <div class="floatRight outerVerticalCenter" id="archiveContentArticle" ><a  class="btn btn-primary" href="#">Archive</a></div>
+                            <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="btn btn-primary" href="#">Save</a></div></div>
                     </div>
                 </div>
             </div>

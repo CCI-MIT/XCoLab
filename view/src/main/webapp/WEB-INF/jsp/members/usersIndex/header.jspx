@@ -56,7 +56,7 @@
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <spring:message code="community.page.members.search.placeholder" var="placeHolder"/>
 					<input class="form-control bs-form-control-inline" type="text" value="${sortFilterPage.filter }" placeholder="${placeHolder}" name="filter" />
-					<button type="submit" class="c-Button__primary"><spring:message code="community.page.members.search.button.search"/></button>
+					<button type="submit" class="btn btn-primary"><spring:message code="community.page.members.search.button.search"/></button>
 				</form>
 			</div>
 

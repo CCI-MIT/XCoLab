@@ -70,7 +70,7 @@
                         <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again</div>
                     </div>
                     <div class="modal-footer">
-                        <button type="close" class="c-Button__secondary" data-dismiss="modal">Close</button>
+                        <button type="close" class="btn btn-gray" data-dismiss="modal">Close</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -263,8 +263,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="c-Button__primary" id="tosAccepted">ACCEPT</button>
-            <button class="c-Button__secondary" id="closeAcceptTos">DO NOT Accept</button>
+            <button class="btn btn-primary" id="tosAccepted">ACCEPT</button>
+            <button class="btn btn-gray" id="closeAcceptTos">DO NOT Accept</button>
         </div>
     </xcolab:modal>
 
@@ -273,7 +273,7 @@
             <ul id="invalidFieldsList"><!--  --></ul>
         </div>
         <div class="modal-footer">
-            <button type="close" data-dismiss="modal" class="c-Button__secondary">CLOSE</button>
+            <button type="close" data-dismiss="modal" class="btn btn-gray">CLOSE</button>
         </div>
     </xcolab:modal>
 
@@ -287,17 +287,17 @@
             </div>
 
             <div class="pull-right-lg">
-                <button class="c-Button__primary" type="button" id="saveChangesButton">
+                <button class="btn btn-primary" type="button" id="saveChangesButton">
                     ${saveButtonText}
                 </button>
                 <c:choose>
                     <c:when test="${proposal.currentVersion > 0 }">
-                        <xcolab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
+                        <xcolab:proposalLink proposal="${proposal}" cssClass="btn btn-gray"
                                              linkId="discardChangesButton" text="DISCARD changes" edit="false" />
                     </c:when>
                     <c:otherwise>
                         <!--  proposal creation, return to contest proposals page on discard -->
-                        <xcolab:contestLink contest="${contest}" cssClass="c-Button__secondary"
+                        <xcolab:contestLink contest="${contest}" cssClass="btn btn-gray"
                                             linkId="discardChangesButton" text="DISCARD changes" />
                     </c:otherwise>
                 </c:choose>
@@ -342,7 +342,7 @@
             noty({text: acceptTosNotificationText,
                 buttons: [
                     {
-                        addClass: 'c-Button__primary', text: 'ACCEPT', onClick: function($noty)
+                        addClass: 'btn btn-primary', text: 'ACCEPT', onClick: function($noty)
                     {
                         tosAcceptedSave();
                         $noty.close();
@@ -438,7 +438,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="close" data-dismiss="modal" class="c-Button__secondary">Cancel</button>
+            <button type="close" data-dismiss="modal" class="btn btn-gray">Cancel</button>
         </div>
     </xcolab:modal>
 

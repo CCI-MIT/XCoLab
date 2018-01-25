@@ -19,7 +19,7 @@
 
     <div class="searchFormContainer">
         <input value="${searchBean.searchPhrase}" class="searchPhrase" id="searchPhrase"/>
-        <a class="c-Button__primary" href="javascript:;"
+        <a class="btn btn-primary ml-2" href="javascript:;"
            onclick="window.location = '/search?searchPhrase=' + encodeURI($('#searchPhrase').val())"><spring:message code="search.button"/></a>
         <c:if test="${searchBean.showBlogReference and not empty searchBean.searchPhrase}">
             <div class="searchBlogLink">

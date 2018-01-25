@@ -37,10 +37,10 @@
     <div class="c-ContentBox">
         <div style="margin-bottom: 40px;">
             <div class="floatRight outerVerticalCenter">
-                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
-                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
-                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
-                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
+                <a class="btn btn-primary innerVerticalCenter" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
+                <a class="btn btn-primary innerVerticalCenter" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
+                <a class="btn btn-primary innerVerticalCenter" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
+                <a class="btn btn-primary innerVerticalCenter" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
             </div>
         </div>
     </div>
@@ -90,7 +90,7 @@
                     </div>
 
                     <div class="outerVerticalCenter floatRight">
-                        <a class="c-Button__primary innerVerticalCenter" href="#" onclick="addContestPhase(event)">Add contest phase</a>
+                        <a class="btn btn-primary innerVerticalCenter" href="#" onclick="addContestPhase(event)">Add contest phase</a>
                     </div>
 
                     <div class="clearfix"><!-- --></div>
@@ -259,7 +259,7 @@
                             </c:otherwise>
                         </c:choose>
                         <td>
-                            <a class="c-Button__primary innerVerticalCenter" href="/admin/contest/details/contestId/${contestWrapper.contestPK}"
+                            <a class="btn btn-primary innerVerticalCenter" href="/admin/contest/details/contestId/${contestWrapper.contestPK}"
                                    target="_blank">EDIT</a>
                         </td>
                     </tr>

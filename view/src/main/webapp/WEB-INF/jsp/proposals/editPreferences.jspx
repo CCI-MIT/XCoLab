@@ -20,7 +20,7 @@
 
             <form:form commandName="preferences" action="${checkForMissingTeamMembersURL}">
                 <div class="form-group">
-                    <button type="submit" class="c-Button__secondary small">
+                    <button type="submit" class="btn btn-gray small">
                         Check for missing team members
                     </button>
                 </div>
@@ -29,7 +29,7 @@
             <c:set var="runRibbonDistributionURL" value="/proposals/runRibbonDistribution"/>
             <form:form commandName="preferences" action="${runRibbonDistributionURL}">
                 <div class="form-group">
-                    <button type="submit" class="c-Button__secondary small"
+                    <button type="submit" class="btn btn-gray small"
                             onclick="return confirm('Are you sure? This action cannot be undone.');">
                         Run (Semi)-Finalist Ribbon Distribution and Copy All Proposals to Winners Awarded for All Active Contests
                     </button>

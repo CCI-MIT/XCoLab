@@ -6,7 +6,7 @@
             ${exampleText}
         </div>
         <div class="modal-footer">
-            <button type="close" class="c-Button__secondary" data-dismiss="modal">Close</button>
+            <button type="close" class="btn btn-gray" data-dismiss="modal">Close</button>
         </div>
     </xcolab:modal>
 

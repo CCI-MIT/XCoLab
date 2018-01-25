@@ -63,9 +63,9 @@
             </table>
 
             <div class="com-info bot">
-                <a class="c-Button__primary" href="javascript:;"
+                <a class="btn btn-primary" href="javascript:;"
                    onclick="selectAllSubscriptions()"><spring:message code="subscription.activities.table.selectall"/></a>
-                <a class="c-Button__primary" href="javascript:;"
+                <a class="btn btn-primary" href="javascript:;"
                    onclick="jQuery('#removeSubscriptionsForm').submit();"><spring:message code="subscription.activities.table.removeselected"/></a>
             </div>
         </form:form>

@@ -189,7 +189,7 @@
                 <div  id="innerContent" class="addpropbox" style="height: 774px;">
                     <div class="colFloatLef">
                         <h3>Focus areas</h3>
-                        <div class="floatLeft outerVerticalCenter" id="newFocusArea" ><a  class="c-Button__primary" href="#">New Focus Area</a></div><br/>
+                        <div class="floatLeft outerVerticalCenter" id="newFocusArea" ><a  class="btn btn-primary" href="#">New Focus Area</a></div><br/>
                         <div class="treeContainer" style="margin-left:0;width: 450px;overflow-x: scroll;">
                             <div id="tree-view" ><!-- --></div>
                             <ul id="focusAreasList">
@@ -224,7 +224,7 @@
 
                             </div>
                             <br/>
-                            <div class="floatRight outerVerticalCenter" id="saveFocusArea" ><a  class="c-Button__primary" href="#">Save</a></div>
+                            <div class="floatRight outerVerticalCenter" id="saveFocusArea" ><a  class="btn btn-primary" href="#">Save</a></div>
                         </div>
                     </div>
                 </div>

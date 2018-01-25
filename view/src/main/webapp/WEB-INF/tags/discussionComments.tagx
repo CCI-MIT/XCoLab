@@ -61,7 +61,7 @@
                             <div id="processedFailed" style="display:none;margin-top: 8px;"><spring:message code="discussion.commmentstag.filter.disallowed"/> <b id = "disallowed_words"><!-- --></b>. <spring:message code="discussion.commmentstag.filter.remove"/></div>
                         </div>
                         <div class="modal-footer">
-                            <button type="close" class="c-Button__secondary" data-dismiss="modal"><spring:message code="discussion.commmentstag.filter.close"/></button>
+                            <button type="close" class="btn btn-gray" data-dismiss="modal"><spring:message code="discussion.commmentstag.filter.close"/></button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
@@ -230,12 +230,12 @@
 						<span class="errorMsg portlet-msg-error" style="display: none;"><spring:message code="discussion.commmentstag.valuerequired"/></span>
 						<c:choose>
 							<c:when test="${discussionPermissions.canAddComment }">
-								<a class="c-Button__primary" href="javascript:;" id="addCommentButton">
+								<a class="btn btn-primary" href="javascript:;" id="addCommentButton">
 									<spring:message code="discussion.commmentstag.addcomment.button"/>
 								</a>
 							</c:when>
 							<c:otherwise>
-								<a class="c-Button__primary" href="javascript:;" data-is-deferred="true" id="addCommentButton">
+								<a class="btn btn-primary" href="javascript:;" data-is-deferred="true" id="addCommentButton">
                                     <spring:message code="discussion.commmentstag.addcomment.button"/>
 								</a>
 							</c:otherwise>

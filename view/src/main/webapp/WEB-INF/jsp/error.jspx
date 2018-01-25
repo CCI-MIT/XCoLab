@@ -59,7 +59,7 @@
                             <input type="text" name="email" class="form-control" placeholder="Email address" />
                             <div class="clearfix"><!-- --></div>
                             <div class="b-Spacing">
-                                <button type="submit" class="c-Button__primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form:form>
                     </div>

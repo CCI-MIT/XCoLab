@@ -10,7 +10,7 @@
         <br />
         <c:if test="${_isAdmin}">
             <a href="/content-editor/?articleId=${contentArticleVersion.contentArticleId}"
-               class="c-Button__admin">
+               class="btn btn-admin btn-sm pull-right">
                 Edit wiki article
             </a>
             <br/>

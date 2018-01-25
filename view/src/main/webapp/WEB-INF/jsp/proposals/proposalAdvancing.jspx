@@ -28,7 +28,7 @@
             This page is shared by ${contestType.contestName} Fellows only.  Advisors and Judges will not be able to view this page.
             <br/>
             <div style="display: inline-block;	float:right; margin-top: 20px;">
-                <a href="#" class="c-Button__admin" style="font-size: 18px;" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
+                <a href="#" class="btn btn-admin" style="font-size: 18px;" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
             </div>
             <h1 style="margin-top:15px;">Rating</h1>
 
@@ -77,22 +77,22 @@
                                                     <strong>The advancement is finalized and may not be changed anymore.</strong>
                                                 </p>
                                                 <c:if test="${proposalsPermissions.canAdminAll}">
-                                                    <a id="submit-advancing-1" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
+                                                    <a id="submit-advancing-1" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
                                                         Save
                                                     </a>
                                                     <input type="submit" id="submit-unfreeze" name="isUnfreeze" style="display:none" value="true" />
-                                                    <a id="submit-unfreeze-link" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
+                                                    <a id="submit-unfreeze-link" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
                                                         Unfreeze
                                                     </a>
                                                 </c:if>
                                             </c:when>
                                             <c:when test="${proposalsPermissions.canFellowActions}">
-                                                <a id="submit-advancing-2" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
+                                                <a id="submit-advancing-2" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
                                                     Save
                                                 </a>
                                                 <!-- <div id="advancement-freeze-button">
                                                     <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
-                                                    <a id="submit-freeze-link" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
+                                                    <a id="submit-freeze-link" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
                                                         Freeze
                                                     </a>
                                                 </div> -->
@@ -106,7 +106,7 @@
                                         <div id="advancement-force-button">
                                             <c:if test="${proposalsPermissions.canAdminAll and not hasAlreadyBeenPromoted}">
                                                     <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
-                                                    <a id="submit-forcePromotion-link" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
+                                                    <a id="submit-forcePromotion-link" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
                                                         Execute judging decision
                                                     </a>
                                             </c:if>
@@ -238,7 +238,7 @@
         </c:if>
         <c:if test="${not proposal.allJudgesReviewFinished}">
             <script>
-                $(".judging_comments .c-Button__primary").hide();
+                $(".judging_comments .btn btn-primary").hide();
             </script>
         </c:if>
         <script>

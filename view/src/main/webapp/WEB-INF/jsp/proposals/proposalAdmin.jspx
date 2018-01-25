@@ -57,7 +57,7 @@
 
                                     <input type="hidden" name="${_csrf.parameterName}"
                                            value="${_csrf.token}"/>
-                                    <button class="c-Button__primary" type="submit">Save</button>
+                                    <button class="btn btn-primary" type="submit">Save</button>
                                 </form>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                                         </c:choose>
                                     </c:forEach>
                                 </select>
-                                <button class="c-Button__primary" type="submit">Save</button>
+                                <button class="btn btn-primary" type="submit">Save</button>
                             </form>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                                   id="deleteProposalForm">
                                 <input type="hidden" name="${_csrf.parameterName}"
                                        value="${_csrf.token}"/>
-                                <a class="c-Button__primary" href="javascript:;"
+                                <a class="btn btn-primary" href="javascript:;"
                                    onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; } jQuery('#deleteProposalForm').submit();">
                                     DELETE ${contestType.proposalName}
                                 </a>
@@ -131,7 +131,7 @@
                         <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                             <strong>Promote ${contestType.proposalName} to latest ${contestType.contestName} phase</strong>
                             <div>
-                                <a class="c-Button__primary" href="javascript:;"
+                                <a class="btn btn-primary" href="javascript:;"
                                    onclick="jQuery(this).parents('form').submit();">
                                     <span>Promote</span> ${contestType.proposalName}
                                 </a>
@@ -145,7 +145,7 @@
                     <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                         <strong>Move ${contestType.proposalName} to different ${contestType.contestName}</strong>
                         <div>
-                            <a class="c-Button__primary" href="javascript:;" rel="nofollow"
+                            <a class="btn btn-primary" href="javascript:;" rel="nofollow"
                                onclick="if(!deferUntilLogin()){return false;
 } showCopyProposalPopup('MOVE_PERMANENTLY')">
                                 <span>Move</span> this ${contestType.proposalName}
@@ -159,7 +159,7 @@
                     <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                         <strong>Reopen ${contestType.proposalName} in different ${contestType.contestName}</strong>
                         <div>
-                            <a class="c-Button__primary" href="javascript:;" rel="nofollow"
+                            <a class="btn btn-primary" href="javascript:;" rel="nofollow"
                                onclick="if(!deferUntilLogin()){return false;
 } showCopyProposalPopup('COPY')">
                                 <span>Reopen</span> this ${contestType.proposalName}
@@ -173,7 +173,7 @@
                     <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                         <strong>Fork ${contestType.proposalName} in different ${contestType.contestName}</strong>
                         <div>
-                            <a class="c-Button__primary" href="javascript:;" rel="nofollow"
+                            <a class="btn btn-primary" href="javascript:;" rel="nofollow"
                                onclick="if(!deferUntilLogin()){return false;
 } showCopyProposalPopup('FORK')">
                                 <span>Fork</span> this ${contestType.proposalName}
@@ -256,7 +256,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="close" data-dismiss="modal" class="c-Button__secondary">Cancel
+                <button type="close" data-dismiss="modal" class="btn btn-gray">Cancel
                 </button>
             </div>
         </xcolab:modal>

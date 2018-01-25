@@ -36,7 +36,7 @@
                         <img src="${_themeImageFolder}/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
                              title="If you are using a public computer, check this box to prevent others from being able to use your login." />
                     </div>
-                    <button type="submit" class="c-Button__primary">Log in</button>
+                    <button type="submit" class="btn btn-primary">Log in</button>
                 </form>
             </c:when>
             <c:when test="${isExpired}">
@@ -46,7 +46,7 @@
                 <form action="/login/token/${tokenId}" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="tokenKey" value="${tokenKey}" />
-                    <button type="submit" class="c-Button__primary">Send new link</button>
+                    <button type="submit" class="btn btn-primary">Send new link</button>
                 </form>
             </c:when>
             <c:otherwise>
