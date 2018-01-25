@@ -212,6 +212,7 @@ public class AdminTabController extends AbstractTabController {
             }
             default:
                 ErrorText.NOT_FOUND.flashAndRedirect(request, response);
+                break;
         }
     }
 
