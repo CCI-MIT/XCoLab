@@ -1,0 +1,33 @@
+@import "bootstrap/variables";
+
+.btn-image {
+  height: 2rem;
+  margin-top: -$btn-padding-y * .5;
+  margin-right: $btn-padding-x * .25;
+  margin-bottom: -$btn-padding-y * .5;
+  margin-left: -$btn-padding-x * .5;
+
+  .btn-sm & {
+    height: 1.5rem;
+    margin-top: -$btn-padding-y-sm * .5;
+    margin-right: $btn-padding-x-sm* .25;
+    margin-bottom: -$btn-padding-y-sm * .5;
+    margin-left: -$btn-padding-x-sm * .5;
+  }
+
+  .btn-lg & {
+    height: 2.5rem;
+    margin-top: -$btn-padding-y-lg * .5;
+    margin-right: $btn-padding-x-lg* .25;
+    margin-bottom: -$btn-padding-y-lg * .5;
+    margin-left: -$btn-padding-x-lg * .5;
+  }
+}
+
+.btn-image-text {
+  vertical-align: middle;
+}
+
+.btn:not(.btn-block) + .btn:not(.btn-block) {
+  margin-left: $spacer * .5;
+}
