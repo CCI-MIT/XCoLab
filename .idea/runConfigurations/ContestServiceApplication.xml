@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ContestServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+  <configuration default="false" name="ContestServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Services">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.ContestServiceApplication" />
     <option name="VM_PARAMETERS" value="-Xms128M -Xmx512M" />
