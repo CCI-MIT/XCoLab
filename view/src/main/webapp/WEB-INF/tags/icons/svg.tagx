@@ -1,0 +1,10 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
+
+    <jsp:directive.attribute name="cssClass" type="java.lang.String" required="false" rtexprvalue="true" description="Additional class for the svg" />
+    <jsp:directive.attribute name="fill" type="java.lang.String" required="false" rtexprvalue="true" description="Optional fill color" />
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" class="c-Icon ${cssClass}"
+         aria-hidden="true" fill="${empty fill ? 'none' : fill}">
+        <jsp:doBody/>
+    </svg>
+</jsp:root>

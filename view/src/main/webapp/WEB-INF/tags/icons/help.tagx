@@ -1,0 +1,10 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab-icon="urn:jsptagdir:/WEB-INF/tags/icons">
+
+    <jsp:directive.attribute name="cssClass" type="java.lang.String" required="false" rtexprvalue="true" description="Extra CSS classes" />
+
+    <xcolab-icon:svg cssClass="c-Icon__help ${cssClass}">
+        <ellipse cx="251" cy="407" rx="37" ry="38"/>
+        <path d="M131 171c0-16 5-32 15-48s25-29 45-40c19-11 42-16 67-16s46 4 64 13c19 9 33 21 43 37a89 89 0 0 1 6 86c-5 11-12 20-20 28a1490 1490 0 0 1-56 53 55 55 0 0 0-11 20l-5 17c-3 17-13 26-29 26-9 0-16-3-22-9-6-5-9-14-9-25a92 92 0 0 1 24-63c7-8 17-17 29-27l23-21 12-16c3-6 5-12 5-19 0-13-5-25-15-34s-23-13-39-13c-18 0-31 4-40 13-8 10-16 23-22 41-5 19-16 28-32 28-9 0-17-3-23-10-7-6-10-13-10-21z"/>
+    </xcolab-icon:svg>
+</jsp:root>

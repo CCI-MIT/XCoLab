@@ -285,7 +285,7 @@
                         <c:when test="${not empty balloonLink}">
                             <c:set var="shareLink" value="${_colabUrl}${balloonLink.targetUrl}" />
                             <c:if test="${not empty balloonText}" >
-                                <div><xcolab-social:socialShareButton title="${balloonText.shareTitle}" size="xs"/></div>
+                                <div><xcolab-social:socialShareButtons title="${balloonText.shareTitle}" size="xs"/></div>
                             </c:if>
                             <input id="snpLink" readonly="true" value="${shareLink}" class="form-control" />
                             <button class="c-Button__primary" id="copyButton"
@@ -302,9 +302,9 @@
                         <c:otherwise>
                             <form action="/snp/socialnetworkprize" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="acceptTos" />
+                                <div class="form-check">
+                                    <input type="checkbox" name="acceptTos" class="form-check-input" id="acceptTos"/>
+                                    <label class="form-check-label" for="acceptTos">
                                         Yes, I have read and I agree to the terms of the <a href="" data-toggle="modal" data-target="#snpConsentFormModal">consent form</a>.
                                     </label>
                                 </div>

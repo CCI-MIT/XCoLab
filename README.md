@@ -26,7 +26,7 @@ cat sql/starter/xcolab-data.sql | mysql -u root -p xcolab
 # Check prerequesites and set up configuration file
 ./INSTALL.sh
 
-# Edit the ~/.xcolab.application.properties with your database credentials
+# Update the ~/.xcolab.application.properties file with your database credentials
 
 # Run the xCoLab:
 ./RUN.sh

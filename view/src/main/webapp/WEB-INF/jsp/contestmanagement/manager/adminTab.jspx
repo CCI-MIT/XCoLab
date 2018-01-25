@@ -47,6 +47,32 @@
         <br/>
         <br/>
         <div class="addpropbox">
+            <h2>Proposal report</h2>
+            <form:form action="/admin/contest/manager/tab/ADMIN/proposalReport" commandName="proposalReportBean"
+                       id="proposalReportForm" method="get">
+                <label for="contestIds">Please select the voting phase(s)
+                    you wish to include in the voting report:</label> <br/>
+                <form:select path="contestIds" id="contestIds"
+                             class="multi form-control" multiple="multiple" cssStyle="width: 100%;">
+                    <form:option value="" label="--- Please select ---"/>
+                    <form:options items="${contestSelectionItems}" itemValue="value"
+                                  itemLabel="lable"/>
+                </form:select>
+                <br />
+                <button type="submit" class="c-Button__primary">Generate report</button>
+            </form:form>
+        </div>
+        <br/>
+        <br/>
+        <div class="addpropbox">
+            <h2>Contest report</h2>
+            <form:form action="/admin/contest/manager/tab/ADMIN/contestReport" method="get">
+                <button type="submit" class="c-Button__primary">Generate report</button>
+            </form:form>
+        </div>
+        <br/>
+        <br/>
+        <div class="addpropbox">
             <h2>Server administration</h2>
             <form action="/admin/caching/clear" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -171,13 +197,11 @@
                 <textarea id="batchRegisterMembersList" name="members" class="form-control"
                           placeholder="Enter members..." style="width: 100%;"><!-- --></textarea>
                 </div>
-                <div class="checkbox">
-                    <label>
-                        <!-- TODO COLAB-2204: remove style attribute once input float rule is removed -->
-                        <input type="checkbox" name="asGuests" style="float: none; height: initial;"/>
-                        <span class="js-Tooltip" title="Guests cannot create proposals or participate in dicussions">
-                            Register as guests
-                        </span>
+                <div class="form-check">
+                    <!-- TODO COLAB-2204: remove style attribute once input float rule is removed -->
+                    <input type="checkbox" name="asGuests" class="form-check-input" id="asGuests" style="float: none; height: initial;"/>
+                    <label class="form-check-label js-Tooltip" for="asGuests" title="Guests cannot create proposals or participate in dicussions">
+                        Register as guests
                     </label>
                 </div>
                 <button type="submit" class="c-Button__primary">Register members</button>

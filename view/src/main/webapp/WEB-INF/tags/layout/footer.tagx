@@ -65,7 +65,7 @@
 
                 <c:if test="${_showShareButtons}">
                     <div class="ml-auto">
-                        <xcolab-social:socialFollowButton />
+                        <xcolab-social:socialFollowButtons />
                     </div>
                 </c:if>
             </div>

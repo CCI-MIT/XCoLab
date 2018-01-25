@@ -242,6 +242,17 @@
     <xcolab:requireLibrary name="handlebars.js" />
     <xcolab:script src="${_themeJsFolder}/proposals/findAndReplaceDOMText.js" />
 
+    <c:set var="sortArrowDown">
+        <xcolab:sortArrow sortAscending="false"/>
+    </c:set>
+    <c:set var="sortArrowUp">
+        <xcolab:sortArrow sortAscending="true"/>
+    </c:set>
+
     <!-- Custom JS -->
+    <script>
+        var sortArrowDown = '${sortArrowDown}';
+        var sortArrowUp = '${sortArrowUp}';
+    </script>
     <xcolab:script src="${_themeJsFolder}/proposals/proposalPicker.js" />
 </jsp:root>
