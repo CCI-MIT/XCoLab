@@ -330,9 +330,13 @@ public final class MembersClient {
     }
 
     public static boolean deleteMember(long memberId) {
-        return memberResource.delete(memberId)
+        boolean result = memberResource.delete(memberId)
                 .cacheName(CacheName.MEMBER)
                 .execute();
+        if (result) {
+            ServiceRequestUtils.clearCache(CacheName.MEMBER_LIST);
+        }
+        return result;
     }
 
     public static boolean isScreenNameUsed(String screenName) {

@@ -61,6 +61,10 @@
                                   itemLabel="lable"/>
                 </form:select>
                 <br />
+                <form:select path="proposalExportType" cssClass="form-control">
+                    <form:options items="${proposalExportTypeSelectionItems}" itemValue="value"
+                                  itemLabel="lable"/>
+                </form:select>
                 <button type="submit" class="c-Button__primary">Generate report</button>
             </form:form>
         </div>
