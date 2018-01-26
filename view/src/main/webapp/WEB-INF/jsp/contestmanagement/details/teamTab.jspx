@@ -13,7 +13,7 @@
 
 	<c:set var="updateContestTeamURL" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/TEAM/update" />
 
-	<script type="text/javascript">
+	<script>
 		var users = [];
 		var usersMap = {};
 		var userNames = [];

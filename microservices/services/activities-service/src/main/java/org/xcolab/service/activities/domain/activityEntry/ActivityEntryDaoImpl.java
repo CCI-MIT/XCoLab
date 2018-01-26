@@ -4,6 +4,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.records.ActivityEntryRecord;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -31,14 +32,11 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     public ActivityEntry create(ActivityEntry activityEntry) {
         ActivityEntryRecord ret = this.dslContext.insertInto(ACTIVITY_ENTRY)
                 .set(ACTIVITY_ENTRY.MEMBER_ID, activityEntry.getMemberId())
-                .set(ACTIVITY_ENTRY.CREATE_DATE, activityEntry.getCreateDate())
-                .set(ACTIVITY_ENTRY.PRIMARY_TYPE, activityEntry.getPrimaryType())
-                .set(ACTIVITY_ENTRY.SECONDARY_TYPE, activityEntry.getSecondaryType())
-                .set(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY, activityEntry.getClassPrimaryKey())
-                .set(ACTIVITY_ENTRY.EXTRA_DATA, activityEntry.getExtraData())
-                .set(ACTIVITY_ENTRY.ACTIVITY_ENTRY_TITLE, activityEntry.getActivityEntryTitle())
-                .set(ACTIVITY_ENTRY.ACTIVITY_ENTRY_BODY, activityEntry.getActivityEntryBody())
-                .set(ACTIVITY_ENTRY.ACTIVITY_ENTRY_NAME, activityEntry.getActivityEntryName())
+                .set(ACTIVITY_ENTRY.CREATE_DATE, DSL.currentTimestamp())
+                .set(ACTIVITY_ENTRY.ACTIVITY_CATEGORY, activityEntry.getActivityCategory())
+                .set(ACTIVITY_ENTRY.ACTIVITY_TYPE, activityEntry.getActivityType())
+                .set(ACTIVITY_ENTRY.CATEGORY_ID, activityEntry.getCategoryId())
+                .set(ACTIVITY_ENTRY.ADDITIONAL_ID, activityEntry.getAdditionalId())
                 .returning(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID)
                 .fetchOne();
         if (ret != null) {
@@ -78,10 +76,10 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     }
 
     @Override
-    public boolean delete(ActivityEntryType activityEntryType, List<Long> classPKs) {
+    public boolean delete(ActivityCategory activityCategory, List<Long> categoryIds) {
         return dslContext.deleteFrom(ACTIVITY_ENTRY)
-                .where(ACTIVITY_ENTRY.PRIMARY_TYPE.eq(activityEntryType.getPrimaryTypeId()))
-                .and(ACTIVITY_ENTRY.CLASS_PRIMARY_KEY.in(classPKs))
+                .where(ACTIVITY_ENTRY.ACTIVITY_CATEGORY.eq(activityCategory.name()))
+                .and(ACTIVITY_ENTRY.CATEGORY_ID.in(categoryIds))
                 .execute() > 0;
     }
 

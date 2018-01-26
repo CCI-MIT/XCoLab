@@ -59,7 +59,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
         super("votingReport", COLUMN_NAMES, response);
     }
 
-    public void addVotes(List<ProposalVote> proposalVotes) {
+    public void writeVotes(List<ProposalVote> proposalVotes) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
         //local caches, since many votes will likely be in the same contest

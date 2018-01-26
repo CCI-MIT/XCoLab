@@ -1,147 +1,140 @@
 package org.xcolab.client.activities.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 public class ActivitySubscription implements Serializable {
 
     public static final TypeProvider<ActivitySubscription> TYPES =
             new TypeProvider<>(ActivitySubscription.class,
-            new ParameterizedTypeReference<List<ActivitySubscription>>() {
-            });
+                    new ParameterizedTypeReference<List<ActivitySubscription>>() {});
 
-    private static final long serialVersionUID = 1658857969;
+    private static final long serialVersionUID = 1L;
 
-    private Long      pk;
-    private Long      classnameid;
-    private Long      classpk;
-    private Integer   type_;
-    private Integer   automaticsubscriptioncounter;
-    private String    extradata;
-    private Long      receiverid;
-    private Timestamp createdate;
-    private Timestamp modifieddate;
+    private Long pk;
+    private Long receiverId;
+    private String activityCategory;
+    private Long categoryId;
+    private Integer automaticSubscriptionCounter;
+    private Timestamp createDate;
+    private Timestamp modifiedDate;
 
     public ActivitySubscription() {}
 
     public ActivitySubscription(ActivitySubscription value) {
         this.pk = value.pk;
-        this.classnameid = value.classnameid;
-        this.classpk = value.classpk;
-        this.type_ = value.type_;
-        this.automaticsubscriptioncounter = value.automaticsubscriptioncounter;
-        this.extradata = value.extradata;
-        this.receiverid = value.receiverid;
-        this.createdate = value.createdate;
-        this.modifieddate = value.modifieddate;
-    }
-
-    public ActivitySubscription(
-        Long      pk,
-        Long      classnameid,
-        Long      classpk,
-        Integer   type_,
-        Integer   automaticsubscriptioncounter,
-        String    extradata,
-        Long      receiverid,
-        Timestamp createdate,
-        Timestamp modifieddate
-    ) {
-        this.pk = pk;
-        this.classnameid = classnameid;
-        this.classpk = classpk;
-        this.type_ = type_;
-        this.automaticsubscriptioncounter = automaticsubscriptioncounter;
-        this.extradata = extradata;
-        this.receiverid = receiverid;
-        this.createdate = createdate;
-        this.modifieddate = modifieddate;
+        this.receiverId = value.receiverId;
+        this.automaticSubscriptionCounter = value.automaticSubscriptionCounter;
+        this.createDate = value.createDate;
+        this.modifiedDate = value.modifiedDate;
     }
 
     public Long getPk() {
-        return this.pk;
+        return pk;
     }
 
     public void setPk(Long pk) {
         this.pk = pk;
     }
 
-    public Long getClassNameId() {
-        return this.classnameid;
+    public Long getReceiverId() {
+        return receiverId;
     }
 
-    public void setClassNameId(Long classnameid) {
-        this.classnameid = classnameid;
+    public void setReceiverId(Long receiverId) {
+        this.receiverId = receiverId;
     }
 
-    public Long getClassPK() {
-        return this.classpk;
+    @JsonIgnore
+    public ActivityCategory getActivityCategoryEnum() {
+        //TODO COLAB-2486: once fixed, this can't be UNKNOWN
+        return activityCategory != null ? ActivityCategory.valueOf(activityCategory)
+                : ActivityCategory.UNKNOWN;
     }
 
-    public void setClassPK(Long classpk) {
-        this.classpk = classpk;
+    public String getActivityCategory() {
+        return activityCategory;
     }
 
-    public Integer getType_() {
-        return this.type_;
+    public void setActivityCategory(String activityCategory) {
+        this.activityCategory = activityCategory;
     }
 
-    public void setType_(Integer type_) {
-        this.type_ = type_;
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Integer getAutomaticSubscriptionCounter() {
-        return this.automaticsubscriptioncounter;
+        return automaticSubscriptionCounter;
     }
 
-    public void setAutomaticSubscriptionCounter(Integer automaticsubscriptioncounter) {
-        this.automaticsubscriptioncounter = automaticsubscriptioncounter;
-    }
-
-    public String getExtraData() {
-        return this.extradata;
-    }
-
-    public void setExtraData(String extradata) {
-        this.extradata = extradata;
-    }
-
-    public Long getReceiverId() {
-        return this.receiverid;
-    }
-
-    public void setReceiverId(Long receiverid) {
-        this.receiverid = receiverid;
+    public void setAutomaticSubscriptionCounter(Integer automaticSubscriptionCounter) {
+        this.automaticSubscriptionCounter = automaticSubscriptionCounter;
     }
 
     public Timestamp getCreateDate() {
-        return this.createdate;
+        return createDate;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
     }
 
     public Timestamp getModifiedDate() {
-        return this.modifieddate;
+        return modifiedDate;
     }
 
-    public void setModifiedDate(Timestamp modifieddate) {
-        this.modifieddate = modifieddate;
+    public void setModifiedDate(Timestamp modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ActivitySubscription)) {
+            return false;
+        }
+        ActivitySubscription that = (ActivitySubscription) o;
+        return Objects.equals(getPk(), that.getPk())
+                && Objects.equals(getReceiverId(), that.getReceiverId())
+                && Objects.equals(getActivityCategory(), that.getActivityCategory())
+                && Objects.equals(getCategoryId(), that.getCategoryId())
+                && Objects.equals(getAutomaticSubscriptionCounter(),
+                        that.getAutomaticSubscriptionCounter())
+                && Objects.equals(getCreateDate(), that.getCreateDate())
+                && Objects.equals(getModifiedDate(), that.getModifiedDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPk(), getReceiverId(), getActivityCategory(), getCategoryId(),
+                getAutomaticSubscriptionCounter(), getCreateDate(), getModifiedDate());
     }
 
     @Override
     public String toString() {
-        String sb =
-                "ActivitySubscription (" + pk + ", " + classnameid + ", " + classpk + ", " + type_
-                        + ", " + automaticsubscriptioncounter + ", " + extradata + ", " + receiverid
-                        + ", " + createdate + ", " + modifieddate + ")";
-
-        return sb;
+        return new ToStringBuilder(this).append("pk", pk)
+                .append("receiverId", receiverId)
+                .append("activityCategory", activityCategory)
+                .append("categoryId", categoryId)
+                .append("automaticSubscriptionCounter", automaticSubscriptionCounter)
+                .append("createDate", createDate)
+                .append("modifiedDate", modifiedDate)
+                .toString();
     }
 }

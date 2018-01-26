@@ -15,22 +15,30 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.pojo.Notification;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
+import org.xcolab.util.html.LabelStringValue;
 import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.ContestCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.ProposalCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.ProposalExportType;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.WinnerCsvWriter;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.EntityIdListUtil;
 import org.xcolab.view.util.entity.enums.MemberRole;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
@@ -39,6 +47,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -102,6 +111,27 @@ public class AdminTabController extends AbstractTabController {
                 .collect(Collectors.toList());
     }
 
+    @ModelAttribute("contestSelectionItems")
+    public List<LabelValue> contestSelectionItems() {
+        return ContestClientUtil.getAllContests()
+                .stream()
+                .sorted(Comparator.comparing(Contest::getContestPK).reversed())
+                .map(contest -> {
+                    final String contestName = contest.getContestShortName();
+                    final Long contestId = contest.getContestPK();
+                    return new LabelValue(contestId, String.format("%d - %s", contestId, contestName));
+                })
+                .collect(Collectors.toList());
+    }
+
+    @ModelAttribute("proposalExportTypeSelectionItems")
+    public List<LabelStringValue> proposalExportTypeSelectionItems() {
+        return Arrays.stream(ProposalExportType.values())
+                .map(proposalExportType -> new LabelStringValue(
+                        proposalExportType.name(), proposalExportType.getDescription()))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("tab/ADMIN")
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member) {
@@ -109,6 +139,7 @@ public class AdminTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
         model.addAttribute("votingReportBean", new VotingReportBean());
+        model.addAttribute("proposalReportBean", new ProposalReportBean());
 
         List<Notification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
@@ -151,7 +182,50 @@ public class AdminTabController extends AbstractTabController {
         try (VoteCsvWriter csvWriter = new VoteCsvWriter(response)) {
             votingReportBean.getVotingPhaseIds().stream()
                     .map(ProposalMemberRatingClientUtil::getProposalVotesInPhase)
-                    .forEach(csvWriter::addVotes);
+                    .forEach(csvWriter::writeVotes);
+        }
+    }
+
+    @GetMapping("tab/ADMIN/proposalReport")
+    public void generateProposalReport(HttpServletRequest request, HttpServletResponse response,
+            ProposalReportBean proposalReportBean) throws IOException {
+        if (!tabWrapper.getCanView()) {
+            ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
+            return;
+        }
+
+        final List<Contest> contests =
+                EntityIdListUtil.CONTESTS.fromIdList(proposalReportBean.getContestIds());
+
+        switch (proposalReportBean.getProposalExportType()) {
+            case ALL: {
+                try (ProposalCsvWriter csvWriter = new ProposalCsvWriter(response)) {
+                    contests.forEach(csvWriter::writeProposalsInContest);
+                }
+                break;
+            }
+            case WINNING_CONTRIBUTORS: {
+                try (WinnerCsvWriter csvWriter = new WinnerCsvWriter(response)) {
+                    contests.forEach(csvWriter::writeProposalsInContest);
+                }
+                break;
+            }
+            default:
+                ErrorText.NOT_FOUND.flashAndRedirect(request, response);
+                break;
+        }
+    }
+
+    @GetMapping("tab/ADMIN/contestReport")
+    public void generateContestReport(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        if (!tabWrapper.getCanView()) {
+            ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
+            return;
+        }
+
+        try (ContestCsvWriter csvWriter = new ContestCsvWriter(response)) {
+            csvWriter.writeContests(ContestClientUtil.getAllContests());
         }
     }
 

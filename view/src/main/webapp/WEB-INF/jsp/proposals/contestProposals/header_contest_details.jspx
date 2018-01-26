@@ -184,7 +184,7 @@
                 <div class="p-ContestProposals__header__shareButtons">
                     <div class="" id="shareProposalToolbox"
                          style="float: left;width: 35px;">
-                        <xcolab-social:socialShareButton title="${_colabName.concat(' - ').concat(contest.contestShortName)}"/>
+                        <xcolab-social:socialShareButtons title="${_colabName.concat(' - ').concat(contest.contestShortName)}"/>
                     </div>
                 </div>
             </c:if>
@@ -194,7 +194,7 @@
 
     <!-- sponsor and action possible integrations-->
 
-    <script type="text/javascript">
+    <script>
 
         jQuery(function () {
             var readMoreLink = document.querySelector("#readMoreLink");

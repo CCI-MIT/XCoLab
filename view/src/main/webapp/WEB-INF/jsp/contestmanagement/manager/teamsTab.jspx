@@ -95,7 +95,7 @@
 
 
 
-    <script type="text/javascript">
+    <script>
         <![CDATA[
 
         jQuery(function () {

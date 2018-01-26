@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,15 +25,13 @@ import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscri
 import org.xcolab.service.activities.service.ActivitiesService;
 import org.xcolab.service.activities.utils.Utils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.nio.charset.Charset;
 import java.util.Optional;
 
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,14 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
-
 @WebMvcTest(ActivitiesController.class)
 @ComponentScan("org.xcolab.service.activities")
-
 @ComponentScan("com.netflix.discovery")
-
-
-
 @TestPropertySource(
     properties = {
         "cache.enabled=false",
@@ -64,8 +56,6 @@ public class ActivitiesControllerTest {
         MediaType.APPLICATION_JSON.getSubtype(),
         Charset.forName("utf8"));
 
-
-
     @Mock
     private ActivityEntryDao activityEntryDao;
 
@@ -75,25 +65,16 @@ public class ActivitiesControllerTest {
     @Mock
     private ActivitiesService activitiesService;
 
-
     @InjectMocks
     private ActivitiesController controller;
 
     @Autowired
     ObjectMapper objectMapper;
 
-
-
-    private HttpMessageConverter mappingJackson2HttpMessageConverter;
-
-
     @Before
     public void before() {
 
-
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-
-
 
         Mockito.when(activityEntryDao.create(anyObject()))
             .thenAnswer(invocation -> new ActivityEntry());
@@ -102,20 +83,6 @@ public class ActivitiesControllerTest {
             .thenAnswer(invocation -> Optional.of(new ActivitySubscription()));
     }
 
-    @Test
-    public void shouldCreateNewActivityEntryInPost() throws Exception {
-
-        this.mockMvc.perform(
-            post("/activityEntries/createActivityEntry")
-            .param("memberId","123")
-            .param("classPrimaryKey","123")
-            .param("primaryType","123")
-            .param("secondaryType","123")
-            .param("extraData","")
-            .contentType(contentType).accept(contentType))
-            .andExpect(status().isOk());
-        Mockito.verify(activityEntryDao,Mockito.times(1)).create(anyObject());
-    }
     @Test
     public void shouldGetActivityEntry() throws Exception {
 
@@ -174,19 +141,17 @@ public class ActivitiesControllerTest {
 
     @Test
     public void shouldSubscribeToActivity() throws Exception {
-
-        ActivitySubscription activitySubscription = new ActivitySubscription();
         this.mockMvc.perform(
-            post("/activitySubscriptions/subscribe")
-        .param("receiverId","8")
-        .param("activityEntryType",ActivityEntryType.MEMBER.toString())
-        .param("classPK","89")
-        .param("extraInfo","")
-        .contentType(contentType).accept(contentType))
-            .andExpect(status().isOk());
+                post("/activitySubscriptions/subscribe")
+                    .param("receiverId","8")
+                    .param("activityCategory", ActivityCategory.CONTEST.name())
+                    .param("categoryId","89")
+                    .param("extraInfo","")
+                    .contentType(contentType).accept(contentType))
+                .andExpect(status().isOk());
 
         Mockito.verify(activitiesService,Mockito.times(1))
-            .subscribe(anyLong(),anyObject(),anyLong(),anyString());
+            .subscribe(anyLong(), anyObject(), anyLong());
     }
     @Test
     public void shouldGetActivitySubscription() throws Exception {
@@ -220,47 +185,42 @@ public class ActivitiesControllerTest {
         this.mockMvc.perform(
             delete("/activitySubscriptions/deleteIfSubscribed")
                 .param("receiverId","8")
-                .param("activityEntryType",ActivityEntryType.MEMBER.toString())
-                .param("classPK","89")
-                .param("extraInfo","")
+                .param("activityCategory", ActivityCategory.CONTEST.name())
+                .param("categoryId","89")
                 .contentType(contentType).accept(contentType))
             .andExpect(status().isOk());
 
         Mockito.verify(activitiesService,Mockito.times(1))
-            .unsubscribe(anyLong(),anyObject(),anyLong(),anyString());
+            .unsubscribe(anyLong(),anyObject(),anyLong());
     }
 
     @Test
     public void shouldCheckIfSubscribed() throws Exception {
 
-
         this.mockMvc.perform(
             get("/activitySubscriptions/isSubscribed")
                 .param("receiverId","8")
-                .param("classNameId","2")
-                .param("classPK","89")
-                .param("type","89")
+                .param("activityCategory",ActivityCategory.CONTEST.name())
+                .param("categoryId","89")
                 .param("extraInfo","")
                 .contentType(contentType).accept(contentType))
             .andExpect(status().isOk());
 
-        Mockito.verify(activitySubscriptionDao,Mockito.times(1))
-            .isSubscribed(anyLong(),anyLong(),anyLong(),anyInt(),anyString());
+        Mockito.verify(activitySubscriptionDao, Mockito.times(1))
+            .isSubscribed(anyObject(), anyLong(), anyLong());
     }
 
     @Test
     public void shouldGetSubscriptions() throws Exception {
 
-
         this.mockMvc.perform(
             get("/activitySubscriptions")
                 .param("receiverId","8")
-                .param("classNameId","2")
-
+                .param("activityCategory",ActivityCategory.CONTEST.name())
                 .contentType(contentType).accept(contentType))
             .andExpect(status().isOk());
 
         Mockito.verify(activitySubscriptionDao,Mockito.times(1))
-            .getActivitySubscribers(anyLong(),anyLong(),anyLong());
+            .getActivitySubscribers(anyObject(), anyLong(), anyLong());
     }
 }

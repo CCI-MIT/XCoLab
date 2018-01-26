@@ -11,7 +11,7 @@
 		<a class="c-Button__secondary" href="${currentTabWrapped.tabUrl}" id="saveChangesButton">DISCARD changes</a>
 	</div>
 
-	<script type="text/javascript">
+	<script>
 	<![CDATA[
 	(function() {
 		jQuery(function(){

@@ -4,8 +4,8 @@
                              rtexprvalue="true" description="The Typekit Kit ID to load" />
 
     <!--suppress JSUnresolvedLibraryURL -->
-    <script type="text/javascript" src="https://use.typekit.com/${kitId}.js"><!-- empty --></script>
+    <script src="https://use.typekit.com/${kitId}.js"><!-- empty --></script>
 
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <script>try{Typekit.load();}catch(e){}</script>
 
 </jsp:root>

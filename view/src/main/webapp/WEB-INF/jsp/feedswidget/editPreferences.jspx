@@ -31,20 +31,20 @@
             </div>
 
             <div class="form-group">
-                <label>Feed max length</label>
-                <form:input path="feedMaxLength" cssClass="form-control"/>
+                <label for="feedMaxLength">Feed max length</label>
+                <form:input path="feedMaxLength" cssClass="form-control" id="feedMaxLength"/>
             </div>
 
-            <div class="checkbox">
-                <label>
-                    <form:checkbox path="removeAdmin"/>
+            <div class="form-check">
+                <form:checkbox path="removeAdmin" cssClass="form-check-input" id="removeAdmin"/>
+                <label class="form-check-label" for="removeAdmin">
                     remove admin
                 </label>
             </div>
 
-            <div class="checkbox">
-                <label>
-                    <form:checkbox path="seeMoreLinkShown"/>
+            <div class="form-check">
+                <form:checkbox path="seeMoreLinkShown" cssClass="form-check-input" id="seeMoreLinkShown"/>
+                <label class="form-check-label" for="seeMoreLinkShown">
                     show see more link
                 </label>
             </div>

@@ -1,9 +1,9 @@
 package org.xcolab.view.util.entity.subscriptions;
 
-import org.xcolab.util.enums.activity.ActivityEntryType;
-import org.xcolab.view.util.entity.activityEntry.ProposalActivitySubType;
+import org.xcolab.util.activities.enums.ActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,57 +14,37 @@ import java.util.Map;
  */
 public class ActivitySubscriptionConstraint {
 
-    private static final Map<String, ActivitySubscriptionWhitelistHandler> whitelistHandlers =
+    private static final Map<ActivityType, ActivitySubscriptionWhitelistHandler> whitelistHandlers =
             new HashMap<>();
 
     static {
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_"
-                        + ProposalActivitySubType.PROPOSAL_SUPPORTER_ADDED.getSecondaryTypeId(),
+        whitelistHandlers.put(ProposalActivityType.SUPPORT_ADDED,
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_"
-                        + ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId(),
+        whitelistHandlers.put(ProposalActivityType.SUPPORT_REMOVED,
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_"
-                        + ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
+        whitelistHandlers.put(ProposalActivityType.VOTE_ADDED,
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_"
-                        + ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),
+        whitelistHandlers.put(ProposalActivityType.VOTE_SWITCHED,
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_"
-                        + ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
+        whitelistHandlers.put(ProposalActivityType.VOTE_RETRACTED,
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
     }
 
-    private final long classNameId;
-    private final long activityType;
+    private final ActivityType activityType;
 
-    public ActivitySubscriptionConstraint(long classNameId, long activityType) {
-        this.classNameId = classNameId;
+    public ActivitySubscriptionConstraint(ActivityType activityType) {
         this.activityType = activityType;
     }
 
     public boolean areSubscribersConstrained() {
-        ActivitySubscriptionWhitelistHandler handler =
-                whitelistHandlers.get(getClassNameId() + "_" + getActivityType());
-
-        return handler != null;
+        return whitelistHandlers.containsKey(activityType);
     }
 
-    public List<Long> getWhitelist(long classPk) {
+    public List<Long> getWhitelist(long categoryId) {
         if (areSubscribersConstrained()) {
-            return whitelistHandlers.get(getClassNameId() + "_" + getActivityType())
-                    .getWhitelistedUsers(classPk);
+            return whitelistHandlers.get(activityType).getWhitelistedUsers(categoryId);
         }
 
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
-
-    public long getClassNameId() {
-        return classNameId;
-    }
-
-    public long getActivityType() {
-        return activityType;
-    }
-
 }

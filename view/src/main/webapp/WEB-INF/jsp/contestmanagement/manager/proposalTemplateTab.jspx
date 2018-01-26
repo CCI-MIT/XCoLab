@@ -108,11 +108,12 @@
 								</form:select>
 							</div>
 
-                            <div class="checkbox">
-                                <label>
-                                    <form:checkbox path="sections[${x.index}].includeInJudgingReport"
-                                                   id="sections${x.index}.includeInJudgingReport"
-                                                   data-form-name="includeInJudgingReport"/>
+                            <div class="form-check">
+                                <form:checkbox path="sections[${x.index}].includeInJudgingReport"
+                                               id="sections${x.index}.includeInJudgingReport"
+                                               data-form-name="includeInJudgingReport"
+                                               cssClass="form-check-input"/>
+                                <label class="form-check-label" for="sections${x.index}.includeInJudgingReport">
                                     <strong>Should the content of this section be included in the judging report CSV?</strong>
                                 </label>
                             </div>
@@ -147,11 +148,12 @@
                                         </form:select>
                                     </div>
 
-                                    <div class="checkbox">
-                                        <label>
-                                            <form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
-                                                           id="sections${x.index}.contestIntegrationRelevance"
-                                                           data-form-name="contestIntegrationRelevance"/>
+                                    <div class="form-check">
+                                        <form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
+                                                       id="sections${x.index}.contestIntegrationRelevance"
+                                                       data-form-name="contestIntegrationRelevance"
+                                                       cssClass="form-check-input"/>
+                                        <label class="form-check-label" for="sections${x.index}.contestIntegrationRelevance">
                                             <strong>Is this proposal reference field used for contest integration?</strong>
                                         </label>
                                     </div>
@@ -280,7 +282,7 @@
 		</div>
 	</c:if>
 
-	<script type="text/javascript">
+	<script>
 		<![CDATA[
 
 		jQuery(function(){

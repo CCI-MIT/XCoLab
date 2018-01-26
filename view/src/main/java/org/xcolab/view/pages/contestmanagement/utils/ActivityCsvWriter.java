@@ -7,7 +7,7 @@ import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.CsvResponseWriter;
 
@@ -34,6 +34,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
             "screenName",
             "firstName",
             "lastName",
+            "activityCategory",
             "activityType",
             "activityCreateDate",
             "activityBody"
@@ -53,8 +54,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
 
     public void writeActivity(ActivityEntry activityEntry) {
 
-        ActivityEntryType activityType = ActivityEntryType
-                .getActivityEntryTypeByPrimaryType(activityEntry.getPrimaryType());
+        final ActivityType activityType = activityEntry.getActivityTypeEnum();
         if (activityType != null) {
             Member member = getMemberOrNull(activityEntry);
 
@@ -63,14 +63,15 @@ public class ActivityCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? member.getScreenName() : MEMBER_NOT_FOUND_MESSAGE);
             addValue(row, member != null ? member.getFirstName() : MEMBER_NOT_FOUND_MESSAGE);
             addValue(row, member != null ? member.getLastName() : MEMBER_NOT_FOUND_MESSAGE);
+            addValue(row, activityType.getCategory().name());
             addValue(row, activityType.name());
             addValue(row, DATE_FORMAT.format(activityEntry.getCreateDate()));
             addValue(row, activityEntryHelper.getActivityBody(activityEntry));
 
             writeRow(row);
         } else {
-            _log.warn("Unknown ActivityEntryType {} found when generating report",
-                    activityEntry.getPrimaryType());
+            _log.warn("Unknown ActivityCategory {} found when generating report",
+                    activityEntry.getActivityCategory());
         }
     }
 

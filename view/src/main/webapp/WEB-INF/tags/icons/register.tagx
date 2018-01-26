@@ -1,0 +1,12 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab-icon="urn:jsptagdir:/WEB-INF/tags/icons">
+
+    <jsp:directive.attribute name="cssClass" type="java.lang.String" required="true" rtexprvalue="true" description="Extra CSS classes" />
+
+    <xcolab-icon:svg cssClass="c-Icon__register ${cssClass}">
+        <g fill-rule="evenodd">
+            <path d="M369 278v87h-90v51h90v86h48v-86h85v-51h-85v-87z"/>
+            <path d="M78 360c-1-44 83-60 91-60h43v-55c-28-8-43-37-43-88 0-76 43-92 91-92 47 0 85 16 86 92 2 51-13 80-43 88v55h28c15 0 22 9 22 26v23h-93v54H133c-36 0-54-14-55-43z"/>
+        </g>
+    </xcolab-icon:svg>
+</jsp:root>

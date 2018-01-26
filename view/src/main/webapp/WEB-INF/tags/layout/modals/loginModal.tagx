@@ -34,13 +34,13 @@
                         <div class="c-Header__socialButtons">
                             <c:if test="${showFacebookSso}">
                                 <a href="/sso/facebook/register" style="color: black;">
-                                    <img src="${_themeImageFolder}/facebook-logo.svg" />
+                                    <img src="${_themeImageFolder}/icons/social/facebook.svg" aria-hidden="true" />
                                     <span>Facebook</span>
                                 </a>
                             </c:if>
                             <c:if test="${showGoogleSso}">
                                 <a href="/sso/google/register" style="color: black;">
-                                    <img src="${_themeImageFolder}/google-logo.svg" />
+                                    <img src="${_themeImageFolder}/icons/social/google.svg" aria-hidden="true"/>
                                     <span>Google</span>
                                 </a>
                             </c:if>
@@ -61,9 +61,9 @@
                            onkeypress="return submitenter(this,event)" />
                 </div>
 
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="remember-me" checked="checked" />
+                <div class="form-check">
+                    <input type="checkbox" name="remember-me" checked="checked" class="form-check-input" id="remember-me"/>
+                    <label class="form-check-label" for="remember-me">
                         <spring:message code="homepage.login.rememberme"/>
                     </label>
                 </div>
@@ -82,7 +82,7 @@
     </xcolab:modal>
 
     <c:if test='${show}'>
-        <script type="text/javascript">
+        <script>
             jQuery(function() {
                 $('#loginModal').modal();
             });

@@ -1,66 +1,7 @@
-$c-Header__menu__right__li__help__border--left: 1px solid $t-Color__grey--light !default;
 
-.c-Header__navItem.bs-navitem-icon {
-
-  &.search {
-    background-image: url(/images/icon-menu-search.png);
-    //background-position-y: 18px;
-
-    &.open {
-      &, &:hover {
-        background-image: url(/images/icon-menu-search2.png);
-      }
-    }
-  }
-
-  &.register {
-    background-image: url(/images/icon-menu-register.png);
-    //background-position-y: 13px;
-
-    &:hover {
-      background-image: url(/images/icon-menu-register2.png);
-    }
-  }
-
-  &.login {
-    background-image: url(/images/icon-menu-login.png);
-    padding-right: 7px;
-
-    &:hover {
-      background-image: url(/images/icon-menu-login2.png);
-    }
-
-    &.open {
-      &, &:hover {
-        background-image: url(/images/icon-menu-login3.png);
-      }
-    }
-  }
-
-  &.language {
-    background-image: url(/images/earth-grid-select-language-button.png);
-
-    &:hover {
-      background-image: url(/images/earth-grid-select-language-button2.png);
-    }
-
-    &.open {
-      &, &:hover {
-        background-image: url(/images/earth-grid-select-language-button3.png)
-      }
-    }
-  }
-
-  &.help {
-    background-image: url(/images/icon-menu-help.png);
-
-    margin-left: 7px;
-    border-left: $c-Header__menu__right__li__help__border--left;
-
-    &:hover {
-      background-image: url(/images/icon-menu-help2.png);
-    }
-  }
+.c-Header__displayName {
+  max-width: 180px;
+  text-align: right;
 }
 
 .c-Header__socialButtons {

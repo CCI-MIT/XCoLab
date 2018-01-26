@@ -1,19 +1,17 @@
 package org.xcolab.view.activityentry.provider;
 
+import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 
 public interface ActivityEntryContentProvider {
 
-    Long getPrimaryType();
-
-    Long getSecondaryType();
+    ActivityType getActivityType();
 
     String getBody();
 
     String getTitle();
 
-    String getName();
-
-    void setActivityEntry(ActivityEntry activityEntry) throws ActivityInitializationException;
+    //TODO COLAB-2496: this method should return a new object that holds the state
+    void initialize(ActivityEntry activityEntry) throws ActivityInitializationException;
 }

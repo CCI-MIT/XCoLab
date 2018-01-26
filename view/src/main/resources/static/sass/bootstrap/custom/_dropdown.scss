@@ -1,52 +1,48 @@
 @import "../../variables/t-base";
+@import "bootstrap/variables";
 
 $dropdownText--open: white;
 $dropdownBackground--open: rgba(51, 51, 51, .9);
 
 .dropdown-toggle {
   cursor: pointer;
+
+  &.bs-dropdown-toggle--no-caret:after {
+    content: none;
+  }
 }
 
-ul.dropdown-menu li {
+.dropdown-menu .dropdown-item {
   background: none;
   margin-left: 0;
 }
 
+.bs-dropdown-box {
+  padding: 15px 15px;
 
-.dropdown-header {
-  color: $t-Color__grey--light;
+  &.bs-dropdown-box--sm {
+    width: 150px;
+  }
+
+  &.bs-dropdown-box--md {
+    width: 225px;
+  }
+
+  &.bs-dropdown-box--lg {
+    width: 300px;
+  }
 }
 
-.bs-dropdown--dark.dropdown, .bs-dropdown--dark.dropup {
+.bs-dropdown-inverse {
+
+  .dropdown-header {
+    color: $t-Color__grey--light;
+  }
 
   .dropdown-menu {
     background-color: $dropdownBackground--open;
+    color: $dropdownText--open;
     border: none;
-
-    &.bs-dropdown-nowrap {
-      white-space: nowrap;
-    }
-
-    &.bs-dropdown-box {
-      padding: 15px 15px;
-      background-color: $dropdownBackground--open;
-      border-bottom-left-radius: 3px;
-      border-bottom-right-radius: 3px;
-
-      color: $dropdownText--open;
-
-      &.bs-dropdown-box--sm {
-        width: 150px;
-      }
-
-      &.bs-dropdown-box--md {
-        width: 225px;
-      }
-
-      &.bs-dropdown-box--lg {
-        width: 300px;
-      }
-    }
 
     a {
       color: $dropdownText--open;
@@ -59,27 +55,39 @@ ul.dropdown-menu li {
       }
     }
 
-    > li > a {
-      padding: 0;
-      margin: 3px 20px;
-      font-weight: 700;
-      display: inline-block;
+    .dropdown-item {
+      a {
+        font-weight: 700;
+        display: inline-block;
+      }
+      &:hover {
+        background: none;
+      }
     }
 
-    &.divider {
+    .dropdown-divider {
       background-color: $dropdownText--open;
-    }
-  }
-  &.open {
-    color: $dropdownText--open;
-    background-color: $dropdownBackground--open;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-
-    > a, > a:hover, > a:focus {
-      color: $dropdownText--open;
-      background: none;
     }
   }
 }
 
+//adjustments for dropdowns in navbars
+.navbar {
+  .dropdown-menu {
+    margin-top: 0;
+
+    border-top-left-radius: 0;
+
+    &.dropdown-menu-right {
+      border-top-left-radius: $dropdown-border-radius;
+      border-top-right-radius: 0;
+    }
+  }
+
+  .nav-item.dropdown.show .nav-link {
+    color: $dropdownText--open;
+    background-color: $dropdownBackground--open;
+    border-top-right-radius: $dropdown-border-radius;
+    border-top-left-radius: $dropdown-border-radius;
+  }
+}

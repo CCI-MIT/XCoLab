@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface ActivitySubscriptionWhitelistHandler {
 
-    List<Long> getWhitelistedUsers(long classPk);
+    List<Long> getWhitelistedUsers(long categoryId);
 }

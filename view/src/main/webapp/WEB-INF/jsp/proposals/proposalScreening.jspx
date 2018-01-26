@@ -158,19 +158,19 @@
             </div>
         </div>
 
-        <script type="text/javascript">
+        <script>
             var fellowScreeningActions = {};
         </script>
 
         <c:forEach var="fellowScreeningActions" items="${judgingOptions}">
-            <script type="text/javascript">
+            <script>
             fellowScreeningActions[${fellowScreeningActions.attributeValue}] = {attributeValue: ${fellowScreeningActions.attributeValue},
             description: "${fellowScreeningActions.description}", selectJudgesEnabled: ${fellowScreeningActions.selectJudgesEnabled},
             commentEnabled: ${fellowScreeningActions.commentEnabled}};
             </script>
         </c:forEach>
 
-        <script type="text/javascript">
+        <script>
 
             jQuery(function() {
                 jQuery("#saveProposalScreeningDecision").click(function () {
@@ -237,7 +237,7 @@
             </script>
         </c:if>
 
-        <script type="text/javascript">
+        <script>
             jQuery(function() {
                 enableDirtyCheck();
             });

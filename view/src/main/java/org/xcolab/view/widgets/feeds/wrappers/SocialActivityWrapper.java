@@ -1,23 +1,15 @@
 package org.xcolab.view.widgets.feeds.wrappers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.xcolab.util.activities.enums.ContestActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.time.DurationFormatter;
-import org.xcolab.view.util.entity.activityEntry.DiscussionActivitySubType;
-import org.xcolab.view.util.entity.activityEntry.MemberSubActivityType;
-import org.xcolab.view.util.entity.activityEntry.ProposalActivitySubType;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SocialActivityWrapper implements Serializable {
 
-    private final static Logger _log = LoggerFactory.getLogger(SocialActivityWrapper.class);
     private static final long serialVersionUID = 1L;
     private static final int MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -84,69 +76,37 @@ public class SocialActivityWrapper implements Serializable {
         return odd;
     }
 
-    public ActivityType getType() {
-        return ActivityType
-                .getType(activity.getPrimaryType() + "", activity.getSecondaryType() + "");
-    }
-
-
-    public enum ActivityType {
-        VOTE("up", ActivityEntryType.PROPOSAL.getPrimaryTypeId() + ""
-                + ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() + ""
-                        + ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() + ""
-                        + ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() + ""
-                        + ProposalActivitySubType.PROPOSAL_SUPPORTER_ADDED.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() + ""
-                        + ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId()),
-        EDIT("edit", ActivityEntryType.PROPOSAL.getPrimaryTypeId() + ""
-                + ProposalActivitySubType.PROPOSAL_ATTRIBUTE_UPDATE.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() + ""
-                        + ProposalActivitySubType.PROPOSAL_MEMBER_ADDED.getSecondaryTypeId(),
-                ActivityEntryType.PROPOSAL.getPrimaryTypeId() + ""
-                        + ProposalActivitySubType.PROPOSAL_MEMBER_REMOVED.getSecondaryTypeId()),
-        NEW("new", ActivityEntryType.PROPOSAL.getPrimaryTypeId() + ""
-                + ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId()),
-        COMMENT("comment", ActivityEntryType.DISCUSSION.getPrimaryTypeId() + ""
-                + DiscussionActivitySubType.DISCUSSION_ADDED.getSecondaryTypeId(),
-                ActivityEntryType.DISCUSSION.getPrimaryTypeId() + ""
-                        + DiscussionActivitySubType.DISCUSSION_CATEGORY_ADDED.getSecondaryTypeId(),
-                ActivityEntryType.DISCUSSION.getPrimaryTypeId() + ""
-                        + DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT
-                        .getSecondaryTypeId(), ActivityEntryType.DISCUSSION.getPrimaryTypeId() + ""
-                + DiscussionActivitySubType.DISCUSSION_FORUM_COMMENT.getSecondaryTypeId()),
-        USER("new_user", ActivityEntryType.MEMBER.getPrimaryTypeId() + ""
-                + MemberSubActivityType.MEMBER_JOINED.getSecondaryTypeId());
-
-        private final static Map<String, ActivityType> activityMap = new HashMap<>();
-        private final static ActivityType defaultType = COMMENT;
-
-        static {
-            for (ActivityType t : ActivityType.values()) {
-                for (String clasz : t.classes) {
-                    activityMap.put(clasz, t);
+    public String getImageClassName() {
+        switch (activity.getActivityCategoryEnum()) {
+            case MEMBER:
+                return "new_user";
+            case DISCUSSION:
+                return "comment";
+            case CONTEST:
+                switch ((ContestActivityType) activity.getActivityTypeEnum()) {
+                    case PROPOSAL_CREATED:
+                        return "new";
+                    case COMMENT_ADDED:
+                        return "comment";
+                    default: return "";
                 }
-            }
+            case PROPOSAL:
+                switch ((ProposalActivityType) activity.getActivityTypeEnum()) {
+                    case UPDATED:
+                    case MEMBER_ADDED:
+                    case MEMBER_REMOVED:
+                        return "edit";
+                    case VOTE_ADDED:
+                    case VOTE_SWITCHED:
+                    case VOTE_RETRACTED:
+                    case SUPPORT_ADDED:
+                    case SUPPORT_REMOVED:
+                        return "up";
+                    case COMMENT_ADDED:
+                        return "comment";
+                    default: return "";
+                }
+            default: return "";
         }
-
-        private final String[] classes;
-        private final String displayName;
-
-        ActivityType(String displayName, String... classes) {
-            this.displayName = displayName;
-            this.classes = classes;
-        }
-
-        public static ActivityType getType(String clasz, String type) {
-            ActivityType t = activityMap.get(clasz + type);
-            return t == null ? defaultType : t;
-        }
-
-        public String getDisplayName() {
-            return displayName;
-        }
-
     }
 }

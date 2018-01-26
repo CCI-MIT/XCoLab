@@ -15,7 +15,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.util.IdListUtil;
-import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
@@ -85,9 +85,8 @@ public class ProposalPickerFilterUtil {
         for (ActivitySubscription subscription : activitySubscriptions) {
 
             try {
-                final long proposalSubscriptionType = ActivityEntryType.PROPOSAL.getPrimaryTypeId();
-                if (subscription.getClassNameId() == proposalSubscriptionType) {
-                    final Proposal proposal = proposalClient.getProposal(subscription.getClassPK());
+                if (subscription.getActivityCategoryEnum() == ActivityCategory.PROPOSAL) {
+                    final Proposal proposal = proposalClient.getProposal(subscription.getCategoryId());
                     if (proposal.isVisible()) {
                         proposals.add(proposal);
                     }

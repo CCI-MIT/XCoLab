@@ -17,13 +17,13 @@
     <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 	<c:if test="${updateError}">
-		<script type="text/javascript" >
+		<script>
 			updateError();
 		</script>
 	</c:if>
 
     <c:if test="${imageSizeError}">
-        <script type="text/javascript" >
+        <script>
             imageSizeError();
         </script>
     </c:if>
@@ -455,7 +455,7 @@
         var profileUserId = ${userBean.userId};
     </script>
 
-	<script type="text/javascript">
+	<script>
 
 		jQuery("#email").keyup(function(){
 			var $emailElement = jQuery("#email");

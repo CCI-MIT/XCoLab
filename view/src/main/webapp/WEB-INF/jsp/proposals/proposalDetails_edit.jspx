@@ -15,7 +15,7 @@
 
     <jsp:directive.include file="./init_proposal.jspx"/>
 
-    <script type="text/javascript">
+    <script>
         var EXTERNAL_IMAGE_UPLOAD_URL = '${requestScope.imageUploadServiceUrl}';
         var IMAGE_UPLOAD_HELP_TEXT = '${requestScope.imageUploadHelpText}';
     </script>
@@ -286,7 +286,7 @@
                 </c:if>
             </div>
 
-            <div class="pull-right-md pull-right-lg">
+            <div class="pull-right-lg">
                 <button class="c-Button__primary" type="button" id="saveChangesButton">
                     ${saveButtonText}
                 </button>
@@ -326,11 +326,11 @@
 
     <!-- TODO: replace with i18n message -->
     <c:set var="acceptTosNotificationText" value="To create a ${contestType.proposalName} on the ${_colabName}, you must ACCEPT the terms of use and ${contestType.contestName} rules. Please click Accept to continue and save your ${contestType.proposalName}!" />
-    <script type="text/javascript">
+    <script>
         var acceptTosNotificationText = '${acceptTosNotificationText}';
     </script>
 
-    <script type="text/javascript">
+    <script>
         var submitTimer;
 
         function showAcceptTosPopup() {

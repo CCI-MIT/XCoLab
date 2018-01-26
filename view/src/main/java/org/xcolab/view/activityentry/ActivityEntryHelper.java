@@ -9,6 +9,8 @@ import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Component
 public class ActivityEntryHelper {
@@ -23,18 +25,36 @@ public class ActivityEntryHelper {
     }
 
     public String getActivityBody(ActivityEntry entry) {
-        try {
-            for (ActivityEntryContentProvider provider : providerList) {
+        final ActivityEntryContentProvider provider = getProvider(entry);
+        return provider != null ? provider.getBody() : "";
+    }
 
-                if (provider.getPrimaryType() == entry.getPrimaryType().longValue()
-                        && provider.getSecondaryType() == entry.getSecondaryType().longValue()) {
-                    provider.setActivityEntry(entry);
-                    return provider.getBody();
-                }
+    public String getActivityTitle(ActivityEntry entry) {
+        final ActivityEntryContentProvider provider = getProvider(entry);
+        return provider != null ? provider.getTitle() : "";
+    }
+
+    private ActivityEntryContentProvider getProvider(ActivityEntry entry) {
+        try {
+            final Optional<ActivityEntryContentProvider> providerOpt = providerList.stream()
+                    .filter(provider ->
+                            Objects.equals(provider.getActivityType(), entry.getActivityTypeEnum()))
+                    .findAny();
+            if (!providerOpt.isPresent()) {
+                log.warn("Activity entry {} has no valid content provider",
+                        entry.getActivityEntryId());
+                return null;
+
+                //TODO COLAB-2486: Fix legacy activity entries and throw an exception on error
+                // throw new IllegalStateException("Activity provider for entry "
+                //        + entry.getActivityEntryId() + " does not exist");
             }
+            final ActivityEntryContentProvider provider = providerOpt.get();
+            provider.initialize(entry);
+            return provider;
         } catch (ActivityInitializationException e) {
             log.warn("Error when getting activity body: {}", e.getMessage());
+            return null;
         }
-        return "";
     }
 }

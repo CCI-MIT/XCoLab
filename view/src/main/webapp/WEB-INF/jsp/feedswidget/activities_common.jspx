@@ -25,7 +25,7 @@
                 <c:forEach items="${activities}" var="activity">
                     <div id="activitiesTable">
                         <div class="c-TableList__row ${activity.odd ? 'odd' : '' }">
-                            <div class="c-TableList__item p-Homepage__activitybox__${activity.type.displayName}"><!--  --></div>
+                            <div class="c-TableList__item p-Homepage__activitybox__${activity.imageClassName}"><!--  --></div>
                             <div class="c-TableList__item" style="width: 750px; margin-top: 20px;">
                                 <c:out value="${activity.body}" escapeXml="false"/>
                             </div>
@@ -82,7 +82,7 @@
             <div class="c-TableList">
                 <c:forEach items="${activities }" var="activity">
                     <div class="c-TableList__row ${activity.odd ? 'odd' : ''}">
-                        <div class="c-TableList__item p-Homepage__activitybox__${activity.type.displayName}"><!--  --></div>
+                        <div class="c-TableList__item p-Homepage__activitybox__${activity.imageClassName}"><!--  --></div>
                         <div class="c-TableList__item">
                             <h5>${activity.activityDateAgo}</h5>
                             <div style="width: 410px;">
@@ -101,7 +101,7 @@
         </div>
     </c:if>
     <c:if test="${not empty filterUserId}">
-        <script type="text/javascript">
+        <script>
             var filterSettings = {
                 filterUserId: ${filterUserId},
                 filterUserName: '${filterUser.screenName}'

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
@@ -25,7 +25,6 @@ import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,7 +79,7 @@ public class ThreadController extends BaseDiscussionController {
     public String createThreadAction(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @RequestParam long categoryId, @RequestParam String title,
             @RequestParam String body)
-            throws IOException, DiscussionAuthorizationException {
+            throws DiscussionAuthorizationException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
@@ -106,9 +105,10 @@ public class ThreadController extends BaseDiscussionController {
             comment.setAuthorId(memberId);
             comment = CommentClientUtil.createComment(comment);
 
-            if(!thread.getIsQuiet()) {
-                ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(),memberId, categoryId, (comment.getCommentId()+""),
-                        ActivityProvidersType.DiscussionAddedActivityEntry.getType());
+            if (!thread.getIsQuiet()) {
+                final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
+                activityClient.createActivityEntry(DiscussionThreadActivityType.CREATED, memberId,
+                        thread.getThreadId());
             }
 
             return "redirect:" + thread.getLinkUrl();

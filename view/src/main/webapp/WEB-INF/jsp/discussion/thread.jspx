@@ -21,7 +21,7 @@
 
         <h1>${thread.title}</h1>
 
-        <script type="text/javascript">
+        <script>
             jQuery(function() {
                 enableDirtyCheck();
             });

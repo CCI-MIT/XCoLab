@@ -1,7 +1,9 @@
 package org.xcolab.view.util.entity.activityEntry;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -11,13 +13,10 @@ import java.util.Set;
 
 public class ActivityEntryMessageLimitationHelper {
 
-    private final Set<Long> limitedClassesIds = new HashSet<>();
+    private final Set<ActivityCategory> limitedCategories = new HashSet<>();
 
-    public ActivityEntryMessageLimitationHelper(Long... limitedClasses) {
-        for (Long c : limitedClasses) {
-            long id = c;
-            limitedClassesIds.add(id);
-        }
+    public ActivityEntryMessageLimitationHelper(ActivityCategory... limitedCategories) {
+        this.limitedCategories.addAll(Arrays.asList(limitedCategories));
     }
 
     public List<ActivityEntry> process(List data) {
@@ -30,8 +29,8 @@ public class ActivityEntryMessageLimitationHelper {
     }
 
     private String getKey(ActivityEntry sa) {
-        if (limitedClassesIds.contains(sa.getPrimaryType())) {
-            return sa.getPrimaryType() + "_" + sa.getClassPrimaryKey();
+        if (limitedCategories.contains(sa.getActivityCategoryEnum())) {
+            return sa.getActivityCategory() + "_" + sa.getActivityType();
         } else {
             return "0_" + sa.getActivityEntryId();
         }

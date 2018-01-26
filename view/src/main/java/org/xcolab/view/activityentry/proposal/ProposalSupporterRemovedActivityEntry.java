@@ -3,6 +3,8 @@ package org.xcolab.view.activityentry.proposal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.util.activities.enums.ActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 @Component
@@ -14,8 +16,8 @@ public class ProposalSupporterRemovedActivityEntry extends ProposalBaseActivityE
     }
 
     @Override
-    public Long getSecondaryType() {
-        return ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId();
+    public ActivityType getActivityType() {
+        return ProposalActivityType.SUPPORT_REMOVED;
     }
 
     @Override
