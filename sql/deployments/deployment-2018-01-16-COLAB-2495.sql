@@ -1,10 +1,10 @@
 # Display all entries that have the issue
-SELECT * FROM xcolab.members_Member WHERE members_Member.status IS  NULL ;
+# SELECT * FROM xcolab.members_Member WHERE members_Member.status IS  NULL ;
 
 # Display entries without a createDate and the replacement createDate (DryRun)
-SELECT T1.id_, T1.screenName, T1.createDate, T2.createDate
-FROM xcolab.members_Member T1, xcolab.members_Member T2
-WHERE T1.id_ = T2.id_ + 1 AND T1.createDate IS NULL;
+# SELECT T1.id_, T1.screenName, T1.createDate, T2.createDate
+# FROM xcolab.members_Member T1, xcolab.members_Member T2
+# WHERE T1.id_ = T2.id_ + 1 AND T1.createDate IS NULL;
 
 # Update status fields
 UPDATE xcolab.members_Member SET status=0 WHERE status IS NULL;
