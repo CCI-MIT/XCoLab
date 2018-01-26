@@ -36,7 +36,7 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
                 .set(PROPOSAL_VERSION.PROPOSAL_ID, proposalVersion.getProposalId())
                 .set(PROPOSAL_VERSION.VERSION, proposalVersion.getVersion())
                 .set(PROPOSAL_VERSION.AUTHOR_ID, proposalVersion.getAuthorId())
-                .set(PROPOSAL_VERSION.CREATE_DATE, proposalVersion.getCreateDate())
+                .set(PROPOSAL_VERSION.CREATE_DATE, DSL.currentTimestamp())
                 .set(PROPOSAL_VERSION.UPDATE_TYPE, proposalVersion.getUpdateType())
                 .set(PROPOSAL_VERSION.UPDATE_ADDITIONAL_ID, proposalVersion.getUpdateAdditionalId())
                 .execute();
