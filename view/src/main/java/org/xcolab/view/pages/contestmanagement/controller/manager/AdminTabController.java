@@ -22,6 +22,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
+import org.xcolab.util.html.LabelStringValue;
 import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -32,7 +33,9 @@ import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.ProposalExportType;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.WinnerCsvWriter;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
@@ -44,6 +47,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -120,6 +124,14 @@ public class AdminTabController extends AbstractTabController {
                 .collect(Collectors.toList());
     }
 
+    @ModelAttribute("proposalExportTypeSelectionItems")
+    public List<LabelStringValue> proposalExportTypeSelectionItems() {
+        return Arrays.stream(ProposalExportType.values())
+                .map(proposalExportType -> new LabelStringValue(
+                        proposalExportType.name(), proposalExportType.getDescription()))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("tab/ADMIN")
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member) {
@@ -182,11 +194,25 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        try (ProposalCsvWriter csvWriter = new ProposalCsvWriter(response)) {
-            final List<Contest> contests =
-                    EntityIdListUtil.CONTESTS.fromIdList(proposalReportBean.getContestIds());
+        final List<Contest> contests =
+                EntityIdListUtil.CONTESTS.fromIdList(proposalReportBean.getContestIds());
 
-            contests.forEach(csvWriter::writeProposalsInContest);
+        switch (proposalReportBean.getProposalExportType()) {
+            case ALL: {
+                try (ProposalCsvWriter csvWriter = new ProposalCsvWriter(response)) {
+                    contests.forEach(csvWriter::writeProposalsInContest);
+                }
+                break;
+            }
+            case WINNING_CONTRIBUTORS: {
+                try (WinnerCsvWriter csvWriter = new WinnerCsvWriter(response)) {
+                    contests.forEach(csvWriter::writeProposalsInContest);
+                }
+                break;
+            }
+            default:
+                ErrorText.NOT_FOUND.flashAndRedirect(request, response);
+                break;
         }
     }
 

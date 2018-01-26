@@ -26,6 +26,10 @@ public class ProposalTeamMember {
         return member.getUserId();
     }
 
+    public Member getMember() {
+        return member;
+    }
+
     public long getPortraitId() {
         return member.getPortraitId();
     }
