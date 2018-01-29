@@ -176,12 +176,6 @@
     <c:if test="${not empty canonicalUrlRelative}">
         <link rel="canonical" href="${_colabUrl}${canonicalUrlRelative}" />
     </c:if>
-
-    <!-- Required for IE 8 support of HTML 5 and media queries -->
-    <xcolab:conditionalComment condition="lt IE 9">
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    </xcolab:conditionalComment>
 </head>
 
 <body class="${_isHomePage ? 'home' : ''}">
