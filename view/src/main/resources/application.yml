@@ -34,6 +34,20 @@ spring:
       max-file-size: 2MB
   session:
     store-type: hash_map
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths:
+            - "/js/**"
+            - "/css/**"
+            - "/vendor/**"
+      cache: false
+    cache-period: 31536000 # 365 days
+    static-locations:
+      - "classpath:/static/"
+      - "classpath:/dist/"
 
 eureka:
   client:
