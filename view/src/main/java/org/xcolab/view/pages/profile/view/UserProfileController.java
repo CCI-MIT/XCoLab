@@ -34,6 +34,7 @@ import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
+import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.profile.beans.MessageBean;
@@ -61,14 +62,17 @@ public class UserProfileController {
     private static final String EDIT_PROFILE_VIEW = "profile/editUserProfile";
 
     private final ActivityEntryHelper activityEntryHelper;
+    private final AuthenticationService authenticationService;
     private final BalloonService balloonService;
 
     private final SmartValidator validator;
 
     @Autowired
     public UserProfileController(ActivityEntryHelper activityEntryHelper,
-            BalloonService balloonService, SmartValidator validator) {
+            AuthenticationService authenticationService, BalloonService balloonService,
+            SmartValidator validator) {
         this.activityEntryHelper = activityEntryHelper;
+        this.authenticationService = authenticationService;
         this.balloonService = balloonService;
         this.validator = validator;
     }
@@ -435,7 +439,8 @@ public class UserProfileController {
         }
 
         if (memberId == loggedInMember.getId_()) {
-            response.sendRedirect("/logout");
+            authenticationService.logout(request, response);
+            response.sendRedirect("/");
         } else {
             response.sendRedirect("/members");
         }

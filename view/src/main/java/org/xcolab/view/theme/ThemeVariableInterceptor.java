@@ -13,7 +13,6 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.theme.ColabTheme;
@@ -67,8 +66,6 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             if (isLoggedIn) {
                 Member member = authenticationService.getMemberOrThrow(request);
                 modelAndView.addObject("_member", member);
-                modelAndView.addObject("_unreadMessages",
-                        MessagingClient.countUnreadMessagesForUser(member.getUserId()));
                 boolean isAdmin = PermissionsClient.canAdminAll(member.getUserId());
                 modelAndView.addObject("_isAdmin", isAdmin);
             }

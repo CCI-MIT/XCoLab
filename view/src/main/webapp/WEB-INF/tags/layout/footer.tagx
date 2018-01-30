@@ -12,42 +12,46 @@
     <jsp:directive.attribute name="themeImageFolder" type="java.lang.String" required="true" rtexprvalue="true" description="Folder for theme images" />
     <jsp:directive.attribute name="footerArticleId" type="java.lang.Long" required="true" rtexprvalue="true" description="ID of the footer's content article" />
 
-    <div id="c-Footer">
+    <div id="c-Footer" class="clearfix">
         <div id="c-Footer__menu">
-            <div class="bs-container-fixed">
+            <div class="bs-container-fixed d-flex align-items-center">
                 <nav>
-                    <ul>
-                        <li><a href="/feedback"><spring:message code="homepage.bottom.menu.contact" /></a></li>
-                        <li><a href="/wiki/Help"><spring:message code="homepage.bottom.menu.help"/></a></li>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/feedback"><spring:message code="homepage.bottom.menu.contact" /></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/wiki/Help"><spring:message code="homepage.bottom.menu.help"/></a>
+                        </li>
                         <c:choose>
                             <c:when test="${showProfileLink}">
-                                <li>
-                                    <a data-url="/logout" class="js-PostLink">
+                                <li class="nav-item">
+                                    <a data-url="/logout" class="nav-link js-PostLink">
                                         <spring:message code="homepage.bottom.menu.signout" />
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="/members/profile">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/members/profile">
                                         <spring:message code="homepage.bottom.menu.myprofile"/>
                                     </a>
                                 </li>
                             </c:when>
                             <c:otherwise>
-                                <li>
-                                    <a href="/register" class="openreg">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/register">
                                         <spring:message code="homepage.bottom.menu.register"/>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#" data-toggle="modal" data-target="#loginModal">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
                                         <spring:message code="homepage.bottom.menu.signin"/>
                                     </a>
                                 </li>
                             </c:otherwise>
                         </c:choose>
                         <c:if test="${showLanguageDropdown}">
-                            <li class="dropup bs-dropdown--dark">
-                                <a data-toggle="dropdown" class="dropdown-trigger">
+                            <li class="nav-item dropup bs-dropdown-inverse">
+                                <a data-toggle="dropdown" class="nav-link dropdown-trigger">
                                     <img src="${themeImageFolder}/footer-language-button.png"/>&#160;
                                     <spring:message code="homepage.menu.visitor.language" />
                                     <span class="caret"><!-- --></span>
@@ -60,8 +64,7 @@
                 </nav>
 
                 <c:if test="${_showShareButtons}">
-                    <!-- TODO : better styling; get rid of style attribute -->
-                    <div class="pull-right" style="margin-top: 4px;">
+                    <div class="ml-auto">
                         <xcolab-social:socialFollowButtons />
                     </div>
                 </c:if>

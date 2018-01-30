@@ -31,13 +31,17 @@
 		<!--<portlet:param name="userIdRecipient" value="${currentUserProfile.userId}"/>-->
 	<!--</portlet:resourceURL>-->
 
-	<div id="bread" class="pro">
-		<a href="/members"><spring:message code="colab.breadcrums.community"/></a>
-		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-		<a href="/members"><spring:message code="colab.breadcrums.members"/></a>
-		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-		<a href="/members/profile/${currentUserProfile.userId}">${userBean.displayName}</a>
-	</div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/members"><spring:message code="colab.breadcrums.members"/></a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">${userBean.displayName}</li>
+        </ol>
+    </nav>
 	<c:choose>
 		<c:when test="${currentUserProfile.active}">
 
@@ -302,9 +306,9 @@
                         <c:otherwise>
                             <form action="/snp/socialnetworkprize" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="acceptTos" />
+                                <div class="form-check">
+                                    <input type="checkbox" name="acceptTos" class="form-check-input" id="acceptTos"/>
+                                    <label class="form-check-label" for="acceptTos">
                                         Yes, I have read and I agree to the terms of the <a href="" data-toggle="modal" data-target="#snpConsentFormModal">consent form</a>.
                                     </label>
                                 </div>

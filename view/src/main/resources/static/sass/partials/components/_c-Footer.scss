@@ -11,12 +11,12 @@ $c-Footer__menu__boxShadow: none !default;
 $c-Footer__link__textColor--hover: $t-Color__accent !default;
 
 #c-Footer { //#footer
-  height: 210px;
   background: $c-Footer__background;
+  padding-bottom: 30px;
 }
 
 #c-Footer__menu { //#footmenu
-  height: 49px;
+  padding: 8px 0;
   @if $c-Footer__menu__background__isSimple {
     background: $c-Footer__menu__backgroundColor;
   } @else {
@@ -25,27 +25,15 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
 
   box-shadow: $c-Footer__menu__boxShadow;
 
-  li {
-    padding: 0;
-    margin-left: 0;
-    float: left;
-    list-style: none;
-    background: none;
+  .nav-link {
+    color: $c-Footer__menu__li__textColor;
 
-    &.c {
-      a {
+    &.active {
         color: $c-Footer__menu__li__a--hover__color;
-      }
     }
 
-    a {
-      display: inline-block;
-      padding: 15px 15px 0 0;
-      color: $c-Footer__menu__li__textColor;
-
-      &:hover {
-        color: $c-Footer__menu__li__a--hover__color;
-      }
+    &:hover {
+      color: $c-Footer__menu__li__a--hover__color;
     }
   }
 }

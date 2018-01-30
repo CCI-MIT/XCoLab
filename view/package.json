@@ -7,18 +7,20 @@
   "license": "MIT",
   "private": true,
   "browserslist": [
-    "Android 2.3",
-    "Android >= 4",
-    "Chrome >= 20",
-    "Firefox >= 24",
-    "Explorer >= 8",
-    "iOS >= 6",
-    "Opera >= 12",
-    "Safari >= 6"
+    "last 1 major version",
+    ">= 1%",
+    "Chrome >= 45",
+    "Firefox >= 38",
+    "Edge >= 12",
+    "Explorer >= 10",
+    "iOS >= 9",
+    "Safari >= 9",
+    "Android >= 4.4",
+    "Opera >= 30"
   ],
   "dependencies": {
     "blueimp-file-upload": "^9.19.3",
-    "bootstrap-sass": "https://github.com/jobachhu/bootstrap-sass",
+    "bootstrap": "^4.0.0",
     "ckeditor": "4.6.1",
     "clipboard": "^1.7.1",
     "d3": "^4.12.2",
@@ -30,6 +32,7 @@
     "moment-timezone": "^0.5.14",
     "noty": "^2.4.1",
     "papaparse": "^4.3.6",
+    "popper.js": "^1.12.9",
     "spin.js": "2.3.2",
     "tooltipster": "^4.2.5"
   },

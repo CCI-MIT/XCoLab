@@ -18,21 +18,26 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
+import org.xcolab.util.html.LabelStringValue;
 import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
+import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.ProposalExportType;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.WinnerCsvWriter;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
@@ -44,6 +49,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -120,6 +126,14 @@ public class AdminTabController extends AbstractTabController {
                 .collect(Collectors.toList());
     }
 
+    @ModelAttribute("proposalExportTypeSelectionItems")
+    public List<LabelStringValue> proposalExportTypeSelectionItems() {
+        return Arrays.stream(ProposalExportType.values())
+                .map(proposalExportType -> new LabelStringValue(
+                        proposalExportType.name(), proposalExportType.getDescription()))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("tab/ADMIN")
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member) {
@@ -128,6 +142,7 @@ public class AdminTabController extends AbstractTabController {
         }
         model.addAttribute("votingReportBean", new VotingReportBean());
         model.addAttribute("proposalReportBean", new ProposalReportBean());
+        model.addAttribute("batchRegisterBean", new BatchRegisterBean());
 
         List<Notification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
@@ -182,11 +197,25 @@ public class AdminTabController extends AbstractTabController {
             return;
         }
 
-        try (ProposalCsvWriter csvWriter = new ProposalCsvWriter(response)) {
-            final List<Contest> contests =
-                    EntityIdListUtil.CONTESTS.fromIdList(proposalReportBean.getContestIds());
+        final List<Contest> contests =
+                EntityIdListUtil.CONTESTS.fromIdList(proposalReportBean.getContestIds());
 
-            contests.forEach(csvWriter::writeProposalsInContest);
+        switch (proposalReportBean.getProposalExportType()) {
+            case ALL: {
+                try (ProposalCsvWriter csvWriter = new ProposalCsvWriter(response)) {
+                    contests.forEach(csvWriter::writeProposalsInContest);
+                }
+                break;
+            }
+            case WINNING_CONTRIBUTORS: {
+                try (WinnerCsvWriter csvWriter = new WinnerCsvWriter(response)) {
+                    contests.forEach(csvWriter::writeProposalsInContest);
+                }
+                break;
+            }
+            default:
+                ErrorText.NOT_FOUND.flashAndRedirect(request, response);
+                break;
         }
     }
 
@@ -219,22 +248,54 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/batchRegister")
     public String batchRegisterMembers(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String members, @RequestParam(defaultValue = "false") Boolean asGuests) {
-        final String[] memberStrings = members.split("\\r\\n|\\n|\\r");
+            BatchRegisterBean batchRegisterBean, VotingReportBean votingReportBean, ProposalReportBean proposalReportBean) throws IOException {
+        /*if (!tabWrapper.getCanView()) {
+            ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
+            return;
+        }*/
+
+        final String[] memberStrings = batchRegisterBean.getBatchText().split("\\r\\n|\\n|\\r");
+
         for (String memberString : memberStrings) {
             final String[] values = memberString.split(";");
             if (values.length != 3) {
-                throw new IllegalArgumentException();
+                AlertMessage.danger("Batch registration: Three entries per row.").flash(request);
+                return TAB_VIEW;
+                //return "redirect:" + tab.getTabUrl();
             }
+
+            String email = values[0];
+
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
+            java.util.regex.Matcher m = p.matcher(email);
+            if (!m.matches()) {
+                AlertMessage.danger("Batch registration: Invalid email address.").flash(request);
+                return "redirect:" + tab.getTabUrl();
+            }
+
+            try {
+                MembersClient.findMemberByEmailAddress(email);
+                // If member is found there is no exception and we continue.
+                AlertMessage.danger("Batch registration: Email address already used.").flash(request);
+                return "redirect:" + tab.getTabUrl();
+            } catch (MemberNotFoundException e) {
+                // Do Nothing.
+            }
+        }
+
+        for (String memberString : memberStrings) {
+            final String[] values = memberString.split(";");
             String email = values[0];
             String firstName = values[1];
             String lastName = values[2];
+
             Member member = loginRegisterService.autoRegister(email, firstName, lastName);
-            if (asGuests) {
+            if (batchRegisterBean.getAsGuests()) {
                 MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
                 MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
             }
         }
+
         AlertMessage.CHANGES_SAVED.flash(request);
         return "redirect:" + tab.getTabUrl();
     }
