@@ -192,7 +192,8 @@
 
         <div class="addpropbox">
             <h2>Batch register members</h2>
-            <form:form action="/admin/contest/manager/tab/ADMIN/batchRegister" method="post" commandName="batchRegisterBean" id="batchRegisterForm">
+            <form:form action="/admin/contest/manager/tab/ADMIN/batchRegister" commandName="batchRegisterBean"
+                       id="batchRegisterForm" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="c-Alert__info__message" for="batchRegisterMembersList">
                     Each member will receive an email with a link that allows them to sign in.
@@ -200,7 +201,7 @@
                     <code>emailAddress;firstName;lastName</code>
                 </div>
                 <div>
-                <form:textarea id="batchRegisterMembersList" name="batchText" class="form-control" path="batchText"
+                    <form:textarea id="batchRegisterMembersList" name="batchText" class="form-control" path="batchText"
                                style="width: 100%;" value="${batchRegisterBean.batchText}" />
                 </div>
                 <div class="form-check">

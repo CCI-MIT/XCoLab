@@ -28,9 +28,9 @@ import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
-import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean;
 import org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
+import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCsvWriter;
@@ -248,7 +248,12 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/batchRegister")
     public String batchRegisterMembers(HttpServletRequest request, HttpServletResponse response,
-            BatchRegisterBean batchRegisterBean) {
+            BatchRegisterBean batchRegisterBean, VotingReportBean votingReportBean, ProposalReportBean proposalReportBean) throws IOException {
+        /*if (!tabWrapper.getCanView()) {
+            ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
+            return;
+        }*/
+
         final String[] memberStrings = batchRegisterBean.getBatchText().split("\\r\\n|\\n|\\r");
 
         for (String memberString : memberStrings) {
