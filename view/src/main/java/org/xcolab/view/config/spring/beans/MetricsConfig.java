@@ -9,6 +9,7 @@ import org.coursera.metrics.datadog.transport.HttpTransport;
 import org.coursera.metrics.datadog.transport.HttpTransport.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -34,7 +35,7 @@ import static org.coursera.metrics.datadog.DatadogReporter.Expansion.RATE_1_MINU
 
 @Configuration
 @EnableConfigurationProperties(MetricsProperties.class)
-public class MetricsConfig {
+public class MetricsConfig implements DisposableBean {
 
     private static final Logger _log = LoggerFactory.getLogger(MetricsConfig.class);
 
@@ -83,6 +84,12 @@ public class MetricsConfig {
                         .build();
         datadogReporter.start(10, TimeUnit.SECONDS);
         return datadogReporter;
+    }
+
+    @Override
+    public void destroy() {
+        //Remove all metrics on context shutdown - needed for dev tool restarts
+        MetricsUtil.REGISTRY.removeMatching(MetricFilter.ALL);
     }
 
     private static class PrefixMetricFilter implements MetricFilter {
