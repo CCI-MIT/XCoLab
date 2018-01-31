@@ -90,9 +90,9 @@
                                 <c:if test="${member.memberType != 'OWNER'}">
                                     <c:set var="removeMemberFromTeam" value="${proposal.proposalUrl}/tab/TEAM/removeMemberFromTeam?memberId=${member.userId}" />
 
-                                    <a data-url="${removeMemberFromTeam }" class="js-PostLink">
+                                    <button type="button" class="btn btn-link js-PostLink" data-url="${removeMemberFromTeam}">
                                         <spring:message code="contests.proposal.team.remove" />
-                                    </a>
+                                    </button>
                                 </c:if>
                             </td>
                             <c:if test="${proposalsPermissions.canPromoteToOwner}">
@@ -100,9 +100,9 @@
                                     <c:if test="${member.memberType != 'OWNER'}">
                                         <c:set var="promoteMemberToOwner" value="${proposal.proposalUrl}/tab/TEAM/promoteMemberToOwner?memberId=${member.userId}" />
 
-                                        <a data-url="${promoteMemberToOwner }" data-confirm="${confirmPromoteText}" class="js-PostLink">
+                                        <button type="button" class="btn btn-link js-PostLink" data-url="${promoteMemberToOwner }" data-confirm="${confirmPromoteText}">
                                             <spring:message code="contests.proposal.team.promote" />
-                                        </a>
+                                        </button>
                                     </c:if>
                                 </td>
                             </c:if>
@@ -123,7 +123,7 @@
                     <div class="prop-butt">
                         <img src="${_themeImageFolder}/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
 
-                        <a class="c-Button__primary js-PostLink" data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
+                        <button type="button" class="c-Button__primary js-PostLink" data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
                                 rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSupportButton}">
@@ -133,7 +133,7 @@
                                     <spring:message code="contests.supports.retract" />
                                 </c:otherwise>
                             </c:choose>
-                        </a>
+                        </button>
                     </div>
                 </c:if>
             </div>

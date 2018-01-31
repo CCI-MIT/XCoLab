@@ -212,6 +212,7 @@
                 </div>
 
                 <div class="c-TitleBar__actionButton pull-right">
+                    <!--TODO COLAB-2560: turn into button-->
                     <a data-url="/impersonate/logout" class="js-PostLink">Stop impersonating</a>
                 </div>
             </div>
