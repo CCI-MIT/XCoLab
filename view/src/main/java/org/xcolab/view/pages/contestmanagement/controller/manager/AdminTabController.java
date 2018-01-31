@@ -140,9 +140,6 @@ public class AdminTabController extends AbstractTabController {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        model.addAttribute("votingReportBean", new VotingReportBean());
-        model.addAttribute("proposalReportBean", new ProposalReportBean());
-        model.addAttribute("batchRegisterBean", new BatchRegisterBean());
 
         List<Notification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
@@ -248,7 +245,7 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/batchRegister")
     public String batchRegisterMembers(HttpServletRequest request, HttpServletResponse response,
-            BatchRegisterBean batchRegisterBean, VotingReportBean votingReportBean, ProposalReportBean proposalReportBean) throws IOException {
+            BatchRegisterBean batchRegisterBean) throws IOException {
         /*if (!tabWrapper.getCanView()) {
             ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
             return;

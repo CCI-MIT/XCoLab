@@ -15,6 +15,10 @@
 
     <!--@elvariable id="registerBatchBean" type="org.xcolab.portlets.contestmanagement.beans.BatchRegisterBean"-->
 
+    <jsp:useBean id="votingReportBean" scope="request" type="org.xcolab.view.pages.contestmanagement.beans.VotingReportBean" />
+    <jsp:useBean id="proposalReportBean" scope="request" type="org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean" />
+    <jsp:useBean id="batchRegisterBean" scope="request" type="org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean" />
+
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
