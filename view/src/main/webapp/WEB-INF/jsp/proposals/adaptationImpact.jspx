@@ -113,7 +113,7 @@
                                  title="${category.tooltip}" class="js-Tooltip" style="margin-left: 5px;" />
                             <c:if test="${proposalsPermissions.canEditBasicImpact}">
                                 <a onclick="jQuery(this).closest('.js-Table__row-group').children('.js-Table__row--collapsible').slideToggle()" style="cursor: pointer; margin-left: 7px;" >
-                                    <img alt="edit" style="vertical-align: middle" height="15" src="${_themeImageFolder}/icon-activity-edit.png"/>
+                                    <img alt="edit" height="15" src="${_themeImageFolder}/icon-activity-edit.png"/>
                                 </a>
                             </c:if>
                         </td>
