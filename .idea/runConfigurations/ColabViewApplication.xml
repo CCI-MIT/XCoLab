@@ -14,6 +14,11 @@
         <option name="name" value="xcolab.secret" />
         <option name="value" value="mYxc0l4bs3cr3t" />
       </param>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="spring.profiles.active" />
+        <option name="value" value="development" />
+      </param>
     </additionalParameters>
     <module name="xcolab-view" />
     <envs />

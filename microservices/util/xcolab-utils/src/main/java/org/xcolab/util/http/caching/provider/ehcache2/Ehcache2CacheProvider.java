@@ -45,6 +45,9 @@ public class Ehcache2CacheProvider implements CacheProvider {
         cacheManager = CacheManager.newInstance(configuration);
         for (CacheName cacheName : CacheName.values()) {
             if (cacheName != CacheName.NONE) {
+                if (getCache(cacheName) != null) {
+                    cacheManager.removeCache(cacheName.name());
+                }
                 addCache(cacheName, customizations.get(cacheName));
             }
         }

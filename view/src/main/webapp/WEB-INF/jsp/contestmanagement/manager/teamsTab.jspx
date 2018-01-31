@@ -17,8 +17,8 @@
         <div style="margin-bottom: 40px;">
             <div class="floatRight outerVerticalCenter">
                 <a class="btn btn-primary innerVerticalCenter" href="#" onclick="saveTeam()">SAVE team</a>
-                <a class="btn btn-primary innerVerticalCenter js-PostLink" data-url="TEAMS">CREATE new team</a>
-                <a class="btn btn-primary innerVerticalCenter js-PostLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</a>
+                <button type="button" class="btn btn-primary innerVerticalCenter js-PostLink" data-url="TEAMS">CREATE new team</button>
+                <button type="button" class="btn btn-primary innerVerticalCenter js-PostLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</button>
             </div>
         </div>
     </div>
@@ -75,7 +75,7 @@
                                     <xcolab:userLinkSimple memberId="${member.userId }" text="${member.displayName }" />
                                 </td>
                                 <td style="vertical-align: middle">
-                                    <a class="js-PostLink" data-url="TEAMS/${teamId}/removeMember/${member.id_}">Remove</a>
+                                    <button type="button" class="btn btn-link js-PostLink" data-url="TEAMS/${teamId}/removeMember/${member.id_}">Remove</button>
                                 </td>
                             </tr>
                         </c:forEach>

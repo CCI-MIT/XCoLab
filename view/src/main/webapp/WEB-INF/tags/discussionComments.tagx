@@ -171,25 +171,27 @@
 
 										<c:if test="${empty sharedColabId} ">
 											<c:if test="${discussionPermissions.getCanReportMessage(message) }">
-												<a style="margin-left: 10px;" href="javascript:;" onclick="reportComment(${message.commentId})">Report</a>
+												<button type="button" class="btn btn-link" onclick="reportComment(${message.commentId})">
+                                                    Report
+                                                </button>
 											</c:if>
 										</c:if>
 										<c:if test="${discussionPermissions.getCanViewAdminMessage(message) }">
 											<c:set var="editCommentURL" value="/discussions/editComment?commentId=${message.commentId}&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
 
                                             <spring:message code="discussion.commmentstag.caneditmsg" var="canEditMsg"/>
-											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.createDate.time}, ${message.commentId},'${editCommentURL}');"
-												class="js-Tooltip" title="${canEditMsg}"><spring:message code="discussion.commmentstag.edit" /></a>
+											<button type="button" class="btn btn-link js-Tooltip ml-2" onclick="editComment(${message.createDate.time}, ${message.commentId},'${editCommentURL}');"
+												 title="${canEditMsg}"><spring:message code="discussion.commmentstag.edit" />
+                                            </button>
 
 											<c:set var="deleteMessageURL" value="/discussions/deleteDiscussionMessageFlag?commentId=${message.commentId }&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
 
                                             <spring:message code="discussion.commmentstag.candeletemsg" var="canDeleteMsg"/>
                                             <spring:message code="discussion.commmentstag.confirmdelete" var="confirmDelete"/>
-											<a style="margin-left: 10px;" data-url="${deleteMessageURL }"
-											   class="js-Tooltip js-PostLink" title="${canDeleteMsg}"
-                                               data-confirm="${confirmDelete}">
+											<button type="button" class="btn btn-link js-Tooltip js-PostLink ml-2" data-url="${deleteMessageURL }"
+                                                    data-confirm="${confirmDelete}" title="${canDeleteMsg}">
 												<spring:message code="discussion.commmentstag.delete.button"/>
-											</a>
+											</button>
 										</c:if>
 									</div>
 								</td>

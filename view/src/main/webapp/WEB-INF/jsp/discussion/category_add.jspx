@@ -9,14 +9,19 @@
     <xcolab:layout>
         <jsp:directive.include file="init.jspx"/>
      <div id="content">
-        <div id="bread" class="pro">
-            <a href="/members"><spring:message code="colab.breadcrums.community"/></a>&#160;
-            <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-            <a href="/discussion"><spring:message code="colab.breadcrums.discussion"/></a>&#160;
-            <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-            <!-- TODO: add url - does not currently exist -->
-            <a href="/discussion"><spring:message code="colab.breadcrums.createcategory"/></a>&#160;
-        </div>
+         <nav aria-label="breadcrumb">
+             <ol class="breadcrumb">
+                 <li class="breadcrumb-item">
+                     <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
+                 </li>
+                 <li class="breadcrumb-item">
+                    <a href="/discussion"><spring:message code="colab.breadcrums.discussion"/></a>
+                 </li>
+                 <li class="breadcrumb-item active" aria-current="page">
+                     <spring:message code="colab.breadcrums.createcategory"/>
+                 </li>
+            </ol>
+         </nav>
 
         <h1><spring:message code="discussion.categoryadd.title"/></h1>
         <div class="addthread">

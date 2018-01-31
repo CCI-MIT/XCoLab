@@ -408,10 +408,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   color: black;
 }
 
-.prop-avatar img {
-  vertical-align: middle;
-}
-
 .prop-contest {
   background: $p-proposal__contest__backgroundColor;
   border-top: 1px solid $t-Color__grey--light;
@@ -467,7 +463,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 
 .contributors td img {
   margin-right: 12px;
-  vertical-align: middle;
 }
 
 .contributors tr.odd td {
@@ -659,7 +654,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   text-align: left;
 
   img {
-    vertical-align: middle;
     margin-right: 10px;
   }
 }

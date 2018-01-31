@@ -70,7 +70,7 @@ ALTER TABLE activities_ActivityEntry MODIFY extraData VARCHAR(75);
 update activities_ActivityEntry set categoryId = classPrimaryKey where activityCategory = 'PROPOSAL' and not activityType = 'COMMENT_ADDED';
 
 -- Contests
-update activities_ActivityEntry set categoryId = classPrimaryKey, additionalId = extraData where activityCategory = 'CONTEST' and activityType = 'PROPOSAL_CREATED' and extraData > 0;
+update activities_ActivityEntry set categoryId = classPrimaryKey, additionalId = extraData where activityCategory = 'CONTEST' and activityType = 'PROPOSAL_CREATED' and not extraData = '' and extraData is NOT NULL;
 update activities_ActivityEntry set categoryId = 0, additionalId = classPrimaryKey where activityCategory = 'CONTEST' and activityType = 'PROPOSAL_CREATED' and (extraData = '' or extraData is NULL);
 
 -- Members

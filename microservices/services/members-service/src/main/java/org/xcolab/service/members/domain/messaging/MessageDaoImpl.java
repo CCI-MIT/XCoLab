@@ -46,8 +46,12 @@ public class MessageDaoImpl implements MessageDao {
     public int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate) {
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(MESSAGE)
-                .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
                 .getQuery();
+
+        if (recipientId != null || isArchived != null || isOpened != null) {
+            query.addJoin(MESSAGE_RECIPIENT_STATUS,
+                    MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID));
+        }
 
         if (senderId != null) {
             query.addConditions(MESSAGE.FROM_ID.eq(senderId));

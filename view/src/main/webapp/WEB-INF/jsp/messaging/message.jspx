@@ -9,17 +9,23 @@
 <xcolab:layout title="${messageBean.subject} - Messages">
     <xcolab:content articleId="${communityTopContentArticleId}" />
     <div id="content">
-        <div id="bread" class="pro">
-            <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
-            <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <a href="/members"><spring:message code="colab.breadcrums.members"/></a>
-            <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <xcolab:userLinkSimple memberId="${user.userId}" text="${user.displayName}" />
-            <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <a href="/messaging"><spring:message code="colab.breadcrums.messages"/></a>
-            <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <a href="${messageBean.linkUrl}">${messageBean.subject}</a>
-        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/members"><spring:message code="colab.breadcrums.members"/></a>
+                </li>
+                <li class="breadcrumb-item">
+                    <xcolab:userLinkSimple memberId="${user.userId}" text="${user.displayName}" />
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/messaging"><spring:message code="colab.breadcrums.messages"/></a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">${messageBean.subject}</li>
+            </ol>
+        </nav>
 
         <h1>${messageBean.subject}</h1>
         <p>

@@ -95,18 +95,9 @@ public class WebProperties {
     public static class Cache {
 
         /**
-         * Browser caching for scripts (JS/CSS)
-         */
-        private final CacheSettings scripts = new CacheSettings();
-
-        /**
          * Browser caching for theme images.
          */
         private final CacheSettings images = new CacheSettings(true, 365);
-
-        public CacheSettings getScripts() {
-            return scripts;
-        }
 
         public CacheSettings getImages() {
             return images;

@@ -15,13 +15,13 @@
 	<div class="c-ContentBox">
 		<div style="margin-bottom: 40px;display:inline">
 			<div class="floatRight outerVerticalCenter">
-				<a class="btn btn-primary innerVerticalCenter js-PostLink" data-url="/admin/contest/manager/createContest" target="_blank">Create new Contest</a>
+				<button type="button" class="btn btn-primary innerVerticalCenter js-PostLink" data-url="/admin/contest/manager/createContest">Create new Contest</button>
 			</div>
 		</div>
 
 		<div style="margin-bottom: 40px;">
 			<div class="floatRight outerVerticalCenter">
-				<a class="btn btn-primary innerVerticalCenter" href="/admin/contest/manager/batchCreateContest" >Batch Contest creation</a>
+				<a class="btn btn-primary innerVerticalCenter" href="/admin/contest/manager/batchCreateContest">Batch Contest creation</a>
 			</div>
 		</div>
 

@@ -18,3 +18,8 @@
 .bg-noise {
   background-image: url(/images/bg-noise.png);
 }
+
+// To reset our default list style
+ol.breadcrumb li {
+  margin-left: 0;
+}

@@ -8,14 +8,16 @@
         <xcolab:layout>
             <xcolab:content articleId="${communityTopContentArticleId}"/>
             <div id="content">
-                <div class="pro" id="bread">
-                    <div class="memberActivitiesContainer" style="display: inline;">
-                        <img alt="" height="8" src="images/arrow.gif" width="8"/>
-                        <a href="/members"><spring:message code="colab.breadcrums.community"/> </a>
-                        <img alt="" height="8" src="${_themeImageFolder}/arrow.gif" width="8"/>
-                        <a href="/activities"><spring:message code="colab.breadcrums.activities"/>
-                        </a></div>
-                </div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <spring:message code="colab.breadcrums.activities"/>
+                        </li>
+                    </ol>
+                </nav>
 
                 <jsp:directive.include file="activities_common.jspx"/>
             </div>

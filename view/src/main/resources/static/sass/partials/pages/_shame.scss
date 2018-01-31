@@ -26,24 +26,6 @@ fieldset {
   margin: 0
 }
 
-//used in userprofile, discussions, and wiki
-#bread {
-  margin: -10px 0 20px 0;
-  font-size: 14px;
-  padding: 5px;
-  border: 0;
-}
-
-//ugly hack to hide breadcrumb on liferay wiki pages
-//(and only the breadcrumb and only on wiki pages)
-#bread > div:first-child {
-  display: none !important;
-}
-
-#bread img {
-  margin: 0 5px;
-}
-
 //TODO: where are these used?
 #invalidFieldsList li {
   margin-bottom: 10px;

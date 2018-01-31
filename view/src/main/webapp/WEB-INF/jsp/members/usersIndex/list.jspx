@@ -66,15 +66,15 @@
 							</a>
 							<c:if test="${permissions.canAdminAll}">
 								<div style="float: right">
-									<a href="/members/profile/${user.memberId}/edit"
-									   style="margin-right: 10px">
+									<a class="btn btn-link btn-sm" href="/members/profile/${user.memberId}/edit">
 										<img src="${_themeImageFolder}/icon-activity-edit.png"
-											 height="15" style="vertical-align: middle" alt="edit" />
+                                             height="15" alt="edit" />
 									</a>
-									<a data-url="/impersonate?memberId=${user.memberId}" class="js-PostLink">
+									<button type="button" class="btn btn-link btn-sm js-PostLink"
+                                            data-url="/impersonate?memberId=${user.memberId}">
 										<img src="${_themeImageFolder}/icon-request-membership.png"
-											 height="15" style="vertical-align: middle" alt="impersonate" />
-									</a>
+                                             height="15" alt="impersonate" />
+									</button>
 								</div>
 							</c:if>
 
