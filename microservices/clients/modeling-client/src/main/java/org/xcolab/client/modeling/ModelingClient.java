@@ -297,7 +297,7 @@ public class ModelingClient {
     }
 
     public void setModelPositions(Long modelId, List<Long> positionIds) {
-        //TODO: implement
+        //TODO COLAB-2581: implement
         throw new UnsupportedOperationException();
 //        modelPositionPersistence.removeByModelId(modelId);
 //

@@ -131,7 +131,7 @@ public class ProposalService {
                 p2p.setVersionTo(-1);
                 proposal2PhaseDao.create(p2p);
                 if (publishActivity) {
-                    //TODO: Migrate the call from proposal portlet to here
+                    //TODO COLAB-2600: Migrate the call from proposal portlet to here
                 }
             }
 
@@ -290,7 +290,7 @@ public class ProposalService {
     public Contest getLatestProposalContest(Long proposalId) {
         Contest contest = null;
         try {
-            //TODO: this looks very shady
+            //TODO COLAB-2600: this looks very shady - we're calling the client from the service!
             contest = ProposalClientUtil.getLatestContestInProposal(proposalId);
         } catch (ContestNotFoundException ignored) {
         }

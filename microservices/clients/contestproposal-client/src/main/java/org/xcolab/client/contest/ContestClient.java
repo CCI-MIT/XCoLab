@@ -152,7 +152,7 @@ public class ContestClient {
     public Contest createContest(Contest contest) {
         final Contest result =
                 contestResource.create(new ContestDto(contest)).execute().toPojo(serviceNamespace);
-        //TODO: fine-grained cache removal
+        //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
         ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
         return result;
@@ -161,7 +161,7 @@ public class ContestClient {
     public boolean deleteContest(long contestId) {
         final Boolean result = contestResource.delete(contestId)
                 .execute();
-        //TODO: fine-grained cache removal
+        //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
         ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
         return result;
@@ -177,7 +177,7 @@ public class ContestClient {
         final Boolean result =
                 contestResource.update(new ContestDto(contest), contest.getContestPK())
                         .execute();
-        //TODO: fine-grained cache removal
+        //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
         ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
         return result;
@@ -308,7 +308,7 @@ public class ContestClient {
                 .execute(), serviceNamespace);
     }
 
-    //TODO:Confusing Variable naming
+    //TODO COLAB-2595: Confusing Variable naming
     public List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
         return DtoUtil.toPojos(contestResource
                 .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())

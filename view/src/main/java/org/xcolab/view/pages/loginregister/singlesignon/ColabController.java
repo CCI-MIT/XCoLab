@@ -51,7 +51,7 @@ public class ColabController {
 
         try {
             loginRegisterService.checkLogin(request, response, login, password);
-            //TODO: what should happen here?
+            //TODO COLAB-2616: what should happen here?
             response.sendRedirect(redirectUrl.toUriString());
             return;
         } catch (MemberNotFoundException | LockoutLoginException | PasswordLoginException ignored) {
@@ -69,7 +69,7 @@ public class ColabController {
                 userBean.setCountry(foreignColab.getCountry());
                 userBean.setPassword(password);
                 userBean.setRetypePassword(password);
-                //TODO: get user imageId and save it locally
+                //TODO COLAB-2616: get user imageId and save it locally
                 userBean.setShortBio(foreignColab.getShortBio());
                 try {
                     loginRegisterService.completeRegistration(request, response, userBean,

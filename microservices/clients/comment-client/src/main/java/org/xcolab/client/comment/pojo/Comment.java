@@ -49,7 +49,7 @@ public class Comment extends AbstractComment {
     }
 
     public int getSpamReportCount() {
-        //TODO: implement
+        //TODO COLAB-2591: retrieve spam count
         return 0;
     }
 

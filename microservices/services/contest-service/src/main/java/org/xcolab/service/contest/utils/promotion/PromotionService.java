@@ -192,7 +192,7 @@ public class PromotionService {
 
                             // Add this check for extra security to prevent proposal authors from being spammed (see COLAB-500)
                             if (phasePromotionHelper.isProposalReviewed(p)) {
-                                //TODO: Migrate logic to send email.
+                                //TODO COLAB-2603: Migrate logic to send email.
                                 org.xcolab.client.contest.pojo.phases.ContestPhase cp = ContestClientUtil.getContestPhase(phase.getContestPhasePK());
                                 ContestPhasePromotionEmail.contestPhasePromotionEmailNotifyProposalContributors(p, cp);
                                 PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(p.getProposalId(), phase.getContestPhasePK());

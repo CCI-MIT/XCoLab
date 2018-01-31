@@ -55,10 +55,6 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         feedType = FeedType.valueOf(feedTypeName);
 
         feedTitle = jsonPreferences.optString(FEED_TITLE_PREF, DEFAULT_FEED_TITLE);
-        //TODO: this condition should be unreachable - verify
-        if (feedTitle == null) {
-            feedTitle = feedType.getDescription();
-        }
 
         feedStyle = jsonPreferences.optString(FEED_DISPLAY_STYLE, DEFAULT_STYLE);
 

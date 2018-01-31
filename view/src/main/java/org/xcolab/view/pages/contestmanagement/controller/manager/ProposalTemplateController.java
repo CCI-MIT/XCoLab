@@ -121,7 +121,6 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(
                     updatedProposalTemplateWrapper.getPlanTemplateId(),
                     ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
-            //TODO: process errors
             AlertMessage.danger("Failed to update element").flash(request);
             return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getPlanTemplateId());
         }

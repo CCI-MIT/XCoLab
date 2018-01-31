@@ -23,7 +23,6 @@ public class ProposalImpactUtil {
         this.contest = contest;
     }
 
-    // TODO cache this map somehow
     /**
      * Returns a map that maps from a region (WHERE) OntologyTerm to all sector (WHAT) OntologyTerms that are still available
      *

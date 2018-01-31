@@ -303,18 +303,6 @@ CREATE TABLE `xcolab_ImpactTemplateSeries` (
   PRIMARY KEY (`seriesId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `UserGroupRole` (
-  `userId` bigint(20) NOT NULL,
-  `groupId` bigint(20) NOT NULL,
-  `roleId` bigint(20) NOT NULL,
-  PRIMARY KEY (`userId`,`groupId`,`roleId`),
-  KEY `IX_1B988D7A` (`groupId`),
-  KEY `IX_871412DF` (`groupId`,`roleId`),
-  KEY `IX_887A2C95` (`roleId`),
-  KEY `IX_887BE56A` (`userId`),
-  KEY `IX_4D040680` (`userId`,`groupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `members_Member` (
   `id_` bigint(20) NOT NULL,
   `screenName` varchar(42) DEFAULT NULL,

@@ -215,7 +215,7 @@ public class LoginRegisterService {
         return checkLogin(request, response, login, password, "");
     }
 
-    //TODO: rethink name and semantics
+    //TODO COLAB-2619: rethink name and semantics
     public Member checkLogin(HttpServletRequest request, HttpServletResponse response, String login,
             String password, String referer)
             throws MemberNotFoundException, PasswordLoginException, LockoutLoginException {

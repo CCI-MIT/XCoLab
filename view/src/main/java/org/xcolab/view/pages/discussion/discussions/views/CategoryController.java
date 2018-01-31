@@ -12,10 +12,7 @@ import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CategoryClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.comment.util.ThreadSortColumn;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -24,7 +21,6 @@ import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
@@ -224,48 +220,5 @@ public class CategoryController extends BaseDiscussionController {
     @Override
     public boolean getCanEdit(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
         return permissions.getCanCreateCategory();
-    }
-
-    //TODO: move
-    public static Comparator<CommentThread> getComparator(final ThreadSortColumn sortColumn, final boolean sortAscending) {
-        return (o1, o2) -> {
-            int ret;
-
-            switch (sortColumn) {
-                case TITLE:
-                    ret = o1.getTitle().compareToIgnoreCase(o2.getTitle());
-                    break;
-                case REPLIES:
-                    ret = o1.getCommentsCount() - o2.getCommentsCount();
-                    break;
-                case LAST_COMMENTER:
-                    final long lastActivityAuthorId1 = ThreadClientUtil
-                            .getLastActivityAuthorId(o1.getThreadId());
-                    final long lastActivityAuthorId2 = ThreadClientUtil
-                            .getLastActivityAuthorId(o2.getThreadId());
-                    try {
-                        final Member lastActivityAuthor1 = MembersClient.getMember(
-                                lastActivityAuthorId1);
-                        final Member lastActivityAuthor2 = MembersClient.getMember(
-                                lastActivityAuthorId2);
-                        if (lastActivityAuthor1 != null && lastActivityAuthor2 != null) {
-                            ret = lastActivityAuthor1.getScreenName()
-                                    .compareToIgnoreCase(lastActivityAuthor2.getScreenName());
-                        } else {
-                            ret = (int) (lastActivityAuthorId1 - lastActivityAuthorId2);
-                        }
-                    } catch (MemberNotFoundException e) {
-                        ret = (int) (lastActivityAuthorId1 - lastActivityAuthorId2);
-                    }
-                    break;
-                case DATE:
-                default:
-                    ret = ThreadClientUtil.getLastActivityDate(o1.getThreadId())
-                            .compareTo(ThreadClientUtil.getLastActivityDate(o2.getThreadId()));
-                    break;
-            }
-
-            return sortAscending ? -ret : ret;
-        };
     }
 }

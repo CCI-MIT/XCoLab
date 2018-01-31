@@ -39,7 +39,6 @@ public class ActivitySubscriptionNameGenerator {
     private static String getNameForProposalSubscription(ActivitySubscription subscription){
         Long proposalId = subscription.getCategoryId();
         try {
-            //TODO: figure out which client we need in case it's a shared contest!
             Proposal proposal = ProposalClientUtil.getProposal(proposalId);
             Contest contest = ProposalClientUtil.getCurrentContestForProposal(proposalId);
             return "Proposal: " + String.format(HYPERLINK,
@@ -67,27 +66,6 @@ public class ActivitySubscriptionNameGenerator {
         try {
             CommentThread thread = ThreadClientUtil.getThread(categoryId);
             return String.format(HYPERLINK, thread.getLinkUrl(), thread.getTitle());
-
-//            CategoryGroup categoryGroup = CategoryClientUtil.getCategoryGroup(classPK);
-//            name.append(getCategoryGroupHyperlink(categoryGroup));
-
-            //TODO: what is stored in the extra data now?
-//            if (extraData != null && !extraData.isEmpty()) {
-//                List<Long> ids = IdListUtil.getIdsFromString(extraData);
-//                if (!ids.isEmpty()) {
-//                    long categoryId = ids.get(0);
-//                    Category category = CategoryClientUtil.getCategory(categoryId);
-//                    name.append(" &gt; ");
-//                    name.append(getCategoryHyperlink(category));
-//                }
-//                if (ids.size() > 1) {
-//                    long threadId = ids.get(1);
-//                    CommentThread thread = ThreadClientUtil.getThread(threadId);
-//
-//                    name.append(" &gt; ");
-//                    name.append(getDiscussion(thread));
-//                }
-//            }
         } catch (ThreadNotFoundException e) {
             _log.warn("Could not resolve discussion subscription name for subscription {}",
                     subscription.getPk() , e);

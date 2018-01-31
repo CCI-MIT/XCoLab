@@ -109,7 +109,7 @@ public final class ContentsClient {
     public static ContentArticle createContentArticle(ContentArticle contentArticle) {
         final ContentArticle result = contentArticleResource.create(contentArticle)
                 .execute();
-        //TODO: fine-grained cache control
+        //TODO COLAB-2589: fine-grained cache control
         ServiceRequestUtils.clearCache(CacheName.CONTENT);
         return result;
     }
@@ -119,7 +119,7 @@ public final class ContentsClient {
                 contentArticleResource.update(contentArticle, contentArticle.getContentArticleId())
                         .cacheName(CacheName.CONTENT)
                         .execute();
-        //TODO: fine-grained cache control
+        //TODO COLAB-2589: fine-grained cache control
         ServiceRequestUtils.clearCache(CacheName.CONTENT);
         return result;
     }
@@ -140,7 +140,7 @@ public final class ContentsClient {
             ContentArticleVersion contentArticleVersion) {
         final ContentArticleVersion result =
                 contentArticleVersionResource.create(contentArticleVersion).execute();
-        //TODO: fine-grained cache control
+        //TODO COLAB-2589: fine-grained cache control
         ServiceRequestUtils.clearCache(CacheName.CONTENT);
         return result;
     }
@@ -150,7 +150,7 @@ public final class ContentsClient {
                 .update(contentArticleVersion, contentArticleVersion.getContentArticleVersionId())
                 .cacheName(CacheName.CONTENT)
                 .execute();
-        //TODO: fine-grained cache control
+        //TODO COLAB-2589: fine-grained cache control
         ServiceRequestUtils.clearCache(CacheName.CONTENT);
         return result;
     }
@@ -169,7 +169,7 @@ public final class ContentsClient {
 
     public static ContentFolder createContentFolder(ContentFolder contentFolder) {
         final ContentFolder result = contentFolderResource.create(contentFolder).execute();
-        //TODO: fine-grained cache control
+        //TODO COLAB-2589: fine-grained cache control
         ServiceRequestUtils.clearCache(CacheName.CONTENT);
         return result;
     }
@@ -179,7 +179,7 @@ public final class ContentsClient {
                 contentFolderResource.update(contentFolder, contentFolder.getContentFolderId())
                         .cacheName(CacheName.CONTENT)
                         .execute();
-        //TODO: fine-grained cache control
+        //TODO COLAB-2589: fine-grained cache control
         ServiceRequestUtils.clearCache(CacheName.CONTENT);
         return result;
     }

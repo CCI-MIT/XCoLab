@@ -74,7 +74,7 @@ public class FacebookController {
         String referrer = request.getHeader(HttpHeaders.REFERER);
         session.setAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY, referrer);
 
-        //TODO: potentially replace by current URL
+        //TODO COLAB-2172: potentially replace by current URL
         String facebookAuthRedirectURL = FacebookUtil.getAuthRedirectURL(request);
 
         UriComponentsBuilder facebookAuthURL = UriComponentsBuilder.fromHttpUrl(
@@ -222,7 +222,7 @@ public class FacebookController {
             for (int i = 0; i < 5; i++) {
                 try {
                     MembersClient.findMemberByScreenName(screenName);
-                    //TODO: find better way to resolve conflicts
+                    //TODO COLAB-2172: find better way to resolve conflicts
                     screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
                 } catch (MemberNotFoundException e) {
                     //user name is not in use -> we can continue

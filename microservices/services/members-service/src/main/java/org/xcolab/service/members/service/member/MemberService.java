@@ -103,7 +103,7 @@ public class MemberService {
                 shortBio, country, facebookId, openId, imageId, liferayUserId, googleId,defaultLocale);
         final Member member = memberDao.findOneByScreenName(screenName)
                 .orElseThrow(IllegalStateException::new);
-        //TODO: centralize this ID in constant (see MemberRole enum)
+        //TODO COLAB-2609: centralize this ID in constant (see MemberRole enum)
         roleDao.assignMemberRole(member.getId_(), 10122L);
         subscribeToNewsletter(member.getEmailAddress());
         return member;

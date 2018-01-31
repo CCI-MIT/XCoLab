@@ -7,7 +7,7 @@ public class CollectionCardFilterBean {
 
     private List<CollectionCardWrapper> collectionCardsFeatured;
 
-    // todo:  SortFilterPage
+    // TODO COLAB-2627:  SortFilterPage
 
     public CollectionCardFilterBean(List<CollectionCardWrapper> collectionCards) {
         this.collectionCards = collectionCards;

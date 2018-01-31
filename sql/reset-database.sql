@@ -54,8 +54,6 @@ delete from xcolab_OntologyTerm where id_ not in (1, 2, 3, 1300601);
 
 delete from Group_;
 delete from Users_Groups;
--- TODO: this table will be removed soon
-delete from UserGroupRole;
 
 delete from xcolab_Points;
 

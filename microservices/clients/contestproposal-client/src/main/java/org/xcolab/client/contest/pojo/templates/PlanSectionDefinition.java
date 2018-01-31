@@ -103,7 +103,7 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
         }
         final String baseUri = PlatformAttributeKey.COLAB_URL.get();
         Document contentDocument = Jsoup.parse(content.trim(), baseUri);
-        // TODO: do we need this? this should already happen in HtmlUtil#cleanX
+        // TODO COLAB-2593: do we need this? this should already happen in HtmlUtil#cleanX
         contentDocument = HtmlUtil.addNoFollowToLinkTagsInDocument(contentDocument);
 
         for (Element aTagElements : contentDocument.select("a")) {
@@ -177,13 +177,11 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
                 // If a match is found create a new <a> tag
                 if (matcher.find()) {
                     final String link = word.substring(matcher.start(), matcher.end());
-                    //TODO: TEST FOR COMPILING
                     final Proposal linkedProposal = ProposalClientUtil.getProposalFromLinkUrl(link);
 
                     String elementName;
                     if (linkedProposal != null) {
-                        //TODO: TEST FOR COMPILING
-                        elementName = (linkedProposal).getName();
+                        elementName = linkedProposal.getName();
                     } else {
                         elementName = link;
                     }

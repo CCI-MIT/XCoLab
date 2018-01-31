@@ -3,7 +3,7 @@ package org.xcolab.client.admin.util;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 
-//TODO: move entire TemplateReplacementUtil here
+//TODO COLAB-2590: move entire TemplateReplacementUtil here
 public final class TemplateReplacementUtilPlaceholder {
 
     private final static String COLAB_NAME_PLACEHOLDER = "<colab-name/>";

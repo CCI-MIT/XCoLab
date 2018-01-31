@@ -251,7 +251,6 @@ public class ContestDaoImpl implements ContestDao {
             query.addConditions(CONTEST.PLAN_TEMPLATE_ID.eq(planTemplateId));
         }
         if (searchTerm != null && !searchTerm.isEmpty()) {
-            //TODO: replace wild card search with match...against
             query.addConditions(CONTEST.CONTEST_NAME.like("%" + searchTerm + "%")
                     .or(CONTEST.CONTEST_SHORT_NAME.like("%" + searchTerm + "%")));
         }
@@ -421,7 +420,7 @@ public class ContestDaoImpl implements ContestDao {
                 .execute();
     }
 
-    // TODO: move this to ProposalDao after cross-DAO transactions are possible. [COLAB-2466]
+    // TODO COLAB-2466: move this to ProposalDao after cross-DAO transactions are possible
     public static void deleteOrphanProposals(DSLContext ctx) {
         // Retrieve orphaned proposals
         List<Long> orphanProposals = ctx.select(PROPOSAL.PROPOSAL_ID)

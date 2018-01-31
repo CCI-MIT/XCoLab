@@ -28,10 +28,6 @@ public class EmailTemplateWrapper {
         }
     }
 
-    private static void removeEmailTemplate(String templateType) {
-        //TODO
-    }
-
     public Boolean getCreateNew() {
         return createNew;
     }

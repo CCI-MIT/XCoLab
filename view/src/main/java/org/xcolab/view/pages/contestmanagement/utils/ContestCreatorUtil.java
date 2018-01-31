@@ -110,7 +110,6 @@ public final class ContestCreatorUtil {
     }
 
     public static void insertSeedDataToContestScheduleTableIfNotAvailable() {
-        //TODO: create count endpoint instead of getting all schedules
         if (ContestClientUtil.getAllContestSchedules().isEmpty()) {
             ContestScheduleLifecycleUtil
                     .createProposalCreationOnlySchedule(SEED_CONTEST_SCHEDULE_NAME);

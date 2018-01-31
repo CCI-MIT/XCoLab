@@ -21,8 +21,6 @@ import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -179,7 +177,7 @@ public final class ProposalAttributeClient {
     }
     public ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute,
             Long authorId) {
-        //TODO: replace with better cache invalidation mechanism
+        //TODO COLAB-2589: replace with better cache invalidation mechanism
 
         //.optionalQueryParam("proposalId", proposalId)
         //        .optionalQueryParam("version", version)

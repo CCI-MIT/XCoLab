@@ -357,11 +357,6 @@ public class UserProfileController {
             changedMember = true;
         }
 
-        // TODO
-        //	if(changedExpando || changedUserPart) {
-        //	fireGoogleEvent = !profileWasComplete && profileIsComplete();
-        //}
-
         final long newImageId = updatedUserBean.getImageId();
         if (newImageId != currentUserProfile.getUserBean().getImageId()) {
 

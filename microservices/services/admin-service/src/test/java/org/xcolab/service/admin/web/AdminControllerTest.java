@@ -24,12 +24,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.xcolab.model.tables.pojos.ConfigurationAttribute;
 import org.xcolab.service.admin.AdminTestUtils;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
-import org.xcolab.service.admin.pojo.Notification;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
@@ -37,7 +34,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeast;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -166,61 +162,4 @@ public class AdminControllerTest {
             .andExpect(content().contentType(contentType));
         Mockito.verify(configurationAttributeDao,atLeast(1)).update(anyObject());
     }
-
-
-    private Notification getNotification(Long id) {
-        Notification notification = new Notification();
-        notification.setBeginTime(new Date());
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, 2);
-
-        notification.setEndTime(cal.getTime());
-        notification.setNotificationId(id);
-        notification.setNotificationText("Notification text");
-        return notification;
-    }
-
-    @Test
-    public void shouldCreateAndDeleteNotificationInPost() throws Exception {
-        //TODO: this test does a lot - not clear what it's testing
-
-        Notification notification = getNotification(1L);
-        this.mockMvc.perform(
-            get("/notifications/")
-                .contentType(contentType).accept(contentType)
-                .content(objectMapper.writeValueAsString(notification)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(content().contentType(contentType));
-
-        this.mockMvc.perform(
-            post("/notifications/")
-                .contentType(contentType).accept(contentType)
-                .content(objectMapper.writeValueAsString(notification)))
-            .andExpect(status().isOk());
-
-        this.mockMvc.perform(
-            get("/notifications/")
-                .contentType(contentType).accept(contentType)
-                .content(objectMapper.writeValueAsString(notification)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(content().contentType(contentType));
-
-        this.mockMvc.perform(
-            delete("/notifications/" + notification.getNotificationId())
-                .contentType(contentType).accept(contentType)
-                .content(objectMapper.writeValueAsString(notification)))
-            .andExpect(status().isOk());
-
-        this.mockMvc.perform(
-            get("/notifications/")
-                .contentType(contentType).accept(contentType)
-                .content(objectMapper.writeValueAsString(notification)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isEmpty())
-            .andExpect(content().contentType(contentType));
-
-    }
-
 }

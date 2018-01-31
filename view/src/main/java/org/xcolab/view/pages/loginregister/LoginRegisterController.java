@@ -93,7 +93,6 @@ public class LoginRegisterController {
         }
 
         if (StringUtils.isNotEmpty(redirect)) {
-            //TODO: or escape?
             model.addAttribute("redirect", redirect);
         }
 
@@ -203,7 +202,7 @@ public class LoginRegisterController {
             result.addError(new ObjectError("createUserBean", resourceMessageResolver.getLocalizedMessage("register.form.validation.captcha.message")));
             return showRegistrationError(model);
         }
-        //TODO: improve redirect to avoid double handling
+        //TODO COLAB-2617: improve redirect to avoid double handling
         loginRegisterService.completeRegistration(request, response, newAccountBean, redirect, false);
         SessionErrors.clear(request);
         SessionMessages.clear(request);

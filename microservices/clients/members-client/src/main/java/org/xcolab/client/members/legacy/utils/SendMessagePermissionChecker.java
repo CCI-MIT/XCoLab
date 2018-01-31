@@ -23,9 +23,9 @@ public class SendMessagePermissionChecker {
 
     /**
      * IMPORTANT This flag indicates whether the permission checker is active or not. Set this flag
-     * to true when the feature should be enabled //TODO: when will we activate this feature? Do we
-     * still need this?
+     * to true when the feature should be enabled
      */
+    //TODO COLAB-2596: when will we activate this feature? Do we still need this?
     private static final boolean ACTIVATED = false;
 
     public SendMessagePermissionChecker(Member origin) {

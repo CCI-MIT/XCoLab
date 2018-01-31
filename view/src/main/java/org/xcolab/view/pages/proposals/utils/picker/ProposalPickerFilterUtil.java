@@ -151,7 +151,7 @@ public class ProposalPickerFilterUtil {
     }
 
     private static List<Long> getAllowedTiers(Long filterTier) {
-        //TODO: make this processes clearer by introducing a boolean field to allow lower tiers
+        //TODO COLAB-641: make this processes clearer by introducing a boolean field to allow lower tiers
         // if filterTier < 0:
         //  allow tier <= (-filterTier)
         // else if filterTier > 0

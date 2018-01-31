@@ -93,7 +93,7 @@ public class ProposalContextImpl implements ProposalContext {
         }
     }
 
-    //TODO: report to table rather than email
+    //TODO COLAB-2624: report to table rather than email (or external service)
     @SuppressWarnings("UnusedParameters")
     private void handleAccessedInvalidUrlIdInUrl(Member member, String currentUrl,
             String referralUrl, String userAgent)

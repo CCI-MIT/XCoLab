@@ -27,14 +27,11 @@ import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @Controller
 public class ProposalVersionsJsonController {
 
     private final static long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
-    //TODO: get contest for sharing?
-    //-- @ResourceMapping("getProposalVersionFirstIndex")
     @GetMapping("/api/phases/{phaseId}/proposals/{proposalId}/versionsFirstIndex")
     public void getProposalVersionFirstIndex(HttpServletRequest request, HttpServletResponse response,
             @PathVariable("phaseId") long contestPhaseId, @PathVariable("proposalId") long proposalId)

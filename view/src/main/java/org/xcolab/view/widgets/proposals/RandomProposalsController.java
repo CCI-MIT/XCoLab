@@ -73,14 +73,13 @@ public class RandomProposalsController
         List<Proposal> ret = new ArrayList<>();
         List<Proposal> proposals = getAvailableProposals(preferences);
 
-        //TODO: remove loop and use micro service pojo
+        //TODO COLAB-2630: remove loop and use micro service pojo
         if (proposals != null) {
             Collections.shuffle(proposals);
             for (int i = 0; i < proposals.size() && i < preferences.getFeedSize(); ++i) {
                 try {
                     ret.add((ProposalClientUtil.getProposal(proposals.get(i).getProposalId())));
                 } catch (ProposalNotFoundException e) {
-                    //ignored for now, will be removed after LR
                 }
             }
         }

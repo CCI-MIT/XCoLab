@@ -56,14 +56,11 @@ public class LoadThreadStartTag extends BodyTagSupport {
             }
 
             String shareTitle = null;
-            String shareUrl = null;
 
             if (categoryId > 0) {
                 try {
                     Category category = categoryClient.getCategory(categoryId);
                     shareTitle = category.getName();
-                    //TODO: url
-                    shareUrl = "";
                 } catch (CategoryNotFoundException e) {
                     throw ReferenceResolutionException.toObject(Category.class, categoryId)
                             .fromObject(LoadThreadStartTag.class, "for thread " + threadId);
@@ -75,10 +72,6 @@ public class LoadThreadStartTag extends BodyTagSupport {
                     CategoryGroup categoryGroup = categoryClient.getCategoryGroup(categoryGroupId);
                     if (shareTitle == null) {
                         shareTitle = categoryGroup.getDescription();
-                    }
-                    if (shareUrl == null) {
-                        //TODO: url
-                        shareUrl = "";
                     }
                 } catch (CategoryGroupNotFoundException e) {
                     throw ReferenceResolutionException
@@ -100,7 +93,6 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
             pageContext.setAttribute("thread", thread);
             pageContext.setAttribute("shareTitle", shareTitle);
-            pageContext.setAttribute("shareUrl", shareUrl);
             pageContext.setAttribute("newMessage", new NewMessageWrapper());
             pageContext.setAttribute("discussionPermissions", discussionPermissions);
             final List<ReportTarget> reportTargets =

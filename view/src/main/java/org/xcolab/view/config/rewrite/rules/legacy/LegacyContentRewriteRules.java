@@ -180,7 +180,7 @@ public class LegacyContentRewriteRules implements RewriteRuleProvider {
                                     .or(Path.matches("/web/guest/handbook/-/wiki/Main/{page}"))
                                     .or(Path.matches("/web/guest/handbook/-/wiki/page/{page}"))
                     ))
-                    //TODO: this page doesn't exist yet!
+                    //TODO COLAB-2610: this page doesn't exist yet!
                     .perform(Redirect.permanent("/handbook/{page}"))
                     .where("page").matches(".*");
 

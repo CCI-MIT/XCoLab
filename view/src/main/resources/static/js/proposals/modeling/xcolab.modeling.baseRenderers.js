@@ -87,7 +87,6 @@ if (typeof(XCoLab.modeling) == 'undefined')
 	 * Renders a header line (in view mode) for an input if it has no parent or its direct parent is a tab.
 	 */
 	XCoLab.modeling.BaseXCoLabModelingItemRenderer.prototype.renderHeader = function(container, input, modelingWidget, idx, parent) {
-		// FIXME - headers disabled as per Rob's request
 		if (false && !(input.groupType == 'TAB') && (typeof(parent) == 'undefined' || parent.groupType == 'TAB' )) {
 			// this input has no parent or its parent is a tab, it should display it's name as an input section header
 			//var addTooltip = input.description && jQuery.trim(input.description).length > 0;

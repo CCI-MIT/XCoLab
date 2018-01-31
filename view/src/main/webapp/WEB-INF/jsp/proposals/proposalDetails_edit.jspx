@@ -324,7 +324,7 @@
     </div>
     <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
-    <!-- TODO: replace with i18n message -->
+    <!-- TODO COLAB-2583: replace with i18n message -->
     <c:set var="acceptTosNotificationText" value="To create a ${contestType.proposalName} on the ${_colabName}, you must ACCEPT the terms of use and ${contestType.contestName} rules. Please click Accept to continue and save your ${contestType.proposalName}!" />
     <script>
         var acceptTosNotificationText = '${acceptTosNotificationText}';

@@ -62,7 +62,7 @@ public class AdminClient {
         final Boolean result = configurationAttributeResource
                 .update(configurationAttribute, configurationAttribute.getName())
                 .cacheName(CacheName.CONFIGURATION).execute();
-        //TODO: more fine grained cache control
+        //TODO COLAB-2589: more fine grained cache control
         ServiceRequestUtils.clearCache(CacheName.CONFIGURATION);
         return result;
     }
