@@ -45,9 +45,10 @@ spring:
             - "/vendor/**"
       cache: false
     cache-period: 31536000 # 365 days
-    static-locations:
-      - "classpath:/static/"
-      - "classpath:/dist/"
+    # use comma-separated list to override default value
+    static-locations: >
+      classpath:/dist/,
+      classpath:/static/
 
 eureka:
   client:
@@ -72,3 +73,15 @@ logging:
 
 security:
   filter-dispatcher-types: ASYNC,REQUEST,ERROR
+
+---
+
+spring:
+  profiles: development
+  resources:
+    # use comma-separated list to override default value
+    static-locations: >
+      file:view/src/main/resources/static/,
+      file:view/src/main/resources/dist/,
+      classpath:/dist/,
+      classpath:/static/
