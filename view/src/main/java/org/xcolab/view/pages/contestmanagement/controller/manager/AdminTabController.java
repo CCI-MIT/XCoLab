@@ -246,10 +246,9 @@ public class AdminTabController extends AbstractTabController {
     @PostMapping("tab/ADMIN/batchRegister")
     public String batchRegisterMembers(HttpServletRequest request, HttpServletResponse response,
             BatchRegisterBean batchRegisterBean) throws IOException {
-        /*if (!tabWrapper.getCanView()) {
-            ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
-            return;
-        }*/
+        if (!tabWrapper.getCanView()) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
 
         final String[] memberStrings = batchRegisterBean.getBatchText().split("\\r\\n|\\n|\\r");
 

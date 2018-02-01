@@ -13,8 +13,6 @@
     <!--@elvariable id="level" type="java.lang.Integer"-->
     <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
-    <!--@elvariable id="registerBatchBean" type="org.xcolab.portlets.contestmanagement.beans.BatchRegisterBean"-->
-
     <jsp:useBean id="votingReportBean" scope="request" type="org.xcolab.view.pages.contestmanagement.beans.VotingReportBean" />
     <jsp:useBean id="proposalReportBean" scope="request" type="org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean" />
     <jsp:useBean id="batchRegisterBean" scope="request" type="org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean" />
@@ -198,20 +196,19 @@
             <h2>Batch register members</h2>
             <form:form action="/admin/contest/manager/tab/ADMIN/batchRegister" commandName="batchRegisterBean"
                        id="batchRegisterForm" method="post">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="c-Alert__info__message" for="batchRegisterMembersList">
                     Each member will receive an email with a link that allows them to sign in.
                     Enter one member per line in the following format:<br/>
                     <code>emailAddress;firstName;lastName</code>
                 </div>
                 <div>
-                    <form:textarea id="batchRegisterMembersList" name="batchText" class="form-control" path="batchText"
-                               style="width: 100%;" value="${batchRegisterBean.batchText}" />
+                    <form:textarea id="batchRegisterMembersList" cssClass="form-control" path="batchText"
+                               style="width: 100%;" />
                 </div>
                 <div class="form-check">
                     <!-- TODO COLAB-2204: remove style attribute once input float rule is removed -->
-                    <form:checkbox name="asGuests" path="asGuests" class="form-check-input" id="asGuests"
-                           style="float: none; height: initial;" value="${batchRegisterBean.asGuests}"/>
+                    <form:checkbox path="asGuests" cssClass="form-check-input" id="asGuests"
+                           style="float: none; height: initial;" />
                     <label class="form-check-label js-Tooltip" for="asGuests" title="Guests cannot create proposals or participate in dicussions">
                         Register as guests
                     </label>
