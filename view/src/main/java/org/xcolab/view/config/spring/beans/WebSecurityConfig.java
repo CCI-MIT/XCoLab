@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 
@@ -107,6 +108,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .csrf()
                     .ignoringAntMatchers("/webhooks/**")
+                    //COLAB-2480: Fixes 403 when double clicking login button (CSRF token is reset)
+                    .csrfTokenRepository(new CookieCsrfTokenRepository())
                     .and()
                 .headers().defaultsDisabled()
                     .referrerPolicy(ReferrerPolicy.ORIGIN_WHEN_CROSS_ORIGIN)
