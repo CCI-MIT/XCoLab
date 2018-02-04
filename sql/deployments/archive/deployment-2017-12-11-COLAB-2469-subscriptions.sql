@@ -22,7 +22,8 @@ DROP INDEX IX_C2ED8710 ON xcolab_ActivitySubscription;
 delete from xcolab_ActivitySubscription where classNameId not in (39202, 1368503, 39701);
 
 -- Delete unknown subscription
-delete from xcolab_ActivitySubscription where pk = 1002547;
+delete from xcolab_ActivitySubscription where pk = 1002547
+  and (select stringValue from xcolab_ConfigurationAttribute where name = 'COLAB_NAME') = 'Climate CoLab';
 
 -- Normalize extra data
 update xcolab_ActivitySubscription set extraData = null where length(extraData) < 2 or extraData is null;
