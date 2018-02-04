@@ -44,6 +44,8 @@
             <jsp:doBody/>
         </div>
 
+        <hr/>
+
         <div class="form-group">
             <a class="c-Button__secondary" href="/" >Return to home</a>
             <button type="submit" class="c-Button__primary">Save</button>
