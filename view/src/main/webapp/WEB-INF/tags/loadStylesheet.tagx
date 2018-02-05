@@ -9,11 +9,11 @@
         <c:url var="encodedUrl" value="${href}" />
         <c:choose>
             <c:when test="${not empty integrity}">
-                <link rel="stylesheet" href="${encodedUrl}" type="text/css"
-                        integrity="${integrity}" crossorigin="anonymous" />
+                <link rel="stylesheet" href="${encodedUrl}"
+                      integrity="${integrity}" crossorigin="anonymous"/>
             </c:when>
             <c:otherwise>
-                <link rel="stylesheet" href="${encodedUrl}" type="text/css" />
+                <link rel="stylesheet" href="${encodedUrl}"/>
             </c:otherwise>
         </c:choose>
     </c:if>

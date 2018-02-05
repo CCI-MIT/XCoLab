@@ -101,7 +101,7 @@
     <xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js"/>
     <xcolab:script src="${_themeJsFolder}/proposals/historyWidget.js"/>
 
-    <link rel="stylesheet" type="text/css"  href="${_libCssFolder}/imageviewer.css"/>
+    <xcolab:stylesheet href="${_libCssFolder}/imageviewer.css"/>
     <xcolab:script src="${_themeJsFolder}/proposals/imageviewer.min.js" />
 
 </jsp:root>

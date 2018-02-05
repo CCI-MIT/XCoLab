@@ -4,5 +4,5 @@
     <jsp:directive.attribute name="href" type="java.lang.String" required="false" rtexprvalue="true" description="URL" />
 
     <c:url var="encodedUrl" value="${href}" />
-    <link rel="stylesheet" href="${encodedUrl}" type="text/css" />
+    <link rel="stylesheet" href="${encodedUrl}"/>
 </jsp:root>
