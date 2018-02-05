@@ -98,15 +98,6 @@ $c-Footer__menu__li__a--hover__color: $t-Color__primary;
 $c-Footer__menu__backgroundColor: linear-gradient(to bottom, lighten($t-Color__grey--medium, 5%), darken($t-Color__grey--medium, 5%));
 $c-Footer__menu__boxShadow: inset 0px 5px 12px lighten($t-Color__grey--dark, 10%);
 
-$c-Button__padding: 10px 15px;
-$c-Button__padding--small: 8px 12px;
-$c-Button__fontWeight: $t-Typography__fontWeight--regular;
-$c-Button__capitalization: uppercase;
-$c-Button__theme__textShadow: none;
-
-$c-Button__primary__borderColor: none;
-$c-Button__grey__borderColor: none;
-
 $c-TitleBar__backgroundColor: $t-Color__red;
 $c-TitleBar__borderBottom: none;
 $c-TitleBar__element--active__capitalization: uppercase;

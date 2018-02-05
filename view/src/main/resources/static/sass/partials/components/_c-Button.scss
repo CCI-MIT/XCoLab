@@ -3,31 +3,16 @@
 
 @import "bootstrap/mixins/buttons";
 
-$c-Button__padding: 8px !default;
-$c-Button__capitalization: none !default;
-
-$c-Button__primary__backgroundColor: $t-Color__primary !default;
-$c-Button__primary__borderColor: $t-Color__primary--dark !default;
-$c-Button__primary__backgroundColor--hover: null !default;
-
-$c-Button__grey__borderColor: $t-Color__grey--dark !default;
-
 %c-Button__base {
   display: inline-block;
-  padding: $c-Button__padding;
+  padding: 8px;
   margin-left: 5px;
   vertical-align: middle;
 
   font-weight: $bs-Button__fontWeight;
   line-height: normal;
-  text-transform: $c-Button__capitalization;
 
   border-radius: $t-Border__radius;
-}
-
-//TODO COLAB-2561: move to custom/_button.scss
-.btn {
-  text-transform: $c-Button__capitalization;
 }
 
 @mixin theme-button($button-color, $border-color: null, $image-url: null, $hover-color: null) {
@@ -43,8 +28,6 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   }
 
   color: contrasting-color($button-color, white, $t-Color__grey--darkest, $t-Text__threshold);
-  $c-Button__theme__textShadow: 1px 1px 0 darken($button-color, 25%) !default;
-  text-shadow: $c-Button__theme__textShadow;
 
   &:hover {
     color: contrasting-color(darken($button-color, 10%), white, $t-Color__grey--darkest, $t-Text__threshold);
@@ -54,5 +37,5 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
 }
 
 .btn-admin {
-  @include button-variant($c-Button__primary__backgroundColor, $t-Color__accent);
+  @include button-variant($t-Color__primary, $t-Color__accent);
 }
