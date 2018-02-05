@@ -40,8 +40,7 @@
                     <form:options items="${votingPhaseSelectionItems}" itemValue="value"
                                   itemLabel="lable"/>
                 </form:select>
-                <br />
-                <button type="submit" class="btn btn-primary">Generate report</button>
+                <button type="submit" class="btn btn-primary mt-2">Generate report</button>
             </form:form>
         </div>
         <br/>
@@ -58,12 +57,11 @@
                     <form:options items="${contestSelectionItems}" itemValue="value"
                                   itemLabel="lable"/>
                 </form:select>
-                <br />
-                <form:select path="proposalExportType" cssClass="form-control">
+                <form:select path="proposalExportType" cssClass="form-control mt-2">
                     <form:options items="${proposalExportTypeSelectionItems}" itemValue="value"
                                   itemLabel="lable"/>
                 </form:select>
-                <button type="submit" class="btn btn-primary">Generate report</button>
+                <button type="submit" class="btn btn-primary mt-2">Generate report</button>
             </form:form>
         </div>
         <br/>

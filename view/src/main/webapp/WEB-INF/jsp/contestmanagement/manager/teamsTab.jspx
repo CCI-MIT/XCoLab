@@ -15,10 +15,10 @@
 
     <div class="c-ContentBox">
         <div style="margin-bottom: 40px;">
-            <div class="floatRight outerVerticalCenter">
-                <a class="btn btn-primary innerVerticalCenter" href="#" onclick="saveTeam()">SAVE team</a>
-                <button type="button" class="btn btn-primary innerVerticalCenter js-PostLink" data-url="TEAMS">CREATE new team</button>
-                <button type="button" class="btn btn-primary innerVerticalCenter js-PostLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</button>
+            <div class="floatRight">
+                <a class="btn btn-primary" href="#" onclick="saveTeam()">SAVE team</a>
+                <button type="button" class="btn btn-primary js-PostLink" data-url="TEAMS">CREATE new team</button>
+                <button type="button" class="btn btn-primary js-PostLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</button>
             </div>
         </div>
     </div>

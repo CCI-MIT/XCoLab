@@ -359,9 +359,9 @@
 
                         </div>
                         <br/>
-                        <div class="floatLeft outerVerticalCenter" id="previewContentArticle" ><a  class="btn btn-primary" href="#">Preview</a></div>
-                        <div class="floatRight outerVerticalCenter" id="deleteOntologyTerm" ><a  class="btn btn-primary" href="#">Delete</a></div>
-                        <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="btn btn-primary" href="#">Save</a></div></div>
+                        <div class="floatLeft" id="previewContentArticle" ><a  class="btn btn-primary" href="#">Preview</a></div>
+                        <div class="floatRight" id="deleteOntologyTerm" ><a  class="btn btn-primary" href="#">Delete</a></div>
+                        <div> <div class="floatRight" id="saveArticle" ><a  class="btn btn-primary" href="#">Save</a></div></div>
                     </div>
                 </div>
             </div>

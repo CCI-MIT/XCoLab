@@ -281,8 +281,8 @@
                         </div>
                         <div id="folderName">Parent term: <!-- --></div>
                         <br/>
-                        <div class="floatRight outerVerticalCenter" id="deleteOntologyTerm" ><a  class="btn btn-primary" href="#">Delete</a></div>
-                        <div class="floatRight outerVerticalCenter" id="saveOntologyTerm" ><a  class="btn btn-primary" href="#">Save</a></div>
+                        <div class="floatRight" id="deleteOntologyTerm" ><a  class="btn btn-primary" href="#">Delete</a></div>
+                        <div class="floatRight" id="saveOntologyTerm" ><a  class="btn btn-primary" href="#">Save</a></div>
                     </div>
                 </div>
             </div>

@@ -34,10 +34,10 @@
 
     <div class="c-ContentBox">
         <div style="margin-bottom: 40px;">
-            <div class="floatRight outerVerticalCenter">
-                <a class="btn btn-primary innerVerticalCenter" href="#" onclick="saveExistingReportTarget()">SAVE target</a>
-                <a class="btn btn-primary innerVerticalCenter" href="#" onclick="saveAsNewReportTarget()">SAVE as new target</a>
-                <a class="btn btn-primary innerVerticalCenter" href="#" onclick="submitDeleteReportTargetForm()">DELETE target</a>
+            <div class="floatRight">
+                <a class="btn btn-primary" href="#" onclick="saveExistingReportTarget()">SAVE target</a>
+                <a class="btn btn-primary" href="#" onclick="saveAsNewReportTarget()">SAVE as new target</a>
+                <a class="btn btn-primary" href="#" onclick="submitDeleteReportTargetForm()">DELETE target</a>
             </div>
         </div>
     </div>
