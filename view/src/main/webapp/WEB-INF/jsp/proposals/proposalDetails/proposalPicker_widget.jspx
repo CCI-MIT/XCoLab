@@ -50,12 +50,9 @@
                         </ul>
                     </div>
 
-                    <div id="proposalPickerSearchContainer">
-                        <input id="prop-search" name="searchField" type="text"
-                               placeholder="Filter" maxcharacters="80" validatelength="true"
-                               style="height: 22px; width: 175px; padding: 0 5px;" />
-                        <a class="btn btn-primary" href="javascript:;">Search</a>
-                    </div>
+                    <input id="prop-search" name="searchField" type="text"
+                           placeholder="Filter results" aria-label="Filter results"
+                           class="form-control my-2" />
 
                     <div id="proposalPicker_viewArea">
                         <div id="proposalPickerTableContests"
