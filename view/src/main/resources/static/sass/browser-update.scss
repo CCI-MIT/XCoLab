@@ -13,7 +13,7 @@ body { //wrap in body to increase specificity (allows overriding default rules)
   .buorg div a {
     &, &:visited {
       color: $t-Color__text--light;
-      border-radius: $t-BorderRadius;
+      border-radius: $t-Border__radius;
       background: $t-Color__gray-600;
     }
     &:hover {
