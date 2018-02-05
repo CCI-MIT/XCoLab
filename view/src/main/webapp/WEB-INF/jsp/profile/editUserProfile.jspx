@@ -15,6 +15,8 @@
     <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
     <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.members.pojo.MemberCategory>"-->
     <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+    <!--@elvariable id="_isGoogleSsoActive" type="java.lang.Boolean"-->
+    <!--@elvariable id="_isFacebookSsoActive" type="java.lang.Boolean"-->
 
 	<c:if test="${updateError}">
 		<script>
@@ -327,50 +329,56 @@
 		</div>
 	</c:if>
 
-	<div class="right_col v1">
-		<div class="comm_rightcol">
-			<div class="comm_rightcol-title2"><spring:message code="profile.sso.settings.title"/></div>
-			<table border="0" cellpadding="0" cellspacing="0" class="colab">
-				<tr class="colabRow">
-					<td class="actionColumn">
-						<c:choose>
-							<c:when test="${currentUserProfile.hasFacebookId}">
-								<input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
-									   value="true" checked="checked" onClick="unlinkFacebookSSO();" />
-							</c:when>
-							<c:otherwise>
-								<input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
-									   disabled="true" />
-							</c:otherwise>
-						</c:choose>
-						<label for="hasFacebookId"><!-- --></label>
-					</td>
-					<td>
-                        <spring:message code="profile.sso.settings.facebook"/>
-					</td>
-				</tr>
-				<tr class="colabRow">
-					<td class="actionColumn">
-						<c:choose>
-							<c:when test="${currentUserProfile.hasOpenId}">
-								<input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
-									   value="true" checked="checked" onClick="unlinkGoogleSSO();" />
-							</c:when>
-							<c:otherwise>
-								<input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
-									   disabled="true" />
-							</c:otherwise>
-						</c:choose>
-						<label for="hasOpenId"><!-- --></label>
-					</td>
-					<td>
-                        <spring:message code="profile.sso.settings.google"/>
-					</td>
-				</tr>
-			</table>
-			<div class="clearfix"><!-- --></div>
-		</div>
-	</div> <!-- /right_col -->
+    <c:if test="${(_isFacebookSsoActive or _isGoogleSsoActive)}">
+        <div class="right_col v1">
+            <div class="comm_rightcol">
+                <div class="comm_rightcol-title2"><spring:message code="profile.sso.settings.title"/></div>
+                <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                    <c:if test="${_isFacebookSsoActive}">
+                        <tr class="colabRow">
+                            <td class="actionColumn">
+                                <c:choose>
+                                    <c:when test="${currentUserProfile.hasFacebookId}">
+                                        <input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                               value="true" checked="checked" onClick="unlinkFacebookSSO();" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                               disabled="true" />
+                                    </c:otherwise>
+                                </c:choose>
+                                <label for="hasFacebookId"><!-- --></label>
+                            </td>
+                            <td>
+                                <spring:message code="profile.sso.settings.facebook"/>
+                            </td>
+                        </tr>
+                    </c:if>
+                    <c:if test="${_isGoogleSsoActive}">
+                        <tr class="colabRow">
+                            <td class="actionColumn">
+                                <c:choose>
+                                    <c:when test="${currentUserProfile.hasOpenId}">
+                                        <input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                               value="true" checked="checked" onClick="unlinkGoogleSSO();" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                               disabled="true" />
+                                    </c:otherwise>
+                                </c:choose>
+                                <label for="hasOpenId"><!-- --></label>
+                            </td>
+                            <td>
+                                <spring:message code="profile.sso.settings.google"/>
+                            </td>
+                        </tr>
+                    </c:if>
+                </table>
+                <div class="clearfix"><!-- --></div>
+            </div>
+        </div> <!-- /right_col -->
+    </c:if>
 
 	<div class="right_col v1">
 		<div class="comm_rightcol">
