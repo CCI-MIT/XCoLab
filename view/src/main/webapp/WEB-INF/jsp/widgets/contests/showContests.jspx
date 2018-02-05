@@ -8,7 +8,7 @@
 
     <div>
         <c:if test="${_isAdmin}">
-            <a href="/widgets/contests/preferences?preferenceId=${contestPreferences.preferenceId}" class="btn btn-admin btn-sm pull-right">Edit contestPreferences</a><br/>
+            <a href="/widgets/contests/preferences?preferenceId=${contestPreferences.preferenceId}" class="btn btn-admin btn-sm float-right">Edit contestPreferences</a><br/>
         </c:if>
         <h2> ${contestPreferences.title} <span><a href="${contestPreferences.allContestsUrl}">${contestPreferences.allContestsTitle}</a></span></h2>
         <c:forEach var="contest" items="${contests}">

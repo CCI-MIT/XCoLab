@@ -102,7 +102,7 @@ function requestMembership() {
     var $requestButtons = $('#requestButtons');
     $requestButtons.empty();
     $requestButtons.append('<a href="javascript:;" class="btn btn-gray" onclick="hideRequestForm(true);">Cancel</a>');
-    $requestButtons.append('<a href="javascript:;" class="btn btn-primary pull-right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a>');
+    $requestButtons.append('<a href="javascript:;" class="btn btn-primary float-right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a>');
 }
 function hideRequestForm(animate) {
     var speed = animate ? 600 : 1;
@@ -122,8 +122,8 @@ function inviteMember() {
     $('.prop-butt-popover:first').css('background', 'url('+_themeImageFolder+'/search-bg.png)');
     var $requestButtons = $('#requestButtons');
     $requestButtons.empty();
-    $requestButtons.append('<a href="javascript:;" class="btn btn-gray pull-left" onclick="hideInviteForm(true);">Cancel</a>');
-    $requestButtons.append('<a href="javascript:;" class="btn btn-primary pull-right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a>');
+    $requestButtons.append('<a href="javascript:;" class="btn btn-gray float-left" onclick="hideInviteForm(true);">Cancel</a>');
+    $requestButtons.append('<a href="javascript:;" class="btn btn-primary float-right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a>');
 }
 
 function hideInviteForm(animate) {

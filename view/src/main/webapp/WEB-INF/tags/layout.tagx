@@ -195,7 +195,7 @@
                     </span>
                     </div>
 
-                    <div class="c-TitleBar__actionButton pull-right">
+                    <div class="c-TitleBar__actionButton float-right">
                         <a href="${_colabUrlProduction}">Take me to ${_colabUrlProduction}.</a>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
                     <span style="display: inline-block">Impersonating member ${_member.screenName} (Logged in as ${_realMember.screenName})</span>
                 </div>
 
-                <div class="c-TitleBar__actionButton pull-right">
+                <div class="c-TitleBar__actionButton float-right">
                     <!--TODO COLAB-2560: turn into button-->
                     <a data-url="/impersonate/logout" class="js-PostLink">Stop impersonating</a>
                 </div>
@@ -227,7 +227,7 @@
                     <span style="display: inline-block"><!-- Reference for image alignment --></span>
                 </div>
 
-                <div class="c-TitleBar__actionButton pull-right">
+                <div class="c-TitleBar__actionButton float-right">
                     <a href="${_mitHeaderBarLinkUrl}">${_mitHeaderBarLinkText}</a>
                 </div>
             </div>

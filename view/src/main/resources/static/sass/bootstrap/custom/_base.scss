@@ -8,13 +8,6 @@
   margin: 0 auto;
 }
 
-//TODO: migrate to bootstrap 4/flexbox
-@include media-breakpoint-up(lg) {
-  .pull-right-lg {
-    float: right !important;
-  }
-}
-
 .bg-noise {
   background-image: url(/images/bg-noise.png);
 }

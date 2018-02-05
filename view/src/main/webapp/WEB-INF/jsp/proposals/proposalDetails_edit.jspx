@@ -279,14 +279,14 @@
 
     <div class="c-ControlsOverlay">
         <div class="bs-container-fixed">
-            <div class="pull-left hidden-xs hidden-sm">
+            <div class="float-left d-none d-lg-block">
                 Don't forget to save your work!
                 <c:if test="${not empty saveHelpText}">
                     ${saveHelpText}
                 </c:if>
             </div>
 
-            <div class="pull-right-lg">
+            <div class="float-lg-right">
                 <button class="btn btn-primary" type="button" id="saveChangesButton">
                     ${saveButtonText}
                 </button>
