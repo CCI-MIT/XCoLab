@@ -108,7 +108,7 @@
                         <form:errors cssClass="c-Alert c-Alert__error"/>
                     </div>
 
-                    <table class="c-ContentBox__Table form-inline">
+                    <table class="c-ContentBox__Table">
                         <col span="1" class="extraSmallColumn"/>
                         <!-- <col span="1" class="extraSmallColumn"/> -->
                         <col span="4" class="mediumColumn"/>
