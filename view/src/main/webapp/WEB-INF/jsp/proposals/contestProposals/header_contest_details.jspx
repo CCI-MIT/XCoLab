@@ -152,7 +152,7 @@
                 </div>
                 <div class="p-ContestProposals__header__buttons">
                     <c:if test="${showEditLink}">
-                        <a href="/admin/contest/details/contestId/${contest.contestPK}" class="btn btn-outline-primary">
+                        <a href="/admin/contest/details/contestId/${contest.contestPK}" class="btn btn-outline-admin">
                             Edit Contest
                         </a>
                     </c:if>
