@@ -89,7 +89,7 @@ function loadProposalSections() {
 }
 
 function updatePopupSize() {
-    //TODO: do we need this for the new copyProposalModal? Otherwise remove
+    //TODO COLAB-2587: do we need this for the new copyProposalModal? Otherwise remove
 	var container = jQuery("#copyProposalContainer");
 	container.find("#copyProposalPopup").css({top: "20px"});
 	var availableHeight = jQuery(window).height();

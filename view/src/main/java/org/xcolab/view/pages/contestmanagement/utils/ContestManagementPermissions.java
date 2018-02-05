@@ -36,12 +36,10 @@ public class ContestManagementPermissions implements TabPermissions, Serializabl
 
     @Override
     public boolean getCanCreate() {
-        // TODO check who needs this
         return isLoggedIn;
     }
 
     public boolean getCanEdit() {
-        // TODO check who needs this
         return getCanAdmin();
     }
 }

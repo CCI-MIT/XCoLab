@@ -104,7 +104,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
     }
 
 
-//    TODO: this wasn't active - do we still need that?
+//    TODO COLAB-2603: this wasn't active - do we still need that?
     //-- @RequestMapping(params = "action=judging")
 //    public void releaseJudgingMails(HttpServletRequest request) {
 //        Integer[] phaseIds = { 1308611,1309131,1309135,1309139,1309143,1309147,1309151,1309155,1309159,1309163,1309167,1309171,1309175,1309179,1309183,1309187,1309191,1309201,1309707  };

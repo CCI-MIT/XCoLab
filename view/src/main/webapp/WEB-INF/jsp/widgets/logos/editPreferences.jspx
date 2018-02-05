@@ -14,7 +14,7 @@
                 <form:hidden id="remove${status.index}" path="logos[${status.index}].remove" />
             </c:forEach>
 
-            <table class="table">
+            <table class="table" id="js-LogoTable">
                 <tr>
                     <th>Image URL</th>
                     <th>Link URL</th>
@@ -32,24 +32,17 @@
                     </tr>
                 </c:forEach>
 
-                <tr>
-                    <td />
-                    <td />
-                    <td />
-                    <td>
-                        <a href="javascript:void(0)"><span class="js-Table__add glyphicon glyphicon-plus" /></a>
-                    </td>
-                </tr>
-
                 <tr id="js-Table__prototypeRow" class="hide">
                     <td><input id="imageUrl" name="" class="form-control" type="text" value="" /></td>
                     <td><input id="linkUrl" name="" class="form-control" type="text" value="" /></td>
                     <td><input id="altText" name="" class="form-control" type="text" value="" /></td>
                     <td>
-                        <a href="javascript:void(0)"><span class="js-Table__remove glyphicon glyphicon-remove" /></a>
+                        <button type="button" class="btn btn-link js-Table__remove">Remove</button>
                     </td>
                 </tr>
             </table>
+
+            <button type="button" class="btn btn-primary btn-block js-Table__add">Add row</button>
 
         </xcolab:editPreferences>
 
@@ -60,7 +53,7 @@
 
             $('.js-Table__add').click(function () {
                 var $clone = $prototype_row.clone(true).removeClass('hide');
-                $(this).parents('tr').before($clone);
+                $('#js-LogoTable').find('tr:last').before($clone);
                 $clone.removeAttr('id');
                 $clone.addClass(String(logosCount));
                 $clone.find('#imageUrl').attr('name', 'logos[' + logosCount + '].imageUrl');

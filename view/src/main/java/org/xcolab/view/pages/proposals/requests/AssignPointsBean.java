@@ -59,7 +59,7 @@ public class AssignPointsBean {
                     addAssignment(pointType, presetUsers, existingDistributionConfigurations);
                     break;
                 case SUB_PROPOSAL:
-                    //TODO: subProposals
+                    //TODO COLAB-2582: subProposals
                     throw new UnsupportedOperationException("The points system does not yet support" +
                             "user defined allocation to sub proposals");
             }

@@ -94,7 +94,7 @@ public class AdminTabController extends AbstractTabController {
     public List<LabelValue> votingPhaseSelectionItems() {
         final List<ContestPhase> contestPhasesByType = new ArrayList<>(ContestClientUtil
                 .getContestPhasesByType(ContestPhaseTypeValue.VOTING_PHASE_SOLVE.getTypeId()));
-        //TODO: don't hard code phase types
+        //TODO COLAB-2613: don't hard code phase types
         contestPhasesByType.addAll(ContestClientUtil.getContestPhasesByType(20L));
 
         final Date now = new Date();

@@ -241,8 +241,8 @@ public class ActivitiesService {
             final Proposal proposal = ProposalClientUtil.getProposal(proposalId);
             queries.addAll(getDiscussionDeleteQueries(memberId,
                     proposal.getDiscussionId(), true));
-        } catch (ProposalNotFoundException e) {
-            //TODO: log failure
+        } catch (ProposalNotFoundException ignored) {
+            //orphaned activity - ignore
         }
         return queries;
     }

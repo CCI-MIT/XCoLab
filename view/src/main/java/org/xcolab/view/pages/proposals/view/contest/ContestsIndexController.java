@@ -126,7 +126,7 @@ public class ContestsIndexController extends BaseProposalsController {
                 currentCollectionCardId = BY_TOPIC_COLLECTION_CARD_ID;
                 showCollectionCards=false;
             } else if(currentCollectionCardId == FEATURED_COLLECTION_CARD_ID) {
-                showOnlyFeatured = true;  // filter with JSP  -> TODO: increase performance
+                showOnlyFeatured = true;  // filter with JSP  -> TODO COLAB-2627: increase performance
                 ontologyTermToLoad = null; //get all
             } else {
                 ontologyTermToLoad = ContestClientUtil.getContestCollectionCard(currentCollectionCardId)

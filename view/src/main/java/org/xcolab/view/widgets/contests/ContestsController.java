@@ -115,7 +115,6 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
 
         model.addAttribute("contests", contestWrappers);
         model.addAttribute("contestPreferences", contestPreferences);
-        //TODO: allow setting on a per-contest/per portlet basis
         model.addAttribute("contestType", ContestTypeClient
                 .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
         return VIEW_BASE_PATH + "/showContests";

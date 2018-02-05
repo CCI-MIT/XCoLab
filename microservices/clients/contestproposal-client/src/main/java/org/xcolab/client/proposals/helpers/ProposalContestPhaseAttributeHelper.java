@@ -7,7 +7,6 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 
 import java.util.List;
 
-//TODO: should extend AttributeHelper
 public class ProposalContestPhaseAttributeHelper {
 
     private final Long proposalId;

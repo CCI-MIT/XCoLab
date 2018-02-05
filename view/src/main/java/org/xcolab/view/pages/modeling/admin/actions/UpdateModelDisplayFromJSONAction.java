@@ -128,7 +128,7 @@ public class UpdateModelDisplayFromJSONAction {
                 }
             }
             if (!found) {
-                //TODO: logging
+                //TODO: error handling
             }
         }
         return count;

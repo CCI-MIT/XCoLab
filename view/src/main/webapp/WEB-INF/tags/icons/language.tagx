@@ -2,6 +2,6 @@
 
     <jsp:directive.attribute name="cssClass" type="java.lang.String" required="false" rtexprvalue="true" description="Extra CSS classes" />
 
-    <!-- TODO: update to SVG -->
+    <!-- TODO COLAB-2583: update to SVG -->
     <img src="/images/earth-grid-select-language-button.png" aria-hidden="true" />
 </jsp:root>

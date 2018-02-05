@@ -92,7 +92,7 @@ public class UserBean implements Serializable {
         if(member.getDefaultLocale()!=null){
             defaultLocale = member.getDefaultLocale();
         }else{
-            defaultLocale = "en";//TODO:migrate this to a single i18n file
+            defaultLocale = "en"; //TODO COLAB-2621: migrate this to a single i18n file
         }
         if(member.getPortraitFileEntryId()==null){
             imageId = 0;

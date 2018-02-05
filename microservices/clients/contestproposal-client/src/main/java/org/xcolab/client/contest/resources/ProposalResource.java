@@ -24,7 +24,7 @@ public enum ProposalResource implements ResourceEnum {
     GROUP("groups"),
     MEMBERSHIP_REQUEST("membershipRequests"),
 
-    //TODO: rethink these endpoints
+    //TODO COLAB-2594: rethink these endpoints
     PROPOSAL_ID("proposalIds"),
     PROPOSAL_THREAD_ID("proposalThreadIds");
 

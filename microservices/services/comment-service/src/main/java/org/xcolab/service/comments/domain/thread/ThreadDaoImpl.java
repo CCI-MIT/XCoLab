@@ -84,7 +84,7 @@ public class ThreadDaoImpl implements ThreadDao {
                             : DSL.max(comment.CREATE_DATE).desc());
                     break;
                 }
-                //TODO: this currently sorts by id, not name
+                //TODO COLAB-2601: this currently sorts by id, not name
                 case "activityAuthor":
                     final CommentTable a1 = COMMENT.as("a");
                     final CommentTable b1 = COMMENT.as("b");

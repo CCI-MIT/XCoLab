@@ -62,7 +62,7 @@ public final class ContestScheduleLifecycleUtil {
         List<Proposal2Phase> proposal2Phases = ProposalPhaseClientUtil
                 .getProposal2PhaseByContestPhaseId(contestPhaseId);
         if (!proposal2Phases.isEmpty()) {
-            // TODO how should we treat these remaining entries?
+            // TODO COLAB-2615: how should we treat these remaining entries?
             _log.warn("There are remaining proposal2phase entries for contestPhaseId: {}",
                     contestPhaseId);
         }

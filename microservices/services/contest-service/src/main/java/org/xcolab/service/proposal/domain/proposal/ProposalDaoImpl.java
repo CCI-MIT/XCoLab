@@ -80,7 +80,7 @@ public class ProposalDaoImpl implements ProposalDao {
         }
 
         if (filterText != null) {
-            //TODO: replace wild carded search with match...against
+            //TODO COLAB-2602: replace wild carded search with match...against
             query.addJoin(PROPOSAL_ATTRIBUTE, JoinType.JOIN,
                     PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_ATTRIBUTE.PROPOSAL_ID)
                             .and(PROPOSAL_ATTRIBUTE.STRING_VALUE.like("%" + filterText + "%"))

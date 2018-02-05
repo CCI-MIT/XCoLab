@@ -101,7 +101,7 @@ public class UserProfileWrapper implements Serializable {
             realName = member.getFirstName();
         }
 
-        attendsConference = false; //TODO: store this outside expando if we want to reactive this
+        attendsConference = false; //TODO COLAB-2622: store this outside expando if we want to reactive this
         badges = new BadgeBean(member.getId_());
 
         highestRole = MemberRole.getHighestRole(member.getRoles());

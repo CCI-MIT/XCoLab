@@ -321,7 +321,6 @@ public class ActivitySubscriptionEmailHelper {
                     .getEmailActivityDailyDigest()) {
                 _log.info("Sending activity notification to member {}.", recipient.getId_());
 
-                //TODO: fix this because this was only done so the code would compile
                 String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(
                         PlatformAttributeKey.COLAB_URL.get(), NotificationUnregisterUtils
                                 .getUnregisterLink(
@@ -412,7 +411,6 @@ public class ActivitySubscriptionEmailHelper {
         String footer = TemplateReplacementUtil.replaceContestTypeStrings(StringUtils
                 .replace(UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT, FAQ_DIGEST_LINK_PLACEHOLDER,
                         faqUrl), null);
-        //TODO: select contest type above? -> uses generic word!
         footer = StringUtils
                 .replace(footer, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
         return footer;

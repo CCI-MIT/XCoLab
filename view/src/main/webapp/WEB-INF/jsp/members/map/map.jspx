@@ -1,5 +1,5 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
-    <style type="text/css">
+    <style>
 
         path {
             stroke: #404040;

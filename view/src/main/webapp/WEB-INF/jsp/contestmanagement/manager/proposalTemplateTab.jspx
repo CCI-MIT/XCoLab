@@ -286,7 +286,7 @@
 		<![CDATA[
 
 		jQuery(function(){
-//		    TODO: reenable
+//		    TODO COLAB-2580: re-enable dirty check
 //			enableDirtyCheck();
 			bindDeleteClicks();
 			bindAddSectionClick();
@@ -541,7 +541,7 @@
 		]]>
 	</script>
 
-	<!--  TODO: comments for details? -->
+	<!--  TODO COLAB-2579: comments for details? -->
 	<!--<c:if test="${not param.manager}">-->
 		<!--<jsp:directive.include file="../details/footer.jspx"/>-->
 	<!--</c:if>-->

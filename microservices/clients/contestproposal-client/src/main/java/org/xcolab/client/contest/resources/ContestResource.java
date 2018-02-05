@@ -22,7 +22,7 @@ public enum ContestResource implements ResourceEnum {
     POINT_TYPE("pointTypes"),
     POINTS_DISTRIBUTION_CONFIGURATION("pointsDistributionConfigurations"),
 
-    //TODO: rethink this endpoint
+    //TODO COLAB-2594: rethink this endpoint
     CONTEST_YEAR("contestyears")
     ;
 

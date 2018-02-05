@@ -186,7 +186,7 @@ public final class MembersClient {
         ServiceRequestUtils.clearCache(CacheName.ROLES);
     }
 
-    //TODO: this seems to be duplicated in the ContestTeamMemberClient
+    //TODO COLAB-2594: this seems to be duplicated in the ContestTeamMemberClient
     public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
         return memberRoleResource.resolveParent(memberResource.id(memberId))
                 .list()
@@ -358,7 +358,7 @@ public final class MembersClient {
                 .queryParam("forgotPasswordToken", forgotPasswordToken)
                 .queryParam("password", password)
                 .post();
-        //TODO: improve API so we can do more fine-grained cache refreshing
+        //TODO COLAB-2589: improve API so we can do more fine-grained cache refreshing
         ServiceRequestUtils.clearCache(CacheName.MEMBER);
         return result;
     }
@@ -385,7 +385,7 @@ public final class MembersClient {
     public static String createForgotPasswordToken(long memberId) {
         return memberResource.service("createForgotPasswordToken", String.class)
                 .queryParam("memberId", memberId)
-                //TODO: this should be posted!
+                //TODO COLAB-2594: this should be posted!
                 .get();
     }
 
@@ -452,7 +452,7 @@ public final class MembersClient {
         final Boolean result = memberResource.service(memberId, "updatePassword", Boolean.class)
                 .queryParam("newPassword", newPassword)
                 .post();
-        //TODO: improve endpoint for caching
+        //TODO COLAB-2589: improve endpoint for caching
         memberResource.get(memberId).withCache(CacheName.MEMBER).deleteFromCache();
         return result;
     }
@@ -479,7 +479,7 @@ public final class MembersClient {
         }
     }
 
-    //TODO: this shouldn't be done manually
+    //TODO COLAB-2594: this shouldn't be done manually
     public static LoginLog createLoginLog(long memberId, String ipAddress, String redirectUrl) {
         LoginLog loginLog = new LoginLog();
         loginLog.setUserId(memberId);

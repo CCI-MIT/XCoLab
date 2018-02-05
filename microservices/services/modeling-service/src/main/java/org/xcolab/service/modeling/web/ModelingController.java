@@ -71,7 +71,7 @@ public class ModelingController {
                 }));
     }
 
-    //TODO: rethink url, modelPrefId doesn't exist
+    //TODO COLAB-2594: rethink url, modelPrefId doesn't exist
     @PutMapping("/models/{modelId}/preferences/{modelPrefId}}")
     public boolean updatePreferences(@PathVariable long modelId, @RequestBody ModelGlobalPreference pojo) {
         return modelGlobalPreferenceDao.update(pojo);

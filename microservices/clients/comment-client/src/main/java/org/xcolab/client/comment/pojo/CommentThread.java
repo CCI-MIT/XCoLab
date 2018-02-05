@@ -118,7 +118,7 @@ public class CommentThread extends AbstractCommentThread {
                 return categoryGroup.getLinkUrl() + "/thread/" + getThreadId();
             }
         }
-        //TODO: handle proposal comments
+        //TODO COLAB-2592: handle proposal comments
 
         return null;
     }

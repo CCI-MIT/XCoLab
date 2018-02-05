@@ -98,7 +98,7 @@ public class OntologyClient {
     public FocusArea createFocusArea(FocusArea focusArea) {
         final FocusArea result = focusAreaResource.create(new FocusAreaDto(focusArea))
                 .execute().toPojo(serviceNamespace);
-        //TODO: fine-grained cache removal
+        //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
         return result;
     }
@@ -139,7 +139,7 @@ public class OntologyClient {
         final OntologyTerm result =
                 ontologyTermResource.create(new OntologyTermDto(ontologyTerm))
                         .execute().toPojo(serviceNamespace);
-        //TODO: fine-grained cache removal
+        //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
         return result;
     }
@@ -149,7 +149,7 @@ public class OntologyClient {
                 .update(new OntologyTermDto(ontologyTerm), ontologyTerm.getId_())
                 .cacheName(CacheName.CONTEST_ONTOLOGY)
                 .execute();
-        //TODO: fine-grained cache removal
+        //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
         return result;
     }
@@ -158,7 +158,7 @@ public class OntologyClient {
         final Boolean result = ontologyTermResource.delete(id_)
                 .cacheName(CacheName.CONTEST_ONTOLOGY)
                 .execute();
-        //TODO: fine-grained cache removal
+        //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
         return result;
     }

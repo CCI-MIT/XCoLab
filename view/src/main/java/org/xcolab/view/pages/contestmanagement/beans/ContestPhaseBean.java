@@ -278,7 +278,7 @@ public class ContestPhaseBean implements Serializable {
         contestPhasePK = contestPhase.getContestPhasePK();
     }
 
-    //TODO: improve naming?
+    //TODO COLAB-2595: improve naming?
     public ContestPhase getContestPhase() {
         ContestPhase contestPhase;
         if (contestPhasePK != null && contestPhasePK > 0) {

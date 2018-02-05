@@ -118,7 +118,7 @@ public class MemberDaoImpl implements MemberDao {
                             ? displayName.asc() :  displayName.desc());
                     break;
                 case "activityCount":
-                    //TODO: this property is owned by the activities-service
+                    //TODO COLAB-2608: this property is owned by the activities-service
                     Field<Object> activityCount = this.dslContext.selectCount()
                             .from(ACTIVITY_ENTRY)
                             .where(ACTIVITY_ENTRY.MEMBER_ID.equal(member.ID_))
@@ -128,7 +128,7 @@ public class MemberDaoImpl implements MemberDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? activityCount.asc() : activityCount.desc());
                     break;
-                    //TODO: this sorting doesn't work
+                    //TODO COLAB-2607: this sorting doesn't work
                 case "roleName":
                     Field<Object> roleNameField = dslContext.select(max(MEMBER_CATEGORY.SORT_ORDER))
                             .from(MEMBER_CATEGORY)

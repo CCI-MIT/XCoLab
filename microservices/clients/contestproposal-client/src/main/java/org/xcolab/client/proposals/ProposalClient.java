@@ -50,7 +50,7 @@ public final class ProposalClient {
 
     private final RestResource<GroupDto, Long> groupResource;
 
-    //TODO: methods that use this should be in the service!
+    //TODO COLAB-2600: methods that use this should be in the service!
     private final ContestClient contestClient;
 
     private final ActivitiesClient activitiesClient;

@@ -52,7 +52,7 @@ public class CommentController {
         this.categoryDao = categoryDao;
     }
 
-    //TODO: move /comments endpoint to "/threads/{threadId}/comments"
+    //TODO COLAB-2594: move /comments endpoint to "/threads/{threadId}/comments"
     @RequestMapping(value = "/comments", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Comment> listComments(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
@@ -69,8 +69,7 @@ public class CommentController {
         return commentDao.findByGiven(paginationHelper, authorId, threadId, includeDeleted);
     }
 
-    //TODO: write test
-    //TODO: move to contestPhase endpoint in contest-service
+    //TODO COLAB-2594: move to contestPhase endpoint in contest-service
     @GetMapping("/comments/countCommentsInContestPhase")
     public Integer countCommentsInContestPhase(@RequestParam long contestPhaseId,
             @RequestParam long contestId) {

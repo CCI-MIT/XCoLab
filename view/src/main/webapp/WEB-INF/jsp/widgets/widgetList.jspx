@@ -1,0 +1,52 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <h1>Widgets</h1>
+
+        <p>
+            This page includes an example of all widgets for testing purposes.
+        </p>
+
+        <section>
+            <h2>Contests widget</h2>
+            <hr/>
+            <div class="colabwidget" data-url="/widgets/contests"><!-- empty --></div>
+        </section>
+
+        <hr/>
+
+        <section>
+            <h2>Feeds widget</h2>
+            <hr/>
+            <div class="colabwidget" data-url="/widgets/feeds"><!-- empty --></div>
+        </section>
+
+        <hr/>
+
+        <section>
+            <h2>Logo widget</h2>
+            <hr/>
+            <div class="colabwidget" data-url="/widgets/logos"><!-- empty --></div>
+        </section>
+
+        <hr/>
+
+        <section>
+            <h2>Content widget</h2>
+            <hr/>
+            <div class="colabwidget" data-article-id="2"><!-- empty --></div>
+        </section>
+
+        <hr/>
+
+        <section>
+            <h2>Staff members widget</h2>
+            <hr/>
+            <div class="colabwidget" data-url="/widgets/staffmembers"><!-- empty --></div>
+        </section>
+
+    </xcolab:layout>
+</jsp:root>
