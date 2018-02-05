@@ -416,6 +416,8 @@
     <!-- Custom user tracking -->
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
 
+    <!-- Show update notification to outdated browsers -->
+    <xcolab-scripts:browserUpdate />
 
     <!-- ============ Structured data (schema.org) ============ -->
 
