@@ -93,17 +93,14 @@
             </div> <!-- /c-Box -->
             <div class="c-Box boxColor--light clearfix">
                 <c:if test="${_showShareButtons}">
-                    <div>
-                        <xcolab-social:socialShareButtons title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
-                    </div>
+                    <xcolab-social:socialShareButtons title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
                 </c:if>
                 <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
 
                     <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
-                    <div class="p-Proposal__subscribe" style="float: right;">
-                        <!-- TODO COLAB-2560: turn into button -->
-                        <a data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }"
-                                rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" class="js-PostLink">
+                    <div class="p-Proposal__subscribe float-right">
+                        <button type="button" class="btn btn-link btn-sm js-PostLink" onclick="if(!deferUntilLogin(this)) return false;"
+                                data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
                                     <img height="20" src="${_themeImageFolder}/subscribe.png" /> <spring:message code="contests.details.subscribe" />
@@ -112,22 +109,21 @@
                                     <img height="20" src="${_themeImageFolder}/unsubscribe.png" /> <spring:message code="contests.details.unsubscribe" />
                                 </c:otherwise>
                             </c:choose>
-                        </a>
+                        </button>
                     </div>
                 </c:if>
             </div>
             <div class="c-Box messaging">
-                <div class="message-share-button">
-                    <a href="javascript:;" rel="nofollow" onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
-                        <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> <collab:message code="contests.proposal.share.messaging" />
-                    </a>
-                </div>
+                <button type="button" class="btn btn-link btn-sm" onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
+                    <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> <collab:message code="contests.proposal.share.messaging" />
+                </button>
                 <c:if test="${proposalsPermissions.canReportProposal}">
-                    <div class="message-share-button">
-                        <a rel="nofollow" href="javascript:;" onclick="reportProposal(${proposal.proposalId})">Report</a>
+                    <div>
+                        <button type="button" class="btn btn-link btn-sm" onclick="reportProposal(${proposal.proposalId})">
+                            Report
+                        </button>
                     </div>
                 </c:if>
-                <div class="clear"><!--  --></div>
             </div>
             </c:if>
 

@@ -202,9 +202,7 @@
                     <h4 style="color: #30a3fb;">
                         <spring:message code="contests.proposal.voting.share" />
                     </h4>
-                    <div>
-                        <xcolab-social:socialShareButtons title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
-                    </div>
+                    <xcolab-social:socialShareButtons title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
                 </div>
             </xcolab:modal>
             <script>
