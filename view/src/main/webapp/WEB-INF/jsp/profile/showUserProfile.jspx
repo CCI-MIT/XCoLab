@@ -292,7 +292,7 @@
                                 <div><xcolab-social:socialShareButtons title="${balloonText.shareTitle}" size="xs"/></div>
                             </c:if>
                             <input id="snpLink" readonly="true" value="${shareLink}" class="form-control" />
-                            <button class="btn btn-primary" id="copyButton"
+                            <button class="btn btn-primary btn-sm btn-block mt-2" id="copyButton"
                                     data-clipboard-target="#snpLink">
                                 Copy link
                             </button>
@@ -354,14 +354,12 @@
 
 				</c:forEach>
 
-				<div class="rounded_button brn">
-					<a href="#" data-toggle="modal" data-target="#sendMessageModal"><spring:message code="profile.show.compose.button"/></a>
-					<xcolab:sendMessageModal />
-				</div>
-
-				<div class="rounded_button brn">
-					<a href="/messaging"><spring:message code="profile.show.compose.allmessages"/></a>
-				</div>
+                <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#sendMessageModal">
+                    <spring:message code="profile.show.compose.button"/>
+                </button>
+                <a href="/messaging" class="btn btn-link btn-sm btn-block">
+                    <spring:message code="profile.show.seeall"/>
+                </a>
 
 				<div class="clearfix"><!-- --></div>
 			</div>
@@ -399,15 +397,15 @@
 
 					</c:forEach>
 
-					<div class="rounded_button brn">
-						<a href="/members/profile/${currentUserProfile.userId}/subscriptions/manage"><spring:message code="profile.show.manage"/></a>
-					</div>
+                    <a class="btn btn-primary btn-sm btn-block" href="/members/profile/${currentUserProfile.userId}/subscriptions/manage">
+                        <spring:message code="profile.show.manage"/>
+                    </a>
 
-					<div class="rounded_button brn">
-						<c:if test="${not empty currentUserProfile.subscribedActivities}">
-							<a href="/members/profile/${currentUserProfile.userId}/subscriptions"><spring:message code="profile.show.seeall"/></a>
-						</c:if>
-					</div>
+                    <c:if test="${not empty currentUserProfile.subscribedActivities}">
+                        <a class="btn btn-link btn-sm btn-block" href="/members/profile/${currentUserProfile.userId}/subscriptions">
+                            <spring:message code="profile.show.seeall"/>
+                        </a>
+                    </c:if>
 				</form:form>
 			</div>
 		</div>
@@ -429,6 +427,8 @@
     </c:if>
 
 	<xcolab:requireLibrary name="CKEditor" />
+
+    <xcolab:sendMessageModal />
 
 </xcolab:layout>
 </jsp:root>

@@ -103,10 +103,6 @@ $_c-TitleBar__borderWidth: 6px;
   }
 
   //states
-  &.right {
-    float: right;
-  }
-
   &.disabled {
     color: $c-TitleBar__element--disabled__textColor;
     text-transform: none;
