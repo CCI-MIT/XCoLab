@@ -72,12 +72,8 @@
                             <c:set var="assignRibbonURL"
                                    value="${proposal.proposalUrl}/tab/ADMIN/assignRibbon?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
 
-
-                            <form action="${assignRibbonURL }" method="post">
-                                <input type="hidden" name="${_csrf.parameterName}"
-                                       value="${_csrf.token}"/>
-                                <select name="ribbon"
-                                        class="form-control bs-form-control-inline bs-form-control--md">
+                            <form:form action="${assignRibbonURL}" method="post" cssClass="form-inline">
+                                <select name="ribbon" class="form-control form-control-sm w-75">
                                     <option value="-1">no ribbon</option>
                                     <c:forEach var="ribbon" items="${availableRibbons }">
                                         <c:choose>
@@ -91,8 +87,8 @@
                                         </c:choose>
                                     </c:forEach>
                                 </select>
-                                <button class="btn btn-primary" type="submit">Save</button>
-                            </form>
+                                <button class="btn btn-admin ml-2" type="submit">Save</button>
+                            </form:form>
                         </div>
                     </div>
                     <c:set var="addBlueClass" value='${not addBlueClass }'/>
@@ -109,10 +105,10 @@
                                   id="deleteProposalForm">
                                 <input type="hidden" name="${_csrf.parameterName}"
                                        value="${_csrf.token}"/>
-                                <a class="btn btn-primary" href="javascript:;"
+                                <button type="button" class="btn ${proposalsPermissions.isPlanEditable ? 'btn-primary' : 'btn-admin'}"
                                    onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; } jQuery('#deleteProposalForm').submit();">
                                     DELETE ${contestType.proposalName}
-                                </a>
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -131,10 +127,9 @@
                         <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                             <strong>Promote ${contestType.proposalName} to latest ${contestType.contestName} phase</strong>
                             <div>
-                                <a class="btn btn-primary" href="javascript:;"
-                                   onclick="jQuery(this).parents('form').submit();">
-                                    <span>Promote</span> ${contestType.proposalName}
-                                </a>
+                                <button type="submit" class="btn btn-admin">
+                                    Promote ${contestType.proposalName}
+                                </button>
                             </div>
                         </div>
                         <c:set var="addBlueClass" value='${not addBlueClass }'/>
@@ -145,7 +140,7 @@
                     <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                         <strong>Move ${contestType.proposalName} to different ${contestType.contestName}</strong>
                         <div>
-                            <a class="btn btn-primary" href="javascript:;" rel="nofollow"
+                            <a class="btn ${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'btn-admin'}" href="javascript:;" rel="nofollow"
                                onclick="if(!deferUntilLogin()){return false;
 } showCopyProposalPopup('MOVE_PERMANENTLY')">
                                 <span>Move</span> this ${contestType.proposalName}
