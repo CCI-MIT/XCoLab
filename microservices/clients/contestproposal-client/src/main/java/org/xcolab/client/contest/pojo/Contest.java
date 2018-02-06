@@ -290,8 +290,6 @@ public class Contest extends AbstractContest implements Serializable {
         try {
             ContestPhase cp = contestClient.getActivePhase(this.getContestPK());
             if (cp != null) {
-                //TODO:REPLACE THIS CALL FOR SYNCD CONTEST REFERENCE
-
                 return ProposalPhaseClient.fromNamespace(serviceNamespace)
                         .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
             }

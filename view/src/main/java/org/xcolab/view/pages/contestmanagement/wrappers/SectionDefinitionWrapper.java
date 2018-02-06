@@ -151,7 +151,6 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         List<PlanTemplateSection> planTemplateSections =
                 PlanTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
 
-        // TODO very inefficient, add finder to service layer
         for (PlanTemplateSection planTemplateSection : planTemplateSections) {
             if (Objects.equals(
                     planTemplateSection.getPlanSectionId(), planSectionDefinition.getId_())) {

@@ -78,6 +78,10 @@ public class ProposalsPermissions {
         return member;
     }
 
+    public boolean getIsPlanEditable() {
+        return planIsEditable;
+    }
+
     public boolean getCanReport() {
         return (ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.get() && isLoggedIn && !isGuest)
                 || getCanAdminAll();

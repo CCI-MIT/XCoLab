@@ -43,7 +43,7 @@
                                 </a>
                             </em>
                         </div>
-                        <input name="submit" type="submit" class="c-Button__primary" value="LOGIN" id="loginPopupTopSubmit" />
+                        <input name="submit" type="submit" class="btn btn-primary" value="LOGIN" id="loginPopupTopSubmit" />
                     </form>
                 </div>
             </td>

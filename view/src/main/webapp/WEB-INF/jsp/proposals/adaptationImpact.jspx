@@ -31,25 +31,21 @@
 
         <c:if test="${proposalsPermissions.canEditBasicImpact}">
             You can set all the region and sub-region for all rows here:
-            <div class="form-inline">
-                <div class="form-group">
-                    <label for="globalRegion" class="control-label">Region:</label>
-                    <select class="form-control" id="globalRegion"
-                            onchange="jQuery('.js-AdaptationImpact__region').val(jQuery(this).val())">
-                        <option value="">Select region</option>
-                        <option value="United States">United States</option>
-                        <option value="European Union">European Union</option>
-                        <option value="China">China</option>
-                        <option value="India">India</option>
-                        <option value="Other developed countries">Other developed countries</option>
-                        <option value="Other developing countries">Other developing countries</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="globalSubRegion" class="control-label">Sub-region</label>
-                    <input type="text" class="form-control" id="globalSubRegion"
-                           onchange="jQuery('.js-AdaptationImpact__subRegion').val(jQuery(this).val())"/>
-                </div>
+            <div class="form-inline my-2">
+                <label for="globalRegion" class="control-label">Region:</label>
+                <select class="form-control ml-1" id="globalRegion"
+                        onchange="jQuery('.js-AdaptationImpact__region').val(jQuery(this).val())">
+                    <option value="">Select region</option>
+                    <option value="United States">United States</option>
+                    <option value="European Union">European Union</option>
+                    <option value="China">China</option>
+                    <option value="India">India</option>
+                    <option value="Other developed countries">Other developed countries</option>
+                    <option value="Other developing countries">Other developing countries</option>
+                </select>
+                <label for="globalSubRegion" class="control-label ml-3">Sub-region</label>
+                <input type="text" class="form-control ml-1" id="globalSubRegion"
+                       onchange="jQuery('.js-AdaptationImpact__subRegion').val(jQuery(this).val())"/>
             </div>
         </c:if>
 
@@ -113,7 +109,7 @@
                                  title="${category.tooltip}" class="js-Tooltip" style="margin-left: 5px;" />
                             <c:if test="${proposalsPermissions.canEditBasicImpact}">
                                 <a onclick="jQuery(this).closest('.js-Table__row-group').children('.js-Table__row--collapsible').slideToggle()" style="cursor: pointer; margin-left: 7px;" >
-                                    <img alt="edit" style="vertical-align: middle" height="15" src="${_themeImageFolder}/icon-activity-edit.png"/>
+                                    <img alt="edit" height="15" src="${_themeImageFolder}/icon-activity-edit.png"/>
                                 </a>
                             </c:if>
                         </td>
@@ -163,7 +159,7 @@
             </table>
 
             <c:if test="${proposalsPermissions.canEditBasicImpact}">
-                <button type="submit" class="c-Button__primary" onclick="disableDirtyCheck()">
+                <button type="submit" class="btn btn-primary" onclick="disableDirtyCheck()">
                     SAVE adaptation table
                 </button>
             </c:if>

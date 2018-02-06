@@ -302,7 +302,7 @@
                 <div  id="innerContent" class="addpropbox">
                     <div class="colFloatLef">
                         <div>
-                            <div class="outerVerticalCenter" id="newContentPage" ><a  class="c-Button__primary" href="#">New</a></div>
+                            <div class="" id="newContentPage" ><a  class="btn btn-primary" href="#">New</a></div>
                         </div>
                         <br/>
                         <h3>Content pages</h3>
@@ -348,11 +348,11 @@
                             <br/>
                         </div>
                         <br/>
-                        <div class="floatRight outerVerticalCenter" id="previewContentPage">
-                            <a class="c-Button__primary" href="#">Preview</a>
+                        <div class="floatRight" id="previewContentPage">
+                            <a class="btn btn-primary" href="#">Preview</a>
                         </div>
-                        <div class="floatRight outerVerticalCenter" id="saveContentPage">
-                            <a class="c-Button__primary" href="#">Save</a>
+                        <div class="floatRight" id="saveContentPage">
+                            <a class="btn btn-primary" href="#">Save</a>
                         </div>
                     </div>
                 </div>

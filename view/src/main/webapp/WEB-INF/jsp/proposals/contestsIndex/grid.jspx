@@ -29,7 +29,7 @@
             </c:forEach>
         </div>
 
-        <!-- TODO: uncomment when COLAB-1996 approved -->
+        <!-- TODO COLAB-1996: uncomment when COLAB-1996 approved -->
         <!--<c:if test="${priorContestsExist}">-->
             <!--<div id="seeAllContestsTrigger" style="text-align: center;font-weight: 700;cursor: pointer;text-decoration: underline;font-size: 18px;">-->
                 <!--<collab:message  code="contests.selector.seeall" contestType="${contestType}" />-->
@@ -49,8 +49,8 @@
 
     <script>
         <![CDATA[
-//        TODO: uncomment when COLAB-1996 approved
-//        TODO: Load via ajax instead
+//        TODO COLAB-1996: uncomment when COLAB-1996 approved
+//        TODO COLAB-1996: Load via ajax instead
 //        jQuery(function() {
 //            jQuery("#seeAllContestsTrigger").click(function() {
 //                jQuery("#priorContestsContainer").fadeIn();

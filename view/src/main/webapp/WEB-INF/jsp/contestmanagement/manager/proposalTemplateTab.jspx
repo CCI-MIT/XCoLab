@@ -242,7 +242,7 @@
 					</c:forEach>
 
 					<div class="addSection" id="addSection" name="addSection">
-						<a class="c-Button__primary" id="addSectionButton" href="#addSection">ADD section</a>
+						<a class="btn btn-primary" id="addSectionButton" href="#addSection">ADD section</a>
 					</div>
 				</form:form>
 			</div>
@@ -272,7 +272,7 @@
 						<td ><xcolab:contestLink contest="${contestWrapper}" /></td>
 						<td>Tier ${contestWrapper.contestTier}</td>
 						<td>
-							<a class="c-Button__primary innerVerticalCenter" href="/admin/contest/details/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+							<a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -286,7 +286,7 @@
 		<![CDATA[
 
 		jQuery(function(){
-//		    TODO: reenable
+//		    TODO COLAB-2580: re-enable dirty check
 //			enableDirtyCheck();
 			bindDeleteClicks();
 			bindAddSectionClick();
@@ -541,7 +541,7 @@
 		]]>
 	</script>
 
-	<!--  TODO: comments for details? -->
+	<!--  TODO COLAB-2579: comments for details? -->
 	<!--<c:if test="${not param.manager}">-->
 		<!--<jsp:directive.include file="../details/footer.jspx"/>-->
 	<!--</c:if>-->

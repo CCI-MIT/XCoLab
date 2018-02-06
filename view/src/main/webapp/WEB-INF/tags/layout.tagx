@@ -168,7 +168,7 @@
         <meta property="fb:app_id" content="${_facebookId}"/>
     </c:if>
 
-    <!-- TODO: make this configurable -->
+    <!-- TODO COLAB-2586: make this configurable -->
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
 
     <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
@@ -195,7 +195,7 @@
                     </span>
                     </div>
 
-                    <div class="c-TitleBar__actionButton pull-right">
+                    <div class="c-TitleBar__actionButton float-right">
                         <a href="${_colabUrlProduction}">Take me to ${_colabUrlProduction}.</a>
                     </div>
                 </div>
@@ -211,7 +211,8 @@
                     <span style="display: inline-block">Impersonating member ${_member.screenName} (Logged in as ${_realMember.screenName})</span>
                 </div>
 
-                <div class="c-TitleBar__actionButton pull-right">
+                <div class="c-TitleBar__actionButton float-right">
+                    <!--TODO COLAB-2560: turn into button-->
                     <a data-url="/impersonate/logout" class="js-PostLink">Stop impersonating</a>
                 </div>
             </div>
@@ -226,7 +227,7 @@
                     <span style="display: inline-block"><!-- Reference for image alignment --></span>
                 </div>
 
-                <div class="c-TitleBar__actionButton pull-right">
+                <div class="c-TitleBar__actionButton float-right">
                     <a href="${_mitHeaderBarLinkUrl}">${_mitHeaderBarLinkText}</a>
                 </div>
             </div>
@@ -299,7 +300,7 @@
 
     <xcolab-modals:flaggingModal />
 
-    <!-- TODO: rework as part of SSO improvements -->
+    <!-- TODO COLAB-2172: rework as part of SSO improvements -->
     <!-- post registration popup -->
     <c:if test='${request.getParameter("postRegistration")}'>
         <c:choose>
@@ -391,7 +392,6 @@
 
     <!-- shared colab scripts -->
     <c:if test="${_isSharedColab}">
-        <!-- TODO: can we only require this on certain pages? -->
         <xcolab:requireLibrary name="sharedColab" />
     </c:if>
     <xcolab:loadScript shouldLoad="${_librariesToLoad['sharedColab']}" src="${_themeJsFolder}/sharedColab.js" />
@@ -416,6 +416,8 @@
     <!-- Custom user tracking -->
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
 
+    <!-- Show update notification to outdated browsers -->
+    <xcolab-scripts:browserUpdate />
 
     <!-- ============ Structured data (schema.org) ============ -->
 

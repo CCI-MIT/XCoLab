@@ -188,7 +188,6 @@ public class ProposalReview {
     }
 
     private String getTeamOrNull(){
-            //TODO: optimize
             for (ProposalAttribute attr: ProposalAttributeClientUtil
                     .getAllProposalAttributes(proposal.getProposalId(), proposal.getCurrentVersion())) {
                 if (attr.getName().equals(ProposalAttributeKeys.TEAM) && attr.getAdditionalId() == 0) {

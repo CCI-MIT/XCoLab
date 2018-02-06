@@ -51,7 +51,7 @@
     </c:if>
 
     <!-- Misc analytics scripts -->
-    <!-- TODO: move to backend? -->
+    <!-- TODO COLAB-2585: this should be done in the backend -->
 
     <c:if test="${not empty googleAnalyticsKey}">
         <c:if test="${httpSession.getAttribute('collab_user_has_registered')}">

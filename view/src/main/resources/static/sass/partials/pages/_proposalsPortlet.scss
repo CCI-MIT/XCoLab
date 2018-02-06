@@ -103,21 +103,6 @@
     border-top-left-radius: 3px;
 }
 
-.sendButton {
-    width: 75px;
-    height: 28px;
-    display: inline-block;
-    padding-top: 9px;
-    margin-left: 3px;
-    background: #fcfbf9;
-    border: 1px solid #6a96a7;
-    font-size: 16px;
-    font-weight: 700;
-    text-align: center;
-    border-radius: 5px;
-    vertical-align: top;
-}
-
 .allow-deny-membership-box {
     width: 87px;
     display: inline-block;
@@ -306,14 +291,6 @@ table.judgingForm {
     color: black;
 }
 
-#proposalPickerSearchContainer {
-    text-align: left;
-    padding: 10px;
-}
-
-#proposalPickerSearchContainer .c-Button__primary {
-    display: inline-block;
-}
 
 #proposalPicker_proposalsContainer h4 {
     font-size: 15px;

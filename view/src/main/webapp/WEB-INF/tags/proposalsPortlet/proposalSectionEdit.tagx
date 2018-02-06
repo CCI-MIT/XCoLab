@@ -90,7 +90,7 @@
                         </table>
                     </c:otherwise>
                 </c:choose>
-                <a class="c-Button__primary" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId},
+                <a class="btn btn-primary" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId},
                         ${proposalPickerDefaultTabIsContests ? 'PICKER_TAB_ALL_CONTESTS' : 'PICKER_TAB_ALL_PROPOSALS'},
                         '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
                     Select ${section.proposalNames}
@@ -107,7 +107,7 @@
                         </li>
                 	</c:forEach>
                 </ul>
-                <a class="c-Button__primary" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId},
+                <a class="btn btn-primary" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId},
                         ${proposalPickerDefaultTabIsContests ? 'PICKER_TAB_ALL_CONTESTS' : 'PICKER_TAB_ALL_PROPOSALS'},
                         '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
                     Edit ${section.proposalNames} list
@@ -133,7 +133,7 @@
         		</c:if>
         		<c:if test="${showCopySectionContentButton }">
         			<div class='alignright copyFromBaseProposalTriggerContainer'>
-        				<a class="c-Button__primary copyFromBaseProposalTrigger" href="javascript:;" data-section-id="${section.sectionDefinitionId}">Copy from base ${contestType.proposalName}</a>
+        				<a class="btn btn-primary copyFromBaseProposalTrigger" href="javascript:;" data-section-id="${section.sectionDefinitionId}">Copy from base ${contestType.proposalName}</a>
         			</div>
         		</c:if>
 			</c:otherwise>

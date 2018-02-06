@@ -47,7 +47,7 @@ public class ContentController {
                 model.addAttribute("menuArticleId", contentPage.getMenuArticleId());
             }
 
-            //TODO: allow different active pages
+            //TODO COLAB-2611: allow different active pages
             model.addAttribute("_activePageLink", "about");
         } catch (ContentNotFoundException e) {
             response.setStatus(HttpStatus.NOT_FOUND.value());

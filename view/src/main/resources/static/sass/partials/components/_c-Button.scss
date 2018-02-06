@@ -1,52 +1,18 @@
 @import "../../lib/l-functions";
 @import "../../lib/l-mixins";
 
-$c-Button__padding: 8px !default;
-$c-Button__padding--large: 8px !default;
-$c-Button__padding--small: 6px !default;
-$c-Button__fontWeight: 700 !default;
-$c-Button__borderRadius: 5px !default;
-$c-Button__capitalization: none !default;
-
-$c-Button__primary__backgroundColor: $t-Color__primary !default;
-$c-Button__primary__borderColor: $t-Color__primary--dark !default;
-$c-Button__primary__backgroundColor--hover: null !default;
-
-$c-Button__grey__backgroundColor: $t-Color__grey--medium !default;
-$c-Button__grey__borderColor: $t-Color__grey--dark !default;
+@import "bootstrap/mixins/buttons";
 
 %c-Button__base {
   display: inline-block;
-  padding: $c-Button__padding;
+  padding: 8px;
   margin-left: 5px;
   vertical-align: middle;
 
-  font-weight: $c-Button__fontWeight;
+  font-weight: $bs-Button__fontWeight;
   line-height: normal;
-  text-transform: $c-Button__capitalization;
 
-  border-radius: $c-Button__borderRadius;
-
-  &.disabled {
-    opacity: 0.4;
-    pointer-events: none;
-  }
-
-  &.small {
-    font-size: 14px;
-    padding: $c-Button__padding--small;
-  }
-  &.large {
-    font-size: 16px;
-    padding: $c-Button__padding--large;
-  }
-  &.margins {
-    margin: 5px;
-  }
-
-  &.c-Button--noMargins {
-    margin: 0;
-  }
+  border-radius: $t-Border__radius;
 }
 
 @mixin theme-button($button-color, $border-color: null, $image-url: null, $hover-color: null) {
@@ -62,8 +28,6 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   }
 
   color: contrasting-color($button-color, white, $t-Color__grey--darkest, $t-Text__threshold);
-  $c-Button__theme__textShadow: 1px 1px 0 darken($button-color, 25%) !default;
-  text-shadow: $c-Button__theme__textShadow;
 
   &:hover {
     color: contrasting-color(darken($button-color, 10%), white, $t-Color__grey--darkest, $t-Text__threshold);
@@ -72,30 +36,13 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   }
 }
 
-span.c-Button__primary,
-a.c-Button__primary,
-.c-Button__primary a,
-input.c-Button__primary,
-button.c-Button__primary {
-  @include theme-button($c-Button__primary__backgroundColor, $c-Button__primary__borderColor, $hover-color: $c-Button__primary__backgroundColor--hover);
+.btn-admin {
+  @include button-variant($t-Color__primary, $t-Color__accent);
 }
 
-span.c-Button__secondary,
-a.c-Button__secondary,
-.c-Button__secondary a,
-input.c-Button__secondary,
-button.c-Button__secondary {
-  @include theme-button($c-Button__grey__backgroundColor, $c-Button__grey__borderColor);
-}
-
-a, button {
-  &.c-Button__admin {
-    @include theme-button($c-Button__primary__backgroundColor, $t-Color__accent);
-    font-size: 12px;
-    float: right;
+.btn-outline-admin {
+  @extend .btn-outline-primary;
+  &, &:hover {
+    border-color: $t-Color__accent;
   }
-}
-
-.c-Button__accent {
-  @include theme-button($t-Color__accent, darken($t-Color__accent, 10%));
 }

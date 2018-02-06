@@ -78,6 +78,7 @@ public abstract class ConstraintValidatorHelper {
         return uniqueValues.size() == 1 || uniqueValues.isEmpty();
     }
 
+    //TODO COLAB-2621: it's not clear what this method does. What are the property names?
     public static String resolveMessage(String[] propertyNames,
             ResourceMessageResolver messageResolver) {
         StringBuffer buffer = concatPropertyNames(propertyNames);
@@ -88,7 +89,6 @@ public abstract class ConstraintValidatorHelper {
     }
 
     private static StringBuffer concatPropertyNames(String[] propertyNames) {
-        //TODO improve concatenation
         StringBuffer buffer = new StringBuffer();
         buffer.append('[');
         for (String propertyName : propertyNames) {

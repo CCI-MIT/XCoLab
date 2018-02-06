@@ -90,17 +90,6 @@ $c-Footer__menu__background__isSimple: true;
 $c-Footer__menu__backgroundColor: transparent;
 $c-Footer__menu__boxShadow: none;
 
-$c-Button__padding: 7px 15px;
-$c-Button__padding--small: 5px 8px;
-$c-Button__padding--large: 7px 15px;
-$c-Button__fontWeight: $t-Typography__fontWeight--regular;
-$c-Button__borderRadius: 0;
-$c-Button__capitalization: uppercase;
-$c-Button__theme__textShadow: none;
-
-$c-Button__primary__borderColor: none;
-$c-Button__grey__borderColor: none;
-
 $c-TitleBar__backgroundColor: $t-Color__primary;
 $c-TitleBar__borderBottom: none;
 $c-TitleBar__element--active__capitalization: uppercase;
@@ -220,7 +209,6 @@ $p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
 $p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
 
 $p-Proposal__subscribe__capitalization: uppercase;
-$p-Proposal__edit__button__backgroundColor: $t-Color__primary;
 $p-Proposal__box__offColor: $t-Color__grey--light;
 $p-Proposal__propbox--green: #a7da85;
 
@@ -339,10 +327,9 @@ $c-Headline__days-left__span__padding: 7px 12px;
 $c-Headline__days-left__span__background: $t-Color__grey--medium;
 $c-Headline__days-left__span__fontSize: 15px;
 $c-TitleBar__actionButton__backgroundColor--hover: $t-Color__blue--hover;
-$c-Button__primary__backgroundColor--hover: $t-Color__blue--hover;
 $p-homepage__learn__backgroundColor--hover: $t-Color__blue--hover;
 $c-Box__button__boxColor--dark__backgroundColor--hover: $t-Color__blue--hover;
 
 $p-Contests__priorActiveAllWidget__a__color--isHover: white;
 
-$bs-form-control__borderRadius: 0;
+$t-Border__rounded: false;

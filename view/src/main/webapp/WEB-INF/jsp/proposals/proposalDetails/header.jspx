@@ -84,13 +84,9 @@
 	<c:if test="${currentTabWrapped.canEdit and currentTabWrapped.name != 'POINTS' and not edit}">
 					<!-- or (currentTabWrapped.name == 'IMPACT' and proposalsPermissions.canAdminAll)}"> -->
 		<div class="edit-prop-wrap">
-			<div class="inner">
-				<div class="edit-prop">
-					<div class="edit-prop-butts">
-						<xcolab:proposalLink proposal="${proposal}" text="Edit" edit="true" tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
-					</div>
-				</div>
-			</div>
+            <xcolab:proposalLink proposal="${proposal}" text="Edit" edit="true"
+                                 cssClass="btn btn-primary-darkest btn-xs"
+                                 tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
 		</div>
 	</c:if>
 
@@ -101,7 +97,7 @@
     <xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js"/>
     <xcolab:script src="${_themeJsFolder}/proposals/historyWidget.js"/>
 
-    <link rel="stylesheet" type="text/css"  href="${_libCssFolder}/imageviewer.css"/>
+    <xcolab:stylesheet href="${_libCssFolder}/imageviewer.css"/>
     <xcolab:script src="${_themeJsFolder}/proposals/imageviewer.min.js" />
 
 </jsp:root>

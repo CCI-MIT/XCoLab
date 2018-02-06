@@ -52,7 +52,6 @@ public class ProposalAdminTabController extends BaseProposalTabController {
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanDelete()) {
-            //TODO: Undelete doesn't work
             ContestPhase contestPhase = proposalContext.getContestPhase();
             Proposal proposal = proposalContext.getProposal();
             Contest contest = proposalContext.getContest();

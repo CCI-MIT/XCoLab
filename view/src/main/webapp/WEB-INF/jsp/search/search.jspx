@@ -17,21 +17,26 @@
         </c:if>
     </h1>
 
-    <div class="searchFormContainer">
-        <input value="${searchBean.searchPhrase}" class="searchPhrase" id="searchPhrase"/>
-        <a class="c-Button__primary" href="javascript:;"
-           onclick="window.location = '/search?searchPhrase=' + encodeURI($('#searchPhrase').val())"><spring:message code="search.button"/></a>
-        <c:if test="${searchBean.showBlogReference and not empty searchBean.searchPhrase}">
-            <div class="searchBlogLink">
-                <span><spring:message code="search.didnotfind"/></span>&#160;&#160;
-                <b>
-                    <a href="${searchBean.searchBlogURL}">
-                        <collab:message code="search.colabnews" arguments="${searchBean.searchPhrase}"/>
-                    </a>
-                </b>
-            </div>
+    <form action="/search" method="get" class="form-inline">
+        <label class="sr-only" for="searchPhrase">Search phrase</label>
+        <input value="${searchBean.searchPhrase}" name="searchPhrase" id="searchPhrase"
+                class="form-control"/>
+        <c:if test="${not empty searchBean.searchLocation}">
+            <input type="hidden" name="searchLocation" value="${searchBean.searchLocation}"/>
         </c:if>
-    </div>
+        <button type="submit" class="btn btn-primary ml-2">
+            <spring:message code="search.button"/>
+        </button>
+    </form>
+
+    <c:if test="${searchBean.showBlogReference and not empty searchBean.searchPhrase}">
+        <div class="searchBlogLink">
+            <span><spring:message code="search.didnotfind"/></span>&#160;
+            <a href="${searchBean.searchBlogURL}">
+                <collab:message code="search.colabnews" arguments="${searchBean.searchPhrase}"/>
+            </a>
+        </div>
+    </c:if>
 
     <div class="clearfix">
         <div id="main" class="searchresults">

@@ -230,7 +230,6 @@ public class ContestController {
         if (contestDao.get(contestId) == null) {
             throw new NotFoundException("No Contest with id " + contestId);
         } else {
-            //TODO: currently deleting phases is handled client side - this should be moved here
             return contestDao.delete(contestId);
         }
     }

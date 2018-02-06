@@ -852,7 +852,6 @@ public class Proposal extends AbstractProposal {
     /**
      * Determine if IA fellows are done with proposal
      */
-    //TODO: other mechanism for indicating status
     public AssessmentStatus getImpactAssessmentStatus() {
         final String impactCommentIaf = getImpactCommentIaf();
         if (impactCommentIaf.startsWith("Done")) {

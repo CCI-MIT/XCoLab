@@ -44,8 +44,7 @@
                     <form:options items="${votingPhaseSelectionItems}" itemValue="value"
                                   itemLabel="lable"/>
                 </form:select>
-                <br />
-                <button type="submit" class="c-Button__primary">Generate report</button>
+                <button type="submit" class="btn btn-primary mt-2">Generate report</button>
             </form:form>
         </div>
         <br/>
@@ -62,12 +61,11 @@
                     <form:options items="${contestSelectionItems}" itemValue="value"
                                   itemLabel="lable"/>
                 </form:select>
-                <br />
-                <form:select path="proposalExportType" cssClass="form-control">
+                <form:select path="proposalExportType" cssClass="form-control mt-2">
                     <form:options items="${proposalExportTypeSelectionItems}" itemValue="value"
                                   itemLabel="lable"/>
                 </form:select>
-                <button type="submit" class="c-Button__primary">Generate report</button>
+                <button type="submit" class="btn btn-primary mt-2">Generate report</button>
             </form:form>
         </div>
         <br/>
@@ -75,7 +73,7 @@
         <div class="addpropbox">
             <h2>Contest report</h2>
             <form:form action="/admin/contest/manager/tab/ADMIN/contestReport" method="get">
-                <button type="submit" class="c-Button__primary">Generate report</button>
+                <button type="submit" class="btn btn-primary">Generate report</button>
             </form:form>
         </div>
         <br/>
@@ -84,7 +82,7 @@
             <h2>Server administration</h2>
             <form action="/admin/caching/clear" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <button type="submit" class="c-Button__primary">Clear cache</button>
+                <button type="submit" class="btn btn-primary">Clear cache</button>
             </form>
         </div>
         <br/>
@@ -112,7 +110,7 @@
                                name="${_csrf.parameterName}"
                                value="${_csrf.token}"/>
                     </p>
-                    <button type="submit" class="c-Button__primary">Add Notification</button>
+                    <button type="submit" class="btn btn-primary">Add Notification</button>
                 </form:form>
 
                 <form action="/admin/contest/manager/tab/ADMIN/notificationMessageDelete"
@@ -152,7 +150,7 @@
                                     </td>
                                     <td style="text-align: right;">
                                         <h5>Expires On: ${notification.endTime}</h5>
-                                        <button type="submit" class="c-Button__primary" onClick="deleteNotification(${notification.notificationId})">Delete Notification</button>
+                                        <button type="submit" class="btn btn-primary" onClick="deleteNotification(${notification.notificationId})">Delete Notification</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -188,7 +186,7 @@
             <h2>Activities CSV export</h2>
             <form action="/admin/contest/manager/tab/ADMIN/exportActivities" method="post">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <button type="submit" class="c-Button__primary">Export activities</button>
+                <button type="submit" class="btn btn-primary">Export activities</button>
             </form>
         </div>
 
@@ -213,7 +211,7 @@
                         Register as guests
                     </label>
                 </div>
-                <button type="submit" class="c-Button__primary">Register members</button>
+                <button type="submit" class="btn btn-primary">Register members</button>
             </form:form>
         </div>
 

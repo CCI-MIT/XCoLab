@@ -83,7 +83,7 @@ function disableDirtyCheck() {
     });
 }());
 
-// TODO: do we need this?
+// TODO COLAB-2588: do we need this?
 function submitenter(myfield, e) {
     var keycode;
     if (window.event) {

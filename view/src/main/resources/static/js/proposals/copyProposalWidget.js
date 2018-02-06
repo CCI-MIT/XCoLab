@@ -9,7 +9,7 @@ function proposalCopy_loadContests(moveType) {
 			html.push(obj.contestName);
 			html.push("</td>");
 			html.push("<td>");
-			html.push('<div class="c-Button__primary"><a href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName);
+			html.push('<div class="btn btn-primary"><a href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName);
 
 			if (moveType == "FORK") {
 				html.push('/createProposal/basedOn/');
@@ -61,7 +61,7 @@ function loadProposalSections() {
 			}
 			html.push("</td>");
 			html.push("<td>");
-			html.push('<div class="c-Button__primary"><a href="javascript:;" class="copySectionBtn" data-section-id="');
+			html.push('<div class="btn btn-primary"><a href="javascript:;" class="copySectionBtn" data-section-id="');
 			html.push(obj.sectionId);
 			html.push('">Copy</a></div>');
 			html.push("</td></tr>");
@@ -89,7 +89,7 @@ function loadProposalSections() {
 }
 
 function updatePopupSize() {
-    //TODO: do we need this for the new copyProposalModal? Otherwise remove
+    //TODO COLAB-2587: do we need this for the new copyProposalModal? Otherwise remove
 	var container = jQuery("#copyProposalContainer");
 	container.find("#copyProposalPopup").css({top: "20px"});
 	var availableHeight = jQuery(window).height();

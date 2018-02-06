@@ -36,7 +36,7 @@
 
 					<c:if test="${fn:length(contestResourcesBean.sections)-2 eq x.index}">
 						<div class="addSection" id="addSection" name="addSection">
-							<a class="c-Button__primary" id="addSectionButton" href="#addSection">ADD section</a>
+							<a class="btn btn-primary" id="addSectionButton" href="#addSection">ADD section</a>
 						</div>
 					</c:if>
 

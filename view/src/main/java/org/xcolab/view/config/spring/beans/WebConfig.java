@@ -27,13 +27,12 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
-import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
-import org.xcolab.view.config.spring.filters.CdnUrlEncodingFilter;
 import org.xcolab.view.config.spring.converters.CaseInsensitiveStringToEnumConverterFactory;
+import org.xcolab.view.config.spring.filters.CdnUrlEncodingFilter;
 import org.xcolab.view.config.spring.properties.ServerProperties;
 import org.xcolab.view.config.spring.properties.TomcatProperties;
 import org.xcolab.view.config.spring.properties.WebProperties;
@@ -213,21 +212,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        addScriptResourceHandlers(registry);
         addThemeImageResourceResolvers(registry);
-    }
-
-    private void addScriptResourceHandlers(ResourceHandlerRegistry registry) {
-        final CacheSettings cacheSettings = webProperties.getCache().getScripts();
-        final CacheControl cacheControl = cacheSettings.isActive()
-                ? CacheControl.maxAge(cacheSettings.getMaxAgeDays(), TimeUnit.DAYS)
-                : CacheControl.noCache();
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/", "classpath:/dist/")
-                .setCacheControl(cacheControl)
-                .resourceChain(true)
-                .addResolver(new VersionResourceResolver()
-                        .addContentVersionStrategy("/js/**", "/css/**", "/vendor/**"));
     }
 
     private void addThemeImageResourceResolvers(ResourceHandlerRegistry registry) {

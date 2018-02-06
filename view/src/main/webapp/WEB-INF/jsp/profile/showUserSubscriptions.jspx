@@ -30,8 +30,8 @@
         <h1>Subscribed activities</h1>
         <c:if test="${currentUserProfile.viewingOwnProfile}">
           <div class="profile_action">
-            <a class="c-Button__primary" href="/members/profile/${currentUserProfile.userId}/subscriptions/manage"><spring:message code="subscription.manage.button"/></a>
-            <a class="c-Button__secondary" href="/members/profile/${currentUserProfile.userId}"><spring:message code="subscription.backtoprofile.button"/></a>
+            <a class="btn btn-primary" href="/members/profile/${currentUserProfile.userId}/subscriptions/manage"><spring:message code="subscription.manage.button"/></a>
+            <a class="btn btn-gray" href="/members/profile/${currentUserProfile.userId}"><spring:message code="subscription.backtoprofile.button"/></a>
           </div>
         </c:if>
         <table id="activitiesTable" class="fullscreen colab">

@@ -59,7 +59,7 @@
         <img id="${previewImgId}"
              src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
         <div class="c-Upload__button">
-            <span class="c-Button__primary fileinput-button">
+            <span class="btn btn-primary fileinput-button">
                 ${buttonText}
                 <input id="${uploadImageInputId}" type="file" name="file" tabindex="-1" />
             </span>

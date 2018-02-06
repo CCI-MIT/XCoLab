@@ -216,7 +216,7 @@
                 <tr>
                     <th><!-- --></th>
                     <td colspan="3">
-                        <a class="c-Button__primary" href="javascript:;" onclick="try {pageTracker._trackPageview('/user/registerSubmit')} catch(err) {};updateTextarea();jQuery('#registrationForm').submit();"><spring:message code="register.form.buttons.createaccount"/></a>
+                        <a class="btn btn-primary" href="javascript:;" onclick="try {pageTracker._trackPageview('/user/registerSubmit')} catch(err) {};updateTextarea();jQuery('#registrationForm').submit();"><spring:message code="register.form.buttons.createaccount"/></a>
                     </td>
                 </tr>
             </table>

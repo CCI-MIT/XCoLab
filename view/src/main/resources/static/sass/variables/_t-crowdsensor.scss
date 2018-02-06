@@ -98,17 +98,6 @@ $c-Footer__menu__li__a--hover__color: $t-Color__primary;
 $c-Footer__menu__backgroundColor: linear-gradient(to bottom, lighten($t-Color__grey--medium, 5%), darken($t-Color__grey--medium, 5%));
 $c-Footer__menu__boxShadow: inset 0px 5px 12px lighten($t-Color__grey--dark, 10%);
 
-$c-Button__padding: 10px 15px;
-$c-Button__padding--small: 8px 12px;
-$c-Button__padding--large: 15px 25px;
-$c-Button__fontWeight: $t-Typography__fontWeight--regular;
-$c-Button__borderRadius: 25px;
-$c-Button__capitalization: uppercase;
-$c-Button__theme__textShadow: none;
-
-$c-Button__primary__borderColor: none;
-$c-Button__grey__borderColor: none;
-
 $c-TitleBar__backgroundColor: $t-Color__red;
 $c-TitleBar__borderBottom: none;
 $c-TitleBar__element--active__capitalization: uppercase;
@@ -213,7 +202,6 @@ $p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
 $p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
 
 $p-Proposal__subscribe__capitalization: uppercase;
-$p-Proposal__edit__button__backgroundColor: $t-Color__primary;
 $p-Proposal__box__offColor: $t-Color__pattern__gray--light;
 
 $p-community__left__lineHeight: default;
@@ -238,7 +226,6 @@ $p-ContestProposals__list__element--judgeFellow__border--left: 1px solid;
 $p-ContestProposals__list__element--contributor__width: 146px;
 $p-ContestProposals__list__element--proposalname__judgeActions__width: 449px;
 $p-ContestProposals__header__detailButton__fontWeight: $t-Typography__fontWeight--regular;
-$p-ContestProposals__header__detailButton__borderRadius: 20px;
 $p-ContestProposals__header__detailButton__padding: 5px 15px;
 $p-ContestProposals__header__detailButton__border: 1px solid $t-Color__grey;
 $p-ContestProposals__header__detailButton__backgroundColor: white;
@@ -314,3 +301,6 @@ $p-Discussion__right__borderBottom__paddingBottom: 11px;
 
 $b-Spacing__inline--large__capitalization: uppercase;
 
+$t-Border__radius: 1.5rem;
+$t-Border__radius--large: 1.75rem;
+$t-Border__radius--small: 1rem;

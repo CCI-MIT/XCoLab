@@ -62,7 +62,7 @@ public class ProposalsResult {
             this.team = proposal.getTeam();
             this.authorName = proposal.getAuthorName();
             this.authorId = proposal.getAuthorId();
-            //TODO: get right date
+            //TODO COLAB-2628: get right date
             this.dateSubscribed = new Date().getTime();
             this.commentsCount = proposal.getCommentsCount();
             this.supportersCount = proposal.getSupportersCount();

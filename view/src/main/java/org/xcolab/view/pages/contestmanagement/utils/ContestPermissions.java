@@ -42,7 +42,6 @@ public class ContestPermissions implements TabPermissions, Serializable {
 
     @Override
     public boolean getCanCreate() {
-        // TODO check who needs this
         return isLoggedIn;
     }
 

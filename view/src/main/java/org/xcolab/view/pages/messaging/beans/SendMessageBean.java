@@ -48,7 +48,7 @@ public class SendMessageBean implements Serializable {
     }
 
     public void send(Member sender, String baseUri) throws MessageLimitExceededException {
-        //TODO: do we need this?
+        //TODO COLAB-2620: do we need this?
 //        if (messageHoneypot != null && !messageHoneypot.isEmpty()) {
 //            _log.info("Message was not sent because honeypot was filled - text: " + messageContent + " honeypot: "
 //                    + messageHoneypot);

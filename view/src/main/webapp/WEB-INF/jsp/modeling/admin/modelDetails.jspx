@@ -6,7 +6,7 @@
 
     <jsp:directive.include file="header.jspx"/>
 
-	<!--TODO: port this when porting modeling from proposals portlet -->
+	<!--TODO COLAB-2581: port this when porting modeling from proposals portlet -->
 	<!--<p>${model.description }</p>-->
 	<!--<div>-->
 		<!--<modeling:simulationEdit modelId="${model.id }" />-->

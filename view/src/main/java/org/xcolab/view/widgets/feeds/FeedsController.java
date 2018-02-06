@@ -94,7 +94,6 @@ public class FeedsController extends AbstractWidgetController<FeedsPreferences> 
                 return ftpdp.populateModel(request, response, sortFilterPage, preferences, model);
             }
         }
-        //TODO: error handling!
         return null;
     }
 

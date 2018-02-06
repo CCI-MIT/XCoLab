@@ -104,7 +104,7 @@
                         </div>
                         <c:choose>
                             <c:when test="${proposalsPermissions.canFellowActions}">
-                                <a id="saveProposalScreeningDecision" style="display:block; float:right;" href="#" class="c-Button__primary requestMembershipSubmitButton">
+                                <a id="saveProposalScreeningDecision" style="display:block; float:right;" href="#" class="btn btn-primary requestMembershipSubmitButton">
                                     Save ${contestType.proposalName} decision</a>
                             </c:when>
                             <c:otherwise>
@@ -137,7 +137,7 @@
                                 <h4>Rating comment:</h4>
                                 <i>Your comment will be visible to other Fellows and Judges only.</i>
                                 <form:textarea id="fellowRatingComment" cssClass="c-Comment__box" path="comment" style="width:100%;"/>
-                                    <a id="saveProposalScreeningComment" style="display:block; float:right;" href="#" class="c-Button__primary requestMembershipSubmitButton">
+                                    <a id="saveProposalScreeningComment" style="display:block; float:right;" href="#" class="btn btn-primary requestMembershipSubmitButton">
                                         Save</a>
                             </c:when>
                             <c:otherwise>

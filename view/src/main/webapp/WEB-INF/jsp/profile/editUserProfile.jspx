@@ -178,7 +178,7 @@
                                     <spring:message code="profile.form.fields.newlink"/>
                                 </th>
                                 <td>
-                                    <button type="button" class="c-Button__primary" onclick="sendNewLoginLink()">
+                                    <button type="button" class="btn btn-primary" onclick="sendNewLoginLink()">
                                         <spring:message code="profile.form.button.sendlink"/>
                                     </button>
                                 </td>
@@ -193,7 +193,7 @@
                                         <spring:message code="profile.form.fields.newpassword"/>
                                     </th>
                                     <td>
-                                        <button type="button" data-toggle="modal" data-target="#forgotPasswordModal" class="c-Button__primary">
+                                        <button type="button" data-toggle="modal" data-target="#forgotPasswordModal" class="btn btn-primary">
                                             <spring:message code="profile.form.button.setpassword"/>
                                         </button>
                                     </td>
@@ -239,7 +239,9 @@
 				</table>
 
 				<c:if test="${permissions.canAdmin}">
-					<a data-url="/impersonate?memberId=${currentUserProfile.userId}" class="js-PostLink">Impersonate ${userBean.firstName}</a>
+					<button type="button" class="btn btn-link js-PostLink" data-url="/impersonate?memberId=${currentUserProfile.userId}">
+                        Impersonate ${userBean.firstName}
+                    </button>
 				</c:if>
 
 				<div class="profile_about-head"><spring:message code="profile.form.fields.shortbio"/></div>
@@ -256,8 +258,8 @@
 					<div class="clearfix">&#160;</div>
 				</div>
 
-				<a class="c-Button__primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();"><spring:message code="profile.form.button.save"/></a>
-				<a class="c-Button__secondary" href="/members/profile/${currentUserProfile.userId}"><spring:message code="profile.form.button.cancel"/></a>
+				<a class="btn btn-primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();"><spring:message code="profile.form.button.save"/></a>
+				<a class="btn btn-gray" href="/members/profile/${currentUserProfile.userId}"><spring:message code="profile.form.button.cancel"/></a>
 			</div>
 		</div> <!-- /main -->
 
@@ -379,7 +381,7 @@
                         <spring:message code="profile.account.delete.question" arguments="${_colabName}" var="deleteMsg"/>
 						<form action="${deleteProfileUrl}" method="post" onsubmit="confirm('${deleteMsg}')">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-							<button type="submit" class="c-Button__secondary small"><spring:message code="profile.account.delete.button"/></button>
+							<button type="submit" class="btn btn-gray btn-sm"><spring:message code="profile.account.delete.button"/></button>
 						</form>
 					</td>
                     <td>

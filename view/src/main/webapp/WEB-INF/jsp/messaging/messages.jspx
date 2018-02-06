@@ -127,7 +127,7 @@
                         <br />
                         <h3><spring:message code="message.messages.actions.title"/></h3>
                         <p>
-                            <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#archiveMessagesForm').submit()">
+                            <a class="btn btn-primary" href="javascript:;" onclick="jQuery('#archiveMessagesForm').submit()">
                                 <spring:message code="message.messages.actions.archive"/>
                             </a>
                         </p>

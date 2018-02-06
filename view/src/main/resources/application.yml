@@ -34,6 +34,21 @@ spring:
       max-file-size: 2MB
   session:
     store-type: hash_map
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths:
+            - "/js/**"
+            - "/css/**"
+            - "/vendor/**"
+      cache: false
+    cache-period: 31536000 # 365 days
+    # use comma-separated list to override default value
+    static-locations: >
+      classpath:/dist/,
+      classpath:/static/
 
 eureka:
   client:
@@ -58,3 +73,15 @@ logging:
 
 security:
   filter-dispatcher-types: ASYNC,REQUEST,ERROR
+
+---
+
+spring:
+  profiles: development
+  resources:
+    # use comma-separated list to override default value
+    static-locations: >
+      file:view/src/main/resources/static/,
+      file:view/src/main/resources/dist/,
+      classpath:/dist/,
+      classpath:/static/

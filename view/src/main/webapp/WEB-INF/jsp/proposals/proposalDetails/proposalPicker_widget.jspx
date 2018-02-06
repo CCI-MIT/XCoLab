@@ -50,12 +50,9 @@
                         </ul>
                     </div>
 
-                    <div id="proposalPickerSearchContainer">
-                        <input id="prop-search" name="searchField" type="text"
-                               placeholder="Filter" maxcharacters="80" validatelength="true"
-                               style="height: 22px; width: 175px; padding: 0 5px;" />
-                        <a class="c-Button__primary" href="javascript:;">Search</a>
-                    </div>
+                    <input id="prop-search" name="searchField" type="text"
+                           placeholder="Filter results" aria-label="Filter results"
+                           class="form-control my-2" />
 
                     <div id="proposalPicker_viewArea">
                         <div id="proposalPickerTableContests"
@@ -143,8 +140,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="close" class="c-Button__secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="c-Button__primary" onclick="savePickedProposals()">
+                    <button type="close" class="btn btn-gray" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" onclick="savePickedProposals()">
                         Choose <span class="contestTypeProposalNames">Proposal</span>
                     </button>
                 </div>

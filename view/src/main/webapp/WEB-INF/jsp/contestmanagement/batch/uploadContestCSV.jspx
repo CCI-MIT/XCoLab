@@ -377,7 +377,7 @@
                     <tbody id="cvsContests" ><!-- --></tbody>
                 </table>
             </div>
-            <div class="outerVerticalCenter"><a  class="c-Button__primary  innerVerticalCenter" href="#" id="createAllContestsAbove">Create all contests above</a></div>
+            <div class=""><a  class="btn btn-primary " href="#" id="createAllContestsAbove">Create all contests above</a></div>
         </form:form>
     </div>
     <xcolab:requireLibrary name="CKEditor" />

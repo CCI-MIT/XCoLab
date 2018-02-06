@@ -48,7 +48,7 @@ public class FlaggingService {
                 removeComment(report.getTargetId());
             }
         }
-        //TODO: implement notification
+        //TODO COLAB-2604: implement notification
         // else if (totalWeight >= reportTarget.getNotificationThreshold()) {
         return report;
     }
@@ -111,7 +111,7 @@ public class FlaggingService {
     }
 
     private void revertProposal(long proposalId) {
-        //TODO: implement
+        //TODO COLAB-2605: implement
         removeProposal(proposalId);
     }
 

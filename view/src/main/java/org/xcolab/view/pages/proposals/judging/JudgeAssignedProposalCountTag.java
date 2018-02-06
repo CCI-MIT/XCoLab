@@ -30,7 +30,6 @@ public class JudgeAssignedProposalCountTag extends BodyTagSupport {
     @Override
     public int doStartTag() throws JspException {
 
-        //TODO: get right client? Or not, because judging is probably only done in the host colab
         int judgeAssignedProposalCount = ProposalClientUtil
                 .getNumberOfProposalsForJudge(userId, contestPhaseId);
 

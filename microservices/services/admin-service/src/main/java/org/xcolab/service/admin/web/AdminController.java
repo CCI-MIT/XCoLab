@@ -27,10 +27,10 @@ public class AdminController {
     private final ConfigurationAttributeDao configurationAttributeDao;
     private final ContestTypeAttributeDao contestTypeAttributeDao;
 
-    //TODO: this should be in the database
+    //TODO COLAB-2046: this should be in the database
     private final ArrayList<Notification> notificationsList = new ArrayList<>();
 
-    //TODO: moved from the view, remove when moving list to database
+    //TODO COLAB-2046: moved from the view, remove when moving list to database
     private long notificationCounter;
 
     @Autowired

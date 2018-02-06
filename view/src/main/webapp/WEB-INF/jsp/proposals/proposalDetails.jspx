@@ -5,7 +5,8 @@
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
-          xmlns:spring="http://www.springframework.org/tags">
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
@@ -39,158 +40,148 @@
             var textHideHistory = '${textHideHistory}';
         </script>
 
-
-        <div id="content">
-            <div class="prop-left ${contestType.showProposalSummary ? '' : 'full-width'}">
-                <div class="edit-prop-wrap" style="padding-top: 0">
-                    <div class="inner">
-                        <div style="display:inline-block; width: 616px;">
-                            <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
-                                <div class="edit-prop-butts" style="line-height: normal;">
-                                    <xcolab:proposalLink proposal="${proposal}" text="Go to current" />
-                                </div>
-                            </c:if>
+        <div class="prop-left ${contestType.showProposalSummary ? '' : 'full-width'}">
+            <div class="edit-prop-wrap">
+                <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
+                    <xcolab:proposalLink proposal="${proposal}" text="Go to current"
+                                         cssClass="btn btn-primary-darkest btn-xs" />
+                </c:if>
 
 
-                            <div class="edit-prop-butts" style="line-height: normal;">
-                                <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">
-                                    ${textShowHistory}
-                                </a>
-                                <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
+                <div>
+                    <button id="versionContainerTrigger" onclick="triggerHistoryVisibility();"
+                            class="btn btn-primary-darkest btn-xs">
+                        ${textShowHistory}
+                    </button>
+                    <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
+                </div>
+
+                <c:if test="${not proposal.isLatestVersion}">
+                    <c:set var="proposalRevertURL" value="${proposal.proposalUrl}/proposalRevert" />
+                    <button type="button" class="btn btn-primary-darkest btn-xs" data-url="${proposalRevertURL}">
+                        Revert
+                    </button>
+                </c:if>
+
+                <c:if test="${proposal.wasMovedToContest != null}">
+                    <div>
+                        <collab:message code="contests.proposal.moving.movedto" contestType="${contestType}">
+                            <spring:argument><xcolab:contestLink contest="${proposal.wasMovedToContest}" /></spring:argument>
+                        </collab:message>
+                    </div>
+                </c:if>
+
+                <c:if test="${not empty targetMoveHistory}">
+                    <div>
+                        <c:choose>
+                            <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'MOVE_PERMANENTLY'}">
+                                <collab:message code="contests.proposal.moving.movedfrom" contestType="${contestType}">
+                                    <spring:argument><xcolab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
+                                </collab:message>
+                            </c:when>
+                            <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'COPY'}">
+                                <collab:message code="contests.proposal.moving.reopened" contestType="${contestType}">
+                                    <spring:argument><xcolab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
+                                </collab:message>
+                            </c:when>
+                            <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'FORK'}">
+                                <collab:message code="contests.proposal.moving.forked" contestType="${contestType}">
+                                    <spring:argument><xcolab:proposalLink proposal="${targetMoveHistory.sourceProposal}"/></spring:argument>
+                                    <spring:argument><xcolab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
+                                </collab:message>
+                            </c:when>
+                        </c:choose>
+                        <c:if test="${proposalsPermissions.canAdminAll}">
+                            by <xcolab:userLinkSimple memberId="${targetMoveHistory.movingUser.userId}" text="${targetMoveHistory.movingUser.screenName}"/>
+                        </c:if>
+                    </div>
+                </c:if>
+
+                <c:forEach var="sourceMoveHistory" items="${sourceMoveHistories}">
+                    <c:choose>
+                        <c:when test="${sourceMoveHistory.moveTypeEnum.name() == 'COPY'
+                                    and (sourceMoveHistory.sourcePhaseId == null
+                                            or sourceMoveHistory.sourcePhaseId == contestPhase.contestPhasePK)}">
+                            <div>
+                                <collab:message code="contests.proposal.moving.reopenedin" contestType="${contestType}">
+                                    <spring:argument>
+                                        <xcolab:contestLink contest="${sourceMoveHistory.sourceContest}"/>
+                                    </spring:argument>
+                                </collab:message>
+                                <c:if test="${proposalsPermissions.canAdminAll}">
+                                    by <xcolab:userLinkSimple memberId="${sourceMoveHistory.movingUser.userId}" text="${sourceMoveHistory.movingUser.screenName}"/>
+                                </c:if>
                             </div>
+                        </c:when>
+                    </c:choose>
+                </c:forEach>
 
-                            <c:if test="${not proposal.isLatestVersion}">
-                                <div class="edit-prop-butts" style="line-height: normal;">
+                <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
+                    <div class="lastedited">
+                        <spring:message code="contests.proposal.versions.currentlyviewing" />
+                        <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format("MM/DD/YYYY hh:mm A"));
+                            var version = ${proposal.selectedVersion.version};
+                            triggerHistoryVisibility();
+                        </script>
+                        by
+                        <xcolab:userLinkSimple memberId="${proposal.selectedVersion.authorId}"
+                                               text="${proposal.userForSelectedVersion.screenName}"/>
+                    </div>
+                </c:if>
 
-                                    <c:set var="proposalRevertURL" value="${proposal.proposalUrl}/proposalRevert?contestId=${contest.contestPK }&amp;planId=${proposal.proposalId}&amp;version=${proposal.selectedVersion.version}" />
-
-                                    <a href="${proposalRevertURL}">Revert</a>
-                                </div>
-                            </c:if>
-
-                            <c:if test="${proposal.wasMovedToContest != null}">
-                                <div>
-                                    <collab:message code="contests.proposal.moving.movedto" contestType="${contestType}">
-                                        <spring:argument><xcolab:contestLink contest="${proposal.wasMovedToContest}" /></spring:argument>
-                                    </collab:message>
-                                </div>
-                            </c:if>
-
-                            <c:if test="${not empty targetMoveHistory}">
-                                <div>
-                                    <c:choose>
-                                        <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'MOVE_PERMANENTLY'}">
-                                            <collab:message code="contests.proposal.moving.movedfrom" contestType="${contestType}">
-                                                <spring:argument><xcolab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
-                                            </collab:message>
-                                        </c:when>
-                                        <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'COPY'}">
-                                            <collab:message code="contests.proposal.moving.reopened" contestType="${contestType}">
-                                                <spring:argument><xcolab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
-                                            </collab:message>
-                                        </c:when>
-                                        <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'FORK'}">
-                                            <collab:message code="contests.proposal.moving.forked" contestType="${contestType}">
-                                                <spring:argument><xcolab:proposalLink proposal="${targetMoveHistory.sourceProposal}"/></spring:argument>
-                                                <spring:argument><xcolab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
-                                            </collab:message>
-                                        </c:when>
-                                    </c:choose>
-                                    <c:if test="${proposalsPermissions.canAdminAll}">
-                                        by <xcolab:userLinkSimple memberId="${targetMoveHistory.movingUser.userId}" text="${targetMoveHistory.movingUser.screenName}"/>
-                                    </c:if>
-                                </div>
-                            </c:if>
-
-                            <c:forEach var="sourceMoveHistory" items="${sourceMoveHistories}">
-                                <c:choose>
-                                    <c:when test="${sourceMoveHistory.moveTypeEnum.name() == 'COPY'
-                                                and (sourceMoveHistory.sourcePhaseId == null
-                                                        or sourceMoveHistory.sourcePhaseId == contestPhase.contestPhasePK)}">
-                                        <div>
-                                            <collab:message code="contests.proposal.moving.reopenedin" contestType="${contestType}">
-                                                <spring:argument>
-                                                    <xcolab:contestLink contest="${sourceMoveHistory.sourceContest}"/>
-                                                </spring:argument>
-                                            </collab:message>
-                                            <c:if test="${proposalsPermissions.canAdminAll}">
-                                                by <xcolab:userLinkSimple memberId="${sourceMoveHistory.movingUser.userId}" text="${sourceMoveHistory.movingUser.screenName}"/>
-                                            </c:if>
-                                        </div>
-                                    </c:when>
-                                </c:choose>
-                            </c:forEach>
-
-                            <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
-                                <div class="lastedited">
-                                    <spring:message code="contests.proposal.versions.currentlyviewing" />
-                                    <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format("MM/DD/YYYY hh:mm A"));
-                                        var version = ${proposal.selectedVersion.version};
-                                        triggerHistoryVisibility();
-                                    </script>
-                                    by
-                                    <xcolab:userLinkSimple memberId="${proposal.selectedVersion.authorId}"
-                                                           text="${proposal.userForSelectedVersion.screenName}"/>
-                                </div>
-                            </c:if>
-
-                        </div>
-
-                        <div id="versions" class="versionsContainer hidden">
-                            <div class="versions">
-                                <div class="historyTable">
-                                    <table>
-                                        <tbody class="ui-datatable-data ui-widget-content">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                <div id="versions" class="versionsContainer hidden">
+                    <div class="versions">
+                        <div class="historyTable">
+                            <table>
+                                <tbody class="ui-datatable-data ui-widget-content">
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <c:if test="${not empty proposal.pitch }">
-                    <h2>${contestType.pitchName}</h2>
-
-                    <p class="intro">${proposal.pitch}</p>
-
-                    <div class="div1"><!--  --></div>
-                </c:if>
-
-                <h2><spring:message code="contests.proposal.sections.description" /></h2>
-                <c:if test="${empty proposal.sections or fn:length(proposal.description) gt 0}">
-                            ${proposal.description }
-                </c:if>
-                <c:if test="${not empty proposal.sections }">
-                    <c:forEach var="section" items="${proposal.sections }" varStatus="status">
-
-                        <c:choose>
-                            <c:when test="${section.type == 'SECTION_HEADER' }">
-                                <h3><b>${section.title }</b></h3>
-                            </c:when>
-                            <c:otherwise>
-                                <h3>${section.title }</h3>
-                                <proposalsPortlet:proposalSectionContent section="${section }" />
-                            </c:otherwise>
-                        </c:choose>
-
-
-
-                        <c:if test="${not status.last }">
-                            <div class="div2"><!--  --></div>
-                        </c:if>
-                    </c:forEach>
-                </c:if>
-
-                <c:catch var ="catchException">
-                    <c:if test="${proposalsPermissions.canJudgeActions and
-                    (not proposalsPermissions.canFellowActions or (proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions) and proposal.selectedJudges.size() > 0)}">
-                            <!-- TODO check what this is used for: and proposal.judgeReviewStatus.statusValue > 0   -->
-                        <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
-                    </c:if>
-                </c:catch>
             </div>
-            <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
+            <c:if test="${not empty proposal.pitch }">
+                <h2>${contestType.pitchName}</h2>
+
+                <p class="intro">${proposal.pitch}</p>
+
+                <div class="div1"><!--  --></div>
+            </c:if>
+
+            <h2><spring:message code="contests.proposal.sections.description" /></h2>
+            <c:if test="${empty proposal.sections or fn:length(proposal.description) gt 0}">
+                        ${proposal.description }
+            </c:if>
+            <c:if test="${not empty proposal.sections }">
+                <c:forEach var="section" items="${proposal.sections }" varStatus="status">
+
+                    <c:choose>
+                        <c:when test="${section.type == 'SECTION_HEADER' }">
+                            <h3><b>${section.title }</b></h3>
+                        </c:when>
+                        <c:otherwise>
+                            <h3>${section.title }</h3>
+                            <proposalsPortlet:proposalSectionContent section="${section }" />
+                        </c:otherwise>
+                    </c:choose>
+
+
+
+                    <c:if test="${not status.last }">
+                        <div class="div2"><!--  --></div>
+                    </c:if>
+                </c:forEach>
+            </c:if>
+
+            <c:catch var ="catchException">
+                <c:if test="${proposalsPermissions.canJudgeActions and
+                (not proposalsPermissions.canFellowActions or (proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions) and proposal.selectedJudges.size() > 0)}">
+                        <!-- TODO check what this is used for: and proposal.judgeReviewStatus.statusValue > 0   -->
+                    <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
+                </c:if>
+            </c:catch>
         </div>
+        <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
         <c:if test="${voted}">
             <spring:message code="contests.proposal.voting.thankyou" var="justVotedModalTitle" />
             <xcolab:modal modalId="justVotedModal" title="${justVotedModalTitle}">

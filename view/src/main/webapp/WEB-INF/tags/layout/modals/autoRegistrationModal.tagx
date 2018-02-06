@@ -23,10 +23,10 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button onclick="handleOkForSharedColabAutoReg();" class="c-Button__primary">
+            <button onclick="handleOkForSharedColabAutoReg();" class="btn btn-primary">
                 <spring:message code="homepage.modals.sso.autoreg.button.ok" />
             </button>
-            <button onclick="handleNoForSharedColabAutoReg();" class="c-Button__secondary">
+            <button onclick="handleNoForSharedColabAutoReg();" class="btn btn-gray">
                 <spring:message code="homepage.modals.sso.autoreg.button.cancel" />
             </button>
         </div>

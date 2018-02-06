@@ -1,6 +1,6 @@
 $(function() {
     // Register clickHandler on document to support dynamically added anchor tags.
-    $(document).on("click", "a.js-PostLink", function (eventObject) {
+    $(document).on("click", ".js-PostLink", function (eventObject) {
         // If confirm data field is available, ask user for confirmation first.
         var confirmText = $(this).data('confirm');
         if (confirmText && !confirm(confirmText)) {

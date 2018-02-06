@@ -46,14 +46,14 @@ public class ContestTeamMemberClient {
         final ContestTeamMember result =
                 contestTeamMemberResource.create(new ContestTeamMemberDto(contestTeamMember))
                         .execute().toPojo(serviceNamespace);
-        //TODO: fine-grained cache removal
+        //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
         return result;
     }
 
     public void deleteContestTeamMember(Long contestTeamMemberId) {
         contestTeamMemberResource.delete(contestTeamMemberId).execute();
-        //TODO: fine-grained cache removal
+        //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
     }
 

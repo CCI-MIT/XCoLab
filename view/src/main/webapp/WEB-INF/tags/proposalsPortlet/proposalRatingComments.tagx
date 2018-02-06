@@ -36,7 +36,7 @@
         </c:forEach>
         <c:if test="${!proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
         <br class="clear"/>
-        <a class="c-Button__primary" href="#advanceCommentAnchor"
+        <a class="btn btn-primary" href="#advanceCommentAnchor"
                 onclick="copyCommentsToTextArea(this);"
                 >Copy comments to text area</a>
         </c:if>

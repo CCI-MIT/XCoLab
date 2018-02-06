@@ -48,7 +48,7 @@ public class PointsDistributionUtil {
                 final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
 
                 PointsDistributionConfiguration pdc = PointsClientUtil.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(planSectionDefinitionId);
-                //TODO: do we need to do anything else if it's null?
+                //TODO COLAB-2597: do we need to do anything else if it's null?
                 if (pdc != null) {
                     targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
                 }

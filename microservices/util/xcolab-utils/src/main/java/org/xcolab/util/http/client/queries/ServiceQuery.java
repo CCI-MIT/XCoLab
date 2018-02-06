@@ -112,7 +112,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
         if (cacheKey == null) {
             return ServiceRequestUtils.getList(uriBuilder, typeReference);
         } else {
-            //TODO : Implement cache for service lists
+            //TODO COLAB-2589: Implement cache for service lists
             return ServiceRequestUtils.getList(uriBuilder, typeReference);
         }
     }

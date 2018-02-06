@@ -163,7 +163,7 @@
 					<c:if test="${permissions.getCanEditMemberProfile(userBean.userId)}">
 						<tr>
 							<td colspan="4">
-								<a class="c-Button__primary"
+								<a class="btn btn-primary"
 								   href="/members/profile/${currentUserProfile.userId}/edit">
 									<spring:message code="profile.show.manageprofile.button"/>
 								</a>
@@ -177,7 +177,7 @@
             <div class="clearfix"><!-- --></div>
 		</div>
 		<c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
-			<a class="c-Button__primary" href="#" rel="nofollow"
+			<a class="btn btn-primary" href="#" rel="nofollow"
 			   onclick="if (!deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
                 <spring:message code="profile.show.sendmessage" arguments="${userBean.displayNameShort}"/>
 			</a>
@@ -257,7 +257,7 @@
 			</table>
 
 			<c:if test="${not empty currentUserProfile.activities}">
-				<a class="c-Button__primary" href="/activities?userId=${currentUserProfile.userId}"><spring:message code="profile.show.activities.seeall"/></a>
+				<a class="btn btn-primary" href="/activities?userId=${currentUserProfile.userId}"><spring:message code="profile.show.activities.seeall"/></a>
 			</c:if>
 		</c:if>
 
@@ -292,7 +292,7 @@
                                 <div><xcolab-social:socialShareButtons title="${balloonText.shareTitle}" size="xs"/></div>
                             </c:if>
                             <input id="snpLink" readonly="true" value="${shareLink}" class="form-control" />
-                            <button class="c-Button__primary" id="copyButton"
+                            <button class="btn btn-primary" id="copyButton"
                                     data-clipboard-target="#snpLink">
                                 Copy link
                             </button>
@@ -314,7 +314,7 @@
                                 </div>
                                 <input type="hidden" name="redirect" value="${currentUserProfile.user.profileLinkUrl}" />
                                 <input type="hidden" name="email" value="${userBean.emailStored}" />
-                                <button type="submit" class="c-Button__primary small">Generate link</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Generate link</button>
                             </form>
                         </c:otherwise>
                     </c:choose>

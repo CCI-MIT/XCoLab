@@ -68,4 +68,9 @@ $b-Typography__textColor__a--isHover: black !default;
 
 $b-Typography__textDecoration__a--hover: none !default;
 
-$t-BorderRadius: 5px;
+$t-Border__rounded: true !default;
+$t-Border__radius: .3125rem !default;
+$t-Border__radius--large: .375rem !default;
+$t-Border__radius--small: .25rem !default;
+
+$bs-Button__fontWeight: $t-Typography__fontWeight--bold !default;

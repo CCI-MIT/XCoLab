@@ -61,7 +61,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         List<Proposal> subProposalsWrapped = ProposalClientUtil
                 .getSubproposals(proposal.getProposalId(), false);
 
-        //TODO: make this flexible
+        //TODO COLAB-2597: make this flexible
         PointType pointType = pointsClient.getPointType(9L);
         DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
         ReceiverLimitationStrategy receiverLimitationStrategy = ReceiverLimitationStrategy.valueOf(pointType.getReceiverLimitationStrategy());

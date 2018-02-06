@@ -1,3 +1,5 @@
+@import "bootstrap/variables";
+
 $p-proposal__header__background: url(/images/pattern-6x6-blue.png) !default;
 $p-proposal__header__h1__textColor: $b-Typography__textColor !default;
 $p-proposal__header__h1__capitalization: $b-Typography__capitalization--none !default;
@@ -104,42 +106,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 /* edit proposal block */
 .edit-prop-wrap {
   border-bottom: 1px dashed #666;
-  padding: 31px 0 13px;
-}
-
-.edit-prop {
-  font-size: 13px;
-}
-
-.edit-prop a {
-  font-weight: $t-Typography__fontWeight--bold;
-}
-
-.edit-prop-butts {
-  float: left;
-  margin-right: 5px;
-}
-
-.edit-prop-butts a, .edit-prop-butts span {
-  line-height: 20px;
-  padding: 3px 10px 0;
-  margin-right: 5px;
-  display: inline-block;
-  background: $p-Proposal__edit__button__backgroundColor;
-  font-size: 14px;
-  color: white;
-  border-radius: 3px;
-}
-.edit-prop-butts a:hover {
-  color: white;
-}
-.edit-prop-butts a:visited {
-  color: white;
-}
-
-.edit-prop-butts span {
-  background: $t-Color__grey--light;
-  font-weight: $t-Typography__fontWeight--bold;
+  padding: $spacer 0;
 }
 
 .lastedited {
@@ -351,11 +318,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   height: 23px;
 }
 
-.votebox-top .c-Button__primary {
-  margin-top: 5px;
-  font-weight: $t-Typography__fontWeight;
-}
-
 .votebox-bottom span {
   font-size: 20px;
   font-weight: $t-Typography__fontWeight--bold;
@@ -406,10 +368,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   padding: 10px 12px 11px 12px;
   font-size: 15px;
   color: black;
-}
-
-.prop-avatar img {
-  vertical-align: middle;
 }
 
 .prop-contest {
@@ -467,7 +425,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 
 .contributors td img {
   margin-right: 12px;
-  vertical-align: middle;
 }
 
 .contributors tr.odd td {
@@ -659,7 +616,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   text-align: left;
 
   img {
-    vertical-align: middle;
     margin-right: 10px;
   }
 }

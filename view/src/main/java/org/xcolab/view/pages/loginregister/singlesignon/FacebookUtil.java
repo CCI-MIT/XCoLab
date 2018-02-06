@@ -44,7 +44,7 @@ public final class FacebookUtil {
      */
     public static String getFacebookPictureURLString(String fbProfilePictureURL) {
         try {
-            //TODO: this doesn't work -> requires token!
+            //TODO COLAB-968: this doesn't work -> requires token!
             // Get real facebook image URL
             InputStream is = new URL(fbProfilePictureURL).openStream();
             StringWriter writer = new StringWriter();

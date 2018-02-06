@@ -1,0 +1,22 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+<!--
+This script checks for basic flexbox support and loads a script to notify
+users  to update their browser if flexbox is not supported.
+-->
+
+<c:url var="encodedUrl" value="/js/browser-update.js" />
+
+<script>(function(d){
+var f='flex',b=d.createElement('b');
+try{
+    b.style.display=f;
+    if(b.style.display!==f||location.hash==="#test-bu")l();
+}catch(e){l()}
+function l(){
+    var s=d.createElement("script");
+    s.src="${encodedUrl}";s.async=true;d.body.appendChild(s);
+}
+})(document);
+</script>
+</jsp:root>

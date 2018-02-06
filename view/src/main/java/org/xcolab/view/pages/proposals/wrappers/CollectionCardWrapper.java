@@ -7,7 +7,7 @@ import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 
 public class CollectionCardWrapper{
 
-//TODO: NotFoundexception
+//TODO COLAB-2627: NotFoundexception
 
     protected final ContestCollectionCard contestCollectionCard;
     protected String viewType;

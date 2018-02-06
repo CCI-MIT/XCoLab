@@ -146,7 +146,7 @@ public class ContestPhaseService {
             // Enable this line to post promotion comment to Evaluation tab comment section
             // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
 
-            //TODO: Migrate logic to send email , the method is blank so there may be no need for this
+            //TODO COLAB-2603: Migrate logic to send email , the method is blank so there may be no need for this
         /*try {
             proposalLocalService.contestPhasePromotionEmailNotifyProposalContributors(p,  phase, null);
         } catch (MailEngineException | AddressException | UnsupportedEncodingException e) {

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalFellowReviewTabController extends BaseProposalTabController {
 
-    //TODO: check if we want to reactivate this
+    //TODO COLAB-2623: check if we want to reactivate this
 //    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=FELLOW_REVIEW")
 //    public String showFellowReview(HttpServletRequest request, Model model) {
 //

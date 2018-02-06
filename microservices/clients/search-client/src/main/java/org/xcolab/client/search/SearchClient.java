@@ -10,7 +10,7 @@ import java.util.List;
 
 public final class SearchClient {
 
-    //TODO: API naming (singular collection?)
+    //TODO COLAB-2594: API naming (singular collection?)
     private static final RestResource<SearchPojo, Long> searchResource = new RestResource1<>(
             SearchResource.SEARCH, SearchPojo.TYPES);
 

@@ -93,7 +93,7 @@ public final class ProposalMoveUtil {
 //                ProposalCreationUtil.createProposal(proposal.getAuthorId(), updateProposalSectionsBean,
 //                        contest, themeDisplay, contestPhase);
 //                break;
-                    //TODO: verify if old implementation works
+                    //TODO COLAB-2625: verify if old implementation works
                     throw new NotImplementedException("Not supported");
                 default:
             }

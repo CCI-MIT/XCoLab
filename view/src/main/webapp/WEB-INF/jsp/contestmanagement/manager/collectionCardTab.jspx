@@ -29,7 +29,7 @@
         <div class="addpropbox">
             <b>Create </b> a new Collection Card:
             <div style="display:inline-block" >
-                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="createNewCollectionCard();">CREATE NEW</a>
+                <a class="btn btn-primary" href="#" onclick="createNewCollectionCard();">CREATE NEW</a>
             </div>
         </div>
         <br/>
@@ -103,18 +103,18 @@
         <br/>
         <div class="buttonContainer">
             <div>
-                <div class="floatRight outerVerticalCenter">
-                    <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">SAVE</a>
+                <div class="floatRight">
+                    <a class="btn btn-primary" href="#" onclick="submitUpdateCollectionCard();">SAVE</a>
                 </div>
             </div>
             <div>
-                <div class="floatRight outerVerticalCenter">
-                    <a class="c-Button__primary innerVerticalCenter" id="deleteButton" href="#" onclick="submitDeleteCollectionCard();">DELETE</a>
+                <div class="floatRight">
+                    <a class="btn btn-primary" id="deleteButton" href="#" onclick="submitDeleteCollectionCard();">DELETE</a>
                 </div>
             </div>
             <div>
-                <div class="floatRight outerVerticalCenter">
-                    <a class="c-Button__primary innerVerticalCenter" style="display: none" id="cancelButton" href="#" onclick="cancelCollectionCardCreation();">CANCEL</a>
+                <div class="floatRight">
+                    <a class="btn btn-primary" style="display: none" id="cancelButton" href="#" onclick="cancelCollectionCardCreation();">CANCEL</a>
                 </div>
             </div>
         </div>
@@ -124,10 +124,10 @@
         <h2 style="float:left;"> Pick the OntolgoyTerm</h2>
         <br/>
         <div>
-            <a class="c-Button__primary innerVerticalCenter" style="float:left; margin-left:20px;" href="#" onclick="setOntologyTerm();">SELECT</a>
+            <a class="btn btn-primary" style="float:left; margin-left:20px;" href="#" onclick="setOntologyTerm();">SELECT</a>
         </div>
         <div>
-            <a class="c-Button__primary innerVerticalCenter" href="#" onclick="closeOntologyPicker();">CANCEL</a>
+            <a class="btn btn-primary" href="#" onclick="closeOntologyPicker();">CANCEL</a>
         </div>
         <br/>
         <h3> WHAT </h3>

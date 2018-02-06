@@ -187,7 +187,7 @@
                     </c:choose>
                 </c:when>
                 <c:when test="${pointType.receiverLimitationStrategy eq 'SUBPROPOSALS' and pointType.distributionStrategy eq 'USER_DEFINED'}">
-                    <!--TODO-->
+                    <!--TODO COLAB-2582: check if we need to implement this -->
                 </c:when>
                 <c:when test="${pointType.receiverLimitationStrategy eq 'ANY_USER' or pointType.receiverLimitationStrategy eq 'ANY_NON_TEAM_MEMBER' or pointType.receiverLimitationStrategy eq 'ANY_TEAM_MEMBER'}">
                     <c:choose>

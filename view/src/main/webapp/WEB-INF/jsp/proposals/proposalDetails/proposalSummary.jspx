@@ -26,7 +26,7 @@
                                         <input name="voteValue" class="form-control bs-form-control-inline bs-form-control--xs"
                                                type="number" min="1" max="${contest.maxVotesPerProposal}" value="1"/>
                                     </c:if>
-                                    <button class="c-Button__primary" type="submit"
+                                    <button class="btn btn-primary" type="submit"
                                             onclick="if(!deferUntilLogin(this)){return false;}">
                                         <collab:message var="voteForText" code="contests.voting.vote" contestType="${contestType}"/>
                                         <spring:message var="retractVoteText" code="contests.voting.retract"/>
@@ -80,7 +80,9 @@
                     ${proposal.supportersCount}
                 </span> <spring:message code="contests.supports" />
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
-                        <a class="c-Box__button boxColor--dark js-PostLink" data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
+                        <!-- TODO COLAB-2560: turn into button and remove color rule -->
+                        <a class="c-Box__button boxColor--dark js-PostLink" style="color: white;"
+                           data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
                            rel="nofollow" onclick="if(!handleOnClickAtSupportBtn(this)) return false;">
                             <collab:message var="supportText" code="contests.supports.support" contestType="${contestType}" />
                             <spring:message var="retractText" code="contests.supports.retract" />
@@ -99,6 +101,7 @@
 
                     <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
                     <div class="p-Proposal__subscribe" style="float: right;">
+                        <!-- TODO COLAB-2560: turn into button -->
                         <a data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }"
                                 rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" class="js-PostLink">
                             <c:choose>

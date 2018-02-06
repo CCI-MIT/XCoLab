@@ -12,114 +12,105 @@
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 
+	<div class="c-ContentBox clearfix">
+        <div class="float-right">
+            <button type="button" class="btn btn-primary js-PostLink" data-url="/admin/contest/manager/createContest">Create new Contest</button>
+            <a class="btn btn-primary ml-2" href="/admin/contest/manager/batchCreateContest">Batch Contest creation</a>
+        </div>
+    </div>
+
 	<div class="c-ContentBox">
-		<div style="margin-bottom: 40px;display:inline">
-			<div class="floatRight outerVerticalCenter">
-				<a class="c-Button__primary innerVerticalCenter js-PostLink" data-url="/admin/contest/manager/createContest" target="_blank">Create new Contest</a>
-			</div>
-		</div>
+		<form:form action="/admin/contest/manager/update" modelAttribute="contestOverviewWrapper"
+                   id="editForm" method="post">
+            <div>
+                <div class="float-right">
+                    <div class="form-inline">
+                        <label for="contestsFilterSelect">Filter:</label>
+                        <select id="contestsFilterSelect" class="form-control form-control-sm ml-1">
+                            <option value="all" label="All contests"/>
+                            <option value="active" label="Active contests"/>
+                            <option value="prior" label="Prior contests"/>
+                        </select>
+                    </div>
+                </div>
 
-		<div style="margin-bottom: 40px;">
-			<div class="floatRight outerVerticalCenter">
-				<a class="c-Button__primary innerVerticalCenter" href="/admin/contest/manager/batchCreateContest" >Batch Contest creation</a>
-			</div>
-		</div>
+                <div class="form-inline">
+                    <form:select path="selectedMassAction" id="selectedMassAction" cssClass="form-control">
+                        <form:options items="${massActionsItems}" />
+                    </form:select>
+                    <button type="button" class="btn btn-primary ml-2" id="submitButton">SUBMIT</button>
+                </div>
+                <div id="massMessage" style="display: none;">
+                    <div class="clearLeft"><!-- --></div>
+                    <h3 class="floatLeft">Subject</h3>
+                    <form:input path="massMessageBean.subject" />
+                    <div class="clearLeft"><!-- --></div>
+                    <h3 class="floatLeft">Body</h3>
+                    <form:textarea path="massMessageBean.body"/>
+                </div>
 
-	</div>
-	
-	<div class="c-ContentBox">
-		<div class="floatRight outerVerticalCenter">
-			<div class="innerVerticalCenter floatLeft">
-				<h3>Filter: </h3>
-			</div>
-			<div class="innerVerticalCenter">
-				<select id="contestsFilterSelect" class="form-control">
-					<option value="all" label="All contests"/>
-					<option value="active" label="Active contests"/>
-					<option value="prior" label="Prior contests"/>
-				</select>
-			</div>
-		</div>
+                <div id="flagFlagTextTooltip" style="display: none;">
+                    <table>
+                        <tr>
+                            <td width="200px">
+                                <span class="floatLeft">Flag appearance</span>
+                            </td>
+                            <td>
+                                <form:select path="contestFlagTextToolTipBean.flagNumber">
+                                    <form:options items="${contestOverviewWrapper.flagOptions}" itemValue="value" itemLabel="lable"/>
+                                </form:select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="floatLeft">Flag text (ie. featured)</span>
+                            </td>
+                            <td>
+                                <form:input path="contestFlagTextToolTipBean.flagText"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="floatLeft">Flag tooltip</span>
+                            </td>
+                            <td>
+                                <form:input path="contestFlagTextToolTipBean.flagTooltip"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
-		<form:form action="/admin/contest/manager/update" modelAttribute="contestOverviewWrapper" id="editForm" method="post">
-			<div class="outerVerticalCenter">
-				<div class="innerVerticalCenter">
-					<form:select path="selectedMassAction" id="selectedMassAction" cssClass="form-control">
-						<form:options items="${massActionsItems}" />
-					</form:select>
-				</div>
-				<a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">SUBMIT</a>
-			</div>
-			<div id="massMessage" style="display: none;">
-                <div class="clearLeft"><!-- --></div>
-				<h3 class="floatLeft">Subject</h3>
-				<form:input path="massMessageBean.subject" />
-				<div class="clearLeft"><!-- --></div>
-				<h3 class="floatLeft">Body</h3>
-				<form:textarea path="massMessageBean.body"/>
-			</div>
-
-			<div id="flagFlagTextTooltip" style="display: none;">
-				<table>
-					<tr>
-						<td width="200px">
-							<span class="floatLeft">Flag appearance</span>
-						</td>
-						<td>
-						<form:select path="contestFlagTextToolTipBean.flagNumber">
-							<form:options items="${contestOverviewWrapper.flagOptions}" itemValue="value" itemLabel="lable"/>
-						</form:select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span class="floatLeft">Flag text (ie. featured)</span>
-						</td>
-						<td>
-							<form:input path="contestFlagTextToolTipBean.flagText"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span class="floatLeft">Flag tooltip</span>
-						</td>
-						<td>
-							<form:input path="contestFlagTextToolTipBean.flagTooltip"/>
-						</td>
-					</tr>
-				</table>
-			</div>
-
-			<div id="contestModelSettings" style="display: none;">
-				<table>
-					<tr>
-						<td>
-							<span class="floatLeft">Default Model ID</span>
-						</td>
-						<td>
-							<form:select path="contestModelSettingsBean.defaultModelId">
-								<form:options items="${contestOverviewWrapper.modelIds}" itemValue="value" itemLabel="lable"/>
-							</form:select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span class="floatLeft">Other model IDs (comma separated integer: 2,3,4)</span>
-						</td>
-						<td>
-							<form:input path="contestModelSettingsBean.otherModelIds"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span class="floatLeft">Default model settings (JSON string: {"region":"US"})</span>
-						</td>
-						<td>
-							<form:input path="contestModelSettingsBean.defaultModelSettings"/>
-						</td>
-					</tr>
-				</table>
-			</div>
+                <div id="contestModelSettings" style="display: none;">
+                    <table>
+                        <tr>
+                            <td>
+                                <span class="floatLeft">Default Model ID</span>
+                            </td>
+                            <td>
+                                <form:select path="contestModelSettingsBean.defaultModelId">
+                                    <form:options items="${contestOverviewWrapper.modelIds}" itemValue="value" itemLabel="lable"/>
+                                </form:select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="floatLeft">Other model IDs (comma separated integer: 2,3,4)</span>
+                            </td>
+                            <td>
+                                <form:input path="contestModelSettingsBean.otherModelIds"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="floatLeft">Default model settings (JSON string: {"region":"US"})</span>
+                            </td>
+                            <td>
+                                <form:input path="contestModelSettingsBean.defaultModelSettings"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
 
 			<table class="c-ContentBox__Table">
 					<col span="2" class="extraSmallColumn"/>
@@ -187,7 +178,7 @@
                             <td>${contest.proposalsCount} </td>
                             <td>${contest.commentsCount} </td>
                             <td>
-                                <a class="c-Button__primary innerVerticalCenter" href="${contest.contestUrl}" target="_blank">VIEW</a>
+                                <a class="btn btn-primary" href="${contest.contestUrl}" target="_blank">VIEW</a>
                             </td>
                         </tr>
                     </c:forEach>

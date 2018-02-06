@@ -41,8 +41,8 @@
                     </div>
                     <div>
                         <spring:message code="discussion.categoryadd.form.buttons.add" var="addDisc"/>
-                        <input type="submit" class="c-Button__primary" value="${addDisc}" />
-                        <a class="c-Button__secondary" href="/discussion"><spring:message code="discussion.categoryadd.form.buttons.cancel"/></a>
+                        <input type="submit" class="btn btn-primary" value="${addDisc}" />
+                        <a class="btn btn-gray" href="/discussion"><spring:message code="discussion.categoryadd.form.buttons.cancel"/></a>
                     </div>
                 </form>
             </div>
