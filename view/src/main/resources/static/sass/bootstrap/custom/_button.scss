@@ -31,3 +31,10 @@
 .btn:not(.btn-block) + .btn:not(.btn-block) {
   margin-left: $spacer * .5;
 }
+
+.btn-xs {
+  padding: 0.1875rem 0.4rem;
+  line-height: 1.25;
+  font-weight: $t-Typography__fontWeight;
+  border-radius: $btn-border-radius-sm;
+}

@@ -80,9 +80,10 @@
         </script>
 
         <script id="impactSeriesSaveButtonTemplate" type="text/x-handlebars-template">
-            <div class="edit-prop-butts">
-                <a id="impact-edit-save-button" href="javascript:;">Save</a>
-            </div>
+            <button type="button" id="impact-edit-save-button"
+                    class="btn btn-primary-darkest btn-xs">
+                Save
+            </button>
             <span class="spinner-area">&#160;</span>
         </script>
 
@@ -237,7 +238,9 @@
                         </div>
 
                 <c:if test="${proposalsPermissions.canIAFActions or proposalsPermissions.canAdminAll}">
-                    <div class="edit-prop-butts" style="margin-top: 20px"><a id="upload-impact-data-toggle" href="javascript:;">Upload data from a spreadsheet</a></div>
+                    <button type="button" class="btn btn-primary-darkest btn-xs" id="upload-impact-data-toggle">
+                        Upload data from a spreadsheet
+                    </button>
                     <div class="clearfix"><!-- --></div>
                     <div id="impact-data-upload-form" style="display: none; margin-top: 10px">
                         Please paste data from your spreadsheet below:
@@ -284,15 +287,14 @@
                     </div>
 
                     <div>
-                        <div class="edit-prop-butts">
-                            <a id="impact-edit-save-commnent-button" href="javascript:;">Save and close</a>
-                        </div>
+                        <button type="button" class="btn btn-primary-darkest btn-xs" id="impact-edit-save-commnent-button">
+                            Save and close
+                        </button>
 
-                        <div class="edit-prop-butts">
-                            <a id="impact-edit-discard-commnent-button" href="javascript:;">Discard and close</a>
-                        </div>
+                        <button type="button" class="btn btn-primary-darkest btn-xs" id="impact-edit-discard-commnent-button">
+                            Discard and close
+                        </button>
                         <span class="spinner-area">&#160;</span>
-
                     </div>
                 </c:if>
                 <c:if test="${ not edit}">
