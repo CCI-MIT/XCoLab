@@ -191,10 +191,8 @@
                            value="${proposal.proposalUrl}/tab/ADMIN/replyToMembershipRequest?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
                     <c:set var="count" value="1" scope="page"/>
                     <c:forEach items="${proposal.membershipRequests}" var="request">
-                        <form action="${replyToMembershipRequest }" method="post"
+                        <form:form action="${replyToMembershipRequest }" method="post"
                               style="padding: 10px 0; ${count lt fn:length(proposal.membershipRequests) ? 'border-bottom: 1px solid gray;' :''}">
-                        <input type="hidden" name="${_csrf.parameterName}"
-                                   value="${_csrf.token}"/>
                             <xcolab:userLinkSimple memberId="${request.requestUser.userId}"
                                                    text="${request.requestUser.firstName} ${request.requestUser.lastName} (${request.requestUser.screenName})"/>
                             <div>${request.membershipRequest.comments }</div>
@@ -217,10 +215,9 @@
                                                style="margin-left: 10px;">Deny</label>
                                     </div>
                                 </div>
-                                <a class="sendButton" href="javascript:;"
-                                   onclick="jQuery(this).parents('form').submit();">Send</a>
+                                <button type="submit" class="btn btn-primary">Send</button>
                             </div>
-                        </form>
+                        </form:form>
                         <c:set var="count" value="${count + 1}" scope="page"/>
                     </c:forEach>
 
