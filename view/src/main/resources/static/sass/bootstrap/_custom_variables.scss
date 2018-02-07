@@ -81,10 +81,10 @@ $body-color:                $t-Color__text--dark;
 //
 // Style anchor elements.
 
-$link-color:                theme-color("primary") !default;
-$link-decoration:           none !default;
-$link-hover-color:          darken($link-color, 15%) !default;
-$link-hover-decoration:     none !default;
+$link-color:                $t-Link__color;
+$link-decoration:           $t-Link__decoration;
+$link-hover-color:          $t-Link__color--hover;
+$link-hover-decoration:     $t-Link__decoration--hover;
 
 // Paragraphs
 //
