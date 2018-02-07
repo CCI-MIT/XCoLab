@@ -1,6 +1,38 @@
 @import "bootstrap/variables";
+@import "bootstrap/mixins/buttons";
 
-.btn-image {
+//= Modified base rules
+.btn:not(.btn-block) + .btn:not(.btn-block) {
+  margin-left: $spacer * .5;
+}
+
+
+//= New button colors
+.btn-admin {
+  @include button-variant($t-Color__primary, $t-Color__accent);
+}
+
+.btn-outline-admin {
+  @extend .btn-outline-primary;
+  &, &:hover {
+    border-color: $t-Color__accent;
+  }
+}
+
+//= New button sizes
+.btn-xs {
+  padding: 0.1875rem 0.4rem;
+  line-height: 1.25;
+  font-weight: $t-Typography__fontWeight;
+  border-radius: $btn-border-radius-sm;
+}
+
+//= Elements within btn block
+.cb-btn__image_text {
+  vertical-align: middle;
+}
+
+.cb-btn__image {
   height: 2rem;
   margin-top: -$btn-padding-y * .5;
   margin-right: $btn-padding-x * .25;
@@ -22,19 +54,4 @@
     margin-bottom: -$btn-padding-y-lg * .5;
     margin-left: -$btn-padding-x-lg * .5;
   }
-}
-
-.btn-image-text {
-  vertical-align: middle;
-}
-
-.btn:not(.btn-block) + .btn:not(.btn-block) {
-  margin-left: $spacer * .5;
-}
-
-.btn-xs {
-  padding: 0.1875rem 0.4rem;
-  line-height: 1.25;
-  font-weight: $t-Typography__fontWeight;
-  border-radius: $btn-border-radius-sm;
 }
