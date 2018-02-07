@@ -62,7 +62,7 @@
                                     <a class="b-Spacing__inline--large" href="/discussion/threads/create"
                                        rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
                                         <img style="vertical-align: middle;" height="30"
-                                             src="${_themeImageFolder}/icon_new-topic.png" />&#160;<spring:message code="discussion.categorypage.newdiscussion"/>
+                                             src="/images/icon_new-topic.png" />&#160;<spring:message code="discussion.categorypage.newdiscussion"/>
                                     </a>
                                 </c:if>
                             </div>
@@ -79,7 +79,7 @@
                             <c:set var="unsubscribeUrl" value="/discussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                             <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
                                     rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
-                                <img src="${_themeImageFolder}/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+                                <img src="/images/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
                             </a>
                         </div>
                     </div>

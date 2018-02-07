@@ -66,7 +66,7 @@
                         <h4 class="modal-title">Preparing for submission...</h4>
                     </div>
                     <div class="modal-body">
-                        <div id="loading_filtering_image" style="text-align: left"><img border="0" src="${_themeImageFolder}/loader.gif"/></div>
+                        <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
                         <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again</div>
                     </div>
                     <div class="modal-footer">
@@ -130,7 +130,7 @@
                     <strong class="required-field">
                         <spring:message code="contests.proposal.sections.title" />
                     </strong>
-                    <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                    <a class="helpTrigger" href="javascript:;"><img src="/images/icon-addprop-question.png" width="15" height="15" /></a><br />
                     <spring:message code="contests.proposal.sections.characterlimit" arguments="80"  />
                 </label>
                 <div class="addprophelp">Give the ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
@@ -147,7 +147,7 @@
             <div class="addpropbox q3">
                 <label>
                     <strong class="required-field">${contestType.pitchName}</strong>
-                    <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                    <a href="javascript:;" class="helpTrigger"><img src="/images/icon-addprop-question.png" width="15" height="15" /></a><br />
                     <spring:message code="contests.proposal.sections.characterlimit" arguments="140"  />
                 </label>
                 <div class="addprophelp">Add a very short (140 character) description that conveys the key idea behind the ${fn:toLowerCase(contestType.proposalName)}.</div>
@@ -180,7 +180,7 @@
                     <strong><spring:message code="contests.proposal.sections.team"/> </strong>
                     <br /><em>optional</em>
                 </span>
-                <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                <a class="helpTrigger" href="javascript:;"><img src="/images/icon-addprop-question.png" width="15" height="15" /></a><br />
                 <spring:message code="contests.proposal.sections.characterlimit" arguments="35" />
                 </label>
                 <div class="addprophelp">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the name of its owner.</div>
@@ -223,7 +223,7 @@
                 <div class="addpropbox q3">
                     <label>
                         <strong>Description</strong>
-                        <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                        <a href="javascript:;" class="helpTrigger"><img src="/images/icon-addprop-question.png" width="15" height="15" /></a><br />
                     </label>
 
                     <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
@@ -462,7 +462,7 @@
     <xcolab:requireLibrary name="CKEditor" />
 
     <c:if test="${isMove}">
-        <xcolab:script src="${_themeJsFolder}/proposals/copyProposalWidget.js"/>
+        <xcolab:script src="/js/proposals/copyProposalWidget.js"/>
     </c:if>
 
     <c:if test="${hasProposalPicker}">

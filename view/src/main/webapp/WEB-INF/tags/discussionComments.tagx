@@ -46,7 +46,7 @@
 		</script>
 		</c:if>
 
-		<xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js" />
+		<xcolab:script src="/js/proposals/discussionComments.js" />
 
 		<c:if test="${discussionPermissions.mustFilterContent}">
             <div class="modal fade" id="js-filteringModal" tabindex="-1" role="dialog">
@@ -84,12 +84,12 @@
 					<a href="javascript:;" rel="nofollow"
                        onclick='if(!deferUntilLogin()) {return false;} jQuery(".c-Comment__new")[0].scrollIntoView(); return false;'>
                         <spring:message code="discussion.commmentstag.addacomment" var="addAComment"/>
-                        <img src="${_themeImageFolder}/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="${addAComment}" /><spring:message code="discussion.commmentstag.jumptocomment"/>
+                        <img src="/images/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="${addAComment}" /><spring:message code="discussion.commmentstag.jumptocomment"/>
                     </a>
 				</c:if>
 				<c:if test="${_showShareButtons}">
 					<div class="c-Comment__share">
-                        <img src="${_themeImageFolder}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
+                        <img src="/images/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
                         <spring:message code="discussion.commmentstag.share"/>:
 
                         <div>
@@ -131,7 +131,7 @@
 									<br />
 									<div class="role-indicator">
 										<div style="width: 16px">
-											<img src="${_themeImageFolder}/${role.imageUrl}.png"
+											<img src="/images/${role.imageUrl}.png"
 													width="16" height="16" />
 										</div>
 										${role.printName}

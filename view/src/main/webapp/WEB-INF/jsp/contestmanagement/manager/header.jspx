@@ -11,7 +11,7 @@
 		<div class="inner">
 			<div class="c-Headline">
 				<div class="proposal-image">
-					<img src="${_themeImageFolder}/proposal_default.png" width="52" height="52" />
+					<img src="/images/proposal_default.png" width="52" height="52" />
 				</div>
 				<div class="proposal-title">
 					<h1>Contest management tool - Contest manager</h1>

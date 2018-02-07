@@ -423,7 +423,7 @@
                                 <label for="hasRole${memberCategory.roleId}"></label>
                             </td>
                             <td class="${memberCategory.showInList ? '' : 'text-muted'}">
-                                <img src="${_themeImageFolder}/${memberCategory.imageName}.png"
+                                <img src="/images/${memberCategory.imageName}.png"
                                      width="16" height="16" /> ${memberCategory.categoryName}
                             </td>
                         </tr>

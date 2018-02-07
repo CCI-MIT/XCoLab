@@ -18,7 +18,7 @@
         <xcolab:requireLibrary name="spin.js" />
         <xcolab:requireLibrary name="handlebars.js" />
         
-        <xcolab:script src="${_themeJsFolder}/proposals/numeral.min.js"/>
+        <xcolab:script src="/js/proposals/numeral.min.js"/>
 
         <c:set var="getRegionsUrl" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactGetRegions"/>
 
@@ -57,7 +57,7 @@
             <tr id="impact-edit-row-{{series.name}}" class="impact-edit-row">
                 <td width="45%">{{series.description}}
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
 
                     <div class="addprophelp"><!-- --></div>
                     <div class="clearfix"><!-- --></div>
@@ -123,7 +123,7 @@
                                 <th class="blue-bg" style="width: 55%; text-align: center">
                                     Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
                                     <a href="javascript:;" class="helpTrigger"><img
-                                            src="${_themeImageFolder}/icon-addprop-question.png" width="15"
+                                            src="/images/icon-addprop-question.png" width="15"
                                             height="15"/></a><br/>
 
                                     <div class="addprophelp" style="color:white;">

@@ -10,7 +10,6 @@
     <jsp:directive.attribute name="isShowIcons" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Whether the icons on the right menu should be displayed"/>
     <jsp:directive.attribute name="currentLocale" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="The currently active locale" />
-    <jsp:directive.attribute name="uploadedImageFolder" type="java.lang.String" required="true" rtexprvalue="true" description="The path to the folder for uploaded images" />
     <jsp:directive.attribute name="colabName" type="java.lang.String" required="true" rtexprvalue="true" description="The name of this CoLab" />
     <jsp:directive.attribute name="member" type="org.xcolab.client.members.pojo.Member" required="true" rtexprvalue="true" description="The logged in member, if any" />
     <jsp:directive.attribute name="showFacebookSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, Facebook SSO is shown" />
@@ -87,7 +86,7 @@
                                 </li>
                                 <li class="nav-item bs-nav-item-image dropdown bs-dropdown-inverse">
                                     <a id="user-dropdown" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                                        <img src="${uploadedImageFolder}/member/${member.portraitId}" alt="${member.screenName}" />
+                                        <img src="/image/member/${member.portraitId}" alt="${member.screenName}" />
                                         <span class="caret"><!-- --></span>
                                         <c:if test="${member.unreadMessageCount > 0}">
                                             <div class="badge badge-pill badge-primary-darkest">

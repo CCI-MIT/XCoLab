@@ -93,11 +93,11 @@
     <xcolab:requireLibrary name="CKEditor" />
     <xcolab:requireLibrary name="autoSuggest" />
     <xcolab:requireLibrary name="jQuery UI" />
-    <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
-    <xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js"/>
-    <xcolab:script src="${_themeJsFolder}/proposals/historyWidget.js"/>
+    <xcolab:script src="/js/proposals/proposals.js"/>
+    <xcolab:script src="/js/proposals/discussionComments.js"/>
+    <xcolab:script src="/js/proposals/historyWidget.js"/>
 
-    <xcolab:stylesheet href="${_libCssFolder}/imageviewer.css"/>
-    <xcolab:script src="${_themeJsFolder}/proposals/imageviewer.min.js" />
+    <xcolab:stylesheet href="/css/lib/imageviewer.css"/>
+    <xcolab:script src="/js/proposals/imageviewer.min.js" />
 
 </jsp:root>

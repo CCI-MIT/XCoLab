@@ -10,7 +10,7 @@
                         description="Points distribution for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.contestShortNameWithEndYear}'">
         <!--@elvariable id="linkingProposals" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalWrapper>"-->
 
-        <xcolab:script src="${_themeJsFolder}/proposals/proposalPoints.js" />
+        <xcolab:script src="/js/proposals/proposalPoints.js" />
         <jsp:directive.include file="./init_proposal_tab.jspx" />
 
         <jsp:directive.include file="./proposalDetails/header.jspx" />

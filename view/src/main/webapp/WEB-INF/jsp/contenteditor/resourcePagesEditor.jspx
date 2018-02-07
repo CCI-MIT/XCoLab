@@ -8,7 +8,7 @@
         <xcolab:requireLibrary name="jQuery UI" />
         <xcolab:requireLibrary name="spin.js" />
         <xcolab:requireLibrary name="CKEditor" />
-        <xcolab:script src="${_libJsFolder}/jquery.loadmask.spin.js" />
+        <xcolab:script src="/js/lib/jquery.loadmask.spin.js" />
 
         <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
@@ -48,7 +48,7 @@
 
 
         </style>
-        <xcolab:stylesheet href="${_libCssFolder}/jquery.loadmask.spin.css" />
+        <xcolab:stylesheet href="/css/lib/jquery.loadmask.spin.css" />
 
         <c:set var="contentEditorListFolderURL" value="/content-editor/resourcePagesListFolder"/>
 
@@ -103,10 +103,10 @@
                 }
 
 
-                CKEDITOR.plugins.addExternal( 'justify', '${_libJsFolder}/newckeditorplugins/justify/plugin.js' );
+                CKEDITOR.plugins.addExternal( 'justify', '/js/lib/newckeditorplugins/justify/plugin.js' );
 
-                CKEDITOR.plugins.addExternal( 'colorbutton', '${_libJsFolder}/newckeditorplugins/colorbutton/plugin.js' );
-                CKEDITOR.plugins.addExternal( 'uploadimage', '${_libJsFolder}/newckeditorplugins/uploadimage/plugin.js' );
+                CKEDITOR.plugins.addExternal( 'colorbutton', '/js/lib/newckeditorplugins/colorbutton/plugin.js' );
+                CKEDITOR.plugins.addExternal( 'uploadimage', '/js/lib/newckeditorplugins/uploadimage/plugin.js' );
 
                 CKEDITOR.config.allowedContent = true;
 
@@ -158,7 +158,7 @@
                 );
 
 
-                ckEditor = CKEDITOR.replace('articleVersionContent', { customConfig: '${_libJsFolder}/newckeditorplugins/config.js'});
+                ckEditor = CKEDITOR.replace('articleVersionContent', { customConfig: '/js/lib/newckeditorplugins/config.js'});
                 //CKEDITOR.instances['articleVersionContent'].setReadOnly(true);
 
                 $("#infoBox").hide();

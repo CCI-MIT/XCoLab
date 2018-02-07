@@ -31,13 +31,13 @@
                         <div class="c-Header__socialButtons">
                             <c:if test="${showFacebookSso}">
                                 <a href="/sso/facebook/register" style="color: black;">
-                                    <img src="${_themeImageFolder}/icons/social/facebook.svg" aria-hidden="true" />
+                                    <img src="/images/icons/social/facebook.svg" aria-hidden="true" />
                                     <span>Facebook</span>
                                 </a>
                             </c:if>
                             <c:if test="${showGoogleSso}">
                                 <a href="/sso/google/register" style="color: black;">
-                                    <img src="${_themeImageFolder}/icons/social/google.svg" aria-hidden="true"/>
+                                    <img src="/images/icons/social/google.svg" aria-hidden="true"/>
                                     <span>Google</span>
                                 </a>
                             </c:if>

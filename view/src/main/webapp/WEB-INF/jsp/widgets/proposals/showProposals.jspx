@@ -20,7 +20,7 @@
                                 <img src="${proposalsModel.baseImagePath}${proposal.image}" width="151" height="151" alt="Proposal image" title="${proposal.name}" />
                             </c:if>
                             <c:if test="${empty proposal.image or proposal.image le 0}">
-                                <img src="${_themeImageFolder}/proposal_default.png" width="151" height="151" alt="Proposal image" title="${proposal.name}" style="border: 1px solid #bbb;"/>
+                                <img src="/images/proposal_default.png" width="151" height="151" alt="Proposal image" title="${proposal.name}" style="border: 1px solid #bbb;"/>
                             </c:if>
                         </a>
                     </div>

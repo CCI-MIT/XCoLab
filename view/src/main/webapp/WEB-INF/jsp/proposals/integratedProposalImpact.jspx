@@ -5,7 +5,6 @@
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
-    <!--@elvariable id="_themeImageFolder" type="java.lang.String"-->
     <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -216,7 +215,7 @@
                                 Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
                                 <a href="javascript:;" class="helpTrigger">
                                 <img
-                                        src="${_themeImageFolder}/icon-addprop-question.png" width="15"
+                                        src="/images/icon-addprop-question.png" width="15"
                                         height="15"/></a><br/>
 
                                 <div class="addprophelp" style="color:white;">
@@ -235,7 +234,7 @@
                         <tr>
                             <td class="blue-bg" style="text-align: left">Sector
                                 <a href="javascript:;" class="helpTrigger"><img
-                                        src="${_themeImageFolder}/icon-addprop-question.png" width="15"
+                                        src="/images/icon-addprop-question.png" width="15"
                                         height="15"/></a><br/>
 
                                 <div class="addprophelp" style="color:white;">

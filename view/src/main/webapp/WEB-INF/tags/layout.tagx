@@ -41,10 +41,6 @@
     <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
 
     <!--@elvariable id="_themeCssFolder" type="java.lang.String"-->
-    <!--@elvariable id="_libCssFolder" type="java.lang.String"-->
-    <!--@elvariable id="_themeJsFolder" type="java.lang.String"-->
-    <!--@elvariable id="_libJsFolder" type="java.lang.String"-->
-    <!--@elvariable id="_themeImageFolder" type="java.lang.String"-->
     <!--@elvariable id="_languageSelectItems" type="java.lang.String"-->
     <!--@elvariable id="_activePageLink" type="java.lang.String"-->
 
@@ -52,7 +48,6 @@
     <!--@elvariable id="_logoPathSocial" type="java.lang.String"-->
     <!--@elvariable id="_logoPathBig" type="java.lang.String"-->
     <!--@elvariable id="_logoPathSquare" type="java.lang.String"-->
-    <!--@elvariable id="_uploadedImageFolder" type="java.lang.String"-->
 
 
     <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
@@ -122,7 +117,6 @@
         var _firstByteDate = new Date();
         var _isLoggedIn = '${_isLoggedIn}' == 'true';
         var _isAdmin = '${_isAdmin}' == 'true';
-        var _themeImageFolder = '${_themeImageFolder}';
     </script>
 
 
@@ -171,7 +165,7 @@
     <!-- TODO COLAB-2586: make this configurable -->
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
 
-    <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
+    <link href="/images/favicon.ico" rel="Shortcut Icon" />
     <link rel="image_src" type="image/png" href="${_logoPathBig}" />
     <c:if test="${not empty canonicalUrlRelative}">
         <link rel="canonical" href="${_colabUrl}${canonicalUrlRelative}" />
@@ -217,7 +211,7 @@
         <div class="c-TitleBar c-TitleBar--light">
             <div class="bs-container-fixed c-TitleBar__content">
                 <div class="c-TitleBar__element pl-0">
-                    <img src="${_themeImageFolder}/logo_mit_themed.png" alt="MIT" />
+                    <img src="/images/logo_mit_themed.png" alt="MIT" />
                     <span style="display: inline-block"><!-- Reference for image alignment --></span>
                 </div>
 
@@ -232,7 +226,7 @@
     <xcolab-layout:navbar colabName="${_colabName}" logoPath="${_logoPath}" redirect="${_requestUri}"
                           activePageLink="${_activePageLink}" contestPages="${_contestPages}"
                           member="${_isLoggedIn ? _member : null}" isWhiteBackgound="${_isHomePage}"
-                          isShowIcons="${_navbarShowIcons}" uploadedImageFolder="${_uploadedImageFolder}"
+                          isShowIcons="${_navbarShowIcons}"
                           blogAdminUrl="${_blogAdminUrl}"
                           showLanguage="${_isI18NActive}" showSearch="${_showSearchMenuItem}"
                           languageSelectItems="${_languageSelectItems}" currentLocale="${_currentLocale}"
@@ -267,7 +261,7 @@
 
     <xcolab-layout:footer showProfileLink="${_isLoggedIn}" currentLanguage="${_lang}"
                           languageSelectItems="${_languageSelectItems}"
-                          themeImageFolder="${_themeImageFolder}"
+                          themeImageFolder="/images"
                           showLanguageDropdown="${_isI18NActive}"
                           footerArticleId="${_footerArticleId}" />
 
@@ -283,10 +277,10 @@
             screenName="${_isLoggedIn ? _member.screenName : null}"/>
 
     <c:if test="${_isSharedColab}">
-        <xcolab-modals:ssoLoginModal partnerLogoPath="${_themeImageFolder}/${_partnerColabLogo}"
+        <xcolab-modals:ssoLoginModal partnerLogoPath="/images/${_partnerColabLogo}"
                 show="${_showSsoPopup}" redirect="${_requestUri}"/>
         <xcolab-modals:autoRegistrationModal logoPath="${_logoPath}"
-                partnerLogoPath="${_themeImageFolder}/${_partnerColabLogo}"
+                partnerLogoPath="/images/${_partnerColabLogo}"
                 contestType="${_defaultContestType}"/>
     </c:if>
 
@@ -301,7 +295,7 @@
             </c:when>
             <c:otherwise>
                 <xcolab-modals:postRegistrationModal member="${_member}" redirect="${_requestUri}" />
-                <xcolab:script src="${_themeJsFolder}/postRegistration.js" />
+                <xcolab:script src="/js/postRegistration.js" />
             </c:otherwise>
         </c:choose>
     </c:if>
@@ -319,7 +313,7 @@
         </script>
     </c:if>
 
-    <xcolab:script src="${_themeJsFolder}/postLinkHandler.js"/>
+    <xcolab:script src="/js/postLinkHandler.js"/>
     <xcolab-scripts:loadTooltips />
     <xcolab-scripts:loadMoment locale="${_locale}"/>
 
@@ -354,10 +348,10 @@
     <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="/vendor/spin.js/jquery.spin.js"/>
 
     <!-- TODO COLAB-2545: only used in mitigration impact tab; requires jquery UI -->
-    <xcolab:script src="${_themeJsFolder}/proposals/jquery.scrolltable.js"/>
+    <xcolab:script src="/js/proposals/jquery.scrolltable.js"/>
 
     <!-- AutoSuggest -->
-    <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['autoSuggest']}" href="${_libCssFolder}/autoSuggest.css" />
+    <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['autoSuggest']}" href="/css/lib/autoSuggest.css" />
 
     <!-- Handlebars.js-->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['handlebars.js']}" src="/vendor/handlebars/dist/handlebars.min.js"/>
@@ -373,28 +367,28 @@
             var CKEDITOR_BASEPATH = stripFileNameFromUrl('${encodedCkEditorUrl}');
         </script>
         <xcolab:script src="${encodedCkEditorUrl}" />
-        <xcolab:script src="${_themeJsFolder}/configureCkEditor.js" />
+        <xcolab:script src="/js/configureCkEditor.js" />
     </c:if>
 
 
     <xcolab:loadScript shouldLoad="${_librariesToLoad['papaparse']}" src="/vendor/papaparse/papaparse.min.js" />
 
     <!-- i18n scripts -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['i18n']}" src="${_themeJsFolder}/i18n.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['i18n']}" src="/js/i18n.js" />
 
     <!-- shared colab scripts -->
     <c:if test="${_isSharedColab}">
         <xcolab:requireLibrary name="sharedColab" />
     </c:if>
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['sharedColab']}" src="${_themeJsFolder}/sharedColab.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['sharedColab']}" src="/js/sharedColab.js" />
 
     <!-- Ddslick -->
     <!-- TODO: only used in proposalJuding.jspx - replace? -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="${_libJsFolder}/jquery.ddslick.min.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="/js/lib/jquery.ddslick.min.js" />
 
     <xcolab:loadScript shouldLoad="${_librariesToLoad['clipboard.js']}" src="/vendor/clipboard/dist/clipboard.min.js" />
     
-    <xcolab:script src="${_themeJsFolder}/initScript.js" />
+    <xcolab:script src="/js/initScript.js" />
 
     <!-- ============ Analytics and tracking ============ -->
 
@@ -406,7 +400,7 @@
     </c:if>
 
     <!-- Custom user tracking -->
-    <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
+    <xcolab:script src="/js/usertracking.js" defer="true"/>
 
     <!-- Show update notification to outdated browsers -->
     <xcolab-scripts:browserUpdate />

@@ -18,7 +18,7 @@
         <xcolab:requireLibrary name="spin.js" />
 
         <!--TODO COLAB-2423: we can use this for better formatting -->
-        <!--<xcolab:script src="${_themeJsFolder}/proposals/numeral.min.js"/>-->
+        <!--<xcolab:script src="/js/proposals/numeral.min.js"/>-->
 
         <xcolab:betaDisclaimer>
             <strong>How will this proposal prevent fatalities and damages? </strong>
@@ -69,7 +69,7 @@
                     </th>
                     <th style="width: 20%;">
                         Sub-region
-                        <img src="${_themeImageFolder}/icon-addprop-question-bar.png" width="15" height="15"
+                        <img src="/images/icon-addprop-question-bar.png" width="15" height="15"
                              title="ex: New Delhi, coastal cities in Australia, etc" class="js-Tooltip" />
                     </th>
                     <th style="width: 27.5%;">
@@ -105,11 +105,11 @@
                         </td>
                         <td>
                             <p class="form-control-static" style="display: inline-block;">${category.title} [${category.unit}]</p>
-                            <img src="${_themeImageFolder}/icon-addprop-question-bar.png" width="15" height="15"
+                            <img src="/images/icon-addprop-question-bar.png" width="15" height="15"
                                  title="${category.tooltip}" class="js-Tooltip" style="margin-left: 5px;" />
                             <c:if test="${proposalsPermissions.canEditBasicImpact}">
                                 <a onclick="jQuery(this).closest('.js-Table__row-group').children('.js-Table__row--collapsible').slideToggle()" style="cursor: pointer; margin-left: 7px;" >
-                                    <img alt="edit" height="15" src="${_themeImageFolder}/icon-activity-edit.png"/>
+                                    <img alt="edit" height="15" src="/images/icon-activity-edit.png"/>
                                 </a>
                             </c:if>
                         </td>

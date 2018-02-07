@@ -6,7 +6,7 @@
 		<div class="inner">
 			<div class="c-Headline">
 				<div class="proposal-image">
-                    <img src="${_uploadedImageFolder}/contest/${contestWrapper.contestLogoId}" width="52" height="52" alt="${contestWrapper.contestShortNameWithEndYear }" />
+                    <img src="/image/contest/${contestWrapper.contestLogoId}" width="52" height="52" alt="${contestWrapper.contestShortNameWithEndYear }" />
 				</div>
 				<div class="proposal-title">
 					<h1>${contestWrapper.contestShortNameWithEndYear}</h1>

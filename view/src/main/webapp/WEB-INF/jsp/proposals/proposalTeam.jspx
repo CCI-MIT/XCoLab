@@ -28,7 +28,7 @@
                 </h2>
                 <c:if test="${proposalsDisplayPermissions.canSeeRequestMembershipButton}">
                     <div class="prop-butt-popover">
-                        <img src="${_themeImageFolder}/icon-request-membership.png"
+                        <img src="/images/icon-request-membership.png"
                              width="24" height="22" alt="request membership" class="request-membership-icon"/>
 
 
@@ -51,7 +51,7 @@
                 </c:if>
                 <c:if test="${proposalsPermissions.isTeamMember}">
                     <div class="prop-butt-popover">
-                        <img src="${_themeImageFolder}/icon-request-membership.png"
+                        <img src="/images/icon-request-membership.png"
                              width="24" height="22" alt="request membership" class="request-membership-icon"/>
 
 
@@ -121,7 +121,7 @@
                 <c:if test="${proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton  }">
                     <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?forwardToTab=TEAM&amp;contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
                     <div class="prop-butt">
-                        <img src="${_themeImageFolder}/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
+                        <img src="/images/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
 
                         <button type="button" class="btn btn-primary js-PostLink" data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
                                 rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
@@ -201,6 +201,6 @@
 
         <xcolab:requireLibrary name="autoSuggest" />
         <xcolab:requireLibrary name="jQuery UI" />
-        <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
+        <xcolab:script src="/js/proposals/proposals.js"/>
     </xcolab:layout>
 </jsp:root>

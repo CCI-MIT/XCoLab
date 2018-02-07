@@ -6,7 +6,7 @@
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Admin">
-        <xcolab:script src="${_themeJsFolder}/proposals/copyProposalWidget.js"/>
+        <xcolab:script src="/js/proposals/copyProposalWidget.js"/>
 
         <!--@elvariable id="availableRibbons" type="java.util.List<org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType>"-->
         <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->

@@ -31,7 +31,7 @@
                 <label>
                     <strong>Title</strong>
                     <a class="helpTrigger" href="javascript:;"><img
-                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">Two to five words very broadly describing the contest topic, such as
@@ -73,7 +73,7 @@
                 <label>
                     <strong>Question</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">The key question to be answered through the contest. The most successful
@@ -154,7 +154,7 @@
                 <label>
                     <strong>Description</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address
@@ -183,7 +183,7 @@
                 <label>
                     <strong>Proposal template</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">Select the proposal template associated with your contest. Templates hold the
@@ -207,7 +207,7 @@
                 <label>
                     <strong>Schedule template</strong>
                     <a href="javascript:;" class="helpTrigger">
-                        <img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/>
+                        <img src="/images/icon-addprop-question.png" width="15" height="15"/>
                     </a><br/>
                 </label>
 

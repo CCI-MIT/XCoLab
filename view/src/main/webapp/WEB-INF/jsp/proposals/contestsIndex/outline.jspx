@@ -104,7 +104,7 @@
 				<c:choose>
 					<c:when test="${showActiveContests }">
 						<span class="otherContestsCount prior">
-						<img src="${_themeImageFolder}/contests-archive.png" height='20px' />&amp;nbsp;
+						<img src="/images/contests-archive.png" height='20px' />&amp;nbsp;
 						If you select
 							<a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" class='showOtherContestsLink' >prior contests</a>,
 					

@@ -33,11 +33,11 @@
                     onclick="if(!deferUntilLogin(this)) return false;">
                 <c:choose>
                     <c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
-                        <img src="${_themeImageFolder}/subscribe-light.png" />
+                        <img src="/images/subscribe-light.png" />
                         <spring:message code="contests.details.subscribe" />
                     </c:when>
                     <c:otherwise>
-                        <img src="${_themeImageFolder}/unsubscribe-light.png" />
+                        <img src="/images/unsubscribe-light.png" />
                         <spring:message code="contests.details.unsubscribe" />
                     </c:otherwise>
                 </c:choose>

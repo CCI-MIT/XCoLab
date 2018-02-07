@@ -56,7 +56,7 @@
 	    </c:when>
 	    <c:otherwise>
             <div id="archivedContestsMarkerContainer">
-                <img src="${_themeImageFolder}/contests-archive.png" />
+                <img src="/images/contests-archive.png" />
                 <strong>Archived:</strong>&#160;You are currently viewing completed ${contestType.contestNamePlural}.&#160; <a href="${contestType.contestBaseUrl}" >Back to active ${contestType.contestNamePlural}</a>
             </div>
 		</c:otherwise>

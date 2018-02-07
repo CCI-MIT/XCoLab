@@ -65,7 +65,7 @@
 
 							<c:if test="${not empty section.helpText}">
 							<a class="helpTrigger" href="javascript:;">
-								<img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" />
+								<img src="/images/icon-addprop-question.png" width="15" height="15" />
 							</a>
 							</c:if>
 							<br />

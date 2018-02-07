@@ -23,31 +23,23 @@ public enum ColabTheme {
     }
 
     public String getLogoPath() {
-        return getImagePath() + "/" + themeName + "-logo.png";
+        return "/images/" + themeName + "-logo.png";
     }
 
     public String getLogoPathSocial() {
-        return getImagePath() + "/" + themeName + "-logo-sketchy.png";
+        return "/images/" + themeName + "-logo-sketchy.png";
     }
 
     public String getLogoPathBig() {
-        return getImagePath() + "/" + themeName + "-logo-big.png";
+        return "/images/" + themeName + "-logo-big.png";
     }
 
     public String getLogoPathSquare() {
-        return getImagePath() + "/" + themeName + "-logo-square.png";
+        return "/images/" + themeName + "-logo-square.png";
     }
 
     public String getCssPath() {
         return "/css/themes/" + themeName;
-    }
-
-    public String getJsPath() {
-        return "/js";
-    }
-
-    public String getImagePath() {
-        return "/images";
     }
 
     public String getOverrideImagePath() {
