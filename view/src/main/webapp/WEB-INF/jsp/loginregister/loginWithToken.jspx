@@ -1,9 +1,9 @@
-<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:layout="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:jsp="http://java.sun.com/JSP/Page">
+          xmlns:form="http://www.springframework.org/tags/form">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
-<!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 <layout:layout title="Login link">
     <h2>Login with unique link</h2>
@@ -17,8 +17,7 @@
                     You clicked a unique login link. Click the "Log in" button below to complete the login.
                 </div>
 
-                <form action="/login/token/${tokenId}" method="post">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <form:form action="/login/token/${tokenId}" method="post">
                     <input type="hidden" name="tokenKey" value="${tokenKey}" />
                     <div class="form-check">
                         <input type="checkbox" id="remember-me" name="remember-me" checked="checked" class="form-check-input" />
@@ -37,17 +36,16 @@
                              title="If you are using a public computer, check this box to prevent others from being able to use your login." />
                     </div>
                     <button type="submit" class="btn btn-primary">Log in</button>
-                </form>
+                </form:form>
             </c:when>
             <c:when test="${isExpired}">
                 <div class="c-Alert c-Alert__danger">
                     Your login link has expired!
                 </div>
-                <form action="/login/token/${tokenId}" method="post">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <form:form action="/login/token/${tokenId}" method="post">
                     <input type="hidden" name="tokenKey" value="${tokenKey}" />
                     <button type="submit" class="btn btn-primary">Send new link</button>
-                </form>
+                </form:form>
             </c:when>
             <c:otherwise>
                 <div class="c-Alert c-Alert__danger">

@@ -27,7 +27,6 @@
             <div class="judging_left">
                 <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
                            commandName="fellowProposalScreeningBean">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="addpropbox">
                         <h3>Advance ${contestType.proposalName} to Judges for Review?</h3>
 

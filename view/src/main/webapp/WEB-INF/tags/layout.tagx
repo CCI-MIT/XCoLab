@@ -98,7 +98,7 @@
     <!--@elvariable id="__alertMessage" type="org.xcolab.view.util.entity.flash.AlertMessage"-->
     <!--@elvariable id="__analyticsAttribute" type="org.xcolab.view.util.entity.flash.AnalyticsAttribute"-->
 
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken"-->
 
     <fmt:setLocale value="${_locale}" />
     <fmt:setTimeZone value="${_defaultTimeZone}" />
@@ -117,6 +117,11 @@
         var _firstByteDate = new Date();
         var _isLoggedIn = '${_isLoggedIn}' == 'true';
         var _isAdmin = '${_isAdmin}' == 'true';
+        var _csrf = {
+            token: '${_csrf.token}',
+            parameterName: '${_csrf.parameterName}',
+            headerName: '${_csrf.headerName}'
+        }
     </script>
 
 
@@ -137,9 +142,6 @@
 
     <meta content="${not empty description ? description : _metaPageDescription}" lang="en-US" name="description" />
     <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
-
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
     <c:if test="${!_isProduction}">
         <!-- Prevent indexing of non-production sites -->
@@ -241,9 +243,7 @@
     <script>
         $.ajaxSetup({
             beforeSend: function(xhr) {
-                var token = $("meta[name='_csrf']").attr("content");
-                var header = $("meta[name='_csrf_header']").attr("content");
-                xhr.setRequestHeader(header, token);
+                xhr.setRequestHeader(window._csrf.headerName, window._csrf.token);
             }
         })
     </script>

@@ -14,7 +14,6 @@
 	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
     <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
     <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.members.pojo.MemberCategory>"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
     <!--@elvariable id="_isGoogleSsoActive" type="java.lang.Boolean"-->
     <!--@elvariable id="_isFacebookSsoActive" type="java.lang.Boolean"-->
 
@@ -387,10 +386,9 @@
 				<tr class="colabRow">
 					<td class="actionColumn">
                         <spring:message code="profile.account.delete.question" arguments="${_colabName}" var="deleteMsg"/>
-						<form action="${deleteProfileUrl}" method="post" onsubmit="confirm('${deleteMsg}')">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						<form:form action="${deleteProfileUrl}" method="post" onsubmit="confirm('${deleteMsg}')">
 							<button type="submit" class="btn btn-gray btn-sm"><spring:message code="profile.account.delete.button"/></button>
-						</form>
+						</form:form>
 					</td>
                     <td>
                         <spring:message code="profile.account.delete.message" arguments="${_colabName}"/>

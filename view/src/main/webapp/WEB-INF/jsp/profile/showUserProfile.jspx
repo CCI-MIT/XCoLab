@@ -10,7 +10,6 @@
 <!--@elvariable id="permissions" type="org.xcolab.view.pages.profile.utils.UserProfilePermissions"-->
 <!--@elvariable id="userBean" type="org.xcolab.view.pages.profile.beans.UserBean"-->
 <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
-<!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 <!-- SNP -->
 <!--@elvariable id="isSnpActive" type="java.lang.Boolean"-->
@@ -304,8 +303,7 @@
                             </script>
                         </c:when>
                         <c:otherwise>
-                            <form action="/snp/socialnetworkprize" method="post">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <form:form action="/snp/socialnetworkprize" method="post">
                                 <div class="form-check">
                                     <input type="checkbox" name="acceptTos" class="form-check-input" id="acceptTos"/>
                                     <label class="form-check-label" for="acceptTos">
@@ -315,7 +313,7 @@
                                 <input type="hidden" name="redirect" value="${currentUserProfile.user.profileLinkUrl}" />
                                 <input type="hidden" name="email" value="${userBean.emailStored}" />
                                 <button type="submit" class="btn btn-primary btn-sm">Generate link</button>
-                            </form>
+                            </form:form>
                         </c:otherwise>
                     </c:choose>
                 </div>

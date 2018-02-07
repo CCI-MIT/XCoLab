@@ -1,14 +1,14 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
+
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
     <!--@elvariable id="_colabName" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
 
     <!--@elvariable id="__errorMessage" type="org.xcolab.view.util.entity.flash.ErrorMessage"-->
-
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <h1 style="padding-left: 20px;">
     Welcome to the ${_colabName}!</h1>
@@ -28,8 +28,7 @@
                     <div class="c-Alert__danger">${__errorMessage.message}</div>
                 </c:if>
                 <div class="c-Header__login__box" style="margin: 15px auto 0 auto;">
-                    <form id="signInFormPopup" method="post" action="/sso/registerOrLogin">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <form:form id="signInFormPopup" method="post" action="/sso/registerOrLogin">
                         <div class="form-group">
                             <input name="login" type="text" class="form-control" placeholder="username or email address" />
                         </div>
@@ -44,7 +43,7 @@
                             </em>
                         </div>
                         <input name="submit" type="submit" class="btn btn-primary" value="LOGIN" id="loginPopupTopSubmit" />
-                    </form>
+                    </form:form>
                 </div>
             </td>
             <td style="width:50%; padding: 0 20px;">

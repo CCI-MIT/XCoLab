@@ -1,10 +1,10 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:spring="http://www.springframework.org/tags">
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <xcolab:layout>
         <jsp:directive.include file="init.jspx"/>
@@ -27,8 +27,7 @@
         <div class="addthread">
             <div class="c-Comment__new">
                 <c:set var="addCategoryUrl" value="/discussion/category/createCategory" />
-                <form id="addThreadForm" action="${addCategoryUrl }" method="post">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <form:form id="addThreadForm" action="${addCategoryUrl }" method="post">
                     <div>
                         <label><spring:message code="discussion.categoryadd.form.title"/><br />
                             <input class="form-control" name="title" maxlength="255" style="width:660px;" type="text" value="" />
@@ -44,7 +43,7 @@
                         <input type="submit" class="btn btn-primary" value="${addDisc}" />
                         <a class="btn btn-gray" href="/discussion"><spring:message code="discussion.categoryadd.form.buttons.cancel"/></a>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
      </div>

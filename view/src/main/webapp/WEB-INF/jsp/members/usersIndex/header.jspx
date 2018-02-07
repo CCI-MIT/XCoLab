@@ -4,7 +4,6 @@
           xmlns:form="http://www.springframework.org/tags/form">
 
     <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">

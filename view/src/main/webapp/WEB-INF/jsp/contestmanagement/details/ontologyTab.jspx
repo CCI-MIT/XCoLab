@@ -1,13 +1,13 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 
 	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
     <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
@@ -18,10 +18,9 @@
 
 		<p>Each contest on the Climate CoLab has a place inside of our climate change taxonomy, which we use to organize and help people easily locate contests.  Please select where your contest falls in each of the four dimensions below.  If you have questions about where your contest best fits, please submit a comment below for the Climate CoLab team.</p>
 
-		<form action="${updateContestOntologyURL }" id="editForm" method="post">
+		<form:form action="${updateContestOntologyURL }" id="editForm" method="post">
 			<input type="hidden" name="selectedOntologyTerms" id="selectedOntologyTerms"/>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		</form>
+		</form:form>
 
 		<h2>Contest ontology</h2>
 		<div class="contest-outline-left">

@@ -17,8 +17,8 @@ $(function() {
 
         // Add a CSRF token as an input field to the form.
         var csrfInput = document.createElement("input");
-        csrfInput.value = $("meta[name='_csrf']").attr("content");
-        csrfInput.name = '_csrf';
+        csrfInput.value = window._csrf.token;
+        csrfInput.name = window._csrf.parameterName;
         csrfInput.type = 'hidden';
         form.appendChild(csrfInput);
 

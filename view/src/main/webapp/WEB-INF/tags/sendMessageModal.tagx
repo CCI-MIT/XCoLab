@@ -1,7 +1,8 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
 
     <jsp:directive.attribute name="recipient" type="org.xcolab.client.members.pojo.Member" required="false" rtexprvalue="true" description="Recipient"/>
     <jsp:directive.attribute name="replyToMessage" type="org.xcolab.view.pages.messaging.beans.MessageBean" required="false" rtexprvalue="true" description="Message to reply to"/>
@@ -9,7 +10,6 @@
     <jsp:directive.attribute name="subject" type="java.lang.String" required="false" rtexprvalue="true" description="Pre-filled subject"/>
     <jsp:directive.attribute name="content" type="java.lang.String" required="false" rtexprvalue="true" description="Pre-filled content"/>
 
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <c:set var="showRecipients" value="${empty recipient and empty replyToMessage}"/>
 
@@ -17,9 +17,8 @@
 
     <xcolab:modal modalId="sendMessageModal" size="lg"
                   title="${not empty recipient ? sendMessageModalTitle : ''}">
-        <form method="post" id="messageForm" action="/messaging/sendMessage"
+        <form:form method="post" id="messageForm" action="/messaging/sendMessage"
               onSubmit="checkMessageForm(${showRecipients});">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="modal-body">
                 <c:choose>
                     <c:when test="${not empty recipient}">
@@ -65,7 +64,7 @@
                 <button type="close" class="btn btn-gray" data-dismiss="modal"><spring:message code="message.modal.buttons.cancel"/></button>
                 <button type="submit" class="btn btn-primary"><spring:message code="message.modal.buttons.send"/></button>
             </div>
-        </form>
+        </form:form>
     </xcolab:modal>
 
     <spring:message code="message.modal.buttons.notification.selectrecepient" var="selectRecipients"/>

@@ -21,7 +21,6 @@
     <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="Redirect URL for registration link" />
     <!--@elvariable id="contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <div class="${isWhiteBackgound ? 'bg-white' : 'bg-tan cb-bg-noise'} border-bottom border-medium">
         <div class="cb-container-fixed">
