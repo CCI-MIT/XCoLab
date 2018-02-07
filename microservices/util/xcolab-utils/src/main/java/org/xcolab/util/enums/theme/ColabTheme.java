@@ -5,7 +5,6 @@ import org.apache.commons.text.WordUtils;
 
 public enum ColabTheme {
     CLIMATE_COLAB,
-    SOLVE_COLAB,
     CROWDSENSOR,
     RESILIENCE_DIALOGUES,
     CLIMATE_RISKS_COLAB;
