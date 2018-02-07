@@ -276,28 +276,13 @@
     <xcolab-modals:forgotPasswordModal show="${_showPasswordResetPopup}" redirect="${_requestUri}"
             screenName="${_isLoggedIn ? _member.screenName : null}"/>
 
-    <c:if test="${_isSharedColab}">
-        <xcolab-modals:ssoLoginModal partnerLogoPath="/images/${_partnerColabLogo}"
-                show="${_showSsoPopup}" redirect="${_requestUri}"/>
-        <xcolab-modals:autoRegistrationModal logoPath="${_logoPath}"
-                partnerLogoPath="/images/${_partnerColabLogo}"
-                contestType="${_defaultContestType}"/>
-    </c:if>
-
     <xcolab-modals:flaggingModal />
 
     <!-- TODO COLAB-2172: rework as part of SSO improvements -->
     <!-- post registration popup -->
     <c:if test='${request.getParameter("postRegistration")}'>
-        <c:choose>
-            <c:when test="${_isSharedColab}">
-                <xcolab-modals:postRegistrationSsoModal />
-            </c:when>
-            <c:otherwise>
-                <xcolab-modals:postRegistrationModal member="${_member}" redirect="${_requestUri}" />
-                <xcolab:script src="/js/postRegistration.js" />
-            </c:otherwise>
-        </c:choose>
+        <xcolab-modals:postRegistrationModal member="${_member}" redirect="${_requestUri}" />
+        <xcolab:script src="/js/postRegistration.js" />
     </c:if>
 
 
@@ -375,12 +360,6 @@
 
     <!-- i18n scripts -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['i18n']}" src="/js/i18n.js" />
-
-    <!-- shared colab scripts -->
-    <c:if test="${_isSharedColab}">
-        <xcolab:requireLibrary name="sharedColab" />
-    </c:if>
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['sharedColab']}" src="/js/sharedColab.js" />
 
     <!-- Ddslick -->
     <!-- TODO: only used in proposalJuding.jspx - replace? -->

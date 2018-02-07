@@ -51,32 +51,11 @@
                 <c:if test="${proposalsDisplayPermissions.canSeeCreateProposalButton}">
                     <c:set var="createProposalURL" value="${contest.newProposalLinkUrl}"/>
                 </c:if>
-                <c:choose>
-                    <c:when test="${contest.isSharedContest}">
-                        <script>
-                            function handleOnClickAtSupportBtn(event){
-                                return showSharedContestAutoRegPopUp(function(ref){
-                                    if(deferUntilLoginTargeted()){
-                                        window.location = "${createProposalURL}";
-                                    }
-
-                                },${contest.contestPK });
-                            }
-                        </script>
-                    </c:when>
-                    <c:otherwise>
-                        <script>
-                            function handleOnClickAtSupportBtn(){
-                                return deferUntilLoginTargeted('${createProposalURL}');
-                            }
-                        </script>
-                    </c:otherwise>
-                </c:choose>
 
                 <div class="right">
                     <c:if test="${proposalsDisplayPermissions.canSeeCreateProposalButton}">
                         <a class="btn ${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'btn-admin'}" rel="nofollow" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
-                           onclick="if(!handleOnClickAtSupportBtn()) return false;">
+                           onclick="if(!deferUntilLogin()) return false;">
                             ${contestType.creationPrompt}
                         </a>
                     </c:if>
