@@ -84,7 +84,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item cb-nav-item-image dropdown cb-dropdown-inverse">
-                                    <a id="user-dropdown" class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown">
+                                    <a id="user-dropdown" class="nav-link dropdown-toggle" data-toggle="dropdown">
                                         <img src="/image/member/${member.portraitId}" alt="${member.screenName}" />
                                         <span class="caret"><!-- --></span>
                                         <c:if test="${member.unreadMessageCount > 0}">
