@@ -39,17 +39,18 @@ $p-homepage__join__imageUrl: none !default;
   width: 100%;
 }
 
-//TODO: deprecated; remove from homespot on climatecolab.org and then remove here
-.topshade {
-  display: none;
-}
-
 //TODO: legacy for climate colab
 .earth {
   background: url(/images/homespot/earth.png) no-repeat 500px top;
   background-size: contain;
   width: 100%;
   min-height: 336px;
+}
+
+.mitproject {
+  background: url(/images/logo_mit_themed.png) no-repeat;
+  padding-left: 90px;
+  margin-bottom: 5px;
 }
 
 .homespot-left {
@@ -358,12 +359,6 @@ a.join {
 .home h2 span {
   font-size: 15px;
   padding-left: 5px;
-}
-
-.rss {
-  float: right;
-  margin-right: 30px;
-  width: 20px;
 }
 
 .p-Homepage__activitybox__comment {
