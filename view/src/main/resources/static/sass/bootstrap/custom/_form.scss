@@ -1,6 +1,7 @@
 @import "../../variables/t-base";
 
-.bs-form-control-inline {
+//TODO COLAB-2576: This might no longer be necessary
+.cb-form-control-inline {
 
   @media (min-width: 768px) {
     &.form-control {
@@ -9,49 +10,25 @@
       vertical-align: middle;
     }
 
-    &.bs-form-control--xs {
+    &.cb-form-control-xs {
       width: 50px;
     }
 
-    &.bs-form-control--sm {
+    &.cb-form-control-sm {
       width: 200px;
     }
 
-    &.bs-form-control--md {
+    &.cb-form-control-md {
       width: 300px;
     }
 
-    &.bs-form-control--lg {
+    &.cb-form-control-lg {
       width: 400px;
     }
   }
 }
 
-@media (min-width: 768px) {
-  .bs-form--alignLeft.form-horizontal .control-label {
-    text-align: left;
-  }
-}
-
-.form-control[disabled],
-.form-control[readonly],
-fieldset[disabled] .form-control {
-  background-color: #f8f8f8;
-}
-
-@media (min-width: 768px) {
-  .bs-form--lg {
-    .form-group {
-      margin-bottom: 25px;
-    }
-  }
-
-  .bs-form-group--lg.form-group {
-    margin-bottom: 25px;
-  }
-}
-
-.form-control.bs-form-has-error {
+.form-control.cb-form-has-error {
   border-color: #a94442;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 

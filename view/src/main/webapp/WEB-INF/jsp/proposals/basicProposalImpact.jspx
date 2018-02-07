@@ -81,7 +81,7 @@
 
         <script id="impactSeriesSaveButtonTemplate" type="text/x-handlebars-template">
             <button type="button" id="impact-edit-save-button"
-                    class="btn btn-primary-darkest btn-xs">
+                    class="btn btn-primary-darkest cb-btn-xs">
                 Save
             </button>
             <span class="spinner-area">&#160;</span>
@@ -238,7 +238,7 @@
                         </div>
 
                 <c:if test="${proposalsPermissions.canIAFActions or proposalsPermissions.canAdminAll}">
-                    <button type="button" class="btn btn-primary-darkest btn-xs" id="upload-impact-data-toggle">
+                    <button type="button" class="btn btn-primary-darkest cb-btn-xs" id="upload-impact-data-toggle">
                         Upload data from a spreadsheet
                     </button>
                     <div class="clearfix"><!-- --></div>
@@ -287,11 +287,11 @@
                     </div>
 
                     <div>
-                        <button type="button" class="btn btn-primary-darkest btn-xs" id="impact-edit-save-commnent-button">
+                        <button type="button" class="btn btn-primary-darkest cb-btn-xs" id="impact-edit-save-commnent-button">
                             Save and close
                         </button>
 
-                        <button type="button" class="btn btn-primary-darkest btn-xs" id="impact-edit-discard-commnent-button">
+                        <button type="button" class="btn btn-primary-darkest cb-btn-xs" id="impact-edit-discard-commnent-button">
                             Discard and close
                         </button>
                         <span class="spinner-area">&#160;</span>

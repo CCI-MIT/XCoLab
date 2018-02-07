@@ -23,7 +23,7 @@
 
                                     <form:form action="${voteOnProposalURL}" method="post">
                                         <c:if test="${proposalsDisplayPermissions.canSeeVoteButton and contest.maxVotesPerProposal > 1}">
-                                            <input name="voteValue" class="form-control bs-form-control-inline bs-form-control--xs"
+                                            <input name="voteValue" class="form-control cb-form-control-inline cb-form-control-xs"
                                                    type="number" min="1" max="${contest.maxVotesPerProposal}" value="1"/>
                                         </c:if>
                                         <button class="btn btn-primary" type="submit"

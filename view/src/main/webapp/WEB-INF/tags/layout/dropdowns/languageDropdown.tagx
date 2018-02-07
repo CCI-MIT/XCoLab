@@ -10,7 +10,7 @@
 
     <xcolab:requireLibrary  name="i18n"/>
 
-    <ul class="dropdown-menu dropdown-menu-right bs-dropdown-box text-nowrap">
+    <ul class="dropdown-menu dropdown-menu-right cb-dropdown-box text-nowrap">
 
         <form>
         <c:forEach var="lang" items="${languageSelectItems}">

@@ -44,13 +44,13 @@
             <div class="edit-prop-wrap">
                 <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
                     <xcolab:proposalLink proposal="${proposal}" text="Go to current"
-                                         cssClass="btn btn-primary-darkest btn-xs" />
+                                         cssClass="btn btn-primary-darkest cb-btn-xs" />
                 </c:if>
 
 
                 <div>
                     <button id="versionContainerTrigger" onclick="triggerHistoryVisibility();"
-                            class="btn btn-primary-darkest btn-xs">
+                            class="btn btn-primary-darkest cb-btn-xs">
                         ${textShowHistory}
                     </button>
                     <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
@@ -58,7 +58,7 @@
 
                 <c:if test="${not proposal.isLatestVersion}">
                     <c:set var="proposalRevertURL" value="${proposal.proposalUrl}/proposalRevert" />
-                    <button type="button" class="btn btn-primary-darkest btn-xs" data-url="${proposalRevertURL}">
+                    <button type="button" class="btn btn-primary-darkest cb-btn-xs" data-url="${proposalRevertURL}">
                         Revert
                     </button>
                 </c:if>

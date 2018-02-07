@@ -87,7 +87,7 @@
                                         </c:choose>
                                     </c:forEach>
                                 </select>
-                                <button class="btn btn-admin ml-2" type="submit">Save</button>
+                                <button class="btn cb-btn-admin ml-2" type="submit">Save</button>
                             </form:form>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                                   id="deleteProposalForm">
                                 <input type="hidden" name="${_csrf.parameterName}"
                                        value="${_csrf.token}"/>
-                                <button type="button" class="btn ${proposalsPermissions.isPlanEditable ? 'btn-primary' : 'btn-admin'}"
+                                <button type="button" class="btn ${proposalsPermissions.isPlanEditable ? 'btn-primary' : 'cb-btn-admin'}"
                                    onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; } jQuery('#deleteProposalForm').submit();">
                                     DELETE ${contestType.proposalName}
                                 </button>
@@ -127,7 +127,7 @@
                         <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                             <strong>Promote ${contestType.proposalName} to latest ${contestType.contestName} phase</strong>
                             <div>
-                                <button type="submit" class="btn btn-admin">
+                                <button type="submit" class="btn cb-btn-admin">
                                     Promote ${contestType.proposalName}
                                 </button>
                             </div>
@@ -140,7 +140,7 @@
                     <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                         <strong>Move ${contestType.proposalName} to different ${contestType.contestName}</strong>
                         <div>
-                            <a class="btn ${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'btn-admin'}" href="javascript:;" rel="nofollow"
+                            <a class="btn ${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}" href="javascript:;" rel="nofollow"
                                onclick="if(!deferUntilLogin()){return false;
 } showCopyProposalPopup('MOVE_PERMANENTLY')">
                                 <span>Move</span> this ${contestType.proposalName}
