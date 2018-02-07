@@ -212,6 +212,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // Default handler is defined in application.yml
         addThemeImageResourceResolvers(registry);
     }
 
