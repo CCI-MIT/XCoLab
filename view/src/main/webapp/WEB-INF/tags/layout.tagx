@@ -182,7 +182,7 @@
     <c:if test="${!_isProduction}">
         <div class="c-TitleBar__container">
             <div class="c-TitleBar c-TitleBar--warning c-TitleBar--fixed">
-                <div class="bs-container-fixed c-TitleBar__content">
+                <div class="cb-container-fixed c-TitleBar__content">
                     <div class="c-TitleBar__element pl-0">
                         You are currently on a <b>test server</b>. Content on this server is for testing only and may be deleted at any time.
                     </div>
@@ -195,7 +195,7 @@
 
     <c:if test="${_showImpersonationBar}">
         <div class="c-TitleBar">
-            <div class="bs-container-fixed c-TitleBar__content">
+            <div class="cb-container-fixed c-TitleBar__content">
                 <div class="c-TitleBar__element pl-0">
                     Impersonating member ${_member.screenName} (Logged in as ${_realMember.screenName})
                 </div>
@@ -209,7 +209,7 @@
 
     <c:if test="${_mitHeaderBarShow}">
         <div class="c-TitleBar c-TitleBar--light">
-            <div class="bs-container-fixed c-TitleBar__content">
+            <div class="cb-container-fixed c-TitleBar__content">
                 <div class="c-TitleBar__element pl-0">
                     <img src="/images/logo_mit_themed.png" alt="MIT" />
                     <span style="display: inline-block"><!-- Reference for image alignment --></span>
@@ -251,7 +251,7 @@
 
     <!-- ============ Content ============ -->
 
-    <main class="bs-container-fixed clearfix" id="content">
+    <main class="cb-container-fixed clearfix" id="content">
         <!-- Include page body -->
         <jsp:doBody/>
     </main>

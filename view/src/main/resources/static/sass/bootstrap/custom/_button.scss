@@ -7,12 +7,12 @@
 }
 
 
-//= New button colors
-.btn-admin {
+//= New button variants
+.cb-btn-admin {
   @include button-variant($t-Color__primary, $t-Color__accent);
 }
 
-.btn-outline-admin {
+.cb-btn-outline-admin {
   @extend .btn-outline-primary;
   &, &:hover {
     border-color: $t-Color__accent;
@@ -20,7 +20,7 @@
 }
 
 //= New button sizes
-.btn-xs {
+.cb-btn-xs {
   padding: 0.1875rem 0.4rem;
   line-height: 1.25;
   font-weight: $t-Typography__fontWeight;

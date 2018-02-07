@@ -28,7 +28,7 @@
             This page is shared by ${contestType.contestName} Fellows only.  Advisors and Judges will not be able to view this page.
             <br/>
             <div style="display: inline-block;	float:right; margin-top: 20px;">
-                <a href="#" class="btn btn-admin" style="font-size: 18px;" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
+                <a href="#" class="btn cb-btn-admin" style="font-size: 18px;" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
             </div>
             <h1 style="margin-top:15px;">Rating</h1>
 

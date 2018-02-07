@@ -45,7 +45,7 @@
                     </div>
 					<div class="clearfix"><!--  --></div>
 					<div class="addpropInputContainer">
-						<form:input path="contestUrlName" id="contestUrlName" cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
+						<form:input path="contestUrlName" id="contestUrlName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="c-Alert c-Alert__error" path="contestUrlName"/>
@@ -73,7 +73,7 @@
                     </div>
 					<div class="clearfix"><!--  --></div>
 					<div class="addpropInputContainer">
-						<form:input path="contestYear" id="contestYear" cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
+						<form:input path="contestYear" id="contestYear" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="c-Alert c-Alert__error" path="contestYear"/>
@@ -95,7 +95,7 @@
 					<div class="addprophelp">The corresponding wiki template URL</div>
 					<div class="clearfix"><!--  --></div>
 					<div class="addpropInputContainer">
-						<form:input path="emailTemplateUrl" id="emailTemplateUrl" cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
+						<form:input path="emailTemplateUrl" id="emailTemplateUrl" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="c-Alert c-Alert__error" path="emailTemplateUrl"/>
@@ -119,7 +119,7 @@
 					</div>
 					<div class="clearfix"><!-- --></div>
 					<div class="addpropInputContainer">
-						<form:select path="contestTier" cssClass="form-control" cssErrorClass="form-control bs-form-has-error">
+						<form:select path="contestTier" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
 							<form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
 						</form:select>
 
@@ -142,7 +142,7 @@
 					</div>
 					<div class="clearfix"><!-- --></div>
 					<div class="addpropInputContainer">
-						<form:select path="hideRibbons" cssClass="form-control" cssErrorClass="form-control bs-form-has-error">
+						<form:select path="hideRibbons" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
 							<form:option value="true" label="hide" />
 							<form:option value="false" label="show" />
 						</form:select>
@@ -172,7 +172,7 @@
 									<span class="floatLeft">Default model (please reload page if selection is empty)</span>
 								</td>
 								<td>
-									<form:select path="contestModelSettings.defaultModelId" cssClass="form-control" cssErrorClass="form-control bs-form-has-error">
+									<form:select path="contestModelSettings.defaultModelId" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
 										<form:option value="" label="None"/>
 										<form:options items="${modelIdsSelectionItems}" itemValue="value"
 													  itemLabel="lable"/>
@@ -192,7 +192,7 @@
 								</td>
 								<td>
 									<form:select path="contestModelSettings.otherModelIds" multiple="true" size="10"
-                                                 cssClass="multi form-control" cssErrorClass="form-control bs-form-has-error">
+                                                 cssClass="multi form-control" cssErrorClass="form-control cb-form-has-error">
 										<form:options items="${modelIdsSelectionItems}" itemValue="value"
 													  itemLabel="lable"/>
 									</form:select>
@@ -207,7 +207,7 @@
 									<span class="floatLeft">Model region (considered for regional models only)</span>
 								</td>
 								<td>
-									<form:select path="contestModelSettings.modelRegion" cssClass="form-control" cssErrorClass="form-control bs-form-has-error">
+									<form:select path="contestModelSettings.modelRegion" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
 										<form:option value="" label="None"/>
 										<form:options items="${modelRegionsSelectionItems}" itemValue="value"
 													  itemLabel="lable"/>
@@ -232,7 +232,7 @@
 					<div class="addprophelp">Select the type of this contest. Types determine the name of the contest-entity and the proposal-entities and where they will appear. If you have a question about which type to select, please submit a comment below for the CoLab team.</div>
 					<div class="clearfix"><!-- --></div>
 					<div class="addpropInputContainer">
-						<form:select path="contestType" cssClass="form-control" cssErrorClass="form-control bs-form-has-error">
+						<form:select path="contestType" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
 							<form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
 						</form:select>
 						<div class="reg_errors"><!--  -->

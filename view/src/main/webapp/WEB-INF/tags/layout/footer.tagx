@@ -14,7 +14,7 @@
 
     <div id="c-Footer" class="clearfix">
         <div id="c-Footer__menu">
-            <div class="bs-container-fixed d-flex align-items-center">
+            <div class="cb-container-fixed d-flex align-items-center">
                 <nav>
                     <ul class="nav">
                         <li class="nav-item">
@@ -50,7 +50,7 @@
                             </c:otherwise>
                         </c:choose>
                         <c:if test="${showLanguageDropdown}">
-                            <li class="nav-item dropup bs-dropdown-inverse">
+                            <li class="nav-item dropup cb-dropdown-inverse">
                                 <a data-toggle="dropdown" class="nav-link dropdown-trigger">
                                     <img src="${themeImageFolder}/footer-language-button.png"/>&#160;
                                     <spring:message code="homepage.menu.visitor.language" />
@@ -73,7 +73,7 @@
         </div> <!-- #c-Footer__menu -->
 
         
-        <footer class="bs-container-fixed">
+        <footer class="cb-container-fixed">
             <!-- footer content -->
             <xcolab:content articleId="${footerArticleId}"/>
         </footer>

@@ -278,7 +278,7 @@
     </xcolab:modal>
 
     <div class="c-ControlsOverlay">
-        <div class="bs-container-fixed">
+        <div class="cb-container-fixed">
             <div class="float-left d-none d-lg-block">
                 Don't forget to save your work!
                 <c:if test="${not empty saveHelpText}">
