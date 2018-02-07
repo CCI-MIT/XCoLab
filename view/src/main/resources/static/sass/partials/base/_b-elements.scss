@@ -13,6 +13,7 @@ table, tbody, tfoot, thead, tr, th, td {
   word-break: normal !important;
 }
 
+//= Defaults for tables
 table {
   width: 100%;
 }
@@ -24,4 +25,31 @@ td {
 td, th {
   text-align: left;
   line-height: normal;
+}
+
+//= Defaults for lists
+ol, ul {
+  margin-left: 0;
+
+  .cke_editable & {
+    margin-left: 15px;
+  }
+}
+
+ol li {
+  margin-left: 20px;
+}
+
+ul li {
+  margin-left: 11px;
+}
+
+//= Defaults for images
+img {
+  max-width: 100%;
+
+  &.media-object {
+    // compatibility with bootstrap media object
+    max-width: initial;
+  }
 }

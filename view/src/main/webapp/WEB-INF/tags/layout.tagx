@@ -40,7 +40,7 @@
     <!--@elvariable id="_realMember" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
 
-    <!--@elvariable id="_themeCssFolder" type="java.lang.String"-->
+    <!--@elvariable id="_themeStylesheetPath" type="java.lang.String"-->
     <!--@elvariable id="_languageSelectItems" type="java.lang.String"-->
     <!--@elvariable id="_activePageLink" type="java.lang.String"-->
 
@@ -130,7 +130,7 @@
 
     <!-- ============ Stylesheets ============ -->
 
-    <xcolab:stylesheet href="${_themeCssFolder}/main.css" />
+    <xcolab:stylesheet href="${_themeStylesheetPath}" />
 
 
     <!-- ============ META CONTENT ============ -->

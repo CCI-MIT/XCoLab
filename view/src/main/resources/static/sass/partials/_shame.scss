@@ -10,11 +10,6 @@
   margin: 0 30px 0 0;
 }
 
-//TODO: is this used? Improve name/scope
-//.disabled {
-//  opacity: 0.3;
-//}
-
 * html .clearfix {
   height: 1%;
 }
@@ -42,12 +37,6 @@ fieldset {
 
 .info.subscribe img {
   vertical-align: bottom;
-}
-
-.mitproject {
-  background: url(/images/logo_mit_themed.png) no-repeat;
-  padding-left: 90px;
-  margin-bottom: 5px;
 }
 
 //TODO: where are these used?
@@ -91,13 +80,6 @@ fieldset {
 .role-indicator div {
   float: left;
   margin-right: 15px;
-}
-
-//TODO: only used in blogsstats-portlet
-ul#blogArchives li {
-  list-style: none;
-  margin-bottom: 10px;
-  background: none;
 }
 
 fieldset.fieldset .control-group { //

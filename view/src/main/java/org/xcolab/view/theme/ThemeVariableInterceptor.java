@@ -81,7 +81,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             //TODO COLAB-2446: move cdn resolution to CdnUrlEncodingFilter
             final String themeImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_STATIC.get();
 
-            modelAndView.addObject("_themeCssFolder", activeTheme.getCssPath());
+            modelAndView.addObject("_themeStylesheetPath", activeTheme.getStylesheetPath());
 
             modelAndView.addObject("_logoPath",
                     themeImageDomain + activeTheme.getLogoPath());
