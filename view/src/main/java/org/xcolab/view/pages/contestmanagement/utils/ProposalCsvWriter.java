@@ -2,26 +2,36 @@ package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalTeamMember;
 import org.xcolab.view.util.CsvResponseWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
 public class ProposalCsvWriter extends CsvResponseWriter {
 
     private static final List<String> COLUMN_NAMES = Arrays.asList(
-            "Proposal id",
             "Contest id",
+            "Contest name",
+            "Proposal id",
             "Proposal link",
             "Proposal name",
-            "Contest name"
-            );
+            "Proposal team name",
+            "Proposal team size",
+            "Proposal team members",
+            "Proposal authorId",
+            "Proposal create date",
+            "Proposal update date",
+            "Proposal pitch"
+    );
 
     public ProposalCsvWriter(HttpServletResponse response) throws IOException {
         super("proposalReport", COLUMN_NAMES, response);
@@ -34,14 +44,30 @@ public class ProposalCsvWriter extends CsvResponseWriter {
 
         for (Proposal proposal : proposals) {
             List<String> row = new ArrayList<>();
-            addValue(row, proposal.getProposalId());
             addValue(row, contest.getContestPK());
+            addValue(row, contest.getContestShortName());
+
+            addValue(row, proposal.getProposalId());
             final String proposalUrl = colabUrl + proposal.getProposalLinkUrl(contest);
             addValue(row, proposalUrl);
             addValue(row, proposal.getName());
-            addValue(row, contest.getContestShortName());
+            addValue(row, proposal.getTeam());
+            addValue(row, proposal.getMembers().size());
+            addValue(row, proposal.getMembers().stream()
+                    .map(ProposalTeamMember::getUserId)
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(",")));
+            addValue(row, proposal.getAuthorId());
+            addValue(row, proposal.getCreateDate());
+            addValue(row, proposal.getUpdatedDate());
+            addValue(row, proposal.getPitch());
 
-            writeRow(row);
+            List<String> sectionContent = new ArrayList<>();
+            for (PlanSectionDefinition section:  proposal.getSections()) {
+                addValue(sectionContent, "<h1>" + section.getTitle() + "</h1>" + section.getContent());
+            }
+
+            writeRow(row, sectionContent);
         }
     }
 
