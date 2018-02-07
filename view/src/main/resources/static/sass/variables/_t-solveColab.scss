@@ -250,9 +250,6 @@ $c-Box__background__color--primary: $t-Color__primary;
 $c-Box__background--dark: url(/images/bg-noise.png) $c-Box__background__color--dark;
 $c-Box__background--light: url(/images/bg-noise.png) $c-Box__background__color--light;
 $c-Box__border: none;
-$c-Box__button__backgroundColor--light: $t-Color__primary;
-$c-Box__button__backgroundColor--dark: white;
-$c-Box__button__boxColor--dark__textColor: white;
 
 $b-Spacing__separatorColor: $t-Color__grey;
 
@@ -321,9 +318,7 @@ $c-Headline__h2__span__fontSize: 27px;
 $c-Headline__days-left__span__padding: 7px 12px;
 $c-Headline__days-left__span__background: $t-Color__grey--medium;
 $c-Headline__days-left__span__fontSize: 15px;
-$c-TitleBar__actionButton__backgroundColor--hover: $t-Color__blue--hover;
 $p-homepage__learn__backgroundColor--hover: $t-Color__blue--hover;
-$c-Box__button__boxColor--dark__backgroundColor--hover: $t-Color__blue--hover;
 
 $p-Contests__priorActiveAllWidget__a__color--isHover: white;
 

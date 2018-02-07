@@ -586,24 +586,6 @@
   border-radius: 5px;
 }
 
-.rounded_button.brn a {
-  background: $t-Color__grey--lightest;
-  color: $t-Color__grey--darkest;
-}
-
-.rounded_button.brn a:hover {
-  color: $t-Color__accent;
-}
-
-.rounded_button.blu a {
-  background: $t-Color__primary__grey--light;
-  color: $t-Color__grey--darkest;
-}
-
-.rounded_button.blu a:hover {
-  color: $t-Color__accent;
-}
-
 .rounded_button.blugrid a {
   background: $t-Color__primary;
   color: white;

@@ -74,6 +74,7 @@ $p-homepage__join__imageUrl: none !default;
   margin: 20px 0 10px 0;
 }
 
+//TODO COLAB-2561: remove once replaced in web content
 a.learn {
   @include theme-button($p-homepage__learn__backgroundColor, $p-homepage__learn__borderColor,
           $p-homepage__learn__imageUrl, $p-homepage__learn__backgroundColor--hover);
@@ -81,12 +82,14 @@ a.learn {
   margin-right: 15px;
 }
 
+//TODO COLAB-2561: remove once replaced in web content
 a.get {
   @include theme-button($p-homepage__get__backgroundColor, $p-homepage__get__borderColor, $p-homepage__get__imageUrl);
   text-transform: uppercase;
   margin-right: 15px;
 }
 
+//TODO COLAB-2561: remove once replaced in web content
 a.join {
   @include theme-button($p-homepage__join__backgroundColor, $p-homepage__join__borderColor, $p-homepage__join__imageUrl);
   text-transform: uppercase;

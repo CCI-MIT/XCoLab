@@ -2,8 +2,7 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
-<span>
-
+    <div class="c-TitleBar__element_group">
 	<c:choose>
 		<c:when test="${not empty contest.visiblePhases}">
 			<c:forEach var="phase" items="${contest.visiblePhases }" varStatus="status">
@@ -40,7 +39,7 @@
 		<c:otherwise>
 			No phases
 		</c:otherwise>
-	</c:choose>        
-</span>
+	</c:choose>
+    </div>
 </jsp:root>
 

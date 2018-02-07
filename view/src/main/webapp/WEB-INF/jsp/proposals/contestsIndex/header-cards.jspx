@@ -10,7 +10,7 @@
 	<!--@elvariable id="collectionHierarchy" type="org.xcolab.view.pages.proposals.wrappers.CollectionCardFilterBean"-->
 
 
-	<div class="c-Headline formmargin">
+	<div class="c-Headline">
 		<div style="position: relative;">
 			<c:if test="${showContestManagementLink}">
 				<a href="/admin/contest" target="_blank">Go to Contest Management Tool</a>
