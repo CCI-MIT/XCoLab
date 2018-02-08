@@ -9,21 +9,13 @@
 }
 
 @function yiq-is-light($color, $threshold) {
-  @return if (yiq($color), true, false);
-}
-
-@function yiq-contrast-color($color, $dark, $light, $threshold) {
-  @return if(yiq-is-light($color, $threshold), $dark, $light);
+  @return if(yiq($color) > $threshold, true, false);
 }
 
 //chooses the optimal color for good contrast.
 @function yiq-contrasting-color($color, $light: $t-Color__text--light, $dark: $t-Color__text--dark) {
   $threshold: (yiq($light) + yiq($dark)) / 2;
-  @if yiq-is-light($color, $threshold) {
-    @return $dark;
-  } @else {
-    @return $light;
-  }
+  @return if(yiq-is-light($color, $threshold), $dark, $light);
 }
 
 @function hover-color($color, $hover-color: null) {
