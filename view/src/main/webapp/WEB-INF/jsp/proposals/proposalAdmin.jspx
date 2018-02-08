@@ -236,12 +236,13 @@
         <xcolab:modal modalId="copyProposalModal" size="lg"
                       title="Choose the ${contestType.contestNameLowercase} to which you would like to move this ${contestType.proposalNameLowercase}">
             <div class="modal-body">
-                <div id="copyProposalPopupContent" style="overflow: auto; height: 50vh">
+                <div id="copyProposalPopupContent">
                     <div id="copyProposalContests"><!--  --></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="close" data-dismiss="modal" class="btn btn-gray">Cancel
+                <button type="close" data-dismiss="modal" class="btn btn-gray">
+                    Cancel
                 </button>
             </div>
         </xcolab:modal>
