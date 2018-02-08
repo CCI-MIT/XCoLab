@@ -24,13 +24,17 @@ public final class ConfigurationAttributeKey {
     //Main CoLab configuration
     public static final AttributeGetter<String> ADMIN_EMAIL =
             ConfigurationAttributes.newStringAttribute("ADMIN_EMAIL")
-                    .withCache().build();
-    public static final AttributeGetter<String> ADMIN_FROM_EMAIL =
-            ConfigurationAttributes.newStringAttribute("ADMIN_FROM_EMAIL")
-                    .withCache().build();
+                    .withCache()
+                    .build();
     public static final AttributeGetter<String> COLAB_NAME =
             ConfigurationAttributes.newStringAttribute("COLAB_NAME")
-                    .withCache().build();
+                    .withCache()
+                    .build();
+    public static final AttributeGetter<String> ADMIN_FROM_EMAIL =
+            ConfigurationAttributes.newStringAttribute("ADMIN_FROM_EMAIL")
+                    .withCache()
+                    .defaultValue(ADMIN_EMAIL)
+                    .build();
     public static final AttributeGetter<String> COLAB_LONG_NAME =
             ConfigurationAttributes.newStringAttribute("COLAB_LONG_NAME")
                     .withCache()
@@ -38,7 +42,9 @@ public final class ConfigurationAttributeKey {
                     .build();
     public static final AttributeGetter<String> COLAB_SHORT_NAME =
             ConfigurationAttributes.newStringAttribute("COLAB_SHORT_NAME")
-                    .withCache().build();
+                    .withCache()
+                    .defaultValue(COLAB_NAME)
+                    .build();
 
     public static final AttributeGetter<String> COLAB_URL_PRODUCTION =
             ConfigurationAttributes.newStringAttribute("COLAB_URL_PRODUCTION")
@@ -461,34 +467,42 @@ public final class ConfigurationAttributeKey {
     //Portlet preferences config
     public static final AttributeGetter<String> PORTLET_CONTACT_FORM_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_CONTACT_FORM_PREFERENCES")
+                    .defaultValue(EMPTY_JAVASCRIPT_OBJECT)
                     .build();
 
     public static final AttributeGetter<String> PORTLET_CONTESTS_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_CONTESTS_PREFERENCES")
+                    .defaultValue(EMPTY_JAVASCRIPT_OBJECT)
                     .build();
 
     public static final AttributeGetter<String> PORTLET_CAROUSEL_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_CAROUSEL_PREFERENCES")
-                    .defaultValue(EMPTY_JAVASCRIPT_OBJECT).build();
+                    .defaultValue(EMPTY_JAVASCRIPT_OBJECT)
+                    .build();
 
     public static final AttributeGetter<String> PORTLET_FEED_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_FEED_PREFERENCES")
+                    .defaultValue(EMPTY_JAVASCRIPT_OBJECT)
                     .build();
 
     public static final AttributeGetter<String> PORTLET_RANDOM_PROPOSALS_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_RANDOM_PROPOSALS_PREFERENCES")
+                    .defaultValue(EMPTY_JAVASCRIPT_OBJECT)
                     .build();
 
     public static final AttributeGetter<String> PORTLET_STAFF_MEMBERS_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_STAFF_MEMBERS_PREFERENCES")
+                    .defaultValue(EMPTY_JAVASCRIPT_OBJECT)
                     .build();
 
     public static final AttributeGetter<String> PORTLET_PROPOSALS_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_PROPOSALS_PREFERENCES")
+                    .defaultValue(EMPTY_JAVASCRIPT_OBJECT)
                     .build();
 
     public static final AttributeGetter<String> PORTLET_DISCUSSION_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_DISCUSSION_PREFERENCES")
+                    .defaultValue(EMPTY_JAVASCRIPT_OBJECT)
                     .build();
 
     public static final AttributeGetter<Long> LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID =

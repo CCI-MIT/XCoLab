@@ -1,12 +1,12 @@
--- Starter data for a clean XCoLab instance
+-- Starter data for a clean xCoLab instance
 -- created using ../database-reset.sql
 
 INSERT INTO members_Member (id_, screenName, emailAddress, isEmailConfirmed, firstName, lastName, hashedPassword, createDate, modifiedDate, passwordModifiedDate, country, shortBio, facebookId, googleId, openId, loginIP, loginDate, status, forgotPasswordToken, forgotPasswordTokenExpireTime, portraitFileEntryId, reportKarma, autoRegisteredMemberStatus, uuid)
   VALUES (10144, 'admin', 'admin+u10144@example.com', 0, 'Admin', 'CoLab', 'PBKDF2_160_128000_g81/ioSNrXo=_pRj14MUWBMdoAVhbI7pqUlGdrII=', '2009-08-19 01:00:00', '2009-08-19 01:00:00', '2009-08-19 01:00:00', 'United States', '', 0, null, '', '127.0.0.1', '2009-08-19 01:00:00', 0, null, null, 0, 100, 0, null),
     (10145, 'member', 'member+u10145@example.com', 0, 'Member', 'CoLab', 'PBKDF2_160_128000_g81/ioSNrXo=_pRj14MUWBMdoAVhbI7pqUlGdrII=', '2009-08-19 01:00:00', '2009-08-19 01:00:00', '2009-08-19 01:00:00', 'United States', '', 0, null, '', '127.0.0.1', '2009-08-19 01:00:00', 0, null, null, 0, 100, 0, null);
 INSERT INTO sharedcolab_SharedMember (sharedMemberId, screenName, emailAddress, createDate, colabOrigin)
-  VALUES (10144, 'admin', 'admin+u10144@example.com', '2009-08-19 01:00:00', 'XCoLab'),
-    (10145, 'member', 'member+u10145@example.com', '2009-08-19 01:00:00', 'XCoLab');
+  VALUES (10144, 'admin', 'admin+u10144@example.com', '2009-08-19 01:00:00', 'xCoLab'),
+    (10145, 'member', 'member+u10145@example.com', '2009-08-19 01:00:00', 'xCoLab');
 
 INSERT INTO Users_Roles (userId, roleId) VALUES (10144, 10118), (10144, 10122), (10145, 10122);
 
@@ -71,8 +71,7 @@ INSERT INTO Role_ (roleId, companyId, classNameId, classPK, name, title, descrip
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('ACTIVE_THEME', 0, 0, 'CLIMATE_COLAB', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('ADMIN_EMAIL', 0, 0, 'admin@my-xcolab.org', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('ADMIN_FROM_EMAIL', 0, 0, 'no-reply@my-xcolab.org', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('COLAB_NAME', 0, 0, 'XCoLab', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('COLAB_SHORT_NAME', 0, 0, 'CoLab', 0);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('COLAB_NAME', 0, 0, 'xCoLab', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('DISCUSSION_CONTENT_ARTICLE_ID', 0, 7, ' ', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FOOTER_CONTENT_ARTICLE_ID', 0, 3, ' ', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IMAGE_UPLOAD_EXTERNAL_SERVICE_URL', 0, 0, 'http://imgur.com/MRfmcOs', 0);
@@ -80,16 +79,9 @@ INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, str
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID', 0, 4, ' ', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('LANDING_PAGE_BOTTOM_CONTENT_ARTICLE_ID', 0, 5, ' ', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('MEMBERS_CONTENT_ARTICLE_ID', 0, 6, ' ', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('META_PAGE_DESCRIPTION', 0, null, 'The XCoLab is a generic version of the Climate CoLab, a platform to crowdsource solutions to climate change.', null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('META_PAGE_KEYWORDS', 0, null, 'XCoLab, CoLab, open source, open innovation', null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('OPEN_GRAPH_SHARE_DESCRIPTION', 0, 0, 'The XCoLab is a generic version of the Climate CoLab, a platform to crowdsource solutions to climate change.', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_CONTACT_FORM_PREFERENCES', 0, null, '{"preferences":{"default":{"EXPAND_LINK_TEXT":"Send feedback message","MESSAGE_SUBJECT":"[CoLab] USER_NAME sent a message using contact form","MESSAGE_FORMAT":"USER_NAME (USER_EMAIL) has sent message using contact form\\r\\nUSER_MESSAGE","RECIPIENTS":"admin@myxcolab.org"}}}', null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_CONTESTS_PREFERENCES', 0, null, '{"preferences":{"default":{"SELECTED_CONTESTS":"","ALL_CONTESTS_URL":"https:\\/\\/myxcolab.org\\/contests","CONTEST_FEED_SIZE":"2","CONTEST_TITLE":"Featured contests","ALL_CONTESTS_TITLE":"See all contests","SHOW_COUNTS":"true"}}}', null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_DISCUSSION_PREFERENCES', 0, 0, '{}', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_FEED_PREFERENCES', 0, null, '{"FEED_REMOVE_ADMIN":"false","FEED_SEE_MORE_LINK_SHOWN":"true","FEED_SIZE":"7","FEED_DISPLAY_STYLE":"SHORT","FEED_MAX_LENGTH":"0","FEED_TITLE":"Activities","PORTLET_TITLE":"Activities","FEED_TYPE":"ACTIVITIES"}', null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_PROPOSALS_PREFERENCES', 0, null, '{"preferences":{"default":{"CONTEST_TYPE_ID":"0","CALL_TO_ACTION":""}}}', null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_RANDOM_PROPOSALS_PREFERENCES', 0, 0, '{ "SELECTED_PHASES_PREFERENCE": "", "FLAG_FILTER_PREFERENCE": "", "TITLE_PREFERENCE": "Interesting Proposals", "ALL_PROPOSALS_TITLE": "see all", "ALL_PROPOSALS_URL": "/contests", "FEED_SIZE_PREFERENCE": "3", "IS_COMPACT": "false"}', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_STAFF_MEMBERS_PREFERENCES', 0, null, '{"preferences":{"default":{"CATEGORY_ID":"5","COLUMN_AMOUNT":"5","DISPLAY_URL":"true","DISPLAY_PHOTO":"true","PORTLET_TITLE":"Project team"},"advisors":{"CATEGORY_ID":"9","COLUMN_AMOUNT":"5","DISPLAY_URL":"false","DISPLAY_PHOTO":"true","PORTLET_TITLE":" Current and Past Advisors"},"judges":{"CATEGORY_ID":"10","COLUMN_AMOUNT":"5","DISPLAY_URL":"false","DISPLAY_PHOTO":"true","PORTLET_TITLE":"Judges"}}}', null);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('META_PAGE_DESCRIPTION', 0, null, 'The xCoLab is a generic version of the Climate CoLab, a platform to crowdsource solutions to climate change.', null);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('META_PAGE_KEYWORDS', 0, null, 'xCoLab, CoLab, open source, open innovation', null);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('OPEN_GRAPH_SHARE_DESCRIPTION', 0, 0, 'The xCoLab is a generic version of the Climate CoLab, a platform to crowdsource solutions to climate change.', 0);
 
 INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible) VALUES (1, 10144, '2016-05-11 09:21:08', 1, 2, null, null, 1);
 INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible) VALUES (2, 10144, '2016-05-11 09:21:08', 2, 2, null, null, 1);
