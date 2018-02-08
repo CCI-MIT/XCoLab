@@ -3,6 +3,8 @@ package org.xcolab.client.admin.util;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 
+import java.util.Optional;
+
 //TODO COLAB-2590: move entire TemplateReplacementUtil here
 public final class TemplateReplacementUtilPlaceholder {
 
@@ -24,14 +26,18 @@ public final class TemplateReplacementUtilPlaceholder {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
         final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
         final String adminFromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-        final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
+        final Optional<String> partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.getOpt();
 
-        return text.replaceAll(COLAB_NAME_PLACEHOLDER, colabName)
+        String ret = text.replaceAll(COLAB_NAME_PLACEHOLDER, colabName)
                 .replaceAll(COLAB_SHORT_NAME_PLACEHOLDER, colabShortName)
                 .replaceAll(COLAB_URL, colabUrl)
                 .replaceAll(ADMIN_EMAIL_PLACEHOLDER, adminEmail)
-                .replaceAll(ADMIN_FROM_EMAIL_PLACEHOLDER, adminFromEmail)
-                .replaceAll(PARTNER_COLAB_NAME_PLACEHOLDER, partnerColabName);
+                .replaceAll(ADMIN_FROM_EMAIL_PLACEHOLDER, adminFromEmail);
+
+        if (partnerColabName.isPresent()) {
+            ret = ret.replaceAll(PARTNER_COLAB_NAME_PLACEHOLDER, partnerColabName.get());
+        }
+        return ret;
     }
 
     public static String getAdminFromEmail() {
