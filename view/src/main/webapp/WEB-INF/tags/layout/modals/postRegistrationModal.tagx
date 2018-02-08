@@ -10,7 +10,7 @@
 
 
     <spring:message code="homepage.modals.postreg.title" var="modalTitle"/>
-    <xcolab:modal modalId="postRegistrationModal" title="${modalTitle}" size="lg">
+    <xcolab:modal modalId="postRegistrationModal" title="${modalTitle}">
         <div class="modal-body">
             <p>
                 <collab:message code="homepage.modals.postreg.message" />

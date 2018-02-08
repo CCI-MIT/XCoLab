@@ -12,7 +12,7 @@
     <jsp:directive.attribute name="authError" type="org.xcolab.view.auth.login.AuthenticationError" required="false" rtexprvalue="true" description="Auth error, if any" />
 
     <collab:message code="homepage.modals.login.message" var="loginModalTitle" />
-    <xcolab:modal modalId="loginModal" title="${loginModalTitle}">
+    <xcolab:modal modalId="loginModal" title="${loginModalTitle}" size="sm">
         <form:form id="signInForm_form" method="post" action="/login">
             <div class="modal-body">
                 <c:choose>

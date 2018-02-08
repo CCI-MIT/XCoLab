@@ -16,7 +16,7 @@ $c-ContestBox__meta__flag__fontWeight: $t-Typography__fontWeight !default;
 
 $c-ContestBox__text__height: 125px !default;
 $c-ContestBox__text__title__textColor: $t-Color__primary !default;
-$c-ContestBox__text__title__textColor--hover: $b-Typography__textColor__a--isHover !default;
+$c-ContestBox__text__title__textColor--hover: $t-Link__color--hover !default;
 
 $c-ContestBox__background: white !default;
 $c-ContestBox__border: 4px solid $t-Color__grey--lightest !default;

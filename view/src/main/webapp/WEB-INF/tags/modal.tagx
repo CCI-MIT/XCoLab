@@ -6,7 +6,7 @@
     <jsp:directive.attribute name="size" type="java.lang.String" required="false" rtexprvalue="true" description="Optional size of the model. One of xl, lg, md, sm." />
 
     <div id="${modalId}" class="modal fade" tab-index="-1" role="dialog">
-        <div class="modal-dialog cb-modal-${not empty size ? size : 'md'}" role="document">
+        <div class="modal-dialog modal-${not empty size ? size : 'md'}" role="document">
             <div class="modal-content">
                 <c:if test="${not empty title}">
                     <div class="modal-header">

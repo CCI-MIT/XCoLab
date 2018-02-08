@@ -6,7 +6,7 @@
 
     <!-- report popup -->
     <spring:message code="homepage.modals.flagging.title" var="modalTitle" />
-    <xcolab:modal modalId="flaggingModal" title="${modalTitle}">
+    <xcolab:modal modalId="flaggingModal" title="${modalTitle}" size="sm">
         <form:form method="post" action="/flagging/report" id="popup_flagging_form">
             <div class="modal-body">
                 <div class="c-Alert__info__message">

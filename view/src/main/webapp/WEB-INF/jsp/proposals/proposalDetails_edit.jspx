@@ -254,7 +254,7 @@
         <a href="/wiki/Terms+of+use" target="_blank">Terms of Use</a>
         and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.
     </c:set>
-    <xcolab:modal modalId="acceptTosModal" title="${acceptTosModalTitle}" size="lg">
+    <xcolab:modal modalId="acceptTosModal" title="${acceptTosModalTitle}">
         <div class="modal-body">
             <h5>${fn:toUpperCase(contestType.rulesPageName)}:</h5>
             <div class="c-Scrollable c-Scrollable--visibleScrollbar" style="height:260px;">
@@ -267,7 +267,8 @@
         </div>
     </xcolab:modal>
 
-    <xcolab:modal modalId="invalidFieldsModal" title="The following sections have too many characters:">
+    <xcolab:modal modalId="invalidFieldsModal" size="sm"
+                  title="The following sections have too many characters:">
         <div class="modal-body">
             <ul id="invalidFieldsList"><!--  --></ul>
         </div>
