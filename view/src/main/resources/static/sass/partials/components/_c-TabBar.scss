@@ -129,7 +129,7 @@ $c-TabBar__tab--first__margin--left: 0px !default;
   text-align: center;
   font-size: 12px;
   background: $c-TabBar__tab__count__background;
-  color: contrasting-color($c-TabBar__tab__count__background);
+  color: yiq-contrasting-color($c-TabBar__tab__count__background);
   padding: 0 5px;
   margin-left: 5px;
   border-radius: 8px;

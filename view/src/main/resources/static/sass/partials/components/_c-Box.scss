@@ -23,12 +23,12 @@ $c-Box__messaging__padding--top: 5px !default;
 
   &.boxColor--primary {
     background: $c-Box__background--primary;
-    color: contrasting-color($c-Box__background__color--primary);
+    color: yiq-contrasting-color($c-Box__background__color--primary);
   }
 
   &.boxColor--dark {
     background: $c-Box__background--dark;
-    color: contrasting-color($c-Box__background__color--dark);
+    color: yiq-contrasting-color($c-Box__background__color--dark);
     margin-top: $c-Box__boxColor--dark__margin--top;
   }
 
@@ -38,9 +38,9 @@ $c-Box__messaging__padding--top: 5px !default;
     padding-bottom: $c-Box__messaging__padding--top;
 
     @if $c-Box__background--light != transparent {
-      color: contrasting-color($c-Box__background__color--light);
+      color: yiq-contrasting-color($c-Box__background__color--light);
     } @else {
-      color: contrasting-color(white);
+      color: yiq-contrasting-color(white);
     }
   }
 

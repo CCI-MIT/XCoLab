@@ -147,11 +147,11 @@ $_c-TitleBar__borderWidth: 6px;
 
   border-radius: 0;
 
-  color: contrasting-color($c-TitleBar__actionButton__backgroundColor, $t-Color__text--light, $t-Link__color);
+  color: yiq-contrasting-color($c-TitleBar__actionButton__backgroundColor, $t-Color__text--light, $t-Link__color);
   background: $c-TitleBar__actionButton__backgroundColor;
 
   &:hover {
-    color: contrasting-color($c-TitleBar__actionButton__backgroundColor--hover, $t-Color__text--light, $t-Link__color--hover);
+    color: yiq-contrasting-color($c-TitleBar__actionButton__backgroundColor--hover, $t-Color__text--light, $t-Link__color--hover);
     background: $c-TitleBar__actionButton__backgroundColor--hover;
   }
 

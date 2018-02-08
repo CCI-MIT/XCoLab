@@ -23,10 +23,10 @@
     border: 1px solid $border-color;
   }
 
-  color: contrasting-color($button-color, white, $t-Color__grey--darkest, $t-Text__threshold);
+  color: yiq-contrasting-color($button-color);
 
   &:hover {
-    color: contrasting-color(darken($button-color, 10%), white, $t-Color__grey--darkest, $t-Text__threshold);
+    color: yiq-contrasting-color(darken($button-color, 10%));
     text-decoration: none;
     @include background-gradient(hover-color($button-color), $image-url, 40px);
   }

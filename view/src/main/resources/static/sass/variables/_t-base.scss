@@ -1,5 +1,3 @@
-@import "../lib/l-functions";
-
 //main colors:
 $t-Color__primary: #30a3fb !default;
 $t-Color__secondary: #66b035 !default;
@@ -50,7 +48,6 @@ $t-Color__success__background: $t-Color__secondary--light !default;
 //standard text colors
 $t-Color__text--light: white !default;
 $t-Color__text--dark: $t-Color__grey--darkest !default;
-$t-Text__threshold: (brightness($t-Color__text--light) + brightness($t-Color__text--dark)) / 2 !default;
 
 //outline view TODO: see if we can adapt this to use our colors
 $t-Color__outline__level1: #e0dacb !default; // background slevel1

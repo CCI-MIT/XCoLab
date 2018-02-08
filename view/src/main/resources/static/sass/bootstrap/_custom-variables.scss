@@ -1,5 +1,6 @@
 @import "bootstrap/functions";
 @import "../variables/t-base";
+@import "../lib/l-functions";
 
 // Variables
 //
@@ -38,12 +39,11 @@ $theme-colors: (
 );
 // stylelint-enable
 
-$yiq-contrasted-threshold: 160;
-
 
 // Customize the light and dark text colors for use in our YIQ color contrast function.
 $yiq-text-dark: $t-Color__text--dark;
 $yiq-text-light: $t-Color__text--light;
+$yiq-contrasted-threshold: (yiq($t-Color__text--dark) + yiq($t-Color__text--light)) / 2;
 
 // Options
 //
