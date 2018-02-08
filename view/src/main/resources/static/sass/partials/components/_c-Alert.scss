@@ -12,7 +12,6 @@ $c-Alert__info__message__background: $t-Color__info__background !default;
 $c-Alert__success__message__background: $t-Color__success__background !default;
 
 .c-Alert { //.alert
-  display: inline-block;
   padding: 4px 14px 4px 14px;
   margin: 10px auto;
   background-color: $c-Alert__backgroundColor;
