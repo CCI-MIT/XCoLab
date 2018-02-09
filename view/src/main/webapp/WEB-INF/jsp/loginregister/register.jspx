@@ -24,7 +24,7 @@
             <h1><collab:message code="register.header.joinmessage" /></h1>
         </div>
 
-        <c:if test="${(_isFacebookSsoActive or _isGoogleSsoActive or _isSharedColab) and not isSsoLogin}">
+        <c:if test="${(_isFacebookSsoActive or _isGoogleSsoActive) and not isSsoLogin}">
             <div class="sso-register">
                 <div style="float: right">
                     <h1><spring:message code="register.header.joinwith"/>:</h1><br/>
@@ -33,11 +33,6 @@
                     </c:if>
                     <c:if test="${_isGoogleSsoActive}">
                         <a href="/sso/google/register" class="sketchy-icon sketchy-black google-sketchy"><span>Google</span></a>
-                    </c:if>
-                    <c:if test="${_isSharedColab}">
-                        <a href="#" class="sketchy-icon sketchy-black ${_partnerColabClassName}" onclick="showSharedColabLogin()">
-                            <span>${_partnerColabName}</span>
-                        </a>
                     </c:if>
                 </div>
             </div>

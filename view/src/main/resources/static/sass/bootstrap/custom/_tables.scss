@@ -4,7 +4,7 @@
 // Custom variants
 
 @include table-row-variant('primary', $t-Color__primary);
-@include table-row-variant('gray', $t-Color__grey--light);
+@include table-row-variant('gray', $t-Color__gray--medium-500);
 
 .table {
   .primary {

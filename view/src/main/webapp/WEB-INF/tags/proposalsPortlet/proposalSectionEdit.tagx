@@ -11,7 +11,7 @@
 
 	<label>
 		<strong>${section.title}</strong> 
-		<a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+		<a href="javascript:;" class="helpTrigger"><img src="/images/icon-addprop-question.png" width="15" height="15" /></a><br />
 		<c:if test="${section.characterLimit gt 0}">
         	${section.characterLimit} characters
         </c:if>

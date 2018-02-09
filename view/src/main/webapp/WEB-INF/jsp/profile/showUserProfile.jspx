@@ -10,7 +10,6 @@
 <!--@elvariable id="permissions" type="org.xcolab.view.pages.profile.utils.UserProfilePermissions"-->
 <!--@elvariable id="userBean" type="org.xcolab.view.pages.profile.beans.UserBean"-->
 <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
-<!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 <!-- SNP -->
 <!--@elvariable id="isSnpActive" type="java.lang.Boolean"-->
@@ -50,7 +49,7 @@
 		<div class="comm_member" style="margin-top: 0;">
 
             <!-- <c:if test="${currentUserProfile.attendsConference}">
-				<a href="/web/guest/conference2014" class="attendingConference"><img src="${_themeImageFolder}/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
+				<a href="/web/guest/conference2014" class="attendingConference"><img src="/images/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
 			</c:if> -->
 
 			<div class="comm_member-photo">
@@ -66,7 +65,7 @@
 								<div class="memname">${currentUserProfile.realName}</div>
 								<div class="role-indicator" style="margin-top: 5px;">
 									<div style="width: 16px">
-										<img src="${_themeImageFolder}/${currentUserProfile.highestRole.imageUrl}.png" width="16" height="16" />
+										<img src="/images/${currentUserProfile.highestRole.imageUrl}.png" width="16" height="16" />
 									</div>
 									${currentUserProfile.highestRole.printName}
 								</div>
@@ -112,7 +111,7 @@
 						<c:if test="${pointsActive}">
 							<td class="b points_box left_border top_border" width="45%">
 								<spring:message code="profile.show.pointsactual" arguments="${_colabShortName}"/>
-								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png" /></a>
+								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/images/icon-addprop-question.png" /></a>
 								<br />
 								<div style="display: none;" class="profilehelp">
                                     <spring:message code="profile.show.pointsdisclaimer" arguments="${_colabShortName},${currentUserProfile.proposalString},${currentUserProfile.proposalsString}" argumentSeparator=","/>
@@ -134,7 +133,7 @@
 						<c:if test="${pointsActive}">
 							<td class="b points_box left_border bottom_border" width="43%">
                                 <spring:message code="profile.show.pointsactualMax" arguments="${_colabShortName}"/>
-								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png" /></a>
+								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/images/icon-addprop-question.png" /></a>
 								<br />
 								<div style="display: none;" class="profilehelp">
                                     <spring:message code="profile.show.maximumnumber" arguments="${_colabShortName},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString}" argumentSeparator=","/>
@@ -282,7 +281,7 @@
                         <a href="/snp/socialnetworkprize" target="_blank" class="js-Tooltip"
                            style="margin-left: 5px;"
                            title="Click to learn more about the Social Network Prize">
-                            <img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" />
+                            <img src="/images/icon-addprop-question.png" width="15" height="15" />
                         </a>
                     </p>
                     <c:choose>
@@ -292,7 +291,7 @@
                                 <div><xcolab-social:socialShareButtons title="${balloonText.shareTitle}" size="xs"/></div>
                             </c:if>
                             <input id="snpLink" readonly="true" value="${shareLink}" class="form-control" />
-                            <button class="btn btn-primary" id="copyButton"
+                            <button class="btn btn-primary btn-sm btn-block mt-2" id="copyButton"
                                     data-clipboard-target="#snpLink">
                                 Copy link
                             </button>
@@ -304,8 +303,7 @@
                             </script>
                         </c:when>
                         <c:otherwise>
-                            <form action="/snp/socialnetworkprize" method="post">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <form:form action="/snp/socialnetworkprize" method="post">
                                 <div class="form-check">
                                     <input type="checkbox" name="acceptTos" class="form-check-input" id="acceptTos"/>
                                     <label class="form-check-label" for="acceptTos">
@@ -315,7 +313,7 @@
                                 <input type="hidden" name="redirect" value="${currentUserProfile.user.profileLinkUrl}" />
                                 <input type="hidden" name="email" value="${userBean.emailStored}" />
                                 <button type="submit" class="btn btn-primary btn-sm">Generate link</button>
-                            </form>
+                            </form:form>
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -354,14 +352,12 @@
 
 				</c:forEach>
 
-				<div class="rounded_button brn">
-					<a href="#" data-toggle="modal" data-target="#sendMessageModal"><spring:message code="profile.show.compose.button"/></a>
-					<xcolab:sendMessageModal />
-				</div>
-
-				<div class="rounded_button brn">
-					<a href="/messaging"><spring:message code="profile.show.compose.allmessages"/></a>
-				</div>
+                <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#sendMessageModal">
+                    <spring:message code="profile.show.compose.button"/>
+                </button>
+                <a href="/messaging" class="btn btn-link btn-sm btn-block">
+                    <spring:message code="profile.show.seeall"/>
+                </a>
 
 				<div class="clearfix"><!-- --></div>
 			</div>
@@ -399,15 +395,15 @@
 
 					</c:forEach>
 
-					<div class="rounded_button brn">
-						<a href="/members/profile/${currentUserProfile.userId}/subscriptions/manage"><spring:message code="profile.show.manage"/></a>
-					</div>
+                    <a class="btn btn-primary btn-sm btn-block" href="/members/profile/${currentUserProfile.userId}/subscriptions/manage">
+                        <spring:message code="profile.show.manage"/>
+                    </a>
 
-					<div class="rounded_button brn">
-						<c:if test="${not empty currentUserProfile.subscribedActivities}">
-							<a href="/members/profile/${currentUserProfile.userId}/subscriptions"><spring:message code="profile.show.seeall"/></a>
-						</c:if>
-					</div>
+                    <c:if test="${not empty currentUserProfile.subscribedActivities}">
+                        <a class="btn btn-link btn-sm btn-block" href="/members/profile/${currentUserProfile.userId}/subscriptions">
+                            <spring:message code="profile.show.seeall"/>
+                        </a>
+                    </c:if>
 				</form:form>
 			</div>
 		</div>
@@ -429,6 +425,8 @@
     </c:if>
 
 	<xcolab:requireLibrary name="CKEditor" />
+
+    <xcolab:sendMessageModal />
 
 </xcolab:layout>
 </jsp:root>

@@ -1,19 +1,18 @@
 @import "../../lib/l-functions";
 
-$c-TitleBar__backgroundColor: $t-Color__primary__grey--light !default;
-$c-TitleBar__borderBottom: 1px solid $t-Color__primary__grey !default;
-$c-TitleBar__contestSummary__backgroundColor--light: $t-Color__grey--light !default;
-$c-TitleBar__textColor: $t-Color__grey--darkest !default;
+$c-TitleBar__backgroundColor: $t-Color__primary__gray--light !default;
+$c-TitleBar__borderBottom: 1px solid $t-Color__primary__gray !default;
+$c-TitleBar__contestSummary__backgroundColor--light: $t-Color__gray--medium-500 !default;
+$c-TitleBar__textColor: $t-Color__gray--dark-800 !default;
 $c-TitleBar__element--active__capitalization: none !default;
-$c-TitleBar__element--disabled__textColor: $t-Color__grey--medium !default;
+$c-TitleBar__element--disabled__textColor: $t-Color__gray--dark-600 !default;
 $c-TitleBar__element__fontWeight: $t-Typography__fontWeight !default;
 $c-TitleBar__a__textColor: $t-Color__primary !default;
 $c-TitleBar__a__textColor--hover: black !default;
 $c-TitleBar__a__fontWeight: 700 !default;
 $c-TitleBar__capitalization: none !default;
 
-$c-TitleBar__contestSummary__backgroundColor: $t-Color__primary__grey--light !default;
-$c-TitleBar__contestSummary__display: block !default;
+$c-TitleBar__contestSummary__backgroundColor: $t-Color__primary__gray--light !default;
 
 $c-TitleBar__actionButton__backgroundColor: $c-TitleBar__backgroundColor !default;
 $c-TitleBar__actionButton__backgroundColor--hover: $c-TitleBar__backgroundColor !default;
@@ -22,12 +21,12 @@ $c-TitleBar__actionButton__backgroundColor--hover: $c-TitleBar__backgroundColor 
 $c-TitleBar__separator__color: #B9E3FF !default;
 
 //== Local vars
-$_c-TitleBar__width: 37px;
+$_c-TitleBar__height: 37px;
 $_c-TitleBar__borderWidth: 6px;
 
 //TODO: this should be the top level of the component (.c-TitleBar)
 .c-TitleBar__container {
-  height: $_c-TitleBar__width + $_c-TitleBar__borderWidth;
+  height: $_c-TitleBar__height + $_c-TitleBar__borderWidth;
 }
 
 .c-TitleBar {
@@ -36,19 +35,8 @@ $_c-TitleBar__borderWidth: 6px;
   color: $c-TitleBar__textColor;
   text-transform: $c-TitleBar__capitalization;
 
-  a {
-    color: $c-TitleBar__a__textColor;
-    font-weight: $c-TitleBar__a__fontWeight;
-  }
-
-  a:hover {
-    color: $c-TitleBar__a__textColor--hover;
-    text-decoration: none;
-  }
-
   &.contestSummary {
     background: $c-TitleBar__contestSummary__backgroundColor;
-    display: $c-TitleBar__contestSummary__display;
   }
 }
 
@@ -60,18 +48,16 @@ $_c-TitleBar__borderWidth: 6px;
 }
 
 .c-TitleBar.c-TitleBar--warning {
-  background: $t-Color__primary__grey--light;
-  color: $t-Color__grey--darkest;
+  background: $t-Color__primary__gray--light;
+  color: $t-Color__gray--dark-800;
   border-bottom: $_c-TitleBar__borderWidth solid $t-Color__accent;
 
   .c-TitleBar__actionButton {
+    color: white;
     background: $t-Color__accent;
 
-    a, a:hover {
-      color: white;
-    }
-
     &:hover {
+      color: white;
       background: hover-color($t-Color__accent);
     }
   }
@@ -85,9 +71,19 @@ $_c-TitleBar__borderWidth: 6px;
   z-index: 1035;
 }
 
+.c-TitleBar__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.c-TitleBar__element_group {
+  text-wrap: none;
+}
+
 .c-TitleBar__element {
-  height: $_c-TitleBar__width;
-  line-height: $_c-TitleBar__width;
+  height: $_c-TitleBar__height;
+  line-height: $_c-TitleBar__height;
   display: inline-block;
   position: relative;
   padding-left: 10px;
@@ -96,17 +92,7 @@ $_c-TitleBar__borderWidth: 6px;
   font-size: 14px;
   font-weight: $c-TitleBar__element__fontWeight;
 
-  //inline icons
-  img {
-    height: 25px;
-    margin-right: 5px;
-  }
-
   //states
-  &.right {
-    float: right;
-  }
-
   &.disabled {
     color: $c-TitleBar__element--disabled__textColor;
     text-transform: none;
@@ -151,11 +137,27 @@ $_c-TitleBar__borderWidth: 6px;
 }
 
 .c-TitleBar__actionButton {
-  @extend .c-TitleBar__element;
+  @extend .btn;
 
+  height: $_c-TitleBar__height;
+  line-height: $_c-TitleBar__height;
+  padding: 0 10px;
+
+  font-size: 0.875rem;
+
+  border-radius: 0;
+
+  color: yiq-contrasting-color($c-TitleBar__actionButton__backgroundColor, $t-Color__text--light, $t-Link__color);
   background: $c-TitleBar__actionButton__backgroundColor;
 
   &:hover {
+    color: yiq-contrasting-color($c-TitleBar__actionButton__backgroundColor--hover, $t-Color__text--light, $t-Link__color--hover);
     background: $c-TitleBar__actionButton__backgroundColor--hover;
+  }
+
+  //inline icons
+  img {
+    height: 25px;
+    margin-right: 5px;
   }
 }

@@ -9,13 +9,6 @@
 $b-Typography__capitalization--none: none !default;
 $b-Typography__capitalization--capitalize: uppercase !default;
 
-$b-Typography__fontSize__h1: 32px !default;
-$b-Typography__fontSize__h2: 27px !default;
-$b-Typography__fontSize__h3: 19px !default;
-$b-Typography__fontSize__h4: 15px !default;
-$b-Typography__fontSize__h5: 14px !default;
-$b-Typography__fontSize__h6: 14px !default;
-
 $b-Typography__capitalization__h1: $b-Typography__capitalization--none !default;
 $b-Typography__capitalization__h2: $b-Typography__capitalization--none !default;
 
@@ -27,10 +20,7 @@ $t-Typography__fontWeight__h5: $t-Typography__fontWeight !default;
 $t-Typography__fontWeight__h6: $t-Typography__fontWeight !default;
 
 $b-Typography__textColor: initial !default;
-$b-Typography__textColor__h1: $t-Color__grey--darkest !default;
-
-
-$b-Typography__margin__p: 0 0 20px 0 !default;
+$b-Typography__textColor__h1: $t-Color__gray--dark-800 !default;
 
 
 body, .homespot-left h1, .proposal-head h1 {
@@ -38,44 +28,34 @@ body, .homespot-left h1, .proposal-head h1 {
   color: $b-Typography__textColor;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  margin-top: 0;
+body {
+  font-size: 15px;
 }
 
 h1 {
   font-weight: $t-Typography__fontWeight__h1;
-  font-size: $b-Typography__fontSize__h1;
   color: $b-Typography__textColor__h1;
   line-height: 1em;
   text-transform: $b-Typography__capitalization__h1;
 }
 
 h2 {
-  font-size: $b-Typography__fontSize__h2;
   font-weight: $t-Typography__fontWeight__h2;
   text-transform: $b-Typography__capitalization__h2;
 }
 
 h3 {
-  font-size: $b-Typography__fontSize__h3;
   font-weight: $t-Typography__fontWeight__h3;
 }
 
 h4 {
-  font-size: $b-Typography__fontSize__h4;
   font-weight: $t-Typography__fontWeight__h4;
 }
 
 h5 {
-  font-size: $b-Typography__fontSize__h5;
   font-weight: $t-Typography__fontWeight__h5;
 }
 
 h6 {
-  font-size: $b-Typography__fontSize__h6;
   font-weight: $t-Typography__fontWeight__h6;
-}
-
-p {
-  margin: $b-Typography__margin__p;
 }

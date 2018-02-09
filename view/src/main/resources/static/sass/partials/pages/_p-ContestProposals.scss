@@ -23,22 +23,15 @@ $p-ContestProposals__header__team__display: inline-block !default;
 $p-ContestProposals__header__team__member__display: inline-block !default;
 $p-ContestProposals__header__team__roleName__paddingTop: 15px !default;
 
-$p-ContestProposals__header__detailButton__fontWeight: $t-Typography__fontWeight--bold !default;
-$p-ContestProposals__header__detailButton__borderRadius: 5px !default;
-$p-ContestProposals__header__detailButton__padding: 0 !default;
-$p-ContestProposals__header__detailButton__backgroundColor: $t-Color__primary__grey--light !default;
-$p-ContestProposals__header__detailButton__border: 1px solid $t-Color__primary__grey--dark !default;
-$p-ContestProposals__header__detailButton__display: inline-block !default;
-
-$p-Contests__contestDetail__backgroundColor: $t-Color__grey--lightest !default;
-$p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.png) darken($t-Color__grey--lightest, 7) !default;
+$p-Contests__contestDetail__backgroundColor: $t-Color__tan !default;
+$p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.png) darken($t-Color__tan, 7) !default;
 
 .p-ContestProposals__header { //.contest-detail
   background-color: $p-Contests__contestDetail__backgroundColor;
   padding-top: $p-ContestProposals__header__paddingTop;
   padding-bottom: $p-ContestProposals__header__paddingBottom;
-  border-bottom: 1px solid $t-Color__grey--light;
-  color: $t-Color__grey--darkest;
+  border-bottom: 1px solid $t-Color__gray--medium-500;
+  color: $t-Color__gray--dark-800;
   position: relative;
 }
 
@@ -137,39 +130,6 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
   display: inline-block;
   padding-right: 20px;
   float: right;
-}
-
-.p-ContestProposals__header__detailButton { //a.detailbutton
-  position: relative;
-  display: $p-ContestProposals__header__detailButton__display;
-
-  padding: $p-ContestProposals__header__detailButton__padding;
-  min-width: 115px;
-  line-height: 30px;
-  margin-left: 3px;
-
-  font-size: 16px;
-  font-weight: $p-ContestProposals__header__detailButton__fontWeight;
-  text-align: center;
-
-  background: $p-ContestProposals__header__detailButton__backgroundColor;
-  border: $p-ContestProposals__header__detailButton__border;
-
-  border-radius: $p-ContestProposals__header__detailButton__borderRadius;
-}
-
-.p-ContestProposals__header__detailButton__count { //.discussion-button-badge {
-  position: absolute;
-  right: -7px;
-  top: -6px;
-  display: inline;
-  text-align: center;
-  font: 12px Arial, Helvetica, sans-serif;
-  color: white;
-  background: $t-Color__primary--darkest;
-  padding: 0 5px;
-  margin-left: 5px;
-  border-radius: 8px;
 }
 
 .p-ContestProposals__header__ontology {

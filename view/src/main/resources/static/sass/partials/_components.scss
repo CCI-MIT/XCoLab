@@ -1,10 +1,3 @@
-//TODO: might not be needed, as bootstrap includes a reset
-@import 'base/b-reset';
-
-@import 'base/b-typography';
-@import "base/b-Spacing";
-@import 'base/layout';
-
 //components
 @import 'components/c-Alert';
 @import 'components/c-Badge';
@@ -38,29 +31,3 @@
 
 //modifiers
 @import 'modifiers/m-Shadebar';
-
-//page styles
-
-@import "pages/p-ContestProposals";
-@import "pages/p-Members";
-@import "pages/p-Discussion";
-
-//old pages
-@import "pages/logingregister";
-@import 'pages/search';
-@import 'pages/contest_manager';
-@import 'pages/community';
-@import 'pages/userprofile';
-@import 'pages/points';
-@import 'pages/modeling';
-@import 'pages/homepage';
-@import 'pages/about';
-@import 'pages/contests';
-@import 'pages/outline_view';
-@import 'pages/proposals';
-@import 'pages/proposalsPortlet';
-@import 'pages/staffmembers';
-
-
-// misc styles
-@import "pages/shame";

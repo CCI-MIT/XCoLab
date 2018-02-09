@@ -52,10 +52,10 @@
                         <span class="js-Tooltip" title="Judge's decision ${not contest.judgeStatus ? 'incomplete' : 'completed'}.">
                             <c:choose>
                                 <c:when test="${not contest.judgeStatus}">
-                                    <img src="${_themeImageFolder}/icon_question-x.png"/>
+                                    <img src="/images/icon_question-x.png"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <img src="${_themeImageFolder}/icon_question-chk.png"/>
+                                    <img src="/images/icon_question-chk.png"/>
                                 </c:otherwise>
                             </c:choose>
                         </span>
@@ -66,10 +66,10 @@
 							<span class="js-Tooltip" title="Fellow screening ${contest.screeningStatus ? 'completed' : 'incomplete'}.">
 								<c:choose>
 									<c:when test="${contest.screeningStatus}">
-										<img src="${_themeImageFolder}/icon_question-chk.png"/>
+										<img src="/images/icon_question-chk.png"/>
 									</c:when>
 									<c:otherwise>
-										<img src="${_themeImageFolder}/icon_question-x.png"/>
+										<img src="/images/icon_question-x.png"/>
 									</c:otherwise>
 								</c:choose>
 							</span>

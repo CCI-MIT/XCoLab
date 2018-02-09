@@ -1,6 +1,7 @@
 package org.xcolab.view.util;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.Assert;
@@ -64,9 +65,38 @@ public abstract class CsvResponseWriter implements Closeable {
         }
     }
 
+    /**
+     * Writes a row of values to the list.
+     *
+     * The row must have exactly as many columns as defined in the constructor of this class
+     * or an exception will be thrown.
+     *
+     * @param cols A list of columns for this row.
+     *
+     * @throws IllegalArgumentException if {@code cols.size() != numColumns}
+     * @throws NullPointerException if cols is null
+     */
     protected void writeRow(List<String> cols) {
+        writeRow(cols, null);
+    }
+
+    /**
+     * Writes a new row with optional extra columns.
+     *
+     * While the cols parameter has to match the count of headers defined,
+     * the extraCols parameters can be of any length (or null).
+     * Its values, if present, will simply be appended to the end of the list.
+     *
+     * @param cols A list of default columns (matching the headers)
+     * @param extraCols An optional list of appended columns that don't match any header
+     *
+     * @throws IllegalArgumentException if {@code cols.size() != numColumns}
+     * @throws NullPointerException if cols is null
+     */
+    protected void writeRow(List<String> cols, List<String> extraCols) {
         checkLength(cols);
-        csvWriter.writeNext(cleanRow(cols));
+        List<String> fullRow = extraCols == null ? cols : ListUtils.union(cols, extraCols);
+        csvWriter.writeNext(cleanRow(fullRow));
     }
 
     private void checkLength(List<String> cols) {

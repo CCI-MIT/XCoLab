@@ -45,7 +45,8 @@ update activities_ActivityEntry set activityCategory = 'DISCUSSION', activityTyp
 
 -- Delete add category activities
 delete from activities_ActivityEntry where primaryType = 39203 and secondaryType = 1;
-delete from activities_ActivityEntry where activityEntryId in (52007, 1002426, 1462191);
+delete from activities_ActivityEntry where activityEntryId in (52007, 1002426, 1462191)
+  and (select stringValue from xcolab_ConfigurationAttribute where name = 'COLAB_NAME') = 'Climate CoLab';
 
 -- Delete liferay's upload picture activities
 delete from activities_ActivityEntry where primaryType = 10054;
@@ -78,7 +79,8 @@ update activities_ActivityEntry set categoryId = classPrimaryKey where activityC
 
 -- Discussions
 -- delete activities for spam comments that were fully deleted from database
-delete from activities_ActivityEntry where activityEntryId in (1687625, 1719867, 1687626, 1720296);
+delete from activities_ActivityEntry where activityEntryId in (1687625, 1719867, 1687626, 1720296)
+  and (select stringValue from xcolab_ConfigurationAttribute where name = 'COLAB_NAME') = 'Climate CoLab';
 -- only convert activities in new format (category != 701)
 update activities_ActivityEntry set categoryId = (select threadId from comment_Comment where commentId = extraData) where activityCategory = 'DISCUSSION' and activityType = 'CREATED' and not classPrimaryKey = 701;
 update activities_ActivityEntry set categoryId = (select threadId from comment_Comment where commentId = extraData), additionalId = extraData where activityCategory = 'DISCUSSION' and activityType = 'COMMENT_ADDED';

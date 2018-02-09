@@ -50,7 +50,7 @@
                         <label for="${model.key }"> ${model.value[0] }</label>
 
 						<span class="js-Tooltip" title="${model.value[1] }">
-							<img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png"/>
+							<img height="15" width="15" src="/images/icon-addprop-question.png"/>
 						</span>
                         <br/>
                     </c:forEach>

@@ -18,8 +18,8 @@
 		var filterKey = 'ACCEPTALL';
 	</script>
 
-    <div id="proposalPickerModal" class="modal bs-modal fade" tab-index="-1" role="dialog">
-        <div class="modal-dialog modal-xl" role="document">
+    <div id="proposalPickerModal" class="modal fade" tab-index="-1" role="dialog">
+        <div class="modal-dialog cb-modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">
@@ -162,7 +162,7 @@
 				<div class="ribbonPlaceholder" style="float: left;">
                 <span class="js-Tooltip" title="{{data.ribbonText}}">
                     <br />
-                    <img src="${_themeImageFolder}/icon-prize{{ data.ribbon }}.png" />
+                    <img src="/images/icon-prize{{ data.ribbon }}.png" />
                 </span>
 				</div>
 				{{/if}}
@@ -189,7 +189,7 @@
             <td class="c-Table__cell no-border">
                 {{#each data.contests}}
                 <div class="b-Spacing__inline">
-                    <img alt="Image" class="js-Tooltip" title="Contest: {{this.name}}" height="25" width="25" src="${_uploadedImageFolder}/contest/{{this.contestLogoId}}" />
+                    <img alt="Image" class="js-Tooltip" title="Contest: {{this.name}}" height="25" width="25" src="/image/contest/{{this.contestLogoId}}" />
                 </div>
                 {{/each}}
             </td>
@@ -237,7 +237,7 @@
     <!-- Libraries -->
     <xcolab:requireLibrary name="spin.js" />
     <xcolab:requireLibrary name="handlebars.js" />
-    <xcolab:script src="${_themeJsFolder}/proposals/findAndReplaceDOMText.js" />
+    <xcolab:script src="/js/proposals/findAndReplaceDOMText.js" />
 
     <c:set var="sortArrowDown">
         <xcolab:sortArrow sortAscending="false"/>
@@ -251,5 +251,5 @@
         var sortArrowDown = '${sortArrowDown}';
         var sortArrowUp = '${sortArrowUp}';
     </script>
-    <xcolab:script src="${_themeJsFolder}/proposals/proposalPicker.js" />
+    <xcolab:script src="/js/proposals/proposalPicker.js" />
 </jsp:root>

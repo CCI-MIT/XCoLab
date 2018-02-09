@@ -1,9 +1,8 @@
 @import "../../lib/l-functions";
 @import "../../lib/l-mixins";
 
-@import "bootstrap/mixins/buttons";
-
-%c-Button__base {
+//TODO COLAB-2561: Remove this mixin (and the whole file)
+@mixin theme-button($button-color, $border-color: null, $image-url: null, $hover-color: null) {
   display: inline-block;
   padding: 8px;
   margin-left: 5px;
@@ -13,10 +12,7 @@
   line-height: normal;
 
   border-radius: $t-Border__radius;
-}
 
-@mixin theme-button($button-color, $border-color: null, $image-url: null, $hover-color: null) {
-  @extend %c-Button__base;
   font-size: 16px;
 
   @include background-gradient($button-color, $image-url, 40px);
@@ -27,22 +23,11 @@
     border: 1px solid $border-color;
   }
 
-  color: contrasting-color($button-color, white, $t-Color__grey--darkest, $t-Text__threshold);
+  color: yiq-contrasting-color($button-color);
 
   &:hover {
-    color: contrasting-color(darken($button-color, 10%), white, $t-Color__grey--darkest, $t-Text__threshold);
+    color: yiq-contrasting-color(darken($button-color, 10%));
     text-decoration: none;
     @include background-gradient(hover-color($button-color), $image-url, 40px);
-  }
-}
-
-.btn-admin {
-  @include button-variant($t-Color__primary, $t-Color__accent);
-}
-
-.btn-outline-admin {
-  @extend .btn-outline-primary;
-  &, &:hover {
-    border-color: $t-Color__accent;
   }
 }

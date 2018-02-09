@@ -3,7 +3,8 @@
           xmlns:discussions="urn:jsptld:/WEB-INF/tlds/xcolab-discussions.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
-          xmlns:spring="http://www.springframework.org/tags">
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
 
     <jsp:directive.attribute name="threadId" type="java.lang.Long" required="true" rtexprvalue="true" description="Thread id" />
     <jsp:directive.attribute name="categoryGroupId" type="java.lang.Long" required="false" rtexprvalue="true" description="CategoryGroup id" />
@@ -25,7 +26,6 @@
         <!--@elvariable id="shareTitle" type="java.lang.String"-->
         <!--@elvariable id="reportTargets" type="java.util.List<org.xcolab.client.flagging.pojo.ReportTarget>"-->
         <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
-        <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 		<xcolab:requireLibrary name="CKEditor" />
 
@@ -46,7 +46,7 @@
 		</script>
 		</c:if>
 
-		<xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js" />
+		<xcolab:script src="/js/proposals/discussionComments.js" />
 
 		<c:if test="${discussionPermissions.mustFilterContent}">
             <div class="modal fade" id="js-filteringModal" tabindex="-1" role="dialog">
@@ -84,12 +84,12 @@
 					<a href="javascript:;" rel="nofollow"
                        onclick='if(!deferUntilLogin()) {return false;} jQuery(".c-Comment__new")[0].scrollIntoView(); return false;'>
                         <spring:message code="discussion.commmentstag.addacomment" var="addAComment"/>
-                        <img src="${_themeImageFolder}/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="${addAComment}" /><spring:message code="discussion.commmentstag.jumptocomment"/>
+                        <img src="/images/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="${addAComment}" /><spring:message code="discussion.commmentstag.jumptocomment"/>
                     </a>
 				</c:if>
 				<c:if test="${_showShareButtons}">
 					<div class="c-Comment__share">
-                        <img src="${_themeImageFolder}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
+                        <img src="/images/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
                         <spring:message code="discussion.commmentstag.share"/>:
 
                         <div>
@@ -131,7 +131,7 @@
 									<br />
 									<div class="role-indicator">
 										<div style="width: 16px">
-											<img src="${_themeImageFolder}/${role.imageUrl}.png"
+											<img src="/images/${role.imageUrl}.png"
 													width="16" height="16" />
 										</div>
 										${role.printName}
@@ -221,8 +221,7 @@
 				</div>
 				<div class="c-Comment__new">
 					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
-					<form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="_csrf"/>
+					<form:form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
                         <input name="threadId" class="title text hidden" maxlength="255" value="${thread.threadId}" />
 						<input type="hidden" name="uuid" id="filtering_uuid"/>
 						<textarea id="messageContent" name="description"  class="rte-editorPlaceholder c-Comment__box commentContent"><!-- --></textarea>
@@ -241,7 +240,7 @@
 								</a>
 							</c:otherwise>
 						</c:choose>
-					</form>
+					</form:form>
 				</div>
 			</div>
 		</c:if>

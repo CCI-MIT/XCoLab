@@ -5,14 +5,19 @@ import org.apache.commons.text.WordUtils;
 
 public enum ColabTheme {
     CLIMATE_COLAB,
-    SOLVE_COLAB,
-    CROWDSENSOR,
+    CROWDSENSOR(true),
     RESILIENCE_DIALOGUES,
-    CLIMATE_RISKS_COLAB;
+    CLIMATE_RISKS_COLAB(true);
 
     private final String themeName;
+    private final boolean hasCustomStylesheet;
 
     ColabTheme() {
+        this(false);
+    }
+
+    ColabTheme(boolean hasCustomStylesheet) {
+        this.hasCustomStylesheet = hasCustomStylesheet;
         final String camelCaseName = WordUtils.capitalizeFully(name(), '_')
                 .replaceAll("_", "");
         this.themeName = StringUtils.uncapitalize(camelCaseName);
@@ -23,31 +28,26 @@ public enum ColabTheme {
     }
 
     public String getLogoPath() {
-        return getImagePath() + "/" + themeName + "-logo.png";
+        return "/images/" + themeName + "-logo.png";
     }
 
     public String getLogoPathSocial() {
-        return getImagePath() + "/" + themeName + "-logo-sketchy.png";
+        return "/images/" + themeName + "-logo-sketchy.png";
     }
 
     public String getLogoPathBig() {
-        return getImagePath() + "/" + themeName + "-logo-big.png";
+        return "/images/" + themeName + "-logo-big.png";
     }
 
     public String getLogoPathSquare() {
-        return getImagePath() + "/" + themeName + "-logo-square.png";
+        return "/images/" + themeName + "-logo-square.png";
     }
 
-    public String getCssPath() {
-        return "/css/themes/" + themeName;
-    }
-
-    public String getJsPath() {
-        return "/js";
-    }
-
-    public String getImagePath() {
-        return "/images";
+    public String getStylesheetPath() {
+        if (hasCustomStylesheet) {
+            return "/css/themes/" + themeName + ".css";
+        }
+        return "/css/main.css";
     }
 
     public String getOverrideImagePath() {

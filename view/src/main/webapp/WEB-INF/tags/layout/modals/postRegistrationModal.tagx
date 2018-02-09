@@ -3,22 +3,20 @@
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags"
-         >
+          xmlns:form="http://www.springframework.org/tags/form">
 
     <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="URL to redirect to" />
     <jsp:directive.attribute name="member" type="org.xcolab.client.members.pojo.Member" required="false" rtexprvalue="true" description="Regigstered member" />
 
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <spring:message code="homepage.modals.postreg.title" var="modalTitle"/>
-    <xcolab:modal modalId="postRegistrationModal" title="${modalTitle}" size="lg">
+    <xcolab:modal modalId="postRegistrationModal" title="${modalTitle}">
         <div class="modal-body">
             <p>
                 <collab:message code="homepage.modals.postreg.message" />
             </p>
             <div class="login_popup_box">
-                <form id="postRegister_form" method="post" action="/register/finalize">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <form:form id="postRegister_form" method="post" action="/register/finalize">
 
                     <div id="error" class="popup-message" style="display: none;">
                         Your user name must only contain alphabetical or numerical characters and your bio must not exceed 2000 characters.
@@ -53,7 +51,7 @@
                     <div class="btns">
                         <a href="javascript:;" class="btn btn-primary" onclick="submitForm()" id="deferLoginPopupSubmit">Finish</a>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
     </xcolab:modal>

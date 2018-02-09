@@ -32,7 +32,7 @@
             <td class="c-Table__cell propname-authors no-border">
                 <c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
                     <div class="ribbonPlaceholder">
-                        <img src="${_themeImageFolder}/icon-prize${proposal.ribbonWrapper.ribbon}.png"
+                        <img src="/images/icon-prize${proposal.ribbonWrapper.ribbon}.png"
                              class="js-Tooltip" title="${proposal.ribbonWrapper.ribbonText}" />
                     </div>
                 </c:if>
@@ -55,7 +55,7 @@
             <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                 <td class="c-Table__cell text-center votes no-border">
                     <div class="highlight">
-                        <img src="${_themeImageFolder}/icon-proposal-vote-small.png" />
+                        <img src="/images/icon-proposal-vote-small.png" />
                         <xcolab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
                     </div>
                 </td>
@@ -63,14 +63,14 @@
             <c:if test="${not contestPhase.canVote}">
                 <td class="c-Table__cell text-center supporters no-border">
                     <div class="highlight">
-                        <img src="${_themeImageFolder}/icon-proposal-support.png" />
+                        <img src="/images/icon-proposal-support.png" />
                         <xcolab:proposalLink proposal="${proposal}" text="${proposal.supportersCountCached}" tab="TEAM"/>
                     </div>
                 </td>
             </c:if>
             <td class="c-Table__cell text-center comments no-border">
                 <div class="highlight">
-                    <img src="${_themeImageFolder}/icon-proposal-comments.png" />
+                    <img src="/images/icon-proposal-comments.png" />
                     <xcolab:proposalLink proposal="${proposal}" text="${proposal.commentsCount}" tab="COMMENTS" />
                 </div>
             </td>

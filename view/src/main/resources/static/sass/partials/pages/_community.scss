@@ -1,6 +1,6 @@
 $p-community__left__lineHeight: 21px !default;
 $p-community__colab__th__background: #E7F1F5 !default;
-$p-community__colab__th__textColor: $t-Color__grey--darkest !default;
+$p-community__colab__th__textColor: $t-Color__gray--dark-800 !default;
 $p-community__commList__marginTop: 20px !default;
 $p-community__commList__h2__paddingBottom: 0px !default;
 $p-community__commList__h2__borderBottom: none !default;
@@ -56,7 +56,7 @@ $p-community__c-Message__column__width: 204px !default;
   float: left;
   width: 500px;
   font-size: 21px;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
   font-weight: $t-Typography__fontWeight;
 }
 
@@ -128,7 +128,7 @@ $p-community__c-Message__column__width: 204px !default;
 
 .comm_list h2 {
   font-size: 20px;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__gray--dark-800;
   margin-bottom: 18px;
   padding-bottom: $p-community__commList__h2__paddingBottom;
   border-bottom: $p-community__commList__h2__borderBottom;
@@ -242,7 +242,7 @@ $p-community__c-Message__column__width: 204px !default;
 
 .comm_member td div.memname {
   font-size: 21px;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
 }
 
 .wf-active .comm_member td div.memname {
@@ -258,7 +258,7 @@ $p-community__c-Message__column__width: 204px !default;
 }
 
 .comm_member .memdiv {
-  background: $t-Color__grey--medium;
+  background: $t-Color__gray--dark-600;
   height: 4px;
   margin: 7px 0 10px 0;
 }

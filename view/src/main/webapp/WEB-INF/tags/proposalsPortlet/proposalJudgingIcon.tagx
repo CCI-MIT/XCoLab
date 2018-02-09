@@ -6,13 +6,13 @@
     <span class="fieldWithTooltip">
         <c:choose>
             <c:when test="${value == 0}">
-                <img src="${_themeImageFolder}/icon_question-chk-qm.png"/>
+                <img src="/images/icon_question-chk-qm.png"/>
             </c:when>
             <c:when test="${value == 1}">
-                <img src="${_themeImageFolder}/icon_question-x.png"/>
+                <img src="/images/icon_question-x.png"/>
             </c:when>
             <c:otherwise>
-                <img src="${_themeImageFolder}/icon_question-chk.png"/>
+                <img src="/images/icon_question-chk.png"/>
             </c:otherwise>
         </c:choose>
         </span>

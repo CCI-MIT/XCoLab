@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.util.activities.enums.ContestActivityType;
-import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
-import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
@@ -31,10 +28,12 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.activities.enums.ContestActivityType;
+import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
@@ -127,10 +126,6 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                         //proposal
                         activityClient.createActivityEntry(ProposalActivityType.COMMENT_ADDED,
                                 memberId, proposal.getProposalId(), comment.getCommentId());
-
-                        Contest contest = proposal.getContest();
-                        SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest
-                                .getContestPK(), memberId);
                     } else {
                         final Contest contest = getContest(commentThread);
                         if (contest != null) {

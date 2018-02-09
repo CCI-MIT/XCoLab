@@ -195,19 +195,6 @@
     font-weight: bold;
 }
 
-.message-share-button {
-    margin-top: 15px;
-}
-
-#share-proposal-container table.colab td.b {
-    vertical-align: middle;
-    padding-right: 10px;
-}
-
-#share-proposal-container table.colab td input {
-    width: 90%;
-}
-
 .commentor-header {
     float: left;
 }
@@ -315,10 +302,6 @@ table.judgingForm {
     width: 650px;
 }
 
-.pickerButtons .btn {
-    float: right;
-}
-
 #proposalPicker_proposalsContainer .higlightText1,
 #proposalPicker_contestsContainer .higlightText1 {
     background: #fdff62;
@@ -403,15 +386,6 @@ div.selected {
     margin-left: 0 !important;
     padding: inherit !important;
     background: none !important;
-}
-
-.button-disabled {
-    opacity: 0.5;
-}
-
-.button-disabled a,
-.disabled {
-    pointer-events: none;
 }
 
 /* Impact tab */

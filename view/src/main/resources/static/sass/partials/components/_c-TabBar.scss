@@ -19,14 +19,14 @@ $c-TabBar__tab__textColor--active: $t-Color__primary !default;
 
 $c-TabBar__tab__borderTop: 1px solid transparent !default;
 $c-TabBar__tab__borderLeft: none !default;
-$c-TabBar__tab__borderRight: none !default; //1px solid $t-Color__grey--medium
+$c-TabBar__tab__borderRight: none !default; //1px solid $t-Color__gray--dark-600
 $c-TabBar__tab__borderRight--last: $c-TabBar__tab__borderRight !default;
 $c-TabBar__tab__fontWeight: 700 !default;
 $c-TabBar__tab__borderRadius: 5px !default;
-$c-TabBar__tab__active__border--right: 1px solid $t-Color__grey--medium !default;
+$c-TabBar__tab__active__border--right: 1px solid $t-Color__gray--dark-600 !default;
 $c-TabBar__tab__borderLeft--first: none !default;
 $c-TabBar__tab__borderRight--first: $c-TabBar__tab__borderRight !default;
-$c-TabBar__tab__active__border--right--left: 1px solid $t-Color__grey--medium !default;
+$c-TabBar__tab__active__border--right--left: 1px solid $t-Color__gray--dark-600 !default;
 
 $c-TabBar__tab__count__background: $t-Color__primary--darkest !default;
 
@@ -83,7 +83,7 @@ $c-TabBar__tab--first__margin--left: 0px !default;
   }
 
   &.active {
-    border-top: 1px solid $t-Color__grey--medium;
+    border-top: 1px solid $t-Color__gray--dark-600;
     @if $c-TabBar__tab__active__border--right--left != none {
       border-left: $c-TabBar__tab__active__border--right--left;
       border-right: $c-TabBar__tab__active__border--right--left;
@@ -129,7 +129,7 @@ $c-TabBar__tab--first__margin--left: 0px !default;
   text-align: center;
   font-size: 12px;
   background: $c-TabBar__tab__count__background;
-  color: contrasting-color($c-TabBar__tab__count__background);
+  color: yiq-contrasting-color($c-TabBar__tab__count__background);
   padding: 0 5px;
   margin-left: 5px;
   border-radius: 8px;

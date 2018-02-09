@@ -26,28 +26,6 @@
 
 		</div>
 
-		<c:if test="${contest.isSharedContest}">
-			<script>
-				jQuery(function() {
-					setTimeout(setupHooks, 2000);
-				});
-				function setupHooks(){
-					$('#addCommentButton').prop('onclick',null).off('click');
-					console.log(" all clicks off ");
-					$("#addCommentButton").click(function(event){
-						console.log(" Inside add coment click")
-						var ss = showSharedContestAutoRegPopUp(function(event){console.log("WHERE IS THIS CALLED"); handleClickOnDiscussion(event)},${contest.contestPK });
-						if(!ss){
-							console.log(" Inside add coment click false return")
-							event.stopPropagation();
-							return false;
-						}
-						console.log(" Inside add coment click")
-						return handleClickOnDiscussion(event);
-					});
-				}
-			</script>
-		</c:if>
 		<script>
 			jQuery(function() {
 				enableDirtyCheck();

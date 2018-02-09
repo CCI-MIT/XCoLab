@@ -4,7 +4,6 @@
           xmlns:form="http://www.springframework.org/tags/form">
 
     <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -23,7 +22,7 @@
 			<span class="c-Helpbox__header__title"><spring:message code="community.page.help.title"/> </span>
 			<div class="c-Helpbox__header__close">
 				<a href="javascript:;" onclick="Cookies.set('climatecolab_hide_members_msg', 'true'); jQuery('#js-HelpBox').hide()">
-				<img src="${_themeImageFolder}/helpbox_close.png" width="20" height="20" alt="X" /></a>
+				<img src="/images/helpbox_close.png" width="20" height="20" alt="X" /></a>
 			</div>
 		</div>
 		<div class="c-Helpbox__text">

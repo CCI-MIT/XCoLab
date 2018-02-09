@@ -4,62 +4,102 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/tree.jquery.min.js"><!-- --></script>
-        <xcolab:requireLibrary name="jQuery UI" />
-        <xcolab:requireLibrary name="spin.js" />
-        <xcolab:requireLibrary name="CKEditor" />
-        <xcolab:script src="${_libJsFolder}/jquery.loadmask.spin.js" />
+        <xcolab:requireLibrary name="jQuery UI"/>
+        <xcolab:requireLibrary name="spin.js"/>
+        <xcolab:requireLibrary name="CKEditor"/>
+        <xcolab:script src="/js/lib/jquery.loadmask.spin.js"/>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/jqtree.min.css"><!-- --></link>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/jqtree.min.css"><!-- --></link>
         <!-- link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"></link -->
         <style>
 
-            .contentEditor input {border: 1px solid #DDD; color: #8d8d8d;  font-weight: 200;  margin-bottom: 7px; height: 30px;  font-size: large;  width: 530px;}
-            .contentBody {margin: auto; width: 1022px;  height: 742px;}
-            .treeContainer {height: 542px; overflow-y: scroll;}
-            #infoBox {padding: 8px 35px 8px 14px;margin-bottom: 20px;}
-            .colFloatLef{float:left}
-            #tree-view{width:350px}
-            #saveArticle{cursor:pointer}
-            #articleURL{overflow:hidden}
-            #anchorArticleURL{display: block; width:0; white-space: nowrap;}
+            .contentEditor input {
+                border: 1px solid #DDD;
+                color: #8d8d8d;
+                font-weight: 200;
+                margin-bottom: 7px;
+                height: 30px;
+                font-size: large;
+                width: 530px;
+            }
+
+            .contentBody {
+                margin: auto;
+                width: 1022px;
+                height: 742px;
+            }
+
+            .treeContainer {
+                height: 542px;
+                overflow-y: scroll;
+            }
+
+            #infoBox {
+                padding: 8px 35px 8px 14px;
+                margin-bottom: 20px;
+            }
+
+            .colFloatLef {
+                float: left
+            }
+
+            #tree-view {
+                width: 350px
+            }
+
+            #saveArticle {
+                cursor: pointer
+            }
+
+            #articleURL {
+                overflow: hidden
+            }
+
+            #anchorArticleURL {
+                display: block;
+                width: 0;
+                white-space: nowrap;
+            }
 
             #articleVersions span:hover {
-                text-decoration:none;
-                cursor:pointer;
+                text-decoration: none;
+                cursor: pointer;
             }
+
             #articleVersions span {
-                cursor:pointer;
-                color:blue;
-                text-decoration:underline;
+                cursor: pointer;
+                color: blue;
+                text-decoration: underline;
             }
 
             #tree-view small:hover {
-                text-decoration:none;
-                cursor:pointer;
+                text-decoration: none;
+                cursor: pointer;
             }
+
             #tree-view small {
-                cursor:pointer;
-                color:blue;
-                text-decoration:underline;
+                cursor: pointer;
+                color: blue;
+                text-decoration: underline;
             }
 
 
         </style>
-        <xcolab:stylesheet href="${_libCssFolder}/jquery.loadmask.spin.css" />
+        <xcolab:stylesheet href="/css/lib/jquery.loadmask.spin.css"/>
 
         <c:set var="contentEditorListFolderURL" value="/content-editor/pageEditorListFolder"/>
 
 
-        <c:set  var="getContentPageURL" value="/content-editor/pageEditorGetPage"/>
+        <c:set var="getContentPageURL" value="/content-editor/pageEditorGetPage"/>
 
 
-        <c:set  var="saveContentPageURL" value="/content-editor/saveContentPage"/>
+        <c:set var="saveContentPageURL" value="/content-editor/saveContentPage"/>
 
 
+        <c:set var="previewContentPageURL" value="/content-editor/previewContentPage"/>
 
-        <c:set  var="previewContentPageURL" value="/content-editor/previewContentPage"/>
-
-        <c:set  var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
+        <c:set var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
 
         <c:if test="${not empty param.articleId}">
             <script>
@@ -69,7 +109,7 @@
 
                     loadPageContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.pageId});
 
-                    window.setTimeout(function(){
+                    window.setTimeout(function () {
                         $("#article-view").unmask()
                     }, 2000);
 
@@ -89,12 +129,13 @@
             var ckEditor = null;
             var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
 
-            function validateTitleStr(title){
+            function validateTitleStr(title) {
 
                 var re = new RegExp("^([a-zA-Z0-9_-]+)$");
                 return re.test(title);
 
             }
+
             jQuery(function () {
 
                 $("#article-view").mask({
@@ -251,7 +292,10 @@
                         return false;
                     }
                     if (!validateTitleStr(pageTitle)) {
-                        noty({text: 'The title is invalid, it must contain only alphanumeric characters - or _. This title will be used to compose a url at /page/title!', type: 'error'});
+                        noty({
+                            text: 'The title is invalid, it must contain only alphanumeric characters - or _. This title will be used to compose a url at /page/title!',
+                            type: 'error'
+                        });
                         return false;
                     }
                     $("#article-view").mask();
@@ -293,21 +337,26 @@
         <div class="contentEditor">
             <div class="contentBody">
                 <ul class="c-TabBar clearfix">
-                    <li class="c-TabBar__tab--first"><a href="/content-editor/">Content Editor</a></li>
-                    <li class="c-TabBar__tab active"><a href="/content-editor/pageEditor">Page Editor</a></li>
-                    <li class="c-TabBar__tab"><a href="/content-editor/resourcePagesEditor">Resource pages</a></li>
+                    <li class="c-TabBar__tab--first"><a href="/content-editor/">Content Editor</a>
+                    </li>
+                    <li class="c-TabBar__tab active"><a
+                            href="/content-editor/pageEditor">Page Editor</a></li>
+                    <li class="c-TabBar__tab"><a
+                            href="/content-editor/resourcePagesEditor">Resource pages</a></li>
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
-                <div  id="innerContent" class="addpropbox">
+                <div id="innerContent" class="addpropbox">
                     <div class="colFloatLef">
                         <div>
-                            <div class="" id="newContentPage" ><a  class="btn btn-primary" href="#">New</a></div>
+                            <div class="" id="newContentPage"><a class="btn btn-primary"
+                                                                 href="#">New</a></div>
                         </div>
                         <br/>
                         <h3>Content pages</h3>
                         <div class="treeContainer">
-                            <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
+                            <div id="tree-view"
+                                 data-url="${contentEditorListFolderURL}"><!-- --></div>
                         </div>
                     </div>
                     <div class="colFloatLef" style="width: 580px;margin-left: 15px;">
@@ -317,13 +366,13 @@
                             <div>
                                 <!-- FORM FIELDS -->
                                 <input type="hidden" id="pageId"/>
-                                Page title: <input type="text" id="pageTitle"  maxcharacters="300"  />
+                                Page title: <input type="text" id="pageTitle" maxcharacters="300"/>
                             </div>
                             <div id="createdAtDate"><!-- --></div>
                             <div>
                                 <label for="leftMenu">Left menu:</label>
-                                <select id="leftMenu"  style="width: 527px;">>
-                                        <option value="0">None</option>
+                                <select id="leftMenu" style="width: 527px;">>
+                                    <option value="0">None</option>
                                     <c:forEach var="article" items="${allArticles}">
                                         <option value="${article.value}">${article.key}</option>
                                     </c:forEach>
@@ -333,7 +382,7 @@
                             <div>
                                 <label for="mainContent">Main content:</label>
                                 <select id="mainContent" style="width: 508px;">
-                                        <option value="0">Select an article</option>
+                                    <option value="0">Select an article</option>
                                     <c:forEach var="article" items="${allArticles}">
                                         <option value="${article.value}">${article.key}</option>
                                     </c:forEach>
@@ -342,7 +391,8 @@
 
                             <div>
                                 <label for="metaDescription">Description for search engines:</label>
-                                <textarea id="metaDescription" style="width: 508px;" maxcharacters="255" >
+                                <textarea id="metaDescription" style="width: 508px;"
+                                          maxcharacters="255">
                                     <!-- empty --></textarea>
                             </div>
                             <br/>

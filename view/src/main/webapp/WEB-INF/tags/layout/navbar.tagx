@@ -10,7 +10,6 @@
     <jsp:directive.attribute name="isShowIcons" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Whether the icons on the right menu should be displayed"/>
     <jsp:directive.attribute name="currentLocale" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="The currently active locale" />
-    <jsp:directive.attribute name="uploadedImageFolder" type="java.lang.String" required="true" rtexprvalue="true" description="The path to the folder for uploaded images" />
     <jsp:directive.attribute name="colabName" type="java.lang.String" required="true" rtexprvalue="true" description="The name of this CoLab" />
     <jsp:directive.attribute name="member" type="org.xcolab.client.members.pojo.Member" required="true" rtexprvalue="true" description="The logged in member, if any" />
     <jsp:directive.attribute name="showFacebookSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, Facebook SSO is shown" />
@@ -22,10 +21,9 @@
     <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="Redirect URL for registration link" />
     <!--@elvariable id="contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
-    <div class="${isWhiteBackgound ? 'bg-white' : 'bg-tan bg-noise'} border-bottom border-medium">
-        <div class="bs-container-fixed">
+    <div class="${isWhiteBackgound ? 'bg-white' : 'bg-tan cb-bg-noise'} border-bottom border-medium">
+        <div class="cb-container-fixed">
             <nav class="navbar navbar-expand navbar-light" aria-label="site wide">
                 <a class="navbar-brand" href="/">
                     <img src="${logoPath}" alt="${colabName}" height="42" />
@@ -34,34 +32,34 @@
                     <span class="navbar-toggler-icon"/>
                 </button>
                 <div class="collapse navbar-collapse dual-collapse">
-                    <ul class="navbar-nav bs-nav-pages">
-                        <li class="nav-item bs-navitem-text ${activePageLink == 'about' ? 'active' : ''}">
+                    <ul class="navbar-nav cb-nav-pages">
+                        <li class="nav-item cb-nav-item-text ${activePageLink == 'about' ? 'active' : ''}">
                             <a class="nav-link" href="/page/about"><spring:message code="homepage.menu.about" /></a>
                         </li>
 
                         <c:forEach var="_contestPage" items="${contestPages}">
                             <c:if test="${_contestPage.menuItemName != ''}">
-                                <li class="nav-item bs-navitem-text ${activePageLink == _contestPage.identifier ? 'active' : ''}">
+                                <li class="nav-item cb-nav-item-text ${activePageLink == _contestPage.identifier ? 'active' : ''}">
                                     <a class="nav-link" href="${_contestPage.contestBaseUrl}">${_contestPage.menuItemName}</a>
                                 </li>
                             </c:if>
                         </c:forEach>
-                        <li class="nav-item bs-navitem-text ${activePageLink == 'community' ? 'active' : ''}" >
+                        <li class="nav-item cb-nav-item-text ${activePageLink == 'community' ? 'active' : ''}" >
                             <a class="nav-link" href="/members"><spring:message code="homepage.menu.community" /></a>
                         </li>
                         <c:if test="${showSearch}">
                             <!--#if ($pageName == 'search') isCurrent #end-->
                             <c:set var="navbarSearchActive" value="${activePageLink == 'search' ? 'active' : ''}" />
-                            <li class="nav-item bs-nav-item-icon mr-1 dropdown bs-dropdown-inverse ${navbarSearchActive}" data-toggle="dropdown">
-                                <a class="nav-link dropdown-toggle bs-dropdown-toggle--no-caret" data-toggle="dropdown">
+                            <li class="nav-item cb-nav-item-icon mr-1 dropdown cb-dropdown-inverse ${navbarSearchActive}" data-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown">
                                     <xcolab-icon:search cssClass="nav-icon"/>
-                                    <div class="bs-nav-text">
+                                    <div class="cb-nav-text">
                                         <spring:message code="homepage.menu.search" />
                                     </div>
                                 </a>
-                                <div class="dropdown-menu bs-dropdown-box text-nowrap">
+                                <div class="dropdown-menu cb-dropdown-box text-nowrap">
                                     <form action="/search" method="get">
-                                        <input class="form-control bs-form-control-inline bs-form-control--sm"
+                                        <input class="form-control cb-form-control-inline cb-form-control-sm"
                                                type="text" name="searchPhrase"/>
                                         <button type="submit" class="btn btn-primary ml-2">
                                             <spring:message code="homepage.search.button" />
@@ -77,17 +75,17 @@
                 </div>
                 <div class="collapse navbar-collapse dual-collapse">
                     <ul class="navbar-nav ml-auto">
-                        <c:set var="navItemRightClass" value="${isShowIcons ? 'bs-navitem-icon' : 'bs-navitem-text bs-navitem--small'}" />
+                        <c:set var="navItemRightClass" value="${isShowIcons ? 'cb-nav-item-icon' : 'cb-nav-item-text cb-nav-item-sm'}" />
                         <c:choose>
                             <c:when test="${member != null}">
-                                <li class="nav-item bs-nav-item-multi-line c-Header__displayName d-inline-flex align-items-center">
-                                    <a class="nav-link dropdown-toggle bs-dropdown-toggle--no-caret js-DropdownToggle p-2" data-target="#user-dropdown">
+                                <li class="nav-item cb-nav-item-multi-line c-Header__displayName d-inline-flex align-items-center">
+                                    <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret js-DropdownToggle p-2" data-target="#user-dropdown">
                                         ${member.displayName}
                                     </a>
                                 </li>
-                                <li class="nav-item bs-nav-item-image dropdown bs-dropdown-inverse">
+                                <li class="nav-item cb-nav-item-image dropdown cb-dropdown-inverse">
                                     <a id="user-dropdown" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                                        <img src="${uploadedImageFolder}/member/${member.portraitId}" alt="${member.screenName}" />
+                                        <img src="/image/member/${member.portraitId}" alt="${member.screenName}" />
                                         <span class="caret"><!-- --></span>
                                         <c:if test="${member.unreadMessageCount > 0}">
                                             <div class="badge badge-pill badge-primary-darkest">
@@ -100,18 +98,18 @@
                                 </li>
                             </c:when>
                             <c:otherwise>
-                                <li class="nav-item bs-nav-item-icon ${navItemRightClass}">
+                                <li class="nav-item ${navItemRightClass}">
                                     <a href="/register?redirect=${redirect}" class="nav-link">
                                         <xcolab-icon:register cssClass="nav-icon"/>
-                                        <div class="bs-nav-text">
+                                        <div class="cb-nav-text">
                                             <spring:message code="homepage.menu.visitor.register" />
                                         </div>
                                     </a>
                                 </li>
-                                <li class="nav-item bs-nav-item-icon dropdown bs-dropdown-inverse ${navItemRightClass}">
-                                    <a class="nav-link dropdown-toggle bs-dropdown-toggle--no-caret" data-toggle="dropdown" >
+                                <li class="nav-item dropdown cb-dropdown-inverse ${navItemRightClass}">
+                                    <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" >
                                         <xcolab-icon:login cssClass="nav-icon"/>
-                                        <div class="bs-nav-text">
+                                        <div class="cb-nav-text">
                                             <spring:message code="homepage.menu.visitor.login" />
                                         </div>
                                     </a>
@@ -119,10 +117,10 @@
                                     <xcolab-dropdowns:loginDropdown showFacebookSso="${showFacebookSso}" showGoogleSso="${showGoogleSso}" />
                                 </li>
                                 <c:if test="${showLanguage}">
-                                    <li class="nav-item bs-nav-item-icon dropdown bs-dropdown-inverse ${navItemRightClass}">
-                                        <a class="nav-link dropdown-toggle bs-dropdown-toggle--no-caret" data-toggle="dropdown">
+                                    <li class="nav-item dropdown cb-dropdown-inverse ${navItemRightClass}">
+                                        <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown">
                                             <xcolab-icon:language cssClass="nav-icon"/>
-                                            <div class="bs-nav-text">
+                                            <div class="cb-nav-text">
                                                 <spring:message code="homepage.menu.visitor.language" />
                                             </div>
                                         </a>
@@ -133,10 +131,10 @@
                                 </c:if>
                             </c:otherwise>
                         </c:choose>
-                        <li class="nav-item bs-nav-item-icon bs-nav-item--separator-left ${navItemRightClass}">
+                        <li class="nav-item cb-nav-item-separator-left ${navItemRightClass}">
                             <a href="/wiki/Help" class="nav-link">
                                 <xcolab-icon:help cssClass="nav-icon" />
-                                <div class="bs-nav-text">
+                                <div class="cb-nav-text">
                                     <spring:message code="homepage.menu.help" />
                                 </div>
                             </a>

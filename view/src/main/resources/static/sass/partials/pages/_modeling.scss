@@ -4,10 +4,10 @@
   position: relative;
   z-index: 5;
   font-size: 15px;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__gray--dark-800;
   line-height: 20px;
   background: url(/images/grid_t.gif) white;
-  border: 1px solid $t-Color__grey--lightest;
+  border: 1px solid $t-Color__tan;
   border-radius: 10px;
   padding-bottom: 15px;
 }
@@ -38,7 +38,7 @@
   float: left;
   width: 734px;
   padding-left: 10px;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__gray--dark-800;
   position: relative;
 }
 
@@ -46,7 +46,7 @@
   background: url(/images/icon_act-arrows-l.png) no-repeat 0 24px;
   padding: 26px 0 22px 47px;
   font-size: 16px;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__gray--dark-800;
   font-weight: $t-Typography__fontWeight--bold;
 }
 
@@ -54,7 +54,7 @@
   background: url(/images/icon_act-arrows-r.png) no-repeat 0 24px;
   padding: 26px 0 22px 47px;
   font-size: 16px;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__gray--dark-800;
   font-weight: $t-Typography__fontWeight--bold;
 }
 
@@ -97,13 +97,13 @@
   padding: 10px;
   margin-left: -10px;
   font: normal 12px/20px Verdana, sans-serif;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__gray--dark-800;
   border: 1px solid white;
 }
 
 .act_left-list li ul li:hover {
-  background: $t-Color__primary__grey--light;
-  border: 1px solid $t-Color__primary__grey--dark;
+  background: $t-Color__primary__gray--light;
+  border: 1px solid $t-Color__primary__gray--dark;
 }
 
 .act_left-list li.d ul li a {
@@ -228,7 +228,7 @@
   width: 50px;
   line-height: normal;
   font: 11px Verdana, sans-serif;
-  color: $t-Color__grey--dark;
+  color: $t-Color__gray--dark-700;
 }
 
 .actions_chart_y-axis li {
@@ -240,8 +240,8 @@
   float: left;
   width: 683px;
   height: 380px;
-  border-left: 1px solid $t-Color__grey--light;
-  border-bottom: 1px solid $t-Color__grey--light;
+  border-left: 1px solid $t-Color__gray--medium-500;
+  border-bottom: 1px solid $t-Color__gray--medium-500;
   background: url(/images/actions_grid.png);
 }
 
@@ -251,7 +251,7 @@
   margin-left: 50px;
   line-height: normal;
   font: 11px Verdana, sans-serif;
-  color: $t-Color__grey--dark;
+  color: $t-Color__gray--dark-700;
 }
 
 .actions_chart_x-axis li {
@@ -290,7 +290,7 @@
 .act-edit_right {
   float: right;
   width: 489px;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__gray--dark-800;
 }
 
 .act-edit_left-top {
@@ -329,7 +329,7 @@
   width: 50px;
   line-height: normal;
   font: 11px Verdana, sans-serif;
-  color: $t-Color__grey--dark;
+  color: $t-Color__gray--dark-700;
 }
 
 .actions-edit_chart_y-axis li {
@@ -341,8 +341,8 @@
   float: left;
   width: 433px;
   height: 380px;
-  border-left: 1px solid $t-Color__grey--light;
-  border-bottom: 1px solid $t-Color__grey--light;
+  border-left: 1px solid $t-Color__gray--medium-500;
+  border-bottom: 1px solid $t-Color__gray--medium-500;
   background: url(/images/actions_grid.png);
 }
 
@@ -352,7 +352,7 @@
   margin-left: 50px;
   line-height: normal;
   font: 11px Verdana, sans-serif;
-  color: $t-Color__grey--dark;
+  color: $t-Color__gray--dark-700;
 }
 
 .actions-edit_chart_x-axis li {
@@ -391,14 +391,14 @@
 .chart_sub-menu li a:hover {
   padding: 11px 0 11px 20px;
   margin: 0;
-  background: $t-Color__grey--light;
+  background: $t-Color__gray--medium-500;
   color: white;
 }
 
 .chart_sub-menu li.c a {
   padding: 11px 0 11px 20px;
   margin: 0;
-  background: $t-Color__grey--light;
+  background: $t-Color__gray--medium-500;
   color: white;
 }
 
@@ -435,7 +435,7 @@
   float: left;
   width: 455px;
   margin-right: 10px;
-  background: $t-Color__grey--lightest;
+  background: $t-Color__tan;
   padding: 17px 15px 6px 15px;
   font-size: 13px;
   color: #444;
@@ -448,7 +448,7 @@
 .act-edit-box_right {
   float: left;
   width: 459px;
-  background: $t-Color__grey--lightest;
+  background: $t-Color__tan;
   padding: 17px 15px 6px 15px;
   font-size: 13px;
   color: #444;
@@ -489,7 +489,7 @@
 
 .control_wrap {
   font: 11px Verdana, sans-serif;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
   line-height: 14px;
   height: 38px;
   margin: 12px 0;
@@ -547,8 +547,8 @@
 }
 
 .control_input {
-  background: url(/images/bg-noise.png), $t-Color__grey--lightest;
-  border: 1px solid $t-Color__grey--light;
+  background: url(/images/bg-noise.png), $t-Color__tan;
+  border: 1px solid $t-Color__gray--medium-500;
   width: 53px;
   height: 34px;
   padding-right: 6px;
@@ -560,7 +560,7 @@
 .control_div {
   clear: both;
   height: 2px;
-  background: $t-Color__grey--lightest;
+  background: $t-Color__tan;
   margin-bottom: 10px;
 }
 
@@ -586,38 +586,20 @@
   border-radius: 5px;
 }
 
-.rounded_button.brn a {
-  background: $t-Color__grey--lightest;
-  color: $t-Color__grey--darkest;
-}
-
-.rounded_button.brn a:hover {
-  color: $t-Color__accent;
-}
-
-.rounded_button.blu a {
-  background: $t-Color__primary__grey--light;
-  color: $t-Color__grey--darkest;
-}
-
-.rounded_button.blu a:hover {
-  color: $t-Color__accent;
-}
-
 .rounded_button.blugrid a {
   background: $t-Color__primary;
   color: white;
-  border: 1px solid $t-Color__primary__grey--dark;
+  border: 1px solid $t-Color__primary__gray--dark;
 }
 
 .rounded_button.blugrid a:hover {
   background: white;
-  color: $t-Color__primary__grey--dark;
+  color: $t-Color__primary__gray--dark;
 }
 
 .rounded_button.blugrid.c a {
   background: white;
-  color: $t-Color__primary__grey--dark;
+  color: $t-Color__primary__gray--dark;
 }
 
 .ui-slider {
@@ -667,7 +649,7 @@
   font-size: .9em;
   background: white url(/images/slider_bg.gif) 0 0 repeat-x;
   color: black;
-  border: 4px solid $t-Color__grey--lightest;
+  border: 4px solid $t-Color__tan;
   position: relative;
 }
 
@@ -682,7 +664,7 @@
 
 .control_definition {
   font: 11px Verdana, sans-serif;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
 }
 
 #content input.control_input {
@@ -714,8 +696,8 @@
 }
 
 .act_left-list li.act_left-list-child:hover {
-  background: $t-Color__primary__grey--light;
-  border: 1px solid $t-Color__primary__grey--dark;
+  background: $t-Color__primary__gray--light;
+  border: 1px solid $t-Color__primary__gray--dark;
 }
 
 tr.jqplot-table-legend {

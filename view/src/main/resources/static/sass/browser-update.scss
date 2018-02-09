@@ -5,8 +5,8 @@ body { //wrap in body to increase specificity (allows overriding default rules)
   //Notification background
   .buorg {
     border-bottom: none;
-    border-top: 1px solid $t-Color__gray-500;
-    background-color: $t-Color__gray-100;
+    border-top: 1px solid $t-Color__gray--medium-500;
+    background-color: $t-Color__gray--light-100;
   }
 
   //Update button
@@ -14,21 +14,21 @@ body { //wrap in body to increase specificity (allows overriding default rules)
     &, &:visited {
       color: $t-Color__text--light;
       border-radius: $t-Border__radius;
-      background: $t-Color__gray-600;
+      background: $t-Color__gray--dark-600;
     }
     &:hover {
-      background: darken($t-Color__gray-600, 10%);
+      background: darken($t-Color__gray--dark-600, 10%);
     }
   }
 
   //Ignore button
   #buorgig {
     color: $t-Color__text--dark;
-    background-color: $t-Color__gray-200;
+    background-color: $t-Color__gray--light-200;
 
     &:hover {
       color: darken($t-Color__text--dark, 5%);
-      background-color: darken($t-Color__gray-200, 5%);
+      background-color: darken($t-Color__gray--light-200, 5%);
     }
   }
 }

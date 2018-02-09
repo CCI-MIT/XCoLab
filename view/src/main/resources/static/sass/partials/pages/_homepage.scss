@@ -1,11 +1,11 @@
 @import "../components/c-Button";
 
-$p-Homepage__homespot__background: url(/images/bg-noise.png) $t-Color__grey--lightest !default;
+$p-Homepage__homespot__background: url(/images/bg-noise.png) $t-Color__tan !default;
 $p-Homepage__homespot__background__background: url(/images/homespot/background.png) no-repeat right 0 center !default;
 $p-Homepage__homespot__background__backgroundSize: contain !default;
 
 $p-homepage__content__h2__fontSize: 20px !default;
-$p-homepage__content__h2__textColor: $t-Color__grey--darkest !default;
+$p-homepage__content__h2__textColor: $t-Color__gray--dark-800 !default;
 
 $p-homepage__learn__backgroundColor: $t-Color__primary !default;
 $p-homepage__learn__backgroundColor--hover: null !default;
@@ -39,17 +39,18 @@ $p-homepage__join__imageUrl: none !default;
   width: 100%;
 }
 
-//TODO: deprecated; remove from homespot on climatecolab.org and then remove here
-.topshade {
-  display: none;
-}
-
 //TODO: legacy for climate colab
 .earth {
   background: url(/images/homespot/earth.png) no-repeat 500px top;
   background-size: contain;
   width: 100%;
   min-height: 336px;
+}
+
+.mitproject {
+  background: url(/images/logo_mit_themed.png) no-repeat;
+  padding-left: 90px;
+  margin-bottom: 5px;
 }
 
 .homespot-left {
@@ -74,6 +75,7 @@ $p-homepage__join__imageUrl: none !default;
   margin: 20px 0 10px 0;
 }
 
+//TODO COLAB-2561: remove once replaced in web content
 a.learn {
   @include theme-button($p-homepage__learn__backgroundColor, $p-homepage__learn__borderColor,
           $p-homepage__learn__imageUrl, $p-homepage__learn__backgroundColor--hover);
@@ -81,12 +83,14 @@ a.learn {
   margin-right: 15px;
 }
 
+//TODO COLAB-2561: remove once replaced in web content
 a.get {
   @include theme-button($p-homepage__get__backgroundColor, $p-homepage__get__borderColor, $p-homepage__get__imageUrl);
   text-transform: uppercase;
   margin-right: 15px;
 }
 
+//TODO COLAB-2561: remove once replaced in web content
 a.join {
   @include theme-button($p-homepage__join__backgroundColor, $p-homepage__join__borderColor, $p-homepage__join__imageUrl);
   text-transform: uppercase;
@@ -94,13 +98,13 @@ a.join {
 }
 
 .newsbox {
-  background: url(/images/bg-noise.png) $t-Color__grey--lightest;
+  background: url(/images/bg-noise.png) $t-Color__tan;
   width: 418px;
   font-size: 15px;
   padding: 10px 26px 10px 18px;
   margin: 25px 0 25px;
   position: relative;
-  border: 1px solid $t-Color__grey--light;
+  border: 1px solid $t-Color__gray--medium-500;
   border-radius: 6px;
 }
 
@@ -153,52 +157,15 @@ a.join {
   border-bottom: 1px solid black;
 }
 
-.social-icon {
-  float: left;
-  height: 17px;
-  padding: 1px 0 0 25px;
-  text-indent: -999px;
-  overflow: hidden;
-  font-size: 0;
-}
-
-.facebook {
-  background: url(/images/icon-facebook.png) no-repeat;
-}
-
-.twitter {
-  background: url(/images/icon-twitter.png) no-repeat;
-}
-
-.reddit {
-  background: url(/images/icon-reddit.png) no-repeat;
-}
-
-.pinterest {
-  background: url(/images/icon-pinterest.png) no-repeat;
-}
-
-.linkedin {
-  background: url(/images/icon-linkedin.png) no-repeat;
-}
-
-.googleplus {
-  background: url(/images/icon-googleplus.png) no-repeat;
-}
-
-.youtube {
-  background: url(/images/icon-youtube.png) no-repeat;
-}
-
 .sketchy-icon {
   height: 32px;
   display: inline-block;
   padding: 8px 0 0 41px;
-  color: $t-Color__grey--lightest;
+  color: $t-Color__tan;
   margin: 0 10px;
 
   &:hover {
-    color: $t-Color__grey--lightest;
+    color: $t-Color__tan;
   }
 
   span:hover {
@@ -226,14 +193,7 @@ a.join {
   background: url(/images/icons/social/google.svg) no-repeat;
   background-size: 32px;
 }
-.SolveCoLab-sketchy{
-  background: url(/images/SolveCoLab-sketchy.png) no-repeat;
-  background-size: 32px;
-}
-.ClimateCoLab-sketchy{
-  background: url(/images/ClimateCoLab-sketchy.png) no-repeat;
-  background-size: 32px;
-}
+
 /* <Conference Countdown Flipclock>*/
 #conference-countdown {
   position: absolute;
@@ -399,12 +359,6 @@ a.join {
 .home h2 span {
   font-size: 15px;
   padding-left: 5px;
-}
-
-.rss {
-  float: right;
-  margin-right: 30px;
-  width: 20px;
 }
 
 .p-Homepage__activitybox__comment {

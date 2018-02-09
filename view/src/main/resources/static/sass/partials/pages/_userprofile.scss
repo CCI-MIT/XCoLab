@@ -13,7 +13,7 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
   background: url(/images/icon-addprop-arrow.png) no-repeat 0 3px;
   float: right;
   padding: 0 0 5px 11px;
-  color: $t-Color__grey--dark;
+  color: $t-Color__gray--dark-700;
 }
 
 .comm_rightcol {
@@ -23,7 +23,7 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
 
 //TODO: also used in feeds-portlet...
 .comm_rightcol-bdr {
-  border-bottom: 3px solid $t-Color__primary__grey--light;
+  border-bottom: 3px solid $t-Color__primary__gray--light;
   padding-bottom: 10px;
   margin-top: 0;
 }
@@ -41,12 +41,12 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
 
 .comm_rightcol-title2 {
   text-transform: uppercase;
-  background: $t-Color__primary__grey--light;
+  background: $t-Color__primary__gray--light;
   padding: 10px 8px;
   font-size: 12px;
   line-height: normal;
   font-weight: $t-Typography__fontWeight--bold;
-  color: contrasting-color($t-Color__primary__grey--light);
+  color: yiq-contrasting-color($t-Color__primary__gray--light);
   margin-bottom: 5px;
 }
 

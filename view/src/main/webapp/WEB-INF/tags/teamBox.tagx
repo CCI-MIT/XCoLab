@@ -105,7 +105,7 @@
                 var imgPortrait = document.createElement("img");
                 imgPortrait.height = "40";
                 imgPortrait.width = "40";
-                var imageSrc = "${_uploadedImageFolder}/user_male_portrait?screenName="
+                var imageSrc = "/image/user_male_portrait?screenName="
                         + screenName;
                 imgPortrait.setAttribute("src", imageSrc);
                 spanPortrait.appendChild(imgPortrait);

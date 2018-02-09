@@ -40,9 +40,9 @@ spring:
         content:
           enabled: true
           paths:
-            - "/js/**"
-            - "/css/**"
-            - "/vendor/**"
+            - "/js/**"      # /static/js - our JavaScript files
+            - "/css/**"     # /static/css - our CSS files
+            - "/vendor/**"  # /dist/vendor - external dependencies (from yarn)
       cache: false
     cache-period: 31536000 # 365 days
     # use comma-separated list to override default value

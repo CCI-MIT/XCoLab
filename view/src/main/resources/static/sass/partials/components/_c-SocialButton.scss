@@ -1,8 +1,8 @@
-$bs-height-base: 30px !default;
-$bs-height-xs: 22px !default;
+$_c-SocialButton__height: 30px !default;
+$_c-SocialButton__height--xs: 22px !default;
 
 .c-SocialButton {
-  margin: 2px;
+  margin: 1px;
   display: inline-block;
   cursor: pointer;
 
@@ -14,12 +14,12 @@ $bs-height-xs: 22px !default;
   }
 
   > img {
-    height: $bs-height-base;
-    width: $bs-height-base;
+    height: $_c-SocialButton__height;
+    width: $_c-SocialButton__height;
   }
 
   &.c-SocialButton--xs > img {
-    height: $bs-height-xs;
-    width: $bs-height-xs;
+    height: $_c-SocialButton__height--xs;
+    width: $_c-SocialButton__height--xs;
   }
 }

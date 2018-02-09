@@ -149,14 +149,6 @@ public class MembersController {
                 member.getOpenId(), member.getPortraitFileEntryId(), member.getId_(), member.getGoogleId(), member.getDefaultLocale());
     }
 
-    @PostMapping("registerFromSharedColab")
-    public Member registerFromSharedColab(@RequestBody Member member) {
-            return memberService.registerWithHashedPassword(member.getScreenName(), member.getHashedPassword(),
-                    member.getEmailAddress(), member.getFirstName(), member.getLastName(),
-                    member.getShortBio(), member.getCountry(), member.getFacebookId(),
-                    member.getOpenId(), member.getPortraitFileEntryId(), member.getId_(), member.getGoogleId(),member.getDefaultLocale());
-    }
-
     @GetMapping("{memberId}/points")
     public int getMemberPoints(@PathVariable Long memberId,
             @RequestParam (required = false, defaultValue = "false") boolean hypothetical) {

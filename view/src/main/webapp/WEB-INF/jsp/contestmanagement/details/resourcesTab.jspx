@@ -55,7 +55,7 @@
 								<c:when test="${section.deletable}">
 									<strong>Title:</strong>
                                     <form:input path="sections[${x.index}].title" data-form-name="title"
-                                                cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
+                                                cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 								</c:when>
 								<c:otherwise>
 									<form:hidden path="sections[${x.index}].title"/>
@@ -65,7 +65,7 @@
 
 							<c:if test="${not empty section.helpText}">
 							<a class="helpTrigger" href="javascript:;">
-								<img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" />
+								<img src="/images/icon-addprop-question.png" width="15" height="15" />
 							</a>
 							</c:if>
 							<br />

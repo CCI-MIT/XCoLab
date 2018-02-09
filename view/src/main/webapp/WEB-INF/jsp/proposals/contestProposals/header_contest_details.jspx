@@ -152,7 +152,7 @@
                 </div>
                 <div class="p-ContestProposals__header__buttons">
                     <c:if test="${showEditLink}">
-                        <a href="/admin/contest/details/contestId/${contest.contestPK}" class="btn btn-outline-admin">
+                        <a href="/admin/contest/details/contestId/${contest.contestPK}" class="btn cb-btn-outline-admin ">
                             Edit Contest
                         </a>
                     </c:if>
@@ -163,8 +163,6 @@
                         </a>
                     </c:if>
 
-                    <!-- TODO: delete p-ContestProposals__header__detailButton -->
-                    <!-- TODO: delete p-ContestProposals__header__detailButton__count -->
                     <c:if test="${contestType.hasDiscussion}">
                         <a href="${contest.contestUrl}/discussion" class="btn btn-outline-primary">
                            <span><spring:message code="contests.details.discussion" />&#160;</span>

@@ -27,7 +27,6 @@
             <div class="judging_left">
                 <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
                            commandName="fellowProposalScreeningBean">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="addpropbox">
                         <h3>Advance ${contestType.proposalName} to Judges for Review?</h3>
 
@@ -50,10 +49,10 @@
                                                                            proposalId="${proposal.proposalId}" contestId="${contest.contestPK}">
                                                     <c:choose>
                                                         <c:when test="${judgeReviewStatus.statusValue eq 1}">
-                                                            <img src="${_themeImageFolder}/icon_question-x.png" class="review-status-icon"/>
+                                                            <img src="/images/icon_question-x.png" class="review-status-icon"/>
                                                         </c:when>
                                                         <c:when test="${judgeReviewStatus.statusValue eq 2}">
-                                                            <img src="${_themeImageFolder}/icon_question-chk.png" class="review-status-icon"/>
+                                                            <img src="/images/icon_question-chk.png" class="review-status-icon"/>
                                                         </c:when>
                                                     </c:choose>
                                                 </judging:judgeReviewStatus>

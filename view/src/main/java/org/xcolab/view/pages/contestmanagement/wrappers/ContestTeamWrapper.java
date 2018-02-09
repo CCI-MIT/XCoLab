@@ -10,7 +10,6 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTeamBean;
-import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.util.entity.enums.MemberRole;
 
 import java.util.List;
@@ -42,14 +41,6 @@ public class ContestTeamWrapper {
         assignMembersToContestWithRole(userIds, memberRole);
         assignMemberRoleToUser(memberRole, userIds);
         subscribeUsersToContest(userIds);
-        crossColabRegisterUsersForSharedContests(userIds);
-    }
-
-    private void crossColabRegisterUsersForSharedContests(List<Long> userIds) {
-
-        for (Long id : userIds) {
-            SharedColabUtil.checkTriggerForAutoUserCreationInContest(contestId, id);
-        }
     }
 
     private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds) {
