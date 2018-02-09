@@ -358,7 +358,7 @@
                         <tr class="colabRow">
                             <td class="actionColumn">
                                 <c:choose>
-                                    <c:when test="${currentUserProfile.hasOpenId}">
+                                    <c:when test="${currentUserProfile.hasGoogleId}">
                                         <input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
                                                value="true" checked="checked" onClick="unlinkGoogleSSO();" />
                                     </c:when>
