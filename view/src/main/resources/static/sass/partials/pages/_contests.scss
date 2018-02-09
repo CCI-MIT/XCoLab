@@ -35,7 +35,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
 }
 
 .contests-container {
-  background-color: $t-Color__primary__grey--light;
+  background-color: $t-Color__primary__gray--light;
   padding-top:15px;
   padding-left:35px;
   overflow:hidden;
@@ -53,7 +53,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
     margin-right: 50px;
 
     &.selected {
-      border-bottom: 32px solid $t-Color__primary__grey--light;
+      border-bottom: 32px solid $t-Color__primary__gray--light;
       background-color:white;
     }
   }
@@ -62,7 +62,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
     font-weight: bold;
     margin-right: 50px;
     &.selected {
-      color: $t-Color__grey--medium;
+      color: $t-Color__gray--dark-600;
     }
   }
 
@@ -73,13 +73,13 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
 
 .c-breadcrump {
   font-size: 14px;
-  background-color: $t-Color__primary__grey--light;
+  background-color: $t-Color__primary__gray--light;
   padding: 17px;
   padding-bottom: 0;
   padding-left: 20px;
 
   span {
-    color: $t-Color__grey--medium
+    color: $t-Color__gray--dark-600
   }
 
   a {
@@ -90,7 +90,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
 
 .c-display-selector {
 
-  background-color: $t-Color__primary__grey--light;
+  background-color: $t-Color__primary__gray--light;
   height: 65px;
 
   .show-active {
@@ -117,7 +117,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
       text-transform: uppercase;
 
       &.selected {
-        color: $t-Color__grey--medium;
+        color: $t-Color__gray--dark-600;
         border: solid 1px $t-Color__primary;
         border-radius: 3px;
         margin:14px;
@@ -143,7 +143,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
 
 .c-description {
   margin-right: 400px;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
   font-size: 15px;
   line-height: 24px;
 }
@@ -165,8 +165,8 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
   float: left;
   height: 34px;
   line-height: 34px;
-  background: $t-Color__grey--lightest;
-  border: solid 1px $t-Color__grey--medium;
+  background: $t-Color__tan;
+  border: solid 1px $t-Color__gray--dark-600;
   border-radius: 6px;
   margin-right: 16px;
   font-size: 12px;
@@ -285,14 +285,14 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
   width: 170px;
   height: 27px;
   padding: 1px 0 0 8px;
-  border: 1px solid $t-Color__grey--light;
+  border: 1px solid $t-Color__gray--medium-500;
   font: 12px "Lucida Grande", Arial, sans-serif;
 }
 
 .users-pagination {
   float: left;
   width: 100%;
-  border-bottom: 1px solid $t-Color__grey--light;
+  border-bottom: 1px solid $t-Color__gray--medium-500;
   padding-bottom: 40px;
   padding-top: 40px;
 }
@@ -316,8 +316,8 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
   padding: 11px 10px 0;
   font-size: 14px;
   line-height: 20px;
-  color: $t-Color__grey--darkest;
-  border-bottom: 1px solid $t-Color__grey--lightest;
+  color: $t-Color__gray--dark-800;
+  border-bottom: 1px solid $t-Color__tan;
 }
 
 .userslist a {
@@ -334,11 +334,11 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
 }
 
 .userslist.featured td {
-  background-color: $t-Color__grey--lightest;
+  background-color: $t-Color__tan;
 }
 
 .userslist tr.feat-bot {
-  border-bottom: 1px solid $t-Color__primary__grey;
+  border-bottom: 1px solid $t-Color__primary__gray;
 }
 
 #priorActiveAllWidget {
@@ -367,7 +367,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
 
 #priorActiveAllWidget ul li.active,
 #priorActiveAllWidget ul li:hover {
-  background: $t-Color__primary__grey--light;
+  background: $t-Color__primary__gray--light;
 
   a {
     color: $p-Contests__priorActiveAllWidget__a__color--isHover;
@@ -427,5 +427,5 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
   padding: 30px;
   text-overflow: ellipsis;
   width: 850px;
-  color:$t-Color__grey--medium
+  color:$t-Color__gray--dark-600
 }

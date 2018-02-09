@@ -1,11 +1,11 @@
-$c-Alert__backgroundColor: $t-Color__grey--lightest !default;
-$c-Alert__border: 1px solid $t-Color__grey--light !default;
+$c-Alert__backgroundColor: $t-Color__tan !default;
+$c-Alert__border: 1px solid $t-Color__gray--medium-500 !default;
 
 $c-Alert__danger_error__backgroundColor: $t-Color__alert--light !default;
-$c-Alert__danger_error__borderColor: $t-Color__grey--lightest !default;
+$c-Alert__danger_error__borderColor: $t-Color__tan !default;
 $c-Alert__danger_error__textColor: $t-Color__alert !default;
 
-$c-Alert__message__border: 1px dashed $t-Color__grey--dark !default;
+$c-Alert__message__border: 1px dashed $t-Color__gray--dark-700 !default;
 
 $c-Alert__error__message__background: $t-Color__alert--light !default;
 $c-Alert__info__message__background: $t-Color__info__background !default;

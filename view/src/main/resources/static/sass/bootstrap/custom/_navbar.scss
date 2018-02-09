@@ -2,7 +2,7 @@
 @import "bootstrap/functions";
 @import "bootstrap/variables";
 
-$c-Header__background: url(/images/bg-noise.png), $t-Color__grey--lightest !default;
+$c-Header__background: url(/images/bg-noise.png), $t-Color__tan !default;
 $c-Header__background--hover: url(/images/bg-noise.png) !default;
 $c-Header__menu__li__a__textColor: $t-Color__primary !default;
 $c-Header__menu__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
@@ -14,7 +14,7 @@ $cb-navbar__hasBoxShadow: false !default;
 
 // local vars
 $_navbar__height: 67px;
-$_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__grey--medium, .7);
+$_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
 
 .nav li,
 .navbar li {
@@ -67,7 +67,7 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__grey--medium, .7);
       > img {
         height: 25px;
         width: 25px;
-        border: 1px solid $t-Color__grey--medium;
+        border: 1px solid $t-Color__gray--dark-600;
       }
 
       .badge {
@@ -91,7 +91,7 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__grey--medium, .7);
   margin-left: $spacer;
 
   .nav-item {
-    border-left: 1px solid $t-Color__grey--light;
+    border-left: 1px solid $t-Color__gray--medium-500;
 
     &:hover {
       background-image: $c-Header__background--hover;
@@ -116,7 +116,7 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__grey--medium, .7);
 
   .cb-nav-item-icon {
     .nav-link {
-      color: $t-Color__gray-700;
+      color: $t-Color__gray--dark-700;
 
       &:hover {
         color: black;

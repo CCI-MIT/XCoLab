@@ -1,6 +1,6 @@
 //TODO: perhaps combine this with c-Table
 
-$c-TableList__background--odd: $t-Color__primary__grey--light !default;
+$c-TableList__background--odd: $t-Color__primary__gray--light !default;
 
 .c-TableList {
 
@@ -25,9 +25,9 @@ $c-TableList__background--odd: $t-Color__primary__grey--light !default;
 
 .c-TableList__row { //.activitiesbox
   font-size: 14px;
-  color: $t-Color__grey--dark;
+  color: $t-Color__gray--dark-700;
 
-  border-bottom: 1px solid $t-Color__grey--light;
+  border-bottom: 1px solid $t-Color__gray--medium-500;
 
   &.odd { //.blu
     background: $c-TableList__background--odd;

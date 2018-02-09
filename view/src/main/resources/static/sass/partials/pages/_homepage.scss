@@ -1,11 +1,11 @@
 @import "../components/c-Button";
 
-$p-Homepage__homespot__background: url(/images/bg-noise.png) $t-Color__grey--lightest !default;
+$p-Homepage__homespot__background: url(/images/bg-noise.png) $t-Color__tan !default;
 $p-Homepage__homespot__background__background: url(/images/homespot/background.png) no-repeat right 0 center !default;
 $p-Homepage__homespot__background__backgroundSize: contain !default;
 
 $p-homepage__content__h2__fontSize: 20px !default;
-$p-homepage__content__h2__textColor: $t-Color__grey--darkest !default;
+$p-homepage__content__h2__textColor: $t-Color__gray--dark-800 !default;
 
 $p-homepage__learn__backgroundColor: $t-Color__primary !default;
 $p-homepage__learn__backgroundColor--hover: null !default;
@@ -98,13 +98,13 @@ a.join {
 }
 
 .newsbox {
-  background: url(/images/bg-noise.png) $t-Color__grey--lightest;
+  background: url(/images/bg-noise.png) $t-Color__tan;
   width: 418px;
   font-size: 15px;
   padding: 10px 26px 10px 18px;
   margin: 25px 0 25px;
   position: relative;
-  border: 1px solid $t-Color__grey--light;
+  border: 1px solid $t-Color__gray--medium-500;
   border-radius: 6px;
 }
 
@@ -161,11 +161,11 @@ a.join {
   height: 32px;
   display: inline-block;
   padding: 8px 0 0 41px;
-  color: $t-Color__grey--lightest;
+  color: $t-Color__tan;
   margin: 0 10px;
 
   &:hover {
-    color: $t-Color__grey--lightest;
+    color: $t-Color__tan;
   }
 
   span:hover {

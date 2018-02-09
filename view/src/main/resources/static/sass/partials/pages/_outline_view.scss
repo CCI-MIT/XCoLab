@@ -4,7 +4,7 @@
   float: left;
   width: 490px;
   min-height: 600px;
-  border-right: 1px solid $t-Color__grey--lightest;
+  border-right: 1px solid $t-Color__tan;
   padding-bottom: 150px;
   box-shadow: inset -14px 0 10px -10px #ccc;
 }
@@ -31,7 +31,7 @@
 .contest-count {
   display: inline-block;
   font: 12px "Lucida Grande", Arial, sans-serif;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
   margin-right: 20px;
   padding: 10px 0 20px 10px;
 }
@@ -90,7 +90,7 @@
 }
 
 .contest-outline-left li a:hover, .section-head.open {
-  background-color: $t-Color__primary__grey--light;
+  background-color: $t-Color__primary__gray--light;
 }
 
 .contest-outline-left ul.level1 li a {
@@ -119,11 +119,11 @@
   vertical-align: middle;
   font-size: 12px;
   font-weight: $t-Typography__fontWeight--bold;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
 }
 
 .section-head {
-  background: $t-Color__grey--lightest url(/images/pattern-6x6-white.png);
+  background: $t-Color__tan url(/images/pattern-6x6-white.png);
   padding: 15px 20px 15px 15px;
 }
 
@@ -152,7 +152,7 @@
 .section-head h2 span {
   font-size: 13px;
   font-weight: 200;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
   vertical-align: middle;
 }
 
@@ -269,7 +269,7 @@
   text-align: center;
   padding: 15px 0;
   line-height: 24px;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
 }
 
 .cintro h2 {
@@ -278,12 +278,12 @@
 }
 
 .cintro strong {
-  color: $t-Color__grey--dark;
+  color: $t-Color__gray--dark-700;
 }
 
 .contest-outline-right .contest-count {
   font: 18px "proxima-nova", Arial, Helvetica, sans-serif;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
   padding: 0 0 0 0;
 }
 
@@ -303,7 +303,7 @@
 
 .other-contest-count {
   font: 13px "Lucida Grande", Arial, sans-serif;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
   margin-right: 20px;
   padding: 10px 0 20px 10px;
 }
@@ -378,7 +378,7 @@
 .prop-head {
   text-align: right;
   font: 10px "Lucida Grande", Arial, sans-serif;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
   padding: 0 0 10px 0;
 }
 
@@ -412,9 +412,9 @@
 }
 
 .txt {
-  background-color: $t-Color__grey--lightest;
+  background-color: $t-Color__tan;
   padding: 10px;
-  border-top: 1px solid $t-Color__grey--medium;
+  border-top: 1px solid $t-Color__gray--dark-600;
 }
 
 .section a {
@@ -479,16 +479,16 @@
   vertical-align: middle;
   font-size: 12px;
   font-weight: $t-Typography__fontWeight--bold;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
 }
 
 .detail {
   font-size: 12px;
   margin: 0 0 15px 29px;
   padding: 5px 0;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
   line-height: 19px;
-  border-bottom: 1px solid $t-Color__grey--lightest;
+  border-bottom: 1px solid $t-Color__tan;
   display: none;
 }
 

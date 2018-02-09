@@ -1,17 +1,17 @@
 $p-About__left__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
 $p-About__left__li__a__padding--left: 4px !default;
-$p-About__left__li__a__current__background: $t-Color__grey--lightest !default;
+$p-About__left__li__a__current__background: $t-Color__tan !default;
 $p-About__left__li__a__current__border--left: none !default;
 $p-About__left__li__a__current__padding--left: 4px !default;
 $p-About__left__li__ul__li__a__padding--left: 28px !default;
-$p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
-$p-About__checkout__backgroundColor: $t-Color__primary__grey--light !default;
+$p-About__left__li__a__current__textColor: $t-Color__gray--dark-700 !default;
+$p-About__checkout__backgroundColor: $t-Color__primary__gray--light !default;
 $p-About__contribute__background: url(/images/about/getinvolved-top_illustration.jpg) no-repeat !default;
 $p-About__ge1__background: url(/images/about/getinvolved-row-01.png) no-repeat 42px 0 !default;
 $p-About__ge2__background: url(/images/about/getinvolved-row-02.png) no-repeat 31px 20px !default;
 $p-About__ge3__background: url(/images/about/getinvolved-row-03.png) no-repeat 10px 0 !default;
 $p-About__ge4__background: url(/images/about/getinvolved-row-04.png) no-repeat 20px 15px !default;
-$p-About__getinvolved__backgroundColor: $t-Color__grey--lightest !default;
+$p-About__getinvolved__backgroundColor: $t-Color__tan !default;
 $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !default;
 
 /* ABOUT ------------------------------------------------------------------------------------- */
@@ -57,7 +57,7 @@ $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !defaul
 }
 
 .about-left li a:hover {
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
   text-decoration: none;
 }
 
@@ -83,7 +83,7 @@ $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !defaul
 }
 
 .about-left li ul li a:hover, .about-left li ul li.c > a {
-  background: $t-Color__grey--lightest;
+  background: $t-Color__tan;
   text-decoration: none;
   padding-left: 28px;
 }
@@ -167,7 +167,7 @@ $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !defaul
 .continue a {
   padding: 28px 24px 24px;
   display: inline-block;
-  background: $t-Color__primary__grey--light;
+  background: $t-Color__primary__gray--light;
   font-size: 18px;
   font-weight: $t-Typography__fontWeight--bold;
   text-align: center;
@@ -200,7 +200,7 @@ $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !defaul
 }
 
 .one-butt {
-  background: $t-Color__primary__grey--light;
+  background: $t-Color__primary__gray--light;
   border: 1px solid $t-Color__primary;
   height: 27px;
   padding: 7px 12px 0;
@@ -361,7 +361,7 @@ $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !defaul
 }
 
 .checkout-wrap {
-  border: 1px dashed $t-Color__grey--medium;
+  border: 1px dashed $t-Color__gray--dark-600;
   width: 553px;
   padding: 5px;
   margin: 52px auto 0;
@@ -386,9 +386,9 @@ $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !defaul
 
 .p-About__approachIllustration {
   margin-top: 30px;
-  background: $t-Color__grey--lightest;
-  border-top: 1px solid $t-Color__grey--medium;
-  border-bottom: 1px solid $t-Color__grey--medium;
+  background: $t-Color__tan;
+  border-top: 1px solid $t-Color__gray--dark-600;
+  border-bottom: 1px solid $t-Color__gray--dark-600;
 
   h3 {
     text-align: center;

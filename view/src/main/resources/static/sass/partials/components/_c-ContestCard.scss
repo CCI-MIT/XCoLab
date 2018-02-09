@@ -6,21 +6,21 @@ $c-ContestCard__meta__flag__marginTop: 0 !default;
 $c-ContestCard__meta__flag__isGradient: true !default;
 $c-ContestCard__meta__flag__background--color: $t-Color__secondary !default;
 $c-ContestCard__meta__flag__textColor--color: white !default;
-$c-ContestCard__meta__flag__background--grey: $t-Color__primary__grey--light !default;
-$c-ContestCard__meta__flag__textColor--grey: $t-Color__grey--medium !default;
+$c-ContestCard__meta__flag__background--grey: $t-Color__primary__gray--light !default;
+$c-ContestCard__meta__flag__textColor--grey: $t-Color__gray--dark-600 !default;
 $c-ContestCard__meta__flag__fontWeight: $t-Typography__fontWeight !default;
-$c-ContestCard__meta__count__textColor: $t-Color__grey--medium;
+$c-ContestCard__meta__count__textColor: $t-Color__gray--dark-600;
 
 $c-ContestCard__text__height: 104px !default;
 $c-ContestCard__text__title__textColor: $t-Color__primary !default;
 $c-ContestCard__text__title__textColor--hover: $t-Link__color--hover !default;
 
 $c-ContestCard__background: white !default;
-$c-ContestCard__border: 1px solid $t-Color__grey--light !default;
+$c-ContestCard__border: 1px solid $t-Color__gray--medium-500 !default;
 $c-ContestCard__border__radius: 8px !default;
 $c-ContestCard__border__bottom: null !default;
-$c-ContestCard__text__textColor: $t-Color__grey--dark;
-$c-ContestCard__shadow--hover:  0 0 10px  $t-Color__grey--light;
+$c-ContestCard__text__textColor: $t-Color__gray--dark-700;
+$c-ContestCard__shadow--hover:  0 0 10px  $t-Color__gray--medium-500;
 
 .c-ContestCard {
   width: 200px;

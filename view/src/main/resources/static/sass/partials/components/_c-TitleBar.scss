@@ -1,18 +1,18 @@
 @import "../../lib/l-functions";
 
-$c-TitleBar__backgroundColor: $t-Color__primary__grey--light !default;
-$c-TitleBar__borderBottom: 1px solid $t-Color__primary__grey !default;
-$c-TitleBar__contestSummary__backgroundColor--light: $t-Color__grey--light !default;
-$c-TitleBar__textColor: $t-Color__grey--darkest !default;
+$c-TitleBar__backgroundColor: $t-Color__primary__gray--light !default;
+$c-TitleBar__borderBottom: 1px solid $t-Color__primary__gray !default;
+$c-TitleBar__contestSummary__backgroundColor--light: $t-Color__gray--medium-500 !default;
+$c-TitleBar__textColor: $t-Color__gray--dark-800 !default;
 $c-TitleBar__element--active__capitalization: none !default;
-$c-TitleBar__element--disabled__textColor: $t-Color__grey--medium !default;
+$c-TitleBar__element--disabled__textColor: $t-Color__gray--dark-600 !default;
 $c-TitleBar__element__fontWeight: $t-Typography__fontWeight !default;
 $c-TitleBar__a__textColor: $t-Color__primary !default;
 $c-TitleBar__a__textColor--hover: black !default;
 $c-TitleBar__a__fontWeight: 700 !default;
 $c-TitleBar__capitalization: none !default;
 
-$c-TitleBar__contestSummary__backgroundColor: $t-Color__primary__grey--light !default;
+$c-TitleBar__contestSummary__backgroundColor: $t-Color__primary__gray--light !default;
 
 $c-TitleBar__actionButton__backgroundColor: $c-TitleBar__backgroundColor !default;
 $c-TitleBar__actionButton__backgroundColor--hover: $c-TitleBar__backgroundColor !default;
@@ -48,8 +48,8 @@ $_c-TitleBar__borderWidth: 6px;
 }
 
 .c-TitleBar.c-TitleBar--warning {
-  background: $t-Color__primary__grey--light;
-  color: $t-Color__grey--darkest;
+  background: $t-Color__primary__gray--light;
+  color: $t-Color__gray--dark-800;
   border-bottom: $_c-TitleBar__borderWidth solid $t-Color__accent;
 
   .c-TitleBar__actionButton {

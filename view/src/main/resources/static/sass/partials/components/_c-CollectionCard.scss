@@ -2,17 +2,17 @@ $c-CollectionCard__text__title__textColor: $t-Color__primary !default;
 $c-CollectionCard__text__title__textColor--hover: $t-Link__color--hover !default;
 
 $c-CollectionCard__background: white !default;
-$c-CollectionCard__border: 1px solid $t-Color__grey--light !default;
+$c-CollectionCard__border: 1px solid $t-Color__gray--medium-500 !default;
 $c-CollectionCard__border__radius: 8px !default;
 $c-CollectionCard__border__bottom: null !default;
-$c-CollectionCard__shadow--hover:  0 0 10px  $t-Color__grey--light;
+$c-CollectionCard__shadow--hover:  0 0 10px  $t-Color__gray--medium-500;
 $c-CollectionCard__background__container__shadow--hover: $c-CollectionCard__shadow--hover;
 $c-CollectionCard__circle__background__color: $t-Color__primary;
 $c-CollectionCard__circle__textColor: white;
-$c-CollectionCard__separator__border-bottom: 2px solid $t-Color__grey--lightest;
+$c-CollectionCard__separator__border-bottom: 2px solid $t-Color__tan;
 $c-CollectionCard__text__parent__title__textColor: black;
-$c-CollectionCard__text__textColor:  $t-Color__grey--dark;
-$c-CollectionCard__contests__tag__textColor: $t-Color__grey--medium;
+$c-CollectionCard__text__textColor:  $t-Color__gray--dark-700;
+$c-CollectionCard__contests__tag__textColor: $t-Color__gray--dark-600;
 
 .c-CollectionCard__background__container {
   width: 200px;

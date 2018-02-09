@@ -1,11 +1,11 @@
 .c-ListView {
-  background-color: $t-Color__primary__grey--light;
+  background-color: $t-Color__primary__gray--light;
   overflow:hidden;
 }
 
 .c-ListItem {
   border-radius: 3px;
-  color: $t-Color__grey--light;
+  color: $t-Color__gray--medium-500;
   height: 60px;
   float: left;
   width: 800px;
@@ -13,24 +13,24 @@
   padding-bottom: 15px;
   background-color: white;
   margin-bottom: 15px;
-  border: 1px solid $t-Color__grey--light;
+  border: 1px solid $t-Color__gray--medium-500;
   &:hover {
-    box-shadow: 0 0 3px 3px $t-Color__grey--light;
+    box-shadow: 0 0 3px 3px $t-Color__gray--medium-500;
   }
 }
 
 .c-ListItem--background-container {
   border-radius: 3px;
-  color: $t-Color__grey--light;
+  color: $t-Color__gray--medium-500;
   height: 60px;
   float: left;
   width: 800px;
   padding-bottom: 15px;
   background-color: white;
   margin-bottom: 15px;
-  border: 1px solid $t-Color__grey--light;
+  border: 1px solid $t-Color__gray--medium-500;
   &:hover {
-    box-shadow: 0 0 3px 3px $t-Color__grey--light;
+    box-shadow: 0 0 3px 3px $t-Color__gray--medium-500;
   }
 }
 
@@ -99,8 +99,8 @@
 }
 
 .c-ListItem__meta__flag--grey {
-  color: $t-Color__grey--medium;
-  background: $t-Color__grey--lightest;
+  color: $t-Color__gray--dark-600;
+  background: $t-Color__tan;
  }
 
 .c-ListItem__meta__flag--color {
@@ -109,12 +109,12 @@
 }
 
 .c-ListItem__contests {
-  border-right: 1px dashed $t-Color__grey--light;
+  border-right: 1px dashed $t-Color__gray--medium-500;
   height: 59px;
   width: 55px;
   padding: 8px;
   float: left;
-  color: $t-Color__grey--medium;
+  color: $t-Color__gray--dark-600;
 }
 
 .c-ListItem__circle {

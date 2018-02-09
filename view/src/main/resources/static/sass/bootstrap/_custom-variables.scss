@@ -13,28 +13,28 @@
 //
 
 // stylelint-disable
-$gray-100: $t-Color__gray-100;
-$gray-200: $t-Color__gray-200;
-$gray-300: $t-Color__gray-300;
-$gray-400: $t-Color__gray-400;
-$gray-500: $t-Color__gray-500;
-$gray-600: $t-Color__gray-600;
-$gray-700: $t-Color__gray-700;
-$gray-800: $t-Color__gray-800;
-$gray-900: $t-Color__gray-900;
+$gray-100: $t-Color__gray--light-100;
+$gray-200: $t-Color__gray--light-200;
+$gray-300: $t-Color__gray--light-300;
+$gray-400: $t-Color__gray--light-400;
+$gray-500: $t-Color__gray--medium-500;
+$gray-600: $t-Color__gray--dark-600;
+$gray-700: $t-Color__gray--dark-700;
+$gray-800: $t-Color__gray--dark-800;
+$gray-900: $t-Color__gray--dark-900;
 
 $primary:       $t-Color__primary;
 $secondary:     $t-Color__secondary;
-$light:         $t-Color__gray-100;
-$dark:          $t-Color__gray-800;
-$medium:        $t-Color__gray-500;
+$light:         $t-Color__gray--light-100;
+$dark:          $t-Color__gray--dark-800;
+$medium:        $t-Color__gray--medium-500;
 
 $theme-colors: (
     "primary":          $primary,
     "primary-darkest":  $t-Color__primary__darkest,
     "accent":           $t-Color__accent,
     "medium":           $medium,
-    "gray":             $t-Color__gray-600,
+    "gray":             $t-Color__gray--dark-600,
     "tan":              $t-Color__tan
 );
 // stylelint-enable
@@ -75,7 +75,7 @@ $grid-gutter-width:           30px !default;
 //
 // Define common padding and border radius sizes and more.
 
-$border-color:                $t-Color__gray-400;
+$border-color:                $t-Color__gray--light-400;
 $border-radius:               $t-Border__radius;
 $border-radius-lg:            $t-Border__radius--large;
 $border-radius-sm:            $t-Border__radius--small;
@@ -138,7 +138,7 @@ $table-head-color:            $gray-700 !default;
 $table-dark-bg:               $t-Color__primary !default;
 $table-dark-accent-bg:        rgba(white, .05) !default;
 $table-dark-hover-bg:         rgba(white, .075) !default;
-$table-dark-border-color:     $t-Color__gray-300 !default;
+$table-dark-border-color:     $t-Color__gray--light-300 !default;
 $table-dark-color:            $t-Color__text--light !default;
 
 
@@ -170,7 +170,7 @@ $btn-link-disabled-color:     $gray-600 !default;
 
 // Forms
 
-$input-disabled-bg:                     $t-Color__gray-100;
+$input-disabled-bg:                     $t-Color__gray--light-100;
 
 $input-color:                           $gray-700 !default;
 $input-border-color:                    $gray-400 !default;
@@ -273,7 +273,7 @@ $modal-content-border-color:     rgba(black, .8);
 $modal-content-box-shadow-xs:    0 0 0.125rem 0.375rem rgba(black, .6);
 $modal-content-box-shadow-sm-up: 0 0 0.25rem 0.625rem rgba(black, .6);
 
-$modal-header-border-color:   $t-Color__gray-400;
+$modal-header-border-color:   $t-Color__gray--light-400;
 
 $modal-lg:                          850px;
 $modal-md:                          600px;
@@ -301,8 +301,8 @@ $breadcrumb-padding-x:              0;
 $breadcrumb-item-padding:           .4rem;
 
 $breadcrumb-bg:                     transparent;
-$breadcrumb-divider-color:          $t-Color__gray-700;
-$breadcrumb-active-color:           $t-Color__gray-700;
+$breadcrumb-divider-color:          $t-Color__gray--dark-700;
+$breadcrumb-active-color:           $t-Color__gray--dark-700;
 $breadcrumb-divider:                "\003e";
 
 
