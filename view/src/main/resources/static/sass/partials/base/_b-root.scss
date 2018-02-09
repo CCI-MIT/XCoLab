@@ -1,0 +1,31 @@
+:root {
+  --primary: $t-Color__primary;
+  --secondary: $t-Color__secondary;
+  --accent: $t-Color__accent;
+  --tan: $t-Color__tan;
+
+  --primary--light: $t-Color__primary--light;
+  --secondary--light: $t-Color__secondary--light;
+
+  --primary--dark: $t-Color__primary--dark;
+  --secondary--dark: $t-Color__secondary--dark;
+
+  --primary--darkest: $t-Color__primary--darkest;
+  --secondary--darkest: $t-Color__secondary--darkest;
+
+  --primary__gray: $t-Color__primary__gray;
+  --primary__gray--light: $t-Color__primary__gray--light;
+  --primary__gray--dark: $t-Color__primary__gray--dark;
+
+  --gray--light-100: $t-Color__gray--light-100;
+  --gray--light-200: $t-Color__gray--light-200;
+  --gray--light-300: $t-Color__gray--light-300;
+  --gray--light-400: $t-Color__gray--light-400;
+
+  --gray--medium-500: $t-Color__gray--medium-500;
+
+  --gray--dark-600: $t-Color__gray--dark-600;
+  --gray--dark-700: $t-Color__gray--dark-700;
+  --gray--dark-800: $t-Color__gray--dark-800;
+  --gray--dark-900: $t-Color__gray--dark-900;
+}
