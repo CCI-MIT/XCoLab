@@ -225,7 +225,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public boolean getHasGoogleId() {
-        return member.getGoogleId() != null && member.getGoogleId().isEmpty();
+        return member.getGoogleId() != null && !member.getGoogleId().isEmpty();
     }
 
     public boolean getHasOpenId() {
