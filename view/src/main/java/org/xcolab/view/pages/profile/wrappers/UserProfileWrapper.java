@@ -224,6 +224,10 @@ public class UserProfileWrapper implements Serializable {
         return member.getFacebookId() != null && member.getFacebookId() != 0;
     }
 
+    public boolean getHasGoogleId() {
+        return member.getGoogleId() != null && member.getGoogleId().isEmpty();
+    }
+
     public boolean getHasOpenId() {
         return (member.getOpenId() != null && !member.getOpenId().isEmpty());
     }
