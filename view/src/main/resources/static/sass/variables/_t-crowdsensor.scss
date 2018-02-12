@@ -40,7 +40,12 @@ $t-Color__gray--dark-700: #57585a;
 $t-Color__gray--dark-800: #404143;
 
 //alert and message colors:
+$t-Color__success: $t-Color__secondary;
 $t-Color__alert: #eb008a;
+$t-Color__warning: #ffc107;
+$t-Color__info: $t-Color__pattern__gray;
+
+//TODO COLAB-2352: We don't need these anymore once we remove c-Alert
 $t-Color__alert--light: #f6dfec;
 $t-Color__info__background: $t-Color__primary__gray--light;
 $t-Color__success__background: $t-Color__secondary--light;
