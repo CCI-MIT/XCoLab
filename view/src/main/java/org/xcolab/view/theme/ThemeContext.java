@@ -72,6 +72,39 @@ public class ThemeContext {
     public boolean isSharedColab;
     public AuthenticationError authError;
 
+    public String partnerColabName;
+    public String partnerColabImgsAndClasses;
+    public String partnerColabLogo;
+
+    public boolean isI18NActive;
+    public String currentLocale;
+    public String languageSelectItems;
+    public String adminEmail;
+    public ContestType defaultContestType;
+
+    public boolean isGoogleSsoActive;
+    public boolean isFacebookSsoActive;
+    public String facebookId;
+    public boolean showLoginPopup;
+    public boolean showPasswordResetPopup;
+    public boolean showSsoPopup;
+
+    public String requestUri;
+    public boolean isHomePage;
+
+    public String _alertMessage;
+    public String _analyticsAttribute;
+    public String _errorMessage;
+    public String _infoMessage;
+
+    public String shareRequestUri;
+    public boolean showShareButtons;
+
+    public List shareableSocialMediaUrls;
+    public List followableSocialMediaUrls;
+    public List socialMediaEngines;
+    public String donateLink;
+
     public List contestPages;
     public Map<String, String> themePaths;
 
@@ -176,34 +209,31 @@ public class ThemeContext {
                     = AuthenticationError.fromName(request.getParameter("signinRegError"));
         }
 
-        modelAndView.addObject("_isGoogleSsoActive", ConfigurationAttributeKey.GOOGLE_SSO_IS_ACTIVE.get());
-        modelAndView.addObject("_isFacebookSsoActive", ConfigurationAttributeKey.FACEBOOK_SSO_IS_ACTIVE.get());
-        modelAndView.addObject("_facebookId", ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get());
+        this.isGoogleSsoActive = ConfigurationAttributeKey.GOOGLE_SSO_IS_ACTIVE.get();
+        this.isFacebookSsoActive = ConfigurationAttributeKey.FACEBOOK_SSO_IS_ACTIVE.get();
+        this.facebookId = ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get();
 
-        modelAndView.addObject("_showLoginPopup", isSigningIn);
-        modelAndView.addObject("_showPasswordResetPopup", isPasswordReminder);
-        modelAndView.addObject("_showSsoPopup", isSSOSigningIn);
+        this.showLoginPopup = isSigningIn;
+        this.showPasswordResetPopup = isPasswordReminder;
+        this.showSsoPopup = isSSOSigningIn;
 
-        modelAndView.addObject("_requestUri", RequestUtil.getOriginalUri(request));
-        modelAndView.addObject("_isHomePage", request.getRequestURI().equals("/"));
+        this.requestUri = RequestUtil.getOriginalUri(request);
+        this.isHomePage = request.getRequestURI().equals("/");
 
-        modelAndView.addObject("__alertMessage", AlertMessage.extract(request));
-        modelAndView.addObject("__analyticsAttribute", AnalyticsAttribute.extract(request));
-        modelAndView.addObject("__errorMessage", ErrorMessage.extract(request));
-        modelAndView.addObject("__infoMessage", InfoMessage.extract(request));
+        this._alertMessage = AlertMessage.extract(request);
+        this._analyticsAttribute = AnalyticsAttribute.extract(request);
+        this._errorMessage = ErrorMessage.extract(request);
+        this._infoMessage = InfoMessage.extract(request);
 
-        modelAndView.addObject("_shareRequestUri", SocialMediaEngine
-                .getUtmParameters(ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get(), request));
-        modelAndView.addObject("_facebookId", ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get());
+        this.shareRequestUri = SocialMediaEngine
+                .getUtmParameters(ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get(), request);
+        this.showShareButtons = ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get();
 
-        modelAndView.addObject("_showShareButtons",
-                ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
+        this.shareableSocialMediaUrls = SocialMediaEngine.getShareableSocialMediaEngines();
+        this.followableSocialMediaUrls = SocialMediaEngine.getFollowableSocialMediaEngines();
+        this.socialMediaEngines = SocialMediaEngine.getAllSocialMediaEngines();
 
-        modelAndView.addObject("_shareableSocialMediaUrls", SocialMediaEngine.getShareableSocialMediaEngines());
-        modelAndView.addObject("_followableSocialMediaUrls", SocialMediaEngine.getFollowableSocialMediaEngines());
-        modelAndView.addObject("_socialMediaEngines", SocialMediaEngine.getAllSocialMediaEngines());
-
-        modelAndView.addObject("_donateLink", ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get());
+        this.donateLink = ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get();
     }
 
     private boolean readBooleanParameter(HttpServletRequest request, String name) {
