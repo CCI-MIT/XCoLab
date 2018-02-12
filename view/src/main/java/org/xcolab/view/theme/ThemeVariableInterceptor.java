@@ -32,10 +32,6 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
         }
     }
 
-    private boolean readBooleanParameter(HttpServletRequest request, String name) {
-        return Boolean.parseBoolean(request.getParameter(name));
-    }
-
     private boolean isRedirectView(ModelAndView modelAndView) {
         return (modelAndView.getView() != null && modelAndView.getView() instanceof RedirectView)
                 || modelAndView.getViewName().startsWith("redirect:");

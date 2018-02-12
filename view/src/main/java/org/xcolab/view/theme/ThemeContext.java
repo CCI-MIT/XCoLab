@@ -214,4 +214,8 @@ public class ThemeContext {
         modelAndView.addObject("_donateLink", ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get());
     }
 
+    private boolean readBooleanParameter(HttpServletRequest request, String name) {
+        return Boolean.parseBoolean(request.getParameter(name));
+    }
+
 }
