@@ -19,7 +19,7 @@
 
             <form:form modelAttribute="userEmailBean" id="sendUserEmailForm"
                        action="/snp/socialnetworkprize" method="post">
-                <form:errors path="acceptTos" class="c-Alert c-Alert__error"/>
+                <form:errors path="acceptTos" class="alert alert-danger"/>
                 <div class="form-check">
                     <form:checkbox path="acceptTos" class="form-check-input" id="acceptTos" />
                     <label class="form-check-label" for="acceptTos">
@@ -29,7 +29,7 @@
                 <c:choose>
                     <c:when test="${not _isLoggedIn}">
                         <div>
-                            <form:errors path="email" class="c-Alert c-Alert__error" />
+                            <form:errors path="email" class="alert alert-danger" />
                         </div>
                         <form:input path="email" placeholder="Please enter your email address"
                                     cssClass="form-control cb-form-control-inline cb-form-control-md" />

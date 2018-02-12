@@ -41,7 +41,7 @@
 
     <div class="c-ContentBox">
         <div class="reg_errors"><!--  -->
-            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
+            <form:errors cssClass="alert alert-danger" path="*"/>
         </div>
 
         <div class="addpropbox">
@@ -69,7 +69,7 @@
                 <form:input path="type" cssClass="form-control" disabled="disabled"/>
 
                 <div class="reg_errors"><!--  -->
-                    <form:errors cssClass="c-Alert c-Alert__error" path="type"/>
+                    <form:errors cssClass="alert alert-danger" path="type"/>
                 </div>
             </div>
 
@@ -78,7 +78,7 @@
                 <form:input path="reason" cssClass="form-control"/>
 
                 <div class="reg_errors"><!--  -->
-                    <form:errors cssClass="c-Alert c-Alert__error" path="reason"/>
+                    <form:errors cssClass="alert alert-danger" path="reason"/>
                 </div>
             </div>
 
@@ -87,7 +87,7 @@
                 <form:input path="notificationThreshold" cssClass="form-control"/>
 
                 <div class="reg_errors"><!--  -->
-                    <form:errors cssClass="c-Alert c-Alert__error" path="notificationThreshold"/>
+                    <form:errors cssClass="alert alert-danger" path="notificationThreshold"/>
                 </div>
             </div>
 
@@ -96,7 +96,7 @@
                 <form:input path="screeningThreshold" cssClass="form-control"/>
 
                 <div class="reg_errors"><!--  -->
-                    <form:errors cssClass="c-Alert c-Alert__error" path="screeningThreshold"/>
+                    <form:errors cssClass="alert alert-danger" path="screeningThreshold"/>
                 </div>
             </div>
 
