@@ -23,19 +23,47 @@ import org.xcolab.view.util.entity.flash.AnalyticsAttribute;
 import org.xcolab.view.util.entity.flash.ErrorMessage;
 import org.xcolab.view.util.entity.flash.InfoMessage;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class ThemeContext {
 
     public String language;
     public String locale;
     public String defaultTimeZone;
-    Object isLoggedIn;
-    Object isImpersonating;
-    Object
+    public boolean isLoggedIn;
+    public boolean isImpersonating;
+    public Member realMember;
+    public Member member;
+    public boolean isAdmin;
+    public ServerEnvironment serverEnvironment;
+    public boolean isProductionEnvironment;
+
+    public String colabName;
+    public String colabLongName;
+    public String colabShortName;
+    public String colabUrl;
+    public String colabUrlProduction;
+    public String blogAdminUrl;
+
+    public String googleAnalyticsKey;
+    public String pingdomRumId;
+    public String typekitId;
+    public String typekitIdLocal;
+
+    public boolean mitHeaderBarShow;
+    public String mitHeaderBarLinkText;
+    public String mitHeaderBarLinkUrl;
+    public boolean navbarShowIcons;
+
+    public Map<String, String> themePaths;
 
     public ThemeContext() {
+        this.themePaths = new HashMap<>();
     }
 
     private void init(AuthenticationService authenticationService, HttpServletRequest request) {
@@ -43,46 +71,31 @@ public class ThemeContext {
         this.language = locale.getLanguage();
         this.locale = locale.toLanguageTag();
         this.defaultTimeZone = ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get();
-        final boolean isLoggedIn = authenticationService.isLoggedIn();
-        modelAndView.addObject("_isLoggedIn", isLoggedIn);
+        this.isLoggedIn = authenticationService.isLoggedIn();
 
-        final boolean isImpersonating = authenticationService.isImpersonating(request);
-        modelAndView.addObject("_showImpersonationBar", isImpersonating);
+        this.isImpersonating = authenticationService.isImpersonating(request);
         if (isImpersonating) {
-            final Member realMember = authenticationService.getRealMemberOrNull();
-            modelAndView.addObject("_realMember", realMember);
+            this.realMember = authenticationService.getRealMemberOrNull();
         }
 
         if (isLoggedIn) {
-            Member member = authenticationService.getMemberOrThrow(request);
-            modelAndView.addObject("_member", member);
-            boolean isAdmin = PermissionsClient.canAdminAll(member.getUserId());
-            modelAndView.addObject("_isAdmin", isAdmin);
+            this.member = authenticationService.getMemberOrThrow(request);
+            this.isAdmin = PermissionsClient.canAdminAll(member.getUserId());
         }
 
-        final ServerEnvironment serverEnvironment =
-                PlatformAttributeKey.SERVER_ENVIRONMENT.get();
-        modelAndView.addObject("_serverEnvironment", serverEnvironment);
-        final boolean isProductionEnvironment = serverEnvironment == ServerEnvironment.PRODUCTION;
-        modelAndView.addObject("_isProduction", isProductionEnvironment);
+        this.serverEnvironment = PlatformAttributeKey.SERVER_ENVIRONMENT.get();
+        this.isProductionEnvironment = serverEnvironment == ServerEnvironment.PRODUCTION;
 
         ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
 
         //TODO COLAB-2446: move cdn resolution to CdnUrlEncodingFilter
         final String themeImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_STATIC.get();
 
-        modelAndView.addObject("_themeStylesheetPath", activeTheme.getStylesheetPath());
-
-        modelAndView.addObject("_logoPath",
-                themeImageDomain + activeTheme.getLogoPath());
-        modelAndView.addObject("_logoPathSocial",
-                themeImageDomain + activeTheme.getLogoPathSocial());
-
-        modelAndView.addObject("_logoPathBig",
-                themeImageDomain + activeTheme.getLogoPathBig());
-
-        modelAndView.addObject("_logoPathSquare",
-                themeImageDomain + activeTheme.getLogoPathSquare());
+        themePaths.put("_themeStylesheetPath", activeTheme.getStylesheetPath());
+        themePaths.put("_logoPath", themeImageDomain + activeTheme.getLogoPath());
+        themePaths.put("_logoPathSocial", themeImageDomain + activeTheme.getLogoPathSocial());
+        themePaths.put("_logoPathBig", themeImageDomain + activeTheme.getLogoPathBig());
+        themePaths.put("_logoPathSquare", themeImageDomain + activeTheme.getLogoPathSquare());
 
 
         modelAndView.addObject("_contestPages", ContestTypeClient
@@ -90,28 +103,18 @@ public class ThemeContext {
                 .map(contestType -> contestType.withLocale(locale.getLanguage()))
                 .collect(Collectors.toList()));
 
-        final String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
-        final String colabLongName = ConfigurationAttributeKey.COLAB_LONG_NAME.get();
-        final String colabShortName = ConfigurationAttributeKey.COLAB_SHORT_NAME.get();
-        modelAndView.addObject("_colabName", colabName);
-        modelAndView.addObject("_colabLongName", colabLongName);
-        modelAndView.addObject("_colabShortName", colabShortName);
+        this.colabName = ConfigurationAttributeKey.COLAB_NAME.get();
+        this.colabLongName = ConfigurationAttributeKey.COLAB_LONG_NAME.get();
+        this.colabShortName = ConfigurationAttributeKey.COLAB_SHORT_NAME.get();
 
-        modelAndView.addObject("_colabUrl", PlatformAttributeKey.COLAB_URL.get());
-        modelAndView.addObject("_colabUrlProduction", ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get());
-        modelAndView.addObject("_blogAdminUrl", ConfigurationAttributeKey.BLOG_ADMIN_URL.get());
+        this.colabUrl = PlatformAttributeKey.COLAB_URL.get();
+        this.colabUrlProduction = ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get();
+        this.blogAdminUrl = ConfigurationAttributeKey.BLOG_ADMIN_URL.get();
 
-        final String googleAnalyticsKey = ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get();
-        modelAndView.addObject("_googleAnalyticsKey", googleAnalyticsKey);
-
-        final String pingdomRumId = ConfigurationAttributeKey.PINGDOM_RUM_ID.get();
-        modelAndView.addObject("_pingdomRumId", pingdomRumId);
-
-        final String typekitId = ConfigurationAttributeKey.TYPEKIT_KIT_ID.get();
-        modelAndView.addObject("_typekitId", typekitId);
-
-        final String typekitIdLocal = ConfigurationAttributeKey.TYPEKIT_KIT_ID_LOCALHOST.get();
-        modelAndView.addObject("_typekitIdLocal", typekitIdLocal);
+        this.googleAnalyticsKey = ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get();
+        this.pingdomRumId = ConfigurationAttributeKey.PINGDOM_RUM_ID.get();
+        this.typekitId = ConfigurationAttributeKey.TYPEKIT_KIT_ID.get();
+        this.typekitIdLocal = ConfigurationAttributeKey.TYPEKIT_KIT_ID_LOCALHOST.get();
 
         modelAndView
                 .addObject("_betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.get());
@@ -160,17 +163,15 @@ public class ThemeContext {
                 .getContestType(defaultContestTypeId, locale.getLanguage());
         modelAndView.addObject("_defaultContestType", defaultContestType);
 
-        final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
-        modelAndView.addObject("_mitHeaderBarShow", mitHeaderBarShow);
+        this.mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
         if (mitHeaderBarShow) {
-            modelAndView.addObject("_mitHeaderBarLinkText",
-                    ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.get());
-            modelAndView.addObject("_mitHeaderBarLinkUrl",
-                    ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_URL.get());
+            this.mitHeaderBarLinkText =
+                    ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.get();
+            this.mitHeaderBarLinkUrl =
+                    ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_URL.get();
         }
 
-        final Boolean navbarShowIcons = ConfigurationAttributeKey.NAVBAR_SHOW_ICONS.get();
-        modelAndView.addObject("_navbarShowIcons", navbarShowIcons);
+        this.navbarShowIcons = ConfigurationAttributeKey.NAVBAR_SHOW_ICONS.get();
 
         boolean isSigningIn = readBooleanParameter(request, "isSigningIn");
         boolean isPasswordReminder = readBooleanParameter(request, "isPasswordReminder");
