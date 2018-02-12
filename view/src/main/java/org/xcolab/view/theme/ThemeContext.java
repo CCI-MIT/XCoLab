@@ -35,11 +35,10 @@ public class ThemeContext {
     Object isImpersonating;
     Object
 
-    public ThemeContext(AuthenticationService authenticationService) {
-        init(authenticationService);
+    public ThemeContext() {
     }
 
-    private void init(AuthenticationService authenticationService) {
+    private void init(AuthenticationService authenticationService, HttpServletRequest request) {
         final Locale locale = LocaleContextHolder.getLocale();
         this.language = locale.getLanguage();
         this.locale = locale.toLanguageTag();
