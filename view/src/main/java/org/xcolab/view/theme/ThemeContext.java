@@ -24,6 +24,7 @@ import org.xcolab.view.util.entity.flash.ErrorMessage;
 import org.xcolab.view.util.entity.flash.InfoMessage;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -60,6 +61,18 @@ public class ThemeContext {
     public String mitHeaderBarLinkUrl;
     public boolean navbarShowIcons;
 
+    public boolean betaRibbonShow;
+    public boolean showSearchMenuItem;
+    public String openGraphShareTitle;
+    public String openGraphShareDescription;
+    public String metaPageDescription;
+    public String metaPageKeywords;
+    public Long footerArticleId;
+
+    public boolean isSharedColab;
+    public AuthenticationError authError;
+
+    public List contestPages;
     public Map<String, String> themePaths;
 
     public ThemeContext() {
@@ -97,11 +110,9 @@ public class ThemeContext {
         themePaths.put("_logoPathBig", themeImageDomain + activeTheme.getLogoPathBig());
         themePaths.put("_logoPathSquare", themeImageDomain + activeTheme.getLogoPathSquare());
 
-
-        modelAndView.addObject("_contestPages", ContestTypeClient
-                .getActiveContestTypes().stream()
+        this.contestPages = ContestTypeClient.getActiveContestTypes().stream()
                 .map(contestType -> contestType.withLocale(locale.getLanguage()))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
 
         this.colabName = ConfigurationAttributeKey.COLAB_NAME.get();
         this.colabLongName = ConfigurationAttributeKey.COLAB_LONG_NAME.get();
@@ -116,52 +127,36 @@ public class ThemeContext {
         this.typekitId = ConfigurationAttributeKey.TYPEKIT_KIT_ID.get();
         this.typekitIdLocal = ConfigurationAttributeKey.TYPEKIT_KIT_ID_LOCALHOST.get();
 
-        modelAndView
-                .addObject("_betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.get());
-        modelAndView.addObject("_showSearchMenuItem",
-                ConfigurationAttributeKey.SHOW_SEARCH_MENU_ITEM.get());
-        modelAndView.addObject("_openGraphShareTitle",
-                ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get());
-        modelAndView.addObject("_openGraphShareDescription",
-                ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.get());
+        this.betaRibbonShow = ConfigurationAttributeKey.BETA_RIBBON_SHOW.get();
+        this.showSearchMenuItem = ConfigurationAttributeKey.SHOW_SEARCH_MENU_ITEM.get();
+        this.openGraphShareTitle = ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get();
+        this.openGraphShareDescription = ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.get();
 
         final String metaDescriptionAttribute = (String) request.getAttribute(MetaKeys.DESCRIPTION.getAttributeName());
         if (StringUtils.isNotBlank(metaDescriptionAttribute)) {
-            modelAndView.addObject("_metaPageDescription", HtmlUtil.cleanAll(metaDescriptionAttribute));
+            this.metaPageDescription = HtmlUtil.cleanAll(metaDescriptionAttribute);
         } else {
-            modelAndView.addObject("_metaPageDescription",
-                    ConfigurationAttributeKey.META_PAGE_DESCRIPTION.get(locale.getLanguage()));
+            this.metaPageDescription = ConfigurationAttributeKey.META_PAGE_DESCRIPTION.get(locale.getLanguage());
         }
-        modelAndView.addObject("_metaPageKeywords", ConfigurationAttributeKey.META_PAGE_KEYWORDS.get());
+        this.metaPageKeywords = ConfigurationAttributeKey.META_PAGE_KEYWORDS.get();
+        this.footerArticleId = ConfigurationAttributeKey.FOOTER_CONTENT_ARTICLE_ID.get();
 
-        modelAndView
-                .addObject("_footerArticleId", ConfigurationAttributeKey.FOOTER_CONTENT_ARTICLE_ID.get());
-
-
-        final Boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
-        modelAndView.addObject("_isSharedColab", isSharedColab);
-
+        this.isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
         if (isSharedColab) {
-            final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
-            modelAndView.addObject("_partnerColabName", partnerColabName);
-            final String partnerColabImgsAndClasses = partnerColabName.replace(" ", "");
-            modelAndView.addObject("_partnerColabClassName", partnerColabImgsAndClasses + "-sketchy");
-            modelAndView.addObject("_partnerColabLogo", partnerColabImgsAndClasses +
-                    "PartnerLogo.png");
+            this.partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
+            this.partnerColabImgsAndClasses = partnerColabName.replace(" ", "") + "-sketchy";
+            this.partnerColabLogo = partnerColabImgsAndClasses + "PartnerLogo.png";
         }
 
-        modelAndView.addObject("_isI18NActive",ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
-        modelAndView.addObject("_currentLocale",locale.getLanguage());
-        modelAndView.addObject("_languageSelectItems", I18nUtils.getSelectList());
-
-
-        modelAndView.addObject("_adminEmail", ConfigurationAttributeKey.ADMIN_EMAIL.get());
+        this.isI18NActive = ConfigurationAttributeKey.IS_I18N_ACTIVE.get();
+        this.currentLocale = locale.getLanguage();
+        this.languageSelectItems = I18nUtils.getSelectList();
+        this.adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
 
         final Long defaultContestTypeId =
                 ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
-        final ContestType defaultContestType = ContestTypeClient
+        this.defaultContestType = ContestTypeClient
                 .getContestType(defaultContestTypeId, locale.getLanguage());
-        modelAndView.addObject("_defaultContestType", defaultContestType);
 
         this.mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
         if (mitHeaderBarShow) {
@@ -177,16 +172,13 @@ public class ThemeContext {
         boolean isPasswordReminder = readBooleanParameter(request, "isPasswordReminder");
         boolean isSSOSigningIn = readBooleanParameter(request, "isSSOSigningIn");
         if (isSigningIn) {
-            final AuthenticationError authError
+            this.authError
                     = AuthenticationError.fromName(request.getParameter("signinRegError"));
-            modelAndView.addObject("_authError", authError);
         }
 
         modelAndView.addObject("_isGoogleSsoActive", ConfigurationAttributeKey.GOOGLE_SSO_IS_ACTIVE.get());
         modelAndView.addObject("_isFacebookSsoActive", ConfigurationAttributeKey.FACEBOOK_SSO_IS_ACTIVE.get());
         modelAndView.addObject("_facebookId", ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get());
-
-
 
         modelAndView.addObject("_showLoginPopup", isSigningIn);
         modelAndView.addObject("_showPasswordResetPopup", isPasswordReminder);
