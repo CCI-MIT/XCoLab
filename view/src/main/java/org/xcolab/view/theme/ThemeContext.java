@@ -78,7 +78,7 @@ public class ThemeContext {
 
     public boolean isI18NActive;
     public String currentLocale;
-    public String languageSelectItems;
+    public List languageSelectItems;
     public String adminEmail;
     public ContestType defaultContestType;
 
@@ -92,10 +92,10 @@ public class ThemeContext {
     public String requestUri;
     public boolean isHomePage;
 
-    public String _alertMessage;
-    public String _analyticsAttribute;
-    public String _errorMessage;
-    public String _infoMessage;
+    public AlertMessage _alertMessage;
+    public AnalyticsAttribute _analyticsAttribute;
+    public ErrorMessage _errorMessage;
+    public InfoMessage _infoMessage;
 
     public String shareRequestUri;
     public boolean showShareButtons;
@@ -112,7 +112,7 @@ public class ThemeContext {
         this.themePaths = new HashMap<>();
     }
 
-    private void init(AuthenticationService authenticationService, HttpServletRequest request) {
+    public void init(AuthenticationService authenticationService, HttpServletRequest request) {
         final Locale locale = LocaleContextHolder.getLocale();
         this.language = locale.getLanguage();
         this.locale = locale.toLanguageTag();
