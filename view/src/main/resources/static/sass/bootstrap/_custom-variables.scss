@@ -25,12 +25,15 @@ $gray-900: $t-Color__gray--dark-900;
 
 $primary:       $t-Color__primary;
 $secondary:     $t-Color__secondary;
+$success:       $t-Color__success;
+$info:          $t-Color__info;
+$warning:       $t-Color__warning;
+$danger:        $t-Color__alert;
 $light:         $t-Color__gray--light-100;
 $dark:          $t-Color__gray--dark-800;
 $medium:        $t-Color__gray--medium-500;
 
 $theme-colors: (
-    "primary":          $primary,
     "primary-darkest":  $t-Color__primary__darkest,
     "accent":           $t-Color__accent,
     "medium":           $medium,

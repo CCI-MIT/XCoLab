@@ -12,7 +12,7 @@
     <c:if test="${contestType.showProposalSummary}">
         <div class="prop-right" style="margin-top: 45px;">
             <c:if test="${proposal.proposalId > 0}">
-                <div class="c-Box boxColor--dark hasShadow hasBorder">
+                <div class="c-Box boxColor--dark hasShadow hasBorder flex-column">
                     <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                         <div class="votebox-top clearfix">
                             <div class="vote">
@@ -61,16 +61,16 @@
                             <img src="/images/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
                             ${proposal.supportersCount}
                         </span> <spring:message code="contests.supports" />
+                        <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
+                            <button type="button" class="btn btn-primary btn-sm js-PostLink float-right"
+                                    data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
+                                    onclick="if(!deferUntilLogin()) return false;">
+                                <collab:message var="supportText" code="contests.supports.support" contestType="${contestType}" />
+                                <spring:message var="retractText" code="contests.supports.retract" />
+                                ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : retractText }
+                            </button>
+                        </c:if>
                     </div>
-                    <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
-                        <button type="button" class="btn btn-primary btn-sm js-PostLink"
-                           data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
-                                onclick="if(!deferUntilLogin()) return false;">
-                            <collab:message var="supportText" code="contests.supports.support" contestType="${contestType}" />
-                            <spring:message var="retractText" code="contests.supports.retract" />
-                            ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : retractText }
-                        </button>
-                    </c:if>
                 </div> <!-- /c-Box -->
                 <div class="c-Box boxColor--light clearfix">
                     <c:if test="${_showShareButtons}">

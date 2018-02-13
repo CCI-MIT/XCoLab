@@ -29,7 +29,12 @@ $t-Color__gray--dark-700: #575757;
 $t-Color__gray--dark-800: #404040;
 
 //alert and message colors:
-$t-Color__alert: #b94a48;
+$t-Color__success: $t-Color__auxiliary;
+$t-Color__alert: #b94a48; //maybe $t-Color__primary?
+$t-Color__warning: $t-Color__accent;
+$t-Color__info: $t-Color__secondary; //maybe desaturate?
+
+//TODO COLAB-2352: We don't need these anymore once we remove c-Alert
 $t-Color__alert--light: #f2dede;
 $t-Color__info__background: $t-Color__primary__gray--light;
 $t-Color__success__background: $t-Color__secondary--light;
