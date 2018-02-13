@@ -12,9 +12,15 @@
     <!--@elvariable id="section" type="java.lang.Integer"-->
     <!--@elvariable id="level" type="java.lang.Integer"-->
 
-    <jsp:useBean id="votingReportBean" scope="request" type="org.xcolab.view.pages.contestmanagement.beans.VotingReportBean" />
-    <jsp:useBean id="proposalReportBean" scope="request" type="org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean" />
-    <jsp:useBean id="batchRegisterBean" scope="request" type="org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean" />
+    <jsp:useBean id="votingReportBean" scope="request"
+                 type="org.xcolab.view.pages.contestmanagement.beans.VotingReportBean"
+                 beanName="org.xcolab.view.pages.contestmanagement.beans.VotingReportBean" />
+    <jsp:useBean id="proposalReportBean" scope="request"
+                 type="org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean"
+                 beanName="org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean" />
+    <jsp:useBean id="batchRegisterBean" scope="request"
+                 type="org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean"
+                 beanName="org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean" />
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
