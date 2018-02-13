@@ -28,6 +28,7 @@ import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterLineBean;
 import org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean;
@@ -53,6 +54,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
@@ -60,6 +62,10 @@ import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
@@ -75,6 +81,9 @@ public class AdminTabController extends AbstractTabController {
     private final LoginRegisterService loginRegisterService;
     private final ServletContext servletContext;
     private final ActivityEntryHelper activityEntryHelper;
+
+    @Autowired
+    Validator validator;
 
     @Autowired
     public AdminTabController(LoginRegisterService loginRegisterService,
@@ -259,18 +268,21 @@ public class AdminTabController extends AbstractTabController {
                 return TAB_VIEW;
                 //return "redirect:" + tab.getTabUrl();
             }
+            BatchRegisterLineBean registerBean = new BatchRegisterLineBean(values[0], values[1], values[2]);
 
-            String email = values[0];
+            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+            Validator validator = factory.getValidator();
+            Set<ConstraintViolation<BatchRegisterLineBean>> violations = validator.validate(registerBean);
 
             java.util.regex.Pattern p = java.util.regex.Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
-            java.util.regex.Matcher m = p.matcher(email);
+            java.util.regex.Matcher m = p.matcher(registerBean.getEmail());
             if (!m.matches()) {
                 AlertMessage.danger("Batch registration: Invalid email address.").flash(request);
                 return "redirect:" + tab.getTabUrl();
             }
 
             try {
-                MembersClient.findMemberByEmailAddress(email);
+                MembersClient.findMemberByEmailAddress(registerBean.getEmail());
                 // If member is found there is no exception and we continue.
                 AlertMessage.danger("Batch registration: Email address already used.").flash(request);
                 return "redirect:" + tab.getTabUrl();
