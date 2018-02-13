@@ -39,7 +39,7 @@
                 </form:form>
             </c:when>
             <c:when test="${isExpired}">
-                <div class="c-Alert c-Alert__danger">
+                <div class="alert alert-danger">
                     Your login link has expired!
                 </div>
                 <form:form action="/login/token/${tokenId}" method="post">
@@ -48,7 +48,7 @@
                 </form:form>
             </c:when>
             <c:otherwise>
-                <div class="c-Alert c-Alert__danger">
+                <div class="alert alert-danger">
                     The token you entered is invalid. Make sure you are using the most recent
                     login link as only once link is valid at a time.
                 </div>
