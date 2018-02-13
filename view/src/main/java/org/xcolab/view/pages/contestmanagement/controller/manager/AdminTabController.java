@@ -149,6 +149,9 @@ public class AdminTabController extends AbstractTabController {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
+        model.addAttribute("votingReportBean", new VotingReportBean());
+        model.addAttribute("proposalReportBean", new ProposalReportBean());
+        model.addAttribute("batchRegisterBean", new BatchRegisterBean());
 
         List<Notification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
@@ -265,21 +268,25 @@ public class AdminTabController extends AbstractTabController {
             final String[] values = memberString.split(";");
             if (values.length != 3) {
                 AlertMessage.danger("Batch registration: Invalid format.").flash(request);
-                return TAB_VIEW;
-                //return "redirect:" + tab.getTabUrl();
+                return "redirect:" + tab.getTabUrl();
             }
-            BatchRegisterLineBean registerBean = new BatchRegisterLineBean(values[0], values[1], values[2]);
+            BatchRegisterLineBean registerBean = new BatchRegisterLineBean(values[1], values[2], values[0]);
 
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
             Set<ConstraintViolation<BatchRegisterLineBean>> violations = validator.validate(registerBean);
+            System.out.println(Arrays.toString(violations.toArray()));
+            if (!violations.isEmpty()) {
+                AlertMessage.danger("Batch registration: Invalid email address.").flash(request);
+                return "redirect:" + tab.getTabUrl();
+            }
 
-            java.util.regex.Pattern p = java.util.regex.Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
+           /* java.util.regex.Pattern p = java.util.regex.Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
             java.util.regex.Matcher m = p.matcher(registerBean.getEmail());
             if (!m.matches()) {
                 AlertMessage.danger("Batch registration: Invalid email address.").flash(request);
                 return "redirect:" + tab.getTabUrl();
-            }
+            }*/
 
             try {
                 MembersClient.findMemberByEmailAddress(registerBean.getEmail());
