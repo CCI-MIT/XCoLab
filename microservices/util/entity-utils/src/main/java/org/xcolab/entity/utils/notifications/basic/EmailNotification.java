@@ -61,7 +61,7 @@ public abstract class EmailNotification {
     private static final String LINKEDIN_PROPOSAL_SHARE_LINK
             = "https://www.linkedin.com/shareArticle?mini=true&url=%s&title=%s&summary=%s&source=";
     private static final String PINTEREST_PROPOSAL_SHARE_LINK
-            = "https://pinterest.com/pin/create/button/?url=g%s&media=http://climatecolab.org/climatecolab-theme/images/logo-climate-colab.png&description=%s";
+            = "https://pinterest.com/pin/create/button/?url=g%s&media=https://cdn.climatecolab.org/images/climateColab-logo.png&description=%s";
 
     private ProposalAttributeHelper proposalAttributeHelper;
 

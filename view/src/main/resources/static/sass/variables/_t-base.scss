@@ -34,8 +34,12 @@ $t-Color__gray--dark-800: #404040 !default;
 $t-Color__gray--dark-900: #252525 !default;
 
 //alert and message colors:
-$t-Color__success: $t-Color__secondary;
-$t-Color__alert: #b94a48 !default;
+$t-Color__success: $t-Color__secondary !default;
+$t-Color__alert: #dc3545 !default;
+$t-Color__warning: #ffc107 !default;
+$t-Color__info: $t-Color__primary__gray !default;
+
+//TODO COLAB-2352: We don't need these anymore once we remove c-Alert
 $t-Color__alert--light: #f2dede !default;
 $t-Color__info__background: $t-Color__primary__gray--light !default;
 $t-Color__success__background: $t-Color__secondary--light !default;

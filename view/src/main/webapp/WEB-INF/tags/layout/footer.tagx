@@ -14,7 +14,7 @@
 
     <div id="c-Footer" class="clearfix">
         <div id="c-Footer__menu">
-            <div class="cb-container-fixed d-flex align-items-center">
+            <div class="cb-container-fixed d-flex align-items-center justify-content-between">
                 <nav>
                     <ul class="nav">
                         <li class="nav-item">
@@ -64,7 +64,7 @@
                 </nav>
 
                 <c:if test="${_showShareButtons}">
-                    <div class="ml-auto">
+                    <div>
                         <xcolab-social:socialFollowButtons />
                     </div>
                 </c:if>

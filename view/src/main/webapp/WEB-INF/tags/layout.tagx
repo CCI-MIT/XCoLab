@@ -213,7 +213,7 @@
         <div class="c-TitleBar c-TitleBar--light">
             <div class="cb-container-fixed c-TitleBar__content">
                 <div class="c-TitleBar__element pl-0">
-                    <img src="/images/logo_mit_themed.png" alt="MIT" />
+                    <img src="/images/logos/mit-themed.png" alt="MIT" />
                     <span style="display: inline-block"><!-- Reference for image alignment --></span>
                 </div>
 
