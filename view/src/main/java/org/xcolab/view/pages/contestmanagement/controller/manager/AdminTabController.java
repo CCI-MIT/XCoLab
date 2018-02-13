@@ -255,7 +255,7 @@ public class AdminTabController extends AbstractTabController {
         for (String memberString : memberStrings) {
             final String[] values = memberString.split(";");
             if (values.length != 3) {
-                AlertMessage.danger("Batch registration: Three entries per row.").flash(request);
+                AlertMessage.danger("Batch registration: Invalid format.").flash(request);
                 return TAB_VIEW;
                 //return "redirect:" + tab.getTabUrl();
             }
