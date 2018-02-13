@@ -149,9 +149,6 @@ public class AdminTabController extends AbstractTabController {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        /*model.addAttribute("votingReportBean", new VotingReportBean());
-        model.addAttribute("proposalReportBean", new ProposalReportBean());
-        model.addAttribute("batchRegisterBean", new BatchRegisterBean());*/
 
         List<Notification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
@@ -268,7 +265,7 @@ public class AdminTabController extends AbstractTabController {
             final String[] values = memberString.split(";");
             if (values.length != 3) {
                 AlertMessage.danger("Batch registration: Invalid format.").flash(request);
-                return "redirect:" + tab.getTabUrl();
+                return TAB_VIEW;
             }
             BatchRegisterLineBean registerBean = new BatchRegisterLineBean(values[1], values[2], values[0]);
 
@@ -277,8 +274,8 @@ public class AdminTabController extends AbstractTabController {
             Set<ConstraintViolation<BatchRegisterLineBean>> violations = validator.validate(registerBean);
             System.out.println(Arrays.toString(violations.toArray()));
             if (!violations.isEmpty()) {
-                AlertMessage.danger("Batch registration: Invalid email address.").flash(request);
-                return "redirect:" + tab.getTabUrl();
+                AlertMessage.danger("Batch registration: Invalid format.").flash(request);
+                return TAB_VIEW;
             }
 
            /* java.util.regex.Pattern p = java.util.regex.Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
@@ -292,7 +289,7 @@ public class AdminTabController extends AbstractTabController {
                 MembersClient.findMemberByEmailAddress(registerBean.getEmail());
                 // If member is found there is no exception and we continue.
                 AlertMessage.danger("Batch registration: Email address already used.").flash(request);
-                return "redirect:" + tab.getTabUrl();
+                return TAB_VIEW;
             } catch (MemberNotFoundException e) {
                 // Do Nothing.
             }
