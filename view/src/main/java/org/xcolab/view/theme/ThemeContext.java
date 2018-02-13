@@ -108,11 +108,10 @@ public class ThemeContext {
     public List contestPages;
     public Map<String, String> themePaths;
 
-    public ThemeContext() {
+    public ThemeContext(AuthenticationService authenticationService,
+                        HttpServletRequest request) {
         this.themePaths = new HashMap<>();
-    }
 
-    public void init(AuthenticationService authenticationService, HttpServletRequest request) {
         final Locale locale = LocaleContextHolder.getLocale();
         this.language = locale.getLanguage();
         this.locale = locale.toLanguageTag();

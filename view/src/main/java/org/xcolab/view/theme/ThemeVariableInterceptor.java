@@ -26,8 +26,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler, ModelAndView modelAndView) {
         if (modelAndView != null && !isRedirectView(modelAndView)) {
-            ThemeContext themeContext = new ThemeContext();
-            themeContext.init(authenticationService, request);
+            ThemeContext themeContext = new ThemeContext(authenticationService, request);
             modelAndView.addObject("_themeContext", themeContext);
         }
     }
