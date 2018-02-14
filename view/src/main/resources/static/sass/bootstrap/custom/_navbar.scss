@@ -9,6 +9,9 @@ $c-Header__menu__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
 
 $c-Header__menu__right__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
 
+$c-Header__navItemGray--textColor: $t-Color__gray--dark-700 !default;
+$c-Header__navItemGray--hoverColor: black !default;
+
 //TODO: re-implement
 $cb-navbar__hasBoxShadow: false !default;
 
@@ -56,9 +59,6 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
     .nav-icon + .cb-nav-text {
       display: block;
       margin-top: 5px;
-      text-transform: uppercase;
-      font-size: 10px;
-      font-weight: 700;
     }
   }
 
@@ -81,7 +81,7 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
   }
 
   .cb-nav-item-separator-left {
-    border-left: 1px solid #aaa;
+    border-left: 1px solid $t-Color__gray--medium-500;
     margin-left: $spacer / 2;
     padding-left: $spacer / 2;
   }
@@ -138,11 +138,29 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
   }
 }
 
-//TODO: needed for CRC
-.cb-nav-item-text {
+.cb-nav-text {
+  font-weight: $t-Typography__fontWeight--bold;
+}
 
+.navbar-light .navbar-nav .cb-nav-item-gray {
+  .nav-link {
+    color: $c-Header__navItemGray--textColor;
+
+    &:hover {
+      color: $c-Header__navItemGray--hoverColor;
+    }
+  }
 }
 
 .cb-nav-item-sm {
+  text-transform: uppercase;
+  font-size: 0.625rem;
+  font-weight: 700;
 
+  //Reset for dropdown menus, which are children of the nav-item
+  .dropdown-menu {
+    font-size: initial;
+    font-weight: initial;
+    text-transform: initial;
+  }
 }
