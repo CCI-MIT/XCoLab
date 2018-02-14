@@ -81,16 +81,15 @@ public class AdminTabController extends AbstractTabController {
     private final LoginRegisterService loginRegisterService;
     private final ServletContext servletContext;
     private final ActivityEntryHelper activityEntryHelper;
-
-    @Autowired
-    Validator validator;
+    private final Validator validator;
 
     @Autowired
     public AdminTabController(LoginRegisterService loginRegisterService,
-            ServletContext servletContext, ActivityEntryHelper activityEntryHelper) {
+            ServletContext servletContext, ActivityEntryHelper activityEntryHelper, Validator validator) {
         this.loginRegisterService = loginRegisterService;
         this.servletContext = servletContext;
         this.activityEntryHelper = activityEntryHelper;
+        this.validator = validator;
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -261,16 +260,20 @@ public class AdminTabController extends AbstractTabController {
 
         final String[] memberStrings = batchRegisterBean.getBatchText().split("\\r\\n|\\n|\\r");
 
-        for (String memberString : memberStrings) {
-            final String[] values = memberString.split(";");
-            if (values.length != 3) {
-                AlertMessage.danger("Batch registration: Invalid format.").flash(request);
-                return TAB_VIEW;
-            }
-            BatchRegisterLineBean registerBean = new BatchRegisterLineBean(values[1], values[2], values[0]);
+        final Set<BatchRegisterLineBean> registerLineBeans;
+        try {
+            registerLineBeans =
+                    Arrays.stream(memberStrings)
+                            .map(memberString -> memberString.split(";"))
+                            .map(values -> new BatchRegisterLineBean(values[1], values[2], values[0]))
+                            .collect(Collectors.toSet());
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            AlertMessage.danger("Batch registration: Invalid format.").flash(request);
+            return TAB_VIEW;
+        }
 
-            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-            Validator validator = factory.getValidator();
+
+        for (BatchRegisterLineBean registerBean : registerLineBeans) {
             Set<ConstraintViolation<BatchRegisterLineBean>> violations = validator.validate(registerBean);
 
             if (!violations.isEmpty()) {
@@ -288,9 +291,10 @@ public class AdminTabController extends AbstractTabController {
             }
         }
 
-        for (String memberString : memberStrings) {
-            final String[] values = memberString.split(";");
-            Member member = loginRegisterService.autoRegister(values[0], values[1], values[2]);
+        for (BatchRegisterLineBean registerBean : registerLineBeans) {
+            Member member = loginRegisterService.autoRegister(registerBean.getEmail(),
+                                                              registerBean.getFirstName(),
+                                                              registerBean.getLastName());
             if (batchRegisterBean.getAsGuests()) {
                 MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
                 MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
