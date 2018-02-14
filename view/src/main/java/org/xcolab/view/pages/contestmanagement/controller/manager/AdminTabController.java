@@ -63,9 +63,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
@@ -273,8 +271,8 @@ public class AdminTabController extends AbstractTabController {
         }
 
 
-        for (BatchRegisterLineBean registerBean : registerLineBeans) {
-            Set<ConstraintViolation<BatchRegisterLineBean>> violations = validator.validate(registerBean);
+        for (BatchRegisterLineBean registerLineBean : registerLineBeans) {
+            Set<ConstraintViolation<BatchRegisterLineBean>> violations = validator.validate(registerLineBean);
 
             if (!violations.isEmpty()) {
                 AlertMessage.danger("Batch registration: Invalid format.").flash(request);
@@ -282,7 +280,7 @@ public class AdminTabController extends AbstractTabController {
             }
 
             try {
-                MembersClient.findMemberByEmailAddress(registerBean.getEmail());
+                MembersClient.findMemberByEmailAddress(registerLineBean.getEmail());
                 // If member is found there is no exception and we continue.
                 AlertMessage.danger("Batch registration: Email address already used.").flash(request);
                 return TAB_VIEW;
@@ -291,11 +289,11 @@ public class AdminTabController extends AbstractTabController {
             }
         }
 
-        for (BatchRegisterLineBean registerBean : registerLineBeans) {
-            Member member = loginRegisterService.autoRegister(registerBean.getEmail(),
-                                                              registerBean.getFirstName(),
-                                                              registerBean.getLastName());
-            if (batchRegisterBean.getAsGuests()) {
+        for (BatchRegisterLineBean registerLineBean : registerLineBeans) {
+            Member member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
+                                                              registerLineBean.getFirstName(),
+                                                              registerLineBean.getLastName());
+            if (batchRegisterBean.getAsGuests()) { // TODO: throws a null pointer exception...
                 MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
                 MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
             }
