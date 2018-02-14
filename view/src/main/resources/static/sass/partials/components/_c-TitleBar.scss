@@ -50,15 +50,15 @@ $_c-TitleBar__borderWidth: 6px;
 .c-TitleBar.c-TitleBar--warning {
   background: $t-Color__primary__gray--light;
   color: $t-Color__gray--dark-800;
-  border-bottom: $_c-TitleBar__borderWidth solid $t-Color__accent;
+  border-bottom: $_c-TitleBar__borderWidth solid $t-Color__warning;
 
   .c-TitleBar__actionButton {
     color: white;
-    background: $t-Color__accent;
+    background: $t-Color__warning;
 
     &:hover {
       color: white;
-      background: hover-color($t-Color__accent);
+      background: hover-color($t-Color__warning);
     }
   }
 }
