@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
           xmlns:xcolab-icon="urn:jsptagdir:/WEB-INF/tags/icons">
 
@@ -26,7 +27,7 @@
         <div class="cb-container-fixed">
             <nav class="navbar navbar-expand navbar-light" aria-label="site wide">
                 <a class="navbar-brand" href="/">
-                    <img src="${logoPath}" alt="${colabName}" height="42" />
+                    <collab:image src="${logoPath}" alt="${colabName}" height="42" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"/>
@@ -85,7 +86,7 @@
                                 </li>
                                 <li class="nav-item cb-nav-item-image dropdown cb-dropdown-inverse">
                                     <a id="user-dropdown" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                                        <img src="/image/member/${member.portraitId}" alt="${member.screenName}" />
+                                        <collab:image src="/image/member/${member.portraitId}" alt="${member.screenName}" />
                                         <span class="caret"><!-- --></span>
                                         <c:if test="${member.unreadMessageCount > 0}">
                                             <div class="badge badge-pill badge-primary-darkest">

@@ -1,7 +1,8 @@
-<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <jsp:directive.attribute name="cssClass" type="java.lang.String" required="false" rtexprvalue="true" description="Extra CSS classes" />
 
     <!-- TODO COLAB-2583: update to SVG -->
-    <img src="/images/earth-grid-select-language-button.png" aria-hidden="true" />
+    <collab:image src="/images/earth-grid-select-language-button.png" ariaHidden="true" />
 </jsp:root>
