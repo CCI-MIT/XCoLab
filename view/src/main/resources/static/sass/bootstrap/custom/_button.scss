@@ -24,7 +24,9 @@
   padding: 0.1875rem 0.4rem;
   line-height: 1.25;
   font-weight: $t-Typography__fontWeight;
-  border-radius: $btn-border-radius-sm;
+  @if $t-Border__rounded {
+    border-radius: $t-Border__radius--small;
+  }
 }
 
 //= Elements within btn block
