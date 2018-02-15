@@ -56,10 +56,10 @@ $t-Border__rounded: false;
 
 $b-Typography__fontFamily: Arial, Helvetica, sans-serif;
 
-$c-Header__background: white;
+$cb-navbar__background: white;
 $cb-navbar__hasBoxShadow: true;
 $c-Header__menu__li__a__fontWeight: 400;
-$bs-navbar-navitem--active__hasBoxShadow: true;
+$bs-navbar__activeBoxShadow: inset 0 -8px 0 $t-Color__primary;
 $c-Header__menu__right__li__help__border--left: none;
 $c-Header__menu__li__a__textColor: $t-Color__primary;
 $c-Header__background--hover: none;

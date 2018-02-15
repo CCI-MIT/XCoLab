@@ -12,8 +12,9 @@ $c-Header__menu__right__li__a__fontWeight: $t-Typography__fontWeight--bold !defa
 $c-Header__navItemGray--textColor: $t-Color__gray--dark-700 !default;
 $c-Header__navItemGray--hoverColor: black !default;
 
-//TODO: re-implement
 $cb-navbar__hasBoxShadow: false !default;
+$bs-navbar__activeBoxShadow: none !default;
+$cb-navbar__background: url(/images/bg-noise.png), $t-Color__tan !default;
 
 // local vars
 $_navbar__height: 67px;
@@ -103,8 +104,7 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
   .nav-link {
     color: $c-Header__menu__li__a__textColor;
 
-    &:hover,
-    .active .nav-link {
+    &:hover {
       color: black;
     }
   }
@@ -112,6 +112,7 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
   .active {
     background: white;
     margin-bottom: -1px;
+    box-shadow: $bs-navbar__activeBoxShadow;
   }
 
   .cb-nav-item-icon {
@@ -162,5 +163,12 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
     font-size: initial;
     font-weight: initial;
     text-transform: initial;
+  }
+}
+
+.cb-navbar-background {
+  background: $cb-navbar__background;
+  @if $cb-navbar__hasBoxShadow {
+    box-shadow: $_navbar__boxShadow;
   }
 }
