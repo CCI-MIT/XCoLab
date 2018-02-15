@@ -17,29 +17,26 @@
     </nav>
 
 	<!-- HELP DIVS -->
-	<div class="c-Helpbox" id="js-HelpBox" style="display: none;">
-		<div class="c-Helpbox__header">
-			<span class="c-Helpbox__header__title"><spring:message code="community.page.help.title"/> </span>
-			<div class="c-Helpbox__header__close">
-				<a href="javascript:;" onclick="Cookies.set('climatecolab_hide_members_msg', 'true'); jQuery('#js-HelpBox').hide()">
-				<img src="/images/helpbox_close.png" width="20" height="20" alt="X" /></a>
-			</div>
-		</div>
-		<div class="c-Helpbox__text">
-            <c:if test="${isRegistrationOpen}">
-				<spring:message code="community.page.help.text" arguments="${_colabName}"/>
-            </c:if>
+    <c:if test="${not cookie.containsKey('climatecolab_hide_members_msg')}">
+        <div class="card mb-3 collapse show" id="js-HelpBox" aria-expanded="true">
+            <div class="card-header">
+                <span><spring:message code="community.page.help.title"/></span>
+                <button type="button" class="close" aria-label="Close"
+                        data-toggle="collapse" data-target="#js-HelpBox" aria-controls="#js-HelpBox"
+                        onclick="Cookies.set('climatecolab_hide_members_msg', 'true');">
+                    <span aria-hidden="true">&#215;</span> <!-- &#215; == &times; -->
+                </button>
+            </div>
+            <div class="card-body">
+                <c:if test="${isRegistrationOpen}">
+                    <spring:message code="community.page.help.text" arguments="${_colabName}"/>
+                </c:if>
 
-            <spring:message code="community.page.help.text2"/>
-		</div>
-		<script>
-            jQuery(function() {
-                if (!Cookies.get("climatecolab_hide_members_msg")) {
-                    jQuery("#js-HelpBox").show();
-                }
-            });
-		</script>
-	</div>
+                <spring:message code="community.page.help.text2"/>
+            </div>
+        </div>
+    </c:if>
+
 
 	<!-- HELP DIV -->
     <c:if test="${not empty memberCategory and not empty memberCategory.description}">
