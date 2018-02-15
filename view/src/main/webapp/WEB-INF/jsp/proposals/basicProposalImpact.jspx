@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:form="http://www.springframework.org/tags/form">
     
@@ -122,9 +123,11 @@
                                 <th style="width: 22.5%;"><!-- --></th>
                                 <th class="blue-bg" style="width: 55%; text-align: center">
                                     Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
-                                    <a href="javascript:;" class="helpTrigger"><img
-                                            src="/images/icon-addprop-question.png" width="15"
-                                            height="15"/></a><br/>
+                                    <a href="javascript:;" class="helpTrigger">
+                                        <collab:image src="/images/icon-addprop-question.png" width="15"
+                                            height="15"/>
+                                    </a>
+                                    <br/>
 
                                     <div class="addprophelp" style="color:white;">
                                         This table shows a summary of the emission reductions for all sectors and regions

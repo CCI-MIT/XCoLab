@@ -1,6 +1,7 @@
 package org.xcolab.view.config.spring.filters;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
@@ -15,10 +16,11 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 public class CdnUrlEncodingFilter extends GenericFilterBean {
 
-    private final Map<String, String> prefixToCdnUrlMap;
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+    private final Map<String, String> pathPatternToCdnUrlMap;
 
-    public CdnUrlEncodingFilter(Map<String, String> prefixToCdnUrlMap) {
-        this.prefixToCdnUrlMap = prefixToCdnUrlMap;
+    public CdnUrlEncodingFilter(Map<String, String> pathPatternToCdnUrlMap) {
+        this.pathPatternToCdnUrlMap = pathPatternToCdnUrlMap;
     }
 
     @Override
@@ -40,16 +42,15 @@ public class CdnUrlEncodingFilter extends GenericFilterBean {
         @Override
         public String encodeURL(String url) {
             final String localUrl = super.encodeURL(url);
-            //TODO COLAB-2446: use pathPatterns rather than prefixes
-            for (Map.Entry<String, String> entry : prefixToCdnUrlMap.entrySet()) {
-                if (StringUtils.isNotBlank(localUrl) && localUrl.startsWith(entry.getKey())) {
-                    final String finalUrl = entry.getValue() + localUrl;
-                    return super.encodeURL(finalUrl);
+            for (Map.Entry<String, String> entry : pathPatternToCdnUrlMap.entrySet()) {
+                final String pattern = entry.getKey();
+                final String domain = entry.getValue();
+
+                if (StringUtils.isNotBlank(localUrl) && pathMatcher.match(pattern, localUrl)) {
+                    return domain + localUrl;
                 }
             }
             return localUrl;
         }
-
     }
-
 }

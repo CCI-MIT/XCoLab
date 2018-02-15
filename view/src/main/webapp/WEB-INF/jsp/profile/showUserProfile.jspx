@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
@@ -49,11 +50,11 @@
 		<div class="comm_member" style="margin-top: 0;">
 
             <!-- <c:if test="${currentUserProfile.attendsConference}">
-				<a href="/web/guest/conference2014" class="attendingConference"><img src="/images/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
+				<a href="/web/guest/conference2014" class="attendingConference"><collab:image src="/images/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
 			</c:if> -->
 
 			<div class="comm_member-photo">
-				<img src="${userBean.portrait}" width="150" height="150"
+                <collab:image src="${userBean.portrait}" width="150" height="150"
 					 alt="${currentUserProfile.realName}" />
 			</div>
 
@@ -65,7 +66,7 @@
 								<div class="memname">${currentUserProfile.realName}</div>
 								<div class="role-indicator" style="margin-top: 5px;">
 									<div style="width: 16px">
-										<img src="/images/${currentUserProfile.highestRole.imageUrl}.png" width="16" height="16" />
+                                        <collab:image src="/images/${currentUserProfile.highestRole.imageUrl}.png" width="16" height="16" />
 									</div>
 									${currentUserProfile.highestRole.printName}
 								</div>
@@ -111,7 +112,9 @@
 						<c:if test="${pointsActive}">
 							<td class="b points_box left_border top_border" width="45%">
 								<spring:message code="profile.show.pointsactual" arguments="${_colabShortName}"/>
-								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/images/icon-addprop-question.png" /></a>
+								<a class="helpTrigger" href="javascript:;">
+                                    <collab:image height="15" width="15" src="/images/icon-addprop-question.png" />
+                                </a>
 								<br />
 								<div style="display: none;" class="profilehelp">
                                     <spring:message code="profile.show.pointsdisclaimer" arguments="${_colabShortName},${currentUserProfile.proposalString},${currentUserProfile.proposalsString}" argumentSeparator=","/>
@@ -133,7 +136,9 @@
 						<c:if test="${pointsActive}">
 							<td class="b points_box left_border bottom_border" width="43%">
                                 <spring:message code="profile.show.pointsactualMax" arguments="${_colabShortName}"/>
-								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="/images/icon-addprop-question.png" /></a>
+								<a class="helpTrigger" href="javascript:;">
+                                    <collab:image height="15" width="15" src="/images/icon-addprop-question.png" />
+                                </a>
 								<br />
 								<div style="display: none;" class="profilehelp">
                                     <spring:message code="profile.show.maximumnumber" arguments="${_colabShortName},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString}" argumentSeparator=","/>
@@ -281,7 +286,7 @@
                         <a href="/snp/socialnetworkprize" target="_blank" class="js-Tooltip"
                            style="margin-left: 5px;"
                            title="Click to learn more about the Social Network Prize">
-                            <img src="/images/icon-addprop-question.png" width="15" height="15" />
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                         </a>
                     </p>
                     <c:choose>

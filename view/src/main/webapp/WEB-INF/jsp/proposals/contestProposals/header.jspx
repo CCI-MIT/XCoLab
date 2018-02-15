@@ -7,7 +7,7 @@
 
 	<div class="c-Headline contest-page">
 		<div class="contest-image">
-			<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
+            <collab:image src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
 		</div>
 		<h1>${contest.contestShortNameWithEndYear}</h1>
 		<c:if test="${contestPhase.active and not empty contestPhase.phaseEndDate and showCountdown}">
@@ -33,11 +33,11 @@
                     onclick="if(!deferUntilLogin(this)) return false;">
                 <c:choose>
                     <c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
-                        <img src="/images/subscribe-light.png" />
+                        <collab:image src="/images/subscribe-light.png" />
                         <spring:message code="contests.details.subscribe" />
                     </c:when>
                     <c:otherwise>
-                        <img src="/images/unsubscribe-light.png" />
+                        <collab:image src="/images/unsubscribe-light.png" />
                         <spring:message code="contests.details.unsubscribe" />
                     </c:otherwise>
                 </c:choose>

@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form">
 
@@ -12,13 +13,13 @@
                 <div class="c-Header__socialButtons">
                     <c:if test="${showFacebookSso}">
                         <a href="/sso/facebook/login">
-                            <img src="/images/icons/social/facebook.svg" aria-hidden="true" />
+                            <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
                             <span>Facebook</span>
                         </a>
                     </c:if>
                     <c:if test="${showGoogleSso}">
                         <a href="/sso/google/login">
-                            <img src="/images/icons/social/google.svg" aria-hidden="true" />
+                            <collab:image src="/images/icons/social/google.svg" ariaHidden="true" />
                             <span>Google</span>
                         </a>
                     </c:if>

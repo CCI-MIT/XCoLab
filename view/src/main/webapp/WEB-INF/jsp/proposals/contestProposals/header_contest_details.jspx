@@ -3,9 +3,9 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
->
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
 
     <div class="p-ContestProposals__header">
         <div class="p-ContestProposals__header__content">
@@ -15,15 +15,15 @@
                         <c:choose>
                             <c:when test="${contest.sponsorLinkAvailable}">
                                 <a href="${contest.sponsorLink}" target="_blank">
-                                    <img src="${contest.sponsorLogoPath}"
+                                    <collab:image src="${contest.sponsorLogoPath}"
                                             alt="Sponsor Logo"
-                                            class="p-ContestProposals__header__sponsorLogo"/>
+                                            cssClass="p-ContestProposals__header__sponsorLogo"/>
                                 </a>
                             </c:when>
                             <c:otherwise>
-                                <img src="${contest.sponsorLogoPath}"
+                                <collab:image src="${contest.sponsorLogoPath}"
                                      alt="Sponsor Logo"
-                                     class="p-ContestProposals__header__sponsorLogo"/>
+                                     cssClass="p-ContestProposals__header__sponsorLogo"/>
                             </c:otherwise>
                         </c:choose>
                     </c:if>

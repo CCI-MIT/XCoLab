@@ -130,10 +130,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public FilterRegistrationBean cdnUrlEncodingFilter() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         Map<String, String> cdnUrlMappings = new HashMap<>();
-        //TODO COLAB-2446: move this configuration somewhere else
-        cdnUrlMappings.put("/css", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
-        cdnUrlMappings.put("/js", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
-        cdnUrlMappings.put("/vendor", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
+        cdnUrlMappings.put("/css/**", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
+        cdnUrlMappings.put("/js/**", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
+        cdnUrlMappings.put("/vendor/**", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
+        cdnUrlMappings.put("/images/**", PlatformAttributeKey.CDN_URL_IMAGES_STATIC.get());
+        cdnUrlMappings.put("/image/**", PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get());
         registrationBean.setFilter(new CdnUrlEncodingFilter(cdnUrlMappings));
         registrationBean.setOrder(Ordered.LOWEST_PRECEDENCE);
         return registrationBean;

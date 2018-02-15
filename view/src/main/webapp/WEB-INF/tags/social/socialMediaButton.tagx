@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <jsp:directive.attribute name="socialEngine" type="java.lang.String" required="true"
                              rtexprvalue="true" description="Available engines : facebook, twitter, google, linkedin, youtube"/>
@@ -27,7 +28,7 @@
         <c:when test="${type.equals('follow')}">
             <c:if test="${not empty followMeUrl}">
                 <a class="c-SocialButton ${sizeClass}" href="${followMeUrl}" target="_blank">
-                    <img src="${socialEngineLogoUrl}" alt="${socialEngine}" />
+                    <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
                 </a>
             </c:if>
         </c:when>
@@ -50,7 +51,7 @@
                 </c:when>
             </c:choose>
             <a class="c-SocialButton ${sizeClass}" data-reference="${dataReference}" data-engine-url="${dataEngineUrl}" data-engine="${socialEngine}" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
-                <img src="${socialEngineLogoUrl}" alt="${socialEngine}" />
+                <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
             </a>
         </c:when>
     </c:choose>
