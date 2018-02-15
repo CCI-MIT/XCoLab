@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `admin_ContestTypeAttribute` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalVote` (
-  `proposalId` bigint(20) DEFAULT NULL,
+  `proposalId` bigint(20) NOT NULL,
   `contestPhaseId` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL,
   `value` INT DEFAULT '1' NULL,
