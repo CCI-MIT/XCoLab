@@ -17,13 +17,13 @@
     </nav>
 
 	<!-- HELP DIVS -->
-    <c:if test="${not cookie.containsKey('climatecolab_hide_members_msg')}">
+    <c:if test="${not cookie.containsKey('xc-HelpBox__members--hidden')}">
         <div class="card mb-3 collapse show" id="js-HelpBox" aria-expanded="true">
             <div class="card-header">
                 <span><spring:message code="community.page.help.title"/></span>
                 <button type="button" class="close" aria-label="Close"
                         data-toggle="collapse" data-target="#js-HelpBox" aria-controls="#js-HelpBox"
-                        onclick="Cookies.set('climatecolab_hide_members_msg', 'true');">
+                        onclick="Cookies.set('xc-HelpBox__members--hidden', '1', {path: '/members'});">
                     <span aria-hidden="true">&#215;</span> <!-- &#215; == &times; -->
                 </button>
             </div>
