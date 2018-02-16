@@ -15,6 +15,7 @@ $c-Header__navItemGray--hoverColor: black !default;
 $cb-navbar__hasBoxShadow: false !default;
 $bs-navbar__activeBoxShadow: none !default;
 $cb-navbar__background: url(/images/bg-noise.png), $t-Color__tan !default;
+$cb-navbar__searchIconColor: $t-Color__primary;
 
 // local vars
 $_navbar__height: 67px;
@@ -127,7 +128,7 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
 
   .nav-item:not(.show) { // don't override shown dropdowns
     .c-Icon__search {
-      fill: $t-Color__primary;
+      fill: $cb-navbar__searchIconColor;
     }
   }
 }
