@@ -1,0 +1,28 @@
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld">
+
+    <jsp:directive.attribute name="activities" type="java.util.List"
+                             required="true" rtexprvalue="true" description="List of activities to display" />
+
+    <jsp:directive.attribute name="isResponsive" type="java.lang.Boolean" required="true"
+                             rtexprvalue="true" description="Whether the list should expand for larger display sizes" />
+
+    <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper>>"-->
+
+    <div class="list-group">
+        <c:forEach items="${activities}" var="activity">
+            <div class="list-group-item d-flex align-items-center justify-content-between ${activity.odd ? 'bg-primary-gray-light' : '' }">
+                <collab:image src="${activity.iconPath}" alt="Comment"/>
+                <div style="flex: 1" class="d-flex flex-column ${isResponsive ? 'flex-md-row-reverse' : ''} ml-3">
+                    <small class="text-muted ${isResponsive ?'ml-md-3' : ''}">
+                        ${activity.activityDateAgo}
+                    </small>
+                    <div style="flex: 1">
+                        <c:out value="${activity.body}" escapeXml="false"/>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</jsp:root>
