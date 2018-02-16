@@ -8,7 +8,7 @@
   @return (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
 }
 
-@function yiq-is-light($color, $threshold) {
+@function yiq-is-light($color, $threshold: 130) {
   @return if(yiq($color) > $threshold, true, false);
 }
 
