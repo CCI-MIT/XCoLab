@@ -35,6 +35,16 @@ $_c-TitleBar__borderWidth: 6px;
   color: $c-TitleBar__textColor;
   text-transform: $c-TitleBar__capitalization;
 
+  a {
+    //Use default link color unless we need a light text color
+    @if yiq-is-light($c-TitleBar__textColor) {
+      color: $c-TitleBar__textColor;
+      &:hover {
+        color: hover-color($c-TitleBar__textColor);
+      }
+    }
+  }
+
   &.contestSummary {
     background: $c-TitleBar__contestSummary__backgroundColor;
   }
