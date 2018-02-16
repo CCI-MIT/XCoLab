@@ -1,5 +1,3 @@
-@import "../lib/l-functions";
-
 //main colors:
 $t-Color__primary: #aa2029;
 $t-Color__secondary: #30a3fb;
@@ -50,6 +48,8 @@ $t-Color__outline__level3: #c1bcb2; // background slevel3
 $t-Color__outline__level4: #aaa69f; // background slevel4-6
 
 $t-Border__rounded: false;
+
+$t-Link__color--hover: darken($t-Color__primary, 20%) !default;
 
 // ====
 // changes in component variables
