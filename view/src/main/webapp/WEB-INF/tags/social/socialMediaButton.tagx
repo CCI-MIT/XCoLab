@@ -27,7 +27,7 @@
     <c:choose>
         <c:when test="${type.equals('follow')}">
             <c:if test="${not empty followMeUrl}">
-                <a class="c-SocialButton ${sizeClass}" href="${followMeUrl}" target="_blank">
+                <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" href="${followMeUrl}" target="_blank">
                     <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
                 </a>
             </c:if>
@@ -50,7 +50,7 @@
                     <c:set var="dataEngineUrl" value="mailto:info@example.com?subject=${title}&amp;body="/>
                 </c:when>
             </c:choose>
-            <a class="c-SocialButton ${sizeClass}" data-reference="${dataReference}" data-engine-url="${dataEngineUrl}" data-engine="${socialEngine}" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
+            <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" data-reference="${dataReference}" data-engine-url="${dataEngineUrl}" data-engine="${socialEngine}" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
                 <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
             </a>
         </c:when>

@@ -133,43 +133,6 @@ a.join {
   visibility: hidden;
 }
 
-.sketchy-icon {
-  height: 32px;
-  display: inline-block;
-  padding: 8px 0 0 41px;
-  color: $t-Color__tan;
-  margin: 0 10px;
-
-  &:hover {
-    color: $t-Color__tan;
-  }
-
-  span:hover {
-    border-bottom: 1px dashed white;
-  }
-
-  &.sketchy-black {
-    color: black;
-    &:hover {
-      color: black;
-    }
-
-    span:hover {
-      border-bottom: 1px dashed black;
-    }
-  }
-}
-
-.facebook-sketchy {
-  background: url(/images/icons/social/facebook.svg) no-repeat;
-  background-size: 32px;
-}
-
-.google-sketchy {
-  background: url(/images/icons/social/google.svg) no-repeat;
-  background-size: 32px;
-}
-
 /* <Conference Countdown Flipclock>*/
 #conference-countdown {
   position: absolute;
