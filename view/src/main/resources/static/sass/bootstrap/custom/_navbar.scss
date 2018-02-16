@@ -15,7 +15,7 @@ $c-Header__navItemGray--hoverColor: black !default;
 $cb-navbar__hasBoxShadow: false !default;
 $cb-navbar__activeBoxShadow: none !default;
 $cb-navbar__background: url(/images/bg-noise.png), $t-Color__tan !default;
-$cb-navbar__searchIconColor: $t-Color__primary;
+$cb-navbar__searchIconColor: $t-Color__primary !default;
 
 // local vars
 $_navbar__height: 67px;
