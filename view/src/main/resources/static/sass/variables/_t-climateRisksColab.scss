@@ -60,7 +60,7 @@ $cb-navbar__background: white;
 $cb-navbar__hasBoxShadow: true;
 $cb-navbar__searchIconColor: $t-Color__secondary;
 $c-Header__menu__li__a__fontWeight: 400;
-$bs-navbar__activeBoxShadow: inset 0 -8px 0 $t-Color__primary;
+$cb-navbar__activeBoxShadow: inset 0 -8px 0 $t-Color__primary;
 $c-Header__menu__right__li__help__border--left: none;
 $c-Header__menu__li__a__textColor: $t-Color__primary;
 $c-Header__background--hover: none;
@@ -263,5 +263,3 @@ $c-ContestBox__text__title__textColor--hover: $t-Color__primary;
 $p-Contests__priorActiveAllWidget__a__color--isHover: white;
 
 $c_ControlsOverlay__backgroundColor: rgba($t-Color__tan, .9);
-
-$bs-Border__rounded: false;
