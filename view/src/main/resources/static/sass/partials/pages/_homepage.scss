@@ -132,31 +132,6 @@ a.join {
   visibility: hidden;
 }
 
-.newsbox, .homespot {
-  display: inline-block;
-}
-
-* html .newsbox, * html .homespot {
-  height: 1%;
-}
-
-.newsbox, .homespot {
-  display: block;
-}
-
-.newslinks {
-  float: left;
-  width: 363px;
-}
-
-.newslinks a.readmore {
-  color: black;
-}
-
-.newslinks a.readmore:hover {
-  border-bottom: 1px solid black;
-}
-
 .sketchy-icon {
   height: 32px;
   display: inline-block;
