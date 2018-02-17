@@ -10,10 +10,10 @@
 
     <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper>>"-->
 
-    <div class="list-group">
+    <div class="list-group list-group-flush">
         <c:forEach items="${activities}" var="activity">
-                <collab:image src="${activity.iconPath}" alt="Comment"/>
             <div class="list-group-item cb-d-flex-between-center ${activity.odd ? 'bg-primary-gray-light' : '' }">
+                <collab:image src="${activity.iconPath}" alt="Comment" width="30"/>
                 <div class="d-flex flex-fill flex-column ${isResponsive ? 'flex-md-row-reverse' : ''} ml-3">
                     <small class="text-muted cb-no-wrap ${isResponsive ?'ml-md-3' : ''}">
                         ${activity.activityDateAgo}
