@@ -15,7 +15,7 @@
 
     <div id="c-Footer" class="clearfix">
         <div id="c-Footer__menu">
-            <div class="cb-container-fixed d-flex align-items-center justify-content-between">
+            <div class="cb-container-fixed cb-d-flex-between-center">
                 <nav>
                     <ul class="nav">
                         <li class="nav-item">

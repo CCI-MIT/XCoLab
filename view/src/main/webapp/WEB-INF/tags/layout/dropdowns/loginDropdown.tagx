@@ -45,7 +45,7 @@
                         <input class="form-check-input" id="header__remember-me" type="checkbox" name="remember-me" checked="checked" />
                         <label class="form-check-label" for="header__remember-me"><spring:message code="homepage.login.rememberme"/></label>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="cb-d-flex-between-center">
                         <a href="javascript:;" onclick="showForgotPasswordModal()">
                             <em><spring:message code="homepage.login.forgotyourpassword"/></em>
                         </a>
