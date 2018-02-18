@@ -184,8 +184,6 @@
             </table>
         </div>
 
-        <xcolab:requireLibrary name="autoSuggest" />
-        <xcolab:requireLibrary name="jQuery UI" />
         <xcolab:script src="/js/proposals/proposals.js"/>
         <c:set var="contestPageBreadcumbs" >
             <c:forEach var="_contestPage" items="${_contestPages}" varStatus="status">

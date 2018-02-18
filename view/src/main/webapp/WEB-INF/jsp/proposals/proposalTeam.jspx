@@ -199,7 +199,7 @@
             </c:if>
         </div>
 
-        <xcolab:requireLibrary name="autoSuggest" />
+        <!-- TODO COLAB-2676: still needed for autocomplete -->
         <xcolab:requireLibrary name="jQuery UI" />
         <xcolab:script src="/js/proposals/proposals.js"/>
     </xcolab:layout>

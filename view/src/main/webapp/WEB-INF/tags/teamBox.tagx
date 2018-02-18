@@ -49,6 +49,8 @@
         </div>
     </div>
 
+    <!-- TODO COLAB-2676: still needed for autocomplete -->
+    <xcolab:requireLibrary name="jQuery UI" />
     <script>
         (function () {
             var userSelectorInput = "#" + "${inputBox}";

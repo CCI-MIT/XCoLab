@@ -336,9 +336,6 @@
     <!-- TODO COLAB-2545: only used in mitigration impact tab; requires jquery UI -->
     <xcolab:script src="/js/proposals/jquery.scrolltable.js"/>
 
-    <!-- AutoSuggest -->
-    <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['autoSuggest']}" href="/css/lib/autoSuggest.css" />
-
     <!-- Handlebars.js-->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['handlebars.js']}" src="/vendor/handlebars/dist/handlebars.min.js"/>
 
