@@ -22,7 +22,7 @@
     <!--@elvariable id="contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
 
-    <div class="cb-navbar-background ${isWhiteBackgound ? 'bg-white' : ''} border-bottom border-medium">
+    <div class="cb-navbar-background ${isWhiteBackgound ? 'cb-navbar-background-white' : ''} border-bottom border-medium">
         <div class="cb-container-fixed">
             <nav class="navbar navbar-expand navbar-light" aria-label="site wide">
                 <a class="navbar-brand" href="/">
