@@ -12,7 +12,7 @@
 
     <div class="list-group list-group-flush">
         <c:forEach items="${activities}" var="activity">
-            <div class="list-group-item cb-d-flex-between-center ${activity.odd ? 'bg-primary-gray-light' : '' }">
+            <div class="list-group-item cb-d-flex-between-center ${activity.odd ? 'cb-list-group-item-odd' : '' }">
                 <collab:image src="${activity.iconPath}" alt="Comment" width="30"/>
                 <div class="d-flex flex-fill flex-column ${isResponsive ? 'flex-md-row-reverse' : ''} ml-3">
                     <small class="text-muted cb-no-wrap ${isResponsive ?'ml-md-3' : ''}">
