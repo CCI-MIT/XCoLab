@@ -58,27 +58,6 @@
         }
     </style>
 
-    <c:if test="${mustFilterContent}">
-        <div class="modal fade" id="js-filteringModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Preparing for submission...</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div id="loading_filtering_image" style="text-align: left">
-                            <collab:image src="/images/loader.gif"/>
-                        </div>
-                        <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again</div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="close" class="btn btn-gray" data-dismiss="modal">Close</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-    </c:if>
-
     <div class="prop-left">
 
         <div class="c-Headline addprop">
@@ -393,21 +372,7 @@
             disableButtons();
             if (validatePlanEditForm()) {
                 disableDirtyCheck();
-                if(getMustFilterContent()) {
-                    var text = "";
-                    text = text + $("#proposalName").val() + " ";
-                    text = text + $("#proposalTeam").val() + " ";
-                    text = text + $("#proposalPitchInput").val() + " ";
-                    for (var ckInstanceId in CKEDITOR.instances) {
-                        if (document.getElementById(ckInstanceId)) {
-                            var ckInstance = CKEDITOR.instances[ckInstanceId];
-                            text = text + (ckInstance.getData()) + " ";
-                        }
-                    }
-                    handleFilteredContent(text,"PROPOSAL", "#uuid",function () { jQuery("#editForm").submit() });
-                }else {
-                    jQuery("#editForm").submit();
-                }
+                jQuery("#editForm").submit();
             }
         }
 
@@ -456,23 +421,6 @@
             <button type="close" data-dismiss="modal" class="btn btn-gray">Cancel</button>
         </div>
     </xcolab:modal>
-
-    <c:choose>
-    <c:when test="${mustFilterContent}">
-        <script>
-            function getMustFilterContent() {
-                return true;
-            }
-        </script>
-    </c:when>
-    <c:otherwise>
-        <script>
-            function getMustFilterContent() {
-                return false;
-            }
-        </script>
-    </c:otherwise>
-    </c:choose>
 
     <xcolab:requireLibrary name="CKEditor" />
 
