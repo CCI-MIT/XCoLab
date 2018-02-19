@@ -41,12 +41,11 @@
         </script>
 
         <div class="prop-left ${contestType.showProposalSummary ? '' : 'full-width'}">
-            <div class="edit-prop-wrap">
+            <div>
                 <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
                     <xcolab:proposalLink proposal="${proposal}" text="Go to current"
                                          cssClass="btn btn-primary-darkest cb-btn-xs" />
                 </c:if>
-
 
                 <div>
                     <button id="versionContainerTrigger" onclick="triggerHistoryVisibility();"
@@ -140,12 +139,14 @@
                     </div>
                 </div>
             </div>
+
+            <hr class="cb-hr-dark cb-hr-dashed" />
             <c:if test="${not empty proposal.pitch }">
                 <h2>${contestType.pitchName}</h2>
 
-                <p class="intro">${proposal.pitch}</p>
+                <p class="lead">${proposal.pitch}</p>
 
-                <div class="div1"><!--  --></div>
+                <hr class="cb-hr-tan cb-hr-xl"/>
             </c:if>
 
             <h2><spring:message code="contests.proposal.sections.description" /></h2>
@@ -168,7 +169,7 @@
 
 
                     <c:if test="${not status.last }">
-                        <div class="div2"><!--  --></div>
+                        <hr class="my-4"/>
                     </c:if>
                 </c:forEach>
             </c:if>

@@ -111,7 +111,7 @@
 
 
                 <c:if test="${not empty listOfNotifications}">
-                    <div class="div2"><!--  --></div>
+                    <hr/>
                     <h2>List of Notifications</h2>
                     <h6>To send next pending notification, delete the currently active notification or wait for it to expire automatically.</h6>
                     <c:forEach var="notification" items="${listOfNotifications}" varStatus="status">
@@ -166,8 +166,7 @@
                 <c:if test="${empty listOfNotifications}">
                     <h5><br />No Notifications found! You can schedule one using the form above! </h5>
                 </c:if>
-                <div class="div2"><!--  --></div>
-
+                <hr/>
             </div>
             <br/>
             <br/>

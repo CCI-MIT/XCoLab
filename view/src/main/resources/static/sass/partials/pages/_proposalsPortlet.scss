@@ -43,14 +43,10 @@
 }
 
 .addpropInputContainer {
-    float: right;
-    font-size: 16px;
-    min-width: 440px;
-
-  &.full-width {
-    width: 830px;
-  }
-    position: relative;
+  float: right;
+  font-size: 16px;
+  min-width: 440px;
+  position: relative;
 }
 .addpropInputContainer span {
   vertical-align: middle;

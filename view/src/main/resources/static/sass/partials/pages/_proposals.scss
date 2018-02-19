@@ -53,6 +53,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   padding-top: 28px;
   background: $p-proposal__header__background;
   border-bottom: 1px solid $t-Color__gray--dark-600;
+  margin-bottom: $t-Spacing__base;
 }
 
 .proposal-head:after {
@@ -104,31 +105,11 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 }
 
 /* edit proposal block */
-.edit-prop-wrap {
-  border-bottom: 1px dashed #666;
-  padding: $spacer 0;
-}
 
 .lastedited {
   float: left;
   height: 19px;
   font-size: 13px;
-}
-
-/* proposal columns */
-.prop-left {
-  float: left;
-  width: 631px;
-  &.full-width {
-    width: 100%;
-  }
-  margin-right: 23px;
-  line-height: 24px;
-}
-
-.prop-right {
-  float: left;
-  width: 330px;
 }
 
 .prop-left h2 {
@@ -145,28 +126,9 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   margin-bottom: 13px;
   color: $t-Color__gray--dark-800;
 }
-.prop-left img {
-  max-width: 650px;
-}
+
 .prop-left p {
   color: $t-Color__gray--dark-700;
-}
-
-.prop-left p.intro {
-  font-size: 19px;
-  line-height: 27px;
-}
-
-.div1 {
-  background: $t-Color__tan;
-  height: 6px;
-  margin: 30px 0 30px;
-}
-
-.div2 {
-  background: $t-Color__gray--medium-500;
-  height: 1px;
-  margin: 38px 0 30px;
 }
 
 .div3 {
@@ -485,23 +447,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 .addpropform label img {
   position: relative;
   top: 3px;
-}
-
-
-.addpropform {
-
-  // TODO: needed?
-  &.full-width textarea {
-    width: 830px;
-  }
-}
-
-.addpropform {
-
-  // TODO: needed?
-  &.full-width textarea {
-    width: 830px;
-  }
 }
 
 .addpropform .notation {
