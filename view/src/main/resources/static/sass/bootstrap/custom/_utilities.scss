@@ -6,6 +6,16 @@
   background-image: url(/images/bg-noise.png);
 }
 
+//= Text utilities
+
+.cb-text-lg {
+  font-size: 120%;
+}
+
+.cb-text-sm {
+  @extend .small;
+}
+
 
 //= Flexbox utilities
 
@@ -13,6 +23,12 @@
 .cb-d-flex-between-center {
   @extend .d-flex;
   @extend .justify-content-between;
+  @extend .align-items-center;
+}
+
+.cb-d-flex-center-center {
+  @extend .d-flex;
+  @extend .justify-content-center;
   @extend .align-items-center;
 }
 

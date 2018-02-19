@@ -29,6 +29,14 @@
   }
 }
 
+.cb-btn-xl {
+  padding: 1rem 1.5rem;
+  font-weight: $t-Typography__fontWeight--bold;
+  @if $t-Border__rounded {
+    border-radius: $t-Border__radius--large;
+  }
+}
+
 //= Elements within btn block
 .cb-btn__image_text {
   vertical-align: middle;
