@@ -1,5 +1,5 @@
-@import "../../lib/l-functions";
-@import "../../lib/l-mixins";
+@import "../../lib/functions";
+@import "../../lib/mixins";
 
 //TODO COLAB-2561: Remove this mixin (and the whole file)
 @mixin theme-button($button-color, $border-color: null, $image-url: null, $hover-color: null) {
