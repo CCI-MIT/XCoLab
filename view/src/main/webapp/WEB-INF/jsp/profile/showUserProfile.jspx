@@ -45,10 +45,10 @@
     <c:choose>
         <c:when test="${currentUserProfile.active}">
 
-            <div>
-                <div id="main" class="${currentUserProfile.viewingOwnProfile ? '' : 'full'} userProfile">
-                    <div>
-                        <div>
+            <div class="l-Content">
+                <div class="l-Content__main">
+                    <div class="card bg-tan">
+                        <div class="card-body">
                         <h1>Member Profile</h1>
                         <div class="comm_member" style="margin-top: 0;">
 
@@ -322,16 +322,15 @@
                 <!-- /l-Content__main -->
 
                 <c:if test="${currentUserProfile.viewingOwnProfile}">
-                    <div class="c-Message__column">
-                        <div>
-                            <div>
-                                <c:if test="${isSnpActive}">
-                                <div class="comm_rightcol">
-                                    <div class="comm_rightcol-title">
+                    <div class="l-Content__sidebar l-Content__sidebar--right l-Content__sidebar--collapseBottom">
+                        <div class="card">
+                            <c:if test="${isSnpActive}">
+                                <div class="card-body">
+                                    <h3>
                                         <label for="snpLink">
                                             <spring:message code="profile.show.referralLink"/>
                                         </label>
-                                    </div>
+                                    </h3>
                                     <p>
                                         <spring:message code="profile.show.referralText"/>
                                         <a href="/snp/socialnetworkprize" target="_blank"
@@ -389,105 +388,99 @@
                                 </div>
                             </c:if>
 
-                                <div class="comm_rightcol">
-                                    <div class="comm_rightcol-title"><spring:message
-                                            code="profile.show.inbox"/></div>
+                            <div class="card-body">
+                                <h3><spring:message code="profile.show.inbox"/></h3>
 
-                                    <c:if test="${empty currentUserProfile.messages}">
-                                        <p><spring:message code="profile.show.nonewmessages"/></p>
-                                    </c:if>
+                                <c:if test="${empty currentUserProfile.messages}">
+                                    <p><spring:message code="profile.show.nonewmessages"/></p>
+                                </c:if>
 
-                                    <c:forEach var="message" items="${currentUserProfile.messages}">
+                                <c:forEach var="message" items="${currentUserProfile.messages}">
 
-                                        <div class="comm_rightcol-time">
-                                            <c:choose>
-                                                <c:when test="${message.daysAgo == 0}">
-                                                    <spring:message code="profile.show.today"/>
-                                                </c:when>
-                                                <c:when test="${message.daysAgo == 1}">
-                                                    <spring:message code="profile.show.yesterday"/>
-                                                </c:when>
-                                                <c:when test="${message.daysAgo > 1}">
-                                                    <spring:message code="profile.show.daysago"
-                                                                    arguments="${message.daysAgo}"/>
-                                                </c:when>
-                                            </c:choose>
-                                            <br/>
+                                    <div class="my-3">
+                                        <div class="text-muted cb-d-flex-between">
+                                                <c:choose>
+                                                    <c:when test="${message.daysAgo == 0}">
+                                                        <spring:message code="profile.show.today"/>
+                                                    </c:when>
+                                                    <c:when test="${message.daysAgo == 1}">
+                                                        <spring:message code="profile.show.yesterday"/>
+                                                    </c:when>
+                                                    <c:when test="${message.daysAgo > 1}">
+                                                        <spring:message code="profile.show.daysago"
+                                                                        arguments="${message.daysAgo}"/>
+                                                    </c:when>
+                                                </c:choose>
                                             <xcolab:formatDateTime millis="${message.createDate.time}"
                                                                    type="time"/>
                                         </div>
 
-                                        <div class="activityBody">
-                                            <xcolab:userLinkSimple text="${message.from.displayName}"
-                                                                   memberId="${message.from.userId}"/>
-                                            <spring:message code="profile.show.sentyouamessage"/>
-                                            <a href="/messaging/message/${message.messageId}">${message.subject}</a>
+                                        <xcolab:userLinkSimple text="${message.from.displayName}"
+                                                               memberId="${message.from.userId}"/>
+                                        <spring:message code="profile.show.sentyouamessage"/>
+                                        <a href="/messaging/message/${message.messageId}">${message.subject}</a>
+                                    </div>
+                                </c:forEach>
+
+                                <button type="button" class="btn btn-primary btn-sm btn-block"
+                                        data-toggle="modal" data-target="#sendMessageModal">
+                                    <spring:message code="profile.show.compose.button"/>
+                                </button>
+                                <a href="/messaging" class="btn btn-link btn-sm btn-block">
+                                    <spring:message code="profile.show.seeall"/>
+                                </a>
+
+                                <div class="clearfix"><!-- --></div>
+                            </div>
+
+                            <div class="card-body">
+                                <h3>
+                                    <spring:message code="profile.show.compose.subscribedactivity"/>
+                                </h3>
+
+                                <c:if test="${empty currentUserProfile.subscribedActivities}">
+                                    <p><spring:message code="profile.show.compose.noactivties"/></p>
+                                </c:if>
+
+                                <c:forEach var="activity"
+                                           items="${currentUserProfile.subscribedActivities}"
+                                           begin="0" end="5">
+
+                                    <div class="my-3">
+                                        <div class="text-muted cb-d-flex-between">
+                                            <c:choose>
+                                                <c:when test="${activity.daysAgo == 0}">
+                                                    <spring:message code="profile.show.today"/>
+                                                </c:when>
+                                                <c:when test="${activity.daysAgo == 1}">
+                                                    <spring:message code="profile.show.yesterday"/>
+                                                </c:when>
+                                                <c:when test="${activity.daysAgo > 1}">
+                                                    <spring:message code="profile.show.compose.daysago"
+                                                                    arguments="${activity.daysAgo}"/>
+                                                </c:when>
+                                            </c:choose>
+
+                                            <xcolab:formatDateTime millis="${activity.createdDate.time}"
+                                                                   type="time"/>
                                         </div>
 
-                                    </c:forEach>
+                                        ${activity.body}
+                                    </div>
 
-                                    <button type="button" class="btn btn-primary btn-sm btn-block"
-                                            data-toggle="modal" data-target="#sendMessageModal">
-                                        <spring:message code="profile.show.compose.button"/>
-                                    </button>
-                                    <a href="/messaging" class="btn btn-link btn-sm btn-block">
+                                </c:forEach>
+
+                                <a class="btn btn-primary btn-sm btn-block"
+                                   href="/members/profile/${currentUserProfile.userId}/subscriptions/manage">
+                                    <spring:message code="profile.show.manage"/>
+                                </a>
+
+                                <c:if test="${not empty currentUserProfile.subscribedActivities}">
+                                    <a class="btn btn-link btn-sm btn-block"
+                                       href="/members/profile/${currentUserProfile.userId}/subscriptions">
                                         <spring:message code="profile.show.seeall"/>
                                     </a>
-
-                                    <div class="clearfix"><!-- --></div>
-                                </div>
-
-                                <div class="comm_rightcol">
-                                    <form:form>
-                                        <div class="comm_rightcol-title"><spring:message
-                                                code="profile.show.compose.subscribedactivity"/></div>
-
-                                        <c:if test="${empty currentUserProfile.subscribedActivities}">
-                                            <p><spring:message code="profile.show.compose.noactivties"/></p>
-                                        </c:if>
-
-
-                                        <c:forEach var="activity"
-                                                   items="${currentUserProfile.subscribedActivities}"
-                                                   begin="0" end="5">
-
-                                            <div class="comm_rightcol-time">
-                                                <c:choose>
-                                                    <c:when test="${activity.daysAgo == 0}">
-                                                        <spring:message code="profile.show.today"/>
-                                                    </c:when>
-                                                    <c:when test="${activity.daysAgo == 1}">
-                                                        <spring:message code="profile.show.yesterday"/>
-                                                    </c:when>
-                                                    <c:when test="${activity.daysAgo > 1}">
-                                                        <spring:message code="profile.show.compose.daysago"
-                                                                        arguments="${activity.daysAgo}"/>
-                                                    </c:when>
-                                                </c:choose>
-                                                &#160;
-                                                <xcolab:formatDateTime millis="${activity.createdDate.time}"
-                                                                       type="time"/>
-                                            </div>
-
-                                            <div class="activityBody">
-                                                ${activity.body}
-                                            </div>
-
-                                        </c:forEach>
-
-                                        <a class="btn btn-primary btn-sm btn-block"
-                                           href="/members/profile/${currentUserProfile.userId}/subscriptions/manage">
-                                            <spring:message code="profile.show.manage"/>
-                                        </a>
-
-                                        <c:if test="${not empty currentUserProfile.subscribedActivities}">
-                                            <a class="btn btn-link btn-sm btn-block"
-                                               href="/members/profile/${currentUserProfile.userId}/subscriptions">
-                                                <spring:message code="profile.show.seeall"/>
-                                            </a>
-                                        </c:if>
-                                    </form:form>
-                                </div>
+                                </c:if>
                             </div>
                         </div>
                     </div>

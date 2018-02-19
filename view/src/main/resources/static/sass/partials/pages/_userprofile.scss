@@ -80,10 +80,6 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
   cursor: pointer;
 }
 
-.userProfileAbout textarea {
-  display: none;
-}
-
 .comm_rightcol .activityBody {
   color: #666;
   padding: 0 10px;
@@ -98,12 +94,6 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
 
 .comm_member {
   margin: 20px 0 !important;
-}
-
-.c-Message__column {
-  padding: 20px;
-  border: 1px solid #bdbcb7;
-  margin-left: 15px !important;
 }
 
 #activtiesTable td {
@@ -137,13 +127,6 @@ a.attendingConference {
   position: absolute;
   top: -9px;
   right: -10px;
-}
-
-#main.userProfile {
-  background-color: #f2f1e9;
-  padding: 20px;
-  border: 1px solid #bdbcb7;
-  position: relative;
 }
 
 /* honeypot */
