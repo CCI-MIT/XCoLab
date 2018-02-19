@@ -20,6 +20,11 @@
 //= Flexbox utilities
 
 //Combine flexbox utilities commonly used together
+.cb-d-flex-between {
+  @extend .d-flex;
+  @extend .justify-content-between;
+}
+
 .cb-d-flex-between-center {
   @extend .d-flex;
   @extend .justify-content-between;
