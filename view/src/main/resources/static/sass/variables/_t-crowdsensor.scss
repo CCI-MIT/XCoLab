@@ -242,8 +242,6 @@ $c-Box__background--dark: url(/images/bg-noise.png) $c-Box__background__color--d
 $c-Box__background--light: url(/images/bg-noise.png) $c-Box__background__color--light;
 $c-Box__border: none;
 
-$b-Spacing__separatorColor: $t-Color__grey;
-
 $c-TabBar__background: url(/images/bg-noise.png) white;
 $c-TabBar__borderTop: 1px solid $t-Color__gray--dark-600;
 $c-TabBar__paddingTop: 35px;
@@ -281,19 +279,12 @@ $c-Helpbox__header__title__capitalization: uppercase;
 $c-Helpbox__text__fontWeight: $t-Typography__fontWeight--light;
 $c-Helpbox__header__close__marginTop: 0px;
 
-$b-Spacing__paddingBottom: 10px;
 $c-Count__fontSize: 17px;
 $c-Count__capitalization: uppercase;
 $c-Count__number__color: $t-Color__primary;
 $c-Count__number__fontSize: 20px;
 $c-Count__number__fontWeight: $t-Typography__fontWeight--regular;
 $c-Count__number__verticalAlign: baseline;
-
-$p-Discussion__right__subscribeLinkSmall__capitalization: uppercase;
-$p-Discussion__right__borderBottom__marginTop: 8px;
-$p-Discussion__right__borderBottom__paddingBottom: 11px;
-
-$b-Spacing__inline--large__capitalization: uppercase;
 
 $t-Border__radius: 1.5rem;
 $t-Border__radius--large: 1.75rem;

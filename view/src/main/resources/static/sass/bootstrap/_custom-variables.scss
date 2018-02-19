@@ -58,6 +58,15 @@ $enable-shadows:            true;
 $enable-gradients:          true;
 
 
+// Spacing
+//
+// Control the default styling of most Bootstrap elements by modifying these
+// variables. Mostly focused on spacing.
+// You can add more entries to the $spacers map, should you need more variation.
+
+$spacer: $t-Spacing__base;
+
+
 // Links
 //
 // Style anchor elements.
@@ -118,6 +127,8 @@ $display3-weight:             $font-weight-light;
 $display4-weight:             $font-weight-light;
 
 $lead-font-weight:            $font-weight-light;
+
+$hr-border-color:             rgba-equivalent($t-Color__gray--medium-500);
 
 $mark-bg:                     #fcf8e3 !default;
 

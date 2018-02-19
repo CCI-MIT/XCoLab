@@ -174,7 +174,7 @@
 		</div>
 
 		<c:if test="${permissions.canDownloadMemberList}">
-			<div class="b-Spacing--large" style="margin-top: 20px;">
+			<div class="mt-4">
 				<c:set value="/api/members/downloadMembersList" var="downloadMembersListUrl"/>
 				<a href="${downloadMembersListUrl}"><spring:message code="community.page.members.csv"/></a>
 			</div>
