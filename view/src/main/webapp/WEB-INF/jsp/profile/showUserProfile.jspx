@@ -492,17 +492,20 @@
         </c:otherwise>
     </c:choose>
 
-    <c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
-        <xcolab:sendMessageModal recipient="${currentUserProfile.user}"/>
-    </c:if>
+    <c:choose>
+        <c:when test="${currentUserProfile.viewingOwnProfile}">
+            <xcolab:sendMessageModal/>
+        </c:when>
+        <c:when test="${currentUserProfile.canSeeSendMessageButton}">
+            <xcolab:sendMessageModal recipient="${currentUserProfile.user}"/>
+        </c:when>
+    </c:choose>
 
     <c:if test="${isSnpActive and empty balloonLink}">
         <jsp:include page="../redballoon/consentForm.jspx"/>
     </c:if>
 
     <xcolab:requireLibrary name="CKEditor"/>
-
-    <xcolab:sendMessageModal/>
 
 </xcolab:layout>
 </jsp:root>
