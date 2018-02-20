@@ -8,39 +8,39 @@
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form">
 
-    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
-    <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
-    <c:choose>
-        <c:when test='${proposal.imageId > 0}'>
-            <c:set var="proposalOpenGraphImage" value="${proposal.logoPath}"/>
-        </c:when>
-        <c:otherwise>
-            <c:set var="proposalOpenGraphImage" value=""/>
-        </c:otherwise>
-    </c:choose>
+<!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
+<c:choose>
+    <c:when test='${proposal.imageId > 0}'>
+        <c:set var="proposalOpenGraphImage" value="${proposal.logoPath}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="proposalOpenGraphImage" value=""/>
+    </c:otherwise>
+</c:choose>
 
-    <xcolab:layout title="${proposal.name}" description="${proposal.pitch}"
-                   openGraphImage="${proposalOpenGraphImage}"
-                   openGraphDescription="${proposal.cleanPitch}"
-                   openGraphTitle="${proposal.name} - ${contest.contestShortNameWithEndYear} - ${_colabName}"
-    >
-        <!--@elvariable id="voted" type="java.lang.Boolean"-->
-        <!--@elvariable id="votingDeadline" type="java.lang.String"-->
-        <!--@elvariable id="targetMoveHistory" type="org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory"-->
-        <!--@elvariable id="sourceMoveHistories" type="java.util.List<org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory>"-->
+<xcolab:layout title="${proposal.name}" description="${proposal.pitch}"
+               openGraphImage="${proposalOpenGraphImage}"
+               openGraphDescription="${proposal.cleanPitch}"
+               openGraphTitle="${proposal.name} - ${contest.contestShortNameWithEndYear} - ${_colabName}"
+>
+    <!--@elvariable id="voted" type="java.lang.Boolean"-->
+    <!--@elvariable id="votingDeadline" type="java.lang.String"-->
+    <!--@elvariable id="targetMoveHistory" type="org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory"-->
+    <!--@elvariable id="sourceMoveHistories" type="java.util.List<org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory>"-->
 
-        <jsp:directive.include file="./init_proposal_tab.jspx" />
-        <jsp:directive.include file="./proposalDetails/header.jspx"/>
+    <jsp:directive.include file="./init_proposal_tab.jspx" />
+    <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
-        <spring:message var="textShowHistory" code="contests.proposal.versions.showhistory" />
-        <spring:message var="textHideHistory" code="contests.proposal.versions.hidehistory" />
-        <script>
-            var textShowHistory = '${textShowHistory}';
-            var textHideHistory = '${textHideHistory}';
-        </script>
-
-        <div class="prop-left ${contestType.showProposalSummary ? '' : 'full-width'}">
+    <spring:message var="textShowHistory" code="contests.proposal.versions.showhistory" />
+    <spring:message var="textHideHistory" code="contests.proposal.versions.hidehistory" />
+    <script>
+        var textShowHistory = '${textShowHistory}';
+        var textHideHistory = '${textHideHistory}';
+    </script>
+    <div class="l-Content">
+        <div class="l-Content__main">
             <div>
                 <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
                     <xcolab:proposalLink proposal="${proposal}" text="Go to current"
@@ -166,8 +166,6 @@
                         </c:otherwise>
                     </c:choose>
 
-
-
                     <c:if test="${not status.last }">
                         <hr class="my-4"/>
                     </c:if>
@@ -182,81 +180,84 @@
                 </c:if>
             </c:catch>
         </div>
-        <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
-        <c:if test="${voted}">
-            <spring:message code="contests.proposal.voting.thankyou" var="justVotedModalTitle" />
-            <xcolab:modal modalId="justVotedModal" title="${justVotedModalTitle}">
-                <div class="modal-body">
-                    <p style="color: #545454; margin-top: 5px;">
-                        <collab:message code="contests.proposal.voting.youjustvoted" contestType="${contestType}">
-                            <spring:argument>${proposal.name}</spring:argument>
-                            <spring:argument>${proposal.contest.contestName}</spring:argument>
+        <div class="l-Content__sidebar l-Content__sidebar--large l-Content__sidebar--right l-Content__sidebar--collapseBottom">
+            <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
+        </div>
+    </div>
+    <c:if test="${voted}">
+        <spring:message code="contests.proposal.voting.thankyou" var="justVotedModalTitle" />
+        <xcolab:modal modalId="justVotedModal" title="${justVotedModalTitle}">
+            <div class="modal-body">
+                <p style="color: #545454; margin-top: 5px;">
+                    <collab:message code="contests.proposal.voting.youjustvoted" contestType="${contestType}">
+                        <spring:argument>${proposal.name}</spring:argument>
+                        <spring:argument>${proposal.contest.contestName}</spring:argument>
+                    </collab:message>
+                    <br/><br/>
+                    <c:if test="${not empty votingDeadline}">
+                        <collab:message code="contests.proposal.voting.youcanvote" contestType="${contestType}">
+                            <spring:argument>${votingDeadline}</spring:argument>
                         </collab:message>
-                        <br/><br/>
-                        <c:if test="${not empty votingDeadline}">
-                            <collab:message code="contests.proposal.voting.youcanvote" contestType="${contestType}">
-                                <spring:argument>${votingDeadline}</spring:argument>
-                            </collab:message>
-                            <br/>
-                        </c:if>
-                    </p>
-                    <h4 style="color: #30a3fb;">
-                        <spring:message code="contests.proposal.voting.share" />
-                    </h4>
-                    <xcolab-social:socialShareButtons title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
-                </div>
-            </xcolab:modal>
-            <script>
-                jQuery(function() {
-                   jQuery('#justVotedModal').modal();
-                });
-            </script>
-        </c:if>
-
-        <script>
-            var currentProposal = {
-                    proposalId: ${proposal.proposalId},
-                    version: ${proposal.version},
-                    contestId: ${proposal.contest.contestPK}
-            }
-        </script>
+                        <br/>
+                    </c:if>
+                </p>
+                <h4 style="color: #30a3fb;">
+                    <spring:message code="contests.proposal.voting.share" />
+                </h4>
+                <xcolab-social:socialShareButtons title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
+            </div>
+        </xcolab:modal>
         <script>
             jQuery(function() {
-
-
-                $(".prop-left img").each(function(index, value){
-                    var width = $(value).css("width");
-                    if(width >= 650) {
-                        $(value).attr("style", "");
-                    }
-                    $(value).css('cursor', 'pointer');
-                });
-
-                $('.prop-left img').click(function () {
-                    var viewer = ImageViewer();
-                    var imgSrc = this.src, highResolutionImage = $(this).attr('src');
-                    viewer.show(imgSrc, highResolutionImage);
-                });
+               jQuery('#justVotedModal').modal();
             });
         </script>
-        <!--<script>-->
-            <!--jQuery(function() {-->
-                <!--enableDirtyCheck();-->
-            <!--});-->
-        <!--</script>-->
+    </c:if>
 
-        <c:set var="contestPageBreadcumbs" >
-            <c:forEach var="_contestPage" items="${_contestPages}" varStatus="status">
-                <c:if test="${_contestPage.menuItemName != ''}">
+    <script>
+        var currentProposal = {
+                proposalId: ${proposal.proposalId},
+                version: ${proposal.version},
+                contestId: ${proposal.contest.contestPK}
+        }
+    </script>
+    <script>
+        jQuery(function() {
 
-                </c:if>
-            </c:forEach>
-        </c:set>
 
-        <spring:message var="menuItemName" text="${contestType.menuItemName}" javaScriptEscape="true" />
-        <spring:message var="contestShortName" text="${contest.contestShortName}" javaScriptEscape="true" />
-        <spring:message var="proposalName" text="${proposal.name}" javaScriptEscape="true" />
-        <script type="application/ld+json">
+            $(".prop-left img").each(function(index, value){
+                var width = $(value).css("width");
+                if(width >= 650) {
+                    $(value).attr("style", "");
+                }
+                $(value).css('cursor', 'pointer');
+            });
+
+            $('.prop-left img').click(function () {
+                var viewer = ImageViewer();
+                var imgSrc = this.src, highResolutionImage = $(this).attr('src');
+                viewer.show(imgSrc, highResolutionImage);
+            });
+        });
+    </script>
+    <!--<script>-->
+        <!--jQuery(function() {-->
+            <!--enableDirtyCheck();-->
+        <!--});-->
+    <!--</script>-->
+
+    <c:set var="contestPageBreadcumbs" >
+        <c:forEach var="_contestPage" items="${_contestPages}" varStatus="status">
+            <c:if test="${_contestPage.menuItemName != ''}">
+
+            </c:if>
+        </c:forEach>
+    </c:set>
+
+    <spring:message var="menuItemName" text="${contestType.menuItemName}" javaScriptEscape="true" />
+    <spring:message var="contestShortName" text="${contest.contestShortName}" javaScriptEscape="true" />
+    <spring:message var="proposalName" text="${proposal.name}" javaScriptEscape="true" />
+    <script type="application/ld+json">
         {
           "@context": "http://schema.org",
           "@type": "BreadcrumbList",
@@ -293,5 +294,5 @@
           ]
         }
     </script>
-    </xcolab:layout>
+</xcolab:layout>
 </jsp:root>

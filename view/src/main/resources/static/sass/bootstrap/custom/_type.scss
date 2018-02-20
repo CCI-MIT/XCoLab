@@ -3,6 +3,10 @@ hr {
     border-style: dashed;
   }
 
+  &.cb-hr-dotted {
+    border-style: dotted;
+  }
+
   &.cb-hr-lg {
     border-width: 3px;
   }

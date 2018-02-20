@@ -11,8 +11,6 @@ $_l-Content__gutter: $t-Spacing__gridGutter;
 
   @include media-breakpoint-up(md) {
     flex-direction: row;
-    margin-left: -$_l-Content__margin;
-    margin-right: -$_l-Content__margin;
   }
 }
 
@@ -32,9 +30,8 @@ $_l-Content__gutter: $t-Spacing__gridGutter;
   flex-grow: 1;
 
   @include media-breakpoint-up(md) {
-    flex-grow: 0;
     margin-right: $_l-Content__gutter;
-    width: 300px;
+    flex: 0 0 300px;
   }
 }
 
@@ -46,11 +43,11 @@ $_l-Content__gutter: $t-Spacing__gridGutter;
 
 @include media-breakpoint-up(md) {
   .l-Content__sidebar--small {
-    width: 250px;
+    flex-basis: 250px;
   }
 
   .l-Content__sidebar--large {
-    width: 350px;
+    flex-basis: 350px;
   }
 
   .l-Content__sidebar--right {
