@@ -63,12 +63,13 @@ $_c-TitleBar__borderWidth: 6px;
   border-bottom: $_c-TitleBar__borderWidth solid $t-Color__warning;
 
   .c-TitleBar__actionButton {
-    color: white;
+    color: yiq-contrasting-color($t-Color__warning);
     background: $t-Color__warning;
 
     &:hover {
-      color: white;
-      background: hover-color($t-Color__warning);
+      $hover-background: hover-color($t-Color__warning);
+      color: yiq-contrasting-color($hover-background);
+      background: $hover-background;
     }
   }
 }
