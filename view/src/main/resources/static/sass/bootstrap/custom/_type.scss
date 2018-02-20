@@ -1,0 +1,23 @@
+hr {
+  &.cb-hr-dashed {
+    border-style: dashed;
+  }
+
+  &.cb-hr-dotted {
+    border-style: dotted;
+  }
+
+  &.cb-hr-lg {
+    border-width: 3px;
+  }
+
+  &.cb-hr-xl {
+    border-width: 6px;
+  }
+
+  @each $color, $value in $theme-colors {
+    &.cb-hr-#{$color} {
+      border-color: $value;
+    }
+  }
+}

@@ -83,11 +83,10 @@
 	<!-- /proposal-head -->
 	<c:if test="${currentTabWrapped.canEdit and currentTabWrapped.name != 'POINTS' and not edit}">
 					<!-- or (currentTabWrapped.name == 'IMPACT' and proposalsPermissions.canAdminAll)}"> -->
-		<div class="edit-prop-wrap">
-            <xcolab:proposalLink proposal="${proposal}" text="Edit" edit="true"
-                                 cssClass="btn btn-primary-darkest cb-btn-xs"
-                                 tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
-		</div>
+        <xcolab:proposalLink proposal="${proposal}" text="Edit" edit="true"
+                             cssClass="btn btn-primary-darkest cb-btn-xs"
+                             tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
+        <hr class="cb-hr-dark cb-hr-dashed"/>
 	</c:if>
 
     <xcolab:requireLibrary name="CKEditor" />

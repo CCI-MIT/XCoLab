@@ -81,7 +81,7 @@ $link-hover-decoration:     $t-Link__decoration--hover;
 //
 // Set the number of columns and specify the width of the gutters.
 
-$grid-gutter-width:           30px !default;
+$grid-gutter-width:           $t-Spacing__gridGutter;
 
 
 // Components

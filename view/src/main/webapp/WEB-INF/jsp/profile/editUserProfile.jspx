@@ -247,7 +247,7 @@
 				</c:if>
 
 				<div class="profile_about-head"><spring:message code="profile.form.fields.shortbio"/></div>
-				<div class="userProfileAbout">
+				<div>
 					<form:textarea
 						cssClass="rte-editorPlaceholder form-control" path="shortBio" />
 					<div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
