@@ -34,6 +34,30 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ThemeContext {
 
+    public I18n i18n;
+    public AuthenticationContext authenticationContext;
+    public Credentials credentials;
+    public Theme theme;
+    public Meta meta;
+    public SharedColab sharedColab;
+    public Message message;
+    public SocialMedia socialMedia;
+
+    public ServerEnvironment serverEnvironment;
+    // public boolean isProductionEnvironment;
+    // Now use: serverEnvironment.isProduction()
+
+    public String colabName;
+    public String colabLongName;
+    public String colabShortName;
+    public String colabUrl;
+    public String colabUrlProduction;
+    public String blogAdminUrl;
+    public String adminEmail;
+    public ContestType defaultContestType;
+
+    public String requestUri;
+
     class I18n {
         public String language;
         public String locale;
@@ -242,30 +266,6 @@ public class ThemeContext {
             this.donateLink = ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get();
         }
     }
-
-    public I18n i18n;
-    public AuthenticationContext authenticationContext;
-    public Credentials credentials;
-    public Theme theme;
-    public Meta meta;
-    public SharedColab sharedColab;
-    public Message message;
-    public SocialMedia socialMedia;
-
-    public ServerEnvironment serverEnvironment;
-    // public boolean isProductionEnvironment;
-    // Now use: serverEnvironment.isProduction()
-
-    public String colabName;
-    public String colabLongName;
-    public String colabShortName;
-    public String colabUrl;
-    public String colabUrlProduction;
-    public String blogAdminUrl;
-    public String adminEmail;
-    public ContestType defaultContestType;
-
-    public String requestUri;
 
     private void initSubObjects(AuthenticationService authenticationService,
                                 HttpServletRequest request) {
