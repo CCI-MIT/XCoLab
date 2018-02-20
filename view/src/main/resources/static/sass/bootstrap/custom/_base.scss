@@ -6,6 +6,16 @@
 .cb-container-fixed {
   width: 985px;
   margin: 0 auto;
+
+  //TODO COLAB-2681: Remove conditional once RD is always on
+  .feature-isResponsive & {
+    // equivalent to .container-fluid
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
 
 // To reset our default list style

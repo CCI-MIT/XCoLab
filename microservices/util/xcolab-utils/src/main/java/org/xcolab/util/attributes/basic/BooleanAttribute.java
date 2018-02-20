@@ -8,8 +8,9 @@ import org.xcolab.util.attributes.exceptions.AttributeFormatException;
 /**
  * A getter for boolean values from {@link Attribute}s.
  *
- * The BooleanAttribute getter uses the {@link Attribute#getNumericValue()} method and returns true
- * if the returned value is greater than zero.
+ * The BooleanAttribute getter uses the {@link Attribute#getNumericValue()}
+ * and {@link Attribute#getStringValue()} methods and returns true
+ * if the returned value is greater than zero or not equal to {@code 'true'}.
  */
 public class BooleanAttribute extends AbstractAttributeGetter<Boolean> {
 
@@ -19,9 +20,14 @@ public class BooleanAttribute extends AbstractAttributeGetter<Boolean> {
 
     @Override
     protected Boolean extractValue(Attribute attribute) {
-        if (attribute.getNumericValue() == null) {
-            throw new AttributeFormatException("Non-null numeric value required");
+        if (attribute.getNumericValue() != null) {
+            return attribute.getNumericValue() > 0;
         }
-        return attribute.getNumericValue() > 0;
+
+        if (attribute.getStringValue() != null) {
+            return Boolean.parseBoolean(attribute.getStringValue());
+        }
+
+        throw new AttributeFormatException("Non-null numeric or String value required");
     }
 }
