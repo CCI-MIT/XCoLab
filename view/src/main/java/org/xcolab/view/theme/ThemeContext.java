@@ -176,7 +176,7 @@ public class ThemeContext {
         public String metaPageDescription;
         public String metaPageKeywords;
 
-        public Meta(HttpServletRequest request) {
+        public Meta(HttpServletRequest request, I18n i18n) {
             this.openGraphShareTitle = ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get();
             this.openGraphShareDescription = ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.get();
 
@@ -184,7 +184,7 @@ public class ThemeContext {
             if (StringUtils.isNotBlank(metaDescriptionAttribute)) {
                 this.metaPageDescription = HtmlUtil.cleanAll(metaDescriptionAttribute);
             } else {
-                this.metaPageDescription = ConfigurationAttributeKey.META_PAGE_DESCRIPTION.get(locale.getLanguage());
+                this.metaPageDescription = ConfigurationAttributeKey.META_PAGE_DESCRIPTION.get(i18n.language);
             }
             this.metaPageKeywords = ConfigurationAttributeKey.META_PAGE_KEYWORDS.get();
         }
@@ -273,7 +273,7 @@ public class ThemeContext {
         this.authenticationContext = this.new AuthenticationContext(authenticationService, request);
         this.credentials = this.new Credentials();
         this.theme = this.new Theme(request, this.i18n);
-        this.meta = this.new Meta(request);
+        this.meta = this.new Meta(request, this.i18n);
         this.sharedColab = this.new SharedColab();
         this.message = this.new Message(request);
         this.socialMedia = this.new SocialMedia(request);
