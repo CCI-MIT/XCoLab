@@ -70,9 +70,12 @@ $t-Border__radius: .3125rem !default;
 $t-Border__radius--large: .375rem !default;
 $t-Border__radius--small: .25rem !default;
 
-$bs-Button__fontWeight: $t-Typography__fontWeight--bold !default;
+$cb-Button__fontWeight: $t-Typography__fontWeight--bold !default;
 
 $t-Link__color: $t-Color__primary !default;
 $t-Link__color--hover: darken($t-Link__color, 15%) !default;
 $t-Link__decoration: none !default;
 $t-Link__decoration--hover: none !default;
+
+$t-Spacing__base: 1rem !default;
+$t-Spacing__gridGutter: 30px !default;

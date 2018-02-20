@@ -425,10 +425,6 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("SHOW_CONTEST_COUNTDOWN")
                     .defaultValue(true)
                     .build();
-    public static final AttributeGetter<Boolean> FILTER_PROFANITY =
-            ConfigurationAttributes.newBooleanAttribute("FILTER_PROFANITY")
-                    .defaultValue(false)
-                    .build();
     public static final AttributeGetter<Boolean> SHOW_CONTESTS_DISPLAY_OPTIONS =
             ConfigurationAttributes.newBooleanAttribute("SHOW_CONTESTS_DISPLAY_OPTIONS")
                     .defaultValue(true)

@@ -91,7 +91,7 @@
                             <th class="c-Table__cell--title text-center votes js-Tooltip" title="${tooltipVotes}">
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=VOTES&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'VOTES' ? not sortFilterPage.sortAscending : true }" />
                                 <a href="${sortURL }">
-                                    <img src="/images/icon-proposal-vote.png" />
+                                    <collab:image src="/images/icon-proposal-vote.png" />
                                 </a>
                                 <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES" />
                             </th>
@@ -102,7 +102,7 @@
                             <th class="c-Table__cell--title text-center supporters js-Tooltip" title="${tooltipSupporters}">
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=SUPPORTERS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'SUPPORTERS' ? not sortFilterPage.sortAscending : true }" />
                                 <a href="${sortURL }">
-                                    <img src="/images/icon-proposal-thumb.png" />
+                                    <collab:image src="/images/icon-proposal-thumb.png" />
                                 </a>
                                 <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
                             </th>
@@ -112,7 +112,7 @@
                         <th class="c-Table__cell--title text-center comments js-Tooltip" title="${tooltipComments}">
                             <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=COMMENTS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'COMMENTS' ? not sortFilterPage.sortAscending : true }" />
                             <a href="${sortURL }">
-                                <img src="/images/icon-list-comment.png" />
+                                <collab:image src="/images/icon-list-comment.png" />
                             </a>
                             <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
                         </th>
@@ -184,8 +184,6 @@
             </table>
         </div>
 
-        <xcolab:requireLibrary name="autoSuggest" />
-        <xcolab:requireLibrary name="jQuery UI" />
         <xcolab:script src="/js/proposals/proposals.js"/>
         <c:set var="contestPageBreadcumbs" >
             <c:forEach var="_contestPage" items="${_contestPages}" varStatus="status">

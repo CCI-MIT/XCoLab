@@ -1,0 +1,11 @@
+@import "bootstrap/mixins/caret";
+
+.c-Caret {
+  @include caret(down);
+
+  &.c-Caret--up {
+    @include caret(up);
+  }
+}
+
+

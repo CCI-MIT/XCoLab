@@ -149,44 +149,6 @@ function handleClickOnDiscussion(event){
         }
         disableDirtyCheck();
         window.disableAddComment();
-
-        if(getMustFilterContent()) {
-            var text = "";
-            if(CKEDITOR.instances.messageContent === undefined) {
-                var $thecomment = jQuery(".c-Comment__new");
-                text = $thecomment.find(".commentContent").val();
-            }else{
-                text = CKEDITOR.instances.messageContent.getData();
-            }
-            handleFilteredContent(text,"DISCUSSION", "#filtering_uuid",function () { $('#addCommentForm').submit() });
-            event.preventDefault();
-            return false;
-        } else {
-            $('#addCommentForm').submit();
-        }
-
+        $('#addCommentForm').submit();
     }
-}
-function handleFilteredContent(textInput, source, uuidField, callback){
-
-    $("#processedFailed").hide();
-    $("#js-filteringModal").modal();
-    var parameters ={
-        fullText: textInput,
-        source : source
-    };
-    $.post("/profanityfiltering/" ,parameters , function (doc, suc, response) {
-        var responseData = JSON.parse(response.responseText);
-
-        if (responseData.valid == false) {
-            $("#disallowed_words").html(responseData.offensiveTerm)
-            $("#processedFailed").show();
-            
-            $("#loading_filtering_image").hide();
-        } else {
-            var uuid = responseData.uuid;
-            $(uuidField).val(uuid);
-            callback.call(null);
-        }
-    });
 }

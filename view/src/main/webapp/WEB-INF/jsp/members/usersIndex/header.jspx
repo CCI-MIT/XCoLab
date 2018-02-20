@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form">
 
@@ -36,7 +37,6 @@
             </div>
         </div>
     </c:if>
-
 
 	<!-- HELP DIV -->
     <c:if test="${not empty memberCategory and not empty memberCategory.description}">

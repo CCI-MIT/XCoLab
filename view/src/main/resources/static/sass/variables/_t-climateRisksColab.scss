@@ -1,5 +1,3 @@
-@import "../lib/l-functions";
-
 //main colors:
 $t-Color__primary: #aa2029;
 $t-Color__secondary: #30a3fb;
@@ -49,19 +47,24 @@ $t-Color__outline__level2: #d1cbbf; // background slevel2
 $t-Color__outline__level3: #c1bcb2; // background slevel3
 $t-Color__outline__level4: #aaa69f; // background slevel4-6
 
+$t-Border__rounded: false;
+
+$t-Link__color--hover: darken($t-Color__primary, 20%) !default;
 
 // ====
 // changes in component variables
 
 $b-Typography__fontFamily: Arial, Helvetica, sans-serif;
 
-$c-Header__background: white;
+$cb-navbar__background: white;
 $cb-navbar__hasBoxShadow: true;
+$cb-navbar__searchIconColor: $t-Color__secondary;
 $c-Header__menu__li__a__fontWeight: 400;
-$bs-navbar-navitem--active__hasBoxShadow: true;
+$cb-navbar__activeBoxShadow: inset 0 -8px 0 $t-Color__primary;
 $c-Header__menu__right__li__help__border--left: none;
 $c-Header__menu__li__a__textColor: $t-Color__primary;
 $c-Header__background--hover: none;
+$c-Header__navItemGray--hoverColor: $t-Color__primary;
 
 $c-Headline__days-left__span__textColor: white;
 $c-Headline__h2__span__fontSize: 27px;
@@ -124,7 +127,6 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: white;
 $p-community__colab__th__background: $t-Color__primary;
 $p-community__colab__th__textColor: white;
 $p-community__commList__marginTop: 7px;
-$p-community__c-Message__column__width: 204px;
 $p-community__commList__h2__paddingBottom: 6px;
 $p-community__commList__h2__borderBottom: 1px solid $t-Color__gray--medium-500;
 $p-community__discHead__width: 680px;
@@ -154,15 +156,9 @@ $p-proposal__header__background: transparent;
 $p-proposal__header__h1__textColor: $t-Color__primary;
 $p-proposal__propbox__titleAuthor__width: 602px;
 $p-proposal__propbox__padding: 15px 0px 30px 14px;
-$p-proposal__right__h5__topbox__backgroundColor: white;
-$p-proposal__settings__backgroundColor: white;
-$p-proposal__contest__backgroundColor: white;
+$p-Proposal__sidebar__sectionBackgroundColor: white;
 $p-proposal__votebox__top__left: 0px;
 $p-proposal__votebox__marginTop: 35px;
-$p-proposal__right__h5__topbox__padding--top: 20px;
-$p-proposal__right__h5__topbox__font-size: 14pt;
-$p-proposal__right__h5__topbox__border--top: 1px solid $t-Color__gray--medium-500;
-$p-proposal__settings__padding--bottom: 25px;
 $p-proposal__contest__padding--top--bottom: 20px;
 $p-proposal__left__h2__textColor: $t-Color__gray--dark-800;
 $p-proposal__thumbbox__a__margin--left: 10px;
@@ -196,10 +192,9 @@ $p-ContestProposals__header__ontology__term__useIcons: false;
 $p-ContestProposals__header__paddingBottom: 5px;
 $p-ContestProposals__header__description__padding: 5px 20px;
 
-$c-TableList__background--odd: url(/images/bg-noise.png) $t-Color__tan;
+$cb-list-group__itemBackground--odd: url(/images/bg-noise.png) $t-Color__tan;
 
 $c-Box__shadow: none;
-$c-Box__boxColor--dark__margin--top: 0px;
 $c-Box__boxColor--light__padding--top: 15px;
 $c-Box__messaging__padding--top: 15px;
 $c-Box__background__color--dark: $t-Color__tan;
@@ -208,8 +203,6 @@ $c-Box__background__color--primary: $t-Color__primary;
 $c-Box__background--dark: url(/images/bg-noise.png) $c-Box__background__color--dark;
 $c-Box__background--light: url(/images/bg-noise.png) $c-Box__background__color--light;
 $c-Box__border: none;
-
-$b-Spacing__separatorColor: $t-Color__gray--dark-600;
 
 $c-TabBar__background: url(/images/bg-noise.png) white;
 $c-TabBar__borderTop: 1px solid $t-Color__gray--dark-600;
@@ -239,19 +232,19 @@ $c-TabBar__tab__count__background: $t-Color__gray--medium-500;
 
 $p-userprofile__comm_rightcol-title2__height: auto ;
 
-$b-Spacing__paddingBottom: 10px;
+$c-Helpbox__borderRadius: 0px;
+$c-Helpbox__borderColor: $t-Color__gray--dark-700;
+$c-Helpbox__header__padding: 8px 10px 4px 19px;
+$c-Helpbox__header__background: url(/images/bg-noise.png) $t-Color__gray--dark-700;
+$c-Helpbox__header__title__textColor: white;
+$c-Helpbox__header__close__marginTop: 0px;
+
 $c-Count__fontSize: 17px;
 $c-Count__number__color: $t-Color__primary;
 $c-Count__number__fontSize: 20px;
-$c-Count__number__verticalAlign: baseline;
-
-$p-Discussion__right__borderBottom__marginTop: 8px !default;
-$p-Discussion__right__borderBottom__paddingBottom: 11px !default;
 
 $c-Footer__link__textColor--hover: $t-Color__primary;
 $c-ContestBox__text__title__textColor--hover: $t-Color__primary;
 $p-Contests__priorActiveAllWidget__a__color--isHover: white;
 
 $c_ControlsOverlay__backgroundColor: rgba($t-Color__tan, .9);
-
-$bs-Border__rounded: false;

@@ -1,6 +1,6 @@
 @import "bootstrap/functions";
 @import "../variables/t-base";
-@import "../lib/l-functions";
+@import "../lib/functions";
 
 // Variables
 //
@@ -35,6 +35,7 @@ $medium:        $t-Color__gray--medium-500;
 
 $theme-colors: (
     "primary-darkest":  $t-Color__primary__darkest,
+    "primary-gray-light": $t-Color__primary__gray--light,
     "accent":           $t-Color__accent,
     "medium":           $medium,
     "gray":             $t-Color__gray--dark-600,
@@ -57,6 +58,15 @@ $enable-shadows:            true;
 $enable-gradients:          true;
 
 
+// Spacing
+//
+// Control the default styling of most Bootstrap elements by modifying these
+// variables. Mostly focused on spacing.
+// You can add more entries to the $spacers map, should you need more variation.
+
+$spacer: $t-Spacing__base;
+
+
 // Links
 //
 // Style anchor elements.
@@ -71,7 +81,7 @@ $link-hover-decoration:     $t-Link__decoration--hover;
 //
 // Set the number of columns and specify the width of the gutters.
 
-$grid-gutter-width:           30px !default;
+$grid-gutter-width:           $t-Spacing__gridGutter;
 
 
 // Components
@@ -117,6 +127,8 @@ $display3-weight:             $font-weight-light;
 $display4-weight:             $font-weight-light;
 
 $lead-font-weight:            $font-weight-light;
+
+$hr-border-color:             rgba-equivalent($t-Color__gray--medium-500);
 
 $mark-bg:                     #fcf8e3 !default;
 
@@ -165,7 +177,7 @@ $input-btn-padding-x-lg:      1rem !default;
 //
 // For each of Bootstrap's buttons, define text, background, and border color.
 
-$btn-font-weight:             $bs-Button__fontWeight;
+$btn-font-weight:             $cb-Button__fontWeight;
 $btn-disabled-opacity:        .65 !default;
 
 $btn-link-disabled-color:     $gray-600 !default;

@@ -75,7 +75,6 @@ delete from xcolab_AnalyticsUserEvent;
 delete from xcolab_LoginLog;
 
 delete from files_FileEntry;
-delete from filtering_FilteredEntry;
 
 delete from xcolab_ContentPage;
 delete from xcolab_ContentArticle;

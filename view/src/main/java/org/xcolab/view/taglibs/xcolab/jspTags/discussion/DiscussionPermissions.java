@@ -88,8 +88,4 @@ public class DiscussionPermissions {
     public boolean getCanAdminAll() {
         return PermissionsClient.canAdminAll(memberId);
     }
-
-    public boolean getMustFilterContent() {
-        return ConfigurationAttributeKey.FILTER_PROFANITY.get();
-    }
 }
