@@ -102,6 +102,7 @@ $_c-TitleBar__borderWidth: 6px;
 
   font-size: 14px;
   font-weight: $c-TitleBar__element__fontWeight;
+  overflow: hidden;
 
   //states
   &.disabled {
