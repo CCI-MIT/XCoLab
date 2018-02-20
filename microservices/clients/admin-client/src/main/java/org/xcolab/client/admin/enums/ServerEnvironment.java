@@ -4,9 +4,6 @@ public enum ServerEnvironment {
     PRODUCTION, STAGING, DEV, LOCAL, UNKNOWN;
 
     public boolean isProduction() {
-        if (PRODUCTION == this)
-            return true;
-        else
-            return false;
+        return PRODUCTION == this;
     }
 }
