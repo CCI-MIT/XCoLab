@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class BatchRegisterBean implements Serializable {
 
     @NotBlank
-    private Boolean asGuests;
+    private boolean asGuests;
 
     @NotBlank
     private String batchText;
@@ -20,17 +20,17 @@ public class BatchRegisterBean implements Serializable {
         this.batchText = batchText;
     }
 
-    public Boolean getAsGuests() {
+    public boolean getAsGuests() {
         return asGuests;
     }
 
-    public void setAsGuest(Boolean asGuests) {
+    public void setAsGuest(boolean asGuests) {
         this.asGuests = asGuests;
     }
 
     @Override
     public String toString() {
-        return "BatchRegisterBean [batchText='" + batchText + "', asGuests='" + asGuests.toString() + "']";
+        return "BatchRegisterBean [batchText='" + batchText + "', asGuests='" + String.valueOf(asGuests) + "']";
     }
 
 }
