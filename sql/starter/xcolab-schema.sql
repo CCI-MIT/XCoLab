@@ -463,20 +463,6 @@ CREATE TABLE `sharedcolab_SharedContest` (
   PRIMARY KEY (`sharedContestId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `filtering_FilteredEntry` (
-  `filteredEntryId` bigint(10) NOT NULL AUTO_INCREMENT,
-  `source` bigint(10) DEFAULT NULL,
-  `sourceId` bigint(10) DEFAULT NULL,
-  `authorId` bigint(10) DEFAULT NULL,
-  `fullText` text,
-  `status` int(11) DEFAULT NULL,
-  `createdAt` datetime DEFAULT NULL,
-  `answeredAt` datetime DEFAULT NULL,
-  `responseFullText` text,
-  `uuid` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`filteredEntryId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `xcolab_ActivitySubscription` (
   `pk` bigint(20) NOT NULL AUTO_INCREMENT,
   `receiverId` bigint(20) NOT NULL,

@@ -13,14 +13,12 @@
             <c:when test="${not empty contentArticleVersion}">
                 <c:if test="${withTitle}">
                     <h1>${contentArticleVersion.title}</h1>
-                    <br />
                 </c:if>
                 <c:if test="${_isAdmin}">
                     <a href="/content-editor/?articleId=${contentArticleVersion.contentArticleId}"
                        class="btn cb-btn-admin btn-sm float-right">
                         Edit article
                     </a>
-                    <br/>
                 </c:if>
                 <c:if test="${not empty contentArticleVersion}">
                     ${contentArticleVersion.content}

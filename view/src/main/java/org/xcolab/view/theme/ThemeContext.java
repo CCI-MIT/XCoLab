@@ -108,6 +108,8 @@ public class ThemeContext {
     public List contestPages;
     public Map<String, String> themePaths;
 
+    public boolean isResponsive;
+
     public ThemeContext(AuthenticationService authenticationService,
                         HttpServletRequest request) {
         this.themePaths = new HashMap<>();
@@ -233,6 +235,9 @@ public class ThemeContext {
         this.socialMediaEngines = SocialMediaEngine.getAllSocialMediaEngines();
 
         this.donateLink = ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get();
+
+        this.isResponsive = PlatformAttributeKey.LAYOUT_IS_RESPONSIVE.get();
+
     }
 
     private boolean readBooleanParameter(HttpServletRequest request, String name) {

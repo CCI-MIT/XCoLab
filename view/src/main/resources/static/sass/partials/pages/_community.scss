@@ -16,8 +16,6 @@ $p-community__infoLeft__span__fontSize: 32px !default;
 $p-community__infoLeft__span__paddingRight: 5px !default;
 $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !default;
 
-$p-community__c-Message__column__width: 204px !default;
-
 .community-left {
   float: left;
   width: 736px;
@@ -282,23 +280,9 @@ $p-community__c-Message__column__width: 204px !default;
   width: 770px;
 }
 
-#main.userProfile h2 {
-  margin-top: 0
-}
-
 .main_long {
   float: left;
   width: 680px;
-}
-
-.wf-active .c-Message__column {
-  margin: 0 0 0 40px;
-}
-
-.c-Message__column {
-  float: left;
-  width: $p-community__c-Message__column__width;
-  margin: 0 0 0 40px;
 }
 
 .hidden {
@@ -362,11 +346,6 @@ $p-community__c-Message__column__width: 204px !default;
 #main {
   float: left;
   width: 680px;
-}
-
-#main.full {
-  float: none;
-  width: 100%;
 }
 
 .right_col {

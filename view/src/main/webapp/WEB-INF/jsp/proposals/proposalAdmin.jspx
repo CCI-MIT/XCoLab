@@ -216,20 +216,6 @@
 
                     <div id="manage_membership_request_dialog"><!--  --></div>
                 </div>
-
-                <div class="addpropbox blue">
-                    <strong>History</strong>
-                    <div id="versions" class="versionsContainer hidden">
-                        <div class="versions">
-                            <div class="p-Proposal__history c-TableList--noBorder fullWidth">
-                                <table>
-                                    <tbody class="ui-datatable-data ui-widget-content">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -246,17 +232,6 @@
                 </button>
             </div>
         </xcolab:modal>
-        <script>
-            var currentProposal = {
-                proposalId: ${proposal.proposalId},
-                version: ${proposal.version},
-                contestPhaseId:  ${proposal.contestPhase.contestPhasePK},
-                contestPK: ${proposal.contestPK}
-            };
-            jQuery(function () {
-                loadHistoryForVersion(${proposal.version});
-            });
-        </script>
     </xcolab:layout>
 
 </jsp:root>

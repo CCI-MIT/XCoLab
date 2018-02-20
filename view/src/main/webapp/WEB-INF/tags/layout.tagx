@@ -1,7 +1,8 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab-modals="urn:jsptagdir:/WEB-INF/tags/layout/modals"
           xmlns:xcolab-layout="urn:jsptagdir:/WEB-INF/tags/layout"
           xmlns:xcolab-scripts="urn:jsptagdir:/WEB-INF/tags/layout/scripts"
@@ -174,7 +175,8 @@
     </c:if>
 </head>
 
-<body class="${_isHomePage ? 'home' : ''}">
+<!--TODO COLAB-2681: Remove isResponsive feature flag once its on by default -->
+<body class="${_isHomePage ? 'home' : ''} ${_isResponsive ? 'feature-isResponsive' : ''}">
     <c:if test="${_betaRibbonShow}">
         <div class="c-Ribbon">
             Beta
@@ -213,7 +215,7 @@
         <div class="c-TitleBar c-TitleBar--light">
             <div class="cb-container-fixed c-TitleBar__content">
                 <div class="c-TitleBar__element pl-0">
-                    <img src="/images/logos/mit-themed.png" alt="MIT" />
+                    <collab:image src="/images/logos/mit-themed.png" alt="MIT" />
                     <span style="display: inline-block"><!-- Reference for image alignment --></span>
                 </div>
 
@@ -334,9 +336,6 @@
 
     <!-- TODO COLAB-2545: only used in mitigration impact tab; requires jquery UI -->
     <xcolab:script src="/js/proposals/jquery.scrolltable.js"/>
-
-    <!-- AutoSuggest -->
-    <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['autoSuggest']}" href="/css/lib/autoSuggest.css" />
 
     <!-- Handlebars.js-->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['handlebars.js']}" src="/vendor/handlebars/dist/handlebars.min.js"/>

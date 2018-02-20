@@ -22,7 +22,7 @@
                                     contestType="${contestType}" var="helpTooltip" />
                     <a href="${contestType.rulesPageUrl}#Howwillproposalsbejudged" target="_blank"
                        class="js-Tooltip" style="margin-left: 5px;" title="${helpTooltip}">
-                        <img src="/images/icon-addprop-question.png" width="15" height="15" />
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                     </a>
                 </h3>
                 <table>

@@ -1,0 +1,57 @@
+@import "bootstrap/variables";
+@import "bootstrap/mixins/breakpoints";
+
+//= Background utilities
+.cb-bg-noise {
+  background-image: url(/images/bg-noise.png);
+}
+
+//= Text utilities
+
+.cb-text-lg {
+  font-size: 120%;
+}
+
+.cb-text-sm {
+  @extend .small;
+}
+
+
+//= Flexbox utilities
+
+//Combine flexbox utilities commonly used together
+.cb-d-flex-between {
+  @extend .d-flex;
+  @extend .justify-content-between;
+}
+
+.cb-d-flex-between-center {
+  @extend .d-flex;
+  @extend .justify-content-between;
+  @extend .align-items-center;
+}
+
+.cb-d-flex-center-center {
+  @extend .d-flex;
+  @extend .justify-content-center;
+  @extend .align-items-center;
+}
+
+
+//= Other utilities
+.cb-no-wrap {
+  white-space: nowrap !important;
+}
+
+
+//= Responsive utilities
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    // Copied from v4-dev branch - should be included in the next release
+    .flex#{$infix}-fill {
+      flex: 1 1 auto !important;
+    }
+  }
+}

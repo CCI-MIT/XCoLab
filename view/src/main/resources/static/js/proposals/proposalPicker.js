@@ -303,24 +303,6 @@ var inputHandler =  function(){
     }
 };
 
-// SORT ARROWS
-
-function sortByColumn(link, column){
-    // remove all sort arrows
-    link.parent().parent().children().each(function() {
-        $(this).children().remove('.js-Table__sortArrow');
-    });
-
-    if (sortOrder == 'ASC'){
-        sortOrder = 'DESC';
-        link.parent().append(sortArrowDown);
-    } else {
-        sortOrder = 'ASC';
-        link.parent().append(sortArrowUp);
-    }
-    sortColumn = column;
-    loadProposals();
-}
 
 // -------------------- PROPOSAL PICKER HIGHLIGHTING --------------------
 var container = document.getElementById('proposalPickerModal');
@@ -413,7 +395,7 @@ $("#proposalPickerModal").find(".c-Table__cell--title a").click(function(event) 
 	var parentContainer = link.parents(".c-Table");
 	var column = link.attr('data-sort-column');
     link.parent().parent().children().each(function() {
-        $(this).children().remove('.c-Table__sortArrow');
+        $(this).children().remove('.js-SortArrow');
     });
 
     if (sortOrder == 'ASC'){

@@ -293,4 +293,6 @@ DROP TABLE IF EXISTS User_;
 
 DROP TABLE IF EXISTS xcolab_SpamReport;
 
+DROP TABLE IF EXISTS filtering_FilteredEntry;
+
 SET FOREIGN_KEY_CHECKS = 1

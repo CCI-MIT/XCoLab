@@ -6,17 +6,6 @@
     <jsp:directive.attribute name="currentColumn" type="java.lang.String" required="false" rtexprvalue="true" description="Current column" />
 
     <c:if test="${empty sortColumn or sortColumn == currentColumn }">
-        <div class="c-Table__sortArrow js-Table__sortArrow">
-            <c:choose>
-                <c:when test="${sortAscending }">
-                    <span class="dropup">
-                        <span class="caret"><!-- --></span>
-                    </span>
-                </c:when>
-                <c:otherwise>
-                    <span class="caret"><!-- --></span>
-                </c:otherwise>
-            </c:choose>
-        </div>
+        <span class="js-SortArrow c-Caret ${sortAscending ? 'c-Caret--up' : ''}"><!-- empty --></span>
     </c:if>
 </jsp:root>
