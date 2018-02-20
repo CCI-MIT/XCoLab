@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<!--@elvariable id="users" type="java.util.List<org.xcolab.view.pages.members.users.utils.MemberItem>"-->
@@ -23,8 +24,8 @@
 					<th class="c-Table__cell--title points">
 						<c:set var="sortURLPoints" value="/members?sortColumn=POINTS&amp;sortAscending=${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
-						<img class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__points"
-							 style="width: 15px; height: 15px;" src="/images/icon-addprop-question-bar.png" />
+                        <collab:image cssClass="js-Tooltip" dataTooltipContent="#js-Tooltip__content__points"
+							 cssStyle="width: 15px; height: 15px;" src="/images/icon-addprop-question-bar.png" />
                         <div class="hidden">
                             <span id="js-Tooltip__content__points">
                                 <spring:message code="community.page.members.table.order.points.help"/>
@@ -67,12 +68,12 @@
 							<c:if test="${permissions.canAdminAll}">
 								<div style="float: right">
 									<a class="btn btn-link btn-sm" href="/members/profile/${user.memberId}/edit">
-										<img src="/images/icon-activity-edit.png"
+                                        <collab:image src="/images/icon-activity-edit.png"
                                              height="15" alt="edit" />
 									</a>
 									<button type="button" class="btn btn-link btn-sm js-PostLink"
                                             data-url="/impersonate?memberId=${user.memberId}">
-										<img src="/images/icon-request-membership.png"
+                                        <collab:image src="/images/icon-request-membership.png"
                                              height="15" alt="impersonate" />
 									</button>
 								</div>
@@ -89,7 +90,7 @@
 						${user.activityCountFormatted}
 					</td>
 					<td class="c-Table__cell category odd">
-						<img src="/images/${user.memberCategory.imageName}.png"
+                        <collab:image src="/images/${user.memberCategory.imageName}.png"
 							 width="16" height="16" />
 						&#160;${user.memberCategory.displayName}
 					</td>
@@ -160,7 +161,7 @@
 			<ul class="membersCategories">
 				<c:forEach var="category" items="${memberCategories }">
 					<li class="${memberCategory.displayName == category.displayName ? 'c' : ''}">
-						<img src="/images/${category.imageName}.png"
+                        <collab:image src="/images/${category.imageName}.png"
 							 width="16" height="16" />&#160;
 
 						<c:set var="memberCategoryURL" value="/members?filter=${sortFilterPage.filter}&amp;memberCategory=${category.displayName}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;page=1" />
@@ -173,7 +174,7 @@
 		</div>
 
 		<c:if test="${permissions.canDownloadMemberList}">
-			<div class="b-Spacing--large" style="margin-top: 20px;">
+			<div class="mt-4">
 				<c:set value="/api/members/downloadMembersList" var="downloadMembersListUrl"/>
 				<a href="${downloadMembersListUrl}"><spring:message code="community.page.members.csv"/></a>
 			</div>

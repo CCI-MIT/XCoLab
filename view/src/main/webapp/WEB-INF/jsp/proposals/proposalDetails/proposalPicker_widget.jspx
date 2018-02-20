@@ -188,9 +188,7 @@
             </td>
             <td class="c-Table__cell no-border">
                 {{#each data.contests}}
-                <div class="b-Spacing__inline">
-                    <img alt="Image" class="js-Tooltip" title="Contest: {{this.name}}" height="25" width="25" src="/image/contest/{{this.contestLogoId}}" />
-                </div>
+                    <img alt="Image" class="d-inline-block ml-2 js-Tooltip" title="Contest: {{this.name}}" height="25" width="25" src="/image/contest/{{this.contestLogoId}}" />
                 {{/each}}
             </td>
 		</tr>

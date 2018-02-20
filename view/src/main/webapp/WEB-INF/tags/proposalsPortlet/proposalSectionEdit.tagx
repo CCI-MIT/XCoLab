@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<jsp:directive.attribute name="section" type="org.xcolab.client.contest.pojo.templates.PlanSectionDefinition"
@@ -11,7 +12,10 @@
 
 	<label>
 		<strong>${section.title}</strong> 
-		<a href="javascript:;" class="helpTrigger"><img src="/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+		<a href="javascript:;" class="helpTrigger">
+            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+        </a>
+        <br />
 		<c:if test="${section.characterLimit gt 0}">
         	${section.characterLimit} characters
         </c:if>

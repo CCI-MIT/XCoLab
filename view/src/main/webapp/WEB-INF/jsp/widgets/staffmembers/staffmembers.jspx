@@ -51,7 +51,7 @@
                                 <span class="staffmembers-organization">${staffMember.organization}</span><br/>
                             </c:if>
                         </div>
-                        <img src="${staffMember.photoUrl}"/>
+                        <collab:image src="${staffMember.photoUrl}"/>
                     </li>
                 </c:forEach>
             </ul>

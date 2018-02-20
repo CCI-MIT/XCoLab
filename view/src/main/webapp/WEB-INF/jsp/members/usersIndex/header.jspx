@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form">
 
@@ -22,7 +23,7 @@
 			<span class="c-Helpbox__header__title"><spring:message code="community.page.help.title"/> </span>
 			<div class="c-Helpbox__header__close">
 				<a href="javascript:;" onclick="Cookies.set('climatecolab_hide_members_msg', 'true'); jQuery('#js-HelpBox').hide()">
-				<img src="/images/helpbox_close.png" width="20" height="20" alt="X" /></a>
+                    <collab:image src="/images/helpbox_close.png" width="20" height="20" alt="X" /></a>
 			</div>
 		</div>
 		<div class="c-Helpbox__text">

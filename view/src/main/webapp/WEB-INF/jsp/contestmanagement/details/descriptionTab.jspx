@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -30,8 +31,10 @@
             <div class="addpropbox">
                 <label>
                     <strong>Title</strong>
-                    <a class="helpTrigger" href="javascript:;"><img
-                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                    <a class="helpTrigger" href="javascript:;">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                    </a>
+                    <br/>
                 </label>
 
                 <div class="addprophelp">Two to five words very broadly describing the contest topic, such as
@@ -72,8 +75,10 @@
             <div class="addpropbox">
                 <label>
                     <strong>Question</strong>
-                    <a href="javascript:;" class="helpTrigger"><img
-                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                    <a href="javascript:;" class="helpTrigger">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                    </a>
+                    <br/>
                 </label>
 
                 <div class="addprophelp">The key question to be answered through the contest. The most successful
@@ -153,8 +158,10 @@
             <div class="addpropbox">
                 <label>
                     <strong>Description</strong>
-                    <a href="javascript:;" class="helpTrigger"><img
-                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                    <a href="javascript:;" class="helpTrigger">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                    </a>
+                    <br/>
                 </label>
 
                 <div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address
@@ -182,8 +189,10 @@
             <div class="addpropbox">
                 <label>
                     <strong>Proposal template</strong>
-                    <a href="javascript:;" class="helpTrigger"><img
-                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                    <a href="javascript:;" class="helpTrigger">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                    </a>
+                    <br/>
                 </label>
 
                 <div class="addprophelp">Select the proposal template associated with your contest. Templates hold the
@@ -207,7 +216,7 @@
                 <label>
                     <strong>Schedule template</strong>
                     <a href="javascript:;" class="helpTrigger">
-                        <img src="/images/icon-addprop-question.png" width="15" height="15"/>
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
                     </a><br/>
                 </label>
 

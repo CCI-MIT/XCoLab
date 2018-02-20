@@ -21,9 +21,6 @@ import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.filtering.FilteringClient;
-import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
-import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -137,16 +134,6 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                                     GoogleAnalyticsEventType.COMMENT_CONTEST);
                         }
                     }
-                }
-            }
-            if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {
-                try {
-                    FilteredEntry filteredEntry =
-                            FilteringClient.getFilteredEntryByUuid(newMessage.getUuid());
-                    filteredEntry.setSourceId(comment.getCommentId());
-                    filteredEntry.setAuthorId(memberId);
-                    FilteringClient.updateFilteredEntry(filteredEntry);
-                } catch (FilteredEntryNotFoundException ignored) {
                 }
             }
 

@@ -1,4 +1,4 @@
-@import "l-functions";
+@import "functions";
 
 @mixin background-gradient($base-color, $image-url: null, $image-padding: 0) {
   background-color: $base-color;

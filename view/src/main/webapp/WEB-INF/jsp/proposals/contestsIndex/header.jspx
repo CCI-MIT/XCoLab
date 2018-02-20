@@ -141,7 +141,7 @@
 
     <c:if test="${!showActiveContests }">
         <div id="archivedContestsMarkerContainer">
-            <img src="/images/contests-archive.png" />
+            <collab:image src="/images/contests-archive.png" />
 
             <collab:message code="contests.archived.message" contestType="${contestType}" />
             <a href="${contestType.contestBaseUrl}">

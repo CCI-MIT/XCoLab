@@ -9,32 +9,53 @@ $c-Header__menu__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
 
 $c-Header__menu__right__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
 
-//TODO: re-implement
+$c-Header__navItemGray--textColor: $t-Color__gray--dark-700 !default;
+$c-Header__navItemGray--hoverColor: black !default;
+
 $cb-navbar__hasBoxShadow: false !default;
+$cb-navbar__activeBoxShadow: none !default;
+$cb-navbar__background: url(/images/bg-noise.png), $t-Color__tan !default;
+$cb-navbar__searchIconColor: $t-Color__primary !default;
 
 // local vars
 $_navbar__height: 67px;
 $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
+
+@mixin navbar-expanded {
+
+  //TODO COLAB-2681: this can be removed once responsive design is always on
+  .navbar-expand & {
+    @content;
+  }
+
+  @include media-breakpoint-up(lg) {
+     @content;
+  }
+}
 
 .nav li,
 .navbar li {
   margin-left: 0;
 }
 
-.navbar {
+.navbar-nav {
   .nav-link {
-    line-height: $_navbar__height;
-    padding-top: 0;
-    padding-bottom: 0;
+    @include navbar-expanded {
+      line-height: $_navbar__height;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
 
     font-weight: $c-Header__menu__li__a__fontWeight;
   }
 
   .nav-item {
-    &.cb-nav-item-multi-line {
-      height: $_navbar__height;
-      .nav-link {
-        line-height: normal;
+    @include navbar-expanded {
+      &.cb-nav-item-multi-line {
+        height: $_navbar__height;
+        .nav-link {
+          line-height: normal;
+        }
       }
     }
   }
@@ -42,23 +63,28 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
   .cb-nav-item-icon {
 
     .nav-link {
-      height: 67px;
-      line-height: 1;
-      padding-top: 10px;
-      text-align: center;
+      @include navbar-expanded {
+        height: 67px;
+        line-height: 1;
+        padding-top: 10px;
+        text-align: center;
+      }
     }
 
     .nav-icon {
+      //Hide on small screens, expanded via navbar-expand-{breakpoint}
+      display: none;
       height: 30px;
       width: 30px;
-    }
 
-    .nav-icon + .cb-nav-text {
-      display: block;
-      margin-top: 5px;
-      text-transform: uppercase;
-      font-size: 10px;
-      font-weight: 700;
+      @include navbar-expanded {
+        display: initial;
+
+        & + .cb-nav-text {
+          display: block;
+          margin-top: 5px;
+        }
+      }
     }
   }
 
@@ -71,30 +97,36 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
       }
 
       .badge {
-        position: absolute;
-        top: 14px;
-        right: 10px;
         padding: 2px 5px;
         font-weight: 400;
+        @include navbar-expanded {
+          position: absolute;
+          top: 14px;
+          right: 10px;
+        }
       }
     }
   }
 
   .cb-nav-item-separator-left {
-    border-left: 1px solid #aaa;
-    margin-left: $spacer / 2;
-    padding-left: $spacer / 2;
+    @include navbar-expanded {
+      border-left: 1px solid $t-Color__gray--medium-500;
+      margin-left: $spacer / 2;
+      padding-left: $spacer / 2;
+    }
   }
 }
 
 .cb-nav-pages {
-  margin-left: $spacer;
+  @include navbar-expanded {
+    margin-left: $spacer;
 
-  .nav-item {
-    border-left: 1px solid $t-Color__gray--medium-500;
+    .nav-item {
+      border-left: 1px solid $t-Color__gray--medium-500;
 
-    &:hover {
-      background-image: $c-Header__background--hover;
+      &:hover {
+        background-image: $c-Header__background--hover;
+      }
     }
   }
 }
@@ -103,46 +135,93 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
   .nav-link {
     color: $c-Header__menu__li__a__textColor;
 
-    &:hover,
-    .active .nav-link {
+    &:hover {
       color: black;
-    }
-  }
-
-  .active {
-    background: white;
-    margin-bottom: -1px;
-  }
-
-  .cb-nav-item-icon {
-    .nav-link {
-      color: $t-Color__gray--dark-700;
-
-      &:hover {
-        color: black;
-      }
     }
   }
 
   .nav-item:not(.show) { // don't override shown dropdowns
     .c-Icon__search {
-      fill: $t-Color__primary;
+      fill: $cb-navbar__searchIconColor;
     }
   }
 }
 
-.navbar-expand {
-  .navbar-nav.cb-nav-pages .nav-link {
+//TODO COLAB-2681: this can be removed and ported to the mixing once RD is always on
+.navbar-expand.navbar-light .navbar-nav {
+  .active {
+    background: white;
+    margin-bottom: -1px;
+    box-shadow: $cb-navbar__activeBoxShadow;
+  }
+}
+.navbar-light .navbar-nav {
+  @include media-breakpoint-up(lg) {
+    .active {
+      background: white;
+      margin-bottom: -1px;
+      box-shadow: $cb-navbar__activeBoxShadow;
+    }
+  }
+}
+
+.navbar-nav.cb-nav-pages .nav-link {
+  @include navbar-expanded {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 }
 
-//TODO: needed for CRC
-.cb-nav-item-text {
-
+.cb-nav-text {
+  font-weight: $t-Typography__fontWeight--bold;
 }
 
-.cb-nav-item-sm {
+//TODO COLAB-2681: this can be removed and ported to the mixing once RD is always on
+.navbar-expand.navbar-light .navbar-nav .cb-nav-item-gray {
+  .nav-link {
+    color: $c-Header__navItemGray--textColor;
 
+    &:hover {
+      color: $c-Header__navItemGray--hoverColor;
+    }
+  }
+}
+.navbar-light .navbar-nav .cb-nav-item-gray {
+  @include media-breakpoint-up(lg) {
+    .nav-link {
+      color: $c-Header__navItemGray--textColor;
+
+      &:hover {
+        color: $c-Header__navItemGray--hoverColor;
+      }
+    }
+  }
+}
+
+
+
+.cb-nav-item-sm {
+  @include navbar-expanded {
+    text-transform: uppercase;
+    font-size: 0.625rem;
+    font-weight: 700;
+  }
+
+  //Reset for dropdown menus, which are children of the nav-item
+  .dropdown-menu {
+    font-size: initial;
+    font-weight: initial;
+    text-transform: initial;
+  }
+}
+
+.cb-navbar-background {
+  background: $cb-navbar__background;
+  @if $cb-navbar__hasBoxShadow {
+    box-shadow: $_navbar__boxShadow;
+  }
+}
+
+.cb-navbar-background-white {
+  background: white;
 }

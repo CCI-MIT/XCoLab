@@ -97,6 +97,7 @@ a.join {
   margin-right: 15px;
 }
 
+//TODO COLAB-2673: Remove once newsboxes in content articles are replaced
 .newsbox {
   background: url(/images/bg-noise.png) $t-Color__tan;
   width: 418px;
@@ -130,68 +131,6 @@ a.join {
   height: 0;
   clear: both;
   visibility: hidden;
-}
-
-.newsbox, .homespot {
-  display: inline-block;
-}
-
-* html .newsbox, * html .homespot {
-  height: 1%;
-}
-
-.newsbox, .homespot {
-  display: block;
-}
-
-.newslinks {
-  float: left;
-  width: 363px;
-}
-
-.newslinks a.readmore {
-  color: black;
-}
-
-.newslinks a.readmore:hover {
-  border-bottom: 1px solid black;
-}
-
-.sketchy-icon {
-  height: 32px;
-  display: inline-block;
-  padding: 8px 0 0 41px;
-  color: $t-Color__tan;
-  margin: 0 10px;
-
-  &:hover {
-    color: $t-Color__tan;
-  }
-
-  span:hover {
-    border-bottom: 1px dashed white;
-  }
-
-  &.sketchy-black {
-    color: black;
-    &:hover {
-      color: black;
-    }
-
-    span:hover {
-      border-bottom: 1px dashed black;
-    }
-  }
-}
-
-.facebook-sketchy {
-  background: url(/images/icons/social/facebook.svg) no-repeat;
-  background-size: 32px;
-}
-
-.google-sketchy {
-  background: url(/images/icons/social/google.svg) no-repeat;
-  background-size: 32px;
 }
 
 /* <Conference Countdown Flipclock>*/

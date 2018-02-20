@@ -1,4 +1,4 @@
-@import "../../lib/l-functions";
+@import "../../lib/functions";
 
 $c-TitleBar__backgroundColor: $t-Color__primary__gray--light !default;
 $c-TitleBar__borderBottom: 1px solid $t-Color__primary__gray !default;
@@ -35,6 +35,16 @@ $_c-TitleBar__borderWidth: 6px;
   color: $c-TitleBar__textColor;
   text-transform: $c-TitleBar__capitalization;
 
+  a {
+    //Use default link color unless we need a light text color
+    @if yiq-is-light($c-TitleBar__textColor) {
+      color: $c-TitleBar__textColor;
+      &:hover {
+        color: hover-color($c-TitleBar__textColor);
+      }
+    }
+  }
+
   &.contestSummary {
     background: $c-TitleBar__contestSummary__backgroundColor;
   }
@@ -50,15 +60,16 @@ $_c-TitleBar__borderWidth: 6px;
 .c-TitleBar.c-TitleBar--warning {
   background: $t-Color__primary__gray--light;
   color: $t-Color__gray--dark-800;
-  border-bottom: $_c-TitleBar__borderWidth solid $t-Color__accent;
+  border-bottom: $_c-TitleBar__borderWidth solid $t-Color__warning;
 
   .c-TitleBar__actionButton {
-    color: white;
-    background: $t-Color__accent;
+    color: yiq-contrasting-color($t-Color__warning);
+    background: $t-Color__warning;
 
     &:hover {
-      color: white;
-      background: hover-color($t-Color__accent);
+      $hover-background: hover-color($t-Color__warning);
+      color: yiq-contrasting-color($hover-background);
+      background: $hover-background;
     }
   }
 }
@@ -91,6 +102,7 @@ $_c-TitleBar__borderWidth: 6px;
 
   font-size: 14px;
   font-weight: $c-TitleBar__element__fontWeight;
+  overflow: hidden;
 
   //states
   &.disabled {

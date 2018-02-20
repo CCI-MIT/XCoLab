@@ -38,14 +38,14 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
   }
 }
 
-//TODO: used in content article for footer - replace with bootstrap classes
+//TODO COLAB-2561: remove once it's replaced in the footer
 #footleft {
   float: left;
   width: 420px;
   padding-top: 21px;
 }
 
-//TODO: used in content article for footer - replace with bootstrap classes
+//TODO COLAB-2561: remove once it's replaced in the footer
 #footright {
   float: right;
   width: 510px;
@@ -74,6 +74,24 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
         color: $c-Footer__link__textColor--hover;
         text-decoration: none;
       }
+    }
+  }
+}
+
+.c-Footer__text {
+  font-size: .8125rem;
+  color: $t-Color__gray--dark-700;
+
+  a {
+    padding-bottom: 2px;
+    border-bottom: 1px solid $t-Color__gray--medium-500;
+    font-size: .75rem;
+    font-weight: $t-Typography__fontWeight--bold;
+    color: black;
+
+    &:hover {
+      color: $c-Footer__link__textColor--hover;
+      text-decoration: none;
     }
   }
 }

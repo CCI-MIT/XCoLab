@@ -74,8 +74,6 @@
 			);
 		]]>
 		</script>
-        <xcolab:requireLibrary name="autoSuggest" />
-        <xcolab:requireLibrary name="jQuery UI" />
 		<xcolab:script src="/js/proposals/proposals.js"/>
 	</xcolab:layout>
 </jsp:root>

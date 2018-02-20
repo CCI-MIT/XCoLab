@@ -10,6 +10,12 @@ import java.util.Date;
 
 public class SocialActivityWrapper implements Serializable {
 
+    private static final String ICON_COMMENT_PATH = "/images/icons/activity/comment.png";
+    private static final String ICON_EDIT_PATH = "/images/icons/activity/edit.png";
+    private static final String ICON_THUMBS_UP_PATH = "/images/icons/activity/thumbs-up.png";
+    private static final String ICON_NEW_PROPOSAL_PATH = "/images/icons/activity/new-proposal.png";
+    private static final String ICON_NEW_USER_PATH = "/images/icons/activity/new-user.png";
+
     private static final long serialVersionUID = 1L;
     private static final int MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -76,18 +82,18 @@ public class SocialActivityWrapper implements Serializable {
         return odd;
     }
 
-    public String getImageClassName() {
+    public String getIconPath() {
         switch (activity.getActivityCategoryEnum()) {
             case MEMBER:
-                return "new_user";
+                return ICON_NEW_USER_PATH;
             case DISCUSSION:
-                return "comment";
+                return ICON_COMMENT_PATH;
             case CONTEST:
                 switch ((ContestActivityType) activity.getActivityTypeEnum()) {
                     case PROPOSAL_CREATED:
-                        return "new";
+                        return ICON_NEW_PROPOSAL_PATH;
                     case COMMENT_ADDED:
-                        return "comment";
+                        return ICON_COMMENT_PATH;
                     default: return "";
                 }
             case PROPOSAL:
@@ -95,15 +101,15 @@ public class SocialActivityWrapper implements Serializable {
                     case UPDATED:
                     case MEMBER_ADDED:
                     case MEMBER_REMOVED:
-                        return "edit";
+                        return ICON_EDIT_PATH;
                     case VOTE_ADDED:
                     case VOTE_SWITCHED:
                     case VOTE_RETRACTED:
                     case SUPPORT_ADDED:
                     case SUPPORT_REMOVED:
-                        return "up";
+                        return ICON_THUMBS_UP_PATH;
                     case COMMENT_ADDED:
-                        return "comment";
+                        return ICON_COMMENT_PATH;
                     default: return "";
                 }
             default: return "";

@@ -220,6 +220,8 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("_socialMediaEngines", SocialMediaEngine.getAllSocialMediaEngines());
 
             modelAndView.addObject("_donateLink", ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get());
+
+            modelAndView.addObject("_isResponsive", PlatformAttributeKey.LAYOUT_IS_RESPONSIVE.get());
         }
     }
 
