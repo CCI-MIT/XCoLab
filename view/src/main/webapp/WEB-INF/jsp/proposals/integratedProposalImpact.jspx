@@ -136,7 +136,7 @@
                         </form:form>
 
                         <div class="c-ControlsOverlay">
-                            <div class="inner">
+                            <div class="cb-container-fixed">
                                 <p>
                                     <c:choose>
                                         <c:when test="${proposal.currentVersion le 1}">
