@@ -131,7 +131,7 @@
                                 <c:if test="${permissions.canAdminAll}">
                                     <div style="float: right">
                                         <a class="btn btn-link btn-sm" href="/members/profile/${user.memberId}/edit">
-                                            <collab:image src="/images/icon-activity-edit.png"
+                                            <collab:image src="/images/icons/activity/edit.png"
                                                           height="15" alt="edit" />
                                         </a>
                                         <button type="button" class="btn btn-link btn-sm js-PostLink"
