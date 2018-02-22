@@ -346,7 +346,7 @@
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
-                <div id="innerContent" class="addpropbox">
+                <div class="addpropbox">
                     <div class="colFloatLef">
                         <div>
                             <div class="" id="newContentPage"><a class="btn btn-primary"

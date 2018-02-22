@@ -4,35 +4,25 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<div class="proposal-head">
-		<div class="inner">
-			<div class="c-Headline">
-				<div class="proposal-image">
-                    <collab:image src="/image/contest/${contestWrapper.contestLogoId}" width="52" height="52" alt="${contestWrapper.contestShortNameWithEndYear }" />
-				</div>
-				<div class="proposal-title">
-					<h1>${contestWrapper.contestShortNameWithEndYear}</h1>
-					<span class="floatLeft clearLeft"><h3>${contestWrapper.contestName}</h3></span>
-				</div>
-			</div>
-			<!--
-			<c:if test="${contestWrapper.contestPrivate }">
-				<h3 class='portlet-msg-error'>
-					This contest has been deleted!
-				</h3>
-			</c:if>
-			-->
-			<ul class="c-TabBar clearfix">
-				<c:forEach var="singleTab" items="${tabs}" varStatus="loopStatus">
-					<li class="${!loopStatus.last ? (!loopStatus.first ? 'c-TabBar__tab' : 'c-TabBar__tab--first') : 'c-TabBar__tab--last'} ${currentTabWrapped.name == singleTab.tab ? 'active' : ''}">
-						<xcolab:tabLink defaultTab="${singleTab.isDefault}" tabName="${singleTab.name}"
-                                        tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.contestPK}"
-                                        activityCount="${singleTab.activityCount}"/>
-					</li>
-				</c:forEach>
-			</ul>
-		</div>
-		<!-- /inner -->
-	</div>
+        <div class="c-Headline">
+            <div class="proposal-image">
+                <collab:image src="/image/contest/${contestWrapper.contestLogoId}" width="52" height="52" alt="${contestWrapper.contestShortNameWithEndYear }" />
+            </div>
+            <div class="proposal-title">
+                <h1>${contestWrapper.contestShortNameWithEndYear}</h1>
+                <span class="clearLeft"><h3>${contestWrapper.contestName}</h3></span>
+            </div>
+        </div>
+        <ul class="c-TabBar clearfix">
+            <c:forEach var="singleTab" items="${tabs}" varStatus="loopStatus">
+                <li class="${!loopStatus.last ? (!loopStatus.first ? 'c-TabBar__tab' : 'c-TabBar__tab--first') : 'c-TabBar__tab--last'} ${currentTabWrapped.name == singleTab.tab ? 'active' : ''}">
+                    <xcolab:tabLink defaultTab="${singleTab.isDefault}" tabName="${singleTab.name}"
+                                    tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.contestPK}"
+                                    activityCount="${singleTab.activityCount}"/>
+                </li>
+            </c:forEach>
+        </ul>
+    </div>
 	<!-- /proposal-head -->
 
 </jsp:root>

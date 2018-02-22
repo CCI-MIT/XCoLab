@@ -43,29 +43,12 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 /* proposal HEADER */
 .proposal-head {
   padding-top: 28px;
+  padding-left: 15px;
+  padding-right: 15px;
+
   background: $p-proposal__header__background;
   border-bottom: 1px solid $t-Color__gray--dark-600;
   margin-bottom: $t-Spacing__base;
-}
-
-.proposal-head:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
-.proposal-head {
-  display: inline-block;
-}
-
-* html .proposal-head {
-  height: 1%;
-}
-
-.proposal-head {
-  display: block;
 }
 
 .proposal-image {

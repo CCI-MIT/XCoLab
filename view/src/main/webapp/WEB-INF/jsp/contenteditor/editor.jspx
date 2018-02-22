@@ -552,7 +552,7 @@
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
-                <div id="innerContent" class="addpropbox">
+                <div class="addpropbox">
                     <div class="colFloatLef">
                         <h3>Content articles</h3>
                         <div class="treeContainer">
