@@ -1,7 +1,7 @@
 $p-About__left__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
 $p-About__left__li__a__padding--left: 4px !default;
 $p-About__left__li__a__current__background: $t-Color__tan !default;
-$p-About__left__li__a__current__border--left: none !default;
+$p-About__left__li__a__current__borderWidth--left: 0px !default;
 $p-About__left__li__a__current__padding--left: 4px !default;
 $p-About__left__li__ul__li__a__padding--left: 28px !default;
 
@@ -74,8 +74,11 @@ $c-SideMenu__menuItem__paddingLeft: $t-Spacing__base * .5 !default;
 
     > a:hover,
     &.c-SideMenu__link--active > a {
+      padding-left: calc(#{$c-SideMenu__menuItem__paddingLeft} - #{$p-About__left__li__a__current__borderWidth--left});
       background: $p-About__left__li__a__current__background;
-      border-left: $p-About__left__li__a__current__border--left;
+      border-left-style: solid;
+      border-left-width: $p-About__left__li__a__current__borderWidth--left;
+      border-left-color: $t-Color__secondary;
       color: yiq-contrasting-color($p-About__left__li__a__current__background);
     }
 
