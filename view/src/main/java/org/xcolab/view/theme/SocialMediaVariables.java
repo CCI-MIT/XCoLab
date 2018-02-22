@@ -32,7 +32,7 @@ public class SocialMediaVariables {
         return shareRequestUri;
     }
 
-    public boolean isShowShareButtons() {
+    public boolean getShowShareButtons() {
         return showShareButtons;
     }
 

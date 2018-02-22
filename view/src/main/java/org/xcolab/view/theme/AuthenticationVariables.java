@@ -28,11 +28,11 @@ public class AuthenticationVariables {
         this.isLoggedIn = authenticationService.isLoggedIn();
 
         this.isImpersonating = authenticationService.isImpersonating(request);
-        if (isImpersonating()) {
+        if (getIsImpersonating()) {
             this.realMember = authenticationService.getRealMemberOrNull();
         }
 
-        if (isLoggedIn()) {
+        if (getIsLoggedIn()) {
             this.member = authenticationService.getMemberOrThrow(request);
             this.isAdmin = PermissionsClient.canAdminAll(getMember().getUserId());
         }
@@ -58,11 +58,11 @@ public class AuthenticationVariables {
         return Boolean.parseBoolean(request.getParameter(name));
     }
 
-    public boolean isLoggedIn() {
+    public boolean getIsLoggedIn() {
         return isLoggedIn;
     }
 
-    public boolean isImpersonating() {
+    public boolean getIsImpersonating() {
         return isImpersonating;
     }
 
@@ -74,15 +74,15 @@ public class AuthenticationVariables {
         return member;
     }
 
-    public boolean isAdmin() {
+    public boolean getIsAdmin() {
         return isAdmin;
     }
 
-    public boolean isGoogleSsoActive() {
+    public boolean getIsGoogleSsoActive() {
         return isGoogleSsoActive;
     }
 
-    public boolean isFacebookSsoActive() {
+    public boolean getIsFacebookSsoActive() {
         return isFacebookSsoActive;
     }
 
@@ -90,7 +90,7 @@ public class AuthenticationVariables {
         return facebookId;
     }
 
-    public boolean isShowLoginPopup() {
+    public boolean getShowLoginPopup() {
         return showLoginPopup;
     }
 
@@ -98,11 +98,11 @@ public class AuthenticationVariables {
         return authError;
     }
 
-    public boolean isShowPasswordResetPopup() {
+    public boolean getShowPasswordResetPopup() {
         return showPasswordResetPopup;
     }
 
-    public boolean isShowSsoPopup() {
+    public boolean getShowSsoPopup() {
         return showSsoPopup;
     }
 }

@@ -41,7 +41,7 @@ public class I18nVariables {
         return defaultTimeZone;
     }
 
-    public boolean isI18NActive() {
+    public boolean getIsI18NActive() {
         return isI18NActive;
     }
 

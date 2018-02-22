@@ -31,7 +31,7 @@ public class ThemeVariables {
 
     public ThemeVariables(HttpServletRequest request, I18nVariables i18NVariables) {
         this.mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
-        if (isMitHeaderBarShow()) {
+        if (getMitHeaderBarShow()) {
             this.mitHeaderBarLinkText =
                     ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.get();
             this.mitHeaderBarLinkUrl =
@@ -66,7 +66,7 @@ public class ThemeVariables {
         getThemePaths().put("_logoPathSquare", themeImageDomain + activeTheme.getLogoPathSquare());
     }
 
-    public boolean isMitHeaderBarShow() {
+    public boolean getMitHeaderBarShow() {
         return mitHeaderBarShow;
     }
 
@@ -78,15 +78,15 @@ public class ThemeVariables {
         return mitHeaderBarLinkUrl;
     }
 
-    public boolean isNavbarShowIcons() {
+    public boolean getNavbarShowIcons() {
         return navbarShowIcons;
     }
 
-    public boolean isBetaRibbonShow() {
+    public boolean getBetaRibbonShow() {
         return betaRibbonShow;
     }
 
-    public boolean isShowSearchMenuItem() {
+    public boolean getShowSearchMenuItem() {
         return showSearchMenuItem;
     }
 
@@ -94,7 +94,7 @@ public class ThemeVariables {
         return footerArticleId;
     }
 
-    public boolean isHomePage() {
+    public boolean getIsHomePage() {
         return isHomePage;
     }
 
@@ -102,7 +102,7 @@ public class ThemeVariables {
         return contestPages;
     }
 
-    public boolean isResponsive() {
+    public boolean getIsResponsive() {
         return isResponsive;
     }
 

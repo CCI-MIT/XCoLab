@@ -11,14 +11,14 @@ public class SharedColabVariables {
 
     public SharedColabVariables() {
         this.isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
-        if (isSharedColab()) {
+        if (getIsSharedColab()) {
             this.partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
             this.partnerColabImgsAndClasses = getPartnerColabName().replace(" ", "") + "-sketchy";
             this.partnerColabLogo = getPartnerColabImgsAndClasses() + "PartnerLogo.png";
         }
     }
 
-    public boolean isSharedColab() {
+    public boolean getIsSharedColab() {
         return isSharedColab;
     }
 
