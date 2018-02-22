@@ -1,14 +1,5 @@
 $p-userprofile__comm_rightcol-title2__height: 22px !default;
 
-#portraitUploadInput {
-  width: 140px;
-  height: 30px;
-  z-index: 99999;
-  opacity: 0;
-  filter: alpha(opacity=0); /* For IE8 and earlier */
-  cursor: pointer;
-}
-
 .profilehelp {
   background: url(/images/icon-addprop-arrow.png) no-repeat 0 3px;
   float: right;
@@ -56,28 +47,11 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
   font: 12px/21px Verdana, Geneva, sans-serif;
 }
 
-.profile_rightcol p, .comm_rightcol-bdr p {
+.comm_rightcol-bdr p {
   color: #666;
   padding: 0 10px;
   margin-bottom: 15px;
   font: 12px/21px Verdana, Geneva, sans-serif;
-}
-
-.filepcBtn {
-  font-size: 50px;
-  background-color: red;
-}
-
-.filepcTxt {
-  position: relative;
-  left: -100px;
-  opacity: 0.0;
-  -moz-opacity: 0.0;
-  filter: alpha(opacity=00);
-  width: 233px;
-  height: 34px;
-  z-index: 1000;
-  cursor: pointer;
 }
 
 .comm_rightcol .activityBody {
@@ -100,20 +74,6 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
   text-align: center !important;
 }
 
-.fileUpload input {
-  opacity: 0;
-  filter: alpha(opacity=0); /* For IE8 and earlier */
-  cursor: pointer;
-  width: 121px;
-  height: 30px;
-  z-index: 100000;
-}
-
-.fileUpload {
-  opacity: 0;
-  filter: alpha(opacity=0); /* For IE8 and earlier */
-}
-
 a.attendingConference {
   background: url(/images/attending-conference.png) no-repeat;
   float: left;
@@ -125,35 +85,10 @@ a.attendingConference {
   right: -10px;
 }
 
-/* honeypot */
-#sendMessageOverlay p.p {
-  display: none;
-}
-
 #main h1 {
   margin-bottom: 10px;
 }
 
-.main_long h1 {
-  margin-bottom: 10px;
-  float: left;
-}
-
-.main_long th {
-  margin-bottom: 10px;
-}
-
-.main_long {
-  width: 720px !important;
-}
-
-.comm_list {
-  margin-top: 0 !important;
-}
-
-.comm_list h3 {
-  padding-top: 10px;
-}
 
 #main table th {
   line-height: 44px;
@@ -168,17 +103,6 @@ a.attendingConference {
 .profile_about-head {
   font-weight: bold;
   line-height: 44px;
-}
-
-.comm_controlsScrBtn {
-  background: none;
-  border: 0;
-  color: #30a3fb;
-  margin: 0 !important;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-  width: 65px;
 }
 
 .subscriptionSelect {

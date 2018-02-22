@@ -12,7 +12,7 @@
         <!--@elvariable id="hasError" type="java.lang.Boolean"-->
 
     <div class="l-Content">
-		<div class="l-Content__sidebar l-Content__sidebar--small">
+		<div class="l-Content__sidebar l-Content__sidebar--small c-SideMenu c-SideMenu--styled">
 			<xcolab:content articleId="${feedbackPage.menuArticleId}" />
             <script>
                 (function(href) {

@@ -10,7 +10,7 @@
     <div class="l-Content">
         <c:if test="${not empty menuArticleId}">
 
-            <div class="l-Content__sidebar l-Content__sidebar--small c-SideMenu">
+            <div class="l-Content__sidebar l-Content__sidebar--small c-SideMenu c-SideMenu--styled">
                 <xcolab:content articleId="${menuArticleId}" />
                 <script>
                     (function(href) {
