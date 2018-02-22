@@ -24,10 +24,10 @@
 @import "bootstrap/media";
 @import "bootstrap/list-group";
 @import "bootstrap/close";
-@import "bootstrap/modal";
 
 //Include these last to give them precedence
 @import "bootstrap/transitions";
+@import "bootstrap/modal"; //modal needs to be after transition
 @import "bootstrap/utilities";
 @import "bootstrap/print";
 
