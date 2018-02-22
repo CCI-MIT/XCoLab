@@ -7,16 +7,23 @@
 <!--@elvariable id="menuArticleId" type="java.lang.Long"-->
 <xcolab:layout title="${contentPage.formattedTitle}" description="${contentPage.metaDescription}">
 
-    <c:if test="${not empty menuArticleId}">
+    <div class="l-Content">
+        <c:if test="${not empty menuArticleId}">
 
-        <div class="about-left">
-            <xcolab:content articleId="${menuArticleId}" />
+            <div class="l-Content__sidebar l-Content__sidebar--small c-SideMenu">
+                <xcolab:content articleId="${menuArticleId}" />
+                <script>
+                    (function(href) {
+                        var pageIndex = href.lastIndexOf("/") + 1;
+                        var page = href.substring(pageIndex);
+                        jQuery("#" + page).addClass("c-SideMenu__link--active");
+                    })(window.location.href);
+                </script>
+            </div>
+        </c:if>
+        <div class="l-Content__main">
+            <xcolab:content articleId="${contentArticleId}" />
         </div>
-    </c:if>
-    <div class="${not empty menuArticleId ? 'about-right' : ''}">
-        <xcolab:content articleId="${contentArticleId}" />
     </div>
 </xcolab:layout>
-
-
 </jsp:root>
