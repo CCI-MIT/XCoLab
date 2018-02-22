@@ -13,21 +13,21 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 public class ThemeVariables {
-    final private boolean mitHeaderBarShow;
+    private final boolean mitHeaderBarShow;
     private String mitHeaderBarLinkText;
     private String mitHeaderBarLinkUrl;
-    final private boolean navbarShowIcons;
+    private final boolean navbarShowIcons;
 
-    final private boolean betaRibbonShow;
-    final private boolean showSearchMenuItem;
+    private final boolean betaRibbonShow;
+    private final boolean showSearchMenuItem;
 
-    final private Long footerArticleId;
-    final private boolean isHomePage;
-    final private List contestPages;
+    private final Long footerArticleId;
+    private final boolean isHomePage;
+    private final List contestPages;
 
-    final private boolean isResponsive;
+    private final boolean isResponsive;
 
-    final private Map<String, String> themePaths;
+    private final Map<String, String> themePaths;
 
     public ThemeVariables(HttpServletRequest request, I18nVariables i18NVariables) {
         this.mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();

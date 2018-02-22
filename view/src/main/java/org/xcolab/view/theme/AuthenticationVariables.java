@@ -9,41 +9,35 @@ import org.xcolab.view.auth.login.AuthenticationError;
 import javax.servlet.http.HttpServletRequest;
 
 public class AuthenticationVariables {
-    final private boolean isLoggedIn;
-    final private boolean isImpersonating;
-    private Member realMember;
-    private Member member;
-    private boolean isAdmin;
+    private final boolean isLoggedIn;
+    private final boolean isImpersonating;
+    private final Member realMember;
+    private final Member member;
+    private final boolean isAdmin;
 
-    final private boolean isGoogleSsoActive;
-    final private boolean isFacebookSsoActive;
-    final private String facebookId;
-    final private boolean showLoginPopup;
-    private AuthenticationError authError;
-    final private boolean showPasswordResetPopup;
-    final private boolean showSsoPopup;
+    private final boolean isGoogleSsoActive;
+    private final boolean isFacebookSsoActive;
+    private final String facebookId;
+    private final boolean showLoginPopup;
+    private final AuthenticationError authError;
+    private final boolean showPasswordResetPopup;
+    private final boolean showSsoPopup;
 
     public AuthenticationVariables(AuthenticationService authenticationService,
                           HttpServletRequest request) {
         this.isLoggedIn = authenticationService.isLoggedIn();
 
         this.isImpersonating = authenticationService.isImpersonating(request);
-        if (getIsImpersonating()) {
-            this.realMember = authenticationService.getRealMemberOrNull();
-        }
+        this.realMember = authenticationService.getRealMemberOrNull();
 
-        if (getIsLoggedIn()) {
-            this.member = authenticationService.getMemberOrThrow(request);
-            this.isAdmin = PermissionsClient.canAdminAll(getMember().getUserId());
-        }
+        this.member = authenticationService.getMemberOrNull(request);
+        this.isAdmin = PermissionsClient.canAdminAll(getMember());
+        // TODO: isAdmin, info change from getuserid
 
         boolean isSigningIn = readBooleanParameter(request, "isSigningIn");
         boolean isPasswordReminder = readBooleanParameter(request, "isPasswordReminder");
         boolean isSSOSigningIn = readBooleanParameter(request, "isSSOSigningIn");
-        if (isSigningIn) {
-            this.authError
-                    = AuthenticationError.fromName(request.getParameter("signinRegError"));
-        }
+        this.authError = AuthenticationError.fromName(request.getParameter("signinRegError"));
 
         this.isGoogleSsoActive = ConfigurationAttributeKey.GOOGLE_SSO_IS_ACTIVE.get();
         this.isFacebookSsoActive = ConfigurationAttributeKey.FACEBOOK_SSO_IS_ACTIVE.get();

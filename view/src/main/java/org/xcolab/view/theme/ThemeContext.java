@@ -12,29 +12,29 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ThemeContext {
 
-    final private I18nVariables i18NVariables;
-    final private AuthenticationVariables authenticationVariables;
-    final private CredentialVariables credentialVariables;
-    final private ThemeVariables themeVariables;
-    final private MetaVariables metaVariables;
-    final private SharedColabVariables sharedColabVariables;
-    final private MessageVariables messageVariables;
-    final private SocialMediaVariables socialMediaVariables;
+    private final I18nVariables i18NVariables;
+    private final AuthenticationVariables authenticationVariables;
+    private final CredentialVariables credentialVariables;
+    private final ThemeVariables themeVariables;
+    private final MetaVariables metaVariables;
+    private final SharedColabVariables sharedColabVariables;
+    private final MessageVariables messageVariables;
+    private final SocialMediaVariables socialMediaVariables;
 
-    final private ServerEnvironment serverEnvironment;
+    private final ServerEnvironment serverEnvironment;
     // public boolean isProductionEnvironment;
     // Now use: serverEnvironment.isProduction()
 
-    final private String colabName;
-    final private String colabLongName;
-    final private String colabShortName;
-    final private String colabUrl;
-    final private String colabUrlProduction;
-    final private String blogAdminUrl;
-    final private String adminEmail;
-    final private ContestType defaultContestType;
+    private final String colabName;
+    private final String colabLongName;
+    private final String colabShortName;
+    private final String colabUrl;
+    private final String colabUrlProduction;
+    private final String blogAdminUrl;
+    private final String adminEmail;
+    private final ContestType defaultContestType;
 
-    final private String requestUri;
+    private final String requestUri;
 
     public ThemeContext(AuthenticationService authenticationService,
                         HttpServletRequest request) {

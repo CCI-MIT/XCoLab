@@ -3,7 +3,7 @@ package org.xcolab.view.theme;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 
 public class SharedColabVariables {
-    final private boolean isSharedColab;
+    private final boolean isSharedColab;
 
     private String partnerColabName; // TODO: check if these are unsued and remove
     private String partnerColabImgsAndClasses;
