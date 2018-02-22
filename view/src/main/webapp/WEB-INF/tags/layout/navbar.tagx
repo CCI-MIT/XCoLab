@@ -58,10 +58,11 @@
                                         <spring:message code="homepage.menu.search" />
                                     </div>
                                 </a>
-                                <div class="dropdown-menu cb-dropdown-box text-nowrap">
-                                    <form action="/search" method="get">
-                                        <input class="form-control cb-form-control-inline cb-form-control-sm"
-                                               type="text" name="searchPhrase"/>
+                                <div class="dropdown-menu cb-dropdown-box">
+                                    <form action="/search" method="get" class="d-flex">
+                                        <label for="dropdown-searchPhrase" class="sr-only">Search term:</label>
+                                        <input type="text" name="searchPhrase" id="dropdown-searchPhrase"
+                                               class="form-control flex-fill cb-w-auto"/>
                                         <button type="submit" class="btn btn-primary ml-2">
                                             <spring:message code="homepage.search.button" />
                                         </button>

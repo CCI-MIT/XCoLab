@@ -37,6 +37,12 @@
   @extend .align-items-center;
 }
 
+//= Sizing utilities
+
+.cb-w-auto {
+  width: auto !important;
+}
+
 
 //= Other utilities
 .cb-no-wrap {
