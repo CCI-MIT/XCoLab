@@ -10,12 +10,7 @@ $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !defaul
 /* ABOUT ------------------------------------------------------------------------------------- */
 
 
-.how {
-  background: url(/images/about/how-top.jpg) no-repeat right;
-  width: 420px;
-  padding: 13px 290px 0 0;
-}
-
+//Specific classes for about pages
 .deciding {
   margin-top: 40px;
   margin-bottom: 20px
@@ -31,14 +26,6 @@ $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !defaul
 
 .breaking2 {
   padding: 30px 0 0 12px;
-}
-
-.apad {
-  padding: 10px 30px 0 30px;
-}
-
-.cpad {
-  padding-right: 30px;
 }
 
 .putting {
@@ -68,94 +55,6 @@ $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !defaul
   text-align: center;
   vertical-align: middle;
   border-radius: 12px;
-}
-
-.webview {
-  position: absolute;
-  top: 116px;
-  left: 254px;
-}
-
-.one {
-  width: 315px;
-  background: url(/images/about/contests-1-number.png) no-repeat;
-  position: relative;
-  z-index: 5;
-}
-
-.one h2 {
-  padding: 22px 0 0 40px;
-}
-
-.one-collab {
-  margin-top: 70px;
-  background: url(/images/about/contests-3-illustration.jpg) no-repeat left top;
-  width: 436px;
-  padding-left: 300px;
-}
-
-.one-butt {
-  background: $t-Color__primary__gray--light;
-  border: 1px solid $t-Color__primary;
-  height: 27px;
-  padding: 7px 12px 0;
-  display: inline-block;
-  margin-top: 6px;
-  border-radius: 5px;
-}
-
-.two {
-  width: 454px;
-  background: url(/images/about/contests-4-illustration.jpg) no-repeat right top;
-  padding: 0 260px 0 0;
-  margin: 56px 0 0 0;
-}
-
-.two .txt {
-  background: url(/images/about/contests-2-number.png) no-repeat;
-  padding: 0 0 0 55px;
-}
-
-.three {
-  width: 559px;
-  background: url(/images/about/getinvolved-row-04.png) no-repeat left top;
-  padding: 0 0 0 145px;
-  margin-top: 54px;
-  margin-left: 13px
-}
-
-.three .txt {
-  background: url(/images/about/contests-3-number.png) no-repeat;
-  padding: 0 0 0 55px;
-}
-
-.four {
-  width: 419px;
-  height: 204px;
-  background: url(/images/about/contests-5-webview.jpg) no-repeat top right;
-  padding: 14px 290px 0 0;
-  margin: 58px 29px 0 0;
-}
-
-.four .txt {
-  background: url(/images/about/contests-4-number.png) no-repeat;
-  padding: 0 0 0 55px;
-}
-
-.five {
-  width: 485px;
-  background: url(/images/about/contests-6-illustration.jpg) no-repeat;
-  padding: 0 0 0 212px;
-  margin: 46px 0 35px 0;
-}
-
-.five .txt {
-  background: url(/images/about/contests-5-number.png) no-repeat;
-  padding: 0 0 0 55px;
-}
-
-.one a, .two a, .three a, .four a, .five a, .six a {
-  font-weight: $t-Typography__fontWeight--bold;
 }
 
 .contribute {
@@ -310,5 +209,4 @@ $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight !defaul
       margin-left: 15px;
     }
   }
-
 }
