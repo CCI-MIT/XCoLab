@@ -13,25 +13,25 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 public class ThemeVariables {
-    public boolean mitHeaderBarShow;
-    public String mitHeaderBarLinkText;
-    public String mitHeaderBarLinkUrl;
-    public boolean navbarShowIcons;
+    private boolean mitHeaderBarShow;
+    private String mitHeaderBarLinkText;
+    private String mitHeaderBarLinkUrl;
+    private boolean navbarShowIcons;
 
-    public boolean betaRibbonShow;
-    public boolean showSearchMenuItem;
+    private boolean betaRibbonShow;
+    private boolean showSearchMenuItem;
 
-    public Long footerArticleId;
-    public boolean isHomePage;
-    public List contestPages;
+    private Long footerArticleId;
+    private boolean isHomePage;
+    private List contestPages;
 
-    public boolean isResponsive;
+    private boolean isResponsive;
 
-    public Map<String, String> themePaths;
+    private Map<String, String> themePaths;
 
     public ThemeVariables(HttpServletRequest request, I18nVariables i18NVariables) {
         this.mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
-        if (mitHeaderBarShow) {
+        if (isMitHeaderBarShow()) {
             this.mitHeaderBarLinkText =
                     ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.get();
             this.mitHeaderBarLinkUrl =
@@ -47,7 +47,7 @@ public class ThemeVariables {
         this.isHomePage = request.getRequestURI().equals("/");
 
         this.contestPages = ContestTypeClient.getActiveContestTypes().stream()
-                .map(contestType -> contestType.withLocale(i18NVariables.language))
+                .map(contestType -> contestType.withLocale(i18NVariables.getLanguage()))
                 .collect(Collectors.toList());
 
         this.isResponsive = PlatformAttributeKey.LAYOUT_IS_RESPONSIVE.get();
@@ -59,10 +59,54 @@ public class ThemeVariables {
         //TODO COLAB-2446: move cdn resolution to CdnUrlEncodingFilter
         final String themeImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_STATIC.get();
 
-        themePaths.put("_themeStylesheetPath", activeTheme.getStylesheetPath());
-        themePaths.put("_logoPath", themeImageDomain + activeTheme.getLogoPath());
-        themePaths.put("_logoPathSocial", themeImageDomain + activeTheme.getLogoPathSocial());
-        themePaths.put("_logoPathBig", themeImageDomain + activeTheme.getLogoPathBig());
-        themePaths.put("_logoPathSquare", themeImageDomain + activeTheme.getLogoPathSquare());
+        getThemePaths().put("_themeStylesheetPath", activeTheme.getStylesheetPath());
+        getThemePaths().put("_logoPath", themeImageDomain + activeTheme.getLogoPath());
+        getThemePaths().put("_logoPathSocial", themeImageDomain + activeTheme.getLogoPathSocial());
+        getThemePaths().put("_logoPathBig", themeImageDomain + activeTheme.getLogoPathBig());
+        getThemePaths().put("_logoPathSquare", themeImageDomain + activeTheme.getLogoPathSquare());
+    }
+
+    public boolean isMitHeaderBarShow() {
+        return mitHeaderBarShow;
+    }
+
+    public String getMitHeaderBarLinkText() {
+        return mitHeaderBarLinkText;
+    }
+
+    public String getMitHeaderBarLinkUrl() {
+        return mitHeaderBarLinkUrl;
+    }
+
+    public boolean isNavbarShowIcons() {
+        return navbarShowIcons;
+    }
+
+    public boolean isBetaRibbonShow() {
+        return betaRibbonShow;
+    }
+
+    public boolean isShowSearchMenuItem() {
+        return showSearchMenuItem;
+    }
+
+    public Long getFooterArticleId() {
+        return footerArticleId;
+    }
+
+    public boolean isHomePage() {
+        return isHomePage;
+    }
+
+    public List getContestPages() {
+        return contestPages;
+    }
+
+    public boolean isResponsive() {
+        return isResponsive;
+    }
+
+    public Map<String, String> getThemePaths() {
+        return themePaths;
     }
 }

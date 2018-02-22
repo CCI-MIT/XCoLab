@@ -9,32 +9,32 @@ import org.xcolab.view.auth.login.AuthenticationError;
 import javax.servlet.http.HttpServletRequest;
 
 public class AuthenticationVariables {
-    public boolean isLoggedIn;
-    public boolean isImpersonating;
-    public Member realMember;
-    public Member member;
-    public boolean isAdmin;
+    private boolean isLoggedIn;
+    private boolean isImpersonating;
+    private Member realMember;
+    private Member member;
+    private boolean isAdmin;
 
-    public boolean isGoogleSsoActive;
-    public boolean isFacebookSsoActive;
-    public String facebookId;
-    public boolean showLoginPopup;
-    public AuthenticationError authError;
-    public boolean showPasswordResetPopup;
-    public boolean showSsoPopup;
+    private boolean isGoogleSsoActive;
+    private boolean isFacebookSsoActive;
+    private String facebookId;
+    private boolean showLoginPopup;
+    private AuthenticationError authError;
+    private boolean showPasswordResetPopup;
+    private boolean showSsoPopup;
 
     public AuthenticationVariables(AuthenticationService authenticationService,
                           HttpServletRequest request) {
         this.isLoggedIn = authenticationService.isLoggedIn();
 
         this.isImpersonating = authenticationService.isImpersonating(request);
-        if (isImpersonating) {
+        if (isImpersonating()) {
             this.realMember = authenticationService.getRealMemberOrNull();
         }
 
-        if (isLoggedIn) {
+        if (isLoggedIn()) {
             this.member = authenticationService.getMemberOrThrow(request);
-            this.isAdmin = PermissionsClient.canAdminAll(member.getUserId());
+            this.isAdmin = PermissionsClient.canAdminAll(getMember().getUserId());
         }
 
         boolean isSigningIn = readBooleanParameter(request, "isSigningIn");
@@ -56,5 +56,53 @@ public class AuthenticationVariables {
 
     private boolean readBooleanParameter(HttpServletRequest request, String name) {
         return Boolean.parseBoolean(request.getParameter(name));
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public boolean isImpersonating() {
+        return isImpersonating;
+    }
+
+    public Member getRealMember() {
+        return realMember;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public boolean isGoogleSsoActive() {
+        return isGoogleSsoActive;
+    }
+
+    public boolean isFacebookSsoActive() {
+        return isFacebookSsoActive;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public boolean isShowLoginPopup() {
+        return showLoginPopup;
+    }
+
+    public AuthenticationError getAuthError() {
+        return authError;
+    }
+
+    public boolean isShowPasswordResetPopup() {
+        return showPasswordResetPopup;
+    }
+
+    public boolean isShowSsoPopup() {
+        return showSsoPopup;
     }
 }

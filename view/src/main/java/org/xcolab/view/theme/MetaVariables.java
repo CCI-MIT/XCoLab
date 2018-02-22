@@ -9,10 +9,10 @@ import org.xcolab.view.util.MetaKeys;
 import javax.servlet.http.HttpServletRequest;
 
 public class MetaVariables {
-    public String openGraphShareTitle;
-    public String openGraphShareDescription;
-    public String metaPageDescription;
-    public String metaPageKeywords;
+    private String openGraphShareTitle;
+    private String openGraphShareDescription;
+    private String metaPageDescription;
+    private String metaPageKeywords;
 
     public MetaVariables(HttpServletRequest request, I18nVariables i18NVariables) {
         this.openGraphShareTitle = ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get();
@@ -23,8 +23,24 @@ public class MetaVariables {
             this.metaPageDescription = HtmlUtil.cleanAll(metaDescriptionAttribute);
         } else {
             this.metaPageDescription = ConfigurationAttributeKey.META_PAGE_DESCRIPTION.get(
-                    i18NVariables.language);
+                    i18NVariables.getLanguage());
         }
         this.metaPageKeywords = ConfigurationAttributeKey.META_PAGE_KEYWORDS.get();
+    }
+
+    public String getOpenGraphShareTitle() {
+        return openGraphShareTitle;
+    }
+
+    public String getOpenGraphShareDescription() {
+        return openGraphShareDescription;
+    }
+
+    public String getMetaPageDescription() {
+        return metaPageDescription;
+    }
+
+    public String getMetaPageKeywords() {
+        return metaPageKeywords;
     }
 }

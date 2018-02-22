@@ -8,13 +8,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 public class SocialMediaVariables {
-    public String shareRequestUri;
-    public boolean showShareButtons;
+    private String shareRequestUri;
+    private boolean showShareButtons;
 
-    public List<SocialMediaEngine> shareableSocialMediaUrls; // TODO: Rename to shareableEngines
-    public List<SocialMediaEngine> followableSocialMediaUrls; // TODO: Rename to followableEngines
-    public List<SocialMediaEngine> socialMediaEngines; // TODO: Rename to allEngines
-    public String donateLink;
+    private List<SocialMediaEngine> shareableSocialMediaUrls; // TODO: Rename to shareableEngines
+    private List<SocialMediaEngine> followableSocialMediaUrls; // TODO: Rename to followableEngines
+    private List<SocialMediaEngine> socialMediaEngines; // TODO: Rename to allEngines
+    private String donateLink;
 
     public SocialMediaVariables(HttpServletRequest request) {
         this.shareRequestUri = SocialMediaEngine
@@ -26,5 +26,29 @@ public class SocialMediaVariables {
         this.socialMediaEngines = SocialMediaEngine.getAllSocialMediaEngines();
 
         this.donateLink = ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get();
+    }
+
+    public String getShareRequestUri() {
+        return shareRequestUri;
+    }
+
+    public boolean isShowShareButtons() {
+        return showShareButtons;
+    }
+
+    public List<SocialMediaEngine> getShareableSocialMediaUrls() {
+        return shareableSocialMediaUrls;
+    }
+
+    public List<SocialMediaEngine> getFollowableSocialMediaUrls() {
+        return followableSocialMediaUrls;
+    }
+
+    public List<SocialMediaEngine> getSocialMediaEngines() {
+        return socialMediaEngines;
+    }
+
+    public String getDonateLink() {
+        return donateLink;
     }
 }
