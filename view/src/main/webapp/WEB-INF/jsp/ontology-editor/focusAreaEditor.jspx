@@ -186,7 +186,7 @@
                     <li class="c-TabBar__tab--first" ><a href="/ontology-editor">Ontology Editor</a></li>
                     <li class="c-TabBar__tab active"><a href="#">Focus area editor</a></li>
                 </ul>
-                <div  id="innerContent" class="addpropbox" style="height: 774px;">
+                <div class="addpropbox" style="height: 774px;">
                     <div class="colFloatLef">
                         <h3>Focus areas</h3>
                         <div class="floatLeft" id="newFocusArea" ><a  class="btn btn-primary" href="#">New Focus Area</a></div><br/>

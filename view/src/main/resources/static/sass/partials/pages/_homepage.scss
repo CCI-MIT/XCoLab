@@ -1,8 +1,6 @@
 @import "../components/c-Button";
 
 $p-Homepage__homespot__background: url(/images/bg-noise.png) $t-Color__tan !default;
-$p-Homepage__homespot__background__background: url(/images/homespot/background.png) no-repeat right 0 center !default;
-$p-Homepage__homespot__background__backgroundSize: contain !default;
 
 $p-homepage__content__h2__fontSize: 20px !default;
 $p-homepage__content__h2__textColor: $t-Color__gray--dark-800 !default;
@@ -21,30 +19,39 @@ $p-homepage__join__backgroundColor: $t-Color__accent !default;
 $p-homepage__join__borderColor: none !default;
 $p-homepage__join__imageUrl: none !default;
 
-//TODO: legacy for climate colab
-.homespot {
-  background: $p-Homepage__homespot__background;
-  padding-bottom: 5px;
-  margin-bottom: 25px;
-}
-
+//TODO: remove legacy homespot for climate colab
+.homespot,
 .p-Homepage__homespot { //.homespot
   background: $p-Homepage__homespot__background;
   margin-bottom: 25px;
+  padding-bottom: 5px;
 }
 
-.p-Homepage__homespot__background { //.earth
-  background: $p-Homepage__homespot__background__background;
-  background-size: $p-Homepage__homespot__background__backgroundSize;
-  width: 100%;
-}
-
-//TODO: legacy for climate colab
-.earth {
-  background: url(/images/homespot/earth.png) no-repeat 500px top;
+%p-Homepage__homespot__background { //.earth
+  @extend .clearfix;
+  background-position: right 0 center;
+  background-repeat: no-repeat;
   background-size: contain;
   width: 100%;
-  min-height: 336px;
+}
+
+//TODO: remove legacy earth for climate colab
+.earth {
+  @extend %p-Homepage__homespot__background;
+  background-image: url(/images/homespot/background.png);
+}
+
+// Background can optionally start at various breakpoints
+@each $breakpoint in map-keys($grid-breakpoints) {
+  $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+  .p-Homepage__homespot__background#{$infix} {
+    @extend %p-Homepage__homespot__background;
+
+    @include media-breakpoint-up($breakpoint) {
+      background-image: url(/images/homespot/background.png);
+    }
+  }
 }
 
 .mitproject {
@@ -284,6 +291,7 @@ a.join {
 .home #content {
   padding: 0;
   width: 100%;
+  max-width: initial;
 }
 
 .home h2 {

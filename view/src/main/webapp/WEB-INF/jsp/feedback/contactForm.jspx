@@ -5,17 +5,25 @@
           xmlns:spring="http://www.springframework.org/tags">
 
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-	<xcolab:layout title="Contact">
+<xcolab:layout title="Contact">
         <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
 
         <!--@elvariable id="feedbackPage" type="org.xcolab.client.contents.pojo.ContentPage"-->
         <!--@elvariable id="hasError" type="java.lang.Boolean"-->
 
-		<div class="about-left">
+    <div class="l-Content">
+		<div class="l-Content__sidebar l-Content__sidebar--small c-SideMenu c-SideMenu--styled">
 			<xcolab:content articleId="${feedbackPage.menuArticleId}" />
+            <script>
+                (function(href) {
+                    var pageIndex = href.lastIndexOf("/") + 1;
+                    var page = href.substring(pageIndex);
+                    jQuery("#" + page).addClass("c-SideMenu__link--active");
+                })(window.location.href);
+            </script>
 		</div>
 
-		<div class="about-right">
+		<div class="l-Content__main">
             <xcolab:content articleId="${feedbackPage.contentArticleId}" />
 
 			<script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
@@ -76,6 +84,6 @@
 				</form:form>
 			</div>
 		</div>
-	</xcolab:layout>
-
+    </div>
+</xcolab:layout>
 </jsp:root>

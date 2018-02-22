@@ -7,7 +7,7 @@
     <jsp:directive.attribute name="showFacebookSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Whether to show the Facebook login button" />
     <jsp:directive.attribute name="showGoogleSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Whether to show the Google login button" />
 
-    <div class="dropdown-menu dropdown-menu-right cb-dropdown-box" style="width: 300px;">
+    <div class="dropdown-menu dropdown-menu-right cb-dropdown-box" style="min-width: 300px;">
         <div class="row">
             <div class="col-md-12">
                 <div class="d-flex justify-content-around">
