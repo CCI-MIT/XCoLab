@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ThemeContext {
 
     public I18n i18n;
-    public AuthenticationContext authenticationContext;
+    public AuthenticationVariables authenticationVariables;
     public Credentials credentials;
     public Theme theme;
     public Meta meta;
@@ -79,7 +79,7 @@ public class ThemeContext {
         }
     }
 
-    class AuthenticationContext {
+    class AuthenticationVariables {
         public boolean isLoggedIn;
         public boolean isImpersonating;
         public Member realMember;
@@ -94,7 +94,7 @@ public class ThemeContext {
         public boolean showPasswordResetPopup;
         public boolean showSsoPopup;
 
-        public AuthenticationContext(AuthenticationService authenticationService,
+        public AuthenticationVariables(AuthenticationService authenticationService,
                               HttpServletRequest request) {
             this.isLoggedIn = authenticationService.isLoggedIn();
 
@@ -181,6 +181,7 @@ public class ThemeContext {
             this.isResponsive = PlatformAttributeKey.LAYOUT_IS_RESPONSIVE.get();
 
             this.themePaths = new HashMap<>();
+            // TODO: just expose the activeTheme object, that is enough
             ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
 
             //TODO COLAB-2446: move cdn resolution to CdnUrlEncodingFilter
@@ -270,7 +271,7 @@ public class ThemeContext {
     private void initSubObjects(AuthenticationService authenticationService,
                                 HttpServletRequest request) {
         this.i18n = this.new I18n();
-        this.authenticationContext = this.new AuthenticationContext(authenticationService, request);
+        this.authenticationVariables = this.new AuthenticationVariables(authenticationService, request);
         this.credentials = this.new Credentials();
         this.theme = this.new Theme(request, this.i18n);
         this.meta = this.new Meta(request, this.i18n);
