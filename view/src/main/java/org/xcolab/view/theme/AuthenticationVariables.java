@@ -9,19 +9,19 @@ import org.xcolab.view.auth.login.AuthenticationError;
 import javax.servlet.http.HttpServletRequest;
 
 public class AuthenticationVariables {
-    private boolean isLoggedIn;
-    private boolean isImpersonating;
+    final private boolean isLoggedIn;
+    final private boolean isImpersonating;
     private Member realMember;
     private Member member;
     private boolean isAdmin;
 
-    private boolean isGoogleSsoActive;
-    private boolean isFacebookSsoActive;
-    private String facebookId;
-    private boolean showLoginPopup;
+    final private boolean isGoogleSsoActive;
+    final private boolean isFacebookSsoActive;
+    final private String facebookId;
+    final private boolean showLoginPopup;
     private AuthenticationError authError;
-    private boolean showPasswordResetPopup;
-    private boolean showSsoPopup;
+    final private boolean showPasswordResetPopup;
+    final private boolean showSsoPopup;
 
     public AuthenticationVariables(AuthenticationService authenticationService,
                           HttpServletRequest request) {

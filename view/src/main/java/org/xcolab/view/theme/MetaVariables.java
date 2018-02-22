@@ -9,10 +9,10 @@ import org.xcolab.view.util.MetaKeys;
 import javax.servlet.http.HttpServletRequest;
 
 public class MetaVariables {
-    private String openGraphShareTitle;
-    private String openGraphShareDescription;
-    private String metaPageDescription;
-    private String metaPageKeywords;
+    final private String openGraphShareTitle;
+    final private String openGraphShareDescription;
+    final private String metaPageDescription;
+    final private String metaPageKeywords;
 
     public MetaVariables(HttpServletRequest request, I18nVariables i18NVariables) {
         this.openGraphShareTitle = ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get();

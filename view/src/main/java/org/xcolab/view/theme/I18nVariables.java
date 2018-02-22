@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Locale;
 
 public class I18nVariables {
-    private String language;
-    private String locale;
-    private String defaultTimeZone;
+    final private String language;
+    final private String locale;
+    final private String defaultTimeZone;
 
-    private boolean isI18NActive;
-    private String currentLocale;
-    private List<LabelStringValue> languageSelectItems;
+    final private boolean isI18NActive;
+    final private String currentLocale;
+    final private List<LabelStringValue> languageSelectItems;
 
     public I18nVariables() {
         final Locale locale = LocaleContextHolder.getLocale();

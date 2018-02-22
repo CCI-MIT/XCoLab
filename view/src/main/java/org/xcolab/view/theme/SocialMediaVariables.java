@@ -8,13 +8,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 public class SocialMediaVariables {
-    private String shareRequestUri;
-    private boolean showShareButtons;
+    final private String shareRequestUri;
+    final private boolean showShareButtons;
 
-    private List<SocialMediaEngine> shareableSocialMediaUrls; // TODO: Rename to shareableEngines
-    private List<SocialMediaEngine> followableSocialMediaUrls; // TODO: Rename to followableEngines
-    private List<SocialMediaEngine> socialMediaEngines; // TODO: Rename to allEngines
-    private String donateLink;
+    final private List<SocialMediaEngine> shareableSocialMediaUrls; // TODO: Rename to shareableEngines
+    final private List<SocialMediaEngine> followableSocialMediaUrls; // TODO: Rename to followableEngines
+    final private List<SocialMediaEngine> socialMediaEngines; // TODO: Rename to allEngines
+    final private String donateLink;
 
     public SocialMediaVariables(HttpServletRequest request) {
         this.shareRequestUri = SocialMediaEngine

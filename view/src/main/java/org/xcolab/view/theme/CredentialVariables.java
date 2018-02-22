@@ -3,10 +3,10 @@ package org.xcolab.view.theme;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 
 public class CredentialVariables {
-    private String googleAnalyticsKey;
-    private String pingdomRumId;
-    private String typekitId;
-    private String typekitIdLocal;
+    final private String googleAnalyticsKey;
+    final private String pingdomRumId;
+    final private String typekitId;
+    final private String typekitIdLocal;
 
     public CredentialVariables() {
         this.googleAnalyticsKey = ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get();

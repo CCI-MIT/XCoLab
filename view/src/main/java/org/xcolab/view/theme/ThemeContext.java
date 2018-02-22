@@ -12,32 +12,32 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ThemeContext {
 
-    private I18nVariables i18NVariables;
-    private AuthenticationVariables authenticationVariables;
-    private CredentialVariables credentialVariables;
-    private ThemeVariables themeVariables;
-    private MetaVariables metaVariables;
-    private SharedColabVariables sharedColabVariables;
-    private MessageVariables messageVariables;
-    private SocialMediaVariables socialMediaVariables;
+    final private I18nVariables i18NVariables;
+    final private AuthenticationVariables authenticationVariables;
+    final private CredentialVariables credentialVariables;
+    final private ThemeVariables themeVariables;
+    final private MetaVariables metaVariables;
+    final private SharedColabVariables sharedColabVariables;
+    final private MessageVariables messageVariables;
+    final private SocialMediaVariables socialMediaVariables;
 
-    private ServerEnvironment serverEnvironment;
+    final private ServerEnvironment serverEnvironment;
     // public boolean isProductionEnvironment;
     // Now use: serverEnvironment.isProduction()
 
-    private String colabName;
-    private String colabLongName;
-    private String colabShortName;
-    private String colabUrl;
-    private String colabUrlProduction;
-    private String blogAdminUrl;
-    private String adminEmail;
-    private ContestType defaultContestType;
+    final private String colabName;
+    final private String colabLongName;
+    final private String colabShortName;
+    final private String colabUrl;
+    final private String colabUrlProduction;
+    final private String blogAdminUrl;
+    final private String adminEmail;
+    final private ContestType defaultContestType;
 
-    private String requestUri;
+    final private String requestUri;
 
-    private void initSubObjects(AuthenticationService authenticationService,
-                                HttpServletRequest request) {
+    public ThemeContext(AuthenticationService authenticationService,
+                        HttpServletRequest request) {
         this.i18NVariables = new I18nVariables();
         this.authenticationVariables = new AuthenticationVariables(authenticationService, request);
         this.credentialVariables = new CredentialVariables();
@@ -46,11 +46,6 @@ public class ThemeContext {
         this.sharedColabVariables = new SharedColabVariables();
         this.messageVariables = new MessageVariables(request);
         this.socialMediaVariables = new SocialMediaVariables(request);
-    }
-
-    public ThemeContext(AuthenticationService authenticationService,
-                        HttpServletRequest request) {
-        this.initSubObjects(authenticationService, request);
 
         this.serverEnvironment = PlatformAttributeKey.SERVER_ENVIRONMENT.get();
 

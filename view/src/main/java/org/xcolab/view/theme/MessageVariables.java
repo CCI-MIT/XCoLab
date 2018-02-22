@@ -8,10 +8,10 @@ import org.xcolab.view.util.entity.flash.InfoMessage;
 import javax.servlet.http.HttpServletRequest;
 
 public class MessageVariables {
-    private AlertMessage _alertMessage;
-    private AnalyticsAttribute _analyticsAttribute;
-    private ErrorMessage _errorMessage;
-    private InfoMessage _infoMessage;
+    final private AlertMessage _alertMessage;
+    final private AnalyticsAttribute _analyticsAttribute;
+    final  private ErrorMessage _errorMessage;
+    final private InfoMessage _infoMessage;
 
     public MessageVariables(HttpServletRequest request) {
         this._alertMessage = AlertMessage.extract(request);
