@@ -8,7 +8,7 @@
     <jsp:directive.attribute name="isResponsive" type="java.lang.Boolean" required="true"
                              rtexprvalue="true" description="Whether the list should expand for larger display sizes" />
 
-    <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper>>"-->
+    <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper>"-->
 
     <div class="list-group list-group-flush">
         <c:forEach items="${activities}" var="activity">

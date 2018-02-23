@@ -50,10 +50,6 @@ public class SocialActivityWrapper implements Serializable {
         return body;
     }
 
-    public boolean isToday() {
-        return daysBetween == 0;
-    }
-
     public boolean isYesterday() {
         return daysBetween == 1;
     }

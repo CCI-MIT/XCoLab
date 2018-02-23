@@ -89,9 +89,10 @@ public class FeedsController extends AbstractWidgetController<FeedsPreferences> 
         model.addAttribute("feedStyle", preferences.getFeedStyle());
         model.addAttribute("title", preferences.getTitle());
         model.addAttribute("seeMoreLinkShown", preferences.getSeeMoreLinkShown());
-        for (FeedTypeDataProvider ftpdp : dataProviderList) {
-            if (ftpdp.getFeedTypeName().equals(preferences.getFeedType().getDescription())) {
-                return ftpdp.populateModel(request, response, sortFilterPage, preferences, model);
+        for (FeedTypeDataProvider dataProvider : dataProviderList) {
+            if (dataProvider.getFeedType() == preferences.getFeedType()) {
+                dataProvider.populateModel(request, response, sortFilterPage, preferences, model);
+                return dataProvider.getViewName();
             }
         }
         return null;
