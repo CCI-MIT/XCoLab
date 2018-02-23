@@ -10,105 +10,90 @@ import java.util.Date;
 
 public class SocialActivityWrapper implements Serializable {
 
-    private static final String ICON_COMMENT_PATH = "/images/icons/activity/comment.png";
-    private static final String ICON_EDIT_PATH = "/images/icons/activity/edit.png";
-    private static final String ICON_THUMBS_UP_PATH = "/images/icons/activity/thumbs-up.png";
-    private static final String ICON_NEW_PROPOSAL_PATH = "/images/icons/activity/new-proposal.png";
-    private static final String ICON_NEW_USER_PATH = "/images/icons/activity/new-user.png";
-
     private static final long serialVersionUID = 1L;
-    private static final int MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
     private final ActivityEntry activity;
-    private final int daysBetween;
-    private final boolean indicateNewDate;
-    private final boolean odd;
-    private long daysAgo;
-    private String body;
+    private final String body;
 
-    public SocialActivityWrapper(ActivityEntry activity, int daysBetween, boolean indicateNewDate,
-            boolean odd, int maxLength, String actBody) {
+    public SocialActivityWrapper(ActivityEntry activity, String body) {
         this.activity = activity;
-
-        this.daysBetween = daysBetween;
-        this.indicateNewDate = indicateNewDate;
-
-        long createDay = activity.getCreateDate().getTime() / MILLISECONDS_PER_DAY;
-        long daysNow = new Date().getTime() / MILLISECONDS_PER_DAY;
-        daysAgo = daysNow - createDay;
-        body = actBody;
-        if (body != null) {
-            body = body.replaceAll("c.my_sites[^\\\"]*",
-                    "web/guest/member/-/member/userId/" + activity.getMemberId());
-        }
-
-        this.odd = odd;
+        this.body = body;
     }
-
 
     public String getBody() {
         return body;
-    }
-
-    public boolean isYesterday() {
-        return daysBetween == 1;
     }
 
     public Date getCreateDate() {
         return new Date(activity.getCreateDate().getTime());
     }
 
-    public boolean getIndicateNewDate() {
-        return indicateNewDate;
-    }
-
-    public long getDaysAgo() {
-        return daysAgo;
-    }
-
-    public void setDaysAgo(long daysAgo) {
-        this.daysAgo = daysAgo;
-    }
-
-    public String getActivityDateAgo() {
+    public String getRelativeDate() {
         return DurationFormatter.forRequestLocale().format(activity.getCreateDate());
     }
 
-    public boolean isOdd() {
-        return odd;
-    }
-
-    public String getIconPath() {
+    public Icon getIcon() {
         switch (activity.getActivityCategoryEnum()) {
             case MEMBER:
-                return ICON_NEW_USER_PATH;
+                return Icon.NEW_USER;
             case DISCUSSION:
-                return ICON_COMMENT_PATH;
+                return Icon.COMMENT;
             case CONTEST:
                 switch ((ContestActivityType) activity.getActivityTypeEnum()) {
                     case PROPOSAL_CREATED:
-                        return ICON_NEW_PROPOSAL_PATH;
+                        return Icon.NEW_PROPOSAL;
                     case COMMENT_ADDED:
-                        return ICON_COMMENT_PATH;
-                    default: return "";
+                        return Icon.COMMENT;
+                    default: throw new UnknownActivityTypeException(activity);
                 }
             case PROPOSAL:
                 switch ((ProposalActivityType) activity.getActivityTypeEnum()) {
                     case UPDATED:
                     case MEMBER_ADDED:
                     case MEMBER_REMOVED:
-                        return ICON_EDIT_PATH;
+                        return Icon.EDIT;
                     case VOTE_ADDED:
                     case VOTE_SWITCHED:
                     case VOTE_RETRACTED:
                     case SUPPORT_ADDED:
                     case SUPPORT_REMOVED:
-                        return ICON_THUMBS_UP_PATH;
+                        return Icon.THUMBS_UP;
                     case COMMENT_ADDED:
-                        return ICON_COMMENT_PATH;
-                    default: return "";
+                        return Icon.COMMENT;
+                    default: throw new UnknownActivityTypeException(activity);
                 }
-            default: return "";
+            default: throw new UnknownActivityTypeException(activity);
+        }
+    }
+
+    public enum Icon {
+        COMMENT("Comment", "/images/icons/activity/comment.png"),
+        EDIT("Edit", "/images/icons/activity/edit.png"),
+        THUMBS_UP("Thumbs up", "/images/icons/activity/thumbs-up.png"),
+        NEW_PROPOSAL("New proposal", "/images/icons/activity/new-proposal.png"),
+        NEW_USER("New member", "/images/icons/activity/new-user.png");
+
+        private final String altText;
+        private final String path;
+
+        Icon(String altText, String path) {
+            this.altText = altText;
+            this.path = path;
+        }
+
+        public String getAltText() {
+            return altText;
+        }
+
+        public String getPath() {
+            return path;
+        }
+    }
+
+    public static class UnknownActivityTypeException extends RuntimeException {
+        public UnknownActivityTypeException(ActivityEntry activity) {
+            super("Unknown activity type: " + activity.getActivityCategory() + "."
+                    + activity.getActivityType());
         }
     }
 }
