@@ -19,12 +19,32 @@ $p-homepage__join__backgroundColor: $t-Color__accent !default;
 $p-homepage__join__borderColor: none !default;
 $p-homepage__join__imageUrl: none !default;
 
+.p-Homepage {
+
+  // Reset the container's spacing so the background can span the whole page's width
+  #content {
+    padding: 0;
+    width: 100%;
+    max-width: initial;
+  }
+
+  h1 {
+    font-size: 2.1875rem;
+  }
+
+  h2 span {
+    font-size: 1rem;
+    margin-left: .5rem;
+  }
+}
+
 //TODO: remove legacy homespot for climate colab
 .homespot,
 .p-Homepage__homespot { //.homespot
+  padding: 1rem 0;
+  margin-bottom: 1.5rem;
+
   background: $p-Homepage__homespot__background;
-  margin-bottom: 25px;
-  padding-bottom: 5px;
 }
 
 %p-Homepage__homespot__background { //.earth
@@ -64,22 +84,8 @@ $p-homepage__join__imageUrl: none !default;
   float: left;
   width: 530px;
   padding-left: 10px;
-  color: $t-Color__text--dark;
   position: relative;
   font-size: 16px;
-}
-
-.social {
-  font-size: 14px;
-  width: 150px;
-  position: absolute;
-  right: -9px;
-  top: 2px;
-}
-
-.homespot-left h1 {
-  font-size: 35px;
-  margin: 20px 0 10px 0;
 }
 
 //TODO COLAB-2561: remove once replaced in web content
@@ -273,10 +279,6 @@ a.join {
 
 /* </ Conference Countdown Flipclock>*/
 
-.landingpage-links {
-  float: right;
-}
-
 /* columns ------------- */
 .home-left {
   float: left;
@@ -286,24 +288,4 @@ a.join {
 .home-right {
   float: left;
   width: 464px;
-}
-
-.home #content {
-  padding: 0;
-  width: 100%;
-  max-width: initial;
-}
-
-.home h2 {
-  font-size: $p-homepage__content__h2__fontSize;
-  color: $p-homepage__content__h2__textColor;
-  margin-bottom: 18px;
-}
-
-.home h2.flt {
-}
-
-.home h2 span {
-  font-size: 15px;
-  padding-left: 5px;
 }
