@@ -13,6 +13,7 @@ import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.util.pagination.SortFilterPage;
+import org.xcolab.view.widgets.feeds.FeedType;
 import org.xcolab.view.widgets.feeds.FeedTypeDataProvider;
 import org.xcolab.view.widgets.feeds.FeedsPreferences;
 import org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper;
@@ -29,11 +30,15 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
+    private final ActivityEntryHelper activityEntryHelper;
+
     @Autowired
-    private ActivityEntryHelper activityEntryHelper;
+    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper) {
+        this.activityEntryHelper = activityEntryHelper;
+    }
 
     @Override
-    public String populateModel(HttpServletRequest request, HttpServletResponse response,
+    public void populateModel(HttpServletRequest request, HttpServletResponse response,
             SortFilterPage sortFilterPage, FeedsPreferences feedsPreferences, Model model) {
 
         Map<String, String[]> parameters = request.getParameterMap();
@@ -128,13 +133,16 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
                     ((pageSize * (sortFilterPage.getPage() + 1) >= ActivityUtil
                             .getActivitiesCount(filterUserId))));
         }
+    }
 
+    @Override
+    public String getViewName() {
         return "feedswidget/activities";
     }
 
     @Override
-    public String getFeedTypeName() {
-        return "Activities";
+    public FeedType getFeedType() {
+        return FeedType.ACTIVITIES;
     }
 
     private static int getDaysBetween(Date d1, Date d2) {
