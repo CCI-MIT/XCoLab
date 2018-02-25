@@ -12,6 +12,7 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.time.DurationFormatter;
 
@@ -217,6 +218,10 @@ public class ContestPhase extends AbstractContestPhase {
         Date now = new Date();
         final Timestamp phaseStartDate = this.getPhaseStartDate();
         return phaseStartDate != null && phaseStartDate.before(now);
+    }
+
+    public ContestPhasePromoteType getContestPhaseAutopromoteEnum() {
+        return ContestPhasePromoteType.getPromoteType(getContestPhaseAutopromote());
     }
 
     public Boolean getProposalVisibility(long proposalId) {

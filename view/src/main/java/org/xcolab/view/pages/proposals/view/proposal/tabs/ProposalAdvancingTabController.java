@@ -149,8 +149,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             @RequestParam(defaultValue = "false") boolean isForcePromotion,
             @RequestParam(defaultValue = "false") boolean isFreeze,
             @RequestParam(defaultValue = "false") boolean isUnfreeze,
-            @Valid ProposalAdvancingBean proposalAdvancingBean, BindingResult result)
-            throws IOException {
+            @Valid ProposalAdvancingBean proposalAdvancingBean, BindingResult result) {
 
         Proposal proposal = proposalContext.getProposal();
         final Contest contest = proposalContext.getContest();
