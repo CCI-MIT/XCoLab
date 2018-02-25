@@ -5,6 +5,7 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="isFrozen" type="java.lang.Boolean"-->
+    <!--@elvariable id="isFinalistPhase" type="java.lang.Boolean"-->
     <!--@elvariable id="hasAlreadyBeenPromoted" type="java.lang.Boolean"-->
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Advancing">
@@ -56,14 +57,14 @@
                                         <form:textarea id="advanceComment" cssClass="c-Comment__box" path="advanceComment" style="width:100%;"/>
                                         <div id="comment-headers">
                                             <c:forEach var="template" items="${emailTemplates}">
-                                                <div class="${template.key}">
+                                                <div data-template-name="${template.key}">
                                                     ${template.value.header}
                                                 </div>
                                             </c:forEach>
                                         </div>
                                         <div id="comment-footers">
                                             <c:forEach var="template" items="${emailTemplates}">
-                                                <div class="${template.key}">
+                                                <div data-template-name="${template.key}">
                                                     ${template.value.footer}
                                                 </div>
                                             </c:forEach>
@@ -159,6 +160,8 @@
         </div>
 
         <script>
+            var isFinalistPhase = '${isFinalistPhase}' == 'true';
+
             jQuery(function() {
                 jQuery("#submit-forcePromotion-link").click(function () {
                     disableDirtyCheck();
@@ -212,14 +215,18 @@
                 jQuery("#comment-headers").find("> div").hide();
 
                 var action = $("#advanceDecision").val();
-                var classToBeShown = "";
+                var templateToBeShown = "";
                 if (action == "1") {
-                    classToBeShown = "ADVANCING_DO_NOT_ADVANCE";
+                    templateToBeShown = "ADVANCING_DO_NOT_ADVANCE";
                 } else if (action == "2") {
-                    classToBeShown = "ADVANCING_ADVANCE_TO_SEMIFINALIST";
+                    if (isFinalistPhase) {
+                        templateToBeShown = "ADVANCING_ADVANCE_TO_FINALIST";
+                    } else {
+                        templateToBeShown = "ADVANCING_ADVANCE_TO_SEMIFINALIST";
+                    }
                 }
-                if (classToBeShown != "") {
-                    jQuery("#comment-headers ."+classToBeShown).add("#comment-footers ."+classToBeShown).show();
+                if (templateToBeShown != "") {
+                    jQuery("#comment-headers").find("[data-template-name='"+templateToBeShown+"']").add("#comment-footers ."+templateToBeShown).show();
                 }
             }
 

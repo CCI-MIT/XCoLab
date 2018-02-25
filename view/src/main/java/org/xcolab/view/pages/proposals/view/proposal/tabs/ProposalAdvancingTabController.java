@@ -23,6 +23,7 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.judging.JudgingUtil;
@@ -40,6 +41,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,18 +63,30 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         }
 
         Proposal proposal = proposalContext.getProposal();
+        Contest contest = proposalContext.getContest();
         ContestPhase contestPhase = proposalContext.getContestPhase();
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
-        ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
+        ProposalAdvancingBean advancingBean = new ProposalAdvancingBean(proposalWrapper);
+
+        List<ContestPhase> contestPhases = contest.getVisiblePhases();
+        final Predicate<ContestPhase> isAfterCurrentPhase =
+                phase -> phase.getPhaseStartDateInstant()
+                        .isAfter(contestPhase.getPhaseStartDateInstant());
+        final Predicate<ContestPhase> isJudgedPhase =
+                phase -> phase.getContestPhaseTypeObject().getDefaultPromotionTypeEnum()
+                        == ContestPhasePromoteType.PROMOTE_JUDGED;
+        final boolean isFinalistPhase = contestPhases.stream()
+                        .filter(isAfterCurrentPhase)
+                        .noneMatch(isJudgedPhase);
 
         if (!model.containsAttribute("proposalAdvancingBean")) {
-            model.addAttribute("proposalAdvancingBean", bean);
+            model.addAttribute("proposalAdvancingBean", advancingBean);
         }
 
         model.addAttribute("discussionId", proposal.getJudgeDiscussionId());
-        model.addAttribute("emailTemplates", bean.getEmailTemplateBean().getEmailTemplates());
+        model.addAttribute("emailTemplates", advancingBean.getEmailTemplateBean().getEmailTemplates());
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
-
+        model.addAttribute("isFinalistPhase", isFinalistPhase);
 
         List<ProposalRating> fellowRatingsUnWrapped =
                 ProposalJudgeRatingClientUtil.getFellowRatingsForProposal(

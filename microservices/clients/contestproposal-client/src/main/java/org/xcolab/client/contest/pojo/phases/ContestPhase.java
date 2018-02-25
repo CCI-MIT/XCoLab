@@ -16,6 +16,7 @@ import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.time.DurationFormatter;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -139,8 +140,16 @@ public class ContestPhase extends AbstractContestPhase {
         return this.getPhaseStartDate();
     }
 
+    public Instant getPhaseStartDateInstant() {
+        return this.getPhaseStartDate().toInstant();
+    }
+
     public Date getPhaseEndDateDt() {
         return this.getPhaseEndDate();
+    }
+
+    public Instant getPhaseEndDateInstant() {
+        return this.getPhaseEndDate() != null ? this.getPhaseEndDate().toInstant() : null;
     }
 
     public Date getPhaseReferenceDate() {
