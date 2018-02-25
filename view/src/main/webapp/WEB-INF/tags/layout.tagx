@@ -192,7 +192,7 @@
         <div class="c-TitleBar__container">
             <div class="c-TitleBar c-TitleBar--warning c-TitleBar--fixed">
                 <div class="cb-container-fixed c-TitleBar__content">
-                    <div class="c-TitleBar__element pl-0">
+                    <div class="c-TitleBar__element pl-0" style="overflow: hidden">
                         You are currently on a <b>test server</b>. Content on this server is for testing only and may be deleted at any time.
                     </div>
 
