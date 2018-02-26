@@ -49,10 +49,8 @@ $p-homepage__join__imageUrl: none !default;
 
 %p-Homepage__homespot__background { //.earth
   @extend .clearfix;
-  background-position: right 0 center;
+  background-position: right top;
   background-repeat: no-repeat;
-  background-size: contain;
-  width: 100%;
 }
 
 // Background can optionally start at various breakpoints
