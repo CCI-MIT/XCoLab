@@ -55,12 +55,6 @@ $p-homepage__join__imageUrl: none !default;
   width: 100%;
 }
 
-//TODO: remove legacy earth for climate colab
-.earth {
-  @extend %p-Homepage__homespot__background;
-  background-image: url(/images/homespot/background.png);
-}
-
 // Background can optionally start at various breakpoints
 @each $breakpoint in map-keys($grid-breakpoints) {
   $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
