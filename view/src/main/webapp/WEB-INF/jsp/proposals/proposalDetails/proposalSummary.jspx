@@ -88,12 +88,12 @@
                                 data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
-                                    <collab:image height="20" src="/images/subscribe.png" cssClass="cb-btn__image"/>
-                                    <span class="cb-btn__image_text"><spring:message code="contests.details.subscribe"/></span>
+                                    <collab:image height="20" src="/images/subscribe.png" cssClass="cb-btn-image"/>
+                                    <span class="cb-btn-image-text"><spring:message code="contests.details.subscribe"/></span>
                                 </c:when>
                                 <c:otherwise>
-                                    <collab:image height="20" src="/images/unsubscribe.png" cssClass="cb-btn__image"/>
-                                    <span class="cb-btn__image_text"><spring:message code="contests.details.unsubscribe"/></span>
+                                    <collab:image height="20" src="/images/unsubscribe.png" cssClass="cb-btn-image"/>
+                                    <span class="cb-btn-image-text"><spring:message code="contests.details.unsubscribe"/></span>
                                 </c:otherwise>
                             </c:choose>
                         </button>
@@ -101,8 +101,8 @@
                 </c:if>
             </div>
             <button type="button" class="btn btn-link btn-sm mt-3" onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
-                <collab:image src="/images/icon_new-message.png" width="31" height="29" cssClass="cb-btn__image" />
-                <span class="cb-btn__image_text"><collab:message code="contests.proposal.share.messaging" /></span>
+                <collab:image src="/images/icon_new-message.png" width="31" height="29" cssClass="cb-btn-image" />
+                <span class="cb-btn-image-text"><collab:message code="contests.proposal.share.messaging" /></span>
             </button>
             <c:if test="${proposalsPermissions.canReportProposal}">
                 <div>
