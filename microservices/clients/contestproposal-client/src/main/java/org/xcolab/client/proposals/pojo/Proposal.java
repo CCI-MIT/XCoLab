@@ -910,8 +910,7 @@ public class Proposal extends AbstractProposal {
                 List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                         .getProposalRatingsByProposalUserContestPhase(this.getProposalId(),
                                 contestPhase.getContestPhasePK(),userId);
-                ProposalRatings wrapper = new ProposalRatings(userId,
-                        proposalRatings);
+                ProposalRatings wrapper = new ProposalRatings(userId, proposalRatings);
                 if (!wrapper.isReviewComplete()) {
                     return false;
                 }
