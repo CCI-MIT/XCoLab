@@ -1,4 +1,4 @@
-@import "custom_variables";
+@import "custom-variables";
 
 @import "bootstrap/functions";
 @import "bootstrap/variables";
@@ -11,20 +11,23 @@
 @import "bootstrap/tables";
 @import "bootstrap/forms";
 @import "bootstrap/buttons";
-@import "bootstrap/transitions";
 @import "bootstrap/dropdown";
 
 @import "bootstrap/input-group";
 @import "bootstrap/nav";
 @import "bootstrap/navbar";
+@import "bootstrap/card";
 @import "bootstrap/breadcrumb";
 @import "bootstrap/pagination";
 @import "bootstrap/badge";
 @import "bootstrap/alert";
 @import "bootstrap/media";
+@import "bootstrap/list-group";
 @import "bootstrap/close";
-@import "bootstrap/modal";
 
+//Include these last to give them precedence
+@import "bootstrap/transitions";
+@import "bootstrap/modal"; //modal needs to be after transition
 @import "bootstrap/utilities";
 @import "bootstrap/print";
 
@@ -34,6 +37,9 @@
 @import "custom/button";
 @import "custom/modal";
 @import "custom/form";
+@import "custom/list-group";
 @import "custom/navbar";
 @import "custom/dropdown";
 @import "custom/tables";
+@import "custom/type";
+@import "custom/utilities";

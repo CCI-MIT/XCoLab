@@ -2,6 +2,7 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:discussions="urn:jsptld:/WEB-INF/tlds/xcolab-discussions.tld"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
@@ -25,7 +26,7 @@
 
                         <div class="role-indicator">
                             <div style="width: 16px">
-                                <img src="${_themeImageFolder}/${role.imageUrl}.png" width="16" height="16" />
+                                <collab:image src="/images/${role.imageUrl}.png" width="16" height="16" />
                             </div>
                             ${role.printName}
                         </div>

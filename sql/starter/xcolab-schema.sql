@@ -434,6 +434,7 @@ CREATE TABLE IF NOT EXISTS `sharedcolab_SharedContest` (
   `colabOrigin` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS `filtering_FilteredEntry` (
   `filteredEntryId` bigint(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `source` bigint(10) DEFAULT NULL,

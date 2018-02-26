@@ -32,7 +32,7 @@
                             <form:errors path="email" class="c-Alert c-Alert__error" />
                         </div>
                         <form:input path="email" placeholder="Please enter your email address"
-                                    cssClass="form-control bs-form-control-inline bs-form-control--md" />
+                                    cssClass="form-control cb-form-control-inline cb-form-control-md" />
                     </c:when>
                     <c:otherwise>
                         <form:hidden path="email" />

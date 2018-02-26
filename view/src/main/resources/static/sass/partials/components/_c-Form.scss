@@ -67,7 +67,7 @@ div.selectbox-wrapper {
   text-align: left;
   overflow: auto;
   background-color: white;
-  border: 1px solid $t-Color__grey--light;
+  border: 1px solid $t-Color__gray--medium-500;
 }
 
 //TODO: unused in source code - verify if used elsewhere
@@ -79,13 +79,13 @@ div.selectbox-wrapper ul {
 //TODO: unused in source code - verify if used elsewhere
 #main div.selectbox-wrapper ul li.selected,
 div.selectbox-wrapper ul li.selected {
-  background-color: $t-Color__primary__grey--light;
+  background-color: $t-Color__primary__gray--light;
 }
 
 //TODO: unused in source code - verify if used elsewhere
 #main div.selectbox-wrapper ul li.current,
 div.selectbox-wrapper ul li.current {
-  background-color: $t-Color__primary__grey;
+  background-color: $t-Color__primary__gray;
 }
 
 //TODO: unused in source code - verify if used elsewhere

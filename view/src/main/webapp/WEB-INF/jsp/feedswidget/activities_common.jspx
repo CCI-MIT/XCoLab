@@ -1,42 +1,29 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:spring="http://www.springframework.org/tags">
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
     <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper>"-->
 
     <div class="alignright ${_isAdmin ? '' : 'hidden'}">
-        <button class="btn btn-admin btn-sm float-right" rel="nofollow" href="/activities/downloadCsv">
+        <button class="btn cb-btn-admin btn-sm float-right" rel="nofollow" href="/activities/downloadCsv">
             Download activities
         </button>
     </div>
     <div class="clearfix"><!--  --></div>
     <h2>${title}</h2>
     <c:if test="${_isAdmin}">
-        <a href="/widgets/feeds/preferences" class="btn btn-admin btn-sm float-right">Edit preferences</a><br/>
+        <a href="/widgets/feeds/preferences" class="btn cb-btn-admin btn-sm float-right">Edit preferences</a><br/>
     </c:if>
     <c:choose>
         <c:when test="${empty activities  }">
             <spring:message code="activities.page.nothing.found"/>
         </c:when>
         <c:when test="${feedStyle == 'FULL' }">
-            <div class="c-Table fullWidth">
-                <c:forEach items="${activities}" var="activity">
-                    <div id="activitiesTable">
-                        <div class="c-TableList__row ${activity.odd ? 'odd' : '' }">
-                            <div class="c-TableList__item p-Homepage__activitybox__${activity.imageClassName}"><!--  --></div>
-                            <div class="c-TableList__item" style="width: 750px; margin-top: 20px;">
-                                <c:out value="${activity.body}" escapeXml="false"/>
-                            </div>
-                            <h5 class="c-TableList__item right"
-                                style="margin-top: 20px; margin-right:10px;">
-                                ${activity.activityDateAgo}
-                            </h5>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
+            <xcolab:activityList activities="${activities}" isResponsive="true"/>
 
             <div class="paginatorControls">
                 <c:choose>
@@ -79,19 +66,7 @@
             <div class="clearfix"><!--  --></div>
         </c:when>
         <c:otherwise>
-            <div class="c-TableList">
-                <c:forEach items="${activities }" var="activity">
-                    <div class="c-TableList__row ${activity.odd ? 'odd' : ''}">
-                        <div class="c-TableList__item p-Homepage__activitybox__${activity.imageClassName}"><!--  --></div>
-                        <div class="c-TableList__item">
-                            <h5>${activity.activityDateAgo}</h5>
-                            <div style="width: 410px;">
-                                <c:out value="${activity.body}" escapeXml="false"/>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
+            <xcolab:activityList activities="${activities}" isResponsive="false"/>
         </c:otherwise>
     </c:choose>
 

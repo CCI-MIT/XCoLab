@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:spring="http://www.springframework.org/tags">
@@ -29,7 +30,7 @@
 
 
     <div class="messagingContainer">
-        <xcolab:script src="${_libJsFolder}/jquery.validate.pack.js"/>
+        <xcolab:script src="/js/lib/jquery.validate.pack.js"/>
         <div class="main_long">
             <div class="left_col">
                 <div id="message-info">
@@ -38,12 +39,12 @@
                         <c:choose>
                             <c:when test="${messagingBean.numberOfMessagesLeft >= 1}">
                                 <a href="#" data-toggle="modal" data-target="#sendMessageModal">
-                                    <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> <spring:message code="message.messages.compose"/>
+                                    <collab:image src="/images/icon_new-message.png" width="31" height="29" /> <spring:message code="message.messages.compose"/>
                                 </a>
                             </c:when>
                             <c:otherwise>
                                 <a style="color: grey;">
-                                    <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> <spring:message code="message.messages.limitexceeded"/>
+                                    <collab:image src="/images/icon_new-message.png" width="31" height="29" /> <spring:message code="message.messages.limitexceeded"/>
                                 </a>
                             </c:otherwise>
                         </c:choose>

@@ -1,40 +1,64 @@
 @import "bootstrap/variables";
+@import "bootstrap/mixins/buttons";
 
-.btn-image {
-  height: 2rem;
+//= Modified base rules
+.btn:not(.btn-block) + .btn:not(.btn-block) {
+  margin-left: $spacer * .5;
+}
+
+
+//= New button variants
+.cb-btn-admin {
+  @include button-variant($t-Color__primary, $t-Color__accent);
+}
+
+.cb-btn-outline-admin {
+  @extend .btn-outline-primary;
+  &, &:hover {
+    border-color: $t-Color__accent;
+  }
+}
+
+//= New button sizes
+.cb-btn-xs {
+  padding: 0.1875rem 0.4rem;
+  line-height: 1.25;
+  font-weight: $t-Typography__fontWeight;
+  @if $t-Border__rounded {
+    border-radius: $t-Border__radius--small;
+  }
+}
+
+.cb-btn-xl {
+  padding: 1rem 1.5rem;
+  font-weight: $t-Typography__fontWeight--bold;
+  @if $t-Border__rounded {
+    border-radius: $t-Border__radius--large;
+  }
+}
+
+//= Elements within btn block
+.cb-btn__image_text {
+  vertical-align: middle;
+}
+
+.cb-btn__image {
   margin-top: -$btn-padding-y * .5;
-  margin-right: $btn-padding-x * .25;
+  margin-right: $btn-padding-x * .5;
   margin-bottom: -$btn-padding-y * .5;
   margin-left: -$btn-padding-x * .5;
 
   .btn-sm & {
-    height: 1.5rem;
     margin-top: -$btn-padding-y-sm * .5;
-    margin-right: $btn-padding-x-sm* .25;
+    margin-right: $btn-padding-x-sm* .5;
     margin-bottom: -$btn-padding-y-sm * .5;
     margin-left: -$btn-padding-x-sm * .5;
   }
 
   .btn-lg & {
-    height: 2.5rem;
     margin-top: -$btn-padding-y-lg * .5;
-    margin-right: $btn-padding-x-lg* .25;
+    margin-right: $btn-padding-x-lg* .5;
     margin-bottom: -$btn-padding-y-lg * .5;
     margin-left: -$btn-padding-x-lg * .5;
   }
-}
-
-.btn-image-text {
-  vertical-align: middle;
-}
-
-.btn:not(.btn-block) + .btn:not(.btn-block) {
-  margin-left: $spacer * .5;
-}
-
-.btn-xs {
-  padding: 0.1875rem 0.4rem;
-  line-height: 1.25;
-  font-weight: $t-Typography__fontWeight;
-  border-radius: $btn-border-radius-sm;
 }

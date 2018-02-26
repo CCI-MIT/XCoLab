@@ -1,11 +1,9 @@
 @import "../components/c-Button";
 
-$p-Homepage__homespot__background: url(/images/bg-noise.png) $t-Color__grey--lightest !default;
-$p-Homepage__homespot__background__background: url(/images/homespot/background.png) no-repeat right 0 center !default;
-$p-Homepage__homespot__background__backgroundSize: contain !default;
+$p-Homepage__homespot__background: url(/images/bg-noise.png) $t-Color__tan !default;
 
 $p-homepage__content__h2__fontSize: 20px !default;
-$p-homepage__content__h2__textColor: $t-Color__grey--darkest !default;
+$p-homepage__content__h2__textColor: $t-Color__gray--dark-800 !default;
 
 $p-homepage__learn__backgroundColor: $t-Color__primary !default;
 $p-homepage__learn__backgroundColor--hover: null !default;
@@ -21,35 +19,45 @@ $p-homepage__join__backgroundColor: $t-Color__accent !default;
 $p-homepage__join__borderColor: none !default;
 $p-homepage__join__imageUrl: none !default;
 
-//TODO: legacy for climate colab
-.homespot {
-  background: $p-Homepage__homespot__background;
-  padding-bottom: 5px;
-  margin-bottom: 25px;
-}
-
+//TODO: remove legacy homespot for climate colab
+.homespot,
 .p-Homepage__homespot { //.homespot
   background: $p-Homepage__homespot__background;
   margin-bottom: 25px;
+  padding-bottom: 5px;
 }
 
-.p-Homepage__homespot__background { //.earth
-  background: $p-Homepage__homespot__background__background;
-  background-size: $p-Homepage__homespot__background__backgroundSize;
-  width: 100%;
-}
-
-//TODO: deprecated; remove from homespot on climatecolab.org and then remove here
-.topshade {
-  display: none;
-}
-
-//TODO: legacy for climate colab
-.earth {
-  background: url(/images/homespot/earth.png) no-repeat 500px top;
+%p-Homepage__homespot__background { //.earth
+  @extend .clearfix;
+  background-position: right 0 center;
+  background-repeat: no-repeat;
   background-size: contain;
   width: 100%;
-  min-height: 336px;
+}
+
+//TODO: remove legacy earth for climate colab
+.earth {
+  @extend %p-Homepage__homespot__background;
+  background-image: url(/images/homespot/background.png);
+}
+
+// Background can optionally start at various breakpoints
+@each $breakpoint in map-keys($grid-breakpoints) {
+  $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+  .p-Homepage__homespot__background#{$infix} {
+    @extend %p-Homepage__homespot__background;
+
+    @include media-breakpoint-up($breakpoint) {
+      background-image: url(/images/homespot/background.png);
+    }
+  }
+}
+
+.mitproject {
+  background: url(/images/logos/mit-themed.png) no-repeat;
+  padding-left: 90px;
+  margin-bottom: 5px;
 }
 
 .homespot-left {
@@ -74,6 +82,7 @@ $p-homepage__join__imageUrl: none !default;
   margin: 20px 0 10px 0;
 }
 
+//TODO COLAB-2561: remove once replaced in web content
 a.learn {
   @include theme-button($p-homepage__learn__backgroundColor, $p-homepage__learn__borderColor,
           $p-homepage__learn__imageUrl, $p-homepage__learn__backgroundColor--hover);
@@ -81,26 +90,29 @@ a.learn {
   margin-right: 15px;
 }
 
+//TODO COLAB-2561: remove once replaced in web content
 a.get {
   @include theme-button($p-homepage__get__backgroundColor, $p-homepage__get__borderColor, $p-homepage__get__imageUrl);
   text-transform: uppercase;
   margin-right: 15px;
 }
 
+//TODO COLAB-2561: remove once replaced in web content
 a.join {
   @include theme-button($p-homepage__join__backgroundColor, $p-homepage__join__borderColor, $p-homepage__join__imageUrl);
   text-transform: uppercase;
   margin-right: 15px;
 }
 
+//TODO COLAB-2673: Remove once newsboxes in content articles are replaced
 .newsbox {
-  background: url(/images/bg-noise.png) $t-Color__grey--lightest;
+  background: url(/images/bg-noise.png) $t-Color__tan;
   width: 418px;
   font-size: 15px;
   padding: 10px 26px 10px 18px;
   margin: 25px 0 25px;
   position: relative;
-  border: 1px solid $t-Color__grey--light;
+  border: 1px solid $t-Color__gray--medium-500;
   border-radius: 6px;
 }
 
@@ -128,112 +140,6 @@ a.join {
   visibility: hidden;
 }
 
-.newsbox, .homespot {
-  display: inline-block;
-}
-
-* html .newsbox, * html .homespot {
-  height: 1%;
-}
-
-.newsbox, .homespot {
-  display: block;
-}
-
-.newslinks {
-  float: left;
-  width: 363px;
-}
-
-.newslinks a.readmore {
-  color: black;
-}
-
-.newslinks a.readmore:hover {
-  border-bottom: 1px solid black;
-}
-
-.social-icon {
-  float: left;
-  height: 17px;
-  padding: 1px 0 0 25px;
-  text-indent: -999px;
-  overflow: hidden;
-  font-size: 0;
-}
-
-.facebook {
-  background: url(/images/icon-facebook.png) no-repeat;
-}
-
-.twitter {
-  background: url(/images/icon-twitter.png) no-repeat;
-}
-
-.reddit {
-  background: url(/images/icon-reddit.png) no-repeat;
-}
-
-.pinterest {
-  background: url(/images/icon-pinterest.png) no-repeat;
-}
-
-.linkedin {
-  background: url(/images/icon-linkedin.png) no-repeat;
-}
-
-.googleplus {
-  background: url(/images/icon-googleplus.png) no-repeat;
-}
-
-.youtube {
-  background: url(/images/icon-youtube.png) no-repeat;
-}
-
-.sketchy-icon {
-  height: 32px;
-  display: inline-block;
-  padding: 8px 0 0 41px;
-  color: $t-Color__grey--lightest;
-  margin: 0 10px;
-
-  &:hover {
-    color: $t-Color__grey--lightest;
-  }
-
-  span:hover {
-    border-bottom: 1px dashed white;
-  }
-
-  &.sketchy-black {
-    color: black;
-    &:hover {
-      color: black;
-    }
-
-    span:hover {
-      border-bottom: 1px dashed black;
-    }
-  }
-}
-
-.facebook-sketchy {
-  background: url(/images/icons/social/facebook.svg) no-repeat;
-  background-size: 32px;
-}
-
-.google-sketchy {
-  background: url(/images/icons/social/google.svg) no-repeat;
-  background-size: 32px;
-}
-.SolveCoLab-sketchy{
-  background: url(/images/SolveCoLab-sketchy.png) no-repeat;
-  background-size: 32px;
-}
-.ClimateCoLab-sketchy{
-  background: url(/images/ClimateCoLab-sketchy.png) no-repeat;
-  background-size: 32px;
-}
 /* <Conference Countdown Flipclock>*/
 #conference-countdown {
   position: absolute;
@@ -385,6 +291,7 @@ a.join {
 .home #content {
   padding: 0;
   width: 100%;
+  max-width: initial;
 }
 
 .home h2 {
@@ -399,50 +306,4 @@ a.join {
 .home h2 span {
   font-size: 15px;
   padding-left: 5px;
-}
-
-.rss {
-  float: right;
-  margin-right: 30px;
-  width: 20px;
-}
-
-.p-Homepage__activitybox__comment {
-  @extend %p-Homepage__activitybox__image;
-  background: url(/images/icon-activity-comment.png) no-repeat center;
-}
-
-.p-Homepage__activitybox__edit {
-  @extend %p-Homepage__activitybox__image;
-  background: url(/images/icon-activity-edit.png) no-repeat center;
-}
-
-.p-Homepage__activitybox__new {
-  @extend %p-Homepage__activitybox__image;
-  background: url(/images/icon-activity-new_proposal.png) no-repeat center;
-}
-
-.p-Homepage__activitybox__up {
-  @extend %p-Homepage__activitybox__image;
-  background: url(/images/icon-activity-thumbs_up.png) no-repeat center;
-}
-
-.p-Homepage__activitybox__new_user {
-  @extend %p-Homepage__activitybox__image;
-  background: url(/images/icon-activity-new_user.png) no-repeat center;
-}
-
-%p-Homepage__activitybox__image {
-  width: 50px;
-  height: 50px;
-  background-size: 25px;
-}
-
-.p-Homepage__voting__notice {
-  margin-top: 30px;
-  margin-bottom: 30px;
-
-  img {
-    margin-right: 10px;
-  }
 }

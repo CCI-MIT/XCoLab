@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:form="http://www.springframework.org/tags/form">
     
@@ -18,7 +19,7 @@
         <xcolab:requireLibrary name="spin.js" />
         <xcolab:requireLibrary name="handlebars.js" />
         
-        <xcolab:script src="${_themeJsFolder}/proposals/numeral.min.js"/>
+        <xcolab:script src="/js/proposals/numeral.min.js"/>
 
         <c:set var="getRegionsUrl" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactGetRegions"/>
 
@@ -57,7 +58,7 @@
             <tr id="impact-edit-row-{{series.name}}" class="impact-edit-row">
                 <td width="45%">{{series.description}}
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
 
                     <div class="addprophelp"><!-- --></div>
                     <div class="clearfix"><!-- --></div>
@@ -81,7 +82,7 @@
 
         <script id="impactSeriesSaveButtonTemplate" type="text/x-handlebars-template">
             <button type="button" id="impact-edit-save-button"
-                    class="btn btn-primary-darkest btn-xs">
+                    class="btn btn-primary-darkest cb-btn-xs">
                 Save
             </button>
             <span class="spinner-area">&#160;</span>
@@ -122,9 +123,11 @@
                                 <th style="width: 22.5%;"><!-- --></th>
                                 <th class="blue-bg" style="width: 55%; text-align: center">
                                     Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
-                                    <a href="javascript:;" class="helpTrigger"><img
-                                            src="${_themeImageFolder}/icon-addprop-question.png" width="15"
-                                            height="15"/></a><br/>
+                                    <a href="javascript:;" class="helpTrigger">
+                                        <collab:image src="/images/icon-addprop-question.png" width="15"
+                                            height="15"/>
+                                    </a>
+                                    <br/>
 
                                     <div class="addprophelp" style="color:white;">
                                         This table shows a summary of the emission reductions for all sectors and regions
@@ -238,7 +241,7 @@
                         </div>
 
                 <c:if test="${proposalsPermissions.canIAFActions or proposalsPermissions.canAdminAll}">
-                    <button type="button" class="btn btn-primary-darkest btn-xs" id="upload-impact-data-toggle">
+                    <button type="button" class="btn btn-primary-darkest cb-btn-xs" id="upload-impact-data-toggle">
                         Upload data from a spreadsheet
                     </button>
                     <div class="clearfix"><!-- --></div>
@@ -287,11 +290,11 @@
                     </div>
 
                     <div>
-                        <button type="button" class="btn btn-primary-darkest btn-xs" id="impact-edit-save-commnent-button">
+                        <button type="button" class="btn btn-primary-darkest cb-btn-xs" id="impact-edit-save-commnent-button">
                             Save and close
                         </button>
 
-                        <button type="button" class="btn btn-primary-darkest btn-xs" id="impact-edit-discard-commnent-button">
+                        <button type="button" class="btn btn-primary-darkest cb-btn-xs" id="impact-edit-discard-commnent-button">
                             Discard and close
                         </button>
                         <span class="spinner-area">&#160;</span>

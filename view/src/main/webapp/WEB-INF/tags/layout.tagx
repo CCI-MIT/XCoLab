@@ -1,7 +1,8 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab-modals="urn:jsptagdir:/WEB-INF/tags/layout/modals"
           xmlns:xcolab-layout="urn:jsptagdir:/WEB-INF/tags/layout"
           xmlns:xcolab-scripts="urn:jsptagdir:/WEB-INF/tags/layout/scripts"
@@ -40,11 +41,7 @@
     <!--@elvariable id="_realMember" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
 
-    <!--@elvariable id="_themeCssFolder" type="java.lang.String"-->
-    <!--@elvariable id="_libCssFolder" type="java.lang.String"-->
-    <!--@elvariable id="_themeJsFolder" type="java.lang.String"-->
-    <!--@elvariable id="_libJsFolder" type="java.lang.String"-->
-    <!--@elvariable id="_themeImageFolder" type="java.lang.String"-->
+    <!--@elvariable id="_themeStylesheetPath" type="java.lang.String"-->
     <!--@elvariable id="_languageSelectItems" type="java.lang.String"-->
     <!--@elvariable id="_activePageLink" type="java.lang.String"-->
 
@@ -52,7 +49,6 @@
     <!--@elvariable id="_logoPathSocial" type="java.lang.String"-->
     <!--@elvariable id="_logoPathBig" type="java.lang.String"-->
     <!--@elvariable id="_logoPathSquare" type="java.lang.String"-->
-    <!--@elvariable id="_uploadedImageFolder" type="java.lang.String"-->
 
 
     <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
@@ -103,7 +99,7 @@
     <!--@elvariable id="__alertMessage" type="org.xcolab.view.util.entity.flash.AlertMessage"-->
     <!--@elvariable id="__analyticsAttribute" type="org.xcolab.view.util.entity.flash.AnalyticsAttribute"-->
 
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken"-->
 
     <fmt:setLocale value="${_locale}" />
     <fmt:setTimeZone value="${_defaultTimeZone}" />
@@ -114,6 +110,11 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
+    <!--TODO COLAB-2681: Remove isResponsive feature flag once its on by default -->
+    <c:if test="${_isResponsive}">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    </c:if>
+
     <title>${title}${(not empty title) ? ' - ' : ''}${_colabName}</title>
 
     <!-- ============ Globals ============ -->
@@ -122,7 +123,11 @@
         var _firstByteDate = new Date();
         var _isLoggedIn = '${_isLoggedIn}' == 'true';
         var _isAdmin = '${_isAdmin}' == 'true';
-        var _themeImageFolder = '${_themeImageFolder}';
+        var _csrf = {
+            token: '${_csrf.token}',
+            parameterName: '${_csrf.parameterName}',
+            headerName: '${_csrf.headerName}'
+        }
     </script>
 
 
@@ -136,16 +141,13 @@
 
     <!-- ============ Stylesheets ============ -->
 
-    <xcolab:stylesheet href="${_themeCssFolder}/main.css" />
+    <xcolab:stylesheet href="${_themeStylesheetPath}" />
 
 
     <!-- ============ META CONTENT ============ -->
 
     <meta content="${not empty description ? description : _metaPageDescription}" lang="en-US" name="description" />
     <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
-
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
     <c:if test="${!_isProduction}">
         <!-- Prevent indexing of non-production sites -->
@@ -171,14 +173,15 @@
     <!-- TODO COLAB-2586: make this configurable -->
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
 
-    <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
+    <link href="/images/favicon.ico" rel="Shortcut Icon" />
     <link rel="image_src" type="image/png" href="${_logoPathBig}" />
     <c:if test="${not empty canonicalUrlRelative}">
         <link rel="canonical" href="${_colabUrl}${canonicalUrlRelative}" />
     </c:if>
 </head>
 
-<body class="${_isHomePage ? 'home' : ''}">
+<!--TODO COLAB-2681: Remove isResponsive feature flag once its on by default -->
+<body class="${_isHomePage ? 'home' : ''} ${_isResponsive ? 'feature-isResponsive' : ''}">
     <c:if test="${_betaRibbonShow}">
         <div class="c-Ribbon">
             Beta
@@ -188,48 +191,40 @@
     <c:if test="${!_isProduction}">
         <div class="c-TitleBar__container">
             <div class="c-TitleBar c-TitleBar--warning c-TitleBar--fixed">
-                <div class="bs-container-fixed">
-                    <div class="c-TitleBar__element" style="padding-left: 0;">
-                    <span style="display: inline-block">
+                <div class="cb-container-fixed c-TitleBar__content">
+                    <div class="c-TitleBar__element pl-0" style="overflow: hidden">
                         You are currently on a <b>test server</b>. Content on this server is for testing only and may be deleted at any time.
-                    </span>
                     </div>
 
-                    <div class="c-TitleBar__actionButton float-right">
-                        <a href="${_colabUrlProduction}">Take me to ${_colabUrlProduction}.</a>
-                    </div>
+                    <a class="c-TitleBar__actionButton" href="${_colabUrlProduction}">Take me to ${_colabUrlProduction}.</a>
                 </div>
             </div>
         </div>
-
     </c:if>
 
     <c:if test="${_showImpersonationBar}">
         <div class="c-TitleBar">
-            <div class="bs-container-fixed">
-                <div class="c-TitleBar__element" style="padding-left: 0;">
-                    <span style="display: inline-block">Impersonating member ${_member.screenName} (Logged in as ${_realMember.screenName})</span>
+            <div class="cb-container-fixed c-TitleBar__content">
+                <div class="c-TitleBar__element pl-0">
+                    Impersonating member ${_member.screenName} (Logged in as ${_realMember.screenName})
                 </div>
 
-                <div class="c-TitleBar__actionButton float-right">
-                    <!--TODO COLAB-2560: turn into button-->
-                    <a data-url="/impersonate/logout" class="js-PostLink">Stop impersonating</a>
-                </div>
+                <button type="button" class="c-TitleBar__actionButton js-PostLink" data-url="/impersonate/logout">
+                    Stop impersonating
+                </button>
             </div>
         </div>
     </c:if>
 
     <c:if test="${_mitHeaderBarShow}">
         <div class="c-TitleBar c-TitleBar--light">
-            <div class="bs-container-fixed">
-                <div class="c-TitleBar__element" style="padding-left: 0;">
-                    <img src="${_themeImageFolder}/logo_mit_themed.png" alt="MIT" />
+            <div class="cb-container-fixed c-TitleBar__content">
+                <div class="c-TitleBar__element pl-0">
+                    <collab:image src="/images/logos/mit-themed.png" alt="MIT" />
                     <span style="display: inline-block"><!-- Reference for image alignment --></span>
                 </div>
 
-                <div class="c-TitleBar__actionButton float-right">
-                    <a href="${_mitHeaderBarLinkUrl}">${_mitHeaderBarLinkText}</a>
-                </div>
+                <a class="c-TitleBar__actionButton" href="${_mitHeaderBarLinkUrl}">${_mitHeaderBarLinkText}</a>
             </div>
         </div>
     </c:if>
@@ -240,7 +235,7 @@
     <xcolab-layout:navbar colabName="${_colabName}" logoPath="${_logoPath}" redirect="${_requestUri}"
                           activePageLink="${_activePageLink}" contestPages="${_contestPages}"
                           member="${_isLoggedIn ? _member : null}" isWhiteBackgound="${_isHomePage}"
-                          isShowIcons="${_navbarShowIcons}" uploadedImageFolder="${_uploadedImageFolder}"
+                          isShowIcons="${_navbarShowIcons}"
                           blogAdminUrl="${_blogAdminUrl}"
                           showLanguage="${_isI18NActive}" showSearch="${_showSearchMenuItem}"
                           languageSelectItems="${_languageSelectItems}" currentLocale="${_currentLocale}"
@@ -255,9 +250,7 @@
     <script>
         $.ajaxSetup({
             beforeSend: function(xhr) {
-                var token = $("meta[name='_csrf']").attr("content");
-                var header = $("meta[name='_csrf_header']").attr("content");
-                xhr.setRequestHeader(header, token);
+                xhr.setRequestHeader(window._csrf.headerName, window._csrf.token);
             }
         })
     </script>
@@ -265,7 +258,7 @@
 
     <!-- ============ Content ============ -->
 
-    <main class="bs-container-fixed clearfix" id="content">
+    <main class="cb-container-fixed clearfix" id="content">
         <!-- Include page body -->
         <jsp:doBody/>
     </main>
@@ -275,7 +268,7 @@
 
     <xcolab-layout:footer showProfileLink="${_isLoggedIn}" currentLanguage="${_lang}"
                           languageSelectItems="${_languageSelectItems}"
-                          themeImageFolder="${_themeImageFolder}"
+                          themeImageFolder="/images"
                           showLanguageDropdown="${_isI18NActive}"
                           footerArticleId="${_footerArticleId}" />
 
@@ -290,28 +283,13 @@
     <xcolab-modals:forgotPasswordModal show="${_showPasswordResetPopup}" redirect="${_requestUri}"
             screenName="${_isLoggedIn ? _member.screenName : null}"/>
 
-    <c:if test="${_isSharedColab}">
-        <xcolab-modals:ssoLoginModal partnerLogoPath="${_themeImageFolder}/${_partnerColabLogo}"
-                show="${_showSsoPopup}" redirect="${_requestUri}"/>
-        <xcolab-modals:autoRegistrationModal logoPath="${_logoPath}"
-                partnerLogoPath="${_themeImageFolder}/${_partnerColabLogo}"
-                contestType="${_defaultContestType}"/>
-    </c:if>
-
     <xcolab-modals:flaggingModal />
 
     <!-- TODO COLAB-2172: rework as part of SSO improvements -->
     <!-- post registration popup -->
     <c:if test='${request.getParameter("postRegistration")}'>
-        <c:choose>
-            <c:when test="${_isSharedColab}">
-                <xcolab-modals:postRegistrationSsoModal />
-            </c:when>
-            <c:otherwise>
-                <xcolab-modals:postRegistrationModal member="${_member}" redirect="${_requestUri}" />
-                <xcolab:script src="${_themeJsFolder}/postRegistration.js" />
-            </c:otherwise>
-        </c:choose>
+        <xcolab-modals:postRegistrationModal member="${_member}" redirect="${_requestUri}" />
+        <xcolab:script src="/js/postRegistration.js" />
     </c:if>
 
 
@@ -327,7 +305,7 @@
         </script>
     </c:if>
 
-    <xcolab:script src="${_themeJsFolder}/postLinkHandler.js"/>
+    <xcolab:script src="/js/postLinkHandler.js"/>
     <xcolab-scripts:loadTooltips />
     <xcolab-scripts:loadMoment locale="${_locale}"/>
 
@@ -362,10 +340,7 @@
     <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="/vendor/spin.js/jquery.spin.js"/>
 
     <!-- TODO COLAB-2545: only used in mitigration impact tab; requires jquery UI -->
-    <xcolab:script src="${_themeJsFolder}/proposals/jquery.scrolltable.js"/>
-
-    <!-- AutoSuggest -->
-    <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['autoSuggest']}" href="${_libCssFolder}/autoSuggest.css" />
+    <xcolab:script src="/js/proposals/jquery.scrolltable.js"/>
 
     <!-- Handlebars.js-->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['handlebars.js']}" src="/vendor/handlebars/dist/handlebars.min.js"/>
@@ -381,28 +356,22 @@
             var CKEDITOR_BASEPATH = stripFileNameFromUrl('${encodedCkEditorUrl}');
         </script>
         <xcolab:script src="${encodedCkEditorUrl}" />
-        <xcolab:script src="${_themeJsFolder}/configureCkEditor.js" />
+        <xcolab:script src="/js/configureCkEditor.js" />
     </c:if>
 
 
     <xcolab:loadScript shouldLoad="${_librariesToLoad['papaparse']}" src="/vendor/papaparse/papaparse.min.js" />
 
     <!-- i18n scripts -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['i18n']}" src="${_themeJsFolder}/i18n.js" />
-
-    <!-- shared colab scripts -->
-    <c:if test="${_isSharedColab}">
-        <xcolab:requireLibrary name="sharedColab" />
-    </c:if>
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['sharedColab']}" src="${_themeJsFolder}/sharedColab.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['i18n']}" src="/js/i18n.js" />
 
     <!-- Ddslick -->
     <!-- TODO: only used in proposalJuding.jspx - replace? -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="${_libJsFolder}/jquery.ddslick.min.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="/js/lib/jquery.ddslick.min.js" />
 
     <xcolab:loadScript shouldLoad="${_librariesToLoad['clipboard.js']}" src="/vendor/clipboard/dist/clipboard.min.js" />
     
-    <xcolab:script src="${_themeJsFolder}/initScript.js" />
+    <xcolab:script src="/js/initScript.js" />
 
     <!-- ============ Analytics and tracking ============ -->
 
@@ -414,7 +383,7 @@
     </c:if>
 
     <!-- Custom user tracking -->
-    <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
+    <xcolab:script src="/js/usertracking.js" defer="true"/>
 
     <!-- Show update notification to outdated browsers -->
     <xcolab-scripts:browserUpdate />

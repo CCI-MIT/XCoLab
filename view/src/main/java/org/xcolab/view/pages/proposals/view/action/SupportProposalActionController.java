@@ -7,14 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.AccessDeniedPage;
-import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
@@ -60,14 +57,6 @@ public class SupportProposalActionController {
                                 SUPPORT_ANALYTICS_CATEGORY, SUPPORT_ANALYTICS_ACTION,
                                 SUPPORT_ANALYTICS_LABEL, analyticsValue);
 				GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_SUPPORT);
-            }
-            try {
-                Contest contest = proposalContext.getClients().getProposalClient()
-                        .getLatestContestInProposal(proposalId);
-                SharedColabUtil
-                        .checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
-            } catch (ContestNotFoundException ignore) {
-
             }
         }
         ServiceRequestUtils.clearCache(CacheName.MISC_REQUEST);

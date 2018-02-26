@@ -1,25 +1,20 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.util.activities.enums.ContestActivityType;
-import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.filtering.FilteringClient;
-import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
-import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ContestActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -98,18 +93,6 @@ public final class AddUpdateProposalControllerUtil {
         } else {
             activitiesClient.createActivityEntry(ProposalActivityType.UPDATED, memberId,
                     proposal.getProposalId());
-        }
-        SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
-
-        if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {
-            try {
-                FilteredEntry filteredEntry = FilteringClient
-                        .getFilteredEntryByUuid(updateProposalSectionsBean.getUuid());
-                filteredEntry.setSourceId(proposal.getProposalId());
-                filteredEntry.setAuthorId(memberId);
-                FilteringClient.updateFilteredEntry(filteredEntry);
-            } catch (FilteredEntryNotFoundException ignored) {
-            }
         }
 
         return "redirect:" + proposal.getProposalLinkUrl(contest);

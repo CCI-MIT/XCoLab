@@ -1,26 +1,24 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:c="http://java.sun.com/jsp/jstl/core">
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:form="http://www.springframework.org/tags/form">
 
     <jsp:directive.attribute name="elementName" type="java.lang.String" required="false" rtexprvalue="true" description="Name of the element" />
     <jsp:directive.attribute name="baseUrl" type="java.lang.String" required="false" rtexprvalue="true" description="Base url" />
     <jsp:directive.attribute name="elementId" type="java.lang.String" required="false" rtexprvalue="true" description="Element id" />
     <jsp:directive.attribute name="dirtyCheck" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the dirty check is enabled" />
 
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <c:set var="createNewElementFormURL" value="${baseUrl}/create" />
     <c:set var="updateElementFormURL" value="${baseUrl}/update" />
     <c:set var="deleteElementFormURL" value="${baseUrl}/delete/${elementId}" />
 
-    <form action="${deleteElementFormURL}" id="deleteElementForm" method="post" style="visibility: hidden;" >
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <form:form action="${deleteElementFormURL}" id="deleteElementForm" method="post" style="visibility: hidden;" >
         <!-- -->
-    </form>
+    </form:form>
 
-    <form action="${createNewElementFormURL}" id="createNewElementForm" method="post" style="visibility: hidden;" >
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <form:form action="${createNewElementFormURL}" id="createNewElementForm" method="post" style="visibility: hidden;" >
         <!-- -->
-    </form>
+    </form:form>
 
 
     <div class="c-ContentBox">

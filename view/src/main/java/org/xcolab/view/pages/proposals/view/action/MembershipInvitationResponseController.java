@@ -22,7 +22,6 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -102,10 +101,6 @@ public class MembershipInvitationResponseController {
                 sendMessage(invitee.getUserId(), recipients, MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,
                         String.format(membershipAcceptedMessage, invitee.getFullName(),
                                 proposalLink));
-
-                if (contest.getIsSharedContest()) {
-                    SharedColabUtil.registerMemberInSharedColab(invitee.getId_());
-                }
                 AlertMessage.success(
                         "You are now a contributor of this " + contestType.getProposalName() + "!")
                         .flash(request);

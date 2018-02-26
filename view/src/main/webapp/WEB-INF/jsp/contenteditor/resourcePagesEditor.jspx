@@ -1,68 +1,109 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/tree.jquery.min.js"><!-- --></script>
-        <xcolab:requireLibrary name="jQuery UI" />
-        <xcolab:requireLibrary name="spin.js" />
-        <xcolab:requireLibrary name="CKEditor" />
-        <xcolab:script src="${_libJsFolder}/jquery.loadmask.spin.js" />
+        <xcolab:requireLibrary name="jQuery UI"/>
+        <xcolab:requireLibrary name="spin.js"/>
+        <xcolab:requireLibrary name="CKEditor"/>
+        <xcolab:script src="/js/lib/jquery.loadmask.spin.js"/>
 
-        <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/jqtree.min.css"><!-- --></link>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/jqtree.min.css"><!-- --></link>
         <!-- link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"></link -->
         <style>
 
-            .contentEditor input {border: 1px solid #DDD; color: #8d8d8d;  font-weight: 200;  margin-bottom: 7px; height: 30px;  font-size: large;  width: 530px;}
-            .contentBody {margin: auto; width: 1022px;  height: 742px;}
-            .treeContainer {        height: 561px; overflow-y: scroll;}
-            #infoBox {padding: 8px 35px 8px 14px;margin-bottom: 20px;}
-            .colFloatLef{float:left}
-            #tree-view{width:350px}
-            #saveArticle{cursor:pointer}
-            #articleURL{overflow:hidden}
-            #anchorArticleURL{display: block; width:0; white-space: nowrap;}
+            .contentEditor input {
+                border: 1px solid #DDD;
+                color: #8d8d8d;
+                font-weight: 200;
+                margin-bottom: 7px;
+                height: 30px;
+                font-size: large;
+                width: 530px;
+            }
+
+            .contentBody {
+                margin: auto;
+                width: 1022px;
+                height: 742px;
+            }
+
+            .treeContainer {
+                height: 561px;
+                overflow-y: scroll;
+            }
+
+            #infoBox {
+                padding: 8px 35px 8px 14px;
+                margin-bottom: 20px;
+            }
+
+            .colFloatLef {
+                float: left
+            }
+
+            #tree-view {
+                width: 350px
+            }
+
+            #saveArticle {
+                cursor: pointer
+            }
+
+            #articleURL {
+                overflow: hidden
+            }
+
+            #anchorArticleURL {
+                display: block;
+                width: 0;
+                white-space: nowrap;
+            }
 
             #articleVersions span:hover {
-                text-decoration:none;
-                cursor:pointer;
+                text-decoration: none;
+                cursor: pointer;
             }
+
             #articleVersions span {
-                cursor:pointer;
-                color:blue;
-                text-decoration:underline;
+                cursor: pointer;
+                color: blue;
+                text-decoration: underline;
             }
 
             #tree-view small:hover {
-                text-decoration:none;
-                cursor:pointer;
+                text-decoration: none;
+                cursor: pointer;
             }
+
             #tree-view small {
-                cursor:pointer;
-                color:blue;
-                text-decoration:underline;
+                cursor: pointer;
+                color: blue;
+                text-decoration: underline;
             }
 
 
         </style>
-        <xcolab:stylesheet href="${_libCssFolder}/jquery.loadmask.spin.css" />
+        <xcolab:stylesheet href="/css/lib/jquery.loadmask.spin.css"/>
 
         <c:set var="contentEditorListFolderURL" value="/content-editor/resourcePagesListFolder"/>
 
-        <c:set  var="previewArticleURL" value="/content-editor/previewArticle"/>
+        <c:set var="previewArticleURL" value="/content-editor/previewArticle"/>
 
-        <c:set  var="getArticleVersionURL" value="/content-editor/contentEditorGetLatestResourceArticleVersion"/>
+        <c:set var="getArticleVersionURL"
+               value="/content-editor/contentEditorGetLatestResourceArticleVersion"/>
 
-        <c:set  var="getArticleVersionIdURL" value="/content-editor/contentEditorGetArticleVersion"/>
+        <c:set var="getArticleVersionIdURL" value="/content-editor/contentEditorGetArticleVersion"/>
 
-        <c:set  var="saveArticleVersionURL" value="/content-editor/saveContentArticleVersion"/>
+        <c:set var="saveArticleVersionURL" value="/content-editor/saveContentArticleVersion"/>
 
-        <c:set  var="getArticleVersionIdURL" value="/content-editor/contentEditorGetArticleVersion"/>
+        <c:set var="getArticleVersionIdURL" value="/content-editor/contentEditorGetArticleVersion"/>
 
-        <c:set  var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
+        <c:set var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
 
         <c:if test="${not empty param.articleId}">
             <script>
@@ -70,9 +111,10 @@
                 <![CDATA[
                 jQuery(function () {
 
-                    loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId}, "");
+                    loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId},
+                            "");
 
-                    window.setTimeout(function(){
+                    window.setTimeout(function () {
                         $("#article-view").unmask()
                     }, 2000);
 
@@ -92,44 +134,48 @@
             var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
             jQuery(function () {
 
-                $("#article-view").mask({'label':"Please click on an Article or create a new one clicking in the folder`s + article link!", spinner:false});
+                $("#article-view").mask({
+                    'label': "Please click on an Article or create a new one clicking in the folder`s + article link!",
+                    spinner: false
+                });
 
                 var styles = $('link');
-                for(var i=0 ; i <styles.length ; i++){
-                    if($(styles[i]).attr("href").indexOf("style.css")!= -1){
+                for (var i = 0; i < styles.length; i++) {
+                    if ($(styles[i]).attr("href").indexOf("style.css") != -1) {
                         CKEDITOR.config.contentsCss = $(styles[i]).attr("href");
                         break;
                     }
                 }
 
+                CKEDITOR.plugins.addExternal('justify',
+                        '/js/lib/newckeditorplugins/justify/plugin.js');
 
-                CKEDITOR.plugins.addExternal( 'justify', '${_libJsFolder}/newckeditorplugins/justify/plugin.js' );
-
-                CKEDITOR.plugins.addExternal( 'colorbutton', '${_libJsFolder}/newckeditorplugins/colorbutton/plugin.js' );
-                CKEDITOR.plugins.addExternal( 'uploadimage', '${_libJsFolder}/newckeditorplugins/uploadimage/plugin.js' );
+                CKEDITOR.plugins.addExternal('colorbutton',
+                        '/js/lib/newckeditorplugins/colorbutton/plugin.js');
+                CKEDITOR.plugins.addExternal('uploadimage',
+                        '/js/lib/newckeditorplugins/uploadimage/plugin.js');
 
                 CKEDITOR.config.allowedContent = true;
-
 
                 var $treeView = $('#tree-view');
                 $treeView.tree({
                     //data:data,
                     saveState: true,
-                    onCanSelectNode: function(node) {
+                    onCanSelectNode: function (node) {
                         //if(node.kind == "folder") return false;
                         return true;
 
                     },
-                    onCreateLi: function(node, $li) {
+                    onCreateLi: function (node, $li) {
                         // Append a link to the jqtree-element div.
                         // The link has an url '#node-[id]' and a data property 'node-id'.
 
                     },
-                    onCanMoveTo: function(moved_node, target_node, position) {
+                    onCanMoveTo: function (moved_node, target_node, position) {
                         return target_node.kind == "folder";
                     },
-                    onCanMove: function(node) {
-                        if (! node.parent.parent) {
+                    onCanMove: function (node) {
+                        if (!node.parent.parent) {
                             // Example: Cannot move root node
 
                             return false;
@@ -138,18 +184,18 @@
                             return node.kind != "folder";
                         }
                     },
-                    dragAndDrop: true});
-
+                    dragAndDrop: true
+                });
 
                 $treeView.bind(
                         'tree.click',
-                        function(event) {
+                        function (event) {
                             var node = event.node;
-                            if(node.kind == "article"){
+                            if (node.kind == "article") {
                                 $("#article-view").unmask();
                                 $("#article-view").mask();
                                 loadArticleVersionContent(node.id, node.parent.name);
-                            }else{
+                            } else {
                                 /*
                                  event.preventDefault();
                                  return false;*/
@@ -157,20 +203,20 @@
                         }
                 );
 
-
-                ckEditor = CKEDITOR.replace('articleVersionContent', { customConfig: '${_libJsFolder}/newckeditorplugins/config.js'});
+                ckEditor = CKEDITOR.replace('articleVersionContent',
+                        {customConfig: '/js/lib/newckeditorplugins/config.js'});
                 //CKEDITOR.instances['articleVersionContent'].setReadOnly(true);
 
                 $("#infoBox").hide();
 
-                $("#saveArticle").click(function(){
+                $("#saveArticle").click(function () {
 
                     saveArticle();
                 });
                 var $contentArticleTitle = $('#contentArticleTitle');
-                $contentArticleTitle.bind('input', function() {
+                $contentArticleTitle.bind('input', function () {
                     if ($("#folderName").html().indexOf("Wiki") !== -1) {
-                        updateArticleURL("Wiki", $contentArticleTitle.val().replace(/ /g,"+"));
+                        updateArticleURL("Wiki", $contentArticleTitle.val().replace(/ /g, "+"));
                         $contentArticleTitle.attr("value", $contentArticleTitle.val());
                         $("#article-view").unmask()
                     }
@@ -182,54 +228,60 @@
                     $("#previewArticleForm").submit();
                 });
             });
-            function addVersionEntry(dateOfEdit, versionId){
+
+            function addVersionEntry(dateOfEdit, versionId) {
                 var cell = $('<li>');
-                cell.attr("id","articleVersionId_"+versionId);
-                cell.attr("class","articleVersionClass");
+                cell.attr("id", "articleVersionId_" + versionId);
+                cell.attr("class", "articleVersionClass");
                 cell.html(dateOfEdit);
                 return cell;
             }
 
             function updateArticleURL(folderName, articleTitle) {
-                if(folderName == "Wiki") {
-                    $("#articleURL").html("Article URL: <a id='anchorArticleURL' href='/wiki/" + articleTitle +
+                if (folderName == "Wiki") {
+                    $("#articleURL").html("Article URL: <a id='anchorArticleURL' href='/wiki/"
+                            + articleTitle +
                             "'>~/wiki/" + articleTitle + "</a>");
                 } else {
                     $("#articleURL").html("");
                 }
             }
+
             function pad(n, width, z) {
                 z = z || '0';
                 n = n + '';
                 return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
             }
-            function loadArticleVersionContent(id, folderName){
+
+            function loadArticleVersionContent(id, folderName) {
                 id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
 
-                $("#folderName").html("Parent folder: " +folderName);
+                $("#folderName").html("Parent folder: " + folderName);
 
                 var url = getArticleVersionURL;
 
-                var parameters={articleId : id};
+                var parameters = {articleId: id};
 
-                $.get(url ,parameters ,loadContentArticleResponse);
+                $.get(url, parameters, loadContentArticleResponse);
 
             }
 
-
-            function loadArticleVersionContentId(id){
+            function loadArticleVersionContentId(id) {
 
                 var url = getArticleVersionIdURL;
 
-                var parameters={articleVersionId : id};
+                var parameters = {articleVersionId: id};
 
-                $.get(url ,parameters ,loadContentArticleResponse);
+                $.get(url, parameters, loadContentArticleResponse);
 
             }
-            function formatDate(ctd){
+
+            function formatDate(ctd) {
                 var dateObject = new Date(ctd); //read in as Date object
                 var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
-                return(dateObject.getMonth()+1)+"/"+dateObject.getDate()+"/"+dateObject.getFullYear()+" "+pad(dateObject.getHours(),2)+":"+pad(dateObject.getMinutes(),2)+" "+timeZoneIdentifier;
+                return (dateObject.getMonth() + 1) + "/" + dateObject.getDate() + "/"
+                        + dateObject.getFullYear() + " " + pad(dateObject.getHours(), 2) + ":"
+                        + pad(dateObject.getMinutes(), 2) + " " + timeZoneIdentifier;
 
             }
 
@@ -238,23 +290,23 @@
                 var data = responseData;
                 var id = data.articleId;
 
-
                 var textarea = $('#articleVersionContent');
 
-                var contestURL =  data.contestURL;
-                var contestArticleURL =  data.contestArticleURL;
+                var contestURL = data.contestURL;
+                var contestArticleURL = data.contestArticleURL;
 
-                $("#contestURL").html("<a target=\"_blank\" href=\""+contestURL+"\" >Contest</a>");
-                $("#contestArticleURL").html("<a target=\"_blank\" href=\""+contestArticleURL+"\" >Resource page link</a>");
-
+                $("#contestURL").html("<a target=\"_blank\" href=\"" + contestURL
+                        + "\" >Contest</a>");
+                $("#contestArticleURL").html("<a target=\"_blank\" href=\"" + contestArticleURL
+                        + "\" >Resource page link</a>");
 
                 //textarea.html(data.content);
                 CKEDITOR.instances['articleVersionContent'].setData(data.content);
 
                 var input = $('#contentArticleId');
-                input.attr("value",id);
+                input.attr("value", id);
 
-                $('#contentArticleFolderId').attr("value",data.folderId);
+                $('#contentArticleFolderId').attr("value", data.folderId);
                 var input1 = $('#contentArticleTitle');
                 input1.attr("value", data.title);
 
@@ -263,41 +315,46 @@
 
                 $('#articleVersions').empty();
 
-                for(var i = 0 ; i <  data.versions.length; i++) {
-                    var version =  data.versions[i];
+                for (var i = 0; i < data.versions.length; i++) {
+                    var version = data.versions[i];
                     var adjustedDateString = formatDate(version.createdDate);
-                    div.append("<span class='oldArticleVersion' data-attribute='"+version.contentArticleVersionId+"'> Created at: "+adjustedDateString+"</span><br/>")
+                    div.append("<span class='oldArticleVersion' data-attribute='"
+                            + version.contentArticleVersionId + "'> Created at: "
+                            + adjustedDateString + "</span><br/>")
 
                 }
-                $(".oldArticleVersion").on('click',function (ref){
+                $(".oldArticleVersion").on('click', function (ref) {
 
-                    loadArticleVersionContentId($( this ).attr("data-attribute"))
+                    loadArticleVersionContentId($(this).attr("data-attribute"))
                 });
-                updateArticleURL(folderName, data.title.replace(/ /g,"+"));
-                $("#articleId").html('Article ID: <a href="?articleId=' + id + '">' + id + '</a><br/>');
+                updateArticleURL(folderName, data.title.replace(/ /g, "+"));
+                $("#articleId").html('Article ID: <a href="?articleId=' + id + '">' + id
+                        + '</a><br/>');
 
                 ckEditor.setReadOnly(false);
                 $("#article-view").unmask()
 
             }
-            function saveArticle(){
 
-                if($('#contentArticleTitle').val() == ""){
+            function saveArticle() {
+
+                if ($('#contentArticleTitle').val() == "") {
                     noty({text: 'Title field is mandatory!', type: 'error'});
                     return false;
                 }
                 $("#article-view").mask();
                 var url = saveArticleVersionURL;
 
-
                 var articleId = $('#contentArticleId').val();
                 var title = $('#contentArticleTitle').val();
-                var folderId =$('#contentArticleFolderId').val();
+                var folderId = $('#contentArticleFolderId').val();
                 var content = ckEditor.getData();
-                var parameters={articleId : articleId, title: title, folderId: folderId
-                    ,content: content};
+                var parameters = {
+                    articleId: articleId, title: title, folderId: folderId
+                    , content: content
+                };
 
-                $.post(url ,parameters , function (response) {
+                $.post(url, parameters, function (response) {
                     var responseData = JSON.parse(response);
                     var data = responseData;
                     var $infoBox = $("#infoBox");
@@ -305,15 +362,13 @@
 
                     $("#article-view").unmask();
                     $('#tree-view').tree('reload');
-                    var folderName = $("#folderName").html().replace("Parent folder: ","");
-                    var id = (parseInt(data.articleVersionId) + parseInt(THRESHOLD_TO_AVOID_NODE_COLISION));
+                    var folderName = $("#folderName").html().replace("Parent folder: ", "");
+                    var id = (parseInt(data.articleVersionId) + parseInt(
+                            THRESHOLD_TO_AVOID_NODE_COLISION));
                     loadArticleVersionContent(id, folderName);
-
 
                 });
             }
-
-
 
             ]]>
         </script>
@@ -321,17 +376,21 @@
             <div class="contentBody">
                 <ul class="c-TabBar clearfix">
 
-                    <li class="c-TabBar__tab--first"><a href="/content-editor/">Content Editor</a></li>
-                    <li class="c-TabBar__tab"><a href="/content-editor/pageEditor">Page Editor</a></li>
-                    <li class="c-TabBar__tab active"><a href="/content-editor/resourcePagesEditor">Resource pages</a></li>
+                    <li class="c-TabBar__tab--first"><a href="/content-editor/">Content Editor</a>
+                    </li>
+                    <li class="c-TabBar__tab"><a href="/content-editor/pageEditor">Page Editor</a>
+                    </li>
+                    <li class="c-TabBar__tab active"><a
+                            href="/content-editor/resourcePagesEditor">Resource pages</a></li>
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
-                <div  id="innerContent" class="addpropbox">
+                <div class="addpropbox">
                     <div class="colFloatLef">
                         <h3>Resource pages for contests</h3>
                         <div class="treeContainer">
-                            <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
+                            <div id="tree-view"
+                                 data-url="${contentEditorListFolderURL}"><!-- --></div>
                         </div>
                     </div>
                     <div class="colFloatLef" style="width: 580px;margin-left: 15px;">
@@ -342,7 +401,8 @@
                                 <!-- FORM FIELDS -->
                                 <input type="hidden" id="contentArticleId"/>
                                 <input type="hidden" id="contentArticleFolderId"/>
-                                Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
+                                Article title: <input type="text" id="contentArticleTitle"
+                                                      maxcharacters="300"/>
                             </div>
                             <div id="folderName">Parent folder: <!-- --></div>
                             <div id="createdAtDate"><!-- --></div>
@@ -351,24 +411,32 @@
                             <br/>
                             <!--<div id="articleURL">&lt;!&ndash; Article URL:  &ndash;&gt;</div>-->
                             <div>
-                                <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
+                                <textarea id="articleVersionContent" name="articleVersionContent"
+                                          rows="10" cols="80"><!-- --></textarea>
                             </div>
                             <div id="articleId"><!-- Article ID: --></div>
                             <div id="">Previous versions:</div>
-                            <div id="articleVersions" style="max-height: 80px;overflow-y: scroll;"><!-- Article versions: --></div>
+                            <div id="articleVersions"
+                                 style="max-height: 80px;overflow-y: scroll;"><!-- Article versions: --></div>
 
                         </div>
                         <br/>
-                        <div class="floatLeft" id="previewContentArticle" ><a  class="btn btn-primary" href="#">Preview</a></div>
-                        <div class="floatRight" id="deleteOntologyTerm" ><a  class="btn btn-primary" href="#">Delete</a></div>
-                        <div> <div class="floatRight" id="saveArticle" ><a  class="btn btn-primary" href="#">Save</a></div></div>
+                        <div class="floatLeft" id="previewContentArticle"><a class="btn btn-primary"
+                                                                             href="#">Preview</a>
+                        </div>
+                        <div class="floatRight" id="deleteOntologyTerm"><a class="btn btn-primary"
+                                                                           href="#">Delete</a></div>
+                        <div>
+                            <div class="floatRight" id="saveArticle"><a class="btn btn-primary"
+                                                                        href="#">Save</a></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <form target="_blank" action="${previewArticleURL}" method="post" id="previewArticleForm">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input type="hidden" id="htmlContent" name="content" />
-            </form>
+            <form:form target="_blank" action="${previewArticleURL}" method="post"
+                  id="previewArticleForm">
+                <input type="hidden" id="htmlContent" name="content"/>
+            </form:form>
         </div>
     </xcolab:layout>
 </jsp:root>

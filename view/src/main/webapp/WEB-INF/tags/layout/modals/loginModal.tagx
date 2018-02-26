@@ -12,7 +12,7 @@
     <jsp:directive.attribute name="authError" type="org.xcolab.view.auth.login.AuthenticationError" required="false" rtexprvalue="true" description="Auth error, if any" />
 
     <collab:message code="homepage.modals.login.message" var="loginModalTitle" />
-    <xcolab:modal modalId="loginModal" title="${loginModalTitle}">
+    <xcolab:modal modalId="loginModal" title="${loginModalTitle}" size="sm">
         <form:form id="signInForm_form" method="post" action="/login">
             <div class="modal-body">
                 <c:choose>
@@ -27,21 +27,19 @@
                 </c:choose>
 
                 <div class="form-group clearfix">
-                    <div class="c-Header__login__with">
-                        <div class="c-Header__socialButtons">
-                            <c:if test="${showFacebookSso}">
-                                <a href="/sso/facebook/register" style="color: black;">
-                                    <img src="${_themeImageFolder}/icons/social/facebook.svg" aria-hidden="true" />
-                                    <span>Facebook</span>
-                                </a>
-                            </c:if>
-                            <c:if test="${showGoogleSso}">
-                                <a href="/sso/google/register" style="color: black;">
-                                    <img src="${_themeImageFolder}/icons/social/google.svg" aria-hidden="true"/>
-                                    <span>Google</span>
-                                </a>
-                            </c:if>
-                        </div>
+                    <div class="d-flex justify-content-around">
+                        <c:if test="${showFacebookSso}">
+                            <a href="/sso/facebook/register" class="c-SocialButton text-dark">
+                                <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
+                                <span class="c-SocialButton__text">Facebook</span>
+                            </a>
+                        </c:if>
+                        <c:if test="${showGoogleSso}">
+                            <a href="/sso/google/register" class="c-SocialButton text-dark">
+                                <collab:image src="/images/icons/social/google.svg" ariaHidden="true"/>
+                                <span class="c-SocialButton__text">Google</span>
+                            </a>
+                        </c:if>
                     </div>
                 </div>
 

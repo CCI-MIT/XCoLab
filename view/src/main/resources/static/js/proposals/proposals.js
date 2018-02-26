@@ -98,7 +98,7 @@ function clearContents(element) {
 
 function requestMembership() {
     $('#requestComment').slideDown('slow');
-    $('.prop-butt-popover:first').css('background', 'url('+_themeImageFolder+'/search-bg.png)');
+    $('.prop-butt-popover:first').css('background', 'url(/images/search-bg.png)');
     var $requestButtons = $('#requestButtons');
     $requestButtons.empty();
     $requestButtons.append('<a href="javascript:;" class="btn btn-gray" onclick="hideRequestForm(true);">Cancel</a>');
@@ -119,7 +119,7 @@ function hideRequestForm(animate) {
 function inviteMember() {
     $('#invite-comment').slideDown('slow');
     $('#invite-recipient').slideDown('slow');
-    $('.prop-butt-popover:first').css('background', 'url('+_themeImageFolder+'/search-bg.png)');
+    $('.prop-butt-popover:first').css('background', 'url(/images/search-bg.png)');
     var $requestButtons = $('#requestButtons');
     $requestButtons.empty();
     $requestButtons.append('<a href="javascript:;" class="btn btn-gray float-left" onclick="hideInviteForm(true);">Cancel</a>');

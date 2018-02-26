@@ -1,7 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
-    <xcolab:modal modalId="snpExampleModal" size="lg">
+    <xcolab:modal modalId="snpExampleModal">
         <div class="modal-body">
             ${exampleText}
         </div>

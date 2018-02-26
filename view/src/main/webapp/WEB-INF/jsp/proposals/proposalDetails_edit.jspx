@@ -3,6 +3,7 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags">
 
@@ -11,7 +12,6 @@
     <!--@elvariable id="isMove" type="java.lang.Boolean"-->
     <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
     <!--@elvariable id="userTeams" type="java.util.List<org.xcolab.client.members.pojo.PlatformTeam>"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <jsp:directive.include file="./init_proposal.jspx"/>
 
@@ -57,25 +57,6 @@
             box-shadow: 0 0 2px #000;
         }
     </style>
-
-    <c:if test="${mustFilterContent}">
-        <div class="modal fade" id="js-filteringModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Preparing for submission...</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div id="loading_filtering_image" style="text-align: left"><img border="0" src="${_themeImageFolder}/loader.gif"/></div>
-                        <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again</div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="close" class="btn btn-gray" data-dismiss="modal">Close</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-    </c:if>
 
     <div class="prop-left">
 
@@ -130,7 +111,10 @@
                     <strong class="required-field">
                         <spring:message code="contests.proposal.sections.title" />
                     </strong>
-                    <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                    <a class="helpTrigger" href="javascript:;">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                    </a>
+                    <br />
                     <spring:message code="contests.proposal.sections.characterlimit" arguments="80"  />
                 </label>
                 <div class="addprophelp">Give the ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
@@ -147,7 +131,10 @@
             <div class="addpropbox q3">
                 <label>
                     <strong class="required-field">${contestType.pitchName}</strong>
-                    <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                    <a href="javascript:;" class="helpTrigger">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                    </a>
+                    <br />
                     <spring:message code="contests.proposal.sections.characterlimit" arguments="140"  />
                 </label>
                 <div class="addprophelp">Add a very short (140 character) description that conveys the key idea behind the ${fn:toLowerCase(contestType.proposalName)}.</div>
@@ -180,7 +167,10 @@
                     <strong><spring:message code="contests.proposal.sections.team"/> </strong>
                     <br /><em>optional</em>
                 </span>
-                <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                <a class="helpTrigger" href="javascript:;">
+                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                </a>
+                <br />
                 <spring:message code="contests.proposal.sections.characterlimit" arguments="35" />
                 </label>
                 <div class="addprophelp">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the name of its owner.</div>
@@ -223,7 +213,10 @@
                 <div class="addpropbox q3">
                     <label>
                         <strong>Description</strong>
-                        <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                        <a href="javascript:;" class="helpTrigger">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
+                        <br />
                     </label>
 
                     <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
@@ -255,7 +248,7 @@
         <a href="/wiki/Terms+of+use" target="_blank">Terms of Use</a>
         and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.
     </c:set>
-    <xcolab:modal modalId="acceptTosModal" title="${acceptTosModalTitle}" size="lg">
+    <xcolab:modal modalId="acceptTosModal" title="${acceptTosModalTitle}">
         <div class="modal-body">
             <h5>${fn:toUpperCase(contestType.rulesPageName)}:</h5>
             <div class="c-Scrollable c-Scrollable--visibleScrollbar" style="height:260px;">
@@ -268,7 +261,8 @@
         </div>
     </xcolab:modal>
 
-    <xcolab:modal modalId="invalidFieldsModal" title="The following sections have too many characters:">
+    <xcolab:modal modalId="invalidFieldsModal" size="sm"
+                  title="The following sections have too many characters:">
         <div class="modal-body">
             <ul id="invalidFieldsList"><!--  --></ul>
         </div>
@@ -278,7 +272,7 @@
     </xcolab:modal>
 
     <div class="c-ControlsOverlay">
-        <div class="bs-container-fixed">
+        <div class="cb-container-fixed">
             <div class="float-left d-none d-lg-block">
                 Don't forget to save your work!
                 <c:if test="${not empty saveHelpText}">
@@ -378,21 +372,7 @@
             disableButtons();
             if (validatePlanEditForm()) {
                 disableDirtyCheck();
-                if(getMustFilterContent()) {
-                    var text = "";
-                    text = text + $("#proposalName").val() + " ";
-                    text = text + $("#proposalTeam").val() + " ";
-                    text = text + $("#proposalPitchInput").val() + " ";
-                    for (var ckInstanceId in CKEDITOR.instances) {
-                        if (document.getElementById(ckInstanceId)) {
-                            var ckInstance = CKEDITOR.instances[ckInstanceId];
-                            text = text + (ckInstance.getData()) + " ";
-                        }
-                    }
-                    handleFilteredContent(text,"PROPOSAL", "#uuid",function () { jQuery("#editForm").submit() });
-                }else {
-                    jQuery("#editForm").submit();
-                }
+                jQuery("#editForm").submit();
             }
         }
 
@@ -442,27 +422,10 @@
         </div>
     </xcolab:modal>
 
-    <c:choose>
-    <c:when test="${mustFilterContent}">
-        <script>
-            function getMustFilterContent() {
-                return true;
-            }
-        </script>
-    </c:when>
-    <c:otherwise>
-        <script>
-            function getMustFilterContent() {
-                return false;
-            }
-        </script>
-    </c:otherwise>
-    </c:choose>
-
     <xcolab:requireLibrary name="CKEditor" />
 
     <c:if test="${isMove}">
-        <xcolab:script src="${_themeJsFolder}/proposals/copyProposalWidget.js"/>
+        <xcolab:script src="/js/proposals/copyProposalWidget.js"/>
     </c:if>
 
     <c:if test="${hasProposalPicker}">

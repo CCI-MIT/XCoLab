@@ -23,15 +23,15 @@ $p-ContestProposals__header__team__display: inline-block !default;
 $p-ContestProposals__header__team__member__display: inline-block !default;
 $p-ContestProposals__header__team__roleName__paddingTop: 15px !default;
 
-$p-Contests__contestDetail__backgroundColor: $t-Color__grey--lightest !default;
-$p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.png) darken($t-Color__grey--lightest, 7) !default;
+$p-Contests__contestDetail__backgroundColor: $t-Color__tan !default;
+$p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.png) darken($t-Color__tan, 7) !default;
 
 .p-ContestProposals__header { //.contest-detail
   background-color: $p-Contests__contestDetail__backgroundColor;
   padding-top: $p-ContestProposals__header__paddingTop;
   padding-bottom: $p-ContestProposals__header__paddingBottom;
-  border-bottom: 1px solid $t-Color__grey--light;
-  color: $t-Color__grey--darkest;
+  border-bottom: 1px solid $t-Color__gray--medium-500;
+  color: $t-Color__gray--dark-800;
   position: relative;
 }
 

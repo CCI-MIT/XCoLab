@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -30,8 +31,10 @@
             <div class="addpropbox">
                 <label>
                     <strong>Title</strong>
-                    <a class="helpTrigger" href="javascript:;"><img
-                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                    <a class="helpTrigger" href="javascript:;">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                    </a>
+                    <br/>
                 </label>
 
                 <div class="addprophelp">Two to five words very broadly describing the contest topic, such as
@@ -40,7 +43,7 @@
                 </div>
                 <div class="clearfix"><!--  --></div>
                 <div class="addpropInputContainer">
-                    <form:input path="contestShortName" id="contestShortName" cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
+                    <form:input path="contestShortName" id="contestShortName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
                         <form:errors cssClass="c-Alert c-Alert__error" path="contestShortName"/>
@@ -72,8 +75,10 @@
             <div class="addpropbox">
                 <label>
                     <strong>Question</strong>
-                    <a href="javascript:;" class="helpTrigger"><img
-                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                    <a href="javascript:;" class="helpTrigger">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                    </a>
+                    <br/>
                 </label>
 
                 <div class="addprophelp">The key question to be answered through the contest. The most successful
@@ -81,7 +86,7 @@
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <div class="addpropInputContainer">
-                    <form:textarea path="contestName" id="contestName" cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
+                    <form:textarea path="contestName" id="contestName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
                         <form:errors cssClass="c-Alert c-Alert__error" path="contestName"/>
@@ -132,7 +137,7 @@
                     An optional link that it opened when a user clicks on the sponsor logo.
                 </div>
 
-                <form:input path="sponsorLink" id="sponsorLink" cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
+                <form:input path="sponsorLink" id="sponsorLink" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
             </div>
 
             <div class="addpropbox blue">
@@ -153,8 +158,10 @@
             <div class="addpropbox">
                 <label>
                     <strong>Description</strong>
-                    <a href="javascript:;" class="helpTrigger"><img
-                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                    <a href="javascript:;" class="helpTrigger">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                    </a>
+                    <br/>
                 </label>
 
                 <div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address
@@ -166,7 +173,7 @@
                 
                 <div class="addpropInputContainer" style="min-width:700px;">
                     <form:textarea path="contestDescription" id="contestDescription"
-                                   cssClass="rte-editorPlaceholder form-control" cssErrorClass="form-control bs-form-has-error"/>
+                                   cssClass="rte-editorPlaceholder form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
                         <form:errors cssClass="c-Alert c-Alert__error" path="contestDescription"/>
@@ -182,8 +189,10 @@
             <div class="addpropbox">
                 <label>
                     <strong>Proposal template</strong>
-                    <a href="javascript:;" class="helpTrigger"><img
-                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                    <a href="javascript:;" class="helpTrigger">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                    </a>
+                    <br/>
                 </label>
 
                 <div class="addprophelp">Select the proposal template associated with your contest. Templates hold the
@@ -193,7 +202,7 @@
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <div class="addpropInputContainer">
-                    <form:select path="planTemplateId" cssClass="form-control" cssErrorClass="form-control bs-form-has-error">
+                    <form:select path="planTemplateId" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
                         <form:options items="${proposalTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
 
@@ -207,7 +216,7 @@
                 <label>
                     <strong>Schedule template</strong>
                     <a href="javascript:;" class="helpTrigger">
-                        <img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/>
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
                     </a><br/>
                 </label>
 
@@ -216,7 +225,7 @@
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <div class="addpropInputContainer">
-                    <form:select path="scheduleTemplateId" cssClass="form-control" cssErrorClass="form-control bs-form-has-error">
+                    <form:select path="scheduleTemplateId" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
                         <form:option value="0" label="None"/>
 
                         <form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>

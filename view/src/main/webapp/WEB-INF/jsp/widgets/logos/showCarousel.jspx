@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
@@ -7,7 +8,7 @@
     <!--@elvariable id="_isAdmin" type="boolean"-->
     <div class="c-CarouselWrapper">
         <c:if test="${_isAdmin}">
-            <a href="/widgets/logos/preferences?preferenceId=${carouselPreferences.preferenceId}" class="btn btn-admin btn-sm float-right">Edit carouselPreferences</a><br/>
+            <a href="/widgets/logos/preferences?preferenceId=${carouselPreferences.preferenceId}" class="btn cb-btn-admin btn-sm float-right">Edit carouselPreferences</a><br/>
         </c:if>
         <h2>${carouselPreferences.title}</h2>
         <div class="c-CarouselBox">
@@ -16,11 +17,11 @@
                     <c:choose>
                         <c:when test="${logo.linkUrl != null and !logo.linkUrl.isEmpty()}">
                             <a href="${logo.linkUrl}" target="_blank">
-                                <img src="${logo.imageUrl}" alt="${logo.altText}" />
+                                <collab:image src="${logo.imageUrl}" alt="${logo.altText}" />
                             </a>
                         </c:when>
                         <c:otherwise>
-                            <img src="${logo.imageUrl}" alt="${logo.altText}" />
+                            <collab:image src="${logo.imageUrl}" alt="${logo.altText}" />
                         </c:otherwise>
                     </c:choose>
                 </div>

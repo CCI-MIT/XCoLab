@@ -1,8 +1,8 @@
 $c-Headline__addprop__textColor: black !default;
-$c-Headline__h2__textColor: $t-Color__grey--darkest !default;
+$c-Headline__h2__textColor: $t-Color__gray--dark-800 !default;
 $c-Headline__h2__span__fontWeight: 700 !default;
 $c-Headline__h2__span__textColor: $t-Color__secondary !default;
-$c-Headline__fold__message_backgroundColor: $t-Color__primary__grey--light !default;
+$c-Headline__fold__message_backgroundColor: $t-Color__primary__gray--light !default;
 $c-Headline__days-left__span__textColor: $t-Color__accent !default;
 $c-Headline__h2__span__fontSize: 33px !default;
 $c-Headline__days-left__span__padding: 0 !default;
@@ -37,10 +37,6 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
 
   &.contest-page { //.headline.contest-page
     margin-bottom: 14px;
-  }
-
-  &.formmargin { //.headline.formmargin
-    margin-right: 10px;
   }
 
   &.prophead { //.headline.prophead

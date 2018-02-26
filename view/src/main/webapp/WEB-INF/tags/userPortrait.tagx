@@ -1,9 +1,10 @@
-<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
 	<jsp:directive.attribute name="portraitId" type="java.lang.Long" required="true" rtexprvalue="true" description="Portrait id" />
 	<jsp:directive.attribute name="width" type="java.lang.Integer" required="true" rtexprvalue="true" description="Width" />
 	<jsp:directive.attribute name="height" type="java.lang.Integer" required="true" rtexprvalue="true" description="Height" />
 	<jsp:directive.attribute name="memberId" type="java.lang.Long" required="true" rtexprvalue="true" description="UserId" />
 
-	<img src="${_uploadedImageFolder}/member/${portraitId}" width="${width}" height="${height}" />
+    <collab:image src="/image/member/${portraitId}" width="${width}" height="${height}" />
 </jsp:root>

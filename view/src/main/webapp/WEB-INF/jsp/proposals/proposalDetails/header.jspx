@@ -13,91 +13,89 @@
         var proposalUrlInPhase = "${proposal.getProposalUrl(contestPhase.wrapped)}";
     </script>
 	<div class="proposal-head">
-		<div class="inner">
-			<div class="c-Headline">
-				<div class="proposal-image">
-                    <img src="${proposal.logoPath}"
-                         width="52" height="52" alt="${contestType.proposalName} image" title="${proposal.name}" />
+        <div class="c-Headline">
+            <div class="proposal-image">
+                <collab:image src="${proposal.logoPath}"
+                     width="52" height="52" alt="${contestType.proposalName} image" title="${proposal.name}" />
 
-				</div>
-				<div class="proposal-title">
-					<div class="prop-description">
-                        <collab:message code="contests.proposal.header.caption" contestType="${contestType}">
-                            <spring:argument>
-                                <xcolab:contestLink contest="${contest}" />
-                            </spring:argument>
-                            <spring:argument>
-                                <c:choose>
-                                    <c:when test="${empty proposal.team}">
-                                        <xcolab:userLinkSimple memberId="${proposal.authorId}" text="${proposal.author.screenName}" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        ${proposal.team}
-                                    </c:otherwise>
-                                </c:choose>
-                            </spring:argument>
-                        </collab:message>
-					</div>
-					<h1><a href="${proposal.proposalUrl}">${proposal.name}</a></h1>
-				</div>
-			</div>
-			<c:if test="${not proposal.visible }">
-				<h3 class='portlet-msg-error'>
-					This ${contestType.proposalName} has been deleted!
-				</h3>
-			</c:if>
-			<c:if test="${tabs.size() > 0}">
-                <ul class="c-TabBar clearfix">
-                    <c:forEach var="singleTab" items="${tabs }" varStatus="loopStatus">
-                        <li class="${!loopStatus.last
-							? (!loopStatus.first ? 'c-TabBar__tab' : 'c-TabBar__tab--first')
-							: 'c-TabBar__tab--last'}
-							${currentTab == singleTab.tab ? 'active' : singleTab.tab.tabType.cssModifier}">
+            </div>
+            <div class="proposal-title">
+                <div class="prop-description">
+                    <collab:message code="contests.proposal.header.caption" contestType="${contestType}">
+                        <spring:argument>
+                            <xcolab:contestLink contest="${contest}" />
+                        </spring:argument>
+                        <spring:argument>
                             <c:choose>
-                                <c:when test="${singleTab.defaultTab and empty contestPhase }">
-                                    <c:set var="proposalUrl" value="${proposal.proposalUrl}" />
-                                </c:when>
-                                <c:when test="${singleTab.defaultTab and not empty contestPhase }">
-                                    <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }" />
-                                </c:when>
-                                <c:when test="${not singleTab.defaultTab and empty contestPhase }">
-                                    <c:set var="proposalUrl" value="${proposal.proposalUrl}/tab/${singleTab.name}" />
+                                <c:when test="${empty proposal.team}">
+                                    <xcolab:userLinkSimple memberId="${proposal.authorId}" text="${proposal.author.screenName}" />
                                 </c:when>
                                 <c:otherwise>
-                                    <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }/tab/${singleTab.name}" />
+                                    ${proposal.team}
                                 </c:otherwise>
                             </c:choose>
-                            <a href="${proposalUrl }">
-                                <spring:message code="${singleTab.displayNameMessageCode}" />
-                                <c:if test="${singleTab.activityCount > 0}">
-                                    <span class="c-TabBar__tab__count">${singleTab.activityCount}</span>
-                                </c:if>
-                            </a>
-                        </li>
-                    </c:forEach>
-                </ul>
-            </c:if>
-		</div>
-		<!-- /inner -->
+                        </spring:argument>
+                    </collab:message>
+                </div>
+                <h1><a href="${proposal.proposalUrl}">${proposal.name}</a></h1>
+            </div>
+        </div>
+        <c:if test="${not proposal.visible }">
+            <h3 class='portlet-msg-error'>
+                This ${contestType.proposalName} has been deleted!
+            </h3>
+        </c:if>
+        <c:if test="${tabs.size() > 0}">
+            <ul class="c-TabBar clearfix">
+                <c:forEach var="singleTab" items="${tabs }" varStatus="loopStatus">
+                    <li class="${!loopStatus.last
+                        ? (!loopStatus.first ? 'c-TabBar__tab' : 'c-TabBar__tab--first')
+                        : 'c-TabBar__tab--last'}
+                        ${currentTab == singleTab.tab ? 'active' : singleTab.tab.tabType.cssModifier}">
+                        <c:choose>
+                            <c:when test="${singleTab.defaultTab and empty contestPhase }">
+                                <c:set var="proposalUrl" value="${proposal.proposalUrl}" />
+                            </c:when>
+                            <c:when test="${singleTab.defaultTab and not empty contestPhase }">
+                                <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }" />
+                            </c:when>
+                            <c:when test="${not singleTab.defaultTab and empty contestPhase }">
+                                <c:set var="proposalUrl" value="${proposal.proposalUrl}/tab/${singleTab.name}" />
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }/tab/${singleTab.name}" />
+                            </c:otherwise>
+                        </c:choose>
+                        <a href="${proposalUrl }">
+                            <spring:message code="${singleTab.displayNameMessageCode}" />
+                            <c:if test="${singleTab.activityCount > 0}">
+                                <span class="c-TabBar__tab__count">${singleTab.activityCount}</span>
+                            </c:if>
+                        </a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </c:if>
 	</div>
 	<!-- /proposal-head -->
 	<c:if test="${currentTabWrapped.canEdit and currentTabWrapped.name != 'POINTS' and not edit}">
 					<!-- or (currentTabWrapped.name == 'IMPACT' and proposalsPermissions.canAdminAll)}"> -->
-		<div class="edit-prop-wrap">
-            <xcolab:proposalLink proposal="${proposal}" text="Edit" edit="true"
-                                 cssClass="btn btn-primary-darkest btn-xs"
-                                 tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
-		</div>
+        <xcolab:proposalLink proposal="${proposal}" text="Edit" edit="true"
+                             cssClass="btn btn-primary-darkest cb-btn-xs"
+                             tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
+        <hr class="cb-hr-dark cb-hr-dashed"/>
 	</c:if>
 
     <xcolab:requireLibrary name="CKEditor" />
-    <xcolab:requireLibrary name="autoSuggest" />
-    <xcolab:requireLibrary name="jQuery UI" />
-    <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
-    <xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js"/>
-    <xcolab:script src="${_themeJsFolder}/proposals/historyWidget.js"/>
 
-    <xcolab:stylesheet href="${_libCssFolder}/imageviewer.css"/>
-    <xcolab:script src="${_themeJsFolder}/proposals/imageviewer.min.js" />
+    <!-- TODO COLAB-2676: still needed for autocomplete -->
+    <xcolab:requireLibrary name="jQuery UI" />
+
+    <xcolab:script src="/js/proposals/proposals.js"/>
+    <xcolab:script src="/js/proposals/discussionComments.js"/>
+    <xcolab:script src="/js/proposals/historyWidget.js"/>
+
+    <xcolab:stylesheet href="/css/lib/imageviewer.css"/>
+    <xcolab:script src="/js/proposals/imageviewer.min.js" />
 
 </jsp:root>

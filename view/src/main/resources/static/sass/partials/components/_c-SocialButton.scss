@@ -1,25 +1,35 @@
-$bs-height-base: 30px !default;
-$bs-height-xs: 22px !default;
+$_c-SocialButton__height: 30px !default;
+$_c-SocialButton__height--xs: 22px !default;
 
 .c-SocialButton {
-  margin: 1px;
   display: inline-block;
+  margin: 0.125rem;
   cursor: pointer;
 
+  > img {
+    height: $_c-SocialButton__height;
+    width: $_c-SocialButton__height;
+  }
+
+  &.c-SocialButton--xs > img {
+    height: $_c-SocialButton__height--xs;
+    width: $_c-SocialButton__height--xs;
+  }
+}
+
+.c-SocialButton--hoverTranslate {
   transition: all .2s ease-in-out;
   animation-fill-mode: both;
 
   &:hover {
     transform: translateY(-4px);
   }
+}
 
-  > img {
-    height: $bs-height-base;
-    width: $bs-height-base;
-  }
+.c-SocialButton__text {
+  margin-left: 5px;
 
-  &.c-SocialButton--xs > img {
-    height: $bs-height-xs;
-    width: $bs-height-xs;
+  &:hover {
+    border-bottom: 1px dashed;
   }
 }

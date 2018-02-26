@@ -1,0 +1,94 @@
+$p-About__left__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
+$p-About__left__li__a__padding--left: 4px !default;
+$p-About__left__li__a__current__background: $t-Color__tan !default;
+$p-About__left__li__a__current__borderWidth--left: 0px !default;
+$p-About__left__li__a__current__padding--left: 4px !default;
+$p-About__left__li__ul__li__a__padding--left: 28px !default;
+
+$c-SideMenu__menuItem__paddingLeft: $t-Spacing__base * .5 !default;
+
+//This is purposely kept with just a single wrapper class,
+// as the menu is often external content managed via content articles
+.c-SideMenu {
+
+  ul {
+    margin-bottom: 0;
+  }
+
+  li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    > a {
+      display: block;
+      padding-left: $c-SideMenu__menuItem__paddingLeft;
+
+      line-height: 2em;
+      font-size: 18px;
+      font-weight: $p-About__left__li__a__fontWeight;
+      color: $t-Color__primary;
+    }
+
+    > img + a {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    > a:hover,
+    &.c-SideMenu__link--active > a {
+      color: $t-Color__text--dark;
+      text-decoration: none;
+    }
+
+    //Nested sub-menu
+    ul {
+      padding: $t-Spacing__base * .5 0;
+
+      @include media-breakpoint-up(md) {
+        padding: $t-Spacing__base 0;
+      }
+
+      > li {
+        margin-left: $t-Spacing__base * .5;
+        > a {
+          font-size: 0.9em;
+        }
+      }
+    }
+  }
+}
+
+.c-SideMenu--compact {
+  li > a {
+    font-weight: $t-Typography__fontWeight;
+    line-height: 1.25em;
+  }
+}
+
+.c-SideMenu--styled {
+  li {
+    > a {
+      border-bottom: 1px solid $t-Color__gray--medium-500;;
+    }
+
+    > a:hover,
+    &.c-SideMenu__link--active > a {
+      padding-left: calc(#{$c-SideMenu__menuItem__paddingLeft} - #{$p-About__left__li__a__current__borderWidth--left});
+      background: $p-About__left__li__a__current__background;
+      border-left-style: solid;
+      border-left-width: $p-About__left__li__a__current__borderWidth--left;
+      border-left-color: $t-Color__secondary;
+      color: yiq-contrasting-color($p-About__left__li__a__current__background);
+    }
+
+    //Nested sub-menu
+    ul {
+      border-bottom: 1px solid $t-Color__gray--medium-500;
+
+      li > a {
+        border-bottom: none;
+      }
+    }
+  }
+}

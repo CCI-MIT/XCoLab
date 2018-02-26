@@ -26,7 +26,7 @@ public class ResourceMessageResolver {
         return getLocalizedMessage(messageId, null);
     }
 
-    public String getLocalizedMessage(String messageId, String[] args) {
+    public String getLocalizedMessage(String messageId, Object[] args) {
         try {
             return messageSource.getMessage(messageId, args, LocaleContextHolder.getLocale());
         } catch (NoSuchMessageException e) {

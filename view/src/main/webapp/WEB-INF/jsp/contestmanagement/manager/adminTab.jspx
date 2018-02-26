@@ -11,7 +11,13 @@
     <!--@elvariable id="ontologyTermsWhere" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
     <!--@elvariable id="section" type="java.lang.Integer"-->
     <!--@elvariable id="level" type="java.lang.Integer"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
+    <jsp:useBean id="votingReportBean" scope="request"
+                 class="org.xcolab.view.pages.contestmanagement.beans.VotingReportBean" />
+    <jsp:useBean id="proposalReportBean" scope="request"
+                 class="org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean" />
+    <jsp:useBean id="batchRegisterBean" scope="request"
+                 class="org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean" />
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
@@ -76,10 +82,9 @@
         <br/>
         <div class="addpropbox">
             <h2>Server administration</h2>
-            <form action="/admin/caching/clear" method="post">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <form:form action="/admin/caching/clear" method="post">
                 <button type="submit" class="btn btn-primary">Clear cache</button>
-            </form>
+            </form:form>
         </div>
         <br/>
         <br/>
@@ -102,22 +107,18 @@
                         <strong class="inputTitleLeft">Expire Notification at this time: (date and time): </strong>
                         <input type="datetime-local" name="expiretime" step="1"/><br/>
                         <br/>
-                        <input type="hidden"
-                               name="${_csrf.parameterName}"
-                               value="${_csrf.token}"/>
                     </p>
                     <button type="submit" class="btn btn-primary">Add Notification</button>
                 </form:form>
 
-                <form action="/admin/contest/manager/tab/ADMIN/notificationMessageDelete"
+                <form:form action="/admin/contest/manager/tab/ADMIN/notificationMessageDelete"
                       id="deleteNotificationForm" method="post" style="visibility: hidden;" >
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" id = "notificationId" name="notificationId"/>
-                </form>
+                </form:form>
 
 
                 <c:if test="${not empty listOfNotifications}">
-                    <div class="div2"><!--  --></div>
+                    <hr/>
                     <h2>List of Notifications</h2>
                     <h6>To send next pending notification, delete the currently active notification or wait for it to expire automatically.</h6>
                     <c:forEach var="notification" items="${listOfNotifications}" varStatus="status">
@@ -172,42 +173,41 @@
                 <c:if test="${empty listOfNotifications}">
                     <h5><br />No Notifications found! You can schedule one using the form above! </h5>
                 </c:if>
-                <div class="div2"><!--  --></div>
-
+                <hr/>
             </div>
             <br/>
             <br/>
             
         <div class="addpropbox">
             <h2>Activities CSV export</h2>
-            <form action="/admin/contest/manager/tab/ADMIN/exportActivities" method="post">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <form:form action="/admin/contest/manager/tab/ADMIN/exportActivities" method="post">
                 <button type="submit" class="btn btn-primary">Export activities</button>
-            </form>
+            </form:form>
         </div>
 
         <div class="addpropbox">
             <h2>Batch register members</h2>
-            <form action="/admin/contest/manager/tab/ADMIN/batchRegister" method="post">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <form:form action="/admin/contest/manager/tab/ADMIN/batchRegister" commandName="batchRegisterBean"
+                       id="batchRegisterForm" method="post">
                 <div class="c-Alert__info__message" for="batchRegisterMembersList">
                     Each member will receive an email with a link that allows them to sign in.
                     Enter one member per line in the following format:<br/>
                     <code>emailAddress;firstName;lastName</code>
                 </div>
                 <div>
-                <textarea id="batchRegisterMembersList" name="members" class="form-control"
-                          placeholder="Enter members..." style="width: 100%;"><!-- --></textarea>
+                    <form:textarea id="batchRegisterMembersList" cssClass="form-control" path="batchText"
+                               style="width: 100%;" />
                 </div>
                 <div class="form-check">
                     <!-- TODO COLAB-2204: remove style attribute once input float rule is removed -->
-                    <input type="checkbox" name="asGuests" class="form-check-input" id="asGuests" style="float: none; height: initial;"/>
+                    <form:checkbox path="asGuests" cssClass="form-check-input" id="asGuests"
+                           style="float: none; height: initial;" />
                     <label class="form-check-label js-Tooltip" for="asGuests" title="Guests cannot create proposals or participate in dicussions">
                         Register as guests
                     </label>
                 </div>
                 <button type="submit" class="btn btn-primary">Register members</button>
-            </form>
+            </form:form>
         </div>
 
         <div class="addpropbox">

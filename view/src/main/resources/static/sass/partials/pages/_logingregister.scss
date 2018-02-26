@@ -4,7 +4,7 @@
 
 .is-required {
   font-style: italic;
-  color: $t-Color__grey--dark;
+  color: $t-Color__gray--dark-700;
   margin-bottom: 20px;
 }
 
@@ -18,12 +18,6 @@
   font-size: 36px;
 }
 
-.sso-register {
-  float: right;
-  width: 50%;
-  margin-bottom: 20px;
-}
-
 .popupreg_txt.req {
   background: url(/images/reg-star.png) no-repeat 225px 4px;
 }
@@ -35,7 +29,7 @@
   width: 220px;
   height: 27px;
   padding: 6px 20px 0 0;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__gray--dark-800;
 }
 
 .popupreg_input {

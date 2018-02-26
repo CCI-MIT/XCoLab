@@ -9,7 +9,7 @@ function proposalCopy_loadContests(moveType) {
 			html.push(obj.contestName);
 			html.push("</td>");
 			html.push("<td>");
-			html.push('<div class="btn btn-primary"><a href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName);
+			html.push('<a class="btn btn-primary" href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName);
 
 			if (moveType == "FORK") {
 				html.push('/createProposal/basedOn/');
@@ -24,7 +24,7 @@ function proposalCopy_loadContests(moveType) {
 				html.push('/moveFromContestPhaseId/' + currentProposal.contestPhaseId);
 				html.push("/move/" + moveType);
 			}
-			html.push('">Select</a></div>');
+			html.push('">Select</a>');
 			html.push("</td></tr>");
 		});
 		html.push("</table>");
@@ -61,9 +61,9 @@ function loadProposalSections() {
 			}
 			html.push("</td>");
 			html.push("<td>");
-			html.push('<div class="btn btn-primary"><a href="javascript:;" class="copySectionBtn" data-section-id="');
+			html.push('<button type="button" class="btn btn-primary js-CopySectionButton" data-section-id="');
 			html.push(obj.sectionId);
-			html.push('">Copy</a></div>');
+			html.push('">Copy</button></div>');
 			html.push("</td></tr>");
 		});
 		html.push("</table>");
@@ -71,7 +71,7 @@ function loadProposalSections() {
 		var $copyProposalContestsElement = jQuery("#copyProposalContests");
 		$copyProposalContestsElement.html(html.join(""));
 
-		$copyProposalContestsElement.find("a.copySectionBtn").click(function() {
+		$copyProposalContestsElement.find(".js-CopySectionButton").click(function() {
 			var copyFromSectionId = jQuery(this).attr('data-section-id');
 
 			CKEDITOR.instances['sectionsContent' + targetSectionId].insertHtml(availableSections[copyFromSectionId].content);
@@ -88,13 +88,6 @@ function loadProposalSections() {
 	});
 }
 
-function updatePopupSize() {
-    //TODO COLAB-2587: do we need this for the new copyProposalModal? Otherwise remove
-	var container = jQuery("#copyProposalContainer");
-	container.find("#copyProposalPopup").css({top: "20px"});
-	var availableHeight = jQuery(window).height();
-	container.find(".c-Popup").css({height: (availableHeight - 200), });
-}
 
 jQuery(function() {
 	jQuery(".copyFromBaseProposalTrigger").click(function() {

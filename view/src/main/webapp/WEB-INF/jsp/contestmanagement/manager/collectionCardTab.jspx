@@ -11,7 +11,6 @@
     <!--@elvariable id="ontologyTermsWhere" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
     <!--@elvariable id="section" type="java.lang.Integer"-->
     <!--@elvariable id="level" type="java.lang.Integer"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
@@ -55,10 +54,9 @@
 
         <c:set var="deleteContestCollectionCardURL" value="/admin/contest/manager/tab/COLLECTION_CARDS/delete" />
 
-        <form action="${deleteContestCollectionCardURL }" id="deleteCollectionCardForm" method="post" style="visibility: hidden;">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <form:form action="${deleteContestCollectionCardURL }" id="deleteCollectionCardForm" method="post" style="visibility: hidden;">
             <input id="collectionCardId" name="collectionCardId"  type="hidden" value=""/>
-        </form>
+        </form:form>
 
         <form:form action="${updateContestCollectionCardURL }" commandName="collectionCardWrapperWhat" id="editForm" method="post">
             <div class="collectionCard-edit-form">

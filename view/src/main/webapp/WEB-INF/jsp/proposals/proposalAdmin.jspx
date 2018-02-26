@@ -6,10 +6,9 @@
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Admin">
-        <xcolab:script src="${_themeJsFolder}/proposals/copyProposalWidget.js"/>
+        <xcolab:script src="/js/proposals/copyProposalWidget.js"/>
 
         <!--@elvariable id="availableRibbons" type="java.util.List<org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType>"-->
-        <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
         <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
@@ -27,7 +26,7 @@
                                 <c:set var="toggleProposalOpenURL"
                                        value="${proposal.proposalUrl}/tab/ADMIN/toggleProposalOpen?&amp;contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
 
-                                <form action="${toggleProposalOpenURL }" method="post">
+                                <form:form action="${toggleProposalOpenURL }" method="post">
                                     <div class="radio">
                                         <label>
                                             <c:choose>
@@ -54,11 +53,8 @@
                                             Anyone
                                         </label>
                                     </div>
-
-                                    <input type="hidden" name="${_csrf.parameterName}"
-                                           value="${_csrf.token}"/>
                                     <button class="btn btn-primary" type="submit">Save</button>
-                                </form>
+                                </form:form>
                             </div>
                         </div>
                         <c:set var="addBlueClass" value='${not addBlueClass }'/>
@@ -87,7 +83,7 @@
                                         </c:choose>
                                     </c:forEach>
                                 </select>
-                                <button class="btn btn-admin ml-2" type="submit">Save</button>
+                                <button class="btn cb-btn-admin ml-2" type="submit">Save</button>
                             </form:form>
                         </div>
                     </div>
@@ -101,15 +97,13 @@
                             <c:set var="deleteProposalURL"
                                    value="${proposal.proposalUrl}/tab/ADMIN/deleteProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }&amp;delete=true"/>
 
-                            <form action="${deleteProposalURL }" method="post"
+                            <form:form action="${deleteProposalURL }" method="post"
                                   id="deleteProposalForm">
-                                <input type="hidden" name="${_csrf.parameterName}"
-                                       value="${_csrf.token}"/>
-                                <button type="button" class="btn ${proposalsPermissions.isPlanEditable ? 'btn-primary' : 'btn-admin'}"
+                                <button type="button" class="btn ${proposalsPermissions.isPlanEditable ? 'btn-primary' : 'cb-btn-admin'}"
                                    onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; } jQuery('#deleteProposalForm').submit();">
                                     DELETE ${contestType.proposalName}
                                 </button>
-                            </form>
+                            </form:form>
                         </div>
                     </div>
                     <c:set var="addBlueClass" value='${not addBlueClass }'/>
@@ -122,25 +116,24 @@
                     <c:set var="promoteProposalURL"
                            value="${proposal.proposalUrl}/tab/ADMIN/promoteProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }&amp;contestPhaseId=${proposal.contestPhase.contestPhasePK}"/>
 
-                    <form action="${promoteProposalURL }" method="post">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <form:form action="${promoteProposalURL }" method="post">
                         <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                             <strong>Promote ${contestType.proposalName} to latest ${contestType.contestName} phase</strong>
                             <div>
-                                <button type="submit" class="btn btn-admin">
+                                <button type="submit" class="btn cb-btn-admin">
                                     Promote ${contestType.proposalName}
                                 </button>
                             </div>
                         </div>
                         <c:set var="addBlueClass" value='${not addBlueClass }'/>
-                    </form>
+                    </form:form>
                 </c:if>
 
                 <c:if test="${ proposalsPermissions.canMoveProposal }">
                     <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
                         <strong>Move ${contestType.proposalName} to different ${contestType.contestName}</strong>
                         <div>
-                            <a class="btn ${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'btn-admin'}" href="javascript:;" rel="nofollow"
+                            <a class="btn ${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}" href="javascript:;" rel="nofollow"
                                onclick="if(!deferUntilLogin()){return false;
 } showCopyProposalPopup('MOVE_PERMANENTLY')">
                                 <span>Move</span> this ${contestType.proposalName}
@@ -223,46 +216,22 @@
 
                     <div id="manage_membership_request_dialog"><!--  --></div>
                 </div>
-
-                <div class="addpropbox blue">
-                    <strong>History</strong>
-                    <div id="versions" class="versionsContainer hidden">
-                        <div class="versions">
-                            <div class="p-Proposal__history c-TableList--noBorder fullWidth">
-                                <table>
-                                    <tbody class="ui-datatable-data ui-widget-content">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
         <xcolab:modal modalId="copyProposalModal" size="lg"
-                      title="Choose section from base ${contestType.proposalNameLowercase}, which content you want to copy">
+                      title="Choose the ${contestType.contestNameLowercase} to which you would like to move this ${contestType.proposalNameLowercase}">
             <div class="modal-body">
-                <div id="copyProposalPopupContent" style="overflow: auto; height: 50vh">
+                <div id="copyProposalPopupContent">
                     <div id="copyProposalContests"><!--  --></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="close" data-dismiss="modal" class="btn btn-gray">Cancel
+                <button type="close" data-dismiss="modal" class="btn btn-gray">
+                    Cancel
                 </button>
             </div>
         </xcolab:modal>
-        <script>
-            var currentProposal = {
-                proposalId: ${proposal.proposalId},
-                version: ${proposal.version},
-                contestPhaseId:  ${proposal.contestPhase.contestPhasePK},
-                contestPK: ${proposal.contestPK}
-            };
-            jQuery(function () {
-                loadHistoryForVersion(${proposal.version});
-            });
-        </script>
     </xcolab:layout>
 
 </jsp:root>

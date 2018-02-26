@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags">
 
@@ -104,7 +105,7 @@
 				<c:choose>
 					<c:when test="${showActiveContests }">
 						<span class="otherContestsCount prior">
-						<img src="${_themeImageFolder}/contests-archive.png" height='20px' />&amp;nbsp;
+						<collab:image src="/images/contests-archive.png" height="20" />&amp;nbsp;
 						If you select
 							<a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" class='showOtherContestsLink' >prior contests</a>,
 					

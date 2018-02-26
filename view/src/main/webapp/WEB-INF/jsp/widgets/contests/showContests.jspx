@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
@@ -8,14 +9,14 @@
 
     <div>
         <c:if test="${_isAdmin}">
-            <a href="/widgets/contests/preferences?preferenceId=${contestPreferences.preferenceId}" class="btn btn-admin btn-sm float-right">Edit contestPreferences</a><br/>
+            <a href="/widgets/contests/preferences?preferenceId=${contestPreferences.preferenceId}" class="btn cb-btn-admin btn-sm float-right">Edit contestPreferences</a><br/>
         </c:if>
         <h2> ${contestPreferences.title} <span><a href="${contestPreferences.allContestsUrl}">${contestPreferences.allContestsTitle}</a></span></h2>
         <c:forEach var="contest" items="${contests}">
             <div class="c-ContestBox backgroundLight">
                 <div class="c-ContestBox__image">
                     <a href="${contest.contestUrl}">
-                        <img src="${contest.logoPath}" width="150" height="150" alt="${contest.contestShortName}" />
+                        <collab:image src="${contest.logoPath}" width="150" height="150" alt="${contest.contestShortName}" />
                     </a>
                 </div>
                 <div class="c-ContestBox__text">

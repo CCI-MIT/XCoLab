@@ -81,4 +81,11 @@ public final class PlatformAttributeKey {
                     .defaultValue(System.getProperty("java.io.tmpdir")
                             + File.separator + "xcolab-images" + File.separator)
                     .build();
+
+    //TODO COLAB-2681: Remove once responsive design is finished
+    public static final AttributeGetter<Boolean> LAYOUT_IS_RESPONSIVE =
+            PlatformAttributes.newBooleanAttribute("layout.is-responsive")
+                    .withCache()
+                    .defaultValue(false)
+                    .build();
 }

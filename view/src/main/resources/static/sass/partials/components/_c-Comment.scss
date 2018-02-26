@@ -3,9 +3,9 @@ $c-Comment__input__button__border: none !default;
 
 $c-Comment__special__highlight: $t-Color__alert--light !default;
 
-$c-Comment__box__border: 2px solid $t-Color__grey--light !default;
+$c-Comment__box__border: 2px solid $t-Color__gray--medium-500 !default;
 
-$c-Comment__count__backgroundColor: $t-Color__grey--lightest !default;
+$c-Comment__count__backgroundColor: $t-Color__tan !default;
 $c-Comment__count__background: url(/images/icon-proposal-comments.png) no-repeat 11px 5px $c-Comment__count__backgroundColor !default;
 $c-Comment__count__a__fontWeight: 700 !default;
 $c-Comment__count__a__margin--left: 0px !default;
@@ -13,14 +13,14 @@ $c-Comment__count__a__margin--left: 0px !default;
 $c-Comment__commentor__backgroundImage: url(/images/pattern-6x6.png) !default;
 $c-Comment__commentor__textColor: black !default;
 
-$c-Comment__threads__list__tr__border--bottom: 1px solid $t-Color__grey--light !default;
+$c-Comment__threads__list__tr__border--bottom: 1px solid $t-Color__gray--medium-500 !default;
 
 .c-Comment { //.the-comment
   width: 693px;
   padding: 28px;
   position: relative;
   line-height: 22px;
-  color: $t-Color__grey--darkest;
+  color: $t-Color__gray--dark-800;
 
   p {
     margin: 0 0 10px 0;
@@ -110,7 +110,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   font-size: 15px;
 
   tr.odd td {
-    background-color: $t-Color__grey--lightest;
+    background-color: $t-Color__tan;
   }
 
   td {
@@ -178,20 +178,20 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
 #commentbox {
   height: 178px;
   width: 788px;
-  border: 2px solid $t-Color__grey--light;
+  border: 2px solid $t-Color__gray--medium-500;
   margin-bottom: 25px;
 }
 
 //TODO: unused in source code - verify if used elsewhere
 .featured_expert {
-  background: $t-Color__grey--lightest;
+  background: $t-Color__tan;
   padding: 0 0 10px 0;
-  border-bottom: 3px solid $t-Color__grey--lightest;
+  border-bottom: 3px solid $t-Color__tan;
 }
 
 //TODO: unused in source code - verify if used elsewhere
 .featured_expert-title {
-  background: $t-Color__grey--lightest;
+  background: $t-Color__tan;
   height: 26px;
   padding: 6px 0 0 101px;
   font-size: 12px;

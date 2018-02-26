@@ -1,9 +1,8 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
-
-
 
 
 	<!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
@@ -54,10 +53,10 @@
 						<span class="js-Tooltip" title="Judge's decision ${not contest.judgeStatus ? 'incomplete' : 'completed'}.">
 							<c:choose>
 								<c:when test="${not contest.judgeStatus}">
-									<img src="${_themeImageFolder}/icon_question-x.png"/>
+									<collab:image src="/images/icon_question-x.png"/>
 								</c:when>
 								<c:otherwise>
-									<img src="${_themeImageFolder}/icon_question-chk.png"/>
+									<collab:image src="/images/icon_question-chk.png"/>
 								</c:otherwise>
 							</c:choose>
 						</span>
@@ -68,10 +67,10 @@
 							<span class="js-Tooltip" title="Fellow screening ${contest.screeningStatus ? 'completed' : 'incomplete'}.">
 								<c:choose>
 									<c:when test="${contest.screeningStatus}">
-										<img src="${_themeImageFolder}/icon_question-chk.png"/>
+										<collab:image src="/images/icon_question-chk.png"/>
 									</c:when>
 									<c:otherwise>
-										<img src="${_themeImageFolder}/icon_question-x.png"/>
+										<collab:image src="/images/icon_question-x.png"/>
 									</c:otherwise>
 								</c:choose>
 							</span>

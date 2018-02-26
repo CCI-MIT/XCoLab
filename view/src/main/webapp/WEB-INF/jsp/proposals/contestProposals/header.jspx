@@ -7,7 +7,7 @@
 
 	<div class="c-Headline contest-page">
 		<div class="contest-image">
-			<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
+            <collab:image src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
 		</div>
 		<h1>${contest.contestShortNameWithEndYear}</h1>
 		<c:if test="${contestPhase.active and not empty contestPhase.phaseEndDate and showCountdown}">
@@ -21,31 +21,27 @@
 	</div>
     <!-- /c-Headline -->
 
-	<div class="c-TitleBar contestSummary m-Shadebar">
+	<div class="c-TitleBar c-TitleBar__content contestSummary m-Shadebar">
 		<jsp:directive.include file="./header_contestPhases.jspx" />
 		<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">
 			<c:set var="subscribeContestURL" value="/contests/subscribeContest?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }"/>
 
-			<div class="c-TitleBar__actionButton c-TitleBar__element right">
-
-                <collab:message code="contests.details.subscribe.tooltip" var="tooltipSubscribe" contestType="${contestType}" />
-				<span class="js-Tooltip" title="${tooltipSubscribe}">
-                    <!-- TODO COLAB-2560: turn into button -->
-					<a data-url="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }"
-                            rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" class="js-PostLink">
-						<c:choose>
-							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
-								<img src="${_themeImageFolder}/subscribe-light.png" />
-                                <spring:message code="contests.details.subscribe" />
-							</c:when>
-							<c:otherwise>
-								<img src="${_themeImageFolder}/unsubscribe-light.png" />
-                                <spring:message code="contests.details.unsubscribe" />
-							</c:otherwise>
-						</c:choose>
-					</a>
-				</span>
-			</div>
+            <collab:message code="contests.details.subscribe.tooltip" var="tooltipSubscribe" contestType="${contestType}" />
+            <button type="button" class="c-TitleBar__actionButton js-PostLink js-Tooltip"
+                    title="${tooltipSubscribe}"
+                    data-url="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }"
+                    onclick="if(!deferUntilLogin(this)) return false;">
+                <c:choose>
+                    <c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
+                        <collab:image src="/images/subscribe-light.png" />
+                        <spring:message code="contests.details.subscribe" />
+                    </c:when>
+                    <c:otherwise>
+                        <collab:image src="/images/unsubscribe-light.png" />
+                        <spring:message code="contests.details.unsubscribe" />
+                    </c:otherwise>
+                </c:choose>
+            </button>
 		</c:if>
 	</div>
 </jsp:root>

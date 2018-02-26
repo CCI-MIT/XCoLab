@@ -9,7 +9,7 @@
 		<!--@elvariable id="showCollectionCards" type="java.lang.Boolean"-->
 		<jsp:directive.include file="./init.jspx" />
 		<c:if test="${_isAdmin}">
-			<a href="/proposals/preferences" class="btn btn-admin btn-sm float-right">Edit contests preferences</a><br/>
+			<a href="/proposals/preferences" class="btn cb-btn-admin btn-sm float-right">Edit contests preferences</a><br/>
 		</c:if>
 		<c:choose>
 			<c:when test="${showCollectionCards}">
@@ -74,8 +74,6 @@
 			);
 		]]>
 		</script>
-        <xcolab:requireLibrary name="autoSuggest" />
-        <xcolab:requireLibrary name="jQuery UI" />
-		<xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
+		<xcolab:script src="/js/proposals/proposals.js"/>
 	</xcolab:layout>
 </jsp:root>

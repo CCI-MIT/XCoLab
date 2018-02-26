@@ -1,0 +1,151 @@
+//Shame file - TODO: these things need to go into their own files or be deleted
+
+.alignright {
+  float: right;
+  margin: 0 0 0 30px;
+}
+
+.alignleft {
+  float: left;
+  margin: 0 30px 0 0;
+}
+
+* html .clearfix {
+  height: 1%;
+}
+
+//TODO: is this also for admin stuff?
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0
+}
+
+//TODO: where are these used?
+#invalidFieldsList li {
+  margin-bottom: 10px;
+  font-weight: $t-Typography__fontWeight--bold;
+}
+
+.seeAllActivities {
+  text-align: right;
+}
+
+.no-bottom-margin, ul.no-bottom-margin, ol.no-bottom-margin {
+  margin-bottom: 0 !important;
+}
+
+.info.subscribe img {
+  vertical-align: bottom;
+}
+
+//TODO: where are these used?
+.header-back-to {
+  display: none;
+}
+
+.taglib-header {
+  border-bottom: 0;
+}
+
+.toplinks li {
+  list-style: none;
+}
+
+.hashlink {
+  display: none;
+}
+
+#freeOutputPhysical {
+  padding-bottom: 20px;
+}
+
+//TODO: where are these used?
+.taglib-icon-help span.hide-accessible {
+  font-size: 10pt;
+  font-weight: normal;
+  margin-left: 10px;
+  color: #a9a9a9;
+}
+
+.taglib-header h3 {
+  margin-top: 20px !important;
+}
+
+.js .controls-hidden .lfr-meta-actions {
+  display: block;
+}
+
+//TODO: members or discussion (or both)?
+.role-indicator div {
+  float: left;
+  margin-right: 15px;
+}
+
+fieldset.fieldset .control-group { //
+  float: left;
+  margin-right: 50px;
+}
+
+//team box (CMS + messaging):
+.teamBox {
+  float: left;
+  margin-right: 20px;
+}
+
+.teamBox:last-child {
+  margin-right: 0;
+}
+
+.teamBox .teamMemberHeader h2 {
+  float: left;
+}
+
+.teamBox .teamMemberListing li {
+  line-height: 10px;
+  margin-bottom: 5px;
+  background-size: 20px;
+  background: #FFF url("/images/icon_question-x.png") no-repeat 215px;
+  list-style: none;
+}
+
+.teamBox .teamMemberAdd input {
+  width: 350px;
+  height: 40px;
+  background: #FFF url("/images/contest-icon-cplus-orange.png") no-repeat;
+  float:left;
+  background-size: 20px;
+  background-position: 98% 50%;
+  padding-left: 10px;
+}
+
+.teamBox .teamMemberListing .name {
+  padding-left: 7px;
+  vertical-align: 11px;
+}
+
+//jquery list for user selection in teambox
+// TODO COLAB-2676: still needed for autocomplete
+.ui-autocomplete.ui-menu {
+  z-index: 1100;
+}
+
+
+li.ui-menu-item {
+  border-bottom: 1px solid #ccc;
+  background: #fff url("/images/contest-icon-cplus-blue.png");
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: 98% 50%;
+  padding-left: 10px;
+}
+
+li.ui-menu-item .ui-state-focus {
+  background: #FFF url("/images/contest-icon-cplus-green.png");
+  border: 1px solid #ccc;
+  border-radius: 0;
+  color: #000;
+  background-repeat: no-repeat;
+  background-position: 98% 50%;
+  padding-left: 10px;
+}

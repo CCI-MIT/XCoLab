@@ -7,7 +7,7 @@
 <xcolab:layout title="Subscriptions">
 
     <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
-    <jsp:directive.include file="./init.jspx" />
+    <jsp:directive.include file="./init.jspx"/>
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -26,48 +26,53 @@
         </ol>
     </nav>
 
-    <div class="main_long clearfix">
-        <h1>Subscribed activities</h1>
-        <c:if test="${currentUserProfile.viewingOwnProfile}">
-          <div class="profile_action">
-            <a class="btn btn-primary" href="/members/profile/${currentUserProfile.userId}/subscriptions/manage"><spring:message code="subscription.manage.button"/></a>
-            <a class="btn btn-gray" href="/members/profile/${currentUserProfile.userId}"><spring:message code="subscription.backtoprofile.button"/></a>
-          </div>
-        </c:if>
-        <table id="activitiesTable" class="fullscreen colab">
+    <h1>Subscribed activities</h1>
+    <c:if test="${currentUserProfile.viewingOwnProfile}">
+        <div class="float-right mb-3">
+            <a class="btn btn-link"
+               href="/members/profile/${currentUserProfile.userId}"><spring:message
+                    code="subscription.backtoprofile.button"/></a>
+            <a class="btn btn-primary"
+               href="/members/profile/${currentUserProfile.userId}/subscriptions/manage"><spring:message
+                    code="subscription.manage.button"/></a>
+        </div>
+    </c:if>
+    <table id="activitiesTable" class="fullscreen colab">
         <thead class="portlet-section-header">
-            <tr>
-              <th style="width: 585px" class="Hdr"><spring:message code="subscription.activities.activity.title"/></th>
-              <th style="width: 160px" class="Hdr"><spring:message code="subscription.activities.date.title"/></th>
-            </tr>
-          </thead>
-          <tbody>
-            <c:forEach  var="activity" items="${currentUserProfile.subscribedActivities}"
-                        begin="${(currentUserProfile.subscriptionsPaginationPageId-1) * currentUserProfile.subscriptionsPageSize}"
-                        end="${currentUserProfile.subscriptionsPaginationPageId * currentUserProfile.subscriptionsPageSize}">
-              <tr class="colabRow">
+        <tr>
+            <th class="Hdr"><spring:message
+                    code="subscription.activities.activity.title"/></th>
+            <th class="Hdr"><spring:message
+                    code="subscription.activities.date.title"/></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="activity" items="${currentUserProfile.subscribedActivities}"
+                   begin="${(currentUserProfile.subscriptionsPaginationPageId-1) * currentUserProfile.subscriptionsPageSize}"
+                   end="${currentUserProfile.subscriptionsPaginationPageId * currentUserProfile.subscriptionsPageSize}">
+            <tr class="colabRow">
                 <td>${activity.body}</td>
                 <td>
-                    <xcolab:formatDateTime millis="${activity.createdDate.time}" />
+                    <xcolab:formatDateTime millis="${activity.createdDate.time}"/>
                 </td>
-              </tr>
+            </tr>
 
+        </c:forEach>
+        </tbody>
+    </table>
+
+    <c:set var="paginationActionUrl" value="/members/profile/${currentUserProfile.userId}/subscriptions/navigate"/>
+
+
+    <!--@elvariable id="pageNavigation" type="org.xcolab.view.util.pagination.PageNavigation"-->
+    <c:if test="${pageNavigation.shouldShowNavigation}">
+        <div class="pagination">
+            <c:forEach var="pageLink" items="${pageNavigation.pageLinks}">
+                <a class="${pageLink.isCurrent ? 'c' : ''}"
+                   href="${pageLink.url}">${pageLink.text}</a>
             </c:forEach>
-          </tbody>
-        </table>
+        </div>
+    </c:if>
 
-      <c:set var="paginationActionUrl" value="/members/profile/${currentUserProfile.userId}/subscriptions/navigate" />
-
-
-        <!--@elvariable id="pageNavigation" type="org.xcolab.view.util.pagination.PageNavigation"-->
-        <c:if test="${pageNavigation.shouldShowNavigation}">
-            <div class="pagination">
-                <c:forEach var="pageLink" items="${pageNavigation.pageLinks}">
-                    <a class="${pageLink.isCurrent ? 'c' : ''}" href="${pageLink.url}">${pageLink.text}</a>
-                </c:forEach>
-            </div>
-        </c:if>
-
-    </div>
 </xcolab:layout>
 </jsp:root>

@@ -2,6 +2,7 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -14,7 +15,6 @@
 	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
     <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
     <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.members.pojo.MemberCategory>"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
     <!--@elvariable id="_isGoogleSsoActive" type="java.lang.Boolean"-->
     <!--@elvariable id="_isFacebookSsoActive" type="java.lang.Boolean"-->
 
@@ -247,7 +247,7 @@
 				</c:if>
 
 				<div class="profile_about-head"><spring:message code="profile.form.fields.shortbio"/></div>
-				<div class="userProfileAbout">
+				<div>
 					<form:textarea
 						cssClass="rte-editorPlaceholder form-control" path="shortBio" />
 					<div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
@@ -387,10 +387,9 @@
 				<tr class="colabRow">
 					<td class="actionColumn">
                         <spring:message code="profile.account.delete.question" arguments="${_colabName}" var="deleteMsg"/>
-						<form action="${deleteProfileUrl}" method="post" onsubmit="confirm('${deleteMsg}')">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						<form:form action="${deleteProfileUrl}" method="post" onsubmit="confirm('${deleteMsg}')">
 							<button type="submit" class="btn btn-gray btn-sm"><spring:message code="profile.account.delete.button"/></button>
-						</form>
+						</form:form>
 					</td>
                     <td>
                         <spring:message code="profile.account.delete.message" arguments="${_colabName}"/>
@@ -423,7 +422,7 @@
                                 <label for="hasRole${memberCategory.roleId}"></label>
                             </td>
                             <td class="${memberCategory.showInList ? '' : 'text-muted'}">
-                                <img src="${_themeImageFolder}/${memberCategory.imageName}.png"
+                                <collab:image src="/images/${memberCategory.imageName}.png"
                                      width="16" height="16" /> ${memberCategory.categoryName}
                             </td>
                         </tr>

@@ -109,11 +109,6 @@ public class SharedColabClient {
         return member;
     }
 
-    public static Member registerInPartnerColab(Member member) {
-        return partnerMemberResource.service("registerFromSharedColab", Member.class)
-                .post(member);
-    }
-
     public static boolean validatePassword(String password, long memberId) {
         return partnerMemberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)

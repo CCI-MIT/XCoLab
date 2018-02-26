@@ -80,18 +80,9 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             //TODO COLAB-2446: move cdn resolution to CdnUrlEncodingFilter
             final String themeImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_STATIC.get();
-            final String userImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
 
-            //Note: CDN for scripts is added via CdnUrlEncodingFilter
-            modelAndView.addObject("_libCssFolder", "/css/lib");
-            modelAndView.addObject("_libJsFolder", "/js/lib");
-            modelAndView.addObject("_themeCssFolder", activeTheme.getCssPath());
-            modelAndView.addObject("_themeJsFolder", activeTheme.getJsPath());
+            modelAndView.addObject("_themeStylesheetPath", activeTheme.getStylesheetPath());
 
-            modelAndView.addObject("_themeImageFolder",
-                    themeImageDomain + activeTheme.getImagePath());
-            modelAndView.addObject("_uploadedImageFolder",
-                    userImageDomain + "/image");
             modelAndView.addObject("_logoPath",
                     themeImageDomain + activeTheme.getLogoPath());
             modelAndView.addObject("_logoPathSocial",
@@ -229,6 +220,8 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("_socialMediaEngines", SocialMediaEngine.getAllSocialMediaEngines());
 
             modelAndView.addObject("_donateLink", ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get());
+
+            modelAndView.addObject("_isResponsive", PlatformAttributeKey.LAYOUT_IS_RESPONSIVE.get());
         }
     }
 

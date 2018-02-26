@@ -11,7 +11,6 @@
     <!--@elvariable id="selectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
 
     <!--@elvariable id="reports" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.FlaggingReportWrapper>"-->
-    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
@@ -22,15 +21,13 @@
     <c:set var="deleteReportTargetUrl" value="/admin/contest/manager/tab/FLAGGING/delete/${reportTargetWrapper.reportTargetId}" />
 
 
-    <form action="${deleteReportTargetUrl}" id="deleteReportTargetForm" method="post" style="visibility: hidden;">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <form:form action="${deleteReportTargetUrl}" id="deleteReportTargetForm" method="post" style="visibility: hidden;">
         <!-- -->
-    </form>
+    </form:form>
 
-    <form action="${createReportTargetUrl}" id="createReportTargetForm" method="post" style="visibility: hidden;">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <form:form action="${createReportTargetUrl}" id="createReportTargetForm" method="post" style="visibility: hidden;">
         <!-- -->
-    </form>
+    </form:form>
 
     <div class="c-ContentBox">
         <div style="margin-bottom: 40px;">

@@ -43,14 +43,10 @@
 }
 
 .addpropInputContainer {
-    float: right;
-    font-size: 16px;
-    min-width: 440px;
-
-  &.full-width {
-    width: 830px;
-  }
-    position: relative;
+  float: right;
+  font-size: 16px;
+  min-width: 440px;
+  position: relative;
 }
 .addpropInputContainer span {
   vertical-align: middle;
@@ -302,10 +298,6 @@ table.judgingForm {
     width: 650px;
 }
 
-.pickerButtons .btn {
-    float: right;
-}
-
 #proposalPicker_proposalsContainer .higlightText1,
 #proposalPicker_contestsContainer .higlightText1 {
     background: #fdff62;
@@ -390,15 +382,6 @@ div.selected {
     margin-left: 0 !important;
     padding: inherit !important;
     background: none !important;
-}
-
-.button-disabled {
-    opacity: 0.5;
-}
-
-.button-disabled a,
-.disabled {
-    pointer-events: none;
 }
 
 /* Impact tab */

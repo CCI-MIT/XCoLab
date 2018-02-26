@@ -13,14 +13,12 @@
             <c:when test="${not empty contentArticleVersion}">
                 <c:if test="${withTitle}">
                     <h1>${contentArticleVersion.title}</h1>
-                    <br />
                 </c:if>
                 <c:if test="${_isAdmin}">
                     <a href="/content-editor/?articleId=${contentArticleVersion.contentArticleId}"
-                       class="btn btn-admin btn-sm float-right">
+                       class="btn cb-btn-admin btn-sm float-right">
                         Edit article
                     </a>
-                    <br/>
                 </c:if>
                 <c:if test="${not empty contentArticleVersion}">
                     ${contentArticleVersion.content}
@@ -28,7 +26,7 @@
             </c:when>
             <c:otherwise>
                 <c:if test="${_isAdmin}">
-                    <a href="/content-editor" class="btn btn-admin btn-sm float-right">Go to content editor</a>
+                    <a href="/content-editor" class="btn cb-btn-admin btn-sm float-right">Go to content editor</a>
                     <br/>
                     <div class="c-Alert__danger c-Alert__error__message">
                         Error while loading content article ${articleId}, it might not exist.

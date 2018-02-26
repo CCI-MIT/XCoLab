@@ -14,6 +14,7 @@ import java.util.List;
 public class ProposalAdvancingBean {
 
     private static final String[] EMAIL_TEMPLATES_TO_LOAD = {
+            "ADVANCING_ADVANCE_TO_FINALIST",
             "ADVANCING_ADVANCE_TO_SEMIFINALIST",
             "ADVANCING_DO_NOT_ADVANCE"
     };

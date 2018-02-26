@@ -3,9 +3,10 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
 
-    <!--@elvariable id="_themeImageFolder" type="java.lang.String"-->
     <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -25,7 +26,6 @@
         <!--@elvariable id="proposalToModelMap" type="java.util.Map<java.lang.String, org.xcolab.view.pages.proposals.impact.ProposalSimulationScenarioRegionWrapper>"-->
         <!--@elvariable id="impactIterations" type="java.util.List<org.xcolab.client.contest.pojo.impact.ImpactIteration>"-->
         <!--@elvariable id="impactSerieses" type="java.util.List<org.xcolab.view.pages.proposals.impact.ProposalImpactSeries>"-->
-        <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
@@ -127,17 +127,16 @@
 
                         <c:set var="updateProposalScenarioURL" value="${proposal.proposalUrl}/tab/IMPACT" />
 
-                        <form action="${updateProposalScenarioURL}" id="updateProposalScenarioForm" method="post">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <form:form action="${updateProposalScenarioURL}" id="updateProposalScenarioForm" method="post">
                             <input type="text" id="proposalScenarioId" name="scenarioId" class="hidden"/>
                             <input type="text" id="scenarioModelId" name="modelId" class="hidden"/>
                             <input type="text" id="isConsolidatedScenario" name="isConsolidatedScenario" class="hidden"/>
                             <input type="text" id="proposalModelRegion" name="region" class="hidden"
                                    value="${proposal.modelRegion}"/>
-                        </form>
+                        </form:form>
 
                         <div class="c-ControlsOverlay">
-                            <div class="inner">
+                            <div class="cb-container-fixed">
                                 <p>
                                     <c:choose>
                                         <c:when test="${proposal.currentVersion le 1}">
@@ -215,9 +214,9 @@
                             <th class="blue-bg" style="text-align: center" colspan="${fn:length(impactIterations)}">
                                 Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
                                 <a href="javascript:;" class="helpTrigger">
-                                <img
-                                        src="${_themeImageFolder}/icon-addprop-question.png" width="15"
-                                        height="15"/></a><br/>
+                                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                                </a>
+                                <br/>
 
                                 <div class="addprophelp" style="color:white;">
                                     This table shows a summary of the emission reductions for all sectors and regions
@@ -234,9 +233,10 @@
                         </thead>
                         <tr>
                             <td class="blue-bg" style="text-align: left">Sector
-                                <a href="javascript:;" class="helpTrigger"><img
-                                        src="${_themeImageFolder}/icon-addprop-question.png" width="15"
-                                        height="15"/></a><br/>
+                                <a href="javascript:;" class="helpTrigger">
+                                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                                </a>
+                                <br/>
 
                                 <div class="addprophelp" style="color:white;">
                                     This table shows a summary of the emission reductions for all sectors and regions

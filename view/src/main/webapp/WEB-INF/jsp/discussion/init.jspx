@@ -1,6 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
-    <xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js"/>
-    <xcolab:script src="${_themeJsFolder}/discussion/main.js"/>
+    <xcolab:script src="/js/proposals/discussionComments.js"/>
+    <xcolab:script src="/js/discussion/main.js"/>
     <xcolab:content articleId="${communityTopContentArticleId}" />
     </jsp:root>

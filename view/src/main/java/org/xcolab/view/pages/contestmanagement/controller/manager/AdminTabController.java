@@ -18,6 +18,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
@@ -27,8 +28,10 @@ import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterLineBean;
 import org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
+import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCsvWriter;
@@ -51,6 +54,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
@@ -58,6 +62,8 @@ import java.util.stream.Collectors;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
@@ -73,13 +79,15 @@ public class AdminTabController extends AbstractTabController {
     private final LoginRegisterService loginRegisterService;
     private final ServletContext servletContext;
     private final ActivityEntryHelper activityEntryHelper;
+    private final Validator validator;
 
     @Autowired
     public AdminTabController(LoginRegisterService loginRegisterService,
-            ServletContext servletContext, ActivityEntryHelper activityEntryHelper) {
+            ServletContext servletContext, ActivityEntryHelper activityEntryHelper, Validator validator) {
         this.loginRegisterService = loginRegisterService;
         this.servletContext = servletContext;
         this.activityEntryHelper = activityEntryHelper;
+        this.validator = validator;
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -138,8 +146,6 @@ public class AdminTabController extends AbstractTabController {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        model.addAttribute("votingReportBean", new VotingReportBean());
-        model.addAttribute("proposalReportBean", new ProposalReportBean());
 
         List<Notification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
@@ -245,22 +251,54 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/batchRegister")
     public String batchRegisterMembers(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String members, @RequestParam(defaultValue = "false") Boolean asGuests) {
-        final String[] memberStrings = members.split("\\r\\n|\\n|\\r");
-        for (String memberString : memberStrings) {
-            final String[] values = memberString.split(";");
-            if (values.length != 3) {
-                throw new IllegalArgumentException();
+            BatchRegisterBean batchRegisterBean) throws IOException {
+        if (!tabWrapper.getCanView()) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        final String[] memberStrings = batchRegisterBean.getBatchText().split("\\r\\n|\\n|\\r");
+
+        final Set<BatchRegisterLineBean> registerLineBeans;
+        try {
+            registerLineBeans =
+                    Arrays.stream(memberStrings)
+                            .map(memberString -> memberString.split(";"))
+                            .map(values -> new BatchRegisterLineBean(values[1], values[2], values[0]))
+                            .collect(Collectors.toSet());
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            AlertMessage.danger("Batch registration: Invalid format.").flash(request);
+            return TAB_VIEW;
+        }
+
+
+        for (BatchRegisterLineBean registerLineBean : registerLineBeans) {
+            Set<ConstraintViolation<BatchRegisterLineBean>> violations = validator.validate(registerLineBean);
+
+            if (!violations.isEmpty()) {
+                AlertMessage.danger("Batch registration: Invalid format.").flash(request);
+                return TAB_VIEW;
             }
-            String email = values[0];
-            String firstName = values[1];
-            String lastName = values[2];
-            Member member = loginRegisterService.autoRegister(email, firstName, lastName);
-            if (asGuests) {
+
+            try {
+                MembersClient.findMemberByEmailAddress(registerLineBean.getEmail());
+                // If member is found there is no exception and we continue.
+                AlertMessage.danger("Batch registration: Email address already used.").flash(request);
+                return TAB_VIEW;
+            } catch (MemberNotFoundException e) {
+                // Do Nothing.
+            }
+        }
+
+        for (BatchRegisterLineBean registerLineBean : registerLineBeans) {
+            Member member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
+                                                              registerLineBean.getFirstName(),
+                                                              registerLineBean.getLastName());
+            if (batchRegisterBean.getAsGuests()) { // TODO: throws a null pointer exception...
                 MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
                 MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
             }
         }
+
         AlertMessage.CHANGES_SAVED.flash(request);
         return "redirect:" + tab.getTabUrl();
     }

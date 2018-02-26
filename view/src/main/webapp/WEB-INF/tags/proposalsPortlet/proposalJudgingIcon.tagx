@@ -1,18 +1,19 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:c="http://java.sun.com/jsp/jstl/core">
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <jsp:directive.attribute name="value" type="java.lang.Integer" required="true" rtexprvalue="true" description="Status value of the icon" />
 
     <span class="fieldWithTooltip">
         <c:choose>
             <c:when test="${value == 0}">
-                <img src="${_themeImageFolder}/icon_question-chk-qm.png"/>
+                <collab:image src="/images/icon_question-chk-qm.png"/>
             </c:when>
             <c:when test="${value == 1}">
-                <img src="${_themeImageFolder}/icon_question-x.png"/>
+                <collab:image src="/images/icon_question-x.png"/>
             </c:when>
             <c:otherwise>
-                <img src="${_themeImageFolder}/icon_question-chk.png"/>
+                <collab:image src="/images/icon_question-chk.png"/>
             </c:otherwise>
         </c:choose>
         </span>

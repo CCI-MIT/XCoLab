@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:c="http://java.sun.com/jsp/jstl/core">
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
@@ -12,7 +13,7 @@
     <!--@elvariable id="staffMembers" type="java.util.List<org.xcolab.view.widgets.staffmembers.StaffMemberWrapper>"-->
 
     <c:if test="${_isAdmin}">
-        <a href="/widgets/staffmembers/preferences?preferenceId=${preferences.preferenceId}" class="btn btn-admin btn-sm float-right">Edit preferences</a><br/>
+        <a href="/widgets/staffmembers/preferences?preferenceId=${preferences.preferenceId}" class="btn cb-btn-admin btn-sm float-right">Edit preferences</a><br/>
     </c:if>
 
     <c:if test="${not empty widgetTitle}">
@@ -55,7 +56,7 @@
                                         <span class="staffmembers-organization">${staffMember.organization}</span><br/>
                                     </c:if>
                                 </div>
-                                <img src="${staffMember.photoUrl}"/>
+                                <collab:image src="${staffMember.photoUrl}"/>
                             </li>
                         </c:forEach>
                     </ul>
