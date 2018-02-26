@@ -1,0 +1,10 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:layout="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<layout:layout>
+
+    <!-- This page has no content - it is used as a baseline for monitoring -->
+
+</layout:layout>
+</jsp:root>
