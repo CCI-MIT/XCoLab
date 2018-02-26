@@ -110,42 +110,6 @@ a.join {
   margin-right: 15px;
 }
 
-//TODO COLAB-2673: Remove once newsboxes in content articles are replaced
-.newsbox {
-  background: url(/images/bg-noise.png) $t-Color__tan;
-  width: 418px;
-  font-size: 15px;
-  padding: 10px 26px 10px 18px;
-  margin: 25px 0 25px;
-  position: relative;
-  border: 1px solid $t-Color__gray--medium-500;
-  border-radius: 6px;
-}
-
-.newsbox h3 {
-  float: left;
-  font-size: 15px;
-  color: black;
-  width: 55px;
-}
-
-.newsbox-arrow {
-  position: absolute;
-  top: 8px;
-  left: -17px;
-  width: 17px;
-  height: 17px;
-  background: url(/images/newsbox-arrow.png) no-repeat;
-}
-
-.newsbox:after, .homespot:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
 /* <Conference Countdown Flipclock>*/
 #conference-countdown {
   position: absolute;
