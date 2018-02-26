@@ -13,7 +13,7 @@
     <jsp:directive.attribute name="themeImageFolder" type="java.lang.String" required="true" rtexprvalue="true" description="Folder for theme images" />
     <jsp:directive.attribute name="footerArticleId" type="java.lang.Long" required="true" rtexprvalue="true" description="ID of the footer's content article" />
 
-    <div id="c-Footer" class="clearfix">
+    <div id="c-Footer">
         <div id="c-Footer__menu">
             <div class="cb-container-fixed cb-d-flex-between-center">
                 <nav>
@@ -74,7 +74,7 @@
         </div> <!-- #c-Footer__menu -->
 
         
-        <footer class="cb-container-fixed">
+        <footer class="cb-container-fixed py-4">
             <!-- footer content -->
             <xcolab:content articleId="${footerArticleId}"/>
         </footer>
