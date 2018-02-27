@@ -1,5 +1,3 @@
-@import "../components/c-Button";
-
 $p-Homepage__homespot__background: url(/images/bg-noise.png) $t-Color__tan !default;
 
 $p-homepage__content__h2__fontSize: 20px !default;
@@ -19,26 +17,38 @@ $p-homepage__join__backgroundColor: $t-Color__accent !default;
 $p-homepage__join__borderColor: none !default;
 $p-homepage__join__imageUrl: none !default;
 
+.p-Homepage {
+
+  // Reset the container's spacing so the background can span the whole page's width
+  #content {
+    padding: 0;
+    width: 100%;
+    max-width: initial;
+  }
+
+  h1 {
+    font-size: 2.1875rem;
+  }
+
+  h2 span {
+    font-size: 1rem;
+    margin-left: .5rem;
+  }
+}
+
 //TODO: remove legacy homespot for climate colab
 .homespot,
 .p-Homepage__homespot { //.homespot
+  padding: 1rem 0;
+  margin-bottom: 1.5rem;
+
   background: $p-Homepage__homespot__background;
-  margin-bottom: 25px;
-  padding-bottom: 5px;
 }
 
 %p-Homepage__homespot__background { //.earth
   @extend .clearfix;
-  background-position: right 0 center;
+  background-position: right top;
   background-repeat: no-repeat;
-  background-size: contain;
-  width: 100%;
-}
-
-//TODO: remove legacy earth for climate colab
-.earth {
-  @extend %p-Homepage__homespot__background;
-  background-image: url(/images/homespot/background.png);
 }
 
 // Background can optionally start at various breakpoints
@@ -64,80 +74,8 @@ $p-homepage__join__imageUrl: none !default;
   float: left;
   width: 530px;
   padding-left: 10px;
-  color: $t-Color__text--dark;
   position: relative;
   font-size: 16px;
-}
-
-.social {
-  font-size: 14px;
-  width: 150px;
-  position: absolute;
-  right: -9px;
-  top: 2px;
-}
-
-.homespot-left h1 {
-  font-size: 35px;
-  margin: 20px 0 10px 0;
-}
-
-//TODO COLAB-2561: remove once replaced in web content
-a.learn {
-  @include theme-button($p-homepage__learn__backgroundColor, $p-homepage__learn__borderColor,
-          $p-homepage__learn__imageUrl, $p-homepage__learn__backgroundColor--hover);
-  text-transform: uppercase;
-  margin-right: 15px;
-}
-
-//TODO COLAB-2561: remove once replaced in web content
-a.get {
-  @include theme-button($p-homepage__get__backgroundColor, $p-homepage__get__borderColor, $p-homepage__get__imageUrl);
-  text-transform: uppercase;
-  margin-right: 15px;
-}
-
-//TODO COLAB-2561: remove once replaced in web content
-a.join {
-  @include theme-button($p-homepage__join__backgroundColor, $p-homepage__join__borderColor, $p-homepage__join__imageUrl);
-  text-transform: uppercase;
-  margin-right: 15px;
-}
-
-//TODO COLAB-2673: Remove once newsboxes in content articles are replaced
-.newsbox {
-  background: url(/images/bg-noise.png) $t-Color__tan;
-  width: 418px;
-  font-size: 15px;
-  padding: 10px 26px 10px 18px;
-  margin: 25px 0 25px;
-  position: relative;
-  border: 1px solid $t-Color__gray--medium-500;
-  border-radius: 6px;
-}
-
-.newsbox h3 {
-  float: left;
-  font-size: 15px;
-  color: black;
-  width: 55px;
-}
-
-.newsbox-arrow {
-  position: absolute;
-  top: 8px;
-  left: -17px;
-  width: 17px;
-  height: 17px;
-  background: url(/images/newsbox-arrow.png) no-repeat;
-}
-
-.newsbox:after, .homespot:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
 }
 
 /* <Conference Countdown Flipclock>*/
@@ -273,10 +211,6 @@ a.join {
 
 /* </ Conference Countdown Flipclock>*/
 
-.landingpage-links {
-  float: right;
-}
-
 /* columns ------------- */
 .home-left {
   float: left;
@@ -286,24 +220,4 @@ a.join {
 .home-right {
   float: left;
   width: 464px;
-}
-
-.home #content {
-  padding: 0;
-  width: 100%;
-  max-width: initial;
-}
-
-.home h2 {
-  font-size: $p-homepage__content__h2__fontSize;
-  color: $p-homepage__content__h2__textColor;
-  margin-bottom: 18px;
-}
-
-.home h2.flt {
-}
-
-.home h2 span {
-  font-size: 15px;
-  padding-left: 5px;
 }

@@ -25,7 +25,7 @@
                     <label style="margin: 0 10px 5px 0;">
                         <spring:message code="homepage.modals.postreg.field.username" />:
                     </label>
-                    <input name="screenName" type="text" id="reg_username" value="${member.screenName}" onkeypress="return submitenter(this,event)" style="padding: 5px; float:right; margin-right:2px;"/>
+                    <input name="screenName" type="text" id="reg_username" value="${member.screenName}" style="padding: 5px; float:right; margin-right:2px;"/>
                     <div id="screenName_error" style="display: none;">
                         <div class="clearfix"><!-- --></div>
                         <div class="c-Alert__error__message">The specified user name is either not valid or already taken.</div>
@@ -36,7 +36,7 @@
                         <spring:message code="homepage.modals.postreg.field.bio" />
                     </label>
                     <br/>
-                    <textarea name="bio" id="reg_bio" onkeypress="return submitenter(this,event)" rows="6" cols="40" style="padding: 5px; float:right;"><!-- --></textarea>
+                    <textarea name="bio" id="reg_bio" rows="6" cols="40" style="padding: 5px; float:right;"><!-- --></textarea>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer" style="margin-bottom: 20px; float:right;">
                         <span class="limit_characterCount"><!--  --></span>/&#160;

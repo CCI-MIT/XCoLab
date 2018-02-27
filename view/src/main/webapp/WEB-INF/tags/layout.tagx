@@ -181,7 +181,7 @@
 </head>
 
 <!--TODO COLAB-2681: Remove isResponsive feature flag once its on by default -->
-<body class="${_isHomePage ? 'home' : ''} ${_isResponsive ? 'feature-isResponsive' : ''}">
+<body class="${_isHomePage ? 'p-Homepage' : ''} ${_isResponsive ? 'feature-isResponsive' : ''}">
     <c:if test="${_betaRibbonShow}">
         <div class="c-Ribbon">
             Beta

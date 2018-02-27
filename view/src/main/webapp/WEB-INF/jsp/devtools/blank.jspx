@@ -4,15 +4,7 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <layout:layout>
 
-    <div class="p-Homepage__homespot">
-        <div class="cb-container-fixed">
-            <xcolab:content articleId="${homeSpotContentArticleId}" />
-        </div>
-    </div>
-
-    <div class="cb-container-fixed">
-        <xcolab:content articleId="${homeBottomContentArticleId}" />
-    </div>
+    <!-- This page has no content - it is used as a baseline for monitoring -->
 
 </layout:layout>
 </jsp:root>

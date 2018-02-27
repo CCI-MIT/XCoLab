@@ -13,12 +13,12 @@ import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.util.pagination.SortFilterPage;
+import org.xcolab.view.widgets.feeds.FeedType;
 import org.xcolab.view.widgets.feeds.FeedTypeDataProvider;
 import org.xcolab.view.widgets.feeds.FeedsPreferences;
 import org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +29,15 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
+    private final ActivityEntryHelper activityEntryHelper;
+
     @Autowired
-    private ActivityEntryHelper activityEntryHelper;
+    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper) {
+        this.activityEntryHelper = activityEntryHelper;
+    }
 
     @Override
-    public String populateModel(HttpServletRequest request, HttpServletResponse response,
+    public void populateModel(HttpServletRequest request, HttpServletResponse response,
             SortFilterPage sortFilterPage, FeedsPreferences feedsPreferences, Model model) {
 
         Map<String, String[]> parameters = request.getParameterMap();
@@ -59,13 +63,11 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
             final MemberCategory memberCategory =
                     MembersClient.getMemberCategory(MemberRole.ADMINISTRATOR.getRoleId());
 
-            List<Member> adminList = MembersClient
-                    .listMembers(memberCategory.getCategoryName(), null, null, null, true, 0,
-                            Integer.MAX_VALUE);
-            if (adminList != null && !adminList.isEmpty()) {
-                for (Member m : adminList) {
-                    idsToExclude.put(m.getId_(), m.getUserId());
-                }
+            List<Member> adminList = MembersClient.listMembers(memberCategory.getCategoryName(),
+                    null, null, null, true,
+                    0, Integer.MAX_VALUE);
+            for (Member m : adminList) {
+                idsToExclude.put(m.getId_(), m.getUserId());
             }
         }
 
@@ -73,71 +75,51 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
                 MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
 
         List<Member> staffList = MembersClient
-                .listMembers(memberCategory.getCategoryName(), null, null, null, true, 0,
-                        Integer.MAX_VALUE);
+                .listMembers(memberCategory.getCategoryName(), null, null, null, true,
+                        0, Integer.MAX_VALUE);
         if (staffList != null && !staffList.isEmpty()) {
             for (Member m : staffList) {
                 idsToExclude.put(m.getId_(), m.getUserId());
             }
         }
 
-        List<ActivityEntry> windowedActivities;
         int startRetrievalAt = sortFilterPage.getPage() * pageSize;
         int endRetrievalAt = (sortFilterPage.getPage() + 1) * pageSize;
-        if (filterUserId == 0) {
-            windowedActivities = ActivitiesClientUtil
-                    .getActivityEntries(startRetrievalAt, endRetrievalAt, null,
-                            new ArrayList<>(idsToExclude.keySet()));
+        List<ActivityEntry> windowedActivities = ActivitiesClientUtil.getActivityEntries(
+                startRetrievalAt, endRetrievalAt, filterUserId > 0 ? filterUserId : null,
+                new ArrayList<>(idsToExclude.keySet()));
 
-        } else {
-            windowedActivities = ActivitiesClientUtil
-                    .getActivityEntries(startRetrievalAt, endRetrievalAt, filterUserId,
-                            new ArrayList<>(idsToExclude.keySet()));
-        }
-
-        int lastDaysBetween = -1;
-        int i = 0;
         List<SocialActivityWrapper> activities = new ArrayList<>();
-        Date now = new Date();
         for (ActivityEntry activity : windowedActivities) {
+            if (activities.size() >= feedsPreferences.getFeedSize()) {
+                break;
+            }
+
             String activityBody = activityEntryHelper.getActivityBody(activity);
             if (activityBody.isEmpty()) {
                 continue;
             }
 
-            if (i >= feedsPreferences.getFeedSize()) {
-                break;
-            }
-
-            int curDaysBetween = getDaysBetween(new Date(activity.getCreateDate().getTime()), now);
-            activities.add(new SocialActivityWrapper(activity, curDaysBetween,
-                    lastDaysBetween < curDaysBetween, i % 2 == 1,
-                    feedsPreferences.getFeedMaxLength(), activityBody));
-            lastDaysBetween = curDaysBetween;
-            i++;
+            activities.add(new SocialActivityWrapper(activity, activityBody));
         }
 
         model.addAttribute("activities", activities);
 
-        if (filterUserId == 0) {
-            model.addAttribute("isLastPage",
-                    ((pageSize * (sortFilterPage.getPage() + 1)) >= ActivityUtil
-                            .getAllActivitiesCount()));
-        } else {
-            model.addAttribute("isLastPage",
-                    ((pageSize * (sortFilterPage.getPage() + 1) >= ActivityUtil
-                            .getActivitiesCount(filterUserId))));
-        }
+        final int allActivitiesCount = filterUserId > 0
+                ? ActivityUtil.getActivitiesCount(filterUserId)
+                : ActivityUtil.getAllActivitiesCount();
 
+        model.addAttribute("isLastPage",
+                ((pageSize * (sortFilterPage.getPage() + 1)) >= allActivitiesCount));
+    }
+
+    @Override
+    public String getViewName() {
         return "feedswidget/activities";
     }
 
     @Override
-    public String getFeedTypeName() {
-        return "Activities";
-    }
-
-    private static int getDaysBetween(Date d1, Date d2) {
-        return (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+    public FeedType getFeedType() {
+        return FeedType.ACTIVITIES;
     }
 }
