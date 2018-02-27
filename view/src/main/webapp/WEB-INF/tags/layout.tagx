@@ -26,81 +26,11 @@
     <!-- jsp variables -->
     <!--@elvariable id="request" type="javax.servlet.http.HttpServletRequest"-->
 
-    <!-- interceptor variables -->
-    <!--@elvariable id="_lang" type="java.lang.String"-->
-    <!--@elvariable id="_locale" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.authenticationVariables.isLoggedIn" type="java.lang.Boolean"-->
-    <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
-
-    <!--@elvariable id="_themeContext.serverEnvironment" type="org.xcolab.client.admin.enums.ServerEnvironment"-->
-    <!--@elvariable id="_themeContext.serverEnvironment.isProduction" type="java.lang.Boolean"-->
-
-    <!--@elvariable id="_themeContext.authenticationVariables.isImpersonating" type="java.lang.Boolean"-->
-    <!--@elvariable id="_themeContext.i18NVariables.isI18NActive" type="java.lang.Boolean"-->
-
-    <!--@elvariable id="_themeContext.authenticationVariables.realMember" type="org.xcolab.client.members.pojo.Member"-->
-    <!--@elvariable id="_themeContext.authenticationVariables.member" type="org.xcolab.client.members.pojo.Member"-->
-
-    <!--@elvariable id="_themeContext.themeVariables.themePaths.themeStylesheetPath" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.i18NVariables.languageSelectItems" type="java.lang.String"-->
     <!--@elvariable id="_activePageLink" type="java.lang.String"-->
 
-    <!--@elvariable id="_themeContext.themeVariables.themePaths.logoPath" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.themeVariables.themePaths.logoPathSocial" type="java.lang.String"-->
-    <!--@elvariable id="__themeContext.themeVariables.themePaths.logoPathBig" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.themeVariables.themePaths.logoPathSquare" type="java.lang.String"-->
-
-
-    <!--@elvariable id="_themeContext.themeVariables.contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
-    <!--@elvariable id="_themeContext.colabName" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.colabUrl" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.colabUrlProduction" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.blogAdminUrl" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.colabLongName" type="java.lang.String"-->
-    <!--@elvariable id="_colabShortName" type="java.lang.String"-->
-
-    <!--@elvariable id="_themeContext.credentialVariables.googleAnalyticsKey" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.credentialVariables.pingdomRumId" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.credentialVariables.typekitId" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.credentialVariables.typekitIdLocal" type="java.lang.String"-->
-
-    <!--@elvariable id="_themeContext.themeVariables.betaRibbonShow" type="java.lang.Boolean"-->
-    <!--@elvariable id="_themeContext.themeVariables.showSearchMenuItem" type="java.lang.Boolean"-->
-    <!--@elvariable id="_themeContext.metaVariables.openGraphShareTitle" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.metaVariables.openGraphShareDescription" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.metaVariables.metaPageKeywords" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.metaVariables.metaPageDescription" type="java.lang.String"-->
-
-    <!--@elvariable id="_isSharedColab" type="java.lang.Boolean"-->
-    <!--@elvariable id="_partnerColabName" type="java.lang.String"-->
-    <!--@elvariable id="_partnerColabClassName" type="java.lang.String"-->
-    <!--@elvariable id="_partnerColabLogo" type="java.lang.String"-->
-    <!--@elvariable id="_defaultContestType" type="org.xcolab.client.admin.pojo.ContestType"-->
-    <!--@elvariable id="_adminEmail" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.themeVariables.mitHeaderBarShow" type="java.lang.Boolean"-->
-    <!--@elvariable id="_themeContext.themeVariables.mitHeaderBarLinkText" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.themeVariables.mitHeaderBarLinkUrl" type="java.lang.String"-->
-
-    <!--@elvariable id="_shareableSocialMediaUrls" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
-    <!--@elvariable id="_followableSocialMediaUrls" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
-    <!--@elvariable id="_themeContext.socialMediaVariables.socialMediaEngines" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
-
-    <!--@elvariable id="_themeContext.authenticationVariables.isGoogleSsoActive" type="java.lang.Boolean"-->
-    <!--@elvariable id="_themeContext.authenticationVariables.isFacebookSsoActive" type="java.lang.Boolean"-->
-
-    <!--@elvariable id="_themeContext.authenticationVariables.showLoginPopup" type="java.lang.Boolean"-->
-    <!--@elvariable id="_themeContext.authenticationVariables.showPasswordResetPopup" type="java.lang.Boolean"-->
-    <!--@elvariable id="_showSsoPopup" type="java.lang.Boolean"-->
-    <!--@elvariable id="_themeContext.authenticationVariables.authError" type="org.xcolab.view.auth.login.AuthenticationError"-->
-
-    <!--@elvariable id="_themeContext.requestUri" type="java.lang.String"-->
-    <!--@elvariable id="_themeContext.themeVariables.isHomePage" type="java.lang.Boolean"-->
-
-    <!--@elvariable id="_themeContext.messageVariables.alertMessage" type="org.xcolab.view.util.entity.flash.AlertMessage"-->
-    <!--@elvariable id="__analyticsAttribute" type="org.xcolab.view.util.entity.flash.AnalyticsAttribute"-->
+    <!-- interceptor variables -->
 
     <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken"-->
-
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <fmt:setLocale value="${_themeContext.i18NVariables.locale}" />
@@ -277,7 +207,8 @@
 
     <!-- ============ Footer ============ -->
 
-    <xcolab-layout:footer showProfileLink="${_themeContext.authenticationVariables.isLoggedIn}" currentLanguage="${_lang}"
+    <xcolab-layout:footer showProfileLink="${_themeContext.authenticationVariables.isLoggedIn}"
+                          currentLanguage="${_themeContext.i18NVariables.language}"
                           languageSelectItems="${_themeContext.i18NVariables.languageSelectItems}"
                           themeImageFolder="/images"
                           showLanguageDropdown="${_themeContext.i18NVariables.isI18NActive}"
@@ -393,7 +324,7 @@
     <c:if test="${_themeContext.serverEnvironment.isProduction}">
         <xcolab-scripts:analyticsScripts googleAnalyticsKey="${_themeContext.credentialVariables.googleAnalyticsKey}"
                                          pingdomRumId="${_themeContext.credentialVariables.pingdomRumId}"
-                                         analyticsAttribute="${__analyticsAttribute}"
+                                         analyticsAttribute="${_themeContext.messageVariables.analyticsAttribute}"
                                          httpSession="${request.session}" member="${_themeContext.authenticationVariables.member}" />
     </c:if>
 

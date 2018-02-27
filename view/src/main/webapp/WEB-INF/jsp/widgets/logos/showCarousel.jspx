@@ -3,9 +3,9 @@
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
     <!--@elvariable id="carouselPreferences" type="org.xcolab.view.widgets.logos.CarouselPreferences"-->
-    <!--@elvariable id="_isAdmin" type="boolean"-->
+
     <div class="c-CarouselWrapper">
         <c:if test="${_themeContext.authenticationVariables.isAdmin}">
             <a href="/widgets/logos/preferences?preferenceId=${carouselPreferences.preferenceId}" class="btn cb-btn-admin btn-sm float-right">Edit carouselPreferences</a><br/>

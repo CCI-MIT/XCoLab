@@ -6,18 +6,18 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-    <!--@elvariable id="__errorMessage" type="org.xcolab.view.util.entity.flash.ErrorMessage"-->
+    <!--@elvariable id="_themeContext.messageVariables.errorMessage" type="org.xcolab.view.util.entity.flash.ErrorMessage"-->
 
     <h2>
-        ${not empty __errorMessage ? __errorMessage.title : 'Oh Snap!'}
+        ${not empty _themeContext.messageVariables.errorMessage ? _themeContext.messageVariables.errorMessage.title : 'Oh Snap!'}
     </h2>
     <br />
 
     <c:choose>
-        <c:when test="${not empty __errorMessage}">
+        <c:when test="${not empty _themeContext.messageVariables.errorMessage}">
             <div class="c-Alert__danger">
                 <div class="c-Alert__error__message">
-                    ${__errorMessage.message}
+                    ${_themeContext.messageVariables.errorMessage.message}
                 </div>
             </div>
         </c:when>

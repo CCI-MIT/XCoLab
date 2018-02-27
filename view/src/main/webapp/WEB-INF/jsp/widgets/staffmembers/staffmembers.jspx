@@ -1,8 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-
-    <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <!--@elvariable id="widgetTitle" type="java.lang.String"-->
     <!--@elvariable id="displayPhoto" type="java.lang.Boolean"-->
