@@ -33,7 +33,7 @@
     <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken"-->
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
-    <fmt:setLocale value="${_themeContext.i18NVariables.locale}" />
+    <fmt:setLocale value="${_themeContext.i18NVariables.language}" />
     <fmt:setTimeZone value="${_themeContext.i18NVariables.defaultTimeZone}" />
 
 <![CDATA[<!DOCTYPE html>]]>
@@ -178,7 +178,7 @@
                           showLanguage="${_themeContext.i18NVariables.isI18NActive}"
                           showSearch="${_themeContext.themeVariables.showSearchMenuItem}"
                           languageSelectItems="${_themeContext.i18NVariables.languageSelectItems}"
-                          currentLocale="${_themeContext.i18NVariables.currentLocale}"
+                          currentLocale="${_themeContext.i18NVariables.language}"
                           showGoogleSso="${_themeContext.authenticationVariables.isGoogleSsoActive}"
                           showFacebookSso="${_themeContext.authenticationVariables.isFacebookSsoActive}" />
 
@@ -253,7 +253,7 @@
 
     <xcolab:script src="/js/postLinkHandler.js"/>
     <xcolab-scripts:loadTooltips />
-    <xcolab-scripts:loadMoment locale="${_themeContext.i18NVariables.locale}"/>
+    <xcolab-scripts:loadMoment locale="${_themeContext.i18NVariables.language}"/>
 
     <!-- Bootstrap -->
     <xcolab:script src="/vendor/popper.js/dist/umd/popper.min.js" />
@@ -347,7 +347,7 @@
     </script>
 
     <c:set var="socialMediaSameAs">
-        <c:forEach var="socialMediaEngine" items="${_themeContext.socialMediaVariables.socialMediaEngines}" varStatus="status">
+        <c:forEach var="socialMediaEngine" items="${_themeContext.socialMediaVariables.allEngines}" varStatus="status">
             "${socialMediaEngine.followMeUrl}"${status.last ? '' : ','}
         </c:forEach>
     </c:set>

@@ -11,21 +11,21 @@ import java.util.Locale;
 
 public class I18nVariables {
     private final String language;
-    private final String locale;
+    //private final String locale;
     private final String defaultTimeZone;
 
     private final boolean isI18NActive;
-    private final String currentLocale;
+    //private final String currentLocale;
     private final List<LabelStringValue> languageSelectItems;
 
     public I18nVariables() {
         final Locale locale = LocaleContextHolder.getLocale();
         this.language = locale.getLanguage();
-        this.locale = locale.toLanguageTag(); // TODO: remove locale and use language instead
+        //this.locale = locale.toLanguageTag();
         this.defaultTimeZone = ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get();
 
         this.isI18NActive = ConfigurationAttributeKey.IS_I18N_ACTIVE.get();
-        this.currentLocale = locale.getLanguage(); // TODO: remove and use language instead
+        //this.currentLocale = locale.getLanguage();
         this.languageSelectItems = I18nUtils.getSelectList();
     }
 
@@ -33,9 +33,9 @@ public class I18nVariables {
         return language;
     }
 
-    public String getLocale() {
+/*    public String getLocale() {
         return locale;
-    }
+    }*/
 
     public String getDefaultTimeZone() {
         return defaultTimeZone;
@@ -45,9 +45,9 @@ public class I18nVariables {
         return isI18NActive;
     }
 
-    public String getCurrentLocale() {
+/*    public String getCurrentLocale() {
         return currentLocale;
-    }
+    }*/
 
     public List<LabelStringValue> getLanguageSelectItems() {
         return languageSelectItems;

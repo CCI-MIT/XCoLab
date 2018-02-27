@@ -32,7 +32,6 @@ public class AuthenticationVariables {
 
         this.member = authenticationService.getMemberOrNull(request);
         this.isAdmin = PermissionsClient.canAdminAll(getMember());
-        // TODO: isAdmin, info change from getuserid
 
         boolean isSigningIn = readBooleanParameter(request, "isSigningIn");
         boolean isPasswordReminder = readBooleanParameter(request, "isPasswordReminder");

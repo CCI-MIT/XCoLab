@@ -11,9 +11,9 @@ public class SocialMediaVariables {
     private final String shareRequestUri;
     private final boolean showShareButtons;
 
-    private final List<SocialMediaEngine> shareableSocialMediaUrls; // TODO: Rename to shareableEngines
-    private final List<SocialMediaEngine> followableSocialMediaUrls; // TODO: Rename to followableEngines
-    private final List<SocialMediaEngine> socialMediaEngines; // TODO: Rename to allEngines
+    private final List<SocialMediaEngine> shareableEngines;
+    private final List<SocialMediaEngine> followableEngines;
+    private final List<SocialMediaEngine> allEngines;
     private final String donateLink;
 
     public SocialMediaVariables(HttpServletRequest request) {
@@ -21,9 +21,9 @@ public class SocialMediaVariables {
                 .getUtmParameters(ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get(), request);
         this.showShareButtons = ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get();
 
-        this.shareableSocialMediaUrls = SocialMediaEngine.getShareableSocialMediaEngines();
-        this.followableSocialMediaUrls = SocialMediaEngine.getFollowableSocialMediaEngines();
-        this.socialMediaEngines = SocialMediaEngine.getAllSocialMediaEngines();
+        this.shareableEngines = SocialMediaEngine.getShareableSocialMediaEngines();
+        this.followableEngines = SocialMediaEngine.getFollowableSocialMediaEngines();
+        this.allEngines = SocialMediaEngine.getAllSocialMediaEngines();
 
         this.donateLink = ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get();
     }
@@ -36,16 +36,16 @@ public class SocialMediaVariables {
         return showShareButtons;
     }
 
-    public List<SocialMediaEngine> getShareableSocialMediaUrls() {
-        return shareableSocialMediaUrls;
+    public List<SocialMediaEngine> getShareableEngines() {
+        return shareableEngines;
     }
 
-    public List<SocialMediaEngine> getFollowableSocialMediaUrls() {
-        return followableSocialMediaUrls;
+    public List<SocialMediaEngine> getFollowableEngines() {
+        return followableEngines;
     }
 
-    public List<SocialMediaEngine> getSocialMediaEngines() {
-        return socialMediaEngines;
+    public List<SocialMediaEngine> getAllEngines() {
+        return allEngines;
     }
 
     public String getDonateLink() {

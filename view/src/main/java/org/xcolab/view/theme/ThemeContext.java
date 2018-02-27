@@ -43,7 +43,7 @@ public class ThemeContext {
         this.credentialVariables = new CredentialVariables();
         this.themeVariables = new ThemeVariables(request, this.getI18NVariables());
         this.metaVariables = new MetaVariables(request, this.getI18NVariables());
-        this.sharedColabVariables = new SharedColabVariables();
+        this.sharedColabVariables = new SharedColabVariables(); // TODO: discuss - never used
         this.messageVariables = new MessageVariables(request);
         this.socialMediaVariables = new SocialMediaVariables(request);
 

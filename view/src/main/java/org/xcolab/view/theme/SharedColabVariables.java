@@ -5,7 +5,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 public class SharedColabVariables {
     private final boolean isSharedColab;
 
-    private String partnerColabName; // TODO: check if these are unsued and remove
+    private String partnerColabName;
     private String partnerColabImgsAndClasses;
     private String partnerColabLogo;
 
