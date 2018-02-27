@@ -83,26 +83,7 @@ function disableDirtyCheck() {
     });
 }());
 
-// TODO COLAB-2588: do we need this?
-function submitenter(myfield, e) {
-    var keycode;
-    if (window.event) {
-        keycode = window.event.keyCode;
-    } else if (e) {
-        keycode = e.which;
-    } else {
-        return true;
-    }
-
-    if (keycode == 13) {
-        jQuery(myfield.form).submit();
-        return false;
-    } else {
-        return true;
-    }
-}
-
-<!-- Social Share Script -->
+// Social Share Script
 function shareThis(event) {
 
     var engineUrl = $(event).data("engine-url");
