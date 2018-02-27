@@ -18,6 +18,8 @@
     <!--@elvariable id="_isGoogleSsoActive" type="java.lang.Boolean"-->
     <!--@elvariable id="_isFacebookSsoActive" type="java.lang.Boolean"-->
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
 	<c:if test="${updateError}">
 		<script>
 			updateError();
