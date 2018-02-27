@@ -3,7 +3,6 @@ package org.xcolab.view.errors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -61,11 +60,6 @@ public class ErrorReportingController {
         response.sendRedirect("/");
     }
 
-    @GetMapping("/reportError/forceException")
-    public void forceException() throws TestException {
-        throw new TestException();
-    }
-
     private String buildErrorReportBody(String url, String userScreenName, String email,
             String stackTrace, String descriptionInHtmlFormat, String userAgent, String referer)
             throws UnsupportedEncodingException {
@@ -84,12 +78,5 @@ public class ErrorReportingController {
         }
 
         return messageBuilder.toString();
-    }
-
-    private static class TestException extends Exception {
-
-        public TestException() {
-            super("This is just a test exception for debugging - no action necessary");
-        }
     }
 }

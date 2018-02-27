@@ -38,27 +38,26 @@
 }
 
 //= Elements within btn block
-.cb-btn__image_text {
+.cb-btn-image-text {
   vertical-align: middle;
 }
 
-.cb-btn__image {
-  margin-top: -$btn-padding-y * .5;
-  margin-right: $btn-padding-x * .5;
-  margin-bottom: -$btn-padding-y * .5;
-  margin-left: -$btn-padding-x * .5;
+.cb-btn-image {
+  margin-right: .125rem;
+
+  margin-top: -$btn-padding-y / 2;
+  margin-bottom: -$btn-padding-y / 2;
+  margin-left: -$btn-padding-x / 2;
 
   .btn-sm & {
-    margin-top: -$btn-padding-y-sm * .5;
-    margin-right: $btn-padding-x-sm* .5;
-    margin-bottom: -$btn-padding-y-sm * .5;
-    margin-left: -$btn-padding-x-sm * .5;
+    margin-top: -$btn-padding-y-sm / 2;
+    margin-bottom: -$btn-padding-y-sm / 2;
+    margin-left: -$btn-padding-x-sm / 2;
   }
 
   .btn-lg & {
-    margin-top: -$btn-padding-y-lg * .5;
-    margin-right: $btn-padding-x-lg* .5;
-    margin-bottom: -$btn-padding-y-lg * .5;
-    margin-left: -$btn-padding-x-lg * .5;
+    margin-top: -$btn-padding-y-lg / 2;
+    margin-bottom: -$btn-padding-y-lg / 2;
+    margin-left: -$btn-padding-x-lg / 2;
   }
 }
