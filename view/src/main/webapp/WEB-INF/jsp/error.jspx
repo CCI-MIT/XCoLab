@@ -6,7 +6,7 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-    <!--@elvariable id="_themeContext.messageVariables.errorMessage" type="org.xcolab.view.util.entity.flash.ErrorMessage"-->
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <h2>
         ${not empty _themeContext.messageVariables.errorMessage ? _themeContext.messageVariables.errorMessage.title : 'Oh Snap!'}

@@ -6,10 +6,10 @@
 
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="Contact">
-        <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
-        <!--@elvariable id="feedbackPage" type="org.xcolab.client.contents.pojo.ContentPage"-->
-        <!--@elvariable id="hasError" type="java.lang.Boolean"-->
+    <!--@elvariable id="feedbackPage" type="org.xcolab.client.contents.pojo.ContentPage"-->
+    <!--@elvariable id="hasError" type="java.lang.Boolean"-->
 
     <div class="l-Content">
 		<div class="l-Content__sidebar l-Content__sidebar--small c-SideMenu c-SideMenu--styled">
