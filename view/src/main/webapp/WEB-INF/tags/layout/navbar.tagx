@@ -23,9 +23,11 @@
     <!--@elvariable id="contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
     <div class="cb-navbar-background ${isWhiteBackgound ? 'cb-navbar-background-white' : ''} border-bottom border-medium">
         <div class="cb-container-fixed">
-            <nav class="navbar ${_isResponsive ? 'navbar-expand-lg' : 'navbar-expand'} navbar-light" aria-label="site wide">
+            <nav class="navbar ${_themeContext.themeVariables.isResponsive ? 'navbar-expand-lg' : 'navbar-expand'} navbar-light" aria-label="site wide">
                 <a class="navbar-brand" href="/">
                     <collab:image src="${logoPath}" alt="${colabName}" height="42" />
                 </a>

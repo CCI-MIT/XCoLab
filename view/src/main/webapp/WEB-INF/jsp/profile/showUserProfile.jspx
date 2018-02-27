@@ -294,7 +294,7 @@
                                         code="profile.show.activities"/></h2>
                                 <c:if test="${empty currentUserProfile.activities}">
                                     <spring:message code="profile.show.activities.noyet"
-                                                    arguments="${userBean.displayNameShort},${_colabName}"
+                                                    arguments="${userBean.displayNameShort},${_themeContext.colabName}"
                                                     argumentSeparator=","/>
                                 </c:if>
 
@@ -344,7 +344,7 @@
                                     <c:choose>
                                         <c:when test="${not empty balloonLink}">
                                             <c:set var="shareLink"
-                                                   value="${_colabUrl}${balloonLink.targetUrl}"/>
+                                                   value="${_themeContext.colabUrl}${balloonLink.targetUrl}"/>
                                             <c:if test="${not empty balloonText}">
                                                 <div><xcolab-social:socialShareButtons
                                                         title="${balloonText.shareTitle}" size="xs"/>

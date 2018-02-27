@@ -39,7 +39,7 @@
             </div>
             <div class="card-body">
                 <c:if test="${isRegistrationOpen}">
-                    <spring:message code="community.page.help.text" arguments="${_colabName}"/>
+                    <spring:message code="community.page.help.text" arguments="${_themeContext.colabName}"/>
                 </c:if>
 
                 <spring:message code="community.page.help.text2"/>

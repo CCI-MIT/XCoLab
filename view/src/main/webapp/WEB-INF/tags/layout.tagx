@@ -29,47 +29,47 @@
     <!-- interceptor variables -->
     <!--@elvariable id="_lang" type="java.lang.String"-->
     <!--@elvariable id="_locale" type="java.lang.String"-->
-    <!--@elvariable id="_isLoggedIn" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.authenticationVariables.isLoggedIn" type="java.lang.Boolean"-->
     <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
 
-    <!--@elvariable id="_serverEnvironment" type="org.xcolab.client.admin.enums.ServerEnvironment"-->
-    <!--@elvariable id="_isProduction" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.serverEnvironment" type="org.xcolab.client.admin.enums.ServerEnvironment"-->
+    <!--@elvariable id="_themeContext.serverEnvironment.isProduction" type="java.lang.Boolean"-->
 
-    <!--@elvariable id="_showImpersonationBar" type="java.lang.Boolean"-->
-    <!--@elvariable id="_isI18NActive" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.authenticationVariables.isImpersonating" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.i18NVariables.isI18NActive" type="java.lang.Boolean"-->
 
-    <!--@elvariable id="_realMember" type="org.xcolab.client.members.pojo.Member"-->
-    <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
+    <!--@elvariable id="_themeContext.authenticationVariables.realMember" type="org.xcolab.client.members.pojo.Member"-->
+    <!--@elvariable id="_themeContext.authenticationVariables.member" type="org.xcolab.client.members.pojo.Member"-->
 
-    <!--@elvariable id="_themeStylesheetPath" type="java.lang.String"-->
-    <!--@elvariable id="_languageSelectItems" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.themeVariables.themePaths.themeStylesheetPath" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.i18NVariables.languageSelectItems" type="java.lang.String"-->
     <!--@elvariable id="_activePageLink" type="java.lang.String"-->
 
-    <!--@elvariable id="_logoPath" type="java.lang.String"-->
-    <!--@elvariable id="_logoPathSocial" type="java.lang.String"-->
-    <!--@elvariable id="_logoPathBig" type="java.lang.String"-->
-    <!--@elvariable id="_logoPathSquare" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.themeVariables.themePaths.logoPath" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.themeVariables.themePaths.logoPathSocial" type="java.lang.String"-->
+    <!--@elvariable id="__themeContext.themeVariables.themePaths.logoPathBig" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.themeVariables.themePaths.logoPathSquare" type="java.lang.String"-->
 
 
-    <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
-    <!--@elvariable id="_colabName" type="java.lang.String"-->
-    <!--@elvariable id="_colabUrl" type="java.lang.String"-->
-    <!--@elvariable id="_colabUrlProduction" type="java.lang.String"-->
-    <!--@elvariable id="_blogAdminUrl" type="java.lang.String"-->
-    <!--@elvariable id="_colabLongName" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.themeVariables.contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
+    <!--@elvariable id="_themeContext.colabName" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.colabUrl" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.colabUrlProduction" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.blogAdminUrl" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.colabLongName" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
 
-    <!--@elvariable id="_googleAnalyticsKey" type="java.lang.String"-->
-    <!--@elvariable id="_pingdomRumId" type="java.lang.String"-->
-    <!--@elvariable id="_typekitId" type="java.lang.String"-->
-    <!--@elvariable id="_typekitIdLocal" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.credentialVariables.googleAnalyticsKey" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.credentialVariables.pingdomRumId" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.credentialVariables.typekitId" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.credentialVariables.typekitIdLocal" type="java.lang.String"-->
 
-    <!--@elvariable id="_betaRibbonShow" type="java.lang.Boolean"-->
-    <!--@elvariable id="_showSearchMenuItem" type="java.lang.Boolean"-->
-    <!--@elvariable id="_openGraphShareTitle" type="java.lang.String"-->
-    <!--@elvariable id="_openGraphShareDescription" type="java.lang.String"-->
-    <!--@elvariable id="_metaPageKeywords" type="java.lang.String"-->
-    <!--@elvariable id="_metaPageDescription" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.themeVariables.betaRibbonShow" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.themeVariables.showSearchMenuItem" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.metaVariables.openGraphShareTitle" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.metaVariables.openGraphShareDescription" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.metaVariables.metaPageKeywords" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.metaVariables.metaPageDescription" type="java.lang.String"-->
 
     <!--@elvariable id="_isSharedColab" type="java.lang.Boolean"-->
     <!--@elvariable id="_partnerColabName" type="java.lang.String"-->
@@ -77,32 +77,34 @@
     <!--@elvariable id="_partnerColabLogo" type="java.lang.String"-->
     <!--@elvariable id="_defaultContestType" type="org.xcolab.client.admin.pojo.ContestType"-->
     <!--@elvariable id="_adminEmail" type="java.lang.String"-->
-    <!--@elvariable id="_mitHeaderBarShow" type="java.lang.Boolean"-->
-    <!--@elvariable id="_mitHeaderBarLinkText" type="java.lang.String"-->
-    <!--@elvariable id="_mitHeaderBarLinkUrl" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.themeVariables.mitHeaderBarShow" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.themeVariables.mitHeaderBarLinkText" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.themeVariables.mitHeaderBarLinkUrl" type="java.lang.String"-->
 
     <!--@elvariable id="_shareableSocialMediaUrls" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
     <!--@elvariable id="_followableSocialMediaUrls" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
-    <!--@elvariable id="_socialMediaEngines" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
+    <!--@elvariable id="_themeContext.socialMediaVariables.socialMediaEngines" type="java.util.List<org.xcolab.view.socialmedia.SocialMediaEngine>"-->
 
-    <!--@elvariable id="_isGoogleSsoActive" type="java.lang.Boolean"-->
-    <!--@elvariable id="_isFacebookSsoActive" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.authenticationVariables.isGoogleSsoActive" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.authenticationVariables.isFacebookSsoActive" type="java.lang.Boolean"-->
 
-    <!--@elvariable id="_showLoginPopup" type="java.lang.Boolean"-->
-    <!--@elvariable id="_showPasswordResetPopup" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.authenticationVariables.showLoginPopup" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.authenticationVariables.showPasswordResetPopup" type="java.lang.Boolean"-->
     <!--@elvariable id="_showSsoPopup" type="java.lang.Boolean"-->
-    <!--@elvariable id="_authError" type="org.xcolab.view.auth.login.AuthenticationError"-->
+    <!--@elvariable id="_themeContext.authenticationVariables.authError" type="org.xcolab.view.auth.login.AuthenticationError"-->
 
-    <!--@elvariable id="_requestUri" type="java.lang.String"-->
-    <!--@elvariable id="_isHomePage" type="java.lang.Boolean"-->
+    <!--@elvariable id="_themeContext.requestUri" type="java.lang.String"-->
+    <!--@elvariable id="_themeContext.themeVariables.isHomePage" type="java.lang.Boolean"-->
 
-    <!--@elvariable id="__alertMessage" type="org.xcolab.view.util.entity.flash.AlertMessage"-->
+    <!--@elvariable id="_themeContext.messageVariables.alertMessage" type="org.xcolab.view.util.entity.flash.AlertMessage"-->
     <!--@elvariable id="__analyticsAttribute" type="org.xcolab.view.util.entity.flash.AnalyticsAttribute"-->
 
     <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken"-->
 
-    <fmt:setLocale value="${_locale}" />
-    <fmt:setTimeZone value="${_defaultTimeZone}" />
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
+    <fmt:setLocale value="${_themeContext.i18NVariables.locale}" />
+    <fmt:setTimeZone value="${_themeContext.i18NVariables.defaultTimeZone}" />
 
 <![CDATA[<!DOCTYPE html>]]>
 <html>
@@ -111,18 +113,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
     <!--TODO COLAB-2681: Remove isResponsive feature flag once its on by default -->
-    <c:if test="${_isResponsive}">
+    <c:if test="${_themeContext.themeVariables.isResponsive}">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     </c:if>
 
-    <title>${title}${(not empty title) ? ' - ' : ''}${_colabName}</title>
+    <title>${title}${(not empty title) ? ' - ' : ''}${_themeContext.colabName}</title>
 
     <!-- ============ Globals ============ -->
 
     <script>
         var _firstByteDate = new Date();
-        var _isLoggedIn = '${_isLoggedIn}' == 'true';
-        var _isAdmin = '${_isAdmin}' == 'true';
+        var _isLoggedIn = '${_themeContext.authenticationVariables.isLoggedIn}' == 'true';
+        var _isAdmin = '${_themeContext.authenticationVariables.isAdmin}' == 'true';
         var _csrf = {
             token: '${_csrf.token}',
             parameterName: '${_csrf.parameterName}',
@@ -133,23 +135,23 @@
 
     <!-- ============ Fonts ============ -->
 
-    <c:if test="${not empty _typekitId}">
-        <c:set var="typekitId" value="${_serverEnvironment eq 'LOCAL' ? _typekitIdLocal :_typekitId}" />
+    <c:if test="${not empty _themeContext.credentialVariables.typekitId}">
+        <c:set var="typekitId" value="${_themeContext.serverEnvironment eq 'LOCAL' ? _themeContext.credentialVariables.typekitIdLocal :_themeContext.credentialVariables.typekitId}" />
         <xcolab-scripts:loadTypekit kitId="${typekitId}" />
     </c:if>
 
 
     <!-- ============ Stylesheets ============ -->
 
-    <xcolab:stylesheet href="${_themeStylesheetPath}" />
+    <xcolab:stylesheet href="${_themeContext.themeVariables.themePaths.themeStylesheetPath}" />
 
 
     <!-- ============ META CONTENT ============ -->
 
-    <meta content="${not empty description ? description : _metaPageDescription}" lang="en-US" name="description" />
-    <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
+    <meta content="${not empty description ? description : _themeContext.metaVariables.metaPageDescription}" lang="en-US" name="description" />
+    <meta content="${_themeContext.metaVariables.metaPageKeywords}" lang="en-US" name="keywords" />
 
-    <c:if test="${!_isProduction}">
+    <c:if test="${!_themeContext.serverEnvironment.isProduction}">
         <!-- Prevent indexing of non-production sites -->
         <meta name="robots" content="noindex, nofollow" />
         <script>
@@ -158,37 +160,37 @@
     </c:if>
 
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="${_colabUrl}${requestScope['javax.servlet.forward.request_uri']}"/>
-    <meta property="og:site_name" content="${ not empty openGraphSiteName ? openGraphSiteName: _colabName}" />
-    <meta property="og:title" content="${ not empty openGraphTitle ? openGraphTitle: _openGraphShareTitle}" />
-    <meta property="og:description" content="${ not empty openGraphDescription ? openGraphDescription: _openGraphShareDescription}" />
-    <meta property="og:image" content="${not empty openGraphImage ? openGraphImage : _logoPathBig}" />
+    <meta property="og:url" content="${_themeContext.colabUrl}${requestScope['javax.servlet.forward.request_uri']}"/>
+    <meta property="og:site_name" content="${ not empty openGraphSiteName ? openGraphSiteName: _themeContext.colabName}" />
+    <meta property="og:title" content="${ not empty openGraphTitle ? openGraphTitle: _themeContext.metaVariables.openGraphShareTitle}" />
+    <meta property="og:description" content="${ not empty openGraphDescription ? openGraphDescription: _themeContext.metaVariables.openGraphShareDescription}" />
+    <meta property="og:image" content="${not empty openGraphImage ? openGraphImage : _themeContext.themeVariables.themePaths.logoPathBig}" />
 
-    <meta name="twitter:image" content="${not empty openGraphImage ? openGraphImage : _logoPathSquare}"/>
+    <meta name="twitter:image" content="${not empty openGraphImage ? openGraphImage : _themeContext.themeVariables.themePaths.logoPathSquare}"/>
 
-    <c:if test="${not empty _facebookId}">
-        <meta property="fb:app_id" content="${_facebookId}"/>
+    <c:if test="${not empty _themeContext.authenticationVariables.facebookId}">
+        <meta property="fb:app_id" content="${_themeContext.authenticationVariables.facebookId}"/>
     </c:if>
 
     <!-- TODO COLAB-2586: make this configurable -->
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
 
     <link href="/images/favicon.ico" rel="Shortcut Icon" />
-    <link rel="image_src" type="image/png" href="${_logoPathBig}" />
+    <link rel="image_src" type="image/png" href="${_themeContext.themeVariables.themePaths.logoPathBig}" />
     <c:if test="${not empty canonicalUrlRelative}">
-        <link rel="canonical" href="${_colabUrl}${canonicalUrlRelative}" />
+        <link rel="canonical" href="${_themeContext.colabUrl}${canonicalUrlRelative}" />
     </c:if>
 </head>
 
 <!--TODO COLAB-2681: Remove isResponsive feature flag once its on by default -->
-<body class="${_isHomePage ? 'p-Homepage' : ''} ${_isResponsive ? 'feature-isResponsive' : ''}">
-    <c:if test="${_betaRibbonShow}">
+<body class="${_themeContext.themeVariables.isHomePage ? 'p-Homepage' : ''} ${_themeContext.themeVariables.isResponsive ? 'feature-isResponsive' : ''}">
+    <c:if test="${_themeContext.themeVariables.betaRibbonShow}">
         <div class="c-Ribbon">
             Beta
         </div>
     </c:if>
 
-    <c:if test="${!_isProduction}">
+    <c:if test="${!_themeContext.serverEnvironment.isProduction}">
         <div class="c-TitleBar__container">
             <div class="c-TitleBar c-TitleBar--warning c-TitleBar--fixed">
                 <div class="cb-container-fixed c-TitleBar__content">
@@ -196,17 +198,17 @@
                         You are currently on a <b>test server</b>. Content on this server is for testing only and may be deleted at any time.
                     </div>
 
-                    <a class="c-TitleBar__actionButton" href="${_colabUrlProduction}">Take me to ${_colabUrlProduction}.</a>
+                    <a class="c-TitleBar__actionButton" href="${_themeContext.colabUrlProduction}">Take me to ${_themeContext.colabUrlProduction}.</a>
                 </div>
             </div>
         </div>
     </c:if>
 
-    <c:if test="${_showImpersonationBar}">
+    <c:if test="${_themeContext.authenticationVariables.isImpersonating}">
         <div class="c-TitleBar">
             <div class="cb-container-fixed c-TitleBar__content">
                 <div class="c-TitleBar__element pl-0">
-                    Impersonating member ${_member.screenName} (Logged in as ${_realMember.screenName})
+                    Impersonating member ${_themeContext.authenticationVariables.member.screenName} (Logged in as ${_themeContext.authenticationVariables.realMember.screenName})
                 </div>
 
                 <button type="button" class="c-TitleBar__actionButton js-PostLink" data-url="/impersonate/logout">
@@ -216,7 +218,7 @@
         </div>
     </c:if>
 
-    <c:if test="${_mitHeaderBarShow}">
+    <c:if test="${_themeContext.themeVariables.mitHeaderBarShow}">
         <div class="c-TitleBar c-TitleBar--light">
             <div class="cb-container-fixed c-TitleBar__content">
                 <div class="c-TitleBar__element pl-0">
@@ -224,7 +226,9 @@
                     <span style="display: inline-block"><!-- Reference for image alignment --></span>
                 </div>
 
-                <a class="c-TitleBar__actionButton" href="${_mitHeaderBarLinkUrl}">${_mitHeaderBarLinkText}</a>
+                <a class="c-TitleBar__actionButton" href="${_themeContext.themeVariables.mitHeaderBarLinkUrl}">
+                    ${_themeContext.themeVariables.mitHeaderBarLinkText}
+                </a>
             </div>
         </div>
     </c:if>
@@ -232,14 +236,21 @@
 
     <!-- ============ Navbar ============ -->
 
-    <xcolab-layout:navbar colabName="${_colabName}" logoPath="${_logoPath}" redirect="${_requestUri}"
-                          activePageLink="${_activePageLink}" contestPages="${_contestPages}"
-                          member="${_isLoggedIn ? _member : null}" isWhiteBackgound="${_isHomePage}"
-                          isShowIcons="${_navbarShowIcons}"
-                          blogAdminUrl="${_blogAdminUrl}"
-                          showLanguage="${_isI18NActive}" showSearch="${_showSearchMenuItem}"
-                          languageSelectItems="${_languageSelectItems}" currentLocale="${_currentLocale}"
-                          showGoogleSso="${_isGoogleSsoActive}" showFacebookSso="${_isFacebookSsoActive}" />
+    <xcolab-layout:navbar colabName="${_themeContext.colabName}"
+                          logoPath="${_themeContext.themeVariables.themePaths.logoPath}"
+                          redirect="${_themeContext.requestUri}"
+                          activePageLink="${_activePageLink}"
+                          contestPages="${_themeContext.themeVariables.contestPages}"
+                          member="${_themeContext.authenticationVariables.isLoggedIn ? _themeContext.authenticationVariables.member : null}"
+                          isWhiteBackgound="${_themeContext.themeVariables.isHomePage}"
+                          isShowIcons="${_themeContext.themeVariables.navbarShowIcons}"
+                          blogAdminUrl="${_themeContext.blogAdminUrl}"
+                          showLanguage="${_themeContext.i18NVariables.isI18NActive}"
+                          showSearch="${_themeContext.themeVariables.showSearchMenuItem}"
+                          languageSelectItems="${_themeContext.i18NVariables.languageSelectItems}"
+                          currentLocale="${_themeContext.i18NVariables.currentLocale}"
+                          showGoogleSso="${_themeContext.authenticationVariables.isGoogleSsoActive}"
+                          showFacebookSso="${_themeContext.authenticationVariables.isFacebookSsoActive}" />
 
 
     <!-- ============ Load jQuery ============ -->
@@ -266,29 +277,33 @@
 
     <!-- ============ Footer ============ -->
 
-    <xcolab-layout:footer showProfileLink="${_isLoggedIn}" currentLanguage="${_lang}"
-                          languageSelectItems="${_languageSelectItems}"
+    <xcolab-layout:footer showProfileLink="${_themeContext.authenticationVariables.isLoggedIn}" currentLanguage="${_lang}"
+                          languageSelectItems="${_themeContext.i18NVariables.languageSelectItems}"
                           themeImageFolder="/images"
-                          showLanguageDropdown="${_isI18NActive}"
+                          showLanguageDropdown="${_themeContext.i18NVariables.isI18NActive}"
                           footerArticleId="${_footerArticleId}" />
 
 
     <!-- ============ Modals ============ -->
 
-    <c:if test="${!_isLoggedIn}">
-        <xcolab-modals:loginModal show="${_showLoginPopup}" redirect="${_requestUri}" authError="${_authError}"
-                showFacebookSso="${_isFacebookSsoActive}" showGoogleSso="${_isGoogleSsoActive}" />
+    <c:if test="${!_themeContext.authenticationVariables.isLoggedIn}">
+        <xcolab-modals:loginModal show="${_themeContext.authenticationVariables.showLoginPopup}"
+                                  redirect="${_themeContext.requestUri}"
+                                  authError="${_themeContext.authenticationVariables.authError}"
+                                  showFacebookSso="${_themeContext.authenticationVariables.isFacebookSsoActive}"
+                                  showGoogleSso="${_themeContext.authenticationVariables.isGoogleSsoActive}" />
     </c:if>
 
-    <xcolab-modals:forgotPasswordModal show="${_showPasswordResetPopup}" redirect="${_requestUri}"
-            screenName="${_isLoggedIn ? _member.screenName : null}"/>
+    <xcolab-modals:forgotPasswordModal show="${_themeContext.authenticationVariables.showPasswordResetPopup}"
+                                       redirect="${_themeContext.requestUri}"
+                                       screenName="${_themeContext.authenticationVariables.isLoggedIn ? _themeContext.authenticationVariables.member.screenName : null}"/>
 
     <xcolab-modals:flaggingModal />
 
     <!-- TODO COLAB-2172: rework as part of SSO improvements -->
     <!-- post registration popup -->
     <c:if test='${request.getParameter("postRegistration")}'>
-        <xcolab-modals:postRegistrationModal member="${_member}" redirect="${_requestUri}" />
+        <xcolab-modals:postRegistrationModal member="${_themeContext.authenticationVariables.member}" redirect="${_themeContext.requestUri}" />
         <xcolab:script src="/js/postRegistration.js" />
     </c:if>
 
@@ -298,16 +313,16 @@
     <xcolab-scripts:loadWidgets />
 
     <xcolab-scripts:loadNotyAlerts />
-    <c:if test="${not empty __alertMessage}">
-        <spring:message var="notyMessage" text="${__alertMessage.message}" javaScriptEscape="true" />
+    <c:if test="${not empty _themeContext.messageVariables.alertMessage}">
+        <spring:message var="notyMessage" text="${_themeContext.messageVariables.alertMessage.message}" javaScriptEscape="true" />
         <script>
-            noty({text: '${notyMessage}', type: '${__alertMessage.type.notyType}'});
+            noty({text: '${notyMessage}', type: '${_themeContext.messageVariables.alertMessage.type.notyType}'});
         </script>
     </c:if>
 
     <xcolab:script src="/js/postLinkHandler.js"/>
     <xcolab-scripts:loadTooltips />
-    <xcolab-scripts:loadMoment locale="${_locale}"/>
+    <xcolab-scripts:loadMoment locale="${_themeContext.i18NVariables.locale}"/>
 
     <!-- Bootstrap -->
     <xcolab:script src="/vendor/popper.js/dist/umd/popper.min.js" />
@@ -375,11 +390,11 @@
 
     <!-- ============ Analytics and tracking ============ -->
 
-    <c:if test="${_isProduction}">
-        <xcolab-scripts:analyticsScripts googleAnalyticsKey="${_googleAnalyticsKey}"
-                                         pingdomRumId="${_pingdomRumId}"
+    <c:if test="${_themeContext.serverEnvironment.isProduction}">
+        <xcolab-scripts:analyticsScripts googleAnalyticsKey="${_themeContext.credentialVariables.googleAnalyticsKey}"
+                                         pingdomRumId="${_themeContext.credentialVariables.pingdomRumId}"
                                          analyticsAttribute="${__analyticsAttribute}"
-                                         httpSession="${request.session}" member="${_member}" />
+                                         httpSession="${request.session}" member="${_themeContext.authenticationVariables.member}" />
     </c:if>
 
     <!-- Custom user tracking -->
@@ -394,14 +409,14 @@
         {
           "@context": "http://schema.org",
           "@type": "WebSite",
-          "name": "${_colabName}",
-          "alternateName": "${_colabLongName}",
-          "url": "${_colabUrl}"
+          "name": "${_themeContext.colabName}",
+          "alternateName": "${_themeContext.colabLongName}",
+          "url": "${_themeContext.colabUrl}"
         }
     </script>
 
     <c:set var="socialMediaSameAs">
-        <c:forEach var="socialMediaEngine" items="${_socialMediaEngines}" varStatus="status">
+        <c:forEach var="socialMediaEngine" items="${_themeContext.socialMediaVariables.socialMediaEngines}" varStatus="status">
             "${socialMediaEngine.followMeUrl}"${status.last ? '' : ','}
         </c:forEach>
     </c:set>
@@ -411,9 +426,9 @@
         {
           "@context": "http://schema.org",
           "@type": "Organization",
-          "name": "${_colabName}",
-          "url": "${_colabUrl}",
-          "logo": "${_logoPathSquare}",
+          "name": "${_themeContext.colabName}",
+          "url": "${_themeContext.colabUrl}",
+          "logo": "${_themeContext.themeVariables.themePaths.logoPathSquare}",
           "sameAs": [${socialMediaSameAs}]
         }
     </script>

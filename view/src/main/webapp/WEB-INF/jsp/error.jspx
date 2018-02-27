@@ -45,7 +45,7 @@
                 <c:otherwise>
                     <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0;">
                         <form:form id="signInForm_form" method="post" action="/reportError">
-                            <input name="url" type="hidden" value="${_requestUri}" />
+                            <input name="url" type="hidden" value="${_themeContext.requestUri}" />
                             <input name="stackTrace" type="hidden" value="${trace}"/>
                             <input name="referer" type="hidden" value="${header.get('referer')}"/>
                             <div class="c-Alert__error__message" role="alert">
@@ -66,7 +66,7 @@
                 </c:otherwise>
             </c:choose>
 
-            <c:if test="${_isAdmin}">
+            <c:if test="${_themeContext.authenticationVariables.isAdmin}">
                 <div class="c-Alert__info__message mt-3" role="alert">
                     <h2>Admin Error Details:</h2>
                     <div>Status: ${status}</div>

@@ -244,7 +244,7 @@
     <jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
 
     <c:set var="acceptTosModalTitle">
-        By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${_colabName} ${contestType.contestName} and agree to the
+        By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${_themeContext.colabName} ${contestType.contestName} and agree to the
         <a href="/wiki/Terms+of+use" target="_blank">Terms of Use</a>
         and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.
     </c:set>
@@ -319,7 +319,7 @@
     <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
     <!-- TODO COLAB-2583: replace with i18n message -->
-    <c:set var="acceptTosNotificationText" value="To create a ${contestType.proposalName} on the ${_colabName}, you must ACCEPT the terms of use and ${contestType.contestName} rules. Please click Accept to continue and save your ${contestType.proposalName}!" />
+    <c:set var="acceptTosNotificationText" value="To create a ${contestType.proposalName} on the ${_themeContext.colabName}, you must ACCEPT the terms of use and ${contestType.contestName} rules. Please click Accept to continue and save your ${contestType.proposalName}!" />
     <script>
         var acceptTosNotificationText = '${acceptTosNotificationText}';
     </script>

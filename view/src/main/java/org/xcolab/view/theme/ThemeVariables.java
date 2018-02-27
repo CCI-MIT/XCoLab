@@ -27,7 +27,7 @@ public class ThemeVariables {
 
     private final boolean isResponsive;
 
-    private final Map<String, String> themePaths;
+    private final ThemePaths themePaths;
 
     public ThemeVariables(HttpServletRequest request, I18nVariables i18NVariables) {
         this.mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
@@ -52,18 +52,7 @@ public class ThemeVariables {
 
         this.isResponsive = PlatformAttributeKey.LAYOUT_IS_RESPONSIVE.get();
 
-        this.themePaths = new HashMap<>();
-        // TODO: just expose the activeTheme object, that is enough
-        ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
-
-        //TODO COLAB-2446: move cdn resolution to CdnUrlEncodingFilter
-        final String themeImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_STATIC.get();
-
-        getThemePaths().put("_themeStylesheetPath", activeTheme.getStylesheetPath());
-        getThemePaths().put("_logoPath", themeImageDomain + activeTheme.getLogoPath());
-        getThemePaths().put("_logoPathSocial", themeImageDomain + activeTheme.getLogoPathSocial());
-        getThemePaths().put("_logoPathBig", themeImageDomain + activeTheme.getLogoPathBig());
-        getThemePaths().put("_logoPathSquare", themeImageDomain + activeTheme.getLogoPathSquare());
+        this.themePaths = new ThemePaths();
     }
 
     public boolean getMitHeaderBarShow() {
@@ -106,7 +95,7 @@ public class ThemeVariables {
         return isResponsive;
     }
 
-    public Map<String, String> getThemePaths() {
+    public ThemePaths getThemePaths() {
         return themePaths;
     }
 }

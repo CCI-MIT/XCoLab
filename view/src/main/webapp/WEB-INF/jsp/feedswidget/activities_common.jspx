@@ -15,7 +15,7 @@
     </div>
     <div class="clearfix"><!--  --></div>
     <h2>${title}</h2>
-    <c:if test="${_isAdmin}">
+    <c:if test="${_themeContext.authenticationVariables.isAdmin}">
         <a href="/widgets/feeds/preferences" class="btn cb-btn-admin btn-sm float-right">Edit preferences</a><br/>
     </c:if>
     <c:choose>
