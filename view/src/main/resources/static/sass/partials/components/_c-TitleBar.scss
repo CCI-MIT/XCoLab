@@ -102,7 +102,6 @@ $_c-TitleBar__borderWidth: 6px;
 
   font-size: 14px;
   font-weight: $c-TitleBar__element__fontWeight;
-  overflow: hidden;
 
   //states
   &.disabled {
@@ -134,14 +133,12 @@ $_c-TitleBar__borderWidth: 6px;
   }
   //noinspection CssOptimizeSimilarProperties
   &:after {
-    border-color: transparent;
     border-width: 12px;
     border-left-color: $c-TitleBar__contestSummary__backgroundColor;
     margin-top: -12px;
   }
   //noinspection CssOptimizeSimilarProperties
   &:before {
-    border-color: transparent;
     border-width: 16px;
     border-left-color: $c-TitleBar__separator__color;
     margin-top: -16px;
