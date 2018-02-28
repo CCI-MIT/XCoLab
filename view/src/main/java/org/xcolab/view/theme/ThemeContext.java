@@ -84,7 +84,7 @@ public class ThemeContext {
     public MetaVariables getMetaVariables() {
         return metaVariables;
     }
-    
+
     public MessageVariables getMessageVariables() {
         return messageVariables;
     }
