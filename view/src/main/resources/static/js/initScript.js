@@ -12,14 +12,6 @@ function deferUntilLogin(source) {
     }
 }
 
-
-// To allow a dropdown toggle to exist outside the bootstrap dropdown
-jQuery('.js-DropdownToggle').click(function () {
-    var targetSelector = jQuery(this).data('target');
-    jQuery(targetSelector).dropdown("toggle");
-    return false;
-});
-
 function showForgotPasswordModal() {
     jQuery('#loginModal').modal('hide');
     jQuery('#forgotPasswordModal').modal();
