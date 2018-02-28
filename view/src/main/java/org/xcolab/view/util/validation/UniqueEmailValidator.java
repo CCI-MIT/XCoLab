@@ -2,7 +2,6 @@ package org.xcolab.view.util.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
@@ -10,9 +9,8 @@ import javax.validation.ConstraintValidatorContext;
 
 public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
 
-    private String emailProperty;
-
     private final ResourceMessageResolver resourceMessageResolver;
+    private String emailProperty;
 
     @Autowired
     public UniqueEmailValidator(ResourceMessageResolver resourceMessageResolver) {
@@ -40,18 +38,10 @@ public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
 
             if (isDefaultMessage) {
-                StringBuilder message = new StringBuilder();
-                message.append(resourceMessageResolver
-                        .getLocalizedMessage("register.form.validation.uniqueEmail.message"));
-
-                if (ConfigurationAttributeKey.IS_SHARED_COLAB.get()) {
-                    message.append("<br />").append(resourceMessageResolver
-                            .getLocalizedMessage("register.form.validation.uniqueX.sharedColab",
-                                    new String[]{
-                                            ConfigurationAttributeKey.PARTNER_COLAB_NAME.get()}));
-                }
+                String message = resourceMessageResolver
+                        .getLocalizedMessage("register.form.validation.uniqueEmail.message");
                 context.disableDefaultConstraintViolation();
-                processDefaultErrorMessage(message.toString(), false, context);
+                processDefaultErrorMessage(message, false, context);
             }
         }
 

@@ -3,6 +3,7 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:judging="urn:jsptld:/WEB-INF/tlds/xcolab-judging.tld"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -49,10 +50,10 @@
                                                                            proposalId="${proposal.proposalId}" contestId="${contest.contestPK}">
                                                     <c:choose>
                                                         <c:when test="${judgeReviewStatus.statusValue eq 1}">
-                                                            <img src="/images/icon_question-x.png" class="review-status-icon"/>
+                                                            <collab:image src="/images/icon_question-x.png" cssClass="review-status-icon"/>
                                                         </c:when>
                                                         <c:when test="${judgeReviewStatus.statusValue eq 2}">
-                                                            <img src="/images/icon_question-chk.png" class="review-status-icon"/>
+                                                            <collab:image src="/images/icon_question-chk.png" cssClass="review-status-icon"/>
                                                         </c:when>
                                                     </c:choose>
                                                 </judging:judgeReviewStatus>

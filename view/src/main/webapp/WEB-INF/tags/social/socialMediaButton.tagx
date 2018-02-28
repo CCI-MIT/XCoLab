@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <jsp:directive.attribute name="socialEngine" type="java.lang.String" required="true"
                              rtexprvalue="true" description="Available engines : facebook, twitter, google, linkedin, youtube"/>
@@ -9,7 +10,7 @@
     <jsp:directive.attribute name="followMeUrl" type="java.lang.String" description="The social link for the follow me function" />
     <jsp:directive.attribute name="shareUrl" type="java.lang.String" description="Share url override, if not passed the current URL will be used" />
     <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
-    <jsp:directive.attribute name="dataReference" type="java.lang.String" description="Extra reference to compose URL" />
+    <jsp:directive.attribute name="hashString" type="java.lang.String" description="Optional hash string to append to the URL. Has to start with '#'" />
 
     <c:choose>
         <c:when test="${not empty shareUrl}"><c:set var="finalShareUrl" value="${shareUrl}"/></c:when>
@@ -26,12 +27,23 @@
     <c:choose>
         <c:when test="${type.equals('follow')}">
             <c:if test="${not empty followMeUrl}">
-                <a class="c-SocialButton ${sizeClass}" href="${followMeUrl}" target="_blank">
-                    <img src="${socialEngineLogoUrl}" alt="${socialEngine}" />
+                <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" href="${followMeUrl}" target="_blank">
+                    <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
                 </a>
             </c:if>
         </c:when>
         <c:when test="${type.equals('share')}">
+            <!-- Load share script exactly once -->
+            <c:if test="${empty __socialMediaButton__shareScriptLoaded}">
+                <c:set var="__socialMediaButton__shareScriptLoaded" value="true" scope="request"/>
+                <script>
+                    function shareThis(el) {
+                        var shareUrl = $(el).data("share-url").replace("socialMediaEngine", $(el).data("engine"));
+                        window.open($(el).data("engine-url") + encodeURIComponent(shareUrl), '_blank');
+                    }
+                </script>
+            </c:if>
+            
             <c:choose>
                 <c:when test="${socialEngine.equals('facebook')}">
                     <c:set var="dataEngineUrl" value="https://www.facebook.com/dialog/share?app_id=${_facebookId}&amp;display=popup&amp;href="/>
@@ -49,8 +61,9 @@
                     <c:set var="dataEngineUrl" value="mailto:info@example.com?subject=${title}&amp;body="/>
                 </c:when>
             </c:choose>
-            <a class="c-SocialButton ${sizeClass}" data-reference="${dataReference}" data-engine-url="${dataEngineUrl}" data-engine="${socialEngine}" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
-                <img src="${socialEngineLogoUrl}" alt="${socialEngine}" />
+            <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" data-engine-url="${dataEngineUrl}"
+               data-engine="${socialEngine}" data-share-url="${finalShareUrl}${hashString}" onclick="shareThis(this)">
+                <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
             </a>
         </c:when>
     </c:choose>

@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <div class="media" style="margin-bottom: 15px;">
         <div class="media-body">
@@ -7,7 +8,7 @@
         </div>
 
         <div class="media-right">
-            <img class="media-object" src="/images/beta-indicator.png" alt="Beta" style="width: 55px;" />
+            <collab:image cssClass="media-object" src="/images/beta-indicator.png" alt="Beta" cssStyle="width: 55px;" />
         </div>
     </div>
 </jsp:root>

@@ -12,25 +12,6 @@ function deferUntilLogin(source) {
     }
 }
 
-function deferUntilLoginTargeted(targetLocation) {
-
-    if (_isLoggedIn) {
-        return true;
-    } else {
-        if (targetLocation != null) {
-            jQuery("#signInForm_form").find("input[name=redirect]").val(targetLocation);
-        }
-        $('#loginModal').modal();
-    }
-}
-
-// To allow a dropdown toggle to exist outside the bootstrap dropdown
-jQuery('.js-DropdownToggle').click(function () {
-    var targetSelector = jQuery(this).data('target');
-    jQuery(targetSelector).dropdown("toggle");
-    return false;
-});
-
 function showForgotPasswordModal() {
     jQuery('#loginModal').modal('hide');
     jQuery('#forgotPasswordModal').modal();
@@ -82,36 +63,3 @@ function disableDirtyCheck() {
         setTimeout(poll, POLLING_INITIAL_DELAY_SECONDS * 1000);
     });
 }());
-
-// TODO COLAB-2588: do we need this?
-function submitenter(myfield, e) {
-    var keycode;
-    if (window.event) {
-        keycode = window.event.keyCode;
-    } else if (e) {
-        keycode = e.which;
-    } else {
-        return true;
-    }
-
-    if (keycode == 13) {
-        jQuery(myfield.form).submit();
-        return false;
-    } else {
-        return true;
-    }
-}
-
-<!-- Social Share Script -->
-function shareThis(event) {
-
-    var engineUrl = $(event).data("engine-url");
-    var shareUrl = $(event).data("share-url");
-    var engine = $(event).data("engine");
-    var dataReference = $(event).data("reference");
-
-    window.open(engineUrl +
-            encodeURIComponent(
-                    shareUrl.replace("socialMediaEngine", engine) +
-                    ((dataReference != "") ? (dataReference) : (""))), '_blank');
-}

@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
 		  xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
 		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -32,8 +33,10 @@
 				<div class="addpropbox">
 					<label>
 						<strong>Contest URL name</strong>
-						<a class="helpTrigger" href="javascript:;"><img
-								src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+						<a class="helpTrigger" href="javascript:;">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                        </a>
+                        <br/>
 					</label>
 
 					<div class="addprophelp">
@@ -60,8 +63,10 @@
 				<div class="addpropbox">
 					<label>
 						<strong>Contest Year</strong>
-						<a class="helpTrigger" href="javascript:;"><img
-								src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+						<a class="helpTrigger" href="javascript:;">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                        </a>
+                        <br/>
 					</label>
 
 					<div class="addprophelp">
@@ -88,8 +93,10 @@
 				<div class="addpropbox">
 					<label>
 						<strong>Email Template URL</strong>
-						<a class="helpTrigger" href="javascript:;"><img
-								src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+						<a class="helpTrigger" href="javascript:;">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                        </a>
+                        <br/>
 					</label>
 
 					<div class="addprophelp">The corresponding wiki template URL</div>
@@ -110,8 +117,10 @@
 				<div class="addpropbox">
 					<label>
 						<strong>Contest level</strong>
-						<a href="javascript:;" class="helpTrigger"><img
-								src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+						<a href="javascript:;" class="helpTrigger">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                        </a>
+                        <br/>
 					</label>
 
 					<div class="addprophelp">Select the level associated with your contest. If you have questions on which
@@ -132,8 +141,10 @@
 				<div class="addpropbox">
 					<label>
 						<strong>Hide Ribbons</strong>
-						<a href="javascript:;" class="helpTrigger"><img
-								src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+						<a href="javascript:;" class="helpTrigger">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                        </a>
+                        <br/>
 					</label>
 
 					<div class="addprophelp">
@@ -156,8 +167,10 @@
 				<div class="addpropbox">
 					<label>
 						<strong>Contest model settings</strong>
-						<a href="javascript:;" class="helpTrigger"><img
-								src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+						<a href="javascript:;" class="helpTrigger">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                        </a>
+                        <br/>
 					</label>
 
 					<div class="addprophelp">Set the modeling settings for your contest. If you have questions on how to set
@@ -227,7 +240,10 @@
 				<div class="addpropbox">
 					<label>
 						<strong>Contest type</strong>
-						<a href="javascript:;" class="helpTrigger"><img src="/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+						<a href="javascript:;" class="helpTrigger">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
+                        <br />
 					</label>
 					<div class="addprophelp">Select the type of this contest. Types determine the name of the contest-entity and the proposal-entities and where they will appear. If you have a question about which type to select, please submit a comment below for the CoLab team.</div>
 					<div class="clearfix"><!-- --></div>

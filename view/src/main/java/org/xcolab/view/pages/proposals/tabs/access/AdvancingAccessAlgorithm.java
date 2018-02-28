@@ -24,8 +24,7 @@ public class AdvancingAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
         }
 
         ContestPhase contestPhase = proposalContext.getContestPhase();
-        ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType
-                .getPromoteType(contestPhase.getContestPhaseAutopromote());
+        ContestPhasePromoteType phasePromoteType = contestPhase.getContestPhaseAutopromoteEnum();
 
         final boolean isJudged = phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED;
         final boolean isDirectJudging = isJudged && !contestPhase.getFellowScreeningActive();

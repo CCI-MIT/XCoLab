@@ -1,9 +1,5 @@
 package org.xcolab.util.enums.promotion;
 
-/**
- * @author pdeboer
- *         First created on 10/7/13 at 7:37 PM
- */
 public class JudgingSystemActions {
     public enum AdvanceDecision {
         NO_DECISION(0, "No decision made yet"),

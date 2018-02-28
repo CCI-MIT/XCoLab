@@ -43,7 +43,9 @@
         </p>
 
         <c:if test="${user.userId != messageBean.from.userId}">
-            <a class="btn btn-primary" data-toggle="modal" data-target="#sendMessageModal"><spring:message code="message.reply.button"/></a>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendMessageModal">
+                <spring:message code="message.reply.button"/>
+            </button>
             <xcolab:sendMessageModal replyToMessage="${messageBean}" />
         </c:if>
     </div>

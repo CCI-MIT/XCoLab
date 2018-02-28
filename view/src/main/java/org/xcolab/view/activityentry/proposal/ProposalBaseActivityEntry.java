@@ -10,6 +10,9 @@ import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.AbstractActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class ProposalBaseActivityEntry extends AbstractActivityEntryContentProvider {
 
     private final ResourceMessageResolver resourceMessageResolver;
@@ -37,10 +40,15 @@ public abstract class ProposalBaseActivityEntry extends AbstractActivityEntryCon
         return proposal;
     }
 
+    protected List<Object> getBodyTemplateParams() {
+        return Arrays.asList(getUserLink(), contestType.getProposalNameLowercase(),
+                getProposalLink());
+    }
+
     @Override
     public String getBody() {
-        String[] params = {getUserLink(), contestType.getProposalNameLowercase(), getProposalLink()};
-        return resourceMessageResolver.getLocalizedMessage(getBodyTemplate(), params);
+        final List<Object> params = getBodyTemplateParams();
+        return resourceMessageResolver.getLocalizedMessage(getBodyTemplate(), params.toArray());
     }
 
     @Override

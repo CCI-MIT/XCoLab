@@ -1,0 +1,58 @@
+@import "bootstrap/variables";
+@import "bootstrap/mixins/breakpoints";
+
+//Local vars
+$_l-Content__margin: $t-Spacing__base * .5;
+$_l-Content__gutter: $t-Spacing__gridGutter;
+
+.l-Content {
+  display: flex;
+  flex-direction: column;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+}
+
+%l-Content__element {
+  margin: $_l-Content__margin 0;
+}
+
+.l-Content__main {
+  @extend %l-Content__element;
+  flex: 1 1 auto;
+}
+
+.l-Content__sidebar {
+  @extend %l-Content__element;
+
+  order: -1;
+  flex-grow: 1;
+
+  @include media-breakpoint-up(md) {
+    margin-right: $_l-Content__gutter;
+    flex: 0 0 300px;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .l-Content__sidebar--collapseBottom {
+    order: 99;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .l-Content__sidebar--small {
+    flex-basis: 250px;
+  }
+
+  .l-Content__sidebar--large {
+    flex-basis: 350px;
+  }
+
+  .l-Content__sidebar--right {
+    margin-left: $_l-Content__gutter;
+    margin-right: 0;
+    order: 99;
+  }
+}

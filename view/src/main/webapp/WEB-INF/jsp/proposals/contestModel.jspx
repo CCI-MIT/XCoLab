@@ -2,6 +2,7 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<!--@elvariable id="availableModels" type="java.util.Map<java.lang.Long, java.lang.String>"-->
@@ -12,17 +13,14 @@
 	<jsp:directive.include file="./init_contest.jspx" />
 	
 	<div class="proposal-head">
-		<div class="inner">
-			<div class='c-Headline'>
-				<div class="contest-image">
-					<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
-				</div>
-				<div class='proposal-title'>
-					<h1>Model <xcolab:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
-				</div>
-			</div>
-		</div>
-		<!-- /inner -->
+        <div class='c-Headline'>
+            <div class="contest-image">
+                <collab:image src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
+            </div>
+            <div class='proposal-title'>
+                <h1>Model <xcolab:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
+            </div>
+        </div>
 	</div>
 	<!-- /proposal-head -->
     <c:if test="${not empty availableModels }">

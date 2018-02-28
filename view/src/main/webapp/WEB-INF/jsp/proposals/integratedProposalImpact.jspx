@@ -3,6 +3,7 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:form="http://www.springframework.org/tags/form">
 
@@ -135,7 +136,7 @@
                         </form:form>
 
                         <div class="c-ControlsOverlay">
-                            <div class="inner">
+                            <div class="cb-container-fixed">
                                 <p>
                                     <c:choose>
                                         <c:when test="${proposal.currentVersion le 1}">
@@ -213,9 +214,9 @@
                             <th class="blue-bg" style="text-align: center" colspan="${fn:length(impactIterations)}">
                                 Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
                                 <a href="javascript:;" class="helpTrigger">
-                                <img
-                                        src="/images/icon-addprop-question.png" width="15"
-                                        height="15"/></a><br/>
+                                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                                </a>
+                                <br/>
 
                                 <div class="addprophelp" style="color:white;">
                                     This table shows a summary of the emission reductions for all sectors and regions
@@ -232,9 +233,10 @@
                         </thead>
                         <tr>
                             <td class="blue-bg" style="text-align: left">Sector
-                                <a href="javascript:;" class="helpTrigger"><img
-                                        src="/images/icon-addprop-question.png" width="15"
-                                        height="15"/></a><br/>
+                                <a href="javascript:;" class="helpTrigger">
+                                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                                </a>
+                                <br/>
 
                                 <div class="addprophelp" style="color:white;">
                                     This table shows a summary of the emission reductions for all sectors and regions

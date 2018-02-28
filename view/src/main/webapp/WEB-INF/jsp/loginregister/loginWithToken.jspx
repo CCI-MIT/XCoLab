@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:layout="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:form="http://www.springframework.org/tags/form">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
@@ -24,7 +25,7 @@
                         <label class="form-check-label" for="remember-me">
                             Remember me
                         </label> &#160;
-                        <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip"
+                        <collab:image src="/images/icon-addprop-question-bar.png" class="js-Tooltip"
                              title="If this box is checked, you will stay logged into the site automatically for one month." />
                     </div>
                     <div class="form-check">
@@ -32,7 +33,7 @@
                         <label class="form-check-label" for="invalidate-link">
                             Invalidate link after login
                         </label> &#160;
-                        <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip"
+                        <collab:image src="/images/icon-addprop-question-bar.png" class="js-Tooltip"
                              title="If you are using a public computer, check this box to prevent others from being able to use your login." />
                     </div>
                     <button type="submit" class="btn btn-primary">Log in</button>

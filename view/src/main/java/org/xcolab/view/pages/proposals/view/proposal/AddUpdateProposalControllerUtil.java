@@ -2,14 +2,10 @@ package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.filtering.FilteringClient;
-import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
-import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
@@ -97,17 +93,6 @@ public final class AddUpdateProposalControllerUtil {
         } else {
             activitiesClient.createActivityEntry(ProposalActivityType.UPDATED, memberId,
                     proposal.getProposalId());
-        }
-
-        if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {
-            try {
-                FilteredEntry filteredEntry = FilteringClient
-                        .getFilteredEntryByUuid(updateProposalSectionsBean.getUuid());
-                filteredEntry.setSourceId(proposal.getProposalId());
-                filteredEntry.setAuthorId(memberId);
-                FilteringClient.updateFilteredEntry(filteredEntry);
-            } catch (FilteredEntryNotFoundException ignored) {
-            }
         }
 
         return "redirect:" + proposal.getProposalLinkUrl(contest);

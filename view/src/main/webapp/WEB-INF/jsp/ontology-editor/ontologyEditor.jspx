@@ -258,7 +258,7 @@
             </ul>
 
             <div id="infoBox"><!-- --></div>
-            <div  id="innerContent" class="addpropbox">
+            <div class="addpropbox">
                 <div class="colFloatLef">
                     <h3>Ontology areas and terms</h3>
                     <div class="treeContainer">

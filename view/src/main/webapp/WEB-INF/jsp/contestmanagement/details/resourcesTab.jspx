@@ -2,6 +2,7 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
 		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -65,7 +66,7 @@
 
 							<c:if test="${not empty section.helpText}">
 							<a class="helpTrigger" href="javascript:;">
-								<img src="/images/icon-addprop-question.png" width="15" height="15" />
+                                <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
 							</a>
 							</c:if>
 							<br />

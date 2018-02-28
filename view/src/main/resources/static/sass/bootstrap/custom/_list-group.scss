@@ -1,0 +1,7 @@
+$cb-list-group__itemBackground--odd: $t-Color__primary__gray--light !default;
+
+.cb-list-group-striped {
+  .list-group-item:nth-of-type(odd) {
+    background: $cb-list-group__itemBackground--odd;
+  }
+}

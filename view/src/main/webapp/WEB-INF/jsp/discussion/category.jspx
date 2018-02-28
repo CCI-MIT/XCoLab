@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags">
 
@@ -54,33 +55,38 @@
                     <h3>${empty currentCategory ? allDiscussions : currentCategory.name}</h3>
                     <div class="p-Discussion__row">
                         <div class="p-Discussion__left">
-                            <div class="b-Spacing ${not empty currentCategory ? 'separatorBelow' : ''}">
+                            <div class="my-2 cb-d-flex-between-center">
 
                                 <span class="c-Count"><span class="c-Count__number">${threads.size()}</span>&#160;<spring:message code="discussion.categorypage.count"/></span>
 
                                 <c:if test="${discussionPermissions.canSeeAddThreadButton}">
-                                    <a class="b-Spacing__inline--large" href="/discussion/threads/create"
+                                    <a class="btn btn-link" href="/discussion/threads/create"
                                        rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
-                                        <img style="vertical-align: middle;" height="30"
-                                             src="/images/icon_new-topic.png" />&#160;<spring:message code="discussion.categorypage.newdiscussion"/>
+                                        <collab:image height="30" src="/images/icon_new-topic.png" cssClass="cb-btn-image"/>
+                                        <span class="cb-btn-image-text">
+                                            <spring:message code="discussion.categorypage.newdiscussion"/>
+                                        </span>
                                     </a>
                                 </c:if>
                             </div>
 
                             <c:if test="${not empty currentCategory}">
-                                <div class="b-Spacing">
+                                <hr class="my-2"/>
+                                <div class="my-2">
                                     ${currentCategory.description}
                                 </div>
                             </c:if>
 
                         </div>
-                        <div class="p-Discussion__right border-bottom">
+                        <div class="p-Discussion__right">
                             <c:set var="subscribeUrl" value="/discussion/subscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                             <c:set var="unsubscribeUrl" value="/discussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
-                            <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
+                            <a class="btn btn-link" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
                                     rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
-                                <img src="/images/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+                                <collab:image src="/images/subscribe_small_2.png" cssClass="cb-btn-image" />
+                                <span class="cb-btn-image-text">${isSubscribed ? 'Unsubscribe' : 'Subscribe'}</span>
                             </a>
+                            <hr/>
                         </div>
                     </div>
                 </div>

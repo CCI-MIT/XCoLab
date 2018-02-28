@@ -4,48 +4,29 @@ $c-Count__number__color: $t-Color__secondary !default;
 $c-Count__number__fontSize: 30px !default;
 $c-Count__number__fontWeight: $t-Typography__fontWeight--bold !default;
 $c-Count__number__color--accent: $t-Color__accent !default;
-$c-Count__number__verticalAlign: middle !default;
 
 //TODO: port other counts to this
 
 .c-Count {
+  display: inline-block;
+  vertical-align: middle;
   font-size: $c-Count__fontSize;
   text-transform: $c-Count__capitalization;
-
-  &.large {
-    font-size: 27px;
-  }
-
-  &.small {
-    font-size: 15px;
-  }
-}
-
-%c-Count__number {
-  font-size: $c-Count__number__fontSize;
-  font-weight: $c-Count__number__fontWeight;
-  vertical-align: $c-Count__number__verticalAlign;
-
-  &.large {
-    font-size: 36px;
-  }
-
-  &.small {
-    font-size: 24px;
-  }
 }
 
 .c-Count__number {
-  @extend %c-Count__number;
+  display: inline-block;
+  margin-right: $t-Spacing__base * .25;
+  font-size: $c-Count__number__fontSize;
+  font-weight: $c-Count__number__fontWeight;
+
   color: $c-Count__number__color;
 }
 
 .c-Count__number--accent {
-  @extend %c-Count__number;
   color: $c-Count__number__color--accent;
 }
 
 .c-Count__number--neutral {
-  @extend %c-Count__number;
   color: $b-Typography__textColor;
 }

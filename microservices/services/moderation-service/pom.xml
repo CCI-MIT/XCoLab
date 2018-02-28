@@ -62,7 +62,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>flagging_.*|filtering_.*</includes>
+                            <includes>flagging_.*</includes>
                         </database>
                     </generator>
                 </configuration>

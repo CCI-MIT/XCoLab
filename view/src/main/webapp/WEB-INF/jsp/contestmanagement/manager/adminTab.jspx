@@ -12,6 +12,13 @@
     <!--@elvariable id="section" type="java.lang.Integer"-->
     <!--@elvariable id="level" type="java.lang.Integer"-->
 
+    <jsp:useBean id="votingReportBean" scope="request"
+                 class="org.xcolab.view.pages.contestmanagement.beans.VotingReportBean" />
+    <jsp:useBean id="proposalReportBean" scope="request"
+                 class="org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean" />
+    <jsp:useBean id="batchRegisterBean" scope="request"
+                 class="org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean" />
+
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
@@ -111,7 +118,7 @@
 
 
                 <c:if test="${not empty listOfNotifications}">
-                    <div class="div2"><!--  --></div>
+                    <hr/>
                     <h2>List of Notifications</h2>
                     <h6>To send next pending notification, delete the currently active notification or wait for it to expire automatically.</h6>
                     <c:forEach var="notification" items="${listOfNotifications}" varStatus="status">
@@ -166,8 +173,7 @@
                 <c:if test="${empty listOfNotifications}">
                     <h5><br />No Notifications found! You can schedule one using the form above! </h5>
                 </c:if>
-                <div class="div2"><!--  --></div>
-
+                <hr/>
             </div>
             <br/>
             <br/>
@@ -181,19 +187,21 @@
 
         <div class="addpropbox">
             <h2>Batch register members</h2>
-            <form:form action="/admin/contest/manager/tab/ADMIN/batchRegister" method="post">
+            <form:form action="/admin/contest/manager/tab/ADMIN/batchRegister" commandName="batchRegisterBean"
+                       id="batchRegisterForm" method="post">
                 <div class="c-Alert__info__message" for="batchRegisterMembersList">
                     Each member will receive an email with a link that allows them to sign in.
                     Enter one member per line in the following format:<br/>
                     <code>emailAddress;firstName;lastName</code>
                 </div>
                 <div>
-                <textarea id="batchRegisterMembersList" name="members" class="form-control"
-                          placeholder="Enter members..." style="width: 100%;"><!-- --></textarea>
+                    <form:textarea id="batchRegisterMembersList" cssClass="form-control" path="batchText"
+                               style="width: 100%;" />
                 </div>
                 <div class="form-check">
                     <!-- TODO COLAB-2204: remove style attribute once input float rule is removed -->
-                    <input type="checkbox" name="asGuests" class="form-check-input" id="asGuests" style="float: none; height: initial;"/>
+                    <form:checkbox path="asGuests" cssClass="form-check-input" id="asGuests"
+                           style="float: none; height: initial;" />
                     <label class="form-check-label js-Tooltip" for="asGuests" title="Guests cannot create proposals or participate in dicussions">
                         Register as guests
                     </label>

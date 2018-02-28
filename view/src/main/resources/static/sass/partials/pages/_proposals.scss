@@ -16,15 +16,7 @@ $p-proposal__left__h2__textColor: $t-Color__secondary !default;
 $p-proposal__left__h2__capitalization: $b-Typography__capitalization--none !default;
 $p-proposal__left__h2__fontWeight: initial !default;
 
-$p-proposal__right__h5__topbox__backgroundColor: $t-Color__tan !default;
-$p-proposal__right__h5__topbox__padding--top: 10px !default;
-$p-proposal__right__h5__topbox__font-size: 13px !default;
-$p-proposal__right__h5__topbox__fontWeight: bold !default;
-$p-proposal__right__h5__topbox__border--top: 1px dotted $t-Color__gray--dark-600 !default;
-$p-proposal__title__addProp__fontWeight: 700 !default;
-$p-proposal__settings__padding--bottom: 10px !default;
-$p-proposal__settings__backgroundColor: $t-Color__tan !default;
-$p-proposal__contest__backgroundColor: $t-Color__tan !default;
+$p-Proposal__sidebar__sectionBackgroundColor: $t-Color__tan !default;
 $p-proposal__contest__padding--top--bottom: 12px !default;
 
 $p-proposal__thumbbox__a__fontWeight: 700 !default;
@@ -36,7 +28,7 @@ $p-proposal__history__item__textColor: $t-Color__primary !default;
 $p-proposal__propbox__judgementActions__featured__titleAuthor__width: 455px !default;
 $p-proposal__propbox__judgementActions__titleAuthor__width: 476px !default;
 
-$p-Proposal__subscribe__capitalization: none !default;
+$p-Proposal__sidebar__subscribe__capitalization: none !default;
 
 $p-Proposal__edit__button__backgroundColor: $t-Color__primary--darkest !default;
 $p-Proposal__box__offColor: $t-Color__primary__gray--light !default;
@@ -51,28 +43,12 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 /* proposal HEADER */
 .proposal-head {
   padding-top: 28px;
+  padding-left: 15px;
+  padding-right: 15px;
+
   background: $p-proposal__header__background;
   border-bottom: 1px solid $t-Color__gray--dark-600;
-}
-
-.proposal-head:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
-.proposal-head {
-  display: inline-block;
-}
-
-* html .proposal-head {
-  height: 1%;
-}
-
-.proposal-head {
-  display: block;
+  margin-bottom: $t-Spacing__base;
 }
 
 .proposal-image {
@@ -104,31 +80,11 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 }
 
 /* edit proposal block */
-.edit-prop-wrap {
-  border-bottom: 1px dashed #666;
-  padding: $spacer 0;
-}
 
 .lastedited {
   float: left;
   height: 19px;
   font-size: 13px;
-}
-
-/* proposal columns */
-.prop-left {
-  float: left;
-  width: 631px;
-  &.full-width {
-    width: 100%;
-  }
-  margin-right: 23px;
-  line-height: 24px;
-}
-
-.prop-right {
-  float: left;
-  width: 330px;
 }
 
 .prop-left h2 {
@@ -145,33 +101,9 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   margin-bottom: 13px;
   color: $t-Color__gray--dark-800;
 }
-.prop-left img {
-  max-width: 650px;
-}
+
 .prop-left p {
   color: $t-Color__gray--dark-700;
-}
-
-.prop-left p.intro {
-  font-size: 19px;
-  line-height: 27px;
-}
-
-.div1 {
-  background: $t-Color__tan;
-  height: 6px;
-  margin: 30px 0 30px;
-}
-
-.div2 {
-  background: $t-Color__gray--medium-500;
-  height: 1px;
-  margin: 38px 0 30px;
-}
-
-.div3 {
-  border-top: 1px dotted $t-Color__gray--dark-600;
-  height: 1px;
 }
 
 /*  the Table-like rows of proposals */
@@ -287,121 +219,34 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   background-color: $p-Proposal__propbox--green !important;
 }
 
-/* right column */
+/* Proposal sidebar */
 
-.votebox-top {
-  border-bottom: 1px dotted $t-Color__gray--dark-600;
-  margin-bottom: 10px;
+.p-Proposal__sidebar__subscribe {
+  text-transform: $p-Proposal__sidebar__subscribe__capitalization;
 }
 
-.votebox-top .vote {
-  float: left;
-  width: 260px;
-  padding-top: 17px;
-  font-size: 27px;
-  color: $t-Color__gray--dark-800;
-}
-
-.votebox-top .vote span {
-  font-size: 33px;
-  color: $t-Color__secondary;
-  font-weight: $t-Typography__fontWeight--bold;
-}
-
-.votebox-top .vote img {
-  margin: 0 3px 0 5px;
-}
-
-.votebox-top .question {
-  float: right;
-  width: 23px;
-  height: 23px;
-}
-
-.votebox-bottom span {
-  font-size: 20px;
-  font-weight: $t-Typography__fontWeight--bold;
-}
-
-.p-Proposal__subscribe {
-  text-transform: $p-Proposal__subscribe__capitalization;
-}
-
-.prop-right h5 {
-  padding: 10px 0 10px 12px;
-  line-height: normal;
-  text-transform: uppercase;
-  color: $t-Color__secondary;
-}
-
-.prop-right h5.toppad {
-  padding: 42px 0 5px 12px;
-}
-
-.prop-right h5.topbox {
-  padding: $p-proposal__right__h5__topbox__padding--top 0 10px 12px;
-  margin-bottom: 9px;
-  background: $p-proposal__right__h5__topbox__backgroundColor;
-  font-size: $p-proposal__right__h5__topbox__font-size;
-  color: $t-Color__gray--dark-600;
-  border-top: $p-proposal__right__h5__topbox__border--top;
-  font-weight: $p-proposal__right__h5__topbox__fontWeight;
-}
-
-.prop-title {
-  background: $t-Color__tan;
-  border-bottom: 1px solid $t-Color__gray--medium-500;
-  line-height: 21px;
-  color: black;
-  padding: 13px 18px 13px 12px;
-}
-
-.prop-title.addprop {
-  background: none;
-  border-bottom: none;
-  font-weight: $p-proposal__title__addProp__fontWeight;
-  padding: 0 18px 9px 12px;
-}
-
-.prop-avatar {
-  padding: 10px 12px 11px 12px;
+.p-Proposal__sidebar__section {
+  padding: $t-Spacing__base * .5 $t-Spacing__base;
+  margin-top: $t-Spacing__base * .5;
   font-size: 15px;
-  color: black;
+
+  a {
+    font-weight: $t-Typography__fontWeight--bold;
+  }
 }
 
-.prop-contest {
-  background: $p-proposal__contest__backgroundColor;
+.p-Proposal__sidebar__section--background {
+  background: $p-Proposal__sidebar__sectionBackgroundColor;
   border-top: 1px solid $t-Color__gray--medium-500;
   border-bottom: 1px solid $t-Color__gray--medium-500;
-  font-size: 13px;
-  line-height: 18px;
-  color: black;
-  padding: $p-proposal__contest__padding--top--bottom 18px $p-proposal__contest__padding--top--bottom 12px;
-  margin-bottom: 3px;
 }
 
-.prop-settings {
-  background: $p-proposal__settings__backgroundColor;
-  border-bottom: 1px solid $t-Color__gray--medium-500;
-  font-size: 13px;
-  line-height: 18px;
-  color: black;
-  padding: 8px 18px $p-proposal__settings__padding--bottom 12px;
-}
-
-.prop-results {
-  padding: 10px 12px 0 12px;
-}
-
-.prop-results div {
-  font-size: 13px;
-  line-height: 16px;
-  color: $t-Color__gray--dark-700;
-  margin-bottom: 10px;
-}
-
-.prop-title a, .prop-avatar a, .prop-contest a, .prop-results a {
+.p-Proposal__sidebar__heading {
+  font-size: .8125rem;
+  color: $t-Color__gray--dark-600;
+  border-top: 1px dotted $t-Color__gray--dark-600;
   font-weight: $t-Typography__fontWeight--bold;
+  text-transform: uppercase;
 }
 
 /* contributors table */
@@ -485,23 +330,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 .addpropform label img {
   position: relative;
   top: 3px;
-}
-
-
-.addpropform {
-
-  // TODO: needed?
-  &.full-width textarea {
-    width: 830px;
-  }
-}
-
-.addpropform {
-
-  // TODO: needed?
-  &.full-width textarea {
-    width: 830px;
-  }
 }
 
 .addpropform .notation {

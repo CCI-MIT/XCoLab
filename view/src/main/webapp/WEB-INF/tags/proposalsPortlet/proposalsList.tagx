@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
@@ -32,8 +33,8 @@
             <td class="c-Table__cell propname-authors no-border">
                 <c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
                     <div class="ribbonPlaceholder">
-                        <img src="/images/icon-prize${proposal.ribbonWrapper.ribbon}.png"
-                             class="js-Tooltip" title="${proposal.ribbonWrapper.ribbonText}" />
+                        <collab:image src="/images/icon-prize${proposal.ribbonWrapper.ribbon}.png"
+                             cssClass="js-Tooltip" title="${proposal.ribbonWrapper.ribbonText}" />
                     </div>
                 </c:if>
                 <h4>
@@ -55,7 +56,7 @@
             <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                 <td class="c-Table__cell text-center votes no-border">
                     <div class="highlight">
-                        <img src="/images/icon-proposal-vote-small.png" />
+                        <collab:image src="/images/icon-proposal-vote-small.png" />
                         <xcolab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
                     </div>
                 </td>
@@ -63,14 +64,14 @@
             <c:if test="${not contestPhase.canVote}">
                 <td class="c-Table__cell text-center supporters no-border">
                     <div class="highlight">
-                        <img src="/images/icon-proposal-support.png" />
+                        <collab:image src="/images/icon-proposal-support.png" />
                         <xcolab:proposalLink proposal="${proposal}" text="${proposal.supportersCountCached}" tab="TEAM"/>
                     </div>
                 </td>
             </c:if>
             <td class="c-Table__cell text-center comments no-border">
                 <div class="highlight">
-                    <img src="/images/icon-proposal-comments.png" />
+                    <collab:image src="/images/icon-proposal-comments.png" />
                     <xcolab:proposalLink proposal="${proposal}" text="${proposal.commentsCount}" tab="COMMENTS" />
                 </div>
             </td>

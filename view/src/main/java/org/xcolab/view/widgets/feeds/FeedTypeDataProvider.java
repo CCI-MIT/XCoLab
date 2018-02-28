@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface FeedTypeDataProvider {
 
-    String populateModel(HttpServletRequest request, HttpServletResponse response,
+    void populateModel(HttpServletRequest request, HttpServletResponse response,
             SortFilterPage sortFilterPage, FeedsPreferences feedsPreferences, Model model);
 
-    String getFeedTypeName();
+    String getViewName();
+
+    FeedType getFeedType();
 }

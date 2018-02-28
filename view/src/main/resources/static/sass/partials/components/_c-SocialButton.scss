@@ -2,16 +2,9 @@ $_c-SocialButton__height: 30px !default;
 $_c-SocialButton__height--xs: 22px !default;
 
 .c-SocialButton {
-  margin: 1px;
   display: inline-block;
+  margin: 0.125rem;
   cursor: pointer;
-
-  transition: all .2s ease-in-out;
-  animation-fill-mode: both;
-
-  &:hover {
-    transform: translateY(-4px);
-  }
 
   > img {
     height: $_c-SocialButton__height;
@@ -21,5 +14,22 @@ $_c-SocialButton__height--xs: 22px !default;
   &.c-SocialButton--xs > img {
     height: $_c-SocialButton__height--xs;
     width: $_c-SocialButton__height--xs;
+  }
+}
+
+.c-SocialButton--hoverTranslate {
+  transition: all .2s ease-in-out;
+  animation-fill-mode: both;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+.c-SocialButton__text {
+  margin-left: 5px;
+
+  &:hover {
+    border-bottom: 1px dashed;
   }
 }

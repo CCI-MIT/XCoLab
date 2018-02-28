@@ -5,7 +5,12 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="isFrozen" type="java.lang.Boolean"-->
+    <!--@elvariable id="isFinalistPhase" type="java.lang.Boolean"-->
     <!--@elvariable id="hasAlreadyBeenPromoted" type="java.lang.Boolean"-->
+    <!--@elvariable id="emailTemplates" type="java.util.Map<String, org.xcolab.view.pages.proposals.wrappers.ContestEmailTemplateWrapper>"-->
+    <!--@elvariable id="judgeRatings" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.ProposalRatings>"-->
+    <!--@elvariable id="fellowRatings" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.ProposalRatings>"-->
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Advancing">
 
@@ -15,10 +20,6 @@
 
         <!--ProposalJudgesTabController-->
         <jsp:useBean id="proposalAdvancingBean" scope="request" type="org.xcolab.view.pages.proposals.requests.ProposalAdvancingBean"/>
-
-        <style>h3 {
-            margin: 20px 0 10px 0 !important;
-        }</style>
 
         <c:set var="saveAdvanceDetailsURL" value="${proposal.proposalUrl}/tab/ADVANCING?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
 
@@ -56,14 +57,14 @@
                                         <form:textarea id="advanceComment" cssClass="c-Comment__box" path="advanceComment" style="width:100%;"/>
                                         <div id="comment-headers">
                                             <c:forEach var="template" items="${emailTemplates}">
-                                                <div class="${template.key}">
+                                                <div data-template-name="${template.key}">
                                                     ${template.value.header}
                                                 </div>
                                             </c:forEach>
                                         </div>
                                         <div id="comment-footers">
                                             <c:forEach var="template" items="${emailTemplates}">
-                                                <div class="${template.key}">
+                                                <div data-template-name="${template.key}">
                                                     ${template.value.footer}
                                                 </div>
                                             </c:forEach>
@@ -77,17 +78,17 @@
                                                     <strong>The advancement is finalized and may not be changed anymore.</strong>
                                                 </p>
                                                 <c:if test="${proposalsPermissions.canAdminAll}">
-                                                    <a id="submit-advancing-1" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
+                                                    <a id="submit-advancing-1" style="display:block; float:right; margin-top: 10px;" class="btn cb-btn-admin" href="#">
                                                         Save
                                                     </a>
                                                     <input type="submit" id="submit-unfreeze" name="isUnfreeze" style="display:none" value="true" />
-                                                    <a id="submit-unfreeze-link" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
+                                                    <a id="submit-unfreeze-link" style="display:block; float:right; margin-top: 10px;" class="btn cb-btn-admin ml-2" href="#">
                                                         Unfreeze
                                                     </a>
                                                 </c:if>
                                             </c:when>
                                             <c:when test="${proposalsPermissions.canFellowActions}">
-                                                <a id="submit-advancing-2" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
+                                                <a id="submit-advancing-2" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary ml-2" href="#">
                                                     Save
                                                 </a>
                                                 <!-- <div id="advancement-freeze-button">
@@ -159,6 +160,8 @@
         </div>
 
         <script>
+            var isFinalistPhase = '${isFinalistPhase}' == 'true';
+
             jQuery(function() {
                 jQuery("#submit-forcePromotion-link").click(function () {
                     disableDirtyCheck();
@@ -212,14 +215,18 @@
                 jQuery("#comment-headers").find("> div").hide();
 
                 var action = $("#advanceDecision").val();
-                var classToBeShown = "";
+                var templateToBeShown = "";
                 if (action == "1") {
-                    classToBeShown = "ADVANCING_DO_NOT_ADVANCE";
+                    templateToBeShown = "ADVANCING_DO_NOT_ADVANCE";
                 } else if (action == "2") {
-                    classToBeShown = "ADVANCING_ADVANCE_TO_SEMIFINALIST";
+                    if (isFinalistPhase) {
+                        templateToBeShown = "ADVANCING_ADVANCE_TO_FINALIST";
+                    } else {
+                        templateToBeShown = "ADVANCING_ADVANCE_TO_SEMIFINALIST";
+                    }
                 }
-                if (classToBeShown != "") {
-                    jQuery("#comment-headers ."+classToBeShown).add("#comment-footers ."+classToBeShown).show();
+                if (templateToBeShown != "") {
+                    jQuery("#comment-headers").find("[data-template-name='"+templateToBeShown+"']").add("#comment-footers ."+templateToBeShown).show();
                 }
             }
 
@@ -238,7 +245,7 @@
         </c:if>
         <c:if test="${not proposal.allJudgesReviewFinished}">
             <script>
-                $(".judging_comments .btn btn-primary").hide();
+                $(".judging_comments .btn.btn-primary").hide();
             </script>
         </c:if>
         <script>

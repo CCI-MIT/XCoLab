@@ -1,0 +1,47 @@
+@import "../variables/t-base";
+
+@function yiq($color) {
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  @return (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+}
+
+@function yiq-is-light($color, $threshold: 130) {
+  @return if(yiq($color) > $threshold, true, false);
+}
+
+//chooses the optimal color for good contrast.
+@function yiq-contrasting-color($color, $light: $t-Color__text--light, $dark: $t-Color__text--dark) {
+  $threshold: (yiq($light) + yiq($dark)) / 2;
+  @return if(yiq-is-light($color, $threshold), $dark, $light);
+}
+
+// Finds an RGBA color with maximum alpha component,
+// that looks identical to the given color on white background
+@function rgba-equivalent($color) {
+  $red: red($color);
+  $green: green($color);
+  $blue: blue($color);
+  $min-color-component: min($red, $green, $blue);
+
+  $alpha: (255 - $min-color-component) / 255;
+  $rgba_red: ($red - $min-color-component) / $alpha;
+  $rgba_green: ($green - $min-color-component) / $alpha;
+  $rgba_blue: ($blue - $min-color-component) / $alpha;
+
+  @return rgba($rgba_red, $rgba_green, $rgba_blue, $alpha);
+}
+
+@function hover-color($color, $hover-color: null) {
+  @if $hover-color == null {
+    @return darken($color, 10%);
+  } @else {
+    @return $hover-color;
+  }
+}
+
+@function simple-gradient($base-color) {
+  @return linear-gradient(to bottom, lighten($base-color, 5%), darken($base-color, 5%));
+}

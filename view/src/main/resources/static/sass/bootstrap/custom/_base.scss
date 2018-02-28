@@ -1,15 +1,32 @@
-@import "../../lib/l-mixins";
+@import "../../lib/mixins";
 @import "bootstrap/mixins/breakpoints";
 
-//TODO: .inner is deprecated - remove from content articles then remove here
-.inner,
 .cb-container-fixed {
   width: 985px;
   margin: 0 auto;
-}
 
-.cb-bg-noise {
-  background-image: url(/images/bg-noise.png);
+  //TODO COLAB-2681: Remove conditional once RD is always on
+  .feature-isResponsive & {
+    // equivalent to .container
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+
+    @media (min-width: 576px) {
+      max-width: 540px;
+    }
+    @media (min-width: 768px) {
+      max-width: 720px;
+    }
+    @media (min-width: 992px) {
+      max-width: 960px;
+    }
+    @media (min-width: 1200px) {
+      max-width: 1140px;
+    }
+  }
 }
 
 // To reset our default list style
