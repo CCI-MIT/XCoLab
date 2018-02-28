@@ -1,4 +1,5 @@
 @import "bootstrap/variables";
+@import "bootstrap/mixins/caret";
 
 $p-proposal__header__background: url(/images/pattern-6x6-blue.png) !default;
 $p-proposal__header__h1__textColor: $b-Typography__textColor !default;
@@ -280,6 +281,29 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   padding-bottom: 8px;
 }
 
+.p-Proposal__formBox__label {
+  display: flex;
+  flex-direction: row;
+
+  @extend .col-lg-2;
+  @extend .flex-lg-column;
+
+  @include media-breakpoint-down(md) {
+    justify-content: space-between;
+  }
+}
+
+.p-Proposal__formBox__main {
+  @extend .col-lg-10;
+}
+
+.p-Proposal__formBox__helpText {
+  @include caret(left);
+  &:after, &:before {
+    vertical-align: 0.1em;
+  }
+}
+
 /* add proposal boxes */
 .addpropbox {
   background: $t-Color__tan;
@@ -315,27 +339,12 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 }
 
 /* form fields */
-.addpropform label {
+.addpropform .addpropbox label {
   float: left;
   width: 110px;
   display: inline-block;
   font-size: 16px;
   color: $t-Color__gray--dark-600;
-}
-
-.addpropform label strong, .addpropform .blue {
-  color: black;
-}
-
-.addpropform label img {
-  position: relative;
-  top: 3px;
-}
-
-.addpropform .notation {
-  font-size: 15px;
-  color: $t-Color__gray--dark-700;
-  margin: 1px 0 25px 12px;
 }
 
 .addprophelp {
