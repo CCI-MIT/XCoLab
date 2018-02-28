@@ -63,17 +63,3 @@ function disableDirtyCheck() {
         setTimeout(poll, POLLING_INITIAL_DELAY_SECONDS * 1000);
     });
 }());
-
-// Social Share Script
-function shareThis(event) {
-
-    var engineUrl = $(event).data("engine-url");
-    var shareUrl = $(event).data("share-url");
-    var engine = $(event).data("engine");
-    var dataReference = $(event).data("reference");
-
-    window.open(engineUrl +
-            encodeURIComponent(
-                    shareUrl.replace("socialMediaEngine", engine) +
-                    ((dataReference != "") ? (dataReference) : (""))), '_blank');
-}

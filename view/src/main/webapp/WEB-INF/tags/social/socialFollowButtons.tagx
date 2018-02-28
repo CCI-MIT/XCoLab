@@ -2,7 +2,6 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolabSocial="urn:jsptagdir:/WEB-INF/tags/social">
 
-    <jsp:directive.attribute name="dataReference" type="java.lang.String" description="Extra reference to compose URL" />
     <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
 
     <span class="sr-only">Follow on:</span>
