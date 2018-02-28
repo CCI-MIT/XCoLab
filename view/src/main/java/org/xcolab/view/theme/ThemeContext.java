@@ -17,7 +17,6 @@ public class ThemeContext {
     private final CredentialVariables credentialVariables;
     private final ThemeVariables themeVariables;
     private final MetaVariables metaVariables;
-    private final SharedColabVariables sharedColabVariables;
     private final MessageVariables messageVariables;
     private final SocialMediaVariables socialMediaVariables;
 
@@ -43,7 +42,6 @@ public class ThemeContext {
         this.credentialVariables = new CredentialVariables();
         this.themeVariables = new ThemeVariables(request, this.getI18NVariables());
         this.metaVariables = new MetaVariables(request, this.getI18NVariables());
-        this.sharedColabVariables = new SharedColabVariables(); // TODO: discuss - never used
         this.messageVariables = new MessageVariables(request);
         this.socialMediaVariables = new SocialMediaVariables(request);
 
@@ -86,11 +84,7 @@ public class ThemeContext {
     public MetaVariables getMetaVariables() {
         return metaVariables;
     }
-
-    public SharedColabVariables getSharedColabVariables() {
-        return sharedColabVariables;
-    }
-
+    
     public MessageVariables getMessageVariables() {
         return messageVariables;
     }
