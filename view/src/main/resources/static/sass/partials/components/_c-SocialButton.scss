@@ -3,6 +3,7 @@ $_c-SocialButton__height--xs: 22px !default;
 
 .c-SocialButton {
   display: inline-block;
+  margin: 0.125rem;
   cursor: pointer;
 
   > img {
@@ -14,10 +15,6 @@ $_c-SocialButton__height--xs: 22px !default;
     height: $_c-SocialButton__height--xs;
     width: $_c-SocialButton__height--xs;
   }
-}
-
-.c-SocialButton + .c-SocialButton {
-  margin-left: 0.25rem;
 }
 
 .c-SocialButton--hoverTranslate {

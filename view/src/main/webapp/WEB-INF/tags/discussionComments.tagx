@@ -113,7 +113,7 @@
 
                                         <c:if test="${_showShareButtons}">
                                             <div style="float: left">
-                                                <xcolab-social:socialShareButtons title="${shareTitlePageScope}" dataReference="#_message_${message.commentId}" size="xs"/>
+                                                <xcolab-social:socialShareButtons title="${shareTitlePageScope}" hashString="#_message_${message.commentId}" size="xs"/>
                                             </div>
                                         </c:if>
 
