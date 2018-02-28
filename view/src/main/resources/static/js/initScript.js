@@ -12,17 +12,6 @@ function deferUntilLogin(source) {
     }
 }
 
-function deferUntilLoginTargeted(targetLocation) {
-
-    if (_isLoggedIn) {
-        return true;
-    } else {
-        if (targetLocation != null) {
-            jQuery("#signInForm_form").find("input[name=redirect]").val(targetLocation);
-        }
-        $('#loginModal').modal();
-    }
-}
 
 // To allow a dropdown toggle to exist outside the bootstrap dropdown
 jQuery('.js-DropdownToggle').click(function () {
