@@ -6,9 +6,8 @@
 	<!--@elvariable id="tabs" type="java.util.List<java.util.List<org.xcolab.wrapper.TabWrapper>"-->
 	<!--@elvariable id="currentTabWrapped" type="org.xcolab.wrapper.TabWrapper"-->
 	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
-	<!--@elvariable id="_activeTheme" type="org.xcolab.util.enums.theme.ColabTheme"-->
 
-	<div class="proposal-head">
+    <div class="proposal-head">
         <div class="c-Headline">
             <div class="proposal-image">
                 <collab:image src="/images/proposal_default.png" width="52" height="52" />

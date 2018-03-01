@@ -11,7 +11,7 @@
     <xcolab:layout title="${contest.contestShortNameWithEndYear}" description="${contest.contestName}"
                    openGraphImage="${contest.logoPath}"
                    openGraphDescription="${contest.cleanContestDescription}"
-                   openGraphTitle="${contest.contestShortNameWithEndYear} - ${_colabName}">
+                   openGraphTitle="${contest.contestShortNameWithEndYear} - ${_themeContext.colabName}">
 
         <jsp:directive.include file="./init_contest.jspx"/>
 
@@ -29,7 +29,7 @@
                 <c:if test="${contest.hideRibbons and contestPhase.completed}">
                     <div class="fold-message">
                         <h3><spring:message code="contests.details.tallying" /> </h3>
-                        <c:if test="${_isAdmin}">
+                        <c:if test="${_themeContext.authenticationVariables.isAdmin}">
                             <h4>Admin info: Ribbons are hidden for non-admin accounts.</h4>
                         </c:if>
                     </div>
@@ -186,7 +186,7 @@
 
         <xcolab:script src="/js/proposals/proposals.js"/>
         <c:set var="contestPageBreadcumbs" >
-            <c:forEach var="_contestPage" items="${_contestPages}" varStatus="status">
+            <c:forEach var="_contestPage" items="${_themeContext.themeVariables.contestPages}" varStatus="status">
                 <c:if test="${_contestPage.menuItemName != ''}">
                     <c:if test="${!status.last}">,</c:if>
                 </c:if>
@@ -204,7 +204,7 @@
                     "@type": "ListItem",
                     "position": 1,
                     "item": {
-                    "@id": "${_colabUrl}${contestType.contestBaseUrl}",
+                    "@id": "${_themeContext.colabUrl}${contestType.contestBaseUrl}",
                     "name": "${menuItemName}"
                     }
                 },
@@ -212,9 +212,9 @@
                     "@type": "ListItem",
                     "position": 2,
                     "item": {
-                      "@id": "${_colabUrl}${contest.contestUrl}",
+                      "@id": "${_themeContext.colabUrl}${contest.contestUrl}",
                       "name": "${contestShortName}",
-                      "image": "${_colabUrl}${contest.logoPath}"
+                      "image": "${_themeContext.colabUrl}${contest.logoPath}"
                     }
                 }
             ]

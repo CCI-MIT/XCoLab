@@ -5,13 +5,10 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-    <!--@elvariable id="_colabName" type="java.lang.String"-->
-    <!--@elvariable id="_colabShortName" type="java.lang.String"-->
-
-    <!--@elvariable id="__errorMessage" type="org.xcolab.view.util.entity.flash.ErrorMessage"-->
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <h1 style="padding-left: 20px;">
-    Welcome to the ${_colabName}!</h1>
+    Welcome to the ${_themeContext.colabName}!</h1>
     <br /><br />
     <div style="padding-left: 20px;">We successfully verified your Facebook or Google account. Please choose from the following options in order to finish the process:</div>
     <br /><br /><br />
@@ -19,13 +16,13 @@
     <table>
         <tr>
             <td style="width:50%; padding: 0 20px;">
-                <h2>Link your existing ${_colabShortName} member account</h2>
+                <h2>Link your existing ${_themeContext.colabShortName} member account</h2>
                 <br />
-                <span>You can sign in to your account to link your social media and ${_colabName} account and use the social media login when returning to the site.</span>
+                <span>You can sign in to your account to link your social media and ${_themeContext.colabName} account and use the social media login when returning to the site.</span>
                 <div style="height:15px;">&#160;</div>
 
-                <c:if test="${not empty __errorMessage}">
-                    <div class="c-Alert__danger">${__errorMessage.message}</div>
+                <c:if test="${not empty _themeContext.messageVariables.errorMessage}">
+                    <div class="c-Alert__danger">${_themeContext.messageVariables.errorMessage.message}</div>
                 </c:if>
                 <div class="c-Header__login__box" style="margin: 15px auto 0 auto;">
                     <form:form id="signInFormPopup" method="post" action="/sso/registerOrLogin">
@@ -47,9 +44,9 @@
                 </div>
             </td>
             <td style="width:50%; padding: 0 20px;">
-                <h2>Register as new ${_colabShortName} member</h2>
+                <h2>Register as new ${_themeContext.colabShortName} member</h2>
                 <br />
-                <span>You can register as new member of the ${_colabName} with your social media account to be part of the community.</span>
+                <span>You can register as new member of the ${_themeContext.colabName} with your social media account to be part of the community.</span>
                 <br /><br /><br /><br />
                 <h1 style="text-align: center;"><a href="/register">Register as new member</a></h1>
             </td>

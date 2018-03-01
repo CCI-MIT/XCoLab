@@ -8,10 +8,10 @@
 
 <layout:layout title="Login link">
     <h2>Login with unique link</h2>
-    <c:if test="${_isLoggedIn}">
+    <c:if test="${_themeContext.authenticationVariables.isLoggedIn}">
         You are already logged in.
     </c:if>
-    <c:if test="${not _isLoggedIn}">
+    <c:if test="${not _themeContext.authenticationVariables.isLoggedIn}">
         <c:choose>
             <c:when test="${isValid}">
                 <div class="c-Alert c-Alert__info__message">

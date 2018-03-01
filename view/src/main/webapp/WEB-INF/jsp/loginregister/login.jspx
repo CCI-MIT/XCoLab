@@ -5,7 +5,7 @@
 
 <layout:layout title="Login" canonicalUrlRelative="/login">
     <c:choose>
-        <c:when test="${not _isLoggedIn}">
+        <c:when test="${not _themeContext.authenticationVariables.isLoggedIn}">
             <h2>Restricted access - login required</h2>
             <p>
                 Use popup to login or click <a rel="nofollow" href="javascript:deferUntilLogin();">here</a>.

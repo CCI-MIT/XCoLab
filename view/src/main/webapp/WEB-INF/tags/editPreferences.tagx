@@ -9,7 +9,7 @@
 
     <h1>Edit preferences</h1>
 
-    <form:form method="post" commandName="preferences" action="${_requestUri}">
+    <form:form method="post" commandName="preferences" action="${_themeContext.requestUri}">
 
         <div class="form-group">
             <label for="js-Preferences__idSelect">
