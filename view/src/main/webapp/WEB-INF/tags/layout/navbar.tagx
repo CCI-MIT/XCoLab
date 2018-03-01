@@ -81,7 +81,8 @@
                         <c:choose>
                             <c:when test="${member != null}">
                                 <li class="nav-item cb-nav-item-multi-line c-Header__displayName d-inline-flex align-items-center">
-                                    <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret p-2" onclick="jQuery('#user-dropdown').dropdown('toggle')">
+                                    <a href="#" class="nav-link p-2"
+                                       onclick="event.stopPropagation();jQuery('#user-dropdown').dropdown('toggle');">
                                         ${member.displayName}
                                     </a>
                                 </li>
