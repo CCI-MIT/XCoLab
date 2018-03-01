@@ -26,11 +26,6 @@ jQuery(function() {
 });
 
 function initializeJavaScript(){
-    jQuery(".addpropform .helpTrigger").click(function() {
-        var trigger = jQuery(this);
-        trigger.parent().parent().find(".addprophelp").slideToggle("fast");
-    });
-
     jQuery("#contestFilterInput").change(filterContests).keypress(function (e) {
         if (e.keyCode == 13) {
             filterContests();

@@ -341,7 +341,7 @@ div.selected {
 .addpropbox.PROPOSAL_LIST_REFERENCE,
 .addpropbox.PROPOSAL_REFERENCE,
 .addpropbox.PROPOSAL_LIST_TEXT_REFERENCE {
-    background: #e7f1f5;
+    background: $t-Color__primary__gray--light;
 }
 
 .wizardSelectedOptionsInfo li {
@@ -483,13 +483,6 @@ div.selected {
     background-color: #ffffff;
     border: 1px solid #000000;
 }
-
-#impact div.addprophelp {
-    text-align: left;
-    font-weight: normal;
-    width: 90%;
-}
-
 
 #impact table .sector {
     padding-left: 20px;

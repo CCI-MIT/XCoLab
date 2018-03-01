@@ -169,12 +169,10 @@
                         <div class="text-muted">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
 
                         <c:if test="${userTeams.size() > 0}">
-                            <div class="addprophelp">Alternatively, you can select your team here.</div>
+                            <div class="p-Proposal__formBox__helpText">Alternatively, you can select your team here.</div>
 
-                            <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                                <form:select path="selectedTeam" items="${userTeams}" itemLabel="name" itemValue="id_" />
-                                <form:errors path="selectedTeam" />
-                            </div>
+                            <form:select path="selectedTeam" items="${userTeams}" itemLabel="name" itemValue="id_" />
+                            <form:errors path="selectedTeam" />
                         </c:if>
                     </div>
                 </div>

@@ -32,17 +32,15 @@
     </form:form>
 
     <div class="c-ContentBox">
-        <div style="margin-bottom: 40px;">
-            <div class="floatRight">
-                <a class="btn btn-primary" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
-                <a class="btn btn-primary" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
-                <a class="btn btn-primary" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
-                <a class="btn btn-primary" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
-            </div>
+        <div class="text-right">
+            <a class="btn btn-primary" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
+            <a class="btn btn-primary" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
+            <a class="btn btn-primary" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
+            <a class="btn btn-primary" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
         </div>
     </div>
 
-    <div class="c-ContentBox">
+    <div class="c-ContentBox l-BoxLayout__stacked">
         <div class="reg_errors"><!--  -->
             <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
         </div>
@@ -50,10 +48,10 @@
         <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
                    method="post">
 
-            <div class="addpropbox">
-                <strong class="inputTitleLeft">Schedule template:</strong>
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <strong>Schedule template:</strong>
 
-                <div class="addpropInputContainer">
                     <form:select path="elementId" id="changeContestScheduleSelect" cssClass="form-control">
                         <form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value"
                                       itemLabel="lable"/>
@@ -67,133 +65,137 @@
         </form:form>
         <c:if test="${scheduleId >= 0}">
             <form:form action="${updateContestScheduleUrl}?elementId=${contestScheduleBean.scheduleId}"
-                       commandName="contestScheduleBean" id="editForm" method="post">
+                       commandName="contestScheduleBean" id="editForm" method="post" class="mt-3">
                 <input type="hidden" name="action" value="UPDATE" />
                 <form:hidden path="scheduleId"/>
                 <form:hidden path="createNew" id="createNewFlag"/>
 
-                <div class="addpropbox">
-                    <strong class="inputTitleLeft">Schedule name:</strong>
-                    <form:input path="scheduleName" cssClass="form-control"/>
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
+                        <strong>Schedule name:</strong>
+                        <form:input path="scheduleName" cssClass="form-control"/>
 
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="scheduleName"/>
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error" path="scheduleName"/>
+                        </div>
                     </div>
                 </div>
 
-                <div class="addpropbox">
-                    <div>
-                        <strong class="inputTitleLeft">Contest phases for this schedule:</strong>
-                    </div>
-
-                    <div class="floatRight">
-                        <a class="btn btn-primary" href="#" onclick="addContestPhase(event)">Add contest phase</a>
-                    </div>
-
-                    <div class="clearfix"><!-- --></div>
-
-                    <c:if test="${contestScheduleBean.usedInNonEmptyContest}">
-                        <div class="c-Alert__info__message">
-                            You are editing a schedule that is used in at least one non-empty contest.
-                            You can only add, delete, or edit phases that have not started yet.
-                            You can also change the end date (and promote type) of the current phase, as long as the new end date is also in the future.<br />
-                            If you wish to create a derivative of this schedule, click "Save as new schedule" above to freely modify a copy.
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
+                        <div>
+                            <strong class="inputTitleLeft">Contest phases for this schedule:</strong>
                         </div>
-                    </c:if>
 
-                    <div><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error"/>
-                    </div>
+                        <div class="floatRight">
+                            <a class="btn btn-primary" href="#" onclick="addContestPhase(event)">Add contest phase</a>
+                        </div>
 
-                    <table class="c-ContentBox__Table">
-                        <col span="1" class="extraSmallColumn"/>
-                        <!-- <col span="1" class="extraSmallColumn"/> -->
-                        <col span="4" class="mediumColumn"/>
-                        <col span="1" class="extraSmallColumn"/>
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Phase Type</th>
-                            <!-- <th>Buffer</th> -->
-                            <th>Start Date</th>
-                            <th>Autopromote</th>
-                            <th>Fellow <br/>Screening</th>
-                            <th><!-- --></th>
-                        </tr>
-                        </thead>
-                        <tbody id="contestOverviewBody" class="contestPhases">
-                        <c:set var="dateTimePickerIndex" value="0"/>
-                        <c:forEach var="schedulePhase" items="${contestScheduleBean.schedulePhases}" varStatus="x">
-                            <tr data-filter-attribute="${fn:length(contestScheduleBean.schedulePhases) - 1 eq x.index ? 'dummyPhase' : ''}"
-                                data-form-index="${x.index}"
-                                style="${fn:length(contestScheduleBean.schedulePhases) - 1 eq x.index ? 'display:none' : ''}"
-                                    >
+                        <div class="clearfix"><!-- --></div>
 
-                                <form:hidden path="schedulePhases[${x.index}].contestScheduleId"
-                                             data-form-name="contestScheduleId"/>
-                                <form:hidden path="schedulePhases[${x.index}].contestPhasePK"
-                                             data-form-name="contestPhasePK"/>
-                                <form:hidden path="schedulePhases[${x.index}].contestPK" data-form-name="contestPK"/>
-                                <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
-                                             data-form-name="contestPhaseDeleted"/>
+                        <c:if test="${contestScheduleBean.usedInNonEmptyContest}">
+                            <div class="c-Alert__info__message">
+                                You are editing a schedule that is used in at least one non-empty contest.
+                                You can only add, delete, or edit phases that have not started yet.
+                                You can also change the end date (and promote type) of the current phase, as long as the new end date is also in the future.<br />
+                                If you wish to create a derivative of this schedule, click "Save as new schedule" above to freely modify a copy.
+                            </div>
+                        </c:if>
 
-                                <div class="reg_errors"><!--  -->
-                                    <form:errors cssClass="c-Alert c-Alert__error"
-                                                 path="schedulePhases[${x.index}].phaseStartDate"/>
-                                </div>
+                        <div><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error"/>
+                        </div>
 
-                                <td data-form-attribute="indexLable">${x.index + 1}</td>
-                                <td>
-                                    <form:hidden path="schedulePhases[${x.index}].contestPhaseTypeOld" data-form-name="contestPhaseTypeOld"/>
-                                    <form:select path="schedulePhases[${x.index}].contestPhaseType" class="form-control" data-form-name="contestPhaseType"
-                                                 disabled="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted}">
-                                        <form:options items="${contestPhaseTypesSelectionItems}" itemValue="value"
-                                                      itemLabel="lable"/>
-                                    </form:select>
-                                </td>
-                                <!-- <td>
-                                        <form:checkbox path="schedulePhases[${x.index}].hasBuffer"
-                                                       data-select-attribute="hasBufferCheckbox"/></td> -->
-                                <td>
-                                    <fmt:formatDate value="${schedulePhase.phaseStartDate}" pattern="MM/dd/yyyy HH:mm"
-                                                    type="date" dateStyle="short" timeZone="America/New_York"
-                                                    var="formatDate"/>
-
-                                    <c:set var="inputIsReadOnly" value="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted}" />
-                                    <form:input path="schedulePhases[${x.index}].phaseStartDate"
-                                                cssClass="${inputIsReadOnly ? '' : 'js-Datetimepicker'} form-control" value="${formatDate}"
-                                                data-type-attribute="start"
-                                                data-index-attribute="${dateTimePickerIndex}"
-                                                data-select-attribute="datetimepicker"
-                                                data-form-name="phaseStartDate"
-                                                readonly="${inputIsReadOnly}"
-                                            />
-
-                                </td>
-                                <td>
-                                    <form:select path="schedulePhases[${x.index}].contestPhaseAutopromote" class="form-control"
-                                                 data-form-name="contestPhaseAutopromote">
-                                        <form:options items="${contestPhaseAutopromoteSelectionItems}" itemValue="value"
-                                                      itemLabel="lable"/>
-                                    </form:select>
-                                </td>
-                                <td>
-                                    <form:checkbox path="schedulePhases[${x.index}].fellowScreeningActive"
-                                                   data-form-name="fellowScreeningActive">
-                                    </form:checkbox>
-                                </td>
-                                <td>
-                                    <c:if test="${not (contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted)}">
-                                        <div class="deleteIcon"> <!-- --></div>
-                                    </c:if>
-                                </td>
+                        <table class="c-ContentBox__Table">
+                            <col span="1" class="extraSmallColumn"/>
+                            <!-- <col span="1" class="extraSmallColumn"/> -->
+                            <col span="4" class="mediumColumn"/>
+                            <col span="1" class="extraSmallColumn"/>
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Phase Type</th>
+                                <!-- <th>Buffer</th> -->
+                                <th>Start Date</th>
+                                <th>Autopromote</th>
+                                <th>Fellow <br/>Screening</th>
+                                <th><!-- --></th>
                             </tr>
-                            <c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 2}"/>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                    <i>Please do not put an end date to the last phase, otherwise the mass messaging function can't detect
-                        the contest!</i>
+                            </thead>
+                            <tbody id="contestOverviewBody" class="contestPhases">
+                            <c:set var="dateTimePickerIndex" value="0"/>
+                            <c:forEach var="schedulePhase" items="${contestScheduleBean.schedulePhases}" varStatus="x">
+                                <tr data-filter-attribute="${fn:length(contestScheduleBean.schedulePhases) - 1 eq x.index ? 'dummyPhase' : ''}"
+                                    data-form-index="${x.index}"
+                                    style="${fn:length(contestScheduleBean.schedulePhases) - 1 eq x.index ? 'display:none' : ''}"
+                                        >
+
+                                    <form:hidden path="schedulePhases[${x.index}].contestScheduleId"
+                                                 data-form-name="contestScheduleId"/>
+                                    <form:hidden path="schedulePhases[${x.index}].contestPhasePK"
+                                                 data-form-name="contestPhasePK"/>
+                                    <form:hidden path="schedulePhases[${x.index}].contestPK" data-form-name="contestPK"/>
+                                    <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
+                                                 data-form-name="contestPhaseDeleted"/>
+
+                                    <div class="reg_errors"><!--  -->
+                                        <form:errors cssClass="c-Alert c-Alert__error"
+                                                     path="schedulePhases[${x.index}].phaseStartDate"/>
+                                    </div>
+
+                                    <td data-form-attribute="indexLable">${x.index + 1}</td>
+                                    <td>
+                                        <form:hidden path="schedulePhases[${x.index}].contestPhaseTypeOld" data-form-name="contestPhaseTypeOld"/>
+                                        <form:select path="schedulePhases[${x.index}].contestPhaseType" class="form-control" data-form-name="contestPhaseType"
+                                                     disabled="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted}">
+                                            <form:options items="${contestPhaseTypesSelectionItems}" itemValue="value"
+                                                          itemLabel="lable"/>
+                                        </form:select>
+                                    </td>
+                                    <!-- <td>
+                                            <form:checkbox path="schedulePhases[${x.index}].hasBuffer"
+                                                           data-select-attribute="hasBufferCheckbox"/></td> -->
+                                    <td>
+                                        <fmt:formatDate value="${schedulePhase.phaseStartDate}" pattern="MM/dd/yyyy HH:mm"
+                                                        type="date" dateStyle="short" timeZone="America/New_York"
+                                                        var="formatDate"/>
+
+                                        <c:set var="inputIsReadOnly" value="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted}" />
+                                        <form:input path="schedulePhases[${x.index}].phaseStartDate"
+                                                    cssClass="${inputIsReadOnly ? '' : 'js-Datetimepicker'} form-control" value="${formatDate}"
+                                                    data-type-attribute="start"
+                                                    data-index-attribute="${dateTimePickerIndex}"
+                                                    data-select-attribute="datetimepicker"
+                                                    data-form-name="phaseStartDate"
+                                                    readonly="${inputIsReadOnly}"
+                                                />
+
+                                    </td>
+                                    <td>
+                                        <form:select path="schedulePhases[${x.index}].contestPhaseAutopromote" class="form-control"
+                                                     data-form-name="contestPhaseAutopromote">
+                                            <form:options items="${contestPhaseAutopromoteSelectionItems}" itemValue="value"
+                                                          itemLabel="lable"/>
+                                        </form:select>
+                                    </td>
+                                    <td>
+                                        <form:checkbox path="schedulePhases[${x.index}].fellowScreeningActive"
+                                                       data-form-name="fellowScreeningActive">
+                                        </form:checkbox>
+                                    </td>
+                                    <td>
+                                        <c:if test="${not (contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted)}">
+                                            <div class="deleteIcon"> <!-- --></div>
+                                        </c:if>
+                                    </td>
+                                </tr>
+                                <c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 2}"/>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                        <i>Please do not put an end date to the last phase, otherwise the mass messaging function can't detect
+                            the contest!</i>
+                    </div>
                 </div>
             </form:form>
         </c:if>
@@ -202,67 +204,69 @@
 
     <div class="c-ContentBox">
 
-        <div class="addpropbox" style="margin-top: 20px;">
-            <strong class="inputTitleLeft">Contests using this schedule:</strong>
-            <table class="c-ContentBox__Table">
-                <colgroup>
-                    <col class="extraSmallColumn" span="1" />
-                    <col style="text-align: center;" class="mediumColumn" span="1" />
-                    <col style="text-align: center;" class="smallColumn" span="1" />
-                    <col style="text-align: center;" class="mediumColumn" span="2" />
-                    <col style="text-align: center;" class="smallColumn" span="2" />
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Tier</th>
-                    <th>Current phase</th>
-                    <th>Current phase <br/>Autopromote state</th>
-                    <th>Current phase <br/>Fellow screening</th>
-                    <th><!-- --></th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${contestScheduleBean.contestsUsingSelectedSchedule}" var="contestWrapper"
-                           varStatus="x">
+        <div class="c-Box c-Box--colorTan" style="margin-top: 20px;">
+            <div class="c-Box__body">
+                <strong>Contests using this schedule:</strong>
+                <table class="c-ContentBox__Table">
+                    <colgroup>
+                        <col class="extraSmallColumn" span="1" />
+                        <col style="text-align: center;" class="mediumColumn" span="1" />
+                        <col style="text-align: center;" class="smallColumn" span="1" />
+                        <col style="text-align: center;" class="mediumColumn" span="2" />
+                        <col style="text-align: center;" class="smallColumn" span="2" />
+                    </colgroup>
+                    <thead>
                     <tr>
-                        <td data-form-name="index">${x.index + 1}</td>
-                        <td><xcolab:contestLink contest="${contestWrapper}" /></td>
-                        <td>Tier ${contestWrapper.contestTier}</td>
-                        <c:choose>
-                            <c:when test="${not empty contestWrapper.activePhase}">
-                                <td>
-                                        ${contestWrapper.activePhase.name}
-                                </td>
-                                <td>
-                                        ${contestWrapper.activePhase.contestPhaseAutopromote}
-                                </td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${contestWrapper.activePhase.fellowScreeningActive}">
-                                            <input type="checkbox" disabled="disabled" checked="checked"/>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="checkbox" disabled="disabled"/>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                            </c:when>
-                            <c:otherwise>
-                                <td colspan="3">
-                                    No active phase!
-                                </td>
-                            </c:otherwise>
-                        </c:choose>
-                        <td>
-                            <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestPK}"
-                                   target="_blank">EDIT</a>
-                        </td>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Tier</th>
+                        <th>Current phase</th>
+                        <th>Current phase <br/>Autopromote state</th>
+                        <th>Current phase <br/>Fellow screening</th>
+                        <th><!-- --></th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${contestScheduleBean.contestsUsingSelectedSchedule}" var="contestWrapper"
+                               varStatus="x">
+                        <tr>
+                            <td data-form-name="index">${x.index + 1}</td>
+                            <td><xcolab:contestLink contest="${contestWrapper}" /></td>
+                            <td>Tier ${contestWrapper.contestTier}</td>
+                            <c:choose>
+                                <c:when test="${not empty contestWrapper.activePhase}">
+                                    <td>
+                                            ${contestWrapper.activePhase.name}
+                                    </td>
+                                    <td>
+                                            ${contestWrapper.activePhase.contestPhaseAutopromote}
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${contestWrapper.activePhase.fellowScreeningActive}">
+                                                <input type="checkbox" disabled="disabled" checked="checked"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="checkbox" disabled="disabled"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td colspan="3">
+                                        No active phase!
+                                    </td>
+                                </c:otherwise>
+                            </c:choose>
+                            <td>
+                                <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestPK}"
+                                       target="_blank">EDIT</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

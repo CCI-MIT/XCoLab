@@ -18,7 +18,7 @@
 
     <xcolab:requireLibrary name="CKEditor" />
 
-    <div class="c-ContentBox">
+    <div class="c-ContentBox l-BoxLayout__stacked">
         <p>*Be sure to click <strong>SAVE changes</strong> before exiting a tab or submitting a comment for the contest
             team, or your content may be lost.</p>
 
@@ -28,27 +28,26 @@
             <div class="reg_errors"><!--  -->
                 <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
             </div>
-            <div class="addpropbox">
-                <label>
-                    <strong>Title</strong>
-                    <a class="helpTrigger" href="javascript:;">
-                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
-                    </a>
-                    <br/>
-                </label>
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Title</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__title">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
+                    </label>
 
-                <div class="addprophelp">Two to five words very broadly describing the contest topic, such as
-                    "Transportation Efficiency," or "Scaling Renewables in Emerging Economies". This is how the contest
-                    will be identified.
-                </div>
-                <div class="clearfix"><!--  --></div>
-                <div class="addpropInputContainer">
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__title">
+                        Two to five words very broadly describing the contest topic, such as
+                        "Transportation Efficiency," or "Scaling Renewables in Emerging Economies". This is how the contest
+                        will be identified.
+                    </div>
+
                     <form:input path="contestShortName" id="contestShortName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
-                    <div class="reg_errors"><!--  -->
+                    <div class="reg_errors">
                         <form:errors cssClass="c-Alert c-Alert__error" path="contestShortName"/>
                     </div>
-                    <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">60</span> characters
                     </div>
@@ -72,20 +71,20 @@
                 </div>
             </div>
 
-            <div class="addpropbox">
-                <label>
-                    <strong>Question</strong>
-                    <a href="javascript:;" class="helpTrigger">
-                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
-                    </a>
-                    <br/>
-                </label>
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Question</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__question">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
+                    </label>
 
-                <div class="addprophelp">The key question to be answered through the contest. The most successful
-                    contest questions are concise and worded with language accessible to the public.
-                </div>
-                <div class="clearfix"><!-- --></div>
-                <div class="addpropInputContainer">
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__question">
+                        The key question to be answered through the contest. The most successful
+                        contest questions are concise and worded with language accessible to the public.
+                    </div>
+
                     <form:textarea path="contestName" id="contestName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
@@ -99,86 +98,114 @@
                 </div>
             </div>
 
-            <div class="addpropbox blue">
-                <label>
-                    <strong>Contest image</strong>
-                </label>
+            <div class="c-Box c-Box--colorTan blue">
+                <div class="c-Box__body">
+                    <div>
+                        <label>
+                            <strong>Contest image</strong>
+                            <a class="ml-1" data-toggle="collapse" href="#js-Help__contestImage">
+                                <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                            </a>
+                        </label>
 
-                <div class="addprophelp">The image symbolizes the contest challenge. Requirements: 300x300 pixels or
-                    larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed
-                    copyrights attached to the image.
+                        <div class="p-Proposal__formBox__helpText collapse" id="js-Help__contestImage">
+                            The image symbolizes the contest challenge. Requirements: 300x300 pixels or
+                            larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed
+                            copyrights attached to the image.
+                        </div>
+                    </div>
+
+                    <form:hidden path="contestLogoId" id="contestImageId"/>
+                    <xcolab:imageUpload uniqueName="contestImage" imageIdInput="contestImageId" compactView="true"
+                                        defaultImage="CONTEST" defaultImageId="${contestWrapper.contestLogoId}" />
                 </div>
-
-                <form:hidden path="contestLogoId" id="contestImageId"/>
-                <xcolab:imageUpload uniqueName="contestImage" imageIdInput="contestImageId" compactView="true"
-                                    defaultImage="CONTEST" defaultImageId="${contestWrapper.contestLogoId}" />
             </div>
 
-            <div class="addpropbox blue">
-                <label>
-                    <strong>Sponsor logo</strong>
-                </label>
+            <div class="c-Box c-Box--colorTan blue">
+                <div class="c-Box__body">
+                    <div>
+                        <label>
+                            <strong>Sponsor logo</strong>
+                            <a class="ml-1" data-toggle="collapse" href="#js-Help__sponsorLogo">
+                                <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                            </a>
+                        </label>
 
-                <div class="addprophelp">If available, it is preferred to use a version of the logo that is horizontal
-                    and has a transparent background.
+                        <div class="p-Proposal__formBox__helpText collapse" id="js-Help__sponsorLogo">
+                            If available, it is preferred to use a version of the logo that is horizontal
+                            and has a transparent background.
+                        </div>
+                    </div>
+
+                    <form:hidden path="sponsorLogoId" id="logoImageId"/>
+                    <xcolab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true" preserveAspectRatio="true"
+                                        defaultImage="CONTEST" defaultImageId="${contestWrapper.sponsorLogoId}" />
                 </div>
-
-                <form:hidden path="sponsorLogoId" id="logoImageId"/>
-                <xcolab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true" preserveAspectRatio="true"
-                                    defaultImage="CONTEST" defaultImageId="${contestWrapper.sponsorLogoId}" />
             </div>
 
-            <div class="addpropbox">
-                <label>
-                    <strong>Sponsor link</strong>
-                </label>
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Sponsor link</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__sponsorLink">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
+                    </label>
 
-                <div class="addprophelp">
-                    An optional link that it opened when a user clicks on the sponsor logo.
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__sponsorLink">
+                        An optional link that it opened when a user clicks on the sponsor logo.
+                    </div>
+
+                    <form:input path="sponsorLink" id="sponsorLink" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
                 </div>
-
-                <form:input path="sponsorLink" id="sponsorLink" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
             </div>
 
-            <div class="addpropbox blue">
-                <label>
-                    <strong>Default proposal image</strong>
-                </label>
+            <div class="c-Box c-Box--colorTan blue">
+                <div class="c-Box__body">
+                    <div>
+                        <label>
+                            <strong>Default proposal image</strong>
+                            <a class="ml-1" data-toggle="collapse" href="#js-Help__defaultImage">
+                                <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                            </a>
+                        </label>
 
-                <div class="addprophelp">If available the image used as default proposal icon. Requirements: 300x300 pixels or
-                    larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed
-                    copyrights attached to the image.
+                        <div class="p-Proposal__formBox__helpText collapse" id="js-Help__defaultImage">If available the image used as default proposal icon. Requirements: 300x300 pixels or
+                            larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed
+                            copyrights attached to the image.
+                        </div>
+                    </div>
+
+                    <form:hidden path="defaultProposalLogoId" id="defaultProposalLogoId"/>
+                    <xcolab:imageUpload uniqueName="defaultProposalLogo" imageIdInput="defaultProposalLogoId" compactView="true"
+                                        defaultImage="PROPOSAL" defaultImageId="${contestWrapper.defaultProposalLogoId}" />
                 </div>
-
-                <form:hidden path="defaultProposalLogoId" id="defaultProposalLogoId"/>
-                <xcolab:imageUpload uniqueName="defaultProposalLogo" imageIdInput="defaultProposalLogoId" compactView="true"
-                                    defaultImage="PROPOSAL" defaultImageId="${contestWrapper.defaultProposalLogoId}" />
             </div>
 
-            <div class="addpropbox">
-                <label>
-                    <strong>Description</strong>
-                    <a href="javascript:;" class="helpTrigger">
-                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
-                    </a>
-                    <br/>
-                </label>
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Description</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__description">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
+                    </label>
 
-                <div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address
-                    and why it is important. The description is essentially a summary of the resources page (see next
-                    tab) and typically starts by briefly outlining the opportunity and/or challenge the contest seeks to
-                    tackle and concludes by stating the contest's focus.
-                </div>
-                <div class="clearfix"><!-- --></div>
-                
-                <div class="addpropInputContainer" style="min-width:700px;">
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__description">
+                        A short paragraph that states the specific problem the contest seeks to address
+                        and why it is important. The description is essentially a summary of the resources page (see next
+                        tab) and typically starts by briefly outlining the opportunity and/or challenge the contest seeks to
+                        tackle and concludes by stating the contest's focus.
+                    </div>
+                    <div class="clearfix"><!-- --></div>
+
                     <form:textarea path="contestDescription" id="contestDescription"
                                    cssClass="rte-editorPlaceholder form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
                         <form:errors cssClass="c-Alert c-Alert__error" path="contestDescription"/>
                     </div>
-                    <div class="clearfix"><!-- --></div>
+
                     <div class="inputLimitContainer">
                         <span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">1500</span> characters
@@ -186,45 +213,44 @@
                 </div>
             </div>
 
-            <div class="addpropbox">
-                <label>
-                    <strong>Proposal template</strong>
-                    <a href="javascript:;" class="helpTrigger">
-                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
-                    </a>
-                    <br/>
-                </label>
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Proposal template</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__template">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
+                    </label>
 
-                <div class="addprophelp">Select the proposal template associated with your contest. Templates hold the
-                    set of questions members will be asked to answer in completing a proposal. If you would like any
-                    changes to your template or need help selecting the most appropriate template, please submit a
-                    comment below for the Climate CoLab team.
-                </div>
-                <div class="clearfix"><!-- --></div>
-                <div class="addpropInputContainer">
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__template">Select the proposal template associated with your contest. Templates hold the
+                        set of questions members will be asked to answer in completing a proposal. If you would like any
+                        changes to your template or need help selecting the most appropriate template, please submit a
+                        comment below for the Climate CoLab team.
+                    </div>
+
                     <form:select path="planTemplateId" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
                         <form:options items="${proposalTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
 
-                    <div class="reg_errors"><!--  -->
+                    <div class="reg_errors">
                         <form:errors cssClass="c-Alert c-Alert__error" path="planTemplateId"/>
                     </div>
                 </div>
             </div>
 
-            <div class="addpropbox">
-                <label>
-                    <strong>Schedule template</strong>
-                    <a href="javascript:;" class="helpTrigger">
-                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
-                    </a><br/>
-                </label>
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Schedule template</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__schedule">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
+                    </label>
 
-                <div class="addprophelp">Select the schedule associated with your contest. If you would like any changes
-                    to your schedule, please submit a comment below for the Climate CoLab team.
-                </div>
-                <div class="clearfix"><!-- --></div>
-                <div class="addpropInputContainer">
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__schedule">
+                        Select the schedule associated with your contest. If you would like any changes
+                        to your schedule, please submit a comment below for the Climate CoLab team.
+                    </div>
                     <form:select path="scheduleTemplateId" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
                         <form:option value="0" label="None"/>
 

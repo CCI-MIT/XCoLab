@@ -1,3 +1,5 @@
+$l-BoxLayout__striped__backgroundColor: $t-Color__primary__gray--light !default;
+
 
 .l-BoxLayout__columns {
   @extend .card-columns;
@@ -9,13 +11,14 @@
 }
 
 .l-BoxLayout__stacked {
-  .c-Box + .c-Box {
+  .c-Box ~ .c-Box {
     margin-top: $t-Spacing__base;
   }
 }
 
 .l-BoxLayout--striped {
   .c-Box:nth-of-type(even) {
-    @extend .c-Box--colorPrimaryGrayLight;
+    background: $l-BoxLayout__striped__backgroundColor;
+    color: yiq-contrasting-color($l-BoxLayout__striped__backgroundColor);
   }
 }
