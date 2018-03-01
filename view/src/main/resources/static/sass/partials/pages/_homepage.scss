@@ -21,7 +21,9 @@ $p-homepage__join__imageUrl: none !default;
 
   // Reset the container's spacing so the background can span the whole page's width
   #content {
-    padding: 0;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
     width: 100%;
     max-width: initial;
   }
