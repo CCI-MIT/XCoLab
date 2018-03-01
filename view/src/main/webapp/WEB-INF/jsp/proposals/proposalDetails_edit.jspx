@@ -51,16 +51,9 @@
         <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
     </c:if>
 
-    <style>
-        td em {
-            background: #000; border-radius: 5px; font-style: normal;
-            box-shadow: 0 0 2px #000;
-        }
-    </style>
-
     <div class="prop-left">
 
-        <div class="c-Headline addprop">
+        <div class="c-Headline">
             <c:choose>
                 <c:when test="${isMove }">
                     <p>

@@ -23,18 +23,6 @@ $c-Headline__show__font: 12px "Lucida Grande", Arial, sans-serif !default;
     content: ".";
   }
 
-  &.addprop { //.headline.addprop
-    width: 616px;
-    margin-right: 368px;
-    line-height: 24px;
-    margin-bottom: 30px;
-    color: $c-Headline__addprop__textColor;
-
-    a { //.headline.addprop a
-      font-weight: $t-Typography__fontWeight--bold;
-    }
-  }
-
   &.contest-page { //.headline.contest-page
     margin-bottom: 14px;
   }
