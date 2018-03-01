@@ -24,17 +24,17 @@
         <c:set var="saveAdvanceDetailsURL" value="${proposal.proposalUrl}/tab/ADVANCING?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
 
         <c:set var="getJudgingCsvURL" value="${proposal.proposalUrl}/tab/ADVANCING/getJudgingCsv"/>
+        <div class="text-right">
+            <a href="#" class="btn cb-btn-admin" style="font-size: 18px;" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
+        </div>
 
-        <div id="content" class="${proposalsPermissions.canJudgeActions and !proposalsPermissions.canFellowActions ? 'judgeReadOnly' : ''}">
-            This page is shared by ${contestType.contestName} Fellows only.  Advisors and Judges will not be able to view this page.
-            <br/>
-            <div style="display: inline-block;	float:right; margin-top: 20px;">
-                <a href="#" class="btn cb-btn-admin" style="font-size: 18px;" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
-            </div>
-            <h1 style="margin-top:15px;">Rating</h1>
+        This page is shared by ${contestType.contestName} Fellows only.  Advisors and Judges will not be able to view this page.
 
-            <c:if test="${!proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
-                <div class="judging_left">
+        <h1 style="margin-top:15px;">Rating</h1>
+
+        <div class="row">
+            <div class="col-6">
+                <c:if test="${!proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
                     <c:choose>
                         <c:when test="${not proposal.allJudgesReviewFinished}">
                             Not all judges have completed the review yet or this ${contestType.proposalName} was not forwarded to any judges.
@@ -42,121 +42,127 @@
                         <c:otherwise>
                             <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL}" method="post"
                                        commandName="proposalAdvancingBean">
-                                <div class="addpropbox">
-                                    <h3>Advance ${contestType.proposalName} to Next Round?</h3>
-                                    <form:select id="advanceDecision" path="advanceDecision" items="${advanceOptions}" itemValue="attributeValue" itemLabel="description"/>
+                                <div class="c-Box c-Box--colorTan">
+                                    <div class="c-Box__body">
+                                        <h3>Advance ${contestType.proposalName} to Next Round?</h3>
+                                        <form:select id="advanceDecision" path="advanceDecision" items="${advanceOptions}" itemValue="attributeValue" itemLabel="description"/>
 
-                                    <div id="comment-container">
-                                        <h3>Comment to send to author:</h3>
-                                        <i>Your comment will be visible to the public.</i>
+                                        <div id="comment-container">
+                                            <h3>Comment to send to author:</h3>
+                                            <i>Your comment will be visible to the public.</i>
 
-                                        <div class="form-errors"><!--  -->
-                                            <form:errors cssClass="c-Alert c-Alert__error" path="advanceComment" />
+                                            <div class="form-errors"><!--  -->
+                                                <form:errors cssClass="c-Alert c-Alert__error" path="advanceComment" />
+                                            </div>
+                                            <a name="advanceCommentAnchor" id="advanceCommentAnchor"></a>
+                                            <form:textarea id="advanceComment" cssClass="c-Comment__box" path="advanceComment" style="width:100%;"/>
+                                            <div id="comment-headers">
+                                                <c:forEach var="template" items="${emailTemplates}">
+                                                    <div data-template-name="${template.key}">
+                                                        ${template.value.header}
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                            <div id="comment-footers">
+                                                <c:forEach var="template" items="${emailTemplates}">
+                                                    <div data-template-name="${template.key}">
+                                                        ${template.value.footer}
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
                                         </div>
-                                        <a name="advanceCommentAnchor" id="advanceCommentAnchor"></a>
-                                        <form:textarea id="advanceComment" cssClass="c-Comment__box" path="advanceComment" style="width:100%;"/>
-                                        <div id="comment-headers">
-                                            <c:forEach var="template" items="${emailTemplates}">
-                                                <div data-template-name="${template.key}">
-                                                    ${template.value.header}
-                                                </div>
-                                            </c:forEach>
-                                        </div>
-                                        <div id="comment-footers">
-                                            <c:forEach var="template" items="${emailTemplates}">
-                                                <div data-template-name="${template.key}">
-                                                    ${template.value.footer}
-                                                </div>
-                                            </c:forEach>
-                                        </div>
-                                    </div>
 
-                                    <div id="advance-save-buttons">
-                                        <c:choose>
-                                            <c:when test="${isFrozen}">
-                                                <p class="submitStatus">
-                                                    <strong>The advancement is finalized and may not be changed anymore.</strong>
-                                                </p>
-                                                <c:if test="${proposalsPermissions.canAdminAll}">
-                                                    <a id="submit-advancing-1" style="display:block; float:right; margin-top: 10px;" class="btn cb-btn-admin" href="#">
+                                        <div id="advance-save-buttons">
+                                            <c:choose>
+                                                <c:when test="${isFrozen}">
+                                                    <p class="submitStatus">
+                                                        <strong>The advancement is finalized and may not be changed anymore.</strong>
+                                                    </p>
+                                                    <c:if test="${proposalsPermissions.canAdminAll}">
+                                                        <a id="submit-advancing-1" style="display:block; float:right; margin-top: 10px;" class="btn cb-btn-admin" href="#">
+                                                            Save
+                                                        </a>
+                                                        <input type="submit" id="submit-unfreeze" name="isUnfreeze" style="display:none" value="true" />
+                                                        <a id="submit-unfreeze-link" style="display:block; float:right; margin-top: 10px;" class="btn cb-btn-admin ml-2" href="#">
+                                                            Unfreeze
+                                                        </a>
+                                                    </c:if>
+                                                </c:when>
+                                                <c:when test="${proposalsPermissions.canFellowActions}">
+                                                    <a id="submit-advancing-2" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary ml-2" href="#">
                                                         Save
                                                     </a>
-                                                    <input type="submit" id="submit-unfreeze" name="isUnfreeze" style="display:none" value="true" />
-                                                    <a id="submit-unfreeze-link" style="display:block; float:right; margin-top: 10px;" class="btn cb-btn-admin ml-2" href="#">
-                                                        Unfreeze
-                                                    </a>
+                                                    <!-- <div id="advancement-freeze-button">
+                                                        <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
+                                                        <a id="submit-freeze-link" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
+                                                            Freeze
+                                                        </a>
+                                                    </div> -->
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <p class="submitStatus error">
+                                                        <strong>You don't have the required permission to change the status of this ${contestType.proposalName}.</strong>
+                                                    </p>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <div id="advancement-force-button">
+                                                <c:if test="${proposalsPermissions.canAdminAll and not hasAlreadyBeenPromoted}">
+                                                        <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
+                                                        <a id="submit-forcePromotion-link" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
+                                                            Execute judging decision
+                                                        </a>
                                                 </c:if>
-                                            </c:when>
-                                            <c:when test="${proposalsPermissions.canFellowActions}">
-                                                <a id="submit-advancing-2" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary ml-2" href="#">
-                                                    Save
-                                                </a>
-                                                <!-- <div id="advancement-freeze-button">
-                                                    <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
-                                                    <a id="submit-freeze-link" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
-                                                        Freeze
-                                                    </a>
-                                                </div> -->
-                                            </c:when>
-                                            <c:otherwise>
+                                            </div>
+                                            <c:if test="${hasAlreadyBeenPromoted}">
                                                 <p class="submitStatus error">
-                                                    <strong>You don't have the required permission to change the status of this ${contestType.proposalName}.</strong>
+                                                    <strong>This ${contestType.proposalName} has already been promoted to the next phase. Thus, changes have no effect.</strong>
                                                 </p>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <div id="advancement-force-button">
-                                            <c:if test="${proposalsPermissions.canAdminAll and not hasAlreadyBeenPromoted}">
-                                                    <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
-                                                    <a id="submit-forcePromotion-link" style="display:block; float:right; margin-top: 10px;" class="btn btn-primary" href="#">
-                                                        Execute judging decision
-                                                    </a>
                                             </c:if>
+
                                         </div>
-                                        <c:if test="${hasAlreadyBeenPromoted}">
-                                            <p class="submitStatus error">
-                                                <strong>This ${contestType.proposalName} has already been promoted to the next phase. Thus, changes have no effect.</strong>
-                                            </p>
-                                        </c:if>
-
                                     </div>
-
                                 </div>
                             </form:form>
                         </c:otherwise>
                     </c:choose>
-                </div>
-            </c:if>
-            <div class="judging_right">
-                <div class="addpropbox">
-                    <h2>Evaluation criteria</h2>
-
-                    <proposalsPortlet:ratingCriteriaText ratingTypes="${proposalAdvancingBean.ratingTypes}" />
-                    </div>
+                </c:if>
             </div>
-            <div class="judging_comments">
-                <h2>Comments by Judges</h2>
-                <c:choose>
-                    <c:when test="${judgeRatings.size() > 0}">
-                        <div class="addpropbox">
+            <div class="col-6">
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
+                        <h2>Evaluation criteria</h2>
+                        <proposalsPortlet:ratingCriteriaText ratingTypes="${proposalAdvancingBean.ratingTypes}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="judging_comments">
+            <h2>Comments by Judges</h2>
+            <c:choose>
+                <c:when test="${judgeRatings.size() > 0}">
+                    <div class="c-Box c-Box--colorTan">
+                        <div class="c-Box__body">
                             <proposalsPortlet:proposalRatingComments showRating="true" proposalRatingsWrappers="${judgeRatings}" proposalId="${proposal.proposalId}" />
                         </div>
-                    </c:when>
-                    <c:otherwise>
-                        <p>No comments by judges yet.</p>
-                    </c:otherwise>
-                </c:choose>
-                <h2>Comments by Fellows</h2>
-                <c:choose>
-                    <c:when test="${fellowRatings.size() > 0}">
-                    <div class="addpropbox">
-                        <proposalsPortlet:proposalRatingComments showRating="${proposalsPermissions.canAdminAll ? 'true' : 'false'}" proposalRatingsWrappers="${fellowRatings}" proposalId="${proposal.proposalId}" />
                     </div>
-                    </c:when>
-                    <c:otherwise>
-                        <p>No comments by fellows yet.</p>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+                </c:when>
+                <c:otherwise>
+                    <p>No comments by judges yet.</p>
+                </c:otherwise>
+            </c:choose>
+            <h2>Comments by Fellows</h2>
+            <c:choose>
+                <c:when test="${fellowRatings.size() > 0}">
+                    <div class="c-Box c-Box--colorTan">
+                        <div class="c-Box__body">
+                            <proposalsPortlet:proposalRatingComments showRating="${proposalsPermissions.canAdminAll ? 'true' : 'false'}" proposalRatingsWrappers="${fellowRatings}" proposalId="${proposal.proposalId}" />
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <p>No comments by fellows yet.</p>
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <script>
