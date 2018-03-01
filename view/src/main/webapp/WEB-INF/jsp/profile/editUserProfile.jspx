@@ -65,77 +65,74 @@
 			<input type="password" style="display:none" />
 
 			<div class="comm_member">
-				<div class="comm_member-photo">
-					<div style="float: right">
+                <div class="row">
+                    <div class="col-4">
                         <form:hidden id="userPortraitInput" path="imageId" />
                         <xcolab:imageUpload uniqueName="userPortraitUpload" imageIdInput="userPortraitInput"
                                             defaultImage="MEMBER" />
-					</div>
-				</div>
-				<div class="comm_member-info">
-					<table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
-						<tr>
-							<th class="b m nowrap required-field" width="170">
-                                <spring:message code="profile.form.fields.firstname"/>
-							</th>
-							<td>
-								<form:input id="firstName" path="firstName" cssClass="form-control"/>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th class="b nowrap required-field">
-                                <spring:message code="profile.form.fields.lastname"/>
-							</th>
-							<td>
-								<form:input id="lastName" path="lastName" cssClass="form-control"/>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
-								</div>
-							</td>
-						</tr>
-
-						<tr>
-							<th class="b m required-field">
-                                <spring:message code="profile.form.fields.country"/>
-							</th>
-							<td>
-                                <form:select cssClass="form-control" path="countryCode">
-                                    <form:option value="" label="Select country"/>
-                                    <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
-                                </form:select>
-                                <div class="reg_errors"><!--  -->
-                                    <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
-                                </div>
-							</td>
-						</tr>
-                        <c:if test="${isI18NActive}">
+                    </div>
+                    <div class="col-8">
+                        <table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
                             <tr>
-                                <th class="b m required-field">
-                                    <spring:message code="profile.form.fields.language"/>
+                                <th class="b m nowrap required-field" width="170">
+                                    <spring:message code="profile.form.fields.firstname"/>
                                 </th>
                                 <td>
-                                    <form:select cssClass="form-control" path="defaultLocale">
-                                        <form:option value="" label="Select language"/>
-                                        <c:forEach var="lang" items="${_themeContext.i18NVariables.languageSelectItems}">
-                                            <form:option value="${lang['value']}" >
-                                                <spring:message code="${lang['lable']}"/>
-                                            </form:option>
-                                        </c:forEach>
+                                    <form:input id="firstName" path="firstName" cssClass="form-control"/>
+                                    <div class="reg_errors"><!--  -->
+                                        <form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="b nowrap required-field">
+                                    <spring:message code="profile.form.fields.lastname"/>
+                                </th>
+                                <td>
+                                    <form:input id="lastName" path="lastName" cssClass="form-control"/>
+                                    <div class="reg_errors"><!--  -->
+                                        <form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="b m required-field">
+                                    <spring:message code="profile.form.fields.country"/>
+                                </th>
+                                <td>
+                                    <form:select cssClass="form-control" path="countryCode">
+                                        <form:option value="" label="Select country"/>
+                                        <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
                                     </form:select>
                                     <div class="reg_errors"><!--  -->
                                         <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
                                     </div>
                                 </td>
                             </tr>
-                        </c:if>
-					</table>
-
-				</div>
-				<div id="userCountry" style="display: none;">${userBean.countryName}</div>
-				<div class="clearfix"><!--  --></div>
+                            <c:if test="${isI18NActive}">
+                                <tr>
+                                    <th class="b m required-field">
+                                        <spring:message code="profile.form.fields.language"/>
+                                    </th>
+                                    <td>
+                                        <form:select cssClass="form-control" path="defaultLocale">
+                                            <form:option value="" label="Select language"/>
+                                            <c:forEach var="lang" items="${_themeContext.i18NVariables.languageSelectItems}">
+                                                <form:option value="${lang['value']}" >
+                                                    <spring:message code="${lang['lable']}"/>
+                                                </form:option>
+                                            </c:forEach>
+                                        </form:select>
+                                        <div class="reg_errors"><!--  -->
+                                            <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </table>
+                    </div>
+                </div>
 			</div>
 
 			<div>

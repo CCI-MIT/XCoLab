@@ -238,15 +238,6 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
   margin-bottom: 20px;
 }
 
-.comm_member td div.memname {
-  font-size: 21px;
-  color: $t-Color__gray--dark-600;
-}
-
-.wf-active .comm_member td div.memname {
-  font-size: 23px;
-}
-
 .comm_member td.r {
   text-align: right;
 }
@@ -265,20 +256,6 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
   margin: 0;
 }
 
-.comm_member-photo {
-  float: left;
-  width: 150px;
-  margin-right: 20px;
-}
-
-.comm_member-info {
-  float: left;
-  width: 460px;
-}
-
-#main.full .comm_member-info {
-  width: 770px;
-}
 
 .main_long {
   float: left;
