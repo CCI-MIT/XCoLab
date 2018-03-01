@@ -13,7 +13,7 @@
         <c:if test="${proposal.proposalId > 0}">
             <div class="c-Box c-Box--colorDark c-Box--hasShadow c-Box--straightCorners">
                 <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
-                    <div class="c-Box__body c-Box__body--columns">
+                    <div class="c-Box__bodyFlex c-Box__bodyFlex--columns">
                         <div class="w-100">
                             <a href="${contestType.rulesPageUrl}#Voting" target="_blank" class="float-right">
                                 <collab:image src="/images/icon-proposal-question.png" width="23" height="23" alt="Question?" ariaLabel="Question?" />
@@ -55,7 +55,7 @@
                     <hr class="cb-hr-dotted"/>
                 </c:if>
 
-                <div class="c-Box__body">
+                <div class="c-Box__bodyFlex">
                     <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
 
                     <div>
@@ -79,7 +79,7 @@
 
             </div> <!-- /c-Box -->
             <div class="c-Box c-Box--noBorder c-Box--straightCorners">
-                <div class="c-Box__body">
+                <div class="c-Box__bodyFlex">
                     <c:if test="${_showShareButtons}">
                         <div>
                             <xcolab-social:socialShareButtons title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>

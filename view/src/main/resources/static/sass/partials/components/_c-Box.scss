@@ -11,10 +11,6 @@ $c-Box__messaging__padding--top: 5px !default;
   @extend .card;
   border: $c-Box__border;
 
-  .c-Box + & {
-    margin-top: $t-Spacing__base;
-  }
-
   &.c-Box--colorPrimary {
     background: $t-Color__primary;
     color: yiq-contrasting-color($t-Color__primary);
@@ -53,13 +49,17 @@ $c-Box__messaging__padding--top: 5px !default;
 }
 
 .c-Box__body {
+  padding: $t-Spacing__base;
+}
+
+.c-Box__bodyFlex {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: $t-Spacing__base;
 
-  &.c-Box__body--columns {
+  &.c-Box__bodyFlex--columns {
     flex-direction: column;
     align-items: flex-start;
   }
