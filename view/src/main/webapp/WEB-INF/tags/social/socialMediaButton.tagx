@@ -46,7 +46,7 @@
             
             <c:choose>
                 <c:when test="${socialEngine.equals('facebook')}">
-                    <c:set var="dataEngineUrl" value="https://www.facebook.com/dialog/share?app_id=${_facebookId}&amp;display=popup&amp;href="/>
+                    <c:set var="dataEngineUrl" value="https://www.facebook.com/dialog/share?app_id=${_themeContext.authenticationVariables.facebookId}&amp;display=popup&amp;href="/>
                 </c:when>
                 <c:when test="${socialEngine.equals('twitter')}">
                     <c:set var="dataEngineUrl" value="https://twitter.com/intent/tweet?text=${title}&amp;display=popup&amp;url="/>

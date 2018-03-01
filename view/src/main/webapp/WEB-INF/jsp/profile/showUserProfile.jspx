@@ -126,7 +126,7 @@
                                             <c:if test="${pointsActive}">
                                                 <td class="b points_box left_border top_border" width="45%">
                                                     <spring:message code="profile.show.pointsactual"
-                                                                    arguments="${_colabShortName}"/>
+                                                                    arguments="${_themeContext.colabShortName}"/>
                                                     <a class="helpTrigger" href="javascript:;">
                                                         <collab:image height="15" width="15"
                                                                       src="/images/icon-addprop-question.png"/>
@@ -134,7 +134,7 @@
                                                     <br/>
                                                     <div style="display: none;" class="profilehelp">
                                                         <spring:message code="profile.show.pointsdisclaimer"
-                                                                        arguments="${_colabShortName},${currentUserProfile.proposalString},${currentUserProfile.proposalsString}"
+                                                                        arguments="${_themeContext.colabShortName},${currentUserProfile.proposalString},${currentUserProfile.proposalsString}"
                                                                         argumentSeparator=","/>
                                                         <a href="/wiki/Climate+CoLab+Points"><spring:message
                                                                 code="profile.show.seemore"/></a>
@@ -156,7 +156,7 @@
                                                 <td class="b points_box left_border bottom_border"
                                                     width="43%">
                                                     <spring:message code="profile.show.pointsactualMax"
-                                                                    arguments="${_colabShortName}"/>
+                                                                    arguments="${_themeContext.colabShortName}"/>
                                                     <a class="helpTrigger" href="javascript:;">
                                                         <collab:image height="15" width="15"
                                                                       src="/images/icon-addprop-question.png"/>
@@ -164,7 +164,7 @@
                                                     <br/>
                                                     <div style="display: none;" class="profilehelp">
                                                         <spring:message code="profile.show.maximumnumber"
-                                                                        arguments="${_colabShortName},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString}"
+                                                                        arguments="${_themeContext.colabShortName},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString}"
                                                                         argumentSeparator=","/>
                                                         <a href="/wiki/Climate+CoLab+Points"><spring:message
                                                                 code="profile.show.seemore"/></a>
@@ -294,7 +294,7 @@
                                         code="profile.show.activities"/></h2>
                                 <c:if test="${empty currentUserProfile.activities}">
                                     <spring:message code="profile.show.activities.noyet"
-                                                    arguments="${userBean.displayNameShort},${_colabName}"
+                                                    arguments="${userBean.displayNameShort},${_themeContext.colabName}"
                                                     argumentSeparator=","/>
                                 </c:if>
 
@@ -344,7 +344,7 @@
                                     <c:choose>
                                         <c:when test="${not empty balloonLink}">
                                             <c:set var="shareLink"
-                                                   value="${_colabUrl}${balloonLink.targetUrl}"/>
+                                                   value="${_themeContext.colabUrl}${balloonLink.targetUrl}"/>
                                             <c:if test="${not empty balloonText}">
                                                 <div><xcolab-social:socialShareButtons
                                                         title="${balloonText.shareTitle}" size="xs"/>

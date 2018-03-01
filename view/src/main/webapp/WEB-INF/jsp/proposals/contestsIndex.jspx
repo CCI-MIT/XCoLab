@@ -8,7 +8,7 @@
 		<!--@elvariable id="viewType" type="java.lang.String"-->
 		<!--@elvariable id="showCollectionCards" type="java.lang.Boolean"-->
 		<jsp:directive.include file="./init.jspx" />
-		<c:if test="${_isAdmin}">
+		<c:if test="${_themeContext.authenticationVariables.isAdmin}">
 			<a href="/proposals/preferences" class="btn cb-btn-admin btn-sm float-right">Edit contests preferences</a><br/>
 		</c:if>
 		<c:choose>

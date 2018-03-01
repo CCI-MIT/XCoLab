@@ -8,6 +8,7 @@
           xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
 
     <!--@elvariable id="linkedProposalContestTypeProposalWrappersByContestTypeId" type="java.util.Map<java.lang.Long, org.xcolab.wrappers.ContestTypeProposalWrapper>"-->
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <c:if test="${contestType.showProposalSummary}">
         <c:if test="${proposal.proposalId > 0}">
@@ -82,7 +83,7 @@
                 <div class="c-Box__bodyFlex">
                     <c:if test="${_showShareButtons}">
                         <div>
-                            <xcolab-social:socialShareButtons title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
+                            <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
                         </div>
                     </c:if>
                     <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">

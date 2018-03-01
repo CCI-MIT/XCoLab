@@ -8,7 +8,7 @@
     <c:if test="${not empty contentArticleVersion}">
         <h1>${contentArticleVersion.title}</h1>
         <br />
-        <c:if test="${_isAdmin}">
+        <c:if test="${_themeContext.authenticationVariables.isAdmin}">
             <a href="/content-editor/?articleId=${contentArticleVersion.contentArticleId}"
                class="btn cb-btn-admin btn-sm float-right">
                 Edit wiki article
