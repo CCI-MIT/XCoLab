@@ -9,8 +9,6 @@ dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend, input,
 table, tbody, tfoot, thead, tr, th, td {
   padding: 0;
-  word-wrap: normal !important;
-  word-break: normal !important;
 }
 
 //= Defaults for tables
@@ -52,4 +50,9 @@ img {
     // compatibility with bootstrap media object
     max-width: initial;
   }
+}
+
+a {
+  //break long URLs if necessary
+  word-break: break-all;
 }
