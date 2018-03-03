@@ -99,6 +99,10 @@
     <meta property="og:locale" content="${_themeContext.i18NVariables.language}"/>
 
     <c:url var="encodedTwitterImageUrl" value="${not empty openGraphImage ? openGraphImage : _themeContext.themeVariables.activeTheme.logoPathSquare}"/>
+    <meta name="twitter:card" content="summary"/>
+    <c:if test="${not empty _themeContext.socialMediaVariables.twitterAccount}">
+        <meta name="twitter:site" content="@${_themeContext.socialMediaVariables.twitterAccount}"/>
+    </c:if>
     <meta name="twitter:image" content="${encodedTwitterImageUrl}"/>
 
     <c:if test="${not empty _themeContext.authenticationVariables.facebookId}">

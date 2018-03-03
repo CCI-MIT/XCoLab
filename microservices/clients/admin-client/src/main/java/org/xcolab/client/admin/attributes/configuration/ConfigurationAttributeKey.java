@@ -163,6 +163,11 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(false)
                     .build();
 
+    public static final AttributeGetter<String> TWITTER_ACCOUNT =
+            ConfigurationAttributes.newStringAttribute("TWITTER_ACCOUNT")
+                    .defaultValue("")
+                    .build();
+
     public static final AttributeGetter<String> TWITTER_URL =
             ConfigurationAttributes.newStringAttribute("TWITTER_URL")
                     .defaultValue("")

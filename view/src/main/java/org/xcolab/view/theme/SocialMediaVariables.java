@@ -15,6 +15,7 @@ public class SocialMediaVariables {
     private final List<SocialMediaEngine> followableEngines;
     private final List<SocialMediaEngine> allEngines;
     private final String donateLink;
+    private final String twitterAccount;
 
     public SocialMediaVariables(HttpServletRequest request) {
         this.shareRequestUri = SocialMediaEngine
@@ -26,6 +27,7 @@ public class SocialMediaVariables {
         this.allEngines = SocialMediaEngine.getAllSocialMediaEngines();
 
         this.donateLink = ConfigurationAttributeKey.NAVBAR_DONATE_LINK.get();
+        this.twitterAccount = ConfigurationAttributeKey.TWITTER_ACCOUNT.get();
     }
 
     public String getShareRequestUri() {
@@ -50,5 +52,9 @@ public class SocialMediaVariables {
 
     public String getDonateLink() {
         return donateLink;
+    }
+
+    public String getTwitterAccount() {
+        return twitterAccount;
     }
 }
