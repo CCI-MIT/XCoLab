@@ -73,7 +73,7 @@
 
     <!-- ============ Stylesheets ============ -->
 
-    <xcolab:stylesheet href="${_themeContext.themeVariables.themePaths.themeStylesheetPath}" />
+    <xcolab:stylesheet href="${_themeContext.themeVariables.activeTheme.stylesheetPath}" />
 
 
     <!-- ============ META CONTENT ============ -->
@@ -94,9 +94,12 @@
     <meta property="og:site_name" content="${ not empty openGraphSiteName ? openGraphSiteName: _themeContext.colabName}" />
     <meta property="og:title" content="${ not empty openGraphTitle ? openGraphTitle: _themeContext.metaVariables.openGraphShareTitle}" />
     <meta property="og:description" content="${ not empty openGraphDescription ? openGraphDescription: _themeContext.metaVariables.openGraphShareDescription}" />
-    <meta property="og:image" content="${not empty openGraphImage ? openGraphImage : _themeContext.themeVariables.themePaths.logoPathBig}" />
+    <c:url var="encodedOpenGraphImageUrl" value="${not empty openGraphImage ? openGraphImage : _themeContext.themeVariables.activeTheme.logoPathBig}"/>
+    <meta property="og:image" content="${encodedOpenGraphImageUrl}"/>
+    <meta property="og:locale" content="${_themeContext.i18NVariables.language}"/>
 
-    <meta name="twitter:image" content="${not empty openGraphImage ? openGraphImage : _themeContext.themeVariables.themePaths.logoPathSquare}"/>
+    <c:url var="encodedTwitterImageUrl" value="${not empty openGraphImage ? openGraphImage : _themeContext.themeVariables.activeTheme.logoPathSquare}"/>
+    <meta name="twitter:image" content="${encodedTwitterImageUrl}"/>
 
     <c:if test="${not empty _themeContext.authenticationVariables.facebookId}">
         <meta property="fb:app_id" content="${_themeContext.authenticationVariables.facebookId}"/>
@@ -106,7 +109,6 @@
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
 
     <link href="/images/favicon.ico" rel="Shortcut Icon" />
-    <link rel="image_src" type="image/png" href="${_themeContext.themeVariables.themePaths.logoPathBig}" />
     <c:if test="${not empty canonicalUrlRelative}">
         <link rel="canonical" href="${_themeContext.colabUrl}${canonicalUrlRelative}" />
     </c:if>
@@ -167,7 +169,7 @@
     <!-- ============ Navbar ============ -->
 
     <xcolab-layout:navbar colabName="${_themeContext.colabName}"
-                          logoPath="${_themeContext.themeVariables.themePaths.logoPath}"
+                          logoPath="${_themeContext.themeVariables.activeTheme.logoPath}"
                           redirect="${_themeContext.requestUri}"
                           activePageLink="${_activePageLink}"
                           contestPages="${_themeContext.themeVariables.contestPages}"
@@ -353,13 +355,14 @@
     </c:set>
 
     <!--suppress CheckValidXmlInScriptTagBody -->
+    <c:url var="encodedSchemaOrgLogoPath" value="${_themeContext.themeVariables.activeTheme.logoPathSquare}"/>
     <script type="application/ld+json">
         {
           "@context": "http://schema.org",
           "@type": "Organization",
           "name": "${_themeContext.colabName}",
           "url": "${_themeContext.colabUrl}",
-          "logo": "${_themeContext.themeVariables.themePaths.logoPathSquare}",
+          "logo": "${encodedSchemaOrgLogoPath}",
           "sameAs": [${socialMediaSameAs}]
         }
     </script>

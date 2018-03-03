@@ -3,6 +3,7 @@ package org.xcolab.view.theme;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
+import org.xcolab.util.enums.theme.ColabTheme;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +25,7 @@ public class ThemeVariables {
 
     private final boolean isResponsive;
 
-    private final ThemePaths themePaths;
+    private final ColabTheme activeTheme;
 
     public ThemeVariables(HttpServletRequest request, I18nVariables i18NVariables) {
         this.mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
@@ -49,7 +50,7 @@ public class ThemeVariables {
 
         this.isResponsive = PlatformAttributeKey.LAYOUT_IS_RESPONSIVE.get();
 
-        this.themePaths = new ThemePaths();
+        this.activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
     }
 
     public boolean getMitHeaderBarShow() {
@@ -92,7 +93,7 @@ public class ThemeVariables {
         return isResponsive;
     }
 
-    public ThemePaths getThemePaths() {
-        return themePaths;
+    public ColabTheme getActiveTheme() {
+        return activeTheme;
     }
 }
