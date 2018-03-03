@@ -7,6 +7,8 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
     <!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
     <!--@elvariable id="scheduleTemplateSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
     <!--@elvariable id="proposalTemplateSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
@@ -260,6 +262,14 @@
                     <div class="reg_errors">
                         <form:errors cssClass="c-Alert c-Alert__error" path="scheduleTemplateId"/>
                     </div>
+
+                    <c:if test="${_themeContext.authenticationVariables.isAdmin}">
+                        <div class="text-right">
+                            <a href="/admin/contest/manager/tab/SCHEDULES?elementId=${contestWrapper.contestScheduleId}">
+                                Edit schedule
+                            </a>
+                        </div>
+                    </c:if>
                 </div>
             </div>
 
