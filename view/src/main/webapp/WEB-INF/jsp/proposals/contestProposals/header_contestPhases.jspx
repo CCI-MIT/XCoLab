@@ -26,9 +26,9 @@
                             ${phase.phaseStatusDescription }
                         </c:if>
 						<c:if test="${not empty phase.phaseStartDate }">
-                            <xcolab:formatDateTime millis="${phase.phaseStartDate.time}" type="date" zoneDisplay="print"/>
+                            <xcolab:formatDateTime millis="${phase.phaseStartDate.time}" type="datetime" zoneDisplay="print"/>
 							<c:if test="${not empty phase.phaseEndDate }">
-								- <xcolab:formatDateTime millis="${phase.phaseEndDate.time}" type="date" zoneDisplay="print"/>
+								- <xcolab:formatDateTime millis="${phase.phaseEndDate.time}" type="datetime" zoneDisplay="print"/>
 							</c:if>
 						</c:if>
 						</span>
