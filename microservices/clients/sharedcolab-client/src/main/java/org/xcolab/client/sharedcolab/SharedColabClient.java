@@ -22,7 +22,8 @@ public class SharedColabClient {
             .instance(ConfigurationAttributeKey.SHARED_COLAB_NAMESPACE
                     .withDefaultValue(ServiceRequestUtils.getNamespace()));
     private static final ServiceNamespace PARTNER_MEMBER_SERVICE = ServiceNamespace
-            .instance(ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
+            .instance(ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                    .withDefaultValue(ServiceRequestUtils.getNamespace()));
 
 
     private static final RestResource<Member, Long> partnerMemberResource = new RestResource1<>(
