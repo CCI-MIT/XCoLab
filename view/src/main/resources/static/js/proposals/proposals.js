@@ -50,8 +50,8 @@ function validatePlanEditForm() {
     
     var isValid = true;
     jQuery("input[type='text'].invalid, textarea.invalid").each(function() {
-        var x = jQuery(this).parents(".addpropbox");
-        invalidFieldsList.append("<li>" + jQuery(this).parents(".addpropbox").find("strong").text() + "</li>");
+        var x = jQuery(this).parents(".c-Box");
+        invalidFieldsList.append("<li>" + jQuery(this).parents(".c-Box").find("strong").text() + "</li>");
         
         isValid = false;   
     });
