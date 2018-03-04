@@ -25,10 +25,8 @@
                     </c:if>
                 </div>
                 <c:if test="${showFacebookSso or showGoogleSso}">
-                    <div class="d-flex justify-content-around align-items-center my-2">
-                        <div class="bg-white" style="flex: 1;height: 1px;"><!-- empty --></div>
-                        <div class="mx-2">OR</div>
-                        <div class="bg-white" style="flex: 1;height: 1px;"><!-- empty --></div>
+                    <div class="c-TextRule c-TextRule--inverse">
+                        OR
                     </div>
                 </c:if>
 
