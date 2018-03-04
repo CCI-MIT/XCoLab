@@ -217,7 +217,7 @@
                             <h4>${section.title}</h4>
                         </c:when>
                         <c:otherwise>
-                            <div class="c-Box c-Box--colorTan ${section.type}" data-section-id="${section.sectionDefinitionId }">
+                            <div class="c-Box ${section.type.name().startsWith('PROPOSAL_') ? 'c-Box--colorPrimaryGrayLight' : 'c-Box--colorTan'} ${section.type}" data-section-id="${section.sectionDefinitionId }">
                                 <div class="c-Box__bodyRow">
                                     <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasUnmappedSections and not empty baseProposal }"/>
                                 </div>

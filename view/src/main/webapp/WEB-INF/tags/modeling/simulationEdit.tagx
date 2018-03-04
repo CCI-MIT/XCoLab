@@ -26,20 +26,22 @@
             </c:otherwise>
         </c:choose>
 
-        <div id="regionSelect" class="addpropbox">
-            <h3 class="floatLeft" style="margin-top: 0">Which modeling region would you like to use?</h3>
-            <select id="modelRegion" name="modelRegion">
-                <c:forEach var="modelRegion" items="${modelRegions}">
-                    <c:choose>
-                        <c:when test="${not empty proposalRegion and proposalRegion == modelRegion[0]}">
-                            <option value="${modelRegion[0]}" checked="checked">${modelRegion[1]}</option>
-                        </c:when>
-                        <c:otherwise>
-                            <option value="${modelRegion[0]}">${modelRegion[1]}</option>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </select>
+        <div id="regionSelect" class="c-Box c-Box--colorTan">
+            <div class="c-Box__body">
+                <h3 class="floatLeft" style="margin-top: 0">Which modeling region would you like to use?</h3>
+                <select id="modelRegion" name="modelRegion">
+                    <c:forEach var="modelRegion" items="${modelRegions}">
+                        <c:choose>
+                            <c:when test="${not empty proposalRegion and proposalRegion == modelRegion[0]}">
+                                <option value="${modelRegion[0]}" checked="checked">${modelRegion[1]}</option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="${modelRegion[0]}">${modelRegion[1]}</option>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </select>
+            </div>
         </div>
 
     </c:if>
