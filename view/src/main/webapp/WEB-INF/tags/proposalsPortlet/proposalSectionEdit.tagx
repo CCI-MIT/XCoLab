@@ -10,143 +10,145 @@
 	<jsp:directive.attribute name="showCopySectionContentButton" type="java.lang.Boolean" 
 		required="false" rtexprvalue="true" description="Tells if 'copy content from base proposal section' button should be shown" />
 
-	<label>
-		<strong>${section.title}</strong> 
-		<a href="javascript:;" class="helpTrigger">
+	<label class="p-Proposal__formBox__label">
+		<strong>${section.title}</strong>
+        <c:if test="${not empty section.helpText}">
+		<a href="#js-Help__section${section.id_}" class="ml-1" data-toggle="collapse">
             <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
         </a>
-        <br />
+        </c:if>
 		<c:if test="${section.characterLimit gt 0}">
         	${section.characterLimit} characters
         </c:if>
 	</label>
-	<div class="addprophelp">${section.helpText}</div>
-	
-	
-	<div class="addpropInputContainer" id="proposalSection_${section.sectionDefinitionId }"  >
-		<c:choose>
 
-			<c:when test="${section.type == 'ONTOLOGY_REFERENCE' }">
-				<c:set var="term" value="${section.numericValueAsOntologyTerm }" />
-				<select name='sectionsContent[${section.sectionDefinitionId }]' class="form-control">
-					<c:forEach var="term" items="${section.focusAreaTerms }">	
-						<c:choose>
-							<c:when test="${section.numericValueAsOntologyTerm.id == term.id }">
-								<option value="${term.id }" selected="selected">${term.name }</option>
-							</c:when>
-							<c:otherwise>
-								<option value="${term.id }">${term.name }</option>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</select>
-			</c:when>
-			<c:when test="${section.type == 'DROPDOWN_MENU'}">
-				<select name='sectionsContent[${section.sectionDefinitionId }]' class="form-control">
-					<c:forEach var="value" items="${section.optionsForDropdownMenu}">
-                        <c:choose>
-                            <c:when test="${section.stringValue == value}">
-                                <option value="${value}" selected="selected">${value}</option>
-                            </c:when>
-                            <c:otherwise>
-                                <option value="${value}">${value}</option>
-                            </c:otherwise>
-                        </c:choose>
+    <div class="p-Proposal__formBox__main">
 
-					</c:forEach>
-				</select>
-			</c:when>
-            <c:when test="${section.type == 'CHECKBOX_OPTION'}">
+        <c:if test="${not empty section.helpText}">
+            <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__section${section.id_}">
+                ${section.helpText}
+            </div>
+        </c:if>
+
+        <div id="proposalSection_${section.sectionDefinitionId }"  >
+            <c:choose>
+
+                <c:when test="${section.type == 'ONTOLOGY_REFERENCE' }">
+                    <c:set var="term" value="${section.numericValueAsOntologyTerm }" />
+                    <select name='sectionsContent[${section.sectionDefinitionId }]' class="form-control">
+                        <c:forEach var="term" items="${section.focusAreaTerms }">
+                            <c:choose>
+                                <c:when test="${section.numericValueAsOntologyTerm.id == term.id }">
+                                    <option value="${term.id }" selected="selected">${term.name }</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${term.id }">${term.name }</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </select>
+                </c:when>
+                <c:when test="${section.type == 'DROPDOWN_MENU'}">
+                    <select name='sectionsContent[${section.sectionDefinitionId }]' class="form-control">
+                        <c:forEach var="value" items="${section.optionsForDropdownMenu}">
+                            <c:choose>
+                                <c:when test="${section.stringValue == value}">
+                                    <option value="${value}" selected="selected">${value}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${value}">${value}</option>
+                                </c:otherwise>
+                            </c:choose>
+
+                        </c:forEach>
+                    </select>
+                </c:when>
+                <c:when test="${section.type == 'CHECKBOX_OPTION'}">
 
                     <c:forEach var="value" items="${section.optionsForCheckbox}">
                         <c:choose>
                             <c:when test="${section.isOptionForCheckboxSelected(value)}">
-                            <div class="checkboxContainer">
-                                <input type="checkbox" id="${section.sectionDefinitionId }_${value}" name='sectionsContent[${section.sectionDefinitionId }]' value="${value}" checked="checked"/>
-                                <span>${value}</span>
-                            </div>
+                                <div class="checkboxContainer">
+                                    <input type="checkbox" id="${section.sectionDefinitionId }_${value}" name='sectionsContent[${section.sectionDefinitionId }]' value="${value}" checked="checked"/>
+                                    <span>${value}</span>
+                                </div>
                             </c:when>
                             <c:otherwise>
-                             <div class="checkboxContainer">
-                                 <input type="checkbox"  id="${section.sectionDefinitionId }_${value}" name='sectionsContent[${section.sectionDefinitionId }]' value="${value}" />
-                                 <span>${value}</span>
-                            </div>
+                                <div class="checkboxContainer">
+                                    <input type="checkbox"  id="${section.sectionDefinitionId }_${value}" name='sectionsContent[${section.sectionDefinitionId }]' value="${value}" />
+                                    <span>${value}</span>
+                                </div>
                             </c:otherwise>
                         </c:choose>
 
                     </c:forEach>
 
-            </c:when>
+                </c:when>
 
-            <c:when test="${section.type == 'PROPOSAL_REFERENCE' }">
-                <c:set var="p" value="${section.numericValueAsProposal }" />
-                <c:choose>
-                    <c:when test="${empty p  }">
-                        <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" />
-                    </c:when>
-                    <c:otherwise>
-                        <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${p.proposalId }" />
-                        <table>
-                            <tr>
-                                <td class="proposalLink"><xcolab:proposalLink proposal="${p}" /></td>
-                                <td>(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</td>
-                            </tr>
-                        </table>
-                    </c:otherwise>
-                </c:choose>
-                <a class="btn btn-primary" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId},
+                <c:when test="${section.type == 'PROPOSAL_REFERENCE' }">
+                    <c:set var="p" value="${section.numericValueAsProposal }" />
+                    <c:choose>
+                        <c:when test="${empty p  }">
+                            <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" />
+                        </c:when>
+                        <c:otherwise>
+                            <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${p.proposalId }" />
+                            <table>
+                                <tr>
+                                    <td class="proposalLink"><xcolab:proposalLink proposal="${p}" /></td>
+                                    <td>(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</td>
+                                </tr>
+                            </table>
+                        </c:otherwise>
+                    </c:choose>
+                    <a class="btn btn-primary" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId},
                         ${proposalPickerDefaultTabIsContests ? 'PICKER_TAB_ALL_CONTESTS' : 'PICKER_TAB_ALL_PROPOSALS'},
                         '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
-                    Select ${section.proposalNames}
-                </a>
-            </c:when>
-            <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
-                <c:set var="pl" value="${section.stringValueAsProposalArray }"/>
-                <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${empty pl ? '' : section.stringValue}"/>
-                <ul>
-                    <c:forEach var="p" items="${pl}">
-                        <li>
-                			<xcolab:proposalLink proposal="${p}" />
-                			(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a>)
-                        </li>
-                	</c:forEach>
-                </ul>
-                <a class="btn btn-primary" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId},
+                        Select ${section.proposalNames}
+                    </a>
+                </c:when>
+                <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
+                    <c:set var="pl" value="${section.stringValueAsProposalArray }"/>
+                    <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${empty pl ? '' : section.stringValue}"/>
+                    <ul>
+                        <c:forEach var="p" items="${pl}">
+                            <li>
+                                <xcolab:proposalLink proposal="${p}" />
+                                (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a>)
+                            </li>
+                        </c:forEach>
+                    </ul>
+                    <a class="btn btn-primary" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId},
                         ${proposalPickerDefaultTabIsContests ? 'PICKER_TAB_ALL_CONTESTS' : 'PICKER_TAB_ALL_PROPOSALS'},
                         '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
-                    Edit ${section.proposalNames} list
-                </a>
-            </c:when>
+                        Edit ${section.proposalNames} list
+                    </a>
+                </c:when>
 
-			<c:otherwise>
-				<form:textarea cssClass="rte-editorPlaceholder" data-section-type="${section.type }" data-section-id="${section.sectionDefinitionId }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]"
-                               data-section-placeholder="${section.defaultText}"/>
+                <c:otherwise>
+                    <form:textarea cssClass="rte-editorPlaceholder" data-section-type="${section.type }" data-section-id="${section.sectionDefinitionId }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]"
+                                   data-section-placeholder="${section.defaultText}"/>
 
 
-				<c:if test="${section.type == 'PROPOSAL_LIST_TEXT_REFERENCE'}">
-					<script>
-						if (!sectionContestTypeNames) { var sectionContestTypeNames = {}; }
-						sectionContestTypeNames[${section.sectionDefinitionId}] = ['${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}']
-					</script>
-				</c:if>
-				<c:if test="${section.characterLimit gt 0}">
-                    <div class="clearfix"><!-- --></div>
-					<div class="inputLimitContainer">
-            			<span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">${section.characterLimit}</span> characters
-            		</div>
-        		</c:if>
-        		<c:if test="${showCopySectionContentButton }">
-        			<div class='alignright copyFromBaseProposalTriggerContainer'>
-        				<a class="btn btn-primary copyFromBaseProposalTrigger" href="javascript:;" data-section-id="${section.sectionDefinitionId}">Copy from base ${contestType.proposalName}</a>
-        			</div>
-        		</c:if>
-			</c:otherwise>
-		</c:choose>
+                    <c:if test="${section.type == 'PROPOSAL_LIST_TEXT_REFERENCE'}">
+                        <script>
+                            if (!sectionContestTypeNames) { var sectionContestTypeNames = {}; }
+                            sectionContestTypeNames[${section.sectionDefinitionId}] = ['${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}']
+                        </script>
+                    </c:if>
+                    <c:if test="${section.characterLimit gt 0}">
+                        <div class="clearfix"><!-- --></div>
+                        <div class="inputLimitContainer">
+                            <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">${section.characterLimit}</span> characters
+                        </div>
+                    </c:if>
+                    <c:if test="${showCopySectionContentButton }">
+                        <div class='alignright copyFromBaseProposalTriggerContainer'>
+                            <a class="btn btn-primary copyFromBaseProposalTrigger" href="javascript:;" data-section-id="${section.sectionDefinitionId}">Copy from base ${contestType.proposalName}</a>
+                        </div>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
-    <script>
-        jQuery(".addpropform .helpTrigger").each(function() {
-            var trigger = jQuery(this);
-            trigger.parent().parent().find(".addprophelp").slideDown(0);
-        });
-    </script>
 </jsp:root>

@@ -156,18 +156,7 @@ input.c-Comment__button[type="submit"]:focus { //input.comm-butt
   }
 }
 
-.addpropbox.evaluation {
-  .c-Comment__commentor {
-    float: left;
-  }
-
-  .c-Comment {
-    padding-bottom: 40px;
-    padding-top: 10px;
-    display: table-footer-group;
-
-    li {
-      background: none;
-    }
-  }
+.c-Box .c-Comment {
+  width: 100%;
+  padding: 0;
 }

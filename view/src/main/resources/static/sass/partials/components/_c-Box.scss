@@ -4,48 +4,68 @@ $c-Box__border: 1px solid $t-Color__gray--medium-500 !default;
 $c-Box__shadow: 3px 3px 1px $t-Color__gray--dark-600 !default;
 
 $c-Box__background__color--dark: $t-Color__tan !default;
-$c-Box__background__color--light: transparent !default;
-$c-Box__background__color--primary: $t-Color__primary__gray !default;
 
-$c-Box__background--dark: $c-Box__background__color--dark !default;
-$c-Box__background--light: $c-Box__background__color--light !default;
-$c-Box__background--primary: $c-Box__background__color--primary !default;
-
-$c-Box__boxColor--light__padding--top: 25px !default;
 $c-Box__messaging__padding--top: 5px !default;
 
 .c-Box {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px 10px;
+  @extend .card;
+  border: $c-Box__border;
 
-  &.boxColor--primary {
-    background: $c-Box__background--primary;
-    color: yiq-contrasting-color($c-Box__background__color--primary);
+  &.c-Box--colorPrimary {
+    background: $t-Color__primary;
+    color: yiq-contrasting-color($t-Color__primary);
   }
 
-  &.boxColor--dark {
-    background: $c-Box__background--dark;
+  &.c-Box--colorTan {
+    background: $t-Color__tan;
+    color: yiq-contrasting-color($t-Color__tan);
+  }
+
+  &.c-Box--colorPrimaryGrayLight {
+    background: $t-Color__primary__gray--light;
+    color: yiq-contrasting-color($t-Color__primary__gray--light);
+  }
+
+  &.c-Box--colorDark {
+    background-color: $c-Box__background__color--dark;
     color: yiq-contrasting-color($c-Box__background__color--dark);
   }
 
-  &.boxColor--light {
-    background: $c-Box__background--light;
-    padding-top: $c-Box__boxColor--light__padding--top;
-    padding-bottom: $c-Box__messaging__padding--top;
-
-    @if $c-Box__background--light != transparent {
-      color: yiq-contrasting-color($c-Box__background__color--light);
-    } @else {
-      color: yiq-contrasting-color(white);
-    }
-  }
-
-  &.hasShadow {
+  &.c-Box--hasShadow {
     box-shadow: $c-Box__shadow;
   }
 
-  &.hasBorder {
-    border: $c-Box__border;
+  &.c-Box--noBorder {
+    border: none;
   }
+
+  &.c-Box--straightCorners {
+    border-radius: 0;
+  }
+
+  hr {
+    margin: 0;
+  }
+}
+
+.c-Box__body {
+  padding: $t-Spacing__base;
+}
+
+.c-Box__bodyFlex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: $t-Spacing__base;
+
+  &.c-Box__bodyFlex--columns {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.c-Box__bodyRow {
+  @extend .row;
+  padding: $t-Spacing__base;
 }

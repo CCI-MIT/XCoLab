@@ -29,8 +29,10 @@
                 <h2>${contestType.proposalName} rating</h2>
                 <c:choose>
                     <c:when test="${proposalsPermissions.canPublicRating}">
-                        <div class="addpropbox evaluation">
-                            <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
+                        <div class="c-Box c-Box--colorTan">
+                            <div class="c-Box__body">
+                                <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
+                            </div>
                         </div>
                     </c:when>
                     <c:otherwise>
@@ -49,9 +51,11 @@
                     <c:forEach var="ratingWrapper" items="${averageRatingsPerPhase}">
                         <h2>${ratingWrapper.contestPhase}</h2>
 
-                        <div class="addpropbox evaluation">
-                            <proposalsPortlet:proposalRatingEvaluation showShouldAdvance="false" showRating="true" showPhase="false"
-                                                                       showRatingDescription="false" wrapper="${ratingWrapper}"/>
+                        <div class="c-Box c-Box--colorTan">
+                            <div class="c-Box__body">
+                                <proposalsPortlet:proposalRatingEvaluation showShouldAdvance="false" showRating="true" showPhase="false"
+                                                                           showRatingDescription="false" wrapper="${ratingWrapper}"/>
+                            </div>
                         </div>
                     </c:forEach>
 

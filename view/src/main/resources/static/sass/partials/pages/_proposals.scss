@@ -1,4 +1,5 @@
 @import "bootstrap/variables";
+@import "bootstrap/mixins/caret";
 
 $p-proposal__header__background: url(/images/pattern-6x6-blue.png) !default;
 $p-proposal__header__h1__textColor: $b-Typography__textColor !default;
@@ -31,7 +32,6 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 476px !default;
 $p-Proposal__sidebar__subscribe__capitalization: none !default;
 
 $p-Proposal__edit__button__backgroundColor: $t-Color__primary--darkest !default;
-$p-Proposal__box__offColor: $t-Color__primary__gray--light !default;
 
 $p-proposal__thumbbox__backgroundColor: $c-Table__cell__count__backgroundColor !default;
 
@@ -280,62 +280,27 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   padding-bottom: 8px;
 }
 
-/* add proposal boxes */
-.addpropbox {
-  background: $t-Color__tan;
-  border-radius: 12px;
-  padding: 13px 15px 12px 12px;
-  margin-bottom: 13px;
-  line-height: 19px;
+.p-Proposal__formBox__label {
+  display: flex;
+  flex-direction: row;
+
+  @extend .col-lg-2;
+  @extend .flex-lg-column;
+
+  @include media-breakpoint-down(md) {
+    justify-content: space-between;
+  }
 }
 
-.addpropbox:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
+.p-Proposal__formBox__main {
+  @extend .col-lg-10;
 }
 
-.addpropbox {
-  display: inline-block;
-}
-
-* html .addpropbox {
-  height: 1%;
-}
-
-//TODO: port to c-Box
-.addpropbox {
-  display: block;
-}
-
-.addpropbox.blue {
-  background: $p-Proposal__box__offColor;
-}
-
-/* form fields */
-.addpropform label {
-  float: left;
-  width: 110px;
-  display: inline-block;
-  font-size: 16px;
-  color: $t-Color__gray--dark-600;
-}
-
-.addpropform label strong, .addpropform .blue {
-  color: black;
-}
-
-.addpropform label img {
-  position: relative;
-  top: 3px;
-}
-
-.addpropform .notation {
-  font-size: 15px;
-  color: $t-Color__gray--dark-700;
-  margin: 1px 0 25px 12px;
+.p-Proposal__formBox__helpText {
+  @include caret(left);
+  &:after, &:before {
+    vertical-align: 0.1em;
+  }
 }
 
 .addprophelp {
@@ -504,15 +469,4 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   height: 300px;
   overflow: auto;
   position: relative;
-}
-
-// admin tab columns
-.admin_left {
-  width: 400px;
-  margin-right: 40px;
-  float: left;
-}
-
-.admin_right {
-  float: left;
 }

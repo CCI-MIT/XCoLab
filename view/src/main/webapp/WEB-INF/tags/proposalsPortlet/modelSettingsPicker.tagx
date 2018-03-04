@@ -19,8 +19,8 @@
     <jsp:directive.attribute name="consolidatedScenarioId" type="java.lang.Long" required="false" rtexprvalue="true"
                              description="Selected modelId"/>
 
-    <div class='addpropbox'>
-        <div>
+    <div class="c-Box c-Box--colorTan">
+        <div class="c-Box__body">
             <c:if test="${not empty isGlobalContest and isGlobalContest}">
                 <div style="margin-left:10px;float:right;">
                     <collab:image src="/images/beta-indicator.png"

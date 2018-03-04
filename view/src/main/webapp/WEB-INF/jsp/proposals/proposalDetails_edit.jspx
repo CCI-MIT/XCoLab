@@ -51,176 +51,161 @@
         <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
     </c:if>
 
-    <style>
-        td em {
-            background: #000; border-radius: 5px; font-style: normal;
-            box-shadow: 0 0 2px #000;
-        }
-    </style>
-
-    <div class="prop-left">
-
-        <div class="c-Headline addprop">
-            <c:choose>
-                <c:when test="${isMove }">
-                    <p>
-                        You're about to move a ${fn:toLowerCase(contestType.proposalName)}
-                        <xcolab:proposalLink proposal="${baseProposal}" escape="true" />
-                        from ${contestType.contestName}
-                        <xcolab:contestLink contest="${baseContest}" />
-                        to ${contestType.contestName}
-                        <xcolab:contestLink contest="${contest}" />.
-                    </p>
-                </c:when>
-                <c:when test="${not empty baseProposal}">
-                    <p>
-                        You're about to create a ${fn:toLowerCase(contestType.proposalName)} that will be based on
-                        <xcolab:proposalLink proposal="${baseProposal}" escape="true" />.
-                    </p>
-                </c:when>
-            </c:choose>
-            <p>
-                <c:if test="${showProposalEditHelpText}">
-                    Please complete your ${fn:toLowerCase(contestType.proposalName)} based on the template below.
-                    If you have input on the template, please send it in a <a href="/feedback" target="_blank">feedback message</a>.
-                    To save your ${fn:toLowerCase(contestType.proposalName)}, you must agree to the <a href="${contestType.rulesPageUrl}" target="_blank">${contestType.rulesPageName}</a>
-                    and <a href="/wiki/Terms+of+use" target="_blank">Terms of use</a>.
-                </c:if>
-
-                <br/>
-                In the past, users have occasionally lost work while inputting text into this form.
-                To prevent this, we recommend that you either (a) prepare your text offline before copying and pasting it into the form or (b) use the SAVE button right after you begin and save frequently.
-                The system will log you out automatically after 2 hours, causing loss of any inputs not previously saved.
-            </p>
-        </div> <!-- /c-Headline -->
-
-
-        <form:form action="${saveUrl}" commandName="updateProposalDetailsBean"
-                   id="editForm"
-                   cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" >
-            <form:hidden path="baseProposalId" />
-            <form:hidden path="baseProposalContestId" />
-            <form:hidden path="isMove" />
-            <form:hidden path="moveType" />
-            <form:hidden path="moveFromContestPhaseId" />
-            <form:hidden path="moveToContestId" />
-            <form:hidden path="uuid" />
-
-            <div class="addpropbox q1">
-                <label>
-                    <strong class="required-field">
-                        <spring:message code="contests.proposal.sections.title" />
-                    </strong>
-                    <a class="helpTrigger" href="javascript:;">
-                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
-                    </a>
-                    <br />
-                    <spring:message code="contests.proposal.sections.characterlimit" arguments="80"  />
-                </label>
-                <div class="addprophelp">Give the ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
-                <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                    <form:input path="name" id="proposalName" cssClass="form-control" />
-                    <form:errors path="name" cssClass="c-Alert c-Alert__error" />
-                    <div class="clearfix"><!--  --></div>
-
-                    <div class="clearfix"><!-- --></div>
-                    <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> characters</div>
-                </div>
-            </div>
-
-            <div class="addpropbox q3">
-                <label>
-                    <strong class="required-field">${contestType.pitchName}</strong>
-                    <a href="javascript:;" class="helpTrigger">
-                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
-                    </a>
-                    <br />
-                    <spring:message code="contests.proposal.sections.characterlimit" arguments="140"  />
-                </label>
-                <div class="addprophelp">Add a very short (140 character) description that conveys the key idea behind the ${fn:toLowerCase(contestType.proposalName)}.</div>
-                <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                    <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="form-control" />
-                    <form:errors path="pitch" />
-                    <div class="clearfix"><!-- --></div>
-                    <div class="inputLimitContainer">
-                        <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> characters
-                    </div>
-                </div>
-
-                <script>
-                    jQuery("textarea#proposalPitchInput").keydown(function(e) {
-                        var TABKEY = 9;
-                        if(e.keyCode == TABKEY) {
-                            this.value += "    ";
-                            if(e.preventDefault) {
-                                e.preventDefault();
-                            }
-                            return false;
-                        }
-                    });
-                </script>
-            </div>
-
-            <div class="addpropbox blue q2 ${contestType.showTeamField ? '' : 'hidden'}">
-                <label>
-                <span>
-                    <strong><spring:message code="contests.proposal.sections.team"/> </strong>
-                    <br /><em>optional</em>
-                </span>
-                <a class="helpTrigger" href="javascript:;">
-                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
-                </a>
-                <br />
-                <spring:message code="contests.proposal.sections.characterlimit" arguments="35" />
-                </label>
-                <div class="addprophelp">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the name of its owner.</div>
-                <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                    <form:input path="team" id="proposalTeam" cssClass="form-control" />
-                    <form:errors path="team" />
-
-                    <div class="clearfix"><!-- --></div>
-                    <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">35</span> characters</div>
-                </div>
-                <c:if test="${userTeams.size() > 0}">
-                    <div class="addprophelp">Alternatively, you can select your team here.</div>
-
-                    <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                        <form:select path="selectedTeam" items="${userTeams}" itemLabel="name" itemValue="id_" />
-                        <form:errors path="selectedTeam" />
-                    </div>
-                </c:if>
-            </div>
-            <c:if test="${contestType.showTeamField}">
-                <div class="notation">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
+    <div class="c-Headline">
+        <c:choose>
+            <c:when test="${isMove }">
+                <p>
+                    You're about to move a ${fn:toLowerCase(contestType.proposalName)}
+                    <xcolab:proposalLink proposal="${baseProposal}" escape="true" />
+                    from ${contestType.contestName}
+                    <xcolab:contestLink contest="${baseContest}" />
+                    to ${contestType.contestName}
+                    <xcolab:contestLink contest="${contest}" />.
+                </p>
+            </c:when>
+            <c:when test="${not empty baseProposal}">
+                <p>
+                    You're about to create a ${fn:toLowerCase(contestType.proposalName)} that will be based on
+                    <xcolab:proposalLink proposal="${baseProposal}" escape="true" />.
+                </p>
+            </c:when>
+        </c:choose>
+        <p>
+            <c:if test="${showProposalEditHelpText}">
+                Please complete your ${fn:toLowerCase(contestType.proposalName)} based on the template below.
+                If you have input on the template, please send it in a <a href="/feedback" target="_blank">feedback message</a>.
+                To save your ${fn:toLowerCase(contestType.proposalName)}, you must agree to the <a href="${contestType.rulesPageUrl}" target="_blank">${contestType.rulesPageName}</a>
+                and <a href="/wiki/Terms+of+use" target="_blank">Terms of use</a>.
             </c:if>
 
-            <c:if test="${showImageUpload}">
-                <div class="addpropbox blue">
-                    <label>
-                        <span>
-                            <strong>${contestType.proposalName} image</strong><br />
-                        </span>
-                    </label>
+            <br/>
+            In the past, users have occasionally lost work while inputting text into this form.
+            To prevent this, we recommend that you either (a) prepare your text offline before copying and pasting it into the form or (b) use the SAVE button right after you begin and save frequently.
+            The system will log you out automatically after 2 hours, causing loss of any inputs not previously saved.
+        </p>
+    </div> <!-- /c-Headline -->
 
-                    <form:hidden path="imageId" id="proposalImageId" />
-                    <xcolab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
-                                        compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image" />
+
+    <form:form action="${saveUrl}" commandName="updateProposalDetailsBean"
+               id="editForm" cssClass="addpropform" >
+        <form:hidden path="baseProposalId" />
+        <form:hidden path="baseProposalContestId" />
+        <form:hidden path="isMove" />
+        <form:hidden path="moveType" />
+        <form:hidden path="moveFromContestPhaseId" />
+        <form:hidden path="moveToContestId" />
+        <form:hidden path="uuid" />
+
+        <div class="l-BoxLayout__stacked">
+
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__bodyRow">
+                    <label class="p-Proposal__formBox__label">
+                        <div>
+                            <strong class="required-field">
+                                <spring:message code="contests.proposal.sections.title" />
+                            </strong>
+                            <a class="ml-1" data-toggle="collapse" href="#js-Help__title">
+                                <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                            </a>
+                        </div>
+                        <div>
+                            <spring:message code="contests.proposal.sections.characterlimit" arguments="80"  />
+                        </div>
+                    </label>
+                    <div class="p-Proposal__formBox__main">
+                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__title">Give the ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
+                        <form:input path="name" id="proposalName" cssClass="form-control" />
+                        <form:errors path="name" cssClass="c-Alert c-Alert__error" />
+                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> characters</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__bodyRow">
+                    <label class="p-Proposal__formBox__label">
+                        <div>
+                            <strong class="required-field">${contestType.pitchName}</strong>
+                            <a class="ml-1" data-toggle="collapse" href="#js-Help__pitch">
+                                <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                            </a>
+                        </div>
+                        <div>
+                            <spring:message code="contests.proposal.sections.characterlimit" arguments="140"  />
+                        </div>
+                    </label>
+                    <div class="p-Proposal__formBox__main">
+                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__pitch">Add a very short (140 character) description that conveys the key idea behind the ${fn:toLowerCase(contestType.proposalName)}.</div>
+                        <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="form-control" />
+                        <form:errors path="pitch" />
+                        <div class="inputLimitContainer">
+                            <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> characters
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="c-Box c-Box--colorPrimaryGrayLight ${contestType.showTeamField ? '' : 'hidden'}">
+                <div class="c-Box__bodyRow">
+                    <label class="p-Proposal__formBox__label">
+                        <div>
+                            <strong><spring:message code="contests.proposal.sections.team"/> </strong>
+                            <a class="ml-1" href="#js-Help__team" data-toggle="collapse">
+                                <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                            </a>
+                        </div>
+                        <div><em>optional</em></div>
+                        <div>
+                            <spring:message code="contests.proposal.sections.characterlimit" arguments="35" />
+                        </div>
+                    </label>
+                    <div class="p-Proposal__formBox__main">
+                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__team">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the name of its owner.</div>
+                        <form:input path="team" id="proposalTeam" cssClass="form-control" />
+                        <form:errors path="team" />
+
+                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">35</span> characters</div>
+                        <div class="text-muted">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
+
+                        <c:if test="${userTeams.size() > 0}">
+                            <div class="p-Proposal__formBox__helpText">Alternatively, you can select your team here.</div>
+
+                            <form:select path="selectedTeam" items="${userTeams}" itemLabel="name" itemValue="id_" />
+                            <form:errors path="selectedTeam" />
+                        </c:if>
+                    </div>
+                </div>
+            </div>
+
+            <c:if test="${showImageUpload}">
+                <div class="c-Box c-Box--colorPrimaryGrayLight">
+                    <div class="c-Box__bodyRow">
+                        <label class="p-Proposal__formBox__label">
+                            <span>
+                                <strong>${contestType.proposalName} image</strong><br />
+                            </span>
+                        </label>
+                        <div class="p-Proposal__formBox__main">
+                            <form:hidden path="imageId" id="proposalImageId" />
+                            <xcolab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
+                                                compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image" />
+                        </div>
+                    </div>
                 </div>
             </c:if>
 
             <!-- legacy for old proposals-->
             <c:if test="${fn:length(proposal.description) gt 0}">
-                <div class="addpropbox q3">
-                    <label>
-                        <strong>Description</strong>
-                        <a href="javascript:;" class="helpTrigger">
-                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
-                        </a>
-                        <br />
-                    </label>
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__bodyRow">
+                        <label class="p-Proposal__formBox__label">
+                            <strong>Description</strong>
+                        </label>
 
-                    <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                        <form:textarea cssClass="rte-editorPlaceholder"  cols="54" rows="7" path="description" />
+                        <div class="p-Proposal__formBox__main">
+                            <form:textarea cssClass="rte-editorPlaceholder"  cols="54" rows="7" path="description" />
+                        </div>
                     </div>
                 </div>
             </c:if>
@@ -232,16 +217,17 @@
                             <h4>${section.title}</h4>
                         </c:when>
                         <c:otherwise>
-                            <div class="addpropbox q3 ${section.type}" data-section-id="${section.sectionDefinitionId }">
-                                <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasUnmappedSections and not empty baseProposal }"/>
+                            <div class="c-Box ${section.type.name().startsWith('PROPOSAL_') ? 'c-Box--colorPrimaryGrayLight' : 'c-Box--colorTan'} ${section.type}" data-section-id="${section.sectionDefinitionId }">
+                                <div class="c-Box__bodyRow">
+                                    <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasUnmappedSections and not empty baseProposal }"/>
+                                </div>
                             </div>
                         </c:otherwise>
                     </c:choose>
                 </c:if>
             </c:forEach>
-        </form:form>
-    </div>
-    <jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
+        </div>
+    </form:form>
 
     <c:set var="acceptTosModalTitle">
         By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${_themeContext.colabName} ${contestType.contestName} and agree to the
@@ -272,15 +258,15 @@
     </xcolab:modal>
 
     <div class="c-ControlsOverlay">
-        <div class="cb-container-fixed">
-            <div class="float-left d-none d-lg-block">
+        <div class="cb-container-fixed cb-d-flex-between-center">
+            <div class="d-none d-lg-block">
                 Don't forget to save your work!
                 <c:if test="${not empty saveHelpText}">
                     ${saveHelpText}
                 </c:if>
             </div>
 
-            <div class="float-lg-right">
+            <div>
                 <button class="btn btn-primary" type="button" id="saveChangesButton">
                     ${saveButtonText}
                 </button>

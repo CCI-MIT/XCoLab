@@ -38,10 +38,6 @@
 }
 
 /** edit proposal sections **/
-.addprophelp {
-    display: none;
-}
-
 .addpropInputContainer {
   float: right;
   font-size: 16px;
@@ -136,18 +132,6 @@
     vertical-align: middle;
 }
 
-.judging_left {
-    float: left;
-    width: 474px;
-    margin-top: 50px;
-}
-
-.judging_right {
-    float: left;
-    width: 454px;
-    margin: 50px 0 0 56px;
-}
-
 .fellow-judge-action {
     float: left;
     width: 147px;
@@ -178,21 +162,12 @@
     color: #FF4444;
 }
 
-.addpropbox.empty .copyFromBaseProposalTriggerContainer {
+.c-Box.empty .copyFromBaseProposalTriggerContainer {
     display: block;
 }
 
-.addpropbox.notempty .copyFromBaseProposalTriggerContainer {
+.c-Box.notempty .copyFromBaseProposalTriggerContainer {
     display: none;
-}
-
-.recipient-error {
-    color: red;
-    font-weight: bold;
-}
-
-.commentor-header {
-    float: left;
 }
 
 div.review-status-container {
@@ -228,10 +203,6 @@ img.review-status-icon {
 table.judgingForm {
     margin-bottom: 1em;
     margin-top: 0.5em;
-}
-
-.addpropbox h5 {
-    margin-bottom: 0.75em;
 }
 
 .judging_comments {
@@ -352,12 +323,6 @@ table.judgingForm {
 
 div.selected {
     background-color: #eaf2fb;
-}
-
-.addpropbox.PROPOSAL_LIST_REFERENCE,
-.addpropbox.PROPOSAL_REFERENCE,
-.addpropbox.PROPOSAL_LIST_TEXT_REFERENCE {
-    background: #e7f1f5;
 }
 
 .wizardSelectedOptionsInfo li {
@@ -499,13 +464,6 @@ div.selected {
     background-color: #ffffff;
     border: 1px solid #000000;
 }
-
-#impact div.addprophelp {
-    text-align: left;
-    font-weight: normal;
-    width: 90%;
-}
-
 
 #impact table .sector {
     padding-left: 20px;

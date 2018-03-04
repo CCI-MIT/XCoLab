@@ -8,20 +8,23 @@
           xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
 
     <!--@elvariable id="linkedProposalContestTypeProposalWrappersByContestTypeId" type="java.util.Map<java.lang.Long, org.xcolab.wrappers.ContestTypeProposalWrapper>"-->
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <c:if test="${contestType.showProposalSummary}">
         <c:if test="${proposal.proposalId > 0}">
-            <div class="c-Box boxColor--dark hasShadow hasBorder flex-column">
+            <div class="c-Box c-Box--colorDark c-Box--hasShadow c-Box--straightCorners">
                 <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
-                    <div>
-                        <a href="${contestType.rulesPageUrl}#Voting" target="_blank" class="float-right">
-                            <collab:image src="/images/icon-proposal-question.png" width="23" height="23" alt="Question?" ariaLabel="Question?" />
-                        </a>
-                        <collab:image src="/images/icon-proposal-vote.png" width="22" height="18" alt="Vote" cssClass="mr-2" />
-                        <span class="c-Count">
-                            <span class="c-Count__number c-Count__number--alignBaseline">${proposal.votesCount}</span>
-                            <spring:message code="contests.votes"/>
-                        </span>
+                    <div class="c-Box__bodyFlex c-Box__bodyFlex--columns">
+                        <div class="w-100">
+                            <a href="${contestType.rulesPageUrl}#Voting" target="_blank" class="float-right">
+                                <collab:image src="/images/icon-proposal-question.png" width="23" height="23" alt="Question?" ariaLabel="Question?" />
+                            </a>
+                            <collab:image src="/images/icon-proposal-vote.png" width="22" height="18" alt="Vote" cssClass="mr-2" />
+                            <span class="c-Count">
+                                <span class="c-Count__number c-Count__number--alignBaseline">${proposal.votesCount}</span>
+                                <spring:message code="contests.votes"/>
+                            </span>
+                        </div>
                         <c:if test="${proposalsPermissions.votingEnabled}">
                             <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction" />
 
@@ -49,18 +52,20 @@
                                 </c:choose>
                             </p>
                         </c:if>
-                        <hr class="cb-hr-dotted"/>
                     </div>
+                    <hr class="cb-hr-dotted"/>
                 </c:if>
 
-                <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+                <div class="c-Box__bodyFlex">
+                    <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
 
-                <div>
-                    <collab:image src="/images/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" cssClass="mr-2" />
-                    <div class="c-Count">
+                    <div>
+                        <collab:image src="/images/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" cssClass="mr-2" />
+                        <div class="c-Count">
                         <span class="c-Count__number c-Count__number--neutral">
                             ${proposal.supportersCount}
                         </span> <spring:message code="contests.supports" />
+                        </div>
                     </div>
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
                         <button type="button" class="btn btn-primary btn-sm js-PostLink float-right"
@@ -74,31 +79,32 @@
                 </div>
 
             </div> <!-- /c-Box -->
-            <div class="c-Box boxColor--light">
-                <c:if test="${_showShareButtons}">
-                    <div>
-                        <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
-                    </div>
-                </c:if>
-                <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
-
-                    <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
-                    <div class="p-Proposal__subscribe">
-                        <button type="button" class="btn btn-link btn-sm js-PostLink" onclick="if(!deferUntilLogin(this)) return false;"
-                                data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }">
-                            <c:choose>
-                                <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
-                                    <collab:image height="20" src="/images/subscribe.png" cssClass="cb-btn-image"/>
-                                    <span class="cb-btn-image-text"><spring:message code="contests.details.subscribe"/></span>
-                                </c:when>
-                                <c:otherwise>
-                                    <collab:image height="20" src="/images/unsubscribe.png" cssClass="cb-btn-image"/>
-                                    <span class="cb-btn-image-text"><spring:message code="contests.details.unsubscribe"/></span>
-                                </c:otherwise>
-                            </c:choose>
-                        </button>
-                    </div>
-                </c:if>
+            <div class="c-Box c-Box--noBorder c-Box--straightCorners">
+                <div class="c-Box__bodyFlex">
+                    <c:if test="${_showShareButtons}">
+                        <div>
+                            <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
+                        </div>
+                    </c:if>
+                    <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
+                        <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+                        <div class="p-Proposal__subscribe">
+                            <button type="button" class="btn btn-link btn-sm js-PostLink" onclick="if(!deferUntilLogin(this)) return false;"
+                                    data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }">
+                                <c:choose>
+                                    <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
+                                        <collab:image height="20" src="/images/subscribe.png" cssClass="cb-btn-image"/>
+                                        <span class="cb-btn-image-text"><spring:message code="contests.details.subscribe"/></span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <collab:image height="20" src="/images/unsubscribe.png" cssClass="cb-btn-image"/>
+                                        <span class="cb-btn-image-text"><spring:message code="contests.details.unsubscribe"/></span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </button>
+                        </div>
+                    </c:if>
+                </div>
             </div>
             <button type="button" class="btn btn-link btn-sm mt-3" onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
                 <collab:image src="/images/icon_new-message.png" width="31" height="29" cssClass="cb-btn-image" />

@@ -15,24 +15,21 @@
         <!--ProposalJudgesTabController-->
         <jsp:useBean id="fellowProposalScreeningBean" scope="request" type="org.xcolab.view.pages.proposals.requests.FellowProposalScreeningBean"/>
 
-        <style>h3 {
-            margin: 20px 0 10px 0 !important;
-        }</style>
+        <form:errors cssClass="c-Alert c-Alert__error" />
 
-        <div id="content">
-            <form:errors cssClass="c-Alert c-Alert__error" />
+        This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
+        <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/tab/SCREENING?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
 
-            This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
-            <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/tab/SCREENING?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
-
-            <div class="judging_left">
-                <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
-                           commandName="fellowProposalScreeningBean">
-                    <div class="addpropbox">
+        <div class="l-BoxLayout__columns">
+            <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
+                       commandName="fellowProposalScreeningBean">
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
                         <h3>Advance ${contestType.proposalName} to Judges for Review?</h3>
 
                         <form:hidden path="contestPhaseId" />
-                        <form:select id="fellowScreeningAction" path="fellowScreeningAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description"/>
+                        <form:select id="fellowScreeningAction" path="fellowScreeningAction" cssClass="form-control mb-3"
+                                     items="${judgingOptions}" itemValue="attributeValue" itemLabel="description"/>
 
                         <div id="fellowSelectJudgesContainer" style="display: none;">
                             <h3>Select Judge(s)</h3>
@@ -62,7 +59,7 @@
                                             <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
                                                 <xcolab:userLinkSimple memberId="${judge.userId}"
                                                                        text="${judge.fullName} (${proposalCount})"/>
-														<div class="hidden">
+                                                        <div class="hidden">
                                                             <span id="js-Tooltip__content__judgedata_${judge.userId}">
                                                                 This Judge has evaluated ${proposalAlreadyJudgedCount} out of the ${proposalCount} proposals assigned to them.
                                                             </span>
@@ -104,8 +101,11 @@
                         </div>
                         <c:choose>
                             <c:when test="${proposalsPermissions.canFellowActions}">
-                                <a id="saveProposalScreeningDecision" style="display:block; float:right;" href="#" class="btn btn-primary requestMembershipSubmitButton">
-                                    Save ${contestType.proposalName} decision</a>
+                                <div class="text-right">
+                                    <button type="button" id="saveProposalScreeningDecision" class="btn btn-primary">
+                                        Save ${contestType.proposalName} decision
+                                    </button>
+                                </div>
                             </c:when>
                             <c:otherwise>
                                 <p class="submitStatus error">
@@ -118,9 +118,10 @@
                                 <strong>This ${contestType.proposalName} has already been promoted to the next phase. Thus, changes have no effect.</strong>
                             </p>
                         </c:if>
-
                     </div>
-                    <div class="addpropbox">
+                </div>
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
                         <form:errors path="*" cssClass="c-Alert c-Alert__error" />
 
                         <h3 style="margin-top: 0;">My Rating</h3>
@@ -137,8 +138,11 @@
                                 <h4>Rating comment:</h4>
                                 <i>Your comment will be visible to other Fellows and Judges only.</i>
                                 <form:textarea id="fellowRatingComment" cssClass="c-Comment__box" path="comment" style="width:100%;"/>
-                                    <a id="saveProposalScreeningComment" style="display:block; float:right;" href="#" class="btn btn-primary requestMembershipSubmitButton">
-                                        Save</a>
+                                <div class="text-right">
+                                    <button type="button" id="saveProposalScreeningComment" class="btn btn-primary">
+                                        Save
+                                    </button>
+                                </div>
                             </c:when>
                             <c:otherwise>
                                 <p class="submitStatus error">
@@ -147,11 +151,11 @@
                             </c:otherwise>
                         </c:choose>
                     </div>
-                </form:form>
-            </div>
+                </div>
+            </form:form>
 
-            <div class="judging_right">
-                <div class="addpropbox">
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
                     <h2>Evaluation Criteria</h2>
                     <proposalsPortlet:ratingCriteriaText ratingTypes="${fellowProposalScreeningBean.ratingTypes}" />
                 </div>

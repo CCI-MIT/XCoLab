@@ -14,13 +14,11 @@
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
-        <div id="content">
-            <div class="admin_left">
-                <c:set var="addBlueClass" value='false'/>
-
-                <c:if test="${proposalsPermissions.canAdminProposal }">
-                    <c:if test="${allowOpenProposals}">
-                        <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+        <div class="l-BoxLayout__columns l-BoxLayout--striped">
+            <c:if test="${proposalsPermissions.canAdminProposal }">
+                <c:if test="${allowOpenProposals}">
+                    <div class="c-Box c-Box--colorTan">
+                        <div class="c-Box__body">
                             <strong>This ${contestType.proposalName} can be edited by:</strong>
                             <div>
                                 <c:set var="toggleProposalOpenURL"
@@ -57,12 +55,13 @@
                                 </form:form>
                             </div>
                         </div>
-                        <c:set var="addBlueClass" value='${not addBlueClass }'/>
-                    </c:if>
+                    </div>
                 </c:if>
+            </c:if>
 
-                <c:if test="${proposalsPermissions.canAssignRibbon }">
-                    <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+            <c:if test="${proposalsPermissions.canAssignRibbon }">
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
                         <strong>${contestType.proposalName} ribbon in ${contestType.contestName} phase</strong>
                         <div><!--  -->
                             <c:set var="assignRibbonURL"
@@ -87,11 +86,12 @@
                             </form:form>
                         </div>
                     </div>
-                    <c:set var="addBlueClass" value='${not addBlueClass }'/>
-                </c:if>
+                </div>
+            </c:if>
 
-                <c:if test="${proposalsPermissions.canDelete and contestPhase.getProposalVisibility(proposal.proposalId) }">
-                    <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+            <c:if test="${proposalsPermissions.canDelete and contestPhase.getProposalVisibility(proposal.proposalId) }">
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
                         <strong>Owner actions</strong>
                         <div>
                             <c:set var="deleteProposalURL"
@@ -106,18 +106,18 @@
                             </form:form>
                         </div>
                     </div>
-                    <c:set var="addBlueClass" value='${not addBlueClass }'/>
+                </div>
+            </c:if>
 
-                </c:if>
 
+            <c:if test="${ proposalsPermissions.canPromoteProposalToNextPhase }">
 
-                <c:if test="${ proposalsPermissions.canPromoteProposalToNextPhase }">
+                <c:set var="promoteProposalURL"
+                       value="${proposal.proposalUrl}/tab/ADMIN/promoteProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }&amp;contestPhaseId=${proposal.contestPhase.contestPhasePK}"/>
 
-                    <c:set var="promoteProposalURL"
-                           value="${proposal.proposalUrl}/tab/ADMIN/promoteProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }&amp;contestPhaseId=${proposal.contestPhase.contestPhasePK}"/>
-
-                    <form:form action="${promoteProposalURL }" method="post">
-                        <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+                <form:form action="${promoteProposalURL }" method="post">
+                    <div class="c-Box c-Box--colorTan">
+                        <div class="c-Box__body">
                             <strong>Promote ${contestType.proposalName} to latest ${contestType.contestName} phase</strong>
                             <div>
                                 <button type="submit" class="btn cb-btn-admin">
@@ -125,58 +125,58 @@
                                 </button>
                             </div>
                         </div>
-                        <c:set var="addBlueClass" value='${not addBlueClass }'/>
-                    </form:form>
-                </c:if>
+                    </div>
+                </form:form>
+            </c:if>
 
-                <c:if test="${ proposalsPermissions.canMoveProposal }">
-                    <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+            <c:if test="${ proposalsPermissions.canMoveProposal }">
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
                         <strong>Move ${contestType.proposalName} to different ${contestType.contestName}</strong>
                         <div>
-                            <a class="btn ${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}" href="javascript:;" rel="nofollow"
-                               onclick="if(!deferUntilLogin()){return false;
-} showCopyProposalPopup('MOVE_PERMANENTLY')">
+                            <button type="button" class="btn ${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}"
+                                    onclick="if(!deferUntilLogin()){return false;} showCopyProposalPopup('MOVE_PERMANENTLY')">
                                 <span>Move</span> this ${contestType.proposalName}
-                            </a>
+                            </button>
                         </div>
                     </div>
-                    <c:set var="addBlueClass" value='${not addBlueClass }'/>
-                </c:if>
+                </div>
+            </c:if>
 
-                <c:if test="${ proposalsPermissions.canCopyProposal }">
-                    <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+            <c:if test="${ proposalsPermissions.canCopyProposal }">
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
                         <strong>Reopen ${contestType.proposalName} in different ${contestType.contestName}</strong>
                         <div>
                             <a class="btn btn-primary" href="javascript:;" rel="nofollow"
                                onclick="if(!deferUntilLogin()){return false;
-} showCopyProposalPopup('COPY')">
+        } showCopyProposalPopup('COPY')">
                                 <span>Reopen</span> this ${contestType.proposalName}
                             </a>
                         </div>
                     </div>
-                    <c:set var="addBlueClass" value='${not addBlueClass }'/>
-                </c:if>
+                </div>
+            </c:if>
 
-                <c:if test="${ proposalsPermissions.canForkProposal }">
-                    <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+            <c:if test="${ proposalsPermissions.canForkProposal }">
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
                         <strong>Fork ${contestType.proposalName} in different ${contestType.contestName}</strong>
                         <div>
                             <a class="btn btn-primary" href="javascript:;" rel="nofollow"
                                onclick="if(!deferUntilLogin()){return false;
-} showCopyProposalPopup('FORK')">
+        } showCopyProposalPopup('FORK')">
                                 <span>Fork</span> this ${contestType.proposalName}
                             </a>
                         </div>
                     </div>
-                    <c:set var="addBlueClass" value='${not addBlueClass }'/>
-                </c:if>
+                </div>
+            </c:if>
 
-
-            </div>
-            <div class="admin_right">
-                <div class="addpropbox">
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
                     <strong>Membership requests</strong>
-
+    
                     <c:if test="${fn:length(proposal.membershipRequests) lt 1}">
                         <div><i>No new requests</i></div>
                     </c:if>
@@ -213,7 +213,7 @@
                         </form:form>
                         <c:set var="count" value="${count + 1}" scope="page"/>
                     </c:forEach>
-
+    
                     <div id="manage_membership_request_dialog"><!--  --></div>
                 </div>
             </div>

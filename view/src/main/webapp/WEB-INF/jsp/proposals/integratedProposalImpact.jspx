@@ -62,49 +62,51 @@
                                                                   consolidatedScenarioId="${consolidatedScenarioId }"
                                                                   consolidatedModelId="${consolidatedModelId }"/>
 
-                            <div id="proposalToModelMap" class="addpropbox" style="display: none;">
-                                <c:if test="${not empty proposalToModelMap}">
-                                    <div class="c-Alert c-Alert__error">
-                                        In order to use the values from your regional plans here, all the regional plans
-                                        need to use the same modeling engine, and you must include a regional plan for all
-                                        the regions.
-                                    </div>
-                                    <table>
-                                        <col span="1" class="wideColumn"/>
-                                        <col span="1" class="smallColumn"/>
-                                        <col span="1" class="smallColumn"/>
-                                        <col span="1" class="smallColumn"/>
-                                        <thead>
-                                        <tr>
-                                            <th>Region</th>
-                                            <th>Proposal</th>
-                                            <th>Model</th>
-                                            <!-- <th>Scenario</th> -->
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        <c:forEach items="${proposalToModelMap}" var="proposalToModel">
+                            <div id="proposalToModelMap" class="c-Box c-Box--colorTan" style="display: none;">
+                                <div class="c-Box__body">
+                                    <c:if test="${not empty proposalToModelMap}">
+                                        <div class="c-Alert c-Alert__error">
+                                            In order to use the values from your regional plans here, all the regional plans
+                                            need to use the same modeling engine, and you must include a regional plan for all
+                                            the regions.
+                                        </div>
+                                        <table>
+                                            <col span="1" class="wideColumn"/>
+                                            <col span="1" class="smallColumn"/>
+                                            <col span="1" class="smallColumn"/>
+                                            <col span="1" class="smallColumn"/>
+                                            <thead>
                                             <tr>
-                                                <td>${proposalToModel.value.region}</td>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${not empty proposalToModel.value.proposalUrl}">
-                                                            <a href="${proposalToModel.value.proposalUrl}"
-                                                               target="_blank">${proposalToModel.value.proposalName}</a>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            ${proposalToModel.value.proposalName}
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
-                                                <td>${proposalToModel.value.simulation}</td>
-                                                <!-- <td>${proposalToModel.value.scenario}</td> -->
+                                                <th>Region</th>
+                                                <th>Proposal</th>
+                                                <th>Model</th>
+                                                <!-- <th>Scenario</th> -->
                                             </tr>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </c:if>
+                                            </thead>
+                                            <tbody>
+
+                                            <c:forEach items="${proposalToModelMap}" var="proposalToModel">
+                                                <tr>
+                                                    <td>${proposalToModel.value.region}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${not empty proposalToModel.value.proposalUrl}">
+                                                                <a href="${proposalToModel.value.proposalUrl}"
+                                                                   target="_blank">${proposalToModel.value.proposalName}</a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                ${proposalToModel.value.proposalName}
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td>${proposalToModel.value.simulation}</td>
+                                                    <!-- <td>${proposalToModel.value.scenario}</td> -->
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </c:if>
+                                </div>
                             </div>
 
                         </c:if>
@@ -338,31 +340,34 @@
             <c:if test="${edit}">
                 <div>
                     <c:if test="${canCommentAsAuthor}">
-                        <div class="addpropbox q1">
-                            <label>
-                                <strong>Comments from Author </strong>
-                            </label>
-                            <div class="addprophelp">Give your comments for your proposal's estimation of impact.</div>
-                            <div class="addpropInputContainer">
-                                <textarea id="impactAuthorComment_text_area"><c:if test="${not empty authorComment}">${authorComment.stringValue}</c:if></textarea>
-                                <div class="clearfix"><!--  --></div>
+                        <div class="c-Box c-Box--colorTan q1">
+                            <div class="c-Box__body">
+                                <label for="impactAuthorComment_text_area">
+                                    <strong>Comments from Author </strong>
+                                </label>
+                                <p>
+                                    Give your comments for your proposal's estimation of impact.
+                                </p>
+                                <textarea id="impactAuthorComment_text_area">
+                                    <c:if test="${not empty authorComment}">${authorComment.stringValue}</c:if>
+                                </textarea>
                             </div>
                         </div>
                     </c:if>
                     <c:if test="${canCommentAsIAF}">
-                        <div class="addpropbox q1">
-                            <label>
-                                <strong>Comments from Impact Assessment Fellow</strong>
-                            </label>
-                            <div class="addprophelp">Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.</div>
-                            <div class="addpropInputContainer">
+                        <div class="c-Box c-Box--colorTan q1">
+                            <div class="c-Box__body">
+                                <label for="impactIAFComment_text_area">
+                                    <strong>Comments from Impact Assessment Fellow</strong>
+                                </label>
+                                <p>
+                                    Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.
+                                </p>
                                 <textarea  id="impactIAFComment_text_area">
                                     <c:if test="${not empty iafComment}">
                                         ${iafComment.stringValue}
                                     </c:if>
                                 </textarea>
-                                <div class="clearfix"><!--  --></div>
-
                             </div>
                         </div>
                     </c:if>

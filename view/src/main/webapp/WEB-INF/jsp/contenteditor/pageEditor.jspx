@@ -40,10 +40,6 @@
                 margin-bottom: 20px;
             }
 
-            .colFloatLef {
-                float: left
-            }
-
             #tree-view {
                 width: 350px
             }
@@ -346,63 +342,66 @@
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
-                <div class="addpropbox">
-                    <div class="colFloatLef">
-                        <div>
-                            <div class="" id="newContentPage"><a class="btn btn-primary"
-                                                                 href="#">New</a></div>
-                        </div>
-                        <br/>
-                        <h3>Content pages</h3>
-                        <div class="treeContainer">
-                            <div id="tree-view"
-                                 data-url="${contentEditorListFolderURL}"><!-- --></div>
-                        </div>
-                    </div>
-                    <div class="colFloatLef" style="width: 580px;margin-left: 15px;">
-                        <div id="article-view">
-                            <h3>Page editor</h3>
-
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__bodyRow">
+                        <div class="col-4">
                             <div>
-                                <!-- FORM FIELDS -->
-                                <input type="hidden" id="pageId"/>
-                                Page title: <input type="text" id="pageTitle" maxcharacters="300"/>
-                            </div>
-                            <div id="createdAtDate"><!-- --></div>
-                            <div>
-                                <label for="leftMenu">Left menu:</label>
-                                <select id="leftMenu" style="width: 527px;">>
-                                    <option value="0">None</option>
-                                    <c:forEach var="article" items="${allArticles}">
-                                        <option value="${article.value}">${article.key}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="mainContent">Main content:</label>
-                                <select id="mainContent" style="width: 508px;">
-                                    <option value="0">Select an article</option>
-                                    <c:forEach var="article" items="${allArticles}">
-                                        <option value="${article.value}">${article.key}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="metaDescription">Description for search engines:</label>
-                                <textarea id="metaDescription" style="width: 508px;"
-                                          maxcharacters="255">
-                                    <!-- empty --></textarea>
+                                <div class="" id="newContentPage"><a class="btn btn-primary"
+                                                                     href="#">New</a></div>
                             </div>
                             <br/>
+                            <h3>Content pages</h3>
+                            <div class="treeContainer">
+                                <div id="tree-view"
+                                     data-url="${contentEditorListFolderURL}"><!-- --></div>
+                            </div>
                         </div>
-                        <br/>
-                        <div class="floatRight" id="previewContentPage">
-                            <a class="btn btn-primary" href="#">Preview</a>
-                        </div>
-                        <div class="floatRight" id="saveContentPage">
-                            <a class="btn btn-primary" href="#">Save</a>
+                        <div class="col-8">
+                            <div id="article-view">
+                                <h3>Page editor</h3>
+
+                                <div>
+                                    <!-- FORM FIELDS -->
+                                    <input type="hidden" id="pageId"/>
+                                    Page title: <input type="text" id="pageTitle" maxcharacters="300"/>
+                                </div>
+                                <div id="createdAtDate"><!-- --></div>
+                                <div>
+                                    <label for="leftMenu">Left menu:</label>
+                                    <select id="leftMenu" style="width: 527px;">>
+                                        <option value="0">None</option>
+                                        <c:forEach var="article" items="${allArticles}">
+                                            <option value="${article.value}">${article.key}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="mainContent">Main content:</label>
+                                    <select id="mainContent" style="width: 508px;">
+                                        <option value="0">Select an article</option>
+                                        <c:forEach var="article" items="${allArticles}">
+                                            <option value="${article.value}">${article.key}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="metaDescription">Description for search engines:</label>
+                                    <textarea id="metaDescription" style="width: 508px;"
+                                              maxcharacters="255">
+                                        <!-- empty --></textarea>
+                                </div>
+                                <br/>
+                            </div>
+                            <div class="cb-d-flex-between-center mt-2">
+                                <button type="button" class="btn btn-primary" id="previewContentPage">
+                                    Preview
+                                </button>
+                                <button type="button" class="btn btn-primary" id="saveContentPage">
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

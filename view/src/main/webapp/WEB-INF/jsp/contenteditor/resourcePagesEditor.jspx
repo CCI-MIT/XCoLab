@@ -42,10 +42,6 @@
                 margin-bottom: 20px;
             }
 
-            .colFloatLef {
-                float: left
-            }
-
             #tree-view {
                 width: 350px
             }
@@ -385,50 +381,55 @@
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
-                <div class="addpropbox">
-                    <div class="colFloatLef">
-                        <h3>Resource pages for contests</h3>
-                        <div class="treeContainer">
-                            <div id="tree-view"
-                                 data-url="${contentEditorListFolderURL}"><!-- --></div>
-                        </div>
-                    </div>
-                    <div class="colFloatLef" style="width: 580px;margin-left: 15px;">
-                        <div id="article-view">
-                            <h3>Content editor</h3>
-
-                            <div>
-                                <!-- FORM FIELDS -->
-                                <input type="hidden" id="contentArticleId"/>
-                                <input type="hidden" id="contentArticleFolderId"/>
-                                Article title: <input type="text" id="contentArticleTitle"
-                                                      maxcharacters="300"/>
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__bodyRow">
+                        <div class="col-4">
+                            <h3>Resource pages for contests</h3>
+                            <div class="treeContainer">
+                                <div id="tree-view"
+                                     data-url="${contentEditorListFolderURL}"><!-- --></div>
                             </div>
-                            <div id="folderName">Parent folder: <!-- --></div>
-                            <div id="createdAtDate"><!-- --></div>
-                            <div id="contestURL"><!-- --></div>
-                            <div id="contestArticleURL"><!-- --></div>
-                            <br/>
-                            <!--<div id="articleURL">&lt;!&ndash; Article URL:  &ndash;&gt;</div>-->
-                            <div>
-                                <textarea id="articleVersionContent" name="articleVersionContent"
-                                          rows="10" cols="80"><!-- --></textarea>
-                            </div>
-                            <div id="articleId"><!-- Article ID: --></div>
-                            <div id="">Previous versions:</div>
-                            <div id="articleVersions"
-                                 style="max-height: 80px;overflow-y: scroll;"><!-- Article versions: --></div>
+                        </div>
+                        <div class="col-8">
+                            <div id="article-view">
+                                <h3>Content editor</h3>
 
-                        </div>
-                        <br/>
-                        <div class="floatLeft" id="previewContentArticle"><a class="btn btn-primary"
-                                                                             href="#">Preview</a>
-                        </div>
-                        <div class="floatRight" id="deleteOntologyTerm"><a class="btn btn-primary"
-                                                                           href="#">Delete</a></div>
-                        <div>
-                            <div class="floatRight" id="saveArticle"><a class="btn btn-primary"
-                                                                        href="#">Save</a></div>
+                                <div>
+                                    <!-- FORM FIELDS -->
+                                    <input type="hidden" id="contentArticleId"/>
+                                    <input type="hidden" id="contentArticleFolderId"/>
+                                    Article title: <input type="text" id="contentArticleTitle"
+                                                          maxcharacters="300"/>
+                                </div>
+                                <div id="folderName">Parent folder: <!-- --></div>
+                                <div id="createdAtDate"><!-- --></div>
+                                <div id="contestURL"><!-- --></div>
+                                <div id="contestArticleURL"><!-- --></div>
+                                <br/>
+                                <!--<div id="articleURL">&lt;!&ndash; Article URL:  &ndash;&gt;</div>-->
+                                <div>
+                                    <textarea id="articleVersionContent" name="articleVersionContent"
+                                              rows="10" cols="80"><!-- --></textarea>
+                                </div>
+                                <div id="articleId"><!-- Article ID: --></div>
+                                <div id="">Previous versions:</div>
+                                <div id="articleVersions"
+                                     style="max-height: 80px;overflow-y: scroll;"><!-- Article versions: --></div>
+
+                            </div>
+                            <div class="cb-d-flex-between-center mt-2">
+                                <button class="btn btn-primary" id="previewContentArticle">
+                                    Preview
+                                </button>
+                                <div>
+                                    <button class="btn btn-primary" id="deleteOntologyTerm">
+                                        Delete
+                                    </button>
+                                    <button class="btn btn-primary ml-2" id="saveArticle">
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

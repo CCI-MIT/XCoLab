@@ -9,15 +9,45 @@
     <xcolab:script src="/js/lib/jquery.loadmask.spin.js" />
     <style>
 
-        .contentEditor input {border: 1px solid #DDD; color: #8d8d8d;  font-weight: 200;  margin-bottom: 7px; height: 30px;  font-size: large;  width: 530px;}
-        .contentBody {margin: auto; width: 1022px;  height: 742px;}
-        .treeContainer {        height: 561px; overflow-y: scroll;}
-        #infoBox {padding: 8px 35px 8px 14px;margin-bottom: 20px;}
-        .colFloatLef{float:left}
-        #tree-view{width:450px}
-        #saveArticle{cursor:pointer}
-        #articleURL{overflow:hidden}
-        #anchorArticleURL{display: block; width:0; white-space: nowrap;}
+        .contentEditor input {
+            border: 1px solid #DDD;
+            color: #8d8d8d;
+            font-weight: 200;
+            margin-bottom: 7px;
+            height: 30px;
+            font-size: large;
+            width: 530px;
+        }
+
+        .contentBody {
+            margin: auto;
+            width: 1022px;
+            height: 742px;
+        }
+
+        .treeContainer {
+            height: 561px;
+            overflow-y: scroll;
+        }
+
+        #infoBox {
+            padding: 8px 35px 8px 14px;
+            margin-bottom: 20px;
+        }
+
+        #tree-view {
+            width: 450px
+        }
+
+        #articleURL {
+            overflow: hidden
+        }
+
+        #anchorArticleURL {
+            display: block;
+            width: 0;
+            white-space: nowrap;
+        }
     </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/jqtree.min.css"><!-- --></link>
@@ -258,35 +288,36 @@
             </ul>
 
             <div id="infoBox"><!-- --></div>
-            <div class="addpropbox">
-                <div class="colFloatLef">
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body__row">
+                    <div class="col-4">
                     <h3>Ontology areas and terms</h3>
                     <div class="treeContainer">
                         <div id="tree-view" data-url="${ontologyListFolderURL}" ><!-- --></div>
                     </div>
                 </div>
-                <div class="colFloatLef" style="width: 500px;margin-left: 15px;">
-                    <div id="article-view">
-                        <h3>Ontology term</h3>
+                    <div class="col-8">
+                        <div id="article-view">
+                            <h3>Ontology term</h3>
 
-                        <div>
-                            <input type="hidden" id="ontologyTermId"/>
-                            <input type="hidden" id="ontologyTermParentId"/>
-                            <input type="hidden" id="ontologySpaceId"/>
-                            Name: <input type="text" id="ontologyTermName"  maxcharacters="100"  /><br/>
-                            Order: <input type="text" id="ontologyTermOrder"  maxcharacters="100"  /><br/>
-                            Description URL: <br/>
-                            <input type="text" id="ontologyTermDescriptionUrl"  maxcharacters="100"  />
+                            <div>
+                                <input type="hidden" id="ontologyTermId"/>
+                                <input type="hidden" id="ontologyTermParentId"/>
+                                <input type="hidden" id="ontologySpaceId"/>
+                                Name: <input type="text" id="ontologyTermName"  maxcharacters="100"  /><br/>
+                                Order: <input type="text" id="ontologyTermOrder"  maxcharacters="100"  /><br/>
+                                Description URL: <br/>
+                                <input type="text" id="ontologyTermDescriptionUrl"  maxcharacters="100"  />
 
+                            </div>
+                            <div id="folderName">Parent term: <!-- --></div>
+                            <br/>
+                            <div class="floatRight" id="deleteOntologyTerm" ><a  class="btn btn-primary" href="#">Delete</a></div>
+                            <div class="floatRight" id="saveOntologyTerm" ><a  class="btn btn-primary" href="#">Save</a></div>
                         </div>
-                        <div id="folderName">Parent term: <!-- --></div>
-                        <br/>
-                        <div class="floatRight" id="deleteOntologyTerm" ><a  class="btn btn-primary" href="#">Delete</a></div>
-                        <div class="floatRight" id="saveOntologyTerm" ><a  class="btn btn-primary" href="#">Save</a></div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </xcolab:layout>
