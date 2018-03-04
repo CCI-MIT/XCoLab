@@ -32,7 +32,6 @@ $p-proposal__propbox__judgementActions__titleAuthor__width: 476px !default;
 $p-Proposal__sidebar__subscribe__capitalization: none !default;
 
 $p-Proposal__edit__button__backgroundColor: $t-Color__primary--darkest !default;
-$p-Proposal__box__offColor: $t-Color__primary__gray--light !default;
 
 $p-proposal__thumbbox__backgroundColor: $c-Table__cell__count__backgroundColor !default;
 
@@ -302,49 +301,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   &:after, &:before {
     vertical-align: 0.1em;
   }
-}
-
-/* add proposal boxes */
-.addpropbox {
-  background: $t-Color__tan;
-  border-radius: 12px;
-  padding: 13px 15px 12px 12px;
-  margin-bottom: 13px;
-  line-height: 19px;
-}
-
-.addpropbox:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
-.addpropbox {
-  display: inline-block;
-}
-
-* html .addpropbox {
-  height: 1%;
-}
-
-//TODO: port to c-Box
-.addpropbox {
-  display: block;
-}
-
-.addpropbox.blue {
-  background: $p-Proposal__box__offColor;
-}
-
-/* form fields */
-.addpropform .addpropbox label {
-  float: left;
-  width: 110px;
-  display: inline-block;
-  font-size: 16px;
-  color: $t-Color__gray--dark-600;
 }
 
 .addprophelp {

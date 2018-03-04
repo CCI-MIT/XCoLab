@@ -30,7 +30,7 @@
 
 //TODO: proposals/cms-related
 
-.c-ContentBox .addpropbox.dragState {
+.c-ContentBox .c-Box.dragState {
   background-color: #CCC;
   border: 1px solid blue;
 }
@@ -47,14 +47,6 @@
   width: 910px;
   height: auto;
   resize: both;
-}
-
-.c-ContentBox .addpropbox .upload {
-  width: 700px;
-}
-
-.c-ContentBox .addpropbox label {
-  width: 200px;
 }
 
 .c-ContentBox .c-Comment__add {
