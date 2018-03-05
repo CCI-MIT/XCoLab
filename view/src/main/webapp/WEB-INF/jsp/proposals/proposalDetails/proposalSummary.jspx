@@ -83,7 +83,10 @@
                 <div class="c-Box__bodyFlex">
                     <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                         <div>
-                            <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
+                            <c:set var="shareMessageBody">Check out the ${contestType.proposalNameLowercase} ${proposal.name} ${contest.contestShortNameWithEndYear} ${contestType.contestNameLowercase}:</c:set>
+                            <xcolab-social:socialShareButtons title="${_themeContext.colabName} - ${contest.contestShortName} - ${proposal.name}"
+                                                              messageTitle="I want to share a ${contestType.proposalNameLowercase} with you!"
+                                                              content="${shareMessageBody}"/>
                         </div>
                     </c:if>
                     <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
@@ -106,10 +109,6 @@
                     </c:if>
                 </div>
             </div>
-            <button type="button" class="btn btn-link btn-sm mt-3" onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
-                <collab:image src="/images/icon_new-message.png" width="31" height="29" cssClass="cb-btn-image" />
-                <span class="cb-btn-image-text"><collab:message code="contests.proposal.share.messaging" /></span>
-            </button>
             <c:if test="${proposalsPermissions.canReportProposal}">
                 <div>
                     <button type="button" class="btn btn-link btn-sm" onclick="reportProposal(${proposal.proposalId})">
@@ -250,13 +249,4 @@
             }
         </script>
     </c:if>
-
-    <c:set var="shareMessageBody">
-        Check out the ${contestType.proposalNameLowercase} &quot;<a href="${proposal.proposalUrl}">${proposal.name}</a>&quot;
-        in the &quot;<a href="${contest.contestUrl}">${contest.contestShortNameWithEndYear}</a>&quot; ${contestType.contestNameLowercase}.
-    </c:set>
-
-    <xcolab:sendMessageModal subject="I want to share a ${contestType.proposalNameLowercase} with you!"
-                             content="${shareMessageBody}" />
-
 </jsp:root>

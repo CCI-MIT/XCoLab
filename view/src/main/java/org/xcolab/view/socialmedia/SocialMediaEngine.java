@@ -18,7 +18,8 @@ public enum SocialMediaEngine {
     GOOGLE(ConfigurationAttributeKey.GOOGLE_URL.get(), true, true),
     STORIFY(ConfigurationAttributeKey.STORIFY_URL.get(), false, false),
     YOUTUBE(ConfigurationAttributeKey.YOUTUBE_URL.get(), false, true),
-    EMAIL(null, true, true);
+    EMAIL(null, true, true),
+    COLAB(null, true, true);
 
     private static final String SOCIAL_MEDIA_SPACE_HOLDER = "socialMediaEngine";
     private final String followMeUrl;
