@@ -81,7 +81,7 @@
             </div> <!-- /c-Box -->
             <div class="c-Box c-Box--noBorder c-Box--straightCorners">
                 <div class="c-Box__bodyFlex">
-                    <c:if test="${_showShareButtons}">
+                    <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                         <div>
                             <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
                         </div>
