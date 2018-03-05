@@ -59,7 +59,7 @@
                         <spring:message code="discussion.commmentstag.share"/>:
 
                         <div>
-                            <xcolab-social:socialShareButtons title="${shareTitlePageScope}" size="xs"/>
+                            <xcolab-social:socialShareButtons title="${shareTitlePageScope}" size="sm"/>
                         </div>
 					</div>
 				</c:if>

@@ -18,10 +18,9 @@
         <c:otherwise><c:set var="finalShareUrl" value="${_shareRequestUri}"/></c:otherwise>
     </c:choose>
 
-    <c:choose>
-        <c:when test="${not empty size}"><c:set var="sizeClass" value="c-SocialButton--${size}"/></c:when>
-        <c:otherwise><c:set var="sizeClass" value=""/></c:otherwise>
-    </c:choose>
+    <c:if test="${not empty size}">
+        <c:set var="sizeClass" value="c-SocialButton--${size}"/>
+    </c:if>
 
     <c:set var="socialEngineLogoUrl" value="/images/icons/social/${socialEngine}.svg" />
 

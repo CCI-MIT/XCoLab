@@ -16,9 +16,13 @@
                 data-clipboard-target="#linkToCopy">
             Copy link
         </button>
+
         <br/>
 
-        <div><xcolab-social:socialShareButtons title="${balloonText.shareTitle}" url="${shareLink}" size="xs"/></div>
+        <div>
+            <xcolab-social:socialShareButtons title="${balloonText.shareTitle}"
+                                              url="${shareLink}" size="sm"/>
+        </div>
 	</div>
 
     <xcolab:requireLibrary name="clipboard.js" />

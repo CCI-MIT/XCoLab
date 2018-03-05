@@ -5,7 +5,7 @@
     <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
     <jsp:directive.attribute name="hashString" type="java.lang.String" description="Optional hash string to append to the URL. Has to start with '#'" />
     <jsp:directive.attribute name="url" type="java.lang.String" description="The url to be shared if passed, if not use the default one from variable interceptor" />
-    <jsp:directive.attribute name="size" type="java.lang.String" description="Available sizes: lg,sm, xm for regular leave blank" />
+    <jsp:directive.attribute name="size" type="java.lang.String" description="Available sizes: lg, md, sm, xs. Default is md." />
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 

@@ -1,5 +1,7 @@
-$_c-SocialButton__height: 30px !default;
-$_c-SocialButton__height--xs: 22px !default;
+$_c-SocialButton__size: 30px !default;
+$_c-SocialButton__size--lg: 35px !default;
+$_c-SocialButton__size--sm: 25px !default;
+$_c-SocialButton__size--xs: 20px !default;
 
 .c-SocialButton {
   display: inline-block;
@@ -7,13 +9,25 @@ $_c-SocialButton__height--xs: 22px !default;
   cursor: pointer;
 
   > img {
-    height: $_c-SocialButton__height;
-    width: $_c-SocialButton__height;
+    height: $_c-SocialButton__size;
+    width: $_c-SocialButton__size;
+    margin: 0;
+    padding: 0;
+  }
+
+  &.c-SocialButton--lg > img {
+    height: $_c-SocialButton__size--lg;
+    width: $_c-SocialButton__size--lg;
+  }
+
+  &.c-SocialButton--sm > img {
+    height: $_c-SocialButton__size--sm;
+    width: $_c-SocialButton__size--sm;
   }
 
   &.c-SocialButton--xs > img {
-    height: $_c-SocialButton__height--xs;
-    width: $_c-SocialButton__height--xs;
+    height: $_c-SocialButton__size--xs;
+    width: $_c-SocialButton__size--xs;
   }
 }
 
