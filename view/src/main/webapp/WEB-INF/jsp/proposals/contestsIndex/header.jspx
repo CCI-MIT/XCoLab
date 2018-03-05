@@ -9,13 +9,13 @@
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
     <!--@elvariable id="preferences" type="org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper"-->
 
-    <div class="c-Headline">
-        <c:if test="${showContestManagementLink}">
-           <div>
-               <a href="/admin/contest/manager" target="_blank">Go to Contest Management Tool</a>
-           </div>
-        </c:if>
+    <c:if test="${showContestManagementLink}">
+        <div>
+            <a href="/admin/contest/manager" target="_blank">Go to Contest Management Tool</a>
+        </div>
+    </c:if>
 
+    <div class="c-Headline">
         <h1>${contestType.contestNamePlural}</h1>
         <c:set var="changeToListViewTypeURL" value="/contests?viewType=LIST&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=${showActiveContests }&amp;showAllContests=${showAllContests }" />
         <c:set var="changeToGridViewTypeURL" value="/contests?viewType=GRID&amp;filter=${sortFilterPage.filter}&amp;showActiveContests=${showActiveContests }&amp;showAllContests=${showAllContests }" />
