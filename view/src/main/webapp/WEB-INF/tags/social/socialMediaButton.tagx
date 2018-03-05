@@ -11,6 +11,7 @@
     <jsp:directive.attribute name="shareUrl" type="java.lang.String" description="Share url override, if not passed the current URL will be used" />
     <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
     <jsp:directive.attribute name="hashString" type="java.lang.String" description="Optional hash string to append to the URL. Has to start with '#'" />
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <c:choose>
         <c:when test="${not empty shareUrl}"><c:set var="finalShareUrl" value="${shareUrl}"/></c:when>
@@ -43,28 +44,34 @@
                     }
                 </script>
             </c:if>
-            
             <c:choose>
-                <c:when test="${socialEngine.equals('facebook')}">
-                    <c:set var="dataEngineUrl" value="https://www.facebook.com/dialog/share?app_id=${_themeContext.authenticationVariables.facebookId}&amp;display=popup&amp;href="/>
-                </c:when>
-                <c:when test="${socialEngine.equals('twitter')}">
-                    <c:set var="dataEngineUrl" value="https://twitter.com/intent/tweet?text=${title}&amp;display=popup&amp;url="/>
-                </c:when>
-                <c:when test="${socialEngine.equals('google')}">
-                    <c:set var="dataEngineUrl" value="https://plus.google.com/share?url="/>
-                </c:when>
-                <c:when test="${socialEngine.equals('linkedin')}">
-                    <c:set var="dataEngineUrl" value="https://www.linkedin.com/shareArticle?mini=true&amp;title=${title}&amp;url="/>
-                </c:when>
                 <c:when test="${socialEngine.equals('email')}">
-                    <c:set var="dataEngineUrl" value="mailto:info@example.com?subject=${title}&amp;body="/>
+                    <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}"
+                       href="mailto:?subject=${title}&amp;body=${body}">
+                        <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
+                    </a>
                 </c:when>
+                <c:otherwise>
+                    <c:choose>
+                        <c:when test="${socialEngine.equals('facebook')}">
+                            <c:set var="dataEngineUrl" value="https://www.facebook.com/dialog/share?app_id=${_themeContext.authenticationVariables.facebookId}&amp;display=popup&amp;href="/>
+                        </c:when>
+                        <c:when test="${socialEngine.equals('twitter')}">
+                            <c:set var="dataEngineUrl" value="https://twitter.com/intent/tweet?text=${title}&amp;display=popup&amp;url="/>
+                        </c:when>
+                        <c:when test="${socialEngine.equals('google')}">
+                            <c:set var="dataEngineUrl" value="https://plus.google.com/share?url="/>
+                        </c:when>
+                        <c:when test="${socialEngine.equals('linkedin')}">
+                            <c:set var="dataEngineUrl" value="https://www.linkedin.com/shareArticle?mini=true&amp;title=${title}&amp;url="/>
+                        </c:when>
+                    </c:choose>
+                    <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" data-engine-url="${dataEngineUrl}"
+                       data-engine="${socialEngine}" data-share-url="${finalShareUrl}${hashString}" onclick="shareThis(this)">
+                        <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
+                    </a>
+                </c:otherwise>
             </c:choose>
-            <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" data-engine-url="${dataEngineUrl}"
-               data-engine="${socialEngine}" data-share-url="${finalShareUrl}${hashString}" onclick="shareThis(this)">
-                <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
-            </a>
         </c:when>
     </c:choose>
 </jsp:root>
