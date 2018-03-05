@@ -56,7 +56,6 @@
 				</c:if>
 				<c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
 					<div class="c-Comment__share">
-                        <collab:image src="/images/share.png" width="24" height="24" alt="Share" cssClass="c-Comment__share" />
                         <spring:message code="discussion.commmentstag.share"/>:
 
                         <div>
