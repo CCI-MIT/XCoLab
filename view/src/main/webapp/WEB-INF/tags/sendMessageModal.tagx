@@ -12,104 +12,111 @@
 
 
     <c:set var="showRecipients" value="${empty recipient and empty replyToMessage}"/>
-
     <spring:message var="sendMessageModalTitle" code="message.modal.sendUserMessage" arguments="${recipient.fullName}"/>
 
-    <xcolab:modal modalId="sendMessageModal" size="lg"
-                  title="${not empty recipient ? sendMessageModalTitle : ''}">
-        <form:form method="post" id="messageForm" action="/messaging/sendMessage"
-              onSubmit="checkMessageForm(${showRecipients});">
-            <div class="modal-body">
-                <c:choose>
-                    <c:when test="${not empty recipient}">
-                        <input name="userIdsRecipients" value="${recipient.userId}" type="hidden"/>
-                    </c:when>
-                    <c:when test="${not empty replyToMessage}">
-                        <input name="userIdsRecipients" value="${replyToMessage.from.userId}" type="hidden"/>
-                    </c:when>
-                    <c:otherwise>
-                        <div>
-                            <xcolab:teamBox title="Recipients"/>
-                            <div class="clearfix"><!-- --></div>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+    <c:if test="${not empty __deferredSendMessageModalContent}">
+        <script>
+            console.warn('More than one send message modal included on page');
+        </script>
+    </c:if>
 
-                <div class="form-group">
-                    <label for="messageSubject"><spring:message code="message.modal.subject"/> </label>
-                    <c:if test="${not empty replyToMessage}">
-                        <c:set var="subject" value="RE: ${replyToMessage.subject}" />
-                    </c:if>
-                    <input name="messageSubject" type="text" id="messageSubject" class="form-control" required="required"
-                           value="${subject}"/>
+    <c:set var="__deferredSendMessageModalContent" scope="request">
+        <xcolab:modal modalId="sendMessageModal" size="lg"
+                      title="${not empty recipient ? sendMessageModalTitle : ''}">
+            <form:form method="post" id="messageForm" action="/messaging/sendMessage"
+                  onSubmit="checkMessageForm(${showRecipients});">
+                <div class="modal-body">
+                    <c:choose>
+                        <c:when test="${not empty recipient}">
+                            <input name="userIdsRecipients" value="${recipient.userId}" type="hidden"/>
+                        </c:when>
+                        <c:when test="${not empty replyToMessage}">
+                            <input name="userIdsRecipients" value="${replyToMessage.from.userId}" type="hidden"/>
+                        </c:when>
+                        <c:otherwise>
+                            <div>
+                                <xcolab:teamBox title="Recipients"/>
+                                <div class="clearfix"><!-- --></div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <div class="form-group">
+                        <label for="messageSubject"><spring:message code="message.modal.subject"/> </label>
+                        <c:if test="${not empty replyToMessage}">
+                            <c:set var="subject" value="RE: ${replyToMessage.subject}" />
+                        </c:if>
+                        <input name="messageSubject" type="text" id="messageSubject" class="form-control" required="required"
+                               value="${subject}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="messageContent">Content: </label>
+                        <textarea name="messageContent" id="messageContent" class="rte-editorPlaceholder form-control" >
+                                    <!-- -->
+                            <c:choose>
+                                <c:when test="${not empty replyToMessage}">
+                                    <br /><br />-- original message begin --<br /><br />
+                                    ${replyToMessage.content}
+                                    <br /><br />-- original message end --<br />
+                                </c:when>
+                                <c:when test="${not empty content}">
+                                    ${content}
+                                </c:when>
+                            </c:choose>
+                        </textarea>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="messageContent">Content: </label>
-                    <textarea name="messageContent" id="messageContent" class="rte-editorPlaceholder form-control" >
-                                <!-- -->
-                        <c:choose>
-                                    <c:when test="${not empty replyToMessage}">
-                                        <br /><br />-- original message begin --<br /><br />
-                                        ${replyToMessage.content}
-                                        <br /><br />-- original message end --<br />
-                                    </c:when>
-                                    <c:when test="${not empty content}">
-                                        ${content}
-                                    </c:when>
-                                </c:choose>
-                            </textarea>
+                <div class="modal-footer">
+                    <button type="close" class="btn btn-gray" data-dismiss="modal"><spring:message code="message.modal.buttons.cancel"/></button>
+                    <button type="submit" class="btn btn-primary"><spring:message code="message.modal.buttons.send"/></button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="close" class="btn btn-gray" data-dismiss="modal"><spring:message code="message.modal.buttons.cancel"/></button>
-                <button type="submit" class="btn btn-primary"><spring:message code="message.modal.buttons.send"/></button>
-            </div>
-        </form:form>
-    </xcolab:modal>
+            </form:form>
+        </xcolab:modal>
 
-    <spring:message code="message.modal.buttons.notification.selectrecepient" var="selectRecipients"/>
-    <spring:message code="message.modal.buttons.notification.member" var="memberNotFoundMsg"/>
-    <spring:message code="message.modal.buttons.notification.notFound" var="memberNotFoundMsg2"/>
-    <spring:message code="message.modal.buttons.notification.limitexceeded" var="limitExceeded"/>
-    <spring:message code="message.modal.buttons.notification.limitexceeded2" var="limitExceeded2"/>
+        <spring:message code="message.modal.buttons.notification.selectrecepient" var="selectRecipients"/>
+        <spring:message code="message.modal.buttons.notification.member" var="memberNotFoundMsg"/>
+        <spring:message code="message.modal.buttons.notification.notFound" var="memberNotFoundMsg2"/>
+        <spring:message code="message.modal.buttons.notification.limitexceeded" var="limitExceeded"/>
+        <spring:message code="message.modal.buttons.notification.limitexceeded2" var="limitExceeded2"/>
 
-    <script>
-        <![CDATA[
-        function checkMessageForm(checkRecipients) {
-            var numberOfRecipients = 1;
+        <script>
+            <![CDATA[
+            function checkMessageForm(checkRecipients) {
+                var numberOfRecipients = 1;
 
-            if (checkRecipients) {
-                var $userListRecipients = $("#userListRecipients");
-                var currentSearchText = $userListRecipients.val();
+                if (checkRecipients) {
+                    var $userListRecipients = $("#userListRecipients");
+                    var currentSearchText = $userListRecipients.val();
 
-                if (currentSearchText.length != 0) {
+                    if (currentSearchText.length != 0) {
+                        noty({
+                            text: "${memberNotFoundMsg} " + currentSearchText + " ${memberNotFoundMsg2}",
+                            type: 'error'
+                        });
+                        return false;
+                    }
+                    numberOfRecipients = $userListRecipients.find("li").length;
+                    if (numberOfRecipients == 0) {
+                        noty({text: "${selectRecipients}", type: 'error'});
+                        return false;
+                    }
+                }
+
+                var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
+                if (numberOfMessagesLeft < numberOfRecipients) {
                     noty({
-                        text: "${memberNotFoundMsg} " + currentSearchText + " ${memberNotFoundMsg2}",
-                        type: 'error'
+                        text: "${limitExceeded} "
+                        + (numberOfRecipients
+                        - numberOfMessagesLeft) + " ${limitExceeded2}", type: 'error'
                     });
                     return false;
                 }
-                numberOfRecipients = $userListRecipients.find("li").length;
-                if (numberOfRecipients == 0) {
-                    noty({text: "${selectRecipients}", type: 'error'});
-                    return false;
-                }
-            }
 
-            var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
-            if (numberOfMessagesLeft < numberOfRecipients) {
-                noty({
-                    text: "${limitExceeded} "
-                    + (numberOfRecipients
-                    - numberOfMessagesLeft) + " ${limitExceeded2}", type: 'error'
-                });
-                return false;
+                disableDirtyCheck();
             }
-
-            disableDirtyCheck();
-        }
-        ]]>
-    </script>
+            ]]>
+        </script>
+    </c:set>
 
     <xcolab:requireLibrary name="CKEditor" />
 
