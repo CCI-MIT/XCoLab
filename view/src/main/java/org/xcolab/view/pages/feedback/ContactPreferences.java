@@ -12,16 +12,16 @@ import java.io.Serializable;
 public class ContactPreferences extends WidgetPreference implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private final static String RECIPIENTS_PREF = "RECIPIENTS";
-    private final static String MESSAGE_FORMAT_PREF = "MESSAGE_FORMAT";
-    private final static String MESSAGE_SUBJECT_PREF = "MESSAGE_SUBJECT";
-    private final static String EXPAND_LINK_TEXT_PREF = "EXPAND_LINK_TEXT";
-    private final static String defaultRecipients = "pdeboer@mit.edu,lfi@mit.edu";
-    private final static String defaultMessageFormat =
+    private static final String RECIPIENTS_PREF = "RECIPIENTS";
+    private static final String MESSAGE_FORMAT_PREF = "MESSAGE_FORMAT";
+    private static final String MESSAGE_SUBJECT_PREF = "MESSAGE_SUBJECT";
+    private static final String EXPAND_LINK_TEXT_PREF = "EXPAND_LINK_TEXT";
+    private static final String defaultRecipients = "pdeboer@mit.edu,lfi@mit.edu";
+    private static final String defaultMessageFormat =
             "USER_NAME (USER_EMAIL) has sent message using contact form\nUSER_MESSAGE";
-    private final static String defaultMessageSubject =
+    private static final String defaultMessageSubject =
             "[CoLab] USER_NAME sent a message using contact form";
-    private final static String defaultExpandLinkText = "Send feedback message";
+    private static final String defaultExpandLinkText = "Send feedback message";
     private String recipients;
     private String messageFormat;
     private String messageSubject;

@@ -45,11 +45,11 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ContestsIndexController extends BaseProposalsController {
 
-    private final static String COOKIE_VIEW_TYPE = "cc_contests_viewType";
-    private final static String VIEW_TYPE_GRID = "GRID";
-    private final static String VIEW_TYPE_LIST = "LIST";
-    private final static String VIEW_TYPE_OUTLINE = "OUTLINE";
-    private final static String VIEW_TYPE_DEFAULT = VIEW_TYPE_GRID;
+    private static final String COOKIE_VIEW_TYPE = "cc_contests_viewType";
+    private static final String VIEW_TYPE_GRID = "GRID";
+    private static final String VIEW_TYPE_LIST = "LIST";
+    private static final String VIEW_TYPE_OUTLINE = "OUTLINE";
+    private static final String VIEW_TYPE_DEFAULT = VIEW_TYPE_GRID;
     private static final int MIN_SIZE_CONTEST_FILTER = 9;
     private static final int FEATURED_COLLECTION_CARD_ID = 1;
     private static final int BY_TOPIC_COLLECTION_CARD_ID = 2;

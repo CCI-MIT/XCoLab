@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 public final class ContestScheduleLifecycleUtil {
 
-    private final static Logger _log = LoggerFactory.getLogger(ContestScheduleLifecycleUtil.class);
+    private static final Logger _log = LoggerFactory.getLogger(ContestScheduleLifecycleUtil.class);
     private static final String NEW_CONTEST_SCHEDULE_NAME = "New contest schedule";
 
     private ContestScheduleLifecycleUtil() {

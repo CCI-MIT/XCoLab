@@ -31,14 +31,14 @@ public class ContestResourcesBean implements Serializable {
     private static final DateTimeFormatter DATE_TIME_FORMAT =
             DateTimeFormat.forPattern("EEEE, MMM dd, yyyy 'at' HH:mm:ss a zzzz");
 
-    private final static String[] BASE_SECTION_TITLES = {
+    private static final String[] BASE_SECTION_TITLES = {
             "Background", "Key Issues", "Judging Criteria",
             "Prizes", "Resources for <proposal/> Authors"
     };
-    private final static List<String> IGNORE_SECTION_TITLES = Arrays.asList("Overview", "\u00a0");
-    private final static int START_INDEX_OF_BOTTOM_SECTIONS = 4;
-    private final static String SECTION_TEXT_DEFAULT = "";
-    private final static String SECTION_HELP_TEXT_BACKGROUND =
+    private static final List<String> IGNORE_SECTION_TITLES = Arrays.asList("Overview", "\u00a0");
+    private static final int START_INDEX_OF_BOTTOM_SECTIONS = 4;
+    private static final String SECTION_TEXT_DEFAULT = "";
+    private static final String SECTION_HELP_TEXT_BACKGROUND =
             "This section expands on the homepage description and includes:<br />\n" +
                     "- An overview of the sector/topic and why it is important for addressing "
                     + "climate change;<br />\n"
@@ -54,7 +54,7 @@ public class ContestResourcesBean implements Serializable {
                     +
                     "- A brief statement of the contest’s focus (which will be expanded upon in "
                     + "the Judging Criteria section, below).<br />";
-    private final static String SECTION_HELP_TEXT_KEY_ISSUES =
+    private static final String SECTION_HELP_TEXT_KEY_ISSUES =
             "This section provides readers with a sense of where the leaders in this field are "
                     + "looking – what are the current challenges or opportunities that people in "
                     + "this sector are talking about and working to solve? What recent "
@@ -62,11 +62,11 @@ public class ContestResourcesBean implements Serializable {
                     + "reference the impact of the U.S.-China climate agreement on the sector, "
                     + "the automotive industry’s focus on self-driving cars, or the dramatic "
                     + "increase of investment in energy storage.";
-    private final static String SECTION_HELP_TEXT_PRIZES =
+    private static final String SECTION_HELP_TEXT_PRIZES =
             "All contest winners will be recognized by the Climate CoLab and eligible for its "
                     + "Grand Prize.  If your contest team is offering any additional prizes, "
                     + "please state them here.";
-    private final static String SECTION_HELP_TEXT_JUDGING_CRITERIA =
+    private static final String SECTION_HELP_TEXT_JUDGING_CRITERIA =
             "<p>This section clarifies what kinds of proposals the contest is seeking and is "
                     + "usually written in bullet points.</p>\n"
                     +
@@ -81,9 +81,9 @@ public class ContestResourcesBean implements Serializable {
                     + "what is the scope of use? (local, national, international, etc.); what "
                     + "stage of development? (all ideas welcome, fully implementable and scalable"
                     + " proposals only, etc.)</p>";
-    private final static String SECTION_HELP_TEXT_REFERENCES =
+    private static final String SECTION_HELP_TEXT_REFERENCES =
             "Free, web-accessible references to help guide authors in preparing their proposals.";
-    private final static String[] BASE_SECTIONS_HELP_TEXT = {
+    private static final String[] BASE_SECTIONS_HELP_TEXT = {
             SECTION_HELP_TEXT_BACKGROUND,
             SECTION_HELP_TEXT_KEY_ISSUES,
             SECTION_HELP_TEXT_JUDGING_CRITERIA,
@@ -92,7 +92,7 @@ public class ContestResourcesBean implements Serializable {
     };
 
     private static final String OVERVIEW_SUBMIT_PROPOSALS_TITLE = "Submit <proposals/>:";
-    private final static String OVERVIEW_SUBMIT_PROPOSALS_CONTENT =
+    private static final String OVERVIEW_SUBMIT_PROPOSALS_CONTENT =
             "<a href=\"<colab-url/><contest-link-url/>\" "
                     + "target=\"_blank\"><colab-url/><contest-link-url/></a>";
     private static final String OVERVIEW_RULES_TITLE = "Rules:";

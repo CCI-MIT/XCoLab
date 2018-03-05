@@ -14,14 +14,14 @@ import static org.xcolab.util.attributes.i18n.LocalizableAttributeGetter.localiz
 
 public class ContestType implements Serializable {
 
-    private final static String PROPOSAL_PLACEHOLDER = "<proposal/>";
-    private final static String CONTEST_PLACEHOLDER = "<contest/>";
-    private final static String PROPOSALS_PLACEHOLDER = "<proposals/>";
-    private final static String CONTESTS_PLACEHOLDER = "<contests/>";
-    private final static String PROPOSAL_LC_PLACEHOLDER = "<proposal-lc/>";
-    private final static String CONTEST_LC_PLACEHOLDER = "<contest-lc/>";
-    private final static String PROPOSALS_LC_PLACEHOLDER = "<proposals-lc/>";
-    private final static String CONTESTS_LC_PLACEHOLDER = "<contests-lc/>";
+    private static final String PROPOSAL_PLACEHOLDER = "<proposal/>";
+    private static final String CONTEST_PLACEHOLDER = "<contest/>";
+    private static final String PROPOSALS_PLACEHOLDER = "<proposals/>";
+    private static final String CONTESTS_PLACEHOLDER = "<contests/>";
+    private static final String PROPOSAL_LC_PLACEHOLDER = "<proposal-lc/>";
+    private static final String CONTEST_LC_PLACEHOLDER = "<contest-lc/>";
+    private static final String PROPOSALS_LC_PLACEHOLDER = "<proposals-lc/>";
+    private static final String CONTESTS_LC_PLACEHOLDER = "<contests-lc/>";
 
     private final long id;
     private final String language;

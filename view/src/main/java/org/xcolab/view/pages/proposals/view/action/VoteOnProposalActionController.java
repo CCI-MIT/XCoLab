@@ -40,10 +40,10 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}")
 public class VoteOnProposalActionController {
 
-    private final static String VOTE_ANALYTICS_KEY = "VOTE_CONTEST_ENTRIES";
-    private final static String VOTE_ANALYTICS_CATEGORY = "User";
-    private final static String VOTE_ANALYTICS_ACTION = "Vote contest entry";
-    private final static String VOTE_ANALYTICS_LABEL = "";
+    private static final String VOTE_ANALYTICS_KEY = "VOTE_CONTEST_ENTRIES";
+    private static final String VOTE_ANALYTICS_CATEGORY = "User";
+    private static final String VOTE_ANALYTICS_ACTION = "Vote contest entry";
+    private static final String VOTE_ANALYTICS_LABEL = "";
 
     @PostMapping("voteOnProposalAction")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,

@@ -47,13 +47,13 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class AddDiscussionMessageActionController extends BaseDiscussionsActionController {
 
-    private final static Logger _log =
+    private static final Logger _log =
             LoggerFactory.getLogger(AddDiscussionMessageActionController.class);
 
-    private final static String COMMENT_ANALYTICS_KEY = "COMMENT_CONTEST_ENTRIES";
-    private final static String COMMENT_ANALYTICS_CATEGORY = "User";
-    private final static String COMMENT_ANALYTICS_ACTION = "Comment on contest entry";
-    private final static String COMMENT_ANALYTICS_LABEL = "";
+    private static final String COMMENT_ANALYTICS_KEY = "COMMENT_CONTEST_ENTRIES";
+    private static final String COMMENT_ANALYTICS_CATEGORY = "User";
+    private static final String COMMENT_ANALYTICS_ACTION = "Comment on contest entry";
+    private static final String COMMENT_ANALYTICS_LABEL = "";
 
 
     @PostMapping("/discussions/addDiscussionMessage")

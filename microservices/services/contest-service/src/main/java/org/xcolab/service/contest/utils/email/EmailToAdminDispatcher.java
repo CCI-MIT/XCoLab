@@ -8,8 +8,8 @@ import java.util.List;
 
 public class EmailToAdminDispatcher {
 
-    private final static int VERBOSITY_ERROR = 1;
-    private final static int VERBOSITY_DEBUG = 2;
+    private static final int VERBOSITY_ERROR = 1;
+    private static final int VERBOSITY_DEBUG = 2;
 
     private static final Recipient[] ADMIN_EMAIL_RECIPIENTS = {
             new Recipient("jobachhu@mit.edu", VERBOSITY_DEBUG),

@@ -31,7 +31,7 @@ import java.util.Date;
 @Service
 public class MemberService {
 
-    private final static int MAX_SCREEN_NAME_LENGTH = 26;
+    private static final int MAX_SCREEN_NAME_LENGTH = 26;
 
     private final MemberDao memberDao;
     private final RoleDao roleDao;

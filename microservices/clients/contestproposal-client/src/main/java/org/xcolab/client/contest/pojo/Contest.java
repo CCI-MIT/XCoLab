@@ -66,7 +66,7 @@ public class Contest extends AbstractContest implements Serializable {
     private final PlanTemplateClient planTemplateClient;
 
 
-    private final static Map<Long, FocusArea> faCache = new HashMap<>();
+    private static final Map<Long, FocusArea> faCache = new HashMap<>();
     private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
 
     protected static final String WHERE = "where";

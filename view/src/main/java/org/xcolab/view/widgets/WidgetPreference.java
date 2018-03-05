@@ -12,9 +12,9 @@ import java.util.List;
 
 public abstract class WidgetPreference {
 
-    private final static String DEFAULT_ID = "default";
-    private final static String PREFERENCES_JSON_OBJECT = "preferences";
-    private final static String DIVIDER = "_";
+    private static final String DEFAULT_ID = "default";
+    private static final String PREFERENCES_JSON_OBJECT = "preferences";
+    private static final String DIVIDER = "_";
 
     private final List<String> allPreferenceIds = new ArrayList<>();
 

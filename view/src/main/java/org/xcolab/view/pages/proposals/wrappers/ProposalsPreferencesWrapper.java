@@ -12,11 +12,11 @@ import org.xcolab.view.widgets.WidgetPreference;
 
 public class ProposalsPreferencesWrapper extends WidgetPreference {
 
-    private final static String TERMS_OF_SERVICE_PREF = "TERMS_OF_SERVICE";
-    private final static String CALL_TO_ACTION = "CALL_TO_ACTION";
-    private final static String CONTEST_TYPE_ID = "CONTEST_TYPE_ID";
+    private static final String TERMS_OF_SERVICE_PREF = "TERMS_OF_SERVICE";
+    private static final String CALL_TO_ACTION = "CALL_TO_ACTION";
+    private static final String CONTEST_TYPE_ID = "CONTEST_TYPE_ID";
 
-    private final static String CALL_TO_ACTION_DEFAULT = "";
+    private static final String CALL_TO_ACTION_DEFAULT = "";
 
     private String termsOfService;
     private String callToAction;

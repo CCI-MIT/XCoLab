@@ -55,7 +55,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalImpactTabController extends BaseProposalTabController {
 
-    private final static Logger _log = LoggerFactory.getLogger(ProposalImpactTabController.class);
+    private static final Logger _log = LoggerFactory.getLogger(ProposalImpactTabController.class);
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=IMPACT")
     public String showImpactTab(HttpServletRequest request, Model model,

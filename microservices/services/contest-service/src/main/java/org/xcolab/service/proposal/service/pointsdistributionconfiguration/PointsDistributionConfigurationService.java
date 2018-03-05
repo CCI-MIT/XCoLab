@@ -30,7 +30,7 @@ public class PointsDistributionConfigurationService {
     private final PointTypeDao pointTypeDao;
     private final ProposalService proposalService;
 
-    private final static double EQUALITY_EPSILON = 0.00000001d;
+    private static final double EQUALITY_EPSILON = 0.00000001d;
 
     @Autowired
     public PointsDistributionConfigurationService(PointsDistributionConfigurationDao pointsDistributionConfigurationDao, PointTypeDao pointTypeDao, ProposalService proposalService) {

@@ -20,7 +20,7 @@ import java.util.Date;
 
 public class FlaggingReportWrapper {
 
-    private final static Logger _log = LoggerFactory.getLogger(FlaggingReportWrapper.class);
+    private static final Logger _log = LoggerFactory.getLogger(FlaggingReportWrapper.class);
 
     private final AggregatedReport report;
     private ManagerAction managerAction = ManagerAction.PENDING;

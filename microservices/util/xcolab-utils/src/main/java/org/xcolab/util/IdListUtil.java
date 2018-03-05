@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  * Utility class for common conversions of ids lists to strings or models.
  */
 public final class IdListUtil {
-    private final static Logger _log = LoggerFactory.getLogger(IdListUtil.class);
+    private static final Logger _log = LoggerFactory.getLogger(IdListUtil.class);
 
     private IdListUtil() { }
 

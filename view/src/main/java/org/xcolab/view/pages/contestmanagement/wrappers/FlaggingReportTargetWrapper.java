@@ -9,7 +9,7 @@ import org.xcolab.client.flagging.pojo.ReportTarget;
 
 public class FlaggingReportTargetWrapper {
 
-    private final static Logger _log = LoggerFactory.getLogger(FlaggingReportTargetWrapper.class);
+    private static final Logger _log = LoggerFactory.getLogger(FlaggingReportTargetWrapper.class);
 
     private ReportTarget reportTarget;
     private Boolean createNew = false;

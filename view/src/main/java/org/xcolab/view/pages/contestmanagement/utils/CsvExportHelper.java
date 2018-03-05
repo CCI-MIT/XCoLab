@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CsvExportHelper {
 
-    private final static String URL_DOMAIN = PlatformAttributeKey.COLAB_URL.get();
+    private static final String URL_DOMAIN = PlatformAttributeKey.COLAB_URL.get();
     private final List<String[]> records = new ArrayList<>();
 
     public CsvExportHelper() {

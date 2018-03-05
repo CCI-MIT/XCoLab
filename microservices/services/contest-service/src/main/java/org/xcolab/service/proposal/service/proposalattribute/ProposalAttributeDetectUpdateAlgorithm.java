@@ -10,12 +10,12 @@ import java.util.Map;
 
 public class ProposalAttributeDetectUpdateAlgorithm {
 
-    private final static ProposalAttributeDetectUpdateImpl PROPOSAL_IMPACT_ATTRIBUTE_UPDATE =
+    private static final ProposalAttributeDetectUpdateImpl PROPOSAL_IMPACT_ATTRIBUTE_UPDATE =
             (attribute, attributeName, additionalId, numericValue, realValue) ->
                     attribute.getName().equals(attributeName) && attribute.getAdditionalId() == additionalId && attribute.getNumericValue() == numericValue
                             && attribute.getRealValue() != realValue;
 
-    private final static ProposalAttributeDetectUpdateImpl PROPOSAL_OTHER_ATTRIBUTE_UPDATE =
+    private static final ProposalAttributeDetectUpdateImpl PROPOSAL_OTHER_ATTRIBUTE_UPDATE =
             (attribute, attributeName, additionalId, numericValue, realValue) ->
                     attribute.getName().equals(attributeName) && attribute.getAdditionalId() == additionalId;
 

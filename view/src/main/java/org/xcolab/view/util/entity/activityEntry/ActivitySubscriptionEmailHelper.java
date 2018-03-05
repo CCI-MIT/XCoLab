@@ -48,7 +48,7 @@ import javax.mail.internet.InternetAddress;
 @Component
 public class ActivitySubscriptionEmailHelper {
 
-    private final static Logger _log =
+    private static final Logger _log =
             LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
 
     private static final Object mutex = new Object();
@@ -73,18 +73,18 @@ public class ActivitySubscriptionEmailHelper {
             "UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER";
 
 
-    private final static String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"
+    private static final String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"
             + "To configure your notification preferences, visit your "
             + "<a href=\"USER_PROFILE_LINK\">profile</a> page";
 
-    private final static String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
+    private static final String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
 
-    private final static String USER_PROFILE_LINK_TEMPLATE =
+    private static final String USER_PROFILE_LINK_TEMPLATE =
             "DOMAIN_PLACEHOLDER/members/profile/USER_ID";
 
-    private final static String USER_ID_PLACEHOLDER = "USER_ID";
+    private static final String USER_ID_PLACEHOLDER = "USER_ID";
 
-    private final static String DOMAIN_PLACEHOLDER = "DOMAIN_PLACEHOLDER";
+    private static final String DOMAIN_PLACEHOLDER = "DOMAIN_PLACEHOLDER";
 
     private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE =
             "<colab-name/> Activities – Daily Digest DATE";

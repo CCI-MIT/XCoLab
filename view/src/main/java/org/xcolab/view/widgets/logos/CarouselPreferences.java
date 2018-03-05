@@ -17,10 +17,10 @@ import java.util.List;
 
 public class CarouselPreferences extends WidgetPreference {
 
-    private final static String TITLE_PREFERENCE = "CAROUSEL_TITLE";
-    private final static String LOGOS_PREFERENCE = "CAROUSEL_LOGOS";
+    private static final String TITLE_PREFERENCE = "CAROUSEL_TITLE";
+    private static final String LOGOS_PREFERENCE = "CAROUSEL_LOGOS";
 
-    private final static String DEFAULT_TITLE = "Logo Carousel Widget";
+    private static final String DEFAULT_TITLE = "Logo Carousel Widget";
 
     private static final ObjectReader logoListReader =
             new ObjectMapper().readerFor(new TypeReference<List<LogoElement>>() {});

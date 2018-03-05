@@ -8,14 +8,14 @@ import java.util.Optional;
 //TODO COLAB-2590: move entire TemplateReplacementUtil here
 public final class TemplateReplacementUtilPlaceholder {
 
-    private final static String COLAB_NAME_PLACEHOLDER = "<colab-name/>";
-    private final static String COLAB_SHORT_NAME_PLACEHOLDER = "<colab-short-name/>";
-    private final static String COLAB_URL = "<colab-url/>";
+    private static final String COLAB_NAME_PLACEHOLDER = "<colab-name/>";
+    private static final String COLAB_SHORT_NAME_PLACEHOLDER = "<colab-short-name/>";
+    private static final String COLAB_URL = "<colab-url/>";
 
-    private final static String PARTNER_COLAB_NAME_PLACEHOLDER = "<partner-colab-name/>";
+    private static final String PARTNER_COLAB_NAME_PLACEHOLDER = "<partner-colab-name/>";
 
-    private final static String ADMIN_EMAIL_PLACEHOLDER = "<admin-email/>";
-    private final static String ADMIN_FROM_EMAIL_PLACEHOLDER = "<admin-from-email/>";
+    private static final String ADMIN_EMAIL_PLACEHOLDER = "<admin-email/>";
+    private static final String ADMIN_FROM_EMAIL_PLACEHOLDER = "<admin-from-email/>";
 
     private TemplateReplacementUtilPlaceholder() {
     }

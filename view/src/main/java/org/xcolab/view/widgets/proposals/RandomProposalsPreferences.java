@@ -17,13 +17,13 @@ import java.util.Map;
 
 public class RandomProposalsPreferences extends WidgetPreference {
 
-    private final static String SELECTED_PHASES_PREFERENCE = "SELECTED_PHASES";
-    private final static String FLAG_FILTER_PREFERENCE = "FLAG_FILTERS";
-    private final static String TITLE_PREFERENCE = "TITLE";
-    private final static String FEED_SIZE_PREFERENCE = "FEED_SIZE";
-    private final static String ALL_PROPOSALS_TITLE = "ALL_PROPOSALS_TITLE";
-    private final static String ALL_PROPOSALS_URL = "ALL_PROPOSALS_URL";
-    private final static String IS_COMPACT = "IS_COMPACT";
+    private static final String SELECTED_PHASES_PREFERENCE = "SELECTED_PHASES";
+    private static final String FLAG_FILTER_PREFERENCE = "FLAG_FILTERS";
+    private static final String TITLE_PREFERENCE = "TITLE";
+    private static final String FEED_SIZE_PREFERENCE = "FEED_SIZE";
+    private static final String ALL_PROPOSALS_TITLE = "ALL_PROPOSALS_TITLE";
+    private static final String ALL_PROPOSALS_URL = "ALL_PROPOSALS_URL";
+    private static final String IS_COMPACT = "IS_COMPACT";
 
     private Long[] selectedPhases;
     private Long[] flagFilters;

@@ -17,7 +17,7 @@ public class ProposalVersionService {
     private final Proposal2PhaseDao proposal2PhaseDao;
     private final ProposalVersionDao proposalVersionDao;
 
-    private final static long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
+    private static final long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
     public ProposalVersionService(Proposal2PhaseDao proposal2PhaseDao,ProposalVersionDao proposalVersionDao ){
         this.proposal2PhaseDao = proposal2PhaseDao;
