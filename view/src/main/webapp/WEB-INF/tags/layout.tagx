@@ -235,7 +235,7 @@
                           languageSelectItems="${_themeContext.i18NVariables.languageSelectItems}"
                           themeImageFolder="/images"
                           showLanguageDropdown="${_themeContext.i18NVariables.isI18NActive}"
-                          footerArticleId="${_footerArticleId}" />
+                          footerArticleId="${_themeContext.themeVariables.footerArticleId}" />
 
 
     <!-- ============ Modals ============ -->

@@ -6,6 +6,8 @@
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
           xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
     <jsp:directive.attribute name="currentLanguage" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="Language selection items" />
     <jsp:directive.attribute name="showProfileLink" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, the profile link will show" />
@@ -64,7 +66,7 @@
                     </ul>
                 </nav>
 
-                <c:if test="${_showShareButtons}">
+                <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                     <div>
                         <xcolab-social:socialFollowButtons />
                     </div>
