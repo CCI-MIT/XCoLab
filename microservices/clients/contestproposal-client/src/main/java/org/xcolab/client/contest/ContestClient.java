@@ -494,16 +494,25 @@ public class ContestClient {
     }
 
 
-    public List<Contest> getContestsByActivePrivateType(boolean contestActive,
-            boolean contestPrivate, Long contestTypeId) {
+    public List<Contest> getContests(Boolean contestActive,
+            Boolean contestPrivate, Long contestTypeId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("lang", lang)
-                .queryParam("active", contestActive)
-                .queryParam("contestPrivate", contestPrivate)
-                .queryParam("contestTypeIds", contestTypeId)
+                .optionalQueryParam("active", contestActive)
+                .optionalQueryParam("contestPrivate", contestPrivate)
+                .optionalQueryParam("contestTypeIds", contestTypeId)
                 .execute(), serviceNamespace);
+    }
+
+    public int countContests(Boolean contestActive, Boolean contestPrivate, Long contestTypeId) {
+        return contestResource.count()
+                .optionalQueryParam("active", contestActive)
+                .optionalQueryParam("contestPrivate", contestPrivate)
+                .optionalQueryParam("contestTypeIds", contestTypeId)
+                .withCache(CacheName.CONTEST_LIST)
+                .execute();
     }
 
     public List<Contest> getContestsByContestTypeId(Long contestTypeId) {
@@ -651,12 +660,6 @@ public class ContestClient {
                 .execute(), serviceNamespace);
     }
 
-    public Integer countContestsByContestType(long contestTypeId) {
-        return contestResource.service("countByContestType", Integer.class)
-                .queryParam("contestTypeId", contestTypeId)
-                .get();
-    }
-
     public List<Contest> getContestsByContestType(Long contestTypeId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()
@@ -664,6 +667,13 @@ public class ContestClient {
                 .queryParam("lang", lang)
 //                .withCache(CacheName.CONTEST_LIST)
                 .execute(), serviceNamespace);
+    }
+
+    public int countContestsByContestType(long contestTypeId) {
+        return contestResource.count()
+                .queryParam("contestTypeIds", contestTypeId)
+                .withCache(CacheName.CONTEST_LIST)
+                .execute();
     }
 
     public String getContestPhaseName(ContestPhase ck) {

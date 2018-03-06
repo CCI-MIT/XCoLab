@@ -177,22 +177,10 @@
 						<c:when test="${showActiveContests }">
 							<a href="#" >Active ${contestType.contestNamePlural}</a>
 						</c:when>
-						<c:when test="${not showActiveContests and not showAllContests }">
-							<a href="#" >Completed ${contestType.contestNamePlural}</a>
-						</c:when>
 						<c:otherwise>
 							<a href="#" >All ${contestType.contestNamePlural}</a>
 						</c:otherwise>
 					</c:choose>
-					<div id="priorActiveAllWidget">
-						<ul>
-							<li class="${showActiveContests ?  'active' : ''}"><a href="${changeToActiveURL}" >Active ${contestType.contestNamePlural}</a></li>
-
-							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="${changeToPriorURL}" >Completed ${contestType.contestNamePlural}</a></li>
-
-							<li class="${showAllContests ?  'active' : ''}"><a href="${changeToAllURL}" >All ${contestType.contestNamePlural}</a></li>
-						</ul>
-					</div>
 				</div>
 			</div>
 		</c:if>

@@ -3,8 +3,6 @@ $p-Contests__userslist__a__fontWeight: 700 !default;
 $p-Contests__userslist__td--g__background: url(/images/pattern-tbl-6x6.png) !default;
 $p-Contests__usersFilter__paddingRight: 0px !default;
 
-$p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !default;
-
 /* CollectionCardsView */
 
 .c-Headline .AdvancedView {
@@ -341,46 +339,6 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
   border-bottom: 1px solid $t-Color__primary__gray;
 }
 
-#priorActiveAllWidget {
-  border: 1px solid $t-Color__primary;
-  box-shadow: 0 2px 2px #666;
-  position: absolute;
-  display: none;
-  z-index: 1000;
-  background: white;
-  text-align: left;
-  padding: 10px 10px 10px 10px;
-  width: 130px;
-}
-
-#priorActiveAllWidget ul {
-  margin-left: 0;
-  list-style: none;
-}
-
-#priorActiveAllWidget ul li {
-  margin-left: 0;
-  list-style: none;
-  background: none;
-  padding: 5px;
-}
-
-#priorActiveAllWidget ul li.active,
-#priorActiveAllWidget ul li:hover {
-  background: $t-Color__primary__gray--light;
-
-  a {
-    color: $p-Contests__priorActiveAllWidget__a__color--isHover;
-  }
-}
-
-#priorActiveAllWidget ul li a,
-#priorActiveAllWidget ul li a:after {
-  background: none;
-  border: 0;
-}
-
-
 //TODO: what exactly are these?
 #contestsFilterClear {
   width: 20px;
@@ -389,14 +347,6 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $t-Link__color--hover !def
   top: 5px;
   right: 5px;
   display: block;
-}
-
-#archivedContestsMarkerContainer {
-  margin-bottom: 15px;
-}
-
-#archivedContestsMarkerContainer img {
-  margin-right: 20px;
 }
 
 //TODO: prop-description is for proposals?

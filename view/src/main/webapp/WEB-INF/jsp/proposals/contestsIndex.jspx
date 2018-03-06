@@ -2,6 +2,8 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
 	<xcolab:layout title="${contestType.contestNamePlural}" description="${pageDescription}">
@@ -38,7 +40,7 @@
 							<jsp:directive.include file="contestsIndex/grid.jspx" />
 						</c:when>
 						<c:when test="${viewType == 'OUTLINE' }">
-							<jsp:directive.include file="./contestsIndex/outline.jspx" />
+							<jsp:directive.include file="contestsIndex/outline.jspx" />
 						</c:when>
 						<c:otherwise>
 							<jsp:directive.include file="contestsIndex/list.jspx" />
@@ -52,26 +54,6 @@
 			jQuery(function() {
 			    setContestsViewTypeCookie('${viewType}');
 			});
-
-			jQuery(".show-active").hover(
-					function() {
-						var self = jQuery(this);
-						if (! self.hasClass('mouseIn')) {
-							jQuery(this).addClass('mouseIn visible');
-							jQuery("#priorActiveAllWidget").slideDown();
-						}
-					},
-					function() {
-						var self = jQuery(this);
-						self.removeClass('mouseIn');
-						setTimeout(function() {
-							if (! self.hasClass('mouseIn') && self.hasClass('visible')) {
-								jQuery("#priorActiveAllWidget").slideUp();
-								self.removeClass('visible');
-							}
-						}, 500);
-					}
-			);
 		]]>
 		</script>
 		<xcolab:script src="/js/proposals/proposals.js"/>

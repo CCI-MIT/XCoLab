@@ -21,9 +21,10 @@ public interface ContestDao {
         List<Long> focusAreaIds, Long contestScheduleId, Long planTemplateId,
         List<Long> contestTypeIds, Boolean contestPrivate, String searchTerm);
 
-    Integer countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured,
-            Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId,
-            Long planTemplateId, Long contestTypeId, Boolean contestPrivate);
+    int countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured,
+            List<Long> contestTiers, List<Long> focusAreaOntologyTerms, Long contestScheduleId,
+            Long planTemplateId, List<Long> contestTypeIds, Boolean contestPrivate,
+            String searchTerm);
 
     boolean isShared(long contestId);
 

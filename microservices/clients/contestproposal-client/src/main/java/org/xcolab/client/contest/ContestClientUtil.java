@@ -175,10 +175,15 @@ public final class ContestClientUtil {
         return contestClient.getContestsByActivePrivate(contestActive, contestPrivate);
     }
 
-    public static List<Contest> getContestsByActivePrivateType(
-            boolean contestActive, boolean contestPrivate, Long contestTypeId) {
+    public static List<Contest> getContests(Boolean contestActive,
+            Boolean contestPrivate, Long contestTypeId) {
         return contestClient
-                .getContestsByActivePrivateType(contestActive, contestPrivate, contestTypeId);
+                .getContests(contestActive, contestPrivate, contestTypeId);
+    }
+
+    public static int countContests(Boolean contestActive,
+            Boolean contestPrivate, Long contestTypeId) {
+        return contestClient.countContests(contestActive, contestPrivate, contestTypeId);
     }
 
     public static List<Contest> getContestsByContestTypeId(

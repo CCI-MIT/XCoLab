@@ -157,9 +157,9 @@ public class ContestService {
         if (ontologyTerm != null) {
             List<Long> focusAreaOntologyTermsIds = ontologyService
                 .getFocusAreasIdForOntologyTermIds(Collections.singletonList(ontologyTerm));
-            count += contestDao.countByGiven(null, null, null, null, null, focusAreaOntologyTermsIds, null, null, null, false);
+            count += contestDao.countByGiven(null, null, null, null, null, focusAreaOntologyTermsIds, null, null, null, false, null);
         } else {
-            count += contestDao.countByGiven(null, null, null, null, null, null, null, null, null, false);
+            count += contestDao.countByGiven(null, null, null, null, null, null, null, null, null, false, null);
         }
         return count;
     }

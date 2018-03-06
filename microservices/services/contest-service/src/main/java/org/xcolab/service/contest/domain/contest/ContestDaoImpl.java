@@ -228,7 +228,7 @@ public class ContestDaoImpl implements ContestDao {
         if (currentContestId != null) {
             query.addConditions(CONTEST.CONTEST_PK.notEqual(currentContestId));
         }
-        return query.fetchOne().into(Integer.class).intValue() == 0;
+        return query.fetchOne().into(Integer.class) == 0;
     }
 
     @Override
@@ -238,6 +238,50 @@ public class ContestDaoImpl implements ContestDao {
             List<Long> contestTypeIds, Boolean contestPrivate, String searchTerm) {
         final SelectQuery<Record> query = dslContext.select().from(CONTEST).getQuery();
 
+        addConditions(contestUrlName, contestYear, active, featured, contestTiers, focusAreaIds,
+                contestScheduleId, planTemplateId, contestTypeIds, contestPrivate, searchTerm,
+                query);
+
+        for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
+            switch (sortColumn.getColumnName()) {
+                case "createDate":
+                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.CREATED.asc()
+                            : CONTEST.CREATED.desc());
+                    break;
+                case "ContestShortName":
+                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.CONTEST_SHORT_NAME.asc()
+                            : CONTEST.CONTEST_SHORT_NAME.desc());
+                    break;
+                case "weight":
+                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.WEIGHT.asc()
+                            : CONTEST.WEIGHT.desc());
+                    break;
+
+                default:
+            }
+        }
+        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
+        return query.fetchInto(Contest.class);
+    }
+
+    @Override
+    public int countByGiven(String contestUrlName, Long contestYear, Boolean active,
+            Boolean featured, List<Long> contestTiers, List<Long> focusAreaIds,
+            Long contestScheduleId, Long planTemplateId, List<Long> contestTypeIds,
+            Boolean contestPrivate, String searchTerm) {
+        final SelectQuery<Record1<Integer>> query =
+                dslContext.selectCount().from(CONTEST).getQuery();
+
+        addConditions(contestUrlName, contestYear, active, featured, contestTiers, focusAreaIds,
+                contestScheduleId, planTemplateId, contestTypeIds, contestPrivate, searchTerm,
+                query);
+        return query.fetchOne().into(Integer.class);
+    }
+
+    private void addConditions(String contestUrlName, Long contestYear, Boolean active,
+            Boolean featured, List<Long> contestTiers, List<Long> focusAreaIds,
+            Long contestScheduleId, Long planTemplateId, List<Long> contestTypeIds,
+            Boolean contestPrivate, String searchTerm, SelectQuery query) {
         if (contestPrivate != null) {
             query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
         }
@@ -272,75 +316,6 @@ public class ContestDaoImpl implements ContestDao {
         if (featured != null) {
             query.addConditions(CONTEST.FEATURED_.eq(featured));
         }
-
-        for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
-            switch (sortColumn.getColumnName()) {
-                case "createDate":
-                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.CREATED.asc()
-                            : CONTEST.CREATED.desc());
-                    break;
-                case "ContestShortName":
-                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.CONTEST_SHORT_NAME.asc()
-                            : CONTEST.CONTEST_SHORT_NAME.desc());
-                    break;
-                case "weight":
-                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.WEIGHT.asc()
-                            : CONTEST.WEIGHT.desc());
-                    break;
-
-                default:
-            }
-        }
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(Contest.class);
-    }
-
-    @Override
-    public Integer countByGiven(String contestUrlName, Long contestYear, Boolean active,
-            Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms,
-            Long contestScheduleId, Long planTemplateId, Long contestTypeId,
-            Boolean contestPrivate) {
-        final SelectQuery<Record1<Integer>> query =
-                dslContext.selectCount().from(CONTEST).getQuery();
-
-        if (contestPrivate != null) {
-            query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
-        }
-
-        if (contestTier != null) {
-            query.addConditions(CONTEST.CONTEST_TIER.eq(contestTier));
-        }
-
-        if (contestScheduleId != null) {
-            query.addConditions(CONTEST.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
-        }
-
-        if (planTemplateId != null) {
-            query.addConditions(CONTEST.PLAN_TEMPLATE_ID.eq(planTemplateId));
-        }
-
-        if (focusAreaOntologyTerms != null && !focusAreaOntologyTerms.isEmpty()) {
-            query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTerms));
-        }
-
-        if (contestTypeId != null) {
-            query.addConditions(CONTEST.CONTEST_TYPE_ID.eq(contestTypeId));
-        }
-
-        if (contestUrlName != null) {
-            query.addConditions(CONTEST.CONTEST_URL_NAME.eq(contestUrlName));
-        }
-        if (contestYear != null) {
-            query.addConditions(CONTEST.CONTEST_YEAR.eq(contestYear));
-        }
-        if (active != null) {
-            query.addConditions(CONTEST.CONTEST_ACTIVE.eq(active));
-        }
-        if (featured != null) {
-            query.addConditions(CONTEST.FEATURED_.eq(featured));
-        }
-        query.addOrderBy(CONTEST.CREATED.desc());
-        return query.fetchOne(0, Integer.class);
     }
 
     @Override

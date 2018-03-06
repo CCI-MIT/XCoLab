@@ -24,12 +24,15 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.service.ontology.OntologyService;
+import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.spring.web.annotation.ListMapping;
 
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class ContestController {
@@ -95,7 +98,8 @@ public class ContestController {
     }
 
     @ListMapping("/contests")
-    public List<Contest> getContests(@RequestParam(required = false) Integer startRecord,
+    public List<Contest> getContests(HttpServletResponse response,
+            @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String lang,
@@ -122,6 +126,10 @@ public class ContestController {
                 focusAreaIds = descendantFocusAreas;
             }
         }
+        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
+                Integer.toString(contestDao.countByGiven(contestUrlName, contestYear, active, featured,
+                        contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
+                        contestTypeIds, contestPrivate, searchTerm)));
         final List<Contest> contests = contestDao
                 .findByGiven(paginationHelper, contestUrlName, contestYear, active, featured,
                         contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
@@ -299,14 +307,6 @@ public class ContestController {
             return contestDiscussionDao.update(contestDiscussion);
         }
     }
-
-    @GetMapping("/contests/countByContestType")
-    public Integer countByContestType(@RequestParam("contestTypeId") Long contestTypeId) {
-        return contestDao.countByGiven(null, null, null, null,
-                null, null, null, null,
-                contestTypeId, null);
-    }
-
 
     @GetMapping("/contests/{contestId}/activePhase")
     public ContestPhase getActivePhaseForContest(@PathVariable long contestId)

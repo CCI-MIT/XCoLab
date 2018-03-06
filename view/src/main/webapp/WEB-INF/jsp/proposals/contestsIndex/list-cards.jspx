@@ -4,7 +4,6 @@
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <!--@elvariable id="showOnlyFeatured" type="java.lang.Boolean"-->
-    <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
