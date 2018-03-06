@@ -31,10 +31,16 @@ public class StylesheetTag extends AbstractHtmlTag {
 	@Override
 	protected void writeTagContent() throws JspException {
 	    writeOptionalAttribute(REL_ATTRIBUTE, "stylesheet");
-        writeOptionalAttribute(HREF_ATTRIBUTE, encodeUrl(getHref()));
+        final String encodedHref = encodeUrl(getHref());
+        writeOptionalAttribute(HREF_ATTRIBUTE, encodedHref);
         writeOptionalAttribute(INTEGRITY_ATTRIBUTE, getIntegrity());
         if (StringUtils.isNotEmpty(getIntegrity())) {
             writeOptionalAttribute(CROSSORIGIN_ATTRIBUTE, "anonymous");
+        }
+
+        final boolean isLocalToCdn = getHref().startsWith("/") && !encodedHref.startsWith("/");
+        if (isLocalToCdn) {
+            writeOptionalAttribute("onerror", "retryLocal(this)");
         }
 	}
 

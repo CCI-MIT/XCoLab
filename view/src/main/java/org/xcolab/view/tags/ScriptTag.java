@@ -33,13 +33,21 @@ public class ScriptTag extends AbstractHtmlTag {
 	 */
 	@Override
 	protected void writeTagContent() throws JspException {
-        writeOptionalAttribute(SRC_ATTRIBUTE, encodeUrl(getSrc()));
+        final String encodedSrc = encodeUrl(getSrc());
+        writeOptionalAttribute(SRC_ATTRIBUTE, encodedSrc);
         writeOptionalAttribute(ASYNC_ATTRIBUTE, getAsync());
         writeOptionalAttribute(DEFER_ATTRIBUTE, getDefer());
         writeOptionalAttribute(INTEGRITY_ATTRIBUTE, getIntegrity());
         if (StringUtils.isNotEmpty(getIntegrity())) {
             writeOptionalAttribute(CROSSORIGIN_ATTRIBUTE, "anonymous");
         }
+
+        final boolean isLocalToCdn = getSrc().startsWith("/") && !encodedSrc.startsWith("/");
+        if (isLocalToCdn) {
+            writeOptionalAttribute("onerror", "retryLocal(this)");
+        }
+
+        getTagWriter().appendValue("<!-- empty -->");
 	}
 
 

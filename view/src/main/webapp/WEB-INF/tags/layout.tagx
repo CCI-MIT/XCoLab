@@ -63,6 +63,23 @@
     </script>
 
 
+    <!-- Retry function for CDN resources. Defaults to the local resource if CDN is unreachable -->
+    <script>
+        function retryLocal(el) {
+            el.onerror = '';
+            var parser = document.createElement('a');
+            if (el.href !== undefined) {
+                parser.href = el.href;
+                el.href = parser.pathname;
+            }
+            if (el.src !== undefined) {
+                parser.href = el.src;
+                el.src = parser.pathname;
+            }
+        }
+    </script>
+
+
     <!-- ============ Fonts ============ -->
 
     <c:if test="${not empty _themeContext.credentialVariables.typekitId}">
