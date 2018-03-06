@@ -12,7 +12,7 @@
 
 	<modeling:simulationLoadScripts />
 	
-	<xcolab:stylesheet href="/css/pages/modeling/simulation.css" />
+	<collab:stylesheet href="/css/pages/modeling/simulation.css" />
 	<div id="modelsOutputContainer"></div>
 	<script>
 		<c:choose>

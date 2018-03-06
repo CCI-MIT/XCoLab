@@ -50,7 +50,7 @@
 
 	<modeling:simulationLoadScripts />
 
-	<xcolab:stylesheet href="/css/pages/modeling/simulation.css" />
+	<collab:stylesheet href="/css/pages/modeling/simulation.css" />
         <div class="spinner-area" style="margin: auto; padding-top: 100px; margin-bottom: -100px;"><!-- --> </div>
 	<div id="modelsOutputContainer"><!-- --></div>
 

@@ -95,7 +95,7 @@
     <collab:script src="/js/proposals/discussionComments.js"/>
     <collab:script src="/js/proposals/historyWidget.js"/>
 
-    <xcolab:stylesheet href="/css/lib/imageviewer.css"/>
+    <collab:stylesheet href="/css/lib/imageviewer.css"/>
     <collab:script src="/js/proposals/imageviewer.min.js" />
 
 </jsp:root>

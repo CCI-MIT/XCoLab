@@ -73,7 +73,7 @@
 
     <!-- ============ Stylesheets ============ -->
 
-    <xcolab:stylesheet href="${_themeContext.themeVariables.activeTheme.stylesheetPath}" />
+    <collab:stylesheet href="${_themeContext.themeVariables.activeTheme.stylesheetPath}" />
 
 
     <!-- ============ META CONTENT ============ -->
@@ -285,8 +285,10 @@
     <!-- jQuery UI -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['jQuery UI']}" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
                        integrity="sha256-KM512VNnjElC30ehFwehXjx1YCHPiQkOPmqnrWtpccM="/>
-    <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['jQuery UI']}" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css"
-                           integrity="sha256-vpKTO4Ob1M4bZ8RAvZvYMtinMz1XjH0QYdAO2861V9M="/>
+    <c:if test="${_librariesToLoad['jQuery UI']}">
+        <collab:stylesheet href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css"
+                            integrity="sha256-vpKTO4Ob1M4bZ8RAvZvYMtinMz1XjH0QYdAO2861V9M="/>
+    </c:if>
 
     <!-- File upload -->
     <c:if test="${_librariesToLoad['fileupload']}">

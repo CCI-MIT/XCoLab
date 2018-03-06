@@ -22,7 +22,7 @@
             #articleURL{overflow:hidden}
             #anchorArticleURL{display: block; width:0; white-space: nowrap;}
         </style>
-        <xcolab:stylesheet href="/css/lib/jquery.loadmask.spin.css" />
+        <collab:stylesheet href="/css/lib/jquery.loadmask.spin.css" />
 
         <c:set var="ontologyListFolderURL" value="/ontology-editor/ontologyEditorList">
         </c:set>

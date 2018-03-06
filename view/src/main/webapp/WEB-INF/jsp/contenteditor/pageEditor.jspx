@@ -83,7 +83,7 @@
 
 
         </style>
-        <xcolab:stylesheet href="/css/lib/jquery.loadmask.spin.css"/>
+        <collab:stylesheet href="/css/lib/jquery.loadmask.spin.css"/>
 
         <c:set var="contentEditorListFolderURL" value="/content-editor/pageEditorListFolder"/>
 

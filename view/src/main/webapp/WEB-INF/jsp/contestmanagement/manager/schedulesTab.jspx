@@ -18,7 +18,7 @@
     <jsp:directive.include file="./header.jspx"/>
 
     <collab:script src="/vendor/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js"/>
-    <xcolab:stylesheet href="/vendor/jquery-datetimepicker/build/jquery.datetimepicker.min.css" />
+    <collab:stylesheet href="/vendor/jquery-datetimepicker/build/jquery.datetimepicker.min.css" />
 
     <c:set var="changeElementUrl" value="/admin/contest/manager/tab/SCHEDULES?elementId=" />
     <c:set var="updateContestScheduleUrl" value="/admin/contest/manager/tab/SCHEDULES" />
