@@ -411,7 +411,7 @@
     <xcolab:requireLibrary name="CKEditor" />
 
     <c:if test="${isMove}">
-        <xcolab:script src="/js/proposals/copyProposalWidget.js"/>
+        <collab:script src="/js/proposals/copyProposalWidget.js"/>
     </c:if>
 
     <c:if test="${hasProposalPicker}">

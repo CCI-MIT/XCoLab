@@ -200,6 +200,6 @@
 
         <!-- TODO COLAB-2676: still needed for autocomplete -->
         <xcolab:requireLibrary name="jQuery UI" />
-        <xcolab:script src="/js/proposals/proposals.js"/>
+        <collab:script src="/js/proposals/proposals.js"/>
     </xcolab:layout>
 </jsp:root>

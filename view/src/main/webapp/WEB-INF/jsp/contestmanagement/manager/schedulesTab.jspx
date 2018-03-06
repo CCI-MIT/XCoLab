@@ -3,7 +3,8 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
     
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
@@ -16,7 +17,7 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
-    <xcolab:script src="/vendor/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js"/>
+    <collab:script src="/vendor/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js"/>
     <xcolab:stylesheet href="/vendor/jquery-datetimepicker/build/jquery.datetimepicker.min.css" />
 
     <c:set var="changeElementUrl" value="/admin/contest/manager/tab/SCHEDULES?elementId=" />

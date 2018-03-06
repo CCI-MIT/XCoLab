@@ -184,7 +184,7 @@
             </table>
         </div>
 
-        <xcolab:script src="/js/proposals/proposals.js"/>
+        <collab:script src="/js/proposals/proposals.js"/>
         <c:set var="contestPageBreadcumbs" >
             <c:forEach var="_contestPage" items="${_themeContext.themeVariables.contestPages}" varStatus="status">
                 <c:if test="${_contestPage.menuItemName != ''}">

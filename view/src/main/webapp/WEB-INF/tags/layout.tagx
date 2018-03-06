@@ -192,7 +192,7 @@
     <!-- ============ Load jQuery ============ -->
 
     <!-- Load jQuery early as it's used in content  -->
-    <xcolab:script src="/vendor/jquery/dist/jquery.min.js"/>
+    <collab:script src="/vendor/jquery/dist/jquery.min.js"/>
     <!-- Include CSRF tokens in AJAX calls. -->
     <script>
         $.ajaxSetup({
@@ -247,7 +247,7 @@
     <!-- post registration popup -->
     <c:if test='${request.getParameter("postRegistration")}'>
         <xcolab-modals:postRegistrationModal member="${_themeContext.authenticationVariables.member}" redirect="${_themeContext.requestUri}" />
-        <xcolab:script src="/js/postRegistration.js" />
+        <collab:script src="/js/postRegistration.js" />
     </c:if>
 
 
@@ -263,18 +263,18 @@
         </script>
     </c:if>
 
-    <xcolab:script src="/js/postLinkHandler.js"/>
+    <collab:script src="/js/postLinkHandler.js"/>
     <xcolab-scripts:loadTooltips />
     <xcolab-scripts:loadMoment locale="${_themeContext.i18NVariables.language}"/>
 
     <!-- Bootstrap -->
-    <xcolab:script src="/vendor/popper.js/dist/umd/popper.min.js" />
-    <xcolab:script src="/vendor/bootstrap/dist/js/bootstrap.min.js" />
+    <collab:script src="/vendor/popper.js/dist/umd/popper.min.js" />
+    <collab:script src="/vendor/bootstrap/dist/js/bootstrap.min.js" />
 
     <!-- Cookies -->
     <!-- TODO COLAB-2546: not minified-->
-    <!--<xcolab:script src="/vendor/js-cookie/src/js.cookie.min.js"/>-->
-    <xcolab:script src="/vendor/js-cookie/src/js.cookie.js"/>
+    <!--<collab:script src="/vendor/js-cookie/src/js.cookie.min.js"/>-->
+    <collab:script src="/vendor/js-cookie/src/js.cookie.js"/>
 
 
     <!-- ============ On demand libraries ============ -->
@@ -298,7 +298,7 @@
     <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="/vendor/spin.js/jquery.spin.js"/>
 
     <!-- TODO COLAB-2545: only used in mitigration impact tab; requires jquery UI -->
-    <xcolab:script src="/js/proposals/jquery.scrolltable.js"/>
+    <collab:script src="/js/proposals/jquery.scrolltable.js"/>
 
     <!-- Handlebars.js-->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['handlebars.js']}" src="/vendor/handlebars/dist/handlebars.min.js"/>
@@ -313,8 +313,8 @@
             }
             var CKEDITOR_BASEPATH = stripFileNameFromUrl('${encodedCkEditorUrl}');
         </script>
-        <xcolab:script src="${encodedCkEditorUrl}" />
-        <xcolab:script src="/js/configureCkEditor.js" />
+        <collab:script src="${encodedCkEditorUrl}" />
+        <collab:script src="/js/configureCkEditor.js" />
     </c:if>
 
 
@@ -329,7 +329,7 @@
 
     <xcolab:loadScript shouldLoad="${_librariesToLoad['clipboard.js']}" src="/vendor/clipboard/dist/clipboard.min.js" />
     
-    <xcolab:script src="/js/initScript.js" />
+    <collab:script src="/js/initScript.js" />
 
     <!-- ============ Analytics and tracking ============ -->
 
@@ -341,7 +341,7 @@
     </c:if>
 
     <!-- Custom user tracking -->
-    <xcolab:script src="/js/usertracking.js" defer="true"/>
+    <collab:script src="/js/usertracking.js" defer="true"/>
 
     <!-- Show update notification to outdated browsers -->
     <xcolab-scripts:browserUpdate />

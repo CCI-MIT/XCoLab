@@ -1,5 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.1/jquery.jcarousel-core.min.js"><!-- --></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"><!-- --></script>
@@ -14,24 +15,24 @@
 
     <xcolab:requireLibrary name="spin.js" />
 
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.core.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.baseRenderers.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.core.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.baseRenderers.js"/>
 	
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.groupVertical.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.groupHorizontal.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.groupTab.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.groupVertical.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.groupHorizontal.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.groupTab.js"/>
 		
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.individualRadio.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.individualSelect.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.individualSlider.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.individualText.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.individualHidden.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.headerRenderer.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.individualRadio.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.individualSelect.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.individualSlider.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.individualText.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.inputRenderer.individualHidden.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.headerRenderer.js"/>
 		
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.inputsRenderer.tabbed.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.inputsRenderer.customInputs.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.outputsRenderer.lazyTabbed.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.outputsTabs.chartTabRendered.js"/>
-	<xcolab:script src="/js/proposals/modeling/xcolab.modeling.outputsTabs.physicalImpactsTabRenderer.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.inputsRenderer.tabbed.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.inputsRenderer.customInputs.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.outputsRenderer.lazyTabbed.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.outputsTabs.chartTabRendered.js"/>
+	<collab:script src="/js/proposals/modeling/xcolab.modeling.outputsTabs.physicalImpactsTabRenderer.js"/>
 	
 </jsp:root>

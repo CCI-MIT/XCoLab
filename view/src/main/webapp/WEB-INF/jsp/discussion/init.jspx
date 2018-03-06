@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
-    <xcolab:script src="/js/proposals/discussionComments.js"/>
-    <xcolab:script src="/js/discussion/main.js"/>
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
+    <collab:script src="/js/proposals/discussionComments.js"/>
+    <collab:script src="/js/discussion/main.js"/>
     <xcolab:content articleId="${communityTopContentArticleId}" />
     </jsp:root>

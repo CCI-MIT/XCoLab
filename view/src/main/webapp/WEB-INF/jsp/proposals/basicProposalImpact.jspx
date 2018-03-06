@@ -19,7 +19,7 @@
         <xcolab:requireLibrary name="spin.js" />
         <xcolab:requireLibrary name="handlebars.js" />
         
-        <xcolab:script src="/js/proposals/numeral.min.js"/>
+        <collab:script src="/js/proposals/numeral.min.js"/>
 
         <c:set var="getRegionsUrl" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactGetRegions"/>
 

@@ -19,7 +19,7 @@
         <xcolab:requireLibrary name="spin.js" />
 
         <!--TODO COLAB-2423: we can use this for better formatting -->
-        <!--<xcolab:script src="/js/proposals/numeral.min.js"/>-->
+        <!--<collab:script src="/js/proposals/numeral.min.js"/>-->
 
         <xcolab:betaDisclaimer>
             <strong>How will this proposal prevent fatalities and damages? </strong>

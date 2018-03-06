@@ -32,7 +32,7 @@
 
 		<xcolab:requireLibrary name="CKEditor" />
 
-		<xcolab:script src="/js/proposals/discussionComments.js" />
+		<collab:script src="/js/proposals/discussionComments.js" />
 
 		<div class="cb-d-flex-between-center">
 			<div class="c-Count">

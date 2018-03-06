@@ -1,11 +1,11 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-         >
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
-    <xcolab:script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/2.10.0/load-image.all.min.js"/>
-    <xcolab:script src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.6.0/js/canvas-to-blob.min.js"/>
-    <xcolab:script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.iframe-transport/1.0.1/jquery.iframe-transport.min.js"/>
-    <xcolab:script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload.min.js"/>
-    <xcolab:script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload-process.min.js"/>
-    <xcolab:script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload-image.min.js"/>
+    <collab:script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/2.10.0/load-image.all.min.js"/>
+    <collab:script src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.6.0/js/canvas-to-blob.min.js"/>
+    <collab:script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.iframe-transport/1.0.1/jquery.iframe-transport.min.js"/>
+    <collab:script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload.min.js"/>
+    <collab:script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload-process.min.js"/>
+    <collab:script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload-image.min.js"/>
 </jsp:root>

@@ -2,11 +2,12 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:form="http://www.springframework.org/tags/form">
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Admin">
-        <xcolab:script src="/js/proposals/copyProposalWidget.js"/>
+        <collab:script src="/js/proposals/copyProposalWidget.js"/>
 
         <!--@elvariable id="availableRibbons" type="java.util.List<org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType>"-->
 

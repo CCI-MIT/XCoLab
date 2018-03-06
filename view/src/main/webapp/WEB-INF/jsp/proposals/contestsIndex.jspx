@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
@@ -56,6 +57,6 @@
 			});
 		]]>
 		</script>
-		<xcolab:script src="/js/proposals/proposals.js"/>
+		<collab:script src="/js/proposals/proposals.js"/>
 	</xcolab:layout>
 </jsp:root>

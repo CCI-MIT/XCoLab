@@ -91,11 +91,11 @@
     <!-- TODO COLAB-2676: still needed for autocomplete -->
     <xcolab:requireLibrary name="jQuery UI" />
 
-    <xcolab:script src="/js/proposals/proposals.js"/>
-    <xcolab:script src="/js/proposals/discussionComments.js"/>
-    <xcolab:script src="/js/proposals/historyWidget.js"/>
+    <collab:script src="/js/proposals/proposals.js"/>
+    <collab:script src="/js/proposals/discussionComments.js"/>
+    <collab:script src="/js/proposals/historyWidget.js"/>
 
     <xcolab:stylesheet href="/css/lib/imageviewer.css"/>
-    <xcolab:script src="/js/proposals/imageviewer.min.js" />
+    <collab:script src="/js/proposals/imageviewer.min.js" />
 
 </jsp:root>
