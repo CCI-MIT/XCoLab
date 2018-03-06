@@ -215,12 +215,6 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <name>crossorigin</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
             <name>id</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -294,12 +288,6 @@
         </attribute>
         <attribute>
             <name>integrity</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>crossorigin</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>

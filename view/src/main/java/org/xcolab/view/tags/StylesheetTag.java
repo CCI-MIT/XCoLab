@@ -1,5 +1,7 @@
 package org.xcolab.view.tags;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 
@@ -18,7 +20,6 @@ public class StylesheetTag extends AbstractHtmlTag {
 
     private String href;
     private String integrity;
-    private String crossorigin;
 
     public StylesheetTag() {
         super(LINK_TAG);
@@ -32,7 +33,9 @@ public class StylesheetTag extends AbstractHtmlTag {
 	    writeOptionalAttribute(REL_ATTRIBUTE, "stylesheet");
         writeOptionalAttribute(HREF_ATTRIBUTE, encodeUrl(getHref()));
         writeOptionalAttribute(INTEGRITY_ATTRIBUTE, getIntegrity());
-        writeOptionalAttribute(CROSSORIGIN_ATTRIBUTE, getCrossorigin());
+        if (StringUtils.isNotEmpty(getIntegrity())) {
+            writeOptionalAttribute(CROSSORIGIN_ATTRIBUTE, "anonymous");
+        }
 	}
 
 
@@ -50,13 +53,5 @@ public class StylesheetTag extends AbstractHtmlTag {
 
     public void setIntegrity(String integrity) {
         this.integrity = integrity;
-    }
-
-    public String getCrossorigin() {
-        return crossorigin;
-    }
-
-    public void setCrossorigin(String crossorigin) {
-        this.crossorigin = crossorigin;
     }
 }

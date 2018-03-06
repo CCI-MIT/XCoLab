@@ -1,5 +1,7 @@
 package org.xcolab.view.tags;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 
@@ -21,7 +23,6 @@ public class ScriptTag extends AbstractHtmlTag {
     private String async;
     private String defer;
     private String integrity;
-    private String crossorigin;
 
     public ScriptTag() {
         super(SCRIPT_TAG);
@@ -36,7 +37,9 @@ public class ScriptTag extends AbstractHtmlTag {
         writeOptionalAttribute(ASYNC_ATTRIBUTE, getAsync());
         writeOptionalAttribute(DEFER_ATTRIBUTE, getDefer());
         writeOptionalAttribute(INTEGRITY_ATTRIBUTE, getIntegrity());
-        writeOptionalAttribute(CROSSORIGIN_ATTRIBUTE, getCrossorigin());
+        if (StringUtils.isNotEmpty(getIntegrity())) {
+            writeOptionalAttribute(CROSSORIGIN_ATTRIBUTE, "anonymous");
+        }
 	}
 
 
@@ -70,13 +73,5 @@ public class ScriptTag extends AbstractHtmlTag {
 
     public void setIntegrity(String integrity) {
         this.integrity = integrity;
-    }
-
-    public String getCrossorigin() {
-        return crossorigin;
-    }
-
-    public void setCrossorigin(String crossorigin) {
-        this.crossorigin = crossorigin;
     }
 }
