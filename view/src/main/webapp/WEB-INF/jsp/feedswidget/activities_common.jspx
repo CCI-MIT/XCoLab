@@ -6,9 +6,11 @@
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
     <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper>"-->
 
-    <div class="alignright ${_isAdmin ? '' : 'hidden'}">
+    <div class="alignright ${_themeContext.authenticationVariables.isAdmin ? '' : 'hidden'}">
         <button class="btn cb-btn-admin btn-sm float-right" rel="nofollow" href="/activities/downloadCsv">
             Download activities
         </button>
