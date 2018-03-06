@@ -30,6 +30,10 @@ public abstract class AbstractHtmlTag extends RequestContextAwareTag {
 
     private static final String DATA_TOOLTIP_CONTENT_ATTRIBUTE = "data-tooltip-content";
 
+    //Event handlers
+    private static final String ONCLICK_ATTRIBUTE = "onclick";
+    private static final String ONERROR_ATTRIBUTE = "onerror";
+
     private String id;
     private String cssClass;
     private String cssStyle;
@@ -39,6 +43,9 @@ public abstract class AbstractHtmlTag extends RequestContextAwareTag {
     private String ariaHidden;
 
     private String dataTooltipContent;
+
+    private String onclick;
+    private String onerror;
 
     private TagWriter tagWriter;
 
@@ -92,6 +99,9 @@ public abstract class AbstractHtmlTag extends RequestContextAwareTag {
         writeOptionalAttribute(ARIA_HIDDEN_ATTRIBUTE, getAriaHidden());
 
         writeOptionalAttribute(DATA_TOOLTIP_CONTENT_ATTRIBUTE, getDataTooltipContent());
+
+        writeOptionalAttribute(ONCLICK_ATTRIBUTE, getOnclick());
+        writeOptionalAttribute(ONERROR_ATTRIBUTE, getOnerror());
     }
 
     /**
@@ -192,5 +202,21 @@ public abstract class AbstractHtmlTag extends RequestContextAwareTag {
 
     public void setDataTooltipContent(String dataTooltipContentAttribute) {
         this.dataTooltipContent = dataTooltipContentAttribute;
+    }
+
+    public String getOnclick() {
+        return onclick;
+    }
+
+    public void setOnclick(String onclick) {
+        this.onclick = onclick;
+    }
+
+    public String getOnerror() {
+        return onerror;
+    }
+
+    public void setOnerror(String onerror) {
+        this.onerror = onerror;
     }
 }
