@@ -40,7 +40,7 @@
         var textHideHistory = '${textHideHistory}';
     </script>
     <div class="l-Content">
-        <div class="l-Content__main">
+        <div class="l-Content__main c-UserContent">
             <div>
                 <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
                     <xcolab:proposalLink proposal="${proposal}" text="Go to current"

@@ -82,7 +82,7 @@
                         <!-- TODO COLAB-1387: replace client calls -->
 						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}" contestId="${sharedColabId}">
                             <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
-							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
+							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'} c-UserContent">
 								<td class="c-Comment__commentor">
 									<a id="_message_${message.commentId}"><!-- empty --></a>
 									<xcolab:userPortrait portraitId="${message.author.portraitId}"
