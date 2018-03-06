@@ -16,14 +16,10 @@ $t-Typography__fontWeight__h6: $t-Typography__fontWeight !default;
 $b-Typography__textColor: initial !default;
 $b-Typography__textColor__h1: $t-Color__gray--dark-800 !default;
 
-
-body, .proposal-head h1 {
-  font-weight: $t-Typography__fontWeight;
-  color: $b-Typography__textColor;
-}
-
 body {
   font-size: 15px;
+  font-weight: $t-Typography__fontWeight;
+  color: $b-Typography__textColor;
 }
 
 h1 {
