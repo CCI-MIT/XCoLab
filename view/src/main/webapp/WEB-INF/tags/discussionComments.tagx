@@ -34,18 +34,18 @@
 
 		<xcolab:script src="/js/proposals/discussionComments.js" />
 
-		<div class="c-Headline prophead">
-			<h2>
-				<span>${thread.commentsCount}</span>
+		<div class="cb-d-flex-between-center">
+			<div class="c-Count">
+				<span class="c-Count__number">${thread.commentsCount}</span>
 				<c:choose>
 					<c:when test="${thread.commentsCount == 1 }">
-                        &#160;<spring:message code="discussion.commmentstag.count.singular.message"/>
+                        <spring:message code="discussion.commmentstag.count.singular.message"/>
 					</c:when>
 					<c:otherwise>
-                        &#160;<spring:message code="discussion.commmentstag.count.plural.message"/>
+                        <spring:message code="discussion.commmentstag.count.plural.message"/>
 					</c:otherwise>
 				</c:choose>
-			</h2>
+			</div>
 			<div class="c-Comment__button">
 				<c:if test="${discussionPermissions.canSeeAddCommentButton}">
 					<a href="javascript:;" rel="nofollow"

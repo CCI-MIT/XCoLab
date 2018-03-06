@@ -14,8 +14,8 @@
         </div>
     </c:if>
 
-    <div class="c-Headline">
-        <h1>${contestType.contestNamePlural}</h1>
+    <div class="c-Headline align-items-center">
+        <h1 class="my-0">${contestType.contestNamePlural}</h1>
         <c:set var="changeToListViewTypeURL" value="/contests?viewType=LIST&amp;filter=${sortFilterPage.filter}&amp;showAllContests=${showAllContests}" />
         <c:set var="changeToGridViewTypeURL" value="/contests?viewType=GRID&amp;filter=${sortFilterPage.filter}&amp;showAllContests=${showAllContests}" />
         <c:set var="changeToOutlineViewTypeURL" value="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter}&amp;showAllContests=${showAllContests}" />
@@ -70,14 +70,14 @@
         </c:if>
 
         <c:if test="${not empty suggestionContestLink}">
-            <div class="show">
+            <small>
                 <a href="${suggestionContestLink}">
                     <collab:message code="contests.suggestnew" contestType="${contestType}" />
                 </a>
-            </div>
+            </small>
         </c:if>
         <c:if test="${showFilter}">
-            <div class="filter" style="position: relative;">
+            <div class="filter ml-auto" style="position: relative;">
                 <c:set var="filterURL" value="/contests"/>
                 <form action="${filterURL }" id="filterContestsForm" method="get">
 
@@ -96,7 +96,7 @@
             </div>
         </c:if>
     </div>
-    <div class="c-Headline">
+    <div class="mb-3">
         ${preferences.callToAction}
     </div>
 

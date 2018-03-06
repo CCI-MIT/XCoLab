@@ -65,14 +65,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   overflow: hidden;
 }
 
-.prop-description {
-  font-size: 18px;
-}
-
-.prop-description a {
-  font-weight: $t-Typography__fontWeight--bold;
-}
-
 .proposal-head h1 {
   font-size: 29px;
   color: $p-proposal__header__h1__textColor;

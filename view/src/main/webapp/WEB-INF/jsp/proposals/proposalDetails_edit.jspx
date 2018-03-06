@@ -51,7 +51,7 @@
         <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
     </c:if>
 
-    <div class="c-Headline">
+    <div class="mb-3">
         <c:choose>
             <c:when test="${isMove }">
                 <p>
@@ -83,7 +83,7 @@
             To prevent this, we recommend that you either (a) prepare your text offline before copying and pasting it into the form or (b) use the SAVE button right after you begin and save frequently.
             The system will log you out automatically after 2 hours, causing loss of any inputs not previously saved.
         </p>
-    </div> <!-- /c-Headline -->
+    </div>
 
 
     <form:form action="${saveUrl}" commandName="updateProposalDetailsBean"

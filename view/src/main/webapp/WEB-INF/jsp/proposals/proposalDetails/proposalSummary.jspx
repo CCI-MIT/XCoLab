@@ -61,10 +61,11 @@
 
                     <div>
                         <collab:image src="/images/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" cssClass="mr-2" />
-                        <div class="c-Count">
-                        <span class="c-Count__number c-Count__number--neutral">
-                            ${proposal.supportersCount}
-                        </span> <spring:message code="contests.supports" />
+                        <div class="c-Count c-Count--neutral">
+                            <span class="c-Count__number">
+                                ${proposal.supportersCount}
+                            </span>
+                            <spring:message code="contests.supports" />
                         </div>
                     </div>
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">

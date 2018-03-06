@@ -193,7 +193,7 @@ public class ContestPhase extends AbstractContestPhase {
     public String getDurationTillEndFormatted() {
         String duration = getDurationTillEnd();
         //surrounds number with <span> tag for formatting
-        return duration.replaceAll("\\b(\\d+)\\b", "<span>$1</span>");
+        return duration.replaceAll("\\b(\\d+)\\b", "<span class='c-Count__number'>$1</span>");
     }
 
     public String getName() {
