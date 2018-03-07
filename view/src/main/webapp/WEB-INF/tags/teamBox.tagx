@@ -15,7 +15,7 @@
     <c:set var="memberList" value="userIds${title}"/>
     <c:set var="unsavedStar" value="unsavedStar${title}"/>
 
-    <div class="c-Box c-Box--colorTan teamBox">
+    <div class="c-Box c-Box--colorTan teamBox" id="teamBox${title}">
         <div class="c-Box__body">
             <h2 id="${unsavedStar}">${title}</h2>
             <div class="teamMemberAdd">

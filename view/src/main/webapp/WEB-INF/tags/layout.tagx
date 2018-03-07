@@ -252,10 +252,8 @@
                                        redirect="${_themeContext.requestUri}"
                                        screenName="${_themeContext.authenticationVariables.isLoggedIn ? _themeContext.authenticationVariables.member.screenName : null}"/>
 
-    <!-- The sendMessageModalDeferred tag populates this variable -->
-    <!--@elvariable id="__deferredSendMessageModalContent" type="java.lang.String"-->
-    <c:if test="${not empty __deferredSendMessageModalContent}">
-        ${__deferredSendMessageModalContent}
+    <c:if test="${_librariesToLoad['sendMessage']}">
+        <xcolab-modals:sendMessageModal/>
     </c:if>
 
     <xcolab-modals:flaggingModal />

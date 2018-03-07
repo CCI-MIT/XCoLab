@@ -1,0 +1,99 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
+
+    <xcolab:modal modalId="sendMessageModal" size="lg">
+        <form:form method="post" action="/messaging/sendMessage"
+              onSubmit="return checkMessageForm();">
+            <div class="modal-body">
+                <xcolab:teamBox title="Recipients"/>
+
+                <div class="form-group">
+                    <label for="messageSubject"><spring:message code="message.modal.subject"/> </label>
+                    <input name="messageSubject" type="text" id="messageSubject"
+                           class="form-control" required="required"/>
+                </div>
+                <div class="form-group">
+                    <label for="messageContent">Content: </label>
+                    <textarea name="messageContent" id="messageContent"
+                              class="rte-editorPlaceholder form-control" ><!-- --></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="close" class="btn btn-gray" data-dismiss="modal">
+                    <spring:message code="message.modal.buttons.cancel"/>
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <spring:message code="message.modal.buttons.send"/>
+                </button>
+            </div>
+        </form:form>
+    </xcolab:modal>
+
+    <spring:message code="message.modal.buttons.notification.selectrecepient" var="selectRecipients"/>
+    <spring:message code="message.modal.buttons.notification.member" var="memberNotFoundMsg"/>
+    <spring:message code="message.modal.buttons.notification.notFound" var="memberNotFoundMsg2"/>
+    <spring:message code="message.modal.buttons.notification.limitexceeded" var="limitExceeded"/>
+    <spring:message code="message.modal.buttons.notification.limitexceeded2" var="limitExceeded2"/>
+
+    <script>
+        <![CDATA[
+
+        jQuery('#sendMessageModal').on('show.bs.modal', function (e) {
+            var $el = jQuery(e.relatedTarget);
+            var recipient = $el.data('messageRecipient');
+            var subject = $el.data('messageSubject');
+            var content = $el.data('messageContent');
+
+            if (recipient) {
+                jQuery('#userIdsRecipients').val(recipient);
+                jQuery('#teamBoxRecipients').hide();
+            }
+            if (subject) {
+                jQuery('#messageSubject').val(subject);
+            }
+            if (content) {
+                if (content.startsWith('#')) {
+                    content = jQuery(content).html();
+                }
+                CKEDITOR.instances['messageContent'].setData(content.trim());
+            }
+        });
+
+        function checkMessageForm() {
+            var $userListRecipients = $("#userListRecipients");
+            var currentSearchText = $userListRecipients.val();
+
+            if (currentSearchText.length !== 0) {
+                noty({
+                    text: "${memberNotFoundMsg} " + currentSearchText + " ${memberNotFoundMsg2}",
+                    type: 'error'
+                });
+                return false;
+            }
+            var recipientVal = $("#userIdsRecipients").val();
+            var numberOfRecipients = recipientVal.length > 0 ? recipientVal.split(',').length : 0;
+            if (numberOfRecipients === 0) {
+                noty({text: "${selectRecipients}", type: 'error'});
+                return false;
+            }
+
+            var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
+            if (numberOfMessagesLeft < numberOfRecipients) {
+                noty({
+                    text: "${limitExceeded} "
+                    + (numberOfRecipients
+                    - numberOfMessagesLeft) + " ${limitExceeded2}", type: 'error'
+                });
+                return false;
+            }
+
+            disableDirtyCheck();
+        }
+        ]]>
+    </script>
+
+    <xcolab:requireLibrary name="CKEditor" />
+</jsp:root>
