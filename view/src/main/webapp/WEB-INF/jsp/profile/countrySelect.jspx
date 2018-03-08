@@ -254,7 +254,7 @@
         <form:option value="ZW" label="Zimbabwe"/>
     </form:select>
     <div class="reg_errors"><!--  -->
-        <form:errors cssClass="alert alert-danger" path="countryCode" />
+        <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
     </div>
 
 </jsp:root>

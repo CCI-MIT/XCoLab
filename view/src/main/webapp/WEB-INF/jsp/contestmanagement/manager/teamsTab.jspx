@@ -25,7 +25,7 @@
 
     <div class="c-ContentBox">
         <div class="reg_errors"><!--  -->
-            <form:errors cssClass="alert alert-danger" path="*"/>
+            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
         </div>
 
         <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
@@ -42,7 +42,7 @@
                     </form:select>
 
                     <div class="reg_errors">
-                        <form:errors cssClass="alert alert-danger" path="elementId"/>
+                        <form:errors cssClass="c-Alert c-Alert__error" path="elementId"/>
                     </div>
                 </div>
             </div>

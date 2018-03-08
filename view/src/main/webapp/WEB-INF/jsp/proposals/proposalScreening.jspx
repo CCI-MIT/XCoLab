@@ -20,7 +20,7 @@
         }</style>
 
         <div id="content">
-            <form:errors cssClass="alert alert-danger" />
+            <form:errors cssClass="c-Alert c-Alert__error" />
 
             This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
             <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/tab/SCREENING?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
@@ -91,7 +91,7 @@
                             </div>
                             <i>Your comment will be visible to the public.</i>
                             <div class="form-errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger" path="fellowScreeningActionCommentBody" />
+                                <form:errors cssClass="c-Alert c-Alert__error" path="fellowScreeningActionCommentBody" />
                             </div>
                             <form:textarea id="fellowCommentBody" cssClass="c-Comment__box" path="fellowScreeningActionCommentBody" style="width:100%;"/>
                             <div id="comment-footers">
@@ -121,7 +121,7 @@
 
                     </div>
                     <div class="addpropbox">
-                        <form:errors path="*" cssClass="alert alert-danger" />
+                        <form:errors path="*" cssClass="c-Alert c-Alert__error" />
 
                         <h3 style="margin-top: 0;">My Rating</h3>
                         <c:choose>

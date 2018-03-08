@@ -120,7 +120,7 @@
                 <div class="addprophelp">Give the ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
                 <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
                     <form:input path="name" id="proposalName" cssClass="form-control" />
-                    <form:errors path="name" cssClass="alert alert-danger" />
+                    <form:errors path="name" cssClass="c-Alert c-Alert__error" />
                     <div class="clearfix"><!--  --></div>
 
                     <div class="clearfix"><!-- --></div>

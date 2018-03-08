@@ -51,7 +51,7 @@
                                         <i>Your comment will be visible to the public.</i>
 
                                         <div class="form-errors"><!--  -->
-                                            <form:errors cssClass="alert alert-danger" path="advanceComment" />
+                                            <form:errors cssClass="c-Alert c-Alert__error" path="advanceComment" />
                                         </div>
                                         <a name="advanceCommentAnchor" id="advanceCommentAnchor"></a>
                                         <form:textarea id="advanceComment" cssClass="c-Comment__box" path="advanceComment" style="width:100%;"/>

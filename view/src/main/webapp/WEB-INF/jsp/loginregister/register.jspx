@@ -67,20 +67,20 @@
             </c:if>
 
             <div class="reg_errors"><!--  --></div>
-            <form:errors cssClass="alert alert-danger" htmlEscape="false"/>
+            <form:errors cssClass="c-Alert c-Alert__error" htmlEscape="false"/>
             <table class="reg">
                 <tr style="${ generateScreenName ? 'display: none;' : ''}">
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.screenname"/> </th>
                     <td><form:input cssClass="popupreg_input" path="screenName" /><br />
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger" path="screenName" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="screenName" />
                         </div></td>
                 </tr>
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.email"/> </th>
                     <td><form:input cssClass="popupreg_input" path="email" />
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger" path="email" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="email" />
                         </div>
                     </td>
                     <th class="second" rowspan="4"><spring:message code="register.form.fields.photo"/></th>
@@ -103,7 +103,7 @@
                         </c:if>
 
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger" path="retypeEmail" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="retypeEmail" />
                         </div>
                     </td>
                 </tr>
@@ -112,7 +112,7 @@
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.firstname"/></th>
                     <td><form:input cssClass="popupreg_input" path="firstName" onchange="generateScreenName()"/>
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger" path="firstName" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
                         </div></td>
                 </tr>
 
@@ -120,7 +120,7 @@
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.lastname"/> </th>
                     <td><form:input cssClass="popupreg_input" path="lastName" onchange="generateScreenName()"/>
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger" path="lastName" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
                         </div></td>
                 </tr>
 
@@ -128,7 +128,7 @@
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.password"/> </th>
                     <td><form:password cssClass="popupreg_input" path="password" />
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger" path="password" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="password" />
                         </div></td>
                     <td colspan="2" class="p-LoginRegister__signup__infofield">
                         <b><spring:message code="register.form.fields.password.note"/></b>
@@ -142,7 +142,7 @@
                     <td><form:password cssClass="popupreg_input"
                                        path="retypePassword" />
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger" path="retypePassword" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="retypePassword" />
                         </div></td>
 
                     <th class="second required-field">
@@ -155,7 +155,7 @@
                             <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
                         </form:select>
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger" path="country" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="country" />
                         </div>
                     </td>
                 </tr>
@@ -175,7 +175,7 @@
                                 </c:forEach>
                             </form:select>
                             <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger" path="country" />
+                                <form:errors cssClass="c-Alert c-Alert__error" path="country" />
                             </div>
                         </td>
                     </tr>
@@ -190,7 +190,7 @@
                             <span class="limit_charactersMax">2000</span> <spring:message code="register.form.fields.shortbio.maxcharmsg"/>
                         </div>
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger" path="shortBio" />
+                            <form:errors cssClass="c-Alert c-Alert__error" path="shortBio" />
                         </div>
                     </td>
                 </tr>
@@ -201,7 +201,7 @@
                         <td colspan="3">
                             <div class="g-recaptcha" data-sitekey="${recaptchaDataSiteKey}"><!-- --></div>
                             <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger" path="captchaText" />
+                                <form:errors cssClass="c-Alert c-Alert__error" path="captchaText" />
                             </div>
                         </td>
                     </tr>

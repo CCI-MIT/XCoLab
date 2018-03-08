@@ -71,17 +71,17 @@
             </div>
         </c:if>
         <br/>
-        <form:errors cssClass="alert alert-danger" />
+        <form:errors cssClass="c-Alert c-Alert__error" />
 
         <div class="form-errors">
-            <form:errors path="ratingValues" cssClass="alert alert-danger"/>
+            <form:errors path="ratingValues" cssClass="c-Alert c-Alert__error"/>
         </div>
         <proposalsPortlet:proposalRating ratingTypes="${judgeProposalFeedbackBean.ratingTypes}" ratingValuesPath="ratingValues" />
 
         <c:if test="${proposalsPermissions.canJudgeActions}">
             <h3>Would you like to see this proposal advance to the next round?</h3>
             <div class="form-errors">
-                <form:errors path="shouldAdvanceProposal" cssClass="alert alert-danger"/>
+                <form:errors path="shouldAdvanceProposal" cssClass="c-Alert c-Alert__error"/>
             </div>
             <form:select path="shouldAdvanceProposal" class="form-control">
                 <form:option value="" label="--- select one ---" />
@@ -92,7 +92,7 @@
 
         <h3 style="margin-top: 10px;">${proposalsPermissions.canJudgeActions ? 'Judge' : ''} Feedback</h3>
         <div class="form-errors"><!--  -->
-            <form:errors cssClass="alert alert-danger" path="comment" />
+            <form:errors cssClass="c-Alert c-Alert__error" path="comment" />
         </div>
 
         <form:textarea path="comment" cssClass="c-Comment__box form-control" style="width:100%; height: 178px;"

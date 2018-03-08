@@ -64,7 +64,7 @@
 
                             <div id="proposalToModelMap" class="addpropbox" style="display: none;">
                                 <c:if test="${not empty proposalToModelMap}">
-                                    <div class="alert alert-danger">
+                                    <div class="c-Alert c-Alert__error">
                                         In order to use the values from your regional plans here, all the regional plans
                                         need to use the same modeling engine, and you must include a regional plan for all
                                         the regions.
@@ -183,7 +183,7 @@
                     </c:when>
                     <c:otherwise>
                         <div id="modelContent">
-                            <div class="alert alert-danger">
+                            <div class="c-Alert c-Alert__error">
                                 No modeling engine is configured for this contest. Please contact the administrator.
                             </div>
                         </div>

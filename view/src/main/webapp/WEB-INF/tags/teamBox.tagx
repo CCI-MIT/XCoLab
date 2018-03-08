@@ -22,11 +22,11 @@
             <input id="${inputBox}" type="text" class="form-control teamMembers"/>
             <div class="clear"><!-- --></div>
             <div id="${pleaseChooseFromList}" style="display: none;"
-                 class="alert alert-danger">Please choose a user from list.
+                 class="c-Alert c-Alert__error">Please choose a user from list.
             </div>
             <div class="clear"><!-- --></div>
             <div id="${unknownUsersContainer}" style="display: none;"
-                 class="alert alert-danger">Unknown users:
+                 class="c-Alert c-Alert__error">Unknown users:
                 <ul></ul>
             </div>
         </div>

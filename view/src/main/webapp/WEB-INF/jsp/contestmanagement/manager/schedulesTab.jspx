@@ -44,7 +44,7 @@
 
     <div class="c-ContentBox">
         <div class="reg_errors"><!--  -->
-            <form:errors cssClass="alert alert-danger" path="*"/>
+            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
         </div>
 
         <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
@@ -60,7 +60,7 @@
                     </form:select>
 
                     <div class="reg_errors">
-                        <form:errors cssClass="alert alert-danger" path="elementId"/>
+                        <form:errors cssClass="c-Alert c-Alert__error" path="elementId"/>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                     <form:input path="scheduleName" cssClass="form-control"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger" path="scheduleName"/>
+                        <form:errors cssClass="c-Alert c-Alert__error" path="scheduleName"/>
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@
                     </c:if>
 
                     <div><!--  -->
-                        <form:errors cssClass="alert alert-danger"/>
+                        <form:errors cssClass="c-Alert c-Alert__error"/>
                     </div>
 
                     <table class="c-ContentBox__Table">
@@ -138,7 +138,7 @@
                                              data-form-name="contestPhaseDeleted"/>
 
                                 <div class="reg_errors"><!--  -->
-                                    <form:errors cssClass="alert alert-danger"
+                                    <form:errors cssClass="c-Alert c-Alert__error"
                                                  path="schedulePhases[${x.index}].phaseStartDate"/>
                                 </div>
 
