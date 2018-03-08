@@ -53,6 +53,7 @@ $c-Alert__success__message__background: $t-Color__success__background !default;
   background: $c-Alert__success__message__background;
 }
 
+// TODO COLAB-2563: remove once we moved to bootstrap's form validation
 .cb-alert-form-invalid {
   margin-top: 5px;
   display: inline-block;
