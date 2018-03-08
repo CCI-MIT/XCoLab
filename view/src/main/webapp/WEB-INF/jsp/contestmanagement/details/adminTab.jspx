@@ -47,7 +47,7 @@
                     <form:input path="contestUrlName" id="contestUrlName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger" path="contestUrlName"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestUrlName"/>
                     </div>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -75,7 +75,7 @@
                     <form:input path="contestYear" id="contestYear" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger" path="contestYear"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestYear"/>
                     </div>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -100,7 +100,7 @@
                     <form:input path="emailTemplateUrl" id="emailTemplateUrl" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger" path="emailTemplateUrl"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="emailTemplateUrl"/>
                     </div>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -128,7 +128,7 @@
                     </form:select>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger" path="contestTier"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestTier"/>
                     </div>
                 </div>
             </div>
@@ -153,7 +153,7 @@
                     </form:select>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger" path="hideRibbons"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="hideRibbons"/>
                     </div>
                 </div>
             </div>
@@ -186,7 +186,7 @@
                                     </form:select>
 
                                     <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger"
+                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid"
                                                      path="contestModelSettings.defaultModelId"/>
                                     </div>
                                 </td>
@@ -204,7 +204,7 @@
                                                       itemLabel="lable"/>
                                     </form:select>
                                     <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger"
+                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid"
                                                      path="contestModelSettings.otherModelIds"/>
                                     </div>
                                 </td>
@@ -221,7 +221,7 @@
                                     </form:select>
 
                                     <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger"
+                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid"
                                                      path="contestModelSettings.defaultModelSettings"/>
                                     </div>
                                 </td>
@@ -248,7 +248,7 @@
                         <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger" path="contestType" />
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestType" />
                     </div>
                 </div>
             </div>
