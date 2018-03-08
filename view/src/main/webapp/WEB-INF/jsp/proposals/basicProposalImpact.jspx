@@ -19,7 +19,7 @@
         <xcolab:requireLibrary name="spin.js" />
         <xcolab:requireLibrary name="handlebars.js" />
         
-        <xcolab:script src="/js/proposals/numeral.min.js"/>
+        <collab:script src="/js/proposals/numeral.min.js"/>
 
         <c:set var="getRegionsUrl" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactGetRegions"/>
 
@@ -263,27 +263,32 @@
                     <div id="edit-comments">
                         <span class="spinner-area"><!-- --> </span>
                         <c:if test="${canCommentAsAuthor}">
-                            <div class="addpropbox q1">
-                                <label>
-                                    <strong>Comments from Author </strong>
-                                </label>
-                                <div class="addprophelp">Give your comments for your proposal's estimation of impact.</div>
-                                <div class="addpropInputContainer">
-                                    <textarea id="impactAuthorComment_text_area"><c:if test="${not empty authorComment}">${authorComment}</c:if></textarea>
-                                    <div class="clearfix"><!--  --></div>
+                            <div class="c-Box c-Box--colorTan q1">
+                                <div class="c-Box__body">
+                                    <label for="impactAuthorComment_text_area">
+                                        <strong>Comments from Author </strong>
+                                    </label>
+                                    <p>
+                                        Give your comments for your proposal's estimation of impact.
+                                    </p>
+                                    <textarea id="impactAuthorComment_text_area">
+                                        <c:if test="${not empty authorComment}">${authorComment}</c:if>
+                                    </textarea>
                                 </div>
                             </div>
                         </c:if>
                         <c:if test="${canCommentAsIAF}">
-                            <div class="addpropbox q1">
-                                <label>
-                                    <strong>Comments from Impact Assessment Fellow </strong>
-                                </label>
-                                <div class="addprophelp">Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.</div>
-                                <div class="addpropInputContainer">
-                                    <textarea  id="impactIAFComment_text_area"><c:if test="${not empty iafComment}">${iafComment}</c:if></textarea>
-                                    <div class="clearfix"><!--  --></div>
-
+                            <div class="c-Box c-Box--colorTan q1">
+                                <div class="c-Box__body">
+                                    <label for="impactIAFComment_text_area">
+                                        <strong>Comments from Impact Assessment Fellow </strong>
+                                    </label>
+                                    <p>
+                                        Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.
+                                    </p>
+                                    <textarea id="impactIAFComment_text_area">
+                                        <c:if test="${not empty iafComment}">${iafComment}</c:if>
+                                    </textarea>
                                 </div>
                             </div>
                         </c:if>

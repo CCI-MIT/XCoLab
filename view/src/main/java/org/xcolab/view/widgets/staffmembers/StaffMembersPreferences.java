@@ -16,18 +16,18 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
 
     private static final long serialVersionUID = 1L;
 
-    private final static String PORTLET_TITLE = "PORTLET_TITLE";
-    private final static String COLUMN_AMOUNT = "COLUMN_AMOUNT";
-    private final static String DISPLAY_PHOTO = "DISPLAY_PHOTO";
-    private final static String DISPLAY_URL = "DISPLAY_URL";
-    private final static String CATEGORY_ID = "CATEGORY_ID";
+    private static final String PORTLET_TITLE = "PORTLET_TITLE";
+    private static final String COLUMN_AMOUNT = "COLUMN_AMOUNT";
+    private static final String DISPLAY_PHOTO = "DISPLAY_PHOTO";
+    private static final String DISPLAY_URL = "DISPLAY_URL";
+    private static final String CATEGORY_ID = "CATEGORY_ID";
 
 
-    private final static int defaultColumnAmount = 3;
-    private final static boolean defaultDisplayPhoto = true;
-    private final static boolean defaultDisplayUrl = true;
-    private final static int defaultCategoryId = 1;
-    private final static String defaultPortletTitle = "";
+    private static final int defaultColumnAmount = 3;
+    private static final boolean defaultDisplayPhoto = true;
+    private static final boolean defaultDisplayUrl = true;
+    private static final int defaultCategoryId = 1;
+    private static final String defaultPortletTitle = "";
 
     private static final Map<Long, String> categories;
 

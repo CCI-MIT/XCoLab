@@ -27,10 +27,10 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}")
 public class SupportProposalActionController {
 
-    private final static String SUPPORT_ANALYTICS_KEY = "SUPPORTED_ENTRIES";
-    private final static String SUPPORT_ANALYTICS_CATEGORY = "User";
-    private final static String SUPPORT_ANALYTICS_ACTION = "Support contest entry";
-    private final static String SUPPORT_ANALYTICS_LABEL = "";
+    private static final String SUPPORT_ANALYTICS_KEY = "SUPPORTED_ENTRIES";
+    private static final String SUPPORT_ANALYTICS_CATEGORY = "User";
+    private static final String SUPPORT_ANALYTICS_ACTION = "Support contest entry";
+    private static final String SUPPORT_ANALYTICS_LABEL = "";
 
     @PostMapping("supportProposalAction")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,

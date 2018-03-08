@@ -14,13 +14,11 @@
     </script>
 	<div class="proposal-head">
         <div class="c-Headline">
-            <div class="proposal-image">
-                <collab:image src="${proposal.logoPath}"
-                     width="52" height="52" alt="${contestType.proposalName} image" title="${proposal.name}" />
+            <collab:image src="${proposal.logoPath}" width="52" height="52"
+                          alt="${contestType.proposalName} image" title="${proposal.name}" />
 
-            </div>
-            <div class="proposal-title">
-                <div class="prop-description">
+            <div>
+                <div class="cb-text-lg">
                     <collab:message code="contests.proposal.header.caption" contestType="${contestType}">
                         <spring:argument>
                             <xcolab:contestLink contest="${contest}" />
@@ -37,7 +35,9 @@
                         </spring:argument>
                     </collab:message>
                 </div>
-                <h1><a href="${proposal.proposalUrl}">${proposal.name}</a></h1>
+                <h1>
+                    <a href="${proposal.proposalUrl}">${proposal.name}</a>
+                </h1>
             </div>
         </div>
         <c:if test="${not proposal.visible }">
@@ -91,11 +91,11 @@
     <!-- TODO COLAB-2676: still needed for autocomplete -->
     <xcolab:requireLibrary name="jQuery UI" />
 
-    <xcolab:script src="/js/proposals/proposals.js"/>
-    <xcolab:script src="/js/proposals/discussionComments.js"/>
-    <xcolab:script src="/js/proposals/historyWidget.js"/>
+    <collab:script src="/js/proposals/proposals.js"/>
+    <collab:script src="/js/proposals/discussionComments.js"/>
+    <collab:script src="/js/proposals/historyWidget.js"/>
 
-    <xcolab:stylesheet href="/css/lib/imageviewer.css"/>
-    <xcolab:script src="/js/proposals/imageviewer.min.js" />
+    <collab:stylesheet href="/css/lib/imageviewer.css"/>
+    <collab:script src="/js/proposals/imageviewer.min.js" />
 
 </jsp:root>

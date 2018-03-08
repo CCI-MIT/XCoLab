@@ -42,23 +42,23 @@
 		<h3>Proposal template details</h3>
 
 		<form:form action="${changeElementUrl }" commandName="elementSelectIdWrapper" id="selectForm" method="post">
-			<div class="addpropbox">
-				<strong class="inputTitleLeft">Selected template:</strong>
-				<div class="addpropInputContainer">
-					<form:select path="elementId" id="changeElementSelect" cssClass="form-control">
-						<form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value" itemLabel="lable"/>
-					</form:select>
-					<div class="reg_errors">
-						<form:errors cssClass="c-Alert c-Alert__error" path="elementId" />
-					</div>
-				</div>
+			<div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <strong>Selected template:</strong>
+                    <form:select path="elementId" id="changeElementSelect" cssClass="form-control">
+                        <form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value" itemLabel="lable"/>
+                    </form:select>
+                    <div class="reg_errors">
+                        <form:errors cssClass="c-Alert c-Alert__error" path="elementId" />
+                    </div>
+                </div>
 			</div>
 		</form:form>
 
 		<c:if test="${planTemplateId >= 0}">
 			<div id="resourcesSections">
 				<form:form action="${updateElementFormURL }" commandName="contestProposalTemplateWrapper"
-				 cssClass="addpropform" id="editForm" method="post">
+				 cssClass="addpropform mt-3" id="editForm" method="post">
 
 					<form:hidden path="createNew" id="createNew"/>
 					<form:hidden path="numberOfSections"/>
@@ -68,28 +68,34 @@
 						<form:errors cssClass="c-Alert c-Alert__error" path="*" />
 					</div>
 
-					<div class="addpropbox">
-						<strong class="inputTitleLeft">Template name:</strong>
-						<form:input path="templateName" cssClass="form-control"/>
-						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="c-Alert c-Alert__error" path="templateName" />
-						</div>
+					<div class="c-Box c-Box--colorTan">
+                        <div class="c-Box__body">
+                            <strong>Template name:</strong>
+                            <form:input path="templateName" cssClass="form-control"/>
+                            <div class="reg_errors"><!--  -->
+                                <form:errors cssClass="c-Alert c-Alert__error" path="templateName" />
+                            </div>
+                        </div>
 					</div>
 					<h3>Proposal template sections</h3>
 					<c:forEach var="section" items="${contestProposalTemplateWrapper.sections}" varStatus="x" >
 
-						<div class="dropzone" style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
-							 ondrop="drop(event)" ondragenter="dragEnter(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)"
-								data-bind-id="${x.index}"
-								id="dropzone${x.index}"><span class="counter" style="float: left;">Position # ${x.index +1}</span><span style="float:right">To change order drag a section and drop it on any of these areas.</span></div>
+                    <div class="dropzone" style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
+                         ondrop="drop(event)" ondragenter="dragEnter(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)"
+                         data-bind-id="${x.index}"
+                         id="dropzone${x.index}">
+                        <span class="counter" style="float: left;">Position # ${x.index +1}</span>
+                        <span style="float:right">To change order drag a section and drop it on any of these areas.</span>
+                    </div>
 
-						<div class="addpropbox js-SectionParent ${section.deletable ? 'blue deletable' : ''} ${section.type}"
-							style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
-							id="section${x.index}"
-							data-section-id="${x.index}"
-							draggable="true"
-							ondragend="dragEnd(event)"
-							ondragstart="dragStart(event)">
+                    <div class="c-Box c-Box--colorTan js-SectionParent ${section.deletable ? 'blue deletable' : ''} ${section.type}"
+                         style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
+                         id="section${x.index}"
+                         data-section-id="${x.index}"
+                         draggable="true"
+                         ondragend="dragEnd(event)"
+                         ondragstart="dragStart(event)">
+                        <div class="c-Box__body">
 
 							<form:hidden path="sections[${x.index}].templateSection" data-form-name="templateSection"/>
 							<form:hidden path="sections[${x.index}].sectionNew" data-form-name="sectionNew"/>
@@ -232,13 +238,13 @@
                                 <strong >Options :</strong><small>(use ';' to separate the options)</small><br/>
                                 <form:input  path="sections[${x.index}].allowedValues" data-form-name="allowedValues" cssClass="form-control"/>
                             </div>
-
-						</div>
-                        <script>
-                            jQuery(function() {
-                                setSectionType(parseInt("${x.index}"), "${section.type}");
-                            });
-                        </script>
+                        </div>
+                    </div>
+                    <script>
+                        jQuery(function() {
+                            setSectionType(parseInt("${x.index}"), "${section.type}");
+                        });
+                    </script>
 					</c:forEach>
 
 					<div class="addSection" id="addSection" name="addSection">
@@ -251,33 +257,35 @@
 	<c:if test="${planTemplateId >= 0}">
 		<div class="c-ContentBox">
 			<h3>Contests using this template:</h3>
-			<div class="addpropbox" style="margin-top: 20px;">
-			<table class="c-ContentBox__Table">
-				<col span="1" class="extraSmallColumn"/>
-				<col span="1" class="wideColumn" style="text-align: left;"/>
-				<col span="1" class="smallColumn"/>
-				<col span="1" class="smallColumn"/>
-				<thead>
-				<tr>
-					<th>#</th>
-					<th>Title</th>
-					<th>Tier</th>
-					<th><!-- --></th>
-				</tr>
-				</thead>
-				<tbody>
-				<c:forEach items="${contestProposalTemplateWrapper.contestsUsingTemplate}" var="contestWrapper" varStatus="x">
-					<tr>
-						<td data-form-name="index">${x.index + 1}</td>
-						<td ><xcolab:contestLink contest="${contestWrapper}" /></td>
-						<td>Tier ${contestWrapper.contestTier}</td>
-						<td>
-							<a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
-						</td>
-					</tr>
-				</c:forEach>
-				</tbody>
-			</table>
+			<div class="c-Box c-Box--colorTan" style="margin-top: 20px;">
+                <div class="c-Box__body">
+                    <table class="c-ContentBox__Table">
+                        <col span="1" class="extraSmallColumn"/>
+                        <col span="1" class="wideColumn" style="text-align: left;"/>
+                        <col span="1" class="smallColumn"/>
+                        <col span="1" class="smallColumn"/>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Tier</th>
+                            <th><!-- --></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${contestProposalTemplateWrapper.contestsUsingTemplate}" var="contestWrapper" varStatus="x">
+                            <tr>
+                                <td data-form-name="index">${x.index + 1}</td>
+                                <td ><xcolab:contestLink contest="${contestWrapper}" /></td>
+                                <td>Tier ${contestWrapper.contestTier}</td>
+                                <td>
+                                    <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
 			</div>
 		</div>
 	</c:if>
@@ -422,7 +430,7 @@
 				element.classList.remove("allowDropState");
 			});
 
-			[].forEach.call(document.getElementsByClassName('addpropbox'), function (element) {
+			[].forEach.call(document.getElementsByClassName('c-Box c-Box--colorTan'), function (element) {
 				element.classList.remove("dragState");
 			});
 

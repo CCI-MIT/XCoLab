@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ContestFlagTextToolTipBean implements Serializable {
 
-    private final static List<LabelValue> FLAG_OPTIONS = Arrays.asList(
+    private static final List<LabelValue> FLAG_OPTIONS = Arrays.asList(
             new LabelValue(-1L, "Hide flag"),
             new LabelValue(0L, "Phase default"),
             new LabelValue(1L, "Green theme"),

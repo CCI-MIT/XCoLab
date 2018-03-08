@@ -15,7 +15,7 @@ public class MessagingBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final int PAGE_SIZE = 10;
-    private final static int PAGER_RANGE = 3;
+    private static final int PAGER_RANGE = 3;
 
     private Member member;
     private MessageType messageType = MessageType.INBOX;

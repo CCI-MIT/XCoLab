@@ -6,7 +6,6 @@
 
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
-    <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
 
 	<div class="contestsContainer">
@@ -52,21 +51,7 @@
     
     
     <div class="contest-outline-right">
-        
-        <!-- 
-        <div class="show-active">Display: 
-        	<c:choose>
-				<c:when test="${showActiveContests }">
-					<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >Show active contests</a>
-				</c:when>
-				<c:otherwise>
-					<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>Show prior contests</a>
-				</c:otherwise>
-			</c:choose>
-		</div>
-		
-        <div class="contest-count"><span class="count"></span> contests</div>
-         -->
+
 		<div class="clearfix"><!--  --></div>
         <div class="section-list">
         	<!--  -->
@@ -74,22 +59,22 @@
 
         <div class="section-contest-count-container"><div class="contest-count"><span class="count"><!--  --></span>
             <span class="active-title" style="display: none;"> active</span>
-            <span class="inactive-title" style="display: none;"> prior</span>
+            <span class="total-title" style="display: none;"> total</span>
             <span class='plural'> ${contestType.contestNamePlural}</span>
             <span class='singular'> ${contestType.contestName}</span>
         </div>
 
             <div class="other-contest-count" style="display: none;">
                 (<span class="active-title" style="display:none;">
-                    <a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=true&amp;showAllContests=${showAllContests}" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=true&amp;showAllContests=${showAllContests}" class='showOtherContestsLink'><span class="count"><!-- --></span>
+                    <a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }" class='showOtherContestsLink'><span class="count"><!-- --></span>
                         active
                         <span class='plural'> ${contestType.contestNamePlural}</span>
                         <span class='singular'> ${contestType.contestName}</span>
                     </a>
                 </span>
-                <span class="inactive-title" style="display:none;">
-                    <a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" class='showOtherContestsLink' ><span class="count"><!-- --></span>
-                        prior
+                <span class="total-title" style="display:none;">
+                    <a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showAllContests=true" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showAllContests=true" class='showOtherContestsLink' ><span class="count"><!-- --></span>
+                        total
                         <span class='plural'> ${contestType.contestNamePlural}</span>
                         <span class='singular'> ${contestType.contestName}</span>
                     </a>
@@ -103,22 +88,22 @@
         <div class="otherContestsInfoContainer">
         	<c:if test="${not showAllContests }">
 				<c:choose>
-					<c:when test="${showActiveContests }">
+					<c:when test="${not showAllContests}">
 						<span class="otherContestsCount prior">
-						<collab:image src="/images/contests-archive.png" height="20" />&amp;nbsp;
+						<collab:image src="/images/contests-archive.png" height="20" />&#160;
 						If you select
-							<a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" class='showOtherContestsLink' >prior contests</a>,
-					
+							<a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showAllContests=false" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter}&amp;showAllContests=true" class='showOtherContestsLink' >all contests</a>,
+
 							<span class='count'><!-- --></span>
-							completed 
+							completed
 							<span class='plural'>${contestType.contestNamePlural}</span>
 							<span class='singular'>${contestType.contestName}</span>
-							will be displayed 
+							will be displayed
 						</span>
 					</c:when>
 					<c:otherwise>
 						<span class="otherContestsCount">If you select
-							<a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=true&amp;showAllContests=${showAllContests}" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" class='showOtherContestsLink'>active contests</a>,
+							<a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showAllContests=false" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter}&amp;showAllContests=false" class='showOtherContestsLink'>active contests</a>,
 							<span class='count'><!-- --></span> current
 							<span class='plural'>${contestType.contestNamePlural}</span>
 							<span class='singular'>${contestType.contestName}</span>
@@ -129,7 +114,7 @@
 			</c:if>
 		</div>
 
- 		
+
     </div> <!-- / contest-outline-right -->
 	</div>
 
@@ -140,7 +125,6 @@
 		var focusAreas = {};
 		var ontologySpaces = {};
 
-        var showActiveContests = ${showActiveContests};
         var showAllContests = ${showAllContests};
 		
 		<c:forEach var="ontologySpace" items="${ontologySpaces}">
@@ -461,19 +445,6 @@
 		function showSpaceContests(spaceId) {
 			var currentSpace = ontologySpaces[spaceId];
 			window.location.hash = "space=" + spaceId + "_" + escape(currentSpace.name);
-			
-			// update links in show active dropdown
-			jQuery(".show-active li a").each(function(idx, elem) {
-				var elem = jQuery(elem);
-				var href = elem.attr('href');
-				var hashPos = href.indexOf("#");
-				
-				if (hashPos >= 0) {
-					href = href.substring(0, hashPos);
-				}
-				elem.attr('href', href + window.location.hash);
-				
-			});
 
 			var otherContestsInfoContainer = jQuery(".otherContestsInfoContainer");
 			if (currentSpace.otherContests.length > 0) {
@@ -502,19 +473,6 @@
 			var otherContestsInfoContainer = jQuery(".otherContestsInfoContainer");
 			var showOtherContestsLink = otherContestsInfoContainer.find(".showOtherContestsLink");
 			showOtherContestsLink.attr('href', showOtherContestsLink.attr("data-base-url") + window.location.hash);
-
-			// update links in show active dropdown
-			jQuery(".show-active li a").each(function(idx, elem) {
-				var elem = jQuery(elem);
-				var href = elem.attr('href');
-				var hashPos = href.indexOf("#");
-				
-				if (hashPos >= 0) {
-					href = href.substring(0, hashPos);
-				}
-				elem.attr('href', href + window.location.hash);
-				
-			});
 			
 			if (currentTerm.otherContests.length > 0) {
 				otherContestsInfoContainer.find(".count").text(currentTerm.otherContests.length);
@@ -563,11 +521,11 @@
                 });
 
 
-                if (showActiveContests) {
+                if (!showAllContests) {
                     countContainer.find(".active-title").show();
-                    otherCountContainer.find(".inactive-title").show();
+                    otherCountContainer.find(".total-title").show();
                 } else {
-                    countContainer.find(".inactive-title").show();
+                    countContainer.find(".total-title").show();
                     otherCountContainer.find(".active-title").show();
                 }
             }

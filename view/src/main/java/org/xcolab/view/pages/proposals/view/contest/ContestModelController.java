@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ContestModelController extends BaseProposalsController {
 
-    private final static String COOKIE_PREFERRED_MODEL = "cc_contests_preferredModels";
+    private static final String COOKIE_PREFERRED_MODEL = "cc_contests_preferredModels";
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/model")
     public String showContestModel(HttpServletRequest request, HttpServletResponse response,

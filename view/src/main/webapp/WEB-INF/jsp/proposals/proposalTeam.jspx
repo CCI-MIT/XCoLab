@@ -20,12 +20,13 @@
 
         <div id="content">
 
-            <div class="c-Headline prophead" style="position: relative;">
-                <h2>
+            <div class="cb-d-flex-between-center" style="position: relative;">
+                <div class="c-Count">
                     <spring:message var="memberText" code="contests.proposal.team.member"/>
                     <spring:message var="membersText" code="contests.proposal.team.members"/>
-                    <span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? memberText : membersText}
-                </h2>
+                    <span class="c-Count__number">${fn:length(proposal.members)}</span>
+                    ${fn:length(proposal.members) == 1 ? memberText : membersText}
+                </div>
                 <c:if test="${proposalsDisplayPermissions.canSeeRequestMembershipButton}">
                     <div class="prop-butt-popover">
                         <collab:image src="/images/icon-request-membership.png" width="24" height="22"
@@ -40,7 +41,7 @@
                                 <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" onfocus="this.value=''" value="Optional comment" style="display:none;"/>
                                 <form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />
                                 <div id="requestButtons">
-                                    <a href="javascript:;" class="btn btn-primary requestMembershipSubmitButton"
+                                    <a href="javascript:;" class="btn btn-primary"
                                             rel="nofollow" onclick="if(deferUntilLogin()) {requestMembership();}">
                                         <spring:message code="contests.proposal.team.request" />
                                     </a>
@@ -63,7 +64,7 @@
                                 <form:textarea id="invite-comment" cssClass="requestComment" path="inviteComment" placeholder="Optional comment" style="display:none;"/>
                                 <!--<form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />-->
                                 <div id="requestButtons">
-                                    <a href="javascript:;" class="btn btn-primary requestMembershipSubmitButton"
+                                    <a href="javascript:;" class="btn btn-primary"
                                             rel="nofollow" onclick="if(deferUntilLogin()) {inviteMember();}">
                                         <spring:message code="contests.proposal.team.invite" />
                                     </a>
@@ -72,8 +73,6 @@
                         </form:form>
                     </div>
                 </c:if>
-
-
             </div>
             <table class="contributors">
                 <c:forEach var="member" items="${proposal.members }" varStatus="status">
@@ -112,12 +111,14 @@
             </table>
 
 
-            <div class="c-Headline propsubhead">
-                <h2>
+            <div class="cb-d-flex-between-center mt-4">
+                <div class="c-Count">
                     <spring:message var="supporterText" code="contests.supports.supporter" />
                     <spring:message var="supportersText" code="contests.supports.supporters" />
-                    <span>${proposal.supportersCount}</span> ${proposal.supportersCount == 1 ? supporterText : supportersText }
-                </h2>
+                    <span class="c-Count__number">${proposal.supportersCount}</span>
+                    ${proposal.supportersCount == 1 ? supporterText : supportersText }
+                </div>
+
                 <c:if test="${proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton  }">
                     <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?forwardToTab=TEAM&amp;contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
                     <div class="prop-butt">
@@ -153,13 +154,11 @@
             </c:if>
 
 
-            <div class="c-Headline propsubhead">
-                <h2>
-                    <collab:message var="linkedProposalText" code="contests.proposal.team.linkedproposal" contestType="${contestType}"/>
-                    <collab:message var="linkedProposalsText" code="contests.proposal.team.linkedproposals" contestType="${contestType}"/>
-                    <span>${fn:length(listOfLinkedProposals)}</span> ${fn:length(listOfLinkedProposals) == 1
-                        ? linkedProposalText : linkedProposalsText}
-                </h2>
+            <div class="c-Count mt-4">
+                <collab:message var="linkedProposalText" code="contests.proposal.team.linkedproposal" contestType="${contestType}"/>
+                <collab:message var="linkedProposalsText" code="contests.proposal.team.linkedproposals" contestType="${contestType}"/>
+                <span class="c-Count__number">${fn:length(listOfLinkedProposals)}</span>
+                ${fn:length(listOfLinkedProposals) == 1 ? linkedProposalText : linkedProposalsText}
             </div>
             <c:if test="${not empty listOfLinkedProposals }">
 
@@ -201,6 +200,6 @@
 
         <!-- TODO COLAB-2676: still needed for autocomplete -->
         <xcolab:requireLibrary name="jQuery UI" />
-        <xcolab:script src="/js/proposals/proposals.js"/>
+        <collab:script src="/js/proposals/proposals.js"/>
     </xcolab:layout>
 </jsp:root>

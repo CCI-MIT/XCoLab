@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin/contest/manager")
 public class FlaggingTabController extends AbstractTabController {
 
-    private final static Logger _log =
+    private static final Logger _log =
             LoggerFactory.getLogger(FlaggingTabController.class);
     static final private ContestManagerTabs tab = ContestManagerTabs.FLAGGING;
     static final private String TAB_VIEW = "contestmanagement/manager/flaggingTab";

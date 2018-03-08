@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
@@ -66,7 +65,7 @@ public class Contest extends AbstractContest implements Serializable {
     private final PlanTemplateClient planTemplateClient;
 
 
-    private final static Map<Long, FocusArea> faCache = new HashMap<>();
+    private static final Map<Long, FocusArea> faCache = new HashMap<>();
     private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
 
     protected static final String WHERE = "where";
@@ -166,8 +165,7 @@ public class Contest extends AbstractContest implements Serializable {
         } else {
             Long imgId = this.getSponsorLogoId();
             if (imgId != null) {
-                final String imageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
-                return imageDomain + "/image/contest/" + imgId;
+                return "/image/contest/" + imgId;
             }
             return "";
         }
@@ -179,13 +177,11 @@ public class Contest extends AbstractContest implements Serializable {
 
     public String getLogoPath() {
         long imgId = this.getContestLogoId() != null ? this.getContestLogoId() : 0;
-        String imageDomain;
+        final String imagePath = "/image/contest/" + imgId;
         if (this.getIsSharedContestInForeignColab()) {
-            imageDomain = ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get();
-        } else {
-            imageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
+            return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get() + imagePath;
         }
-        return imageDomain + "/image/contest/" + imgId;
+        return imagePath;
     }
 
     public boolean getShowInTileView(){

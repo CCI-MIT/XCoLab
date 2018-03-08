@@ -1,0 +1,31 @@
+// This component surrounds its centered text content with a horizontal rule
+
+.c-TextRule {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: $t-Color__text--dark;
+
+  &:after, &:before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: $t-Color__text--dark;
+  }
+
+  &:after {
+    margin-left: 0.5rem;
+  }
+
+  &:before {
+    margin-right: 0.5rem;
+  }
+}
+
+.c-TextRule--inverse {
+  color: $t-Color__text--light;
+
+  &:after, &:before {
+    background: $t-Color__text--light;
+  }
+}

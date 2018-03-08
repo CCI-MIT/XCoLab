@@ -31,10 +31,6 @@ public enum ColabTheme {
         return "/images/" + themeName + "-logo.png";
     }
 
-    public String getLogoPathSocial() {
-        return "/images/" + themeName + "-logo-sketchy.png";
-    }
-
     public String getLogoPathBig() {
         return "/images/" + themeName + "-logo-big.png";
     }

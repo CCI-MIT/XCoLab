@@ -16,23 +16,22 @@
     <jsp:directive.include file="./header.jspx"/>
 
     <div class="explanation">
-        <br/>
         <h1>
             Collection Card Editor
         </h1>
-        <br/>
-        <div class="addpropbox">
-             <b>Update</b> an existing Collection Card: Select the specific item in the hierarchy below!
-        </div>
-        <br/>
-        <div class="addpropbox">
-            <b>Create </b> a new Collection Card:
-            <div style="display:inline-block" >
-                <a class="btn btn-primary" href="#" onclick="createNewCollectionCard();">CREATE NEW</a>
+        <div class="c-Box c-Box--colorTan">
+            <div class="c-Box__body">
+                <b>Update</b> an existing Collection Card: Select the specific item in the hierarchy below!
             </div>
         </div>
-        <br/>
-        <br/>
+        <div class="c-Box c-Box--colorTan">
+            <div class="c-Box__body">
+                <b>Create </b> a new Collection Card:
+                <button type="button" class="btn btn-primary" onclick="createNewCollectionCard();">
+                    CREATE NEW
+                </button>
+            </div>
+        </div>
     </div>
 
 
@@ -65,7 +64,7 @@
                 </h2>
                 <form:hidden path="createNew" id="createNewFlag"/>
                 <input id="id" name="id"  type="hidden" value=""/>
-                <div class="addpropbox">
+                <div class="c-Box c-Box--colorTan">
                     <strong class="inputTitleLeft">Ontologyterm to load</strong>
                     <form:select path="ontologyTermToLoad" id="ontologyTermToLoad" cssClass="form-control" items="${collectionCardWrapperWhat.ontologyTerms}" />
                     <button onclick="openOntologyPicker('ontologyTermToLoad');" type="button"> Change</button>

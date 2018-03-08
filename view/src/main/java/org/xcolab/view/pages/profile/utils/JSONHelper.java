@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class JSONHelper {
 
-    private final static String JSON_SUCCESS_RESPONSE_MESSAGE = "success";
-    private final static String JSON_ERROR_RESPONSE_MESSAGE = "error";
-    private final static boolean JSON_FALSE_RESPONSE_MESSAGE = false;
+    private static final String JSON_SUCCESS_RESPONSE_MESSAGE = "success";
+    private static final String JSON_ERROR_RESPONSE_MESSAGE = "error";
+    private static final boolean JSON_FALSE_RESPONSE_MESSAGE = false;
 
     public void writeSuccessResultResponseJSON(boolean successStatus, HttpServletResponse response) {
         JSONObject resultResponseJson = createSuccessResultResponseJson(successStatus);

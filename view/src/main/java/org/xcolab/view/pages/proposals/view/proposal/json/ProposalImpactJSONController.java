@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ProposalImpactJSONController {
 
-    private final static Logger _log = LoggerFactory.getLogger(ProposalImpactJSONController.class);
+    private static final Logger _log = LoggerFactory.getLogger(ProposalImpactJSONController.class);
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactGetRegions")
     public void proposalImpactGetRegions(HttpServletResponse response,

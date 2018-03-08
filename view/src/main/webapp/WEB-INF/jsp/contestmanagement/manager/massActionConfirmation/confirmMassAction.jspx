@@ -11,13 +11,12 @@
         <c:set var="confirmDeleteContestURL" value="/admin/contest/manager/confirmMassAction" />
 
         <div class="proposal-head">
-            <div class="c-Headline" style="padding: 20px;">
-                <div class="proposal-title"><h1>Mass Action Confirmation</h1>
-                    <span class="floatLeft clearLeft">
-                        <h3>
+            <div class="c-Headline">
+                <div>
+                    <h1>Mass Action Confirmation</h1>
+                    <h3>
                         Please confirm the contest(s) that you want to execute the mass action "${massActionConfirmationWrapper.selectedMassAction.action.displayName}" on!
-                        </h3>
-                    </span>
+                    </h3>
                 </div>
             </div>
         </div>

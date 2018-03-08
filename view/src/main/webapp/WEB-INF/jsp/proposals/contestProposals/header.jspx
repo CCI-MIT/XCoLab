@@ -5,17 +5,17 @@
 
 	<!--@elvariable id="showCountdown" type="java.lang.Boolean"-->
 
-	<div class="c-Headline contest-page">
-		<div class="contest-image">
-            <collab:image src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
-		</div>
-		<h1>${contest.contestShortNameWithEndYear}</h1>
+	<div class="c-Headline align-items-center">
+        <collab:image src="${contest.logoPath}" width="50" height="50" alt="Contest Image"/>
+		<h1 class="my-0">${contest.contestShortNameWithEndYear}</h1>
 		<c:if test="${contestPhase.active and not empty contestPhase.phaseEndDate and showCountdown}">
-			<div class="days-left">
-                <spring:message code="contests.untilphaseends">
-                    <spring:argument>${contestPhase.durationTillEndFormatted}</spring:argument>
-                    <spring:argument>${contestPhase.name}</spring:argument>
-                </spring:message>
+			<div class="ml-auto">
+                <div class="c-Count c-Count--accent">
+                    <spring:message code="contests.untilphaseends">
+                        <spring:argument>${contestPhase.durationTillEndFormatted}</spring:argument>
+                        <spring:argument>${contestPhase.name}</spring:argument>
+                    </spring:message>
+                </div>
 			</div>
 		</c:if>
 	</div>

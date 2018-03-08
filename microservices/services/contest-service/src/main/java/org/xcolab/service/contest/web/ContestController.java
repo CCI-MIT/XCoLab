@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,11 +24,15 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.service.ontology.OntologyService;
+import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.util.spring.web.annotation.ListMapping;
 
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class ContestController {
@@ -40,19 +42,17 @@ public class ContestController {
     private final ContestDiscussionDao contestDiscussionDao;
     private final ContestCollectionCardDao contestCollectionCardDao;
 
-    private final ContestService serviceNamespace;
+    private final ContestService contestService;
     private final CollectionCardService collectionCardService;
     private final OntologyService ontologyService;
 
     @Autowired
-    public ContestController(ContestTranslationDao contestTranslationDao, ContestService serviceNamespace,
-            CollectionCardService collectionCardService, ContestDao contestDao,
-            ContestCollectionCardDao contestCollectionCardDao,
+    public ContestController(ContestTranslationDao contestTranslationDao,
+            ContestService contestService, CollectionCardService collectionCardService,
+            ContestDao contestDao, ContestCollectionCardDao contestCollectionCardDao,
             ContestDiscussionDao contestDiscussionDao, OntologyService ontologyService) {
-
-
         this.contestTranslationDao = contestTranslationDao;
-        this.serviceNamespace = serviceNamespace;
+        this.contestService = contestService;
         this.collectionCardService = collectionCardService;
         this.contestDao = contestDao;
         this.contestCollectionCardDao = contestCollectionCardDao;
@@ -60,40 +60,45 @@ public class ContestController {
         this.ontologyService = ontologyService;
     }
 
-    @GetMapping(value = "/contestCollectionCards/{contestCollectionCardId}")
-    public ContestCollectionCard getContestCollectionCard( @PathVariable long contestCollectionCardId) throws NotFoundException {
+    @GetMapping("/contestCollectionCards/{contestCollectionCardId}")
+    public ContestCollectionCard getContestCollectionCard(
+            @PathVariable long contestCollectionCardId) throws NotFoundException {
         return contestCollectionCardDao.get(contestCollectionCardId);
     }
 
-    @PostMapping(value = "/contestCollectionCards")
-    public ContestCollectionCard createContestCollectionCard(@RequestBody ContestCollectionCard contestCollectionCard) {
+    @PostMapping("/contestCollectionCards")
+    public ContestCollectionCard createContestCollectionCard(
+            @RequestBody ContestCollectionCard contestCollectionCard) {
         return contestCollectionCardDao.create(contestCollectionCard);
     }
 
-    @PutMapping(value = "/contestCollectionCards/{contestCollectionCardId}")
-    public boolean updateContestCollectionCard(@RequestBody ContestCollectionCard contestCollectionCard,
+    @PutMapping("/contestCollectionCards/{contestCollectionCardId}")
+    public boolean updateContestCollectionCard(
+            @RequestBody ContestCollectionCard contestCollectionCard,
             @PathVariable long contestCollectionCardId) throws NotFoundException {
 
         if (contestCollectionCardDao.get(contestCollectionCardId) == null) {
-            throw new NotFoundException("No ContestCollectionCard with id " + contestCollectionCardId);
+            throw new NotFoundException(
+                    "No ContestCollectionCard with id " + contestCollectionCardId);
         } else {
             return contestCollectionCardDao.update(contestCollectionCard);
         }
     }
 
-    @GetMapping(value = "/contestCollectionCards")
+    @GetMapping("/contestCollectionCards")
     public List<ContestCollectionCard> getContestCollectionCards(
-        @RequestParam(required = false) Long parentCollectionCardId) throws NotFoundException{
+            @RequestParam(required = false) Long parentCollectionCardId) throws NotFoundException {
         return contestCollectionCardDao.findByGiven(parentCollectionCardId);
     }
 
-    @DeleteMapping(value = "/contestCollectionCards/{contestCollectionCardId}")
+    @DeleteMapping("/contestCollectionCards/{contestCollectionCardId}")
     public boolean deleteContestCollectionCard(@PathVariable long contestCollectionCardId) {
-        return collectionCardService.deleteContestCollectionCardAndMoveChildren(contestCollectionCardId);
+        return collectionCardService
+                .deleteContestCollectionCardAndMoveChildren(contestCollectionCardId);
     }
 
-    @RequestMapping(value = "/contests", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<Contest> getContests(
+    @ListMapping("/contests")
+    public List<Contest> getContests(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
@@ -110,90 +115,94 @@ public class ContestController {
             @RequestParam(required = false) List<Long> contestTypeIds,
             @RequestParam(required = false) Boolean contestPrivate,
             @RequestParam(required = false) String searchTerm) {
-        final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
-                sort);
+        final PaginationHelper paginationHelper =
+                new PaginationHelper(startRecord, limitRecord, sort);
         if (ontologyTermIds != null) {
-            List<Long> descendantFocusAreas = ontologyService
-                .getFocusAreaIdsForDescendantTerms(ontologyTermIds);
+            List<Long> descendantFocusAreas =
+                    ontologyService.getFocusAreaIdsForDescendantTerms(ontologyTermIds);
             if (focusAreaIds != null) {
                 focusAreaIds.addAll(descendantFocusAreas);
             } else {
                 focusAreaIds = descendantFocusAreas;
             }
         }
+        response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
+                Integer.toString(contestDao.countByGiven(contestUrlName, contestYear, active, featured,
+                        contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
+                        contestTypeIds, contestPrivate, searchTerm)));
         final List<Contest> contests = contestDao
                 .findByGiven(paginationHelper, contestUrlName, contestYear, active, featured,
                         contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
                         contestTypeIds, contestPrivate, searchTerm);
         if (StringUtils.isNotEmpty(lang) && !"en".equalsIgnoreCase(lang)) {
-            return serviceNamespace.resolveTranslations(contests, lang);
+            return contestService.resolveTranslations(contests, lang);
         }
         return contests;
     }
 
-    @RequestMapping(value = "/contests/getContestMatchingOntologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @ListMapping("/contests/getContestMatchingOntologyTerms")
     public List<Contest> getContestMatchingOntologyTerms(
-            @RequestParam(required = false) List<Long> focusAreaOntologyTerms){
-        return serviceNamespace.getContestsMatchingOntologyTerms(focusAreaOntologyTerms);
+            @RequestParam(required = false) List<Long> focusAreaOntologyTerms) {
+        return contestService.getContestsMatchingOntologyTerms(focusAreaOntologyTerms);
     }
 
-    @RequestMapping(value = "/contestyears", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<Long> getContestYears(){
+    @ListMapping("/contestyears")
+    public List<Long> getContestYears() {
         return contestDao.getContestYears();
     }
 
-
-
-
-
-    @RequestMapping(value = "/contests/isContestNameYearUnique", method = {RequestMethod.GET})
-    public Boolean isContestNameYearUnique(
-            @RequestParam(required = false) String contestShortName,
+    @GetMapping("/contests/isContestNameYearUnique")
+    public Boolean isContestNameYearUnique(@RequestParam(required = false) String contestShortName,
             @RequestParam(required = false) Long year,
-            @RequestParam(required = false) Long currentContestId){
+            @RequestParam(required = false) Long currentContestId) {
 
-        return serviceNamespace.isContestNameYearUnique(contestShortName, year,currentContestId);
+        return contestService.isContestNameYearUnique(contestShortName, year, currentContestId);
     }
 
-    @RequestMapping(value = "/contests/getContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @ListMapping("/contests/getContestsByOntologyTerm")
     public List<Contest> getContestsByOntologyTerm(
-            @RequestParam(required = false) Long focusAreaOntologyTerm, @RequestParam(required = false) Boolean getActive, @RequestParam(required = false) Boolean onlyPrivate){
-        return serviceNamespace.getContestsByOntologyTerm(focusAreaOntologyTerm, getActive, onlyPrivate);
+            @RequestParam(required = false) Long focusAreaOntologyTerm,
+            @RequestParam(required = false) Boolean getActive,
+            @RequestParam(required = false) Boolean onlyPrivate) {
+        return contestService
+                .getContestsByOntologyTerm(focusAreaOntologyTerm, getActive, onlyPrivate);
     }
 
-    @RequestMapping(value = "/contests/getNumberOfContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/contests/getNumberOfContestsByOntologyTerm")
     public int getNumberOfContestsByOntologyTerm(
-            @RequestParam(required = false) Long focusAreaOntologyTerm){
-        return serviceNamespace.getNumberOfContestsByOntologyTerm(focusAreaOntologyTerm);
+            @RequestParam(required = false) Long focusAreaOntologyTerm) {
+        return contestService.getNumberOfContestsByOntologyTerm(focusAreaOntologyTerm);
     }
 
-    @RequestMapping(value = "contests/getNumberOfActiveContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("contests/getNumberOfActiveContestsInCollectionCard")
     public int getNumberOfActiveContestsInCollectionCard(@RequestParam long collectionCardId,
-            @RequestParam boolean onlyFeatured,
-            @RequestParam String viewType) {
-        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, true, viewType, onlyFeatured);
+            @RequestParam boolean onlyFeatured, @RequestParam String viewType) {
+        return collectionCardService
+                .getNumberOfContestsInCollectionCard(collectionCardId, true, viewType,
+                        onlyFeatured);
     }
 
-    @RequestMapping(value = "contests/getNumberOfPriorContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("contests/getNumberOfPriorContestsInCollectionCard")
     public int getNumberOfPriorContestsInCollectionCard(@RequestParam long collectionCardId,
-            @RequestParam boolean onlyFeatured,
-            @RequestParam String viewType) {
-        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, false, viewType, onlyFeatured);
+            @RequestParam boolean onlyFeatured, @RequestParam String viewType) {
+        return collectionCardService
+                .getNumberOfContestsInCollectionCard(collectionCardId, false, viewType,
+                        onlyFeatured);
     }
 
-    @RequestMapping(value = "contests/getNumberOfAllContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("contests/getNumberOfAllContestsInCollectionCard")
     public int getNumberOfAllContestsInCollectionCard(@RequestParam long collectionCardId,
-            @RequestParam boolean onlyFeatured,
-            @RequestParam String viewType) {
-        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, null, viewType, onlyFeatured);
+            @RequestParam boolean onlyFeatured, @RequestParam String viewType) {
+        return collectionCardService
+                .getNumberOfContestsInCollectionCard(collectionCardId, null, viewType,
+                        onlyFeatured);
     }
 
-    @RequestMapping(value = "/contests/{contestId}/subContestsByOntologySpaceId", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<Contest> getSubContestsByOntologySpaceId(
-            @PathVariable long contestId,
+    @ListMapping("/contests/{contestId}/subContestsByOntologySpaceId")
+    public List<Contest> getSubContestsByOntologySpaceId(@PathVariable long contestId,
             @RequestParam Long ontologySpaceId) {
 
-        return serviceNamespace.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);
+        return contestService.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);
     }
 
     @PostMapping("/contests")
@@ -208,14 +217,14 @@ public class ContestController {
             @RequestParam(required = false) String lang) throws NotFoundException {
         final Contest contest = contestDao.get(contestId);
         if (StringUtils.isNotEmpty(lang) && !"en".equalsIgnoreCase(lang)) {
-            return serviceNamespace.resolveTranslation(contest, lang);
+            return contestService.resolveTranslation(contest, lang);
         }
         return contest;
     }
 
     @PutMapping("/contests/{contestId}")
-    public boolean updateContest(@RequestBody Contest contest,
-            @PathVariable long contestId) throws NotFoundException {
+    public boolean updateContest(@RequestBody Contest contest, @PathVariable long contestId)
+            throws NotFoundException {
 
         if (contestDao.get(contestId) == null) {
             throw new NotFoundException("No Contest with id " + contestId);
@@ -252,41 +261,43 @@ public class ContestController {
         return contestTranslationDao.listByContestId(contestId);
     }
 
-    @RequestMapping(value = "/contests/getContestByThreadId", method = RequestMethod.GET)
-    public Contest getContestByThreadId(
-            @RequestParam(required = false) Long threadId) throws NotFoundException {
+    @GetMapping("/contests/getContestByThreadId")
+    public Contest getContestByThreadId(@RequestParam(required = false) Long threadId)
+            throws NotFoundException {
         return contestDao.getByThreadId(threadId);
     }
 
-    @RequestMapping(value = "/contests/getContestByResourceArticleId", method = RequestMethod.GET)
+    @GetMapping("/contests/getContestByResourceArticleId")
     public Contest getContestByResourceArticleId(
             @RequestParam(required = false) Long resourceArticleId) throws NotFoundException {
         return contestDao.getByResourceId(resourceArticleId);
     }
 
-    @RequestMapping(value = "/contestDiscussions", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @ListMapping("/contestDiscussions")
     public List<ContestDiscussion> getContestDiscussions(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Long contestId,
-            @RequestParam(required = false) String tab){
-        final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
-                sort);
+            @RequestParam(required = false) String tab) {
+        final PaginationHelper paginationHelper =
+                new PaginationHelper(startRecord, limitRecord, sort);
         return contestDiscussionDao.findByGiven(paginationHelper, contestId, tab);
     }
 
-    @PostMapping(value = "/contestDiscussions")
-    public ContestDiscussion createContestDiscussion(@RequestBody ContestDiscussion contestDiscussion) {
+    @PostMapping("/contestDiscussions")
+    public ContestDiscussion createContestDiscussion(
+            @RequestBody ContestDiscussion contestDiscussion) {
         return this.contestDiscussionDao.create(contestDiscussion);
     }
 
     @GetMapping("/contestDiscussions/{discussionId}")
-    public ContestDiscussion getContestDiscussion(@PathVariable long discussionId) throws NotFoundException {
+    public ContestDiscussion getContestDiscussion(@PathVariable long discussionId)
+            throws NotFoundException {
         return contestDiscussionDao.get(discussionId).orElseThrow(NotFoundException::new);
     }
 
-    @PutMapping(value = "/contestDiscussions/{discussionId}")
+    @PutMapping("/contestDiscussions/{discussionId}")
     public boolean updateContestDiscussion(@RequestBody ContestDiscussion contestDiscussion,
             @PathVariable long discussionId) throws NotFoundException {
 
@@ -297,16 +308,11 @@ public class ContestController {
         }
     }
 
-    @RequestMapping(value = "/contests/countByContestType", method = RequestMethod.GET)
-    public Integer countByContestType(@RequestParam("contestTypeId") Long contestTypeId) throws NotFoundException {
-        return contestDao.countByGiven(null, null, null, null, null, null, null, null, contestTypeId, null);
-    }
+    @GetMapping("/contests/{contestId}/activePhase")
+    public ContestPhase getActivePhaseForContest(@PathVariable long contestId)
+            throws NotFoundException {
 
-
-    @RequestMapping(value = "/contests/{contestId}/activePhase", method = RequestMethod.GET)
-    public ContestPhase getActivePhaseForContest(@PathVariable long contestId) throws NotFoundException {
-
-        ContestPhase activePhase = serviceNamespace.getActiveOrLastPhase(contestId);
+        ContestPhase activePhase = contestService.getActiveOrLastPhase(contestId);
         if (activePhase == null) {
             throw new NotFoundException();
         }
@@ -321,6 +327,6 @@ public class ContestController {
 
     @GetMapping("/contests/{contestId}/visiblePhases")
     public List<ContestPhase> getVisiblePhases(@PathVariable Long contestId) {
-        return serviceNamespace.getVisiblePhases(contestId);
+        return contestService.getVisiblePhases(contestId);
     }
 }

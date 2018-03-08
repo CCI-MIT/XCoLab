@@ -9,9 +9,9 @@ import org.xcolab.view.widgets.WidgetPreference;
 
 public class DiscussionPreferences extends WidgetPreference {
 
-    private final static String CATEGORY_GROUP_ID_PREFERENCE = "CATEGORY_GROUP_ID";
+    private static final String CATEGORY_GROUP_ID_PREFERENCE = "CATEGORY_GROUP_ID";
 
-    private final static Long DEFAULT_CATEGORY_GROUP_ID = 701L;
+    private static final Long DEFAULT_CATEGORY_GROUP_ID = 701L;
     private long categoryGroupId;
 
     @Override

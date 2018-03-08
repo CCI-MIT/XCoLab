@@ -21,12 +21,12 @@ import java.util.Map;
 
 public class ContestPreferences extends WidgetPreference {
 
-    private final static String SELECTED_CONTESTS_PREFERENCE = "SELECTED_CONTESTS";
-    private final static String TITLE_PREFERENCE = "CONTEST_TITLE";
-    private final static String FEED_SIZE_PREFERENCE = "CONTEST_FEED_SIZE";
-    private final static String ALL_CONTESTS_TITLE = "ALL_CONTESTS_TITLE";
-    private final static String ALL_CONTESTS_URL = "ALL_CONTESTS_URL";
-    private final static String SHOW_COUNTS = "SHOW_COUNTS";
+    private static final String SELECTED_CONTESTS_PREFERENCE = "SELECTED_CONTESTS";
+    private static final String TITLE_PREFERENCE = "CONTEST_TITLE";
+    private static final String FEED_SIZE_PREFERENCE = "CONTEST_FEED_SIZE";
+    private static final String ALL_CONTESTS_TITLE = "ALL_CONTESTS_TITLE";
+    private static final String ALL_CONTESTS_URL = "ALL_CONTESTS_URL";
+    private static final String SHOW_COUNTS = "SHOW_COUNTS";
     private List<Long> selectedContests;
     private String title;
     private Integer feedSize;

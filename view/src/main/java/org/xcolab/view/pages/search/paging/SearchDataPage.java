@@ -12,7 +12,7 @@ import java.util.List;
 
 public class SearchDataPage {
 
-    private final static int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 10;
 
     private final int page;
     private final String searchPhrase;

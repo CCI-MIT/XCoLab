@@ -12,14 +12,14 @@ import java.util.regex.Pattern;
 
 public class NotificationUnregisterUtils {
 
-    private final static String UNREGISTER_LINK =
+    private static final String UNREGISTER_LINK =
             "DOMAIN/notifications/unsubscribe/member/USER_ID/subscription/SUBSCRIPTION_ID/token"
                     + "/TOKEN/type/TYPE_ID";
-    private final static String TOKEN_PARAM = "TOKEN";
-    private final static String SUBSCRIPTION_ID = "SUBSCRIPTION_ID";
-    private final static String TYPE_ID = "TYPE_ID";
-    private final static String USER_ID = "USER_ID";
-    private final static String DOMAIN_PLACEHOLDER = "DOMAIN";
+    private static final String TOKEN_PARAM = "TOKEN";
+    private static final String SUBSCRIPTION_ID = "SUBSCRIPTION_ID";
+    private static final String TYPE_ID = "TYPE_ID";
+    private static final String USER_ID = "USER_ID";
+    private static final String DOMAIN_PLACEHOLDER = "DOMAIN";
 
     public static final int ACTIVITY_TYPE = 0;
 

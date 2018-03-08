@@ -1,12 +1,15 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:c="http://java.sun.com/jsp/jstl/core"
-        xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet">
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <!--@elvariable id="contestsSorted" type="org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean"-->
+    <!--@elvariable id="totalContestCount" type="java.lang.Integer"-->
+    <!--@elvariable id="contests" type="java.lang.List<org.xcolab.client.contest.pojo.Contest>"-->
+
 
     <div class="contestsContainer">
-        <div>
-
+        <div class="clearfix">
             <c:set var="zebra" value="true"/>
             <c:forEach var="contest" items="${contestsSorted.contestsFeatured }" varStatus="status">
                 <c:if test="${contest.showInTileView}">
@@ -15,11 +18,12 @@
                 </c:if>
             </c:forEach>
         </div>
+
         <c:if test="${not empty contestsSorted.contestsFeatured}">
             <div class="contest-featured-seperator">&#160;</div>
         </c:if>
 
-        <div>
+        <div class="clearfix">
             <c:set var="zebra" value="true"/>
             <c:forEach var="contest" items="${contestsSorted.contestsNormal }" varStatus="status">
                 <c:if test="${contest.showInTileView}">
@@ -29,35 +33,19 @@
             </c:forEach>
         </div>
 
-        <!-- TODO COLAB-1996: uncomment when COLAB-1996 approved -->
-        <!--<c:if test="${priorContestsExist}">-->
-            <!--<div id="seeAllContestsTrigger" style="text-align: center;font-weight: 700;cursor: pointer;text-decoration: underline;font-size: 18px;">-->
-                <!--<collab:message  code="contests.selector.seeall" contestType="${contestType}" />-->
-            <!--</div>-->
-            <!--<div id="priorContestsContainer" style="display: none;">-->
-                <!--<div class="contest-featured-seperator">&#160;</div>-->
-                <!--<c:forEach var="contest" items="${priorContests}" varStatus="status">-->
-                    <!--<c:if test="${contest.showInTileView}">-->
-                        <!--<proposalsPortlet:contestGridElement contest="${contest }" index="${status.index}" />-->
-                    <!--</c:if>-->
-                <!--</c:forEach>-->
-            <!--</div>-->
-        <!--</c:if>-->
+        <c:if test="${not showAllContests and totalContestCount gt contests.size()}">
+            <div class="text-center">
+                <c:url var="allContestsUrl" value="${contestType.contestBaseUrl}">
+                    <c:param name="viewType" value="${viewType}"/>
+                    <c:param name="filter" value="${sortFilterPage.filter}"/>
+                    <c:param name="showAllContests" value="true"/>
+                </c:url>
+                <a class="btn btn-primary btn-lg" href="${allContestsUrl}">
+                    <collab:message code="contests.selector.seeall" contestType="${contestType}"
+                                    arguments="${totalContestCount}" />
+                </a>
+            </div>
+
+        </c:if>
     </div>
-
-
-
-    <script>
-        <![CDATA[
-//        TODO COLAB-1996: uncomment when COLAB-1996 approved
-//        TODO COLAB-1996: Load via ajax instead
-//        jQuery(function() {
-//            jQuery("#seeAllContestsTrigger").click(function() {
-//                jQuery("#priorContestsContainer").fadeIn();
-//                jQuery("#seeAllContestsTrigger").fadeOut();
-//            });
-//
-//        });
-        ]]>
-    </script>
 </jsp:root>

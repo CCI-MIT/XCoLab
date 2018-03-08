@@ -88,35 +88,20 @@ fieldset.fieldset .control-group { //
 }
 
 //team box (CMS + messaging):
-.teamBox {
-  float: left;
-  margin-right: 20px;
-}
-
-.teamBox:last-child {
-  margin-right: 0;
-}
-
-.teamBox .teamMemberHeader h2 {
-  float: left;
-}
 
 .teamBox .teamMemberListing li {
   line-height: 10px;
   margin-bottom: 5px;
   background-size: 20px;
-  background: #FFF url("/images/icon_question-x.png") no-repeat 215px;
+  background: #FFF url("/images/icon_question-x.png") no-repeat 99%;
   list-style: none;
+  margin-left: 0;
 }
 
 .teamBox .teamMemberAdd input {
-  width: 350px;
-  height: 40px;
   background: #FFF url("/images/contest-icon-cplus-orange.png") no-repeat;
-  float:left;
   background-size: 20px;
   background-position: 98% 50%;
-  padding-left: 10px;
 }
 
 .teamBox .teamMemberListing .name {

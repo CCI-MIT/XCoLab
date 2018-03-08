@@ -18,10 +18,10 @@ public enum SocialMediaEngine {
     GOOGLE(ConfigurationAttributeKey.GOOGLE_URL.get(), true, true),
     STORIFY(ConfigurationAttributeKey.STORIFY_URL.get(), false, false),
     YOUTUBE(ConfigurationAttributeKey.YOUTUBE_URL.get(), false, true),
-    EMAIL(null, true, true);
+    EMAIL(null, true, true),
+    COLAB(null, true, true);
 
-    public static String SOCIAL_MEDIA_SPACE_HOLDER = "socialMediaEngine";
-    private static String TAB_IDENTIFIER = "tab";
+    private static final String SOCIAL_MEDIA_SPACE_HOLDER = "socialMediaEngine";
     private final String followMeUrl;
 
     private final boolean isShareable;
@@ -60,9 +60,9 @@ public enum SocialMediaEngine {
         String url = productionURL;
 
         if (request instanceof HttpRewriteWrappedRequest) {
-            String currentTab = ((HttpRewriteWrappedRequest) request).getParameter("tab");
+            String currentTab = request.getParameter("tab");
             if (currentTab != null) {
-                url += request.getRequestURI() + "/" + TAB_IDENTIFIER + "/" + currentTab;
+                url += request.getRequestURI() + "/tab/" + currentTab;
             } else {
                 url += request.getRequestURI();
             }

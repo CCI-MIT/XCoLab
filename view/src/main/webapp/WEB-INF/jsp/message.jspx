@@ -4,16 +4,16 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-    <!--@elvariable id="__infoMessage" type="org.xcolab.view.util.entity.flash.InfoMessage"-->
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <h2>
-        ${not empty __infoMessage ? __infoMessage.title : 'Message'}
+        ${not empty _themeContext.messageVariables.infoMessage ? _themeContext.messageVariables.infoMessage.title : 'Message'}
     </h2>
     <br />
 
-    <c:if test="${not empty __infoMessage}">
+    <c:if test="${not empty _themeContext.messageVariables.infoMessage}">
         <div class="c-Alert__info__message">
-            ${__infoMessage.message}
+            ${_themeContext.messageVariables.infoMessage.message}
         </div>
     </c:if>
 </xcolab:layout>

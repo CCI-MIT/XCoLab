@@ -1,0 +1,24 @@
+$l-BoxLayout__striped__backgroundColor: $t-Color__primary__gray--light !default;
+
+
+.l-BoxLayout__columns {
+  @extend .card-columns;
+  column-count: 1;
+
+  @include media-breakpoint-up(md) {
+    column-count: 2;
+  }
+}
+
+.l-BoxLayout__stacked {
+  .c-Box ~ .c-Box {
+    margin-top: $t-Spacing__base;
+  }
+}
+
+.l-BoxLayout--striped {
+  .c-Box:nth-of-type(even) {
+    background: $l-BoxLayout__striped__backgroundColor;
+    color: yiq-contrasting-color($l-BoxLayout__striped__backgroundColor);
+  }
+}

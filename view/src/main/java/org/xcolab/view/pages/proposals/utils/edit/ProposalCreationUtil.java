@@ -25,7 +25,7 @@ import javax.validation.Valid;
 
 public final class ProposalCreationUtil {
 
-    private final static Set<String> attributesNotToBeCopiedFromBaseProposal = new HashSet<>();
+    private static final Set<String> attributesNotToBeCopiedFromBaseProposal = new HashSet<>();
 
     static {
         attributesNotToBeCopiedFromBaseProposal.add(ProposalAttributeKeys.SECTION);

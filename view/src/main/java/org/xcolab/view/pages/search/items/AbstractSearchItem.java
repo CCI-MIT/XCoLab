@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public abstract class AbstractSearchItem {
 
-    private final static int MAX_CONTENT_LENGTH = 255;
+    private static final int MAX_CONTENT_LENGTH = 255;
 
     public static AbstractSearchItem newInstance(Class<? extends AbstractSearchItem> clazz) {
         if (Objects.equals(ContentSearchItem.class, clazz)) {

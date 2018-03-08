@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/api/modeling")
 public class ModelingJsonController {
 
-    private final static Logger _log = LoggerFactory.getLogger(ModelingJsonController.class);
+    private static final Logger _log = LoggerFactory.getLogger(ModelingJsonController.class);
 
     @GetMapping("scenarios/{scenarioId}")
     public void getScenario(HttpServletRequest request, HttpServletResponse response,

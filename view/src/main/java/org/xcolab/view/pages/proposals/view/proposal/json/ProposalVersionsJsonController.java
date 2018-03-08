@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ProposalVersionsJsonController {
 
-    private final static long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
+    private static final long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
     @GetMapping("/api/phases/{phaseId}/proposals/{proposalId}/versionsFirstIndex")
     public void getProposalVersionFirstIndex(HttpServletRequest request, HttpServletResponse response,

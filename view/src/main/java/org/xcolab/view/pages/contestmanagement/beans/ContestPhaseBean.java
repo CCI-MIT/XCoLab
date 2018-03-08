@@ -27,7 +27,7 @@ public class ContestPhaseBean implements Serializable {
     public static final Long CREATE_CONTEST_PHASE_PK = -1L;
     public static final Long DEFAULT_CONTEST_SCHEDULE = -1L;
 
-    private final static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+    private static final DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
     private Long contestSchedulePK;
     private Long contestPhasePK;

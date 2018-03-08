@@ -25,7 +25,7 @@ import java.util.Set;
 public class ProposalImpactScenarioCombinationWrapper {
 
     private static final Map<String, Double> REGION_AVG_FACTOR;
-    private final static Logger _log = Logger.getLogger(ProposalImpactScenarioCombinationWrapper.class);
+    private static final Logger _log = Logger.getLogger(ProposalImpactScenarioCombinationWrapper.class);
 
     static {
         Map<String, Double> avgFactor = new HashMap<>();
@@ -38,16 +38,16 @@ public class ProposalImpactScenarioCombinationWrapper {
         REGION_AVG_FACTOR = Collections.unmodifiableMap(avgFactor);
     }
 
-    private final static List<String> validationRegions
+    private static final List<String> validationRegions
             = Arrays.asList("United States", "European Union", "China", "India",
             "Other developing countries", "Other developed countries");
-    private final static Long ENROADS_MODEL_ID = 23L;
-    private final static Long ENROADS_REGION_INPUT_ID = 814L;
+    private static final Long ENROADS_MODEL_ID = 23L;
+    private static final Long ENROADS_REGION_INPUT_ID = 814L;
 
-    private final static Long EMF_MODEL_ID = 17L;
-    private final static Long EMF_REGIONAL_MODEL_ID = 39L;
-    private final static Long EMF_REGION_INPUT_ID = 812L;
-    private final static Long EMF_SCENARIO_INPUT_ID = 366L;
+    private static final Long EMF_MODEL_ID = 17L;
+    private static final Long EMF_REGIONAL_MODEL_ID = 39L;
+    private static final Long EMF_REGION_INPUT_ID = 812L;
+    private static final Long EMF_SCENARIO_INPUT_ID = 366L;
 
 
     private final Set<Scenario> scenarios;

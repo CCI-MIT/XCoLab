@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -19,7 +20,6 @@ import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.pages.proposals.utils.ContestsColumn;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -45,11 +46,11 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ContestsIndexController extends BaseProposalsController {
 
-    private final static String COOKIE_VIEW_TYPE = "cc_contests_viewType";
-    private final static String VIEW_TYPE_GRID = "GRID";
-    private final static String VIEW_TYPE_LIST = "LIST";
-    private final static String VIEW_TYPE_OUTLINE = "OUTLINE";
-    private final static String VIEW_TYPE_DEFAULT = VIEW_TYPE_GRID;
+    private static final String COOKIE_VIEW_TYPE = "cc_contests_viewType";
+    private static final String VIEW_TYPE_GRID = "GRID";
+    private static final String VIEW_TYPE_LIST = "LIST";
+    private static final String VIEW_TYPE_OUTLINE = "OUTLINE";
+    private static final String VIEW_TYPE_DEFAULT = VIEW_TYPE_GRID;
     private static final int MIN_SIZE_CONTEST_FILTER = 9;
     private static final int FEATURED_COLLECTION_CARD_ID = 1;
     private static final int BY_TOPIC_COLLECTION_CARD_ID = 2;
@@ -60,7 +61,6 @@ public class ContestsIndexController extends BaseProposalsController {
             Model model, Member currentMember, ProposalContext proposalContext,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String viewType,
-            @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
             @RequestParam(required = false, defaultValue = "" + FEATURED_COLLECTION_CARD_ID) long currentCollectionCardId,
             SortFilterPage sortFilterPage) {
@@ -68,6 +68,9 @@ public class ContestsIndexController extends BaseProposalsController {
         Locale locale = LocaleContextHolder.getLocale();
         ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(preferenceId,locale.getLanguage());
         ContestType contestType = preferences.getContestType();
+
+        final int totalContestCount = ContestClientUtil
+                .countContests(null, false, contestType.getId());
 
         if (contestType.isSuggestionsActive()) {
             Contest c = ContestClientUtil.getContest(contestType.getSuggestionContestId());
@@ -98,26 +101,11 @@ public class ContestsIndexController extends BaseProposalsController {
             viewType = VIEW_TYPE_DEFAULT;
         }
 
-        List<Contest> priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false,
-                contestType.getId());
-
-        List<Contest> contests = new ArrayList<>();
-
         /*--------------------------------*/
         //Only for CollectionCards
         /*--------------------------------*/
 
         if (ConfigurationAttributeKey.COLAB_USES_CARDS.get() && !viewType.equals(VIEW_TYPE_OUTLINE)) {
-
-            Boolean getActive;
-            if(showActiveContests) {
-                getActive = true; //active
-            } else if(!showAllContests && !showActiveContests){
-                getActive= false; //prior
-            } else {
-                getActive=null; //all
-            }
-
             Long ontologyTermToLoad;
             boolean showCollectionCards=true;
             boolean showOnlyFeatured = false;
@@ -172,22 +160,25 @@ public class ContestsIndexController extends BaseProposalsController {
         //For other views
         /*--------------------------------*/
 
-        if(!ConfigurationAttributeKey.COLAB_USES_CARDS.get() || viewType.equals(VIEW_TYPE_OUTLINE)) {
-
-
-            List<Contest> contestsToWrap = showAllContests
-                    ? ContestClientUtil.getContestsByContestTypeId(contestType.getId())
-                    : ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId());
-
-
-
-            priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false, contestType.getId());
-
-            contests = wrapContests(contestsToWrap);
-
-        }
+        List<Contest> contests = new ArrayList<>();
 
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
+
+            List<Contest> allContests = wrapContests(ContestClientUtil.getContests(
+                    null, false, contestType.getId()));
+
+            final List<Contest> activeContests = allContests.stream()
+                    .filter(Contest::isContestActive)
+                    .collect(Collectors.toList());
+
+            List<Contest> otherContests;
+            if (showAllContests) {
+                contests = allContests;
+                otherContests = activeContests;
+            } else {
+                contests = activeContests;
+                otherContests = allContests;
+            }
 
         	List<OntologySpace> ontologySpacesRaw = OntologyClientUtil.getAllOntologySpaces();
         	List<OntologyTerm> ontologyTermsRaw = OntologyClientUtil.getAllOntologyTerms();
@@ -221,25 +212,6 @@ public class ContestsIndexController extends BaseProposalsController {
         		focusAreas.get(faTerm.getFocusAreaId()).addOntologyTerm(ontologyTerms.get(faTerm.getOntologyTermId()));
         	}
 
-            List<Contest> otherContests = new ArrayList<>();
-            for (Contest contest: ContestClientUtil
-                    .getContestsByActivePrivate(!showActiveContests, false)) {
-                if (! contest.getContestPrivate()) {
-                    if(contest.getIsSharedContestInForeignColab()){
-                        ClientHelper ch = new ClientHelper(contest);
-                        try {
-                            Contest foreignContest =
-                                    ch.getContestClient().getContest(contest.getContestPK());
-                            otherContests.add(foreignContest);
-
-                        }catch (ContestNotFoundException notFound){
-
-                        }
-                    }else {
-                        otherContests.add(contest);
-                    }
-                }
-            }
         	List<OntologySpace> sortedSpaces = new ArrayList<>(ontologySpaces.values());
         	sortedSpaces.sort(Comparator.comparingInt(OntologySpace::getOrder));
         	model.addAttribute("focusAreas", focusAreas.values());
@@ -247,26 +219,29 @@ public class ContestsIndexController extends BaseProposalsController {
         	model.addAttribute("ontologySpaces", sortedSpaces);
         	model.addAttribute("otherContests", otherContests);
         	model.addAttribute("contestType", contestType);
+        } else if (!ConfigurationAttributeKey.COLAB_USES_CARDS.get()) {
+            List<Contest> contestsToWrap = ContestClientUtil.getContests(
+                    showAllContests ? null : true, false, contestType.getId());
+
+            contests = wrapContests(contestsToWrap);
         }
 
         model.addAttribute("showCollectionCards", ConfigurationAttributeKey.COLAB_USES_CARDS.get());
         boolean showContestManagementLink = PermissionsClient.canAdminAll(currentMember) ;
         model.addAttribute("showContestManagementLink", showContestManagementLink);
-        model.addAttribute("priorContestsExist", !priorContests.isEmpty());
-        model.addAttribute("priorContests", wrapContests(priorContests));
+        model.addAttribute("totalContestCount", totalContestCount);
         model.addAttribute("contests", contests);
         //not taken into account if collection cards enabled
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
-        model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage, showActiveContests ? null : ContestsColumn.REFERENCE_DATE));
+        model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage));
         model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);
-        model.addAttribute("showActiveContests", showActiveContests);
         model.addAttribute("showAllContests", showAllContests);
         model.addAttribute("showContestDisplayOptions", ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.get());
 
 
         final String description = String.format("View %s %s run on the %s. ",
-                showAllContests ? "all" : showActiveContests ? "active" : "prior",
+                showAllContests ? "all" : "active",
                 contestType.getContestNamePluralLowercase(),
                 ConfigurationAttributeKey.COLAB_NAME.get())
                 + ConfigurationAttributeKey.META_PAGE_DESCRIPTION_CONTESTS.get();
@@ -279,22 +254,17 @@ public class ContestsIndexController extends BaseProposalsController {
     private List<Contest> wrapContests(List<Contest> contests){
         List<Contest> contestsToReturn = new ArrayList<>();
         for (Contest contest: contests) {
-            if (! contest.getContestPrivate()) {
-                if(contest.getIsSharedContestInForeignColab()){
-                    ClientHelper ch = new ClientHelper(contest);
-                    try {
-                        Contest foreignContest =
-                                ch.getContestClient().getContest(contest.getContestPK());
-                        foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
-                        contestsToReturn.add(foreignContest);
+            if (contest.getIsSharedContestInForeignColab()) {
+                final ContestClient contestClient = new ClientHelper(contest).getContestClient();
+                try {
+                    Contest foreignContest = contestClient.getContest(contest.getContestPK());
+                    foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
+                    contestsToReturn.add(foreignContest);
+                } catch (ContestNotFoundException notFound) {
 
-                    }catch (ContestNotFoundException notFound){
-
-                    }
-                }else {
-                    contestsToReturn.add((contest));
                 }
-
+            } else {
+                contestsToReturn.add((contest));
             }
         }
         return contestsToReturn;

@@ -2,14 +2,23 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolabSocial="urn:jsptagdir:/WEB-INF/tags/social">
 
-    <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
-    <jsp:directive.attribute name="hashString" type="java.lang.String" description="Optional hash string to append to the URL. Has to start with '#'" />
+    <jsp:directive.attribute name="title" required="false" type="java.lang.String" description="Optional title for public sharing platforms (e.g. facebook and twitter)" />
+    <jsp:directive.attribute name="messageTitle" required="false" type="java.lang.String" description="Optional title for private messages (e.g. email or colab message)" />
+    <jsp:directive.attribute name="content" required="false" type="java.lang.String" description="Optional content for some sharing platforms " />
+
     <jsp:directive.attribute name="url" type="java.lang.String" description="The url to be shared if passed, if not use the default one from variable interceptor" />
-    <jsp:directive.attribute name="size" type="java.lang.String" description="Available sizes: lg,sm, xm for regular leave blank" />
+    <jsp:directive.attribute name="hashString" type="java.lang.String" description="Optional hash string to append to the URL. Has to start with '#'" />
+
+    <jsp:directive.attribute name="size" type="java.lang.String" description="Available sizes: lg, md, sm, xs. Default is md." />
+
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <span class="sr-only">Share via:</span>
-    <c:forEach var="followSocialMedia" items="${_shareableSocialMediaUrls}">
-        <xcolabSocial:socialMediaButton type="share" socialEngine="${followSocialMedia.name}" title="${title}" size="${size}" shareUrl="${url}" hashString="${hashString}"/>
+
+    <c:forEach var="followSocialMedia" items="${_themeContext.socialMediaVariables.shareableEngines}">
+        <xcolabSocial:socialMediaButton type="share" socialEngine="${followSocialMedia.name}"
+                                        title="${title}" messageTitle="${messageTitle}" content="${content}"
+                                        shareUrl="${url}" hashString="${hashString}" size="${size}"/>
     </c:forEach>
 
 </jsp:root>

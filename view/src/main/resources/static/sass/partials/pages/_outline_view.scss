@@ -313,26 +313,6 @@
   padding: 10px 0 20px 0;
 }
 
-.show-active {
-  float: right;
-  text-align: right;
-  position: relative;
-  font: 12px "Lucida Grande", Arial, sans-serif;
-  padding: 0 16px 0 0;
-}
-
-.show-active a:after {
-  content: "";
-  position: absolute;
-  top: 6px;
-  right: 0;
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 4px solid $t-Color__primary--darkest;
-}
-
 .section-list {
   margin-bottom: 25px;
   margin-top: 47px;

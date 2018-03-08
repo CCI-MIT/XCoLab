@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ContestResourcesHtmlParserUtil {
 
-    private final static String SECTION_DELIMITER_TAG = "h2";
+    private static final String SECTION_DELIMITER_TAG = "h2";
     private final ContestType contestType;
 
     private HashMap<String, String> baseSections;

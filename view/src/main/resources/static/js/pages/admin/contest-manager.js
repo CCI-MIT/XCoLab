@@ -102,11 +102,6 @@ function filter(className, element){
 }
 
 jQuery(function() {
-    jQuery(".addpropform .helpTrigger").click(function() {
-        var trigger = jQuery(this);
-        trigger.parent().parent().find(".addprophelp").slideToggle("fast");
-    });
-
     initializeDropDowns();
     resizeAllTextareas();
 });

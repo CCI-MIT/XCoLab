@@ -45,7 +45,7 @@ function updateCharacterCounter(input, editor) {
         input.limitCharacterCounter.text(count);
 
         // needed for copy from base proposal - hides button when there is content
-        var parent = input.parents('.addpropbox');
+        var parent = input.parents('.c-Box');
         if (count > 0) {
             parent.removeClass('empty').addClass('notempty');
         }

@@ -11,12 +11,12 @@
 	<!--@elvariable id="collectionHierarchy" type="org.xcolab.view.pages.proposals.wrappers.CollectionCardFilterBean"-->
 
 
-	<div class="c-Headline">
-		<div style="position: relative;">
-			<c:if test="${showContestManagementLink}">
-				<a href="/admin/contest" target="_blank">Go to Contest Management Tool</a>
-			</c:if>
-		</div>
+    <div style="position: relative;">
+        <c:if test="${showContestManagementLink}">
+            <a href="/admin/contest" target="_blank">Go to Contest Management Tool</a>
+        </c:if>
+    </div>
+    <div class="c-Headline">
 		<h1>
 			${contestType.contestNamePlural}
         </h1>
@@ -177,22 +177,10 @@
 						<c:when test="${showActiveContests }">
 							<a href="#" >Active ${contestType.contestNamePlural}</a>
 						</c:when>
-						<c:when test="${not showActiveContests and not showAllContests }">
-							<a href="#" >Completed ${contestType.contestNamePlural}</a>
-						</c:when>
 						<c:otherwise>
 							<a href="#" >All ${contestType.contestNamePlural}</a>
 						</c:otherwise>
 					</c:choose>
-					<div id="priorActiveAllWidget">
-						<ul>
-							<li class="${showActiveContests ?  'active' : ''}"><a href="${changeToActiveURL}" >Active ${contestType.contestNamePlural}</a></li>
-
-							<li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="${changeToPriorURL}" >Completed ${contestType.contestNamePlural}</a></li>
-
-							<li class="${showAllContests ?  'active' : ''}"><a href="${changeToAllURL}" >All ${contestType.contestNamePlural}</a></li>
-						</ul>
-					</div>
 				</div>
 			</div>
 		</c:if>

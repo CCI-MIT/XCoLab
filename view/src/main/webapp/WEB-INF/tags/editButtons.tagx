@@ -22,13 +22,11 @@
 
 
     <div class="c-ContentBox">
-        <div style="margin-bottom: 40px;">
-            <div class="floatRight">
-                <a class="btn btn-primary" href="#" onclick="submitSaveAsExistingForm()">SAVE ${elementName}</a>
-                <a class="btn btn-primary" href="#" onclick="submitSaveAsNewForm()">SAVE as new ${elementName}</a>
-                <a class="btn btn-primary" href="#" onclick="submitDeleteForm()">DELETE ${elementName}</a>
-                <a class="btn btn-primary" href="#" onclick="submitCreateNewForm()">CREATE new ${elementName}</a>
-            </div>
+        <div class="text-right">
+            <a class="btn btn-primary" href="#" onclick="submitSaveAsExistingForm()">SAVE ${elementName}</a>
+            <a class="btn btn-primary" href="#" onclick="submitSaveAsNewForm()">SAVE as new ${elementName}</a>
+            <a class="btn btn-primary" href="#" onclick="submitDeleteForm()">DELETE ${elementName}</a>
+            <a class="btn btn-primary" href="#" onclick="submitCreateNewForm()">CREATE new ${elementName}</a>
         </div>
     </div>
 

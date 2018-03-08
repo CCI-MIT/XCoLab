@@ -9,9 +9,9 @@
 
             ${balloonText.textBeforeForm}
 
-            <c:if test="${not _isLoggedIn}">
+            <c:if test="${not _themeContext.authenticationVariables.isLoggedIn}">
                 <p>
-                    (You don’t have to be a ${_colabName} member to win the Social Network Prize,
+                    (You don’t have to be a ${_themeContext.colabName} member to win the Social Network Prize,
                     but if you are a member, <a rel="nofollow" href="javascript:deferUntilLogin();">log in</a> first
                     so we can display your link on your profile page.)
                 </p>
@@ -27,7 +27,7 @@
                     </label>
                 </div>
                 <c:choose>
-                    <c:when test="${not _isLoggedIn}">
+                    <c:when test="${not _themeContext.authenticationVariables.isLoggedIn}">
                         <div>
                             <form:errors path="email" class="c-Alert c-Alert__error" />
                         </div>

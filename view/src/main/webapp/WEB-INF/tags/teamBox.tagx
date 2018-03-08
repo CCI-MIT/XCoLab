@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <jsp:directive.attribute name="title" type="java.lang.String" required="true" rtexprvalue="true"
                              description="Link text"/>
@@ -14,38 +15,38 @@
     <c:set var="memberList" value="userIds${title}"/>
     <c:set var="unsavedStar" value="unsavedStar${title}"/>
 
-    <div class="addpropbox  teamBox">
-        <div class="teamMemberHeader">
+    <div class="c-Box c-Box--colorTan teamBox">
+        <div class="c-Box__body">
             <h2 id="${unsavedStar}">${title}</h2>
-        </div>
-        <div class="teamMemberAdd">
-            <input id="${inputBox}" type="text" class="form-control teamMembers"/>
-            <div class="clear"><!-- --></div>
-            <div id="${pleaseChooseFromList}" style="display: none;"
-                 class="c-Alert c-Alert__error">Please choose a user from list.
+            <div class="teamMemberAdd">
+                <input id="${inputBox}" type="text" class="form-control teamMembers"/>
+                <div class="clear"><!-- --></div>
+                <div id="${pleaseChooseFromList}" style="display: none;"
+                     class="c-Alert c-Alert__error">Please choose a user from list.
+                </div>
+                <div class="clear"><!-- --></div>
+                <div id="${unknownUsersContainer}" style="display: none;"
+                     class="c-Alert c-Alert__error">Unknown users:
+                    <ul></ul>
+                </div>
             </div>
-            <div class="clear"><!-- --></div>
-            <div id="${unknownUsersContainer}" style="display: none;"
-                 class="c-Alert c-Alert__error">Unknown users:
-                <ul></ul>
+            <div class="teamMemberListing mt-3">
+                <input type="hidden" name="${memberList}" id="${memberList}"/>
+                <ul id="${userList}">
+                    <c:if test="${not empty list}">
+                        <c:forEach var="member" items="${list}">
+                            <li id="${member.userId}">
+                                <span class="portrait">
+                                    <xcolab:userPortrait portraitId="${member.portraitId}"
+                                                         memberId="${member.userId}"
+                                                         height="40" width="40"/>
+                                </span>
+                                <span class="name">${member.firstName} ${member.lastName}</span>
+                            </li>
+                        </c:forEach>
+                    </c:if>
+                </ul>
             </div>
-        </div>
-        <div class="teamMemberListing">
-            <input type="hidden" name="${memberList}" id="${memberList}"/>
-            <ul id="${userList}">
-                <c:if test="${not empty list}">
-                    <c:forEach var="member" items="${list}">
-                        <li id="${member.userId}">
-                            <span class="portrait">
-                                <xcolab:userPortrait portraitId="${member.portraitId}"
-                                                     memberId="${member.userId}"
-                                                     height="40" width="40"/>
-                            </span>
-                            <span class="name">${member.firstName} ${member.lastName}</span>
-                        </li>
-                    </c:forEach>
-                </c:if>
-            </ul>
         </div>
     </div>
 

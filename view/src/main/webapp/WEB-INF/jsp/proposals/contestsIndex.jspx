@@ -1,6 +1,9 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
+
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
@@ -8,7 +11,7 @@
 		<!--@elvariable id="viewType" type="java.lang.String"-->
 		<!--@elvariable id="showCollectionCards" type="java.lang.Boolean"-->
 		<jsp:directive.include file="./init.jspx" />
-		<c:if test="${_isAdmin}">
+		<c:if test="${_themeContext.authenticationVariables.isAdmin}">
 			<a href="/proposals/preferences" class="btn cb-btn-admin btn-sm float-right">Edit contests preferences</a><br/>
 		</c:if>
 		<c:choose>
@@ -38,7 +41,7 @@
 							<jsp:directive.include file="contestsIndex/grid.jspx" />
 						</c:when>
 						<c:when test="${viewType == 'OUTLINE' }">
-							<jsp:directive.include file="./contestsIndex/outline.jspx" />
+							<jsp:directive.include file="contestsIndex/outline.jspx" />
 						</c:when>
 						<c:otherwise>
 							<jsp:directive.include file="contestsIndex/list.jspx" />
@@ -52,28 +55,8 @@
 			jQuery(function() {
 			    setContestsViewTypeCookie('${viewType}');
 			});
-
-			jQuery(".show-active").hover(
-					function() {
-						var self = jQuery(this);
-						if (! self.hasClass('mouseIn')) {
-							jQuery(this).addClass('mouseIn visible');
-							jQuery("#priorActiveAllWidget").slideDown();
-						}
-					},
-					function() {
-						var self = jQuery(this);
-						self.removeClass('mouseIn');
-						setTimeout(function() {
-							if (! self.hasClass('mouseIn') && self.hasClass('visible')) {
-								jQuery("#priorActiveAllWidget").slideUp();
-								self.removeClass('visible');
-							}
-						}, 500);
-					}
-			);
 		]]>
 		</script>
-		<xcolab:script src="/js/proposals/proposals.js"/>
+		<collab:script src="/js/proposals/proposals.js"/>
 	</xcolab:layout>
 </jsp:root>

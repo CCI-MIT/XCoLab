@@ -1,27 +1,10 @@
-$p-Homepage__homespot__background: url(/images/bg-noise.png) $t-Color__tan !default;
-
-$p-homepage__content__h2__fontSize: 20px !default;
-$p-homepage__content__h2__textColor: $t-Color__gray--dark-800 !default;
-
-$p-homepage__learn__backgroundColor: $t-Color__primary !default;
-$p-homepage__learn__backgroundColor--hover: null !default;
-$p-homepage__learn__borderColor: $t-Color__primary--darkest !default;
-$p-homepage__learn__imageUrl: url(/images/homespot/light-bulb-white.png) !default;
-
-$p-homepage__get__backgroundColor: $t-Color__secondary !default;
-$p-homepage__get__borderColor: $t-Color__secondary--darkest !default;
-$p-homepage__get__imageUrl: url(/images/homespot/people-white.png) !default;
-
-//unused in Climate CoLab
-$p-homepage__join__backgroundColor: $t-Color__accent !default;
-$p-homepage__join__borderColor: none !default;
-$p-homepage__join__imageUrl: none !default;
-
 .p-Homepage {
 
   // Reset the container's spacing so the background can span the whole page's width
   #content {
-    padding: 0;
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
     width: 100%;
     max-width: initial;
   }
@@ -36,188 +19,20 @@ $p-homepage__join__imageUrl: none !default;
   }
 }
 
-//TODO: remove legacy homespot for climate colab
-.homespot,
 .p-Homepage__homespot { //.homespot
   padding: 1rem 0;
   margin-bottom: 1.5rem;
-
-  background: $p-Homepage__homespot__background;
-}
-
-%p-Homepage__homespot__background { //.earth
-  @extend .clearfix;
-  background-position: right top;
-  background-repeat: no-repeat;
+  background: url(/images/bg-noise.png) $t-Color__tan;
 }
 
 // Background can optionally start at various breakpoints
+// this class is not used in code, but can be used in the homespot content article
 @each $breakpoint in map-keys($grid-breakpoints) {
   $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
-  .p-Homepage__homespot__background#{$infix} {
-    @extend %p-Homepage__homespot__background;
-
-    @include media-breakpoint-up($breakpoint) {
-      background-image: url(/images/homespot/background.png);
+  @include media-breakpoint-up($breakpoint) {
+    .p-Homepage__homespot__background#{$infix} {
+      background: url(/images/homespot/background.png) right top no-repeat;
     }
   }
-}
-
-.mitproject {
-  background: url(/images/logos/mit-themed.png) no-repeat;
-  padding-left: 90px;
-  margin-bottom: 5px;
-}
-
-.homespot-left {
-  float: left;
-  width: 530px;
-  padding-left: 10px;
-  position: relative;
-  font-size: 16px;
-}
-
-/* <Conference Countdown Flipclock>*/
-#conference-countdown {
-  position: absolute;
-  top: 319px;
-  width: 420px;
-  left: 625px;
-}
-
-.countdown-day {
-  z-index: 1;
-  position: relative;
-  font-size: 26px;
-  display: block;
-  margin: 11px 0 0 15px;
-}
-
-.countdown-graphic {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 0;
-}
-
-.conference-days {
-  color: $t-Color__accent;
-  font-weight: $t-Typography__fontWeight--bold;
-  margin: 16px 0 0 60px;
-  display: block;
-}
-
-.conference-until {
-  margin: 16px 0 0 5px;
-  display: block;
-}
-
-#conference-countdown span, #conference-countdown img {
-  float: left;
-}
-
-#sec {
-  width: 48px;
-  position: absolute;
-  float: left;
-  height: 40px;
-  top: 336px;
-  left: 630px;
-  z-index: 1;
-}
-
-.flip {
-  position: absolute;
-  height: 20px;
-  font-family: Tahoma, Geneva, sans-serif;
-  font-size: 26px;
-  line-height: 40px;
-  text-align: center;
-  overflow: hidden;
-  width: 48px;
-  color: black;
-}
-
-.top {
-  top: 0;
-  transform-origin: center bottom;
-  background: url('/images/flip_top.png') no-repeat;
-}
-
-.bottom {
-  top: 19px;
-  transform-origin: center top;
-  background: url('/images/flip_bottom.png') no-repeat;
-}
-
-.bottom SPAN {
-  display: block;
-  margin-top: -19px;
-}
-
-.ap {
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 20px;
-  position: absolute;
-  left: 30px;
-  top: 170px;
-}
-
-.front {
-  z-index: 200;
-}
-
-.back {
-  z-index: 0;
-}
-
-.hide {
-  display: none;
-}
-
-.ani1 .top.front {
-  transform: skew(5deg) scaleY(.90);
-}
-
-.ani2 .top.front {
-  transform: skew(10deg) scaleY(.60);
-}
-
-.ani3 .top.front {
-  transform: skew(20deg) scaleY(.30);
-}
-
-.ani4 .top.front {
-  transform: skew(50deg) scaleY(0.10);
-}
-
-.ani4 .bottom.front {
-  transform: skew(-50deg) scaleY(0.10);
-}
-
-.ani3 .bottom.front {
-  transform: skew(-20deg) scaleY(.30);
-}
-
-.ani2 .bottom.front {
-  transform: skew(-10deg) scaleY(.60);
-}
-
-.ani1 .bottom.front {
-  transform: skew(-5deg) scaleY(.90);
-}
-
-/* </ Conference Countdown Flipclock>*/
-
-/* columns ------------- */
-.home-left {
-  float: left;
-  width: 520px;
-}
-
-.home-right {
-  float: left;
-  width: 464px;
 }

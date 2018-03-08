@@ -30,10 +30,16 @@ public class ImageTag extends AbstractHtmlTag {
 	 */
 	@Override
 	protected void writeTagContent() throws JspException {
-        writeOptionalAttribute(SRC_ATTRIBUTE, encodeUrl(getSrc()));
+        final String encodedSrc = encodeUrl(getSrc());
+        writeOptionalAttribute(SRC_ATTRIBUTE, encodedSrc);
         writeOptionalAttribute(ALT_ATTRIBUTE, getAlt());
         writeOptionalAttribute(WIDTH_ATTRIBUTE, getWidth());
         writeOptionalAttribute(HEIGHT_ATTRIBUTE, getHeight());
+
+        final boolean isLocalToCdn = getSrc().startsWith("/") && !encodedSrc.startsWith("/");
+        if (isLocalToCdn) {
+            writeOptionalAttribute("onerror", "retryLocal(this)");
+        }
 	}
 
 

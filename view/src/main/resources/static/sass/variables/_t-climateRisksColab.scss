@@ -66,12 +66,6 @@ $c-Header__menu__li__a__textColor: $t-Color__primary;
 $c-Header__background--hover: none;
 $c-Header__navItemGray--hoverColor: $t-Color__primary;
 
-$c-Headline__days-left__span__textColor: white;
-$c-Headline__h2__span__fontSize: 27px;
-$c-Headline__days-left__span__padding: 7px 12px;
-$c-Headline__days-left__span__background: $t-Color__gray--dark-600;
-$c-Headline__days-left__span__fontSize: 15px;
-
 $c-Footer__background: $t-Color__tan;
 $c-Footer__menu__li__a--hover__color: $t-Color__primary;
 $c-Footer__menu__li__textColor: black;
@@ -122,7 +116,6 @@ $c-ContestBox--hover__boxShadow: 0 0 15px $t-Color__gray--medium-500;
 
 $p-Contests__userslist__td--g__background: url(/images/bg-noise.png) $t-Color__tan;
 $p-Contests__usersFilter__paddingRight: 0px;
-$p-Contests__priorActiveAllWidget__a__color--isHover: white;
 
 $p-community__colab__th__background: $t-Color__primary;
 $p-community__colab__th__textColor: white;
@@ -140,18 +133,6 @@ $p-community__infoLeft__span__paddingRight: 0px;
 $p-Contests__contestDetail__backgroundColor: $t-Color__tan;
 $p-Contests__contestDetail__heading__background: none;
 
-$p-homepage__content__h2__fontSize: 18pt;
-
-$p-homepage__learn__backgroundColor: $t-Color__primary;
-$p-homepage__learn__borderColor: none;
-$p-homepage__learn__imageUrl: none;
-$p-homepage__get__backgroundColor: $t-Color__secondary;
-$p-homepage__get__borderColor: none;
-$p-homepage__get__imageUrl: none;
-$p-homepage__join__backgroundColor: white;
-$p-homepage__join__borderColor: none;
-$p-homepage__join__imageUrl: none;
-
 $p-proposal__header__background: transparent;
 $p-proposal__header__h1__textColor: $t-Color__primary;
 $p-proposal__propbox__titleAuthor__width: 602px;
@@ -166,7 +147,7 @@ $p-proposal__thumbbox__background--top: 0px;
 $p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
 $p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
 
-$p-Proposal__box__offColor: $t-Color__gray--medium-500;
+$l-BoxLayout__striped__backgroundColor: $t-Color__gray--medium-500;
 $p-Proposal__propbox--green: #a7da85;
 
 $p-community__left__lineHeight: default;
@@ -195,13 +176,8 @@ $p-ContestProposals__header__description__padding: 5px 20px;
 $cb-list-group__itemBackground--odd: url(/images/bg-noise.png) $t-Color__tan;
 
 $c-Box__shadow: none;
-$c-Box__boxColor--light__padding--top: 15px;
 $c-Box__messaging__padding--top: 15px;
 $c-Box__background__color--dark: $t-Color__tan;
-$c-Box__background__color--light: $t-Color__tan;
-$c-Box__background__color--primary: $t-Color__primary;
-$c-Box__background--dark: url(/images/bg-noise.png) $c-Box__background__color--dark;
-$c-Box__background--light: url(/images/bg-noise.png) $c-Box__background__color--light;
 $c-Box__border: none;
 
 $c-TabBar__background: url(/images/bg-noise.png) white;
@@ -245,6 +221,5 @@ $c-Count__number__fontSize: 20px;
 
 $c-Footer__link__textColor--hover: $t-Color__primary;
 $c-ContestBox__text__title__textColor--hover: $t-Color__primary;
-$p-Contests__priorActiveAllWidget__a__color--isHover: white;
 
 $c_ControlsOverlay__backgroundColor: rgba($t-Color__tan, .9);

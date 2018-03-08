@@ -15,12 +15,8 @@ public class ContestsSortFilterBean {
     private List<Contest> contestsFeatured = new ArrayList<>();
     private List<Contest> contestsNormal = new ArrayList<>();
 
-    public ContestsSortFilterBean(List<Contest> contests, final SortFilterPage sortFilterPage) {
-        this(contests, sortFilterPage, null);
-    }
 
-    public ContestsSortFilterBean(List<Contest> contests, final SortFilterPage sortFilterPage, ContestsColumn sortColumnConstruct) {
-        super();
+    public ContestsSortFilterBean(List<Contest> contests, final SortFilterPage sortFilterPage) {
         List<Contest> filteredContests = contests;
 
         // filter contests
@@ -48,7 +44,7 @@ public class ContestsSortFilterBean {
             sortColumn = ContestsColumn.valueOf(sortFilterPage.getSortColumn());
         }
         else {
-            sortColumn = sortColumnConstruct == null ? ContestsColumn.DEFAULT : sortColumnConstruct;
+            sortColumn = ContestsColumn.DEFAULT;
         }
         this.contests.sort((o1, o2) -> {
             if (o1.isFeatured() && !o2.isFeatured()) {

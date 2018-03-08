@@ -9,14 +9,12 @@
 <xcolab:layout title="Edit Profile">
     <jsp:directive.include file="./init.jspx" />
 
-    <!--@elvariable id="colabShortName" type="java.lang.String"-->
-    <!--@elvariable id="colabName" type="java.lang.String"-->
 	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
 	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
     <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
     <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.members.pojo.MemberCategory>"-->
-    <!--@elvariable id="_isGoogleSsoActive" type="java.lang.Boolean"-->
-    <!--@elvariable id="_isFacebookSsoActive" type="java.lang.Boolean"-->
+
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
 	<c:if test="${updateError}">
 		<script>
@@ -54,7 +52,7 @@
 
 	<form:form autocomplete="off" id="updateUserProfileForm"
 			   action="${updateUserProfileForm}" commandName="userBean" method="post">
-        <c:if test="${not isI18NActive}">
+        <c:if test="${not _themeContext.i18NVariables.isI18NActive}">
             <form:hidden path="defaultLocale" />
         </c:if>
 		<div id="main" class="userprofile">
@@ -67,77 +65,74 @@
 			<input type="password" style="display:none" />
 
 			<div class="comm_member">
-				<div class="comm_member-photo">
-					<div style="float: right">
+                <div class="row">
+                    <div class="col-4">
                         <form:hidden id="userPortraitInput" path="imageId" />
                         <xcolab:imageUpload uniqueName="userPortraitUpload" imageIdInput="userPortraitInput"
                                             defaultImage="MEMBER" />
-					</div>
-				</div>
-				<div class="comm_member-info">
-					<table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
-						<tr>
-							<th class="b m nowrap required-field" width="170">
-                                <spring:message code="profile.form.fields.firstname"/>
-							</th>
-							<td>
-								<form:input id="firstName" path="firstName" cssClass="form-control"/>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th class="b nowrap required-field">
-                                <spring:message code="profile.form.fields.lastname"/>
-							</th>
-							<td>
-								<form:input id="lastName" path="lastName" cssClass="form-control"/>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
-								</div>
-							</td>
-						</tr>
-
-						<tr>
-							<th class="b m required-field">
-                                <spring:message code="profile.form.fields.country"/>
-							</th>
-							<td>
-                                <form:select cssClass="form-control" path="countryCode">
-                                    <form:option value="" label="Select country"/>
-                                    <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
-                                </form:select>
-                                <div class="reg_errors"><!--  -->
-                                    <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
-                                </div>
-							</td>
-						</tr>
-                        <c:if test="${isI18NActive}">
+                    </div>
+                    <div class="col-8">
+                        <table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
                             <tr>
-                                <th class="b m required-field">
-                                    <spring:message code="profile.form.fields.language"/>
+                                <th class="b m nowrap required-field" width="170">
+                                    <spring:message code="profile.form.fields.firstname"/>
                                 </th>
                                 <td>
-                                    <form:select cssClass="form-control" path="defaultLocale">
-                                        <form:option value="" label="Select language"/>
-                                        <c:forEach var="lang" items="${languageSelectItems}">
-                                            <form:option value="${lang['value']}" >
-                                                <spring:message code="${lang['lable']}"/>
-                                            </form:option>
-                                        </c:forEach>
+                                    <form:input id="firstName" path="firstName" cssClass="form-control"/>
+                                    <div class="reg_errors"><!--  -->
+                                        <form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="b nowrap required-field">
+                                    <spring:message code="profile.form.fields.lastname"/>
+                                </th>
+                                <td>
+                                    <form:input id="lastName" path="lastName" cssClass="form-control"/>
+                                    <div class="reg_errors"><!--  -->
+                                        <form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="b m required-field">
+                                    <spring:message code="profile.form.fields.country"/>
+                                </th>
+                                <td>
+                                    <form:select cssClass="form-control" path="countryCode">
+                                        <form:option value="" label="Select country"/>
+                                        <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
                                     </form:select>
                                     <div class="reg_errors"><!--  -->
                                         <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
                                     </div>
                                 </td>
                             </tr>
-                        </c:if>
-					</table>
-
-				</div>
-				<div id="userCountry" style="display: none;">${userBean.countryName}</div>
-				<div class="clearfix"><!--  --></div>
+                            <c:if test="${isI18NActive}">
+                                <tr>
+                                    <th class="b m required-field">
+                                        <spring:message code="profile.form.fields.language"/>
+                                    </th>
+                                    <td>
+                                        <form:select cssClass="form-control" path="defaultLocale">
+                                            <form:option value="" label="Select language"/>
+                                            <c:forEach var="lang" items="${_themeContext.i18NVariables.languageSelectItems}">
+                                                <form:option value="${lang['value']}" >
+                                                    <spring:message code="${lang['lable']}"/>
+                                                </form:option>
+                                            </c:forEach>
+                                        </form:select>
+                                        <div class="reg_errors"><!--  -->
+                                            <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </table>
+                    </div>
+                </div>
 			</div>
 
 			<div>
@@ -309,7 +304,7 @@
 	<c:if test="${newsletterActive}">
 		<div class="right_col v1">
 			<div class="comm_rightcol">
-				<div class="comm_rightcol-title2"><spring:message code="profile.newsletter.settings.title" arguments="${_colabShortName}" /></div>
+				<div class="comm_rightcol-title2"><spring:message code="profile.newsletter.settings.title" arguments="${_themeContext.colabShortName}" /></div>
 				<table border="0" cellpadding="0" cellspacing="0" class="colab">
 					<form:form commandName="newsletterBean">
 						<tr class="colabRow">
@@ -319,7 +314,7 @@
 								<form:label path="emailSubscribedToNewsletter"/>
 							</td>
 							<td>
-                                <spring:message code="profile.newsletter.settings.sendme" arguments="${_colabShortName}"/>
+                                <spring:message code="profile.newsletter.settings.sendme" arguments="${_themeContext.colabShortName}"/>
 							</td>
 						</tr>
 					</form:form>
@@ -329,12 +324,12 @@
 		</div>
 	</c:if>
 
-    <c:if test="${(_isFacebookSsoActive or _isGoogleSsoActive)}">
+    <c:if test="${(_themeContext.authenticationVariables.isFacebookSsoActive or _themeContext.authenticationVariables.isGoogleSsoActive)}">
         <div class="right_col v1">
             <div class="comm_rightcol">
                 <div class="comm_rightcol-title2"><spring:message code="profile.sso.settings.title"/></div>
                 <table border="0" cellpadding="0" cellspacing="0" class="colab">
-                    <c:if test="${_isFacebookSsoActive}">
+                    <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
                         <tr class="colabRow">
                             <td class="actionColumn">
                                 <c:choose>
@@ -354,7 +349,7 @@
                             </td>
                         </tr>
                     </c:if>
-                    <c:if test="${_isGoogleSsoActive}">
+                    <c:if test="${_themeContext.authenticationVariables.isGoogleSsoActive}">
                         <tr class="colabRow">
                             <td class="actionColumn">
                                 <c:choose>
@@ -386,13 +381,13 @@
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
 				<tr class="colabRow">
 					<td class="actionColumn">
-                        <spring:message code="profile.account.delete.question" arguments="${_colabName}" var="deleteMsg"/>
+                        <spring:message code="profile.account.delete.question" arguments="${_themeContext.colabName}" var="deleteMsg"/>
 						<form:form action="${deleteProfileUrl}" method="post" onsubmit="confirm('${deleteMsg}')">
 							<button type="submit" class="btn btn-gray btn-sm"><spring:message code="profile.account.delete.button"/></button>
 						</form:form>
 					</td>
                     <td>
-                        <spring:message code="profile.account.delete.message" arguments="${_colabName}"/>
+                        <spring:message code="profile.account.delete.message" arguments="${_themeContext.colabName}"/>
 
                     </td>
 				</tr>

@@ -1,7 +1,8 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
-    <xcolab:script src="/vendor/noty/js/noty/packaged/jquery.noty.packaged.min.js" />
+    <collab:script src="/vendor/noty/js/noty/packaged/jquery.noty.packaged.min.js" />
 
     <!-- Noty configuration -->
     <script>

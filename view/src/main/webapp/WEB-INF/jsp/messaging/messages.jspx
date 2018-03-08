@@ -30,7 +30,7 @@
 
 
     <div class="messagingContainer">
-        <xcolab:script src="/js/lib/jquery.validate.pack.js"/>
+        <collab:script src="/js/lib/jquery.validate.pack.js"/>
         <div class="main_long">
             <div class="left_col">
                 <div id="message-info">

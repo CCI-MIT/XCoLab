@@ -17,7 +17,7 @@ public class SearchBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final static int PAGER_RANGE = 5;
+    private static final int PAGER_RANGE = 5;
     private final String searchLocation;
     private final int pageNumber;
     private String searchPhrase = "";

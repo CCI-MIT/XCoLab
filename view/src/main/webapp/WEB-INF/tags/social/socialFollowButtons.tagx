@@ -4,8 +4,10 @@
 
     <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
     <span class="sr-only">Follow on:</span>
-    <c:forEach var="followSocialMedia" items="${_followableSocialMediaUrls}">
+    <c:forEach var="followSocialMedia" items="${_themeContext.socialMediaVariables.followableEngines}">
         <xcolabSocial:socialMediaButton type="follow"  title="${title}" socialEngine="${followSocialMedia.name}" followMeUrl="${followSocialMedia.followMeUrl}"/>
     </c:forEach>
 

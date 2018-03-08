@@ -1,9 +1,9 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
-    <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
@@ -15,7 +15,7 @@
         <thead>
         <tr class="c-Table__row--title">
             <th class="c-Table__cell--title">
-                <c:set var="sortURL" value="/contests?sortColumn=CONTEST_NAME&amp;showActiveContests=${showActiveContests }&amp;sortAscending=${sortFilterPage.sortColumn == 'CONTEST_NAME' ? not sortFilterPage.sortAscending : true }" />
+                <c:set var="sortURL" value="/contests?sortColumn=CONTEST_NAME&amp;sortAscending=${sortFilterPage.sortColumn == 'CONTEST_NAME' ? not sortFilterPage.sortAscending : true }" />
 
                 <a href="${sortURL }" class="js-Tooltip" title="click to sort by ${contestType.contestName} title">
                     ${contestType.contestName}
@@ -24,7 +24,7 @@
 
             </th>
             <th class="c-Table__cell--title proposals js-Tooltip" title="click to sort by number of ${contestType.proposalNamePlural}">
-                <c:set var="sortURLProposalsCount" value="/contests?sortColumn=PROPOSALS_COUNT&amp;showActiveContests=${showActiveContests }&amp;sortAscending=${sortFilterPage.sortColumn == 'PROPOSALS_COUNT' ? not sortFilterPage.sortAscending : true }" />
+                <c:set var="sortURLProposalsCount" value="/contests?sortColumn=PROPOSALS_COUNT&amp;sortAscending=${sortFilterPage.sortColumn == 'PROPOSALS_COUNT' ? not sortFilterPage.sortAscending : true }" />
                 <a href="${sortURLProposalsCount}"><!--  --> </a>
                 <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="PROPOSALS_COUNT" />
             </th>
@@ -32,13 +32,13 @@
                 title="${contest.activeOhase.canVote ? 'click to sort by number of votes' : 'click to sort by number of comments'}">
                 <c:choose>
                     <c:when test="${contest.activePhase.canVote }">
-                        <c:set var="sortURLVotes" value="/contests?sortColumn=VOTES_COUNT&amp;showActiveContests=${showActiveContests }&amp;sortAscending=${sortFilterPage.sortColumn == 'VOTES_COUNT' ? not sortFilterPage.sortAscending : true }" />
+                        <c:set var="sortURLVotes" value="/contests?sortColumn=VOTES_COUNT&amp;sortAscending=${sortFilterPage.sortColumn == 'VOTES_COUNT' ? not sortFilterPage.sortAscending : true }" />
 
                         <a href="${sortURLVotes }"> <!--  --></a>
                         <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES_COUNT" />
                     </c:when>
                     <c:otherwise>
-                        <c:set var="sortURLComments" value="/contests?sortColumn=COMMENTS_COUNT&amp;showActiveContests=${showActiveContests }&amp;sortAscending=${sortFilterPage.sortColumn == 'COMMENTS_COUNT' ? not sortFilterPage.sortAscending : true }" />
+                        <c:set var="sortURLComments" value="/contests?sortColumn=COMMENTS_COUNT&amp;sortAscending=${sortFilterPage.sortColumn == 'COMMENTS_COUNT' ? not sortFilterPage.sortAscending : true }" />
 
                         <a href="${sortURLComments }"> <!--  --></a>
                         <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS_COUNT" />
@@ -46,27 +46,27 @@
                 </c:choose>
             </th>
             <th class="c-Table__cell--title ontology_what ">
-                <c:set var="sortURLWhat" value="/contests?sortColumn=WHAT&amp;showActiveContests=${showActiveContests }&amp;sortAscending=${sortFilterPage.sortColumn == 'WHAT' ? not sortFilterPage.sortAscending : true }" />
+                <c:set var="sortURLWhat" value="/contests?sortColumn=WHAT&amp;sortAscending=${sortFilterPage.sortColumn == 'WHAT' ? not sortFilterPage.sortAscending : true }" />
 
                 <a href="${sortURLWhat }" class="js-Tooltip" title="click to sort by actions"> What</a>
                 <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHAT" />
             </th>
             <th class="c-Table__cell--title ontology_where">
-                <c:set var="sortURLWhere" value="/contests?sortColumn=WHERE&amp;showActiveContests=${showActiveContests }&amp;sortAscending=${sortFilterPage.sortColumn == 'WHERE' ? not sortFilterPage.sortAscending : true }" />
+                <c:set var="sortURLWhere" value="/contests?sortColumn=WHERE&amp;sortAscending=${sortFilterPage.sortColumn == 'WHERE' ? not sortFilterPage.sortAscending : true }" />
 
                 <a href="${sortURLWhere }" class="js-Tooltip" title="click to sort by geographical area"> Where</a>
                 <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHERE" />
 
             </th>
             <th class="c-Table__cell--title ontology_who"><c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'WHO' ? not sortFilterPage.sortAscending : true }" />
-                <c:set var="sortURLWho" value="/contests?sortColumn=WHO&amp;showActiveContests=${showActiveContests }&amp;sortAscending=${sortAscending}" />
+                <c:set var="sortURLWho" value="/contests?sortColumn=WHO&amp;sortAscending=${sortAscending}" />
 
                 <a href="${sortURLWho }" class="js-Tooltip" title="click to sort by who this issue affects"> Who</a>
                 <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHO" />
             </th>
             <th class="c-Table__cell--title ontology_how">
                 <c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'HOW' ? not sortFilterPage.sortAscending : true }" />
-                <c:set var="sortURLHow" value="/contests?sortColumn=HOW&amp;showActiveContests=${showActiveContests }&amp;sortAscending=${sortAscending}" />
+                <c:set var="sortURLHow" value="/contests?sortColumn=HOW&amp;sortAscending=${sortAscending}" />
 
                 <a href="${sortURLHow }" class="js-Tooltip" title="click to sort by how this issue affects"> How</a>
                 <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="HOW" />
@@ -95,5 +95,19 @@
         </c:if>
     </table>
 
+    <c:if test="${not showAllContests and totalContestCount gt contests.size()}">
+        <div class="text-center mt-3">
+            <c:url var="allContestsUrl" value="${contestType.contestBaseUrl}">
+                <c:param name="viewType" value="${viewType}"/>
+                <c:param name="filter" value="${sortFilterPage.filter}"/>
+                <c:param name="showAllContests" value="true"/>
+            </c:url>
+            <a class="btn btn-primary btn-lg" href="${allContestsUrl}">
+                <collab:message code="contests.selector.seeall" contestType="${contestType}"
+                                arguments="${totalContestCount}" />
+            </a>
+        </div>
+
+    </c:if>
 
 </jsp:root>

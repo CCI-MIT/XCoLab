@@ -3,18 +3,7 @@ jQuery(function() {
         var trigger = jQuery(this);
         trigger.parent().parent().find(".profilehelp").slideToggle("fast");
     });
-
-    selectCountry();
 });
-
-function selectCountry() {
-    var userCountry = $("#userCountry").html();
-    $("#countryCode").find("> option").each(function () {
-        if(userCountry == $(this).html()){
-            $(this).prop('selected', true);
-        }
-    });
-}
 
 function updateSuccess(){
     noty({text: 'User profile updated successfully.', type: 'success'})

@@ -20,245 +20,239 @@
 
     <xcolab:requireLibrary name="CKEditor" />
 
-	<div class="c-ContentBox">
+	<div class="c-ContentBox l-BoxLayout__stacked">
 
 		<p>*Be sure to click <strong>SAVE changes</strong> before exiting a tab or submitting a comment for the contest
 			team, or your content may be lost.</p>
 
 		<h1>Admin section</h1>
-		<div id="resourcesSections">
-			<form:form action="${updateContestAdminURL }" commandName="contestAdminBean"
-					   cssClass="addpropform" id="editForm" method="post">
-
-				<div class="addpropbox">
-					<label>
-						<strong>Contest URL name</strong>
-						<a class="helpTrigger" href="javascript:;">
-                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+        <form:form action="${updateContestAdminURL }" commandName="contestAdminBean"
+                   cssClass="addpropform" id="editForm" method="post">
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Contest URL name</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__urlName">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                         </a>
-                        <br/>
-					</label>
+                    </label>
 
-					<div class="addprophelp">
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__urlName">
                         A short name for the contest to be used in friendly URLs.
                         URLs will be of the format /contests/{contestYear}/{contestURLName},
                         where {contestYear} and {contestURL} name are defined here.<br />
                         <em><strong>Warning:</strong> Never change this value after the contest launch,
                         as it will break all previous contest and proposal links!</em>
                     </div>
-					<div class="clearfix"><!--  --></div>
-					<div class="addpropInputContainer">
-						<form:input path="contestUrlName" id="contestUrlName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
+                    <form:input path="contestUrlName" id="contestUrlName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
-						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="c-Alert c-Alert__error" path="contestUrlName"/>
-						</div>
-						<div class="clearfix"><!-- --></div>
-						<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
-								class="limit_charactersMax">80</span> characters
-						</div>
-					</div>
-				</div>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="c-Alert c-Alert__error" path="contestUrlName"/>
+                    </div>
+                    <div class="clearfix"><!-- --></div>
+                    <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
+                            class="limit_charactersMax">80</span> characters
+                    </div>
+                </div>
+            </div>
 
-				<div class="addpropbox">
-					<label>
-						<strong>Contest Year</strong>
-						<a class="helpTrigger" href="javascript:;">
-                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Contest Year</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__year">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                         </a>
-                        <br/>
-					</label>
+                    </label>
 
-					<div class="addprophelp">
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__year">
                         The contest year will be used to generate the contest URL and should reflect the year of the current contest period.
                         URLs will be of the format /contests/{contestYear}/{contestURLName},
                         where {contestYear} and {contestURL} name are defined here.<br />
                         <em><strong>Warning:</strong> Never change this value after the contest launch,
                         as it will break all previous contest and proposal links!</em>
                     </div>
-					<div class="clearfix"><!--  --></div>
-					<div class="addpropInputContainer">
-						<form:input path="contestYear" id="contestYear" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
+                    <form:input path="contestYear" id="contestYear" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
-						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="c-Alert c-Alert__error" path="contestYear"/>
-						</div>
-						<div class="clearfix"><!-- --></div>
-						<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
-								class="limit_charactersMax">4</span> characters
-						</div>
-					</div>
-				</div>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="c-Alert c-Alert__error" path="contestYear"/>
+                    </div>
+                    <div class="clearfix"><!-- --></div>
+                    <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
+                            class="limit_charactersMax">4</span> characters
+                    </div>
+                </div>
+            </div>
 
-				<div class="addpropbox">
-					<label>
-						<strong>Email Template URL</strong>
-						<a class="helpTrigger" href="javascript:;">
-                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Email Template URL</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__emailTemplate">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                         </a>
-                        <br/>
-					</label>
+                    </label>
 
-					<div class="addprophelp">The corresponding wiki template URL</div>
-					<div class="clearfix"><!--  --></div>
-					<div class="addpropInputContainer">
-						<form:input path="emailTemplateUrl" id="emailTemplateUrl" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__emailTemplate">
+                        The corresponding wiki template URL
+                    </div>
 
-						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="c-Alert c-Alert__error" path="emailTemplateUrl"/>
-						</div>
-						<div class="clearfix"><!-- --></div>
-						<div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
-								class="limit_charactersMax">50</span> characters
-						</div>
-					</div>
-				</div>
+                    <form:input path="emailTemplateUrl" id="emailTemplateUrl" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
-				<div class="addpropbox">
-					<label>
-						<strong>Contest level</strong>
-						<a href="javascript:;" class="helpTrigger">
-                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="c-Alert c-Alert__error" path="emailTemplateUrl"/>
+                    </div>
+                    <div class="clearfix"><!-- --></div>
+                    <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
+                            class="limit_charactersMax">50</span> characters
+                    </div>
+                </div>
+            </div>
+
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Contest level</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__level">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                         </a>
-                        <br/>
-					</label>
+                    </label>
 
-					<div class="addprophelp">Select the level associated with your contest. If you have questions on which
-						level to select, please submit a comment below for the Climate CoLab team.
-					</div>
-					<div class="clearfix"><!-- --></div>
-					<div class="addpropInputContainer">
-						<form:select path="contestTier" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
-							<form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
-						</form:select>
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__level">
+                        Select the level associated with your contest. If you have questions on which
+                        level to select, please submit a comment below for the Climate CoLab team.
+                    </div>
+                    
+                    <form:select path="contestTier" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
+                        <form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
+                    </form:select>
 
-						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="c-Alert c-Alert__error" path="contestTier"/>
-						</div>
-					</div>
-				</div>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="c-Alert c-Alert__error" path="contestTier"/>
+                    </div>
+                </div>
+            </div>
 
-				<div class="addpropbox">
-					<label>
-						<strong>Hide Ribbons</strong>
-						<a href="javascript:;" class="helpTrigger">
-                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Hide Ribbons</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__ribbons">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                         </a>
-                        <br/>
-					</label>
+                    </label>
 
-					<div class="addprophelp">
-						When set to <em>hide</em>, the ribbons of a contest are not shown in the completed phase and the user is informed that the votes are being counted.
-						The default should be <em>hide</em> and it should be set to <em>show</em> once the ribbons are distributed.
-					</div>
-					<div class="clearfix"><!-- --></div>
-					<div class="addpropInputContainer">
-						<form:select path="hideRibbons" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
-							<form:option value="true" label="hide" />
-							<form:option value="false" label="show" />
-						</form:select>
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__ribbons">
+                        When set to <em>hide</em>, the ribbons of a contest are not shown in the completed phase and the user is informed that the votes are being counted.
+                        The default should be <em>hide</em> and it should be set to <em>show</em> once the ribbons are distributed.
+                    </div>
 
-						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="c-Alert c-Alert__error" path="hideRibbons"/>
-						</div>
-					</div>
-				</div>
+                    <form:select path="hideRibbons" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
+                        <form:option value="true" label="hide" />
+                        <form:option value="false" label="show" />
+                    </form:select>
 
-				<div class="addpropbox">
-					<label>
-						<strong>Contest model settings</strong>
-						<a href="javascript:;" class="helpTrigger">
-                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="c-Alert c-Alert__error" path="hideRibbons"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Contest model settings</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__modelSettings">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                         </a>
-                        <br/>
-					</label>
+                    </label>
 
-					<div class="addprophelp">Set the modeling settings for your contest. If you have questions on how to set
-						the model settings, please submit a comment below for the Climate CoLab team.
-					</div>
-					<div class="clearfix"><!-- --></div>
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__modelSettings">
+                        Set the modeling settings for your contest. If you have questions on how to set
+                        the model settings, please submit a comment below for the Climate CoLab team.
+                    </div>
 
-					<div id="contestModelSettings">
-						<table>
-							<tr>
-								<td>
-									<span class="floatLeft">Default model (please reload page if selection is empty)</span>
-								</td>
-								<td>
-									<form:select path="contestModelSettings.defaultModelId" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
-										<form:option value="" label="None"/>
-										<form:options items="${modelIdsSelectionItems}" itemValue="value"
-													  itemLabel="lable"/>
-									</form:select>
+                    <div id="contestModelSettings">
+                        <table>
+                            <tr>
+                                <td>
+                                    <span class="floatLeft">Default model (please reload page if selection is empty)</span>
+                                </td>
+                                <td>
+                                    <form:select path="contestModelSettings.defaultModelId" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
+                                        <form:option value="" label="None"/>
+                                        <form:options items="${modelIdsSelectionItems}" itemValue="value"
+                                                      itemLabel="lable"/>
+                                    </form:select>
 
-									<div class="reg_errors"><!--  -->
-										<form:errors cssClass="c-Alert c-Alert__error"
-													 path="contestModelSettings.defaultModelId"/>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
+                                    <div class="reg_errors"><!--  -->
+                                        <form:errors cssClass="c-Alert c-Alert__error"
+                                                     path="contestModelSettings.defaultModelId"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                 <span class="floatLeft">Other models <br/>
                                     - Please reload page if selection is empty.<br/>
                                 - Multiple selections possible.</span>
-								</td>
-								<td>
-									<form:select path="contestModelSettings.otherModelIds" multiple="true" size="10"
+                                </td>
+                                <td>
+                                    <form:select path="contestModelSettings.otherModelIds" multiple="true" size="10"
                                                  cssClass="multi form-control" cssErrorClass="form-control cb-form-has-error">
-										<form:options items="${modelIdsSelectionItems}" itemValue="value"
-													  itemLabel="lable"/>
-									</form:select>
-									<div class="reg_errors"><!--  -->
-										<form:errors cssClass="c-Alert c-Alert__error"
-													 path="contestModelSettings.otherModelIds"/>
-									</div>
-								</td>
-							</tr>
-							<tr id="modelRegion">
-								<td>
-									<span class="floatLeft">Model region (considered for regional models only)</span>
-								</td>
-								<td>
-									<form:select path="contestModelSettings.modelRegion" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
-										<form:option value="" label="None"/>
-										<form:options items="${modelRegionsSelectionItems}" itemValue="value"
-													  itemLabel="lable"/>
-									</form:select>
+                                        <form:options items="${modelIdsSelectionItems}" itemValue="value"
+                                                      itemLabel="lable"/>
+                                    </form:select>
+                                    <div class="reg_errors"><!--  -->
+                                        <form:errors cssClass="c-Alert c-Alert__error"
+                                                     path="contestModelSettings.otherModelIds"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="modelRegion">
+                                <td>
+                                    <span class="floatLeft">Model region (considered for regional models only)</span>
+                                </td>
+                                <td>
+                                    <form:select path="contestModelSettings.modelRegion" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
+                                        <form:option value="" label="None"/>
+                                        <form:options items="${modelRegionsSelectionItems}" itemValue="value"
+                                                      itemLabel="lable"/>
+                                    </form:select>
 
-									<div class="reg_errors"><!--  -->
-										<form:errors cssClass="c-Alert c-Alert__error"
-													 path="contestModelSettings.defaultModelSettings"/>
-									</div>
-								</td>
-							</tr>
-						</table>
+                                    <div class="reg_errors"><!--  -->
+                                        <form:errors cssClass="c-Alert c-Alert__error"
+                                                     path="contestModelSettings.defaultModelSettings"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
 
-					</div>
-				</div>
+                    </div>
+                </div>
+            </div>
 
-				<div class="addpropbox">
-					<label>
-						<strong>Contest type</strong>
-						<a href="javascript:;" class="helpTrigger">
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Contest type</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__contestType">
                             <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                         </a>
-                        <br />
-					</label>
-					<div class="addprophelp">Select the type of this contest. Types determine the name of the contest-entity and the proposal-entities and where they will appear. If you have a question about which type to select, please submit a comment below for the CoLab team.</div>
-					<div class="clearfix"><!-- --></div>
-					<div class="addpropInputContainer">
-						<form:select path="contestType" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
-							<form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
-						</form:select>
-						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="c-Alert c-Alert__error" path="contestType" />
-						</div>
-					</div>
-				</div>
-
-			</form:form>
-		</div>
+                    </label>
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__contestType">
+                        Select the type of this contest. Types determine the name of the contest-entity and the proposal-entities and where they will appear.
+                        If you have a question about which type to select, please submit a comment below for the CoLab team.
+                    </div>
+                    <form:select path="contestType" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
+                        <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
+                    </form:select>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="c-Alert c-Alert__error" path="contestType" />
+                    </div>
+                </div>
+            </div>
+        </form:form>
 	</div>
 	<jsp:directive.include file="./footer.jspx"/>
 </xcolab:layout>

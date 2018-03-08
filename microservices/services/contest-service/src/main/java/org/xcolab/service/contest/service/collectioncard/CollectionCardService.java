@@ -19,9 +19,9 @@ public class CollectionCardService {
 
     private final ContestCollectionCardDao contestCollectionCardDao;
 
-    private final static String VIEW_TYPE_GRID = "GRID";
-    private final static String VIEW_TYPE_LIST = "LIST";
-    private final static String VIEW_TYPE_OUTLINE = "OUTLINE";
+    private static final String VIEW_TYPE_GRID = "GRID";
+    private static final String VIEW_TYPE_LIST = "LIST";
+    private static final String VIEW_TYPE_OUTLINE = "OUTLINE";
 
     @Autowired
     public CollectionCardService(ContestService serviceNamespace, ContestCollectionCardDao contestCollectionCardDao) {

@@ -21,12 +21,14 @@ $c-Count__number__color--accent: $t-Color__accent !default;
   font-weight: $c-Count__number__fontWeight;
 
   color: $c-Count__number__color;
+
+  .c-Count--accent & {
+    color: $c-Count__number__color--accent;
+  }
+
+  .c-Count--neutral & {
+    color: $b-Typography__textColor;
+  }
 }
 
-.c-Count__number--accent {
-  color: $c-Count__number__color--accent;
-}
 
-.c-Count__number--neutral {
-  color: $b-Typography__textColor;
-}

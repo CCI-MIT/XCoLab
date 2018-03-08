@@ -17,7 +17,7 @@ import java.util.Set;
  * ProposalImpactSeriesValues represents a data series for exactly one category of data (i.e. BAU, adoption rate, ...).
  */
 public class ProposalImpactSeriesValues {
-    private final static Logger _log = LoggerFactory.getLogger(ProposalImpactSeriesValues.class);
+    private static final Logger _log = LoggerFactory.getLogger(ProposalImpactSeriesValues.class);
 
     private final Map<Integer, Double> yearToValueMap = new HashMap<>();
 

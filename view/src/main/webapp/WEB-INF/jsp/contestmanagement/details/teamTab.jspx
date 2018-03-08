@@ -25,17 +25,16 @@
 				<i>(Click SAVE and reload this page to find newly registered members.)</i>
 			</p>
 			<h2>Contest team</h2>
-		<form:form action="${updateContestTeamURL }" commandName="contestTeamBean" id="editForm" method="post">
-			<div class="teamTabContainer">
-				<xcolab:teamBox title="IAFellows" list="${contestWrapper.contestImpactAssessmentFellows}"/>
-				<xcolab:teamBox title="Advisors" list="${contestWrapper.contestAdvisors}"/>
-				<xcolab:teamBox title="Fellows" list="${contestWrapper.contestFellows}"/>
-				<xcolab:teamBox title="Judges" list="${contestWrapper.contestJudges}"/>
+            <form:form action="${updateContestTeamURL }" commandName="contestTeamBean" id="editForm" method="post">
+                <div class="l-BoxLayout__columns">
+                    <xcolab:teamBox title="IAFellows" list="${contestWrapper.contestImpactAssessmentFellows}"/>
+                    <xcolab:teamBox title="Advisors" list="${contestWrapper.contestAdvisors}"/>
+                    <xcolab:teamBox title="Fellows" list="${contestWrapper.contestFellows}"/>
+                    <xcolab:teamBox title="Judges" list="${contestWrapper.contestJudges}"/>
 
-				<!-- <xcolab:teamBox title="Managers" list="${contestWrapper.contestManager}"/> -->
-			</div>
-		</form:form>
-		<div class="clear"><!-- --></div>
+                    <!-- <xcolab:teamBox title="Managers" list="${contestWrapper.contestManager}"/> -->
+                </div>
+            </form:form>
 	</div>
 	<jsp:directive.include file="./footer.jspx"/>
 </xcolab:layout>
