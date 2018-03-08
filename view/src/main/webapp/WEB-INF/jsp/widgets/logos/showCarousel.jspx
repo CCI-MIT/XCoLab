@@ -8,7 +8,12 @@
 
     <div class="c-CarouselWrapper">
         <c:if test="${_themeContext.authenticationVariables.isAdmin}">
-            <a href="/widgets/logos/preferences?preferenceId=${carouselPreferences.preferenceId}" class="btn cb-btn-admin btn-sm float-right">Edit carouselPreferences</a><br/>
+            <div class="text-right">
+                <a href="/widgets/logos/preferences?preferenceId=${carouselPreferences.preferenceId}"
+                   class="btn cb-btn-admin btn-sm">
+                    Edit carouselPreferences
+                </a>
+            </div>
         </c:if>
         <h2>${carouselPreferences.title}</h2>
         <div class="c-CarouselBox">
