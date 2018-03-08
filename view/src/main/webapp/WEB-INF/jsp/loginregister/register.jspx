@@ -47,13 +47,13 @@
         </div>
 
         <c:if test="${hasLoginInfoText}">
-            <div class="c-Alert" style="font-size: 15px">
+            <div class="alert alert-info" style="font-size: 15px">
                 ${loginInfoText}
             </div>
         </c:if>
 
         <c:if test="${ error != null and isRegistering }">
-            <div class="c-Alert__error__message">${error}</div>
+            <div class="alert alert-danger">${error}</div>
         </c:if>
 
         <form:form action="/register" method="post" commandName="createUserBean" id="registrationForm">

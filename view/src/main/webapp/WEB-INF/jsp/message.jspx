@@ -12,7 +12,7 @@
     <br />
 
     <c:if test="${not empty _themeContext.messageVariables.infoMessage}">
-        <div class="c-Alert__info__message">
+        <div class="alert alert-info">
             ${_themeContext.messageVariables.infoMessage.message}
         </div>
     </c:if>

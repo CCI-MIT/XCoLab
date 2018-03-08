@@ -17,10 +17,10 @@
             <div class="modal-body">
                 <c:choose>
                     <c:when test='${authError != null}'>
-                        <div class="c-Alert__error__message">${authError.message}</div>
+                        <div class="alert alert-danger">${authError.message}</div>
                     </c:when>
                     <c:otherwise>
-                        <div class="c-Alert__info__message">
+                        <div class="alert alert-info">
                             <spring:message code="homepage.modals.login.welcome"/>
                         </div>
                     </c:otherwise>

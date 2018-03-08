@@ -28,7 +28,7 @@
                 <c:if test="${_themeContext.authenticationVariables.isAdmin}">
                     <a href="/content-editor" class="btn cb-btn-admin btn-sm float-right">Go to content editor</a>
                     <br/>
-                    <div class="c-Alert__danger c-Alert__error__message">
+                    <div class="alert alert-danger">
                         Error while loading content article ${articleId}, it might not exist.
                     </div>
                 </c:if>

@@ -95,7 +95,7 @@
                         <div class="clearfix"><!-- --></div>
 
                         <c:if test="${contestScheduleBean.usedInNonEmptyContest}">
-                            <div class="c-Alert__info__message">
+                            <div class="alert alert-info">
                                 You are editing a schedule that is used in at least one non-empty contest.
                                 You can only add, delete, or edit phases that have not started yet.
                                 You can also change the end date (and promote type) of the current phase, as long as the new end date is also in the future.<br />

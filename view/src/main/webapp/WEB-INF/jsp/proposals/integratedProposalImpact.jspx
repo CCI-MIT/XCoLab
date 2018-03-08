@@ -178,7 +178,7 @@
                     </c:when>
                     <c:when test="${modelId > 0 or scenarioId > 0}">
                         <div id="modelContent">
-                            <div class="c-Alert alert-warnig"><h3>
+                            <div class="alert alert-warning"><h3>
                                 The proposal author(s) have not yet estimated the emission impacts of this proposal.
                             </h3></div>
                         </div>
