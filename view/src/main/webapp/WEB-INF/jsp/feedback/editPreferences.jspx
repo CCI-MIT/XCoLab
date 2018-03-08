@@ -8,7 +8,7 @@
     <xcolab:layout>
 
         <xcolab:editPreferences preferences="${preferences}" hasTitle="false">
-            <div class="c-Alert c-Alert__info__message">
+            <div class="alert alert-info">
                 In messages you can use patterns like USER_NAME, USER_EMAIL, USER_MESSAGE
                 as placeholders for values entered by user.
             </div>
