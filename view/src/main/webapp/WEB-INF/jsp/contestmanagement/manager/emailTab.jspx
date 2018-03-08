@@ -35,7 +35,7 @@
 
     <div class="c-ContentBox l-BoxLayout__stacked">
         <div class="reg_errors"><!--  -->
-            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
+            <form:errors cssClass="alert alert-danger" path="*"/>
         </div>
 
         <div class="c-Box c-Box--colorTan">
@@ -64,7 +64,7 @@
                     <form:input path="type" cssClass="form-control" disabled="disabled"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="type"/>
+                        <form:errors cssClass="alert alert-danger" path="type"/>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                     <form:input path="subject" cssClass="form-control"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="subject"/>
+                        <form:errors cssClass="alert alert-danger" path="subject"/>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                     <form:textarea path="content" cssClass="form-control"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="content"/>
+                        <form:errors cssClass="alert alert-danger" path="content"/>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                     <form:input path="footer" cssClass="form-control"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="footer"/>
+                        <form:errors cssClass="alert alert-danger" path="footer"/>
                     </div>
                 </div>
             </div>

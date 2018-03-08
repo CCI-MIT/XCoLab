@@ -39,7 +39,7 @@
                         <form:form id="requestMembershipForm" action="${requestMembershipURL }" method="post" commandName="requestMembershipBean" style="float:left;">
                             <div class="requestMembershipDIV">
                                 <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" onfocus="this.value=''" value="Optional comment" style="display:none;"/>
-                                <form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />
+                                <form:errors cssClass="alert alert-danger" path="requestComment" />
                                 <div id="requestButtons">
                                     <a href="javascript:;" class="btn btn-primary"
                                             rel="nofollow" onclick="if(deferUntilLogin()) {requestMembership();}">
@@ -62,7 +62,7 @@
                             <div class="requestMembershipDIV">
                                 <form:textarea id="invite-recipient" cssClass="requestComment" path="inviteRecipient" placeholder="Enter screen name or last name" style="display:none;"/>
                                 <form:textarea id="invite-comment" cssClass="requestComment" path="inviteComment" placeholder="Optional comment" style="display:none;"/>
-                                <!--<form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />-->
+                                <!--<form:errors cssClass="alert alert-danger" path="requestComment" />-->
                                 <div id="requestButtons">
                                     <a href="javascript:;" class="btn btn-primary"
                                             rel="nofollow" onclick="if(deferUntilLogin()) {inviteMember();}">
