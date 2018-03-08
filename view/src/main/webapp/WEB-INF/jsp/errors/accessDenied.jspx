@@ -21,7 +21,7 @@
             </div>
         </c:when>
         <c:otherwise>
-            <div class="c-Alert c-Alert__error__message">
+            <div class="alert alert-danger">
                 You do not have the correct permissions to view this page.
                 If you think this was an error, please feel free to <a href="/feedback">contact us</a>.
             </div>
