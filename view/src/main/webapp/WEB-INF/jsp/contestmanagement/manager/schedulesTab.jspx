@@ -37,7 +37,7 @@
             <a class="btn btn-primary" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
             <a class="btn btn-primary" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
             <a class="btn btn-primary" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
-            <a class="btn btn-primary" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
+            <a class="btn btn-outline-danger" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
         </div>
     </div>
 
