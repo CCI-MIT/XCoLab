@@ -9,10 +9,10 @@
     <c:if test="${shouldLoad}">
         <c:choose>
             <c:when test="${not empty integrity}">
-                <collab:script src="${encodedUrl}" integrity="${integrity}"/>
+                <collab:script src="${src}" integrity="${integrity}"/>
             </c:when>
             <c:otherwise>
-                <collab:script src="${encodedUrl}"/>
+                <collab:script src="${src}"/>
             </c:otherwise>
         </c:choose>
     </c:if>

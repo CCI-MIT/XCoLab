@@ -247,8 +247,8 @@
     <!--</script>-->
 
     <c:set var="contestPageBreadcumbs" >
-        <c:forEach var="_contestPage" items="${_themeContext.themeVariables.contestPages}" varStatus="status">
-            <c:if test="${_contestPage.menuItemName != ''}">
+        <c:forEach var="contestPage" items="${_themeContext.themeVariables.contestPages}" varStatus="status">
+            <c:if test="${contestPage.menuItemName != ''}">
 
             </c:if>
         </c:forEach>

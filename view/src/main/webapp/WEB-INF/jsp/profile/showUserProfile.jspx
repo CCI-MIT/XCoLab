@@ -217,8 +217,10 @@
                                     </div>
                                 </div>
                                 <c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
-                                    <a class="btn btn-primary" href="#" rel="nofollow"
-                                       onclick="if (!deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
+                                    <a class="btn btn-primary" rel="nofollow"
+                                       data-message-recipient="${currentUserProfile.user.id_}"
+                                       data-toggle="modal" href="#sendMessageModal"
+                                       onclick="if (!deferUntilLogin()) event.stopPropagation()">
                                         <spring:message code="profile.show.sendmessage"
                                                         arguments="${userBean.displayNameShort}"/>
                                     </a>
@@ -522,19 +524,12 @@
         </c:otherwise>
     </c:choose>
 
-    <c:choose>
-        <c:when test="${currentUserProfile.viewingOwnProfile}">
-            <xcolab:sendMessageModal/>
-        </c:when>
-        <c:when test="${currentUserProfile.canSeeSendMessageButton}">
-            <xcolab:sendMessageModal recipient="${currentUserProfile.user}"/>
-        </c:when>
-    </c:choose>
 
     <c:if test="${isSnpActive and empty balloonLink}">
         <jsp:include page="../redballoon/consentForm.jspx"/>
     </c:if>
 
+    <xcolab:requireLibrary name="sendMessage"/>
     <xcolab:requireLibrary name="CKEditor"/>
 
 </xcolab:layout>

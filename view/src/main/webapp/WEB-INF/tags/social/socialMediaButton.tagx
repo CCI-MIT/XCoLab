@@ -18,7 +18,7 @@
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
-    <c:set var="finalShareUrl" value="${not empty shareUrl ? shareUrl : _themeContext.socialMediaVariables.shareRequestUri}"/>
+    <c:set var="finalShareUrl" value="${not empty shareUrl ? shareUrl : _themeContext.socialMediaVariables.shareRequestUri}${hashString}"/>
 
     <c:if test="${not empty size}">
         <c:set var="sizeClass" value="c-SocialButton--${size}"/>
@@ -53,10 +53,11 @@
                     </a>
                 </c:when>
                 <c:when test="${socialEngine.equals('colab')}">
-                    <xcolab:sendMessageModal subject="${not empty messageTitle ? messageTitle : title}"
-                                             content="${content} ${finalShareUrl}"/>
-                    <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" href="#"
-                       onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
+                    <xcolab:requireLibrary name="sendMessage"/>
+                    <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" href="#sendMessageModal" data-toggle="modal"
+                       onclick="if (!deferUntilLogin()) event.stopPropagation();"
+                       data-message-subject="${not empty messageTitle ? messageTitle : title}"
+                       data-message-content="${content} ${finalShareUrl}">
                         <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
                     </a>
                 </c:when>
@@ -76,7 +77,7 @@
                         </c:when>
                     </c:choose>
                     <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" data-engine-url="${dataEngineUrl}"
-                       data-engine="${socialEngine}" data-share-url="${finalShareUrl}${hashString}" onclick="shareThis(this)">
+                       data-engine="${socialEngine}" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
                         <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
                     </a>
                 </c:otherwise>

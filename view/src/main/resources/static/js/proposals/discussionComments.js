@@ -1,19 +1,19 @@
-
 function disableAddComment() {
     jQuery(".c-Comment__new").find(".addCommentButton").attr('disabled', true);
 }
+
 function isAddCommentFormValid() {
     var $thecomment = jQuery(".c-Comment__new");
-    var isValid = (jQuery.trim($thecomment.find(".commentContent").val()) != '');
+    var isValid = (jQuery.trim($thecomment.find(".commentContent").val()) !== '');
     if (!isValid) {
-        isValid = jQuery.trim(CKEDITOR.instances.messageContent.getData()) != '';
+        isValid = jQuery.trim(CKEDITOR.instances['commentContent'].getData()) !== '';
     }
 
     if (isValid) {
-        $thecomment.find('.errorMsg').hide();
+        $thecomment.find('#js-Comment__error').hide();
     }
     else {
-        $thecomment.find('.errorMsg').show();
+        $thecomment.find('#js-Comment__error').show();
     }
     return isValid;
 }
