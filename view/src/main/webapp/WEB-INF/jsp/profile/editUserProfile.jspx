@@ -58,7 +58,7 @@
 		<div id="main" class="userprofile">
 			<form:hidden path="userId"/>
 			<div class="reg_errors"><!--  --></div>
-			<form:errors cssClass="c-Alert c-Alert__error" path="*" htmlEscape="false" />
+			<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*" htmlEscape="false" />
 
 			<!-- use these fields to prevent chrome from wrongly filling in country and current password automatically -->
 			<input type="text" style="display:none" />
@@ -80,7 +80,7 @@
                                 <td>
                                     <form:input id="firstName" path="firstName" cssClass="form-control"/>
                                     <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
+                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="firstName" />
                                     </div>
                                 </td>
                             </tr>
@@ -91,7 +91,7 @@
                                 <td>
                                     <form:input id="lastName" path="lastName" cssClass="form-control"/>
                                     <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
+                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="lastName" />
                                     </div>
                                 </td>
                             </tr>
@@ -106,7 +106,7 @@
                                         <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
                                     </form:select>
                                     <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
+                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="countryCode" />
                                     </div>
                                 </td>
                             </tr>
@@ -125,7 +125,7 @@
                                             </c:forEach>
                                         </form:select>
                                         <div class="reg_errors"><!--  -->
-                                            <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
+                                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="countryCode" />
                                         </div>
                                     </td>
                                 </tr>
@@ -152,7 +152,7 @@
 							<td>
 								<form:input  id="email" cssClass="form-control" path="email"/>
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="email" />
+									<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="email" />
 								</div>
 							</td>
 						</tr>
@@ -164,7 +164,7 @@
 							<td>
 								<form:input  id="retypeEmail" cssClass="form-control" path="retypeEmail" autocomplete="off"/>
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="retypeEmail" />
+									<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypeEmail" />
 								</div>
 							</td>
 						</tr>
@@ -204,7 +204,7 @@
                                     <td>
                                         <form:password cssClass="form-control" path="currentPassword" />
                                         <div class="reg_errors">
-                                            <form:errors cssClass="c-Alert c-Alert__error" path="currentPassword" />
+                                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="currentPassword" />
                                         </div>
                                     </td>
                                 </tr>
@@ -215,7 +215,7 @@
                                     <td>
                                         <form:password cssClass="form-control" path="password"/>
                                         <div class="reg_errors"><!--  -->
-                                            <form:errors cssClass="c-Alert c-Alert__error" path="password" />
+                                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="password" />
                                         </div>
                                     </td>
                                 </tr>
@@ -226,7 +226,7 @@
                                     <td>
                                         <form:password cssClass="form-control" path="retypePassword" />
                                         <div class="reg_errors"><!--  -->
-                                            <form:errors cssClass="c-Alert c-Alert__error" path="retypePassword" />
+                                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypePassword" />
                                         </div>
                                     </td>
                                 </tr>
@@ -250,7 +250,7 @@
 						<span class="limit_charactersMax">2000</span> characters
 					</div>
 					<div class="reg_errors"><!--  -->
-						<form:errors cssClass="c-Alert c-Alert__error" path="shortBio" />
+						<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="shortBio" />
 					</div>
 					<div class="clearfix">&#160;</div>
 				</div>

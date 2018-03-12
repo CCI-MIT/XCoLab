@@ -12,7 +12,7 @@
 
     <c:choose>
         <c:when test="${not _themeContext.authenticationVariables.isLoggedIn}">
-            <div class="c-Alert c-Alert__info__message">
+            <div class="alert alert-info">
                 The page you are trying to access requires you to be logged in.
                 If you already have an account, you can <a rel="nofollow" href="javascript:deferUntilLogin();">log in here</a>.
                 If you don't have an account, you can create a ${_themeContext.colabName} account <a href="/register?redirect=${_themeContext.requestUri}">here</a>.
@@ -21,7 +21,7 @@
             </div>
         </c:when>
         <c:otherwise>
-            <div class="c-Alert c-Alert__error__message">
+            <div class="alert alert-danger">
                 You do not have the correct permissions to view this page.
                 If you think this was an error, please feel free to <a href="/feedback">contact us</a>.
             </div>

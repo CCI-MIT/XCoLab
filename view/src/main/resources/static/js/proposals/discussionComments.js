@@ -66,7 +66,7 @@ function editComment(commentCreationTimestamp,messageId, url){
     var $message = $('#message_' + messageId);
     $message.empty();
     if (!_isAdmin) {
-        $message.append('<div class="c-Alert__info__message">Please make sure you save your edit within 15 minutes of creating this comment. Time left: <span id="clockdiv"> <span class="minutes"></span> minutes <span class="seconds"></span> seconds</span>.</div>');
+        $message.append('<div class="alert alert-info">Please make sure you save your edit within 15 minutes of creating this comment. Time left: <span id="clockdiv"> <span class="minutes"></span> minutes <span class="seconds"></span> seconds</span>.</div>');
 
         var deadline = new Date((commentCreationTimestamp) +  15 * 60 * 1000);
         initializeClock('clockdiv', deadline);

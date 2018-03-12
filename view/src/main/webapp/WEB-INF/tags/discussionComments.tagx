@@ -178,7 +178,7 @@
 							<i><spring:message code="discussion.commmentstag.visibletopublic"/></i>
 						</c:when>
 						<c:when test="${!discussionPermissions.canAddComment}">
-                            <div class="c-Alert__error__message">
+                            <div class="alert alert-danger">
                                 <i><spring:message code="discussion.commmentstag.mustlogin"/></i>
                             </div>
 						</c:when>
