@@ -29,7 +29,7 @@
             <a class="btn btn-primary" href="#" onclick="saveExistingTemplate()">SAVE template</a>
             <!--<a class="btn btn-primary" href="#" onclick="saveAsNewTemplate()">SAVE as new template</a>-->
             <!--<a class="btn btn-primary" href="#" onclick="submitCreateTemplateForm()">CREATE new template</a>-->
-            <!--<a class="btn btn-primary" href="#" onclick="submitDeleteTemplateForm()">DELETE template</a>-->
+            <!--<a class="btn btn-outline-danger" href="#" onclick="submitDeleteTemplateForm()">DELETE template</a>-->
         </div>
     </div>
 

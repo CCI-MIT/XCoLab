@@ -188,10 +188,10 @@
 					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
 					<form:form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
                         <input name="threadId" class="title text hidden" maxlength="255" value="${thread.threadId}" />
-						<textarea id="messageContent" name="description"  class="rte-editorPlaceholder c-Comment__box commentContent"><!-- --></textarea>
-						<div class="clearfix"><!-- --></div>
-						<br />
-						<span class="errorMsg portlet-msg-error" style="display: none;"><spring:message code="discussion.commmentstag.valuerequired"/></span>
+						<textarea id="commentContent" name="description"  class="rte-editorPlaceholder c-Comment__box commentContent"><!-- --></textarea>
+						<div class="alert alert-danger my-2" id="js-Comment__error" style="display: none;">
+                            <spring:message code="discussion.commmentstag.valuerequired"/>
+                        </div>
 						<c:choose>
 							<c:when test="${discussionPermissions.canAddComment }">
 								<a class="btn btn-primary" href="javascript:;" id="addCommentButton">

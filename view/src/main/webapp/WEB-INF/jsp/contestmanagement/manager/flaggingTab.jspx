@@ -33,7 +33,7 @@
         <div class="text-right">
             <button type="button" class="btn btn-primary" onclick="saveExistingReportTarget()">SAVE target</button>
             <button type="button" class="btn btn-primary" onclick="saveAsNewReportTarget()">SAVE as new target</button>
-            <button type="button" class="btn btn-primary" onclick="submitDeleteReportTargetForm()">DELETE target</button>
+            <button type="button" class="btn btn-outline-danger" onclick="submitDeleteReportTargetForm()">DELETE target</button>
         </div>
     </div>
 
