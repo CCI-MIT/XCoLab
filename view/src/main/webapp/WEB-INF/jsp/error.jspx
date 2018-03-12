@@ -16,9 +16,7 @@
     <c:choose>
         <c:when test="${not empty _themeContext.messageVariables.errorMessage}">
             <div class="alert alert-danger">
-                <div class="alert alert-danger">
-                    ${_themeContext.messageVariables.errorMessage.message}
-                </div>
+                ${_themeContext.messageVariables.errorMessage.message}
             </div>
         </c:when>
         <c:when test="${not empty timestamp}">
@@ -86,9 +84,7 @@
         </c:when>
         <c:otherwise>
             <div class="alert alert-danger">
-                <div class="alert alert-danger">
-                    Sorry, we encountered an error while loading this page.
-                </div>
+                Sorry, we encountered an error while loading this page.
             </div>
         </c:otherwise>
     </c:choose>
