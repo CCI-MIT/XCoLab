@@ -148,6 +148,9 @@ $_c-TitleBar__borderWidth: 6px;
 .c-TitleBar__actionButton {
   @extend .btn;
 
+  //The action button shouldn't grow or shrink
+  flex: 0 0 auto;
+
   height: $_c-TitleBar__height;
   line-height: $_c-TitleBar__height;
   padding: 0 10px;
