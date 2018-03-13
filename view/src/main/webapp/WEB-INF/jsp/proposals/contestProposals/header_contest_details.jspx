@@ -16,16 +16,15 @@
                     <c:if test="${contest.sponsorLogoId > 0}">
                         <c:choose>
                             <c:when test="${contest.sponsorLinkAvailable}">
-                                <a href="${contest.sponsorLink}" target="_blank">
-                                    <collab:image src="${contest.sponsorLogoPath}"
-                                            alt="Sponsor Logo"
-                                            cssClass="p-ContestProposals__header__sponsorLogo"/>
+                                <a href="${contest.sponsorLink}" target="_blank"
+                                   class="p-ContestProposals__header__sponsorLogo">
+                                    <collab:image src="${contest.sponsorLogoPath}" alt="Sponsor Logo"/>
                                 </a>
                             </c:when>
                             <c:otherwise>
-                                <collab:image src="${contest.sponsorLogoPath}"
-                                     alt="Sponsor Logo"
-                                     cssClass="p-ContestProposals__header__sponsorLogo"/>
+                                <div class="p-ContestProposals__header__sponsorLogo">
+                                    <collab:image src="${contest.sponsorLogoPath}" alt="Sponsor Logo"/>
+                                </div>
                             </c:otherwise>
                         </c:choose>
                     </c:if>
