@@ -180,10 +180,7 @@
 
             <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                 <div class="p-ContestProposals__header__shareButtons">
-                    <div class="" id="shareProposalToolbox"
-                         style="float: left;width: 35px;">
-                        <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName)}"/>
-                    </div>
+                    <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName)}"/>
                 </div>
             </c:if>
 
