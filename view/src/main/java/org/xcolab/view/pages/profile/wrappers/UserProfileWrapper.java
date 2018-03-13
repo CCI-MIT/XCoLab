@@ -49,7 +49,6 @@ public class UserProfileWrapper implements Serializable {
     private Member member;
     private UserBean userBean;
     private String realName;
-    private Boolean attendsConference;
     private MemberRole highestRole;
     private int subscriptionsPageSize = 20;
     private int subscriptionsPaginationPageId;
@@ -101,7 +100,6 @@ public class UserProfileWrapper implements Serializable {
             realName = member.getFirstName();
         }
 
-        attendsConference = false; //TODO COLAB-2622: store this outside expando if we want to reactive this
         badges = new BadgeBean(member.getId_());
 
         highestRole = MemberRole.getHighestRole(member.getRoles());
@@ -170,14 +168,6 @@ public class UserProfileWrapper implements Serializable {
 
     public Date getJoinDate() {
         return member.getCreateDate();
-    }
-
-    public Boolean getAttendsConference() {
-        return attendsConference;
-    }
-
-    public void setAttendsConference(Boolean attendsConference) {
-        this.attendsConference = attendsConference;
     }
 
     public String getRealName() {

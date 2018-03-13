@@ -53,10 +53,6 @@
                         <div class="card-body">
                             <h1>Member Profile</h1>
                             <div class="comm_member" style="margin-top: 0;">
-
-                                <!-- <c:if test="${currentUserProfile.attendsConference}">
-                                    <a href="/web/guest/conference2014" class="attendingConference"><collab:image src="/images/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
-                                </c:if> -->
                                 <div class="media">
                                     <collab:image src="${userBean.portrait}" width="150" height="150"
                                                   alt="${currentUserProfile.realName}" cssClass="mr-3"/>
