@@ -7,27 +7,10 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
   color: $t-Color__gray--dark-700;
 }
 
-.comm_rightcol {
-  padding-bottom: 10px;
-  margin-top: 40px;
-}
-
-//TODO: also used in feeds-portlet...
-.comm_rightcol-bdr {
-  border-bottom: 3px solid $t-Color__primary__gray--light;
-  padding-bottom: 10px;
-  margin-top: 0;
-}
-
-.comm_rightcol .actionColumn {
+//TODO: replace
+.actionColumn {
   width: 75px;
   font-size: 12px;
-}
-
-.comm_rightcol-title {
-  font-size: 19px;
-  font-weight: $t-Typography__fontWeight--bold;
-  margin-bottom: 15px;
 }
 
 .comm_rightcol-title2 {
@@ -39,31 +22,6 @@ $p-userprofile__comm_rightcol-title2__height: 22px !default;
   font-weight: $t-Typography__fontWeight--bold;
   color: yiq-contrasting-color($t-Color__primary__gray--light);
   margin-bottom: 5px;
-}
-
-.comm_rightcol-time {
-  color: black;
-  padding: 0 10px;
-  font: 12px/21px Verdana, Geneva, sans-serif;
-}
-
-.comm_rightcol-bdr p {
-  color: #666;
-  padding: 0 10px;
-  margin-bottom: 15px;
-  font: 12px/21px Verdana, Geneva, sans-serif;
-}
-
-.comm_rightcol .activityBody {
-  color: #666;
-  padding: 0 10px;
-  margin-bottom: 15px;
-  font: 12px/21px Verdana, Geneva, sans-serif;
-  display: block;
-}
-
-.comm_rightcol {
-  margin-top: 0 !important;
 }
 
 .comm_member {
