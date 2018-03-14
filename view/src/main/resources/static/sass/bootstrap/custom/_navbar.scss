@@ -2,8 +2,6 @@
 @import "bootstrap/functions";
 @import "bootstrap/variables";
 
-$c-Header__background: url(/images/bg-noise.png), $t-Color__tan !default;
-$c-Header__background--hover: url(/images/bg-noise.png) !default;
 $c-Header__menu__li__a__textColor: $t-Color__primary !default;
 $c-Header__menu__li__a__fontWeight: $t-Typography__fontWeight--bold !default;
 
@@ -14,7 +12,7 @@ $c-Header__navItemGray--hoverColor: black !default;
 
 $cb-navbar__hasBoxShadow: false !default;
 $cb-navbar__activeBoxShadow: none !default;
-$cb-navbar__background: url(/images/bg-noise.png), $t-Color__tan !default;
+$cb-navbar__background: $t-Color__tan !default;
 $cb-navbar__searchIconColor: $t-Color__primary !default;
 
 // local vars
@@ -123,10 +121,6 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
 
     .nav-item {
       border-left: 1px solid $t-Color__gray--medium-500;
-
-      &:hover {
-        background-image: $c-Header__background--hover;
-      }
     }
   }
 }
