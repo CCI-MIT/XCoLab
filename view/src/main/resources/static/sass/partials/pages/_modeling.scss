@@ -3,7 +3,7 @@
   width: 984px;
   position: relative;
   z-index: 5;
-  font-size: 15px;
+  font-size: 17px;
   color: $t-Color__gray--dark-800;
   line-height: 20px;
   background: url(/images/grid_t.gif) white;
@@ -14,10 +14,6 @@
 
 .actboxtop a {
   font-weight: $t-Typography__fontWeight--bold;
-}
-
-.wf-active .actboxtop {
-  font-size: 17px;
 }
 
 .type {
@@ -45,7 +41,7 @@
 .acthead-l {
   background: url(/images/icon_act-arrows-l.png) no-repeat 0 24px;
   padding: 26px 0 22px 47px;
-  font-size: 16px;
+  font-size: 18px;
   color: $t-Color__gray--dark-800;
   font-weight: $t-Typography__fontWeight--bold;
 }
@@ -53,13 +49,9 @@
 .acthead-r {
   background: url(/images/icon_act-arrows-r.png) no-repeat 0 24px;
   padding: 26px 0 22px 47px;
-  font-size: 16px;
+  font-size: 18px;
   color: $t-Color__gray--dark-800;
   font-weight: $t-Typography__fontWeight--bold;
-}
-
-.wf-active .acthead-l, .wf-active .acthead-r {
-  font-size: 18px;
 }
 
 .act_left-list {
@@ -437,12 +429,8 @@
   margin-right: 10px;
   background: $t-Color__tan;
   padding: 17px 15px 6px 15px;
-  font-size: 13px;
-  color: #444;
-}
-
-.wf-active .act-edit-box_left {
   font-size: 15px;
+  color: #444;
 }
 
 .act-edit-box_right {
@@ -450,12 +438,8 @@
   width: 459px;
   background: $t-Color__tan;
   padding: 17px 15px 6px 15px;
-  font-size: 13px;
-  color: #444;
-}
-
-.wf-active .act-edit-box_right {
   font-size: 15px;
+  color: #444;
 }
 
 .model_upload {
