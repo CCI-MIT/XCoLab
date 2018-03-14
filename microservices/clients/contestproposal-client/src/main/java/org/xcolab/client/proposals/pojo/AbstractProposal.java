@@ -14,9 +14,6 @@ class AbstractProposal implements Serializable {
     private Boolean visible;
     private Long discussionid;
     private Long resultsdiscussionid;
-    private Long judgediscussionid;
-    private Long fellowdiscussionid;
-    private Long advisordiscussionid;
     private Long groupid;
 
     public AbstractProposal() {}
@@ -29,9 +26,6 @@ class AbstractProposal implements Serializable {
         this.visible = value.visible;
         this.discussionid = value.discussionid;
         this.resultsdiscussionid = value.resultsdiscussionid;
-        this.judgediscussionid = value.judgediscussionid;
-        this.fellowdiscussionid = value.fellowdiscussionid;
-        this.advisordiscussionid = value.advisordiscussionid;
         this.groupid = value.groupid;
     }
 
@@ -84,30 +78,6 @@ class AbstractProposal implements Serializable {
         this.resultsdiscussionid = resultsdiscussionid;
     }
 
-    public Long getJudgeDiscussionId() {
-        return this.judgediscussionid;
-    }
-
-    public void setJudgeDiscussionId(Long judgediscussionid) {
-        this.judgediscussionid = judgediscussionid;
-    }
-
-    public Long getFellowDiscussionId() {
-        return this.fellowdiscussionid;
-    }
-
-    public void setFellowDiscussionId(Long fellowdiscussionid) {
-        this.fellowdiscussionid = fellowdiscussionid;
-    }
-
-    public Long getAdvisorDiscussionId() {
-        return this.advisordiscussionid;
-    }
-
-    public void setAdvisorDiscussionId(Long advisordiscussionid) {
-        this.advisordiscussionid = advisordiscussionid;
-    }
-
     public Long getGroupId() {
         return this.groupid;
     }
@@ -127,12 +97,9 @@ class AbstractProposal implements Serializable {
 
     @Override
     public String toString() {
-        String sb = "Proposal (" + proposalid + ", " + createdate + ", " + updateddate + ", "
+        return "Proposal (" + proposalid + ", " + createdate + ", " + updateddate + ", "
                 + authorid + ", " + visible + ", " + discussionid + ", "
-                + resultsdiscussionid + ", " + judgediscussionid + ", " + fellowdiscussionid + ", "
-                + advisordiscussionid + ", " + groupid + ")";
-
-        return sb;
+                + resultsdiscussionid + ", " + groupid + ")";
     }
 
 }

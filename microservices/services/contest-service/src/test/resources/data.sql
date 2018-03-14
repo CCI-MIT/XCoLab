@@ -10,10 +10,10 @@ INSERT INTO `xcolab_Proposal2Phase` (`proposalId`,`contestPhaseId`,`versionFrom`
 INSERT INTO `xcolab_Proposal2Phase` (`proposalId`,`contestPhaseId`,`versionFrom`,`versionTo`,`sortWeight`,`autopromoteCandidate`) VALUES (1333850,1318613,13,53,NULL,NULL);
 INSERT INTO `xcolab_Proposal2Phase` (`proposalId`,`contestPhaseId`,`versionFrom`,`versionTo`,`sortWeight`,`autopromoteCandidate`) VALUES (1333850,1318614,13,53,NULL,NULL);
 
-INSERT INTO `xcolab_Proposal` (`proposalId`,`createDate`,`updatedDate`,`currentVersion`,`authorId`,`visible`,`discussionId`,`resultsDiscussionId`,`judgeDiscussionId`,`fellowDiscussionId`,`advisorDiscussionId`,`groupId`) VALUES (1333850,'2017-02-10 17:44:06','2017-04-18 17:40:20',54,2651783,1,1366064,1366065,1366066,1366068,1366067,2854024);
+INSERT INTO `xcolab_Proposal` (`proposalId`,`createDate`,`updatedDate`,`currentVersion`,`authorId`,`visible`,`discussionId`,`resultsDiscussionId`,`groupId`) VALUES (1333850,'2017-02-10 17:44:06','2017-04-18 17:40:20',54,2651783,1,1366064,1366065,2854024);
 
 
-INSERT INTO `xcolab_Proposal` (`proposalId`,`createDate`,`updatedDate`,`currentVersion`,`authorId`,`visible`,`discussionId`,`resultsDiscussionId`,`judgeDiscussionId`,`fellowDiscussionId`,`advisorDiscussionId`,`groupId`) VALUES (1333851,'2017-02-10 17:44:06','2017-04-18 17:40:20',54,2651783,1,1366064,1366065,1366066,1366068,1366067,2854024);
+INSERT INTO `xcolab_Proposal` (`proposalId`,`createDate`,`updatedDate`,`currentVersion`,`authorId`,`visible`,`discussionId`,`resultsDiscussionId`,`groupId`) VALUES (1333851,'2017-02-10 17:44:06','2017-04-18 17:40:20',54,2651783,1,1366064,1366065,2854024);
 INSERT INTO `xcolab_Proposal2Phase` (`proposalId`,`contestPhaseId`,`versionFrom`,`versionTo`,`sortWeight`,`autopromoteCandidate`) VALUES (1333851,1318611,1,13,NULL,NULL);
 INSERT INTO `xcolab_Proposal2Phase` (`proposalId`,`contestPhaseId`,`versionFrom`,`versionTo`,`sortWeight`,`autopromoteCandidate`) VALUES (1333851,1318612,13,13,NULL,NULL);
 INSERT INTO `xcolab_Proposal2Phase` (`proposalId`,`contestPhaseId`,`versionFrom`,`versionTo`,`sortWeight`,`autopromoteCandidate`) VALUES (1333851,1318613,13,53,NULL,NULL);

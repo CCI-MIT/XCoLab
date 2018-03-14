@@ -255,9 +255,6 @@ public class ProposalDaoImpl implements ProposalDao {
                 .set(PROPOSAL.VISIBLE, proposal.getVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
                 .set(PROPOSAL.RESULTS_DISCUSSION_ID, proposal.getResultsDiscussionId())
-                .set(PROPOSAL.JUDGE_DISCUSSION_ID, proposal.getJudgeDiscussionId())
-                .set(PROPOSAL.FELLOW_DISCUSSION_ID, proposal.getFellowDiscussionId())
-                .set(PROPOSAL.ADVISOR_DISCUSSION_ID, proposal.getAdvisorDiscussionId())
                 .set(PROPOSAL.GROUP_ID, proposal.getGroupId()).returning(PROPOSAL.PROPOSAL_ID)
                 .fetchOne();
         if (ret != null) {
@@ -298,9 +295,6 @@ public class ProposalDaoImpl implements ProposalDao {
                 .set(PROPOSAL.VISIBLE, proposal.getVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
                 .set(PROPOSAL.RESULTS_DISCUSSION_ID, proposal.getResultsDiscussionId())
-                .set(PROPOSAL.JUDGE_DISCUSSION_ID, proposal.getJudgeDiscussionId())
-                .set(PROPOSAL.FELLOW_DISCUSSION_ID, proposal.getFellowDiscussionId())
-                .set(PROPOSAL.ADVISOR_DISCUSSION_ID, proposal.getAdvisorDiscussionId())
                 .set(PROPOSAL.GROUP_ID, proposal.getGroupId())
                 .where(PROPOSAL.PROPOSAL_ID.eq(proposal.getProposalId())).execute() > 0;
     }

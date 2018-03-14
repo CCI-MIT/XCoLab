@@ -9,9 +9,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -270,23 +268,6 @@ public class Proposal extends AbstractProposal {
 
     }
 
-    @Override
-    public Long getFellowDiscussionId() {
-        long fellowDiscussionId = super.getFellowDiscussionId();
-        if (fellowDiscussionId == 0) {
-            CommentThread commentThread = new CommentThread();
-            commentThread.setAuthorId(this.getAuthorId());
-            commentThread.setIsQuiet(true);
-            commentThread.setTitle(this.getProposalId() + "_fellowReview");
-            commentThread = ThreadClientUtil.createThread(commentThread);
-            fellowDiscussionId =  commentThread.getThreadId();
-            this.setFellowDiscussionId(fellowDiscussionId);
-            clients.proposal.updateProposal(this);
-
-        }
-        return fellowDiscussionId;
-    }
-
     public String getCleanPitch() {
         return HtmlUtil.cleanAll(getPitch());
     }
@@ -350,13 +331,6 @@ public class Proposal extends AbstractProposal {
     public long getCommentsCount() {
         if (this.getProposalId() > 0) {
             return clients.comment.countComments(this.getDiscussionId());
-        }
-        return 0;
-    }
-
-    public long getFellowReviewCommentsCount() {
-        if (this.getProposalId() > 0) {
-            return clients.comment.countComments(this.getFellowDiscussionId());
         }
         return 0;
     }

@@ -83,7 +83,6 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             model.addAttribute("proposalAdvancingBean", advancingBean);
         }
 
-        model.addAttribute("discussionId", proposal.getJudgeDiscussionId());
         model.addAttribute("emailTemplates", advancingBean.getEmailTemplateBean().getEmailTemplates());
         model.addAttribute("advanceOptions", JudgingSystemActions.AdvanceDecision.values());
         model.addAttribute("isFinalistPhase", isFinalistPhase);
