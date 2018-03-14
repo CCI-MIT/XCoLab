@@ -35,7 +35,7 @@
         </div>
     </c:if>
 
-    <div class="cb-d-flex-between-center my-3">
+    <div class="cb-d-flex-between-center flex-wrap-reverse my-3">
         <div class="c-Count">
             <span class="c-Count__number">${proposals.totalSize}</span>
             <c:choose>
