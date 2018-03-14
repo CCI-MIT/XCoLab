@@ -84,7 +84,7 @@
 
     <c:if test="${not empty _themeContext.credentialVariables.typekitId}">
         <c:set var="typekitId" value="${_themeContext.serverEnvironment eq 'LOCAL' ? _themeContext.credentialVariables.typekitIdLocal :_themeContext.credentialVariables.typekitId}" />
-        <xcolab-scripts:loadTypekit kitId="${typekitId}" />
+        <link rel="stylesheet" href="https://use.typekit.com/${typekitId}.css"/>
     </c:if>
 
 
