@@ -136,7 +136,7 @@
             </c:if>
         </c:if>
         <c:if test="${not contestPhase.completed and proposalsDisplayPermissions.canSeeReviewStatus}">
-            <div class="col c-Table__cell--title text-center advancing-status">
+            <div class="col-12 col-lg c-Table__cell--title text-center" style="min-width: 200px">
                 Advancing Status<br />
 
                 <!-- Sorting by Fellows -->

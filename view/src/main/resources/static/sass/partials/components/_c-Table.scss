@@ -130,13 +130,6 @@ $c-Table__cell__count__hideImage: false !default;
   &.contributors {
   }
 
-  &.advancing-status {
-    img {
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-  }
-
   &.highlight a {
     font-weight: $c-Table__cell__fontWeight--active;
   }
@@ -208,10 +201,6 @@ $c-Table__cell__count__hideImage: false !default;
 
   &.contributors {
     width: 95px;
-  }
-
-  &.advancing-status {
-    width: 195px;
   }
 
   a {

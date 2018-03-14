@@ -93,7 +93,7 @@
                 </c:if>
             </c:if>
             <c:if test="${not contestPhase.completed and proposalsDisplayPermissions.canSeeReviewStatus}">
-                <div class="col c-Table__cell text-center advancing-status no-border">
+                <div class="col-12 col-lg c-Table__cell text-center no-border" style="min-width: 200px">
                     <c:if test="${proposalsPermissions.canFellowActions or proposalsPermissions.canIAFActions}">
                         <c:choose>
                             <c:when test="${proposal.screeningStatus.statusValue == 0}">

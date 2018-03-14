@@ -7,13 +7,13 @@
     <span class="fieldWithTooltip">
         <c:choose>
             <c:when test="${value == 0}">
-                <collab:image src="/images/icon_question-chk-qm.png"/>
+                <collab:image src="/images/icon_question-chk-qm.png" cssClass="mx-1"/>
             </c:when>
             <c:when test="${value == 1}">
-                <collab:image src="/images/icon_question-x.png"/>
+                <collab:image src="/images/icon_question-x.png" cssClass="mx-1"/>
             </c:when>
             <c:otherwise>
-                <collab:image src="/images/icon_question-chk.png"/>
+                <collab:image src="/images/icon_question-chk.png" cssClass="mx-1"/>
             </c:otherwise>
         </c:choose>
         </span>
