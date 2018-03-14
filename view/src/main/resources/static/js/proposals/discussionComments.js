@@ -105,18 +105,9 @@ function extractText(elementId) {
     }
 }
 
-/**
- Update add this urls to messages
- **/
 jQuery(function() {
     var $messageContent = $("#messageContent");
     if ($messageContent.length > 0) {
-        var baseLocation = window.location.toString();
-        if (baseLocation.indexOf("#") >= 0) {
-            baseLocation = baseLocation.substring(0, baseLocation.indexOf("#"));
-        }
-
-
         //restore comment content from a previously set cookie.
         if ($messageContent.val() == "" && Cookies.get("proposal-comment-body")) {
             $messageContent.val(Cookies.get("proposal-comment-body"));
@@ -130,7 +121,6 @@ jQuery(function() {
 });
 function handleClickOnDiscussion(event){
     //save the comment in a cookie, in case the user is not logged in
-
     var $ckeMessageContent = $("#cke_messageContent").find("iframe");
     if($ckeMessageContent == null || $ckeMessageContent.contents().find("body").text() == "") {
         Cookies.remove("proposal-comment-body");
@@ -140,10 +130,10 @@ function handleClickOnDiscussion(event){
         Cookies.set("proposal-comment-body", $ckeMessageContent.contents().find("body").text());
     }
 
-    if ($("#addCommentButton").attr("data-is-deferred") == "true") {
+    if ($("#addCommentButton").data("is-deferred") === true) {
         deferUntilLogin();
     } else {
-        if (! window.isAddCommentFormValid()) {
+        if (!window.isAddCommentFormValid()) {
             event.preventDefault();
             return false;
         }

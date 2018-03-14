@@ -46,33 +46,36 @@
 					</c:otherwise>
 				</c:choose>
 			</div>
-			<div class="c-Comment__button">
-				<c:if test="${discussionPermissions.canSeeAddCommentButton}">
-					<a href="javascript:;" rel="nofollow"
-                       onclick='if(!deferUntilLogin()) {return false;} jQuery(".c-Comment__new")[0].scrollIntoView(); return false;'>
-                        <spring:message code="discussion.commmentstag.addacomment" var="addAComment"/>
-                        <collab:image src="/images/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="${addAComment}" /><spring:message code="discussion.commmentstag.jumptocomment"/>
-                    </a>
-				</c:if>
-				<c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
-					<div class="c-Comment__share">
-                        <spring:message code="discussion.commmentstag.share"/>:
+            <c:if test="${discussionPermissions.canSeeAddCommentButton}">
+                <a href="#addCommentForm" onclick='if(!deferUntilLogin()) return false' class="btn btn-link">
+                    <collab:image src="/images/icon-add-comment.png" width="24" height="22"
+                                  cssClass="cb-btn-image" ariaHidden="true"/>
+                    <span class="cb-btn-image-text">
+                        <spring:message code="discussion.commmentstag.jumptocomment"/>
+                    </span>
+                </a>
+            </c:if>
+            <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
+                <div class="c-Comment__share">
+                    <spring:message code="discussion.commmentstag.share"/>:
 
-                        <div>
-                            <xcolab-social:socialShareButtons title="${shareTitlePageScope}" size="sm"/>
-                        </div>
-					</div>
-				</c:if>
-
-			</div>
+                    <div>
+                        <xcolab-social:socialShareButtons title="${shareTitlePageScope}" size="sm"/>
+                    </div>
+                </div>
+            </c:if>
 		</div>
 		<div class="clearfix"><!--  --></div>
 		<c:choose>
 			<c:when test="${thread.commentsCount == 0 }">
 				<div>
-					<spring:message code="discussion.commmentstag.nocomments"/>
+                    <span>
+                        <spring:message code="discussion.commmentstag.nocomments"/>
+                    </span>
 					<c:if test="${discussionPermissions.canSeeAddCommentButton }">
-						<spring:message code="discussion.commmentstag.bethefirst"/>
+                        <span class="ml-1">
+                            <spring:message code="discussion.commmentstag.bethefirst"/>
+                        </span>
 					</c:if>
 				</div>
 			</c:when>
@@ -194,14 +197,14 @@
                         </div>
 						<c:choose>
 							<c:when test="${discussionPermissions.canAddComment }">
-								<a class="btn btn-primary" href="javascript:;" id="addCommentButton">
+								<button type="button" class="btn btn-primary mt-2" id="addCommentButton">
 									<spring:message code="discussion.commmentstag.addcomment.button"/>
-								</a>
+								</button>
 							</c:when>
 							<c:otherwise>
-								<a class="btn btn-primary" href="javascript:;" data-is-deferred="true" id="addCommentButton">
+								<button type="button" class="btn btn-primary mt-2" data-is-deferred="true" id="addCommentButton">
                                     <spring:message code="discussion.commmentstag.addcomment.button"/>
-								</a>
+								</button>
 							</c:otherwise>
 						</c:choose>
 					</form:form>
