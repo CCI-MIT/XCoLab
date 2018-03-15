@@ -113,6 +113,18 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <name>srcset</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>sizes</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
             <name>alt</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>

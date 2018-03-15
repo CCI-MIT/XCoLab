@@ -12,11 +12,15 @@ public class ImageTag extends AbstractHtmlTag {
     private static final String IMAGE_TAG = "img";
 
     private static final String SRC_ATTRIBUTE = "src";
+    private static final String SRCSET_ATTRIBUTE = "srcset";
+    private static final String SIZES_ATTRIBUTE = "sizes";
     private static final String ALT_ATTRIBUTE = "alt";
     private static final String WIDTH_ATTRIBUTE = "width";
     private static final String HEIGHT_ATTRIBUTE = "height";
 
     private String src;
+    private String srcset;
+    private String sizes;
     private String alt;
     private Integer width;
     private Integer height;
@@ -32,6 +36,8 @@ public class ImageTag extends AbstractHtmlTag {
 	protected void writeTagContent() throws JspException {
         final String encodedSrc = encodeUrl(getSrc());
         writeOptionalAttribute(SRC_ATTRIBUTE, encodedSrc);
+        writeOptionalAttribute(SRCSET_ATTRIBUTE, getSrcset());
+        writeOptionalAttribute(SIZES_ATTRIBUTE, getSizes());
         writeOptionalAttribute(ALT_ATTRIBUTE, getAlt());
         writeOptionalAttribute(WIDTH_ATTRIBUTE, getWidth());
         writeOptionalAttribute(HEIGHT_ATTRIBUTE, getHeight());
@@ -73,5 +79,21 @@ public class ImageTag extends AbstractHtmlTag {
 
     public void setHeight(Integer height) {
         this.height = height;
+    }
+
+    public String getSrcset() {
+        return srcset;
+    }
+
+    public void setSrcset(String srcset) {
+        this.srcset = srcset;
+    }
+
+    public String getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(String sizes) {
+        this.sizes = sizes;
     }
 }

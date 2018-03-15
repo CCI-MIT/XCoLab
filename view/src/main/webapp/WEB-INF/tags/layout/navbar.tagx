@@ -29,7 +29,10 @@
         <div class="cb-container-fixed">
             <nav class="navbar ${_themeContext.themeVariables.isResponsive ? 'navbar-expand-lg' : 'navbar-expand'} navbar-light" aria-label="site wide">
                 <a class="navbar-brand" href="/">
-                    <collab:image src="${logoPath}" alt="${colabName}" height="42" />
+                    <c:url var="encodedLogoPath" value="${logoPath}"/>
+                    <c:set var="logoWidth" value="${_themeContext.themeVariables.activeTheme.logoWidth}"/>
+                    <collab:image src="${logoPath}.png" srcset="${encodedLogoPath}@2x.png ${logoWidth * 2}w, ${encodedLogoPath}@3x.png ${logoWidth * 3}w"
+                                  sizes="${logoWidth}px" alt="${colabName}" height="42"/>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"/>
