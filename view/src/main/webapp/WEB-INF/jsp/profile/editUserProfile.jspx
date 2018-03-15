@@ -49,7 +49,7 @@
         </em>
 	</div>
 
-    <!-- TODO: [COLAB-2563] use this form as a demonstration
+    <!-- TODO: [COLAB-2563] use this form as a demonstration -->
 
 	<form:form autocomplete="off" id="updateUserProfileForm"
 			   action="${updateUserProfileForm}" commandName="userBean" method="post">
