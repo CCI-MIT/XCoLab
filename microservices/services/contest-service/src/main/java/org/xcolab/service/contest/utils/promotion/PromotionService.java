@@ -402,7 +402,8 @@ public class PromotionService {
                         completedPhasePK);
                 new EmailToAdminDispatcher("Duplicate primary key for P2p in auto promotion",
                         String.format("Unexpectedly found p2p. Setting versionFrom = %d and versionTo = %d: %s",
-                                currentProposalVersion, currentProposalVersion, p2p)).sendMessage();
+                                currentProposalVersion, currentProposalVersion, p2p), 2)
+                        .sendMessage();
             } catch (Proposal2PhaseNotFoundException e) {
                 p2p = new Proposal2Phase();
                 p2p.setProposalId(proposalId);

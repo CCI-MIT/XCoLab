@@ -58,21 +58,16 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
   font-weight: $t-Typography__fontWeight;
 }
 
-/*.wf-active .comm_date { font-size:23px; }*/
 .comm_icons {
   float: right;
   width: 90px;
 }
 
 .comm_icons a {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: $t-Typography__fontWeight--bold;
   padding-bottom: 0;
   border-bottom: none;
-}
-
-.wf-active .comm_icons a {
-  font-size: 16px;
 }
 
 /** COMMUNITY **/
@@ -100,14 +95,10 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
 
 .comm_info-left span {
   color: $p-community__infoLeft__span__textColor;
-  font-size: 30px;
+  font-size: $p-community__infoLeft__span__fontSize;
   font-weight: $p-community__infoLeft__span__fontWeight;
   padding-right: $p-community__infoLeft__span__paddingRight;
   font-style: normal;
-}
-
-.wf-active .comm_info-left span {
-  font-size: $p-community__infoLeft__span__fontSize;
 }
 
 .comm_info-left img {
@@ -134,7 +125,7 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
 
 }
 
-.wf-active .comm_list h3 {
+.comm_list h3 {
   font-size: 14px;
 }
 
@@ -143,12 +134,8 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
 }
 
 .comm_list li {
-  font-size: 15px;
-  margin-top: 10px;
-}
-
-.wf-active .comm_list li {
   font-size: 17px;
+  margin-top: 10px;
 }
 
 .comm_list li.c {
@@ -206,12 +193,8 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
   border: none;
   cursor: pointer;
   color: white;
-  font-size: 13px;
-  font-weight: $t-Typography__fontWeight;
-}
-
-.wf-active .comm_submit {
   font-size: 15px;
+  font-weight: $t-Typography__fontWeight;
 }
 
 .comm_submit:hover {

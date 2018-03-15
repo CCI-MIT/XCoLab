@@ -1,8 +1,5 @@
-$c-Footer__backgroundColor: $t-Color__tan !default;
-$c-Footer__background: url(/images/bg-noise.png) $c-Footer__backgroundColor !default;
-
-$c-Footer__menu__background__isSimple: false !default;
-$c-Footer__menu__backgroundColor: simple-gradient($t-Color__gray--dark-700) !default;
+$c-Footer__background: $t-Color__tan !default;
+$c-Footer__menu__background: simple-gradient($t-Color__gray--dark-700) !default;
 
 $c-Footer__menu__li__a--hover__color: $t-Color__accent !default;
 $c-Footer__menu__li__textColor: white !default;
@@ -16,11 +13,7 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
 
 #c-Footer__menu { //#footmenu
   padding: 8px 0;
-  @if $c-Footer__menu__background__isSimple {
-    background: $c-Footer__menu__backgroundColor;
-  } @else {
-    background: url(/images/bg-noise.png), $c-Footer__menu__backgroundColor;
-  }
+  background: $c-Footer__menu__background;
 
   box-shadow: $c-Footer__menu__boxShadow;
 

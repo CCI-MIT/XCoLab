@@ -9,7 +9,7 @@
     <xcolab:modal modalId="flaggingModal" title="${modalTitle}" size="sm">
         <form:form method="post" action="/flagging/report" id="popup_flagging_form">
             <div class="modal-body">
-                <div class="c-Alert__info__message">
+                <div class="alert alert-info">
                     <spring:message code="homepage.modals.flagging.message" />
                 </div>
                 <div class="login_popup_box">

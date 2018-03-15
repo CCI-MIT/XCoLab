@@ -17,13 +17,13 @@
         <div class="text-right">
             <button type="button" class="btn btn-primary"  onclick="saveTeam()">SAVE team</button>
             <button type="button" class="btn btn-primary js-PostLink" data-url="TEAMS">CREATE new team</button>
-            <button type="button" class="btn btn-primary js-PostLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</button>
+            <button type="button" class="btn btn-outline-danger js-PostLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</button>
         </div>
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
         <div class="reg_errors"><!--  -->
-            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
+            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
         </div>
 
         <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
@@ -39,7 +39,7 @@
                     </form:select>
 
                     <div class="reg_errors">
-                        <form:errors cssClass="c-Alert c-Alert__error" path="elementId"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="elementId"/>
                     </div>
                 </div>
             </div>

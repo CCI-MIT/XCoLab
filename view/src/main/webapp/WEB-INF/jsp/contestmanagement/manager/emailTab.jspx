@@ -29,13 +29,13 @@
             <a class="btn btn-primary" href="#" onclick="saveExistingTemplate()">SAVE template</a>
             <!--<a class="btn btn-primary" href="#" onclick="saveAsNewTemplate()">SAVE as new template</a>-->
             <!--<a class="btn btn-primary" href="#" onclick="submitCreateTemplateForm()">CREATE new template</a>-->
-            <!--<a class="btn btn-primary" href="#" onclick="submitDeleteTemplateForm()">DELETE template</a>-->
+            <!--<a class="btn btn-outline-danger" href="#" onclick="submitDeleteTemplateForm()">DELETE template</a>-->
         </div>
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
         <div class="reg_errors"><!--  -->
-            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
+            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
         </div>
 
         <div class="c-Box c-Box--colorTan">
@@ -64,7 +64,7 @@
                     <form:input path="type" cssClass="form-control" disabled="disabled"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="type"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="type"/>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                     <form:input path="subject" cssClass="form-control"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="subject"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="subject"/>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                     <form:textarea path="content" cssClass="form-control"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="content"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="content"/>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                     <form:input path="footer" cssClass="form-control"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="footer"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="footer"/>
                     </div>
                 </div>
             </div>

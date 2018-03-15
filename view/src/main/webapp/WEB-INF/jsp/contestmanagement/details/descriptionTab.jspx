@@ -28,7 +28,7 @@
         <form:form action="${updateUrl }" commandName="contestDescriptionBean" cssClass="addpropform"
                    id="editForm" method="post">
             <div class="reg_errors"><!--  -->
-                <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
+                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
             </div>
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
@@ -48,7 +48,7 @@
                     <form:input path="contestShortName" id="contestShortName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors">
-                        <form:errors cssClass="c-Alert c-Alert__error" path="contestShortName"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestShortName"/>
                     </div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">60</span> characters
@@ -90,7 +90,7 @@
                     <form:textarea path="contestName" id="contestName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="contestName"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestName"/>
                     </div>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer">
@@ -205,7 +205,7 @@
                                    cssClass="rte-editorPlaceholder form-control" cssErrorClass="form-control cb-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="contestDescription"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestDescription"/>
                     </div>
 
                     <div class="inputLimitContainer">
@@ -235,7 +235,7 @@
                     </form:select>
 
                     <div class="reg_errors">
-                        <form:errors cssClass="c-Alert c-Alert__error" path="planTemplateId"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="planTemplateId"/>
                     </div>
                 </div>
             </div>
@@ -260,7 +260,7 @@
                     </form:select>
 
                     <div class="reg_errors">
-                        <form:errors cssClass="c-Alert c-Alert__error" path="scheduleTemplateId"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="scheduleTemplateId"/>
                     </div>
 
                     <c:if test="${_themeContext.authenticationVariables.isAdmin}">

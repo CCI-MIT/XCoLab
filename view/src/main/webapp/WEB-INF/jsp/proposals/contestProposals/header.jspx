@@ -5,7 +5,7 @@
 
 	<!--@elvariable id="showCountdown" type="java.lang.Boolean"-->
 
-	<div class="c-Headline align-items-center">
+	<div class="c-Headline align-items-center flex-wrap flex-lg-nowrap">
         <collab:image src="${contest.logoPath}" width="50" height="50" alt="Contest Image"/>
 		<h1 class="my-0">${contest.contestShortNameWithEndYear}</h1>
 		<c:if test="${contestPhase.active and not empty contestPhase.phaseEndDate and showCountdown}">
@@ -21,7 +21,7 @@
 	</div>
     <!-- /c-Headline -->
 
-	<div class="c-TitleBar c-TitleBar__content contestSummary m-Shadebar">
+	<div class="c-TitleBar c-TitleBar__content flex-column flex-md-row contestSummary m-Shadebar">
 		<jsp:directive.include file="./header_contestPhases.jspx" />
 		<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">
 			<c:set var="subscribeContestURL" value="/contests/subscribeContest?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }"/>

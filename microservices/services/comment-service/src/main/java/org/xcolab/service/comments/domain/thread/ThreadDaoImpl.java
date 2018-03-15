@@ -212,9 +212,6 @@ public class ThreadDaoImpl implements ThreadDao {
                 .from(THREAD)
                 .join(PROPOSAL)
                 .on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                .or(PROPOSAL.ADVISOR_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                .or(PROPOSAL.FELLOW_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                .or(PROPOSAL.JUDGE_DISCUSSION_ID.eq(THREAD.THREAD_ID))
                 .or(PROPOSAL.RESULTS_DISCUSSION_ID.eq(THREAD.THREAD_ID))
                 .where(PROPOSAL.PROPOSAL_ID.in(proposalPKs))
                 .fetchInto(Long.class);

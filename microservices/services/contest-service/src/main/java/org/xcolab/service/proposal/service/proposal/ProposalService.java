@@ -96,24 +96,6 @@ public class ProposalService {
 
             proposal.setResultsDiscussionId(resultsCommentThread.getThreadId());
 
-
-            final CommentThread judgeCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " judges discussion",
-                    authorId, true);
-
-            proposal.setJudgeDiscussionId(judgeCommentThread.getThreadId());
-
-
-            final CommentThread advisorsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " advisors discussion",
-                    authorId, true);
-
-            proposal.setAdvisorDiscussionId(advisorsCommentThread.getThreadId());
-
-
-            final CommentThread fellowsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " fellows discussion",
-                    authorId, true);
-
-            proposal.setFellowDiscussionId(fellowsCommentThread.getThreadId());
-
             // create group
             Group_ group = createGroupAndSetUpPermissions(authorId, proposalId, contest);
             proposal.setGroupId(group.getGroupId());

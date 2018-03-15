@@ -155,9 +155,6 @@ CREATE TABLE `xcolab_Proposal` (
   `visible` tinyint(4) DEFAULT NULL,
   `discussionId` bigint(20) DEFAULT NULL,
   `resultsDiscussionId` bigint(20) DEFAULT NULL,
-  `judgeDiscussionId` bigint(20) DEFAULT NULL,
-  `fellowDiscussionId` bigint(20) DEFAULT NULL,
-  `advisorDiscussionId` bigint(20) DEFAULT NULL,
   `groupId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`proposalId`)/*,
   KEY `IX_BBC99B8B` (`updatedDate`)*/

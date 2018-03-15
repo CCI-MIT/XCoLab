@@ -28,7 +28,7 @@
                     <input name="screenName" type="text" id="reg_username" value="${member.screenName}" style="padding: 5px; float:right; margin-right:2px;"/>
                     <div id="screenName_error" style="display: none;">
                         <div class="clearfix"><!-- --></div>
-                        <div class="c-Alert__error__message">The specified user name is either not valid or already taken.</div>
+                        <div class="alert alert-danger">The specified user name is either not valid or already taken.</div>
                     </div>
 
                     <div class="clearfix"><!-- --></div>
@@ -44,7 +44,7 @@
                     </div>
                     <div id="bio_error" style="display: none;">
                         <div class="clearfix"><!-- --></div>
-                        <div class="c-Alert__error__message">Your bio text is too long.</div>
+                        <div class="alert alert-danger">Your bio text is too long.</div>
                     </div>
                     <input name="redirect" type="hidden" value="${redirect}" />
                     <div class="clearfix"><!-- --></div>

@@ -3,7 +3,7 @@
           xmlns:spring="http://www.springframework.org/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-        <div class="c-Alert__error__message">
+        <div class="alert alert-danger">
             <h3><spring:message code="message.dailylimit.title"/></h3>
             <p>
                 <spring:message code="message.dailylimit.message"/>

@@ -57,10 +57,11 @@
         <script id="impactSeriesEditTableRowTemplate" type="text/x-handlebars-template">
             <tr id="impact-edit-row-{{series.name}}" class="impact-edit-row">
                 <td width="45%">{{series.description}}
-                    <a href="javascript:;" class="helpTrigger"><img
-                            src="/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                    <a class="ml-1" data-toggle="collapse" href="#js-Help__{{series.name}}">
+                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                    </a>
 
-                    <div class="addprophelp"><!-- --></div>
+                    <div class="p-Proposal__formBox__helpText collapse js-Help" id="js-Help__{{series.name}}"><!-- --></div>
                     <div class="clearfix"><!-- --></div>
                 </td>
                 {{#each series.values}}
@@ -123,13 +124,11 @@
                                 <th style="width: 22.5%;"><!-- --></th>
                                 <th class="blue-bg" style="width: 55%; text-align: center">
                                     Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
-                                    <a href="javascript:;" class="helpTrigger">
-                                        <collab:image src="/images/icon-addprop-question.png" width="15"
-                                            height="15"/>
+                                    <a class="ml-1" data-toggle="collapse" href="#js-Help__heading">
+                                        <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                                     </a>
-                                    <br/>
 
-                                    <div class="addprophelp" style="color:white;">
+                                    <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__heading" style="color:white;">
                                         This table shows a summary of the emission reductions for all sectors and regions
                                         you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each
                                         decade listed.
@@ -413,7 +412,6 @@
 
                 // Change value in new series sector dropdown
                 registerDropdownEventListener($('div#new-series select#region'), $('div#new-series select#sector'));
-                registerHelpEventHandler();
 
                 // IAF upload form handler
                 registerSeriesUploadFormEventHandler();
@@ -435,15 +433,6 @@
                 // submit button
                 form.find('a#submit-button').click(uploadAllSeriesData);
                 form.find('a#cancel-button').click(hideDataUploadForm);
-            }
-
-            function registerHelpEventHandler() {
-                var $impactHelpTriggerElement = jQuery("#impact").find(".helpTrigger");
-                $impactHelpTriggerElement.off("click");
-                $impactHelpTriggerElement.click(function () {
-                    var trigger = jQuery(this);
-                    trigger.parent().find(".addprophelp").slideToggle("fast");
-                });
             }
 
             function seriesUploadTextAreaKeyup() {
@@ -583,7 +572,7 @@
                         // Add new rows
                         var dataSeries = data.serieses.BAU;
                         var tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
-                        tableRow.find('.addprophelp').html(helpTextMap.BAU);
+                        tableRow.find('.js-Help').html(helpTextMap.BAU);
                         tableRow.find('span.series-value').each(function (idx) {
                             $(this).text(numeral($(this).text()).format('0,0.00'))
                         });
@@ -592,7 +581,7 @@
 
                         dataSeries = data.serieses.IMPACT_REDUCTION;
                         tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
-                        tableRow.find('.addprophelp').html(helpTextMap.IMPACT_REDUCTION);
+                        tableRow.find('.js-Help').html(helpTextMap.IMPACT_REDUCTION);
                         tableRow.find('span.series-value').each(function (idx) {
                             $(this).text(numeral($(this).text()).format('0,0.00'))
                         });
@@ -600,7 +589,7 @@
 
                         dataSeries = data.serieses.IMPACT_ADOPTION_RATE;
                         tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
-                        tableRow.find('.addprophelp').html(helpTextMap.IMPACT_ADOPTION_RATE);
+                        tableRow.find('.js-Help').html(helpTextMap.IMPACT_ADOPTION_RATE);
                         tableRow.find('span.series-value').each(function (idx) {
                             $(this).text(numeral($(this).text()).format('0,0.00'))
                         });
@@ -620,8 +609,6 @@
                         });
                         tableRow.addClass("selected");
                         editTable.append(tableRow);
-                        registerHelpEventHandler();
-
 
                         editedFocusArea = data.focusAreaId;
 

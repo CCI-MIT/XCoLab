@@ -53,172 +53,168 @@
                         <div class="card-body">
                             <h1>Member Profile</h1>
                             <div class="comm_member" style="margin-top: 0;">
-
-                                <!-- <c:if test="${currentUserProfile.attendsConference}">
-                                    <a href="/web/guest/conference2014" class="attendingConference"><collab:image src="/images/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
-                                </c:if> -->
                                 <div class="media">
                                     <collab:image src="${userBean.portrait}" width="150" height="150"
                                                   alt="${currentUserProfile.realName}" cssClass="mr-3"/>
                                     <div class="media-body">
-                                        <div class="comm_member-info">
-                                            <div class="d-flex">
-                                                <div style="flex: 0 0 auto">
-                                                    <h2 class="text-muted">${currentUserProfile.realName}</h2>
-                                                    <div class="role-indicator"
-                                                         style="margin-top: 5px;">
-                                                        <div style="width: 16px">
-                                                            <collab:image
-                                                                    src="/images/${currentUserProfile.highestRole.imageUrl}.png"
-                                                                    width="16" height="16"/>
-                                                        </div>
-                                                        ${currentUserProfile.highestRole.printName}
+                                        <div class="d-flex">
+                                            <div style="flex: 0 0 auto">
+                                                <h2 class="text-muted">${currentUserProfile.realName}</h2>
+                                                <div class="role-indicator"
+                                                     style="margin-top: 5px;">
+                                                    <div style="width: 16px">
+                                                        <collab:image
+                                                                src="/images/${currentUserProfile.highestRole.imageUrl}.png"
+                                                                width="16" height="16"/>
                                                     </div>
-                                                </div>
-                                                <div class="flex-fill">
-                                                    <c:forEach var="badge" items="${currentUserProfile.badges}">
-                                                        <c:if test="${not badge.hideRibbon}">
-                                                            <a href="${badge.proposalLinkUrl}" class="d-inline-block">
-                                                                <div class="c-Badge--small badge-${badge.badgeType} js-Tooltip"
-                                                                     title="${badge.badgeText} in ${badge.contestName}">
-                                                                    <span class="c-Badge__title--small"
-                                                                          style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
-                                                                            ${badge.badgeTitle}
-                                                                    </span>
-
-                                                                    <div class="c-Badge__text--small">20</div>
-                                                                    <span class="c-Badge__year--small">${badge.badgeYearShort}</span>
-                                                                </div>
-                                                            </a>
-                                                        </c:if>
-                                                    </c:forEach>
+                                                    ${currentUserProfile.highestRole.printName}
                                                 </div>
                                             </div>
+                                            <div class="flex-fill">
+                                                <c:forEach var="badge" items="${currentUserProfile.badges}">
+                                                    <c:if test="${not badge.hideRibbon}">
+                                                        <a href="${badge.proposalLinkUrl}" class="d-inline-block">
+                                                            <div class="c-Badge--small badge-${badge.badgeType} js-Tooltip"
+                                                                 title="${badge.badgeText} in ${badge.contestName}">
+                                                                <span class="c-Badge__title--small"
+                                                                      style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
+                                                                        ${badge.badgeTitle}
+                                                                </span>
 
-                                            <hr class="cb-hr-lg"/>
-
-                                            <table border="0" cellpadding="0" cellspacing="0"
-                                                   class="colab members otherInfo profileTable"
-                                                   style="width:100%;">
-                                                <tbody>
-                                                <tr>
-                                                    <td class="b" nowrap="nowrap" width="23%">
-                                                        <spring:message
-                                                                code="profile.show.screen.name"/>
-                                                    </td>
-                                                    <td width="23%">${userBean.screenName}</td>
-                                                    <td class="b" width="43%"><spring:message
-                                                            code="profile.show.activities"/></td>
-                                                    <td class="align_right">${currentUserProfile.userActivityCountFormatted}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="b" nowrap="nowrap" width="23%">
-                                                        <spring:message
-                                                                code="profile.show.membersince"/>
-                                                    </td>
-                                                    <td width="23%">
-                                                        <xcolab:formatDateTime
-                                                                millis="${currentUserProfile.joinDate.time}"
-                                                                type="date" zoneDisplay="none"/>
-                                                    </td>
-                                                    <c:if test="${pointsActive}">
-                                                        <td class="b points_box left_border top_border"
-                                                            width="45%">
-                                                            <spring:message
-                                                                    code="profile.show.pointsactual"
-                                                                    arguments="${_themeContext.colabShortName}"/>
-                                                            <a class="helpTrigger"
-                                                               href="javascript:;">
-                                                                <collab:image height="15" width="15"
-                                                                              src="/images/icon-addprop-question.png"/>
-                                                            </a>
-                                                            <br/>
-                                                            <div style="display: none;"
-                                                                 class="profilehelp">
-                                                                <spring:message
-                                                                        code="profile.show.pointsdisclaimer"
-                                                                        arguments="${_themeContext.colabShortName},${currentUserProfile.proposalString},${currentUserProfile.proposalsString}"
-                                                                        argumentSeparator=","/>
-                                                                <a href="/wiki/Climate+CoLab+Points"><spring:message
-                                                                        code="profile.show.seemore"/></a>
+                                                                <div class="c-Badge__text--small">20</div>
+                                                                <span class="c-Badge__year--small">${badge.badgeYearShort}</span>
                                                             </div>
-                                                            <div class="clearfix"><!-- --></div>
-                                                        </td>
-                                                        <td class="points_box right_border top_border align_right">${currentUserProfile.actualPointsFormatted}</td>
+                                                        </a>
                                                     </c:if>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="b" width="23%">Country</td>
-                                                    <td width="23%">
-                                                        <c:choose>
-                                                            <c:when test="${not empty userBean.countryName}">${userBean.countryName}</c:when>
-                                                        </c:choose>
-                                                    </td>
-                                                    <c:if test="${pointsActive}">
-                                                        <td class="b points_box left_border bottom_border"
-                                                            width="43%">
-                                                            <spring:message
-                                                                    code="profile.show.pointsactualMax"
-                                                                    arguments="${_themeContext.colabShortName}"/>
-                                                            <a class="helpTrigger"
-                                                               href="javascript:;">
-                                                                <collab:image height="15" width="15"
-                                                                              src="/images/icon-addprop-question.png"/>
-                                                            </a>
-                                                            <br/>
-                                                            <div style="display: none;"
-                                                                 class="profilehelp">
-                                                                <spring:message
-                                                                        code="profile.show.maximumnumber"
-                                                                        arguments="${_themeContext.colabShortName},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString}"
-                                                                        argumentSeparator=","/>
-                                                                <a href="/wiki/Climate+CoLab+Points"><spring:message
-                                                                        code="profile.show.seemore"/></a>
-                                                            </div>
-                                                            <div class="clearfix"><!-- --></div>
-                                                        </td>
-                                                        <td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPointsFormatted}</td>
-                                                    </c:if>
-                                                </tr>
-
-                                                <c:if test="${currentUserProfile.viewingOwnProfile}">
-                                                    <tr>
-                                                        <td class="b" width="23%"><spring:message
-                                                                code="profile.show.email"/></td>
-                                                        <td colspan="3"
-                                                            style="white-space: nowrap;">
-                                                            <a href="mailto:${userBean.email}">${userBean.emailStored}</a>
-
-                                                            <c:if test="${currentUserProfile.displayEMailErrorMessage}">
-                                                        <span class="iceMsgError portlet-msg-error Error form_error_messageError"><spring:message
-                                                                code="profile.show.pleaseupdate"/></span>
-                                                            </c:if>
-
-                                                        </td>
-                                                    </tr>
-                                                </c:if>
-
-                                                <c:if test="${permissions.getCanEditMemberProfile(userBean.userId)}">
-                                                    <tr>
-                                                        <td colspan="4">
-                                                            <a class="btn btn-primary"
-                                                               href="/members/profile/${currentUserProfile.userId}/edit">
-                                                                <spring:message
-                                                                        code="profile.show.manageprofile.button"/>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </c:if>
-
-                                                </tbody>
-                                            </table>
+                                                </c:forEach>
+                                            </div>
                                         </div>
+
+                                        <hr class="cb-hr-lg"/>
+
+                                        <table border="0" cellpadding="0" cellspacing="0"
+                                               class="colab members otherInfo profileTable"
+                                               style="width:100%;">
+                                            <tbody>
+                                            <tr>
+                                                <td class="b" nowrap="nowrap" width="23%">
+                                                    <spring:message
+                                                            code="profile.show.screen.name"/>
+                                                </td>
+                                                <td width="23%">${userBean.screenName}</td>
+                                                <td class="b" width="43%"><spring:message
+                                                        code="profile.show.activities"/></td>
+                                                <td class="align_right">${currentUserProfile.userActivityCountFormatted}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="b" nowrap="nowrap" width="23%">
+                                                    <spring:message
+                                                            code="profile.show.membersince"/>
+                                                </td>
+                                                <td width="23%">
+                                                    <xcolab:formatDateTime
+                                                            millis="${currentUserProfile.joinDate.time}"
+                                                            type="date" zoneDisplay="none"/>
+                                                </td>
+                                                <c:if test="${pointsActive}">
+                                                    <td class="b points_box left_border top_border"
+                                                        width="45%">
+                                                        <spring:message
+                                                                code="profile.show.pointsactual"
+                                                                arguments="${_themeContext.colabShortName}"/>
+                                                        <a class="helpTrigger"
+                                                           href="javascript:;">
+                                                            <collab:image height="15" width="15"
+                                                                          src="/images/icon-addprop-question.png"/>
+                                                        </a>
+                                                        <br/>
+                                                        <div style="display: none;"
+                                                             class="profilehelp">
+                                                            <spring:message
+                                                                    code="profile.show.pointsdisclaimer"
+                                                                    arguments="${_themeContext.colabShortName},${currentUserProfile.proposalString},${currentUserProfile.proposalsString}"
+                                                                    argumentSeparator=","/>
+                                                            <a href="/wiki/Climate+CoLab+Points"><spring:message
+                                                                    code="profile.show.seemore"/></a>
+                                                        </div>
+                                                        <div class="clearfix"><!-- --></div>
+                                                    </td>
+                                                    <td class="points_box right_border top_border align_right">${currentUserProfile.actualPointsFormatted}</td>
+                                                </c:if>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="b" width="23%">Country</td>
+                                                <td width="23%">
+                                                    <c:choose>
+                                                        <c:when test="${not empty userBean.countryName}">${userBean.countryName}</c:when>
+                                                    </c:choose>
+                                                </td>
+                                                <c:if test="${pointsActive}">
+                                                    <td class="b points_box left_border bottom_border"
+                                                        width="43%">
+                                                        <spring:message
+                                                                code="profile.show.pointsactualMax"
+                                                                arguments="${_themeContext.colabShortName}"/>
+                                                        <a class="helpTrigger"
+                                                           href="javascript:;">
+                                                            <collab:image height="15" width="15"
+                                                                          src="/images/icon-addprop-question.png"/>
+                                                        </a>
+                                                        <br/>
+                                                        <div style="display: none;"
+                                                             class="profilehelp">
+                                                            <spring:message
+                                                                    code="profile.show.maximumnumber"
+                                                                    arguments="${_themeContext.colabShortName},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString}"
+                                                                    argumentSeparator=","/>
+                                                            <a href="/wiki/Climate+CoLab+Points"><spring:message
+                                                                    code="profile.show.seemore"/></a>
+                                                        </div>
+                                                        <div class="clearfix"><!-- --></div>
+                                                    </td>
+                                                    <td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPointsFormatted}</td>
+                                                </c:if>
+                                            </tr>
+
+                                            <c:if test="${currentUserProfile.viewingOwnProfile}">
+                                                <tr>
+                                                    <td class="b" width="23%"><spring:message
+                                                            code="profile.show.email"/></td>
+                                                    <td colspan="3"
+                                                        style="white-space: nowrap;">
+                                                        <a href="mailto:${userBean.email}">${userBean.emailStored}</a>
+
+                                                        <c:if test="${currentUserProfile.displayEMailErrorMessage}">
+                                                    <span class="iceMsgError portlet-msg-error Error form_error_messageError"><spring:message
+                                                            code="profile.show.pleaseupdate"/></span>
+                                                        </c:if>
+
+                                                    </td>
+                                                </tr>
+                                            </c:if>
+
+                                            <c:if test="${permissions.getCanEditMemberProfile(userBean.userId)}">
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <a class="btn btn-primary"
+                                                           href="/members/profile/${currentUserProfile.userId}/edit">
+                                                            <spring:message
+                                                                    code="profile.show.manageprofile.button"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </c:if>
+
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                                 <c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
-                                    <a class="btn btn-primary" href="#" rel="nofollow"
-                                       onclick="if (!deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
+                                    <a class="btn btn-primary" rel="nofollow"
+                                       data-message-recipient="${currentUserProfile.user.id_}"
+                                       data-toggle="modal" href="#sendMessageModal"
+                                       onclick="if (!deferUntilLogin()) event.stopPropagation()">
                                         <spring:message code="profile.show.sendmessage"
                                                         arguments="${userBean.displayNameShort}"/>
                                     </a>
@@ -522,19 +518,12 @@
         </c:otherwise>
     </c:choose>
 
-    <c:choose>
-        <c:when test="${currentUserProfile.viewingOwnProfile}">
-            <xcolab:sendMessageModal/>
-        </c:when>
-        <c:when test="${currentUserProfile.canSeeSendMessageButton}">
-            <xcolab:sendMessageModal recipient="${currentUserProfile.user}"/>
-        </c:when>
-    </c:choose>
 
     <c:if test="${isSnpActive and empty balloonLink}">
         <jsp:include page="../redballoon/consentForm.jspx"/>
     </c:if>
 
+    <xcolab:requireLibrary name="sendMessage"/>
     <xcolab:requireLibrary name="CKEditor"/>
 
 </xcolab:layout>

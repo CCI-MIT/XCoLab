@@ -3,7 +3,7 @@ $t-Color__primary: #30a3fb !default;
 $t-Color__secondary: #66b035 !default;
 $t-Color__accent: #e36f0f !default;
 $t-Color__auxiliary: #e46970 !default; // 4th color when needed (e.g. ontology)
-$t-Color__tan: #efefe7 !default;
+$t-Color__tan: #efefeb !default;
 
 //lightness variations
 $t-Color__primary--light: lighten($t-Color__primary, 24) !default; $__hex: #aad9fd;

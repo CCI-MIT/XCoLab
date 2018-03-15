@@ -1,19 +1,19 @@
-
 function disableAddComment() {
     jQuery(".c-Comment__new").find(".addCommentButton").attr('disabled', true);
 }
+
 function isAddCommentFormValid() {
     var $thecomment = jQuery(".c-Comment__new");
-    var isValid = (jQuery.trim($thecomment.find(".commentContent").val()) != '');
+    var isValid = (jQuery.trim($thecomment.find(".commentContent").val()) !== '');
     if (!isValid) {
-        isValid = jQuery.trim(CKEDITOR.instances.messageContent.getData()) != '';
+        isValid = jQuery.trim(CKEDITOR.instances['commentContent'].getData()) !== '';
     }
 
     if (isValid) {
-        $thecomment.find('.errorMsg').hide();
+        $thecomment.find('#js-Comment__error').hide();
     }
     else {
-        $thecomment.find('.errorMsg').show();
+        $thecomment.find('#js-Comment__error').show();
     }
     return isValid;
 }
@@ -66,7 +66,7 @@ function editComment(commentCreationTimestamp,messageId, url){
     var $message = $('#message_' + messageId);
     $message.empty();
     if (!_isAdmin) {
-        $message.append('<div class="c-Alert__info__message">Please make sure you save your edit within 15 minutes of creating this comment. Time left: <span id="clockdiv"> <span class="minutes"></span> minutes <span class="seconds"></span> seconds</span>.</div>');
+        $message.append('<div class="alert alert-info">Please make sure you save your edit within 15 minutes of creating this comment. Time left: <span id="clockdiv"> <span class="minutes"></span> minutes <span class="seconds"></span> seconds</span>.</div>');
 
         var deadline = new Date((commentCreationTimestamp) +  15 * 60 * 1000);
         initializeClock('clockdiv', deadline);
@@ -105,18 +105,9 @@ function extractText(elementId) {
     }
 }
 
-/**
- Update add this urls to messages
- **/
 jQuery(function() {
     var $messageContent = $("#messageContent");
     if ($messageContent.length > 0) {
-        var baseLocation = window.location.toString();
-        if (baseLocation.indexOf("#") >= 0) {
-            baseLocation = baseLocation.substring(0, baseLocation.indexOf("#"));
-        }
-
-
         //restore comment content from a previously set cookie.
         if ($messageContent.val() == "" && Cookies.get("proposal-comment-body")) {
             $messageContent.val(Cookies.get("proposal-comment-body"));
@@ -130,7 +121,6 @@ jQuery(function() {
 });
 function handleClickOnDiscussion(event){
     //save the comment in a cookie, in case the user is not logged in
-
     var $ckeMessageContent = $("#cke_messageContent").find("iframe");
     if($ckeMessageContent == null || $ckeMessageContent.contents().find("body").text() == "") {
         Cookies.remove("proposal-comment-body");
@@ -140,10 +130,10 @@ function handleClickOnDiscussion(event){
         Cookies.set("proposal-comment-body", $ckeMessageContent.contents().find("body").text());
     }
 
-    if ($("#addCommentButton").attr("data-is-deferred") == "true") {
+    if ($("#addCommentButton").data("is-deferred") === true) {
         deferUntilLogin();
     } else {
-        if (! window.isAddCommentFormValid()) {
+        if (!window.isAddCommentFormValid()) {
             event.preventDefault();
             return false;
         }

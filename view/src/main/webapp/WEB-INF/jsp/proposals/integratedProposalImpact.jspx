@@ -65,7 +65,7 @@
                             <div id="proposalToModelMap" class="c-Box c-Box--colorTan" style="display: none;">
                                 <div class="c-Box__body">
                                     <c:if test="${not empty proposalToModelMap}">
-                                        <div class="c-Alert c-Alert__error">
+                                        <div class="alert alert-danger">
                                             In order to use the values from your regional plans here, all the regional plans
                                             need to use the same modeling engine, and you must include a regional plan for all
                                             the regions.
@@ -178,14 +178,14 @@
                     </c:when>
                     <c:when test="${modelId > 0 or scenarioId > 0}">
                         <div id="modelContent">
-                            <div class="c-Alert alert-warnig"><h3>
+                            <div class="alert alert-warning"><h3>
                                 The proposal author(s) have not yet estimated the emission impacts of this proposal.
                             </h3></div>
                         </div>
                     </c:when>
                     <c:otherwise>
                         <div id="modelContent">
-                            <div class="c-Alert c-Alert__error">
+                            <div class="alert alert-danger">
                                 No modeling engine is configured for this contest. Please contact the administrator.
                             </div>
                         </div>
@@ -215,12 +215,11 @@
                             <th><!-- --></th>
                             <th class="blue-bg" style="text-align: center" colspan="${fn:length(impactIterations)}">
                                 Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
-                                <a href="javascript:;" class="helpTrigger">
-                                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                                <a class="ml-1" data-toggle="collapse" href="#js-Help__heading">
+                                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                                 </a>
-                                <br/>
 
-                                <div class="addprophelp" style="color:white;">
+                                <div class="p-Proposal__formBox__helpText collpase show js-Help" id="js-Help__heading" style="color:white;">
                                     This table shows a summary of the emission reductions for all sectors and regions
                                     you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each
                                     decade listed.
@@ -235,12 +234,11 @@
                         </thead>
                         <tr>
                             <td class="blue-bg" style="text-align: left">Sector
-                                <a href="javascript:;" class="helpTrigger">
-                                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15"/>
+                                <a class="ml-1" data-toggle="collapse" href="#js-Help__sectorHeading">
+                                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
                                 </a>
-                                <br/>
 
-                                <div class="addprophelp" style="color:white;">
+                                <div class="p-Proposal__formBox__helpText collapse show js-Help" id="js-Help__sectorHeading" style="color:white;">
                                     This table shows a summary of the emission reductions for all sectors and regions
                                     you submitted, in gigatons of carbon dioxide (CO2) equivalent (GtCO2e), for each
                                     decade listed.
@@ -521,15 +519,6 @@
                 });
             };
 
-            function registerHelpEventHandler() {
-                var $impactElement = jQuery("#impact");
-                $impactElement.find(".helpTrigger").off("click");
-                $impactElement.find(".helpTrigger").click(function () {
-                    var trigger = jQuery(this);
-                    trigger.parent().find(".addprophelp").slideToggle("fast");
-                });
-            }
-
             var scenarioFetchedCallbackRegistered = false;
             function registerScenarioFetchedCallback() {
                 var $modelsOutputContainerElement = $("#modelsOutputContainer");
@@ -545,7 +534,6 @@
                 if (!scenarioFetchedCallbackRegistered) {
                     registerScenarioFetchedCallback();
                 }
-                registerHelpEventHandler();
             });
         </script>
     </xcolab:layout>

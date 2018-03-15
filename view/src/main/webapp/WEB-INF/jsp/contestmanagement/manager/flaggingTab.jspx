@@ -33,13 +33,13 @@
         <div class="text-right">
             <button type="button" class="btn btn-primary" onclick="saveExistingReportTarget()">SAVE target</button>
             <button type="button" class="btn btn-primary" onclick="saveAsNewReportTarget()">SAVE as new target</button>
-            <button type="button" class="btn btn-primary" onclick="submitDeleteReportTargetForm()">DELETE target</button>
+            <button type="button" class="btn btn-outline-danger" onclick="submitDeleteReportTargetForm()">DELETE target</button>
         </div>
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
         <div class="reg_errors"><!--  -->
-            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
+            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
         </div>
 
         <div class="c-Box c-Box--colorTan">
@@ -67,7 +67,7 @@
                     <form:input path="type" cssClass="form-control" disabled="disabled"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="type"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="type"/>
                     </div>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                     <form:input path="reason" cssClass="form-control"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="reason"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="reason"/>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                     <form:input path="notificationThreshold" cssClass="form-control"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="notificationThreshold"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="notificationThreshold"/>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@
                     <form:input path="screeningThreshold" cssClass="form-control"/>
 
                     <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="c-Alert c-Alert__error" path="screeningThreshold"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="screeningThreshold"/>
                     </div>
                 </div>
             </div>

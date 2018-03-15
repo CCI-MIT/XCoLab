@@ -4,12 +4,19 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
     <!--@elvariable id="contestPreferences" type="org.xcolab.portlets.contests.ContestPreferences"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
 
     <div>
         <c:if test="${_themeContext.authenticationVariables.isAdmin}">
-            <a href="/widgets/contests/preferences?preferenceId=${contestPreferences.preferenceId}" class="btn cb-btn-admin btn-sm float-right">Edit contestPreferences</a><br/>
+            <div class="text-right">
+                <a href="/widgets/contests/preferences?preferenceId=${contestPreferences.preferenceId}"
+                   class="btn cb-btn-admin btn-sm">
+                    Edit contestPreferences
+                </a>
+            </div>
         </c:if>
         <h2> ${contestPreferences.title} <span><a href="${contestPreferences.allContestsUrl}">${contestPreferences.allContestsTitle}</a></span></h2>
         <c:forEach var="contest" items="${contests}">
@@ -20,7 +27,8 @@
                     </a>
                 </div>
                 <div class="c-ContestBox__text">
-                    <h3 class="c-ContestBox__text__title">
+                    <h3 class="c-ContestBox__text__title"
+                        style="${contest.contestShortNameWithEndYear.length() ge 60 ? 'font-size: 90%' : ''}">
                         <xcolab:contestLink contest="${contest}"/>
                     </h3>
                     ${contest.contestName}

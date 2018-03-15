@@ -171,17 +171,11 @@ public class LegacyContentRewriteRules implements RewriteRuleProvider {
                                     .or(Path.matches("/resources/-/wiki/main/{page}"))
                                     .or(Path.matches("/web/guest/wiki/-/wiki/page/{page}"))
                                     .or(Path.matches("/wiki/-/wiki/page/{page}"))
-                    ))
-                    .perform(Redirect.permanent("/wiki/{page}"))
-                    .where("page").matches(".*")
-                .addRule()
-                    .when(Direction.isInbound().and(
-                            Path.matches("/handbook/-/wiki/Main/{page}")
+                                    .or(Path.matches("/handbook/-/wiki/Main/{page}"))
                                     .or(Path.matches("/web/guest/handbook/-/wiki/Main/{page}"))
                                     .or(Path.matches("/web/guest/handbook/-/wiki/page/{page}"))
                     ))
-                    //TODO COLAB-2610: this page doesn't exist yet!
-                    .perform(Redirect.permanent("/handbook/{page}"))
+                    .perform(Redirect.permanent("/wiki/{page}"))
                     .where("page").matches(".*");
 
         configurationBuilder

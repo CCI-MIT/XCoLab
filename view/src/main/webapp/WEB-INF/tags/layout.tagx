@@ -37,7 +37,7 @@
     <fmt:setTimeZone value="${_themeContext.i18NVariables.defaultTimeZone}" />
 
 <![CDATA[<!DOCTYPE html>]]>
-<html>
+<html lang="${_themeContext.i18NVariables.language}">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -84,7 +84,7 @@
 
     <c:if test="${not empty _themeContext.credentialVariables.typekitId}">
         <c:set var="typekitId" value="${_themeContext.serverEnvironment eq 'LOCAL' ? _themeContext.credentialVariables.typekitIdLocal :_themeContext.credentialVariables.typekitId}" />
-        <xcolab-scripts:loadTypekit kitId="${typekitId}" />
+        <link rel="stylesheet" href="https://use.typekit.com/${typekitId}.css"/>
     </c:if>
 
 
@@ -235,7 +235,7 @@
                           languageSelectItems="${_themeContext.i18NVariables.languageSelectItems}"
                           themeImageFolder="/images"
                           showLanguageDropdown="${_themeContext.i18NVariables.isI18NActive}"
-                          footerArticleId="${_footerArticleId}" />
+                          footerArticleId="${_themeContext.themeVariables.footerArticleId}" />
 
 
     <!-- ============ Modals ============ -->
@@ -252,10 +252,8 @@
                                        redirect="${_themeContext.requestUri}"
                                        screenName="${_themeContext.authenticationVariables.isLoggedIn ? _themeContext.authenticationVariables.member.screenName : null}"/>
 
-    <!-- The sendMessageModalDeferred tag populates this variable -->
-    <!--@elvariable id="__deferredSendMessageModalContent" type="java.lang.String"-->
-    <c:if test="${not empty __deferredSendMessageModalContent}">
-        ${__deferredSendMessageModalContent}
+    <c:if test="${_librariesToLoad['sendMessage']}">
+        <xcolab-modals:sendMessageModal/>
     </c:if>
 
     <xcolab-modals:flaggingModal />

@@ -60,7 +60,6 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
         model.addAttribute("fellowProposalScreeningBean", bean);
         model.addAttribute("emailTemplates", bean.getEmailTemplateBean().getEmailTemplates());
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
-        model.addAttribute("discussionId", proposal.getFellowDiscussionId());
 
         return "proposals/proposalScreening";
     }

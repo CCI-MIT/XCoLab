@@ -219,12 +219,8 @@ ul.ui-tabs-nav li.ui-state-active a {
   padding: 1px 3px 3px 1px;
 }
 
-.wf-active .runSimulationButton_bdr a {
-  font-size: 17px;
-}
-
 .runSimulationButton_bdr a {
-  font-size: 15px;
+  font-size: 17px;
   font-style: italic;
   color: #666;
 }
@@ -234,12 +230,8 @@ ul.ui-tabs-nav li.ui-state-active a {
   line-height: normal;
 }
 
-.wf-active .runSimulationButton_bdr a span, .wf-active .runSimulationButton_bdr a span {
-  font-size: 15px;
-}
-
 .runSimulationButton_bdr a span, .runSimulationButton_bdr a span {
-  font-size: 13px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 600;
   color: #E36F0F;

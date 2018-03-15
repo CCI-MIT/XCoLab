@@ -42,10 +42,6 @@ public enum ProposalTab {
             Type.NORMAL, new EvaluationAccessAlgorithm(),
             ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.evaluationCommentsCount),
-    //TODO COLAB-2623: check if we still need this
-//    FELLOW_REVIEW("Fellow Review", Type.NORMAL, ProposalTabCanAccessAlgorithm.fellowReviewAccess,
-//            ProposalTabAccess.NEVER,
-//            ProposalTabActivityCountAlgorithm.fellowReviewCommentsCount),
     ADMIN("Admin", "contests.proposal.tabs.admin",
             Type.NORMAL, ProposalTabAccess.PROPOSAL_ADMIN, ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.alwaysZero),

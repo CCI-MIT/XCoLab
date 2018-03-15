@@ -195,7 +195,7 @@
                 <h2>Batch register members</h2>
                 <form:form action="/admin/contest/manager/tab/ADMIN/batchRegister" commandName="batchRegisterBean"
                            id="batchRegisterForm" method="post">
-                    <div class="c-Alert__info__message" for="batchRegisterMembersList">
+                    <div class="alert alert-info" for="batchRegisterMembersList">
                         Each member will receive an email with a link that allows them to sign in.
                         Enter one member per line in the following format:<br/>
                         <code>emailAddress;firstName;lastName</code>

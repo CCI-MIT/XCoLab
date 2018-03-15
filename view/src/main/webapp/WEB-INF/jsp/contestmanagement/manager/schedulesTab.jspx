@@ -37,13 +37,13 @@
             <a class="btn btn-primary" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
             <a class="btn btn-primary" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
             <a class="btn btn-primary" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
-            <a class="btn btn-primary" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
+            <a class="btn btn-outline-danger" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
         </div>
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
         <div class="reg_errors"><!--  -->
-            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
+            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
         </div>
 
         <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
@@ -59,7 +59,7 @@
                     </form:select>
 
                     <div class="reg_errors">
-                        <form:errors cssClass="c-Alert c-Alert__error" path="elementId"/>
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="elementId"/>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                         <form:input path="scheduleName" cssClass="form-control"/>
 
                         <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="c-Alert c-Alert__error" path="scheduleName"/>
+                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="scheduleName"/>
                         </div>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                         <div class="clearfix"><!-- --></div>
 
                         <c:if test="${contestScheduleBean.usedInNonEmptyContest}">
-                            <div class="c-Alert__info__message">
+                            <div class="alert alert-info">
                                 You are editing a schedule that is used in at least one non-empty contest.
                                 You can only add, delete, or edit phases that have not started yet.
                                 You can also change the end date (and promote type) of the current phase, as long as the new end date is also in the future.<br />
@@ -104,7 +104,7 @@
                         </c:if>
 
                         <div><!--  -->
-                            <form:errors cssClass="c-Alert c-Alert__error"/>
+                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid"/>
                         </div>
 
                         <table class="c-ContentBox__Table">
@@ -140,7 +140,7 @@
                                                  data-form-name="contestPhaseDeleted"/>
 
                                     <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="c-Alert c-Alert__error"
+                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid"
                                                      path="schedulePhases[${x.index}].phaseStartDate"/>
                                     </div>
 

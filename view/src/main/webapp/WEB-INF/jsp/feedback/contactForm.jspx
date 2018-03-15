@@ -33,14 +33,14 @@
 			<div id="contactForm" style="${not hasError ? 'display:none;' : ''};">
 
 				<form:form action="/feedback" method="post" commandName="contactBean" id="contactFormForm">
-					<form:errors cssClass="c-Alert c-Alert__error" />
+					<form:errors cssClass="alert alert-danger cb-alert-form-invalid" />
 
 					<table class="reg">
 						<tr>
 							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.yourname" /></th>
 							<td>
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="name" />
+									<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="name" />
 								</div>
                                 <form:input cssClass="form-control" path="name" />
 							</td>
@@ -49,7 +49,7 @@
 							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.email" /></th>
 							<td>
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="email" />
+									<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="email" />
 								</div>
                                 <form:input cssClass="form-control" path="email" />
                             </td>
@@ -59,7 +59,7 @@
 							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.message" /></th>
 							<td>
 								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="message" />
+									<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="message" />
 								</div>
                                 <form:textarea cssClass="form-control" path="message" style="width: 100%; height: 150px;" />
                             </td>

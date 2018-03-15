@@ -49,7 +49,7 @@
                         <form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
                     <div class="reg_errors">
-                        <form:errors cssClass="c-Alert c-Alert__error" path="elementId" />
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="elementId" />
                     </div>
                 </div>
 			</div>
@@ -65,7 +65,7 @@
 					<form:hidden path="planTemplateId"/>
 
 					<div class="reg_errors"><!--  -->
-						<form:errors cssClass="c-Alert c-Alert__error" path="*" />
+						<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*" />
 					</div>
 
 					<div class="c-Box c-Box--colorTan">
@@ -73,7 +73,7 @@
                             <strong>Template name:</strong>
                             <form:input path="templateName" cssClass="form-control"/>
                             <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="c-Alert c-Alert__error" path="templateName" />
+                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="templateName" />
                             </div>
                         </div>
 					</div>
@@ -224,13 +224,13 @@
 							<strong>Help text:</strong><br/>
                             <form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText" cssClass="form-control" />   <!-- cssClass="rte-editorPlaceholder" -->
                             <div class="reg_errors">
-                                <form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].helpText" />
+                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="sections[${x.index}].helpText" />
                             </div>
 							<div class="clearfix"><!--  --></div>
 							<strong>Default text:</strong><br/>
                             <form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText" cssClass="form-control" />   <!-- cssClass="rte-editorPlaceholder" -->
                             <div class="reg_errors">
-                                <form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].defaultText" />
+                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="sections[${x.index}].defaultText" />
                             </div>
 
                             <div class="js-sectionTypeDependent" data-section-type="DROPDOWN_MENU"

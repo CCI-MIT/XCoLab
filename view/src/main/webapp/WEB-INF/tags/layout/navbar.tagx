@@ -40,10 +40,10 @@
                             <a class="nav-link" href="/page/about"><spring:message code="homepage.menu.about" /></a>
                         </li>
 
-                        <c:forEach var="_contestPage" items="${contestPages}">
-                            <c:if test="${_contestPage.menuItemName != ''}">
-                                <li class="nav-item cb-nav-item-text ${activePageLink == _contestPage.identifier ? 'active' : ''}">
-                                    <a class="nav-link" href="${_contestPage.contestBaseUrl}">${_contestPage.menuItemName}</a>
+                        <c:forEach var="contestPage" items="${contestPages}">
+                            <c:if test="${contestPage.menuItemName != ''}">
+                                <li class="nav-item cb-nav-item-text ${activePageLink == contestPage.identifier ? 'active' : ''}">
+                                    <a class="nav-link" href="${contestPage.contestBaseUrl}">${contestPage.menuItemName}</a>
                                 </li>
                             </c:if>
                         </c:forEach>
@@ -73,8 +73,8 @@
                             </li>
                         </c:if>
                     </ul>
-                    <c:if test="${not empty _donateLink}">
-                        <a class="btn btn-accent btn-sm" href="${_donateLink}"><spring:message code="homepage.menu.donate" /></a>
+                    <c:if test="${not empty _themeContext.socialMediaVariables.donateLink}">
+                        <a class="btn btn-accent btn-sm" href="${_themeContext.socialMediaVariables.donateLink}"><spring:message code="homepage.menu.donate" /></a>
                     </c:if>
                 </div>
                 <div class="collapse navbar-collapse dual-collapse">

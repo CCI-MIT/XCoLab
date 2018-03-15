@@ -85,20 +85,13 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
 
 .p-ContestProposals__header__sponsorLogo {
   max-width: 320px;
-  display: inline-block;
-  font-size: 14px;
-
-  //.heading-sponsor-logo
-  min-height: 30px;
-  max-height: 100px;
   float: right;
-  padding: 3px 3px 3px 20px;
+  margin-left: 1rem;
 
-  img { //.heading-sponsor-logo img
+  > img {
     max-width: 100%;
-    max-height: 110px;
-    height: auto;
-    width: auto;
+    min-height: 30px;
+    max-height: 100px;
   }
 }
 
@@ -194,9 +187,15 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
 }
 
 .p-ContestProposals__header__shareButtons {
-  position: absolute;
-  right: -32px;
-  top: 20px;
+  padding-left: 1rem;
+
+  @include media-breakpoint-up(lg) {
+    position: absolute;
+    right: -32px;
+    top: 20px;
+    width: 35px;
+    padding: 0;
+  }
 }
 
 %p-ContestProposals__list__element {

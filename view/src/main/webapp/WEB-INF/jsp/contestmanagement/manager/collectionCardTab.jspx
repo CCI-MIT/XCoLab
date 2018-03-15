@@ -106,7 +106,7 @@
             </div>
             <div>
                 <div class="floatRight">
-                    <a class="btn btn-primary" id="deleteButton" href="#" onclick="submitDeleteCollectionCard();">DELETE</a>
+                    <a class="btn btn-outline-danger" id="deleteButton" href="#" onclick="submitDeleteCollectionCard();">DELETE</a>
                 </div>
             </div>
             <div>

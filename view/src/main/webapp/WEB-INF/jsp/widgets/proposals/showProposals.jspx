@@ -6,7 +6,12 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <!--@elvariable id="proposalsModel" type="org.xcolab.view.widgets.proposals.ProposalsModel"-->
     <c:if test="${_themeContext.authenticationVariables.isAdmin}">
-        <a href="/widgets/proposals/preferences?preferenceId=${proposalsModel.preferences.preferenceId}" class="btn cb-btn-admin btn-sm float-right">Edit preferences</a><br/>
+        <div class="text-right">
+            <a href="/widgets/proposals/preferences?preferenceId=${proposalsModel.preferences.preferenceId}"
+               class="btn cb-btn-admin btn-sm">
+                Edit preferences
+            </a>
+        </div>
     </c:if>
 	<div>
         <h2> ${proposalsModel.preferences.title}<span>

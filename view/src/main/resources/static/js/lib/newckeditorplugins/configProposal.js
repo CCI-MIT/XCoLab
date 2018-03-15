@@ -14,7 +14,7 @@ CKEDITOR.editorConfig = function( config )
     config.toolbar = 'Colab';
     //config.skin = "colab";
     config.toolbarCanCollapse = false;
-    config.contentsCss = '/css/themes/climateColab/main.css';
+    config.contentsCss = '/css/main.css';
     config.resize_enabled = 'true';
     
     config.disableNativeSpellChecker = false;

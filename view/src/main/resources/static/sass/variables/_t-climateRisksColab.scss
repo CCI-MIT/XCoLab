@@ -63,14 +63,12 @@ $c-Header__menu__li__a__fontWeight: 400;
 $cb-navbar__activeBoxShadow: inset 0 -8px 0 $t-Color__primary;
 $c-Header__menu__right__li__help__border--left: none;
 $c-Header__menu__li__a__textColor: $t-Color__primary;
-$c-Header__background--hover: none;
 $c-Header__navItemGray--hoverColor: $t-Color__primary;
 
 $c-Footer__background: $t-Color__tan;
 $c-Footer__menu__li__a--hover__color: $t-Color__primary;
 $c-Footer__menu__li__textColor: black;
-$c-Footer__menu__background__isSimple: true;
-$c-Footer__menu__backgroundColor: transparent;
+$c-Footer__menu__background: transparent;
 $c-Footer__menu__boxShadow: none;
 
 $c-TitleBar__backgroundColor: $t-Color__primary;
@@ -114,7 +112,7 @@ $c-ContestBox__border: none;
 $c-ContestBox__border__radius: 0;
 $c-ContestBox--hover__boxShadow: 0 0 15px $t-Color__gray--medium-500;
 
-$p-Contests__userslist__td--g__background: url(/images/bg-noise.png) $t-Color__tan;
+$p-Contests__userslist__td--g__background: $t-Color__tan;
 $p-Contests__usersFilter__paddingRight: 0px;
 
 $p-community__colab__th__background: $t-Color__primary;
@@ -156,7 +154,7 @@ $c-Table__borderColor: $t-Color__gray--medium-500;
 $c-Table__title__backgroundColor: $t-Color__tan;
 $c-Table__row--title__borderTop: 1px solid $t-Color__gray--dark-600;
 $c-Table__row--title__borderBottom: 1px solid $t-Color__gray--dark-600;
-$c-Table__cell--odd__background: url(/images/bg-noise.png) $t-Color__tan;
+$c-Table__cell--odd__background: $t-Color__tan;
 $c-Table__cell--title__a__capitalization: none;
 $c-Table__title__textColor--hover: $t-Color__primary;
 $c-Table__cell__count__backgroundColor: white;
@@ -173,14 +171,14 @@ $p-ContestProposals__header__ontology__term__useIcons: false;
 $p-ContestProposals__header__paddingBottom: 5px;
 $p-ContestProposals__header__description__padding: 5px 20px;
 
-$cb-list-group__itemBackground--odd: url(/images/bg-noise.png) $t-Color__tan;
+$cb-list-group__itemBackground--odd: $t-Color__tan;
 
 $c-Box__shadow: none;
 $c-Box__messaging__padding--top: 15px;
 $c-Box__background__color--dark: $t-Color__tan;
 $c-Box__border: none;
 
-$c-TabBar__background: url(/images/bg-noise.png) white;
+$c-TabBar__background: white;
 $c-TabBar__borderTop: 1px solid $t-Color__gray--dark-600;
 $c-TabBar__paddingTop: 35px;
 
@@ -211,7 +209,7 @@ $p-userprofile__comm_rightcol-title2__height: auto ;
 $c-Helpbox__borderRadius: 0px;
 $c-Helpbox__borderColor: $t-Color__gray--dark-700;
 $c-Helpbox__header__padding: 8px 10px 4px 19px;
-$c-Helpbox__header__background: url(/images/bg-noise.png) $t-Color__gray--dark-700;
+$c-Helpbox__header__background: t-Color__gray--dark-700;
 $c-Helpbox__header__title__textColor: white;
 $c-Helpbox__header__close__marginTop: 0px;
 

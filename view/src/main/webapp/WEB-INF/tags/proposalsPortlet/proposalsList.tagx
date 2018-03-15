@@ -11,7 +11,7 @@
 
     <jsp:directive.attribute name="proposals" type="java.util.Collection" required="true" rtexprvalue="true" description="proposals" />
 
-    <c:forEach var="proposal" items="${proposals }" varStatus="status">
+    <c:forEach var="proposal" items="${proposals}" varStatus="status">
         <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
 
         <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}"><!-- Judges -->
@@ -27,14 +27,14 @@
                 </c:otherwise>
             </c:choose>
         </c:if>
-        <tr class="c-Table__row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
+        <div class="row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
                     ${contestPhase.completed ? 'completed' : ''}
                     ${additionalCSSClasses}">
-            <td class="c-Table__cell propname-authors no-border">
+            <div class="col-12 col-lg-6 col-xl-7 c-Table__cell propname-authors no-border">
                 <c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
                     <div class="ribbonPlaceholder">
                         <collab:image src="/images/icon-prize${proposal.ribbonWrapper.ribbon}.png"
-                             cssClass="js-Tooltip" title="${proposal.ribbonWrapper.ribbonText}" />
+                                      cssClass="js-Tooltip" title="${proposal.ribbonWrapper.ribbonText}" />
                     </div>
                 </c:if>
                 <h4>
@@ -52,35 +52,35 @@
                         </c:otherwise>
                     </c:choose>
                 </h4>
-            </td>
+            </div>
             <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
-                <td class="c-Table__cell text-center votes no-border">
+                <div class="col c-Table__cell text-center votes no-border">
                     <div class="highlight">
                         <collab:image src="/images/icon-proposal-vote-small.png" />
                         <xcolab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
                     </div>
-                </td>
+                </div>
             </c:if>
             <c:if test="${not contestPhase.canVote}">
-                <td class="c-Table__cell text-center supporters no-border">
+                <div class="col c-Table__cell text-center supporters no-border">
                     <div class="highlight">
                         <collab:image src="/images/icon-proposal-support.png" />
                         <xcolab:proposalLink proposal="${proposal}" text="${proposal.supportersCountCached}" tab="TEAM"/>
                     </div>
-                </td>
+                </div>
             </c:if>
-            <td class="c-Table__cell text-center comments no-border">
+            <div class="col c-Table__cell text-center comments no-border">
                 <div class="highlight">
                     <collab:image src="/images/icon-proposal-comments.png" />
                     <xcolab:proposalLink proposal="${proposal}" text="${proposal.commentsCount}" tab="COMMENTS" />
                 </div>
-            </td>
+            </div>
             <c:if test="${not contestPhase.completed}">
-                <td class="c-Table__cell text-center modified no-border">
+                <div class="col c-Table__cell text-center modified no-border">
                     <xcolab:formatDateTime millis="${proposal.lastModifiedDateForContestPhase.time}" type="date" />
-                </td>
+                </div>
                 <c:if test="${showContributorsColumn}">
-                    <td class="c-Table__cell text-center contributors no-border">
+                    <div class="col text-center contributors no-border">
                         <c:choose>
                             <c:when test="${proposal.open}">
                                 Anyone
@@ -89,11 +89,11 @@
                                 Team only
                             </c:otherwise>
                         </c:choose>
-                    </td>
+                    </div>
                 </c:if>
             </c:if>
             <c:if test="${not contestPhase.completed and proposalsDisplayPermissions.canSeeReviewStatus}">
-                <td class="c-Table__cell text-center advancing-status no-border">
+                <div class="col-12 col-lg c-Table__cell text-center no-border" style="min-width: 200px">
                     <c:if test="${proposalsPermissions.canFellowActions or proposalsPermissions.canIAFActions}">
                         <c:choose>
                             <c:when test="${proposal.screeningStatus.statusValue == 0}">
@@ -111,7 +111,7 @@
                         </c:choose>
                         <span class="js-Tooltip" title="${fellowStatusTooltip}">
                             <proposalsPortlet:proposalJudgingIcon value="${proposal.screeningStatus.statusValue}" />
-                        </span>
+                            </span>
 
                         <c:choose>
                             <c:when test="${proposal.impactAssessmentStatus == 'POSITIVE'}">
@@ -125,7 +125,7 @@
                         </c:choose>
                         <span class="js-Tooltip" title="${iafStatusTooltip}">
                             <proposalsPortlet:proposalJudgingIcon value="${proposal.impactAssessmentStatus.statusValue}" />
-                        </span>
+                            </span>
                     </c:if>
 
                     <c:choose>
@@ -141,7 +141,7 @@
                     </c:choose>
                     <span class="js-Tooltip" title="${judgeStatusTooltip}">
                         <proposalsPortlet:proposalJudgingIcon value="${proposal.judgeStatus.statusValue}" />
-                    </span>
+                        </span>
 
                     <c:choose>
                         <c:when test="${proposal.overallStatus.statusValue == 0}">
@@ -157,15 +157,15 @@
                     <span class="js-Tooltip" title="${overallStatusTooltip}">
                         <proposalsPortlet:proposalJudgingIcon value="${proposal.overallStatus.statusValue}" />
                     </span>
-                </td>
+                </div>
             </c:if>
-        </tr>
-        <tr class="c-Table__row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
+        </div>
+        <div class="row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
                     ${contestPhase.completed ? 'completed' : ''}
                     ${additionalCSSClasses}">
-            <td class="c-Table__cell" colspan="10">
+            <div class="col-12 c-Table__cell">
                 ${proposal.pitch}
-            </td>
-        </tr>
+            </div>
+        </div>
     </c:forEach>
 </jsp:root>
