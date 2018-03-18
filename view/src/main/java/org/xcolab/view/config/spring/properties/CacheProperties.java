@@ -2,10 +2,10 @@ package org.xcolab.view.config.spring.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import org.xcolab.commons.http.caching.CacheCustomization;
-import org.xcolab.commons.http.caching.CacheCustomization.DiskStorage;
-import org.xcolab.commons.http.caching.CacheName;
-import org.xcolab.commons.http.caching.provider.CacheProvider;
+import org.xcolab.util.http.caching.CacheCustomization;
+import org.xcolab.util.http.caching.CacheCustomization.DiskStorage;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.caching.provider.CacheProvider;
 
 import java.util.HashMap;
 import java.util.Map;

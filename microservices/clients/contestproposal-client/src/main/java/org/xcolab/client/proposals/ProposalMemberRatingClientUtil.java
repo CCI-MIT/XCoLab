@@ -3,8 +3,8 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.proposals.pojo.SupportedProposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
-import org.xcolab.commons.http.caching.CacheName;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
-import org.xcolab.commons.http.ServiceRequestUtils;
-import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;

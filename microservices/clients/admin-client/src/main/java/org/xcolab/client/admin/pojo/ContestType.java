@@ -3,7 +3,7 @@ package org.xcolab.client.admin.pojo;
 import org.xcolab.client.admin.attributes.contest.ContestTypeAttributeKey;
 import org.xcolab.commons.attributes.AttributeGetter;
 import org.xcolab.commons.attributes.i18n.LocalizableAttributeGetter;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;

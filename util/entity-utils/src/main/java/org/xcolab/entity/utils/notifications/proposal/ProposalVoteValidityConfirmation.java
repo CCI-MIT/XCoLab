@@ -12,7 +12,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.entity.utils.notifications.basic.ProposalNotification;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ProposalVoteValidityConfirmation extends ProposalNotification {
 

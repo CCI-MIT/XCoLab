@@ -1,12 +1,12 @@
 package org.xcolab.client.activities;
 
-import org.xcolab.commons.activities.enums.ActivityType;
+import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.commons.activities.enums.ActivityCategory;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.Date;
 import java.util.List;

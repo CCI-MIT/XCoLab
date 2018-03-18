@@ -3,7 +3,7 @@ package org.xcolab.client.proposals.pojo.evaluation.judges;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.text.DecimalFormat;
 

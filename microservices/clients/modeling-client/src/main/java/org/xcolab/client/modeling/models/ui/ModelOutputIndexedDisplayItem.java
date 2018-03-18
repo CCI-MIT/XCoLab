@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.pojo.ModelOutputChartOrder;
-import org.xcolab.commons.http.exceptions.UncheckedEntityNotFoundException;
-import org.xcolab.commons.json.JsonUtil;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
+import org.xcolab.util.json.JsonUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -34,7 +34,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static org.xcolab.commons.http.exceptions.ExceptionUtils.getOptional;
+import static org.xcolab.util.http.exceptions.ExceptionUtils.getOptional;
 
 @Service
 public class BalloonService {

@@ -10,8 +10,8 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.attributes.AttributeGetter;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
 import java.util.Date;

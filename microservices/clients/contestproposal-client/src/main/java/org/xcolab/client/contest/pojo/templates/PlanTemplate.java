@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.templates;
 
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class PlanTemplate extends AbstractPlanTemplate {
 

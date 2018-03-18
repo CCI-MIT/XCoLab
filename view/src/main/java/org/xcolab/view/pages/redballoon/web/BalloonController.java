@@ -35,7 +35,7 @@ import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import static org.xcolab.commons.http.exceptions.ExceptionUtils.getOptional;
+import static org.xcolab.util.http.exceptions.ExceptionUtils.getOptional;
 
 @Controller
 public class BalloonController {

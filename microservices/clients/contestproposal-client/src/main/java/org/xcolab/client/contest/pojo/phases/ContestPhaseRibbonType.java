@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.pojo.phases;
 
 
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ContestPhaseRibbonType extends AbstractContestPhaseRibbonType {
 

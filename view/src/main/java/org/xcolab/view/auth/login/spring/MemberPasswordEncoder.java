@@ -3,7 +3,7 @@ package org.xcolab.view.auth.login.spring;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.commons.http.ServiceRequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 
 public class MemberPasswordEncoder implements PasswordEncoder {
 

@@ -6,14 +6,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.balloons.BalloonsClient;
-import org.xcolab.commons.http.client.types.TypeProvider;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
-import static org.xcolab.commons.http.exceptions.ExceptionUtils.getOrNull;
+import static org.xcolab.util.http.exceptions.ExceptionUtils.getOrNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BalloonUserTracking implements Serializable {

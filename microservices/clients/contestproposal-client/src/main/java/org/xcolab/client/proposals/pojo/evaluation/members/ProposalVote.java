@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.evaluation.members;
 
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ProposalVote extends AbstractProposalVote {
 

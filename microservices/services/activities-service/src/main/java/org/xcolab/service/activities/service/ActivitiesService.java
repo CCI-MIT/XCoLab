@@ -14,7 +14,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
-import org.xcolab.commons.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.util.ArrayList;
 import java.util.HashSet;

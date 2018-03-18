@@ -24,7 +24,7 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.IdListUtil;
-import org.xcolab.commons.enums.contest.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestBatchBean;

@@ -10,8 +10,8 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.HtmlUtil;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
-import org.xcolab.commons.http.client.types.TypeProvider;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
 import java.util.List;

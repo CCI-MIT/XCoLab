@@ -27,7 +27,7 @@ import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;

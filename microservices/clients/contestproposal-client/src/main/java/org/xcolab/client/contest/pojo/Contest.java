@@ -37,8 +37,8 @@ import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.html.HtmlUtil;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
-import org.xcolab.commons.http.exceptions.UncheckedEntityNotFoundException;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.commons.time.DateUtil;
 
 import java.io.Serializable;

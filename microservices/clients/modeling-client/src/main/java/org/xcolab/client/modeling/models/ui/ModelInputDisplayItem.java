@@ -3,7 +3,7 @@ package org.xcolab.client.modeling.models.ui;
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
 
-import org.xcolab.commons.json.NullsafeJsonObjectBuilder;
+import org.xcolab.util.json.NullsafeJsonObjectBuilder;
 
 import java.io.Serializable;
 

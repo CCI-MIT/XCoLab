@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.commons.metrics.MetricsUtil;
+import org.xcolab.util.metrics.MetricsUtil;
 import org.xcolab.view.config.spring.properties.MetricsProperties;
 import org.xcolab.view.config.spring.properties.MetricsProperties.ReportingConfig;
 import org.xcolab.view.config.spring.properties.MetricsProperties.ReportingConfig.DatadogConfig;

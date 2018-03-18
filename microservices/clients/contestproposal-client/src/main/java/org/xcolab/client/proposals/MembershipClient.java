@@ -1,7 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.commons.activities.enums.ProposalActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
@@ -9,15 +9,15 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.client.proposals.pojo.team.MembershipRequestDto;
-import org.xcolab.commons.activities.enums.ActivityCategory;
-import org.xcolab.commons.enums.membershiprequest.MembershipRequestStatus;
+import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.commons.exceptions.InternalException;
-import org.xcolab.commons.http.caching.CacheKeys;
-import org.xcolab.commons.http.caching.CacheName;
-import org.xcolab.commons.http.client.RestResource1;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
-import org.xcolab.commons.http.dto.DtoUtil;
-import org.xcolab.commons.http.exceptions.Http409ConflictException;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.util.http.exceptions.Http409ConflictException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

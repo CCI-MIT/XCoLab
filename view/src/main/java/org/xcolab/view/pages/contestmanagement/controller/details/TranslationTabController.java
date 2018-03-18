@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTranslationBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;

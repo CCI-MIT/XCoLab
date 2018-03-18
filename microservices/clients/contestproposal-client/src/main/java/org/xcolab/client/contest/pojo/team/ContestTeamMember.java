@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.team;
 
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ContestTeamMember extends AbstractContestTeamMember {
 

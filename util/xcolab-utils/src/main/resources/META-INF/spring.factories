@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.xcolab.commons.autoconfigure.DiscoveryAutoConfiguration
+  org.xcolab.util.autoconfigure.DiscoveryAutoConfiguration

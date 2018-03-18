@@ -19,10 +19,10 @@ import org.xcolab.client.modeling.pojo.ModelOutputItemDto;
 import org.xcolab.client.modeling.pojo.ModelPosition;
 import org.xcolab.client.modeling.pojo.ModelPositionDto;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
-import org.xcolab.commons.http.client.RestResource1;
-import org.xcolab.commons.http.client.RestResource2L;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
-import org.xcolab.commons.http.dto.DtoUtil;
+import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2L;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.dto.DtoUtil;
 
 import java.io.IOException;
 import java.util.Collections;

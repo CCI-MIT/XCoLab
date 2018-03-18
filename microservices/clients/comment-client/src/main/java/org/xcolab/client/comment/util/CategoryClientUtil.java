@@ -5,7 +5,7 @@ import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 

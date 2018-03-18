@@ -9,7 +9,7 @@ import org.xcolab.client.modeling.pojo.ModelInputItem;
 import org.xcolab.client.modeling.pojo.ModelOutputChartOrder;
 import org.xcolab.client.modeling.pojo.ModelOutputItem;
 import org.xcolab.client.modeling.pojo.ModelPosition;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.io.IOException;
 import java.util.List;

@@ -32,7 +32,7 @@ import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.html.HtmlUtil;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.errors.AccessDeniedPage;

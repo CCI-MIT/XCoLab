@@ -9,8 +9,8 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
-import org.xcolab.commons.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.commons.enums.promotion.JudgingSystemActions;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
 import java.util.List;
 

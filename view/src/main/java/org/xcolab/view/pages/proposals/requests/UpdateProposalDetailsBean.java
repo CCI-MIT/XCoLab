@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.commons.enums.proposal.MoveType;
+import org.xcolab.util.enums.proposal.MoveType;
 
 import java.util.HashMap;
 import java.util.Map;

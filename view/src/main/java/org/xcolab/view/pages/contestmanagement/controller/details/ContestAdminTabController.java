@@ -19,7 +19,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
-import org.xcolab.commons.enums.contest.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.errors.AccessDeniedPage;

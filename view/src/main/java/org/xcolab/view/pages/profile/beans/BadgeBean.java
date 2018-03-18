@@ -7,7 +7,7 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.commons.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.profile.entity.Badge;
 
 import java.io.Serializable;

@@ -18,7 +18,7 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;

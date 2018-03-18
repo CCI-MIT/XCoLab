@@ -10,7 +10,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.util.entity.enums.MemberRole;
 
 import java.util.List;

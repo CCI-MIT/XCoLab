@@ -17,7 +17,7 @@ import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 

@@ -7,7 +7,7 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
-import org.xcolab.commons.enums.contest.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 
 import java.util.ArrayList;
 import java.util.HashSet;

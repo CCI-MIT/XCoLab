@@ -22,7 +22,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.commons.enums.contest.ContestPhaseTypeValue;
+import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.activityentry.ActivityEntryHelper;

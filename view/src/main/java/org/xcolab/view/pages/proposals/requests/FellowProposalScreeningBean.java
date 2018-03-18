@@ -2,7 +2,7 @@ package org.xcolab.view.pages.proposals.requests;
 
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.commons.enums.promotion.JudgingSystemActions;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.view.pages.proposals.wrappers.ProposalFellowWrapper;
 
 import java.io.Serializable;

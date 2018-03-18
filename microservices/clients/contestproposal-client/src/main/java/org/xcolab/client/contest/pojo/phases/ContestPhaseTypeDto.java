@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
-import org.xcolab.commons.http.client.types.TypeProvider;
-import org.xcolab.commons.http.dto.DataTransferObject;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
+import org.xcolab.util.http.dto.DataTransferObject;
 
 import java.util.List;
 

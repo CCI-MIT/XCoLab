@@ -1,8 +1,8 @@
 package org.xcolab.client.contest.pojo.phases;
 
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.commons.enums.promotion.ContestPhasePromoteType;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 
 public class ContestPhaseType extends AbstractContestPhaseType {

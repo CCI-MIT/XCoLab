@@ -12,8 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.commons.http.ServiceRequestUtils;
-import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheName;
 
 import java.io.IOException;
 

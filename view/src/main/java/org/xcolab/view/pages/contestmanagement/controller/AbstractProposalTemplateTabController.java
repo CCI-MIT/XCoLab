@@ -15,7 +15,7 @@ import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.pojo.points.PointType;
-import org.xcolab.commons.enums.contest.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.entities.SectionTypes;

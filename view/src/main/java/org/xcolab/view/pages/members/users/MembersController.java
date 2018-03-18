@@ -17,7 +17,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.pages.members.users.utils.MemberItem;
 import org.xcolab.view.pages.members.users.utils.MemberListCsvWriter;
 import org.xcolab.view.pages.members.users.utils.MembersPermissions;

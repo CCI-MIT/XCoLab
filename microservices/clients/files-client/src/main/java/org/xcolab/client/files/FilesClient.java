@@ -3,11 +3,11 @@ package org.xcolab.client.files;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.files.providers.FileSystemPersistenceProvider;
 import org.xcolab.client.files.providers.PersistenceProvider;
-import org.xcolab.commons.http.caching.CacheKeys;
-import org.xcolab.commons.http.caching.CacheName;
-import org.xcolab.commons.http.client.RestResource;
-import org.xcolab.commons.http.client.RestResource1;
-import org.xcolab.commons.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.Optional;
 

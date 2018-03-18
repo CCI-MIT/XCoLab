@@ -5,7 +5,7 @@ import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateFocusAreaList;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateMaxFocusArea;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateSeries;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 

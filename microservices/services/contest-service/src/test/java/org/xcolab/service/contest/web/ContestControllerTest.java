@@ -29,7 +29,7 @@ import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
 import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.service.ontology.OntologyService;
-import org.xcolab.commons.http.ServiceRequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 
 import java.nio.charset.Charset;
 import java.util.Optional;

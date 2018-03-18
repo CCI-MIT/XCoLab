@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.pojo.team;
 
 import org.xcolab.client.contest.enums.ContestRole;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 
 public class ContestTeamMemberRole extends AbstractContestTeamMemberRole

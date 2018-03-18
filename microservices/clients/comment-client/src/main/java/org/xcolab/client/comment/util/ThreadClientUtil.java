@@ -3,7 +3,7 @@ package org.xcolab.client.comment.util;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.Date;
 import java.util.List;

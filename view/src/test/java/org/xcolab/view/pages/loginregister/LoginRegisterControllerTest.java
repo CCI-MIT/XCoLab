@@ -26,7 +26,7 @@ import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.sharedcolab.SharedColabClient;
-import org.xcolab.commons.http.ServiceRequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;

@@ -1,8 +1,6 @@
 package org.xcolab.commons;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -14,7 +12,6 @@ import java.util.stream.Stream;
  * Utility class for common conversions of ids lists to strings or models.
  */
 public final class IdListUtil {
-    private static final Logger _log = LoggerFactory.getLogger(IdListUtil.class);
 
     private IdListUtil() { }
 

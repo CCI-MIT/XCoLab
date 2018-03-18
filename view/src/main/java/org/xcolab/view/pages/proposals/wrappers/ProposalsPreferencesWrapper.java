@@ -7,7 +7,7 @@ import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
 import org.xcolab.commons.attributes.AttributeGetter;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
 public class ProposalsPreferencesWrapper extends WidgetPreference {

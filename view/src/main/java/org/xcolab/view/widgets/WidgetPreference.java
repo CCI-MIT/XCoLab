@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.commons.attributes.AttributeGetter;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.util.ArrayList;
 import java.util.List;

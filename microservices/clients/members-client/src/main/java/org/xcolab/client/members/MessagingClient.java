@@ -9,12 +9,12 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.client.members.pojo.SendMessageBean;
-import org.xcolab.commons.http.caching.CacheKeys;
-import org.xcolab.commons.http.caching.CacheName;
-import org.xcolab.commons.http.client.RestResource1;
-import org.xcolab.commons.http.client.RestResource2L;
-import org.xcolab.commons.http.exceptions.EntityNotFoundException;
-import org.xcolab.commons.http.exceptions.Http429TooManyRequestsException;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2L;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.exceptions.Http429TooManyRequestsException;
 
 import java.util.Collections;
 import java.util.List;

@@ -7,7 +7,7 @@ import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelValue;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;

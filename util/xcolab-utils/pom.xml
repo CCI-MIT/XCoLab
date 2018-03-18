@@ -72,6 +72,12 @@
         </dependency>
 
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>xcolab-commons</artifactId>
             <version>${project.version}</version>

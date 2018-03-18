@@ -14,7 +14,7 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.commons.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;

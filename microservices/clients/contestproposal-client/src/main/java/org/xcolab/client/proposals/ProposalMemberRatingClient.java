@@ -1,7 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.commons.activities.enums.ProposalActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.SupportedProposal;
@@ -10,13 +10,13 @@ import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporterDto;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVoteDto;
-import org.xcolab.commons.http.caching.CacheKeys;
-import org.xcolab.commons.http.caching.CacheName;
-import org.xcolab.commons.http.client.RestResource;
-import org.xcolab.commons.http.client.RestResource1;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
-import org.xcolab.commons.http.dto.DtoUtil;
-import org.xcolab.commons.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.sql.Timestamp;
 import java.util.Date;

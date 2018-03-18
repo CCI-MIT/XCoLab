@@ -13,8 +13,8 @@ import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.commons.enums.flagging.ManagerAction;
-import org.xcolab.commons.enums.flagging.TargetType;
+import org.xcolab.util.enums.flagging.ManagerAction;
+import org.xcolab.util.enums.flagging.TargetType;
 
 import java.util.Date;
 

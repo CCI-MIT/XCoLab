@@ -2,7 +2,7 @@ package org.xcolab.client.proposals.pojo.attributes;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.commons.http.client.types.TypeProvider;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
 import java.util.Map;

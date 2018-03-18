@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestTranslation;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

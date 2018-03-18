@@ -11,7 +11,7 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 
 import javax.servlet.jsp.JspException;

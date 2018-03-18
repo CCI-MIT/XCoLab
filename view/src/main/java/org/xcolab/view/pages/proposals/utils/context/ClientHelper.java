@@ -36,7 +36,7 @@ import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ClientHelper {
 

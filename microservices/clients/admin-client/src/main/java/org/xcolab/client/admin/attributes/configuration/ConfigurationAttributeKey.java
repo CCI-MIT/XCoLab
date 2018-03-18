@@ -7,7 +7,7 @@ import org.xcolab.commons.attributes.AttributeGetter;
 import org.xcolab.commons.attributes.i18n.LocalizableAttributeGetter;
 import org.xcolab.commons.attributes.transformers.AttributeTransformers;
 import org.xcolab.commons.attributes.wrappers.TransformedAttribute;
-import org.xcolab.commons.enums.theme.ColabTheme;
+import org.xcolab.util.enums.theme.ColabTheme;
 
 import java.util.Collections;
 import java.util.List;

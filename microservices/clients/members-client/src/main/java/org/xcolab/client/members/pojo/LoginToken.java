@@ -2,7 +2,7 @@ package org.xcolab.client.members.pojo;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.commons.http.client.types.TypeProvider;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.time.Instant;
 import java.util.List;

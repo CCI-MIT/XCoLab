@@ -5,12 +5,12 @@ import org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException;
 import org.xcolab.client.sharedcolab.pojo.Member;
 import org.xcolab.client.sharedcolab.pojo.SharedContest;
 import org.xcolab.client.sharedcolab.pojo.SharedMember;
-import org.xcolab.commons.http.ServiceRequestUtils;
-import org.xcolab.commons.http.client.RestResource;
-import org.xcolab.commons.http.client.RestResource1;
-import org.xcolab.commons.http.client.ServiceResource;
-import org.xcolab.commons.http.client.ServiceResource1;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.ServiceResource;
+import org.xcolab.util.http.client.ServiceResource1;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 

@@ -14,7 +14,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.commons.enums.proposal.PlanSectionTypeKeys;
+import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;

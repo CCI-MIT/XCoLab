@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.commons.http.ServiceRequestUtils;
-import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.util.entity.flash.AlertMessage;

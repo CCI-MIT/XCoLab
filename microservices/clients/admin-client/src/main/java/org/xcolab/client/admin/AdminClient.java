@@ -3,11 +3,11 @@ package org.xcolab.client.admin;
 import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.client.admin.pojo.Notification;
-import org.xcolab.commons.http.ServiceRequestUtils;
-import org.xcolab.commons.http.caching.CacheName;
-import org.xcolab.commons.http.client.RestResource;
-import org.xcolab.commons.http.client.RestResource1;
-import org.xcolab.commons.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 

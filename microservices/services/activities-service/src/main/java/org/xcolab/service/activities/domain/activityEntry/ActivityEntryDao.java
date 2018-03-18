@@ -3,7 +3,7 @@ package org.xcolab.service.activities.domain.activityEntry;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.util.Date;
 import java.util.List;

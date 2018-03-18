@@ -9,8 +9,8 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.commons.enums.proposal.MoveType;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.enums.proposal.MoveType;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.sql.Timestamp;
 

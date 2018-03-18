@@ -1,7 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.commons.activities.enums.ProposalActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
@@ -19,17 +19,17 @@ import org.xcolab.client.proposals.pojo.group.GroupDto;
 import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReferenceDto;
-import org.xcolab.commons.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
-import org.xcolab.commons.http.ServiceRequestUtils;
-import org.xcolab.commons.http.caching.CacheKeys;
-import org.xcolab.commons.http.caching.CacheName;
-import org.xcolab.commons.http.client.RestResource;
-import org.xcolab.commons.http.client.RestResource1;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
-import org.xcolab.commons.http.client.types.TypeProvider;
-import org.xcolab.commons.http.dto.DtoUtil;
-import org.xcolab.commons.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
+import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

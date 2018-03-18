@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
-import org.xcolab.commons.enums.promotion.JudgingSystemActions;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.view.pages.proposals.wrappers.ProposalRatingTypeWrapper;
 
 import java.util.ArrayList;

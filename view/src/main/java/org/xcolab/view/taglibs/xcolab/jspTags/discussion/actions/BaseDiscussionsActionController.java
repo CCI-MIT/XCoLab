@@ -7,7 +7,7 @@ import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
         .DiscussionAuthorizationException;

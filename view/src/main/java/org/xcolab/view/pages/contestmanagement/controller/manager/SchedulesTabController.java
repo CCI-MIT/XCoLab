@@ -13,7 +13,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.commons.enums.promotion.ContestPhasePromoteType;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.errors.AccessDeniedPage;

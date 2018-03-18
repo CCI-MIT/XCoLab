@@ -15,7 +15,7 @@ import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.records.ProposalRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.util.Collection;
 import java.util.List;

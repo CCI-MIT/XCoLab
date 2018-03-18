@@ -5,7 +5,7 @@ import edu.mit.cci.roma.client.Tuple;
 import edu.mit.cci.roma.client.TupleStatus;
 import edu.mit.cci.roma.client.Variable;
 
-import org.xcolab.commons.json.JsonUtil;
+import org.xcolab.util.json.JsonUtil;
 
 import java.io.Serializable;
 

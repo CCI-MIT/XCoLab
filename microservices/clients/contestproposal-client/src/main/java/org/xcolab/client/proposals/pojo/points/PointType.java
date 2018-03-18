@@ -3,7 +3,7 @@ package org.xcolab.client.proposals.pojo.points;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.ArrayList;
 import java.util.List;

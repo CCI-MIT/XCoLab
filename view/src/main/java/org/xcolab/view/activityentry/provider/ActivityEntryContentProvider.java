@@ -1,6 +1,6 @@
 package org.xcolab.view.activityentry.provider;
 
-import org.xcolab.commons.activities.enums.ActivityType;
+import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 

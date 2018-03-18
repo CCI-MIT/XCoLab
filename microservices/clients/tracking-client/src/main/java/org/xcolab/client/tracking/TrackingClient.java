@@ -2,10 +2,10 @@ package org.xcolab.client.tracking;
 
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.client.tracking.pojo.TrackedVisit;
-import org.xcolab.commons.http.caching.CacheKeys;
-import org.xcolab.commons.http.caching.CacheName;
-import org.xcolab.commons.http.client.RestResource;
-import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.client.RestResource;
+import org.xcolab.util.http.client.RestResource1;
 
 public final class TrackingClient {
 

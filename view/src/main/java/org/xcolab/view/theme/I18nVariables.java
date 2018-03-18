@@ -4,7 +4,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.commons.html.LabelStringValue;
-import org.xcolab.commons.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.util.List;
 import java.util.Locale;

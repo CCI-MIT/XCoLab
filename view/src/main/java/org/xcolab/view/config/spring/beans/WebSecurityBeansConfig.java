@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
-import org.xcolab.commons.autoconfigure.XCoLabProperties;
+import org.xcolab.util.autoconfigure.XCoLabProperties;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;

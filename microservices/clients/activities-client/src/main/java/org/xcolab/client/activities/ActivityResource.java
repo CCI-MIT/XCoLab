@@ -1,7 +1,7 @@
 package org.xcolab.client.activities;
 
-import org.xcolab.commons.http.client.CoLabService;
-import org.xcolab.commons.http.client.enums.ResourceEnum;
+import org.xcolab.util.http.client.CoLabService;
+import org.xcolab.util.http.client.enums.ResourceEnum;
 
 public enum ActivityResource implements ResourceEnum {
 

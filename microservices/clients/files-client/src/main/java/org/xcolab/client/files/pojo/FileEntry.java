@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.files.FilesClient;
-import org.xcolab.commons.http.client.types.TypeProvider;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.File;
 import java.io.Serializable;

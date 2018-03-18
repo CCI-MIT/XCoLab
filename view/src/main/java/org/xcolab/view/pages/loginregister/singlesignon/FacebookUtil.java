@@ -10,10 +10,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.commons.http.RequestHelper;
-import org.xcolab.commons.http.UriBuilder;
-import org.xcolab.commons.http.exceptions.translation.TranslationErrorHandler;
-import org.xcolab.commons.http.exceptions.translation.facebook.FacebookExceptionTranslator;
+import org.xcolab.util.http.RequestHelper;
+import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.exceptions.translation.TranslationErrorHandler;
+import org.xcolab.util.http.exceptions.translation.facebook.FacebookExceptionTranslator;
 
 import java.io.IOException;
 import java.io.InputStream;

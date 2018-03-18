@@ -5,9 +5,9 @@ import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryDto;
 import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.commons.http.caching.CacheName;
-import org.xcolab.commons.http.client.enums.ServiceNamespace;
-import org.xcolab.commons.http.dto.DtoUtil;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.dto.DtoUtil;
 
 import java.util.HashMap;
 import java.util.List;
