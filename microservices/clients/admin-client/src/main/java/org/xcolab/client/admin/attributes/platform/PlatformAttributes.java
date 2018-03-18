@@ -11,8 +11,10 @@ import java.util.function.Function;
 
 public final class PlatformAttributes {
 
+    private static final String FILE_BASE_NAME = ".xcolab.application";
+
     private static final PropertyResolver propertyResolver =
-            new HomeDirPropertyResolver(true);
+            new HomeDirPropertyResolver(FILE_BASE_NAME, true);
 
     private PlatformAttributes() {
     }
