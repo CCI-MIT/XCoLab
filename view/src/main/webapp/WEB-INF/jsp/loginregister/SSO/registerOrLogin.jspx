@@ -27,10 +27,12 @@
                 <div class="c-Header__login__box" style="margin: 15px auto 0 auto;">
                     <form:form id="signInFormPopup" method="post" action="/sso/registerOrLogin">
                         <div class="form-group">
-                            <input name="login" type="text" class="form-control" placeholder="username or email address" />
+                            <input type="text" class="form-control" name="login"
+                                   placeholder="username or email address" autocomplete="username"/>
                         </div>
                         <div class="form-group">
-                            <input name="password" type="password" class="form-control" placeholder="password" />
+                            <input type="password" class="form-control" name="password"
+                                   placeholder="password" autocomplete="current-password"/>
                         </div>
                         <div class="form-group">
                             <em>
