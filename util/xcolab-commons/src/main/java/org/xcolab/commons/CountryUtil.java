@@ -1,15 +1,17 @@
 package org.xcolab.commons;
 
+import org.apache.commons.collections4.BidiMap;
+import org.apache.commons.collections4.bidimap.DualHashBidiMap;
+
 import org.xcolab.commons.html.LabelStringValue;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public final class CountryUtil {
-    private static final Map<String, String> codeToCountryMap = new HashMap<>();
+    private static final BidiMap<String, String> codeToCountryMap = new DualHashBidiMap<>();
     private static final List<LabelStringValue> selectOptions;
 
     // Country list adapted from countries.csv by Google licensed under CC BY 3.0
@@ -266,9 +268,8 @@ public final class CountryUtil {
         codeToCountryMap.put("ZM", "Zambia");
         codeToCountryMap.put("ZW", "Zimbabwe");
 
-        selectOptions = codeToCountryMap.entrySet().stream()
-            .map(entry -> new LabelStringValue(entry.getKey(), entry.getValue()))
-            .collect(Collectors.toList());
+        selectOptions = Collections.unmodifiableList(new ArrayList<>(
+                LabelStringValue.fromMap(codeToCountryMap)));
         selectOptions.sort(Comparator.comparing(LabelStringValue::getLable));
     }
 
@@ -282,10 +283,8 @@ public final class CountryUtil {
     }
 
     public static String getCodeForCounty(String country) {
-        for (Map.Entry entry: codeToCountryMap.entrySet()) {
-            if (entry.getValue().equals(country)) {
-                return (String) entry.getKey();
-            }
+        if (codeToCountryMap.containsValue(country)) {
+            return codeToCountryMap.getKey(country);
         }
         return "";
     }
