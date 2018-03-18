@@ -8,7 +8,7 @@ import org.apache.commons.text.WordUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contents.ContentsClient;
-import org.xcolab.util.http.client.types.TypeProvider;
+import org.xcolab.commons.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

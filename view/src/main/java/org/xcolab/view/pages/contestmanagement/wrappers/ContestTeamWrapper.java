@@ -7,8 +7,8 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
+import org.xcolab.commons.activities.enums.ActivityCategory;
+import org.xcolab.commons.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.view.util.entity.enums.MemberRole;
 

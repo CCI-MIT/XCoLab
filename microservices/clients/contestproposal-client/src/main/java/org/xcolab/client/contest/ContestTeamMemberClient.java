@@ -6,12 +6,12 @@ import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRoleDto;
 import org.xcolab.client.contest.resources.ContestResource;
 import org.xcolab.client.members.legacy.enums.MemberRole;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.commons.http.ServiceRequestUtils;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.RestResource;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.dto.DtoUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

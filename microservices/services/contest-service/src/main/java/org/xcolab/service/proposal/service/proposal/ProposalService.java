@@ -34,7 +34,7 @@ import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
-import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.commons.activities.enums.ActivityCategory;
 
 import java.util.ArrayList;
 import java.util.Date;

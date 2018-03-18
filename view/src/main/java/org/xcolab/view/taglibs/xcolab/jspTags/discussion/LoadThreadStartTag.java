@@ -16,9 +16,9 @@ import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
-import org.xcolab.util.enums.flagging.TargetType;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.enums.flagging.TargetType;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 
 import java.util.List;

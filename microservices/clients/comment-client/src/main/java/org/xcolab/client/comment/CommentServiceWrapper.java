@@ -15,12 +15,12 @@ import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentDto;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.pojo.CommentThreadDto;
-import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.commons.http.caching.CacheKeys;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.RestResource;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.exceptions.EntityNotFoundException;
 
 import java.util.Date;
 import java.util.HashMap;

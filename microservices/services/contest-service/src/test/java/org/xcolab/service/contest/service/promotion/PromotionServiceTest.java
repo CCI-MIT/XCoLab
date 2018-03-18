@@ -14,9 +14,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.service.contest.service.contestphase.ContestPhaseService;
 import org.xcolab.service.contest.utils.promotion.PromotionService;
-import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.commons.http.ServiceRequestUtils;
 
 import java.util.Date;
 
@@ -32,7 +31,7 @@ import java.util.Date;
         }
 )
 @PrepareForTest({
-        org.xcolab.util.http.ServiceRequestUtils.class,
+        org.xcolab.commons.http.ServiceRequestUtils.class,
         org.xcolab.client.proposals.ProposalClientUtil.class,
         org.xcolab.client.proposals.ProposalPhaseClientUtil.class,
         org.xcolab.client.proposals.pojo.Proposal.class,

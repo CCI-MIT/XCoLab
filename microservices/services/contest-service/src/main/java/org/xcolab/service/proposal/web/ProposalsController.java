@@ -31,7 +31,7 @@ import org.xcolab.service.proposal.service.proposal.ProposalService;
 import org.xcolab.service.proposal.service.proposal.ProposalVersionService;
 import org.xcolab.service.proposal.service.proposal2phase.Proposal2PhaseService;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.commons.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.util.List;
 

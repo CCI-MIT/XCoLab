@@ -12,7 +12,7 @@ import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.records.ActivityEntryRecord;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.commons.activities.enums.ActivityCategory;
 
 import java.sql.Timestamp;
 import java.util.Date;

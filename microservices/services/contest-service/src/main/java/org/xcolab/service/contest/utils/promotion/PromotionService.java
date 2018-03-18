@@ -22,8 +22,8 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.service.contestphase.ContestPhaseService;
 import org.xcolab.service.contest.utils.email.EmailToAdminDispatcher;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
+import org.xcolab.commons.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.commons.enums.promotion.ContestPhasePromoteType;
 
 import java.util.Collection;
 import java.util.Date;

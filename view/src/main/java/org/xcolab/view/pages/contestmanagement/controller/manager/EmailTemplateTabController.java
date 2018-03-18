@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.html.LabelStringValue;
+import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.EmailTemplateWrapper;

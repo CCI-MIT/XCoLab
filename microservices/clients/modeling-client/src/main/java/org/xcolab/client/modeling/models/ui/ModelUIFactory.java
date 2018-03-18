@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.pojo.ModelInputGroup;
 import org.xcolab.client.modeling.pojo.ModelInputItem;
-import org.xcolab.util.json.JsonUtil;
-import org.xcolab.util.json.NullsafeJsonArrayBuilder;
-import org.xcolab.util.json.NullsafeJsonObjectBuilder;
+import org.xcolab.commons.json.JsonUtil;
+import org.xcolab.commons.json.NullsafeJsonArrayBuilder;
+import org.xcolab.commons.json.NullsafeJsonObjectBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;

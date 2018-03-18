@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.group;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 public class Group_ extends AbstractGroup_ {
 

@@ -1,7 +1,7 @@
 package org.xcolab.client.contest.pojo.ontology;
 
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 import java.io.Serializable;
 import java.util.ArrayList;

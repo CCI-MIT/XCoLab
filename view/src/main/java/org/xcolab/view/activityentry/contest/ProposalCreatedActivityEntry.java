@@ -3,8 +3,8 @@ package org.xcolab.view.activityentry.contest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.util.activities.enums.ActivityType;
-import org.xcolab.util.activities.enums.ContestActivityType;
+import org.xcolab.commons.activities.enums.ActivityType;
+import org.xcolab.commons.activities.enums.ContestActivityType;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;

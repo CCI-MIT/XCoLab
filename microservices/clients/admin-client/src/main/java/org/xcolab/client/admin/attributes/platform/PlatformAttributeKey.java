@@ -1,8 +1,8 @@
 package org.xcolab.client.admin.attributes.platform;
 
 import org.xcolab.client.admin.enums.ServerEnvironment;
-import org.xcolab.util.attributes.AttributeGetter;
-import org.xcolab.util.attributes.transformers.AttributeTransformers;
+import org.xcolab.commons.attributes.AttributeGetter;
+import org.xcolab.commons.attributes.transformers.AttributeTransformers;
 
 import java.io.File;
 

@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.pojo.impact;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 public class ImpactTemplateSeries extends AbstractImpactTemplateSeries {
 

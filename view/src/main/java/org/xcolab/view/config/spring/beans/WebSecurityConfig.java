@@ -15,7 +15,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 
-import org.xcolab.util.autoconfigure.XCoLabProperties;
+import org.xcolab.commons.autoconfigure.XCoLabProperties;
 import org.xcolab.view.auth.handlers.AuthenticationFailureHandler;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.handlers.LogoutSuccessHandler;

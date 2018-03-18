@@ -2,7 +2,7 @@ package org.xcolab.view.activityentry.contest;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import org.xcolab.util.activities.enums.ContestActivityType;
+import org.xcolab.commons.activities.enums.ContestActivityType;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;

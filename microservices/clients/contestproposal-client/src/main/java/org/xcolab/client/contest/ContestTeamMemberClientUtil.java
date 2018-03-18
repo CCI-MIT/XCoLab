@@ -2,7 +2,7 @@ package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 import java.util.Map;

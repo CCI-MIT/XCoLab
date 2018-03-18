@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
-import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.commons.activities.enums.ActivityCategory;
 
 import java.util.List;
 

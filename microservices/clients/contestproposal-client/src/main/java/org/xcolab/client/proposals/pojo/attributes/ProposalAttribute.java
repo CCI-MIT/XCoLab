@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.attributes;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 public class ProposalAttribute extends AbstractProposalAttribute {
 

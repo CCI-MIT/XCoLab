@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.Assert;
 
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.provider.CacheProvider;
-import org.xcolab.util.http.caching.provider.CacheProviderNoOpImpl;
-import org.xcolab.util.http.caching.provider.redis.RedisCacheProvider;
+import org.xcolab.commons.http.ServiceRequestUtils;
+import org.xcolab.commons.http.caching.provider.CacheProvider;
+import org.xcolab.commons.http.caching.provider.CacheProviderNoOpImpl;
+import org.xcolab.commons.http.caching.provider.redis.RedisCacheProvider;
 import org.xcolab.view.config.spring.properties.CacheProperties;
 
 import java.lang.reflect.InvocationTargetException;

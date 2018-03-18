@@ -17,7 +17,7 @@ import org.xcolab.model.tables.pojos.Thread;
 import org.xcolab.model.tables.records.ThreadRecord;
 import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.SortColumn;
+import org.xcolab.commons.SortColumn;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,7 @@
 package org.xcolab.client.admin;
 
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 

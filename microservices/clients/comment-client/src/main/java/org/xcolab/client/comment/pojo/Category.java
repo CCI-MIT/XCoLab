@@ -10,8 +10,8 @@ import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.comment.util.ThreadSortColumn;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.client.types.TypeProvider;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
 import java.util.List;

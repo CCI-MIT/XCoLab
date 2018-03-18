@@ -21,8 +21,8 @@ import org.xcolab.service.flagging.service.FlaggingService;
 import org.xcolab.service.flagging.wrappers.AggregatedReport;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.flagging.ManagerAction;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.commons.enums.flagging.ManagerAction;
+import org.xcolab.commons.enums.flagging.TargetType;
 
 import java.util.List;
 

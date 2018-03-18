@@ -3,10 +3,10 @@ package org.xcolab.client.members;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Role_;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.types.TypeProvider;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.client.RestResource2L;
+import org.xcolab.commons.http.client.types.TypeProvider;
 
 import java.util.List;
 

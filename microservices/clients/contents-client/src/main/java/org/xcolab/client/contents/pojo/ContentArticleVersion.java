@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.types.TypeProvider;
+import org.xcolab.commons.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

@@ -1,7 +1,7 @@
 package org.xcolab.client.proposals.pojo.evaluation.judges;
 
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 public class ProposalRatingValue extends AbstractProposalRatingValue {
 

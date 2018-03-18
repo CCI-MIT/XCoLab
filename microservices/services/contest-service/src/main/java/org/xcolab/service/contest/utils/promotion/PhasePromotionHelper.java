@@ -8,10 +8,10 @@ import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.model.tables.pojos.ContestPhase;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.commons.enums.contest.ProposalContestPhaseAttributeKeys;
 
-import static org.xcolab.util.enums.promotion.JudgingSystemActions.AdvanceDecision;
-import static org.xcolab.util.enums.promotion.JudgingSystemActions.FellowAction;
+import static org.xcolab.commons.enums.promotion.JudgingSystemActions.AdvanceDecision;
+import static org.xcolab.commons.enums.promotion.JudgingSystemActions.FellowAction;
 
 /**
  * Helper class to promote proposals in the given phase.

@@ -5,7 +5,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.util.http.servlet.RequestUtil;
+import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.view.auth.AuthenticationService;
 
 import javax.servlet.http.HttpServletRequest;

@@ -2,7 +2,7 @@ package org.xcolab.client.contest.pojo.ontology;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 import java.util.ArrayList;
 import java.util.List;

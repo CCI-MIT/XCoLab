@@ -22,7 +22,7 @@ import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

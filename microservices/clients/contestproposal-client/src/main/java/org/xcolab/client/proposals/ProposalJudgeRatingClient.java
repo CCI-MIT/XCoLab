@@ -8,9 +8,9 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingTypeDto;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValueDto;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.dto.DtoUtil;
 
 import java.util.HashMap;
 import java.util.List;

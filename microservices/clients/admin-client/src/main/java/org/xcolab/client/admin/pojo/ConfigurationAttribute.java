@@ -2,8 +2,8 @@ package org.xcolab.client.admin.pojo;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.attributes.AbstractAttribute;
-import org.xcolab.util.http.client.types.TypeProvider;
+import org.xcolab.commons.attributes.AbstractAttribute;
+import org.xcolab.commons.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.util.List;

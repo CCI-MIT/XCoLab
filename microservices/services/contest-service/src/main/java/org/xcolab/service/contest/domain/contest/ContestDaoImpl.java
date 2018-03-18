@@ -17,8 +17,8 @@ import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.SortColumn;
-import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.commons.SortColumn;
+import org.xcolab.commons.activities.enums.ActivityCategory;
 
 import java.util.Collections;
 import java.util.List;

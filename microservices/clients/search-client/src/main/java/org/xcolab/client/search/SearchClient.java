@@ -1,10 +1,10 @@
 package org.xcolab.client.search;
 
 import org.xcolab.client.search.pojo.SearchPojo;
-import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.queries.ListQuery;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.commons.http.client.RestResource;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.client.queries.ListQuery;
+import org.xcolab.commons.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 

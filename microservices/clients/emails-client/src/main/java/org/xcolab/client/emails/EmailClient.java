@@ -1,8 +1,8 @@
 package org.xcolab.client.emails;
 
 import org.xcolab.client.emails.pojo.Email;
-import org.xcolab.util.http.client.ServiceResource;
-import org.xcolab.util.http.client.ServiceResource1;
+import org.xcolab.commons.http.client.ServiceResource;
+import org.xcolab.commons.http.client.ServiceResource1;
 
 import java.util.ArrayList;
 import java.util.List;

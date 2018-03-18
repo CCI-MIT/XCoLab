@@ -8,11 +8,11 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSectionDto;
 import org.xcolab.client.contest.resources.ContestResource;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.dto.DtoUtil;
+import org.xcolab.commons.http.exceptions.EntityNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;

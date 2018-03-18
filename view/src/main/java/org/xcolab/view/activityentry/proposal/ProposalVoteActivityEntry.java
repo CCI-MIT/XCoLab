@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
-import org.xcolab.util.activities.enums.ActivityType;
-import org.xcolab.util.activities.enums.ProposalActivityType;
+import org.xcolab.commons.activities.enums.ActivityType;
+import org.xcolab.commons.activities.enums.ProposalActivityType;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 

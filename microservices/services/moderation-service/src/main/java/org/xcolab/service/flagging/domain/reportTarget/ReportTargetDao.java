@@ -2,7 +2,7 @@ package org.xcolab.service.flagging.domain.reportTarget;
 
 import org.xcolab.model.tables.pojos.ReportTarget;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.commons.enums.flagging.TargetType;
 
 import java.util.List;
 

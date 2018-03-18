@@ -1,6 +1,6 @@
 package org.xcolab.client.admin.exceptions;
 
-import org.xcolab.util.attributes.exceptions.AttributeNotFoundException;
+import org.xcolab.commons.attributes.exceptions.AttributeNotFoundException;
 
 public class ContestTypeAttributeNotFoundException extends AttributeNotFoundException {
 

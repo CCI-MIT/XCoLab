@@ -6,7 +6,7 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.util.time.DateUtil;
+import org.xcolab.commons.time.DateUtil;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.ChangeFrequency;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.Priority;

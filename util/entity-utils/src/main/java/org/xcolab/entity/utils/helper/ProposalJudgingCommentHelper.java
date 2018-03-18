@@ -10,9 +10,9 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.util.enums.promotion.JudgingSystemActions.AdvanceDecision;
-import org.xcolab.util.enums.promotion.JudgingSystemActions.FellowAction;
+import org.xcolab.commons.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.commons.enums.promotion.JudgingSystemActions.AdvanceDecision;
+import org.xcolab.commons.enums.promotion.JudgingSystemActions.FellowAction;
 
 /**
  * This is a helper class that interprets the Judging Feedback message made during judging contest

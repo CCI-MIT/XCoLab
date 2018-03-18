@@ -7,7 +7,7 @@ import edu.mit.cci.roma.client.Variable;
 
 import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.pojo.ModelOutputItem;
-import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
+import org.xcolab.commons.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;

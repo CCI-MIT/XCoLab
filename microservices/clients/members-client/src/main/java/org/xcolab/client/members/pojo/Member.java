@@ -13,7 +13,7 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.util.http.client.types.TypeProvider;
+import org.xcolab.commons.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

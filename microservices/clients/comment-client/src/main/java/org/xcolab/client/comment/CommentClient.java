@@ -3,9 +3,9 @@ package org.xcolab.client.comment;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentDto;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.dto.DtoUtil;
 
 import java.util.HashMap;
 import java.util.List;

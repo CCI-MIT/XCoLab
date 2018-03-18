@@ -16,7 +16,7 @@ import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeHelperData;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeService;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalUnversionedAttributeHelperData;
-import org.xcolab.util.spring.web.annotation.ListMapping;
+import org.xcolab.commons.spring.web.annotation.ListMapping;
 
 import java.util.List;
 

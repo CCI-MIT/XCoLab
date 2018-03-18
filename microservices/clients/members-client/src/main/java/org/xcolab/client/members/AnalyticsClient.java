@@ -2,8 +2,8 @@ package org.xcolab.client.members;
 
 import org.xcolab.client.members.pojo.AnalyticsUserEvent;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestResource2L;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.client.RestResource2L;
 
 public final class AnalyticsClient {
 

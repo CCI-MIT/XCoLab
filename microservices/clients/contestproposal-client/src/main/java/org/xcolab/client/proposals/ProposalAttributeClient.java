@@ -11,15 +11,15 @@ import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeHelperDataDt
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttributeDto;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttributeHelperDataDto;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.client.queries.ListQuery;
-import org.xcolab.util.http.dto.DtoUtil;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.commons.http.ServiceRequestUtils;
+import org.xcolab.commons.http.caching.CacheKeys;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.client.RestResource2L;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.queries.ListQuery;
+import org.xcolab.commons.http.dto.DtoUtil;
+import org.xcolab.commons.http.exceptions.EntityNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;

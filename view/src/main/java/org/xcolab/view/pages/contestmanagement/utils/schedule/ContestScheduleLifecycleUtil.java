@@ -11,9 +11,9 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
-import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
-import org.xcolab.util.html.LabelValue;
+import org.xcolab.commons.enums.contest.ContestPhaseTypeValue;
+import org.xcolab.commons.enums.promotion.ContestPhasePromoteType;
+import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
 
 import java.sql.Timestamp;

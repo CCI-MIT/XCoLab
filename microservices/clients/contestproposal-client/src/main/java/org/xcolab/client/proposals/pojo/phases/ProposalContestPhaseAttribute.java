@@ -4,7 +4,7 @@ package org.xcolab.client.proposals.pojo.phases;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 import java.util.Date;
 

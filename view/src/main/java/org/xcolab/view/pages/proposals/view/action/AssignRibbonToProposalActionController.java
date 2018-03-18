@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.commons.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.entity.flash.AlertMessage;

@@ -3,12 +3,12 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistoryDto;
-import org.xcolab.util.enums.proposal.MoveType;
-import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.commons.enums.proposal.MoveType;
+import org.xcolab.commons.http.caching.CacheKeys;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.dto.DtoUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;

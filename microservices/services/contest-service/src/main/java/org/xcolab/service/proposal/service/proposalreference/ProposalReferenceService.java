@@ -16,7 +16,7 @@ import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeHelper;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeKeys;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeService;
-import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
+import org.xcolab.commons.enums.proposal.PlanSectionTypeKeys;
 
 import java.util.ArrayList;
 import java.util.Collection;

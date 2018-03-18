@@ -4,7 +4,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.commons.enums.flagging.TargetType;
 import org.xcolab.view.auth.MemberAuthUtil;
 
 import java.time.Instant;

@@ -3,7 +3,7 @@ package org.xcolab.view.theme;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.util.MetaKeys;
 
 import javax.servlet.http.HttpServletRequest;

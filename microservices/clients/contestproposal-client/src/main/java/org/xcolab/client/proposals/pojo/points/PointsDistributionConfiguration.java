@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.points;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 import java.sql.Timestamp;
 

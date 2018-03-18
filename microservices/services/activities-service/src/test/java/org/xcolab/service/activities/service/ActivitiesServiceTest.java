@@ -22,8 +22,8 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
-import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.commons.activities.enums.ActivityCategory;
+import org.xcolab.commons.http.ServiceRequestUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

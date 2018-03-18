@@ -4,9 +4,9 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.commons.enums.promotion.ContestPhasePromoteType;
+import org.xcolab.commons.http.ServiceRequestUtils;
+import org.xcolab.commons.http.caching.CacheName;
 import org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean;
 
 import java.util.ArrayList;

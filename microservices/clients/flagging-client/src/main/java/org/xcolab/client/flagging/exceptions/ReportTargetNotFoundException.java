@@ -1,6 +1,6 @@
 package org.xcolab.client.flagging.exceptions;
 
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.commons.enums.flagging.TargetType;
 
 public class ReportTargetNotFoundException extends Exception {
 

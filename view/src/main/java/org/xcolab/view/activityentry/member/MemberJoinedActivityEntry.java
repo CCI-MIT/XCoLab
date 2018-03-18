@@ -3,8 +3,8 @@ package org.xcolab.view.activityentry.member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.util.activities.enums.ActivityType;
-import org.xcolab.util.activities.enums.MemberActivityType;
+import org.xcolab.commons.activities.enums.ActivityType;
+import org.xcolab.commons.activities.enums.MemberActivityType;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.view.activityentry.provider.AbstractActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;

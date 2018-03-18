@@ -4,8 +4,8 @@ import org.json.JSONObject;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.legacy.enums.CategoryRole;
-import org.xcolab.util.attributes.AttributeGetter;
-import org.xcolab.util.i18n.I18nUtils;
+import org.xcolab.commons.attributes.AttributeGetter;
+import org.xcolab.commons.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
 import java.io.Serializable;

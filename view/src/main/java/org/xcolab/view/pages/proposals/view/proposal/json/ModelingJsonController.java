@@ -23,7 +23,7 @@ import org.xcolab.client.modeling.models.ui.ModelOutputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
 import org.xcolab.client.modeling.pojo.ModelGlobalPreference;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

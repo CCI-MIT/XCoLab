@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ReportTarget;
 import org.xcolab.model.tables.records.ReportTargetRecord;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.commons.enums.flagging.TargetType;
 
 import java.util.List;
 

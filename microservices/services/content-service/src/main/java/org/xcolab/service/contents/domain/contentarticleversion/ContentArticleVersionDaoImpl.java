@@ -14,7 +14,7 @@ import org.xcolab.model.tables.records.ContentArticleVersionRecord;
 import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.SortColumn;
+import org.xcolab.commons.SortColumn;
 
 import java.util.List;
 import java.util.stream.Collectors;

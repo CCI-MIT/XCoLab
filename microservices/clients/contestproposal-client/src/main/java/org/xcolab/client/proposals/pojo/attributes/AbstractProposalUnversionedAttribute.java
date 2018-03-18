@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo.attributes;
 
-import org.xcolab.util.attributes.AbstractAttribute;
+import org.xcolab.commons.attributes.AbstractAttribute;
 
 import java.sql.Timestamp;
 import java.util.Objects;

@@ -28,7 +28,7 @@ import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibb
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.service.contestphase.ContestPhaseService;
 import org.xcolab.service.contest.utils.promotion.PromotionService;
-import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.commons.http.ServiceRequestUtils;
 
 import java.nio.charset.Charset;
 

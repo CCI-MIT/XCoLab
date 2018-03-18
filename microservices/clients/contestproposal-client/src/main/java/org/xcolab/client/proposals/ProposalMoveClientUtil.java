@@ -1,8 +1,8 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
-import org.xcolab.util.enums.proposal.MoveType;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.enums.proposal.MoveType;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 

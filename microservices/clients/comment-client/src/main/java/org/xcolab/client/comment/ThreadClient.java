@@ -4,9 +4,9 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.pojo.CommentThreadDto;
 import org.xcolab.client.comment.util.ThreadSortColumn;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.dto.DtoUtil;
 
 import java.util.Date;
 import java.util.HashMap;

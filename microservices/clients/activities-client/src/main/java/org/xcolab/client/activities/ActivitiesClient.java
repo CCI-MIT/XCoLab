@@ -1,18 +1,18 @@
 package org.xcolab.client.activities;
 
-import org.xcolab.util.activities.enums.ActivityType;
+import org.xcolab.commons.activities.enums.ActivityType;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.util.IdListUtil;
-import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.commons.IdListUtil;
+import org.xcolab.commons.activities.enums.ActivityCategory;
+import org.xcolab.commons.http.caching.CacheKeys;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.RestResource;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.exceptions.EntityNotFoundException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

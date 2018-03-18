@@ -5,12 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.types.TypeProvider;
+import org.xcolab.commons.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.util.List;
-
-import javax.annotation.Generated;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)

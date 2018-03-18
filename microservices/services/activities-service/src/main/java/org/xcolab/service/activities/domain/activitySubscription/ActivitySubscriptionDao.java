@@ -5,7 +5,7 @@ import org.jooq.Query;
 
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
-import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.commons.activities.enums.ActivityCategory;
 
 import java.util.List;
 import java.util.Optional;

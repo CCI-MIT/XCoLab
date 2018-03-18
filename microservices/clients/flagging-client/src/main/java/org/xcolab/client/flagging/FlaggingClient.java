@@ -6,13 +6,13 @@ import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.Report;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.enums.flagging.ManagerAction;
-import org.xcolab.util.enums.flagging.TargetType;
-import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.commons.enums.flagging.ManagerAction;
+import org.xcolab.commons.enums.flagging.TargetType;
+import org.xcolab.commons.http.caching.CacheKeys;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.RestResource;
+import org.xcolab.commons.http.client.RestResource1;
+import org.xcolab.commons.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 

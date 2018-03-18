@@ -3,14 +3,12 @@ package org.xcolab.client.admin;
 import org.xcolab.client.admin.exceptions.ContestTypeAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.admin.pojo.ContestTypeAttribute;
-import org.xcolab.util.http.client.CoLabService;
-import org.xcolab.util.enums.Plurality;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.commons.enums.Plurality;
+import org.xcolab.commons.http.caching.CacheName;
+import org.xcolab.commons.http.client.RestResource;
+import org.xcolab.commons.http.client.RestResource1;
 
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.commons.http.exceptions.EntityNotFoundException;
 
 import java.util.Iterator;
 import java.util.List;

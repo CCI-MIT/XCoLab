@@ -8,7 +8,7 @@ import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
-import org.xcolab.util.enums.contest.ContestTier;
+import org.xcolab.commons.enums.contest.ContestTier;
 
 import java.util.ArrayList;
 import java.util.HashSet;

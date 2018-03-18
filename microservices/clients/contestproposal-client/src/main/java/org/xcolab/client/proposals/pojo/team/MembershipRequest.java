@@ -3,8 +3,8 @@ package org.xcolab.client.proposals.pojo.team;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 import java.sql.Timestamp;
 

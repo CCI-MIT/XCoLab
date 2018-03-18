@@ -3,7 +3,7 @@ package org.xcolab.service.proposal.helper.autopromotion;
 
 
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.commons.enums.contest.ProposalContestPhaseAttributeKeys;
 
 /**
  * Created by johannes on 9/8/15.

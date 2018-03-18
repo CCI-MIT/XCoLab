@@ -2,7 +2,7 @@ package org.xcolab.client.contest.pojo;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.commons.http.client.enums.ServiceNamespace;
 
 
 public class ContestSchedule extends AbstractContestSchedule {

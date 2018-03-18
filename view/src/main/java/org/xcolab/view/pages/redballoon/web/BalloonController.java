@@ -22,7 +22,7 @@ import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.LinkUtils;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.redballoon.utils.BalloonService;
 import org.xcolab.view.pages.redballoon.web.beans.UserEmailBean;
 
@@ -35,7 +35,7 @@ import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import static org.xcolab.util.http.exceptions.ExceptionUtils.getOptional;
+import static org.xcolab.commons.http.exceptions.ExceptionUtils.getOptional;
 
 @Controller
 public class BalloonController {

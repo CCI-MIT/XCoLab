@@ -21,7 +21,7 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.commons.http.ServiceRequestUtils;
 
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;

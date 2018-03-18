@@ -3,7 +3,7 @@ package org.xcolab.service.utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
-import org.xcolab.util.SortColumn;
+import org.xcolab.commons.SortColumn;
 
 import java.util.ArrayList;
 import java.util.List;

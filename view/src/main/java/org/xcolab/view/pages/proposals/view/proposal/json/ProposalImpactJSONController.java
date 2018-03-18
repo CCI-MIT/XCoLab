@@ -23,7 +23,7 @@ import org.xcolab.client.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactDataParser;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeries;

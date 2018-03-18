@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.commons.http.exceptions.EntityNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map.Entry;

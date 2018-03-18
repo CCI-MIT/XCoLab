@@ -17,7 +17,7 @@ import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.activities.service.ActivitiesService;
 import org.xcolab.service.activities.utils.Utils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.commons.activities.enums.ActivityCategory;
 
 import java.util.List;
 

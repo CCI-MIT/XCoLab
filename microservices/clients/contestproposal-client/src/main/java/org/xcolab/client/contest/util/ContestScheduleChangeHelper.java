@@ -2,7 +2,7 @@ package org.xcolab.client.contest.util;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
+import org.xcolab.commons.enums.promotion.ContestPhasePromoteType;
 
 import java.sql.Timestamp;
 import java.util.Date;

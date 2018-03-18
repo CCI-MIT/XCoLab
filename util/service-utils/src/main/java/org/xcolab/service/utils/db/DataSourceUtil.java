@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.PropertyResolver;
 
-import org.xcolab.util.metrics.MetricsUtil;
+import org.xcolab.commons.metrics.MetricsUtil;
 
 public final class DataSourceUtil {
 

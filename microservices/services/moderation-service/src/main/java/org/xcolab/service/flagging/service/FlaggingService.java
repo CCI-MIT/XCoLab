@@ -14,8 +14,8 @@ import org.xcolab.model.tables.pojos.ReportTarget;
 import org.xcolab.service.flagging.domain.report.ReportDao;
 import org.xcolab.service.flagging.domain.reportTarget.ReportTargetDao;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.enums.flagging.ManagerAction;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.commons.enums.flagging.ManagerAction;
+import org.xcolab.commons.enums.flagging.TargetType;
 
 import java.sql.Timestamp;
 import java.util.Date;

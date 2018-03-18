@@ -2,9 +2,9 @@ package org.xcolab.client.admin.attributes.platform;
 
 import org.springframework.core.env.PropertyResolver;
 
-import org.xcolab.util.HomeDirPropertyResolver;
-import org.xcolab.util.attributes.AttributeGetterBuilder;
-import org.xcolab.util.attributes.Attributes;
+import org.xcolab.commons.HomeDirPropertyResolver;
+import org.xcolab.commons.attributes.AttributeGetterBuilder;
+import org.xcolab.commons.attributes.Attributes;
 
 import java.util.List;
 import java.util.function.Function;

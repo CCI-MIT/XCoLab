@@ -25,7 +25,7 @@ import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscri
 import org.xcolab.service.activities.service.ActivitiesService;
 import org.xcolab.service.activities.utils.Utils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.commons.activities.enums.ActivityCategory;
 
 import java.nio.charset.Charset;
 import java.util.Optional;
