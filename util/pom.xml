@@ -17,5 +17,6 @@
         <module>service-utils</module>
         <module>xcolab-utils</module>
         <module>entity-utils</module>
+        <module>xcolab-commons</module>
     </modules>
 </project>
