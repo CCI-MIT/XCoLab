@@ -59,7 +59,7 @@
                                     <div class="media-body">
                                         <div class="d-flex">
                                             <div style="flex: 0 0 auto">
-                                                <h2 class="text-muted">${currentUserProfile.realName}</h2>
+                                                <h2>${currentUserProfile.realName}</h2>
                                                 <div class="role-indicator"
                                                      style="margin-top: 5px;">
                                                     <div style="width: 16px">
@@ -358,14 +358,13 @@
                                             <c:set var="shareLink"
                                                    value="${_themeContext.colabUrl}${balloonLink.targetUrl}"/>
                                             <c:if test="${not empty balloonText}">
-                                                <div><xcolab-social:socialShareButtons
-                                                        title="${balloonText.shareTitle}"
-                                                        size="xs"/>
+                                                <div>
+                                                    <xcolab-social:socialShareButtons size="sm"
+                                                        title="${balloonText.shareTitle}"/>
                                                 </div>
                                             </c:if>
                                             <input id="snpLink" readonly="true"
-                                                   value="${shareLink}"
-                                                   class="form-control"/>
+                                                   value="${shareLink}" class="form-control"/>
                                             <button class="btn btn-primary btn-sm btn-block mt-2"
                                                     id="copyButton"
                                                     data-clipboard-target="#snpLink">
