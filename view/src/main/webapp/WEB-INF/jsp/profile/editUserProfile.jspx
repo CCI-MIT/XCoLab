@@ -51,13 +51,13 @@
 
     <!-- TODO: [COLAB-2563] use this form as a demonstration -->
 
-	<form:form autocomplete="off" id="updateUserProfileForm"
+	<form:form autocomplete="off" id="updateUserProfileForm" cssClass="l-Content"
 			   action="${updateUserProfileForm}" commandName="userBean" method="post">
         <c:if test="${not _themeContext.i18NVariables.isI18NActive}">
             <form:hidden path="defaultLocale" />
         </c:if>
-		<div id="main" class="userprofile">
-			<form:hidden path="userId"/>
+		<div class="l-Content__main">
+            <form:hidden path="userId"/>
 			<div class="reg_errors"><!--  --></div>
 			<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*" htmlEscape="false" />
 
@@ -65,369 +65,345 @@
 			<input type="text" style="display:none" />
 			<input type="password" style="display:none" />
 
-			<div class="comm_member">
-                <div class="row">
-                    <div class="col-4">
-                        <form:hidden id="userPortraitInput" path="imageId" />
-                        <xcolab:imageUpload uniqueName="userPortraitUpload" imageIdInput="userPortraitInput"
-                                            defaultImage="MEMBER" />
+            <div class="row mb-2">
+                <div class="col-4 col-md-5 col-lg-3">
+                    <form:hidden id="userPortraitInput" path="imageId" />
+                    <xcolab:imageUpload uniqueName="userPortraitUpload" imageIdInput="userPortraitInput"
+                                        defaultImage="MEMBER" />
+                </div>
+                <div class="col-12 col-sm-8 col-md-7 col-lg-9">
+                    <div class="form-row">
+                        <div class="cb-form-col-label required-field">
+                            <spring:message code="profile.form.fields.firstname"/>
+                        </div>
+                        <div class="col">
+                            <form:input id="firstName" path="firstName" cssClass="form-control"/>
+                            <div class="reg_errors"><!--  -->
+                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="firstName" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-8">
-                        <table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
-                            <tr>
-                                <th class="b m nowrap required-field" width="170">
-                                    <spring:message code="profile.form.fields.firstname"/>
-                                </th>
-                                <td>
-                                    <form:input id="firstName" path="firstName" cssClass="form-control"/>
-                                    <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="firstName" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="b nowrap required-field">
-                                    <spring:message code="profile.form.fields.lastname"/>
-                                </th>
-                                <td>
-                                    <form:input id="lastName" path="lastName" cssClass="form-control"/>
-                                    <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="lastName" />
-                                    </div>
-                                </td>
-                            </tr>
+                    <div class="form-row">
+                        <div class="cb-form-col-label required-field">
+                            <spring:message code="profile.form.fields.lastname"/>
+                        </div>
+                        <div class="col">
+                            <form:input id="lastName" path="lastName" cssClass="form-control"/>
+                            <div class="reg_errors"><!--  -->
+                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="lastName" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="cb-form-col-label required-field">
+                            <spring:message code="profile.form.fields.country"/>
+                        </div>
+                        <div class="col">
+                            <form:select cssClass="form-control" path="countryCode">
+                                <form:option value="" label="Select country"/>
+                                <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
+                            </form:select>
+                            <div class="reg_errors"><!--  -->
+                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="countryCode" />
+                            </div>
+                        </div>
+                    </div>
+                    <c:if test="${isI18NActive}">
+                        <div class="form-row">
+                            <div class="cb-form-col-label required-field">
+                                <spring:message code="profile.form.fields.language"/>
+                            </div>
+                            <div class="col">
+                                <form:select cssClass="form-control" path="defaultLocale">
+                                    <form:option value="" label="Select language"/>
+                                    <c:forEach var="lang" items="${_themeContext.i18NVariables.languageSelectItems}">
+                                        <form:option value="${lang['value']}" >
+                                            <spring:message code="${lang['lable']}"/>
+                                        </form:option>
+                                    </c:forEach>
+                                </form:select>
+                                <div class="reg_errors"><!--  -->
+                                    <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="countryCode" />
+                                </div>
+                            </div>
+                        </div>
+                    </c:if>
+                </div>
+            </div>
 
-                            <tr>
-                                <th class="b m required-field">
-                                    <spring:message code="profile.form.fields.country"/>
-                                </th>
-                                <td>
-                                    <form:select cssClass="form-control" path="countryCode">
-                                        <form:option value="" label="Select country"/>
-                                        <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
-                                    </form:select>
-                                    <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="countryCode" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <c:if test="${isI18NActive}">
-                                <tr>
-                                    <th class="b m required-field">
-                                        <spring:message code="profile.form.fields.language"/>
-                                    </th>
-                                    <td>
-                                        <form:select cssClass="form-control" path="defaultLocale">
-                                            <form:option value="" label="Select language"/>
-                                            <c:forEach var="lang" items="${_themeContext.i18NVariables.languageSelectItems}">
-                                                <form:option value="${lang['value']}" >
-                                                    <spring:message code="${lang['lable']}"/>
-                                                </form:option>
-                                            </c:forEach>
-                                        </form:select>
-                                        <div class="reg_errors"><!--  -->
-                                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="countryCode" />
-                                        </div>
-                                    </td>
-                                </tr>
-                            </c:if>
-                        </table>
+            <div class="form-row">
+                <div class="cb-form-col-label">
+                    <spring:message code="profile.form.fields.email"/>
+                </div>
+                <div class="col">
+                    <form:input id="emailStored" cssClass="form-control" path="emailStored" readonly="true"/>
+                </div>
+            </div>
+            <div class="form-row" id="EmailRow">
+                <div class="cb-form-col-label">
+                    <spring:message code="profile.form.fields.newemail"/>
+                </div>
+                <div class="col">
+                    <form:input  id="email" cssClass="form-control" path="email"/>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="email" />
                     </div>
                 </div>
-			</div>
+            </div>
 
-			<div>
-				<table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
-					<tbody>
-						<tr>
-							<th class="b m" ><spring:message code="profile.form.fields.email"/>
-							</th>
-							<td>
-								<form:input id="emailStored" cssClass="form-control" path="emailStored" readonly="true"/>
-							</td>
-						</tr>
-						<tr id="EmailRow">
-							<th class="b m" >
-                                <spring:message code="profile.form.fields.newemail"/>
-							</th>
-							<td>
-								<form:input  id="email" cssClass="form-control" path="email"/>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="email" />
-								</div>
-							</td>
-						</tr>
+            <div class="form-row" id="retypeEmailRow" style="${emailError ? '' : 'display: none;'}">
+                <div class="cb-form-col-label required-field">
+                    <spring:message code="profile.form.fields.retypeemail"/>
+                </div>
+                <div class="col">
+                    <form:input id="retypeEmail" cssClass="form-control" path="retypeEmail" autocomplete="off"/>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypeEmail" />
+                    </div>
+                </div>
+            </div>
 
-						<tr id="retypeEmailRow" style="${emailError ? '' : 'display: none;'}">
-							<th class="b m required-field">
-                                <spring:message code="profile.form.fields.retypeemail"/>
-							</th>
-							<td>
-								<form:input  id="retypeEmail" cssClass="form-control" path="retypeEmail" autocomplete="off"/>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypeEmail" />
-								</div>
-							</td>
-						</tr>
+            <c:if test="${not empty currentUserProfile.user.loginTokenId}">
+                <div class="form-row">
+                    <div class="cb-form-col-label">
+                        <spring:message code="profile.form.fields.newlink"/>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary" onclick="sendNewLoginLink()">
+                            <spring:message code="profile.form.button.sendlink"/>
+                        </button>
+                    </div>
+                </div>
+            </c:if>
 
-                        <c:if test="${not empty currentUserProfile.user.loginTokenId}">
-                            <tr>
-                                <th class="b m nowrap">
-                                    <spring:message code="profile.form.fields.newlink"/>
-                                </th>
+            <c:choose>
+                <c:when test="${currentUserProfile.viewingOwnProfile and empty currentUserProfile.user.hashedPassword}">
+                    <!-- User has no password yet - allow sending reset link -->
+                    <div class="form-row">
+                        <div class="cb-form-col-label">
+                            <spring:message code="profile.form.fields.newpassword"/>
+                        </div>
+                        <div class="col">
+                            <button type="button" data-toggle="modal" data-target="#forgotPasswordModal" class="btn btn-primary">
+                                <spring:message code="profile.form.button.setpassword"/>
+                            </button>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="form-row">
+                        <div class="cb-form-col-label">
+                            <spring:message code="profile.form.fields.password"/>
+                        </div>
+                        <div class="col">
+                            <form:password cssClass="form-control" path="currentPassword" />
+                            <div class="reg_errors">
+                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="currentPassword" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="cb-form-col-label">
+                            <spring:message code="profile.form.fields.newpassword"/>
+                        </div>
+                        <div class="col">
+                            <form:password cssClass="form-control" path="password"/>
+                            <div class="reg_errors"><!--  -->
+                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="password" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" id="retypePasswordRow" style="${passwordError ? '' : 'display: none;'}">
+                        <div class="cb-form-col-label required-field">
+                            <spring:message code="profile.form.fields.retypepassword"/>
+                        </div>
+                        <div class="col">
+                            <form:password cssClass="form-control" path="retypePassword" />
+                            <div class="reg_errors"><!--  -->
+                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypePassword" />
+                            </div>
+                        </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
+            <c:if test="${permissions.canAdmin}">
+                <button type="button" class="btn btn-link js-PostLink" data-url="/impersonate?memberId=${currentUserProfile.userId}">
+                    Impersonate ${userBean.firstName}
+                </button>
+            </c:if>
+
+            <div class="profile_about-head"><spring:message code="profile.form.fields.shortbio"/></div>
+            <div>
+                <form:textarea
+                    cssClass="rte-editorPlaceholder form-control" path="shortBio" />
+                <div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
+                    <span class="limit_characterCount"><!--  --></span>/&#160;
+                    <span class="limit_charactersMax">2000</span> characters
+                </div>
+                <div class="reg_errors"><!--  -->
+                    <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="shortBio" />
+                </div>
+                <div class="clearfix">&#160;</div>
+            </div>
+
+            <a class="btn btn-primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();"><spring:message code="profile.form.button.save"/></a>
+            <a class="btn btn-gray" href="/members/profile/${currentUserProfile.userId}"><spring:message code="profile.form.button.cancel"/></a>
+        </div>
+
+        <div class="l-Content__sidebar l-Content__sidebar--right l-Content__sidebar--small l-Content__sidebar--collapseBottom">
+            <div>
+                <div class="comm_rightcol-title2"><spring:message code="profile.message.settings.title"/></div>
+                <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                    <tr class="colabRow">
+                        <td class="actionColumn">
+                            <form:checkbox id="sendEmailOnMessage" cssClass="cmn-toggle cmn-toggle-round"
+                                           path="sendEmailOnMessage" onchange="updateUserSendEmailOnMessageSettings(this)"/>
+                            <form:label path="sendEmailOnMessage"/>
+                        </td>
+                        <td class="profile_settings">
+                            <spring:message code="profile.message.settings.emailreceive"/>
+                        </td>
+                    </tr>
+                    <tr class="colabRow">
+                        <td class="actionColumn">
+                            <form:checkbox id="sendEmailOnActivity" cssClass="cmn-toggle cmn-toggle-round"
+                                           path="sendEmailOnActivity" onchange="updateUserSendEmailOnActivitySettings(this)"/>
+                            <form:label path="sendEmailOnActivity"/>
+                        </td>
+                        <td class="profile_settings">
+                            <spring:message code="profile.message.settings.emailsubscription"/>
+                        </td>
+                    </tr>
+                    <tr class="colabRow">
+                        <td class="actionColumn">
+                            <form:checkbox id="sendDailyEmailOnActivity" disabled="${not userBean.sendEmailOnActivity}"
+                                           cssClass="cmn-toggle cmn-toggle-round" path="sendDailyEmailOnActivity"
+                                           onchange="updateUserSendDailyEmailOnActivitySettings(this)" />
+                            <form:label path="sendDailyEmailOnActivity"/>
+                        </td>
+                        <td class="profile_settings">
+                            <spring:message code="profile.message.settings.emaildailydigest"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <c:if test="${newsletterActive}">
+                <div>
+                    <div class="comm_rightcol-title2"><spring:message code="profile.newsletter.settings.title" arguments="${_themeContext.colabShortName}" /></div>
+                    <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                        <form:form commandName="newsletterBean">
+                            <tr class="colabRow">
+                                <td class="actionColumn">
+                                    <form:checkbox id="emailSubscribedToNewsletter" cssClass="cmn-toggle cmn-toggle-round"
+                                                   path="emailSubscribedToNewsletter" onchange="updateNewsletterSettings(this)" />
+                                    <form:label path="emailSubscribedToNewsletter"/>
+                                </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" onclick="sendNewLoginLink()">
-                                        <spring:message code="profile.form.button.sendlink"/>
-                                    </button>
+                                    <spring:message code="profile.newsletter.settings.sendme" arguments="${_themeContext.colabShortName}"/>
+                                </td>
+                            </tr>
+                        </form:form>
+                    </table>
+                </div>
+            </c:if>
+
+            <c:if test="${(_themeContext.authenticationVariables.isFacebookSsoActive or _themeContext.authenticationVariables.isGoogleSsoActive)}">
+                <div>
+                    <div class="comm_rightcol-title2"><spring:message code="profile.sso.settings.title"/></div>
+                    <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                        <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
+                            <tr class="colabRow">
+                                <td class="actionColumn">
+                                    <c:choose>
+                                        <c:when test="${currentUserProfile.hasFacebookId}">
+                                            <input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                                   value="true" checked="checked" onClick="unlinkFacebookSSO();" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                                   disabled="true" />
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <label for="hasFacebookId"><!-- --></label>
+                                </td>
+                                <td>
+                                    <spring:message code="profile.sso.settings.facebook"/>
                                 </td>
                             </tr>
                         </c:if>
+                        <c:if test="${_themeContext.authenticationVariables.isGoogleSsoActive}">
+                            <tr class="colabRow">
+                                <td class="actionColumn">
+                                    <c:choose>
+                                        <c:when test="${currentUserProfile.hasGoogleId}">
+                                            <input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                                   value="true" checked="checked" onClick="unlinkGoogleSSO();" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                                   disabled="true" />
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <label for="hasOpenId"><!-- --></label>
+                                </td>
+                                <td>
+                                    <spring:message code="profile.sso.settings.google"/>
+                                </td>
+                            </tr>
+                        </c:if>
+                    </table>
+                </div>
+            </c:if>
 
-                        <c:choose>
-                            <c:when test="${currentUserProfile.viewingOwnProfile and empty currentUserProfile.user.hashedPassword}">
-                                <!-- User has no password yet - allow sending reset link -->
-                                <tr>
-                                    <th class="b m nowrap">
-                                        <spring:message code="profile.form.fields.newpassword"/>
-                                    </th>
-                                    <td>
-                                        <button type="button" data-toggle="modal" data-target="#forgotPasswordModal" class="btn btn-primary">
-                                            <spring:message code="profile.form.button.setpassword"/>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </c:when>
-                            <c:otherwise>
-                                <tr>
-                                    <th class="b m nowrap">
-                                        <spring:message code="profile.form.fields.password"/>
-                                    </th>
-                                    <td>
-                                        <form:password cssClass="form-control" path="currentPassword" />
-                                        <div class="reg_errors">
-                                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="currentPassword" />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="b m nowrap">
-                                        <spring:message code="profile.form.fields.newpassword"/>
-                                    </th>
-                                    <td>
-                                        <form:password cssClass="form-control" path="password"/>
-                                        <div class="reg_errors"><!--  -->
-                                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="password" />
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr id="retypePasswordRow" style="${passwordError ? '' : 'display: none;'}">
-                                    <th class="b m nowrap required-field">
-                                        <spring:message code="profile.form.fields.retypepassword"/>
-                                    </th>
-                                    <td>
-                                        <form:password cssClass="form-control" path="retypePassword" />
-                                        <div class="reg_errors"><!--  -->
-                                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypePassword" />
-                                        </div>
-                                    </td>
-                                </tr>
-                            </c:otherwise>
-                        </c:choose>
-					</tbody>
-				</table>
+            <div>
+                <div class="comm_rightcol-title2"><spring:message code="profile.account.settings.title"/></div>
+                <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                    <tr class="colabRow">
+                        <td class="actionColumn">
+                            <spring:message code="profile.account.delete.question" arguments="${_themeContext.colabName}" var="deleteMsg"/>
+                            <a class="btn btn-gray btn-sm js-PostLink" data-href="${deleteProfileUrl}" data-confirm="${deleteMsg}">
+                                <spring:message code="profile.account.delete.button"/>
+                            </a>
+                        </td>
+                        <td>
+                            <spring:message code="profile.account.delete.message" arguments="${_themeContext.colabName}"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
-				<c:if test="${permissions.canAdmin}">
-					<button type="button" class="btn btn-link js-PostLink" data-url="/impersonate?memberId=${currentUserProfile.userId}">
-                        Impersonate ${userBean.firstName}
-                    </button>
-				</c:if>
-
-				<div class="profile_about-head"><spring:message code="profile.form.fields.shortbio"/></div>
-				<div>
-					<form:textarea
-						cssClass="rte-editorPlaceholder form-control" path="shortBio" />
-					<div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
-						<span class="limit_characterCount"><!--  --></span>/&#160;
-						<span class="limit_charactersMax">2000</span> characters
-					</div>
-					<div class="reg_errors"><!--  -->
-						<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="shortBio" />
-					</div>
-					<div class="clearfix">&#160;</div>
-				</div>
-
-				<a class="btn btn-primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();"><spring:message code="profile.form.button.save"/></a>
-				<a class="btn btn-gray" href="/members/profile/${currentUserProfile.userId}"><spring:message code="profile.form.button.cancel"/></a>
-			</div>
-		</div> <!-- /main -->
-
-		<div class="right_col v1">
-			<div class="comm_rightcol">
-				<div class="comm_rightcol-title2"><spring:message code="profile.message.settings.title"/></div>
-				<table border="0" cellpadding="0" cellspacing="0" class="colab">
-					<tr class="colabRow">
-						<td class="actionColumn">
-							<form:checkbox id="sendEmailOnMessage" cssClass="cmn-toggle cmn-toggle-round"
-										   path="sendEmailOnMessage" onchange="updateUserSendEmailOnMessageSettings(this)"/>
-							<form:label path="sendEmailOnMessage"/>
-						</td>
-						<td class="profile_settings">
-                            <spring:message code="profile.message.settings.emailreceive"/>
-						</td>
-					</tr>
-					<tr class="colabRow">
-						<td class="actionColumn">
-							<form:checkbox id="sendEmailOnActivity" cssClass="cmn-toggle cmn-toggle-round"
-										   path="sendEmailOnActivity" onchange="updateUserSendEmailOnActivitySettings(this)"/>
-							<form:label path="sendEmailOnActivity"/>
-						</td>
-						<td class="profile_settings">
-                            <spring:message code="profile.message.settings.emailsubscription"/>
-						</td>
-					</tr>
-					<tr class="colabRow">
-						<td class="actionColumn">
-							<form:checkbox id="sendDailyEmailOnActivity" disabled="${not userBean.sendEmailOnActivity}"
-										   cssClass="cmn-toggle cmn-toggle-round" path="sendDailyEmailOnActivity"
-										   onchange="updateUserSendDailyEmailOnActivitySettings(this)" />
-							<form:label path="sendDailyEmailOnActivity"/>
-						</td>
-						<td class="profile_settings">
-                            <spring:message code="profile.message.settings.emaildailydigest"/>
-						</td>
-					</tr>
-				</table>
-				<div class="clearfix"><!-- --></div>
-			</div>
-		</div> <!-- /right_col -->
+            <c:if test="${permissions.canAdmin}">
+                <div>
+                    <div class="comm_rightcol-title2"><spring:message code="profile.account.roles.title"/></div>
+                    <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                        <c:forEach var="memberCategory" items="${memberCategories}">
+                            <tr class="colabRow">
+                                <td class="actionColumn">
+                                    <c:choose>
+                                        <c:when test="${currentUserProfile.hasRole(memberCategory.roleId)}">
+                                            <input id="hasRole${memberCategory.roleId}" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                                   value="true" checked="checked" onClick="removeRole(${memberCategory.roleId});" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input id="hasRole${memberCategory.roleId}" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                                   value="false" onClick="addRole(${memberCategory.roleId});" />
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <label for="hasRole${memberCategory.roleId}"></label>
+                                </td>
+                                <td class="${memberCategory.showInList ? '' : 'text-muted'}">
+                                    <collab:image src="/images/${memberCategory.imageName}.png"
+                                                  width="16" height="16" /> ${memberCategory.categoryName}
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+            </c:if>
+        </div>
 	</form:form>
-
-	<c:if test="${newsletterActive}">
-		<div class="right_col v1">
-			<div class="comm_rightcol">
-				<div class="comm_rightcol-title2"><spring:message code="profile.newsletter.settings.title" arguments="${_themeContext.colabShortName}" /></div>
-				<table border="0" cellpadding="0" cellspacing="0" class="colab">
-					<form:form commandName="newsletterBean">
-						<tr class="colabRow">
-							<td class="actionColumn">
-								<form:checkbox id="emailSubscribedToNewsletter" cssClass="cmn-toggle cmn-toggle-round"
-											   path="emailSubscribedToNewsletter" onchange="updateNewsletterSettings(this)" />
-								<form:label path="emailSubscribedToNewsletter"/>
-							</td>
-							<td>
-                                <spring:message code="profile.newsletter.settings.sendme" arguments="${_themeContext.colabShortName}"/>
-							</td>
-						</tr>
-					</form:form>
-				</table>
-				<div class="clearfix"><!-- --></div>
-			</div>
-		</div>
-	</c:if>
-
-    <c:if test="${(_themeContext.authenticationVariables.isFacebookSsoActive or _themeContext.authenticationVariables.isGoogleSsoActive)}">
-        <div class="right_col v1">
-            <div class="comm_rightcol">
-                <div class="comm_rightcol-title2"><spring:message code="profile.sso.settings.title"/></div>
-                <table border="0" cellpadding="0" cellspacing="0" class="colab">
-                    <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
-                        <tr class="colabRow">
-                            <td class="actionColumn">
-                                <c:choose>
-                                    <c:when test="${currentUserProfile.hasFacebookId}">
-                                        <input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
-                                               value="true" checked="checked" onClick="unlinkFacebookSSO();" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <input id="hasFacebookId" class="cmn-toggle cmn-toggle-round" type="checkbox"
-                                               disabled="true" />
-                                    </c:otherwise>
-                                </c:choose>
-                                <label for="hasFacebookId"><!-- --></label>
-                            </td>
-                            <td>
-                                <spring:message code="profile.sso.settings.facebook"/>
-                            </td>
-                        </tr>
-                    </c:if>
-                    <c:if test="${_themeContext.authenticationVariables.isGoogleSsoActive}">
-                        <tr class="colabRow">
-                            <td class="actionColumn">
-                                <c:choose>
-                                    <c:when test="${currentUserProfile.hasGoogleId}">
-                                        <input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
-                                               value="true" checked="checked" onClick="unlinkGoogleSSO();" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <input id="hasOpenId" class="cmn-toggle cmn-toggle-round" type="checkbox"
-                                               disabled="true" />
-                                    </c:otherwise>
-                                </c:choose>
-                                <label for="hasOpenId"><!-- --></label>
-                            </td>
-                            <td>
-                                <spring:message code="profile.sso.settings.google"/>
-                            </td>
-                        </tr>
-                    </c:if>
-                </table>
-                <div class="clearfix"><!-- --></div>
-            </div>
-        </div> <!-- /right_col -->
-    </c:if>
-
-	<div class="right_col v1">
-		<div class="comm_rightcol">
-			<div class="comm_rightcol-title2"><spring:message code="profile.account.settings.title"/></div>
-			<table border="0" cellpadding="0" cellspacing="0" class="colab">
-				<tr class="colabRow">
-					<td class="actionColumn">
-                        <spring:message code="profile.account.delete.question" arguments="${_themeContext.colabName}" var="deleteMsg"/>
-						<form:form action="${deleteProfileUrl}" method="post" onsubmit="confirm('${deleteMsg}')">
-							<button type="submit" class="btn btn-gray btn-sm"><spring:message code="profile.account.delete.button"/></button>
-						</form:form>
-					</td>
-                    <td>
-                        <spring:message code="profile.account.delete.message" arguments="${_themeContext.colabName}"/>
-
-                    </td>
-				</tr>
-			</table>
-			<div class="clearfix"><!-- --></div>
-		</div>
-	</div> <!-- /right_col4 -->
-
-    <c:if test="${permissions.canAdmin}">
-        <div class="right_col v1">
-            <div class="comm_rightcol">
-                <div class="comm_rightcol-title2"><spring:message code="profile.account.roles.title"/></div>
-                <table border="0" cellpadding="0" cellspacing="0" class="colab">
-                    <c:forEach var="memberCategory" items="${memberCategories}">
-                        <tr class="colabRow">
-                            <td class="actionColumn">
-                                <c:choose>
-                                    <c:when test="${currentUserProfile.hasRole(memberCategory.roleId)}">
-                                        <input id="hasRole${memberCategory.roleId}" class="cmn-toggle cmn-toggle-round" type="checkbox"
-                                               value="true" checked="checked" onClick="removeRole(${memberCategory.roleId});" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <input id="hasRole${memberCategory.roleId}" class="cmn-toggle cmn-toggle-round" type="checkbox"
-                                               value="false" onClick="addRole(${memberCategory.roleId});" />
-                                    </c:otherwise>
-                                </c:choose>
-                                <label for="hasRole${memberCategory.roleId}"></label>
-                            </td>
-                            <td class="${memberCategory.showInList ? '' : 'text-muted'}">
-                                <collab:image src="/images/${memberCategory.imageName}.png"
-                                     width="16" height="16" /> ${memberCategory.categoryName}
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </table>
-                <div class="clearfix"><!-- --></div>
-            </div>
-        </div> <!-- /right_col -->
-    </c:if>
 
 	<xcolab:requireLibrary name="CKEditor" />
     <!-- TODO COLAB-1191: also used in register -->

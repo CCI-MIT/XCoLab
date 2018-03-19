@@ -64,16 +64,30 @@
                 <c:otherwise>
                     <c:choose>
                         <c:when test="${socialEngine.equals('facebook')}">
-                            <c:set var="dataEngineUrl" value="https://www.facebook.com/dialog/share?app_id=${_themeContext.authenticationVariables.facebookId}&amp;display=popup&amp;href="/>
+                            <c:url value="https://www.facebook.com/dialog/share" var="dataEngineUrl">
+                                <c:param name="app_id" value="${_themeContext.authenticationVariables.facebookId}" />
+                                <c:param name="display" value="popup" />
+                                <c:param name="href" value="" />
+                            </c:url>
                         </c:when>
                         <c:when test="${socialEngine.equals('twitter')}">
-                            <c:set var="dataEngineUrl" value="https://twitter.com/intent/tweet?text=${title}&amp;display=popup&amp;url="/>
+                            <c:url value="https://twitter.com/intent/tweet" var="dataEngineUrl">
+                                <c:param name="text" value="${title}" />
+                                <c:param name="display" value="popup" />
+                                <c:param name="url" value="" />
+                            </c:url>
                         </c:when>
                         <c:when test="${socialEngine.equals('google')}">
-                            <c:set var="dataEngineUrl" value="https://plus.google.com/share?url="/>
+                            <c:url value="https://plus.google.com/share" var="dataEngineUrl">
+                                <c:param name="url" value="" />
+                            </c:url>
                         </c:when>
                         <c:when test="${socialEngine.equals('linkedin')}">
-                            <c:set var="dataEngineUrl" value="https://www.linkedin.com/shareArticle?mini=true&amp;title=${title}&amp;url="/>
+                            <c:url value="https://www.linkedin.com/shareArticle" var="dataEngineUrl">
+                                <c:param name="mini" value="true" />
+                                <c:param name="title" value="${title}" />
+                                <c:param name="url" value="" />
+                            </c:url>
                         </c:when>
                     </c:choose>
                     <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" data-engine-url="${dataEngineUrl}"

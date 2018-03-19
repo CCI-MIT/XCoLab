@@ -16,60 +16,6 @@ $p-community__infoLeft__span__fontSize: 32px !default;
 $p-community__infoLeft__span__paddingRight: 5px !default;
 $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !default;
 
-.community-left {
-  float: left;
-  width: 736px;
-  font-size: 16px;
-  line-height: $p-community__left__lineHeight;
-  color: black;
-  position: relative;
-}
-
-.community-right {
-  float: left;
-  width: 210px;
-  margin-left: 38px;
-}
-
-/* community - news */
-.comm_news {
-}
-
-.comm_news p {
-  padding-left: 5px;
-}
-
-#main .comm_news h2 {
-  margin: 0;
-  padding-left: 5px;
-}
-
-.comm_meta {
-  height: 25px;
-  padding-left: 0;
-  margin-bottom: 10px;
-}
-
-.comm_date {
-  float: left;
-  width: 500px;
-  font-size: 21px;
-  color: $t-Color__gray--dark-600;
-  font-weight: $t-Typography__fontWeight;
-}
-
-.comm_icons {
-  float: right;
-  width: 90px;
-}
-
-.comm_icons a {
-  font-size: 16px;
-  font-weight: $t-Typography__fontWeight--bold;
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
 /** COMMUNITY **/
 
 /* community - discussions */
@@ -324,29 +270,4 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
 
 #main h2 {
   margin: 15px 0 7px 0;
-}
-
-#communityHeading {
-  background-color: #F2F1E9;
-  border-bottom: 1px solid #BDBCB7;
-  margin-bottom: 40px;
-}
-
-#communityHeading .community-left-left {
-  width: 368px;
-  float: left;
-}
-
-#communityHeading .community-left-right {
-  width: 368px;
-  float: left;
-}
-
-#communityHeading .smallBoxInner {
-  padding: 10px;
-}
-
-#communityHeading .smallBoxInner h4 {
-  font-size: 12px;
-  line-height: 21px;
 }

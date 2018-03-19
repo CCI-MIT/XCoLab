@@ -38,6 +38,20 @@
   }
 }
 
+//=
+//Form grid
+.form-row ~ .form-row {
+  margin-top: $t-Spacing__base / 2;
+}
+
+.cb-form-col-label {
+  @extend .col-12, .col-lg-3, .col-xl-2;
+  font-weight: $t-Typography__fontWeight--bold;
+  display: flex;
+  align-items: center;
+}
+
+
 //workaround to override legacy input and label rules
 .checkbox {
   label {
