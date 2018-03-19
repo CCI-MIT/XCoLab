@@ -268,9 +268,10 @@ public final class CountryUtil {
         codeToCountryMap.put("ZM", "Zambia");
         codeToCountryMap.put("ZW", "Zimbabwe");
 
-        selectOptions = Collections.unmodifiableList(new ArrayList<>(
-                LabelStringValue.fromMap(codeToCountryMap)));
-        selectOptions.sort(Comparator.comparing(LabelStringValue::getLable));
+        List<LabelStringValue> rawSelectOptions = new ArrayList<>(
+                LabelStringValue.fromMap(codeToCountryMap));
+        rawSelectOptions.sort(Comparator.comparing(LabelStringValue::getLable));
+        selectOptions = Collections.unmodifiableList(rawSelectOptions);
     }
 
     private CountryUtil() { }
