@@ -90,8 +90,6 @@
                             </c:url>
                         </c:when>
                     </c:choose>
-                    <!--<c:url var="encodedDataEngineUrl" value="${dataEngineUrl}"/>-->
-                    <p>${dataEngineUrl}</p>
                     <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" data-engine-url="${dataEngineUrl}"
                        data-engine="${socialEngine}" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
                         <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
