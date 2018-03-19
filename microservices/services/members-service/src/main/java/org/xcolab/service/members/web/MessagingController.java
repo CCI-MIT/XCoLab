@@ -24,7 +24,7 @@ import org.xcolab.service.members.service.messaging.MessagingUserPreferencesServ
 import org.xcolab.service.members.wrappers.SendMessageBean;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 
 import java.sql.Timestamp;
 import java.util.List;

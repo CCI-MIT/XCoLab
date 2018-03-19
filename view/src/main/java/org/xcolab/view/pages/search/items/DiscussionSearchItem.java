@@ -14,7 +14,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.search.pojo.SearchPojo;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
 

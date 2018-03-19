@@ -28,7 +28,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
-import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;

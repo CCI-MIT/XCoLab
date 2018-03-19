@@ -16,7 +16,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
-import org.xcolab.util.time.DurationFormatter;
+import org.xcolab.commons.time.DurationFormatter;
 
 import java.sql.Timestamp;
 import java.util.Date;

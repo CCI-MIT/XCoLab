@@ -20,7 +20,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.entity.utils.LinkUtils;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.auth.AuthenticationService;
 
 import java.sql.Timestamp;

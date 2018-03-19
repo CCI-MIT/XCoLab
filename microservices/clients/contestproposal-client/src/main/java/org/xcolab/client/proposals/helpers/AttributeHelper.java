@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.helpers;
 
-import org.xcolab.util.attributes.Attribute;
+import org.xcolab.commons.attributes.Attribute;
 
 import java.util.ArrayList;
 import java.util.Collection;

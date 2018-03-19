@@ -10,8 +10,6 @@ import org.xcolab.util.http.client.types.TypeProvider;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.Generated;
-
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)

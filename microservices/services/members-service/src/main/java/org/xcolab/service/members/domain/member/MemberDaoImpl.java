@@ -15,7 +15,7 @@ import org.xcolab.model.tables.MemberTable;
 import org.xcolab.model.tables.Users_RolesTable;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.SortColumn;
+import org.xcolab.commons.SortColumn;
 
 import java.sql.Timestamp;
 import java.time.Instant;

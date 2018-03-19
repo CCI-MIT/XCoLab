@@ -3,10 +3,10 @@ package org.xcolab.client.admin.attributes.configuration;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.util.attributes.AttributeGetter;
-import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;
-import org.xcolab.util.attributes.transformers.AttributeTransformers;
-import org.xcolab.util.attributes.wrappers.TransformedAttribute;
+import org.xcolab.commons.attributes.AttributeGetter;
+import org.xcolab.commons.attributes.i18n.LocalizableAttributeGetter;
+import org.xcolab.commons.attributes.transformers.AttributeTransformers;
+import org.xcolab.commons.attributes.wrappers.TransformedAttribute;
 import org.xcolab.util.enums.theme.ColabTheme;
 
 import java.util.Collections;

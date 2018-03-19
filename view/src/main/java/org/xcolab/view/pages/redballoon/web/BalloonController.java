@@ -22,7 +22,7 @@ import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.LinkUtils;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.redballoon.utils.BalloonService;
 import org.xcolab.view.pages.redballoon.web.beans.UserEmailBean;
 

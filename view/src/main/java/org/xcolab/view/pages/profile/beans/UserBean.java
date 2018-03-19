@@ -9,7 +9,7 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
-import org.xcolab.util.CountryUtil;
+import org.xcolab.commons.CountryUtil;
 import org.xcolab.view.util.validation.CompareStrings;
 import org.xcolab.view.util.validation.UniqueEmail;
 import org.xcolab.view.util.validation.ValidBioLength;

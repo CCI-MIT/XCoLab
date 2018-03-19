@@ -17,7 +17,6 @@
     <modules>
         <module>services</module>
         <module>clients</module>
-        <module>util</module>
         <module>cloud</module>
     </modules>
     

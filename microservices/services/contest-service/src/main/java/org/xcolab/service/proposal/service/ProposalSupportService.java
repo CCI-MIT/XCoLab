@@ -7,7 +7,7 @@ import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalSupporter;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
-import org.xcolab.util.GroupingHelper;
+import org.xcolab.commons.GroupingHelper;
 
 import java.sql.Timestamp;
 import java.util.List;

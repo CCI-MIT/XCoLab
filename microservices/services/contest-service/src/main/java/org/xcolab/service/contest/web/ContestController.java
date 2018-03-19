@@ -26,7 +26,7 @@ import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.spring.web.annotation.ListMapping;
+import org.xcolab.commons.spring.web.annotation.ListMapping;
 
 import java.sql.Timestamp;
 import java.util.Date;

@@ -17,7 +17,7 @@ import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.exceptions.UnauthorizedException;
 import org.xcolab.service.members.service.login.LoginBean;
 import org.xcolab.service.members.service.member.MemberService;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

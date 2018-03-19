@@ -5,7 +5,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.time.DateUtil;
+import org.xcolab.commons.time.DateUtil;
 
 import java.io.Serializable;
 import java.util.Date;
