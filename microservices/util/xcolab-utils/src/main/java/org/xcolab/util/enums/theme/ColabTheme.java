@@ -4,19 +4,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 public enum ColabTheme {
-    CLIMATE_COLAB,
-    CROWDSENSOR(true),
-    RESILIENCE_DIALOGUES,
-    CLIMATE_RISKS_COLAB(true);
+    CLIMATE_COLAB(205),
+    CROWDSENSOR(109, true),
+    RESILIENCE_DIALOGUES(136),
+    CLIMATE_RISKS_COLAB(145, true);
 
     private final String themeName;
+    private final int logoWidth;
     private final boolean hasCustomStylesheet;
 
-    ColabTheme() {
-        this(false);
+    ColabTheme(int logoWidth) {
+        this(logoWidth, false);
     }
 
-    ColabTheme(boolean hasCustomStylesheet) {
+    ColabTheme(int logoWidth, boolean hasCustomStylesheet) {
+        this.logoWidth = logoWidth;
         this.hasCustomStylesheet = hasCustomStylesheet;
         final String camelCaseName = WordUtils.capitalizeFully(name(), '_')
                 .replaceAll("_", "");
@@ -28,7 +30,11 @@ public enum ColabTheme {
     }
 
     public String getLogoPath() {
-        return "/images/" + themeName + "-logo.png";
+        return "/images/" + themeName + "-logo";
+    }
+
+    public int getLogoWidth() {
+        return logoWidth;
     }
 
     public String getLogoPathBig() {
