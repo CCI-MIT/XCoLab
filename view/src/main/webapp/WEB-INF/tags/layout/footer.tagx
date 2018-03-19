@@ -17,7 +17,7 @@
 
     <div id="c-Footer">
         <div id="c-Footer__menu">
-            <div class="cb-container-fixed cb-d-flex-between-center">
+            <div class="cb-container-fixed cb-d-flex-between-center flex-column flex-sm-row">
                 <nav>
                     <ul class="nav">
                         <li class="nav-item">
