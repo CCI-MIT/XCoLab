@@ -75,8 +75,8 @@
                         <c:when test="${socialEngine.equals('linkedin')}">
                             <c:set var="dataEngineUrl" value="https://www.linkedin.com/shareArticle?mini=true&amp;title=${title}&amp;url="/>
                         </c:when>
-                        <c:url var="encodedDataEngineUrl" value="${dataEngineUrl}"/>
                     </c:choose>
+                    <c:url var="encodedDataEngineUrl" value="${dataEngineUrl}"/>
                     <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" data-engine-url="${encodedDataEngineUrl}"
                        data-engine="${socialEngine}" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
                         <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
