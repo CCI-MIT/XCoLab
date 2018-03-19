@@ -14,7 +14,7 @@ import org.xcolab.model.tables.pojos.Report;
 import org.xcolab.model.tables.records.ReportRecord;
 import org.xcolab.service.flagging.wrappers.AggregatedReport;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.SortColumn;
+import org.xcolab.commons.SortColumn;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

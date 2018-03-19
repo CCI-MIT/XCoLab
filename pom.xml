@@ -18,6 +18,7 @@
 
 	<modules>
 		<module>microservices</module>
+        <module>util</module>
 		<module>view</module>
 	</modules>
 

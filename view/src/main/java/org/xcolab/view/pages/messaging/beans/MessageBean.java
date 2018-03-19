@@ -7,9 +7,9 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
-import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.util.time.DurationFormatter;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
+import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.time.DurationFormatter;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -2,7 +2,7 @@ package org.xcolab.view.pages.redballoon.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

@@ -8,9 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.dto.DataTransferObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class CommentDto extends AbstractComment implements DataTransferObject<Comment> {

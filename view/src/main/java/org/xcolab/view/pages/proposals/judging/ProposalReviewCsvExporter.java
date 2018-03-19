@@ -10,7 +10,7 @@ import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
-import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.commons.html.HtmlUtil;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;

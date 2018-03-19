@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.util.html.LabelValue;
+import org.xcolab.commons.html.LabelValue;
 
 import java.util.List;
 

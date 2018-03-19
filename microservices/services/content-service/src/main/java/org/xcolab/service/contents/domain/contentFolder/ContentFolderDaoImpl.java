@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 import org.xcolab.model.tables.pojos.ContentFolder;
 import org.xcolab.model.tables.records.ContentFolderRecord;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.util.SortColumn;
+import org.xcolab.commons.SortColumn;
 
 import java.util.ArrayList;
 import java.util.Collections;

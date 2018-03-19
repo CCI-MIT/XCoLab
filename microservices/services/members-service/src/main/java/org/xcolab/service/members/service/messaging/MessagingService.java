@@ -15,8 +15,8 @@ import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.domain.messaging.MessageDao;
 import org.xcolab.service.members.exceptions.MessageLimitExceededException;
 import org.xcolab.service.members.exceptions.MessageRecipientException;
-import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
+import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
 import java.util.Collection;
 import java.util.HashSet;

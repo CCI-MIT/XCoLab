@@ -22,7 +22,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.util.IdListUtil;
+import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;

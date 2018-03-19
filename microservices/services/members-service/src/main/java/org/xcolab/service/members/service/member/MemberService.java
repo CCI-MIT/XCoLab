@@ -21,7 +21,7 @@ import org.xcolab.service.members.util.SHA1PasswordEncryptor;
 import org.xcolab.service.members.util.SecureRandomUtil;
 import org.xcolab.service.members.util.UsernameGenerator;
 import org.xcolab.service.members.util.email.ConnectorEmmaAPI;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
 import java.io.IOException;
 import java.sql.Timestamp;

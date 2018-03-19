@@ -21,10 +21,10 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.util.IdListUtil;
+import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
-import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.net.URISyntaxException;

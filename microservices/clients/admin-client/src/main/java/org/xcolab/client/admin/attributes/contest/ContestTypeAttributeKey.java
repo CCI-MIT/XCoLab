@@ -1,8 +1,8 @@
 package org.xcolab.client.admin.attributes.contest;
 
-import org.xcolab.util.attributes.AttributeGetter;
-import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;
-import org.xcolab.util.attributes.wrappers.TransformedAttribute;
+import org.xcolab.commons.attributes.AttributeGetter;
+import org.xcolab.commons.attributes.i18n.LocalizableAttributeGetter;
+import org.xcolab.commons.attributes.wrappers.TransformedAttribute;
 
 public final class ContestTypeAttributeKey {
 

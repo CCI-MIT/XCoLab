@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.xcolab.util.time.DateUtil.toLocalDateTime;
+import static org.xcolab.commons.time.DateUtil.toLocalDateTime;
 
 @Service
 public class ProposalSitemapGenerator {

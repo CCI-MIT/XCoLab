@@ -61,7 +61,7 @@ import org.xcolab.util.enums.modeling.ModelRegions;
 import org.xcolab.util.enums.promotion.AssessmentStatus;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
-import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 

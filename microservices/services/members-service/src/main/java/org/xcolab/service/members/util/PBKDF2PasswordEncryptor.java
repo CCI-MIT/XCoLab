@@ -2,7 +2,7 @@ package org.xcolab.service.members.util;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;

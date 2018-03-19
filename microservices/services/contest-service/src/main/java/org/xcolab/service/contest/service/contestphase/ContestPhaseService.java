@@ -25,7 +25,7 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.utils.promotion.PhasePromotionHelper;
 import org.xcolab.service.contest.utils.promotion.enums.ContestStatus;
-import org.xcolab.util.GroupingHelper;
+import org.xcolab.commons.GroupingHelper;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -14,7 +14,7 @@ import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.PlatformTeam;
-import org.xcolab.util.html.LabelValue;
+import org.xcolab.commons.html.LabelValue;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;

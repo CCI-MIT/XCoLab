@@ -2,8 +2,8 @@ package org.xcolab.client.admin.attributes.platform;
 
 import org.springframework.core.env.PropertyResolver;
 
-import org.xcolab.util.attributes.AttributeProvider;
-import org.xcolab.util.attributes.exceptions.AttributeNotFoundException;
+import org.xcolab.commons.attributes.AttributeProvider;
+import org.xcolab.commons.attributes.exceptions.AttributeNotFoundException;
 
 public class PlatformAttributeProvider implements AttributeProvider<PlatformAttribute> {
 

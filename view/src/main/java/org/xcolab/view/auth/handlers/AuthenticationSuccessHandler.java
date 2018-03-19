@@ -8,7 +8,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.pages.redballoon.utils.BalloonService;
 

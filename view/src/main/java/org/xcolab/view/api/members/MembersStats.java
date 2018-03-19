@@ -1,6 +1,6 @@
 package org.xcolab.view.api.members;
 
-import org.xcolab.util.CountryUtil;
+import org.xcolab.commons.CountryUtil;
 
 import java.util.List;
 import java.util.Map;
