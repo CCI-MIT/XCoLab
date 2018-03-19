@@ -26,7 +26,7 @@ import org.xcolab.client.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.proposals.helpers.ProposalUnversionedAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.contest.ContestTier;
-import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.impact.IntegratedProposalImpactSeries;

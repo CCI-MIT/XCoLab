@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
-import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.requests.RatingBean;
 
 import java.util.HashMap;

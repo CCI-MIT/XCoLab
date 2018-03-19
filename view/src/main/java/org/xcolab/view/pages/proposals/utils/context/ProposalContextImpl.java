@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions;

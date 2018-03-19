@@ -3,7 +3,7 @@ package org.xcolab.client.files.providers;
 import org.apache.commons.io.FileUtils;
 
 import org.xcolab.client.files.pojo.FileEntry;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.File;
 import java.io.IOException;

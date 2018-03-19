@@ -23,7 +23,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.entity.NotificationUnregisterUtils;
 import org.xcolab.view.util.entity.subscriptions.ActivitySubscriptionConstraint;

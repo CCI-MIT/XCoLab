@@ -20,7 +20,7 @@ import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReferenceDto;
 import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.exceptions.ReferenceResolutionException;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;

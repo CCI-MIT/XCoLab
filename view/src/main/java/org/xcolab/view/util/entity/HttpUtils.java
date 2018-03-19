@@ -1,6 +1,6 @@
 package org.xcolab.view.util.entity;
 
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

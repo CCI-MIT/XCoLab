@@ -8,7 +8,7 @@ import org.xcolab.model.tables.pojos.OntologyTerm;
 import org.xcolab.service.contest.domain.focusareaontologyterm.FocusAreaOntologyTermDao;
 import org.xcolab.service.contest.domain.ontologyterm.OntologyTermDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.exceptions.InternalException;
 
 import java.util.ArrayList;
 import java.util.Collections;

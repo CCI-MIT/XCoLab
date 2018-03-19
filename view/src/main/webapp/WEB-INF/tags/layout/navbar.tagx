@@ -21,7 +21,7 @@
     <jsp:directive.attribute name="contestPages" type="java.util.List" required="true" rtexprvalue="true" description="A list of all contest types that should show a menu item" />
     <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="Redirect URL for registration link" />
     <!--@elvariable id="contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
-    <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
+    <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.commons.html.LabelStringValue>"-->
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 

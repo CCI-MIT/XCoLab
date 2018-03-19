@@ -4,7 +4,7 @@ import org.springframework.util.Assert;
 
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
-import org.xcolab.util.attributes.i18n.LocalizableAttributeProvider;
+import org.xcolab.commons.attributes.i18n.LocalizableAttributeProvider;
 
 class ConfigurationAttributeProvider
         implements LocalizableAttributeProvider<ConfigurationAttribute> {

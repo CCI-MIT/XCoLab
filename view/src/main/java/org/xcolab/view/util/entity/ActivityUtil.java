@@ -2,7 +2,7 @@ package org.xcolab.view.util.entity;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.util.GroupingHelper;
+import org.xcolab.commons.GroupingHelper;
 
 import java.time.Duration;
 import java.util.ArrayList;

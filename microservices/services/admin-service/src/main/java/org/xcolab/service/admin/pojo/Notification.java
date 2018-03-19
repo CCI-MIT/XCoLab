@@ -1,11 +1,6 @@
 package org.xcolab.service.admin.pojo;
 
-import org.springframework.core.ParameterizedTypeReference;
-
-import org.xcolab.util.http.client.types.TypeProvider;
-
 import java.util.Date;
-import java.util.List;
 
 public class Notification{
 

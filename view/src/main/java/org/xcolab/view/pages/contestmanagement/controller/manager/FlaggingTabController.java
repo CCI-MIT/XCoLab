@@ -18,7 +18,7 @@ import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.flagging.ManagerAction;
-import org.xcolab.util.html.LabelValue;
+import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;

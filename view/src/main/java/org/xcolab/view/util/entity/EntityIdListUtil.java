@@ -8,7 +8,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.IdListUtil;
+import org.xcolab.commons.IdListUtil;
 
 import java.util.List;
 import java.util.function.Function;

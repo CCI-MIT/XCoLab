@@ -1,6 +1,5 @@
 package org.xcolab.client.proposals;
 
-import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;

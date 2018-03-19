@@ -27,7 +27,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhaseTypeDto;
 import org.xcolab.client.contest.resources.ContestResource;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.IdListUtil;
+import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;

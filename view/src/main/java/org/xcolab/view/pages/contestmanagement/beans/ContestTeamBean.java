@@ -2,7 +2,7 @@ package org.xcolab.view.pages.contestmanagement.beans;
 
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.util.IdListUtil;
+import org.xcolab.commons.IdListUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

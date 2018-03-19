@@ -1,8 +1,8 @@
 package org.xcolab.client.admin.pojo;
 
 import org.xcolab.client.admin.attributes.contest.ContestTypeAttributeKey;
-import org.xcolab.util.attributes.AttributeGetter;
-import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;
+import org.xcolab.commons.attributes.AttributeGetter;
+import org.xcolab.commons.attributes.i18n.LocalizableAttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.Serializable;
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.xcolab.util.attributes.i18n.LocalizableAttributeGetter.localizable;
+import static org.xcolab.commons.attributes.i18n.LocalizableAttributeGetter.localizable;
 
 public class ContestType implements Serializable {
 

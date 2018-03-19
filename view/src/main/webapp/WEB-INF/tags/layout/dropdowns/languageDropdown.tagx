@@ -6,7 +6,7 @@
 
     <jsp:directive.attribute name="currentLanguage" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="The currently active locale" />
-    <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
+    <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.commons.html.LabelStringValue>"-->
 
     <xcolab:requireLibrary  name="i18n"/>
 

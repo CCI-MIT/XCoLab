@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
-import org.xcolab.util.IdListUtil;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.commons.IdListUtil;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
