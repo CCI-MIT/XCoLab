@@ -10,6 +10,7 @@
 <spring:message code="register.title.register" var="title"/>
 <xcolab:layout title="${title}" canonicalUrlRelative="/register">
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
     <!--@elvariable id="generateScreenName" type="java.lang.Boolean"-->
     <!--@elvariable id="colabName" type="java.lang.String"-->
     <!--@elvariable id="colabShortName" type="java.lang.String"-->
