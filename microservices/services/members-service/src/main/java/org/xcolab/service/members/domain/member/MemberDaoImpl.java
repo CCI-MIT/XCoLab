@@ -133,7 +133,7 @@ public class MemberDaoImpl implements MemberDao {
                     Field<Object> roleNameField = dslContext.select(max(MEMBER_CATEGORY.SORT_ORDER))
                             .from(MEMBER_CATEGORY)
                             .join(USERS_ROLES).on(USERS_ROLES.ROLE_ID.eq(MEMBER_CATEGORY.ROLE_ID))
-                            .where(USERS_ROLES.USER_ID.eq(MEMBER.ID_))
+                            .where(USERS_ROLES.USER_ID.eq(member.ID_))
                             .asField("roleName");
                     query.addSelect(roleNameField);
                     query.addOrderBy(sortColumn.isAscending()
