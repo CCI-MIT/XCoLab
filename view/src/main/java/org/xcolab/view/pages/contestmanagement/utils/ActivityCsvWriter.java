@@ -9,7 +9,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
-import org.xcolab.view.util.CsvResponseWriter;
+import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
 import java.text.DateFormat;
