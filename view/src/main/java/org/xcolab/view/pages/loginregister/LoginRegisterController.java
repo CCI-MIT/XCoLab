@@ -32,7 +32,7 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
 import org.xcolab.view.util.entity.ReCaptchaUtils;
-import org.xcolab.view.util.entity.portlet.RequestParamUtil;
+import org.xcolab.commons.servlet.RequestParamUtil;
 import org.xcolab.view.util.entity.portlet.session.SessionErrors;
 import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 

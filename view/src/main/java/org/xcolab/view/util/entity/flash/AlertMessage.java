@@ -1,5 +1,7 @@
 package org.xcolab.view.util.entity.flash;
 
+import org.xcolab.view.util.entity.flash.impl.FlashMessageStore;
+
 import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
