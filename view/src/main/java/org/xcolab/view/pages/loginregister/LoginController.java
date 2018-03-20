@@ -14,8 +14,8 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.TokenValidity;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
 import org.xcolab.view.auth.AuthenticationService;
-import org.xcolab.view.util.entity.flash.AlertMessage;
-import org.xcolab.view.util.entity.flash.ErrorPage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.ErrorPage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

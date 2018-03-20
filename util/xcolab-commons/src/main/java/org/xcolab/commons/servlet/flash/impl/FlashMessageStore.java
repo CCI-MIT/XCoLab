@@ -1,4 +1,4 @@
-package org.xcolab.view.util.entity.flash.impl;
+package org.xcolab.commons.servlet.flash.impl;
 
 import java.util.HashMap;
 import java.util.Map;

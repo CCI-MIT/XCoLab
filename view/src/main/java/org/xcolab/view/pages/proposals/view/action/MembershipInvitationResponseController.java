@@ -22,7 +22,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -18,7 +18,7 @@ import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.CollectionCardWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,7 +15,7 @@ import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
-import org.xcolab.view.util.entity.flash.ErrorPage;
+import org.xcolab.commons.servlet.flash.ErrorPage;
 
 import java.io.IOException;
 

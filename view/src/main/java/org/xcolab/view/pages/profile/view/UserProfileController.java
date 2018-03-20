@@ -43,8 +43,8 @@ import org.xcolab.view.pages.profile.beans.UserBean;
 import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
 import org.xcolab.view.pages.profile.wrappers.UserProfileWrapper;
 import org.xcolab.view.pages.redballoon.utils.BalloonService;
-import org.xcolab.view.util.entity.flash.AlertMessage;
-import org.xcolab.view.util.entity.flash.ErrorPage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.ErrorPage;
 
 import java.io.IOException;
 import java.util.Optional;

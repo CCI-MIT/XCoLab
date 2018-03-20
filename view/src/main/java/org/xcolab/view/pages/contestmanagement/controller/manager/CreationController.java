@@ -10,7 +10,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
-import org.xcolab.view.util.entity.flash.InfoPage;
+import org.xcolab.commons.servlet.flash.InfoPage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

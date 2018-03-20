@@ -24,7 +24,7 @@ import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.LoginRegisterController;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
-import org.xcolab.view.util.entity.flash.ErrorPage;
+import org.xcolab.commons.servlet.flash.ErrorPage;
 import org.xcolab.commons.servlet.RequestParamUtil;
 
 import java.io.IOException;

@@ -27,7 +27,7 @@ import org.xcolab.view.pages.messaging.beans.MessageBean;
 import org.xcolab.view.pages.messaging.beans.MessagingBean;
 import org.xcolab.view.pages.messaging.beans.SendMessageBean;
 import org.xcolab.view.pages.messaging.utils.MessagingPermissions;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.List;

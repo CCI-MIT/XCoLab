@@ -20,7 +20,7 @@ import org.xcolab.view.pages.contestmanagement.utils.ProposalTemplateLifecycleUt
 import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.ProposalTemplateWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.List;

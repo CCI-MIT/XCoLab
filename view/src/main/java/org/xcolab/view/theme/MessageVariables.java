@@ -1,9 +1,9 @@
 package org.xcolab.view.theme;
 
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.util.entity.flash.AnalyticsAttribute;
-import org.xcolab.view.util.entity.flash.ErrorPage;
-import org.xcolab.view.util.entity.flash.InfoPage;
+import org.xcolab.commons.servlet.flash.ErrorPage;
+import org.xcolab.commons.servlet.flash.InfoPage;
 
 import javax.servlet.http.HttpServletRequest;
 

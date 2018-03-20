@@ -28,7 +28,7 @@ import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.io.IOException;
