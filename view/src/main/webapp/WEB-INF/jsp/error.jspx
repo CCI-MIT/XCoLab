@@ -47,12 +47,12 @@
                             <input name="stackTrace" type="hidden" value="${trace}"/>
                             <input name="referer" type="hidden" value="${header.get('referer')}"/>
                             <div class="alert alert-danger" role="alert">
-                                <p>Unfortunately your request caused an error. To help us improve our service we would kindly ask you to provide a short description of the steps you took prior to receiving this message.</p>
+                                Unfortunately your request caused an error. To help us improve our service we would kindly ask you to provide a short description of the steps you took prior to receiving this message.
                             </div>
                             <textarea name="description" class="form-control" placeholder="Description" ><!-- empty --></textarea>
                             <br/>
                             <div class="alert alert-info" role="alert">
-                                <p>If you provide your e-Mail address below we will let you know as soon as we've fixed the problem</p>
+                                You can optionally provide an email address so we can contact you for further details if necessary.
                             </div>
                             <input type="text" name="email" class="form-control" placeholder="Email address" />
                             <div class="clearfix"><!-- --></div>
