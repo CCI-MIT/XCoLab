@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.util.activities.enums.MemberActivityType;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.balloons.BalloonsClient;
@@ -21,15 +21,15 @@ import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
-import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
-import org.xcolab.entity.utils.notifications.member.MemberRegistrationNotification;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
+import org.xcolab.entity.utils.notifications.member.MemberRegistrationNotification;
+import org.xcolab.util.activities.enums.MemberActivityType;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
 import org.xcolab.view.pages.redballoon.utils.BalloonCookie;
-import org.xcolab.view.util.entity.HttpUtils;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsUtils;
 
@@ -126,7 +126,9 @@ public class LoginRegisterService {
 
         if (postRegistration) {
             // Add request variable for after-registration popover
-            redirect = HttpUtils.addParameter(redirect, "postRegistration", "true");
+            redirect = UriComponentsBuilder.fromUriString(redirect)
+                    .queryParam("postRegistration", true)
+                    .build().toUriString();
         }
 
         response.sendRedirect(redirect);
