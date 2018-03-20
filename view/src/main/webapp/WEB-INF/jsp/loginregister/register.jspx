@@ -29,13 +29,13 @@
             <div class="float-right">
                 <h1><spring:message code="register.header.joinwith"/>:</h1><br/>
                 <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
-                    <a href="/sso/facebook/register" class="c-SocialButton text-dark mx-2">
+                    <a href="/sso/facebook/register" class="c-SocialButton text-dark mx-2" rel="nofollow">
                         <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
                         <span class="c-SocialButton__text">Facebook</span>
                     </a>
                 </c:if>
                 <c:if test="${_themeContext.authenticationVariables.isGoogleSsoActive}">
-                    <a href="/sso/google/register" class="c-SocialButton text-dark mx-2">
+                    <a href="/sso/google/register" class="c-SocialButton text-dark mx-2" rel="nofollow">
                         <collab:image src="/images/icons/social/google.svg" ariaHidden="true"/>
                         <span class="c-SocialButton__text">Google</span>
                     </a>
