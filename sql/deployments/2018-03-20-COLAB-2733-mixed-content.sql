@@ -21,3 +21,15 @@ update comment_Comment set content = replace(content,'http://energy.mit.edu','ht
 update comment_Comment set content = replace(content,'http://lae.mit.edu','https://lae.mit.edu');
 update comment_Comment set content = replace(content,'http://environment.yale.edu','https://environment.yale.edu');
 update comment_Comment set content = replace(content,'http://static3.businessinsider.com','https://static3.businessinsider.com');
+
+-- Proposal content
+update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://climatecolab.org','https://www.climatecolab.org') where length(stringValue) > 20;
+update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://www.climatecolab.org','https://www.climatecolab.org') where length(stringValue) > 20;
+update xcolab_ProposalAttribute set stringValue = replace(stringValue,'https://climatecolab.org','https://www.climatecolab.org') where length(stringValue) > 20;
+update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://i.imgur.com','https://i.imgur.com') where length(stringValue) > 20;
+update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://imgur.com','https://i.imgur.com') where length(stringValue) > 20;
+update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://youtube.com','https://www.youtube.com') where length(stringValue) > 20;
+update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://energy.mit.edu','https://energy.mit.edu') where length(stringValue) > 20;
+update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://lae.mit.edu','https://lae.mit.edu') where length(stringValue) > 20;
+update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://environment.yale.edu','https://environment.yale.edu') where length(stringValue) > 20;
+update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://static3.businessinsider.com','https://static3.businessinsider.com') where length(stringValue) > 20;
