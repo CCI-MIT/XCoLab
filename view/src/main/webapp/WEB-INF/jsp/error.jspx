@@ -9,14 +9,14 @@
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <h2>
-        ${not empty _themeContext.messageVariables.errorMessage ? _themeContext.messageVariables.errorMessage.title : 'Oh Snap!'}
+        ${not empty _themeContext.messageVariables.errorPage ? _themeContext.messageVariables.errorPage.title : 'Oh Snap!'}
     </h2>
     <br />
 
     <c:choose>
-        <c:when test="${not empty _themeContext.messageVariables.errorMessage}">
+        <c:when test="${not empty _themeContext.messageVariables.errorPage}">
             <div class="alert alert-danger">
-                ${_themeContext.messageVariables.errorMessage.message}
+                ${_themeContext.messageVariables.errorPage.message}
             </div>
         </c:when>
         <c:when test="${not empty timestamp}">

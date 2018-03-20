@@ -16,7 +16,7 @@ import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTranslationBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

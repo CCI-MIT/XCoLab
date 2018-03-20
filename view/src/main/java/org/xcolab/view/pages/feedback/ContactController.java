@@ -17,7 +17,7 @@ import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.util.entity.ReCaptchaUtils;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;

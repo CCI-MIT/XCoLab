@@ -7,13 +7,13 @@
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <h2>
-        ${not empty _themeContext.messageVariables.infoMessage ? _themeContext.messageVariables.infoMessage.title : 'Message'}
+        ${not empty _themeContext.messageVariables.infoPage ? _themeContext.messageVariables.infoPage.title : 'Message'}
     </h2>
     <br />
 
-    <c:if test="${not empty _themeContext.messageVariables.infoMessage}">
+    <c:if test="${not empty _themeContext.messageVariables.infoPage}">
         <div class="alert alert-info">
-            ${_themeContext.messageVariables.infoMessage.message}
+            ${_themeContext.messageVariables.infoPage.message}
         </div>
     </c:if>
 </xcolab:layout>

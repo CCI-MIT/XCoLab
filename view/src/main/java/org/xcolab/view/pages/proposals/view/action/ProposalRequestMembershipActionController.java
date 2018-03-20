@@ -25,7 +25,7 @@ import org.xcolab.view.pages.proposals.requests.RequestMembershipBean;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;

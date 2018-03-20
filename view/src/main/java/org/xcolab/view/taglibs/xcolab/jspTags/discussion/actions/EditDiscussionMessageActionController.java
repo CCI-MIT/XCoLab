@@ -14,7 +14,7 @@ import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
         .DiscussionAuthorizationException;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 

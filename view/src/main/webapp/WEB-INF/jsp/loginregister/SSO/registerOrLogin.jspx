@@ -21,8 +21,8 @@
                 <span>You can sign in to your account to link your social media and ${_themeContext.colabName} account and use the social media login when returning to the site.</span>
                 <div style="height:15px;">&#160;</div>
 
-                <c:if test="${not empty _themeContext.messageVariables.errorMessage}">
-                    <div class="alert alert-danger">${_themeContext.messageVariables.errorMessage.message}</div>
+                <c:if test="${not empty _themeContext.messageVariables.errorPage}">
+                    <div class="alert alert-danger">${_themeContext.messageVariables.errorPage.message}</div>
                 </c:if>
                 <div class="c-Header__login__box" style="margin: 15px auto 0 auto;">
                     <form:form id="signInFormPopup" method="post" action="/sso/registerOrLogin">

@@ -1,4 +1,4 @@
-package org.xcolab.view.util.io;
+package org.xcolab.commons.servlet;
 
 import org.apache.commons.io.IOUtils;
 

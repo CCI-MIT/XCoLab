@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.members.users.utils;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.util.CsvResponseWriter;
+import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
 import java.util.Arrays;

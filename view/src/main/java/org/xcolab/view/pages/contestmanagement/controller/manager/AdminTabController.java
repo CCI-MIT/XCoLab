@@ -43,7 +43,7 @@ import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
 import org.xcolab.view.util.entity.enums.MemberRole;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.io.InputStream;

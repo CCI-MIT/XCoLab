@@ -27,7 +27,7 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator.ValidationResult;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsUtils;
 

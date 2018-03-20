@@ -15,7 +15,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.util.entity.portlet.session.SessionErrors;
 import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 

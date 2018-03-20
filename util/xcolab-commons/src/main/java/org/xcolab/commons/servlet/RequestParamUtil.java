@@ -1,4 +1,4 @@
-package org.xcolab.view.util.entity.portlet;
+package org.xcolab.commons.servlet;
 
 import org.springframework.web.servlet.HandlerMapping;
 

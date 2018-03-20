@@ -1,11 +1,13 @@
-package org.xcolab.view.util.entity.flash;
+package org.xcolab.commons.servlet.flash;
+
+import org.xcolab.commons.servlet.flash.impl.FlashMessageStore;
 
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ErrorMessage {
+public class ErrorPage {
 
     private static final FlashMessageStore MESSAGE_STORE = new FlashMessageStore();
     private static final String ERROR_URI = "/error";
@@ -14,21 +16,21 @@ public class ErrorMessage {
     private final String title;
     private final String message;
 
-    private ErrorMessage(String title, String message) {
+    private ErrorPage(String title, String message) {
         this.title = title;
         this.message = message;
     }
 
-    public static ErrorMessage error(String message) {
-        return new ErrorMessage("Error", message);
+    public static ErrorPage error(String message) {
+        return new ErrorPage("Error", message);
     }
 
-    public ErrorMessage withTitle(String title) {
-        return new ErrorMessage(title, message);
+    public ErrorPage withTitle(String title) {
+        return new ErrorPage(title, message);
     }
 
-    public static ErrorMessage extract(HttpServletRequest request) {
-        return MESSAGE_STORE.pop(request, ErrorMessage.class);
+    public static ErrorPage extract(HttpServletRequest request) {
+        return MESSAGE_STORE.pop(request, ErrorPage.class);
     }
 
     public void flash(HttpServletRequest request) {
