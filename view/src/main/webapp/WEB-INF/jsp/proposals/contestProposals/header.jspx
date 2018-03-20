@@ -21,6 +21,19 @@
 	</div>
     <!-- /c-Headline -->
 
+    <div class="d-flex justify-content-around d-lg-none my-3">
+        <a class="btn btn-primary btn-sm" href="#proposalList">Skip to proposals</a>
+        <c:if test="${proposalsDisplayPermissions.canSeeCreateProposalButton}">
+            <c:set var="createProposalUrl" value="${contest.newProposalLinkUrl}"/>
+            <c:set var="createProposalBtnClass"
+                   value="${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}"/>
+            <a class="btn ${createProposalBtnClass} btn-sm" onclick="if(!deferUntilLogin()) return false;" rel="nofollow"
+               href="${proposalsPermissions.canCreate ? createProposalUrl : '#'}">
+                ${contestType.creationPrompt}
+            </a>
+        </c:if>
+    </div>
+
 	<div class="c-TitleBar c-TitleBar__content flex-column flex-md-row contestSummary m-Shadebar">
 		<jsp:directive.include file="./header_contestPhases.jspx" />
 		<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">

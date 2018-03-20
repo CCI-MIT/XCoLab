@@ -35,7 +35,17 @@
         </div>
     </c:if>
 
-    <div class="cb-d-flex-between-center flex-wrap-reverse my-3">
+    <div class="cb-d-flex-between-center flex-column flex-sm-row-reverse my-3" id="proposalList">
+        <c:if test="${proposalsDisplayPermissions.canSeeCreateProposalButton}">
+            <c:set var="createProposalUrl" value="${contest.newProposalLinkUrl}"/>
+            <c:set var="createProposalBtnClass"
+                   value="${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}"/>
+            <a class="btn ${createProposalBtnClass}" onclick="if(!deferUntilLogin()) return false;" rel="nofollow"
+               href="${proposalsPermissions.canCreate ? createProposalUrl : '#'}">
+                ${contestType.creationPrompt}
+            </a>
+        </c:if>
+
         <div class="c-Count">
             <span class="c-Count__number">${proposals.totalSize}</span>
             <c:choose>
@@ -47,19 +57,8 @@
                 </c:otherwise>
             </c:choose>
         </div>
-
-        <c:if test="${proposalsDisplayPermissions.canSeeCreateProposalButton}">
-            <c:set var="createProposalUrl" value="${contest.newProposalLinkUrl}"/>
-            <c:set var="createProposalBtnClass"
-                   value="${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}"/>
-            <div>
-                <a class="btn ${createProposalBtnClass}" onclick="if(!deferUntilLogin()) return false;" rel="nofollow"
-                   href="${proposalsPermissions.canCreate ? createProposalUrl : '#'}">
-                    ${contestType.creationPrompt}
-                </a>
-            </div>
-        </c:if>
     </div>
+
     <div class="row bg-primary-gray-light">
         <div class="col-12 col-lg-6 col-xl-7 c-Table__cell--title">
             <spring:message var="tooltipProposalName"

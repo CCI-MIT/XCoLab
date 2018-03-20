@@ -121,9 +121,12 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
 }
 
 .p-ContestProposals__header__buttons {
-  display: inline-block;
   padding-right: 20px;
-  float: right;
+  text-align: center;
+
+  @include media-breakpoint-up(lg) {
+    text-align: right;
+  }
 }
 
 .p-ContestProposals__header__ontology {
@@ -188,6 +191,8 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
 
 .p-ContestProposals__header__shareButtons {
   padding-left: 1rem;
+  margin-top: $t-Spacing__base / 2;
+  text-align: center;
 
   @include media-breakpoint-up(lg) {
     position: absolute;

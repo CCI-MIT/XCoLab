@@ -80,7 +80,7 @@
                     <xcolab:formatDateTime millis="${proposal.lastModifiedDateForContestPhase.time}" type="date" />
                 </div>
                 <c:if test="${showContributorsColumn}">
-                    <div class="col text-center contributors no-border">
+                    <div class="col c-Table__cell text-center contributors no-border">
                         <c:choose>
                             <c:when test="${proposal.open}">
                                 Anyone
