@@ -6,6 +6,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * A simple key value store that allows storing one value per class across requests.
+ *
+ * It is meant to pass a message from a controller to the next request, for example across
+ * redirects. It is usually read and deleted (using the {@link #pop(HttpServletRequest, Class)}
+ * method) the next time a page is rendered.
+ */
 public class FlashMessageStore {
 
     private static final String FLASH_ATTRIBUTE_NAME = "xcolab_flash_messages";
