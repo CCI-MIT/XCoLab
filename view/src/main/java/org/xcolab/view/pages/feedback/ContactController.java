@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentPage;
@@ -56,7 +57,7 @@ public class ContactController {
 
     @ModelAttribute("recaptchaDataSiteKey")
     public String getRecaptchaDataSiteKey() {
-        return ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get();
+        return PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get();
     }
 
     @PostMapping("/feedback")

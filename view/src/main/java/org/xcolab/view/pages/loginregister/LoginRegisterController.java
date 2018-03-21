@@ -274,7 +274,7 @@ public class LoginRegisterController {
 
     @ModelAttribute("recaptchaDataSiteKey")
     public String getRecaptchaDataSiteKey(){
-        return ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get();
+        return PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get();
     }
 
     @PostMapping("/api/register/generateScreenName")
