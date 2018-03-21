@@ -1,8 +1,11 @@
 package org.xcolab.client.admin.attributes.platform;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.commons.attributes.AttributeGetter;
 import org.xcolab.commons.attributes.transformers.AttributeTransformers;
+import org.xcolab.commons.attributes.wrappers.TransformedAttribute;
 
 import java.io.File;
 
@@ -87,5 +90,22 @@ public final class PlatformAttributeKey {
             PlatformAttributes.newBooleanAttribute("layout.is-responsive")
                     .withCache()
                     .defaultValue(false)
+                    .build();
+
+
+    //= Credentials
+
+    public static final AttributeGetter<String> GOOGLE_RECAPTCHA_SITE_KEY =
+            PlatformAttributes.newStringAttribute("google.recaptcha.site-key")
+                    .defaultValue("")
+                    .build();
+    public static final AttributeGetter<String> GOOGLE_RECAPTCHA_SITE_SECRET_KEY =
+            PlatformAttributes.newStringAttribute("google.recaptcha.secret-key")
+                    .defaultValue("")
+                    .build();
+    public static final AttributeGetter<Boolean> GOOGLE_RECAPTCHA_IS_ACTIVE =
+            PlatformAttributes.newBooleanAttribute("google.recaptcha.enabled")
+                    .defaultValue(TransformedAttribute.of(GOOGLE_RECAPTCHA_SITE_KEY,
+                            StringUtils::isNotEmpty))
                     .build();
 }
