@@ -77,10 +77,10 @@
                             <spring:message code="profile.form.fields.firstname"/>
                         </div>
                         <div class="col">
-                            <form:input id="firstName" path="firstName" cssClass="form-control"/>
-                            <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="firstName" />
-                            </div>
+                            <spring:bind path="firstName">
+                                <form:input id="firstName" path="firstName" cssClass="form-control ${status.error ? 'is-invalid' : 'is-valid'}"/>
+                                <form:errors cssClass="invalid-feedback" path="firstName" />
+                            </spring:bind>
                         </div>
                     </div>
                     <div class="form-row">
@@ -88,10 +88,10 @@
                             <spring:message code="profile.form.fields.lastname"/>
                         </div>
                         <div class="col">
-                            <form:input id="lastName" path="lastName" cssClass="form-control"/>
-                            <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="lastName" />
-                            </div>
+                            <spring:bind path="lastName">
+                                <form:input id="lastName" path="lastName" cssClass="form-control ${status.error ? 'is-invalid' : 'is-valid'}"/>
+                                <form:errors cssClass="invalid-feedback" path="lastName" />
+                            </spring:bind>
                         </div>
                     </div>
                     <div class="form-row">
