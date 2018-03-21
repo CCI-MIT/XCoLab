@@ -52,7 +52,7 @@
                     <li>Review the <a href="${impactTabUrl}">Impact Tab;</a></li>
                 </c:if>
                 <li>Rate this ${contestType.proposalName}; </li>
-                <li>Select from the dropdown whether the proposal should advance to the next round;</li>
+                <li>Select from the dropdown whether the proposal is one of the strongest that you've reviewed in this round;</li>
                 <li>Provide written feedback in the text box below; and</li>
                 <li>Click save.</li>
 
@@ -79,7 +79,7 @@
         <proposalsPortlet:proposalRating ratingTypes="${judgeProposalFeedbackBean.ratingTypes}" ratingValuesPath="ratingValues" />
 
         <c:if test="${proposalsPermissions.canJudgeActions}">
-            <h3>Would you like to see this proposal advance to the next round?</h3>
+            <h3>Is this proposal one of the strongest 3-4 proposals that you have reviewed in this round?</h3>
             <div class="form-errors">
                 <form:errors path="shouldAdvanceProposal" cssClass="alert alert-danger cb-alert-form-invalid"/>
             </div>

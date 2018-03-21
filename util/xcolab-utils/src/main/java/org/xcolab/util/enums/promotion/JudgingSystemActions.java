@@ -35,10 +35,10 @@ public class JudgingSystemActions {
 
     public enum FellowAction {
         NO_DECISION(0, "No decision made yet", false, false),
-        INCOMPLETE(1, "Do Not Advance: incomplete", true, false),
-        OFFTOPIC(2, "Do Not Advance: off-topic", true, false),
-        NOT_ADVANCE_OTHER(4, "Do Not Advance: other", true, false),
-        PASS_TO_JUDGES(3, "Advance", false, true);
+        INCOMPLETE(1, "No, proposal is incomplete", true, false),
+        OFFTOPIC(2, "No, proposal is off-topic", true, false),
+        NOT_ADVANCE_OTHER(4, "No, other reason", true, false),
+        PASS_TO_JUDGES(3, "Yes, send to Judges", false, true);
 
         int attributeValue;
         String description;
