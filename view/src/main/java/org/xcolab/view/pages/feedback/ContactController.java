@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.feedback;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +17,9 @@ import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.view.errors.ErrorText;
-import org.xcolab.view.util.entity.ReCaptchaUtils;
 import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.view.errors.ErrorText;
+import org.xcolab.commons.recaptcha.RecaptchaValidator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +36,12 @@ public class ContactController {
 
     private static final String CONTACT_VIEW_NAME = "/feedback/contactForm";
 
+    private final RecaptchaValidator recaptchaValidator;
+
+    @Autowired
     public ContactController() {
+        final String recaptchaSecret = PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get();
+        recaptchaValidator = new RecaptchaValidator(recaptchaSecret);
     }
 
     @GetMapping("/feedback")
@@ -69,8 +75,7 @@ public class ContactController {
         ContactPreferences contactPreferences = new ContactPreferences(null, locale.getLanguage());
 
         String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-        boolean captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,
-                ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
+        boolean captchaValid = recaptchaValidator.verify(gRecaptchaResponse);
 
         if (result.hasErrors() || !captchaValid) {
             if (!captchaValid) {
