@@ -1,4 +1,4 @@
-package org.xcolab.view.util;
+package org.xcolab.commons;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import org.apache.commons.collections4.ListUtils;

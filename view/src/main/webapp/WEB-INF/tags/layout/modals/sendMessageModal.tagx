@@ -2,9 +2,11 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:form="http://www.springframework.org/tags/form">
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
-    <xcolab:modal modalId="sendMessageModal" size="lg">
+    <collab:message var="sendMessageModalTitle" code="message.modal.title"/>
+    <xcolab:modal modalId="sendMessageModal" title="${sendMessageModalTitle}" size="lg">
         <form:form method="post" action="/messaging/sendMessage"
               onSubmit="return checkMessageForm();">
             <div class="modal-body">

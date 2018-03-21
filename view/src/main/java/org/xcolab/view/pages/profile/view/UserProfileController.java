@@ -43,8 +43,8 @@ import org.xcolab.view.pages.profile.beans.UserBean;
 import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
 import org.xcolab.view.pages.profile.wrappers.UserProfileWrapper;
 import org.xcolab.view.pages.redballoon.utils.BalloonService;
-import org.xcolab.view.util.entity.flash.AlertMessage;
-import org.xcolab.view.util.entity.flash.ErrorMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.ErrorPage;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -119,7 +119,7 @@ public class UserProfileController {
             model.addAttribute("pointsActive", ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
             return SHOW_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {
-            return ErrorMessage.error("User profile not found").flashAndReturnView(request);
+            return ErrorPage.error("User profile not found").flashAndReturnView(request);
         }
     }
 

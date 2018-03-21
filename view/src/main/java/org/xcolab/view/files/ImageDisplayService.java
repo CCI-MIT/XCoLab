@@ -13,7 +13,7 @@ import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.commons.exceptions.InternalException;
-import org.xcolab.view.util.io.ServletFileUtil;
+import org.xcolab.commons.servlet.ServletFileUtil;
 
 import java.io.File;
 import java.io.IOException;

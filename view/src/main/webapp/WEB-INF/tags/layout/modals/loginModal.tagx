@@ -29,13 +29,13 @@
                 <div class="form-group clearfix">
                     <div class="d-flex justify-content-around">
                         <c:if test="${showFacebookSso}">
-                            <a href="/sso/facebook/register" class="c-SocialButton text-dark">
+                            <a href="/sso/facebook/register" class="c-SocialButton text-dark" rel="nofollow">
                                 <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
                                 <span class="c-SocialButton__text">Facebook</span>
                             </a>
                         </c:if>
                         <c:if test="${showGoogleSso}">
-                            <a href="/sso/google/register" class="c-SocialButton text-dark">
+                            <a href="/sso/google/register" class="c-SocialButton text-dark" rel="nofollow">
                                 <collab:image src="/images/icons/social/google.svg" ariaHidden="true"/>
                                 <span class="c-SocialButton__text">Google</span>
                             </a>

@@ -1,23 +1,23 @@
 package org.xcolab.view.theme;
 
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.util.entity.flash.AnalyticsAttribute;
-import org.xcolab.view.util.entity.flash.ErrorMessage;
-import org.xcolab.view.util.entity.flash.InfoMessage;
+import org.xcolab.commons.servlet.flash.ErrorPage;
+import org.xcolab.commons.servlet.flash.InfoPage;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class MessageVariables {
     private final AlertMessage alertMessage;
     private final AnalyticsAttribute analyticsAttribute;
-    final  private ErrorMessage errorMessage;
-    private final InfoMessage infoMessage;
+    private final ErrorPage errorPage;
+    private final InfoPage infoPage;
 
     public MessageVariables(HttpServletRequest request) {
         this.alertMessage = AlertMessage.extract(request);
         this.analyticsAttribute = AnalyticsAttribute.extract(request);
-        this.errorMessage = ErrorMessage.extract(request);
-        this.infoMessage = InfoMessage.extract(request);
+        this.errorPage = ErrorPage.extract(request);
+        this.infoPage = InfoPage.extract(request);
     }
 
     public AlertMessage getAlertMessage() {
@@ -28,11 +28,11 @@ public class MessageVariables {
         return analyticsAttribute;
     }
 
-    public ErrorMessage getErrorMessage() {
-        return errorMessage;
+    public ErrorPage getErrorPage() {
+        return errorPage;
     }
 
-    public InfoMessage getInfoMessage() {
-        return infoMessage;
+    public InfoPage getInfoPage() {
+        return infoPage;
     }
 }

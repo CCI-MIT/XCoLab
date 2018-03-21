@@ -13,8 +13,8 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.util.entity.NotificationUnregisterUtils;
-import org.xcolab.view.util.entity.flash.AlertMessage;
-import org.xcolab.view.util.entity.flash.ErrorMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.ErrorPage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,7 +45,7 @@ public class UnsubscribeController {
                 error = !NotificationUnregisterUtils.isTokenValid(token, member)
                         || typeId != NotificationUnregisterUtils.ACTIVITY_TYPE;
             } catch (MemberNotFoundException e) {
-                return ErrorMessage.error("Please make sure you copied the link correctly or "
+                return ErrorPage.error("Please make sure you copied the link correctly or "
                         + "contact an administrator.").withTitle("Invalid unsubscribe link")
                         .flashAndReturnView(request);
             }
@@ -62,7 +62,7 @@ public class UnsubscribeController {
         }
 
         if (error) {
-            return ErrorMessage.error("Please make sure you copied the link correctly or "
+            return ErrorPage.error("Please make sure you copied the link correctly or "
                     + "contact an administrator.").withTitle("Your unsubscribe token is invalid")
                     .flashAndReturnView(request);
         }

@@ -20,7 +20,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.view.util.entity.portlet.RequestParamUtil;
+import org.xcolab.commons.servlet.RequestParamUtil;
 
 import javax.servlet.http.HttpServletRequest;
 

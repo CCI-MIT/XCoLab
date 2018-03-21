@@ -6,7 +6,7 @@ import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalTeamMember;
-import org.xcolab.view.util.CsvResponseWriter;
+import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;

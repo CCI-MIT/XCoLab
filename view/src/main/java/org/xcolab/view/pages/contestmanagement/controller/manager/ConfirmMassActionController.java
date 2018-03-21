@@ -13,7 +13,7 @@ import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

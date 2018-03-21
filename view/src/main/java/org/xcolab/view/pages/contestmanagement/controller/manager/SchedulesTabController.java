@@ -22,7 +22,7 @@ import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLif
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleBean;
 import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.util.ArrayList;
 import java.util.List;

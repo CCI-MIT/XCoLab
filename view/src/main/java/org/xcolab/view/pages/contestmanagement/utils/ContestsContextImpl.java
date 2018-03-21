@@ -8,7 +8,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
-import org.xcolab.view.util.entity.portlet.RequestParamUtil;
+import org.xcolab.commons.servlet.RequestParamUtil;
 
 import javax.servlet.http.HttpServletRequest;
 

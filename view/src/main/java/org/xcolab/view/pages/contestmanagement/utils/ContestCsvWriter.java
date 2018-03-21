@@ -3,7 +3,7 @@ package org.xcolab.view.pages.contestmanagement.utils;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.view.util.CsvResponseWriter;
+import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;

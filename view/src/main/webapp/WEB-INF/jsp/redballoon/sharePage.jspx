@@ -10,19 +10,13 @@
 	${balloonText.textBeforeShareButtons }
 
 	<div class="balloonContainer">
+        <label for="linkToCopy" class="sr-only">Personal share link</label>
         <input id="linkToCopy" type="text" value="${shareLink}" readonly="readonly"
-                    class="form-control" />
-        <button class="btn btn-primary" id="copyButton"
-                data-clipboard-target="#linkToCopy">
+               class="form-control mb-2"/>
+        <button class="btn btn-primary mr-2" id="copyButton" data-clipboard-target="#linkToCopy">
             Copy link
         </button>
-
-        <br/>
-
-        <div>
-            <xcolab-social:socialShareButtons title="${balloonText.shareTitle}"
-                                              url="${shareLink}" size="sm"/>
-        </div>
+        <xcolab-social:socialShareButtons title="${balloonText.shareTitle}" url="${shareLink}"/>
 	</div>
 
     <xcolab:requireLibrary name="clipboard.js" />

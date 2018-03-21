@@ -26,13 +26,13 @@ import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.html.HtmlUtil;
-import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.commons.servlet.RequestParamUtil;
 import org.xcolab.util.i18n.I18nUtils;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
-import org.xcolab.view.util.entity.ReCaptchaUtils;
-import org.xcolab.view.util.entity.portlet.RequestParamUtil;
+import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.view.util.entity.portlet.session.SessionErrors;
 import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
@@ -57,12 +57,16 @@ public class LoginRegisterController {
     private static final String REGISTER_VIEW_NAME = "loginregister/register";
     private final LoginRegisterService loginRegisterService;
 
-    @Autowired
-    ResourceMessageResolver resourceMessageResolver;
+    private final ResourceMessageResolver resourceMessageResolver;
+    private final RecaptchaValidator recaptchaValidator;
 
     @Autowired
-    public LoginRegisterController(LoginRegisterService loginRegisterService) {
+    public LoginRegisterController(LoginRegisterService loginRegisterService,
+            ResourceMessageResolver resourceMessageResolver) {
         this.loginRegisterService = loginRegisterService;
+        this.resourceMessageResolver = resourceMessageResolver;
+        final String recaptchaSecret = PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get();
+        recaptchaValidator = new RecaptchaValidator(recaptchaSecret);
     }
 
     //    @Autowired
@@ -191,10 +195,9 @@ public class LoginRegisterController {
         boolean captchaValid = true;
         // require captcha if user is not logged in via SSO
         if (fbIdString == null && googleId == null
-                && ConfigurationAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE.get()) {
+                && PlatformAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE.get()) {
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-            captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,
-                    ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
+            captchaValid = recaptchaValidator.verify(gRecaptchaResponse);
         }
         if (!captchaValid) {
             SessionErrors.clear(request);
@@ -274,7 +277,7 @@ public class LoginRegisterController {
 
     @ModelAttribute("recaptchaDataSiteKey")
     public String getRecaptchaDataSiteKey(){
-        return ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get();
+        return PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get();
     }
 
     @PostMapping("/api/register/generateScreenName")

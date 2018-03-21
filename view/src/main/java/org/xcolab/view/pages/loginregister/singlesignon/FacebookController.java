@@ -24,8 +24,8 @@ import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.LoginRegisterController;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
-import org.xcolab.view.util.entity.flash.ErrorMessage;
-import org.xcolab.view.util.entity.portlet.RequestParamUtil;
+import org.xcolab.commons.servlet.flash.ErrorPage;
+import org.xcolab.commons.servlet.RequestParamUtil;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -107,14 +107,14 @@ public class FacebookController {
                 "id,email,first_name,last_name,gender,verified,location,locale");
 
         if (jsonObject == null || jsonObject.optJSONObject("error") != null) {
-            ErrorMessage.error("No data received from Facebook")
+            ErrorPage.error("No data received from Facebook")
                     .flashAndRedirect(request, response);
             return;
         }
 
         if (ConfigurationAttributeKey.FACEBOOK_VERIFIED_REQUIRED.get()
                 && !jsonObject.getBoolean("verified")) {
-            ErrorMessage
+            ErrorPage
                     .error("A verified Facebook account is required to complete the registration")
                     .withTitle("Could not complete the Facebook registration")
                     .flashAndRedirect(request, response);
@@ -235,7 +235,7 @@ public class FacebookController {
                     userBean.getScreenName().isEmpty() ||
                     userBean.getEmail() == null ||
                     userBean.getEmail().isEmpty()) {
-                ErrorMessage
+                ErrorPage
                         .error(AuthenticationError.CREDENTIALS.getMessage())
                         .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
             } else {

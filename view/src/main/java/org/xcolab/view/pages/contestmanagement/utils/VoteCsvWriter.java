@@ -17,7 +17,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
-import org.xcolab.view.util.CsvResponseWriter;
+import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;

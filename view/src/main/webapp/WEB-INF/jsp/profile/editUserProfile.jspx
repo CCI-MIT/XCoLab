@@ -58,12 +58,9 @@
         </c:if>
 		<div class="l-Content__main">
             <form:hidden path="userId"/>
+            <form:hidden path="screenName" autocomplete="username"/>
 			<div class="reg_errors"><!--  --></div>
 			<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*" htmlEscape="false" />
-
-			<!-- use these fields to prevent chrome from wrongly filling in country and current password automatically -->
-			<input type="text" style="display:none" />
-			<input type="password" style="display:none" />
 
             <div class="row mb-2">
                 <div class="col-4 col-md-5 col-lg-3">
@@ -78,7 +75,7 @@
                         </div>
                         <div class="col">
                             <spring:bind path="firstName">
-                                <form:input id="firstName" path="firstName" cssClass="form-control ${status.error ? 'is-invalid' : 'is-valid'}"/>
+                                <form:input id="firstName" path="firstName" cssClass="form-control ${status.error ? 'is-invalid' : 'is-valid'}" autocomplete="given-name"/>
                                 <form:errors cssClass="invalid-feedback" path="firstName" />
                             </spring:bind>
                         </div>
@@ -89,7 +86,7 @@
                         </div>
                         <div class="col">
                             <spring:bind path="lastName">
-                                <form:input id="lastName" path="lastName" cssClass="form-control ${status.error ? 'is-invalid' : 'is-valid'}"/>
+                                <form:input id="lastName" path="lastName" cssClass="form-control ${status.error ? 'is-invalid' : 'is-valid'}" autocomplete="family-name"/>
                                 <form:errors cssClass="invalid-feedback" path="lastName" />
                             </spring:bind>
                         </div>
@@ -99,7 +96,7 @@
                             <spring:message code="profile.form.fields.country"/>
                         </div>
                         <div class="col">
-                            <form:select cssClass="form-control" path="countryCode">
+                            <form:select cssClass="form-control" path="countryCode" autocomplete="country">
                                 <form:option value="" label="Select country"/>
                                 <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
                             </form:select>
@@ -114,7 +111,7 @@
                                 <spring:message code="profile.form.fields.language"/>
                             </div>
                             <div class="col">
-                                <form:select cssClass="form-control" path="defaultLocale">
+                                <form:select cssClass="form-control" path="defaultLocale" autocomplete="language">
                                     <form:option value="" label="Select language"/>
                                     <c:forEach var="lang" items="${_themeContext.i18NVariables.languageSelectItems}">
                                         <form:option value="${lang['value']}" >
@@ -144,7 +141,7 @@
                     <spring:message code="profile.form.fields.newemail"/>
                 </div>
                 <div class="col">
-                    <form:input  id="email" cssClass="form-control" path="email"/>
+                    <form:input  id="email" cssClass="form-control" path="email" autocomplete="off"/>
                     <div class="reg_errors"><!--  -->
                         <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="email" />
                     </div>
@@ -196,7 +193,8 @@
                             <spring:message code="profile.form.fields.password"/>
                         </div>
                         <div class="col">
-                            <form:password cssClass="form-control" path="currentPassword" />
+                            <form:password cssClass="form-control" path="currentPassword"
+                                           autocomplete="current-password" />
                             <div class="reg_errors">
                                 <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="currentPassword" />
                             </div>
@@ -207,7 +205,8 @@
                             <spring:message code="profile.form.fields.newpassword"/>
                         </div>
                         <div class="col">
-                            <form:password cssClass="form-control" path="password"/>
+                            <form:password cssClass="form-control" path="password"
+                                           autocomplete="new-password"/>
                             <div class="reg_errors"><!--  -->
                                 <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="password" />
                             </div>
@@ -218,7 +217,8 @@
                             <spring:message code="profile.form.fields.retypepassword"/>
                         </div>
                         <div class="col">
-                            <form:password cssClass="form-control" path="retypePassword" />
+                            <form:password cssClass="form-control" path="retypePassword"
+                                           autocomplete="new-password"/>
                             <div class="reg_errors"><!--  -->
                                 <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypePassword" />
                             </div>

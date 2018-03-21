@@ -10,7 +10,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
-import org.xcolab.view.util.entity.flash.InfoMessage;
+import org.xcolab.commons.servlet.flash.InfoPage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +31,7 @@ public class CreationController {
         String newContestLink = "/admin/contest/details/contestId/"
                 + contest.getContestPK();
 
-        return InfoMessage.message("<a href=\"" + newContestLink + "\">Click here to start "
+        return InfoPage.message("<a href=\"" + newContestLink + "\">Click here to start "
                 + "editing!</a>")
                 .withTitle("You just created a new contest")
                 .flashAndReturnView(request);

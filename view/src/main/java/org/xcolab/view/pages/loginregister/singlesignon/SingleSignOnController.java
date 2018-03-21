@@ -15,7 +15,7 @@ import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
-import org.xcolab.view.util.entity.flash.ErrorMessage;
+import org.xcolab.commons.servlet.flash.ErrorPage;
 
 import java.io.IOException;
 
@@ -46,7 +46,7 @@ public class SingleSignOnController {
         try {
             MembersClient.findMemberByScreenName(login);
         } catch (MemberNotFoundException e) {
-            ErrorMessage.error(AuthenticationError.CREDENTIALS.getMessage())
+            ErrorPage.error(AuthenticationError.CREDENTIALS.getMessage())
                     .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
             return;
         }
@@ -81,11 +81,11 @@ public class SingleSignOnController {
                 response.sendRedirect("/");
                 return;
             }
-            ErrorMessage.error(AuthenticationError.UNKNOWN.getMessage())
+            ErrorPage.error(AuthenticationError.UNKNOWN.getMessage())
                     .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
 
         } catch (MemberNotFoundException | PasswordLoginException | LockoutLoginException e) {
-            ErrorMessage.error(AuthenticationError.fromException(e).getMessage())
+            ErrorPage.error(AuthenticationError.fromException(e).getMessage())
                     .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
         }
     }
