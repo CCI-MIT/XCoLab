@@ -11,6 +11,10 @@
 
   h1 {
     font-size: 2.1875rem;
+
+    @include media-breakpoint-down(sm) {
+      font-size: 1.6875rem;
+    }
   }
 
   h2 span {
