@@ -4,7 +4,7 @@
 
 	<c:set var="submitContest" value="/admin/contest/details/contestId/${contestWrapper.contestPK }/tab/ADMIN/submit" />
 
-	<div class="actionItems">
+	<div class="actionItems cb-btn-spacer">
 		<a class="btn btn-primary" href="#" id="saveChangesButton">SAVE ${currentTabWrapped.elementType}</a>
 		<xcolab:contestLink contest="${contestWrapper}" text="VIEW contest" cssClass="btn btn-primary" linkId="previewContestButton" target="_blank"/>
 		<a class="btn btn-primary" href="#" id="submitContestButton">SUBMIT contest</a>

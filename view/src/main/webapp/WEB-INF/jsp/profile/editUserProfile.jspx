@@ -249,7 +249,7 @@
             </div>
 
             <a class="btn btn-primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();"><spring:message code="profile.form.button.save"/></a>
-            <a class="btn btn-gray" href="/members/profile/${currentUserProfile.userId}"><spring:message code="profile.form.button.cancel"/></a>
+            <a class="btn btn-gray ml-2" href="/members/profile/${currentUserProfile.userId}"><spring:message code="profile.form.button.cancel"/></a>
         </div>
 
         <div class="l-Content__sidebar l-Content__sidebar--right l-Content__sidebar--small l-Content__sidebar--collapseBottom">
@@ -364,9 +364,9 @@
                     <tr class="colabRow">
                         <td class="actionColumn">
                             <spring:message code="profile.account.delete.question" arguments="${_themeContext.colabName}" var="deleteMsg"/>
-                            <a class="btn btn-gray btn-sm js-PostLink" data-href="${deleteProfileUrl}" data-confirm="${deleteMsg}">
+                            <button type="button" class="btn btn-gray btn-sm js-PostLink" data-href="${deleteProfileUrl}" data-confirm="${deleteMsg}">
                                 <spring:message code="profile.account.delete.button"/>
-                            </a>
+                            </button>
                         </td>
                         <td>
                             <spring:message code="profile.account.delete.message" arguments="${_themeContext.colabName}"/>

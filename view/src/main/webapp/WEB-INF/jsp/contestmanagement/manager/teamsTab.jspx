@@ -14,7 +14,7 @@
     <c:set var="updateTeamUrl" value="/admin/contest/manager/tab/TEAMS" />
 
     <div class="c-ContentBox">
-        <div class="text-right">
+        <div class="text-right cb-btn-spacer">
             <button type="button" class="btn btn-primary"  onclick="saveTeam()">SAVE team</button>
             <button type="button" class="btn btn-primary js-PostLink" data-url="TEAMS">CREATE new team</button>
             <button type="button" class="btn btn-outline-danger js-PostLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</button>

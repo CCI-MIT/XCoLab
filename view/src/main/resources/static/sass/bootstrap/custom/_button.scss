@@ -31,6 +31,18 @@
   }
 }
 
+//= Button spacers
+.cb-btn-spacer {
+  .btn:not(.btn-block) + .btn:not(.btn-block) {
+    @extend .ml-2;
+  }
+
+  .btn-block + .btn-block {
+    @extend .mt-2;
+  }
+}
+
+
 //= Elements within btn block
 .cb-btn-image-text {
   vertical-align: middle;

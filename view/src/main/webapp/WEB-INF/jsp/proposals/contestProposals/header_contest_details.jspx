@@ -151,7 +151,7 @@
                         </div>
                     </c:forEach>
                 </div>
-                <div class="p-ContestProposals__header__buttons">
+                <div class="p-ContestProposals__header__buttons cb-btn-spacer">
                     <c:if test="${showEditLink}">
                         <a href="/admin/contest/details/contestId/${contest.contestPK}" class="btn cb-btn-outline-admin ">
                             Edit Contest
