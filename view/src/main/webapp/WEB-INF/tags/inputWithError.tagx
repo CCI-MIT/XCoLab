@@ -1,0 +1,11 @@
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form">
+
+    <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
+    <jsp:directive.attribute name="autocomplete" type="java.lang.String" description="Autocomplete " />
+
+    <form:input id="${title}" path="${title}" cssClass="form-control" cssErrorClass="form-control is-invalid" autocomplete="${autocomplete}"/>
+    <form:errors cssClass="invalid-feedback" path="${title}" />
+
+</jsp:root>
