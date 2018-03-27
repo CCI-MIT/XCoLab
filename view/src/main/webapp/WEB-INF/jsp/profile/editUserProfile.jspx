@@ -74,10 +74,7 @@
                             <spring:message code="profile.form.fields.firstname"/>
                         </div>
                         <div class="col">
-                            <spring:bind path="firstName">
-                                <form:input id="firstName" path="firstName" cssClass="form-control ${status.error ? 'is-invalid' : 'is-valid'}" autocomplete="given-name"/>
-                                <form:errors cssClass="invalid-feedback" path="firstName" />
-                            </spring:bind>
+                            <xcolab:inputWithError title="firstName" autocomplete="given-name" />
                         </div>
                     </div>
                     <div class="form-row">
@@ -85,10 +82,7 @@
                             <spring:message code="profile.form.fields.lastname"/>
                         </div>
                         <div class="col">
-                            <spring:bind path="lastName">
-                                <form:input id="lastName" path="lastName" cssClass="form-control ${status.error ? 'is-invalid' : 'is-valid'}" autocomplete="family-name"/>
-                                <form:errors cssClass="invalid-feedback" path="lastName" />
-                            </spring:bind>
+                            <xcolab:inputWithError title="lastName" autocomplete="family-name" />
                         </div>
                     </div>
                     <div class="form-row">
