@@ -3,7 +3,6 @@
 
 $p-proposal__header__background: url(/images/pattern-6x6-blue.png) !default;
 $p-proposal__header__h1__textColor: $b-Typography__textColor !default;
-$p-proposal__header__h1__capitalization: $b-Typography__capitalization--none !default;
 $p-proposal__header__borderBottomColor: $t-Color__gray--dark-600 !default;
 $p-proposal__propbox__padding: 0 0 8px 14px !default;
 $p-proposal__propbox__h4__fontWeight: 700 !default;
@@ -66,9 +65,12 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 }
 
 .proposal-head h1 {
-  font-size: 29px;
   color: $p-proposal__header__h1__textColor;
-  text-transform: $p-proposal__header__h1__capitalization;
+  font-size: 1.5rem;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 1.875rem;
+  }
 }
 
 /* edit proposal block */
