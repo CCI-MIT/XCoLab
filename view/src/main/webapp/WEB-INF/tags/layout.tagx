@@ -133,6 +133,13 @@
     <c:if test="${not empty canonicalUrlRelative}">
         <link rel="canonical" href="${_themeContext.colabUrl}${canonicalUrlRelative}" />
     </c:if>
+
+    <c:if test="${_themeContext.serverEnvironment.isProduction}">
+        <xcolab-scripts:analyticsScripts googleAnalyticsKey="${_themeContext.credentialVariables.googleAnalyticsKey}"
+                                         pingdomRumId="${_themeContext.credentialVariables.pingdomRumId}"
+                                         analyticsAttribute="${_themeContext.messageVariables.analyticsAttribute}"
+                                         httpSession="${request.session}" member="${_themeContext.authenticationVariables.member}" />
+    </c:if>
 </head>
 
 <!--TODO COLAB-2681: Remove isResponsive feature flag once its on by default -->
@@ -349,13 +356,6 @@
     <collab:script src="/js/initScript.js" />
 
     <!-- ============ Analytics and tracking ============ -->
-
-    <c:if test="${_themeContext.serverEnvironment.isProduction}">
-        <xcolab-scripts:analyticsScripts googleAnalyticsKey="${_themeContext.credentialVariables.googleAnalyticsKey}"
-                                         pingdomRumId="${_themeContext.credentialVariables.pingdomRumId}"
-                                         analyticsAttribute="${_themeContext.messageVariables.analyticsAttribute}"
-                                         httpSession="${request.session}" member="${_themeContext.authenticationVariables.member}" />
-    </c:if>
 
     <!-- Custom user tracking -->
     <collab:script src="/js/usertracking.js" defer="true"/>

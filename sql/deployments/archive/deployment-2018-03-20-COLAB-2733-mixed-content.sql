@@ -7,7 +7,6 @@ update xcolab_ContentArticleVersion set content = replace(content,'http://imgur.
 update xcolab_ContentArticleVersion set content = replace(content,'http://youtube.com','https://www.youtube.com');
 update xcolab_ContentArticleVersion set content = replace(content,'http://energy.mit.edu','https://energy.mit.edu');
 update xcolab_ContentArticleVersion set content = replace(content,'http://lae.mit.edu','https://lae.mit.edu');
-update xcolab_ContentArticleVersion set content = replace(content,'http://environment.yale.edu','https://environment.yale.edu');
 update xcolab_ContentArticleVersion set content = replace(content,'http://static3.businessinsider.com','https://static3.businessinsider.com');
 
 -- Comments
@@ -19,7 +18,6 @@ update comment_Comment set content = replace(content,'http://imgur.com','https:/
 update comment_Comment set content = replace(content,'http://youtube.com','https://www.youtube.com');
 update comment_Comment set content = replace(content,'http://energy.mit.edu','https://energy.mit.edu');
 update comment_Comment set content = replace(content,'http://lae.mit.edu','https://lae.mit.edu');
-update comment_Comment set content = replace(content,'http://environment.yale.edu','https://environment.yale.edu');
 update comment_Comment set content = replace(content,'http://static3.businessinsider.com','https://static3.businessinsider.com');
 
 -- Proposal content
@@ -31,5 +29,4 @@ update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://im
 update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://youtube.com','https://www.youtube.com') where length(stringValue) > 20;
 update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://energy.mit.edu','https://energy.mit.edu') where length(stringValue) > 20;
 update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://lae.mit.edu','https://lae.mit.edu') where length(stringValue) > 20;
-update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://environment.yale.edu','https://environment.yale.edu') where length(stringValue) > 20;
 update xcolab_ProposalAttribute set stringValue = replace(stringValue,'http://static3.businessinsider.com','https://static3.businessinsider.com') where length(stringValue) > 20;
