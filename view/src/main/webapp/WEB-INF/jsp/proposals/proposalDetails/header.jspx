@@ -13,12 +13,12 @@
         var proposalUrlInPhase = "${proposal.getProposalUrl(contestPhase.wrapped)}";
     </script>
 	<div class="proposal-head">
-        <div class="c-Headline">
-            <collab:image src="${proposal.logoPath}" width="52" height="52"
+        <div class="c-Headline d-block">
+            <collab:image src="${proposal.logoPath}" width="75" height="75" cssClass="float-left"
                           alt="${contestType.proposalName} image" title="${proposal.name}" />
 
             <div>
-                <div class="cb-text-lg">
+                <div class="cb-text-lg mb-2">
                     <collab:message code="contests.proposal.header.caption" contestType="${contestType}">
                         <spring:argument>
                             <xcolab:contestLink contest="${contest}" />

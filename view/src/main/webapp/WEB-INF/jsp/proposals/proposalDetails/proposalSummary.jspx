@@ -101,9 +101,9 @@
             </div>
         </c:if>
 
-        <h4 class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background p-Proposal__sidebar__heading">
+        <h4 class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background p-Proposal__sidebar__heading cb-d-flex-between-center">
             <collab:message code="contests.proposal.summary" contestType="${contestType}" />
-            <button type="button" class="d-lg-none" data-toggle="collapse" data-target="#js-Proposal__sidebar">show/hide</button>
+            <a class="d-lg-none" data-toggle="collapse" href="#js-Proposal__sidebar">show/hide</a>
         </h4>
 
         <div class="cb-collapse-lg-show collapse" id="js-Proposal__sidebar">
