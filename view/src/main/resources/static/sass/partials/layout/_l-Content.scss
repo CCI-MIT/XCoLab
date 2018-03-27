@@ -8,10 +8,6 @@ $_l-Content__gutter: $t-Spacing__gridGutter;
 .l-Content {
   display: flex;
   flex-direction: column;
-
-  @include media-breakpoint-up(md) {
-    flex-direction: row;
-  }
 }
 
 %l-Content__element {
@@ -28,20 +24,16 @@ $_l-Content__gutter: $t-Spacing__gridGutter;
 
   order: -1;
   flex-grow: 1;
-
-  @include media-breakpoint-up(md) {
-    margin-right: $_l-Content__gutter;
-    flex: 0 0 300px;
-  }
 }
 
-@include media-breakpoint-down(sm) {
-  .l-Content__sidebar--collapseBottom {
-    order: 99;
-  }
+.l-Content__sidebar--collapseBottom {
+  order: 99;
 }
 
-@include media-breakpoint-up(md) {
+// Mixin to contain the rules for an expanded sidebar
+@mixin expanded-sidebar {
+  flex-direction: row;
+
   .l-Content__sidebar--small {
     flex-basis: 250px;
   }
@@ -54,5 +46,22 @@ $_l-Content__gutter: $t-Spacing__gridGutter;
     margin-left: $_l-Content__gutter;
     margin-right: 0;
     order: 99;
+  }
+
+  .l-Content__sidebar {
+    margin-right: $_l-Content__gutter;
+    flex: 0 0 300px;
+  }
+}
+
+// Apply expand rules at different breakpoints
+@include media-breakpoint-up(md) {
+  .l-Content:not(.l-Content--break-early) {
+    @include expanded-sidebar;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .l-Content.l-Content--break-early {
+    @include expanded-sidebar;
   }
 }
