@@ -57,8 +57,15 @@ public class ContentController {
     }
 
     @GetMapping("/widgets/content")
-    public String contentDisplay(HttpServletRequest request, HttpServletResponse response,
+    @Deprecated
+    public String showWidgetLegacy(HttpServletRequest request, HttpServletResponse response,
             Model model, @RequestParam Long contentArticleId) {
+        return showWidget(request, response, model, contentArticleId);
+    }
+
+    @GetMapping("/widgets/content/{contentArticleId}")
+    public String showWidget(HttpServletRequest request, HttpServletResponse response,
+            Model model, @PathVariable Long contentArticleId) {
         response.setHeader(HttpHeaders.CACHE_CONTROL,
                 CacheControl.maxAge(30, TimeUnit.SECONDS)
                         .staleWhileRevalidate(36, TimeUnit.HOURS)

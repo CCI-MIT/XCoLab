@@ -1,12 +1,6 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins/buttons";
 
-//= Modified base rules
-.btn:not(.btn-block) + .btn:not(.btn-block) {
-  margin-left: $spacer * .5;
-}
-
-
 //= New button variants
 .cb-btn-admin {
   @include button-variant($t-Color__primary, $t-Color__accent);
@@ -36,6 +30,18 @@
     border-radius: $t-Border__radius--large;
   }
 }
+
+//= Button spacers
+.cb-btn-spacer {
+  .btn:not(.btn-block) + .btn:not(.btn-block) {
+    @extend .ml-2;
+  }
+
+  .btn-block + .btn-block {
+    @extend .mt-2;
+  }
+}
+
 
 //= Elements within btn block
 .cb-btn-image-text {

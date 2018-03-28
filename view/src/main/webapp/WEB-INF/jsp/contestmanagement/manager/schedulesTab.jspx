@@ -33,7 +33,7 @@
     </form:form>
 
     <div class="c-ContentBox">
-        <div class="text-right">
+        <div class="text-right cb-btn-spacer">
             <a class="btn btn-primary" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
             <a class="btn btn-primary" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
             <a class="btn btn-primary" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>

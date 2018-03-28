@@ -25,7 +25,7 @@
     </form:form>
 
     <div class="c-ContentBox">
-        <div class="text-right">
+        <div class="text-right cb-btn-spacer">
             <a class="btn btn-primary" href="#" onclick="saveExistingTemplate()">SAVE template</a>
             <!--<a class="btn btn-primary" href="#" onclick="saveAsNewTemplate()">SAVE as new template</a>-->
             <!--<a class="btn btn-primary" href="#" onclick="submitCreateTemplateForm()">CREATE new template</a>-->

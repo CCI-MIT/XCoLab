@@ -30,7 +30,7 @@
     </form:form>
 
     <div class="c-ContentBox">
-        <div class="text-right">
+        <div class="text-right cb-btn-spacer">
             <button type="button" class="btn btn-primary" onclick="saveExistingReportTarget()">SAVE target</button>
             <button type="button" class="btn btn-primary" onclick="saveAsNewReportTarget()">SAVE as new target</button>
             <button type="button" class="btn btn-outline-danger" onclick="submitDeleteReportTargetForm()">DELETE target</button>

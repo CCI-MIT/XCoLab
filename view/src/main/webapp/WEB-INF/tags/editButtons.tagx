@@ -22,7 +22,7 @@
 
 
     <div class="c-ContentBox">
-        <div class="text-right">
+        <div class="text-right cb-btn-spacer">
             <a class="btn btn-primary" href="#" onclick="submitSaveAsExistingForm()">SAVE ${elementName}</a>
             <a class="btn btn-primary" href="#" onclick="submitSaveAsNewForm()">SAVE as new ${elementName}</a>
             <a class="btn btn-primary" href="#" onclick="submitCreateNewForm()">CREATE new ${elementName}</a>

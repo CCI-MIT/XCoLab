@@ -112,8 +112,6 @@ public class LoginRegisterService {
             throw new InternalException(e);
         }
 
-        session.setAttribute("collab_user_has_registered", true);
-
         ActivitiesClientUtil.createActivityEntry(MemberActivityType.REGISTERED, member.getUserId(),
                 member.getUserId());
 
