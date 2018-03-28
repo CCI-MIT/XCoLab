@@ -251,6 +251,11 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(Collections.emptyList())
                     .build();
 
+    public static final AttributeGetter<Boolean> VOTING_SECRET_FLAG =
+            ConfigurationAttributes.newBooleanAttribute("VOTING_SECRET_FLAG")
+                    .defaultValue(false)
+                    .build();
+
     //Image upload help messages
     public static final AttributeGetter<String> IMAGE_UPLOAD_EXTERNAL_SERVICE_URL =
             ConfigurationAttributes.newStringAttribute("IMAGE_UPLOAD_EXTERNAL_SERVICE_URL")
