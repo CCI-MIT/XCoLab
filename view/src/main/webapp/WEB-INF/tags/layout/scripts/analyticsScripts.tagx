@@ -21,14 +21,14 @@
             ga('create', '${googleAnalyticsKey}', 'auto');
             ga('send', 'pageview');
         </script>
-        <script src='https://www.google-analytics.com/analytics.js' async="async"/>
+        <script src='https://www.google-analytics.com/analytics.js' async="async"><!-- empty --></script>
     </c:if>
 
 
     <!-- Pingdom Visitor Insights -->
     <c:if test="${not empty pingdomRumId}">
         <!--suppress JSUnresolvedLibraryURL -->
-        <script src="https://rum-static.pingdom.net/pa-${pingdomRumId}.js" async="async"/>
+        <script src="https://rum-static.pingdom.net/pa-${pingdomRumId}.js" async="async"><!-- empty --></script>
     </c:if>
 
     <!-- Misc analytics scripts -->
