@@ -21,7 +21,7 @@
             ga('create', '${googleAnalyticsKey}', 'auto');
             ga('send', 'pageview');
         </script>
-        <script src='https://www.google-analytics.com/analytics.js' async="async"><!-- empty --></script>
+        <script src="https://www.google-analytics.com/analytics.js" async="async"><!-- empty --></script>
     </c:if>
 
 
