@@ -126,12 +126,10 @@ $p-About__ge4__background: url(/images/about/getinvolved-row-04.png) no-repeat 4
 $p-About__getinvolved__backgroundColor: white;
 $p-About__approachIllustration__p__fontWeight: $t-Typography__fontWeight--light;
 
-$c-ContestBox__meta__flag__capitalization: uppercase;
-$c-ContestBox__meta__flag__boxShadow: 0px 0px 5px $t-Color__gray--medium-500;
-$c-ContestBox__meta__flag--color__border: none;
+$c-ContestBox__metaFlag__capitalization: uppercase;
+$c-ContestBox__metaFlag__boxShadow: 0px 0px 5px $t-Color__gray--medium-500;
+$c-ContestBox__metaFlag--color__border: none;
 $c-ContestBox__border: none;
-$c-ContestBox__border__bottom: 1px solid $t-Color__grey;
-$c-ContestBox__border__radius: 0;
 $c-ContestBox--hover__boxShadow: 0 0 15px $t-Color__gray--medium-500;
 
 $p-Contests__userslist__a__fontWeight: $t-Typography__fontWeight--regular;

@@ -9,13 +9,20 @@
 
 
     <div class="contestsContainer">
-        <div class="clearfix">
-            <c:set var="zebra" value="true"/>
+        <div class="card-deck">
             <c:forEach var="contest" items="${contestsSorted.contestsFeatured }" varStatus="status">
+                <c:set var="isEven" value="${status.index % 2 == 0 ? true : false}"/>
                 <c:if test="${contest.showInTileView}">
-                        <proposalsPortlet:contestGridElement contest="${contest }" index="${zebra}" />
-                        <c:set var="zebra" value="${not zebra}"/>
+                    <proposalsPortlet:contestGridElement contest="${contest }"/>
                 </c:if>
+                <c:choose>
+                    <c:when test="${isEven}">
+                        <div class="w-100 d-lg-none"><!-- wrap every on sm--></div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="w-100"><!-- wrap every 2--></div>
+                    </c:otherwise>
+                </c:choose>
             </c:forEach>
         </div>
 
@@ -27,7 +34,7 @@
             <c:set var="zebra" value="true"/>
             <c:forEach var="contest" items="${contestsSorted.contestsNormal }" varStatus="status">
                 <c:if test="${contest.showInTileView}">
-                    <proposalsPortlet:contestGridElement contest="${contest }" index="${zebra}" />
+                    <proposalsPortlet:contestGridElement contest="${contest }"/>
                     <c:set var="zebra" value="${not zebra}"/>
                 </c:if>
             </c:forEach>
