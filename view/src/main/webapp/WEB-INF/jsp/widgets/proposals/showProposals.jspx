@@ -3,8 +3,10 @@
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
-    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <!--@elvariable id="proposalsModel" type="org.xcolab.view.widgets.proposals.ProposalsModel"-->
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <c:if test="${_themeContext.authenticationVariables.isAdmin}">
         <div class="text-right">
             <a href="/widgets/proposals/preferences?preferenceId=${proposalsModel.preferences.preferenceId}"
@@ -18,28 +20,29 @@
             <a href="${proposalsModel.preferences.allProposalsUrl}">${proposalsModel.preferences.allProposalsTitle}</a>
         </span></h2>
         <c:forEach items="${proposalsModel.proposals}" var="proposal">
-        	<div class="c-ContestBox">
+            <div class="c-ContestBox">
                 <c:if test="${not proposalsModel.compact}">
                     <div class="c-ContestBox__image">
                         <a href="${proposal.proposalUrl}">
                             <c:if test="${proposal.image > 0}">
                                 <collab:image src="${proposalsModel.baseImagePath}${proposal.image}"
-                                              width="151" height="151"
+                                              width="150" height="150"
                                               alt="Proposal image" title="${proposal.name}" />
                             </c:if>
                             <c:if test="${empty proposal.image or proposal.image le 0}">
-                                <collab:image src="/images/proposal_default.png" width="151" height="151"
-                                              alt="Proposal image" title="${proposal.name}"
-                                              cssStyle="border: 1px solid #bbb;"/>
+                                <collab:image src="/images/proposal_default.png" width="150" height="150"
+                                              alt="Proposal image" title="${proposal.name}"/>
                             </c:if>
                         </a>
                     </div>
                 </c:if>
-                <div class="c-ContestBox__text">
-                    <h3 class="c-ContestBox__title"><xcolab:proposalLink proposal="${proposal}" /></h3>
-                    ${proposalsModel.compact ? proposal.author.fullName : proposal.pitch}
+                <div class="c-ContestBox__body">
+                    <div class="c-ContestBox__text">
+                        <h3 class="c-ContestBox__title"><xcolab:proposalLink proposal="${proposal}" /></h3>
+                        ${proposalsModel.compact ? proposal.author.fullName : proposal.pitch}
+                    </div>
                 </div>
-            </div> 
+            </div>
         </c:forEach>
  	</div>
  	

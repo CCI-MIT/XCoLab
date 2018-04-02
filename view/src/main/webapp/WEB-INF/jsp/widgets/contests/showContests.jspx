@@ -1,6 +1,5 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
@@ -20,39 +19,7 @@
         </c:if>
         <h2> ${contestPreferences.title} <span><a href="${contestPreferences.allContestsUrl}">${contestPreferences.allContestsTitle}</a></span></h2>
         <c:forEach var="contest" items="${contests}">
-            <div class="c-ContestBox">
-                <div class="c-ContestBox__image">
-                    <a href="${contest.contestUrl}">
-                        <collab:image src="${contest.logoPath}" width="150" height="150" alt="${contest.contestShortName}" />
-                    </a>
-                </div>
-                <div class="c-ContestBox__text">
-                    <h3 class="c-ContestBox__title">
-                        <xcolab:contestLink contest="${contest}" cssStyle="${contest.contestShortNameWithEndYear.length() ge 60 ? 'font-size: 90%' : ''}"/>
-                    </h3>
-                    ${contest.contestName}
-                </div>
-                <c:if test="${contestPreferences.showCounts}">
-                    <div class="c-ContestBox__meta">
-                        <div class="c-ContestBox__metaCount">
-                            <div class="prop"><strong>${contest.proposalsCount}</strong>
-                                <c:choose>
-                                    <c:when test="${contest.proposalsCount == 1}">
-                                        &#160;${contestType.proposalNameLowercase}</c:when>
-                                    <c:otherwise>&#160;${contestType.proposalNamePluralLowercase}</c:otherwise>
-                                </c:choose>
-                            </div>
-                            <c:if test="${not contest.contestInVotingPhase}">
-                                <div class="comm"><strong> ${contest.totalCommentsCount}</strong> comments</div>
-                            </c:if>
-                            <c:if test="${contest.contestInVotingPhase}">
-                                <div class="comm"><strong>${contest.votesCount}</strong> votes</div>
-                            </c:if>
-                        </div>
-                    </div>
-                </c:if>
-            </div> <!-- /contestbox -->
-            <div class="clearfix"><!--  --></div>
+            <xcolab:contestBox contest="${contest}" showCounts="${contestPreferences.showCounts}"/>
         </c:forEach>
 	</div>
 </jsp:root>
