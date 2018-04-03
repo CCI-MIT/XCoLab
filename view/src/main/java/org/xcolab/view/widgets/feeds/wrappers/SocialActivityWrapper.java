@@ -1,5 +1,6 @@
 package org.xcolab.view.widgets.feeds.wrappers;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
@@ -7,6 +8,8 @@ import org.xcolab.commons.time.DurationFormatter;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import static org.xcolab.util.activities.enums.ActivityCategory.PROPOSAL;
 
 public class SocialActivityWrapper implements Serializable {
 
@@ -30,6 +33,28 @@ public class SocialActivityWrapper implements Serializable {
 
     public String getRelativeDate() {
         return DurationFormatter.forRequestLocale().format(activity.getCreateDate());
+    }
+
+    public boolean getIsHiddenActivityType() {
+        if (ConfigurationAttributeKey.VOTING_SECRET_FLAG.get() &&
+                activity.getActivityCategoryEnum().equals(PROPOSAL)) {
+            switch ((ProposalActivityType) activity.getActivityTypeEnum()) {
+                case VOTE_ADDED:
+                case VOTE_SWITCHED:
+                case VOTE_RETRACTED:
+                case SUPPORT_ADDED:
+                case SUPPORT_REMOVED:
+                    return true;
+                case UPDATED:
+                case MEMBER_ADDED:
+                case MEMBER_REMOVED:
+                case COMMENT_ADDED:
+                    return false;
+                default: throw new UnknownActivityTypeException(activity);
+            }
+        } else {
+            return false;
+        }
     }
 
     public Icon getIcon() {

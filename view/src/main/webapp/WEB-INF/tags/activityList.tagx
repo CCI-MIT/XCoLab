@@ -12,17 +12,19 @@
 
     <div class="list-group list-group-flush cb-list-group-striped">
         <c:forEach items="${activities}" var="activity">
-            <div class="list-group-item cb-d-flex-between-center">
-                <collab:image src="${activity.icon.path}" alt="${activity.icon.altText}" width="30"/>
-                <div class="d-flex flex-fill flex-column ${isResponsive ? 'flex-md-row-reverse' : ''} ml-3">
-                    <small class="text-muted cb-no-wrap ${isResponsive ?'ml-md-3' : ''}">
-                        ${activity.relativeDate}
-                    </small>
-                    <div class="flex-fill">
-                        <c:out value="${activity.body}" escapeXml="false"/>
+            <c:if test="${!activity.isHiddenActivityType}">
+                <div class="list-group-item cb-d-flex-between-center">
+                    <collab:image src="${activity.icon.path}" alt="${activity.icon.altText}" width="30"/>
+                    <div class="d-flex flex-fill flex-column ${isResponsive ? 'flex-md-row-reverse' : ''} ml-3">
+                        <small class="text-muted cb-no-wrap ${isResponsive ?'ml-md-3' : ''}">
+                            ${activity.relativeDate}
+                        </small>
+                        <div class="flex-fill">
+                            <c:out value="${activity.body}" escapeXml="false"/>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </c:if>
         </c:forEach>
     </div>
 </jsp:root>
