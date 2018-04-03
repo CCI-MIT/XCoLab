@@ -61,22 +61,14 @@
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong class="inputTitleLeft">Template type:</strong>
-                    <form:input path="type" cssClass="form-control" disabled="disabled"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="type"/>
-                    </div>
+                    <xcolab:inputWithError path="type" disabled="disabled" />
                 </div>
             </div>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong class="inputTitleLeft">Subject:</strong>
-                    <form:input path="subject" cssClass="form-control"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="subject"/>
-                    </div>
+                    <xcolab:inputWithError path="subject" />
                 </div>
             </div>
 
@@ -94,11 +86,7 @@
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong class="inputTitleLeft">Footer:</strong>
-                    <form:input path="footer" cssClass="form-control"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="footer"/>
-                    </div>
+                    <xcolab:inputWithError path="footer" />
                 </div>
             </div>
 

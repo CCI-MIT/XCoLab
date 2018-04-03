@@ -5,11 +5,15 @@
     <jsp:directive.attribute name="id" type="java.lang.String" description="Id " required="false" />
     <jsp:directive.attribute name="path" type="java.lang.String" description="Title " required="true" />
     <jsp:directive.attribute name="autocomplete" type="java.lang.String" description="Autocomplete " required="false" />
+    <jsp:directive.attribute name="disabled" type="java.lang.String" description="Disabled " required="false" />
 
     <c:set var="id" value="${(empty id) ? path : id}" />
     <c:set var="autocomplete" value="${(empty autocomplete) ? 'off' : autocomplete}" />
+    <c:set var="autocomplete" value="${(empty autocomplete) ? '' : disabled}" />
 
-    <form:input id="${id}" path="${path}" cssClass="form-control" cssErrorClass="form-control is-invalid" autocomplete="${autocomplete}" />
+    <form:input id="${id}" path="${path}"
+                cssClass="form-control" cssErrorClass="form-control is-invalid"
+                autocomplete="${autocomplete}" disabled="${disabled}" />
     <form:errors cssClass="invalid-feedback" path="${path}" />
 
 </jsp:root>

@@ -45,11 +45,8 @@
                         will be identified.
                     </div>
 
-                    <form:input path="contestShortName" id="contestShortName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
+                    <xcolab:inputWithError path="contestShortName" />
 
-                    <div class="reg_errors">
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestShortName"/>
-                    </div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">60</span> characters
                     </div>
@@ -88,10 +85,8 @@
                     </div>
 
                     <form:textarea path="contestName" id="contestName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
+                    <form:errors cssClass="invalid-feedback" path="contestName"/>
 
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestName"/>
-                    </div>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer">
                         <span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -203,10 +198,7 @@
 
                     <form:textarea path="contestDescription" id="contestDescription"
                                    cssClass="rte-editorPlaceholder form-control" cssErrorClass="form-control cb-form-has-error"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestDescription"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="contestDescription"/>
 
                     <div class="inputLimitContainer">
                         <span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -233,10 +225,7 @@
                     <form:select path="planTemplateId" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
                         <form:options items="${proposalTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors">
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="planTemplateId"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="planTemplateId"/>
                 </div>
             </div>
 
@@ -258,10 +247,7 @@
 
                         <form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors">
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="scheduleTemplateId"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="scheduleTemplateId"/>
 
                     <c:if test="${_themeContext.authenticationVariables.isAdmin}">
                         <div class="text-right">

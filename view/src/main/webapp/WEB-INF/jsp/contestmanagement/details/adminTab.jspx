@@ -44,11 +44,9 @@
                         <em><strong>Warning:</strong> Never change this value after the contest launch,
                         as it will break all previous contest and proposal links!</em>
                     </div>
-                    <form:input path="contestUrlName" id="contestUrlName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
 
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestUrlName"/>
-                    </div>
+                    <xcolab:inputWithError path="contestUrlName" />
+
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">80</span> characters
@@ -72,11 +70,8 @@
                         <em><strong>Warning:</strong> Never change this value after the contest launch,
                         as it will break all previous contest and proposal links!</em>
                     </div>
-                    <form:input path="contestYear" id="contestYear" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
+                    <xcolab:inputWithError path="contestYear" />
 
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestYear"/>
-                    </div>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">4</span> characters
@@ -97,11 +92,8 @@
                         The corresponding wiki template URL
                     </div>
 
-                    <form:input path="emailTemplateUrl" id="emailTemplateUrl" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
+                    <xcolab:inputWithError path="emailTemplateUrl" />
 
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="emailTemplateUrl"/>
-                    </div>
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">50</span> characters
@@ -126,10 +118,7 @@
                     <form:select path="contestTier" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
                         <form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestTier"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="contestTier"/>
                 </div>
             </div>
 
@@ -151,10 +140,7 @@
                         <form:option value="true" label="hide" />
                         <form:option value="false" label="show" />
                     </form:select>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="hideRibbons"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="hideRibbons"/>
                 </div>
             </div>
 
@@ -184,11 +170,8 @@
                                         <form:options items="${modelIdsSelectionItems}" itemValue="value"
                                                       itemLabel="lable"/>
                                     </form:select>
-
-                                    <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid"
+                                    <form:errors cssClass="invalid-feedback"
                                                      path="contestModelSettings.defaultModelId"/>
-                                    </div>
                                 </td>
                             </tr>
                             <tr>
@@ -203,10 +186,8 @@
                                         <form:options items="${modelIdsSelectionItems}" itemValue="value"
                                                       itemLabel="lable"/>
                                     </form:select>
-                                    <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid"
+                                    <form:errors cssClass="invalid-feedback"
                                                      path="contestModelSettings.otherModelIds"/>
-                                    </div>
                                 </td>
                             </tr>
                             <tr id="modelRegion">
@@ -219,11 +200,8 @@
                                         <form:options items="${modelRegionsSelectionItems}" itemValue="value"
                                                       itemLabel="lable"/>
                                     </form:select>
-
-                                    <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid"
+                                    <form:errors cssClass="invalid-feedback"
                                                      path="contestModelSettings.defaultModelSettings"/>
-                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -247,9 +225,7 @@
                     <form:select path="contestType" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
                         <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="contestType" />
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="contestType" />
                 </div>
             </div>
         </form:form>

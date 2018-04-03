@@ -72,10 +72,8 @@
             <table class="reg">
                 <tr style="${ generateScreenName ? 'display: none;' : ''}">
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.screenname"/> </th>
-                    <td><form:input cssClass="popupreg_input" path="screenName" /><br />
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="screenName" />
-                        </div></td>
+                    <td>
+                        <xcolab:inputWithError path="screenName" />
                 </tr>
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.email"/> </th>

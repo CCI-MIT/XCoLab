@@ -39,29 +39,21 @@
 						<tr>
 							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.yourname" /></th>
 							<td>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="name" />
-								</div>
-                                <form:input cssClass="form-control" path="name" />
+                                <xcolab:inputWithError path="name" />
 							</td>
 						</tr>
 						<tr>
 							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.email" /></th>
 							<td>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="email" />
-								</div>
-                                <form:input cssClass="form-control" path="email" />
+                                <xcolab:inputWithError path="email" />
                             </td>
 						</tr>
 
 						<tr>
 							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.message" /></th>
 							<td>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="message" />
-								</div>
                                 <form:textarea cssClass="form-control" path="message" style="width: 100%; height: 150px;" />
+                                <form:errors cssClass="invalid-feedback" path="message" />
                             </td>
 						</tr>
 

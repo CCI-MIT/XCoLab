@@ -74,11 +74,7 @@
                 <div class="c-Box c-Box--colorTan">
                     <div class="c-Box__body">
                         <strong>Schedule name:</strong>
-                        <form:input path="scheduleName" cssClass="form-control"/>
-
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="scheduleName"/>
-                        </div>
+                        <xcolab:inputWithError path="scheduleName" />
                     </div>
                 </div>
 

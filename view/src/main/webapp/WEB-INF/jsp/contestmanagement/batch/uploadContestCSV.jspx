@@ -162,10 +162,7 @@
 
                         <form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors">
-                        <form:errors cssClass="alert alert-error" path="scheduleTemplateId"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="scheduleTemplateId"/>
                 </div>
             </div>
             <div class="c-Box c-Box--colorTan">
@@ -184,10 +181,7 @@
                     <form:select path="contestTier" cssClass="form-control">
                         <form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestTier"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="contestTier"/>
                 </div>
             </div>
             <div class="c-Box c-Box--colorTan">
@@ -205,9 +199,7 @@
                     <form:select path="contestType" cssClass="form-control">
                         <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestType" />
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="contestType" />
                 </div>
             </div>
             <div class="c-Box c-Box--colorTan">
