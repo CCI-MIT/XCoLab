@@ -74,7 +74,7 @@
                             <spring:message code="profile.form.fields.firstname"/>
                         </div>
                         <div class="col">
-                            <xcolab:inputWithError title="firstName" autocomplete="given-name" />
+                            <xcolab:inputWithError path="firstName" autocomplete="given-name" />
                         </div>
                     </div>
                     <div class="form-row">
@@ -82,7 +82,7 @@
                             <spring:message code="profile.form.fields.lastname"/>
                         </div>
                         <div class="col">
-                            <xcolab:inputWithError title="lastName" autocomplete="family-name" />
+                            <xcolab:inputWithError path="lastName" autocomplete="family-name" />
                         </div>
                     </div>
                     <div class="form-row">
@@ -90,13 +90,11 @@
                             <spring:message code="profile.form.fields.country"/>
                         </div>
                         <div class="col">
-                            <form:select cssClass="form-control" path="countryCode" autocomplete="country">
+                            <form:select cssClass="form-control" cssErrorClass="form-control is-invalid" path="countryCode" autocomplete="country">
                                 <form:option value="" label="Select country"/>
                                 <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
                             </form:select>
-                            <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="countryCode" />
-                            </div>
+                            <form:errors cssClass="invalid-feedback" path="countryCode" />
                         </div>
                     </div>
                     <c:if test="${isI18NActive}">
@@ -105,7 +103,7 @@
                                 <spring:message code="profile.form.fields.language"/>
                             </div>
                             <div class="col">
-                                <form:select cssClass="form-control" path="defaultLocale" autocomplete="language">
+                                <form:select cssClass="form-control" cssErrorClass="form-control is-invalid" path="defaultLocale" autocomplete="language">
                                     <form:option value="" label="Select language"/>
                                     <c:forEach var="lang" items="${_themeContext.i18NVariables.languageSelectItems}">
                                         <form:option value="${lang['value']}" >
@@ -113,9 +111,7 @@
                                         </form:option>
                                     </c:forEach>
                                 </form:select>
-                                <div class="reg_errors"><!--  -->
-                                    <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="countryCode" />
-                                </div>
+                                <form:errors cssClass="invalid-feedback" path="countryCode" />
                             </div>
                         </div>
                     </c:if>
@@ -135,10 +131,7 @@
                     <spring:message code="profile.form.fields.newemail"/>
                 </div>
                 <div class="col">
-                    <form:input  id="email" cssClass="form-control" path="email" autocomplete="off"/>
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="email" />
-                    </div>
+                    <xcolab:inputWithError path="email" />
                 </div>
             </div>
 
@@ -147,10 +140,7 @@
                     <spring:message code="profile.form.fields.retypeemail"/>
                 </div>
                 <div class="col">
-                    <form:input id="retypeEmail" cssClass="form-control" path="retypeEmail" autocomplete="off"/>
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypeEmail" />
-                    </div>
+                    <xcolab:inputWithError path="retypeEmail" />
                 </div>
             </div>
 
@@ -187,11 +177,7 @@
                             <spring:message code="profile.form.fields.password"/>
                         </div>
                         <div class="col">
-                            <form:password cssClass="form-control" path="currentPassword"
-                                           autocomplete="current-password" />
-                            <div class="reg_errors">
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="currentPassword" />
-                            </div>
+                            <xcolab:passwordWithError path="currentPassword" autocomplete="current-password" />
                         </div>
                     </div>
                     <div class="form-row">
@@ -199,11 +185,7 @@
                             <spring:message code="profile.form.fields.newpassword"/>
                         </div>
                         <div class="col">
-                            <form:password cssClass="form-control" path="password"
-                                           autocomplete="new-password"/>
-                            <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="password" />
-                            </div>
+                            <xcolab:passwordWithError path="password" autocomplete="new-password" />
                         </div>
                     </div>
                     <div class="form-row" id="retypePasswordRow" style="${passwordError ? '' : 'display: none;'}">
@@ -211,11 +193,7 @@
                             <spring:message code="profile.form.fields.retypepassword"/>
                         </div>
                         <div class="col">
-                            <form:password cssClass="form-control" path="retypePassword"
-                                           autocomplete="new-password"/>
-                            <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypePassword" />
-                            </div>
+                            <xcolab:passwordWithError path="retypePassword" autocomplete="new-password" />
                         </div>
                     </div>
                 </c:otherwise>
@@ -230,13 +208,12 @@
             <div class="profile_about-head"><spring:message code="profile.form.fields.shortbio"/></div>
             <div>
                 <form:textarea
-                    cssClass="rte-editorPlaceholder form-control" path="shortBio" />
+                    cssClass="rte-editorPlaceholder form-control"
+                    cssErrorClass="form-control is-invalid" path="shortBio" />
+                <form:errors cssClass="invalid-feedback" path="shortBio" />
                 <div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
                     <span class="limit_characterCount"><!--  --></span>/&#160;
                     <span class="limit_charactersMax">2000</span> characters
-                </div>
-                <div class="reg_errors"><!--  -->
-                    <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="shortBio" />
                 </div>
                 <div class="clearfix">&#160;</div>
             </div>
