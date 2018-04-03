@@ -74,6 +74,12 @@ logging:
 security:
   filter-dispatcher-types: ASYNC,REQUEST,ERROR
 
+
+http-client:
+  connection-pool:
+    max-total: 40
+    default-max-per-route: 3
+
 ---
 
 spring:

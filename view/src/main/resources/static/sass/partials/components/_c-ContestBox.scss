@@ -1,114 +1,99 @@
 @import "../../lib/mixins";
 
-$c-ContestBox__meta__flag__capitalization: $b-Typography__capitalization--none !default;
-$c-ContestBox__meta__flag__boxShadow: 2px 2px 1px $t-Color__gray--dark-700 !default;
-$c-ContestBox__meta__flag--color__border: 1px solid $t-Color__secondary--light !default;
-$c-ContestBox__meta__flag__position: absolute !default;
-$c-ContestBox__meta__flag__padding: 0 15px !default;
-$c-ContestBox__meta__flag__textColor: white !default;
-$c-ContestBox__meta__flag__height: 30px !default;
-$c-ContestBox__meta__flag__fontSize: 15px !default;
-$c-ContestBox__meta__flag__marginTop: 0 !default;
-$c-ContestBox__meta__flag__isGradient: true !default;
-$c-ContestBox__meta__flag__background--color: $t-Color__secondary !default;
-$c-ContestBox__meta__flag__background--grey: $t-Color__gray--dark-600 !default;
-$c-ContestBox__meta__flag__fontWeight: $t-Typography__fontWeight !default;
+$c-ContestBox__metaFlag__capitalization: $b-Typography__capitalization--none !default;
+$c-ContestBox__metaFlag__boxShadow: 2px 2px 1px $t-Color__gray--dark-700 !default;
+$c-ContestBox__metaFlag--color__border: 1px solid $t-Color__secondary--light !default;
+$c-ContestBox__metaFlag__position: absolute !default;
+$c-ContestBox__metaFlag__padding: 0 15px !default;
+$c-ContestBox__metaFlag__textColor: white !default;
+$c-ContestBox__metaFlag__height: 30px !default;
+$c-ContestBox__metaFlag__fontSize: 15px !default;
+$c-ContestBox__metaFlag__marginTop: 0 !default;
+$c-ContestBox__metaFlag__isGradient: true !default;
+$c-ContestBox__metaFlag__background--color: $t-Color__secondary !default;
+$c-ContestBox__metaFlag__background--grey: $t-Color__gray--dark-600 !default;
+$c-ContestBox__metaFlag__fontWeight: $t-Typography__fontWeight !default;
 
-$c-ContestBox__text__height: 125px !default;
-$c-ContestBox__text__title__textColor: $t-Color__primary !default;
-$c-ContestBox__text__title__textColor--hover: $t-Link__color--hover !default;
+$c-ContestBox__title__textColor: $t-Color__primary !default;
 
 $c-ContestBox__background: white !default;
 $c-ContestBox__border: 4px solid $t-Color__tan !default;
-$c-ContestBox__border__radius: 8px !default;
-$c-ContestBox__border__bottom: null !default;
 $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
 
-.c-ContestBox--compact {
-  width: 476px;
+.c-ContestBox {
+  @extend .card;
 
+  position: relative;
   border: $c-ContestBox__border;
-  @if $c-ContestBox__border__bottom != null {
-    border-bottom: $c-ContestBox__border__bottom;
-  }
-  border-radius: $c-ContestBox__border__radius;
-
   background: $c-ContestBox__background;
-
-  &.backgroundLight {
-    background: white;
-  }
 
   &:hover {
     box-shadow: $c-ContestBox--hover__boxShadow;
   }
 
-  padding: 9px 8px;
-  margin-bottom: 24px;
-  float: left;
-  position: relative;
-}
+  &, .card-deck & {
+    margin-bottom: 1.5rem;
 
-.c-ContestBox { //.contestbox {
-  @extend .c-ContestBox--compact;
-  height: 178px;
-}
-
-.c-ContestBox__image { //.contestbox .img-wrap {
-  float: left;
-  margin-right: 18px;
-  img {
-    display: block;
+    @include media-breakpoint-up(sm) {
+      flex-direction: row;
+    }
   }
 }
 
-.c-ContestBox__text--compact {
-  float: left;
-  width: 283px;
-  font-size: 14px;
-  padding-top: 3px;
-  line-height: 20px;
+.c-ContestBox__image {
+  align-self: center;
+  flex: 0 0 auto;
+  margin: .5rem;
+}
+
+.c-ContestBox__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: .5rem;
+}
+
+.c-ContestBox__text {
+  font-size: 1rem;
+  line-height: 1.3333;
   color: $t-Color__gray--dark-700;
 }
 
-.c-ContestBox__text { // .contestbox .text-wrap {
-  @extend .c-ContestBox__text--compact;
-  height: $c-ContestBox__text__height;
-}
+.c-ContestBox__title {
+  margin-bottom: .5rem;
 
-.c-ContestBox__text__title { // .contestbox h3 {
-  margin-bottom: 8px;
   a {
-    color: $c-ContestBox__text__title__textColor;
+    color: $c-ContestBox__title__textColor;
   }
 
   a:hover {
-    color: $c-ContestBox__text__title__textColor--hover;
+    color: hover-color($c-ContestBox__title__textColor);
     text-decoration: none;
   }
 }
 
-.c-ContestBox__meta__count { //.contestbox .count
+.c-ContestBox__metaCount {
   color: $t-Color__gray--dark-600;
 }
 
-%c-ContestBox__meta__flag {
+.c-ContestBox__metaFlag {
   display: inline-block;
-  padding: $c-ContestBox__meta__flag__padding;
-  margin-top: $c-ContestBox__meta__flag__marginTop;
+  padding: $c-ContestBox__metaFlag__padding;
+  margin-top: $c-ContestBox__metaFlag__marginTop;
 
-  height: $c-ContestBox__meta__flag__height;
-  line-height: $c-ContestBox__meta__flag__height;
+  height: $c-ContestBox__metaFlag__height;
+  line-height: $c-ContestBox__metaFlag__height;
 
-  font-size: $c-ContestBox__meta__flag__fontSize;
-  font-weight: $c-ContestBox__meta__flag__fontWeight;
-  color: $c-ContestBox__meta__flag__textColor;
+  font-size: $c-ContestBox__metaFlag__fontSize;
+  font-weight: $c-ContestBox__metaFlag__fontWeight;
+  color: $c-ContestBox__metaFlag__textColor;
   text-align: center;
+  text-transform: $c-ContestBox__metaFlag__capitalization;
 
-  box-shadow: $c-ContestBox__meta__flag__boxShadow;
+  box-shadow: $c-ContestBox__metaFlag__boxShadow;
 
-  @if $c-ContestBox__meta__flag__position != none {
-    position: $c-ContestBox__meta__flag__position;
+  @if $c-ContestBox__metaFlag__position != none {
+    position: $c-ContestBox__metaFlag__position;
     top: 115px;
     left: -20px;
 
@@ -121,35 +106,31 @@ $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
       right: 3px;
     }
   }
-
-  text-transform: $c-ContestBox__meta__flag__capitalization;
 }
 
-.c-ContestBox__meta__flag--color { // .contest-flag-color {
-  @extend %c-ContestBox__meta__flag;
-  @if $c-ContestBox__meta__flag__isGradient {
-    @include background-gradient($c-ContestBox__meta__flag__background--color);
+.c-ContestBox__metaFlag--color {
+  @if $c-ContestBox__metaFlag__isGradient {
+    @include background-gradient($c-ContestBox__metaFlag__background--color);
   } @else {
-    background: $c-ContestBox__meta__flag__background--color;
+    background: $c-ContestBox__metaFlag__background--color;
   }
 
-  @if $c-ContestBox__meta__flag__position != none {
+  @if $c-ContestBox__metaFlag__position != none {
     &:after {
-      border: $c-ContestBox__meta__flag--color__border;
+      border: $c-ContestBox__metaFlag--color__border;
       border-left: 0;
     }
   }
 }
 
-.c-ContestBox__meta__flag--grey { //.contest-flag-grey {
-  @extend %c-ContestBox__meta__flag;
-  @if $c-ContestBox__meta__flag__isGradient {
-    @include background-gradient($c-ContestBox__meta__flag__background--grey);
+.c-ContestBox__metaFlag--grey {
+  @if $c-ContestBox__metaFlag__isGradient {
+    @include background-gradient($c-ContestBox__metaFlag__background--grey);
   } @else {
-    background: $c-ContestBox__meta__flag__background--grey;
+    background: $c-ContestBox__metaFlag__background--grey;
   }
 
-  @if $c-ContestBox__meta__flag__position != none {
+  @if $c-ContestBox__metaFlag__position != none {
     &:after {
       border: 1px solid $t-Color__gray--medium-500;
       border-left: 0;

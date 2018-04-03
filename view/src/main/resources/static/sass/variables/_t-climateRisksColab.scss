@@ -98,18 +98,16 @@ $p-About__ge3__background: url(/images/about/getinvolved-row-03.png) no-repeat 4
 $p-About__ge4__background: url(/images/about/getinvolved-row-04.png) no-repeat 45px 15px;
 $p-About__getinvolved__backgroundColor: white;
 
-$c-ContestBox__meta__flag__boxShadow: none;
-$c-ContestBox__meta__flag--color__border: none;
-$c-ContestBox__meta__flag__position: none;
-$c-ContestBox__meta__flag__padding: 0 8px;
-$c-ContestBox__meta__flag__fontSize: 12px;
-$c-ContestBox__meta__flag__height: 25px;
-$c-ContestBox__meta__flag__marginTop: 10px;
-$c-ContestBox__meta__flag__isGradient: false;
-$c-ContestBox__text__height: 95px;
+$c-ContestBox__metaFlag__boxShadow: none;
+$c-ContestBox__metaFlag--color__border: none;
+$c-ContestBox__metaFlag__position: none;
+$c-ContestBox__metaFlag__padding: 0 8px;
+$c-ContestBox__metaFlag__fontSize: 12px;
+$c-ContestBox__metaFlag__height: 25px;
+$c-ContestBox__metaFlag__marginTop: 10px;
+$c-ContestBox__metaFlag__isGradient: false;
 $c-ContestBox__background: $t-Color__tan;
 $c-ContestBox__border: none;
-$c-ContestBox__border__radius: 0;
 $c-ContestBox--hover__boxShadow: 0 0 15px $t-Color__gray--medium-500;
 
 $p-Contests__userslist__td--g__background: $t-Color__tan;
@@ -218,6 +216,5 @@ $c-Count__number__color: $t-Color__primary;
 $c-Count__number__fontSize: 20px;
 
 $c-Footer__link__textColor--hover: $t-Color__primary;
-$c-ContestBox__text__title__textColor--hover: $t-Color__primary;
 
 $c_ControlsOverlay__backgroundColor: rgba($t-Color__tan, .9);

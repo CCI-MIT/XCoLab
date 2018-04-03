@@ -3,7 +3,6 @@ package org.xcolab.view.pages.loginregister;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -30,7 +29,7 @@ import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @RunWith(PowerMockRunner.class)
@@ -86,33 +85,22 @@ public class ForgotPasswordControllerTest {
         MembersClientMockerHelper.mockMembersClient();
         AdminClientMockerHelper.mockAdminClient();
         EmailTemplateClientMockerHelper.mockEmailTemplateClient();
-
     }
-
 
     @Test
     public void passwordUpdateFailsWhenScreenNameNotPassed() throws Exception {
-
-        this.mockMvc.perform(post("/login/resetPassword")
-                .with(csrf())
-        );
-
-        PowerMockito.verifyStatic(Mockito.never());
-        EmailTemplateClientUtil.getContestEmailTemplateByType("MEMBER_RESET_PASSWORD_DEFAULT");
+        mockMvc.perform(post("/login/resetPassword")
+                .with(csrf()))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     public void passwordUpdateSucceedsWithValidScreenName() throws Exception {
-
-
-        this.mockMvc.perform(post("/login/resetPassword")
+        mockMvc.perform(post("/login/resetPassword")
                 .with(csrf())
-                .param("screenNameOrEmail", "superuser"));
-
-        PowerMockito.verifyStatic(Mockito.times(1));
-        EmailTemplateClientUtil.getContestEmailTemplateByType("MEMBER_RESET_PASSWORD_DEFAULT");
+                .param("screenNameOrEmail", "superuser"))
+                .andExpect(status().is3xxRedirection());
     }
-
 }
 
 

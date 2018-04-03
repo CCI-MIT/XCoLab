@@ -47,7 +47,7 @@
         <div style="font-size:10pt; font-style: italic; margin-top: 10px;">
             Please
             <ol>
-                <li>Review the revised proposal and the Author's summary of their revisions on the <a href="${proposal.proposalUrl}/tab/EVALUATION">Evaluation Results tab</a>;</li>
+                <li>Review the proposal above;</li>
                 <c:if test="${not empty impactTabUrl}">
                     <li>Review the <a href="${impactTabUrl}">Impact Tab;</a></li>
                 </c:if>
