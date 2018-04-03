@@ -1,6 +1,5 @@
 package org.xcolab.service.sharedcolab.domain.sharedContest;
 
-import com.sun.jersey.api.NotFoundException;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
@@ -10,6 +9,7 @@ import org.springframework.util.Assert;
 
 import org.xcolab.model.tables.pojos.SharedContest;
 import org.xcolab.model.tables.records.SharedContestRecord;
+import org.xcolab.service.sharedcolab.NotFoundException;
 
 import java.util.List;
 

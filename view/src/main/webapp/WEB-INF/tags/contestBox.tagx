@@ -1,0 +1,103 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
+    <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
+
+    <jsp:directive.attribute name="contest" type="org.xcolab.client.contest.pojo.Contest" required="true" rtexprvalue="true" description="The contest to be sh"/>
+    <jsp:directive.attribute name="showCounts" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether to show the counts. Defaults to true."/>
+    <jsp:directive.attribute name="showFlags" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether to show the flags. Defaults to false."/>
+
+    <c:set var="showCounts" value="${empty showCounts ? true : showCounts}"/>
+    <c:set var="showFlags" value="${empty showFlags ? false : showFlags}"/>
+
+    <div class="c-ContestBox">
+		<div class="c-ContestBox__image">
+        	<a href="${contest.contestUrl}" aria-hidden="true">
+                <collab:image src="${contest.logoPath}" width="150" height="150"
+                              alt="${contest.contestShortNameWithEndYear}"/>
+            </a>
+        </div>
+        <div class="c-ContestBox__body">
+            <div class="c-ContestBox__text">
+                <h3 class="c-ContestBox__title">
+                    <xcolab:contestLink contest="${contest}"
+                                        cssStyle="${contest.contestShortNameWithEndYear.length() ge 60 ? 'font-size: 90%' : ''}"/>
+                </h3>
+                ${contest.contestName }
+            </div>
+
+            <c:if test="${showCounts or showFlags}">
+                <div class="c-ContestBox__meta">
+                    <c:if test="${showCounts}">
+                        <div class="c-ContestBox__metaCount">
+                            <span class="mr-3">
+                                <strong>${contest.proposalsCount}</strong>
+                                <c:choose>
+                                    <c:when test="${contest.proposalsCount == 1}">
+                                        ${contestType.proposalNameLowercase}
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${contestType.proposalNamePluralLowercase}
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+
+                            <span>
+                                <c:choose>
+                                    <c:when test="${not empty contest.activePhase and contest.activePhase.canVote}">
+                                        <strong>${contest.votesCount} </strong>
+                                        <c:choose>
+                                            <c:when test="${contest.votesCount == 1}">
+                                                <spring:message code="contests.vote"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <spring:message code="contests.votes"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <strong>${contest.totalCommentsCount} </strong>
+                                        <c:choose>
+                                            <c:when test="${contest.totalCommentsCount == 1}">
+                                                <spring:message code="contests.comment"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <spring:message code="contests.comments"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
+                            </span>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${showFlags}">
+                        <c:set var="contestPhaseClosed"
+                               value="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}"/>
+                        <c:if test="${contest.flag ge 0}">
+                            <c:choose>
+                                <c:when test="${not empty contest.flagText and contest.flag == 0}">
+                                    <div class="c-ContestBox__metaFlag c-ContestBox__metaFlag--${contestPhaseClosed ? 'grey' : 'color'}"> ${contest.flagText} </div>
+                                </c:when>
+                                <c:when test="${not empty contest.flagText and contest.flag gt 0}">
+                                    <div class="c-ContestBox__metaFlag c-ContestBox__metaFlag--${contest.flag == 2 ? 'grey' : 'color'}"> ${contest.flagText} </div>
+                                </c:when>
+                                <c:when test="${contest.contestActive and contest.hideRibbons and contest.activePhase.status eq 'COMPLETED'}">
+                                    <div class="c-ContestBox__metaFlag c-ContestBox__metaFlag--grey"
+                                         style="font-size: 13px;">Winners to be announced
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="c-ContestBox__metaFlag c-ContestBox__metaFlag--${contestPhaseClosed ? 'grey' : 'color'}"> ${contest.activePhase.flagText} </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>
+                    </c:if>
+                </div>
+            </c:if>
+        </div>
+     </div> <!-- /contestbox -->
+</jsp:root>

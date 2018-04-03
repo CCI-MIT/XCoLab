@@ -1,10 +1,11 @@
 package org.xcolab.service.utils.db.jooq.generator;
 
 import org.jooq.tools.StringUtils;
-import org.jooq.util.DefaultGeneratorStrategy;
 import org.jooq.util.Definition;
 
-public class XColabGeneratorStrategy extends DefaultGeneratorStrategy {
+import org.xcolab.commons.jooq.JooqGeneratorStrategy;
+
+public class XColabGeneratorStrategy extends JooqGeneratorStrategy {
 
     private static final String[] TABLE_PREFIXES = {"xcolab_", "members_", "contest_",
             "content_", "proposal_", "comment_", "files_", "balloon_", "admin_", "activities_",
@@ -42,24 +43,11 @@ public class XColabGeneratorStrategy extends DefaultGeneratorStrategy {
     }
 
     @Override
-    public String getJavaClassName(Definition definition, Mode mode) {
-        StringBuilder result = new StringBuilder();
-        if (containsPrefix(definition.getOutputName())) {
-            result.append(cleanUpSchemeAndPrefix(definition.getOutputName()));
-        } else {
-            result.append(definition.getOutputName());
+    protected String customizeJavaClassNameIdentifier(String originalName) {
+        if (containsPrefix(originalName)) {
+            return cleanUpSchemeAndPrefix(originalName);
         }
-        if (mode == Mode.DEFAULT) {
-            result.append("Table");
-        }else if (mode == Mode.RECORD) {
-            result.append("Record");
-        } else if (mode == Mode.DAO) {
-            result.append("Dao");
-        } else if (mode == Mode.INTERFACE) {
-            result.insert(0, "I");
-        }
-
-        return result.toString();
+        return originalName;
     }
 
     private boolean containsPrefix(String string) {
