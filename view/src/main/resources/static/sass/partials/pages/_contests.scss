@@ -159,56 +159,13 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   width: 484px;
 }
 
-.c-Headline .view {
-  float: left;
-  height: 34px;
-  line-height: 34px;
+.p-Contests__viewSelector {
   background: $t-Color__tan;
-  border: solid 1px $t-Color__gray--dark-600;
-  border-radius: 6px;
-  margin-right: 16px;
-  font-size: 12px;
-  font-weight: $t-Typography__fontWeight--bold;
-  text-transform: uppercase;
 
-  > div {
-    float: left;
-    padding-left: 35px;
-    padding-right: 6px;
-
-    &.selected {
-      border-radius: 5px;
-      color: white;
-
-      border: solid 1px #4746ad;
-      box-shadow: 0 0 4px #3e3e3e;
-      margin-top: -1px;
-      margin-left: -1px;
-    }
-  }
-
-  .grid {
-    background: url(/images/icon-grid_view-off.png) no-repeat 8px 8px;
-
-    &.selected {
-      background: url(/images/icon-grid_view-on.png) no-repeat 9px 8px $t-Color__primary;
-    }
-  }
-
-  .outline {
-    background: url(/images/icon-list_outline-off.png) no-repeat 6px 8px;
-
-    &.selected {
-      background: url(/images/icon-list_outline-on.png) no-repeat 9px 8px $t-Color__primary;
-    }
-  }
-
-  .list {
-    background: url(/images/icon-list_view-off.png) no-repeat 6px 8px;
-
-    &.selected {
-      background: url(/images/icon-list_view-on.png) no-repeat 9px 8px $t-Color__primary;
-    }
+  .btn {
+    font-size: .75rem;
+    text-transform: uppercase;
+    font-weight: $t-Typography__fontWeight--bold;
   }
 }
 
