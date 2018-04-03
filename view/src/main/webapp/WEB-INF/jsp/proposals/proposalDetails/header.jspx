@@ -46,7 +46,7 @@
             </h3>
         </c:if>
         <c:if test="${tabs.size() > 0}">
-            <ul class="c-TabBar clearfix">
+            <ul class="nav nav-tabs clearfix">
                 <c:forEach var="singleTab" items="${tabs }" varStatus="loopStatus">
                     <li class="${!loopStatus.last
                         ? (!loopStatus.first ? 'c-TabBar__tab' : 'c-TabBar__tab--first')
