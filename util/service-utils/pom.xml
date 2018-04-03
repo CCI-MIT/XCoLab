@@ -55,11 +55,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-dbcp2</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>xcolab-utils</artifactId>
             <version>${project.version}</version>

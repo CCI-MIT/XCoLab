@@ -1,6 +1,5 @@
 package org.xcolab.service.sharedcolab.web;
 
-import com.sun.jersey.api.NotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.model.tables.pojos.SharedContest;
 import org.xcolab.model.tables.pojos.SharedMember;
+import org.xcolab.service.sharedcolab.NotFoundException;
 import org.xcolab.service.sharedcolab.domain.sharedContest.SharedContestDao;
 import org.xcolab.service.sharedcolab.domain.sharedMember.SharedMemberDao;
 
@@ -95,9 +95,8 @@ public class SharedColabController {
     }
 
     @RequestMapping(value = "/contests", method = RequestMethod.GET)
-    public List<SharedContest> retrieveSharedContestsFromForeingColab(
-            @RequestParam("colabOrigin") String colabOrigin) throws NotFoundException {
-
+    public List<SharedContest> retrieveSharedContestsFromForeignColab(
+            @RequestParam("colabOrigin") String colabOrigin) {
         return sharedContestDao.findByGiven(colabOrigin);
     }
 

@@ -1,8 +1,7 @@
 package org.xcolab.service.sharedcolab.domain.sharedContest;
 
-import com.sun.jersey.api.NotFoundException;
-
 import org.xcolab.model.tables.pojos.SharedContest;
+import org.xcolab.service.sharedcolab.NotFoundException;
 
 import java.util.List;
 
