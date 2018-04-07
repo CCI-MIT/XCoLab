@@ -45,7 +45,9 @@
                         will be identified.
                     </div>
 
-                    <xcolab:inputWithError path="contestShortName" />
+                    <form:input id="contestShortName" path="contestShortName"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="contestShortName" />
 
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">60</span> characters

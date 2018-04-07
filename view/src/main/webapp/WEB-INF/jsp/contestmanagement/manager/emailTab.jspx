@@ -61,14 +61,19 @@
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong class="inputTitleLeft">Template type:</strong>
-                    <xcolab:inputWithError path="type" disabled="disabled" />
+                    <form:input id="type" path="type"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                disabled="disabled" />
+                    <form:errors cssClass="invalid-feedback" path="type" />
                 </div>
             </div>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong class="inputTitleLeft">Subject:</strong>
-                    <xcolab:inputWithError path="subject" />
+                    <form:input id="subject" path="subject"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="subject" />
                 </div>
             </div>
 
@@ -76,17 +81,16 @@
                 <div class="c-Box__body">
                     <strong class="inputTitleLeft">Content:</strong>
                     <form:textarea path="content" cssClass="form-control"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="content"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="content"/>
                 </div>
             </div>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong class="inputTitleLeft">Footer:</strong>
-                    <xcolab:inputWithError path="footer" />
+                    <form:input id="footer" path="footer"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="footer" />
                 </div>
             </div>
 

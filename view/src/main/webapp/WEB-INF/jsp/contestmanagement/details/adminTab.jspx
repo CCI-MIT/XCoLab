@@ -45,7 +45,9 @@
                         as it will break all previous contest and proposal links!</em>
                     </div>
 
-                    <xcolab:inputWithError path="contestUrlName" />
+                    <form:input id="contestUrlName" path="contestUrlName"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="contestUrlName" />
 
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -70,7 +72,10 @@
                         <em><strong>Warning:</strong> Never change this value after the contest launch,
                         as it will break all previous contest and proposal links!</em>
                     </div>
-                    <xcolab:inputWithError path="contestYear" />
+
+                    <form:input id="contestYear" path="contestYear"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="contestYear" />
 
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -92,7 +97,9 @@
                         The corresponding wiki template URL
                     </div>
 
-                    <xcolab:inputWithError path="emailTemplateUrl" />
+                    <form:input id="emailTemplateUrl" path="emailTemplateUrl"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="emailTemplateUrl" />
 
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span

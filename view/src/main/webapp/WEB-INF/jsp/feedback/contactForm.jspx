@@ -39,13 +39,17 @@
 						<tr>
 							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.yourname" /></th>
 							<td>
-                                <xcolab:inputWithError path="name" />
+                                <form:input id="name" path="name"
+                                            cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                                <form:errors cssClass="invalid-feedback" path="name" />
 							</td>
 						</tr>
 						<tr>
 							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.email" /></th>
 							<td>
-                                <xcolab:inputWithError path="email" />
+                                <form:input id="email" path="email"
+                                            cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                                <form:errors cssClass="invalid-feedback" path="email" />
                             </td>
 						</tr>
 

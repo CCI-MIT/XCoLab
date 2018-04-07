@@ -64,28 +64,37 @@
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong>Target type:</strong>
-                    <xcolab:inputWithError path="type" disabled="disabled" />
+                    <form:input id="type" path="type"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                disabled="disabled" />
+                    <form:errors cssClass="invalid-feedback" path="type" />
                 </div>
             </div>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong>Reason:</strong>
-                    <xcolab:inputWithError path="reason" />
+                    <form:input id="reason" path="reason"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="reason" />
                 </div>
             </div>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong>Notification Threshold:</strong>
-                    <xcolab:inputWithError path="notificationThreshold" />
+                    <form:input id="notificationThreshold" path="notificationThreshold"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="notificationThreshold" />
                 </div>
             </div>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong>Screening Threshold:</strong>
-                    <xcolab:inputWithError path="screeningThreshold" />
+                    <form:input id="screeningThreshold" path="screeningThreshold"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="screeningThreshold" />
                 </div>
             </div>
 

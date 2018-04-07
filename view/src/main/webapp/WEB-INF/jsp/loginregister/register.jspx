@@ -73,7 +73,10 @@
                 <tr style="${ generateScreenName ? 'display: none;' : ''}">
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.screenname"/> </th>
                     <td>
-                        <xcolab:inputWithError path="screenName" />
+                        <form:input id="screenName" path="screenName"
+                                    cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                        <form:errors cssClass="invalid-feedback" path="screenName" />
+                    </td>
                 </tr>
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.email"/> </th>

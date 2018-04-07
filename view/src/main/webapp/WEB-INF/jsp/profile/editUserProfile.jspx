@@ -74,7 +74,10 @@
                             <spring:message code="profile.form.fields.firstname"/>
                         </div>
                         <div class="col">
-                            <xcolab:inputWithError path="firstName" autocomplete="given-name" />
+                            <form:input id="firstName" path="firstName"
+                                        cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                        autocomplete="given-name" />
+                            <form:errors cssClass="invalid-feedback" path="firstName" />
                         </div>
                     </div>
                     <div class="form-row">
@@ -82,7 +85,10 @@
                             <spring:message code="profile.form.fields.lastname"/>
                         </div>
                         <div class="col">
-                            <xcolab:inputWithError path="lastName" autocomplete="family-name" />
+                            <form:input id="lastName" path="lastName"
+                                        cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                        autocomplete="family-name" />
+                            <form:errors cssClass="invalid-feedback" path="lastName" />
                         </div>
                     </div>
                     <div class="form-row">
@@ -131,7 +137,9 @@
                     <spring:message code="profile.form.fields.newemail"/>
                 </div>
                 <div class="col">
-                    <xcolab:inputWithError path="email" />
+                    <form:input id="email" path="email"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="email" />
                 </div>
             </div>
 
@@ -140,7 +148,9 @@
                     <spring:message code="profile.form.fields.retypeemail"/>
                 </div>
                 <div class="col">
-                    <xcolab:inputWithError path="retypeEmail" />
+                    <form:input id="retypeEmail" path="retypeEmail"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="retypeEmail" />
                 </div>
             </div>
 
