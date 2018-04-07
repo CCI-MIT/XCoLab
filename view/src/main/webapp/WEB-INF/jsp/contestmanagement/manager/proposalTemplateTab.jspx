@@ -48,9 +48,7 @@
                     <form:select path="elementId" id="changeElementSelect" cssClass="form-control">
                         <form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-                    <div class="reg_errors">
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="elementId" />
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="elementId" />
                 </div>
 			</div>
 		</form:form>
@@ -72,9 +70,7 @@
                         <div class="c-Box__body">
                             <strong>Template name:</strong>
                             <form:input path="templateName" cssClass="form-control"/>
-                            <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="templateName" />
-                            </div>
+                            <form:errors cssClass="invalid-feedback" path="templateName" />
                         </div>
 					</div>
 					<h3>Proposal template sections</h3>
@@ -223,15 +219,11 @@
 							<div class="clearfix"><!--  --></div>
 							<strong>Help text:</strong><br/>
                             <form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText" cssClass="form-control" />   <!-- cssClass="rte-editorPlaceholder" -->
-                            <div class="reg_errors">
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="sections[${x.index}].helpText" />
-                            </div>
+                            <form:errors cssClass="invalid-feedback" path="sections[${x.index}].helpText" />
 							<div class="clearfix"><!--  --></div>
 							<strong>Default text:</strong><br/>
                             <form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText" cssClass="form-control" />   <!-- cssClass="rte-editorPlaceholder" -->
-                            <div class="reg_errors">
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="sections[${x.index}].defaultText" />
-                            </div>
+                            <form:errors cssClass="invalid-feedback" path="sections[${x.index}].defaultText" />
 
                             <div class="js-sectionTypeDependent" data-section-type="DROPDOWN_MENU"
                                     style="display: none">

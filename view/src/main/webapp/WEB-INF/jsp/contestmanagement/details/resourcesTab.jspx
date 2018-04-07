@@ -85,9 +85,7 @@
                             <strong>Content:</strong>
                         </c:if>
                         <form:textarea path="sections[${x.index}].content" cssClass="${fn:length(contestResourcesBean.sections)-1 eq x.index ? '': 'rte-editorPlaceholder'}" data-form-name="content" />
-                        <div class="reg_errors">
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="sections[${x.index}].content" />
-                        </div>
+                        <form:errors cssClass="invalid-feedback" path="sections[${x.index}].content" />
                         <c:if test="${section.characterLimit  > 0}">
                             <div class="inputLimitContainer">
                                 <span class="limit_characterCount"><!--  --></span>

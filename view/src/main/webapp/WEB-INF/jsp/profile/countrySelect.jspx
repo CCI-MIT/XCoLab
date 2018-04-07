@@ -253,8 +253,6 @@
         <form:option value="ZM" label="Zambia"/>
         <form:option value="ZW" label="Zimbabwe"/>
     </form:select>
-    <div class="reg_errors"><!--  -->
-        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="countryCode" />
-    </div>
+    <form:errors cssClass="invalid-feedback" path="countryCode" />
 
 </jsp:root>

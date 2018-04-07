@@ -57,10 +57,7 @@
                         <form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value"
                                       itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors">
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="elementId"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="elementId"/>
                 </div>
             </div>
         </form:form>
