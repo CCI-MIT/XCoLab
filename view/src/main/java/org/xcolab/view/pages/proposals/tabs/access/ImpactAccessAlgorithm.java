@@ -46,9 +46,7 @@ public class ImpactAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
             if (contest.getContestTier() != ContestTier.NONE.getTierType()
                     && contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType()) {
                 long focusAreaId = contest.getFocusAreaId();
-                if (!isDescendantOfExcludedOntologyTerm(focusAreaId)) {
-                    return true;
-                }
+                return !isDescendantOfExcludedOntologyTerm(focusAreaId);
             }
         }
         return false;

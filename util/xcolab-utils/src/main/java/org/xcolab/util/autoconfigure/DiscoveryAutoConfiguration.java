@@ -65,10 +65,10 @@ public class DiscoveryAutoConfiguration {
                 .setConnectionManager(poolingHttpClientConnectionManager())
                 .setDefaultRequestConfig(RequestConfig.custom()
                         .setConnectTimeout(
-                                (int) httpClientProperties.getConnectTimeout().toMillis())
+                                (int) httpClientProperties.getConnectTimeout())
                         .setConnectionRequestTimeout(
-                                (int) httpClientProperties.getConnectionRequestTimeout().toMillis())
-                        .setSocketTimeout((int) httpClientProperties.getSocketTimeout().toMillis())
+                                (int) httpClientProperties.getConnectionRequestTimeout())
+                        .setSocketTimeout((int) httpClientProperties.getSocketTimeout())
                         .build())
                 .build();
         log.debug("HttpClient: connectTimeout={}, connectionRequestTimeout={}, socketTimeout={}",
