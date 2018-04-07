@@ -177,7 +177,8 @@
                             <spring:message code="profile.form.fields.password"/>
                         </div>
                         <div class="col">
-                            <xcolab:passwordWithError path="currentPassword" autocomplete="current-password" />
+                            <form:password id="currentPassword" path="currentPassword" cssClass="form-control" cssErrorClass="form-control is-invalid" autocomplete="current-password" />
+                            <form:errors cssClass="invalid-feedback" path="currentPassword" />
                         </div>
                     </div>
                     <div class="form-row">
@@ -185,7 +186,8 @@
                             <spring:message code="profile.form.fields.newpassword"/>
                         </div>
                         <div class="col">
-                            <xcolab:passwordWithError path="password" autocomplete="new-password" />
+                            <form:password id="password" path="password" cssClass="form-control" cssErrorClass="form-control is-invalid" autocomplete="new-password" />
+                            <form:errors cssClass="invalid-feedback" path="password" />
                         </div>
                     </div>
                     <div class="form-row" id="retypePasswordRow" style="${passwordError ? '' : 'display: none;'}">
@@ -193,7 +195,8 @@
                             <spring:message code="profile.form.fields.retypepassword"/>
                         </div>
                         <div class="col">
-                            <xcolab:passwordWithError path="retypePassword" autocomplete="new-password" />
+                            <form:password id="retypePassword" path="retypePassword" cssClass="form-control" cssErrorClass="form-control is-invalid" autocomplete="new-password" />
+                            <form:errors cssClass="invalid-feedback" path="retypePassword" />
                         </div>
                     </div>
                 </c:otherwise>
