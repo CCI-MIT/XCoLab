@@ -9,7 +9,7 @@
 
     <c:set var="id" value="${(empty id) ? path : id}" />
     <c:set var="autocomplete" value="${(empty autocomplete) ? 'off' : autocomplete}" />
-    <c:set var="autocomplete" value="${(empty autocomplete) ? '' : disabled}" />
+    <c:set var="disabled" value="${(empty disabled) ? '' : disabled}" />
 
     <form:input id="${id}" path="${path}"
                 cssClass="form-control" cssErrorClass="form-control is-invalid"
