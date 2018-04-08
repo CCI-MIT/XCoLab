@@ -25,7 +25,7 @@
         <c:set var="changeToOutlineViewTypeURL" value="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter}&amp;showAllContests=${showAllContests}" />
 
         <c:if test="${showContestDisplayOptions}">
-            <div class="col-12 col-lg-6 order-last order-lg-0">
+            <div class="col-12 col-lg-6 order-last order-lg-0 d-none d-md-block">
                 <div class="btn-group cb-btn-group-justified p-Contests__viewSelector" role="group" aria-label="Contest display options">
                     <a class="btn btn-outline-primary ${viewType == 'GRID' ? 'cb-btn-group-active-btn' : ''}"
                        href="${changeToGridViewTypeURL}">
