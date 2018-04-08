@@ -275,7 +275,9 @@
 
     <!-- ============ Scripts ============ -->
 
-    <xcolab-scripts:loadWidgets />
+    <c:if test="${_librariesToLoad['widgets']}">
+        <xcolab-scripts:loadWidgets />
+    </c:if>
 
     <xcolab-scripts:loadNotyAlerts />
     <c:if test="${not empty _themeContext.messageVariables.alertMessage}">

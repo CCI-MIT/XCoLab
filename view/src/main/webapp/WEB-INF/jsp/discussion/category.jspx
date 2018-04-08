@@ -24,7 +24,7 @@
                 window.location = '/discussion/' + newUrl;
             }
         </script>
-        <xcolab:content articleId="${communityTopContentArticleId}" />
+        <xcolab:content articleId="${communityTopContentArticleId}" loadWidgetLibrary="false"/>
         <div id="content">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
