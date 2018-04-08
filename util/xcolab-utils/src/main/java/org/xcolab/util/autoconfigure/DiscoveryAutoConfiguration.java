@@ -2,7 +2,6 @@ package org.xcolab.util.autoconfigure;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.http.HttpHost;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -63,13 +62,14 @@ public class DiscoveryAutoConfiguration {
     public RestTemplate restTemplate() {
         final CloseableHttpClient httpClient = HttpClients.custom()
                 .setConnectionManager(poolingHttpClientConnectionManager())
-                .setDefaultRequestConfig(RequestConfig.custom()
-                        .setConnectTimeout(
-                                (int) httpClientProperties.getConnectTimeout().toMillis())
-                        .setConnectionRequestTimeout(
-                                (int) httpClientProperties.getConnectionRequestTimeout().toMillis())
-                        .setSocketTimeout((int) httpClientProperties.getSocketTimeout().toMillis())
-                        .build())
+                //TODO: temporarily disabled pending resolution of a timeout problem
+//                .setDefaultRequestConfig(RequestConfig.custom()
+//                        .setConnectTimeout(
+//                                (int) httpClientProperties.getConnectTimeout())
+//                        .setConnectionRequestTimeout(
+//                                (int) httpClientProperties.getConnectionRequestTimeout())
+//                        .setSocketTimeout((int) httpClientProperties.getSocketTimeout())
+//                        .build())
                 .build();
         log.debug("HttpClient: connectTimeout={}, connectionRequestTimeout={}, socketTimeout={}",
                 httpClientProperties.getConnectTimeout(),

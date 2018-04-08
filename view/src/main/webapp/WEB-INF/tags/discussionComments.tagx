@@ -138,6 +138,7 @@
 
 										<c:if test="${empty sharedColabId} ">
 											<c:if test="${discussionPermissions.getCanReportMessage(message) }">
+                                                <xcolab:requireLibrary name="flagging"/>
 												<button type="button" class="btn btn-link" onclick="reportComment(${message.commentId})">
                                                     Report
                                                 </button>

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -60,8 +59,7 @@ public class RandomProposalsController
                 new RandomProposalsPreferences(preferenceId, locale.getLanguage());
 
 
-        ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences,
-                PlatformAttributeKey.COLAB_URL + "/proposal/");
+        ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences);
 
         model.addAttribute("proposalsModel", proposalsModel);
 
