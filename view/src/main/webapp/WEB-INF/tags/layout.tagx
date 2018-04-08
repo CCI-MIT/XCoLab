@@ -289,7 +289,11 @@
 
     <collab:script src="/js/postLinkHandler.js"/>
     <xcolab-scripts:loadTooltips />
-    <xcolab-scripts:loadMoment locale="${_themeContext.i18NVariables.language}"/>
+
+
+    <c:if test="${_librariesToLoad['moment.js']}">
+        <xcolab-scripts:loadMoment locale="${_themeContext.i18NVariables.language}"/>
+    </c:if>
 
     <!-- Bootstrap -->
     <collab:script src="/vendor/popper.js/dist/umd/popper.min.js" />
@@ -303,13 +307,18 @@
 
     <!-- ============ On demand libraries ============ -->
 
+    <!-- Cross-library dependencies -->
+    <c:if test="${_librariesToLoad['jquery.scrolltable']}">
+        <xcolab:requireLibrary name="jQuery UI" />
+    </c:if>
+
     <!-- TODO COLAB-2545: what are we using this for? Do we really need it on all pages? -->
     <xcolab:requireLibrary name="jQuery UI" />
 
     <!-- jQuery UI -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['jQuery UI']}" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
-                       integrity="sha256-KM512VNnjElC30ehFwehXjx1YCHPiQkOPmqnrWtpccM="/>
     <c:if test="${_librariesToLoad['jQuery UI']}">
+        <collab:script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+                       integrity="sha256-KM512VNnjElC30ehFwehXjx1YCHPiQkOPmqnrWtpccM="/>
         <collab:stylesheet href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css"
                             integrity="sha256-vpKTO4Ob1M4bZ8RAvZvYMtinMz1XjH0QYdAO2861V9M="/>
     </c:if>
@@ -323,8 +332,11 @@
     <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="/vendor/spin.js/spin.min.js" />
     <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="/vendor/spin.js/jquery.spin.js"/>
 
-    <!-- TODO COLAB-2545: only used in mitigration impact tab; requires jquery UI -->
-    <collab:script src="/js/proposals/jquery.scrolltable.js"/>
+    <!-- jquery.scrolltable -->
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['jquery.scrolltable']}" src="/js/proposals/jquery.scrolltable.js"/>
+
+    <!-- numberal.js -->
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['numeral.js']}" src="/js/proposals/numeral.min.js"/>
 
     <!-- Handlebars.js-->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['handlebars.js']}" src="/vendor/handlebars/dist/handlebars.min.js"/>
