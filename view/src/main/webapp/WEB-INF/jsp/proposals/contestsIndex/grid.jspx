@@ -28,12 +28,11 @@
         </div>
 
         <c:if test="${not empty contestsSorted.contestsFeatured}">
-            <div class="contest-featured-seperator">&#160;</div>
+            <hr class="p-Contests__featuredSeparator"/>
         </c:if>
 
-        <div class="clearfix">
-            <c:set var="zebra" value="true"/>
-            <c:forEach var="contest" items="${contestsSorted.contestsNormal }" varStatus="status">
+        <div class="card-deck">
+            <c:forEach var="contest" items="${contestsSorted.contestsNormal}" varStatus="status">
                 <c:if test="${contest.showInTileView}">
                     <c:set var="isEven" value="${status.index % 2 == 0 ? true : false}"/>
                     <xcolab:contestBox contest="${contest }" showFlags="true"/>
