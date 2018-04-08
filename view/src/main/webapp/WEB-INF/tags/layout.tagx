@@ -253,17 +253,22 @@
                                   authError="${_themeContext.authenticationVariables.authError}"
                                   showFacebookSso="${_themeContext.authenticationVariables.isFacebookSsoActive}"
                                   showGoogleSso="${_themeContext.authenticationVariables.isGoogleSsoActive}" />
+        <xcolab:requireLibrary name="forgotPasswordModal"/>
     </c:if>
 
-    <xcolab-modals:forgotPasswordModal show="${_themeContext.authenticationVariables.showPasswordResetPopup}"
-                                       redirect="${_themeContext.requestUri}"
-                                       screenName="${_themeContext.authenticationVariables.isLoggedIn ? _themeContext.authenticationVariables.member.screenName : null}"/>
+    <c:if test="${_librariesToLoad['forgotPasswordModal']}">
+        <xcolab-modals:forgotPasswordModal show="${_themeContext.authenticationVariables.showPasswordResetPopup}"
+                                           redirect="${_themeContext.requestUri}"
+                                           screenName="${_themeContext.authenticationVariables.isLoggedIn ? _themeContext.authenticationVariables.member.screenName : null}"/>
+    </c:if>
 
     <c:if test="${_librariesToLoad['sendMessage']}">
         <xcolab-modals:sendMessageModal/>
     </c:if>
 
-    <xcolab-modals:flaggingModal />
+    <c:if test="${_librariesToLoad['flagging']}">
+        <xcolab-modals:flaggingModal />
+    </c:if>
 
     <!-- TODO COLAB-2172: rework as part of SSO improvements -->
     <!-- post registration popup -->
