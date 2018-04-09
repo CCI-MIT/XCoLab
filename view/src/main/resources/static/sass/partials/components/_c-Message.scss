@@ -12,14 +12,6 @@ $c-Message__input__background: #F2F1E9 url(/images/sendMessage_textarea.gif) no-
   font-size: 15px;
   font-style: italic;
   color: $c-Message__textColor;
-
-  .c-Message__number { //#message-info span.num
-    padding-right: 5px;
-    font-size: 37px;
-    font-style: normal;
-    font-weight: 900;
-    color: $c-Message__number__textColor;
-  }
 }
 
 .c-Message__input { //popuplogin_input
