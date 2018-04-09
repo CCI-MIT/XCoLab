@@ -136,37 +136,6 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
 }
 
 /** PAGER **/
-//TODO: probably unused?
-.iceDatPgrTbl td {
-  padding: 0 4px 0 4px;
-}
-
-.iceDatPgr {
-  font-size: 0.85em;
-}
-
-.iceDatPgrScrCol {
-  font-weight: $t-Typography__fontWeight--bold;
-}
-
-.iceDatPgr .iceDatPgrScrBtn {
-  font-weight: $t-Typography__fontWeight--bold;
-  padding: 0 4px 0 4px;
-}
-
-.iceOutFrmt.page {
-  font-size: 0.85em;
-}
-
-.pager td.pageInfo {
-
-  padding-top: 2px;
-}
-
-.pager .oldestNewestPager {
-  font-size: 0.85em;
-  font-weight: bold;
-}
 
 .pager td {
   vertical-align: bottom;
