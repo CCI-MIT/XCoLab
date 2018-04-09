@@ -230,12 +230,6 @@
             }
         </script>
 
-
-        <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden"
-                style="display: none;">
-            <!-- comment -->
-        </iframe>
-
         <c:if test="${generateScreenName}">
             <script>
                 function generateScreenName() {

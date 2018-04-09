@@ -146,7 +146,7 @@
                 </div>
             </div>
 
-            <div class="c-Box c-Box--colorPrimaryGrayLight ${contestType.showTeamField ? '' : 'hidden'}">
+            <div class="c-Box c-Box--colorPrimaryGrayLight ${contestType.showTeamField ? '' : 'd-none'}">
                 <div class="c-Box__bodyRow">
                     <label class="p-Proposal__formBox__label">
                         <div>
