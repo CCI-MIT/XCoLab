@@ -57,21 +57,27 @@
                 </p>
             </c:if>
 
-            <div class="comm_info-left members">
-                <span>${usersCount}</span> <spring:message code="community.page.members.count"/>
-            </div>
-            <div>
+            <div class="row">
+                <div class="col-12 col-md-5">
+                    <div class="c-Count">
+                        <span class="c-Count__number">
+                            ${usersCount}
+                        </span>
+                        <spring:message code="community.page.members.count"/>
+                    </div>
+                </div>
+                <div class="col-12 col-md-7 mb-2">
+                    <c:set var="filterURL" value="/members?sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}" />
 
-                <c:set var="filterURL" value="/members?sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}" />
+                    <form:form action="${filterURL}" method="post" cssClass="form-inline flex-nowrap">
+                        <spring:message code="community.page.members.search.placeholder" var="placeHolderText"/>
+                        <input class="form-control flex-fill" type="text" value="${sortFilterPage.filter}" placeholder="${placeHolderText}" name="filter" />
+                        <button type="submit" class="btn btn-primary ml-2">
+                            <spring:message code="community.page.members.search.button.search"/>
+                        </button>
+                    </form:form>
 
-                <form:form action="${filterURL }" method="post" cssClass="form-inline float-right">
-                    <spring:message code="community.page.members.search.placeholder" var="placeHolderText"/>
-                    <input class="form-control" type="text" value="${sortFilterPage.filter}" placeholder="${placeHolderText}" name="filter" />
-                    <button type="submit" class="btn btn-primary ml-2">
-                        <spring:message code="community.page.members.search.button.search"/>
-                    </button>
-                </form:form>
-
+                </div>
             </div>
 
             <table class="c-Table">
