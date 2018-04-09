@@ -93,24 +93,6 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
 
 /* community - members */
 
-.comm_submit {
-  width: 66px;
-  height: 29px;
-  margin-left: 10px;
-  text-align: center;
-  vertical-align: middle;
-  background: url(/images/search_btn.gif) no-repeat;
-  border: none;
-  cursor: pointer;
-  color: white;
-  font-size: 15px;
-  font-weight: $t-Typography__fontWeight;
-}
-
-.comm_submit:hover {
-  color: black;
-}
-
 .comm_member {
   margin: 40px 0;
 }
