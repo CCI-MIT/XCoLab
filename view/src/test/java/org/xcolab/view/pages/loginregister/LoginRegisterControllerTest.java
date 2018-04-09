@@ -23,7 +23,6 @@ import org.xcolab.client.admin.pojo.MockContestType;
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -33,13 +32,11 @@ import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 
 import java.util.ArrayList;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -137,10 +134,6 @@ public class LoginRegisterControllerTest {
                 .andExpect(model().hasErrors());
 
     }
-    //.andExpect(model().attributeHasFieldErrors(
-    //        "screenName"));
-    //, "email","retypeEmail", "firstName","lastName", "password", "retypePassword"
-
 
     @Test
     public void registrationWorksAndDoLoginAndUserRedirectedToHome() throws Exception {
@@ -160,22 +153,5 @@ public class LoginRegisterControllerTest {
                 .param("country", "BR")
                 .param("shortBio", "shortbio"))
                 .andExpect(redirectedUrl("/"));
-        PowerMockito.verifyStatic(Mockito.times(1));
     }
-
-    @Test
-    public void generateScreenName() throws Exception {
-        Mockito.when(MembersClient.generateScreenName(anyString(), anyString()))
-                .thenAnswer(invocation -> "---");
-
-
-        this.mockMvc.perform(post("/api/register/generateScreenName")
-                .with(csrf())
-                .param("firstName", "User")
-                .param("lastName", "Name"))
-                .andExpect(content().string(containsString("screenName")));
-        PowerMockito.verifyStatic(Mockito.times(1));
-        MembersClient.generateScreenName("Name","User");
-    }
-
 }

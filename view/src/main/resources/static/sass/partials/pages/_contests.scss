@@ -295,12 +295,15 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   padding-top: 40px;
 }
 
-.contest-featured-seperator {
-  width: 50%;
-  border-bottom: 1px solid gray;
-  float: left;
-  margin: 20px 25% 44px 25%;
-  height: 0;
+.p-Contests__featuredSeparator {
+  margin: 0 auto 1.5rem auto;
+  width: 75%;
+
+  @include media-breakpoint-up(lg) {
+    margin-top: 1.5rem;
+    margin-bottom: 3rem;
+    width: 50%;
+  }
 }
 
 /* the table with rows of users  */
@@ -352,19 +355,6 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 //contest outline view
 .accordion, .accordion li {
   list-style: none;
-}
-
-.prop {
-  display: inline;
-  padding-right: 18px;
-}
-
-.comm {
-  display: inline;
-}
-
-.prop a, .comm a {
-   font-weight: $t-Typography__fontWeight--bold;
 }
 
 .nothingFound {

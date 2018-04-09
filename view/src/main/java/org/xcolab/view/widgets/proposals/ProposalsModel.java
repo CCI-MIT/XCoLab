@@ -1,5 +1,6 @@
 package org.xcolab.view.widgets.proposals;
 
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.util.List;
@@ -7,15 +8,12 @@ import java.util.List;
 public class ProposalsModel {
 
     private final RandomProposalsPreferences _preferences;
-    private final String _baseImagePath;
 
     private final List<Proposal> _proposals;
 
-    public ProposalsModel(List<Proposal> proposals, RandomProposalsPreferences preferences,
-            String baseImagePath) {
+    public ProposalsModel(List<Proposal> proposals, RandomProposalsPreferences preferences) {
         _proposals = proposals;
         _preferences = preferences;
-        _baseImagePath = baseImagePath;
     }
 
     public RandomProposalsPreferences getPreferences() {
@@ -23,7 +21,7 @@ public class ProposalsModel {
     }
 
     public String getBaseImagePath() {
-        return _baseImagePath;
+        return PlatformAttributeKey.COLAB_URL.get() + "/proposal/";
     }
 
     public List<Proposal> getProposals() {

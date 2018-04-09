@@ -84,6 +84,10 @@
 
         <!-- Misc -->
         <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.nibor.autolink</groupId>
             <artifactId>autolink</artifactId>
         </dependency>
