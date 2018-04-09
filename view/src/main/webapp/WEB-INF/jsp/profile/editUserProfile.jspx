@@ -59,7 +59,7 @@
 		<div class="l-Content__main">
             <form:hidden path="userId"/>
             <form:hidden path="screenName" autocomplete="username"/>
-			<div class="reg_errors"><!--  --></div>
+
 			<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*" htmlEscape="false" />
 
             <div class="row mb-2">
