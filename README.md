@@ -47,3 +47,8 @@ You can read more about our architecture [here](https://github.com/CCI-MIT/XCoLa
 
 If you notice any issues with the xCoLab, please open an issue in this repository.
 If you're interested in contributing to this project, check out [CONTRIBUTING.md](https://github.com/CCI-MIT/XCoLab/blob/master/CONTRIBUTING.md).
+
+## Supporters
+
+We use browserstack for cross-browser testing to ensure the xCoLab looks good across all supported browsers and devices:
+[![Browserstack](https://p14.zdusercontent.com/attachment/1015988/HM1p8UVlknjX4qselq9X3PeFq?token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..cu6DQzoAj0QVYFBeA6evsQ.IdvvylQZiSAV0AZqnnvksOG2G72SFCzFiP8rxwiTHR2kxDcvIZKjhFMnnYh4zLRgEn8vqHa9OpUxcEqv148QNSeRXyS8dsLvXbM48FijM7VTG-cdA8OgxNK2ful5NcH3uWpXEjs0D_2aKbACcXW-raSHZiU87IoUYsNhXbuyGQ4azJXaSox9RfH46-0WFv8ZLb70PYWXIxKRv5yET-_11cjhsE8sITzakVBnQ0SxT-LXN2q4WJsX9sTHqUgu2KTAI7sRu34qAcc9VUGV0-WFpRIPlHUUPavGqDygaqLXAJM.I4GWWPtlv4PIrYDKZQHYiA)](http://browserstack.com/)
