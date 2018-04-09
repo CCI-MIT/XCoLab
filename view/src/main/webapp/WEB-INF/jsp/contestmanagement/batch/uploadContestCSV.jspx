@@ -27,10 +27,7 @@
 
         <form:form action="${createBatchContestsURL }" commandName="contestBatchBean" cssClass="addpropform"
                    id="batchForm" method="post">
-            <div class="reg_errors"><!--  -->
-                <form:errors cssClass="alert alert-error" path="*"/>
-            </div>
-
+            <form:errors cssClass="alert alert-error" path="*"/>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">

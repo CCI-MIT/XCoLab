@@ -67,7 +67,6 @@
                 <form:hidden path="language" />
             </c:if>
 
-            <div class="reg_errors"><!--  --></div>
             <form:errors cssClass="alert alert-danger cb-alert-form-invalid" htmlEscape="false"/>
             <table class="reg">
                 <tr style="${ generateScreenName ? 'display: none;' : ''}">
@@ -192,9 +191,7 @@
                         <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.captcha"/> </th>
                         <td colspan="3">
                             <div class="g-recaptcha" data-sitekey="${recaptchaDataSiteKey}"><!-- --></div>
-                            <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="captchaText" />
-                            </div>
+                            <form:errors cssClass="invalid-feedback" path="captchaText" />
                         </td>
                     </tr>
                 </c:if>

@@ -42,9 +42,7 @@
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
-        <div class="reg_errors"><!--  -->
-            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
-        </div>
+        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
 
         <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
                    method="post">
@@ -134,10 +132,8 @@
                                     <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
                                                  data-form-name="contestPhaseDeleted"/>
 
-                                    <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid"
+                                    <form:errors cssClass="alert alert-danger cb-alert-form-invalid"
                                                      path="schedulePhases[${x.index}].phaseStartDate"/>
-                                    </div>
 
                                     <td data-form-attribute="indexLable">${x.index + 1}</td>
                                     <td>

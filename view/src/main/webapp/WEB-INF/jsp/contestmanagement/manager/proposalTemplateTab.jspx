@@ -62,9 +62,7 @@
 					<form:hidden path="numberOfSections"/>
 					<form:hidden path="planTemplateId"/>
 
-					<div class="reg_errors"><!--  -->
-						<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*" />
-					</div>
+                    <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*" />
 
 					<div class="c-Box c-Box--colorTan">
                         <div class="c-Box__body">
