@@ -5,6 +5,8 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags">
 
+<!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
+
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="Manage subscriptions">
 
@@ -33,84 +35,83 @@
         </ol>
     </nav>
 
-    <div class="main_long">
+    <h1><spring:message code="subscription.activities.subscribedactivities.title"/></h1>
 
-        <div class="main_long">
-            <h1><spring:message code="subscription.activities.subscribedactivities.title"/></h1>
-            <div class="comm_info-left subscriptions">
-                <span>${currentUserProfile.userSubscriptions.subscriptionsCount}</span> <spring:message code="subscription.activities.subscribedactivities.count"/>
+    <div class="l-Content">
+        <div class="l-Content__main">
+            <div class="c-Count mb-2">
+                <span class="c-Count__number">
+                ${currentUserProfile.userSubscriptions.subscriptionsCount}</span>
+                <spring:message code="subscription.activities.subscribedactivities.count"/>
             </div>
-        </div>
 
-        <form:form commandName="userSubscriptions" id="removeSubscriptionsForm" method="post"
-                   action="${removeSubscriptionURL}">
-            <table id="activitiesTable" class="colab">
-                <tr>
-                    <th class="subscriptionSelect Hdr" style="width: 40px;"><input
-                            type="checkbox" id="checkboxSelectAll"/></th>
-                    <th class="header Hdr"><spring:message code="subscription.activities.table.subject"/> </th>
-                    <th class="header Hdr" style="width: 100px;"><spring:message code="subscription.activities.table.category"/> </th>
-                    <th style="width: 160px;" class="Hdr"><spring:message code="subscription.activities.table.updated"/> </th>
-                </tr>
-
-                <c:forEach var="subscription" items="${userSubscriptions.subscriptions}"
-                           varStatus="x">
-                    <tr class="colabRow">
-                        <td class="subscriptionSelect"><form:checkbox
-                                path="subscriptions[${x.index}].selected"
-                                class="subscriptionSelect"/>
-                            <form:hidden path="subscriptions[${x.index}].subscriptionPk"/>
-                        </td>
-                        <td>${subscription.name}</td>
-                        <td>${subscription.type.printName}</td>
-                        <td>
-                            <xcolab:formatDateTime millis="${subscription.updated.time}" />
-                        </td>
+            <form:form commandName="userSubscriptions" id="removeSubscriptionsForm" method="post"
+                       action="${removeSubscriptionURL}">
+                <table id="activitiesTable" class="colab mt-0">
+                    <tr>
+                        <th class="subscriptionSelect Hdr" style="width: 40px;"><input
+                                type="checkbox" id="checkboxSelectAll"/></th>
+                        <th class="header Hdr"><spring:message code="subscription.activities.table.subject"/> </th>
+                        <th class="header Hdr" style="width: 100px;"><spring:message code="subscription.activities.table.category"/> </th>
+                        <th style="width: 160px;" class="Hdr"><spring:message code="subscription.activities.table.updated"/> </th>
                     </tr>
-                </c:forEach>
-            </table>
 
-            <div class="com-info bot">
-                <a class="btn btn-primary" href="javascript:;"
-                   onclick="selectAllSubscriptions()"><spring:message code="subscription.activities.table.selectall"/></a>
-                <a class="btn btn-primary" href="javascript:;"
-                   onclick="jQuery('#removeSubscriptionsForm').submit();"><spring:message code="subscription.activities.table.removeselected"/></a>
-            </div>
-        </form:form>
+                    <c:forEach var="subscription" items="${userSubscriptions.subscriptions}"
+                               varStatus="x">
+                        <tr class="colabRow">
+                            <td class="subscriptionSelect"><form:checkbox
+                                    path="subscriptions[${x.index}].selected"
+                                    class="subscriptionSelect"/>
+                                <form:hidden path="subscriptions[${x.index}].subscriptionPk"/>
+                            </td>
+                            <td>${subscription.name}</td>
+                            <td>${subscription.type.printName}</td>
+                            <td>
+                                <xcolab:formatDateTime millis="${subscription.updated.time}" />
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
 
-    </div>
-
-    <div class="c-Message__column" style="margin-top: 49px!important;">
-        <div class="comm_list">
-            <h3><spring:message code="subscription.activities.table.display"/></h3>
-            <ul>
-                <li class="${currentUserProfile.userSubscriptions.typeFilterName == null ? 'c' : ''}">
-                    <subscriptions:subscriptionsPaginationFilterLink
-                            userId="${currentUserProfile.userId}" typeFilter="null"
-                            text="Show All Subscriptions"/>
-                </li>
-                <li class="${currentUserProfile.userSubscriptions.typeFilterName == 'DISCUSSION' ? 'c' : ''}">
-                    <subscriptions:subscriptionsPaginationFilterLink
-                            userId="${currentUserProfile.userId}" typeFilter="DISCUSSION"
-                            text="Discussions"/>
-                </li>
-                <li class="${currentUserProfile.userSubscriptions.typeFilterName == 'PROPOSAL' ? 'c' : ''}">
-                    <subscriptions:subscriptionsPaginationFilterLink
-                            userId="${currentUserProfile.userId}" typeFilter="PROPOSAL"
-                            text="${contestType.proposalNamePlural}"/>
-                </li>
-            </ul>
-            <h3><spring:message code="subscription.activities.table.settings"/></h3>
-            <ul>
-                <li>
-                    <a href="/members/profile/${currentUserProfile.userId}/edit"><spring:message code="subscription.activities.manage.settings"/></a>
-                </li>
-            </ul>
+                <div class="com-info bot">
+                    <a class="btn btn-primary" href="javascript:;"
+                       onclick="selectAllSubscriptions()"><spring:message code="subscription.activities.table.selectall"/></a>
+                    <a class="btn btn-primary" href="javascript:;"
+                       onclick="jQuery('#removeSubscriptionsForm').submit();"><spring:message code="subscription.activities.table.removeselected"/></a>
+                </div>
+            </form:form>
         </div>
 
-    </div> <!-- /c-Message__column -->
+        <div class="l-Content__sidebar l-Content__sidebar--right l-Content__sidebar--small">
+            <div class="comm_list">
+                <h3><spring:message code="subscription.activities.table.display"/></h3>
+                <ul>
+                    <li class="${currentUserProfile.userSubscriptions.typeFilterName == null ? 'c' : ''}">
+                        <subscriptions:subscriptionsPaginationFilterLink
+                                userId="${currentUserProfile.userId}" typeFilter="null"
+                                text="Show All Subscriptions"/>
+                    </li>
+                    <li class="${currentUserProfile.userSubscriptions.typeFilterName == 'DISCUSSION' ? 'c' : ''}">
+                        <subscriptions:subscriptionsPaginationFilterLink
+                                userId="${currentUserProfile.userId}" typeFilter="DISCUSSION"
+                                text="Discussions"/>
+                    </li>
+                    <li class="${currentUserProfile.userSubscriptions.typeFilterName == 'PROPOSAL' ? 'c' : ''}">
+                        <subscriptions:subscriptionsPaginationFilterLink
+                                userId="${currentUserProfile.userId}" typeFilter="PROPOSAL"
+                                text="${contestType.proposalNamePlural}"/>
+                    </li>
+                </ul>
+                <h3><spring:message code="subscription.activities.table.settings"/></h3>
+                <ul>
+                    <li>
+                        <a href="/members/profile/${currentUserProfile.userId}/edit"><spring:message code="subscription.activities.manage.settings"/></a>
+                    </li>
+                </ul>
+            </div>
 
-    <div class="clearfix"><!-- --></div>
+        </div>
+    </div>
 
     <script>
         jQuery("#checkboxSelectAll").change(function () {
