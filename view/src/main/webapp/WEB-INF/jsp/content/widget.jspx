@@ -1,6 +1,5 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
-    <xcolab:content articleId="${articleId}"/>
-
+    <xcolab:content articleId="${articleId}" loadWidgetLibrary="false"/>
 </jsp:root>

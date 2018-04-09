@@ -2,17 +2,15 @@
     <script>
         (function() {
             initializeWidgets(jQuery('.js-Widget, .colabwidget'));
-
             function initializeWidgets($widgets) {
                 $widgets.each(function () {
-                    var $this = jQuery(this);
+                    var $el = jQuery(this);
+                    var articleId = $el.data("article-id");
+                    var url = articleId === undefined ? $el.data("url")
+                            : "/widgets/content/" + articleId;
 
-                    var articleId = $this.data("article-id");
-
-                    var url = ((articleId === undefined) ? ($this.data("url")):("/widgets/content?contentArticleId=" + articleId));
-
-                    $this.load(url, function () {
-                        var $children = $this.children();
+                    $el.load(url, function () {
+                        var $children = $el.children();
                         findAndInitializeTooltips($children);
                         initializeWidgets($children.find('.js-Widget'));
                     });

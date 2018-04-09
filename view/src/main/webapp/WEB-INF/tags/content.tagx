@@ -1,10 +1,18 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld">
+
+<!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
 <jsp:directive.attribute name="articleId" type="java.lang.Long" required="true" rtexprvalue="true" description="Content article id" />
 <jsp:directive.attribute name="withTitle" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the title should be included" />
+<jsp:directive.attribute name="loadWidgetLibrary" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the widget script is loaded. Default is true." />
 
+<c:if test="${empty loadWidgetLibrary or loadWidgetLibrary}">
+    <!-- Load code to resovle widgets inside content articles -->
+    <xcolab:requireLibrary name="widgets"/>
+</c:if>
 <div>
     <collab:loadContent articleId="${articleId}">
         <!--@elvariable id="contentArticle" type="org.xcolab.client.contents.pojo.ContentArticle"-->

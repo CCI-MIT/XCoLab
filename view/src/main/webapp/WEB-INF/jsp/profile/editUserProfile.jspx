@@ -169,6 +169,7 @@
 
             <c:choose>
                 <c:when test="${currentUserProfile.viewingOwnProfile and empty currentUserProfile.user.hashedPassword}">
+                    <xcolab:requireLibrary name="forgotPasswordModal"/>
                     <!-- User has no password yet - allow sending reset link -->
                     <div class="form-row">
                         <div class="cb-form-col-label">
