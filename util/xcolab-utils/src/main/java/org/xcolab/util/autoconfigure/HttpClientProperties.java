@@ -2,39 +2,42 @@ package org.xcolab.util.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 @ConfigurationProperties("http-client")
 public class HttpClientProperties {
 
-    private Duration connectTimeout = Duration.ofSeconds(5);
-    private Duration connectionRequestTimeout = Duration.ofSeconds(5);
-    private Duration socketTimeout = Duration.ofSeconds(5);
+    //TODO: Duration only works in spring boot 2.0
+//    private Duration connectTimeout = Duration.ofSeconds(5);
+//    private Duration connectionRequestTimeout = Duration.ofSeconds(5);
+//    private Duration socketTimeout = Duration.ofSeconds(5);
+    private long connectTimeout = 5000;
+    private long connectionRequestTimeout = 5000;
+    private long socketTimeout = 5000;
     private final ConnectionPool connectionPool = new ConnectionPool();
 
-    public Duration getConnectTimeout() {
+    public long getConnectTimeout() {
         return connectTimeout;
     }
 
-    public void setConnectTimeout(Duration connectTimeout) {
+    public void setConnectTimeout(long connectTimeout) {
         this.connectTimeout = connectTimeout;
     }
 
-    public Duration getConnectionRequestTimeout() {
+    public long getConnectionRequestTimeout() {
         return connectionRequestTimeout;
     }
 
-    public void setConnectionRequestTimeout(Duration connectionRequestTimeout) {
+    public void setConnectionRequestTimeout(long connectionRequestTimeout) {
         this.connectionRequestTimeout = connectionRequestTimeout;
     }
 
-    public Duration getSocketTimeout() {
+    public long getSocketTimeout() {
         return socketTimeout;
     }
 
-    public void setSocketTimeout(Duration socketTimeout) {
+    public void setSocketTimeout(long socketTimeout) {
         this.socketTimeout = socketTimeout;
     }
 
