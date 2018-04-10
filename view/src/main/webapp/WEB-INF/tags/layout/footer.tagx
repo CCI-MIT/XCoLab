@@ -78,7 +78,7 @@
         
         <footer class="cb-container-fixed py-4">
             <!-- footer content -->
-            <xcolab:content articleId="${footerArticleId}"/>
+            <xcolab:content articleId="${footerArticleId}" loadWidgetLibrary="false"/>
         </footer>
     </div>
 </jsp:root>
