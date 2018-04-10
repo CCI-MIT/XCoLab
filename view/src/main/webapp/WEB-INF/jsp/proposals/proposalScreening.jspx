@@ -87,10 +87,8 @@
                                 </c:forEach>
                             </div>
                             <i>Your comment will be visible to the public.</i>
-                            <div class="form-errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger" path="fellowScreeningActionCommentBody" />
-                            </div>
                             <form:textarea id="fellowCommentBody" cssClass="c-Comment__box" path="fellowScreeningActionCommentBody" style="width:100%;"/>
+                            <form:errors cssClass="invalid-feedback" path="fellowScreeningActionCommentBody" />
                             <div id="comment-footers">
                                 <c:forEach var="template" items="${emailTemplates}">
                                     <div class="${template.key}">

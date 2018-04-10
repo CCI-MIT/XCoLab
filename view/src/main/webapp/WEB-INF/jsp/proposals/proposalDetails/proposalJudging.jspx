@@ -73,30 +73,24 @@
         <br/>
         <form:errors cssClass="alert alert-danger" />
 
-        <div class="form-errors">
-            <form:errors path="ratingValues" cssClass="alert alert-danger"/>
-        </div>
         <proposalsPortlet:proposalRating ratingTypes="${judgeProposalFeedbackBean.ratingTypes}" ratingValuesPath="ratingValues" />
+        <form:errors path="ratingValues" cssClass="invalid-feedback"/>
 
         <c:if test="${proposalsPermissions.canJudgeActions}">
             <h3>Is this proposal one of the strongest 3-4 proposals that you have reviewed in this round?</h3>
-            <div class="form-errors">
-                <form:errors path="shouldAdvanceProposal" cssClass="alert alert-danger"/>
-            </div>
             <form:select path="shouldAdvanceProposal" class="form-control">
                 <form:option value="" label="--- select one ---" />
                 <form:option value="true" label="Yes" />
                 <form:option value="false" label="No" />
             </form:select>
+            <form:errors path="shouldAdvanceProposal" cssClass="invalid-feedback"/>
         </c:if>
 
         <h3 style="margin-top: 10px;">${proposalsPermissions.canJudgeActions ? 'Judge' : ''} Feedback</h3>
-        <div class="form-errors"><!--  -->
-            <form:errors cssClass="alert alert-danger" path="comment" />
-        </div>
 
         <form:textarea path="comment" cssClass="c-Comment__box form-control" style="width:100%; height: 178px;"
                        placeholder="Write your review here..." />
+        <form:errors cssClass="invalid-feedback" path="comment" />
 
         <div class="clearfix" style="width: 100%;">
             <a class="btn btn-primary" id="saveProposalJudging" style="display:block; float:right; margin-top: 10px;" href="#">Submit</a>
