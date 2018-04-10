@@ -31,7 +31,8 @@ $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
     box-shadow: $c-ContestBox--hover__boxShadow;
   }
 
-  &, .card-deck & {
+  //Double class name to increase specificity
+  &, .card-deck.card-deck & {
     margin-bottom: 1.5rem;
 
     @include media-breakpoint-up(sm) {
