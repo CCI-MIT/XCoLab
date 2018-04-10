@@ -117,11 +117,14 @@ public class ContestProposalsController extends BaseProposalsController {
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
         boolean showEditLink = false;
+        boolean showExportLink = false;
         if (loggedInMember != null) {
             showEditLink = PermissionsClient.canAdminAll(loggedInMember.getUserId())
                     || contest.getCanFellow(loggedInMember.getUserId());
+            showExportLink = PermissionsClient.canAdminAll(loggedInMember.getUserId());
         }
         model.addAttribute("showEditLink", showEditLink);
+        model.addAttribute("showExportLink", showExportLink);
 
         setBasePageAttributes(proposalContext, model);
         return "/proposals/contestProposals";

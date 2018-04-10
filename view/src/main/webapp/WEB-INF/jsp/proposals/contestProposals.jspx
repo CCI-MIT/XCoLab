@@ -57,6 +57,10 @@
                 </c:otherwise>
             </c:choose>
         </div>
+
+        <c:if test="${showExportLink}">
+            <a class="btn cb-btn-outline-admin" href="">Export CSV</a>
+        </c:if>
     </div>
 
     <div class="row bg-primary-gray-light">
