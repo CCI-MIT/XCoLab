@@ -1,5 +1,6 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins/buttons";
+@import "bootstrap/mixins/gradients";
 
 //= New button variants
 .cb-btn-admin {
@@ -12,6 +13,19 @@
     border-color: $t-Color__accent;
   }
 }
+
+
+//= Button group modifiers
+.cb-btn-group-active-btn {
+  pointer-events: none;
+  box-shadow: 0 0 6px 1px $t-Color__gray--dark-900;
+
+  &.btn-outline-primary {
+    @include gradient-bg($t-Color__primary);
+    color: yiq-contrasting-color($t-Color__primary);
+  }
+}
+
 
 //= New button sizes
 .cb-btn-xs {

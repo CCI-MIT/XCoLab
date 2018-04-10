@@ -1,12 +1,14 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
-          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab-icon="urn:jsptagdir:/WEB-INF/tags/icons">
 
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
     <!--@elvariable id="preferences" type="org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper"-->
+    <!--@elvariable id="viewType" type="java.lang.String"-->
 
     <c:if test="${showContestManagementLink}">
         <div>
@@ -21,51 +23,22 @@
         <c:set var="changeToOutlineViewTypeURL" value="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter}&amp;showAllContests=${showAllContests}" />
 
         <c:if test="${showContestDisplayOptions}">
-            <div class="view">
-                <!-- To switch the button over to list view just change "gridview" to "listview" -->
-                <!--@elvariable id="viewType" type="java.lang.String"-->
-                <div class="grid ${viewType == 'GRID' ? 'selected' : ''}">
-                    <div>
-                        <c:choose>
-                            <c:when test="${viewType == 'GRID' }">
-                                <spring:message code="contests.views.grid" />
-                            </c:when>
-                            <c:otherwise>
-                                <a href="${changeToGridViewTypeURL }">
-                                    <spring:message code="contests.views.grid" />
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-                <div class="outline ${viewType == 'OUTLINE' ? 'selected' : ''}">
-                    <div>
-                        <c:choose>
-                            <c:when test="${viewType == 'OUTLINE' }">
-                                <spring:message code="contests.views.outline" />
-                            </c:when>
-                            <c:otherwise>
-                                <a href="${changeToOutlineViewTypeURL }">
-                                    <spring:message code="contests.views.outline" />
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-                <div class="list ${viewType == 'LIST' ? 'selected' : ''}">
-                    <div>
-                        <c:choose>
-                            <c:when test="${viewType == 'LIST' }">
-                                <spring:message code="contests.views.list" />
-                            </c:when>
-                            <c:otherwise>
-                                <a href="${changeToListViewTypeURL }">
-                                    <spring:message code="contests.views.list" />
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
+            <div class="btn-group p-Contests__viewSelector" role="group" aria-label="Contest display options">
+                <a class="btn btn-lg btn-outline-primary ${viewType == 'GRID' ? 'cb-btn-group-active-btn' : ''}"
+                   href="${changeToGridViewTypeURL}">
+                    <xcolab-icon:grid-view cssClass="cb-btn-image"/>
+                    <span class="cb-btn-image-text"><spring:message code="contests.views.grid"/></span>
+                </a>
+                <a class="btn btn-lg btn-outline-primary ${viewType == 'OUTLINE' ? 'cb-btn-group-active-btn' : ''}"
+                   href="${changeToOutlineViewTypeURL}">
+                    <xcolab-icon:outline-view cssClass="cb-btn-image"/>
+                    <span class="cb-btn-image-text"><spring:message code="contests.views.outline" /></span>
+                </a>
+                <a class="btn btn-lg btn-outline-primary ${viewType == 'LIST' ? 'cb-btn-group-active-btn' : ''}"
+                   href="${changeToListViewTypeURL}">
+                    <xcolab-icon:list-view cssClass="cb-btn-image"/>
+                    <span class="cb-btn-image-text"><spring:message code="contests.views.list" /></span>
+                </a>
             </div>
         </c:if>
 
