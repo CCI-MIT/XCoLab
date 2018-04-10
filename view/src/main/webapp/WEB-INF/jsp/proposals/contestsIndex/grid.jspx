@@ -8,59 +8,55 @@
     <!--@elvariable id="totalContestCount" type="java.lang.Integer"-->
     <!--@elvariable id="contests" type="java.lang.List<org.xcolab.client.contest.pojo.Contest>"-->
 
-
-    <div class="contestsContainer">
-        <div class="card-deck">
-            <c:forEach var="contest" items="${contestsSorted.contestsFeatured }" varStatus="status">
-                <c:if test="${contest.showInTileView}">
-                    <c:set var="isEven" value="${status.index % 2 == 0 ? true : false}"/>
-                    <xcolab:contestBox contest="${contest }" showFlags="true"/>
-                    <c:choose>
-                        <c:when test="${isEven}">
-                            <div class="w-100 d-lg-none"><!-- wrap every on sm--></div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="w-100"><!-- wrap every 2--></div>
-                        </c:otherwise>
-                    </c:choose>
-                </c:if>
-            </c:forEach>
-        </div>
-
-        <c:if test="${not empty contestsSorted.contestsFeatured}">
-            <hr class="p-Contests__featuredSeparator"/>
-        </c:if>
-
-        <div class="card-deck">
-            <c:forEach var="contest" items="${contestsSorted.contestsNormal}" varStatus="status">
-                <c:if test="${contest.showInTileView}">
-                    <c:set var="isEven" value="${status.index % 2 == 0 ? true : false}"/>
-                    <xcolab:contestBox contest="${contest }" showFlags="true"/>
-                    <c:choose>
-                        <c:when test="${isEven}">
-                            <div class="w-100 d-lg-none"><!-- wrap every on sm--></div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="w-100"><!-- wrap every 2--></div>
-                        </c:otherwise>
-                    </c:choose>
-                </c:if>
-            </c:forEach>
-        </div>
-
-        <c:if test="${not showAllContests and totalContestCount gt contests.size()}">
-            <div class="text-center">
-                <c:url var="allContestsUrl" value="${contestType.contestBaseUrl}">
-                    <c:param name="viewType" value="${viewType}"/>
-                    <c:param name="filter" value="${sortFilterPage.filter}"/>
-                    <c:param name="showAllContests" value="true"/>
-                </c:url>
-                <a class="btn btn-primary btn-lg" href="${allContestsUrl}">
-                    <collab:message code="contests.selector.seeall" contestType="${contestType}"
-                                    arguments="${totalContestCount}" />
-                </a>
-            </div>
-
-        </c:if>
+    <div class="card-deck">
+        <c:forEach var="contest" items="${contestsSorted.contestsFeatured }" varStatus="status">
+            <c:if test="${contest.showInTileView}">
+                <c:set var="isEven" value="${status.index % 2 == 0 ? true : false}"/>
+                <xcolab:contestBox contest="${contest }" showFlags="true"/>
+                <c:choose>
+                    <c:when test="${isEven}">
+                        <div class="w-100 d-lg-none"><!-- wrap every on sm--></div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="w-100"><!-- wrap every 2--></div>
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
+        </c:forEach>
     </div>
+
+    <c:if test="${not empty contestsSorted.contestsFeatured}">
+        <hr class="p-Contests__featuredSeparator"/>
+    </c:if>
+
+    <div class="card-deck">
+        <c:forEach var="contest" items="${contestsSorted.contestsNormal}" varStatus="status">
+            <c:if test="${contest.showInTileView}">
+                <c:set var="isEven" value="${status.index % 2 == 0 ? true : false}"/>
+                <xcolab:contestBox contest="${contest }" showFlags="true"/>
+                <c:choose>
+                    <c:when test="${isEven}">
+                        <div class="w-100 d-lg-none"><!-- wrap every on sm--></div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="w-100"><!-- wrap every 2--></div>
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
+        </c:forEach>
+    </div>
+
+    <c:if test="${not showAllContests and totalContestCount gt contests.size()}">
+        <div class="text-center">
+            <c:url var="allContestsUrl" value="${contestType.contestBaseUrl}">
+                <c:param name="viewType" value="${viewType}"/>
+                <c:param name="filter" value="${sortFilterPage.filter}"/>
+                <c:param name="showAllContests" value="true"/>
+            </c:url>
+            <a class="btn btn-primary btn-lg" href="${allContestsUrl}">
+                <collab:message code="contests.selector.seeall" contestType="${contestType}"
+                                arguments="${totalContestCount}" />
+            </a>
+        </div>
+    </c:if>
 </jsp:root>

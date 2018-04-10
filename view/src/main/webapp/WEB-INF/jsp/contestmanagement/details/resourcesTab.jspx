@@ -27,9 +27,7 @@
         <form:form action="${updateContestResourcesURL }" commandName="contestResourcesBean"
          modelAttribute="contestResourcesBean" cssClass="addpropform" id="editForm" method="post">
             <form:hidden path="numberOfSections"/>
-            <div class="reg_errors"><!--  -->
-                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*" />
-            </div>
+            <form:errors cssClass="alert alert-danger" path="*" />
 
             <c:forEach var="section" items="${contestResourcesBean.sections}" varStatus="x" >
                 <form:hidden path="sections[${x.index}].templateSection" data-form-name="templateSection"/>
@@ -85,9 +83,7 @@
                             <strong>Content:</strong>
                         </c:if>
                         <form:textarea path="sections[${x.index}].content" cssClass="${fn:length(contestResourcesBean.sections)-1 eq x.index ? '': 'rte-editorPlaceholder'}" data-form-name="content" />
-                        <div class="reg_errors">
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="sections[${x.index}].content" />
-                        </div>
+                        <form:errors cssClass="invalid-feedback" path="sections[${x.index}].content" />
                         <c:if test="${section.characterLimit  > 0}">
                             <div class="inputLimitContainer">
                                 <span class="limit_characterCount"><!--  --></span>

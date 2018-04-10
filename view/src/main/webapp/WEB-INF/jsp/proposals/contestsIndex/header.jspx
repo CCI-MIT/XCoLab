@@ -1,12 +1,14 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
-          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab-icon="urn:jsptagdir:/WEB-INF/tags/icons">
 
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
     <!--@elvariable id="preferences" type="org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper"-->
+    <!--@elvariable id="viewType" type="java.lang.String"-->
 
     <c:if test="${showContestManagementLink}">
         <div>
@@ -14,87 +16,64 @@
         </div>
     </c:if>
 
-    <div class="c-Headline align-items-center">
-        <h1 class="my-0">${contestType.contestNamePlural}</h1>
+    <div class="row">
+        <div class="col-12 col-sm-4 col-lg-2">
+            <h1 class="my-0">${contestType.contestNamePlural}</h1>
+        </div>
         <c:set var="changeToListViewTypeURL" value="/contests?viewType=LIST&amp;filter=${sortFilterPage.filter}&amp;showAllContests=${showAllContests}" />
         <c:set var="changeToGridViewTypeURL" value="/contests?viewType=GRID&amp;filter=${sortFilterPage.filter}&amp;showAllContests=${showAllContests}" />
         <c:set var="changeToOutlineViewTypeURL" value="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter}&amp;showAllContests=${showAllContests}" />
 
         <c:if test="${showContestDisplayOptions}">
-            <div class="view">
-                <!-- To switch the button over to list view just change "gridview" to "listview" -->
-                <!--@elvariable id="viewType" type="java.lang.String"-->
-                <div class="grid ${viewType == 'GRID' ? 'selected' : ''}">
-                    <div>
-                        <c:choose>
-                            <c:when test="${viewType == 'GRID' }">
-                                <spring:message code="contests.views.grid" />
-                            </c:when>
-                            <c:otherwise>
-                                <a href="${changeToGridViewTypeURL }">
-                                    <spring:message code="contests.views.grid" />
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-                <div class="outline ${viewType == 'OUTLINE' ? 'selected' : ''}">
-                    <div>
-                        <c:choose>
-                            <c:when test="${viewType == 'OUTLINE' }">
-                                <spring:message code="contests.views.outline" />
-                            </c:when>
-                            <c:otherwise>
-                                <a href="${changeToOutlineViewTypeURL }">
-                                    <spring:message code="contests.views.outline" />
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-                <div class="list ${viewType == 'LIST' ? 'selected' : ''}">
-                    <div>
-                        <c:choose>
-                            <c:when test="${viewType == 'LIST' }">
-                                <spring:message code="contests.views.list" />
-                            </c:when>
-                            <c:otherwise>
-                                <a href="${changeToListViewTypeURL }">
-                                    <spring:message code="contests.views.list" />
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+            <div class="col-12 col-lg-6 order-last order-lg-0 d-none d-md-block">
+                <div class="btn-group cb-btn-group-justified p-Contests__viewSelector" role="group" aria-label="Contest display options">
+                    <a class="btn btn-outline-primary ${viewType == 'GRID' ? 'cb-btn-group-active-btn' : ''}"
+                       href="${changeToGridViewTypeURL}">
+                        <xcolab-icon:grid-view cssClass="cb-btn-image d-none d-sm-inline-block"/>
+                        <span class="cb-btn-image-text"><spring:message code="contests.views.grid"/></span>
+                    </a>
+                    <a class="btn btn-outline-primary ${viewType == 'OUTLINE' ? 'cb-btn-group-active-btn' : ''}"
+                       href="${changeToOutlineViewTypeURL}">
+                        <xcolab-icon:outline-view cssClass="cb-btn-image d-none d-sm-inline-block"/>
+                        <span class="cb-btn-image-text"><spring:message code="contests.views.outline" /></span>
+                    </a>
+                    <a class="btn btn-outline-primary ${viewType == 'LIST' ? 'cb-btn-group-active-btn' : ''}"
+                       href="${changeToListViewTypeURL}">
+                        <xcolab-icon:list-view cssClass="cb-btn-image d-none d-sm-inline-block"/>
+                        <span class="cb-btn-image-text"><spring:message code="contests.views.list" /></span>
+                    </a>
                 </div>
             </div>
         </c:if>
 
-        <c:if test="${not empty suggestionContestLink}">
-            <small>
-                <a href="${suggestionContestLink}">
-                    <collab:message code="contests.suggestnew" contestType="${contestType}" />
-                </a>
-            </small>
-        </c:if>
-        <c:if test="${showFilter}">
-            <div class="filter ml-auto" style="position: relative;">
-                <c:set var="filterURL" value="/contests"/>
-                <form action="${filterURL }" id="filterContestsForm" method="get">
+        <div class="col-12 col-sm-8 col-lg-4 cb-d-flex-between-center flex-fill">
+            <c:if test="${not empty suggestionContestLink}">
+                <small>
+                    <a href="${suggestionContestLink}">
+                        <collab:message code="contests.suggestnew" contestType="${contestType}" />
+                    </a>
+                </small>
+            </c:if>
+            <c:if test="${showFilter}">
+                <div class="filter" style="position: relative;">
+                    <c:set var="filterURL" value="/contests"/>
+                    <form action="${filterURL}" id="filterContestsForm" method="get">
 
-                    <input type="hidden" name="viewType" value="${viewType}"/>
-                    <input type="hidden" name="showActiveContests" value="${showActiveContests }" />
-                    <input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
-                    <input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
-                    <input type="hidden" name="showAllContests" value="${showAllContests }"/>
+                        <input type="hidden" name="viewType" value="${viewType}"/>
+                        <input type="hidden" name="showActiveContests" value="${showActiveContests }" />
+                        <input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
+                        <input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
+                        <input type="hidden" name="showAllContests" value="${showAllContests }"/>
 
-                    <collab:message var="messageFilterText" code="contests.filter" contestType="${contestType}" />
-                    <input type="text" class="form-control" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="${messageFilterText}" name="filter" />
-                    <c:if test="${not empty sortFilterPage.filter }">
-                        <a href="javascript:;" id="contestsFilterClear">&#215;</a> <!-- &#215; == &times; -->
-                    </c:if>
-                </form>
-            </div>
-        </c:if>
+                        <collab:message var="messageFilterText" code="contests.filter" contestType="${contestType}" />
+                        <input type="text" class="form-control" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="${messageFilterText}" name="filter" />
+                        <c:if test="${not empty sortFilterPage.filter }">
+                            <a href="javascript:;" id="contestsFilterClear">&#215;</a> <!-- &#215; == &times; -->
+                        </c:if>
+                    </form>
+                </div>
+            </c:if>
+        </div>
     </div>
     <div class="mb-3">
         ${preferences.callToAction}

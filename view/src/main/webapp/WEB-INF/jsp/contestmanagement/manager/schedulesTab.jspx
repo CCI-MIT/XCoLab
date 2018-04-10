@@ -42,9 +42,7 @@
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
-        <div class="reg_errors"><!--  -->
-            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
-        </div>
+        <form:errors cssClass="alert alert-danger" path="*"/>
 
         <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
                    method="post">
@@ -57,10 +55,7 @@
                         <form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value"
                                       itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors">
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="elementId"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="elementId"/>
                 </div>
             </div>
         </form:form>
@@ -74,11 +69,9 @@
                 <div class="c-Box c-Box--colorTan">
                     <div class="c-Box__body">
                         <strong>Schedule name:</strong>
-                        <form:input path="scheduleName" cssClass="form-control"/>
-
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="scheduleName"/>
-                        </div>
+                        <form:input id="scheduleName" path="scheduleName"
+                                    cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                        <form:errors cssClass="invalid-feedback" path="scheduleName" />
                     </div>
                 </div>
 
@@ -104,7 +97,7 @@
                         </c:if>
 
                         <div><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid"/>
+                            <form:errors cssClass="alert alert-danger"/>
                         </div>
 
                         <table class="c-ContentBox__Table">
@@ -139,10 +132,8 @@
                                     <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
                                                  data-form-name="contestPhaseDeleted"/>
 
-                                    <div class="reg_errors"><!--  -->
-                                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid"
+                                    <form:errors cssClass="alert alert-danger"
                                                      path="schedulePhases[${x.index}].phaseStartDate"/>
-                                    </div>
 
                                     <td data-form-attribute="indexLable">${x.index + 1}</td>
                                     <td>
