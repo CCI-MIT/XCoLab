@@ -22,9 +22,7 @@
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
-        <div class="reg_errors"><!--  -->
-            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
-        </div>
+        <form:errors cssClass="alert alert-danger" path="*"/>
 
         <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
         <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
@@ -37,10 +35,7 @@
                         <form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value"
                                       itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors">
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="elementId"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="elementId"/>
                 </div>
             </div>
         </form:form>

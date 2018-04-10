@@ -38,9 +38,7 @@
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
-        <div class="reg_errors"><!--  -->
-            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
-        </div>
+        <form:errors cssClass="alert alert-danger" path="*"/>
 
         <div class="c-Box c-Box--colorTan">
             <div class="c-Box__body">
@@ -64,44 +62,37 @@
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong>Target type:</strong>
-                    <form:input path="type" cssClass="form-control" disabled="disabled"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="type"/>
-                    </div>
+                    <form:input id="type" path="type"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                disabled="disabled" />
+                    <form:errors cssClass="invalid-feedback" path="type" />
                 </div>
             </div>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong>Reason:</strong>
-                    <form:input path="reason" cssClass="form-control"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="reason"/>
-                    </div>
+                    <form:input id="reason" path="reason"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="reason" />
                 </div>
             </div>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong>Notification Threshold:</strong>
-                    <form:input path="notificationThreshold" cssClass="form-control"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="notificationThreshold"/>
-                    </div>
+                    <form:input id="notificationThreshold" path="notificationThreshold"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="notificationThreshold" />
                 </div>
             </div>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong>Screening Threshold:</strong>
-                    <form:input path="screeningThreshold" cssClass="form-control"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="screeningThreshold"/>
-                    </div>
+                    <form:input id="screeningThreshold" path="screeningThreshold"
+                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                    <form:errors cssClass="invalid-feedback" path="screeningThreshold" />
                 </div>
             </div>
 
