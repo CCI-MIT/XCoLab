@@ -27,10 +27,7 @@
 
         <form:form action="${createBatchContestsURL }" commandName="contestBatchBean" cssClass="addpropform"
                    id="batchForm" method="post">
-            <div class="reg_errors"><!--  -->
-                <form:errors cssClass="alert alert-error" path="*"/>
-            </div>
-
+            <form:errors cssClass="alert alert-error" path="*"/>
 
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
@@ -49,10 +46,7 @@
                     </div>
                     <form:textarea path="contestDescription" id="contestDescription"
                                    cssClass="rte-editorPlaceholder contestDescription"/>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestDescription"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="contestDescription"/>
                     <div class="inputLimitContainer">
                         <span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">1500</span> characters
@@ -137,10 +131,7 @@
                     <form:select path="planTemplateId" cssClass="form-control">
                         <form:options items="${proposalTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="planTemplateId"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="planTemplateId"/>
                 </div>
             </div>
 
@@ -162,10 +153,7 @@
 
                         <form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors">
-                        <form:errors cssClass="alert alert-error" path="scheduleTemplateId"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="scheduleTemplateId"/>
                 </div>
             </div>
             <div class="c-Box c-Box--colorTan">
@@ -184,10 +172,7 @@
                     <form:select path="contestTier" cssClass="form-control">
                         <form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestTier"/>
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="contestTier"/>
                 </div>
             </div>
             <div class="c-Box c-Box--colorTan">
@@ -205,9 +190,7 @@
                     <form:select path="contestType" cssClass="form-control">
                         <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestType" />
-                    </div>
+                    <form:errors cssClass="invalid-feedback" path="contestType" />
                 </div>
             </div>
             <div class="c-Box c-Box--colorTan">
@@ -224,9 +207,7 @@
                     </div>
                     <div>
                         <input type="file" id="fileCSV" name="file" />
-                    </div>
-                    <div class="reg_errors"><!--  -->
-                        <form:errors cssClass="alert alert-error" path="contestType" />
+                        <form:errors cssClass="invalid-feedback" path="contestType" />
                     </div>
                 </div>
                 <script>

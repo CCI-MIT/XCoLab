@@ -22,19 +22,17 @@
         <c:forEach items="${proposalsModel.proposals}" var="proposal">
             <div class="c-ContestBox">
                 <c:if test="${not proposalsModel.compact}">
-                    <div class="c-ContestBox__image">
-                        <a href="${proposal.proposalUrl}">
-                            <c:if test="${proposal.image > 0}">
-                                <collab:image src="${proposalsModel.baseImagePath}${proposal.image}"
-                                              width="150" height="150"
-                                              alt="Proposal image" title="${proposal.name}" />
-                            </c:if>
-                            <c:if test="${empty proposal.image or proposal.image le 0}">
-                                <collab:image src="/images/proposal_default.png" width="150" height="150"
-                                              alt="Proposal image" title="${proposal.name}"/>
-                            </c:if>
-                        </a>
-                    </div>
+                    <a class="c-ContestBox__image" href="${proposal.proposalUrl}">
+                        <c:if test="${proposal.image > 0}">
+                            <collab:image src="${proposalsModel.baseImagePath}${proposal.image}"
+                                          width="150" height="150"
+                                          alt="Proposal image" title="${proposal.name}" />
+                        </c:if>
+                        <c:if test="${empty proposal.image or proposal.image le 0}">
+                            <collab:image src="/images/proposal_default.png" width="150" height="150"
+                                          alt="Proposal image" title="${proposal.name}"/>
+                        </c:if>
+                    </a>
                 </c:if>
                 <div class="c-ContestBox__body">
                     <div class="c-ContestBox__text">

@@ -51,11 +51,9 @@
                                             <h3>Comment to send to author:</h3>
                                             <i>Your comment will be visible to the public.</i>
 
-                                            <div class="form-errors"><!--  -->
-                                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="advanceComment" />
-                                            </div>
                                             <a name="advanceCommentAnchor" id="advanceCommentAnchor"></a>
                                             <form:textarea id="advanceComment" cssClass="c-Comment__box" path="advanceComment" style="width:100%;"/>
+                                            <form:errors cssClass="invalid-feedback" path="advanceComment" />
                                             <div id="comment-headers">
                                                 <c:forEach var="template" items="${emailTemplates}">
                                                     <div data-template-name="${template.key}">

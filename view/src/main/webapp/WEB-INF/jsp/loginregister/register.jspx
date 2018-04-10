@@ -67,22 +67,21 @@
                 <form:hidden path="language" />
             </c:if>
 
-            <div class="reg_errors"><!--  --></div>
-            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" htmlEscape="false"/>
+            <form:errors cssClass="alert alert-danger" htmlEscape="false"/>
             <table class="reg">
                 <tr style="${ generateScreenName ? 'display: none;' : ''}">
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.screenname"/> </th>
-                    <td><form:input cssClass="popupreg_input" path="screenName" /><br />
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="screenName" />
-                        </div></td>
+                    <td>
+                        <form:input id="screenName" path="screenName"
+                                    cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                        <form:errors cssClass="invalid-feedback" path="screenName" />
+                    </td>
                 </tr>
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.email"/> </th>
-                    <td><form:input cssClass="popupreg_input" path="email" />
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="email" />
-                        </div>
+                    <td>
+                        <form:input cssClass="popupreg_input" path="email" />
+                        <form:errors cssClass="invalid-feedback" path="email" />
                     </td>
                     <th class="second" rowspan="4"><spring:message code="register.form.fields.photo"/></th>
                     <td rowspan="4">
@@ -102,35 +101,32 @@
                         <c:if test="${not isSsoLogin}">
                             <form:input cssClass="popupreg_input" path="retypeEmail" />
                         </c:if>
-
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypeEmail" />
-                        </div>
+                        <form:errors cssClass="invalid-feedback" path="retypeEmail" />
                     </td>
                 </tr>
 
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.firstname"/></th>
-                    <td><form:input cssClass="popupreg_input" path="firstName" onchange="generateScreenName()"/>
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="firstName" />
-                        </div></td>
+                    <td>
+                        <form:input cssClass="popupreg_input" path="firstName" onchange="generateScreenName()"/>
+                        <form:errors cssClass="invalid-feedback" path="firstName" />
+                    </td>
                 </tr>
 
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.lastname"/> </th>
-                    <td><form:input cssClass="popupreg_input" path="lastName" onchange="generateScreenName()"/>
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="lastName" />
-                        </div></td>
+                    <td>
+                        <form:input cssClass="popupreg_input" path="lastName" onchange="generateScreenName()"/>
+                        <form:errors cssClass="invalid-feedback" path="lastName" />
+                    </td>
                 </tr>
 
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.password"/> </th>
-                    <td><form:password cssClass="popupreg_input" path="password" />
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="password" />
-                        </div></td>
+                    <td>
+                        <form:password cssClass="popupreg_input" path="password" />
+                        <form:errors cssClass="invalid-feedback" path="password" />
+                    </td>
                     <td colspan="2" class="p-LoginRegister__signup__infofield">
                         <b><spring:message code="register.form.fields.password.note"/></b>
                         <spring:message code="register.form.fields.password.notemsg"/>
@@ -140,11 +136,11 @@
 
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.retypepassword"/> </th>
-                    <td><form:password cssClass="popupreg_input"
+                    <td>
+                        <form:password cssClass="popupreg_input"
                                        path="retypePassword" />
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="retypePassword" />
-                        </div></td>
+                        <form:errors cssClass="invalid-feedback" path="retypePassword" />
+                    </td>
 
                     <th class="second required-field">
                         <spring:message code="register.form.fields.country"/>
@@ -155,9 +151,7 @@
                             <form:option value="" label="${countryOption}"/>
                             <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
                         </form:select>
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="country" />
-                        </div>
+                        <form:errors cssClass="invalid-feedback" path="country" />
                     </td>
                 </tr>
                 <c:if test="${isI18NActive}">
@@ -175,9 +169,7 @@
                                     </form:option>
                                 </c:forEach>
                             </form:select>
-                            <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="country" />
-                            </div>
+                            <form:errors cssClass="invalid-feedback" path="country" />
                         </td>
                     </tr>
                 </c:if>
@@ -190,9 +182,7 @@
                             <span class="limit_characterCount"><!--  --></span>/&#160;
                             <span class="limit_charactersMax">2000</span> <spring:message code="register.form.fields.shortbio.maxcharmsg"/>
                         </div>
-                        <div class="reg_errors"><!--  -->
-                            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="shortBio" />
-                        </div>
+                        <form:errors cssClass="invalid-feedback" path="shortBio" />
                     </td>
                 </tr>
 
@@ -201,9 +191,7 @@
                         <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.captcha"/> </th>
                         <td colspan="3">
                             <div class="g-recaptcha" data-sitekey="${recaptchaDataSiteKey}"><!-- --></div>
-                            <div class="reg_errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="captchaText" />
-                            </div>
+                            <form:errors cssClass="invalid-feedback" path="captchaText" />
                         </td>
                     </tr>
                 </c:if>

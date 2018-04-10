@@ -15,7 +15,7 @@
         <!--ProposalJudgesTabController-->
         <jsp:useBean id="fellowProposalScreeningBean" scope="request" type="org.xcolab.view.pages.proposals.requests.FellowProposalScreeningBean"/>
 
-        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" />
+        <form:errors cssClass="alert alert-danger" />
 
         This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
         <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/tab/SCREENING?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
@@ -87,10 +87,8 @@
                                 </c:forEach>
                             </div>
                             <i>Your comment will be visible to the public.</i>
-                            <div class="form-errors"><!--  -->
-                                <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="fellowScreeningActionCommentBody" />
-                            </div>
                             <form:textarea id="fellowCommentBody" cssClass="c-Comment__box" path="fellowScreeningActionCommentBody" style="width:100%;"/>
+                            <form:errors cssClass="invalid-feedback" path="fellowScreeningActionCommentBody" />
                             <div id="comment-footers">
                                 <c:forEach var="template" items="${emailTemplates}">
                                     <div class="${template.key}">
@@ -122,7 +120,7 @@
                 </div>
                 <div class="c-Box c-Box--colorTan">
                     <div class="c-Box__body">
-                        <form:errors path="*" cssClass="alert alert-danger cb-alert-form-invalid" />
+                        <form:errors path="*" cssClass="alert alert-danger" />
 
                         <h3 style="margin-top: 0;">My Rating</h3>
                         <c:choose>

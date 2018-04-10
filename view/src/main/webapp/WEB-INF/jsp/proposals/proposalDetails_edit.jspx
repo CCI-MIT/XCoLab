@@ -116,7 +116,7 @@
                     <div class="p-Proposal__formBox__main">
                         <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__title">Give the ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
                         <form:input path="name" id="proposalName" cssClass="form-control" />
-                        <form:errors path="name" cssClass="alert alert-danger cb-alert-form-invalid" />
+                        <form:errors path="name" cssClass="alert alert-danger" />
                         <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> characters</div>
                     </div>
                 </div>
