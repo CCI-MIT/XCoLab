@@ -1,19 +1,12 @@
 /* OUTLINE VIEW - added 1-24-2014 */
 
 .contest-outline-left {
-  float: left;
-  width: 490px;
   min-height: 600px;
-  border-right: 1px solid $t-Color__tan;
-  padding-bottom: 150px;
-  box-shadow: inset -14px 0 10px -10px #ccc;
+  padding-bottom: 1.5rem;
 }
 
 .contest-outline-right {
-  width: 470px;
-  padding-bottom: 150px;
-  float: right;
-  margin-left: 20px;
+  padding-bottom: 1.5rem;
 }
 
 .contest-outline-right div.ctest {
@@ -146,7 +139,6 @@
 .section-head h2 {
   font-size: 25px;
   display: inline-block;
-  width: 380px;
 }
 
 .section-head h2 span {

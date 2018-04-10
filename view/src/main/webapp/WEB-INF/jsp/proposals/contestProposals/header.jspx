@@ -22,7 +22,9 @@
     <!-- /c-Headline -->
 
     <div class="d-flex justify-content-around d-lg-none my-3">
-        <a class="btn btn-primary btn-sm" href="#proposalList">Skip to proposals</a>
+        <a class="btn btn-primary btn-sm" href="#proposalList">
+            VIEW ${contestType.proposalNamePlural}
+        </a>
         <c:if test="${proposalsDisplayPermissions.canSeeCreateProposalButton}">
             <c:set var="createProposalUrl" value="${contest.newProposalLinkUrl}"/>
             <c:set var="createProposalBtnClass"

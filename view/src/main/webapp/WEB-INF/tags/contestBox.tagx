@@ -14,12 +14,10 @@
     <c:set var="showFlags" value="${empty showFlags ? false : showFlags}"/>
 
     <div class="c-ContestBox">
-		<div class="c-ContestBox__image">
-        	<a href="${contest.contestUrl}" aria-hidden="true">
-                <collab:image src="${contest.logoPath}" width="150" height="150"
-                              alt="${contest.contestShortNameWithEndYear}"/>
-            </a>
-        </div>
+        <a class="c-ContestBox__image" href="${contest.contestUrl}" aria-hidden="true">
+            <collab:image src="${contest.logoPath}" width="150" height="150"
+                          alt="${contest.contestShortNameWithEndYear}"/>
+        </a>
         <div class="c-ContestBox__body">
             <div class="c-ContestBox__text">
                 <h3 class="c-ContestBox__title">

@@ -117,6 +117,10 @@
                     and region.
                     <a href="/resources/-/wiki/Main/Assessing+the+impact+of+your+proposal+or+plan" target="_blank">Need help?</a>
                 </xcolab:betaDisclaimer>
+
+                <div class="alert alert-info my-2 d-md-none">
+                    This page is best viewed on a device with a larger screen.
+                </div>
                         <table>
                             <thead>
                             <tr>

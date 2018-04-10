@@ -44,6 +44,9 @@ $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
   align-self: center;
   flex: 0 0 auto;
   margin: .5rem;
+  > img {
+    border-radius: $t-Border__radius;
+  }
 }
 
 .c-ContestBox__body {
@@ -73,6 +76,7 @@ $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
 }
 
 .c-ContestBox__metaCount {
+  margin-top: .5rem;
   color: $t-Color__gray--dark-600;
 }
 

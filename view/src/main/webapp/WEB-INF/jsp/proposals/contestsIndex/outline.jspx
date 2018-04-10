@@ -8,9 +8,9 @@
 	<!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
 
-	<div class="contestsContainer">
-	
-    <div class="contest-outline-left">
+	<div class="row">
+
+    <div class="contest-outline-left col-12 col-md-6">
         <div class="expand">
         	<a href="#" class="showall" style="display: inline;">
                 <spring:message code="contests.outline.expandall" />
@@ -50,7 +50,7 @@
     --> 
     
     
-    <div class="contest-outline-right">
+    <div class="contest-outline-right col-12 col-md-6">
 
 		<div class="clearfix"><!--  --></div>
         <div class="section-list">

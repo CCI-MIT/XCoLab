@@ -29,6 +29,10 @@
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
+        <div class="alert alert-info my-2 d-lg-none">
+            This page is best viewed on a device with a larger screen.
+        </div>
+
         <div>
             <c:if test="${not empty isGlobalContest and isGlobalContest or not empty isRegionalContest and isRegionalContest}">
 
