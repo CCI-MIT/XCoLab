@@ -60,7 +60,7 @@
             <form:hidden path="userId"/>
             <form:hidden path="screenName" autocomplete="username"/>
 
-			<form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*" htmlEscape="false" />
+			<form:errors cssClass="alert alert-danger" path="*" htmlEscape="false" />
 
             <div class="row mb-2">
                 <div class="col-4 col-md-5 col-lg-3">

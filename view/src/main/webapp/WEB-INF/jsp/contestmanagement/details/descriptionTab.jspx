@@ -27,7 +27,7 @@
         <h2>Homepage content</h2>
         <form:form action="${updateUrl }" commandName="contestDescriptionBean" cssClass="addpropform"
                    id="editForm" method="post">
-            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
+            <form:errors cssClass="alert alert-danger" path="*"/>
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <label>

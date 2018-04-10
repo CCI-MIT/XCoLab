@@ -27,7 +27,7 @@
         <form:form action="${updateContestResourcesURL }" commandName="contestResourcesBean"
          modelAttribute="contestResourcesBean" cssClass="addpropform" id="editForm" method="post">
             <form:hidden path="numberOfSections"/>
-            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*" />
+            <form:errors cssClass="alert alert-danger" path="*" />
 
             <c:forEach var="section" items="${contestResourcesBean.sections}" varStatus="x" >
                 <form:hidden path="sections[${x.index}].templateSection" data-form-name="templateSection"/>
