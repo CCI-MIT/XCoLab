@@ -22,7 +22,7 @@
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
-        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" path="*"/>
+        <form:errors cssClass="alert alert-danger" element="div" path="*"/>
 
         <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
         <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
