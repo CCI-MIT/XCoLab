@@ -21,40 +21,35 @@
 
     <div class="popupreg_form">
 
-        <div class="popupreg_head">
-            <h1><collab:message code="register.header.joinmessage" /></h1>
-        </div>
-
-        <c:if test="${(_themeContext.authenticationVariables.isFacebookSsoActive or _themeContext.authenticationVariables.isGoogleSsoActive) and not isSsoLogin}">
-            <div class="float-right">
-                <h1><spring:message code="register.header.joinwith"/>:</h1><br/>
-                <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
-                    <a href="/sso/facebook/register" class="c-SocialButton text-dark mx-2" rel="nofollow">
-                        <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
-                        <span class="c-SocialButton__text">Facebook</span>
-                    </a>
-                </c:if>
-                <c:if test="${_themeContext.authenticationVariables.isGoogleSsoActive}">
-                    <a href="/sso/google/register" class="c-SocialButton text-dark mx-2" rel="nofollow">
-                        <collab:image src="/images/icons/social/google.svg" ariaHidden="true"/>
-                        <span class="c-SocialButton__text">Google</span>
-                    </a>
-                </c:if>
+        <div class="row">
+            <div class="col-12 col-md">
+                <h1><collab:message code="register.header.joinmessage"/></h1>
+                <span class="required-field"><!-- --></span> <spring:message code="register.header.validation.mandatory"/>.
             </div>
-        </c:if>
 
-        <div class="is-required">
-            <span class="required-field"><!-- --></span> <spring:message code="register.header.validation.mandatory"/> .
+            <c:if test="${(_themeContext.authenticationVariables.isFacebookSsoActive or _themeContext.authenticationVariables.isGoogleSsoActive) and not isSsoLogin}">
+                <div class="col text-right">
+                    <h2><spring:message code="register.header.joinwith"/>:</h2>
+                    <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
+                        <a href="/sso/facebook/register" class="c-SocialButton text-dark mx-2" rel="nofollow">
+                            <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
+                            <span class="c-SocialButton__text">Facebook</span>
+                        </a>
+                    </c:if>
+                    <c:if test="${_themeContext.authenticationVariables.isGoogleSsoActive}">
+                        <a href="/sso/google/register" class="c-SocialButton text-dark mx-2" rel="nofollow">
+                            <collab:image src="/images/icons/social/google.svg" ariaHidden="true"/>
+                            <span class="c-SocialButton__text">Google</span>
+                        </a>
+                    </c:if>
+                </div>
+            </c:if>
         </div>
 
         <c:if test="${hasLoginInfoText}">
-            <div class="alert alert-info" style="font-size: 15px">
+            <div class="alert alert-info">
                 ${loginInfoText}
             </div>
-        </c:if>
-
-        <c:if test="${ error != null and isRegistering }">
-            <div class="alert alert-danger">${error}</div>
         </c:if>
 
         <form:form action="/register" method="post" commandName="createUserBean" id="registrationForm">
@@ -67,20 +62,22 @@
                 <form:hidden path="language" />
             </c:if>
 
-            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" htmlEscape="false"/>
+            <form:errors cssClass="alert alert-danger" element="div" htmlEscape="false"/>
+
             <table class="reg">
                 <tr style="${ generateScreenName ? 'display: none;' : ''}">
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.screenname"/> </th>
                     <td>
                         <form:input id="screenName" path="screenName"
-                                    cssClass="form-control" cssErrorClass="form-control is-invalid" />
+                                    cssClass="form-control" cssErrorClass="form-control is-invalid"/>
                         <form:errors cssClass="invalid-feedback" path="screenName" />
                     </td>
                 </tr>
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.email"/> </th>
                     <td>
-                        <form:input cssClass="popupreg_input" path="email" />
+                        <form:input cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                    path="email" />
                         <form:errors cssClass="invalid-feedback" path="email" />
                     </td>
                     <th class="second" rowspan="4"><spring:message code="register.form.fields.photo"/></th>
@@ -96,19 +93,23 @@
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.retypeemail"/></th>
                     <td>
                         <c:if test="${isSsoLogin}">
-                            <form:input cssClass="popupreg_input" path="retypeEmail"  value="${createUserBean.email}" />
+                            <form:input cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                        path="retypeEmail"  value="${createUserBean.email}" />
                         </c:if>
                         <c:if test="${not isSsoLogin}">
-                            <form:input cssClass="popupreg_input" path="retypeEmail" />
+                            <form:input cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                        path="retypeEmail" />
                         </c:if>
-                        <form:errors cssClass="invalid-feedback" path="retypeEmail" />
+                        <form:errors cssClass="invalid-feedback" cssErrorClass="form-control is-invalid"
+                                     path="retypeEmail" />
                     </td>
                 </tr>
 
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.firstname"/></th>
                     <td>
-                        <form:input cssClass="popupreg_input" path="firstName" onchange="generateScreenName()"/>
+                        <form:input cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                    path="firstName" onchange="generateScreenName()"/>
                         <form:errors cssClass="invalid-feedback" path="firstName" />
                     </td>
                 </tr>
@@ -116,7 +117,8 @@
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.lastname"/> </th>
                     <td>
-                        <form:input cssClass="popupreg_input" path="lastName" onchange="generateScreenName()"/>
+                        <form:input cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                    path="lastName" onchange="generateScreenName()"/>
                         <form:errors cssClass="invalid-feedback" path="lastName" />
                     </td>
                 </tr>
@@ -124,11 +126,12 @@
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.password"/> </th>
                     <td>
-                        <form:password cssClass="popupreg_input" path="password" />
+                        <form:password cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                       path="password" />
+                        <b><spring:message code="register.form.fields.password.note"/></b>
                         <form:errors cssClass="invalid-feedback" path="password" />
                     </td>
                     <td colspan="2" class="p-LoginRegister__signup__infofield">
-                        <b><spring:message code="register.form.fields.password.note"/></b>
                         <spring:message code="register.form.fields.password.notemsg"/>
                     </td>
                 </tr>
@@ -137,7 +140,7 @@
                 <tr>
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.retypepassword"/> </th>
                     <td>
-                        <form:password cssClass="popupreg_input"
+                        <form:password cssClass="form-control" cssErrorClass="form-control is-invalid"
                                        path="retypePassword" />
                         <form:errors cssClass="invalid-feedback" path="retypePassword" />
                     </td>
@@ -145,8 +148,9 @@
                     <th class="second required-field">
                         <spring:message code="register.form.fields.country"/>
                     </th>
-                    <td>
-                        <form:select cssClass="popupreg_input" path="country">
+                    <td width="30%">
+                        <form:select cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                     path="country">
                             <spring:message code="register.form.fields.country.defaultselectoption" var="countryOption"/>
                             <form:option value="" label="${countryOption}"/>
                             <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
@@ -160,7 +164,8 @@
                             <spring:message code="register.form.fields.language"/>
                         </th>
                         <td colspan="3">
-                            <form:select cssClass="popupreg_input" path="language">
+                            <form:select cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                         path="language">
                                 <spring:message code="register.form.fields.language.defaultselectoption" var="languageOption"/>
                                 <form:option value="" label="${languageOption}"/>
                                 <c:forEach var="lang" items="${languageSelectItems}">
@@ -182,7 +187,6 @@
                             <span class="limit_characterCount"><!--  --></span>/&#160;
                             <span class="limit_charactersMax">2000</span> <spring:message code="register.form.fields.shortbio.maxcharmsg"/>
                         </div>
-                        <form:errors cssClass="invalid-feedback" path="shortBio" />
                     </td>
                 </tr>
 
