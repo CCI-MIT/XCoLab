@@ -67,7 +67,7 @@
                 <form:hidden path="language" />
             </c:if>
 
-            <form:errors cssClass="alert alert-danger" htmlEscape="false"/>
+            <form:errors cssClass="alert alert-danger cb-alert-form-invalid" htmlEscape="false"/>
             <table class="reg">
                 <tr style="${ generateScreenName ? 'display: none;' : ''}">
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.screenname"/> </th>
