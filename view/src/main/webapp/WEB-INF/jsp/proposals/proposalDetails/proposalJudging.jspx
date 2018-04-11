@@ -71,7 +71,7 @@
             </div>
         </c:if>
         <br/>
-        <form:errors cssClass="alert alert-danger cb-alert-form-invalid" />
+        <form:errors cssClass="alert alert-danger" element="div" />
 
         <proposalsPortlet:proposalRating ratingTypes="${judgeProposalFeedbackBean.ratingTypes}" ratingValuesPath="ratingValues" />
         <form:errors path="ratingValues" cssClass="invalid-feedback"/>
