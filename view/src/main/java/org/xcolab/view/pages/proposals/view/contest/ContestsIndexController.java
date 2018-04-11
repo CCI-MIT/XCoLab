@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.view.contest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +21,13 @@ import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.pages.proposals.utils.ContestsColumn;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
 import org.xcolab.view.pages.proposals.wrappers.CollectionCardFilterBean;
 import org.xcolab.view.pages.proposals.wrappers.CollectionCardWrapper;
-import org.xcolab.view.pages.proposals.wrappers.ContestsSortFilterBean;
+import org.xcolab.view.pages.proposals.wrappers.ContestList;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
@@ -37,6 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.Cookie;
@@ -233,7 +236,13 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("contests", contests);
         //not taken into account if collection cards enabled
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
-        model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage));
+        final ContestList sortedContests = new ContestList(contests, getComparator(sortFilterPage));
+        if (StringUtils.isEmpty(sortFilterPage.getFilter())) {
+            model.addAttribute("contestsSorted", sortedContests);
+        } else {
+            model.addAttribute("contestsSorted",
+                    sortedContests.getFiltered(getFilter(sortFilterPage)));
+        }
         model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showAllContests", showAllContests);
@@ -249,6 +258,39 @@ public class ContestsIndexController extends BaseProposalsController {
 
         setBasePageAttributes(proposalContext, model);
         return "/proposals/contestsIndex";
+    }
+
+    private Comparator<Contest> getComparator(SortFilterPage sortFilterPage) {
+        ContestsColumn sortColumn;
+        if (StringUtils.isNotBlank(sortFilterPage.getSortColumn())) {
+            sortColumn = ContestsColumn.valueOf(sortFilterPage.getSortColumn());
+        } else {
+            sortColumn = ContestsColumn.DEFAULT;
+        }
+        return (o1, o2) -> {
+            if (o1.isFeatured() && !o2.isFeatured()) {
+                return -1;
+            }
+            if (!o1.isFeatured() && o2.isFeatured()) {
+                return 1;
+            }
+            if (sortFilterPage.isSortAscending()) {
+                return sortColumn.getColumnComparator().compare(o1, o2);
+            }
+            return sortColumn.getColumnComparator().compare(o2, o1);
+        };
+    }
+
+    private Predicate<Contest> getFilter(SortFilterPage sortFilterPage) {
+        String filterString = sortFilterPage.getFilter().toLowerCase();
+
+        return contest -> {
+            final String contestNameLc = contest.getContestName().toLowerCase();
+            final String contestShortNameLc = contest.getContestShortNameWithEndYear()
+                    .toLowerCase();
+            return contestNameLc.contains(filterString)
+                    || contestShortNameLc.contains(filterString);
+        };
     }
 
     private List<Contest> wrapContests(List<Contest> contests){

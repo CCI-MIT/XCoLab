@@ -5,6 +5,7 @@
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<!--@elvariable id="showOnlyFeatured" type="java.lang.Boolean"-->
 	<!--@elvariable id="collectionCards" type="org.xcolab.portlets.proposals.wrappers.CollectionCardFilterBean"-->
+    <!--@elvariable id="contestsSorted" type="org.xcolab.view.pages.proposals.wrappers.ContestList"-->
 
 	<div class="contests-container">
 		<div>
@@ -14,28 +15,23 @@
 		</div>
 
   		<div>
-			<c:forEach var="contest" items="${contestsSorted.contestsFeatured }" varStatus="status">
-
-				<c:if test="${contest.showInTileView}">
-				    <proposalsPortlet:contestCard contest="${contest }" index="${status.index}" />
-               	</c:if>
+			<c:forEach var="contest" items="${contestsSorted.inTileView.list}" varStatus="status">
+                <proposalsPortlet:contestCard contest="${contest}" index="${status.index}"/>
 			</c:forEach>
 		</div>
 		<c:if test="${not showOnlyFeatured}">
-			<c:if test="${not empty contestsSorted.contestsFeatured}">
+			<c:if test="${contestsSorted.featured.isNotEmpty}">
 				  <div class="contest-featured-seperator">&#160;</div>
 			</c:if>
 			<div>
-				<c:forEach var="contest" items="${contestsSorted.contestsNormal }" varStatus="status">
-					<c:if test="${contest.showInTileView}">
-						<proposalsPortlet:contestCard contest="${contest }" index="${status.index}" />
-					</c:if>
+				<c:forEach var="contest" items="${contestsSorted.notFeatured.inTileView.list}" varStatus="status">
+                    <proposalsPortlet:contestCard contest="${contest}" index="${status.index}"/>
 				</c:forEach>
 			</div>
 		</c:if>
 		<c:if test="${empty collectionCards.collectionCards}">
-			<c:if test="${empty contestsSorted.contestsFeatured}">
-				<c:if test="${empty contestsSorted.contestsNormal and not showOnlyFeatured}">
+			<c:if test="${contestsSorted.featured.isEmpty}">
+				<c:if test="${contestsSorted.notFeatured.isEmpty and not showOnlyFeatured}">
 					<div class="nothingFound">
 						We couldn't find any contests that match this criteria, but there may be some that are hidden.  Select "All Contests" in the dropdown above to see all of the active and completed contests in this collection.
 					</div>
