@@ -32,14 +32,6 @@
   color: $t-Color__gray--dark-800;
 }
 
-.popupreg_input {
-  float: left;
-  width: 300px;
-  height: 33px;
-  padding: 2px 0 0 8px;
-  font-size: 13px;
-}
-
 .popupreg_form {
   background: white;
   width: 100%;
@@ -100,8 +92,4 @@ th.second {
 
 .shortBioContent {
   width: 100%;
-}
-
-.is-required {
-  margin: 0 !important;
 }

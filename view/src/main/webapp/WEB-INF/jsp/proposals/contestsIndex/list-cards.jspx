@@ -10,24 +10,24 @@
     <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
     <!--@elvariable id="collectionCard" type="org.xcolab.portlets.proposals.wrappers.CollectionCardWrapper"-->
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
-    <!--@elvariable id="contestsSorted" type="org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean"-->
+    <!--@elvariable id="contestsSorted" type="org.xcolab.view.pages.proposals.wrappers.ContestList"-->
     <!--@elvariable id="collectionCards" type="org.xcolab.portlets.proposals.wrappers.CollectionCardFilterBean"-->
 
 
     <div class="c-ListView tooltips">
         <br/>
         <proposalsPortlet:collectionListItem collectionCards="${collectionCards.collectionCards }"/>
-        <c:if test="${not empty contestsSorted.contestsFeatured }">
-            <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsFeatured }" featured="true"/>
+        <c:if test="${not empty contestsSorted.featured.list}">
+            <proposalsPortlet:contestsListItem contests="${contestsSorted.featured.list}" featured="true"/>
         </c:if>
         <c:if test="${not showOnlyFeatured}">
-            <c:if test="${not empty contestsSorted.contestsNormal }">
-                <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsNormal }" featured="false"/>
+            <c:if test="${contestsSorted.notFeatured.isEmpty}">
+                <proposalsPortlet:contestsListItem contests="${contestsSorted.notFeatured.list}" featured="false"/>
             </c:if>
         </c:if>
         <c:if test="${empty collectionCards.collectionCards}">
-            <c:if test="${empty contestsSorted.contestsFeatured}">
-                <c:if test="${empty contestsSorted.contestsNormal and not showOnlyFeatured}">
+            <c:if test="${contestsSorted.featured.isEmpty}">
+                <c:if test="${contestsSorted.notFeatured.isEmpty and not showOnlyFeatured}">
 					<div class="nothingFound">
 						We couldn't find any contests that match this criteria, but there may be some that are hidden.  Select "All Contests" in the dropdown above to see all of the active and completed contests in this collection.
 					</div>
