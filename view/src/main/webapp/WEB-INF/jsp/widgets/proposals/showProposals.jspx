@@ -22,7 +22,7 @@
         <c:forEach items="${proposalsModel.proposals}" var="proposal">
             <div class="c-ContestBox">
                 <c:if test="${not proposalsModel.compact}">
-                    <a class="c-ContestBox__image" href="${proposal.proposalUrl}">
+                    <a class="c-ContestBox__image" href="${proposal.proposalUrl}" aria-hidden="true" tabindex="-1">
                         <c:if test="${proposal.image > 0}">
                             <collab:image src="${proposalsModel.baseImagePath}${proposal.image}"
                                           width="150" height="150"
