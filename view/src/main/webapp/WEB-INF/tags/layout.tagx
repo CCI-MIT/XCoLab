@@ -196,6 +196,8 @@
 
     <!-- ============ Navbar ============ -->
 
+    <a href="#content" class="sr-only">Skip navigation</a>
+
     <xcolab-layout:navbar colabName="${_themeContext.colabName}"
                           logoPath="${_themeContext.themeVariables.activeTheme.logoPath}"
                           redirect="${_themeContext.requestUri}"
