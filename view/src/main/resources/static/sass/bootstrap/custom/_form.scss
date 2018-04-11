@@ -51,6 +51,10 @@
   align-items: center;
 }
 
+.cb-form-col-input {
+  @extend .col-12, .col-lg;
+}
+
 
 //workaround to override legacy input and label rules
 .checkbox {
