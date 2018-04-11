@@ -128,7 +128,6 @@
                     <td>
                         <form:password cssClass="form-control" cssErrorClass="form-control is-invalid"
                                        path="password" />
-                        <b><spring:message code="register.form.fields.password.note"/></b>
                         <form:errors cssClass="invalid-feedback" path="password" />
                     </td>
                     <td colspan="2" class="p-LoginRegister__signup__infofield">
