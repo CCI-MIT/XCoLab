@@ -57,7 +57,7 @@
                             <!--#if ($pageName == 'search') isCurrent #end-->
                             <c:set var="navbarSearchActive" value="${activePageLink == 'search' ? 'active' : ''}" />
                             <li class="nav-item cb-nav-item-icon cb-nav-item-gray cb-nav-item-sm mr-1 dropdown cb-dropdown-inverse ${navbarSearchActive}" data-toggle="dropdown">
-                                <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" href="#">
                                     <xcolab-icon:search cssClass="nav-icon"/>
                                     <div class="cb-nav-text">
                                         <spring:message code="homepage.menu.search" />
@@ -86,13 +86,13 @@
                         <c:choose>
                             <c:when test="${member != null}">
                                 <li class="nav-item cb-nav-item-multi-line c-Header__displayName d-inline-flex align-items-center">
-                                    <a href="#" class="nav-link p-2"
+                                    <a href="#" class="nav-link p-2" tabindex="-1"
                                        onclick="event.stopPropagation();jQuery('#user-dropdown').dropdown('toggle');">
                                         ${member.displayName}
                                     </a>
                                 </li>
                                 <li class="nav-item cb-nav-item-image dropdown cb-dropdown-inverse">
-                                    <a id="user-dropdown" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                    <a id="user-dropdown" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
                                         <collab:image src="/image/member/${member.portraitId}" alt="${member.screenName}" />
                                         <c:if test="${member.unreadMessageCount > 0}">
                                             <div class="badge badge-pill badge-primary-darkest">
@@ -116,7 +116,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item cb-nav-item-gray cb-nav-item-sm dropdown cb-dropdown-inverse ${navItemRightIconClass}">
-                                    <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" >
+                                    <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" href="#">
                                         <c:if test="${isShowIcons}">
                                             <xcolab-icon:login cssClass="nav-icon"/>
                                         </c:if>
@@ -129,7 +129,7 @@
                                 </li>
                                 <c:if test="${showLanguage}">
                                     <li class="nav-item cb-nav-item-gray cb-nav-item-sm dropdown cb-dropdown-inverse ${navItemRightIconClass}">
-                                        <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown">
+                                        <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" href="#">
                                             <c:if test="${isShowIcons}">
                                                 <xcolab-icon:language cssClass="nav-icon"/>
                                             </c:if>
