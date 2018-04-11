@@ -59,7 +59,8 @@
         </div>
 
         <c:if test="${showExportLink}">
-            <a class="btn cb-btn-outline-admin" href="">Export CSV</a>
+            <c:set value="/api/contests/downloadContestProposalsList" var="downloadContestProposalsList"/>
+            <a class="btn cb-btn-outline-admin" href="${downloadContestProposalsList}">Export CSV</a>
         </c:if>
     </div>
 

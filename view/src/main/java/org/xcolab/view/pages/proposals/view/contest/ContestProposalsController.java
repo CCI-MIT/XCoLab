@@ -59,18 +59,12 @@ public class ContestProposalsController extends BaseProposalsController {
         return showContestProposalsPage(model, proposalContext, sortFilterPage, loggedInMember);
     }
 
-    private String showContestProposalsPage(Model model, ProposalContext proposalContext,
-            final SortFilterPage sortFilterPage, Member loggedInMember) {
+    private List<Proposal> getProposals(ProposalContext proposalContext, Member loggedInMember) {
+        final ClientHelper clients = proposalContext.getClients();
+        final ProposalClient proposalClient = clients.getProposalClient();
 
         ContestPhase contestPhase = proposalContext.getContestPhase();
         Contest contest = proposalContext.getContest();
-
-        if (contest == null || contestPhase == null) {
-            throw new ProposalIdOrContestIdInvalidException();
-        }
-
-        final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
 
         final List<Proposal> activeProposals;
         final ContestStatus phaseStatus = contestPhase.getStatus();
@@ -105,6 +99,21 @@ public class ContestProposalsController extends BaseProposalsController {
 
             }
         }
+
+        return proposals;
+    }
+
+    private String showContestProposalsPage(Model model, ProposalContext proposalContext,
+            final SortFilterPage sortFilterPage, Member loggedInMember) {
+
+        ContestPhase contestPhase = proposalContext.getContestPhase();
+        Contest contest = proposalContext.getContest();
+
+        if (contest == null || contestPhase == null) {
+            throw new ProposalIdOrContestIdInvalidException();
+        }
+
+        List<Proposal> proposals = getProposals(proposalContext, loggedInMember);
 
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new SortedProposalList(proposals, sortFilterPage,
@@ -148,6 +157,16 @@ public class ContestProposalsController extends BaseProposalsController {
             response.sendRedirect(proposalContext.getContest().getContestLinkUrl());
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to subscribe contest");
+        }
+    }
+
+    @GetMapping("/api/contests/downloadContestProposalsList")
+    public void downloadContestProposalsList(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
+        try (ContestProposalsCsvWriter csvWriter = new ContestProposalsCsvWriter(response)) {
+            List<Proposal> proposalList = getProposals(proposalContext, loggedInMember);
+            csvWriter.writeMembers(proposalList);
         }
     }
 }
