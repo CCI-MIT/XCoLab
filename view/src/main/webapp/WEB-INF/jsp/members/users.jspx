@@ -5,6 +5,8 @@
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form">
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
     <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
     <!--@elvariable id="users" type="java.util.List<org.xcolab.view.pages.members.users.utils.MemberItem>"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage"-->
