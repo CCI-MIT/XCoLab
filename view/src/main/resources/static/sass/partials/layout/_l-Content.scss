@@ -46,6 +46,10 @@ $_l-Content__gutter: $t-Spacing__gridGutter;
     flex-basis: 250px;
   }
 
+  .l-Content__sidebar--smallest {
+    flex-basis: 200px;
+  }
+
   .l-Content__sidebar--large {
     flex-basis: 350px;
   }
