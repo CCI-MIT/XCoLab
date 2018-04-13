@@ -25,7 +25,7 @@
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
-    <div class="cb-navbar-background ${isWhiteBackgound ? 'cb-navbar-background-white' : ''} border-bottom border-medium">
+    <div class="cb-navbar-background ${isWhiteBackgound ? 'cb-navbar-background-white' : ''}">
         <div class="cb-container-fixed">
             <nav class="navbar ${_themeContext.themeVariables.isResponsive ? 'navbar-expand-lg' : 'navbar-expand'} navbar-light" aria-label="site wide">
                 <a class="navbar-brand" href="/">
@@ -39,18 +39,18 @@
                 </button>
                 <div class="collapse navbar-collapse dual-collapse">
                     <ul class="navbar-nav cb-nav-pages">
-                        <li class="nav-item cb-nav-item-text ${activePageLink == 'about' ? 'active' : ''}">
+                        <li class="nav-item ${activePageLink == 'about' ? 'active' : ''}">
                             <a class="nav-link" href="/page/about"><spring:message code="homepage.menu.about" /></a>
                         </li>
 
                         <c:forEach var="contestPage" items="${contestPages}">
                             <c:if test="${contestPage.menuItemName != ''}">
-                                <li class="nav-item cb-nav-item-text ${activePageLink == contestPage.identifier ? 'active' : ''}">
+                                <li class="nav-item ${activePageLink == contestPage.identifier ? 'active' : ''}">
                                     <a class="nav-link" href="${contestPage.contestBaseUrl}">${contestPage.menuItemName}</a>
                                 </li>
                             </c:if>
                         </c:forEach>
-                        <li class="nav-item cb-nav-item-text ${activePageLink == 'community' ? 'active' : ''}" >
+                        <li class="nav-item ${activePageLink == 'community' ? 'active' : ''}" >
                             <a class="nav-link" href="/members"><spring:message code="homepage.menu.community" /></a>
                         </li>
                         <c:if test="${showSearch}">
@@ -74,11 +74,14 @@
                                     </form>
                                 </div>
                             </li>
+
+                            <c:if test="${not empty _themeContext.socialMediaVariables.donateLink}">
+                                <li class="nav-item cb-navbar-button ${activePageLink == 'donate' ? 'active' : ''}" >
+                                    <a class="btn btn-accent btn-sm" href="${_themeContext.socialMediaVariables.donateLink}"><spring:message code="homepage.menu.donate" /></a>
+                                </li>
+                            </c:if>
                         </c:if>
                     </ul>
-                    <c:if test="${not empty _themeContext.socialMediaVariables.donateLink}">
-                        <a class="btn btn-accent btn-sm" href="${_themeContext.socialMediaVariables.donateLink}"><spring:message code="homepage.menu.donate" /></a>
-                    </c:if>
                 </div>
                 <div class="collapse navbar-collapse dual-collapse">
                     <ul class="navbar-nav ml-auto">
