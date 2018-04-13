@@ -348,7 +348,7 @@
                     <tr class="colabRow">
                         <td class="actionColumn">
                             <spring:message code="profile.account.delete.question" arguments="${_themeContext.colabName}" var="deleteMsg"/>
-                            <button type="button" class="btn btn-gray btn-sm js-PostLink" data-href="${deleteProfileUrl}" data-confirm="${deleteMsg}">
+                            <button type="button" class="btn btn-gray btn-sm js-PostLink" data-url="${deleteProfileUrl}" data-confirm="${deleteMsg}">
                                 <spring:message code="profile.account.delete.button"/>
                             </button>
                         </td>
