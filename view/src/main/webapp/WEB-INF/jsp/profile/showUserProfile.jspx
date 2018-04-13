@@ -53,7 +53,7 @@
                         <div class="card-body">
                             <h1>Member Profile</h1>
                             <div class="comm_member" style="margin-top: 0;">
-                                <div class="media">
+                                <div class="media flex-column flex-lg-row">
                                     <collab:image src="${userBean.portrait}" width="150" height="150"
                                                   alt="${currentUserProfile.realName}" cssClass="mr-3"/>
                                     <div class="media-body">
@@ -93,32 +93,30 @@
                                         <hr class="cb-hr-lg"/>
 
                                         <table border="0" cellpadding="0" cellspacing="0"
-                                               class="colab members otherInfo profileTable"
-                                               style="width:100%;">
+                                               class="colab members profileTable">
                                             <tbody>
                                             <tr>
-                                                <td class="b" nowrap="nowrap" width="23%">
+                                                <td class="b">
                                                     <spring:message
                                                             code="profile.show.screen.name"/>
                                                 </td>
-                                                <td width="23%">${userBean.screenName}</td>
-                                                <td class="b" width="43%"><spring:message
+                                                <td>${userBean.screenName}</td>
+                                                <td class="b"><spring:message
                                                         code="profile.show.activities"/></td>
                                                 <td class="align_right">${currentUserProfile.userActivityCountFormatted}</td>
                                             </tr>
                                             <tr>
-                                                <td class="b" nowrap="nowrap" width="23%">
+                                                <td class="b">
                                                     <spring:message
                                                             code="profile.show.membersince"/>
                                                 </td>
-                                                <td width="23%">
+                                                <td>
                                                     <xcolab:formatDateTime
                                                             millis="${currentUserProfile.joinDate.time}"
                                                             type="date" zoneDisplay="none"/>
                                                 </td>
                                                 <c:if test="${pointsActive}">
-                                                    <td class="b points_box left_border top_border"
-                                                        width="45%">
+                                                    <td class="b points_box left_border top_border">
                                                         <spring:message
                                                                 code="profile.show.pointsactual"
                                                                 arguments="${_themeContext.colabShortName}"/>
@@ -144,15 +142,14 @@
                                             </tr>
 
                                             <tr>
-                                                <td class="b" width="23%">Country</td>
-                                                <td width="23%">
+                                                <td class="b">Country</td>
+                                                <td>
                                                     <c:choose>
                                                         <c:when test="${not empty userBean.countryName}">${userBean.countryName}</c:when>
                                                     </c:choose>
                                                 </td>
                                                 <c:if test="${pointsActive}">
-                                                    <td class="b points_box left_border bottom_border"
-                                                        width="43%">
+                                                    <td class="b points_box left_border bottom_border">
                                                         <spring:message
                                                                 code="profile.show.pointsactualMax"
                                                                 arguments="${_themeContext.colabShortName}"/>
@@ -179,10 +176,9 @@
 
                                             <c:if test="${currentUserProfile.viewingOwnProfile}">
                                                 <tr>
-                                                    <td class="b" width="23%"><spring:message
+                                                    <td class="b"><spring:message
                                                             code="profile.show.email"/></td>
-                                                    <td colspan="3"
-                                                        style="white-space: nowrap;">
+                                                    <td colspan="3">
                                                         <a href="mailto:${userBean.email}">${userBean.emailStored}</a>
 
                                                         <c:if test="${currentUserProfile.displayEMailErrorMessage}">
@@ -193,23 +189,17 @@
                                                     </td>
                                                 </tr>
                                             </c:if>
-
-                                            <c:if test="${permissions.getCanEditMemberProfile(userBean.userId)}">
-                                                <tr>
-                                                    <td colspan="4">
-                                                        <a class="btn btn-primary"
-                                                           href="/members/profile/${currentUserProfile.userId}/edit">
-                                                            <spring:message
-                                                                    code="profile.show.manageprofile.button"/>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </c:if>
-
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
+                                <c:if test="${permissions.getCanEditMemberProfile(userBean.userId)}">
+                                    <a class="btn btn-primary"
+                                       href="/members/profile/${currentUserProfile.userId}/edit">
+                                        <spring:message code="profile.show.manageprofile.button"/>
+                                    </a>
+                                </c:if>
+
                                 <c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
                                     <a class="btn btn-primary" rel="nofollow"
                                        data-message-recipient="${currentUserProfile.user.id_}"
