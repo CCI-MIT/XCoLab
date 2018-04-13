@@ -34,34 +34,37 @@
 
 		<collab:script src="/js/proposals/discussionComments.js" />
 
-		<div class="cb-d-flex-between-center">
-			<div class="c-Count">
-				<span class="c-Count__number">${thread.commentsCount}</span>
-				<c:choose>
-					<c:when test="${thread.commentsCount == 1 }">
-                        <spring:message code="discussion.commmentstag.count.singular.message"/>
-					</c:when>
-					<c:otherwise>
-                        <spring:message code="discussion.commmentstag.count.plural.message"/>
-					</c:otherwise>
-				</c:choose>
-			</div>
+		<div class="row justify-content-between align-items-center">
+            <div class="col-12 col-md">
+                <div class="c-Count">
+                    <span class="c-Count__number">${thread.commentsCount}</span>
+                    <c:choose>
+                        <c:when test="${thread.commentsCount == 1 }">
+                            <spring:message code="discussion.commmentstag.count.singular.message"/>
+                        </c:when>
+                        <c:otherwise>
+                            <spring:message code="discussion.commmentstag.count.plural.message"/>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+
             <c:if test="${discussionPermissions.canSeeAddCommentButton}">
-                <a href="#addCommentForm" onclick='if(!deferUntilLogin()) return false' class="btn btn-link">
-                    <collab:image src="/images/icon-add-comment.png" width="24" height="22"
-                                  cssClass="cb-btn-image" ariaHidden="true"/>
-                    <span class="cb-btn-image-text">
-                        <spring:message code="discussion.commmentstag.jumptocomment"/>
-                    </span>
-                </a>
+                <div class="col-12 col-md">
+                    <a href="#addCommentForm" onclick='if(!deferUntilLogin()) return false' class="btn btn-link">
+                        <collab:image src="/images/icon-add-comment.png" width="24" height="22"
+                                      cssClass="cb-btn-image" ariaHidden="true"/>
+                        <span class="cb-btn-image-text">
+                            <spring:message code="discussion.commmentstag.jumptocomment"/>
+                        </span>
+                    </a>
+                </div>
             </c:if>
             <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
-                <div class="c-Comment__share">
+                <div class="col-12 col-md">
                     <spring:message code="discussion.commmentstag.share"/>:
 
-                    <div>
-                        <xcolab-social:socialShareButtons title="${shareTitlePageScope}" size="sm"/>
-                    </div>
+                    <xcolab-social:socialShareButtons title="${shareTitlePageScope}" size="sm"/>
                 </div>
             </c:if>
 		</div>
@@ -171,8 +174,8 @@
 			</c:otherwise>
 		</c:choose>
 		<c:if test="${discussionPermissions.canSeeAddCommentButton }">
-			<div class="c-Comment__add">
-				<div class="c-Comment__add__info">
+			<div class="row mt-3">
+				<div class="col-12 col-md-3">
 					<strong><spring:message code="discussion.commmentstag.addyourcomment"/></strong><br />
 					<c:choose>
 						<c:when test="${not empty currentTab and currentTab eq 'SCREENING'}">
@@ -188,10 +191,10 @@
 						</c:when>
 					</c:choose>
 				</div>
-				<div class="c-Comment__new">
+				<div class="col-12 col-md-9">
 					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
 					<form:form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
-                        <input name="threadId" class="title text hidden" maxlength="255" value="${thread.threadId}" />
+                        <input type="hidden" name="threadId" value="${thread.threadId}" />
 						<textarea id="commentContent" name="description"  class="rte-editorPlaceholder c-Comment__box commentContent"><!-- --></textarea>
 						<div class="alert alert-danger my-2" id="js-Comment__error" style="display: none;">
                             <spring:message code="discussion.commmentstag.valuerequired"/>
