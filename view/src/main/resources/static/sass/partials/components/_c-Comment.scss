@@ -117,20 +117,6 @@ $c-Comment__threads__list__tr__border--bottom: 1px solid $t-Color__gray--medium-
   }
 }
 
-.c-Comment__threads { //.threads-container {
-  @extend .clearfix;
-
-  .c-Comment__threads__container { //.main-content
-    float: left;
-    width: 680px;
-  }
-
-  .c-Comment__threads__sidebar { //.sidebar
-    float: left;
-    margin-left: 50px;
-  }
-}
-
 .c-Box .c-Comment {
   width: 100%;
   padding: 0;
