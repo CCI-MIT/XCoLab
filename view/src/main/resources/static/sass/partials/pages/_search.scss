@@ -32,17 +32,3 @@
   clear: both;
   height: 0;
 }
-
-.pagination {
-  width: 100%;
-  margin: 10px auto;
-
-  a {
-    padding: 0 5px;
-
-    &.c {
-      cursor: default;
-      color: $t-Color__gray--dark-800;
-    }
-  }
-}

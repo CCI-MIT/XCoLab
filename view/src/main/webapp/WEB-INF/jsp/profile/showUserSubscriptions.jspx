@@ -65,14 +65,7 @@
 
 
     <!--@elvariable id="pageNavigation" type="org.xcolab.view.util.pagination.PageNavigation"-->
-    <c:if test="${pageNavigation.shouldShowNavigation}">
-        <div class="pagination">
-            <c:forEach var="pageLink" items="${pageNavigation.pageLinks}">
-                <a class="${pageLink.isCurrent ? 'c' : ''}"
-                   href="${pageLink.url}">${pageLink.text}</a>
-            </c:forEach>
-        </div>
-    </c:if>
+    <xcolab:pagination pageNavigation="${pageNavigation}"/>
 
 </xcolab:layout>
 </jsp:root>

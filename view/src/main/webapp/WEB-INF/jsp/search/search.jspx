@@ -7,6 +7,7 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="Search">
     <!--@elvariable id="searchBean" type="org.xcolab.view.pages.search.SearchBean"-->
+    <!--@elvariable id="pageNavigation" type="org.xcolab.view.util.pagination.PageNavigation"-->
 
     <h1>
         <c:if test="${not empty searchBean.searchPhrase}">
@@ -78,12 +79,6 @@
         </div>
     </div>
 
-    <c:if test="${searchBean.dataPage.numberOfPages > 1}">
-        <div class="pagination">
-            <c:forEach var="pageLink" items="${searchBean.pageLinks}">
-                <a class="${pageLink.isCurrent(searchBean) ? 'c' : ''}" href="${pageLink.linkUrl}">${pageLink.linkText}</a>
-            </c:forEach>
-        </div>
-    </c:if>
+    <xcolab:pagination pageNavigation="${pageNavigation}"/>
 </xcolab:layout>
 </jsp:root>

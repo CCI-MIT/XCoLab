@@ -200,7 +200,7 @@ public class UserProfileWrapper implements Serializable {
             double d2 = subscriptionsPageSize;
             return (int) Math.ceil(d1 / d2);
         }
-        return 0;
+        return 1;
     }
 
     public int getSubscribedActivitiesCount() {

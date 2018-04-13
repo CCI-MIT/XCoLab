@@ -1,0 +1,57 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+    <jsp:directive.attribute name="pageNavigation" type="org.xcolab.view.util.pagination.PageNavigation"
+                             required="true" rtexprvalue="true" description="A page navigation object to define the pagination."/>
+    <jsp:directive.attribute name="cssClass" type="java.lang.String"
+                             required="false" rtexprvalue="true" description="Optional css classes for the pagination object."/>
+
+    <c:if test="${pageNavigation.shouldShowNavigation}">
+        <nav aria-label="Pagination" class="${cssClass}">
+            <span class="text-muted">Page ${pageNavigation.currentPage} of ${pageNavigation.numPages}</span>
+            <ul class="pagination">
+
+                <c:if test="${not pageNavigation.isFirstPageShown}">
+                    <li class="page-item">
+                        <a class="page-link" accesskey="f" href="${pageNavigation.firstPageLink.url}">
+                            First
+                        </a>
+                    </li>
+                </c:if>
+
+                <c:if test="${not pageNavigation.isFirstPage}">
+                    <li class="page-item">
+                        <a class="page-link" accesskey="p" href="${pageNavigation.previousPageLink.url}">
+                            &#171;<!--&laquo;-->
+                        </a>
+                    </li>
+                </c:if>
+
+                <c:forEach var="pageLink" items="${pageNavigation.pageLinks}">
+                    <li class="page-item ${pageLink.isCurrent ? 'active' : ''}">
+                        <a class="page-link" href="${pageLink.url}">
+                            ${pageLink.page}
+                        </a>
+                    </li>
+                </c:forEach>
+
+                <c:if test="${not pageNavigation.isLastPage}">
+                    <li class="page-item">
+                        <a class="page-link" accesskey="n" href="${pageNavigation.nextPageLink.url}">
+                            &#187;<!--&raquo;-->
+                        </a>
+                    </li>
+                </c:if>
+
+                <c:if test="${not pageNavigation.isLastPageShown}">
+                    <li class="page-item">
+                        <a class="page-link" accesskey="l" href="${pageNavigation.lastPageLink.url}">
+                            Last
+                        </a>
+                    </li>
+                </c:if>
+            </ul>
+        </nav>
+    </c:if>
+</jsp:root>
