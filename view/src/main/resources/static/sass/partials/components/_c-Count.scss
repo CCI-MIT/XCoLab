@@ -1,7 +1,7 @@
-$c-Count__fontSize: 20px !default;
+$c-Count__fontSize: 1.25rem !default;
 $c-Count__capitalization: $b-Typography__capitalization--none !default;
 $c-Count__number__color: $t-Color__secondary !default;
-$c-Count__number__fontSize: 30px !default;
+$c-Count__number__fontSize: 1.875rem !default;
 $c-Count__number__fontWeight: $t-Typography__fontWeight--bold !default;
 $c-Count__number__color--accent: $t-Color__accent !default;
 
@@ -10,15 +10,23 @@ $c-Count__number__color--accent: $t-Color__accent !default;
 .c-Count {
   display: inline-block;
   vertical-align: middle;
-  font-size: $c-Count__fontSize;
   text-transform: $c-Count__capitalization;
+  font-size: ($c-Count__fontSize + 1rem) / 2;
+
+  @include media-breakpoint-up(sm) {
+    font-size: $c-Count__fontSize;
+  }
 }
 
 .c-Count__number {
   display: inline-block;
   margin-right: $t-Spacing__base * .25;
-  font-size: $c-Count__number__fontSize;
   font-weight: $c-Count__number__fontWeight;
+  font-size: ($c-Count__number__fontSize + 1rem) / 2;
+
+  @include media-breakpoint-up(sm) {
+    font-size: $c-Count__number__fontSize;
+  }
 
   color: $c-Count__number__color;
 
