@@ -121,6 +121,10 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
 
     .nav-item {
       border-left: 1px solid $t-Color__gray--medium-500;
+
+      &.dropdown.show {
+        border-left-color: white;
+      }
     }
   }
 }
