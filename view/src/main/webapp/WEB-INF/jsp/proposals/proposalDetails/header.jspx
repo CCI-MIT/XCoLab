@@ -48,12 +48,9 @@
             </h3>
         </c:if>
         <c:if test="${tabs.size() > 0}">
-            <ul class="c-TabBar clearfix">
+            <ul class="nav nav-tabs flex-column flex-md-row clearfix">
                 <c:forEach var="singleTab" items="${tabs }" varStatus="loopStatus">
-                    <li class="${!loopStatus.last
-                        ? (!loopStatus.first ? 'c-TabBar__tab' : 'c-TabBar__tab--first')
-                        : 'c-TabBar__tab--last'}
-                        ${currentTab == singleTab.tab ? 'active' : singleTab.tab.tabType.cssModifier}">
+                    <li class="nav-item text-md-center">
                         <c:choose>
                             <c:when test="${singleTab.defaultTab and empty contestPhase }">
                                 <c:set var="proposalUrl" value="${proposal.proposalUrl}" />
@@ -68,10 +65,10 @@
                                 <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }/tab/${singleTab.name}" />
                             </c:otherwise>
                         </c:choose>
-                        <a href="${proposalUrl }">
+                        <a class="nav-link ${currentTab == singleTab.tab ? 'active' : singleTab.tab.tabType.cssModifier}" href="${proposalUrl }">
                             <spring:message code="${singleTab.displayNameMessageCode}" />
                             <c:if test="${singleTab.activityCount > 0}">
-                                <span class="c-TabBar__tab__count">${singleTab.activityCount}</span>
+                                <span class="badge badge-pill badge-secondary cb-badge-margin-left">${singleTab.activityCount}</span>
                             </c:if>
                         </a>
                     </li>
