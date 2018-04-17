@@ -15,10 +15,10 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
-import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
@@ -30,7 +30,6 @@ import org.xcolab.view.util.entity.enums.ColabConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,7 +151,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
         for (ContestPhase contestPhase : contestPhases) {
             boolean isPhasePastScreeningPhase =
-                    contestPhase.getFellowScreeningActive() && hasContestPhaseEnded(contestPhase);
+                    contestPhase.getFellowScreeningActive() && contestPhase.isEnded();
             if (isPhasePastScreeningPhase) {
                 String contestPhaseName = proposalContext.getClients().getContestClient().getContestPhaseName(contestPhase);
                 List<ProposalRating> judgeRatingsForProposal =
@@ -266,9 +265,5 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         } catch (MemberNotFoundException e) {
             throw new InternalException(e);
         }
-    }
-
-    private boolean hasContestPhaseEnded(ContestPhase contestPhase) {
-        return contestPhase.getPhaseEndDate().before(new Date());
     }
 }
