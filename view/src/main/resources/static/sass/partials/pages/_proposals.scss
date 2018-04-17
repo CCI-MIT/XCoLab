@@ -321,10 +321,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   padding: 10px;
 }
 
-.prop-tabs ul {
-  margin-bottom: 0;
-}
-
 //ribbon
 .thread-creator-overlay {
   background: url(/images/Thread-creator-overlay.png) no-repeat;
@@ -396,17 +392,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   img {
     margin-right: 10px;
   }
-}
-
-.popup-tabcontainer {
-  border: 1px solid $t-Color__gray--dark-600;
-}
-
-.prop-tabs li {
-  list-style: none;
-  background: none;
-  padding: 0;
-  margin-left: 0;
 }
 
 .ui-widget-content a {
