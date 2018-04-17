@@ -192,25 +192,25 @@
                             <div>${request.membershipRequest.comments }</div>
                             <input type="hidden" name="requestId"
                                    value="${request.membershipRequest.membershipRequestId}"/>
-                            <div style="margin-top: 10px;">
-                                <textarea name="comment" class="membership-request-comment-admin"
-                                          onfocus="clearContents(this);">Optional response</textarea>
-                                <div class="allow-deny-membership-box">
-                                    <div>
-                                        <input type="radio" name="approve" value="approve"
-                                               id="radio-approve"/>
-                                        <label for="radio-approve"
-                                               style="margin-left: 10px;">Approve</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" name="approve" value="deny"
-                                               id="radio-deny"/>
-                                        <label for="radio-deny"
-                                               style="margin-left: 10px;">Deny</label>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Send</button>
+                            <textarea name="comment" class="form-control mt-2"
+                                      placeholder="Optional response"><!-- empty --></textarea>
+
+                            <div class="form-check-inline mt-2">
+                                <input type="radio" name="approve" value="approve"
+                                       id="radio-approve" class="form-check-input"/>
+                                <label for="radio-approve" class="form-check-label">
+                                    Approve
+                                </label>
                             </div>
+                            <div class="form-check-inline">
+                                <input type="radio" name="approve" value="deny"
+                                       id="radio-deny" class="form-check-input"/>
+                                <label for="radio-deny" class="form-check-label">
+                                    Deny
+                                </label>
+                            </div>
+                            <br/>
+                            <button type="submit" class="btn btn-primary mt-2">Send</button>
                         </form:form>
                         <c:set var="count" value="${count + 1}" scope="page"/>
                     </c:forEach>
