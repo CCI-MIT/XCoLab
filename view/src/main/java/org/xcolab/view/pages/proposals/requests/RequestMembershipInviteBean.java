@@ -1,8 +1,5 @@
 package org.xcolab.view.pages.proposals.requests;
 
-/**
- * Created by kmang on 08/04/14.
- */
 public class RequestMembershipInviteBean {
 
     private String inviteComment;

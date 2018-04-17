@@ -86,53 +86,6 @@ function enableDirtyCheck() {
 	};
 }
 
-/* Request membership form logic */
-function clearContents(element) {
-    element.value = '';
-}
-
-function requestMembership() {
-    $('#requestComment').slideDown('slow');
-    $('.prop-butt-popover:first').css('background', 'url(/images/search-bg.png)');
-    var $requestButtons = $('#requestButtons');
-    $requestButtons.empty();
-    $requestButtons.append('<a href="javascript:;" class="btn btn-gray" onclick="hideRequestForm(true);">Cancel</a>');
-    $requestButtons.append('<a href="javascript:;" class="btn btn-primary float-right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a>');
-}
-function hideRequestForm(animate) {
-    var speed = animate ? 600 : 1;
-    $('#requestComment').slideUp('slow', function () {
-        $('.prop-butt-popover:first').css('background', 'none');
-        var $requestButtons = $('#requestButtons');
-        $requestButtons.empty();
-        $requestButtons.append('<a href="javascript:;" class="btn btn-primary" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>');
-    });
-}
-/* End of request membership form logic */
-
-/* Membership invite logic */
-function inviteMember() {
-    $('#invite-comment').slideDown('slow');
-    $('#invite-recipient').slideDown('slow');
-    $('.prop-butt-popover:first').css('background', 'url(/images/search-bg.png)');
-    var $requestButtons = $('#requestButtons');
-    $requestButtons.empty();
-    $requestButtons.append('<a href="javascript:;" class="btn btn-gray float-left" onclick="hideInviteForm(true);">Cancel</a>');
-    $requestButtons.append('<a href="javascript:;" class="btn btn-primary float-right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a>');
-}
-
-function hideInviteForm(animate) {
-    var speed = animate ? 600 : 1;
-    $('#invite-comment').slideUp('slow', function () {
-        $('.prop-butt-popover:first').css('background', 'none');
-        var $requestButtons = $('#requestButtons');
-        $requestButtons.empty();
-        $requestButtons.append(
-            '<a href="javascript:;" class="btn btn-primary" rel="nofollow" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>');
-    });
-    $('#invite-recipient').slideUp('slow');
-}
-
 // jQuery autocomplete
 $(function() {
     var cache = {};
