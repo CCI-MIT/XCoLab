@@ -333,13 +333,16 @@
         </script>
         <div class="contentEditor">
             <div class="contentBody">
-                <ul class="c-TabBar clearfix">
-                    <li class="c-TabBar__tab--first"><a href="/content-editor/">Content Editor</a>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"><a class="nav-link"
+                                            href="/content-editor/">Content Editor</a>
                     </li>
-                    <li class="c-TabBar__tab active"><a
-                            href="/content-editor/pageEditor">Page Editor</a></li>
-                    <li class="c-TabBar__tab"><a
-                            href="/content-editor/resourcePagesEditor">Resource pages</a></li>
+                    <li class="nav-item"><a class="nav-link active"
+                                            href="/content-editor/pageEditor">Page Editor</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link"
+                                            href="/content-editor/resourcePagesEditor">Resource pages</a>
+                    </li>
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
