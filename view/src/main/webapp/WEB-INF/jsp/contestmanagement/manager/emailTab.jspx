@@ -34,7 +34,7 @@
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
-        <form:errors cssClass="alert alert-danger" path="*"/>
+        <form:errors cssClass="alert alert-danger" element="div" path="*"/>
 
         <div class="c-Box c-Box--colorTan">
             <form:form commandName="emailTemplateWrapper">

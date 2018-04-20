@@ -66,11 +66,7 @@ public class SearchDataPage {
     }
 
     public int getNumberOfPages() {
-        int numPages = totalResults / PAGE_SIZE;
-        if (totalResults % PAGE_SIZE != 0) {
-            numPages++;
-        }
-        return numPages;
+        return (int) Math.ceil(totalResults / (double) PAGE_SIZE);
     }
 
     public List<SearchResultItem> getItems() {

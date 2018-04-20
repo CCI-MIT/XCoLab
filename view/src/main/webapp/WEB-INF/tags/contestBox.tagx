@@ -15,7 +15,7 @@
 
     <div class="c-ContestBox">
         <a class="c-ContestBox__image" href="${contest.contestUrl}" aria-hidden="true" tabindex="-1">
-            <collab:image src="${contest.logoPath}" width="150" height="150"
+            <collab:image src="${contest.logoPath}" width="150" height="150" cssStyle="max-width: 150px"
                           alt="${contest.contestShortNameWithEndYear}"/>
         </a>
         <div class="c-ContestBox__body">

@@ -5,11 +5,16 @@
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form">
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
     <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
     <!--@elvariable id="users" type="java.util.List<org.xcolab.view.pages.members.users.utils.MemberItem>"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage"-->
     <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
     <!--@elvariable id="permissions" type="org.xcolab.view.pages.members.users.utils.MembersPermissions"-->
+    <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.members.pojo.MemberCategory>"-->
+    <!--@elvariable id="pageNavigation" type="org.xcolab.view.util.pagination.PageNavigation"-->
+    <!--@elvariable id="membersNavigation" type="org.xcolab.view.pages.members.users.utils.MembersNavigation"-->
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="Members">
@@ -18,10 +23,10 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="/members"><spring:message code="colab.breadcrums.community"/> </a>
+                <a href="/members"><spring:message code="colab.breadcrumbs.community"/> </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                <spring:message code="colab.breadcrums.members"/>
+                <spring:message code="colab.breadcrumbs.members"/>
             </li>
         </ol>
     </nav>
@@ -38,7 +43,7 @@
                 </button>
             </div>
             <div class="card-body">
-                <c:if test="${isRegistrationOpen}">
+                <c:if test="${_themeContext.themeVariables.isRegistrationOpen}">
                     <spring:message code="community.page.help.text" arguments="${_themeContext.colabName}"/>
                 </c:if>
 
@@ -57,36 +62,36 @@
                 </p>
             </c:if>
 
-            <div class="comm_info-left members">
-                <span>${usersCount}</span> <spring:message code="community.page.members.count"/>
-            </div>
-            <div>
+            <div class="row">
+                <div class="col-12 col-md-5">
+                    <div class="c-Count">
+                        <span class="c-Count__number">
+                            ${usersCount}
+                        </span>
+                        <spring:message code="community.page.members.count"/>
+                    </div>
+                </div>
+                <div class="col-12 col-md-7 mb-2">
+                    <form:form action="${membersNavigation.blankFilterUrl}" method="post" cssClass="form-inline flex-nowrap">
+                        <spring:message code="community.page.members.search.placeholder" var="placeHolderText"/>
+                        <input class="form-control flex-fill" type="text" value="${sortFilterPage.filter}" placeholder="${placeHolderText}" name="filter" />
+                        <button type="submit" class="btn btn-primary ml-2">
+                            <spring:message code="community.page.members.search.button.search"/>
+                        </button>
+                    </form:form>
 
-                <c:set var="filterURL" value="/members?sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}" />
-
-                <form:form action="${filterURL }" method="post" cssClass="form-inline float-right">
-                    <spring:message code="community.page.members.search.placeholder" var="placeHolderText"/>
-                    <input class="form-control" type="text" value="${sortFilterPage.filter}" placeholder="${placeHolderText}" name="filter" />
-                    <button type="submit" class="btn btn-primary ml-2">
-                        <spring:message code="community.page.members.search.button.search"/>
-                    </button>
-                </form:form>
-
+                </div>
             </div>
 
             <table class="c-Table">
                 <thead>
                 <tr class="c-Table__row--title">
                     <th class="c-Table__cell--title user">
-                        <c:set var="sortURL" value="/members?sortColumn=USER_NAME&amp;sortAscending=${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
-
-                        <a class="js-Tooltip" title="click to sort by user name" href="${sortURL }"><spring:message code="community.page.members.table.order.user"/></a>
+                        <a class="js-Tooltip" title="click to sort by user name" href="${membersNavigation.getSortUrl('USER_NAME')}"><spring:message code="community.page.members.table.order.user"/></a>
                         <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
                     </th>
-                    <c:if test="${pointsActive}">
-                        <th class="c-Table__cell--title points">
-                            <c:set var="sortURLPoints" value="/members?sortColumn=POINTS&amp;sortAscending=${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
-
+                    <c:if test="${_themeContext.themeVariables.isPointsActive}">
+                        <th class="c-Table__cell--title">
                             <collab:image cssClass="js-Tooltip" dataTooltipContent="#js-Tooltip__content__points"
                                           cssStyle="width: 15px; height: 15px;" src="/images/icon-addprop-question-bar.png" />
                             <div class="hidden">
@@ -95,27 +100,25 @@
                             </span>
                             </div>
 
-                            <a class="js-Tooltip" title="click to sort by points" href="${sortURLPoints }"><spring:message code="community.page.members.table.order.points"/></a>
+                            <a class="js-Tooltip" title="click to sort by points" href="${membersNavigation.getSortUrl('POINTS')}"><spring:message code="community.page.members.table.order.points"/></a>
                             <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
                         </th>
                     </c:if>
-                    <th class="c-Table__cell--title activity">
-                        <c:set var="sortURLActivity" value="/members?sortColumn=ACTIVITY&amp;sortAscending=${sortFilterPage.sortColumn == 'ACTIVITY' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
-
-                        <a class="js-Tooltip" title="click to sort by activity" href="${sortURLActivity }"><spring:message code="community.page.members.table.order.activity"/></a>
+                    <th class="c-Table__cell--title">
+                        <a class="js-Tooltip" title="click to sort by activity" href="${membersNavigation.getSortUrl('ACTIVITY')}"><spring:message code="community.page.members.table.order.activity"/></a>
                         <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="ACTIVITY" />
                     </th>
-                    <th class="c-Table__cell--title category">
-                        <c:set var="sortURLCategory" value="/members?sortColumn=CATEGORY&amp;sortAscending=${sortFilterPage.sortColumn == 'CATEGORY' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
-
-                        <a class="js-Tooltip" title="click to sort by category" href="${sortURLCategory }"><spring:message code="community.page.members.table.order.category"/></a>
+                    <th class="c-Table__cell--title">
+                        <a class="js-Tooltip" title="click to sort by category" href="${membersNavigation.getSortUrl('CATEGORY')}">
+                            <spring:message code="community.page.members.table.order.category"/>
+                        </a>
                         <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CATEGORY" />
                     </th>
-                    <th class="c-Table__cell--title member-since">
-                        <c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'MEMBER_SINCE' ? not sortFilterPage.sortAscending : false }" />
-                        <c:set var="sortURLSeniority" value="/members?sortColumn=MEMBER_SINCE&amp;sortAscending=${sortAscending}&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
+                    <th class="c-Table__cell--title">
 
-                        <a class="js-Tooltip" title="click to sort by seniority" href="${sortURLSeniority }"><spring:message code="community.page.members.table.order.membersince"/></a>
+                        <a class="js-Tooltip" title="click to sort by seniority" href="${membersNavigation.getSortUrl('MEMBER_SINCE')}">
+                            <spring:message code="community.page.members.table.order.membersince"/>
+                        </a>
                         <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MEMBER_SINCE" />
                     </th>
                 </tr>
@@ -123,7 +126,7 @@
                 <tbody>
                 <c:forEach var="user" items="${users }">
                     <tr class="c-Table__row">
-                        <td class="c-Table__cell user">
+                        <td class="c-Table__cell">
                             <div class="usersFlag">
                                 <a href="/members/profile/${user.memberId}">
                                     ${user.screenName}
@@ -144,20 +147,20 @@
 
                             </div>
                         </td>
-                        <c:if test="${pointsActive}">
-                            <td class="c-Table__cell points odd">
+                        <c:if test="${_themeContext.themeVariables.isPointsActive}">
+                            <td class="c-Table__cell text-right odd">
                                 ${user.pointsFormatted}
                             </td>
                         </c:if>
-                        <td class="c-Table__cell activity">
+                        <td class="c-Table__cell text-right">
                             ${user.activityCountFormatted}
                         </td>
-                        <td class="c-Table__cell category odd">
+                        <td class="c-Table__cell odd text-nowrap">
                             <collab:image src="/images/${user.memberCategory.imageName}.png"
-                                          width="16" height="16" />
+                                          width="16" height="16" cssClass="d-none d-md-inline-block"/>
                             &#160;${user.memberCategory.displayName}
                         </td>
-                        <td class="c-Table__cell member-since">
+                        <td class="c-Table__cell text-center">
                             ${user.memberSince}
                         </td>
                     </tr>
@@ -165,58 +168,10 @@
                 </tbody>
             </table>
 
-            <div class="users-pagination">
-                <c:if test="${pagesCount gt 0}">
-                    <table class="pagination">
-                        <tbody>
-                        <tr>
-                            <td>
-                                <span>Page ${pageNumber} of ${pagesCount}&#160;&#160;</span>
-                            </td>
-                            <td>
-							<span>
-
-							<c:set var="firstPageURL" value="/members?page=1&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;filter=${sortFilterPage.filter}" />
-
-								<a href="${firstPageURL}"><spring:message code="colab.pagination.first"/></a>&#160;
-							</span>
-
-                                <span>
-
-							<c:set var="prevPageURL" value="/members?page=${startPage}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;filter=${sortFilterPage.filter}" />
-
-								<a href="${prevPageURL}">&lt; <spring:message code="colab.pagination.prev"/></a>&#160;
-							</span>
-
-                                <c:forEach begin="${startPage}" end="${endPage}" var="p">
-								<span>
-									<c:set var="pageURL" value="/members?page=${p}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;filter=${sortFilterPage.filter}" />
-
-									<a class="${p == pageNumber ? 'c' : ''}" href="${pageURL}">${p}</a>&#160;
-								</span>
-                                </c:forEach>
-
-                                <span>
-							<c:set var="nextPageURL" value="/members?page=${endPage}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;filter=${sortFilterPage.filter}" />
-
-								<a href="${nextPageURL}"><spring:message code="colab.pagination.next"/> &gt;</a>&#160;
-							</span>
-
-                                <span>
-
-							<c:set var="lastPageURL" value="/members?page=${pagesCount}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;filter=${sortFilterPage.filter}" />
-
-								<a href="${lastPageURL}"><spring:message code="colab.pagination.last"/></a>
-							</span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </c:if>
-            </div>
+            <xcolab:pagination pageNavigation="${pageNavigation}" cssClass="mt-3"/>
         </div>
 
-        <div class="l-Content__sidebar l-Content__sidebar--right l-Content__sidebar--small">
+        <div class="l-Content__sidebar l-Content__sidebar--right l-Content__sidebar--smallest">
 
             <div class="card comm_list">
                 <div class="card-body c-SideMenu c-SideMenu--compact">
@@ -226,7 +181,7 @@
                             <li class="${memberCategory.displayName == category.displayName ? 'c' : ''}">
                                 <collab:image src="/images/${category.imageName}.png" width="16" height="16" />
 
-                                <c:set var="memberCategoryURL" value="/members?filter=${sortFilterPage.filter}&amp;memberCategory=${category.displayName}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;page=1" />
+                                <c:set var="memberCategoryURL" value="${membersNavigation.getCategoryUrl(category.displayName)}" />
                                 <a href="${memberCategoryURL}">${category.categoryName}</a>
                             </li>
                         </c:forEach>

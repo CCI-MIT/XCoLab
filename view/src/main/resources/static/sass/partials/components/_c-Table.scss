@@ -79,26 +79,6 @@ $c-Table__cell__count__hideImage: false !default;
     background: $c-Table__cell--odd__background;
   }
 
-  &.user {
-    min-width: 200px;
-  }
-
-  &.points {
-    text-align: right;
-  }
-
-  &.activity {
-    text-align: right;
-  }
-
-  &.category {
-    text-align: left;
-  }
-
-  &.member-since {
-    text-align: center;
-  }
-
   &.propname-authors {
     img {
       float: left;
@@ -156,31 +136,6 @@ $c-Table__cell__count__hideImage: false !default;
 
   &:last-of-type {
     border-right: none;
-  }
-
-  &.user {
-    min-width: 200px;
-  }
-
-  &.points {
-    text-align: center;
-  }
-
-  &.activity {
-    text-align: center;
-  }
-
-  &.category {
-    text-align: center;
-    min-width: 80px;
-  }
-
-  &.member-since {
-    text-align: center;
-  }
-
-  &.propname-authors {
-
   }
 
   &.votes {

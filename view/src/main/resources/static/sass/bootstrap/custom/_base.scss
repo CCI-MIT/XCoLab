@@ -30,6 +30,7 @@
 }
 
 // To reset our default list style
-ol.breadcrumb li {
+ol.breadcrumb li,
+ul.pagination li{
   margin-left: 0;
 }

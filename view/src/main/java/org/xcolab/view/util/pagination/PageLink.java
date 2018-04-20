@@ -1,23 +1,15 @@
 package org.xcolab.view.util.pagination;
 
-import org.springframework.web.util.UriComponentsBuilder;
-
 public class PageLink {
 
-    private final String text;
+    private final String url;
     private final int currentPage;
     private final int page;
-    private final String url;
 
-    public PageLink(String text, UriComponentsBuilder baseUri, int currentPage, int page) {
-        this.text = text;
+    public PageLink(String url, int currentPage, int page) {
+        this.url = url;
         this.currentPage = currentPage;
         this.page = page;
-        url = baseUri.cloneBuilder().queryParam("page", page).build().toUriString();
-    }
-
-    public String getText() {
-        return text;
     }
 
     public String getUrl() {
@@ -26,5 +18,9 @@ public class PageLink {
 
     public boolean getIsCurrent() {
         return currentPage == page;
+    }
+
+    public int getPage() {
+        return page;
     }
 }

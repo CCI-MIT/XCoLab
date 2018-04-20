@@ -25,7 +25,7 @@
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
-    <div class="cb-navbar-background ${isWhiteBackgound ? 'cb-navbar-background-white' : ''} border-bottom border-medium">
+    <div class="cb-navbar-background ${isWhiteBackgound ? 'cb-navbar-background-white' : ''}">
         <div class="cb-container-fixed">
             <nav class="navbar ${_themeContext.themeVariables.isResponsive ? 'navbar-expand-lg' : 'navbar-expand'} navbar-light" aria-label="site wide">
                 <a class="navbar-brand" href="/">
@@ -39,25 +39,25 @@
                 </button>
                 <div class="collapse navbar-collapse dual-collapse">
                     <ul class="navbar-nav cb-nav-pages">
-                        <li class="nav-item cb-nav-item-text ${activePageLink == 'about' ? 'active' : ''}">
+                        <li class="nav-item ${activePageLink == 'about' ? 'active' : ''}">
                             <a class="nav-link" href="/page/about"><spring:message code="homepage.menu.about" /></a>
                         </li>
 
                         <c:forEach var="contestPage" items="${contestPages}">
                             <c:if test="${contestPage.menuItemName != ''}">
-                                <li class="nav-item cb-nav-item-text ${activePageLink == contestPage.identifier ? 'active' : ''}">
+                                <li class="nav-item ${activePageLink == contestPage.identifier ? 'active' : ''}">
                                     <a class="nav-link" href="${contestPage.contestBaseUrl}">${contestPage.menuItemName}</a>
                                 </li>
                             </c:if>
                         </c:forEach>
-                        <li class="nav-item cb-nav-item-text ${activePageLink == 'community' ? 'active' : ''}" >
+                        <li class="nav-item ${activePageLink == 'community' ? 'active' : ''}" >
                             <a class="nav-link" href="/members"><spring:message code="homepage.menu.community" /></a>
                         </li>
                         <c:if test="${showSearch}">
                             <!--#if ($pageName == 'search') isCurrent #end-->
                             <c:set var="navbarSearchActive" value="${activePageLink == 'search' ? 'active' : ''}" />
                             <li class="nav-item cb-nav-item-icon cb-nav-item-gray cb-nav-item-sm mr-1 dropdown cb-dropdown-inverse ${navbarSearchActive}" data-toggle="dropdown">
-                                <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" href="#">
                                     <xcolab-icon:search cssClass="nav-icon"/>
                                     <div class="cb-nav-text">
                                         <spring:message code="homepage.menu.search" />
@@ -74,11 +74,14 @@
                                     </form>
                                 </div>
                             </li>
+
+                            <c:if test="${not empty _themeContext.socialMediaVariables.donateLink}">
+                                <li class="nav-item cb-navbar-button ${activePageLink == 'donate' ? 'active' : ''}" >
+                                    <a class="btn btn-accent btn-sm" href="${_themeContext.socialMediaVariables.donateLink}"><spring:message code="homepage.menu.donate" /></a>
+                                </li>
+                            </c:if>
                         </c:if>
                     </ul>
-                    <c:if test="${not empty _themeContext.socialMediaVariables.donateLink}">
-                        <a class="btn btn-accent btn-sm" href="${_themeContext.socialMediaVariables.donateLink}"><spring:message code="homepage.menu.donate" /></a>
-                    </c:if>
                 </div>
                 <div class="collapse navbar-collapse dual-collapse">
                     <ul class="navbar-nav ml-auto">
@@ -86,13 +89,13 @@
                         <c:choose>
                             <c:when test="${member != null}">
                                 <li class="nav-item cb-nav-item-multi-line c-Header__displayName d-inline-flex align-items-center">
-                                    <a href="#" class="nav-link p-2"
+                                    <a href="#" class="nav-link p-2" tabindex="-1"
                                        onclick="event.stopPropagation();jQuery('#user-dropdown').dropdown('toggle');">
                                         ${member.displayName}
                                     </a>
                                 </li>
                                 <li class="nav-item cb-nav-item-image dropdown cb-dropdown-inverse">
-                                    <a id="user-dropdown" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                    <a id="user-dropdown" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
                                         <collab:image src="/image/member/${member.portraitId}" alt="${member.screenName}" />
                                         <c:if test="${member.unreadMessageCount > 0}">
                                             <div class="badge badge-pill badge-primary-darkest">
@@ -116,7 +119,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item cb-nav-item-gray cb-nav-item-sm dropdown cb-dropdown-inverse ${navItemRightIconClass}">
-                                    <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" >
+                                    <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" href="#">
                                         <c:if test="${isShowIcons}">
                                             <xcolab-icon:login cssClass="nav-icon"/>
                                         </c:if>
@@ -129,7 +132,7 @@
                                 </li>
                                 <c:if test="${showLanguage}">
                                     <li class="nav-item cb-nav-item-gray cb-nav-item-sm dropdown cb-dropdown-inverse ${navItemRightIconClass}">
-                                        <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown">
+                                        <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" href="#">
                                             <c:if test="${isShowIcons}">
                                                 <xcolab-icon:language cssClass="nav-icon"/>
                                             </c:if>

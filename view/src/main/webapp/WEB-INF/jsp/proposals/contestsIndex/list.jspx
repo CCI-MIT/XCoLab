@@ -9,7 +9,7 @@
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
     <!--@elvariable id="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"-->
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
-    <!--@elvariable id="contestsSorted" type="org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean"-->
+    <!--@elvariable id="contestsSorted" type="org.xcolab.view.pages.proposals.wrappers.ContestList"-->
 
     <table class="c-Table p-Contests__ListViewTable tooltips">
         <thead>
@@ -87,15 +87,15 @@
             </c:if>
         </tr>
         </thead>
-        <c:if test="${not empty contestsSorted.contestsFeatured }">
-            <proposalsPortlet:contestsList contests="${contestsSorted.contestsFeatured }" featured="true"/>
+        <c:if test="${contestsSorted.featured.isNotEmpty}">
+            <proposalsPortlet:contestsList contests="${contestsSorted.featured.list}" featured="true"/>
         </c:if>
-        <c:if test="${not empty contestsSorted.contestsNormal }">
-            <proposalsPortlet:contestsList contests="${contestsSorted.contestsNormal }" featured="false"/>
+        <c:if test="${contestsSorted.notFeatured.isNotEmpty}">
+            <proposalsPortlet:contestsList contests="${contestsSorted.notFeatured.list}" featured="false"/>
         </c:if>
     </table>
 
-    <c:if test="${not showAllContests and totalContestCount gt contests.size()}">
+    <c:if test="${not showAllContests and totalContestCount gt contestsSorted.size}">
         <div class="text-center mt-3">
             <c:url var="allContestsUrl" value="${contestType.contestBaseUrl}">
                 <c:param name="viewType" value="${viewType}"/>

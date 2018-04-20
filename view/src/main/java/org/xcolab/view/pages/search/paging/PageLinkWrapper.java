@@ -5,6 +5,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.view.pages.search.SearchBean;
 
+//TODO: duplicate of PageLink
 public class PageLinkWrapper {
 
     private final String text;

@@ -108,10 +108,6 @@ $c-TitleBar__a__fontWeight: $t-Typography__fontWeight--regular;
 $c-TitleBar__contestSummary__backgroundColor: $t-Color__gray--dark-700;
 $c-TitleBar__capitalization: uppercase;
 
-$c-Comment__count__backgroundColor: white;
-$c-Comment__count__a__fontWeight: $t-Typography__fontWeight--regular;
-$c-Comment__count__a__margin--left: 10px;
-
 $p-About__left__li__a__fontWeight: $t-Typography__fontWeight--regular;
 $p-About__left__li__a__padding--left: 15px;
 $p-About__left__li__ul__li__a__padding--left: 33px;
@@ -167,9 +163,6 @@ $p-proposal__votebox__marginTop: 35px;
 $p-proposal__contest__padding--top--bottom: 20px;
 $p-proposal__left__h2__textColor: $t-Color__black;
 $p-proposal__left__h2__fontWeight: $t-Typography__fontWeight--light;
-$p-proposal__thumbbox__a__fontWeight: $t-Typography__fontWeight--regular;
-$p-proposal__thumbbox__a__margin--left: 10px;
-$p-proposal__thumbbox__background--top: 0px;
 $p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
 $p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
 
@@ -244,10 +237,10 @@ $c-Helpbox__header__title__capitalization: uppercase;
 $c-Helpbox__text__fontWeight: $t-Typography__fontWeight--light;
 $c-Helpbox__header__close__marginTop: 0px;
 
-$c-Count__fontSize: 17px;
+$c-Count__fontSize: 1.125rem;
 $c-Count__capitalization: uppercase;
 $c-Count__number__color: $t-Color__primary;
-$c-Count__number__fontSize: 20px;
+$c-Count__number__fontSize: 1.25rem;
 $c-Count__number__fontWeight: $t-Typography__fontWeight--regular;
 
 $t-Border__radius: 1.5rem;

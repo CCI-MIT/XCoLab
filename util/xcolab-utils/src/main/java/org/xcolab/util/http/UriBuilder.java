@@ -113,11 +113,11 @@ public class UriBuilder {
     }
 
     public String buildString() {
-        return uriComponentsBuilder.build().toString();
+        return uriComponentsBuilder.build().toUriString();
     }
 
     public String buildAndExpandString() {
-        return uriComponentsBuilder.buildAndExpand(uriVariables).toString();
+        return uriComponentsBuilder.buildAndExpand(uriVariables).toUriString();
     }
 
     public Map<String, Object> getUriVariables() {

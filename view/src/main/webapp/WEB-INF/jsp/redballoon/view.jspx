@@ -3,6 +3,8 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<xcolab:layout meta1="${meta1}" meta2="${meta2}" title="Social Network Prize">
 		<div class="balloonContainer">

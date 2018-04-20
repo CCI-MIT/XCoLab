@@ -42,7 +42,7 @@
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
-        <form:errors cssClass="alert alert-danger" path="*"/>
+        <form:errors cssClass="alert alert-danger" element="div" path="*"/>
 
         <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
                    method="post">
@@ -97,7 +97,7 @@
                         </c:if>
 
                         <div><!--  -->
-                            <form:errors cssClass="alert alert-danger"/>
+                            <form:errors cssClass="alert alert-danger" element="div"/>
                         </div>
 
                         <table class="c-ContentBox__Table">
@@ -132,7 +132,7 @@
                                     <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
                                                  data-form-name="contestPhaseDeleted"/>
 
-                                    <form:errors cssClass="alert alert-danger"
+                                    <form:errors cssClass="alert alert-danger" element="div"
                                                      path="schedulePhases[${x.index}].phaseStartDate"/>
 
                                     <td data-form-attribute="indexLable">${x.index + 1}</td>

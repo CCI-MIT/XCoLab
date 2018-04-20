@@ -83,9 +83,6 @@ $c-TitleBar__contestSummary__backgroundColor: $t-Color__primary;
 $c-TitleBar__contestSummary__backgroundColor--light: $t-Color__tan;
 $c-TitleBar__actionButton__backgroundColor--hover: $t-Color__secondary;
 
-$c-Comment__count__backgroundColor: white;
-$c-Comment__count__a__margin--left: 10px;
-
 $p-About__left__li__a__padding--left: 15px;
 $p-About__left__li__ul__li__a__padding--left: 33px;
 $p-About__left__li__a__current__borderWidth--left: 5px;
@@ -138,8 +135,6 @@ $p-proposal__votebox__top__left: 0px;
 $p-proposal__votebox__marginTop: 35px;
 $p-proposal__contest__padding--top--bottom: 20px;
 $p-proposal__left__h2__textColor: $t-Color__gray--dark-800;
-$p-proposal__thumbbox__a__margin--left: 10px;
-$p-proposal__thumbbox__background--top: 0px;
 $p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
 $p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
 
@@ -211,9 +206,9 @@ $c-Helpbox__header__background: t-Color__gray--dark-700;
 $c-Helpbox__header__title__textColor: white;
 $c-Helpbox__header__close__marginTop: 0px;
 
-$c-Count__fontSize: 17px;
+$c-Count__fontSize: 1.125rem;
 $c-Count__number__color: $t-Color__primary;
-$c-Count__number__fontSize: 20px;
+$c-Count__number__fontSize: 1.25rem;
 
 $c-Footer__link__textColor--hover: $t-Color__primary;
 

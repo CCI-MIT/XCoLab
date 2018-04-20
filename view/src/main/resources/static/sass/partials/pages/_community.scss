@@ -19,42 +19,6 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
 /** COMMUNITY **/
 
 /* community - discussions */
-.comm_info-left {
-  float: right;
-  width: 340px;
-  font-style: $p-community__infoLeft__fontStyle;
-  text-transform: $p-community__infoLeft__capitalization;
-  font-size: $p-community__infoLeft__fontSize;
-  font-weight: $p-community__infoLeft__fontWeight;
-  padding-top: $p-community__infoLeft__paddingTop;
-}
-
-.comm_info-left.members {
-  float: left;
-}
-
-.comm_info-large {
-  float: left;
-  width: 400px;
-  margin-left: 60px;
-}
-
-.comm_info-left span {
-  color: $p-community__infoLeft__span__textColor;
-  font-size: $p-community__infoLeft__span__fontSize;
-  font-weight: $p-community__infoLeft__span__fontWeight;
-  padding-right: $p-community__infoLeft__span__paddingRight;
-  font-style: normal;
-}
-
-.comm_info-left img {
-  margin-right: 5px;
-  vertical-align: bottom;
-}
-
-.comm_info-left img.spc {
-  margin-left: 40px;
-}
 
 .comm_list {
   line-height: normal;
@@ -129,24 +93,6 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
 
 /* community - members */
 
-.comm_submit {
-  width: 66px;
-  height: 29px;
-  margin-left: 10px;
-  text-align: center;
-  vertical-align: middle;
-  background: url(/images/search_btn.gif) no-repeat;
-  border: none;
-  cursor: pointer;
-  color: white;
-  font-size: 15px;
-  font-weight: $t-Typography__fontWeight;
-}
-
-.comm_submit:hover {
-  color: black;
-}
-
 .comm_member {
   margin: 40px 0;
 }
@@ -154,11 +100,6 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
 .comm_member table.colab {
   width: 100%;
   margin-top: 0;
-}
-
-.comm_member table.colab.otherInfo {
-  margin-top: 0;
-  width: 300px;
 }
 
 .member table.colab {
@@ -185,48 +126,11 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
   margin: 0;
 }
 
-
-.main_long {
-  float: left;
-  width: 680px;
-}
-
 .hidden {
   display: none;
 }
 
 /** PAGER **/
-//TODO: probably unused?
-.iceDatPgrTbl td {
-  padding: 0 4px 0 4px;
-}
-
-.iceDatPgr {
-  font-size: 0.85em;
-}
-
-.iceDatPgrScrCol {
-  font-weight: $t-Typography__fontWeight--bold;
-}
-
-.iceDatPgr .iceDatPgrScrBtn {
-  font-weight: $t-Typography__fontWeight--bold;
-  padding: 0 4px 0 4px;
-}
-
-.iceOutFrmt.page {
-  font-size: 0.85em;
-}
-
-.pager td.pageInfo {
-
-  padding-top: 2px;
-}
-
-.pager .oldestNewestPager {
-  font-size: 0.85em;
-  font-weight: bold;
-}
 
 .pager td {
   vertical-align: bottom;
@@ -234,10 +138,6 @@ $p-community__infoLeft__span__fontWeight: $t-Typography__fontWeight--bold !defau
 
 .paginatorControls {
   padding-left: 20px;
-}
-
-.othermembers .comm_info-left {
-  width: 210px;
 }
 
 .pager {

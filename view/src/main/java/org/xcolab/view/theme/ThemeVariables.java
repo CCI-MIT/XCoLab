@@ -24,6 +24,8 @@ public class ThemeVariables {
     private final List contestPages;
 
     private final boolean isResponsive;
+    private final boolean isRegistrationOpen;
+    private final boolean isPointsActive;
 
     private final ColabTheme activeTheme;
 
@@ -49,6 +51,8 @@ public class ThemeVariables {
                 .collect(Collectors.toList());
 
         this.isResponsive = PlatformAttributeKey.LAYOUT_IS_RESPONSIVE.get();
+        this.isRegistrationOpen = ConfigurationAttributeKey.REGISTRATION_IS_OPEN.get();
+        this.isPointsActive = ConfigurationAttributeKey.POINTS_IS_ACTIVE.get();
 
         this.activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
     }
@@ -91,6 +95,14 @@ public class ThemeVariables {
 
     public boolean getIsResponsive() {
         return isResponsive;
+    }
+
+    public boolean getIsRegistrationOpen() {
+        return isRegistrationOpen;
+    }
+
+    public boolean getIsPointsActive() {
+        return isPointsActive;
     }
 
     public ColabTheme getActiveTheme() {
