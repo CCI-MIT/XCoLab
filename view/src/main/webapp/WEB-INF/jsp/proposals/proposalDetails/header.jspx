@@ -68,7 +68,7 @@
                         <a class="nav-link ${currentTab == singleTab.tab ? 'active' : singleTab.tab.tabType.cssModifier}" href="${proposalUrl }">
                             <spring:message code="${singleTab.displayNameMessageCode}" />
                             <c:if test="${singleTab.activityCount > 0}">
-                                <span class="badge badge-pill badge-secondary cb-badge-margin-left">${singleTab.activityCount}</span>
+                                <span class="badge badge-pill badge-secondary">${singleTab.activityCount}</span>
                             </c:if>
                         </a>
                     </li>
