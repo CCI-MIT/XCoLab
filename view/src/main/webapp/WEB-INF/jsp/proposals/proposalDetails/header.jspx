@@ -48,7 +48,7 @@
             </h3>
         </c:if>
         <c:if test="${tabs.size() > 0}">
-            <ul class="nav nav-tabs flex-column flex-md-row clearfix">
+            <ul class="nav nav-tabs flex-column flex-md-row">
                 <c:forEach var="singleTab" items="${tabs }" varStatus="loopStatus">
                     <li class="nav-item text-md-center">
                         <c:choose>
