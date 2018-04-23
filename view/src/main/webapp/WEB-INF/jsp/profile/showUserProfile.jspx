@@ -194,20 +194,25 @@
                                     </div>
                                 </div>
                                 <c:if test="${permissions.getCanEditMemberProfile(userBean.userId)}">
-                                    <a class="btn btn-primary"
-                                       href="/members/profile/${currentUserProfile.userId}/edit">
-                                        <spring:message code="profile.show.manageprofile.button"/>
-                                    </a>
+                                    <div>
+                                        <a class="btn btn-primary"
+                                           href="/members/profile/${currentUserProfile.userId}/edit">
+                                            <spring:message code="profile.show.manageprofile.button"/>
+                                        </a>
+                                    </div>
                                 </c:if>
 
                                 <c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
-                                    <a class="btn btn-primary" rel="nofollow"
-                                       data-message-recipient="${currentUserProfile.user.id_}"
-                                       data-toggle="modal" href="#sendMessageModal"
-                                       onclick="if (!deferUntilLogin()) event.stopPropagation()">
-                                        <spring:message code="profile.show.sendmessage"
+
+                                    <div>
+                                        <a class="btn btn-primary" rel="nofollow"
+                                           data-message-recipient="${currentUserProfile.user.id_}"
+                                           data-toggle="modal" href="#sendMessageModal"
+                                           onclick="if (!deferUntilLogin()) event.stopPropagation()">
+                                            <spring:message code="profile.show.sendmessage"
                                                         arguments="${userBean.displayNameShort}"/>
-                                    </a>
+                                        </a>
+                                    </div>
                                 </c:if>
 
                                 <p>
