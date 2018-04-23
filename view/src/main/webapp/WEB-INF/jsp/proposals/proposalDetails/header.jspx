@@ -93,6 +93,8 @@
     <!-- TODO COLAB-2676: still needed for autocomplete -->
     <xcolab:requireLibrary name="jQuery UI" />
 
+    <xcolab:requireLibrary name="moment.js"/>
+
     <collab:script src="/js/proposals/proposals.js"/>
     <collab:script src="/js/proposals/discussionComments.js"/>
     <collab:script src="/js/proposals/historyWidget.js"/>
