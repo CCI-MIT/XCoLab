@@ -463,7 +463,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestPhaseType` (
   `pointsAccessible` int(11) DEFAULT NULL,
   `defaultPromotionType` varchar(75) DEFAULT NULL,
   `defaultFlagText` varchar(60) DEFAULT NULL,
-  `isDeprecated` tinyint(4) DEFAULT 0,
+  `isDeprecated` tinyint(4) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `members_RoleGroupRoles` (
