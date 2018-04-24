@@ -31,10 +31,6 @@
             </div>
             <div class="c-ContentBox">
                 <table class="c-ContentBox__Table">
-                    <col span="1" class="extraSmallColumn"/>
-                    <col span="1" class="wideColumn"/>
-                    <col span="1" class="mediumColumn"/>
-                    <col span="1" class="smallColumn"/>
                     <thead>
                     <tr>
                         <th><input type="checkbox" id="selectAllCheckbox"/></th>

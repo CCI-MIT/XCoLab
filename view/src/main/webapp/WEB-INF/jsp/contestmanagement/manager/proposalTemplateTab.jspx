@@ -250,10 +250,6 @@
 			<div class="c-Box c-Box--colorTan" style="margin-top: 20px;">
                 <div class="c-Box__body">
                     <table class="c-ContentBox__Table">
-                        <col span="1" class="extraSmallColumn"/>
-                        <col span="1" class="wideColumn" style="text-align: left;"/>
-                        <col span="1" class="smallColumn"/>
-                        <col span="1" class="smallColumn"/>
                         <thead>
                         <tr>
                             <th>#</th>

@@ -101,18 +101,11 @@
                         </div>
 
                         <table class="c-ContentBox__Table">
-                            <col span="1" class="extraSmallColumn"/>
-                            <!-- <col span="1" class="extraSmallColumn"/> -->
-                            <col span="4" class="mediumColumn"/>
-                            <col span="1" class="extraSmallColumn"/>
                             <thead>
                             <tr>
-                                <th>#</th>
+                                <th style="width: 40px;">#</th>
                                 <th>Phase Type</th>
-                                <!-- <th>Buffer</th> -->
                                 <th>Start Date</th>
-                                <th>Autopromote</th>
-                                <th>Fellow <br/>Screening</th>
                                 <th><!-- --></th>
                             </tr>
                             </thead>
@@ -144,9 +137,6 @@
                                                           itemLabel="lable"/>
                                         </form:select>
                                     </td>
-                                    <!-- <td>
-                                            <form:checkbox path="schedulePhases[${x.index}].hasBuffer"
-                                                           data-select-attribute="hasBufferCheckbox"/></td> -->
                                     <td>
                                         <fmt:formatDate value="${schedulePhase.phaseStartDate}" pattern="MM/dd/yyyy HH:mm"
                                                         type="date" dateStyle="short" timeZone="America/New_York"
@@ -164,29 +154,15 @@
 
                                     </td>
                                     <td>
-                                        <form:select path="schedulePhases[${x.index}].contestPhaseAutopromote" class="form-control"
-                                                     data-form-name="contestPhaseAutopromote">
-                                            <form:options items="${contestPhaseAutopromoteSelectionItems}" itemValue="value"
-                                                          itemLabel="lable"/>
-                                        </form:select>
-                                    </td>
-                                    <td>
-                                        <form:checkbox path="schedulePhases[${x.index}].fellowScreeningActive"
-                                                       data-form-name="fellowScreeningActive">
-                                        </form:checkbox>
-                                    </td>
-                                    <td>
                                         <c:if test="${not (contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted)}">
                                             <div class="deleteIcon"> <!-- --></div>
                                         </c:if>
                                     </td>
                                 </tr>
-                                <c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 2}"/>
+                                <c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 1}"/>
                             </c:forEach>
                             </tbody>
                         </table>
-                        <i>Please do not put an end date to the last phase, otherwise the mass messaging function can't detect
-                            the contest!</i>
                     </div>
                 </div>
             </form:form>
@@ -200,13 +176,6 @@
             <div class="c-Box__body">
                 <strong>Contests using this schedule:</strong>
                 <table class="c-ContentBox__Table">
-                    <colgroup>
-                        <col class="extraSmallColumn" span="1" />
-                        <col style="text-align: center;" class="mediumColumn" span="1" />
-                        <col style="text-align: center;" class="smallColumn" span="1" />
-                        <col style="text-align: center;" class="mediumColumn" span="2" />
-                        <col style="text-align: center;" class="smallColumn" span="2" />
-                    </colgroup>
                     <thead>
                     <tr>
                         <th>#</th>
