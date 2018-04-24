@@ -33,13 +33,6 @@
 @each $breakpoint in map-keys($grid-breakpoints) {
   $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
   .p-Homepage__homespot__background#{$infix} {
-
-    //When responsiveness is turned off, always show the background
-    //TODO COLAB-2681: remove
-    body:not(.feature-isResponsive) & {
-      background: url(/images/homespot/background.png) right top no-repeat;
-    }
-
     @include media-breakpoint-up($breakpoint) {
       background: url(/images/homespot/background.png) right top no-repeat;
     }

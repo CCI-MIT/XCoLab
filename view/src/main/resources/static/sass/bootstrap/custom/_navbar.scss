@@ -20,14 +20,14 @@ $_navbar__height: 67px;
 $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
 
 @mixin navbar-expanded {
-
-  //TODO COLAB-2681: this can be removed once responsive design is always on
-  .navbar-expand & {
+  @include media-breakpoint-up(lg) {
     @content;
   }
+}
 
-  @include media-breakpoint-up(lg) {
-     @content;
+@mixin navbar-collapsed {
+  @include media-breakpoint-down(md) {
+    @content;
   }
 }
 
@@ -70,7 +70,7 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
     }
 
     .nav-icon {
-      //Hide on small screens, expanded via navbar-expand-{breakpoint}
+      //Hide on small screens, only show in expanded navbar
       display: none;
       height: 30px;
       width: 30px;
@@ -145,17 +145,18 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
   }
 }
 
-//TODO COLAB-2681: this can be removed and ported to the mixing once RD is always on
-.navbar-expand.navbar-light .navbar-nav {
+.navbar-light .navbar-nav {
   .active {
-    background: white;
-    margin-bottom: -1px;
-    box-shadow: $cb-navbar__activeBoxShadow;
+    @include navbar-expanded {
+      background: white;
+      margin-bottom: -1px;
+      box-shadow: $cb-navbar__activeBoxShadow;
+    }
   }
 }
 .navbar-light .navbar-nav {
-  @include media-breakpoint-up(lg) {
-    .active {
+  .active {
+    @include navbar-expanded {
       background: white;
       margin-bottom: -1px;
       box-shadow: $cb-navbar__activeBoxShadow;
@@ -174,18 +175,8 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
   font-weight: $t-Typography__fontWeight--bold;
 }
 
-//TODO COLAB-2681: this can be removed and ported to the mixin once RD is always on
-.navbar-expand.navbar-light .navbar-nav .cb-nav-item-gray {
-  .nav-link {
-    color: $c-Header__navItemGray--textColor;
-
-    &:hover {
-      color: $c-Header__navItemGray--hoverColor;
-    }
-  }
-}
 .navbar-light .navbar-nav .cb-nav-item-gray {
-  @include media-breakpoint-up(lg) {
+  @include navbar-expanded {
     .nav-link {
       color: $c-Header__navItemGray--textColor;
 
@@ -195,7 +186,6 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
     }
   }
 }
-
 
 
 .cb-nav-item-sm {
@@ -232,7 +222,7 @@ $_navbar__boxShadow: 0 5px 2px -2px rgba($t-Color__gray--dark-600, .7);
   border-left: 0 !important;
 
   > .btn {
-    @include media-breakpoint-down(md) {
+    @include navbar-collapsed {
       padding: .5rem 0;
       background: none;
       color: var(--primary);

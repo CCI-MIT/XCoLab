@@ -26,8 +26,8 @@
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <div class="cb-navbar-background ${isWhiteBackgound ? 'cb-navbar-background-white' : ''}">
-        <div class="cb-container-fixed">
-            <nav class="navbar ${_themeContext.themeVariables.isResponsive ? 'navbar-expand-lg' : 'navbar-expand'} navbar-light" aria-label="site wide">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light" aria-label="site wide">
                 <a class="navbar-brand" href="/">
                     <c:url var="encodedLogoPath" value="${logoPath}"/>
                     <c:set var="logoWidth" value="${_themeContext.themeVariables.activeTheme.logoWidth}"/>

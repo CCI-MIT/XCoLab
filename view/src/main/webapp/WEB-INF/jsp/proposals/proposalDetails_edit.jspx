@@ -258,7 +258,7 @@
     </xcolab:modal>
 
     <div class="c-ControlsOverlay">
-        <div class="cb-container-fixed cb-d-flex-between-center">
+        <div class="container cb-d-flex-between-center">
             <div class="d-none d-lg-block">
                 Don't forget to save your work!
                 <c:if test="${not empty saveHelpText}">

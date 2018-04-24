@@ -2,7 +2,6 @@ package org.xcolab.view.theme;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.util.enums.theme.ColabTheme;
 
 import java.util.List;
@@ -23,7 +22,6 @@ public class ThemeVariables {
     private final boolean isHomePage;
     private final List contestPages;
 
-    private final boolean isResponsive;
     private final boolean isRegistrationOpen;
     private final boolean isPointsActive;
 
@@ -50,7 +48,6 @@ public class ThemeVariables {
                 .map(contestType -> contestType.withLocale(i18NVariables.getLanguage()))
                 .collect(Collectors.toList());
 
-        this.isResponsive = PlatformAttributeKey.LAYOUT_IS_RESPONSIVE.get();
         this.isRegistrationOpen = ConfigurationAttributeKey.REGISTRATION_IS_OPEN.get();
         this.isPointsActive = ConfigurationAttributeKey.POINTS_IS_ACTIVE.get();
 
@@ -91,10 +88,6 @@ public class ThemeVariables {
 
     public List getContestPages() {
         return contestPages;
-    }
-
-    public boolean getIsResponsive() {
-        return isResponsive;
     }
 
     public boolean getIsRegistrationOpen() {
