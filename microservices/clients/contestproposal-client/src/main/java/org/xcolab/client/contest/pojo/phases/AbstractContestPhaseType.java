@@ -16,6 +16,7 @@ abstract class AbstractContestPhaseType implements Serializable {
     private Integer pointsaccessible;
     private String defaultpromotiontype;
     private String defaultflagtext;
+    private Boolean isDeprecated;
 
     public AbstractContestPhaseType() {}
 
@@ -30,22 +31,7 @@ abstract class AbstractContestPhaseType implements Serializable {
         this.pointsaccessible = value.pointsaccessible;
         this.defaultpromotiontype = value.defaultpromotiontype;
         this.defaultflagtext = value.defaultflagtext;
-    }
-
-    public AbstractContestPhaseType(Long id_, String name, String description,
-            String status, Boolean fellowscreeningactivedefault,
-            String contestphaseautopromotedefault, Boolean invisible,
-            Integer pointsaccessible, String defaultpromotiontype, String defaultflagtext) {
-        this.id_ = id_;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.fellowscreeningactivedefault = fellowscreeningactivedefault;
-        this.contestphaseautopromotedefault = contestphaseautopromotedefault;
-        this.invisible = invisible;
-        this.pointsaccessible = pointsaccessible;
-        this.defaultpromotiontype = defaultpromotiontype;
-        this.defaultflagtext = defaultflagtext;
+        this.isDeprecated = value.isDeprecated;
     }
 
     public Long getId_() {
@@ -247,5 +233,13 @@ abstract class AbstractContestPhaseType implements Serializable {
                 ", " + defaultpromotiontype +
                 ", " + defaultflagtext +
                 ")";
+    }
+
+    public Boolean getDeprecated() {
+        return isDeprecated;
+    }
+
+    public void setDeprecated(Boolean deprecated) {
+        isDeprecated = deprecated;
     }
 }

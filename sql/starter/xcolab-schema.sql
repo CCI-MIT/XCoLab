@@ -200,22 +200,13 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestPhase` (
   `ContestPK` bigint(20) DEFAULT NULL,
   `ContestPhaseType` bigint(20) DEFAULT NULL,
   `contestScheduleId` bigint(20) DEFAULT NULL,
-  `fellowScreeningActive` tinyint(4) DEFAULT NULL,
   `contestPhaseAutopromote` varchar(75) DEFAULT NULL,
-  `ContestPhaseDescriptionOverride` longtext,
-  `phaseActiveOverride` tinyint(4) DEFAULT NULL,
-  `phaseInactiveOverride` tinyint(4) DEFAULT NULL,
   `PhaseStartDate` datetime DEFAULT NULL,
   `PhaseEndDate` datetime DEFAULT NULL,
-  `PhaseBufferEndDated` datetime DEFAULT NULL,
-  `nextStatus` varchar(75) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
-  `authorId` bigint(20) DEFAULT NULL,
   KEY `IX_ED61C03C` (`ContestPK`),
   KEY `IX_2BA2B787` (`ContestPK`,`PhaseStartDate`,`PhaseEndDate`),
-  KEY `IX_9F1D3B81` (`ContestPK`,`phaseActiveOverride`),
-  KEY `IX_4F735B66` (`ContestPK`,`phaseInactiveOverride`),
   KEY `IX_1BB9EC37` (`contestPhaseAutopromote`),
   KEY `IX_D9B6142C` (`contestScheduleId`,`ContestPK`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -471,7 +462,8 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestPhaseType` (
   `invisible` tinyint(4) DEFAULT NULL,
   `pointsAccessible` int(11) DEFAULT NULL,
   `defaultPromotionType` varchar(75) DEFAULT NULL,
-  `defaultFlagText` varchar(60) DEFAULT NULL
+  `defaultFlagText` varchar(60) DEFAULT NULL,
+  `isDeprecated` tinyint(4) DEFAULT 0,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `members_RoleGroupRoles` (

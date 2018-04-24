@@ -133,7 +133,6 @@ public final class ContestScheduleLifecycleUtil {
         contestPhase.setContestPhaseType(ContestPhaseTypeValue.PROPOSAL_CREATION.getTypeId());
         contestPhase.setPhaseStartDate(new Timestamp(DateTime.now().getMillis()));
         contestPhase.setContestPhaseAutopromote(ContestPhasePromoteType.DEFAULT.getValue());
-        contestPhase.setFellowScreeningActive(false);
         ContestClientUtil.createContestPhase(contestPhase);
 
         return newContestSchedule;

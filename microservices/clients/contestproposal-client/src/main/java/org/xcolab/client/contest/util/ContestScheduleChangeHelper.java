@@ -147,9 +147,6 @@ public class ContestScheduleChangeHelper {
         }
 
         contestPhase.setContestScheduleId(templatePhase.getContestScheduleId());
-        contestPhase.setFellowScreeningActive(templatePhase.getFellowScreeningActive());
-        contestPhase.setContestPhaseDescriptionOverride(
-                templatePhase.getContestPhaseDescriptionOverride());
         contestPhase.setCreated(new Timestamp(new Date().getTime()));
         contestPhase.setUpdated(new Timestamp(new Date().getTime()));
 

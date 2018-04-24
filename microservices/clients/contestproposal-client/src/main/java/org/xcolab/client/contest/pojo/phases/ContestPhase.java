@@ -40,20 +40,6 @@ public class ContestPhase extends AbstractContestPhase {
         contestClient = value.contestClient;
     }
 
-    public ContestPhase(Long contestphasepk, Long contestpk, Long contestphasetype,
-            Long contestscheduleid, Boolean fellowscreeningactive, String contestphaseautopromote,
-            String contestphasedescriptionoverride, Boolean phaseactiveoverride,
-            Boolean phaseinactiveoverride, Timestamp phasestartdate, Timestamp phaseenddate,
-            Timestamp phasebufferenddated, String nextstatus, Timestamp created,
-            Timestamp updated, Long authorid) {
-
-        super(contestphasepk, contestpk, contestphasetype, contestscheduleid, fellowscreeningactive,
-                contestphaseautopromote, contestphasedescriptionoverride, phaseactiveoverride,
-                phaseinactiveoverride, phasestartdate, phaseenddate, phasebufferenddated,
-                nextstatus, created, updated, authorid);
-        contestClient = ContestClientUtil.getClient();
-    }
-
     public ContestPhase(AbstractContestPhase abstractContestPhase, ServiceNamespace serviceNamespace) {
         super(abstractContestPhase);
         contestClient = ContestClient.fromNamespace(serviceNamespace);
@@ -67,43 +53,13 @@ public class ContestPhase extends AbstractContestPhase {
         newPhase.setPhaseEndDate(originalPhase.getPhaseEndDate());
         newPhase.setContestScheduleId(originalPhase.getContestScheduleId());
         newPhase.setContestPhaseType(originalPhase.getContestPhaseType());
-        newPhase.setFellowScreeningActive(originalPhase.getFellowScreeningActive());
         newPhase.setContestPhaseAutopromote(originalPhase.getContestPhaseAutopromote());
-        newPhase.setContestPhaseDescriptionOverride(
-                originalPhase.getContestPhaseDescriptionOverride());
-        newPhase.setPhaseBufferEndDated(originalPhase.getPhaseBufferEndDated());
-        newPhase.setNextStatus(originalPhase.getNextStatus());
         newPhase.setCreated(new Timestamp(new Date().getTime()));
         newPhase.setUpdated(new Timestamp(new Date().getTime()));
-        newPhase.setAuthorId(originalPhase.getAuthorId());
-
         return newPhase;
     }
 
-    public int compareTo(ContestPhase contestPhase) {
-
-        if (getPhaseStartDate().getTime() == contestPhase.getPhaseStartDate().getTime()) {
-            return 0;
-        } else {
-            if (getPhaseStartDate().getTime() < contestPhase.getPhaseStartDate().getTime()) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
-    }
-
     public boolean getPhaseActive() {
-        if (this.getPhaseActiveOverride() != null) {
-            if(this.getPhaseActiveOverride()) {
-                return this.getPhaseActiveOverride();
-            }
-        }
-        if (this.getPhaseInactiveOverride() != null) {
-            if(this.getPhaseInactiveOverride()) {
-                return this.getPhaseInactiveOverride();
-            }
-        }
         if (this.getPhaseStartDate() != null) {
             Date now = new Date();
             if (now.after(this.getPhaseStartDate())) {
@@ -246,13 +202,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public String getPhaseStatusDescription() {
-        String descriptionOverride = this.getContestPhaseDescriptionOverride();
-        if (StringUtils.isBlank(descriptionOverride)) {
-            return contestClient.getContestPhaseType(this.getContestPhaseType())
-                    .getDescription();
-
-        }
-        return descriptionOverride;
+        return getContestPhaseTypeObject().getDescription();
     }
 
     public boolean isCompleted() {
@@ -269,5 +219,9 @@ public class ContestPhase extends AbstractContestPhase {
 
     public Contest getContest() {
         return contestClient.getContest(getContestPK());
+    }
+
+    public boolean getFellowScreeningActive() {
+        return getContestPhaseTypeObject().getFellowScreeningActiveDefault();
     }
 }
