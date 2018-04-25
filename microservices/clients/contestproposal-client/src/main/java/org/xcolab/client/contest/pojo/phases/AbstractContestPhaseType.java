@@ -235,11 +235,11 @@ abstract class AbstractContestPhaseType implements Serializable {
                 ")";
     }
 
-    public Boolean getDeprecated() {
+    public Boolean getIsDeprecated() {
         return isDeprecated;
     }
 
-    public void setDeprecated(Boolean deprecated) {
+    public void setIsDeprecated(Boolean deprecated) {
         isDeprecated = deprecated;
     }
 }
