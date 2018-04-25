@@ -20,13 +20,6 @@
         var IMAGE_UPLOAD_HELP_TEXT = '${requestScope.imageUploadHelpText}';
     </script>
 
-    <script>
-        var currentProposal = {
-            proposalId: ${proposal.proposalId},
-            version: ${proposal.version}
-        }
-    </script>
-
     <c:if test="${not empty baseProposal}">
         <script>
             var baseProposal = {

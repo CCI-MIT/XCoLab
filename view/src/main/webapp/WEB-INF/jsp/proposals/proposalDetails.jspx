@@ -241,13 +241,6 @@
     </c:if>
 
     <script>
-        var currentProposal = {
-                proposalId: ${proposal.proposalId},
-                version: ${proposal.version},
-                contestId: ${proposal.contest.contestPK}
-        }
-    </script>
-    <script>
         jQuery(function() {
 
 
