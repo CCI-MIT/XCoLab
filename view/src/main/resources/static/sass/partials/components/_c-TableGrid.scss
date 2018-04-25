@@ -8,6 +8,10 @@ $c-TableGrid__cell__hideIcon: false !default;
   @include make-row();
   border-bottom: 1px solid $t-Table__borderColor;
 
+  a {
+    font-weight: $t-Typography__fontWeight--bold;
+  }
+
   &.c-TableGrid__row--continued {
     border-bottom: none;
 
