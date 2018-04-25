@@ -82,9 +82,7 @@ public class ContestScheduleChangeHelper {
                     == activeNewPhase.getContestPhaseType();
             final boolean positionsMatch = activeCurrentPhase.getPosition()
                     == activeNewPhase.getPosition();
-            if (!(typesMatch && positionsMatch)) {
-                return false;
-            }
+            return typesMatch && positionsMatch;
         }
         return true;
     }
