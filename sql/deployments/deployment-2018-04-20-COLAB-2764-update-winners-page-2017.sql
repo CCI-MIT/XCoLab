@@ -518,7 +518,7 @@ VALUES (1214, 38, 2675595, NOW(), 'Climate CoLab Contest Winners',
             </div>
 
             <div class="stat-bubble-outer" style="margin-right:0;">
-                <p class="stat-bubble-number">18</p>
+                <p class="stat-bubble-number">19</p>
 
                 <p class="stat-bubble-title upper">Winners</p>
             </div>
