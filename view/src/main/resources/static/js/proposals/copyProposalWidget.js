@@ -94,12 +94,10 @@ jQuery(function() {
 		targetSectionId = jQuery(this).attr('data-section-id');
 		loadProposalSections();
         jQuery('#copyProposalModal').modal('show');
-		updatePopupSize();
 	});
 });
 
 function showCopyProposalPopup(moveType) {
 	proposalCopy_loadContests(moveType);
     jQuery('#copyProposalModal').modal('show');
-	updatePopupSize();
 }
