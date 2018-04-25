@@ -31,11 +31,9 @@
                     ${contestPhase.completed ? 'completed' : ''}
                     ${additionalCSSClasses}">
             <div class="col-12 col-lg-5 col-xl-6 c-TableGrid__cell propname-authors">
-                <c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
-                    <div class="ribbonPlaceholder">
-                        <collab:image src="/images/icon-prize${proposal.ribbonWrapper.ribbon}.png"
-                                      cssClass="js-Tooltip c-Icon" title="${proposal.ribbonWrapper.ribbonText}" />
-                    </div>
+                <c:if test="${proposal.ribbonWrapper.ribbon > 0}">
+                    <collab:image src="/images/icon-prize${proposal.ribbonWrapper.ribbon}.png"
+                                  cssClass="float-left js-Tooltip mr-2" title="${proposal.ribbonWrapper.ribbonText}" />
                 </c:if>
                 <xcolab:proposalLink proposal="${proposal}" phase="${contestPhase}" escape="false" />
                 /
@@ -160,7 +158,7 @@
                 </div>
             </c:if>
         </div>
-        <div class="c-TableGrid__row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
+        <div class="c-TableGrid__row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'c-TableGrid__row--active' : ''}
                     ${contestPhase.completed ? 'completed' : ''}
                     ${additionalCSSClasses}">
             <div class="col-12 c-TableGrid__cell">
