@@ -141,14 +141,14 @@ $table-cell-padding:          .75rem !default;
 $table-cell-padding-sm:       .3rem !default;
 
 $table-bg:                    transparent !default;
-$table-accent-bg:             rgba(black, .05) !default;
-$table-hover-bg:              rgba(black, .075) !default;
+$table-accent-bg:             rgba-equivalent($t-Color__gray--light-100);
+$table-hover-bg:              rgba-equivalent($t-Color__gray--light-100);
 $table-active-bg:             $table-hover-bg !default;
 
-$table-border-color:          $gray-300 !default;
+$table-border-color:          $t-Table__borderColor !default;
 
-$table-head-bg:               $gray-200 !default;
-$table-head-color:            $gray-700 !default;
+$table-head-bg:               $t-Table__thead__backgroundColor;
+$table-head-color:            yiq-contrasting-color($t-Table__thead__backgroundColor);
 
 $table-dark-bg:               $t-Color__primary !default;
 $table-dark-accent-bg:        rgba(white, .05) !default;

@@ -81,46 +81,55 @@
                         ${currentCategory.description}
                     </div>
                 </c:if>
-                <table class="c-Table">
-                    <thead>
-                    <tr class="c-Table__row--title">
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
                         <c:set value="${not empty currentCategory ? currentCategory.linkUrl : '/discussion'}"
                                var="baseUrl"/>
-                        <th class="c-Table__cell--title">
+                        <th>
                             <c:set var="sortURL" value="${baseUrl}?sortColumn=TITLE&amp;sortAscending=${!sortAscending}" />
 
-                            <a class="js-Tooltip" title="click to sort by title" href="${sortURL }"><spring:message code="discussion.categorypage.table.title"/></a>
-                            <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="TITLE" />
+                            <a class="js-Tooltip" title="click to sort by title" href="${sortURL }">
+                                <spring:message code="discussion.categorypage.table.title"/>
+                                <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="TITLE" />
+                            </a>
+
                         </th>
 
-                        <th class="c-Table__cell--title">
+                        <th>
                             <c:set var="sortURL" value="${baseUrl}?sortColumn=REPLIES&amp;sortAscending=${!sortAscending}" />
 
-                            <a class="js-Tooltip" title="click to sort by replies" href="${sortURL }"><spring:message code="discussion.categorypage.table.replies"/></a>
-                            <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="REPLIES" />
+                            <a class="js-Tooltip" title="click to sort by replies" href="${sortURL }">
+                                <spring:message code="discussion.categorypage.table.replies"/>
+                                <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="REPLIES" />
+                            </a>
                         </th>
 
-                        <th class="c-Table__cell--title">
+                        <th>
                             <c:set var="sortURL" value="${baseUrl}?sortColumn=LAST_COMMENTER&amp;sortAscending=${!sortAscending}" />
 
-                            <a class="js-Tooltip" title="click to sort by last commenter" href="${sortURL }"><spring:message code="discussion.categorypage.table.lastcommenter"/></a>
-                            <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="LAST_COMMENTER" />
+                            <a class="js-Tooltip" title="click to sort by last commenter" href="${sortURL }">
+                                <spring:message code="discussion.categorypage.table.lastcommenter"/>
+                                <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="LAST_COMMENTER" />
+                            </a>
                         </th>
 
-                        <th class="c-Table__cell--title">
+                        <th>
                             <c:set var="sortURL" value="${baseUrl}?sortColumn=DATE&amp;sortAscending=${!sortAscending}" />
 
-                            <a class="js-Tooltip" title="click to sort by date" href="${sortURL }"><spring:message code="discussion.categorypage.table.date" /></a>
-                            <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="DATE" />
+                            <a class="js-Tooltip" title="click to sort by date" href="${sortURL }">
+                                <spring:message code="discussion.categorypage.table.date" />
+                                <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="DATE" />
+                            </a>
                         </th>
                     </tr>
                     </thead>
                     <c:forEach var="thread" items="${threads}">
-                        <tr class="c-Table__row">
-                            <td class="c-Table__cell"><a href="${thread.linkUrl}">${thread.title}</a></td>
-                            <td class="c-Table__cell">${thread.commentsCount}</td>
-                            <td class="c-Table__cell"><xcolab:userLinkSimple memberId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.displayName}"/></td>
-                            <td class="c-Table__cell">${thread.lastActivityDateFormatted}</td>
+                        <tr>
+                            <td><a href="${thread.linkUrl}">${thread.title}</a></td>
+                            <td>${thread.commentsCount}</td>
+                            <td><xcolab:userLinkSimple memberId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.displayName}"/></td>
+                            <td>${thread.lastActivityDateFormatted}</td>
                         </tr>
                     </c:forEach>
                 </table>

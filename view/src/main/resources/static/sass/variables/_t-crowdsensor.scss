@@ -171,17 +171,10 @@ $l-BoxLayout__striped__backgroundColor: $t-Color__pattern__gray--light;
 
 $p-community__left__lineHeight: default;
 
-$c-Table__borderColor: $t-Color__pattern__gray--light;
-$c-Table__title__backgroundColor: $t-Color__primary;
-$c-Table__title__fontColor: white;
-$c-Table__row__fontWeight: $t-Typography__fontWeight--regular;
-$c-Table__cell__fontWeight--active: $t-Typography__fontWeight--medium;
-$c-Table__cell--title__borderRight: 1px solid white;
-$c-Table__row--title__borderBottom: none;
-$c-Table__cell--odd__background: $t-Color__pattern__gray--lightest;
-$c-Table__cell--title__a__capitalization: uppercase;
-$c-Table__title__textColor--hover: $t-Color__pattern__gray--lightest;
-$c-Table__cell__count__backgroundColor: white;
+$t-Table__borderColor: $t-Color__pattern__gray--light;
+$t-Table__thead__backgroundColor: $t-Color__primary;
+$t-Table__stripedColumn__background: $t-Color__pattern__gray--lightest;
+$c-TableGrid__cell__highlight_backgroundColor: white;
 
 $p-ContestProposals__list__element--proposalname__width: 605px;
 $p-ContestProposals__list__element__border: 1px solid;

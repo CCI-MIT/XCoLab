@@ -55,31 +55,32 @@
 
             <form:form action="/messaging/archiveMessages" id="archiveMessagesForm" method="post"
                        modelAttribute="messagingBean">
-                <table class="c-Table">
-                    <thead>
-                    <tr class="c-Table__row--title">
-                        <th class="c-Table__cell--title"><!-- --></th>
-                        <th class="c-Table__cell--title"><spring:message code="message.messages.form.subject"/> </th>
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th><!-- --></th>
+                        <th><spring:message code="message.messages.form.subject"/> </th>
                         <spring:message code="message.messages.form.from" var="fromType"/>
                         <spring:message code="message.messages.form.to" var="toType"/>
 
-                        <th class="c-Table__cell--title">${messagingBean.type != 'SENT' ? fromType : toType}</th>
-                        <th class="c-Table__cell--title"><spring:message code="message.messages.form.date"/></th>
+                        <th>${messagingBean.type != 'SENT' ? fromType : toType}</th>
+                        <th><spring:message code="message.messages.form.date"/></th>
                     </tr>
                     </thead>
                     <tbody>
                     <c:forEach var="message" items="${messagingBean.dataPage.messages}" varStatus="x">
-                        <tr class="c-Table__row">
-                            <td class="c-Table__cell">
+                        <c:set var="isHighlighted" value="${messagingBean.type != 'SENT' and !message.isOpened}"/>
+                        <tr class="${isHighlighted ? 'table-active' : ''}">
+                            <td>
                                 <c:if test="${messagingBean.type == 'INBOX'}">
                                     <form:checkbox path="dataPage.messages[${x.index}].selected" />
                                     <form:hidden path="dataPage.messages[${x.index}].messageId" />
                                 </c:if>
                             </td>
-                            <td class="c-Table__cell ${messagingBean.type != 'SENT' and !message.isOpened ? 'highlight' : ''}">
+                            <td class="${isHighlighted ? 'cb-text-bold' : ''}">
                                 <a href="${message.linkUrl}">${message.subject}</a>
                             </td>
-                            <td class="c-Table__cell">
+                            <td>
                                 <c:choose>
                                     <c:when test="${messagingBean.type == 'SENT'}">
                                         <xcolab:userLinkSimple memberId="${message.to.get(0).id_}" text="${message.to.get(0).displayName}" />
@@ -93,7 +94,7 @@
                                 </c:choose>
 
                             </td>
-                            <td class="c-Table__cell">${message.createDateFormatted}</td>
+                            <td>${message.createDateFormatted}</td>
                         </tr>
                     </c:forEach>
                     </tbody>

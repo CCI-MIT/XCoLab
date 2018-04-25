@@ -143,15 +143,11 @@ $p-Proposal__propbox--green: #a7da85;
 
 $p-community__left__lineHeight: default;
 
-$c-Table__borderColor: $t-Color__gray--medium-500;
-$c-Table__title__backgroundColor: $t-Color__tan;
-$c-Table__row--title__borderTop: 1px solid $t-Color__gray--dark-600;
-$c-Table__row--title__borderBottom: 1px solid $t-Color__gray--dark-600;
-$c-Table__cell--odd__background: $t-Color__tan;
-$c-Table__cell--title__a__capitalization: none;
-$c-Table__title__textColor--hover: $t-Color__primary;
-$c-Table__cell__count__backgroundColor: white;
-$c-Table__cell__count__hideImage: true;
+$t-Table__borderColor: $t-Color__gray--dark-600;
+$t-Table__thead__backgroundColor: $t-Color__tan;
+$t-Table__stripedColumn__background: $t-Color__tan;
+$c-TableGrid__cell__highlight_backgroundColor: white;
+$c-TableGrid__cell__hideIcon: true;
 
 $p-ContestProposals__list__element--proposalname__width: 605px;
 $p-ContestProposals__list__element__border: 1px solid;

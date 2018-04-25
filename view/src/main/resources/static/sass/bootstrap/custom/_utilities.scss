@@ -11,6 +11,10 @@
   @extend .small;
 }
 
+.cb-text-bold {
+  font-weight: $t-Typography__fontWeight--bold;
+}
+
 
 //= Flexbox utilities
 

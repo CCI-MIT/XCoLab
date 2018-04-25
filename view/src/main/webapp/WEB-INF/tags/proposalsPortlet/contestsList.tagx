@@ -12,8 +12,8 @@
 
     <c:forEach var="contest" items="${contests}">
         <c:if test="${contest.showInListView}">
-            <tr class="c-Table__row ${featured ? 'featured' : ''}">
-                <td class="c-Table__cell">
+            <tr class="${featured ? 'table-active' : ''}">
+                <td>
                     <div class="contestFlag">
                         <c:if test="${not empty contest.flagText }">
                             <span class="${not empty contest.flagTooltip ? 'js-Tooltip' : ''}" title="${contest.flagTooltip}">${contest.flagText}:&#160;</span>
@@ -22,10 +22,10 @@
                         ${contest.contestName}
                     </div>
                 </td>
-                <td class="c-Table__cell odd">
+                <td class="text-center">
                     ${contest.proposalsCount}
                 </td>
-                <td class="c-Table__cell">
+                <td class="text-center">
                     <c:choose>
                         <c:when test="${contest.activePhase.canVote }">
                             ${contest.votesCount}
@@ -35,21 +35,21 @@
                         </c:otherwise>
                     </c:choose>
                 </td>
-                <td class="c-Table__cell odd">
+                <td class="text-center">
                     <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what }" />
                 </td>
-                <td class="c-Table__cell">
+                <td class="text-center">
                     <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where }" />
                 </td>
-                <td class="c-Table__cell odd">
+                <td class="text-center">
                     <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who }"/>
                 </td>
-                <td class="c-Table__cell">
+                <td class="text-center">
                     <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.how }"/>
                 </td>
 
                 <c:if test="${proposalsPermissions.canJudgeActions}">
-                    <td class="c-Table__cell odd">
+                    <td class="text-center">
                         <span class="js-Tooltip" title="Judge's decision ${not contest.judgeStatus ? 'incomplete' : 'completed'}.">
                             <c:choose>
                                 <c:when test="${not contest.judgeStatus}">
@@ -63,7 +63,7 @@
                     </td>
 
                     <c:if test="${proposalsPermissions.canFellowActions}">
-                        <td class="c-Table__cell">
+                        <td class="text-center">
 							<span class="js-Tooltip" title="Fellow screening ${contest.screeningStatus ? 'completed' : 'incomplete'}.">
 								<c:choose>
 									<c:when test="${contest.screeningStatus}">
