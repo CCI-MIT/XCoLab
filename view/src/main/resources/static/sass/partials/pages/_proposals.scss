@@ -1,7 +1,6 @@
 @import "bootstrap/variables";
 @import "bootstrap/mixins/caret";
 
-$p-proposal__header__background: url(/images/pattern-6x6-blue.png) !default;
 $p-proposal__header__h1__textColor: $b-Typography__textColor !default;
 $p-proposal__header__borderBottomColor: $t-Color__gray--dark-600 !default;
 $p-proposal__propbox__padding: 0 0 8px 14px !default;
@@ -35,12 +34,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 
 /* proposal HEADER */
 .proposal-head {
-  padding-top: 28px;
-  padding-left: 15px;
-  padding-right: 15px;
-
-  background: $p-proposal__header__background;
-  border-bottom: 1px solid $t-Color__gray--dark-600;
   margin-bottom: $t-Spacing__base;
 }
 
