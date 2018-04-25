@@ -12,9 +12,6 @@ import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -26,13 +23,11 @@ public class ContestPhaseBean implements Serializable {
     public static final Long CREATE_CONTEST_PHASE_PK = -1L;
     public static final Long DEFAULT_CONTEST_SCHEDULE = -1L;
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-
     private Long contestSchedulePK;
     private Long contestPhasePK;
     private Long contestPK;
     private Long contestPhaseType;
-    private Long contestPhaseTypeOld = 0L;
+    private Long contestPhaseTypeOld;
     private Long contestScheduleId;
     @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
     @NotNull(message = "Phase start date must not be empty.")
@@ -40,7 +35,6 @@ public class ContestPhaseBean implements Serializable {
     @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
     private Date phaseEndDate;
 
-    private ContestPhaseType contestPhaseTypeObj;
     private boolean contestPhaseDeleted;
     private boolean contestPhaseHasProposalAssociations;
 
@@ -58,10 +52,6 @@ public class ContestPhaseBean implements Serializable {
         this.contestScheduleId = contestPhase.getContestScheduleId();
         this.phaseStartDate = contestPhase.getPhaseStartDate();
         this.phaseEndDate = contestPhase.getPhaseEndDate();
-
-        if (contestPhaseType != null) {
-            this.contestPhaseTypeObj = ContestClientUtil.getContestPhaseType(contestPhaseType);
-        }
 
         this.contestPhaseHasProposalAssociations = false;
         List<Contest> contestsUsingThisContestPhase = ContestClientUtil
@@ -136,38 +126,12 @@ public class ContestPhaseBean implements Serializable {
         this.phaseStartDate = phaseStartDate;
     }
 
-    public String getPhaseEndDateFormatted() {
-        String phaseEndDateFormatted = "";
-        if (phaseEndDate != null) {
-            phaseEndDateFormatted = dateFormat.format(phaseEndDate);
-        }
-        return phaseEndDateFormatted;
-    }
-
-    public void setPhaseEndDateFormatted(String phaseEndDateFormatted) {
-        if (phaseEndDateFormatted != null) {
-            try {
-                this.phaseEndDate = dateFormat.parse(phaseEndDateFormatted);
-            } catch (ParseException e) {
-                this.phaseEndDate = null;
-            }
-        }
-    }
-
     public Date getPhaseEndDate() {
         return phaseEndDate;
     }
 
     public void setPhaseEndDate(Date phaseEndDate) {
         this.phaseEndDate = phaseEndDate;
-    }
-
-    public String getContestPhaseTypeTitle() {
-        String contestPhaseTypeTitle = "";
-        if (contestPhaseTypeObj != null) {
-            contestPhaseTypeTitle = contestPhaseTypeObj.getName();
-        }
-        return contestPhaseTypeTitle;
     }
 
     public Long getContestScheduleId() {
@@ -241,6 +205,9 @@ public class ContestPhaseBean implements Serializable {
 
         if (contestPhaseType != null) {
             ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseType);
+            contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
+        } else if (contestPhaseTypeOld != null) {
+            ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseTypeOld);
             contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
         } else {
             contestPhase.setContestPhaseAutopromote(null);

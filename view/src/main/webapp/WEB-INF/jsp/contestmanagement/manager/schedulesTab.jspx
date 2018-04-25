@@ -8,12 +8,13 @@
     
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
     <!--@elvariable id="scheduleId" type="java.lang.Long"-->
     <!--@elvariable id="contestScheduleBean" type="org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleBean"-->
     <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
     <!--@elvariable id="contestPhaseTypesSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+    <!--@elvariable id="contestPhaseTypesSelectionItemsDeprecated" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
     <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
-    <!--@elvariable id="contestPhaseAutopromoteSelectionItemsDeprecated" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
@@ -141,8 +142,9 @@
                                         </form:select>
                                     </td>
                                     <td>
-                                        <fmt:formatDate value="${schedulePhase.phaseStartDate}" pattern="MM/dd/yyyy HH:mm"
-                                                        type="date" dateStyle="short" timeZone="America/New_York"
+                                        <fmt:formatDate value="${schedulePhase.phaseStartDate}"
+                                                        type="date" dateStyle="short"
+                                                        pattern="MM/dd/yyyy HH:mm"
                                                         var="formatDate"/>
 
                                         <c:set var="inputIsReadOnly" value="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted}" />

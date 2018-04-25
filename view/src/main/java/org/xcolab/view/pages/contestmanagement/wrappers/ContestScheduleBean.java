@@ -118,6 +118,9 @@ public class ContestScheduleBean {
     public void setPhaseEndDates() {
         ContestPhaseBean prevContestPhase = null;
         for (ContestPhaseBean contestPhase : schedulePhases) {
+            if (contestPhase.isContestPhaseDeleted()) {
+                continue;
+            }
             if (prevContestPhase != null) {
                 prevContestPhase.setPhaseEndDate(contestPhase.getPhaseStartDate());
             }
@@ -129,6 +132,9 @@ public class ContestScheduleBean {
         boolean isValid = true;
         ContestPhaseBean prevContestPhase = null;
         for (ContestPhaseBean contestPhase : schedulePhases) {
+            if (contestPhase.isContestPhaseDeleted()) {
+                continue;
+            }
             if (prevContestPhase != null) {
                 Date prevStartDate = prevContestPhase.getPhaseStartDate();
                 Date prevEndDate = prevContestPhase.getPhaseEndDate();

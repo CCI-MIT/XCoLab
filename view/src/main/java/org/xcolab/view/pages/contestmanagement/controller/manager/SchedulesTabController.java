@@ -148,14 +148,14 @@ public class SchedulesTabController extends AbstractTabController {
     private String updateSchedule(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, ContestScheduleBean contestScheduleBean, BindingResult result) {
 
-        if (!contestScheduleBean.areContestsCompatibleWithSchedule()) {
-            result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_ERROR_MESSAGE);
-        }
-
         contestScheduleBean.setPhaseEndDates();
 
         if (!contestScheduleBean.isValidSchedule()) {
             result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_INVALID_MESSAGE);
+        }
+
+        if (!contestScheduleBean.areContestsCompatibleWithSchedule()) {
+            result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_ERROR_MESSAGE);
         }
 
         if (result.hasErrors()) {
