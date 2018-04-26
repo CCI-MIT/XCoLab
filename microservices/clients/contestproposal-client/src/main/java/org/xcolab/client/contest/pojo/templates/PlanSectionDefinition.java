@@ -246,12 +246,11 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
 
     public List<Proposal> getStringValueAsProposalArray() {
         ProposalAttribute attr = getSectionAttribute();
-        final String idsAsString = attr.getStringValue();
-        if (StringUtils.isEmpty(idsAsString)) {
+        if (attr == null || StringUtils.isEmpty(attr.getStringValue())) {
             return Collections.emptyList();
         }
 
-        final List<Long> proposalIds = IdListUtil.getIdsFromString(idsAsString);
+        final List<Long> proposalIds = IdListUtil.getIdsFromString(attr.getStringValue());
         final List<Proposal> proposals = new ArrayList<>(proposalIds.size());
 
         for (Long proposalId : proposalIds) {
