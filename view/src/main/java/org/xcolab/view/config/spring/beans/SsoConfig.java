@@ -3,6 +3,7 @@ package org.xcolab.view.config.spring.beans;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -17,6 +18,10 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilt
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.filter.CompositeFilter;
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +77,22 @@ public class SsoConfig {
         return new SsoClientResources();
     }
 
+    @Bean
+    public PrincipalExtractor principalExtractor() {
+        return map -> {
+            String principalId = (String) map.get("id");
+            Member user;
+            try {
+                user = MembersClient.findMemberByFacebookId(Long.parseLong(principalId));
+            } catch (MemberNotFoundException e) {
+                log.info("No user found, generating profile for {}", principalId);
+                user = new Member();
+                user.setFacebookId(Long.parseLong(principalId));
+            }
+            return user;
+        };
+    }
+    
     public static class SsoFilter {
 
         private final OAuth2ClientContext oAuth2ClientContext;
