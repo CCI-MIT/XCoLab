@@ -1,5 +1,7 @@
 package org.xcolab.view.config.spring.beans;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -25,6 +27,8 @@ import javax.servlet.Filter;
 @Configuration
 public class SsoConfig {
 
+    private static final Logger log = LoggerFactory.getLogger(SsoConfig.class);
+    
     private final OAuth2ClientContext oauth2ClientContext;
 
     @Autowired
