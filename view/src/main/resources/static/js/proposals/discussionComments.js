@@ -1,18 +1,26 @@
-function disableAddComment() {
-    jQuery(".c-Comment__new").find(".addCommentButton").attr('disabled', true);
+function getCkEditorTextfieldContent(textfieldId) {
+    var val = jQuery.trim($('#' + textfieldId).val());
+    if (val === '') {
+        val = jQuery.trim(CKEDITOR.instances[textfieldId].getData())
+    }
+    return val;
+}
+
+function setCkEditorTextfieldContent(textfieldId, content) {
+    $('#' + textfieldId).val(content);
+    var ckeditorInstance = CKEDITOR.instances[textfieldId];
+    if (ckeditorInstance !== undefined) {
+        ckeditorInstance.setData(content);
+    }
 }
 
 function isAddCommentFormValid() {
     var $thecomment = jQuery(".c-Comment__new");
-    var isValid = (jQuery.trim($thecomment.find(".commentContent").val()) !== '');
-    if (!isValid) {
-        isValid = jQuery.trim(CKEDITOR.instances['commentContent'].getData()) !== '';
-    }
+    var isValid = getCkEditorTextfieldContent('js-Comment__content') !== '';
 
     if (isValid) {
         $thecomment.find('#js-Comment__error').hide();
-    }
-    else {
+    } else {
         $thecomment.find('#js-Comment__error').show();
     }
     return isValid;
@@ -106,39 +114,36 @@ function extractText(elementId) {
 }
 
 jQuery(function() {
-    var $messageContent = $("#messageContent");
-    if ($messageContent.length > 0) {
-        //restore comment content from a previously set cookie.
-        if ($messageContent.val() == "" && Cookies.get("proposal-comment-body")) {
-            $messageContent.val(Cookies.get("proposal-comment-body"));
-        }
-
-        //submit button functionality for adding new comments
-        $("#addCommentButton").click(function(event) {
-            return handleClickOnDiscussion(event);
-        });
-    }
+    //submit button functionality for adding new comments
+    $("#addCommentButton").click(handleClickOnDiscussion);
 });
-function handleClickOnDiscussion(event){
-    //save the comment in a cookie, in case the user is not logged in
-    var $ckeMessageContent = $("#cke_messageContent").find("iframe");
-    if($ckeMessageContent == null || $ckeMessageContent.contents().find("body").text() == "") {
-        Cookies.remove("proposal-comment-body");
-        Cookies.set("proposal-comment-body", $("#messageContent").val());
-    } else {
-        Cookies.remove("proposal-comment-body");
-        Cookies.set("proposal-comment-body", $ckeMessageContent.contents().find("body").text());
+
+function handleClickOnDiscussion(event) {
+    if (!window.isAddCommentFormValid()) {
+        event.preventDefault();
+        return false;
     }
 
-    if ($("#addCommentButton").data("is-deferred") === true) {
-        deferUntilLogin();
-    } else {
-        if (!window.isAddCommentFormValid()) {
-            event.preventDefault();
-            return false;
+    saveCommentInCookie();
+    disableDirtyCheck();
+    $('#addCommentForm').submit();
+}
+
+function saveCommentInCookie() {
+    var commentContent = getCkEditorTextfieldContent('js-Comment__content');
+    Cookies.remove("proposal-comment-body");
+    Cookies.set("proposal-comment-body", commentContent);
+}
+
+$(restoreCommentFromCookie);
+function restoreCommentFromCookie() {
+    var cookieContent = Cookies.get("proposal-comment-body");
+    var $messageContent = $("#js-Comment__content");
+    if (cookieContent !== '') {
+        if ($messageContent.val() !== '') {
+            console.warn("Could not restore comment because text field was already filled.");
+        } else  {
+            setCkEditorTextfieldContent('js-Comment__content', cookieContent);
         }
-        disableDirtyCheck();
-        window.disableAddComment();
-        $('#addCommentForm').submit();
     }
 }
