@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
 import org.springframework.session.web.http.SessionRepositoryFilter;
@@ -21,6 +22,7 @@ import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.handlers.LogoutSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.auth.login.spring.MemberPasswordEncoder;
+import org.xcolab.view.config.spring.beans.SsoConfig.SsoFilter;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.spring.properties.WebProperties.GuestAccess;
 
@@ -38,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final RememberMeServices rememberMeServices;
     private final MemberDetailsService memberDetailsService;
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final SsoFilter ssoFilter;
 
     private final WebProperties webProperties;
     private final XCoLabProperties xCoLabProperties;
@@ -46,12 +49,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public WebSecurityConfig(RememberMeServices rememberMeServices,
             MemberDetailsService memberDetailsService, WebProperties webProperties,
             XCoLabProperties xCoLabProperties,
-            AuthenticationSuccessHandler authenticationSuccessHandler) {
+            AuthenticationSuccessHandler authenticationSuccessHandler, SsoFilter ssoFilter) {
         this.rememberMeServices = rememberMeServices;
         this.memberDetailsService = memberDetailsService;
         this.webProperties = webProperties;
         this.xCoLabProperties = xCoLabProperties;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
+        this.ssoFilter = ssoFilter;
     }
 
     @Override
@@ -102,6 +106,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     // need to specify same key that is used in rememberMeServices
                     .key(xCoLabProperties.getSecret())
                     .and()
+                .addFilterBefore(ssoFilter.getFilter(), BasicAuthenticationFilter.class)
                 .logout()
                     .permitAll()
                     .logoutSuccessHandler(new LogoutSuccessHandler())
