@@ -11,6 +11,8 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -19,9 +21,9 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.filter.CompositeFilter;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.auth.login.spring.MemberDetails;
+import org.xcolab.view.auth.login.spring.MemberDetailsService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +44,8 @@ public class SsoConfig {
     }
 
     @Bean
-    public SsoFilter ssoFilter() {
-        SsoFilter ssoFilter = new SsoFilter(oauth2ClientContext);
+    public SsoFilter ssoFilter(PrincipalExtractor principalExtractor) {
+        SsoFilter ssoFilter = new SsoFilter(oauth2ClientContext, principalExtractor);
         ssoFilter.addFilter(facebook(), "/sso/facebook");
         ssoFilter.addFilter(google(), "/sso/google");
         ssoFilter.addFilter(xcolab(), "/sso/xcolab");
@@ -78,28 +80,33 @@ public class SsoConfig {
     }
 
     @Bean
-    public PrincipalExtractor principalExtractor() {
+    public PrincipalExtractor principalExtractor(MemberDetailsService memberDetailsService) {
         return map -> {
             String principalId = (String) map.get("id");
-            Member user;
+            final long facebookId = Long.parseLong(principalId);
+            UserDetails user;
             try {
-                user = MembersClient.findMemberByFacebookId(Long.parseLong(principalId));
-            } catch (MemberNotFoundException e) {
+                user = memberDetailsService.loadUserByFacebookId(facebookId);
+            } catch (UsernameNotFoundException e) {
                 log.info("No user found, generating profile for {}", principalId);
-                user = new Member();
-                user.setFacebookId(Long.parseLong(principalId));
+                Member member = new Member();
+                member.setFacebookId(facebookId);
+                user = new MemberDetails(member);
             }
             return user;
         };
     }
-    
+
     public static class SsoFilter {
 
         private final OAuth2ClientContext oAuth2ClientContext;
+        private final PrincipalExtractor principalExtractor;
         private final List<Filter> filters = new ArrayList<>();
 
-        public SsoFilter(OAuth2ClientContext oAuth2ClientContext) {
+        public SsoFilter(OAuth2ClientContext oAuth2ClientContext,
+                PrincipalExtractor principalExtractor) {
             this.oAuth2ClientContext = oAuth2ClientContext;
+            this.principalExtractor = principalExtractor;
         }
 
         public Filter getFilter() {
@@ -118,6 +125,7 @@ public class SsoConfig {
             filter.setRestTemplate(template);
             UserInfoTokenServices tokenServices = new UserInfoTokenServices(
                     client.getResource().getUserInfoUri(), client.getClient().getClientId());
+            tokenServices.setPrincipalExtractor(principalExtractor);
             tokenServices.setRestTemplate(template);
             filter.setTokenServices(tokenServices);
             return filter;

@@ -21,4 +21,12 @@ public class MemberDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User " + s + " not found");
         }
     }
+
+    public UserDetails loadUserByFacebookId(Long facebookId) throws UsernameNotFoundException {
+        try {
+            return new MemberDetails(MembersClient.findMemberByFacebookId(facebookId));
+        } catch (MemberNotFoundException e) {
+            throw new UsernameNotFoundException("User Facebook#" + facebookId + " not found");
+        }
+    }
 }
