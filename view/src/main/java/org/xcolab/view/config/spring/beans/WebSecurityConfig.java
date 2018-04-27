@@ -62,7 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .antMatchers("/admin/management/**").hasRole("ADMIN")
-                .antMatchers("/oauth/authorize").authenticated();
+                .antMatchers("/oauth/authorize").authenticated()
+                .antMatchers("/api/user").authenticated();
 
         final GuestAccess guestAccessProperties = webProperties.getGuestAccess();
 

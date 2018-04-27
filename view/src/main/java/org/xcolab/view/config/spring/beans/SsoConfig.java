@@ -13,14 +13,14 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
-import org.springframework.security.oauth2.config.annotation.web.configuration
-        .EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.CompositeFilter;
 
 import org.xcolab.client.members.pojo.Member;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -77,9 +77,8 @@ public class SsoConfig {
         return new SsoClientResources();
     }
 
-    @RequestMapping("/user" )
+    @GetMapping("/api/user")
     public Map<String, String> user(Member member) {
-
         Map<String, String> map = new LinkedHashMap<>();
         map.put("name", member.getFullName());
         map.put("email", member.getEmailAddress());
