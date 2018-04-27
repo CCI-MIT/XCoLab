@@ -13,16 +13,25 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.oauth2.config.annotation.web.configuration
+        .EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.CompositeFilter;
 
+import org.xcolab.client.members.pojo.Member;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.Filter;
 
 @EnableOAuth2Client
+@EnableAuthorizationServer
 @Configuration
+@RestController
 public class SsoConfig {
 
     private final OAuth2ClientContext oauth2ClientContext;
@@ -66,6 +75,15 @@ public class SsoConfig {
     @ConfigurationProperties("sso.xcolab")
     public SsoClientResources xcolab() {
         return new SsoClientResources();
+    }
+
+    @RequestMapping("/user" )
+    public Map<String, String> user(Member member) {
+
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("name", member.getFullName());
+        map.put("email", member.getEmailAddress());
+        return map;
     }
 
     public static class SsoFilter {
