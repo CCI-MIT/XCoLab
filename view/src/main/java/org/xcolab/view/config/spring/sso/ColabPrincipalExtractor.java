@@ -44,6 +44,9 @@ public class ColabPrincipalExtractor extends CustomPrincipalExtractor<String> {
 
     @Override
     protected Optional<String> extractProfileImageUrl(Map<String, Object> userInfoMap) {
+        if (userInfoMap.containsKey("picture")) {
+            return Optional.of((String) userInfoMap.get("picture"));
+        }
         return Optional.empty();
     }
 }
