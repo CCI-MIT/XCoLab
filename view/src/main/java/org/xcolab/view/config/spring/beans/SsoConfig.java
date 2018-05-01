@@ -1,5 +1,6 @@
 package org.xcolab.view.config.spring.beans;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,8 +107,14 @@ public class SsoConfig {
     @GetMapping("/api/user")
     public Map<String, String> user(Member member) {
         Map<String, String> map = new LinkedHashMap<>();
+        map.put("id", Long.toString(member.getId_()));
         map.put("name", member.getFullName());
+        map.put("firstName", member.getFirstName());
+        map.put("lastName", member.getLastName());
         map.put("email", member.getEmailAddress());
+        if (StringUtils.isNotEmpty(member.getAbsoluteImageUrl())) {
+            map.put("picture", member.getAbsoluteImageUrl());
+        }
         return map;
     }
 

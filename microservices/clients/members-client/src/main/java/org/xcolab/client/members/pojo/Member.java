@@ -428,7 +428,19 @@ public class Member implements Serializable {
     @JsonIgnore
     public String getImageLinkUrl() {
         final String userImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
-        return getPortraitId() != 0 ? userImageDomain + USER_IMAGE_PATH + getPortraitId() : "";
+        return getPortraitId() != 0 ? userImageDomain + getRelativeImageUrl() : "";
+    }
+
+    @JsonIgnore
+    public String getAbsoluteImageUrl() {
+        final String cdnUrl = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
+        final String userImageDomain = StringUtils.isNotEmpty(cdnUrl) ? cdnUrl
+                : PlatformAttributeKey.COLAB_URL.get();
+        return getPortraitId() != 0 ? userImageDomain + getRelativeImageUrl() : "";
+    }
+
+    private String getRelativeImageUrl() {
+        return getPortraitId() != 0 ? USER_IMAGE_PATH + getPortraitId() : "";
     }
 
     @JsonIgnore
