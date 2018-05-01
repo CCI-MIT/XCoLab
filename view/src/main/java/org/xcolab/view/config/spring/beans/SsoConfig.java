@@ -1,5 +1,7 @@
 package org.xcolab.view.config.spring.beans;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -20,6 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.CompositeFilter;
 
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.auth.login.spring.MemberDetailsService;
+import org.xcolab.view.config.spring.sso.ClimateXPrincipalExtractor;
+import org.xcolab.view.config.spring.sso.ColabPrincipalExtractor;
+import org.xcolab.view.config.spring.sso.CustomPrincipalExtractor;
+import org.xcolab.view.config.spring.sso.FacebookPrincipalExtractor;
+import org.xcolab.view.config.spring.sso.GooglePrincipalExtractor;
+import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -34,19 +43,31 @@ import javax.servlet.Filter;
 @RestController
 public class SsoConfig {
 
+    private static final Logger log = LoggerFactory.getLogger(SsoConfig.class);
+    
     private final OAuth2ClientContext oauth2ClientContext;
+    private final LoginRegisterService loginRegisterService;
+    private final MemberDetailsService memberDetailsService;
 
     @Autowired
-    public SsoConfig(OAuth2ClientContext oauth2ClientContext) {
+    public SsoConfig(OAuth2ClientContext oauth2ClientContext,
+            LoginRegisterService loginRegisterService, MemberDetailsService memberDetailsService) {
         this.oauth2ClientContext = oauth2ClientContext;
+        this.loginRegisterService = loginRegisterService;
+        this.memberDetailsService = memberDetailsService;
     }
 
     @Bean
     public SsoFilter ssoFilter() {
         SsoFilter ssoFilter = new SsoFilter(oauth2ClientContext);
-        ssoFilter.addFilter(facebook(), "/sso/facebook");
-        ssoFilter.addFilter(google(), "/sso/google");
-        ssoFilter.addFilter(xcolab(), "/sso/xcolab");
+        ssoFilter.addFilter(facebook(), "/sso/facebook",
+                new FacebookPrincipalExtractor(loginRegisterService, memberDetailsService));
+        ssoFilter.addFilter(google(), "/sso/google",
+                new GooglePrincipalExtractor(loginRegisterService, memberDetailsService));
+        ssoFilter.addFilter(xcolab(), "/sso/xcolab",
+                new ColabPrincipalExtractor(loginRegisterService, memberDetailsService));
+        ssoFilter.addFilter(climateX(), "/sso/climatex",
+                new ClimateXPrincipalExtractor(loginRegisterService, memberDetailsService));
         return ssoFilter;
     }
 
@@ -76,6 +97,11 @@ public class SsoConfig {
     public SsoClientResources xcolab() {
         return new SsoClientResources();
     }
+    @Bean
+    @ConfigurationProperties("sso.climatex")
+    public SsoClientResources climateX() {
+        return new SsoClientResources();
+    }
 
     @GetMapping("/api/user")
     public Map<String, String> user(Member member) {
@@ -100,16 +126,19 @@ public class SsoConfig {
             return compositeFilter;
         }
 
-        public void addFilter(SsoClientResources clientResources, String path) {
-            filters.add(ssoFilter(clientResources, path));
+        public void addFilter(SsoClientResources clientResources, String path,
+                CustomPrincipalExtractor principalExtractor) {
+            filters.add(ssoFilter(clientResources, path, principalExtractor));
         }
 
-        private Filter ssoFilter(SsoClientResources client, String path) {
+        private Filter ssoFilter(SsoClientResources client, String path,
+                CustomPrincipalExtractor principalExtractor) {
             OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter(path);
             OAuth2RestTemplate template = new OAuth2RestTemplate(client.getClient(), oAuth2ClientContext);
             filter.setRestTemplate(template);
             UserInfoTokenServices tokenServices = new UserInfoTokenServices(
                     client.getResource().getUserInfoUri(), client.getClient().getClientId());
+            tokenServices.setPrincipalExtractor(principalExtractor);
             tokenServices.setRestTemplate(template);
             filter.setTokenServices(tokenServices);
             return filter;

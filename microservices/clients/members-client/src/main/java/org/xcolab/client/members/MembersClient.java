@@ -1,5 +1,7 @@
 package org.xcolab.client.members;
 
+import org.springframework.util.Assert;
+
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.exceptions.LockoutLoginException;
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
@@ -323,6 +325,26 @@ public final class MembersClient {
         return member;
     }
 
+    public static Member findMemberByColabSsoId(String colabSsoId) throws MemberNotFoundException {
+        Member member = memberResource.list()
+                .queryParam("colabSsoId", colabSsoId)
+                .executeWithResult().getFirstIfExists();
+        if (member == null) {
+            throw new MemberNotFoundException("Member with colabSsoId " + colabSsoId + " does not exist");
+        }
+        return member;
+    }
+
+    public static Member findMemberByClimateXId(String climateXId) throws MemberNotFoundException {
+        Member member = memberResource.list()
+                .queryParam("climateXId", climateXId)
+                .executeWithResult().getFirstIfExists();
+        if (member == null) {
+            throw new MemberNotFoundException("Member with climateXId " + climateXId + " does not exist");
+        }
+        return member;
+    }
+
     public static boolean updateMember(Member member) {
         return memberResource.update(member, member.getId_())
                 .cacheName(CacheName.MEMBER)
@@ -416,6 +438,8 @@ public final class MembersClient {
     }
 
     public static String generateScreenName(String lastName, String firstName) {
+        Assert.notNull(lastName, "First name is required");
+        Assert.notNull(lastName, "Last name is required");
         return memberResource.service("generateScreenName", String.class)
                 .queryParam("values", firstName, lastName)
                 .get();

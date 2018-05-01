@@ -56,9 +56,18 @@ public final class I18nUtils {
         }
         return false;
     }
+
     public static String formatNumberDefaultLocale(Locale locale, Integer values){
         NumberFormat formatter = NumberFormat.getInstance(locale);
         return formatter.format(values);
 
+    }
+
+    public static String getSupportedLanguage(Locale locale) {
+        final String language = locale.getLanguage();
+        if (getAllLanguages().contains(language)) {
+            return language;
+        }
+        return DEFAULT_LANGUAGE;
     }
 }

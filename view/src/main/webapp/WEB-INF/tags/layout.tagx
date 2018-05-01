@@ -267,14 +267,6 @@
         <xcolab-modals:flaggingModal />
     </c:if>
 
-    <!-- TODO COLAB-2172: rework as part of SSO improvements -->
-    <!-- post registration popup -->
-    <c:if test='${request.getParameter("postRegistration")}'>
-        <xcolab-modals:postRegistrationModal member="${_themeContext.authenticationVariables.member}" redirect="${_themeContext.requestUri}" />
-        <collab:script src="/js/postRegistration.js" />
-    </c:if>
-
-
     <!-- ============ Scripts ============ -->
 
     <c:if test="${_librariesToLoad['widgets']}">
