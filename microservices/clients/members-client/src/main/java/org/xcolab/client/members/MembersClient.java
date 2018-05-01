@@ -335,6 +335,16 @@ public final class MembersClient {
         return member;
     }
 
+    public static Member findMemberByClimateXId(String climateXId) throws MemberNotFoundException {
+        Member member = memberResource.list()
+                .queryParam("climateXId", climateXId)
+                .executeWithResult().getFirstIfExists();
+        if (member == null) {
+            throw new MemberNotFoundException("Member with climateXId " + climateXId + " does not exist");
+        }
+        return member;
+    }
+
     public static boolean updateMember(Member member) {
         return memberResource.update(member, member.getId_())
                 .cacheName(CacheName.MEMBER)

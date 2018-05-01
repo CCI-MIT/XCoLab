@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.web.filter.CompositeFilter;
 
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
+import org.xcolab.view.config.spring.sso.ClimateXPrincipalExtractor;
 import org.xcolab.view.config.spring.sso.ColabPrincipalExtractor;
 import org.xcolab.view.config.spring.sso.CustomPrincipalExtractor;
 import org.xcolab.view.config.spring.sso.FacebookPrincipalExtractor;
@@ -57,6 +58,8 @@ public class SsoConfig {
                 new GooglePrincipalExtractor(loginRegisterService, memberDetailsService));
         ssoFilter.addFilter(xcolab(), "/sso/xcolab",
                 new ColabPrincipalExtractor(loginRegisterService, memberDetailsService));
+        ssoFilter.addFilter(climateX(), "/sso/climatex",
+                new ClimateXPrincipalExtractor(loginRegisterService, memberDetailsService));
         return ssoFilter;
     }
 
@@ -84,6 +87,12 @@ public class SsoConfig {
     @Bean
     @ConfigurationProperties("sso.xcolab")
     public SsoClientResources xcolab() {
+        return new SsoClientResources();
+    }
+
+    @Bean
+    @ConfigurationProperties("sso.climatex")
+    public SsoClientResources climateX() {
         return new SsoClientResources();
     }
 

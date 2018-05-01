@@ -291,6 +291,8 @@ CREATE TABLE IF NOT EXISTS `members_Member` (
   `shortBio` text,
   `facebookId` bigint(20) DEFAULT NULL,
   `googleId` varchar(50) DEFAULT NULL,
+  `colabSsoId` varchar(50) DEFAULT NULL,
+  `climateXId` varchar(75) DEFAULT NULL,
   `openId` varchar(255) DEFAULT NULL,
   `loginIP` varchar(75) DEFAULT NULL,
   `loginDate` datetime DEFAULT NULL,
@@ -310,7 +312,9 @@ CREATE TABLE IF NOT EXISTS `members_Member` (
   KEY `IX_XCOLAB_MEMBERS_CREATE_DATE` (`createDate`,`modifiedDate`),
   KEY `IX_XCOLAB_MEMBERS_MODIFIED_DATE` (`modifiedDate`),
   KEY `IX_XCOLAB_MEMBERS_FACEBOOK_ID` (`facebookId`),
-  KEY `IX_XCOLAB_MEMBERS_OPEN_ID` (`openId`)
+  KEY `IX_XCOLAB_MEMBERS_GOOGLE_ID` (`googleId`),
+  KEY `IX_XCOLAB_MEMBERS_COLAB_SSO_ID` (`colabSsoId`),
+  KEY `IX_XCOLAB_MEMBERS_CLIMTE_X_ID` (`climateXId`)
   /*, FULLTEXT KEY `members_Member_names_bio` (`firstName`,`lastName`,`shortBio`,`screenName`)*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -52,4 +52,12 @@ public class MemberDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User ColabSso#" + colabSsoId + " not found");
         }
     }
+
+    public MemberDetails loadUserByClimateXId(String climateXId) throws UsernameNotFoundException {
+        try {
+            return new MemberDetails(MembersClient.findMemberByClimateXId(climateXId));
+        } catch (MemberNotFoundException e) {
+            throw new UsernameNotFoundException("User ClimateX#" + climateXId + " not found");
+        }
+    }
 }

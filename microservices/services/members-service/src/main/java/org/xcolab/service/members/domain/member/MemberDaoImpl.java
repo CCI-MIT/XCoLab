@@ -50,7 +50,7 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
-            String googleId, String colabSsoId, List<Long> roleIds) {
+            String googleId, String colabSsoId, String climateXId, List<Long> roleIds) {
         final MemberTable member = MEMBER.as("member");
         final Users_RolesTable usersRoles = USERS_ROLES.as("usersRoles");
         final MemberCategoryTable memberCategory = MEMBER_CATEGORY.as("memberCategory");
@@ -88,8 +88,11 @@ public class MemberDaoImpl implements MemberDao {
         if (googleId != null) {
             query.addConditions(member.GOOGLE_ID.eq(googleId));
         }
-        if (googleId != null) {
+        if (colabSsoId != null) {
             query.addConditions(member.COLAB_SSO_ID.eq(colabSsoId));
+        }
+        if (climateXId != null) {
+            query.addConditions(member.CLIMATE_X_ID.eq(climateXId));
         }
         if (roleName != null) {
             Users_RolesTable userRolesInner = USERS_ROLES.as("userRolesInner");

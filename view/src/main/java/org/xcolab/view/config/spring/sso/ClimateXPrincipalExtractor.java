@@ -10,21 +10,26 @@ import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import java.util.Map;
 import java.util.Optional;
 
-public class ColabPrincipalExtractor extends CustomPrincipalExtractor<String> {
+public class ClimateXPrincipalExtractor extends CustomPrincipalExtractor<String> {
 
-    public ColabPrincipalExtractor(LoginRegisterService loginRegisterService,
+    public ClimateXPrincipalExtractor(LoginRegisterService loginRegisterService,
             MemberDetailsService memberDetailsService) {
         super(loginRegisterService, memberDetailsService);
     }
 
     @Override
-    protected MemberDetails loadFromSsoId(String colabSsoId) throws UsernameNotFoundException {
-        return memberDetailsService.loadUserByColabSsoId(colabSsoId);
+    protected MemberDetails loadFromSsoId(String climateXId) throws UsernameNotFoundException {
+        return memberDetailsService.loadUserByClimateXId(climateXId);
     }
 
     @Override
-    protected void setSsoId(Member member, String colabSsoId) {
-        member.setColabSsoId(colabSsoId);
+    protected void setSsoId(Member member, String ssoId) {
+        member.setGoogleId(ssoId);
+    }
+
+    @Override
+    protected String extractId(Map map) {
+        return (String) map.get("id");
     }
 
     @Override
@@ -35,11 +40,6 @@ public class ColabPrincipalExtractor extends CustomPrincipalExtractor<String> {
     @Override
     protected String extractLastName(Map<String, Object> map) {
         return (String) map.get("lastName");
-    }
-
-    @Override
-    protected String extractId(Map map) {
-        return (String) map.get("id");
     }
 
     @Override
