@@ -150,7 +150,7 @@ public class LoginRegisterService {
     }
 
     public Member register(String screenName, String password, String email, String firstName,
-            String lastName, String shortBio, String country, String imageId,
+            String lastName, String shortBio, String country, Long imageId,
             boolean generateLoginUrl, String language) {
 
         Assert.notNull(email, "Email address is required");
@@ -178,8 +178,8 @@ public class LoginRegisterService {
         MembersClient.register(member);
         member = MembersClient.getMemberUnchecked(member.getId_());
 
-        if (imageId != null && !imageId.isEmpty()) {
-            member.setPortraitFileEntryId(Long.parseLong(imageId));
+        if (imageId != null) {
+            member.setPortraitFileEntryId(imageId);
             MembersClient.updateMember(member);
         } else {
             member.setPortraitFileEntryId(0L);

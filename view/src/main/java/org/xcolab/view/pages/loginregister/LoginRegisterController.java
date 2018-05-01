@@ -20,19 +20,15 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.commons.CountryUtil;
-import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.commons.servlet.RequestParamUtil;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
-import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
-import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.view.util.entity.portlet.session.SessionErrors;
 import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
@@ -102,16 +98,7 @@ public class LoginRegisterController {
 
         // append SSO attributes
         CreateUserBean userBean = new CreateUserBean();
-        getSSOUserInfo(request.getSession(), userBean);
         model.addAttribute("createUserBean", userBean);
-
-        String fbIdString =
-                (String) request.getSession().getAttribute(SSOKeys.FACEBOOK_USER_ID);
-        String googleId = (String) request.getSession().getAttribute(SSOKeys.SSO_GOOGLE_ID);
-
-        if ((StringUtils.isNotBlank(fbIdString) || googleId != null)) {
-            model.addAttribute("isSsoLogin", true);
-        }
 
         // Get country location
         if (StringUtils.isEmpty(userBean.getCountry())) {
@@ -145,57 +132,18 @@ public class LoginRegisterController {
         throw new UserLocationNotResolvableException(
                 String.format("Could not retrieve country from IP address %s", ipAddr));
     }
-    public static void getSSOUserInfo(HttpSession session, CreateUserBean createUserBean) {
-        // append SSO attributes from session
-        String fbIdString =
-                (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
-        String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);
-        String firstName =
-                (String) session.getAttribute(SSOKeys.SSO_FIRST_NAME);
-        session.removeAttribute(SSOKeys.SSO_FIRST_NAME);
-        String lastName = (String) session.getAttribute(SSOKeys.SSO_LAST_NAME);
-        session.removeAttribute(SSOKeys.SSO_LAST_NAME);
-        String eMail = (String) session.getAttribute(SSOKeys.SSO_EMAIL);
-        session.removeAttribute(SSOKeys.SSO_EMAIL);
-        String screenName =
-                (String) session.getAttribute(SSOKeys.SSO_SCREEN_NAME);
-        session.removeAttribute(SSOKeys.SSO_SCREEN_NAME);
-        String imageId =
-                (String) session.getAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID);
-        session.removeAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID);
-        String country = (String) session.getAttribute(SSOKeys.SSO_COUNTRY);
-        session.removeAttribute(SSOKeys.SSO_COUNTRY);
-
-        if ((StringUtils.isNotBlank(fbIdString) || googleId != null)) {
-            createUserBean.setFirstName(firstName);
-            createUserBean.setLastName(lastName);
-            createUserBean.setEmail(eMail);
-            createUserBean.setScreenName(screenName);
-            createUserBean.setImageId(imageId);
-            createUserBean.setCaptchaNeeded(false);
-        }
-
-        if (StringUtils.isNotEmpty(country)) {
-            createUserBean.setCountry(country);
-        }
-    }
 
     @PostMapping("/register")
     public String registerUser(HttpServletRequest request, HttpServletResponse response, Model model,
             @Valid CreateUserBean newAccountBean, BindingResult result,
             @RequestParam(required = false) String redirect) throws IOException {
 
-        HttpSession session = request.getSession();
-        String fbIdString = (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
-        String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);
-
         if (result.hasErrors()) {
             return showRegistrationError(model);
         }
         boolean captchaValid = true;
         // require captcha if user is not logged in via SSO
-        if (fbIdString == null && googleId == null
-                && PlatformAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE.get()) {
+        if (PlatformAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE.get()) {
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
             captchaValid = recaptchaValidator.verify(gRecaptchaResponse);
         }
@@ -217,62 +165,6 @@ public class LoginRegisterController {
         model.addAttribute("isI18NActive",ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
         model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
         return REGISTER_VIEW_NAME;
-    }
-
-    private static void setCreateUserBeanSessionVariables(CreateUserBean createUserBean,
-            HttpSession portletSession) {
-        portletSession
-                .setAttribute(SSOKeys.SSO_FIRST_NAME, createUserBean.getFirstName());
-        portletSession
-                .setAttribute(SSOKeys.SSO_LAST_NAME, createUserBean.getLastName());
-        portletSession.setAttribute(SSOKeys.SSO_EMAIL, createUserBean.getEmail());
-        portletSession.setAttribute(SSOKeys.SSO_SCREEN_NAME, createUserBean.getScreenName());
-        portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, createUserBean.getImageId());
-        portletSession.setAttribute(SSOKeys.SSO_COUNTRY, createUserBean.getCountry());
-    }
-
-    @PostMapping("/register/finalize")
-    public void updateRegistrationParameters(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-
-        try {
-            JSONObject json = new JSONObject();
-            json.put("screenName", new JSONObject());
-            json.put("bio", new JSONObject());
-
-            String screenName = request.getParameter("screenName");
-            String bio = request.getParameter("bio");
-
-            Member loggedInMember = MemberAuthUtil.getMemberOrNull(request);
-            if (loggedInMember!= null) {
-
-                if (!loggedInMember.getScreenName().equals(screenName)) {
-                    if (StringUtils.isNotEmpty(screenName) && SharedColabClient
-                            .isScreenNameUsed(screenName)
-                            && screenName.matches(USER_NAME_REGEX)) {
-                        loggedInMember.setScreenName(screenName);
-                        json.getJSONObject("screenName").put("success", true);
-                    } else {
-                        json.getJSONObject("screenName").put("success", false);
-                    }
-                }
-
-                json.getJSONObject("bio").put("success", true);
-                if (StringUtils.isNotEmpty(bio)) {
-                    if (bio.length() <= 2000) {
-                        final String baseUri = PlatformAttributeKey.COLAB_URL.get();
-                        loggedInMember.setShortBio(HtmlUtil.cleanSome(bio, baseUri));
-                        MembersClient.updateMember(loggedInMember);
-                    } else {
-                        json.getJSONObject("bio").put("success", false);
-                    }
-                }
-                MembersClient.updateMember(loggedInMember);
-            }
-            response.getWriter().write(json.toString());
-        } catch (JSONException ignored) {
-
-        }
     }
 
     @ModelAttribute("recaptchaDataSiteKey")

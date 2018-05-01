@@ -13,10 +13,12 @@ import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
+import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtractor {
 
@@ -46,38 +48,51 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
     protected abstract void setSsoId(Member member, IdT ssoId);
 
     /**
+     * This method allows subclasses to update additional fields of the member object.
+     *
+     * Changes to the Member object will be persisted automatically, this method does not need to
+     * call update on the Member itself.
+     *
+     * @param member The member object to be modified.
+     */
+    protected void updateAdditionalInformation(Member member, Map<String, Object> userInfoMap) {
+        //Do nothing by default
+    };
+
+    /**
      * This method extracts this SSO services ID from the user info map.
-     * @param map The user info map.
      */
-    protected abstract IdT extractId(Map<String, Object> map);
-
-    /**
-     * This method extracts the first name the user info map.
-     * @param map The user info map.
-     */
-    protected abstract String extractFirstName(Map<String, Object> map);
-
-    /**
-     * This method extracts the last name from the user info map.
-     * @param map The user info map.
-     */
-    protected abstract String extractLastName(Map<String, Object> map);
+    protected abstract IdT extractId(Map<String, Object> userInfoMap);
 
     /**
      * This method extracts the email address from the user info map.
-     * @param map The user info map.
      */
-    protected String extractEmailAddress(Map<String, Object> map) {
-        return (String) map.get("email");
+    protected String extractEmailAddress(Map<String, Object> userInfoMap) {
+        return (String) userInfoMap.get("email");
     }
 
+    /**
+     * This method extracts the first name the user info map.
+     */
+    protected abstract String extractFirstName(Map<String, Object> userInfoMap);
+
+    /**
+     * This method extracts the last name from the user info map.
+     */
+    protected abstract String extractLastName(Map<String, Object> userInfoMap);
+
+    /**
+     * This method extracts the last name from the user info map.
+     */
+    protected abstract Optional<String> extractProfileImageUrl(Map<String, Object> userInfoMap);
+
     @Override
-    public Object extractPrincipal(Map<String, Object> map) {
-        final IdT ssoId = extractId(map);
+    public Object extractPrincipal(Map<String, Object> userInfoMap) {
+        final IdT ssoId = extractId(userInfoMap);
         if (ssoId == null) {
             throw new InternalException("Could not extract ssoId from User Info map.");
         }
-        final String emailAddress = extractEmailAddress(map);
+        final String emailAddress = extractEmailAddress(userInfoMap);
         if (emailAddress == null) {
             throw new InternalException("Could not extract email address from User Info map.");
         }
@@ -94,9 +109,9 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                 log.debug("No user found for sssId={} or email={}. Generating profile...",
                         ssoId, emailAddress);
 
-                String firstName = extractFirstName(map);
-                String lastName = extractLastName(map);
-                final Locale locale = LocaleUtils.toLocale((String) map.get("locale"));
+                String firstName = extractFirstName(userInfoMap);
+                String lastName = extractLastName(userInfoMap);
+                final Locale locale = LocaleUtils.toLocale((String) userInfoMap.get("locale"));
                 String country;
                 String language;
                 if (locale != null) {
@@ -107,11 +122,18 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                     language = I18nUtils.DEFAULT_LANGUAGE;
                 }
 
+                final Optional<String> pictureUrlOpt = extractProfileImageUrl(userInfoMap);
+                Long imageId = null;
+                if (pictureUrlOpt.isPresent()) {
+                    imageId = ImageUploadUtils.linkProfilePicture(pictureUrlOpt.get());
+                }
+
                 Member member = loginRegisterService
                         .register(null, null, emailAddress, firstName, lastName,
-                                null, country, null, false, language);
+                                null, country, imageId, false, language);
 
                 setSsoId(member, ssoId);
+                updateAdditionalInformation(member, userInfoMap);
                 MembersClient.updateMember(member);
 
                 //TODO: how do we get the cookies/request here?

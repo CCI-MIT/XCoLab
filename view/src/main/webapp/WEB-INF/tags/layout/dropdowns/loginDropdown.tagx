@@ -12,13 +12,13 @@
             <div class="col-md-12">
                 <div class="d-flex justify-content-around">
                     <c:if test="${showFacebookSso}">
-                        <a href="/sso/facebook/login" class="c-SocialButton border-0" rel="nofollow">
+                        <a href="/sso/facebook" class="c-SocialButton border-0" rel="nofollow">
                             <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
                             <span class="c-SocialButton__text">Facebook</span>
                         </a>
                     </c:if>
                     <c:if test="${showGoogleSso}">
-                        <a href="/sso/google/login" class="c-SocialButton border-0"  rel="nofollow">
+                        <a href="/sso/google" class="c-SocialButton border-0"  rel="nofollow">
                             <collab:image src="/images/icons/social/google.svg" ariaHidden="true" />
                             <span class="c-SocialButton__text">Google</span>
                         </a>

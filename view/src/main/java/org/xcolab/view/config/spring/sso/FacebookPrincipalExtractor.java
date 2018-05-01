@@ -8,6 +8,7 @@ import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class FacebookPrincipalExtractor extends CustomPrincipalExtractor<Long> {
 
@@ -39,5 +40,17 @@ public class FacebookPrincipalExtractor extends CustomPrincipalExtractor<Long> {
     @Override
     protected String extractLastName(Map<String, Object> map) {
         return (String) map.get("last_name");
+    }
+
+    @Override
+    protected Optional<String> extractProfileImageUrl(Map<String, Object> userInfoMap) {
+        //TODO: deactivated until it can be fixed
+        if (false) {
+            //noinspection unchecked
+            final Map<String, Map<String, String>> picture = (Map<String, Map<String, String>>) userInfoMap.get("picture");
+            //TODO: check if it's the default picture
+            return Optional.of(picture.get("data").get("url"));
+        }
+        return Optional.empty();
     }
 }

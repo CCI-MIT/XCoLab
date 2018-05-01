@@ -27,18 +27,18 @@
                 <span class="required-field"><!-- --></span> <spring:message code="register.header.validation.mandatory"/>.
             </div>
 
-            <c:if test="${(_themeContext.authenticationVariables.isFacebookSsoActive or _themeContext.authenticationVariables.isGoogleSsoActive) and not isSsoLogin}">
+            <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive or _themeContext.authenticationVariables.isGoogleSsoActive}">
                 <div class="col text-right">
                     <h2><spring:message code="register.header.joinwith"/>:</h2>
                     <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
-                        <a href="/sso/facebook/register" rel="nofollow" title="Register with Facebook"
+                        <a href="/sso/facebook" rel="nofollow" title="Register with Facebook"
                            class="c-SocialButton text-dark mx-2 js-Tooltip" >
                             <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
                             <span class="c-SocialButton__text">Facebook</span>
                         </a>
                     </c:if>
                     <c:if test="${_themeContext.authenticationVariables.isGoogleSsoActive}">
-                        <a href="/sso/google/register" rel="nofollow" title="Register with Google"
+                        <a href="/sso/google" rel="nofollow" title="Register with Google"
                            class="c-SocialButton text-dark mx-2 js-Tooltip">
                             <collab:image src="/images/icons/social/google.svg" ariaHidden="true"/>
                             <span class="c-SocialButton__text">Google</span>
@@ -92,17 +92,8 @@
                     <spring:message code="register.form.fields.retypeemail"/>
                 </label>
                 <div class="cb-form-col-input">
-                    <c:choose>
-                        <c:when test="${isSsoLogin}">
-                            <form:input cssClass="form-control" cssErrorClass="form-control is-invalid"
-                                        autocomplete="email" path="retypeEmail" id="retypeEmail"
-                                        value="${createUserBean.email}" />
-                        </c:when>
-                        <c:otherwise>
-                            <form:input cssClass="form-control" cssErrorClass="form-control is-invalid"
-                                        autocomplete="email" path="retypeEmail" />
-                        </c:otherwise>
-                    </c:choose>
+                    <form:input cssClass="form-control" cssErrorClass="form-control is-invalid"
+                                autocomplete="email" path="retypeEmail" />
                     <form:errors cssClass="invalid-feedback" cssErrorClass="form-control is-invalid"
                                  path="retypeEmail" />
                 </div>

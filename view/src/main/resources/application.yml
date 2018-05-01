@@ -82,7 +82,7 @@ sso:
       authenticationScheme: query
       clientAuthenticationScheme: form
     resource:
-      userInfoUri: https://graph.facebook.com/me?fields=id,email,first_name,last_name,location,locale
+      userInfoUri: https://graph.facebook.com/me?fields=id,email,first_name,last_name,location,locale,picture
   google:
     client:
       accessTokenUri: https://www.googleapis.com/oauth2/v4/token
