@@ -3,7 +3,6 @@ package org.xcolab.view.config.spring.beans;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,8 +10,6 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -21,9 +18,12 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.filter.CompositeFilter;
 
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.auth.login.spring.MemberDetails;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
+import org.xcolab.view.config.spring.sso.ColabPrincipalExtractor;
+import org.xcolab.view.config.spring.sso.CustomPrincipalExtractor;
+import org.xcolab.view.config.spring.sso.FacebookPrincipalExtractor;
+import org.xcolab.view.config.spring.sso.GooglePrincipalExtractor;
+import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,18 +37,26 @@ public class SsoConfig {
     private static final Logger log = LoggerFactory.getLogger(SsoConfig.class);
     
     private final OAuth2ClientContext oauth2ClientContext;
+    private final LoginRegisterService loginRegisterService;
+    private final MemberDetailsService memberDetailsService;
 
     @Autowired
-    public SsoConfig(OAuth2ClientContext oauth2ClientContext) {
+    public SsoConfig(OAuth2ClientContext oauth2ClientContext,
+            LoginRegisterService loginRegisterService, MemberDetailsService memberDetailsService) {
         this.oauth2ClientContext = oauth2ClientContext;
+        this.loginRegisterService = loginRegisterService;
+        this.memberDetailsService = memberDetailsService;
     }
 
     @Bean
-    public SsoFilter ssoFilter(PrincipalExtractor principalExtractor) {
-        SsoFilter ssoFilter = new SsoFilter(oauth2ClientContext, principalExtractor);
-        ssoFilter.addFilter(facebook(), "/sso/facebook");
-        ssoFilter.addFilter(google(), "/sso/google");
-        ssoFilter.addFilter(xcolab(), "/sso/xcolab");
+    public SsoFilter ssoFilter() {
+        SsoFilter ssoFilter = new SsoFilter(oauth2ClientContext);
+        ssoFilter.addFilter(facebook(), "/sso/facebook",
+                new FacebookPrincipalExtractor(loginRegisterService, memberDetailsService));
+        ssoFilter.addFilter(google(), "/sso/google",
+                new GooglePrincipalExtractor(loginRegisterService, memberDetailsService));
+        ssoFilter.addFilter(xcolab(), "/sso/xcolab",
+                new ColabPrincipalExtractor(loginRegisterService, memberDetailsService));
         return ssoFilter;
     }
 
@@ -79,34 +87,13 @@ public class SsoConfig {
         return new SsoClientResources();
     }
 
-    @Bean
-    public PrincipalExtractor principalExtractor(MemberDetailsService memberDetailsService) {
-        return map -> {
-            String principalId = (String) map.get("id");
-            final long facebookId = Long.parseLong(principalId);
-            UserDetails user;
-            try {
-                user = memberDetailsService.loadUserByFacebookId(facebookId);
-            } catch (UsernameNotFoundException e) {
-                log.info("No user found, generating profile for {}", principalId);
-                Member member = new Member();
-                member.setFacebookId(facebookId);
-                user = new MemberDetails(member);
-            }
-            return user;
-        };
-    }
-
     public static class SsoFilter {
 
         private final OAuth2ClientContext oAuth2ClientContext;
-        private final PrincipalExtractor principalExtractor;
         private final List<Filter> filters = new ArrayList<>();
 
-        public SsoFilter(OAuth2ClientContext oAuth2ClientContext,
-                PrincipalExtractor principalExtractor) {
+        public SsoFilter(OAuth2ClientContext oAuth2ClientContext) {
             this.oAuth2ClientContext = oAuth2ClientContext;
-            this.principalExtractor = principalExtractor;
         }
 
         public Filter getFilter() {
@@ -115,11 +102,13 @@ public class SsoConfig {
             return compositeFilter;
         }
 
-        public void addFilter(SsoClientResources clientResources, String path) {
-            filters.add(ssoFilter(clientResources, path));
+        public void addFilter(SsoClientResources clientResources, String path,
+                CustomPrincipalExtractor principalExtractor) {
+            filters.add(ssoFilter(clientResources, path, principalExtractor));
         }
 
-        private Filter ssoFilter(SsoClientResources client, String path) {
+        private Filter ssoFilter(SsoClientResources client, String path,
+                CustomPrincipalExtractor principalExtractor) {
             OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter(path);
             OAuth2RestTemplate template = new OAuth2RestTemplate(client.getClient(), oAuth2ClientContext);
             filter.setRestTemplate(template);

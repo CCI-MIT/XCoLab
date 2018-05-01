@@ -50,7 +50,7 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
-            String googleId, List<Long> roleIds) {
+            String googleId, String colabSsoId, List<Long> roleIds) {
         final MemberTable member = MEMBER.as("member");
         final Users_RolesTable usersRoles = USERS_ROLES.as("usersRoles");
         final MemberCategoryTable memberCategory = MEMBER_CATEGORY.as("memberCategory");
@@ -87,6 +87,9 @@ public class MemberDaoImpl implements MemberDao {
         }
         if (googleId != null) {
             query.addConditions(member.GOOGLE_ID.eq(googleId));
+        }
+        if (googleId != null) {
+            query.addConditions(member.COLAB_SSO_ID.eq(colabSsoId));
         }
         if (roleName != null) {
             Users_RolesTable userRolesInner = USERS_ROLES.as("userRolesInner");
@@ -339,6 +342,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.LOGIN_IP, member.getLoginIP())
                 .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
                 .set(MEMBER.GOOGLE_ID, member.getGoogleId())
+                .set(MEMBER.COLAB_SSO_ID, member.getColabSsoId())
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
                 .set(MEMBER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
                 .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())

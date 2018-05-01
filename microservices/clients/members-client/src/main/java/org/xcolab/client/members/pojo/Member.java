@@ -52,6 +52,7 @@ public class Member implements Serializable {
     private String shortBio;
     private Long facebookId;
     private String googleId;
+    private String colabSsoId;
     private String openId;
     private String loginIP;
     private Timestamp loginDate;
@@ -227,6 +228,14 @@ public class Member implements Serializable {
 
     public void setGoogleId(String googleId) {
         this.googleId = googleId;
+    }
+
+    public String getColabSsoId() {
+        return colabSsoId;
+    }
+
+    public void setColabSsoId(String colabSsoId) {
+        this.colabSsoId = colabSsoId;
     }
 
     public String getOpenId() {

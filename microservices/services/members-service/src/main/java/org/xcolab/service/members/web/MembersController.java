@@ -55,14 +55,15 @@ public class MembersController {
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) Long facebookId,
-            @RequestParam(required = false) String googleId) {
+            @RequestParam(required = false) String googleId,
+            @RequestParam(required = false) String colabSsoId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
                 Integer.toString(memberDao.countByGiven(partialName, partialEmail, roleName)));
 
         return memberDao.findByGiven(paginationHelper, partialName, partialEmail,
-                roleName, email, screenName, facebookId, googleId, roleIds);
+                roleName, email, screenName, facebookId, googleId, colabSsoId, roleIds);
     }
 
     @GetMapping("findByIp")
