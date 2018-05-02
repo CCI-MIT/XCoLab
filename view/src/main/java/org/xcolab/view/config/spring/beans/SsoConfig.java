@@ -162,6 +162,11 @@ public class SsoConfig {
 
     public static class SsoClientResources {
 
+        /**
+         * Hostname for OAuth endpoints, if not well-known.
+         */
+        private String hostname;
+
         @NestedConfigurationProperty
         private final AuthorizationCodeResourceDetails client = new AuthorizationCodeResourceDetails();
 
@@ -174,6 +179,14 @@ public class SsoConfig {
 
         public ResourceServerProperties getResource() {
             return resource;
+        }
+
+        public String getHostname() {
+            return hostname;
+        }
+
+        public void setHostname(String hostname) {
+            this.hostname = hostname;
         }
     }
 }

@@ -95,8 +95,27 @@ sso:
     resource:
       userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
       preferTokenInfo: true
-
-
+  xcolab:
+    client:
+      accessTokenUri: ${sso.xcolab.hostname}/oauth/token
+      userAuthorizationUri: ${sso.xcolab.hostname}/oauth/authorize
+      scope:
+       - openid
+       - email
+       - profile
+    resource:
+      userInfoUri: ${sso.xcolab.hostname}/api/user
+  climatex:
+    client:
+      accessTokenUri: ${sso.climatex.hostname}/oauth2/token
+      userAuthorizationUri: ${sso.climatex.hostname}/oauth2/authorize
+      clientAuthenticationScheme: form
+      scope:
+       - openid
+       - email
+       - profile
+    resource:
+      userInfoUri: ${sso.climatex.hostname}/oauth2/UserInfo
 
 http-client:
   connection-pool:
