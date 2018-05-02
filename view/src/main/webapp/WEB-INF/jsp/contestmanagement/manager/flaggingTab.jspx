@@ -6,6 +6,7 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
     <!--@elvariable id="reportTargetId" type="java.lang.Long"-->
     <!--@elvariable id="reportTargetWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.FlaggingReportTargetWrapper"-->
     <!--@elvariable id="selectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
@@ -38,7 +39,7 @@
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
-        <form:errors cssClass="alert alert-danger" path="*"/>
+        <form:errors cssClass="alert alert-danger" element="div" path="*"/>
 
         <div class="c-Box c-Box--colorTan">
             <div class="c-Box__body">
@@ -102,46 +103,50 @@
     <div class="c-ContentBox">
         <h2>Reports</h2>
 
-        <table class="c-Table">
-            <tr class="c-Table__row--title">
-                <th class="c-Table__cell--title">Type</th>
-                <th class="c-Table__cell--title">Reason</th>
-                <th class="c-Table__cell--title">Target</th>
-                <th class="c-Table__cell--title">No. Reports</th>
-                <th class="c-Table__cell--title">Weight</th>
-                <th class="c-Table__cell--title">First report</th>
-                <th class="c-Table__cell--title">Last report</th>
-                <th class="c-Table__cell--title">Actions</th>
+        <table class="table cb-table-striped-inverse">
+            <thead class="thead-light">
+            <tr>
+                <th>Type</th>
+                <th>Reason</th>
+                <th>Target</th>
+                <th>No. Reports</th>
+                <th>Weight</th>
+                <th>First report</th>
+                <th>Last report</th>
+                <th>Actions</th>
             </tr>
+            </thead>
+            <tbody>
             <c:forEach items="${reports}" var="report">
                 <c:set var="approveContentUrl" value="/admin/contest/manager/tab/FLAGGING/handle/${report.firstReportId}/APPROVE" />
                 <c:set var="removeContentUrl" value="/admin/contest/manager/tab/FLAGGING/handle/${report.firstReportId}/REMOVE" />
-                <tr class="c-Table__row">
-                    <td class="c-Table__cell">${report.targetType}</td>
-                    <td class="c-Table__cell">${report.reason}</td>
-                    <td class="c-Table__cell">
+                <tr>
+                    <td>${report.targetType}</td>
+                    <td>${report.reason}</td>
+                    <td>
                         <a href="${report.targetLink}">${report.targetName}</a>
                     </td>
-                    <td class="c-Table__cell">${report.count}</td>
-                    <td class="c-Table__cell">${report.aggregatedWeight}</td>
-                    <td class="c-Table__cell">
+                    <td>${report.count}</td>
+                    <td>${report.aggregatedWeight}</td>
+                    <td>
                         <fmt:formatDate value="${report.firstReportDate}" pattern="MM/dd/yyyy HH:mm"
-                                        type="date" dateStyle="short" timeZone="America/New_York"/>
+                                        type="date" dateStyle="short"/>
                     </td>
-                    <td class="c-Table__cell">
+                    <td>
                         <fmt:formatDate value="${report.lastReportDate}" pattern="MM/dd/yyyy HH:mm"
-                                        type="date" dateStyle="short" timeZone="America/New_York"/>
+                                        type="date" dateStyle="short"/>
                     </td>
-                    <td class="c-Table__cell">
-                        <a class="btn btn-primary btn-small btn-block" href="${approveContentUrl}">
+                    <td>
+                        <a class="btn btn-primary btn-sm btn-block" href="${approveContentUrl}">
                             Approve
                         </a>
-                        <a class="btn btn-primary btn-small btn-block" href="${removeContentUrl}">
+                        <a class="btn btn-primary btn-sm btn-block" href="${removeContentUrl}">
                             Remove
                         </a>
                     </td>
                 </tr>
             </c:forEach>
+            </tbody>
         </table>
     </div>
 

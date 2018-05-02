@@ -5,4 +5,13 @@
 	<!--PopulateContextInterceptor-->
 	<jsp:useBean id="proposal" scope="request" type="org.xcolab.client.proposals.pojo.Proposal"/>
 
+    <script>
+        var currentProposal = {
+            proposalId: ${proposal.proposalId},
+            version: ${proposal.version},
+            contestId: ${proposal.contest.contestPK},
+            contestPhaseId: ${proposal.contestPhase.contestPhasePK}
+        }
+    </script>
+
 </jsp:root>

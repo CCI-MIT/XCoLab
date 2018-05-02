@@ -37,18 +37,11 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .set(CONTEST_PHASE.CONTEST_PK, contestPhase.getContestPK())
                 .set(CONTEST_PHASE.CONTEST_PHASE_TYPE, contestPhase.getContestPhaseType())
                 .set(CONTEST_PHASE.CONTEST_SCHEDULE_ID, contestPhase.getContestScheduleId())
-                .set(CONTEST_PHASE.FELLOW_SCREENING_ACTIVE, contestPhase.getFellowScreeningActive())
                 .set(CONTEST_PHASE.CONTEST_PHASE_AUTOPROMOTE, contestPhase.getContestPhaseAutopromote())
-                .set(CONTEST_PHASE.CONTEST_PHASE_DESCRIPTION_OVERRIDE, contestPhase.getContestPhaseDescriptionOverride())
-                .set(CONTEST_PHASE.PHASE_ACTIVE_OVERRIDE, contestPhase.getPhaseActiveOverride())
-                .set(CONTEST_PHASE.PHASE_INACTIVE_OVERRIDE, contestPhase.getPhaseInactiveOverride())
                 .set(CONTEST_PHASE.PHASE_START_DATE, contestPhase.getPhaseStartDate())
                 .set(CONTEST_PHASE.PHASE_END_DATE, contestPhase.getPhaseEndDate())
-                .set(CONTEST_PHASE.PHASE_BUFFER_END_DATED, contestPhase.getPhaseBufferEndDated())
-                .set(CONTEST_PHASE.NEXT_STATUS, contestPhase.getNextStatus())
                 .set(CONTEST_PHASE.CREATED, DSL.currentTimestamp())
                 .set(CONTEST_PHASE.UPDATED, DSL.currentTimestamp())
-                .set(CONTEST_PHASE.AUTHOR_ID, contestPhase.getAuthorId())
                 .returning(CONTEST_PHASE.CONTEST_PHASE_PK)
                 .fetchOne();
         if (record == null) {
@@ -65,17 +58,10 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .set(CONTEST_PHASE.CONTEST_PK, contestPhase.getContestPK())
                 .set(CONTEST_PHASE.CONTEST_PHASE_TYPE, contestPhase.getContestPhaseType())
                 .set(CONTEST_PHASE.CONTEST_SCHEDULE_ID, contestPhase.getContestScheduleId())
-                .set(CONTEST_PHASE.FELLOW_SCREENING_ACTIVE, contestPhase.getFellowScreeningActive())
                 .set(CONTEST_PHASE.CONTEST_PHASE_AUTOPROMOTE, contestPhase.getContestPhaseAutopromote())
-                .set(CONTEST_PHASE.CONTEST_PHASE_DESCRIPTION_OVERRIDE, contestPhase.getContestPhaseDescriptionOverride())
-                .set(CONTEST_PHASE.PHASE_ACTIVE_OVERRIDE, contestPhase.getPhaseActiveOverride())
-                .set(CONTEST_PHASE.PHASE_INACTIVE_OVERRIDE, contestPhase.getPhaseInactiveOverride())
                 .set(CONTEST_PHASE.PHASE_START_DATE, contestPhase.getPhaseStartDate())
                 .set(CONTEST_PHASE.PHASE_END_DATE, contestPhase.getPhaseEndDate())
-                .set(CONTEST_PHASE.PHASE_BUFFER_END_DATED, contestPhase.getPhaseBufferEndDated())
-                .set(CONTEST_PHASE.NEXT_STATUS, contestPhase.getNextStatus())
                 .set(CONTEST_PHASE.UPDATED, DSL.currentTimestamp())
-                .set(CONTEST_PHASE.AUTHOR_ID, contestPhase.getAuthorId())
                 .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhase.getContestPhasePK()))
                 .execute() > 0;
     }
@@ -127,16 +113,6 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
 
     @Override
     public boolean isPhaseActive(ContestPhase contestPhase) {
-        if (contestPhase.getPhaseActiveOverride() != null) {
-            if(contestPhase.getPhaseActiveOverride()) {
-                return contestPhase.getPhaseActiveOverride();
-            }
-        }
-        if (contestPhase.getPhaseInactiveOverride()!=null) {
-            if(contestPhase.getPhaseInactiveOverride()) {
-                return contestPhase.getPhaseInactiveOverride();
-            }
-        }
         if (contestPhase.getPhaseStartDate() != null) {
             Date now = new Date();
             if (now.after(contestPhase.getPhaseStartDate())) {

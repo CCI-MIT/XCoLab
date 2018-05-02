@@ -82,9 +82,7 @@ public class ContestScheduleChangeHelper {
                     == activeNewPhase.getContestPhaseType();
             final boolean positionsMatch = activeCurrentPhase.getPosition()
                     == activeNewPhase.getPosition();
-            if (!(typesMatch && positionsMatch)) {
-                return false;
-            }
+            return typesMatch && positionsMatch;
         }
         return true;
     }
@@ -147,9 +145,6 @@ public class ContestScheduleChangeHelper {
         }
 
         contestPhase.setContestScheduleId(templatePhase.getContestScheduleId());
-        contestPhase.setFellowScreeningActive(templatePhase.getFellowScreeningActive());
-        contestPhase.setContestPhaseDescriptionOverride(
-                templatePhase.getContestPhaseDescriptionOverride());
         contestPhase.setCreated(new Timestamp(new Date().getTime()));
         contestPhase.setUpdated(new Timestamp(new Date().getTime()));
 

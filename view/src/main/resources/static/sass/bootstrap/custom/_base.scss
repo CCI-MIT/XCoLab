@@ -1,35 +1,14 @@
 @import "../../lib/mixins";
 @import "bootstrap/mixins/breakpoints";
 
+//TODO: remove deprecated selector
+//@Deprecated - still used in content articles
 .cb-container-fixed {
-  width: 985px;
-  margin: 0 auto;
-
-  //TODO COLAB-2681: Remove conditional once RD is always on
-  .feature-isResponsive & {
-    // equivalent to .container
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-
-    @media (min-width: 576px) {
-      max-width: 540px;
-    }
-    @media (min-width: 768px) {
-      max-width: 720px;
-    }
-    @media (min-width: 992px) {
-      max-width: 960px;
-    }
-    @media (min-width: 1200px) {
-      max-width: 1140px;
-    }
-  }
+  @extend .container;
 }
 
 // To reset our default list style
-ol.breadcrumb li {
+ol.breadcrumb li,
+ul.pagination li{
   margin-left: 0;
 }

@@ -41,7 +41,7 @@
 //=
 //Form grid
 .form-row ~ .form-row {
-  margin-top: $t-Spacing__base / 2;
+  margin-top: $t-Spacing__base;
 }
 
 .cb-form-col-label {
@@ -49,6 +49,10 @@
   font-weight: $t-Typography__fontWeight--bold;
   display: flex;
   align-items: center;
+}
+
+.cb-form-col-input {
+  @extend .col-12, .col-lg;
 }
 
 

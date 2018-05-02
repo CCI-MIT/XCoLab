@@ -1,22 +1,25 @@
 package org.xcolab.commons.html;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.Objects;
+
 public class LabelValue implements Comparable<LabelValue> {
 
-    private String lable;
-    private Long value;
+    private final long value;
+    private final String lable;
 
-    public LabelValue(Long value, String lable) {
+    public LabelValue(long value, String lable) {
         this.value = value;
         this.lable = lable;
     }
 
-
-    public Long getValue() {
+    public long getValue() {
         return value;
     }
 
-    public void setValue(Long value) {
-        this.value = value;
+    public String getLable() {
+        return lable;
     }
 
     @Override
@@ -24,11 +27,28 @@ public class LabelValue implements Comparable<LabelValue> {
         return this.getLable().compareTo(o.getLable());
     }
 
-    public String getLable() {
-        return lable;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof LabelValue)) {
+            return false;
+        }
+        LabelValue that = (LabelValue) o;
+        return value == that.value
+                && Objects.equals(getLable(), that.getLable());
     }
 
-    public void setLable(String lable) {
-        this.lable = lable;
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, getLable());
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("value", value)
+                .append("lable", lable).toString();
     }
 }

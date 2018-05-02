@@ -79,3 +79,7 @@ $t-Link__decoration--hover: none !default;
 
 $t-Spacing__base: 1rem !default;
 $t-Spacing__gridGutter: 30px !default;
+
+$t-Table__thead__backgroundColor: $t-Color__primary__gray--light !default;
+$t-Table__borderColor: darken($t-Table__thead__backgroundColor, 10%) !default;
+$t-Table__stripedColumn__background: url(/images/pattern-tbl-6x6.png) !default;

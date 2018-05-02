@@ -1,0 +1,60 @@
+$c-TableGrid__cell__highlight_backgroundColor: $t-Color__tan !default;
+$c-TableGrid__cell__hideIcon: false !default;
+
+.c-TableGrid {
+}
+
+%c-TableGrid__row {
+  @include make-row();
+  border-bottom: 1px solid $t-Table__borderColor;
+
+  a {
+    font-weight: $t-Typography__fontWeight--bold;
+  }
+
+  &.c-TableGrid__row--continued {
+    border-bottom: none;
+
+    .c-TableGrid__cell {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.c-TableGrid__header {
+  @extend %c-TableGrid__row;
+  background-color: $t-Table__thead__backgroundColor;
+  border-bottom-width: 2px;
+
+  font-weight: $t-Typography__fontWeight--bold;
+
+  .c-TableGrid__cell {
+    white-space: nowrap;
+  }
+}
+
+.c-TableGrid__row {
+  @extend %c-TableGrid__row;
+
+  &.c-TableGrid__row--active {
+    background-color: $table-active-bg;
+  }
+}
+
+.c-TableGrid__cell {
+  padding: .5rem;
+
+  .c-Icon {
+    @if $c-TableGrid__cell__hideIcon {
+      display: none;
+    }
+    margin-right: 10px;
+  }
+
+  .highlight {
+    background-color: $c-TableGrid__cell__highlight_backgroundColor;
+    border-radius: 3px;
+    padding: 6px 4px;
+    white-space: nowrap;
+  }
+}

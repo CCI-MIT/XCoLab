@@ -17,7 +17,7 @@ function proposalCopy_loadContests(moveType) {
 				html.push('/');
 				html.push(currentProposal.version);
 				html.push('/');
-				html.push(currentProposal.contestPK);
+				html.push(currentProposal.contestId);
 			} else {
 				html.push('/c/proposal/');
 				html.push(currentProposal.proposalId);
@@ -94,12 +94,10 @@ jQuery(function() {
 		targetSectionId = jQuery(this).attr('data-section-id');
 		loadProposalSections();
         jQuery('#copyProposalModal').modal('show');
-		updatePopupSize();
 	});
 });
 
 function showCopyProposalPopup(moveType) {
 	proposalCopy_loadContests(moveType);
     jQuery('#copyProposalModal').modal('show');
-	updatePopupSize();
 }

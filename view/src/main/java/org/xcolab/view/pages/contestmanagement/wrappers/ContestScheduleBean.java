@@ -4,7 +4,6 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean;
@@ -64,8 +63,6 @@ public class ContestScheduleBean {
         dummyContestPhaseBean.setContestScheduleId(getScheduleId());
         dummyContestPhaseBean.setContestPhasePK(CREATE_CONTEST_PHASE_PK);
         dummyContestPhaseBean.setContestSchedulePK(ContestPhaseBean.DEFAULT_CONTEST_SCHEDULE);
-        dummyContestPhaseBean
-                .setContestPhaseAutopromote(ContestPhasePromoteType.DEFAULT.getValue());
         return dummyContestPhaseBean;
     }
 
@@ -121,6 +118,9 @@ public class ContestScheduleBean {
     public void setPhaseEndDates() {
         ContestPhaseBean prevContestPhase = null;
         for (ContestPhaseBean contestPhase : schedulePhases) {
+            if (contestPhase.isContestPhaseDeleted()) {
+                continue;
+            }
             if (prevContestPhase != null) {
                 prevContestPhase.setPhaseEndDate(contestPhase.getPhaseStartDate());
             }
@@ -132,6 +132,9 @@ public class ContestScheduleBean {
         boolean isValid = true;
         ContestPhaseBean prevContestPhase = null;
         for (ContestPhaseBean contestPhase : schedulePhases) {
+            if (contestPhase.isContestPhaseDeleted()) {
+                continue;
+            }
             if (prevContestPhase != null) {
                 Date prevStartDate = prevContestPhase.getPhaseStartDate();
                 Date prevEndDate = prevContestPhase.getPhaseEndDate();

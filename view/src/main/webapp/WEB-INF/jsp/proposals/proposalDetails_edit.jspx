@@ -20,13 +20,6 @@
         var IMAGE_UPLOAD_HELP_TEXT = '${requestScope.imageUploadHelpText}';
     </script>
 
-    <script>
-        var currentProposal = {
-            proposalId: ${proposal.proposalId},
-            version: ${proposal.version}
-        }
-    </script>
-
     <c:if test="${not empty baseProposal}">
         <script>
             var baseProposal = {
@@ -146,7 +139,7 @@
                 </div>
             </div>
 
-            <div class="c-Box c-Box--colorPrimaryGrayLight ${contestType.showTeamField ? '' : 'hidden'}">
+            <div class="c-Box c-Box--colorPrimaryGrayLight ${contestType.showTeamField ? '' : 'd-none'}">
                 <div class="c-Box__bodyRow">
                     <label class="p-Proposal__formBox__label">
                         <div>
@@ -258,7 +251,7 @@
     </xcolab:modal>
 
     <div class="c-ControlsOverlay">
-        <div class="cb-container-fixed cb-d-flex-between-center">
+        <div class="container cb-d-flex-between-center">
             <div class="d-none d-lg-block">
                 Don't forget to save your work!
                 <c:if test="${not empty saveHelpText}">

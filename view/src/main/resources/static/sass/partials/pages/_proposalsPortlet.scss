@@ -42,48 +42,6 @@
     height: 100px;
 }
 
-.prop-butt-popover {
-    z-index: 10;
-    padding: 20px;
-    top: -20px;
-    position: absolute;
-    left: 486px;
-    font-size: 14px;
-    color: #d4d4d4;
-    font-weight: 700;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-    border-top-left-radius: 3px;
-}
-
-.allow-deny-membership-box {
-    width: 87px;
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: top;
-}
-
-.requestComment {
-    margin: 6px 0 10px 3px;
-    width: 192px;
-    height: 32px;
-    max-width: 192px;
-    font: 12px 'Lucida Grande', Arial, sans-serif;
-}
-
-.request-membership-icon {
-    float: left;
-    margin-top: 8px;
-    margin-right: 10px;
-}
-
-.membership-request-comment-admin {
-    max-width: 245px;
-    width: 245px;
-    height: 33px;
-    margin-top: 2px;
-}
-
 .judgingForm tr.odd td {
     background: #f2f1e9;
 }
@@ -91,14 +49,6 @@
 .judgingForm td {
     text-align: center;
     vertical-align: middle;
-}
-
-.fellow-judge-action {
-    float: left;
-    width: 147px;
-    padding-top: 4px;
-    text-align: center;
-    margin-left: 12px;
 }
 
 #copyProposalPopupContent tr:nth-child(even) {

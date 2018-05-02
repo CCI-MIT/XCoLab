@@ -58,13 +58,13 @@
                     <div id="proposalPicker_viewArea">
                         <div id="proposalPickerTableContests"
                              class="p-Proposals__proposalPicker__scrollContainer">
-                            <table class="c-Table" data-entity="contest">
-                                <thead>
-                                <tr class="c-Table__row--title">
-                                    <th class="c-Table__cell--title">
+                            <table class="table" data-entity="contest">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th>
                                         <a href="#" data-sort-column="Name" class="js-Tooltip" title="click to sort by name"><span class="contestTypeContestNames">Contest</span> name </a>
                                     </th>
-                                    <th class="c-Table__cell--title">
+                                    <th>
                                         <a href="#" data-sort-column="Proposals" class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__numProposals">
                                             <span class="contestTypeProposalNamesPlural">Proposals</span>
 
@@ -73,16 +73,16 @@
                                             click to sort by<br />number of <span class="contestTypeProposalNamesPlural">Proposals</span>
                                         </div>
                                     </th>
-                                    <th class="c-Table__cell--title">
+                                    <th>
                                         <a href="#" data-sort-column="Comments" class="js-Tooltip" title="click to sort by number of comments"> Comments</a>
                                     </th>
-                                    <th class="c-Table__cell--title">
+                                    <th>
                                         <a href="#" data-sort-column="What" class="js-Tooltip" title="click to sort by what"> What</a>
                                     </th>
-                                    <th class="c-Table__cell--title">
+                                    <th>
                                         <a href="#" data-sort-column="Where" class="js-Tooltip" title="click to sort by where"> Where</a>
                                     </th>
-                                    <th class="c-Table__cell--title">
+                                    <th>
                                         <a href="#" data-sort-column="Who" class="js-Tooltip" title="click to sort by who"> Who</a>
                                     </th>
                                 </tr>
@@ -102,10 +102,10 @@
 							</span>
                             </div>
                             <div class="p-Proposals__proposalPicker__scrollContainer">
-                                <table class="c-Table tooltips" data-entity="proposal">
-                                    <thead>
-                                    <tr class="c-Table__row--title">
-                                        <th class="c-Table__cell--title">
+                                <table class="table tooltips" data-entity="proposal">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th>
                                             <div style="display: inline-block">
                                                 <a href="#" data-sort-column="Proposal" class="js-Tooltip" title="click to sort by name"><span class="contestTypeProposalNames">&#160;</span> name</a>
                                             </div>
@@ -115,17 +115,17 @@
                                                 <a href="#" data-sort-column="Author" class="js-Tooltip" title="click to sort by author">Author(s)</a>
                                             </div>
                                         </th>
-                                        <th class="c-Table__cell--title">
+                                        <th>
                                             <a href="#" data-sort-column="Supporters" class="js-Tooltip" title="click to sort by number of supporters">
                                                 Supporters
                                             </a>
                                         </th>
-                                        <th class="c-Table__cell--title">
+                                        <th>
                                             <a href="#" data-sort-column="Comments" class="js-Tooltip" title="click to sort by number of comments">
                                                 Comments
                                             </a>
                                         </th>
-                                        <th class="c-Table__cell--title">
+                                        <th>
                                             <span class='text'><span class="contestTypeContestNamesPlural">&#160;</span></span>
                                         </th>
                                     </tr>
@@ -157,8 +157,8 @@
     <!-- Proposal list template -->
 	<script id="proposalPickerProposalEntryTemplate"
 		type="text/x-handlebars-template">
-		<tr class="c-Table__row {{#if data.featured }}featured{{/if}}">
-			<td class="c-Table__cell no-border">
+		<tr class="{{#if data.featured }}table-active{{/if}}">
+			<td>
 				{{#if data.ribbon}}
 				<div class="ribbonPlaceholder" style="float: left;">
                 <span class="js-Tooltip" title="{{data.ribbonText}}">
@@ -181,20 +181,20 @@
                     <div class="clear" ><!--  --></div>
                 </div>
 			</td>
-            <td class="c-Table__cell no-border supporters">
+            <td>
                 {{data.supportersCount}}
             </td>
-            <td class="c-Table__cell no-border comments">
+            <td>
                 {{data.commentsCount}}
             </td>
-            <td class="c-Table__cell no-border">
+            <td>
                 {{#each data.contests}}
                     <img alt="Image" class="d-inline-block ml-2 js-Tooltip" title="Contest: {{this.name}}" height="25" width="25" src="/image/contest/{{this.contestLogoId}}" />
                 {{/each}}
             </td>
 		</tr>
-        <tr class="c-Table__row">
-            <td class="c-Table__cell" colspan="7">
+        <tr>
+            <td colspan="7">
                 {{ data.pitch }}
             </td>
         </tr>
@@ -203,8 +203,8 @@
     <!-- Contest list template -->
 	<script id="proposalPickerContestEntryTemplate"
 		type="text/x-handlebars-template">
-		<tr class="c-Table__row" data-contestPK="{{contest.contestPK}}">
-			<td class="c-Table__cell">
+		<tr data-contestPK="{{contest.contestPK}}">
+			<td>
 				<div class="contestFlag {{#if contest.wasFiltered}} greyed_out {{/if}}">
 					{{#if contest.flagText}}
 						<span class="{{#if contest.flagTooltip}} js-Tooltip {{/if}}" title="{{contest.flagTooltip}}">{{contest.flagText}}:&#160;</span>
@@ -213,19 +213,19 @@
                 			{{contest.contestName}}
             		</div>
             	</td>
-            	<td class="c-Table__cell">
+            	<td>
         			{{contest.proposalsCount}}
         		</td>
-        		<td class="c-Table__cell">
+        		<td>
 					{{contest.totalCommentsCount}}
         		</td>
-        		<td class="c-Table__cell">
+        		<td>
 					{{contest.what}}
         		</td>
-        		<td class="c-Table__cell">
+        		<td>
 					{{contest.where}}
         		</td>
-        		<td class="c-Table__cell">
+        		<td>
 					{{contest.who}}
                 </td>
             </tr>

@@ -169,59 +169,6 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   }
 }
 
-.p-Contests__ListViewTable { //table.contest-list-view
-
-  %image-only {
-    background-position-y: 8px;
-    background-repeat: no-repeat;
-    a {
-      width: 30px;
-      height: 30px;
-      display: inline-block;
-    }
-  }
-
-  %image-text {
-    background-position-y: 8px;
-    background-repeat: no-repeat;
-    padding-left: 35px;
-  }
-
-  th.proposals {
-    @extend %image-only;
-    background-image: url(/images/icon-list-proposals.png);
-  }
-
-  th.votes {
-    @extend %image-only;
-  }
-
-  th.comments {
-    @extend %image-only;
-    background-image: url(/images/icon-list-comment.png);
-  }
-
-  .ontology_what {
-    @extend %image-text;
-    background-image: url(/images/icon-list-what.png);
-  }
-
-  .ontology_where {
-    @extend %image-text;
-    background-image: url(/images/icon-list-where.png);
-  }
-
-  .ontology_who {
-    @extend %image-text;
-    background-image: url(/images/icon-list-who.png);
-  }
-
-  .ontology_how {
-    @extend %image-text;
-    background-image: url(/images/contest-icon-how.png);
-  }
-}
-
 .list a {
   width: 100%;
 }

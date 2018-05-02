@@ -11,21 +11,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleBean;
 import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,19 +54,18 @@ public class SchedulesTabController extends AbstractTabController {
 
     @ModelAttribute("contestPhaseTypesSelectionItems")
     public List<LabelValue> populateContestPhaseTypesSelectionItems() {
-        return getContestPhaseTypesSelectionItems();
+        return ContestClientUtil.getAllContestPhaseTypes().stream()
+                .filter(phaseType -> !phaseType.getIsDeprecated())
+                .map(phaseType -> new LabelValue(phaseType.getId_(), phaseType.getName()))
+                .collect(Collectors.toList());
     }
 
-    private List<LabelValue> getContestPhaseTypesSelectionItems() {
-        List<LabelValue> contestPhaseTypesSelectionItems = new ArrayList<>();
-
-        List<ContestPhaseType> contestPhases = ContestClientUtil.getAllContestPhaseTypes();
-        for (ContestPhaseType contestPhaseType : contestPhases) {
-            contestPhaseTypesSelectionItems
-                    .add(new LabelValue(contestPhaseType.getId_(), contestPhaseType.getName()));
-        }
-
-        return contestPhaseTypesSelectionItems;
+    @ModelAttribute("contestPhaseTypesSelectionItemsDeprecated")
+    public List<LabelValue> populateContestPhaseTypesSelectionItemsDeprecated() {
+        return ContestClientUtil.getAllContestPhaseTypes().stream()
+                .filter(phaseType -> phaseType.getIsDeprecated())
+                .map(phaseType -> new LabelValue(phaseType.getId_(), phaseType.getName() + " (Deprecated)"))
+                .collect(Collectors.toList());
     }
 
     @ModelAttribute("contestPhaseAutopromoteSelectionItems")
@@ -149,14 +148,14 @@ public class SchedulesTabController extends AbstractTabController {
     private String updateSchedule(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, ContestScheduleBean contestScheduleBean, BindingResult result) {
 
-        if (!contestScheduleBean.areContestsCompatibleWithSchedule()) {
-            result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_ERROR_MESSAGE);
-        }
-
         contestScheduleBean.setPhaseEndDates();
 
         if (!contestScheduleBean.isValidSchedule()) {
             result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_INVALID_MESSAGE);
+        }
+
+        if (!contestScheduleBean.areContestsCompatibleWithSchedule()) {
+            result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_ERROR_MESSAGE);
         }
 
         if (result.hasErrors()) {

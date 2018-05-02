@@ -22,9 +22,9 @@ import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.commons.IdListUtil;
+import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
-import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.net.URISyntaxException;
@@ -226,7 +226,6 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
     }
 
 
-
     public OntologyTerm getNumericValueAsOntologyTerm() {
         ProposalAttribute attr = getSectionAttribute();
         if (attr == null || attr.getNumericValue() <= 0) {
@@ -246,12 +245,11 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
 
     public List<Proposal> getStringValueAsProposalArray() {
         ProposalAttribute attr = getSectionAttribute();
-        final String idsAsString = attr.getStringValue();
-        if (StringUtils.isEmpty(idsAsString)) {
+        if (attr == null || StringUtils.isEmpty(attr.getStringValue())) {
             return Collections.emptyList();
         }
 
-        final List<Long> proposalIds = IdListUtil.getIdsFromString(idsAsString);
+        final List<Long> proposalIds = IdListUtil.getIdsFromString(attr.getStringValue());
         final List<Proposal> proposals = new ArrayList<>(proposalIds.size());
 
         for (Long proposalId : proposalIds) {
@@ -308,8 +306,8 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
     }
 
     public boolean isOptionForCheckboxSelected(String value) {
-        for(String selectedValue : getSelectedValuesForCheckbox()){
-            if(selectedValue.equals(value)){
+        for (String selectedValue : getSelectedValuesForCheckbox()) {
+            if (selectedValue.equals(value)) {
                 return true;
             }
         }

@@ -83,9 +83,6 @@ $c-TitleBar__contestSummary__backgroundColor: $t-Color__primary;
 $c-TitleBar__contestSummary__backgroundColor--light: $t-Color__tan;
 $c-TitleBar__actionButton__backgroundColor--hover: $t-Color__secondary;
 
-$c-Comment__count__backgroundColor: white;
-$c-Comment__count__a__margin--left: 10px;
-
 $p-About__left__li__a__padding--left: 15px;
 $p-About__left__li__ul__li__a__padding--left: 33px;
 $p-About__left__li__a__current__borderWidth--left: 5px;
@@ -129,7 +126,6 @@ $p-community__infoLeft__span__paddingRight: 0px;
 $p-Contests__contestDetail__backgroundColor: $t-Color__tan;
 $p-Contests__contestDetail__heading__background: none;
 
-$p-proposal__header__background: transparent;
 $p-proposal__header__h1__textColor: $t-Color__primary;
 $p-proposal__propbox__titleAuthor__width: 602px;
 $p-proposal__propbox__padding: 15px 0px 30px 14px;
@@ -138,8 +134,6 @@ $p-proposal__votebox__top__left: 0px;
 $p-proposal__votebox__marginTop: 35px;
 $p-proposal__contest__padding--top--bottom: 20px;
 $p-proposal__left__h2__textColor: $t-Color__gray--dark-800;
-$p-proposal__thumbbox__a__margin--left: 10px;
-$p-proposal__thumbbox__background--top: 0px;
 $p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
 $p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
 
@@ -148,15 +142,11 @@ $p-Proposal__propbox--green: #a7da85;
 
 $p-community__left__lineHeight: default;
 
-$c-Table__borderColor: $t-Color__gray--medium-500;
-$c-Table__title__backgroundColor: $t-Color__tan;
-$c-Table__row--title__borderTop: 1px solid $t-Color__gray--dark-600;
-$c-Table__row--title__borderBottom: 1px solid $t-Color__gray--dark-600;
-$c-Table__cell--odd__background: $t-Color__tan;
-$c-Table__cell--title__a__capitalization: none;
-$c-Table__title__textColor--hover: $t-Color__primary;
-$c-Table__cell__count__backgroundColor: white;
-$c-Table__cell__count__hideImage: true;
+$t-Table__borderColor: $t-Color__gray--dark-600;
+$t-Table__thead__backgroundColor: $t-Color__tan;
+$t-Table__stripedColumn__background: $t-Color__tan;
+$c-TableGrid__cell__highlight_backgroundColor: white;
+$c-TableGrid__cell__hideIcon: true;
 
 $p-ContestProposals__list__element--proposalname__width: 605px;
 $p-ContestProposals__list__element__border: 1px solid;
@@ -211,9 +201,9 @@ $c-Helpbox__header__background: t-Color__gray--dark-700;
 $c-Helpbox__header__title__textColor: white;
 $c-Helpbox__header__close__marginTop: 0px;
 
-$c-Count__fontSize: 17px;
+$c-Count__fontSize: 1.125rem;
 $c-Count__number__color: $t-Color__primary;
-$c-Count__number__fontSize: 20px;
+$c-Count__number__fontSize: 1.25rem;
 
 $c-Footer__link__textColor--hover: $t-Color__primary;
 

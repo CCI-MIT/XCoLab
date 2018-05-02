@@ -5,12 +5,12 @@
 <layout:layout>
 
     <div class="p-Homepage__homespot">
-        <div class="cb-container-fixed">
+        <div class="container">
             <xcolab:content articleId="${homeSpotContentArticleId}" />
         </div>
     </div>
 
-    <div class="cb-container-fixed">
+    <div class="container">
         <xcolab:content articleId="${homeBottomContentArticleId}" />
     </div>
 

@@ -12,7 +12,7 @@
 
     <c:if test="${contestType.showProposalSummary}">
         <c:if test="${proposal.proposalId > 0}">
-            <div class="c-Box c-Box--colorDark c-Box--hasShadow c-Box--straightCorners">
+            <div class="c-Box c-Box--colorDark c-Box--hasShadow c-Box--straightCorners mb-3">
                 <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                     <div class="c-Box__bodyFlex c-Box__bodyFlex--columns">
                         <div class="w-100">
@@ -30,8 +30,10 @@
 
                             <form:form action="${voteOnProposalURL}" method="post">
                                 <c:if test="${proposalsDisplayPermissions.canSeeVoteButton and contest.maxVotesPerProposal > 1}">
-                                    <input name="voteValue" class="form-control cb-form-control-inline cb-form-control-xs"
-                                           type="number" min="1" max="${contest.maxVotesPerProposal}" value="1"/>
+                                    <label for="voteValue" class="sr-only">Number of votes</label>
+                                    <input class="form-control cb-form-control-inline cb-form-control-xs mr-2"
+                                           name="voteValue" id="voteValue" value="1"
+                                           type="number" min="1" max="${contest.maxVotesPerProposal}"/>
                                 </c:if>
                                 <button class="btn btn-primary" type="submit"
                                         onclick="if(!deferUntilLogin(this)){return false;}">
@@ -80,36 +82,6 @@
                 </div>
 
             </div> <!-- /c-Box -->
-            <div class="c-Box c-Box--noBorder c-Box--straightCorners">
-                <div class="c-Box__bodyFlex">
-                    <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
-                        <div>
-                            <c:set var="shareMessageBody">Check out the ${contestType.proposalNameLowercase} ${proposal.name} ${contest.contestShortNameWithEndYear} ${contestType.contestNameLowercase}:</c:set>
-                            <xcolab-social:socialShareButtons title="${_themeContext.colabName} - ${contest.contestShortName} - ${proposal.name}"
-                                                              messageTitle="I want to share a ${contestType.proposalNameLowercase} with you!"
-                                                              content="${shareMessageBody}"/>
-                        </div>
-                    </c:if>
-                    <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
-                        <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
-                        <div class="p-Proposal__subscribe">
-                            <button type="button" class="btn btn-link btn-sm js-PostLink" onclick="if(!deferUntilLogin(this)) return false;"
-                                    data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }">
-                                <c:choose>
-                                    <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
-                                        <collab:image height="20" src="/images/subscribe.png" cssClass="cb-btn-image"/>
-                                        <span class="cb-btn-image-text"><spring:message code="contests.details.subscribe"/></span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <collab:image height="20" src="/images/unsubscribe.png" cssClass="cb-btn-image"/>
-                                        <span class="cb-btn-image-text"><spring:message code="contests.details.unsubscribe"/></span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </button>
-                        </div>
-                    </c:if>
-                </div>
-            </div>
             <c:if test="${proposalsPermissions.canReportProposal}">
                 <xcolab:requireLibrary name="flagging"/>
                 <div>
@@ -132,106 +104,108 @@
             </div>
         </c:if>
 
-        <h4 class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background p-Proposal__sidebar__heading">
+        <h4 class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background p-Proposal__sidebar__heading cb-d-flex-between-center">
             <collab:message code="contests.proposal.summary" contestType="${contestType}" />
+            <a class="d-lg-none" data-toggle="collapse" href="#js-Proposal__sidebar">show/hide</a>
         </h4>
 
-        <div class="p-Proposal__sidebar__section">
-            <b>${proposal.name}</b>
-        </div>
+        <div class="cb-collapse-lg-show collapse" id="js-Proposal__sidebar">
+            <div class="p-Proposal__sidebar__section">
+                <b>${proposal.name}</b>
+            </div>
 
-        <c:if test="${showOpennessStatus}">
-            <div class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background">
+            <c:if test="${showOpennessStatus}">
+                <div class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background">
+                    <c:choose>
+                        <c:when test="${proposal.open }">
+                            <collab:message code="contests.openness.open" contestType="${contestType}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <collab:message code="contests.openness.team" contestType="${contestType}"/>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <c:if test="${proposalsPermissions.canAdminProposal and false}">
+                        <a href="${proposal.proposalId }/tab/ADMIN">Change settings</a>
+                    </c:if>
+
+                </div>
+            </c:if>
+
+            <div class="p-Proposal__sidebar__section">
+                <xcolab:userPortrait portraitId="${proposal.author.portraitId }"
+                                     memberId="${proposal.author.userId}"
+                                     width="42" height="42" />
+                By:&#160;
                 <c:choose>
-                    <c:when test="${proposal.open }">
-                        <collab:message code="contests.openness.open" contestType="${contestType}"/>
+                    <c:when test="${empty proposal.team }">
+                        <xcolab:userLinkSimple memberId="${proposal.authorId }" text="${proposal.authorName }" />
                     </c:when>
                     <c:otherwise>
-                        <collab:message code="contests.openness.team" contestType="${contestType}"/>
+                        ${proposal.authorName }
                     </c:otherwise>
                 </c:choose>
-
-                <c:if test="${proposalsPermissions.canAdminProposal and false}">
-                    <a href="${proposal.proposalId }/tab/ADMIN">Change settings</a>
-                </c:if>
-
             </div>
-        </c:if>
 
-        <div class="p-Proposal__sidebar__section">
-            <xcolab:userPortrait portraitId="${proposal.author.portraitId }"
-                                 memberId="${proposal.author.userId}"
-                                 width="42" height="42" />
-            By:&#160;
-            <c:choose>
-                <c:when test="${empty proposal.team }">
-                    <xcolab:userLinkSimple memberId="${proposal.authorId }" text="${proposal.authorName }" />
-                </c:when>
-                <c:otherwise>
-                    ${proposal.authorName }
-                </c:otherwise>
-            </c:choose>
+            <div class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background">
+                <strong>${contestType.contestName}: </strong>
+                <xcolab:contestLink contest="${contest }" /><br />
+                ${contest.contestName}
+            </div>
+            <c:if test="${not empty linkedProposalContestTypeProposalWrappersByContestTypeId}">
+                <c:forEach var="contestTypeProposalWrapper" items="${linkedProposalContestTypeProposalWrappersByContestTypeId}">
+                    <c:if test="${not empty contestTypeProposalWrapper.value.proposals}">
+                        <div class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background">
+                            <strong>Related ${contestTypeProposalWrapper.value.contestType.proposalNamePlural}</strong> <br />
+                            <c:forEach var="linkedProposal" items="${contestTypeProposalWrapper.value.proposals}">
+                                <li>
+                                    <xcolab:proposalLink proposal="${linkedProposal}" /> <br />
+                                </li>
+                            </c:forEach>
+                        </div>
+                    </c:if>
+                </c:forEach>
+            </c:if>
+
+            <c:if test="${proposal.proposalAttributeHelper.hasAttribute('REGION') }">
+                <div class="p-Proposal__sidebar__section" style="font-size: 13px">
+                    <strong>REGION</strong><br />
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('REGION_ECONOMY') }">
+                        <em>Economy:</em> ${proposal.proposalAttributeHelper.attributeString('REGION_ECONOMY')}<br />
+                    </c:if>
+                    <em>Transnational group/large country:</em> ${proposal.proposalAttributeHelper.attributeString('REGION')}<br />
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SUBREGION') }">
+                        <em>Country within transnational group:</em> ${proposal.proposalAttributeHelper.attributeString('SUBREGION')}
+                    </c:if>
+                </div>
+            </c:if>
+            <c:if test="${not empty proposal.baseProposal }">
+                <div class="p-Proposal__sidebar__section" style="font-size: 13px">
+                    <strong>Base ${contestType.proposalName}: </strong>
+                    This ${contestType.proposalName} was created as a copy of
+                    <xcolab:proposalLink proposal="${proposal.baseProposal }" />
+                </div>
+            </c:if>
+
+            <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_ID') }">
+                <h5>Model Results Summary</h5>
+                <hr/>
+                <div class="p-Proposal__sidebar__section">
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
+                        <div><strong>CO2 concentration</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_CO2_CONCENTRATION')} ppm in 2100</div>
+                    </c:if>
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_MITIGATION_COST_NO_ERRORS')}">
+                        <div><strong>Temperature Increase</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_MITIGATION_COST_NO_ERRORS')} &amp;deg;C</div>
+                    </c:if>
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
+                        <div><strong>Mitigation Costs</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_CO2_CONCENTRATION')} %GDP in 2100</div>
+                    </c:if>
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_DAMAGE_COST')}">
+                        <div><strong>Damage Costs</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_DAMAGE_COST')} %GDP in 2100</div>
+                    </c:if>
+                </div>
+            </c:if>
         </div>
-
-        <div class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background">
-            <strong>${contestType.contestName}: </strong>
-            <xcolab:contestLink contest="${contest }" /><br />
-            ${contest.contestName}
-        </div>
-        <c:if test="${not empty linkedProposalContestTypeProposalWrappersByContestTypeId}">
-            <c:forEach var="contestTypeProposalWrapper" items="${linkedProposalContestTypeProposalWrappersByContestTypeId}">
-                <c:if test="${not empty contestTypeProposalWrapper.value.proposals}">
-                    <div class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background">
-                        <strong>Related ${contestTypeProposalWrapper.value.contestType.proposalNamePlural}</strong> <br />
-                        <c:forEach var="linkedProposal" items="${contestTypeProposalWrapper.value.proposals}">
-                            <li>
-                                <xcolab:proposalLink proposal="${linkedProposal}" /> <br />
-                            </li>
-                        </c:forEach>
-                    </div>
-                </c:if>
-            </c:forEach>
-        </c:if>
-
-        <c:if test="${proposal.proposalAttributeHelper.hasAttribute('REGION') }">
-            <div class="p-Proposal__sidebar__section" style="font-size: 13px">
-                <strong>REGION</strong><br />
-                <c:if test="${proposal.proposalAttributeHelper.hasAttribute('REGION_ECONOMY') }">
-                    <em>Economy:</em> ${proposal.proposalAttributeHelper.attributeString('REGION_ECONOMY')}<br />
-                </c:if>
-                <em>Transnational group/large country:</em> ${proposal.proposalAttributeHelper.attributeString('REGION')}<br />
-                <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SUBREGION') }">
-                    <em>Country within transnational group:</em> ${proposal.proposalAttributeHelper.attributeString('SUBREGION')}
-                </c:if>
-            </div>
-        </c:if>
-        <c:if test="${not empty proposal.baseProposal }">
-            <div class="p-Proposal__sidebar__section" style="font-size: 13px">
-                <strong>Base ${contestType.proposalName}: </strong>
-                This ${contestType.proposalName} was created as a copy of
-                <xcolab:proposalLink proposal="${proposal.baseProposal }" />
-            </div>
-        </c:if>
-
-        <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_ID') }">
-            <h5>Model Results Summary</h5>
-            <hr/>
-            <div class="p-Proposal__sidebar__section">
-                <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
-                    <div><strong>CO2 concentration</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_CO2_CONCENTRATION')} ppm in 2100</div>
-                </c:if>
-                <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_MITIGATION_COST_NO_ERRORS')}">
-                    <div><strong>Temperature Increase</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_MITIGATION_COST_NO_ERRORS')} &amp;deg;C</div>
-                </c:if>
-                <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
-                    <div><strong>Mitigation Costs</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_CO2_CONCENTRATION')} %GDP in 2100</div>
-                </c:if>
-                <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_DAMAGE_COST')}">
-                    <div><strong>Damage Costs</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_DAMAGE_COST')} %GDP in 2100</div>
-                </c:if>
-            </div>
-        </c:if>
-
         <script>
             jQuery(function() {
                 jQuery('#popup_flagging_form_targetType').attr('value', 'PROPOSAL');

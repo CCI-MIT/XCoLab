@@ -34,34 +34,37 @@
 
 		<collab:script src="/js/proposals/discussionComments.js" />
 
-		<div class="cb-d-flex-between-center">
-			<div class="c-Count">
-				<span class="c-Count__number">${thread.commentsCount}</span>
-				<c:choose>
-					<c:when test="${thread.commentsCount == 1 }">
-                        <spring:message code="discussion.commmentstag.count.singular.message"/>
-					</c:when>
-					<c:otherwise>
-                        <spring:message code="discussion.commmentstag.count.plural.message"/>
-					</c:otherwise>
-				</c:choose>
-			</div>
+		<div class="row justify-content-between align-items-center">
+            <div class="col-12 col-md">
+                <div class="c-Count">
+                    <span class="c-Count__number">${thread.commentsCount}</span>
+                    <c:choose>
+                        <c:when test="${thread.commentsCount == 1 }">
+                            <spring:message code="discussion.commmentstag.count.singular.message"/>
+                        </c:when>
+                        <c:otherwise>
+                            <spring:message code="discussion.commmentstag.count.plural.message"/>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+
             <c:if test="${discussionPermissions.canSeeAddCommentButton}">
-                <a href="#addCommentForm" onclick='if(!deferUntilLogin()) return false' class="btn btn-link">
-                    <collab:image src="/images/icon-add-comment.png" width="24" height="22"
-                                  cssClass="cb-btn-image" ariaHidden="true"/>
-                    <span class="cb-btn-image-text">
-                        <spring:message code="discussion.commmentstag.jumptocomment"/>
-                    </span>
-                </a>
+                <div class="col-12 col-md">
+                    <a href="#addCommentForm" onclick='if(!deferUntilLogin()) return false' class="btn btn-link">
+                        <collab:image src="/images/icon-add-comment.png" width="24" height="22"
+                                      cssClass="cb-btn-image" ariaHidden="true"/>
+                        <span class="cb-btn-image-text">
+                            <spring:message code="discussion.commmentstag.jumptocomment"/>
+                        </span>
+                    </a>
+                </div>
             </c:if>
             <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
-                <div class="c-Comment__share">
+                <div class="col-12 col-md">
                     <spring:message code="discussion.commmentstag.share"/>:
 
-                    <div>
-                        <xcolab-social:socialShareButtons title="${shareTitlePageScope}" size="sm"/>
-                    </div>
+                    <xcolab-social:socialShareButtons title="${shareTitlePageScope}" size="sm"/>
                 </div>
             </c:if>
 		</div>
@@ -85,7 +88,7 @@
                         <!-- TODO COLAB-1387: replace client calls -->
 						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}" contestId="${sharedColabId}">
                             <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
-							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'} c-UserContent">
+							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
 									<a id="_message_${message.commentId}"><!-- empty --></a>
 									<xcolab:userPortrait portraitId="${message.author.portraitId}"
@@ -131,7 +134,7 @@
 											<div class="thread-ribbon-container"><div>${contestType.proposalName} <br /> <spring:message code="discussion.commmentstag.proposal.contributor"/> </div></div>
 										</c:when>
 									</c:choose>
-									<div id="message_${message.commentId}" class="content">
+									<div id="message_${message.commentId}" class="content c-UserContent">
 										${message.content }
 									</div>
 									<div class="c-Comment__actions">
@@ -171,8 +174,8 @@
 			</c:otherwise>
 		</c:choose>
 		<c:if test="${discussionPermissions.canSeeAddCommentButton }">
-			<div class="c-Comment__add">
-				<div class="c-Comment__add__info">
+			<div class="row mt-3">
+				<div class="col-12 col-md-3">
 					<strong><spring:message code="discussion.commmentstag.addyourcomment"/></strong><br />
 					<c:choose>
 						<c:when test="${not empty currentTab and currentTab eq 'SCREENING'}">
@@ -188,26 +191,18 @@
 						</c:when>
 					</c:choose>
 				</div>
-				<div class="c-Comment__new">
+				<div class="col-12 col-md-9">
 					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
 					<form:form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
-                        <input name="threadId" class="title text hidden" maxlength="255" value="${thread.threadId}" />
-						<textarea id="commentContent" name="description"  class="rte-editorPlaceholder c-Comment__box commentContent"><!-- --></textarea>
+                        <input type="hidden" name="threadId" value="${thread.threadId}" />
+						<textarea id="js-Comment__content" name="description"  class="rte-editorPlaceholder c-Comment__box"><!-- --></textarea>
 						<div class="alert alert-danger my-2" id="js-Comment__error" style="display: none;">
                             <spring:message code="discussion.commmentstag.valuerequired"/>
                         </div>
-						<c:choose>
-							<c:when test="${discussionPermissions.canAddComment }">
-								<button type="button" class="btn btn-primary mt-2" id="addCommentButton">
-									<spring:message code="discussion.commmentstag.addcomment.button"/>
-								</button>
-							</c:when>
-							<c:otherwise>
-								<button type="button" class="btn btn-primary mt-2" data-is-deferred="true" id="addCommentButton">
-                                    <spring:message code="discussion.commmentstag.addcomment.button"/>
-								</button>
-							</c:otherwise>
-						</c:choose>
+                        <button type="button" class="btn btn-primary mt-2" id="addCommentButton"
+                                onclick="if (!deferUntilLogin(this)) event.preventDefault()">
+                            <spring:message code="discussion.commmentstag.addcomment.button"/>
+                        </button>
 					</form:form>
 				</div>
 			</div>

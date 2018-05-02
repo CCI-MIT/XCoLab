@@ -83,32 +83,8 @@
   padding-bottom: 0;
 }
 
-.c-ContentBox .c-ContentBox__Table {
-  table-layout: fixed;
-  margin: inherit;
-  padding: inherit;
-  margin-top: 30px;
-}
-
-.c-ContentBox .c-ContentBox__Table .extraSmallColumn {
-  width: 25px;
-}
-
 .c-ContentBox .c-ContentBox__Table input {
-  float: none;
   padding-left: 10px;
-}
-
-.c-ContentBox .c-ContentBox__Table .smallColumn {
-  width: 100px;
-}
-
-.c-ContentBox .c-ContentBox__Table .mediumColumn {
-  width: 200px;
-}
-
-.c-ContentBox .c-ContentBox__Table .wideColumn {
-  width: 300px;
 }
 
 .c-ContentBox .c-ContentBox__Table tr {

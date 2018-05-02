@@ -11,6 +11,10 @@
   @extend .small;
 }
 
+.cb-text-bold {
+  font-weight: $t-Typography__fontWeight--bold;
+}
+
 
 //= Flexbox utilities
 
@@ -53,6 +57,22 @@
     // Copied from v4-dev branch - should be included in the next release
     .flex#{$infix}-fill {
       flex: 1 1 auto !important;
+    }
+
+    // Assign percentage-based flex-basis
+
+    .cb-flex#{$infix}-basis-100 {
+      flex-basis: 100%;
+    }
+
+    .cb-flex#{$infix}-basis-auto {
+      flex-basis: auto;
+    }
+
+    // Responsive collapse
+
+    .cb-collapse#{$infix}-show.collapse {
+      display: block;
     }
   }
 }

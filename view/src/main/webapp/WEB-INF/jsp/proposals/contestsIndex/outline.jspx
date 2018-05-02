@@ -199,24 +199,22 @@
 
 		var contestsCount = 0;
 
-		<c:forEach var="contest" items="${contestsSorted.contests}">
-            <c:if test="${contest.showInOutlineView}">
-                contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
-                        proposalsCount: ${contest.proposalsCount}, contestLink: '<xcolab:contestLink contest="${contest}" text="visit" />',
-                        contestUrl: '${contest.contestUrl}', created: ${contest.createdTime}, active: ${contest.contestActive}};
-                contests[${contest.contestPK}] = contest;
-                contestsCount++;
+		<c:forEach var="contest" items="${contestsSorted.inOutlineView.list}">
+            contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
+                    proposalsCount: ${contest.proposalsCount}, contestLink: '<xcolab:contestLink contest="${contest}" text="visit" />',
+                    contestUrl: '${contest.contestUrl}', created: ${contest.createdTime}, active: ${contest.contestActive}};
+            contests[${contest.contestPK}] = contest;
+            contestsCount++;
 
-                focusArea = focusAreas[${contest.focusAreaId}];
-                if(focusAreas[${contest.focusAreaId}] != null) {
-                    //console.log("undefined: " + ${contest.focusAreaId})
+            focusArea = focusAreas[${contest.focusAreaId}];
+            if(focusAreas[${contest.focusAreaId}] != null) {
+                //console.log("undefined: " + ${contest.focusAreaId})
 
-                    for (var idx in focusArea.terms) {
-                        addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
-                        ontologyTerms[focusArea.terms[idx]].space.contests.push(contest);
-                    }
+                for (var idx in focusArea.terms) {
+                    addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
+                    ontologyTerms[focusArea.terms[idx]].space.contests.push(contest);
                 }
-            </c:if>
+            }
 		</c:forEach>
 
 		<c:forEach var="contest" items="${otherContests}">

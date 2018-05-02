@@ -12,16 +12,16 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
+                <a href="/members"><spring:message code="colab.breadcrumbs.community"/></a>
             </li>
             <li class="breadcrumb-item">
-                <a href="/members"><spring:message code="colab.breadcrums.members"/></a>
+                <a href="/members"><spring:message code="colab.breadcrumbs.members"/></a>
             </li>
             <li class="breadcrumb-item">
                 <xcolab:userLinkSimple memberId="${currentUserProfile.userId}" text="${userBean.displayName}" />
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                <spring:message code="colab.breadcrums.subscription"/>
+                <spring:message code="colab.breadcrumbs.subscription"/>
             </li>
         </ol>
     </nav>
@@ -65,14 +65,7 @@
 
 
     <!--@elvariable id="pageNavigation" type="org.xcolab.view.util.pagination.PageNavigation"-->
-    <c:if test="${pageNavigation.shouldShowNavigation}">
-        <div class="pagination">
-            <c:forEach var="pageLink" items="${pageNavigation.pageLinks}">
-                <a class="${pageLink.isCurrent ? 'c' : ''}"
-                   href="${pageLink.url}">${pageLink.text}</a>
-            </c:forEach>
-        </div>
-    </c:if>
+    <xcolab:pagination pageNavigation="${pageNavigation}"/>
 
 </xcolab:layout>
 </jsp:root>

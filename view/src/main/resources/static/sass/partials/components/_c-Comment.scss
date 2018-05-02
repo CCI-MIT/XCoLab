@@ -2,11 +2,6 @@ $c-Comment__special__highlight: $t-Color__alert--light !default;
 
 $c-Comment__box__border: 2px solid $t-Color__gray--medium-500 !default;
 
-$c-Comment__count__backgroundColor: $t-Color__tan !default;
-$c-Comment__count__background: url(/images/icon-proposal-comments.png) no-repeat 11px 5px $c-Comment__count__backgroundColor !default;
-$c-Comment__count__a__fontWeight: 700 !default;
-$c-Comment__count__a__margin--left: 0px !default;
-
 $c-Comment__commentor__backgroundImage: url(/images/pattern-6x6.png) !default;
 $c-Comment__commentor__textColor: black !default;
 
@@ -27,30 +22,6 @@ $c-Comment__threads__list__tr__border--bottom: 1px solid $t-Color__gray--medium-
   }
 }
 
-.c-Comment__new { //#thecomment
-  float: left;
-  width: 790px
-}
-
-.c-Comment__share { //.comm-share
-  float: right;
-}
-
-.c-Comment__add { //.addcomment
-  font-size: 14px;
-  margin-top: 25px;
-
-  .c-Comment__add__info { //#add
-    float: left;
-    width: 178px;
-    padding: 10px 6px 10px 6px;
-  }
-
-  strong {
-    font-weight: $t-Typography__fontWeight--bold;
-  }
-}
-
 .c-Comment__box { //.commentbox
   height: 178px;
   width: 788px;
@@ -65,20 +36,6 @@ $c-Comment__threads__list__tr__border--bottom: 1px solid $t-Color__gray--medium-
 .c-Comment__actions { //.commentsActions
   margin-top: 15px;
   text-align: right;
-}
-
-.c-Comment__share { //.icon_share
-  padding-left: 20px;
-}
-
-.c-Comment__count { //.commbox
-  background: $c-Comment__count__background;
-  margin-right: 18px;
-
-  a {
-    font-weight: $c-Comment__count__a__fontWeight;
-    margin-left: $c-Comment__count__a__margin--left;
-  }
 }
 
 .c-Comment__list { //.comments
@@ -114,20 +71,6 @@ $c-Comment__threads__list__tr__border--bottom: 1px solid $t-Color__gray--medium-
 
   span {
     font-weight: $t-Typography__fontWeight--bold;
-  }
-}
-
-.c-Comment__threads { //.threads-container {
-  @extend .clearfix;
-
-  .c-Comment__threads__container { //.main-content
-    float: left;
-    width: 680px;
-  }
-
-  .c-Comment__threads__sidebar { //.sidebar
-    float: left;
-    margin-left: 50px;
   }
 }
 

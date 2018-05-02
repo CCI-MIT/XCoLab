@@ -16,7 +16,7 @@
         </div>
     </c:if>
 
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-12 col-sm-4 col-lg-2">
             <h1 class="my-0">${contestType.contestNamePlural}</h1>
         </div>
@@ -75,9 +75,11 @@
             </c:if>
         </div>
     </div>
-    <div class="mb-3">
-        ${preferences.callToAction}
-    </div>
+    <c:if test="${not empty preferences.callToAction}">
+        <div class="mb-3">
+            ${preferences.callToAction}
+        </div>
+    </c:if>
 
     <c:if test="${showAllContests }">
         <div class="media mb-3">

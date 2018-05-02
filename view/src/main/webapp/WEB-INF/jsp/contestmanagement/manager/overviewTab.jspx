@@ -111,11 +111,6 @@
             </div>
 
 			<table class="c-ContentBox__Table">
-					<col span="2" class="extraSmallColumn"/>
-					<col span="1" class="wideColumn"/>
-					<col span="1" class="mediumColumn"/>
-					<col span="9" class="extraSmallColumn"/>
-					<col span="1" class="smallColumn"/>
 				<thead>
 					<tr>
 						<th><input type="checkbox" id="selectAllCheckbox"/>

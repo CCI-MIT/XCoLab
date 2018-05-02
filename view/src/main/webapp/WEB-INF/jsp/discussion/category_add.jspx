@@ -12,13 +12,13 @@
          <nav aria-label="breadcrumb">
              <ol class="breadcrumb">
                  <li class="breadcrumb-item">
-                     <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
+                     <a href="/members"><spring:message code="colab.breadcrumbs.community"/></a>
                  </li>
                  <li class="breadcrumb-item">
-                    <a href="/discussion"><spring:message code="colab.breadcrums.discussion"/></a>
+                    <a href="/discussion"><spring:message code="colab.breadcrumbs.discussion"/></a>
                  </li>
                  <li class="breadcrumb-item active" aria-current="page">
-                     <spring:message code="colab.breadcrums.createcategory"/>
+                     <spring:message code="colab.breadcrumbs.createcategory"/>
                  </li>
             </ol>
          </nav>

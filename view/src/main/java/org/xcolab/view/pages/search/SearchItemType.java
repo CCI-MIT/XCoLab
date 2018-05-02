@@ -32,8 +32,6 @@ public enum SearchItemType {
         return name();
     }
 
-    //used as method in jsp!
-    @SuppressWarnings("unused")
     public PageLinkWrapper getPageLink(SearchBean searchBean) {
         return new PageLinkWrapper(getPrintName(), 1, searchBean.getSearchPhrase(), name());
     }

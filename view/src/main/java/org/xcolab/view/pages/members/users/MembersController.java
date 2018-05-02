@@ -20,7 +20,9 @@ import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.pages.members.users.utils.MemberItem;
 import org.xcolab.view.pages.members.users.utils.MemberListCsvWriter;
+import org.xcolab.view.pages.members.users.utils.MembersNavigation;
 import org.xcolab.view.pages.members.users.utils.MembersPermissions;
+import org.xcolab.view.util.pagination.PageNavigation;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.io.IOException;
@@ -50,11 +52,6 @@ public class MembersController {
         int page = 1;
         if (pageParam != null) {
             page = pageParam.intValue();
-        }
-
-        int startPage = 1;
-        if (page - 5 > 0) {
-            startPage = page - 5;
         }
 
         int firstUser = 0;
@@ -97,35 +94,34 @@ public class MembersController {
 
         int usersCount = MembersClient.countMembers(memberCategoryParam, filterParam);
         int pagesCount = (int) Math.ceil(usersCount / (double) USERS_PER_PAGE);
-        int endPage = pagesCount;
-        if (startPage + 10 < pagesCount) {
-            endPage = startPage + 10;
-        }
 
-
-        model.addAttribute("pageNumber", page);
-        model.addAttribute("pagesCount", pagesCount);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
+        final MembersNavigation membersNavigation =
+                new MembersNavigation(sortFilterPage, memberCategoryParam, filterParam);
+        model.addAttribute("membersNavigation", membersNavigation);
+        final PageNavigation pageNavigation =
+                new PageNavigation(membersNavigation.getCurrentUrl(), page, pagesCount);
+        model.addAttribute("pageNavigation", pageNavigation);
         model.addAttribute("sortFilterPage", sortFilterPage);
+
         model.addAttribute("users", users);
         model.addAttribute("usersCount", I18nUtils.formatNumberDefaultLocale(locale,usersCount));
-        if (StringUtils.isNotEmpty(memberCategoryParam)) {
-            final MemberCategory memberCategory = MembersClient.getMemberCategory(memberCategoryParam);
-            memberCategory.setDescription(TemplateReplacementUtil
-                    .replacePlatformConstants(memberCategory.getDescription()));
-            model.addAttribute("memberCategory", memberCategory);
-        }
-        model.addAttribute("memberCategoryParam", memberCategoryParam);
-        model.addAttribute("memberCategories", MembersClient.getVisibleMemberCategories());
 
-        model.addAttribute("pointsActive", isPointsActive);
+        model.addAttribute("memberCategories", MembersClient.getVisibleMemberCategories());
+        if (StringUtils.isNotEmpty(memberCategoryParam)) {
+            model.addAttribute("memberCategory", getMemberCategoryInLocale(memberCategoryParam));
+        }
 
         model.addAttribute("permissions", membersPermissions);
-        model.addAttribute("isRegistrationOpen", ConfigurationAttributeKey.REGISTRATION_IS_OPEN.get());
-
         model.addAttribute("_activePageLink", "community");
         return "members/users";
+    }
+
+    private MemberCategory getMemberCategoryInLocale(
+            @RequestParam(value = "memberCategory", required = false) String memberCategoryParam) {
+        final MemberCategory memberCategory = MembersClient.getMemberCategory(memberCategoryParam);
+        memberCategory.setDescription(TemplateReplacementUtil
+                .replacePlatformConstants(memberCategory.getDescription()));
+        return memberCategory;
     }
 
 

@@ -20,7 +20,7 @@
 
         <form:form action="${updateUrl}" commandName="contestTranslationBean" cssClass="addpropform"
                    id="editForm" method="post">
-            <form:errors cssClass="alert alert-danger" path="*"/>
+            <form:errors cssClass="alert alert-danger" element="div" path="*"/>
             <ul id="i18nTabBar" class="c-TabBar clearfix nav nav-tabs" role="tablist">
                 <c:forEach var="lang" items="${i18nOptions}">
                     <li role="presentation" class="c-TabBar__tab small nav-item">

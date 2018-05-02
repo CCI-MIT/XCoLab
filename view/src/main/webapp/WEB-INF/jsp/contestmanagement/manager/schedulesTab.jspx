@@ -8,10 +8,12 @@
     
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
     <!--@elvariable id="scheduleId" type="java.lang.Long"-->
     <!--@elvariable id="contestScheduleBean" type="org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleBean"-->
     <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
     <!--@elvariable id="contestPhaseTypesSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+    <!--@elvariable id="contestPhaseTypesSelectionItemsDeprecated" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
     <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 
     <jsp:directive.include file="../init.jspx"/>
@@ -42,7 +44,7 @@
     </div>
 
     <div class="c-ContentBox l-BoxLayout__stacked">
-        <form:errors cssClass="alert alert-danger" path="*"/>
+        <form:errors cssClass="alert alert-danger" element="div" path="*"/>
 
         <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
                    method="post">
@@ -97,22 +99,15 @@
                         </c:if>
 
                         <div><!--  -->
-                            <form:errors cssClass="alert alert-danger"/>
+                            <form:errors cssClass="alert alert-danger" element="div"/>
                         </div>
 
                         <table class="c-ContentBox__Table">
-                            <col span="1" class="extraSmallColumn"/>
-                            <!-- <col span="1" class="extraSmallColumn"/> -->
-                            <col span="4" class="mediumColumn"/>
-                            <col span="1" class="extraSmallColumn"/>
                             <thead>
                             <tr>
-                                <th>#</th>
+                                <th style="width: 40px;">#</th>
                                 <th>Phase Type</th>
-                                <!-- <th>Buffer</th> -->
                                 <th>Start Date</th>
-                                <th>Autopromote</th>
-                                <th>Fellow <br/>Screening</th>
                                 <th><!-- --></th>
                             </tr>
                             </thead>
@@ -132,7 +127,7 @@
                                     <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
                                                  data-form-name="contestPhaseDeleted"/>
 
-                                    <form:errors cssClass="alert alert-danger"
+                                    <form:errors cssClass="alert alert-danger" element="div"
                                                      path="schedulePhases[${x.index}].phaseStartDate"/>
 
                                     <td data-form-attribute="indexLable">${x.index + 1}</td>
@@ -142,14 +137,14 @@
                                                      disabled="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted}">
                                             <form:options items="${contestPhaseTypesSelectionItems}" itemValue="value"
                                                           itemLabel="lable"/>
+                                            <form:options items="${contestPhaseTypesSelectionItemsDeprecated}" itemValue="value"
+                                                          itemLabel="lable" disabled="true"/>
                                         </form:select>
                                     </td>
-                                    <!-- <td>
-                                            <form:checkbox path="schedulePhases[${x.index}].hasBuffer"
-                                                           data-select-attribute="hasBufferCheckbox"/></td> -->
                                     <td>
-                                        <fmt:formatDate value="${schedulePhase.phaseStartDate}" pattern="MM/dd/yyyy HH:mm"
-                                                        type="date" dateStyle="short" timeZone="America/New_York"
+                                        <fmt:formatDate value="${schedulePhase.phaseStartDate}"
+                                                        type="date" dateStyle="short"
+                                                        pattern="MM/dd/yyyy HH:mm"
                                                         var="formatDate"/>
 
                                         <c:set var="inputIsReadOnly" value="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted}" />
@@ -164,29 +159,15 @@
 
                                     </td>
                                     <td>
-                                        <form:select path="schedulePhases[${x.index}].contestPhaseAutopromote" class="form-control"
-                                                     data-form-name="contestPhaseAutopromote">
-                                            <form:options items="${contestPhaseAutopromoteSelectionItems}" itemValue="value"
-                                                          itemLabel="lable"/>
-                                        </form:select>
-                                    </td>
-                                    <td>
-                                        <form:checkbox path="schedulePhases[${x.index}].fellowScreeningActive"
-                                                       data-form-name="fellowScreeningActive">
-                                        </form:checkbox>
-                                    </td>
-                                    <td>
                                         <c:if test="${not (contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted)}">
                                             <div class="deleteIcon"> <!-- --></div>
                                         </c:if>
                                     </td>
                                 </tr>
-                                <c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 2}"/>
+                                <c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 1}"/>
                             </c:forEach>
                             </tbody>
                         </table>
-                        <i>Please do not put an end date to the last phase, otherwise the mass messaging function can't detect
-                            the contest!</i>
                     </div>
                 </div>
             </form:form>
@@ -200,13 +181,6 @@
             <div class="c-Box__body">
                 <strong>Contests using this schedule:</strong>
                 <table class="c-ContentBox__Table">
-                    <colgroup>
-                        <col class="extraSmallColumn" span="1" />
-                        <col style="text-align: center;" class="mediumColumn" span="1" />
-                        <col style="text-align: center;" class="smallColumn" span="1" />
-                        <col style="text-align: center;" class="mediumColumn" span="2" />
-                        <col style="text-align: center;" class="smallColumn" span="2" />
-                    </colgroup>
                     <thead>
                     <tr>
                         <th>#</th>

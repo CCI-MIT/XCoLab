@@ -41,7 +41,7 @@
         var textShowHistory = '${textShowHistory}';
         var textHideHistory = '${textHideHistory}';
     </script>
-    <div class="l-Content">
+    <div class="l-Content l-Content--break-early">
         <div class="l-Content__main c-UserContent">
             <div>
                 <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
@@ -49,12 +49,36 @@
                                          cssClass="btn btn-primary-darkest cb-btn-xs" />
                 </c:if>
 
-                <div>
+                <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
+                <div class="cb-d-flex-between-center flex-wrap">
                     <button id="versionContainerTrigger" onclick="triggerHistoryVisibility();"
                             class="btn btn-primary-darkest cb-btn-xs">
                         ${textShowHistory}
                     </button>
-                    <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
+                    <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
+                        <div class="text-center cb-flex-basis-100 cb-flex-sm-basis-auto order-first order-first order-sm-0">
+                            <c:set var="shareMessageBody">Check out the ${contestType.proposalNameLowercase} ${proposal.name} ${contest.contestShortNameWithEndYear} ${contestType.contestNameLowercase}:</c:set>
+                            <xcolab-social:socialShareButtons title="${_themeContext.colabName} - ${contest.contestShortName} - ${proposal.name}"
+                                                              messageTitle="I want to share a ${contestType.proposalNameLowercase} with you!"
+                                                              content="${shareMessageBody}"/>
+                        </div>
+                    </c:if>
+                    <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
+                        <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+                        <button type="button" class="btn btn-link btn-sm js-PostLink" onclick="if(!deferUntilLogin(this)) return false;"
+                                data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }">
+                            <c:choose>
+                                <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
+                                    <collab:image height="20" src="/images/subscribe.png" cssClass="cb-btn-image"/>
+                                    <span class="cb-btn-image-text"><spring:message code="contests.details.subscribe"/></span>
+                                </c:when>
+                                <c:otherwise>
+                                    <collab:image height="20" src="/images/unsubscribe.png" cssClass="cb-btn-image"/>
+                                    <span class="cb-btn-image-text"><spring:message code="contests.details.unsubscribe"/></span>
+                                </c:otherwise>
+                            </c:choose>
+                        </button>
+                    </c:if>
                 </div>
 
                 <c:if test="${not proposal.isLatestVersion}">
@@ -182,7 +206,7 @@
                 </c:if>
             </c:catch>
         </div>
-        <div class="l-Content__sidebar l-Content__sidebar--large l-Content__sidebar--right l-Content__sidebar--collapseBottom">
+        <div class="l-Content__sidebar l-Content__sidebar--large l-Content__sidebar--right">
             <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
         </div>
     </div>
@@ -216,13 +240,6 @@
         </script>
     </c:if>
 
-    <script>
-        var currentProposal = {
-                proposalId: ${proposal.proposalId},
-                version: ${proposal.version},
-                contestId: ${proposal.contest.contestPK}
-        }
-    </script>
     <script>
         jQuery(function() {
 

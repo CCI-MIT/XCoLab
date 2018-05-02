@@ -41,11 +41,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-
-    <!--TODO COLAB-2681: Remove isResponsive feature flag once its on by default -->
-    <c:if test="${_themeContext.themeVariables.isResponsive}">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    </c:if>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
     <title>${title}${(not empty title) ? ' - ' : ''}${_themeContext.colabName}</title>
 
@@ -142,8 +138,7 @@
     </c:if>
 </head>
 
-<!--TODO COLAB-2681: Remove isResponsive feature flag once its on by default -->
-<body class="${_themeContext.themeVariables.isHomePage ? 'p-Homepage' : ''} ${_themeContext.themeVariables.isResponsive ? 'feature-isResponsive' : ''}">
+<body class="${_themeContext.themeVariables.isHomePage ? 'p-Homepage' : ''}">
     <c:if test="${_themeContext.themeVariables.betaRibbonShow}">
         <div class="c-Ribbon">
             Beta
@@ -153,7 +148,7 @@
     <c:if test="${!_themeContext.serverEnvironment.isProduction}">
         <div class="c-TitleBar__container">
             <div class="c-TitleBar c-TitleBar--warning c-TitleBar--fixed">
-                <div class="cb-container-fixed c-TitleBar__content">
+                <div class="container c-TitleBar__content">
                     <div class="c-TitleBar__element pl-0" style="overflow: hidden">
                         You are currently on a <b>test server</b>. Content on this server is for testing only and may be deleted at any time.
                     </div>
@@ -166,7 +161,7 @@
 
     <c:if test="${_themeContext.authenticationVariables.isImpersonating}">
         <div class="c-TitleBar">
-            <div class="cb-container-fixed c-TitleBar__content">
+            <div class="container c-TitleBar__content">
                 <div class="c-TitleBar__element pl-0">
                     Impersonating member ${_themeContext.authenticationVariables.member.screenName} (Logged in as ${_themeContext.authenticationVariables.realMember.screenName})
                 </div>
@@ -180,7 +175,7 @@
 
     <c:if test="${_themeContext.themeVariables.mitHeaderBarShow}">
         <div class="c-TitleBar c-TitleBar--light">
-            <div class="cb-container-fixed c-TitleBar__content">
+            <div class="container c-TitleBar__content">
                 <div class="c-TitleBar__element pl-0">
                     <collab:image src="/images/logos/mit-themed.png" alt="MIT" />
                     <span style="display: inline-block"><!-- Reference for image alignment --></span>
@@ -195,6 +190,8 @@
 
 
     <!-- ============ Navbar ============ -->
+
+    <a href="#content" class="sr-only">Skip navigation</a>
 
     <xcolab-layout:navbar colabName="${_themeContext.colabName}"
                           logoPath="${_themeContext.themeVariables.activeTheme.logoPath}"
@@ -229,7 +226,7 @@
 
     <!-- ============ Content ============ -->
 
-    <main class="cb-container-fixed clearfix" id="content">
+    <main class="container clearfix" id="content">
         <!-- Include page body -->
         <jsp:doBody/>
     </main>

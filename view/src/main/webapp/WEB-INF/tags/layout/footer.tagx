@@ -17,7 +17,7 @@
 
     <div id="c-Footer">
         <div id="c-Footer__menu">
-            <div class="cb-container-fixed cb-d-flex-between-center flex-column flex-sm-row">
+            <div class="container cb-d-flex-between-center flex-column flex-sm-row">
                 <nav>
                     <ul class="nav">
                         <li class="nav-item">
@@ -76,7 +76,7 @@
         </div> <!-- #c-Footer__menu -->
 
         
-        <footer class="cb-container-fixed py-4">
+        <footer class="container py-4">
             <!-- footer content -->
             <xcolab:content articleId="${footerArticleId}" loadWidgetLibrary="false"/>
         </footer>

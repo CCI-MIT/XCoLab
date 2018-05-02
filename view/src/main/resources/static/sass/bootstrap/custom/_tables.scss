@@ -7,6 +7,26 @@
 @include table-row-variant('gray', $t-Color__gray--medium-500);
 
 .table {
+
+  // Table with stripes on even instead of odd rows
+  &.cb-table-striped-inverse {
+    tbody tr:nth-of-type(even) {
+      background-color: $table-accent-bg;
+    }
+  }
+
+  &.cb-table-striped-columns {
+    tbody tr td:nth-of-type(even) {
+      background: $t-Table__stripedColumn__background;
+    }
+  }
+
+  thead th img {
+    height: 24px;
+    width: auto;
+    max-width: initial;
+  }
+
   .primary {
     th {
       color: white;
