@@ -3,9 +3,11 @@ package org.xcolab.view.config.spring.beans;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,6 +34,7 @@ import javax.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @SuppressWarnings("ProhibitedExceptionDeclared")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -62,8 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .antMatchers("/admin/management/**").hasRole("ADMIN")
-                .antMatchers("/oauth/authorize").authenticated()
-                .antMatchers("/api/user").authenticated();
+                .antMatchers("/oauth/authorize").authenticated();
 
         final GuestAccess guestAccessProperties = webProperties.getGuestAccess();
 
