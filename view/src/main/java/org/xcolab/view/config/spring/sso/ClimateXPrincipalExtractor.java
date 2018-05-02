@@ -7,10 +7,7 @@ import org.xcolab.view.auth.login.spring.MemberDetails;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
-import java.util.Map;
-import java.util.Optional;
-
-public class ClimateXPrincipalExtractor extends CustomPrincipalExtractor<String> {
+public class ClimateXPrincipalExtractor extends AbstractOpenIdPrincipalExtractor {
 
     public ClimateXPrincipalExtractor(LoginRegisterService loginRegisterService,
             MemberDetailsService memberDetailsService) {
@@ -25,25 +22,5 @@ public class ClimateXPrincipalExtractor extends CustomPrincipalExtractor<String>
     @Override
     protected void setSsoId(Member member, String ssoId) {
         member.setGoogleId(ssoId);
-    }
-
-    @Override
-    protected String extractId(Map map) {
-        return (String) map.get("id");
-    }
-
-    @Override
-    protected String extractFirstName(Map<String, Object> map) {
-        return (String) map.get("firstName");
-    }
-
-    @Override
-    protected String extractLastName(Map<String, Object> map) {
-        return (String) map.get("lastName");
-    }
-
-    @Override
-    protected Optional<String> extractProfileImageUrl(Map<String, Object> userInfoMap) {
-        return Optional.empty();
     }
 }

@@ -8,9 +8,8 @@ import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
 import java.util.Map;
-import java.util.Optional;
 
-public class ColabPrincipalExtractor extends CustomPrincipalExtractor<String> {
+public class ColabPrincipalExtractor extends AbstractOpenIdPrincipalExtractor {
 
     public ColabPrincipalExtractor(LoginRegisterService loginRegisterService,
             MemberDetailsService memberDetailsService) {
@@ -27,26 +26,9 @@ public class ColabPrincipalExtractor extends CustomPrincipalExtractor<String> {
         member.setColabSsoId(colabSsoId);
     }
 
-    @Override
-    protected String extractFirstName(Map<String, Object> map) {
-        return (String) map.get("firstName");
-    }
-
-    @Override
-    protected String extractLastName(Map<String, Object> map) {
-        return (String) map.get("lastName");
-    }
 
     @Override
     protected String extractId(Map map) {
-        return (String) map.get("id");
-    }
-
-    @Override
-    protected Optional<String> extractProfileImageUrl(Map<String, Object> userInfoMap) {
-        if (userInfoMap.containsKey("picture")) {
-            return Optional.of((String) userInfoMap.get("picture"));
-        }
-        return Optional.empty();
+        return (String) map.get("sub");
     }
 }

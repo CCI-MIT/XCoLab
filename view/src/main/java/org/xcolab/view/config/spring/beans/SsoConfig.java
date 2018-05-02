@@ -114,11 +114,12 @@ public class SsoConfig {
     @GetMapping("/api/user")
     public Map<String, String> user(Member member) {
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("id", Long.toString(member.getId_()));
+        map.put("sub", Long.toString(member.getId_()));
         map.put("name", member.getFullName());
-        map.put("firstName", member.getFirstName());
-        map.put("lastName", member.getLastName());
+        map.put("given_name", member.getFirstName());
+        map.put("family_name", member.getLastName());
         map.put("email", member.getEmailAddress());
+        map.put("preferred_username", member.getScreenName());
         if (StringUtils.isNotEmpty(member.getAbsoluteImageUrl())) {
             map.put("picture", member.getAbsoluteImageUrl());
         }
