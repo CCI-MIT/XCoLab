@@ -161,7 +161,8 @@ public class ContestProposalsController extends BaseProposalsController {
     }
 
     @GetMapping("/api/contests/downloadContestProposalsList")
-    public void downloadContestProposalsList(HttpServletRequest request, HttpServletResponse response)
+    public void downloadContestProposalsList(HttpServletRequest request, HttpServletResponse response,
+            Member loggedInMember, ProposalContext proposalContext)
             throws IOException {
 
         try (ContestProposalsCsvWriter csvWriter = new ContestProposalsCsvWriter(response)) {
