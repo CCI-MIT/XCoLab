@@ -44,6 +44,10 @@ public enum ContestStatus {
         return canCreate;
     }
 
+    public boolean isCanAnything() {
+        return canCreate || canVote || canEdit;
+    }
+
     public Comparator<Proposal> getDefaultProposalComparator() {
         final SortColumn sortColumn;
         switch (this) {
