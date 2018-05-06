@@ -34,10 +34,8 @@ public final class AddUpdateProposalControllerUtil {
     }
 
     private static boolean isProposalListClosed(ContestPhase contestPhase) {
-        String currentPhase = contestPhase.getStatus().toString();
-        String closed = ContestStatus.CLOSED.toString();
-        String completed = ContestStatus.COMPLETED.toString();
-        return currentPhase.equals(closed) || currentPhase.equals(completed);
+        return contestPhase.getStatus() == ContestStatus.CLOSED
+                || contestPhase.getStatus() == ContestStatus.COMPLETED;
     }
 
     public static String createOrUpdateProposal(HttpServletRequest request,
