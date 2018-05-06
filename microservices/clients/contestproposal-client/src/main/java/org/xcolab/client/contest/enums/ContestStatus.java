@@ -14,26 +14,13 @@ import java.util.Comparator;
 
 public enum ContestStatus {
 
-    NOT_YET_OPEN("Not yet open",false, false,false),
-    OPEN_FOR_EDIT("Open for editing",false, true,false),
-    OPEN_FOR_SUBMISSION("Open for submission",true, true,false),
-    CLOSED_FOR_JUDGING("Closed for judging",false, false,false),
-    VOTING("Open for voting",false, false,true),
-    FINISHED("Finished",false, false,false),
-    FINALISTS_ANNOUNCED("Finalists Announced",false, false,false),
-    CLOSED("Closed",false, false,false),
-    COMPLETED("Completed",false, false,false);
+    OPEN_FOR_EDIT("Open for editing", false, true, false),
+    OPEN_FOR_SUBMISSION("Open for submission", true, true, false),
+    VOTING("Open for voting", false, false, true),
+    CLOSED("Closed", false, false, false),
+    COMPLETED("Completed", false, false, false);
 
     private final String myName;
-
-    public boolean isCanEdit() {
-        return canEdit;
-    }
-
-    public boolean isCanVote() {
-        return canVote;
-    }
-
     private final boolean canCreate;
     private final boolean canEdit;
     private final boolean canVote;
@@ -45,8 +32,12 @@ public enum ContestStatus {
         this.myName = name;
     }
 
-    public String toString() {
-        return myName;
+    public boolean isCanEdit() {
+        return canEdit;
+    }
+
+    public boolean isCanVote() {
+        return canVote;
     }
 
     public boolean isCanCreate() {
@@ -61,12 +52,12 @@ public enum ContestStatus {
                 sortColumn = new SortColumn("-" + ProposalSortColumn.MODIFIED.name());
                 break;
             case VOTING:
-                sortColumn = new SortColumn(ConfigurationAttributeKey
-                        .PROPOSALS_PHASE_VOTING_SORT_ORDER.get());
+                sortColumn = new SortColumn(
+                        ConfigurationAttributeKey.PROPOSALS_PHASE_VOTING_SORT_ORDER.get());
                 break;
             default:
-                sortColumn = new SortColumn(ConfigurationAttributeKey
-                        .PROPOSALS_PHASE_CLOSED_SORT_ORDER.get());
+                sortColumn = new SortColumn(
+                        ConfigurationAttributeKey.PROPOSALS_PHASE_CLOSED_SORT_ORDER.get());
                 break;
         }
         final Comparator<Proposal> comparator =
@@ -74,4 +65,8 @@ public enum ContestStatus {
         return sortColumn.isAscending() ? comparator : comparator.reversed();
     }
 
+    @Override
+    public String toString() {
+        return myName;
+    }
 }
