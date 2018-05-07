@@ -18,9 +18,10 @@ public enum SearchType {
         this.searchType = searchType;
     }
 
-    public String getStringType(){
+    public String getStringType() {
         return this.searchType;
     }
+
     public Long getId() {
         return id;
     }
