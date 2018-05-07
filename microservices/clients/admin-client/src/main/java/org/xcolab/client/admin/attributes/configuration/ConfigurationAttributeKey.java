@@ -256,6 +256,11 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(false)
                     .build();
 
+    public static final AttributeGetter<Boolean> VOTING_CONVERT_SUPPORTS_TO_VOTES =
+            ConfigurationAttributes.newBooleanAttribute("VOTING_CONVERT_SUPPORTS_TO_VOTES")
+            .defaultValue(true)
+            .build();
+
     //Image upload help messages
     public static final AttributeGetter<String> IMAGE_UPLOAD_EXTERNAL_SERVICE_URL =
             ConfigurationAttributes.newStringAttribute("IMAGE_UPLOAD_EXTERNAL_SERVICE_URL")

@@ -268,6 +268,13 @@ public class Contest extends AbstractContest implements Serializable {
         return getLastPhase().isEnded();
     }
 
+    public boolean isShowColoredFlag() {
+        if (getFlag() > 0) {
+            return getFlag() == 1;
+        }
+        return getActivePhase().getStatus().isCanAnything();
+    }
+
     public boolean isFeatured() {
         return this.getFeatured_();
     }
