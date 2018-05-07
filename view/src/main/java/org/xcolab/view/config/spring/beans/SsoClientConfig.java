@@ -1,8 +1,5 @@
 package org.xcolab.view.config.spring.beans;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -11,21 +8,14 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.CompositeFilter;
 
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.config.spring.sso.ClimateXPrincipalExtractor;
 import org.xcolab.view.config.spring.sso.ColabPrincipalExtractor;
@@ -35,26 +25,20 @@ import org.xcolab.view.config.spring.sso.GooglePrincipalExtractor;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.Filter;
 
 @EnableOAuth2Client
-@EnableAuthorizationServer
 @Configuration
-@RestController
-public class SsoConfig {
+public class SsoClientConfig {
 
-    private static final Logger log = LoggerFactory.getLogger(SsoConfig.class);
-    
     private final OAuth2ClientContext oauth2ClientContext;
     private final LoginRegisterService loginRegisterService;
     private final MemberDetailsService memberDetailsService;
 
     @Autowired
-    public SsoConfig(OAuth2ClientContext oauth2ClientContext,
+    public SsoClientConfig(OAuth2ClientContext oauth2ClientContext,
             LoginRegisterService loginRegisterService, MemberDetailsService memberDetailsService) {
         this.oauth2ClientContext = oauth2ClientContext;
         this.loginRegisterService = loginRegisterService;
@@ -101,37 +85,11 @@ public class SsoConfig {
     public SsoClientResources xcolab() {
         return new SsoClientResources();
     }
+
     @Bean
     @ConfigurationProperties("sso.climatex")
     public SsoClientResources climateX() {
         return new SsoClientResources();
-    }
-
-    @GetMapping("/api/user")
-    public Map<String, String> user(Member member) {
-        Map<String, String> map = new LinkedHashMap<>();
-        map.put("sub", Long.toString(member.getId_()));
-        map.put("name", member.getFullName());
-        map.put("given_name", member.getFirstName());
-        map.put("family_name", member.getLastName());
-        map.put("email", member.getEmailAddress());
-        map.put("preferred_username", member.getScreenName());
-        if (StringUtils.isNotEmpty(member.getAbsoluteImageUrl())) {
-            map.put("picture", member.getAbsoluteImageUrl());
-        }
-        return map;
-    }
-
-    @Configuration
-    @EnableResourceServer
-    @SuppressWarnings("ProhibitedExceptionDeclared")
-    protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/api/user")
-                    .authorizeRequests().anyRequest().authenticated();
-        }
     }
 
     public static class SsoFilter {

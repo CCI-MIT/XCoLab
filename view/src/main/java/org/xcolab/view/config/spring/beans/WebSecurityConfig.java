@@ -24,7 +24,7 @@ import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.handlers.LogoutSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.auth.login.spring.MemberPasswordEncoder;
-import org.xcolab.view.config.spring.beans.SsoConfig.SsoFilter;
+import org.xcolab.view.config.spring.beans.SsoClientConfig.SsoFilter;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.spring.properties.WebProperties.GuestAccess;
 
