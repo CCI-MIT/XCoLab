@@ -73,6 +73,9 @@ logging:
 
 security:
   filter-dispatcher-types: ASYNC,REQUEST,ERROR
+  oauth2:
+    client:
+      scope: openid,email,profile
 sso:
   facebook:
     client:
