@@ -1,6 +1,13 @@
 $(function() {
     // Register clickHandler on document to support dynamically added anchor tags.
     $(document).on("click", ".js-PostLink", function (eventObject) {
+
+        var isLoginRequired = $(this).data('require-login');
+        if (!_isLoggedIn && isLoginRequired) {
+            $('#loginModal').modal();
+            return false;
+        }
+
         // If confirm data field is available, ask user for confirmation first.
         var confirmText = $(this).data('confirm');
         if (confirmText && !confirm(confirmText)) {
