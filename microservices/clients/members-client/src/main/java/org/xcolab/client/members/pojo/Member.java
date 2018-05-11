@@ -53,6 +53,7 @@ public class Member implements Serializable {
     private Long facebookId;
     private String googleId;
     private String colabSsoId;
+    private String climateXSsoId;
     private String openId;
     private String loginIP;
     private Timestamp loginDate;
@@ -236,6 +237,14 @@ public class Member implements Serializable {
 
     public void setColabSsoId(String colabSsoId) {
         this.colabSsoId = colabSsoId;
+    }
+
+    public String getClimateXSsoId() {
+        return climateXSsoId;
+    }
+
+    public void setClimateXSsoId(String climateXSsoId) {
+        this.climateXSsoId = climateXSsoId;
     }
 
     public String getOpenId() {
@@ -463,5 +472,4 @@ public class Member implements Serializable {
     public int hashCode() {
         return (int) (this.getId_() ^ this.getId_() >>> 32);
     }
-
 }

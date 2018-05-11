@@ -21,6 +21,6 @@ public class ClimateXPrincipalExtractor extends AbstractOpenIdPrincipalExtractor
 
     @Override
     protected void setSsoId(Member member, String ssoId) {
-        member.setGoogleId(ssoId);
+        member.setClimateXSsoId(ssoId);
     }
 }
