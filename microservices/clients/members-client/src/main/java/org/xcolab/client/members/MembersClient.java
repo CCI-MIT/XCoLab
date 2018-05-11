@@ -308,7 +308,7 @@ public final class MembersClient {
     public static Member findMemberByFacebookId(long facebookId) throws MemberNotFoundException {
         Member member = memberResource.list()
                 .queryParam("facebookId", facebookId)
-                .executeWithResult().getFirstIfExists();
+                .executeWithResult().getOneIfExists();
         if (member == null) {
             throw new MemberNotFoundException("Member with facebookId " + facebookId + " does not exist");
         }
@@ -318,7 +318,7 @@ public final class MembersClient {
     public static Member findMemberByGoogleId(String googleId) throws MemberNotFoundException {
         Member member = memberResource.list()
                 .queryParam("googleId", googleId)
-                .executeWithResult().getFirstIfExists();
+                .executeWithResult().getOneIfExists();
         if (member == null) {
             throw new MemberNotFoundException("Member with googleId " + googleId + " does not exist");
         }
@@ -328,7 +328,7 @@ public final class MembersClient {
     public static Member findMemberByColabSsoId(String colabSsoId) throws MemberNotFoundException {
         Member member = memberResource.list()
                 .queryParam("colabSsoId", colabSsoId)
-                .executeWithResult().getFirstIfExists();
+                .executeWithResult().getOneIfExists();
         if (member == null) {
             throw new MemberNotFoundException("Member with colabSsoId " + colabSsoId + " does not exist");
         }
@@ -338,7 +338,7 @@ public final class MembersClient {
     public static Member findMemberByClimateXId(String climateXId) throws MemberNotFoundException {
         Member member = memberResource.list()
                 .queryParam("climateXId", climateXId)
-                .executeWithResult().getFirstIfExists();
+                .executeWithResult().getOneIfExists();
         if (member == null) {
             throw new MemberNotFoundException("Member with climateXId " + climateXId + " does not exist");
         }
