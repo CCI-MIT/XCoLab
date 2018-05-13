@@ -209,7 +209,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public boolean getShowInOutlineView(){
-        return this.getShow_in_outline_view();
+        return this.getShow_in_outline_view() && getFocusAreaId() != null;
     }
 
     public boolean isShowInOutlineView(){

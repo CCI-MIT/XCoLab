@@ -65,8 +65,8 @@
                     </c:if>
                     <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
                         <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
-                        <button type="button" class="btn btn-link btn-sm js-PostLink" onclick="if(!deferUntilLogin(this)) return false;"
-                                data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }">
+                        <button type="button" class="btn btn-link btn-sm js-PostLink" data-require-login="true"
+                                data-url="${subscribeProposalURL}">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
                                     <collab:image height="20" src="/images/subscribe.png" cssClass="cb-btn-image"/>

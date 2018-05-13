@@ -43,7 +43,8 @@ public class ContestList {
     }
 
     public ContestList getInOutlineView() {
-        return new ContestList(list.stream().filter(Contest::getShowInOutlineView)
+        return new ContestList(list.stream()
+                .filter(Contest::getShowInOutlineView)
                 .collect(Collectors.toList()));
     }
 
