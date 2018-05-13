@@ -3,6 +3,7 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:judging="urn:jsptld:/WEB-INF/tlds/xcolab-judging.tld"
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
@@ -151,6 +152,7 @@
                         </div>
                     </c:forEach>
                 </div>
+
                 <div class="p-ContestProposals__header__buttons cb-btn-spacer">
                     <c:if test="${showEditLink}">
                         <a href="/admin/contest/details/contestId/${contest.contestPK}" class="btn cb-btn-outline-admin ">
