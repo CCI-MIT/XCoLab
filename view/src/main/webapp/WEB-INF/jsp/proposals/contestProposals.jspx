@@ -57,11 +57,7 @@
                 </c:otherwise>
             </c:choose>
         </div>
-
-        <c:if test="${showExportLink}">
-            <c:set value="/api/contests/downloadContestProposalsList" var="downloadContestProposalsList"/>
-            <a class="btn cb-btn-outline-admin" href="${downloadContestProposalsList}">Export CSV</a>
-        </c:if>
+        
     </div>
 
     <div class="c-TableGrid__header">
