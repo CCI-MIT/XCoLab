@@ -56,8 +56,8 @@
                 <h2>Proposal report</h2>
                 <form:form action="/admin/contest/manager/tab/ADMIN/proposalReport" commandName="proposalReportBean"
                            id="proposalReportForm" method="get">
-                    <label for="contestIds">Please select the voting phase(s)
-                        you wish to include in the voting report:</label> <br/>
+                    <label for="contestIds">Please select the contests
+                        you wish to include in the proposal report:</label> <br/>
                     <form:select path="contestIds" id="contestIds"
                                  class="multi form-control" multiple="multiple" cssStyle="width: 100%;">
                         <form:option value="" label="--- Please select ---"/>
@@ -77,7 +77,8 @@
             <div class="c-Box__body">
                 <h2>Contest report</h2>
                 <form:form action="/admin/contest/manager/tab/ADMIN/contestReport" method="get">
-                    <button type="submit" class="btn btn-primary">Generate report</button>
+                    <label for="contestReportButton">Export a report of all contests on the platorm.</label>
+                    <button type="submit" class="btn btn-primary" id="contestReportButton">Generate report</button>
                 </form:form>
             </div>
         </div>
