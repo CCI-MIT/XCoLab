@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.text.WordUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -79,11 +80,15 @@ public class Member implements Serializable {
         this.createDate = value.createDate;
         this.modifiedDate = value.modifiedDate;
         this.passwordModifiedDate = value.passwordModifiedDate;
+        this.hashedPassword = value.hashedPassword;
         this.firstName = value.firstName;
         this.lastName = value.lastName;
         this.country = value.country;
         this.shortBio = value.shortBio;
         this.facebookId = value.facebookId;
+        this.googleId = value.googleId;
+        this.colabSsoId = value.colabSsoId;
+        this.climateXSsoId = value.climateXSsoId;
         this.openId = value.openId;
         this.loginIP = value.loginIP;
         this.loginDate = value.loginDate;
@@ -93,6 +98,9 @@ public class Member implements Serializable {
         this.autoregisteredmemberstatus = value.autoregisteredmemberstatus;
         this.uuid = value.uuid;
         this.defaultlocale = value.defaultlocale;
+        this.loginTokenId = value.loginTokenId;
+        this.loginTokenKey = value.loginTokenKey;
+        this.loginTokenExpirationDate = value.loginTokenExpirationDate;
     }
 
     public static Member fromId(String memberIdString) {
@@ -407,28 +415,6 @@ public class Member implements Serializable {
         this.loginTokenExpirationDate = loginTokenExpirationDate;
     }
 
-    @Override
-    public String toString() {
-
-        return "Member (" + id_ +
-                ", " + screenName +
-                ", " + emailAddress +
-                ", " + createDate +
-                ", " + modifiedDate +
-                ", " + passwordModifiedDate +
-                ", " + firstName +
-                ", " + lastName +
-                ", " + country +
-                ", " + shortBio +
-                ", " + facebookId +
-                ", " + googleId +
-                ", " + openId +
-                ", " + loginIP +
-                ", " + loginDate +
-                ", " + reportKarma +
-                ")";
-    }
-
     @JsonIgnore
     public String getProfileLinkUrl()  {
         return USER_PROFILE_PATH + getId_();
@@ -471,5 +457,38 @@ public class Member implements Serializable {
     @Override
     public int hashCode() {
         return (int) (this.getId_() ^ this.getId_() >>> 32);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id_", id_)
+                .append("screenName", screenName)
+                .append("emailAddress", emailAddress)
+                .append("isEmailConfirmed", isEmailConfirmed)
+                .append("isEmailBounced", isEmailBounced)
+                .append("createDate", createDate)
+                .append("modifiedDate", modifiedDate)
+                .append("passwordModifiedDate", passwordModifiedDate)
+                .append("hashedPassword", hashedPassword != null ? "REDACTED" : null)
+                .append("firstName", firstName)
+                .append("lastName", lastName)
+                .append("country", country)
+                .append("shortBio", shortBio)
+                .append("facebookId", facebookId)
+                .append("googleId", googleId)
+                .append("colabSsoId", colabSsoId)
+                .append("climateXSsoId", climateXSsoId)
+                .append("openId", openId)
+                .append("loginIP", loginIP)
+                .append("loginDate", loginDate)
+                .append("status", status)
+                .append("reportKarma", reportKarma)
+                .append("portraitFileEntryId", portraitFileEntryId)
+                .append("autoregisteredmemberstatus", autoregisteredmemberstatus)
+                .append("uuid", uuid)
+                .append("defaultlocale", defaultlocale)
+                .append("loginTokenId", loginTokenId)
+                .append("loginTokenKey", loginTokenKey != null ? "REDACTED" : null)
+                .append("loginTokenExpirationDate", loginTokenExpirationDate).toString();
     }
 }
