@@ -35,17 +35,7 @@
         </div>
     </c:if>
 
-    <div class="cb-d-flex-between-center flex-column flex-sm-row-reverse my-3" id="proposalList">
-        <c:if test="${proposalsDisplayPermissions.canSeeCreateProposalButton}">
-            <c:set var="createProposalUrl" value="${contest.newProposalLinkUrl}"/>
-            <c:set var="createProposalBtnClass"
-                   value="${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}"/>
-            <a class="btn ${createProposalBtnClass}" onclick="if(!deferUntilLogin()) return false;" rel="nofollow"
-               href="${proposalsPermissions.canCreate ? createProposalUrl : '#'}">
-                ${contestType.creationPrompt}
-            </a>
-        </c:if>
-
+    <div class="cb-d-flex-between-center flex-column-reverse flex-sm-row my-3" id="proposalList">
         <div class="c-Count">
             <span class="c-Count__number">${proposals.totalSize}</span>
             <c:choose>
@@ -57,7 +47,16 @@
                 </c:otherwise>
             </c:choose>
         </div>
-        
+
+        <c:if test="${proposalsDisplayPermissions.canSeeCreateProposalButton}">
+            <c:set var="createProposalUrl" value="${contest.newProposalLinkUrl}"/>
+            <c:set var="createProposalBtnClass"
+                   value="${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}"/>
+            <a class="btn ${createProposalBtnClass}" onclick="if(!deferUntilLogin()) return false;" rel="nofollow"
+               href="${proposalsPermissions.canCreate ? createProposalUrl : '#'}">
+                ${contestType.creationPrompt}
+            </a>
+        </c:if>
     </div>
 
     <div class="c-TableGrid__header">

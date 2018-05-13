@@ -5,6 +5,7 @@
           xmlns:form="http://www.springframework.org/tags/form">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
 <layout:layout title="Login link">
     <h2>Login with unique link</h2>

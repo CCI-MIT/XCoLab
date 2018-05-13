@@ -209,7 +209,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public boolean getShowInOutlineView(){
-        return this.getShow_in_outline_view();
+        return this.getShow_in_outline_view() && getFocusAreaId() != null;
     }
 
     public boolean isShowInOutlineView(){
@@ -266,6 +266,13 @@ public class Contest extends AbstractContest implements Serializable {
             return activePhase.isCompleted();
         }
         return getLastPhase().isEnded();
+    }
+
+    public boolean isShowColoredFlag() {
+        if (getFlag() > 0) {
+            return getFlag() == 1;
+        }
+        return getActivePhase().getStatus().isCanAnything();
     }
 
     public boolean isFeatured() {

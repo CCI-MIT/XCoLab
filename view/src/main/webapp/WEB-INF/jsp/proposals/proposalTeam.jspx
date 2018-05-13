@@ -127,8 +127,8 @@
                     <collab:image src="/images/icon-proposal-thumb.png" width="20" height="22"
                                   cssClass="mr-2" alt="support ${contestType.proposalName}" />
 
-                    <button type="button" class="btn btn-primary js-PostLink" data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
-                            rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
+                    <button type="button" class="btn btn-primary js-PostLink" data-require-login="true" rel="nofollow"
+                            data-url="${supportProposalActionURL}">
                         <c:choose>
                             <c:when test="${proposalsDisplayPermissions.canSeeSupportButton}">
                                 <collab:message code="contests.supports.support" contestType="${contestType}"/>
