@@ -43,9 +43,7 @@
 
             <collab:message code="contests.details.subscribe.tooltip" var="tooltipSubscribe" contestType="${contestType}" />
             <button type="button" class="c-TitleBar__actionButton js-PostLink js-Tooltip"
-                    title="${tooltipSubscribe}"
-                    data-url="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }"
-                    onclick="if(!deferUntilLogin(this)) return false;">
+                    title="${tooltipSubscribe}" data-url="${subscribeContestURL}" data-require-login="true">
                 <c:choose>
                     <c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
                         <collab:image src="/images/subscribe-light.png" />
