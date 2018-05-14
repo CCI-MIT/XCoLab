@@ -390,7 +390,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public boolean getCanAdminJudging(long memberId) {
-        return getHasUserRoleInContest(memberId, MemberRole.CONTEST_MANAGER.getRoleId());
+        return getHasUserRoleInContest(memberId, MemberRole.FELLOW.getRoleId());
     }
 
     public ContestPhase getActivePhase() {
