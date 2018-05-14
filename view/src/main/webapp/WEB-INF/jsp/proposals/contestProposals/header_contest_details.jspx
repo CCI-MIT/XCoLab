@@ -178,7 +178,7 @@
                     </c:if>
                 </div>
 
-                <c:if test="${showJudgeStatistics}">
+                <c:if test="${showJudgingStatus}">
                     <div class="p-ContestProposals__header__team">
                         <h2>Admin Information</h2>
                         <div class="judgingForm">
