@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
@@ -120,7 +121,8 @@ public class PromotionService {
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     contestPhaseDao.update(phase);
 
-                    if (contestPhaseService.getContestStatus(nextPhase).isCanVote()) {
+                    if (contestPhaseService.getContestStatus(nextPhase).isCanVote() &&
+                            ConfigurationAttributeKey.VOTING_CONVERT_SUPPORTS_TO_VOTES.get()) {
                         contestPhaseService.transferSupportsToVote(contest, nextPhase);
                     }
 

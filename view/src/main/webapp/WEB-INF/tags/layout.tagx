@@ -363,8 +363,7 @@
     <!-- i18n scripts -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['i18n']}" src="/js/i18n.js" />
 
-    <!-- Ddslick -->
-    <!-- TODO: only used in proposalJuding.jspx - replace? -->
+    <!-- Ddslick for judging -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="/js/lib/jquery.ddslick.min.js" />
 
     <xcolab:loadScript shouldLoad="${_librariesToLoad['clipboard.js']}" src="/vendor/clipboard/dist/clipboard.min.js" />

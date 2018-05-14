@@ -5,7 +5,7 @@ import org.xcolab.client.contest.pojo.Contest;
 public class ActiveMassAction extends SetContestPropertyMassAction {
 
     public ActiveMassAction(boolean setValue) {
-        super(setValue, "Active", "Prior");
+        super(setValue, "Active", "Prior (not 'Active')");
     }
 
     @Override
