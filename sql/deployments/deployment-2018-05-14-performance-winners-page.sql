@@ -386,7 +386,7 @@ border-color: #30a3fb; */
     <!-- ****************** 2020 ****************** -->
 
     <div class="2020 content">
-        <div class="relative"><img class="winner-picture darken" src="--INSERT PICTURE LINK HERE--" /> <img class="winner-icon" src="https://images.climatecolab.org/pages/imported/BdMVyXr.png" />
+        <div class="relative"><img class="winner-picture darken" src="" /> <img class="winner-icon" src="https://images.climatecolab.org/pages/imported/BdMVyXr.png" />
             <h1 class="upper image-title">Contest Winners</h1>
             <span class="upper indigogo-button"> <a href="https://www.indiegogo.com/partners/ClimateColab" style="color: white; text-decoration: none;">Support them on Indigogo</a> </span></div>
         <!-- Bubble Statistics-->
@@ -414,7 +414,7 @@ border-color: #30a3fb; */
     <!-- ****************** 2019 ****************** -->
 
     <div class="2019 content">
-        <div class="relative"><img class="winner-picture darken" src="--INSERT PICTURE LINK HERE--" /> <img class="winner-icon" src="https://images.climatecolab.org/pages/imported/YHpReIA.png" />
+        <div class="relative"><img class="winner-picture darken" src="" /> <img class="winner-icon" src="https://images.climatecolab.org/pages/imported/YHpReIA.png" />
             <h1 class="upper image-title">Contest Winners</h1>
             <span class="upper indigogo-button"> <a href="https://www.indiegogo.com/partners/ClimateColab" style="color: white; text-decoration: none;">Support them on Indiegogo</a> </span></div>
         <!-- Bubble Statistics-->
@@ -442,7 +442,7 @@ border-color: #30a3fb; */
     <!-- ****************** 2018 ****************** -->
 
     <div class="2018 content">
-        <div class="relative"><img class="winner-picture darken" src="--INSERT PICTURE LINK HERE--" /> <img class="winner-icon" src="https://images.climatecolab.org/pages/imported/jG90QBz.png" />
+        <div class="relative"><img class="winner-picture darken" src="" /> <img class="winner-icon" src="https://images.climatecolab.org/pages/imported/jG90QBz.png" />
             <h1 class="upper image-title">Contest Winners</h1>
             <span class="upper indigogo-button"> <a href="https://www.indiegogo.com/partners/ClimateColab" style="color: white; text-decoration: none;">Support them on Indigogo</a> </span></div>
         <!-- Bubble Statistics-->
@@ -1492,7 +1492,7 @@ border-color: #30a3fb; */
             </tbody>
         </table>
 
-        <div class="single-winner"><img class="single-winner-image" src="https://static3.businessinsider.com/image/54ee19f969bedd820f6d7e15-480/eden-full-thiel-fellow-princeton-student.jpg" />
+        <div class="single-winner"><img class="single-winner-image" src="https://images.climatecolab.org/pages/imported/eden-full-thiel-fellow-princeton-student.jpg" />
             <p class="single-winner-title">Eden Full &amp; Jake Schual-Berke</p>
 
             <p class="single-winner-proposal"><a href="https://www.climatecolab.org/web/guest/plans/-/plans/contestId/1301501/phaseId/1309180/planId/1318104">SunSaluter: a low-cost, passive solar tracker that produces clean water</a> <span> by </span> <a href="https://www.climatecolab.org/contests/2015/energy-water-nexus/phase/1309180/proposal/1318104/tab/TEAM">SunSaluter</a></p>
@@ -2077,7 +2077,7 @@ border-color: #30a3fb; */
     <!-- ****************** 2014 ****************** -->
 
     <div class="2014 content">
-        <div class="relative"><img class="winner-picture darken" src="https://lh3.googleusercontent.com/-9VMBJoZbfPk/VH-jzaf_OqI/AAAAAAAAB8A/eQT6OpMdCHc/w1624-h1082-no/20141105_DR19546A.jpg" /> <!-- <img class="image-title" src="http://image.flaticon.com/teams/1-freepik.jpg"> --> <img class="winner-icon" src="https://images.climatecolab.org/pages/imported/gIkpDwC.png" />
+        <div class="relative"><img class="winner-picture darken" src="https://images.climatecolab.org/pages/imported/20141105_DR19546A.jpg" /> <!-- <img class="image-title" src="http://image.flaticon.com/teams/1-freepik.jpg"> --> <img class="winner-icon" src="https://images.climatecolab.org/pages/imported/gIkpDwC.png" />
             <h1 class="upper image-title">Contest Winners</h1>
 
             <p class="image-title-sub">&amp; Awardees</p>
@@ -2594,7 +2594,7 @@ border-color: #30a3fb; */
     <!-- ****************** 2013 / 2012 ****************** -->
 
     <div class="2013 content">
-        <div class="relative"><img class="winner-picture darken" src="https://lh4.googleusercontent.com/-tM7m27Qf7LM/UoPRwcHOFEI/AAAAAAAAA5I/lWxM5iWcYNk/w1624-h1082-no/20131106DR0582.jpg" /> <!-- <img class="image-title" src="http://image.flaticon.com/teams/1-freepik.jpg"> --> <img class="winner-icon" src="https://images.climatecolab.org/pages/imported/4wHQcVR.png" />
+        <div class="relative"><img class="winner-picture darken" src="https://images.climatecolab.org/pages/imported/20131106DR0582.jpg" /> <!-- <img class="image-title" src="http://image.flaticon.com/teams/1-freepik.jpg"> --> <img class="winner-icon" src="https://images.climatecolab.org/pages/imported/4wHQcVR.png" />
             <h1 class="upper image-title">Contest Winners</h1>
 
             <p class="image-title-sub">&amp; Awardees</p>
