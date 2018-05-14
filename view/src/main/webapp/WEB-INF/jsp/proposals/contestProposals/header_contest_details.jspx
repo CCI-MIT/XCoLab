@@ -153,7 +153,7 @@
                 </div>
                 <div class="p-ContestProposals__header__buttons cb-btn-spacer">
 
-                    <c:if test="${showEditLink}">
+                    <c:if test="${showDownloadLink}">
                         <c:set value="${contest.contestUrl}/downloadContestProposalsList" var="downloadContestProposalsList"/>
                         <a class="btn cb-btn-outline-admin" href="${downloadContestProposalsList}">Export CSV</a>
                     </c:if>

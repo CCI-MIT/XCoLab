@@ -125,12 +125,10 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("showContributorsColumn",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
-        boolean showEditLink = false;
-        if (loggedInMember != null) {
-            showEditLink = PermissionsClient.canAdminAll(loggedInMember.getUserId())
-                    || contest.getCanFellow(loggedInMember.getUserId());
-        }
+        boolean showEditLink = proposalContext.getPermissions().getCanEdit();
+        boolean showDownloadLink = proposalContext.getPermissions().getCanDownload();
         model.addAttribute("showEditLink", showEditLink);
+        model.addAttribute("showDownloadLink", showDownloadLink);
 
         setBasePageAttributes(proposalContext, model);
         return "/proposals/contestProposals";
