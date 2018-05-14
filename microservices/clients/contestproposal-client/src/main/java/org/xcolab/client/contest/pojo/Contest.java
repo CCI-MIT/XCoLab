@@ -388,7 +388,7 @@ public class Contest extends AbstractContest implements Serializable {
     public boolean getCanFellow(long memberId) {
         return getHasUserRoleInContest(memberId, MemberRole.FELLOW.getRoleId());
     }
-    
+
     public ContestPhase getActivePhase() {
         if (activePhase == null) {
             ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
