@@ -178,9 +178,9 @@
                     </c:if>
                 </div>
 
-                <div class="p-ContestProposals__header__team">
-                    <h2>Admin Information</h2>
-                    <c:if test="${showEditLink}">
+                <c:if test="${showJudgeStatistics}">
+                    <div class="p-ContestProposals__header__team">
+                        <h2>Admin Information</h2>
                         <div class="judgingForm">
                             <div>
                                 <c:forEach var="judge" items="${contest.contestJudges}">
@@ -205,9 +205,9 @@
                                 </c:forEach>
                             </div>
                         </div>
-                    </c:if>
-                </div>
-                
+                    </div>
+                </c:if>
+
             </div>
 
             <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
