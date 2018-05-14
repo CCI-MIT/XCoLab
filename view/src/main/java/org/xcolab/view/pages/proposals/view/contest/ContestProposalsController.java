@@ -160,7 +160,7 @@ public class ContestProposalsController extends BaseProposalsController {
         }
     }
 
-    @GetMapping("/api/contests/downloadContestProposalsList")
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/downloadContestProposalsList")
     public void downloadContestProposalsList(HttpServletRequest request, HttpServletResponse response,
             Member loggedInMember, ProposalContext proposalContext)
             throws IOException {
