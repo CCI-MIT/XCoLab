@@ -48,6 +48,18 @@
             </c:choose>
         </div>
 
+        <c:if test="${proposalsPermissions.canFellowActions}">
+            <a class="btn btn-primary" rel="nofollow" href="#">
+                Assign all Judges
+            </a>
+        </c:if>
+
+        <c:if test="${proposalsPermissions.canFellowActions}">
+            <a class="btn btn-primary" rel="nofollow" href="#">
+                Remove unfinished Judges
+            </a>
+        </c:if>
+
         <c:if test="${proposalsDisplayPermissions.canSeeCreateProposalButton}">
             <c:set var="createProposalUrl" value="${contest.newProposalLinkUrl}"/>
             <c:set var="createProposalBtnClass"
