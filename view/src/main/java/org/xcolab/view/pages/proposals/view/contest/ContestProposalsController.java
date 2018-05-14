@@ -123,12 +123,6 @@ public class ContestProposalsController extends BaseProposalsController {
         }
         model.addAttribute("showEditLink", showEditLink);
 
-        boolean showJudgeStatistics = false;
-        if (loggedInMember != null) {
-            showJudgeStatistics = contest.getCanAdminJudging(loggedInMember.getUserId());
-        }
-        model.addAttribute("showJudgeStatistics", showJudgeStatistics);
-
         setBasePageAttributes(proposalContext, model);
         return "/proposals/contestProposals";
     }
