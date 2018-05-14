@@ -127,7 +127,7 @@ public class ContestProposalsController extends BaseProposalsController {
         if (loggedInMember != null) {
             showJudgeStatistics = contest.getCanAdminJudging(loggedInMember.getUserId());
         }
-        model.addAttribute("showJudgeStatistics", showJudgeStatistics)
+        model.addAttribute("showJudgeStatistics", showJudgeStatistics);
 
         setBasePageAttributes(proposalContext, model);
         return "/proposals/contestProposals";
