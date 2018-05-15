@@ -26,8 +26,13 @@ public class ProposalCsvWriter extends CsvResponseWriter {
             "Proposal name",
             "Proposal team name",
             "Proposal team size",
-            "Proposal team members",
-            "Proposal authorId",
+            "Proposal team members (IDs)",
+            "Proposal team members (names)",
+            "Proposal author (ID)",
+            "Proposal author (name)",
+            "Proposal comments",
+            "Proposal supports",
+            "Proposal votes",
             "Proposal create date",
             "Proposal update date",
             "Proposal pitch"
@@ -57,7 +62,15 @@ public class ProposalCsvWriter extends CsvResponseWriter {
                     .map(ProposalTeamMember::getUserId)
                     .map(String::valueOf)
                     .collect(Collectors.joining(",")));
+            addValue(row, proposal.getMembers().stream()
+                    .map(ProposalTeamMember::getFullName)
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(",")));
             addValue(row, proposal.getAuthorId());
+            addValue(row, proposal.getAuthorName());
+            addValue(row, proposal.getCommentsCount());
+            addValue(row, proposal.getSupportersCount());
+            addValue(row, proposal.getVotesCount());
             addValue(row, proposal.getCreateDate());
             addValue(row, proposal.getUpdatedDate());
             addValue(row, proposal.getPitch());

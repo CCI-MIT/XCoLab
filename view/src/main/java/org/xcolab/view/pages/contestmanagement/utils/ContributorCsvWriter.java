@@ -13,10 +13,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class WinnerCsvWriter extends CsvResponseWriter {
+public class ContributorCsvWriter extends CsvResponseWriter {
 
     private static final List<String> COLUMN_NAMES = Arrays.asList(
             "Contest id",
@@ -33,9 +34,14 @@ public class WinnerCsvWriter extends CsvResponseWriter {
             "Member email",
             "Member role"
     );
+    private Predicate<Proposal> filterPredicate = proposal -> true;
 
-    public WinnerCsvWriter(HttpServletResponse response) throws IOException {
-        super("winnerReport", COLUMN_NAMES, response);
+    public ContributorCsvWriter(HttpServletResponse response) throws IOException {
+        super("contributorReport", COLUMN_NAMES, response);
+    }
+
+    public void addFilter(Predicate<Proposal> filterPredicate) {
+        this.filterPredicate = this.filterPredicate.and(filterPredicate);
     }
 
     public void writeProposalsInContest(Contest contest) {
@@ -44,11 +50,10 @@ public class WinnerCsvWriter extends CsvResponseWriter {
         List<Proposal> proposals = ProposalClientUtil.listProposals(contest.getContestPK());
 
         for (Proposal proposal : proposals) {
-            final ProposalRibbon ribbonWrapper = proposal.getRibbonWrapper();
-            if (ribbonWrapper.getRibbon() == 0) {
+            if (!filterPredicate.test(proposal)) {
                 continue;
             }
-
+            final ProposalRibbon ribbonWrapper = proposal.getRibbonWrapper();
             for (ProposalTeamMember teamMember : proposal.getMembers()) {
                 List<String> row = new ArrayList<>();
                 addValue(row, contest.getContestPK());
