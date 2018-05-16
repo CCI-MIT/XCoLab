@@ -28,11 +28,11 @@ public class CreateUserBean implements Serializable {
     private String screenName;
 
     @NotBlank
-    @Email(regexp = EMAIL_REGEX)
+    @Email
     private String email;
 
     @NotBlank
-    @Email(regexp = EMAIL_REGEX)
+    @Email
     private String retypeEmail;
 
     @NotBlank
