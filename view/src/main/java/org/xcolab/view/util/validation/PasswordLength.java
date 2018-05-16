@@ -8,16 +8,19 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
-@Pattern(regexp = "^[a-zA-Z0-9]*$")
+@Size.List ({
+        @Size(min=8, message = "{register.password.min}"),
+        @Size(max=512, message="{register.password.max}")
+})
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ValidScreenName {
+public @interface PasswordLength {
 
-    String message() default "{register.screenName.valid}";
+    String message() default "";
 
     Class<?>[] groups() default {};
 

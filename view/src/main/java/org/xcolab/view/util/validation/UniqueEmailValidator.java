@@ -1,5 +1,6 @@
 package org.xcolab.view.util.validation;
 
+import org.jooq.tools.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.xcolab.client.sharedcolab.SharedColabClient;
@@ -7,10 +8,14 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * Validates that the given email address is unique.
+ *
+ * An empty or null value is considered valid.
+ */
 public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
 
     private final ResourceMessageResolver resourceMessageResolver;
-    private String emailProperty;
 
     @Autowired
     public UniqueEmailValidator(ResourceMessageResolver resourceMessageResolver) {
@@ -19,16 +24,14 @@ public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
 
     @Override
     public void initialize(UniqueEmail constraintAnnotation) {
-        emailProperty = constraintAnnotation.emailProperty();
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
 
-        String email =
-                ConstraintValidatorHelper.getPropertyValue(String.class, emailProperty, value);
+        String email = (String) value;
 
-        if (email == null) {
+        if (StringUtils.isEmpty(email)) {
             return true;
         }
 

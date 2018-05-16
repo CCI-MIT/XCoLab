@@ -9,15 +9,16 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Target({ElementType.TYPE})
+@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ValidBioLengthValidator.class)
+@Constraint(validatedBy = HtmlMaxLengthValidator.class)
 @Documented
-public @interface ValidBioLength {
+public @interface HtmlMaxLength {
 
-    String bioProperty();
-
-    boolean allowNull() default false;
+    /**
+     * Maximum length of the HTML content.
+     */
+    int value();
 
     String message() default "";
 

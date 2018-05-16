@@ -2,7 +2,6 @@ package org.xcolab.view.pages.profile.beans;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -11,15 +10,14 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.view.util.validation.CompareStrings;
+import org.xcolab.view.util.validation.HtmlMaxLength;
+import org.xcolab.view.util.validation.PasswordLength;
 import org.xcolab.view.util.validation.UniqueEmail;
-import org.xcolab.view.util.validation.ValidBioLength;
 
 import java.io.Serializable;
 
 @CompareStrings(propertyNames = {"password,retypePassword", "email,retypeEmail"}, groups = {
         UserBean.PasswordChanged.class, UserBean.EmailChanged.class})
-@UniqueEmail(emailProperty = "email", groups = {UserBean.EmailChanged.class})
-@ValidBioLength(bioProperty = "shortBio")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,6 +33,7 @@ public class UserBean implements Serializable {
 
     @NotBlank(groups = {UserBean.EmailChanged.class})
     @Email(groups = {UserBean.EmailChanged.class})
+    @UniqueEmail(groups = {UserBean.EmailChanged.class})
     private String email;
 
     @NotBlank(groups = {UserBean.EmailChanged.class})
@@ -48,23 +47,20 @@ public class UserBean implements Serializable {
     private String lastName;
 
     @NotBlank(groups = {UserBean.PasswordChanged.class})
-    @Length(min = 8, max = 24, groups = {UserBean.PasswordChanged.class})
     private String currentPassword;
 
     @NotBlank(groups = {UserBean.PasswordChanged.class})
-    @Length(min = 8, max = 24, groups = {UserBean.PasswordChanged.class})
+    @PasswordLength(groups = {UserBean.PasswordChanged.class})
     private String password;
 
     @NotBlank(groups = {UserBean.PasswordChanged.class})
-    @Length(min = 8, max = 24, groups = {UserBean.PasswordChanged.class})
     private String retypePassword;
 
+    @HtmlMaxLength(2000)
     private String shortBio;
 
     @NotBlank(message = "A country selection is required. Please selected a country from the list above.")
     private String countryCode;
-
-
 
     private String defaultLocale;
 

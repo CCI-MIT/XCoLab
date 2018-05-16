@@ -8,32 +8,32 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ValidBioLengthValidator implements ConstraintValidator<ValidBioLength, Object> {
+public class HtmlMaxLengthValidator implements ConstraintValidator<HtmlMaxLength, Object> {
 
-    private static final int BIO_MAX_LENGTH = 2000;
-    private String bioProperty;
+    private int max;
 
     private final ResourceMessageResolver resourceMessageResolver;
 
     @Autowired
-    public ValidBioLengthValidator(ResourceMessageResolver resourceMessageResolver) {
+    public HtmlMaxLengthValidator(ResourceMessageResolver resourceMessageResolver) {
         this.resourceMessageResolver = resourceMessageResolver;
     }
 
     @Override
-    public void initialize(ValidBioLength constraintAnnotation) {
-        bioProperty = constraintAnnotation.bioProperty();
+    public void initialize(HtmlMaxLength constraintAnnotation) {
+        max = constraintAnnotation.value();
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-        String bio = ConstraintValidatorHelper.getPropertyValue(String.class, bioProperty, value);
-        if (bio == null) {
+        String content = (String) value;
+        if (content == null) {
             // ignore in case of null. Another validator will care about this
             return true;
         }
 
-        if (validateBio(bio)) {
+        final String plainText = Jsoup.parse(content).text();
+        if (plainText.length() <= max) {
             return true;
         } else {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
@@ -43,9 +43,7 @@ public class ValidBioLengthValidator implements ConstraintValidator<ValidBioLeng
 			 */
             if (isDefaultMessage) {
                 context.disableDefaultConstraintViolation();
-                String message = resourceMessageResolver
-                        .getLocalizedMessage("register.form.validation.biography.message",
-                                new String[]{BIO_MAX_LENGTH + ""});
+                String message = "This field may not be more than " + max + " characters.";
                 ConstraintValidatorContext.ConstraintViolationBuilder violationBuilder =
                         context.buildConstraintViolationWithTemplate(message);
                 violationBuilder.addConstraintViolation();
@@ -53,10 +51,5 @@ public class ValidBioLengthValidator implements ConstraintValidator<ValidBioLeng
 
             return false;
         }
-    }
-
-    public boolean validateBio(String bio) {
-
-        return Jsoup.parse(bio).text().length() <= BIO_MAX_LENGTH;
     }
 }
