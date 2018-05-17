@@ -196,7 +196,7 @@
                                                                    text="${judge.fullName} (${proposalCount})"/>
                                             <div class="hidden">
                                             <span id="js-Tooltip__content__judgedata_${judge.userId}">
-                                                This Judge has evaluated ${proposalAlreadyJudgedCount} out of the ${proposalCount} proposals assigned to them.
+                                                ${judge.fullName} has evaluated ${proposalAlreadyJudgedCount} out of the ${proposalCount} proposals assigned to them.
                                             </span>
                                             </div>
                                         </judging:judgeAssignedProposalCount>
