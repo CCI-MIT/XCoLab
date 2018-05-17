@@ -7,7 +7,8 @@ public enum ColabTheme {
     CLIMATE_COLAB(205),
     CROWDSENSOR(109, true),
     RESILIENCE_DIALOGUES(136),
-    CLIMATE_RISKS_COLAB(145, true);
+    CLIMATE_RISKS_COLAB(145, true),
+    FUTURES_COLAB(145, true);
 
     private final String themeName;
     private final int logoWidth;
