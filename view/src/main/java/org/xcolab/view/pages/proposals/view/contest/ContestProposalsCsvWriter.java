@@ -51,7 +51,7 @@ public class ContestProposalsCsvWriter extends CsvResponseWriter {
     ));
 
     public ContestProposalsCsvWriter(HttpServletResponse response) throws IOException {
-        super("proposalList", COLUMN_NAMES, response);
+        super("contestProposalsList", COLUMN_NAMES, response);
     }
 
     public void writeMembers(List<Proposal> proposals) {
