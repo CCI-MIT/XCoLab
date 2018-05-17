@@ -30,6 +30,7 @@ public class ContestProposalsCsvWriter extends CsvResponseWriter {
             "Supporter Count",
             "Absolute Proposal URL"
     );
+
     private static final Function<Proposal, List<String>> COLUMN_EXTRACTION_FUNCTION
             = (proposal -> Arrays.asList(
             proposal.getName(),

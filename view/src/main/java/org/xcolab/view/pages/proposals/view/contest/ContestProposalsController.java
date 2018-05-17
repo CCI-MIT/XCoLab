@@ -131,6 +131,7 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("showDownloadLink", showDownloadLink);
 
         setBasePageAttributes(proposalContext, model);
+
         return "/proposals/contestProposals";
     }
 
@@ -161,8 +162,8 @@ public class ContestProposalsController extends BaseProposalsController {
             throws IOException {
 
         try (ContestProposalsCsvWriter csvWriter = new ContestProposalsCsvWriter(response)) {
-            List<Proposal> proposalList = getProposals(proposalContext, loggedInMember);
-            csvWriter.writeMembers(proposalList);
+            List<Proposal> contestProposalsList = getProposals(proposalContext, loggedInMember);
+            csvWriter.writeMembers(contestProposalsList);
         }
     }
 }
