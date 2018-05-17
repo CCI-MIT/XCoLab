@@ -102,13 +102,13 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
         }
 
         // save fellow action
-        if (fellowProposalScreeningBean.getFellowScreeningAction() != 0) {
-            proposalContext.getClients().getProposalPhaseClient()
-                    .setProposalContestPhaseAttribute(proposalId, contestPhaseId,
-                            ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0L,
-                            (long) fellowProposalScreeningBean.getFellowScreeningAction(),
-                            null);
-
+        proposalContext.getClients().getProposalPhaseClient()
+                .setProposalContestPhaseAttribute(proposalId, contestPhaseId,
+                        ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0L,
+                        (long) fellowProposalScreeningBean.getFellowScreeningAction(),
+                        null);
+        if (fellowProposalScreeningBean.getFellowScreeningAction()
+                != JudgingSystemActions.FellowAction.NO_DECISION.getAttributeValue()) {
             //save fellow action comment
             ProposalJudgingCommentHelper commentHelper =
                     new ProposalJudgingCommentHelper(proposal,
