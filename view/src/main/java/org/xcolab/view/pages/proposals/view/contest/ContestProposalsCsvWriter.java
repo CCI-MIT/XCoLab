@@ -13,16 +13,41 @@ import javax.servlet.http.HttpServletResponse;
 public class ContestProposalsCsvWriter extends CsvResponseWriter {
 
     private static final List<String> COLUMN_NAMES = Arrays.asList(
-            "Author name", "Description", "Name", "Proposal review", "Rating comment", "Team"
+            "Name",
+            "Author Name",
+            "Author Full Name",
+            "Team",
+            "Description",
+            "Clean Pitch",
+            "Pitch",
+            "Proposal Review",
+            "Rating Comment",
+            "Fellow Action Comment",
+            "Impact Comment Author",
+            "Impact Comment Iaf",
+            "All Judges finished Reviews",
+            "Vote Count",
+            "Supporter Count",
+            "Absolute Proposal URL"
     );
     private static final Function<Proposal, List<String>> COLUMN_EXTRACTION_FUNCTION
             = (proposal -> Arrays.asList(
-            proposal.getAuthorName(),
-            proposal.getDescription(),
             proposal.getName(),
+            proposal.getAuthorName(),
+            proposal.getAuthor().getFullName(),
+            proposal.getTeam(),
+            proposal.getDescription(),
+            proposal.getCleanPitch(),
+            proposal.getPitch(),
             proposal.getProposalReview(),
             proposal.getRatingComment(),
-            proposal.getTeam()
+            proposal.getFellowActionComment(),
+            proposal.getImpactCommentAuthor(),
+            proposal.getImpactCommentIaf(),
+            String.valueOf(proposal.getAllJudgesReviewFinished()),
+            String.valueOf(proposal.getVotesCount()),
+            String.valueOf(proposal.getSupportersCount()),
+            proposal.getAbsoluteProposalUrl()
     ));
 
     public ContestProposalsCsvWriter(HttpServletResponse response) throws IOException {
