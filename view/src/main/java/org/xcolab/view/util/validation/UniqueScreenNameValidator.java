@@ -1,5 +1,6 @@
 package org.xcolab.view.util.validation;
 
+import org.jooq.tools.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.xcolab.client.sharedcolab.SharedColabClient;
@@ -7,10 +8,14 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * Validates that the given screen name is unique.
+ *
+ * An empty or null value is considered valid.
+ */
 public class UniqueScreenNameValidator extends CustomValidator<UniqueScreenName> {
 
     private final ResourceMessageResolver resourceMessageResolver;
-    private String screenNameProperty;
 
     @Autowired
     public UniqueScreenNameValidator(ResourceMessageResolver resourceMessageResolver) {
@@ -19,16 +24,14 @@ public class UniqueScreenNameValidator extends CustomValidator<UniqueScreenName>
 
     @Override
     public void initialize(UniqueScreenName constraintAnnotation) {
-        this.screenNameProperty = constraintAnnotation.screenNameProperty();
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
 
-        String screenName =
-                ConstraintValidatorHelper.getPropertyValue(String.class, screenNameProperty, value);
+        String screenName = (String) value;
 
-        if (screenName == null) {
+        if (StringUtils.isEmpty(screenName)) {
             return true;
         }
 

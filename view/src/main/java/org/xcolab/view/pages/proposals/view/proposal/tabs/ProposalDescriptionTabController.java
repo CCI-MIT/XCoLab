@@ -250,7 +250,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
     private void setVotingDeadline(Model model, ProposalContext proposalContext, Contest baseContest) {
         Date votingDeadline = getVotingDeadline(proposalContext, baseContest);
         if (votingDeadline != null) {
-            final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, YYYY", Locale.US);
+            final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
             model.addAttribute("votingDeadline", customDateFormat.format(votingDeadline));
         } else {
             model.addAttribute("votingDeadline", "");
