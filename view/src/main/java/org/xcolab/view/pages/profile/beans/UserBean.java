@@ -2,7 +2,6 @@ package org.xcolab.view.pages.profile.beans;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -11,20 +10,17 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.view.util.validation.CompareStrings;
+import org.xcolab.view.util.validation.HtmlMaxLength;
+import org.xcolab.view.util.validation.PasswordLength;
 import org.xcolab.view.util.validation.UniqueEmail;
-import org.xcolab.view.util.validation.ValidBioLength;
 
 import java.io.Serializable;
 
 @CompareStrings(propertyNames = {"password,retypePassword", "email,retypeEmail"}, groups = {
         UserBean.PasswordChanged.class, UserBean.EmailChanged.class})
-@UniqueEmail(emailProperty = "email", groups = {UserBean.EmailChanged.class})
-@ValidBioLength(bioProperty = "shortBio")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final String EMAIL_REGEX =
-            "(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
     private String screenName;
 
@@ -32,15 +28,16 @@ public class UserBean implements Serializable {
     private String displayNameShort;
 
     @NotBlank(groups = {UserBean.EmailChanged.class})
-    @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "Please write a valid email!")
+    @Email(groups = {UserBean.EmailChanged.class})
     private String emailStored;
 
     @NotBlank(groups = {UserBean.EmailChanged.class})
-    @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "Please write a valid email!")
+    @Email(groups = {UserBean.EmailChanged.class})
+    @UniqueEmail(groups = {UserBean.EmailChanged.class})
     private String email;
 
     @NotBlank(groups = {UserBean.EmailChanged.class})
-    @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "Please write a valid email!")
+    @Email(groups = {UserBean.EmailChanged.class})
     private String retypeEmail;
 
     @NotBlank
@@ -50,23 +47,20 @@ public class UserBean implements Serializable {
     private String lastName;
 
     @NotBlank(groups = {UserBean.PasswordChanged.class})
-    @Length(min = 8, max = 24, groups = {UserBean.PasswordChanged.class})
     private String currentPassword;
 
     @NotBlank(groups = {UserBean.PasswordChanged.class})
-    @Length(min = 8, max = 24, groups = {UserBean.PasswordChanged.class})
+    @PasswordLength(groups = {UserBean.PasswordChanged.class})
     private String password;
 
     @NotBlank(groups = {UserBean.PasswordChanged.class})
-    @Length(min = 8, max = 24, groups = {UserBean.PasswordChanged.class})
     private String retypePassword;
 
+    @HtmlMaxLength(2000)
     private String shortBio;
 
     @NotBlank(message = "A country selection is required. Please selected a country from the list above.")
     private String countryCode;
-
-
 
     private String defaultLocale;
 

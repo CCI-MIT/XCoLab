@@ -199,11 +199,14 @@
                 </div>
 
                 <div class="col-12 col-md">
-                    <form:textarea cssClass="rte-editorPlaceholder form-control shortBioContent" path="shortBio" />
+                    <form:textarea cssClass="rte-editorPlaceholder form-control shortBioContent"
+                                   cssErrorClass="rte-editorPlaceholder form-control shortBioContent is-invalid"
+                                   path="shortBio" />
                     <div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
                         <span class="limit_characterCount"><!--  --></span>/&#160;
                         <span class="limit_charactersMax">2000</span> <spring:message code="register.form.fields.shortbio.maxcharmsg"/>
                     </div>
+                    <form:errors cssClass="invalid-feedback" path="shortBio"/>
                 </div>
             </div>
 

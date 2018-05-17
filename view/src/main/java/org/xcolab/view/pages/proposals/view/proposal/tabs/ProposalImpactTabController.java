@@ -140,6 +140,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                     } else {
                         return showImpactTabGlobal();
                     }
+                default:
             }
         }
         _log.warn("Using default impact tab view since contest tier is not set for contest: {}",
