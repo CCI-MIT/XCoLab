@@ -338,10 +338,10 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public String getProposalsString() {
-        this.getProposalWithPlurality(Plurality.PLURAL.name());
+        return this.getProposalWithPlurality(Plurality.PLURAL.name());
     }
 
     public String getProposalString() {
-        this.getProposalWithPlurality(Plurality.SINGULAR.name());
+        return this.getProposalWithPlurality(Plurality.SINGULAR.name());
     }
 }
