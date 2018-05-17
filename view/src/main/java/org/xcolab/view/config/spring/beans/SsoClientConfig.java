@@ -1,6 +1,10 @@
 package org.xcolab.view.config.spring.beans;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,19 +23,21 @@ import org.springframework.web.filter.CompositeFilter;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.config.spring.sso.ClimateXPrincipalExtractor;
 import org.xcolab.view.config.spring.sso.ColabPrincipalExtractor;
-import org.xcolab.view.config.spring.sso.CustomPrincipalExtractor;
 import org.xcolab.view.config.spring.sso.FacebookPrincipalExtractor;
 import org.xcolab.view.config.spring.sso.GooglePrincipalExtractor;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import javax.servlet.Filter;
 
 @EnableOAuth2Client
 @Configuration
 public class SsoClientConfig {
+
+    private static final Logger log = LoggerFactory.getLogger(SsoClientConfig.class);
 
     private final OAuth2ClientContext oauth2ClientContext;
     private final LoginRegisterService loginRegisterService;
@@ -48,15 +54,36 @@ public class SsoClientConfig {
     @Bean
     public SsoFilter ssoFilter() {
         SsoFilter ssoFilter = new SsoFilter(oauth2ClientContext);
-        ssoFilter.addFilter(facebook(), "/sso/facebook",
-                new FacebookPrincipalExtractor(loginRegisterService, memberDetailsService));
-        ssoFilter.addFilter(google(), "/sso/google",
-                new GooglePrincipalExtractor(loginRegisterService, memberDetailsService));
-        ssoFilter.addFilter(xcolab(), "/sso/xcolab",
-                new ColabPrincipalExtractor(loginRegisterService, memberDetailsService));
-        ssoFilter.addFilter(climateX(), "/sso/climatex",
-                new ClimateXPrincipalExtractor(loginRegisterService, memberDetailsService));
+        configureSsoFilter(ssoFilter, facebook(), "/sso/facebook", false,
+                FacebookPrincipalExtractor::new);
+        configureSsoFilter(ssoFilter, google(), "/sso/google", false,
+                GooglePrincipalExtractor::new);
+        configureSsoFilter(ssoFilter, xcolab(), "/sso/xcolab", true,
+                ColabPrincipalExtractor::new);
+        configureSsoFilter(ssoFilter, climateX(), "/sso/climatex", true,
+                ClimateXPrincipalExtractor::new);
         return ssoFilter;
+    }
+
+    private void configureSsoFilter(SsoFilter ssoFilter, SsoClientResources clientResources,
+            String path, boolean requireHostname,
+            BiFunction<LoginRegisterService, MemberDetailsService, PrincipalExtractor> principalExtractorSupplier) {
+        if (isClientConfigured(clientResources)) {
+            if (requireHostname) {
+                if (StringUtils.isEmpty(clientResources.getHostname())) {
+                    throw new IllegalStateException("Hostname is not configured for SsoFilter " + path);
+                }
+            }
+            ssoFilter.addFilter(clientResources, path, principalExtractorSupplier.apply(
+                    loginRegisterService, memberDetailsService));
+        } else {
+            log.info("Skipped configuring SsoFilter {} because client is not configured.", path);
+        }
+    }
+
+    private boolean isClientConfigured(SsoClientResources clientResources) {
+        final AuthorizationCodeResourceDetails client = clientResources.getClient();
+        return StringUtils.isNoneEmpty(client.getClientId(), client.getClientSecret());
     }
 
     @Bean
@@ -108,12 +135,12 @@ public class SsoClientConfig {
         }
 
         public void addFilter(SsoClientResources clientResources, String path,
-                CustomPrincipalExtractor principalExtractor) {
+                PrincipalExtractor principalExtractor) {
             filters.add(ssoFilter(clientResources, path, principalExtractor));
         }
 
         private Filter ssoFilter(SsoClientResources client, String path,
-                CustomPrincipalExtractor principalExtractor) {
+                PrincipalExtractor principalExtractor) {
             OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter(path);
             OAuth2RestTemplate template = new OAuth2RestTemplate(client.getClient(), oAuth2ClientContext);
             filter.setRestTemplate(template);
