@@ -336,7 +336,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public boolean isVerifiedAccount() {
-        return hasLinkedSocialAccount() || isEmailConfirmed;
+        return isEmailConfirmed;
     }
 
     @JsonIgnore

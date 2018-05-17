@@ -72,8 +72,7 @@
                     </div>
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
                         <button type="button" class="btn btn-primary btn-sm js-PostLink float-right"
-                                data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
-                                onclick="if(!deferUntilLogin()) return false;">
+                                data-require-login="true" data-url="${supportProposalActionURL}">
                             <collab:message var="supportText" code="contests.supports.support" contestType="${contestType}" />
                             <spring:message var="retractText" code="contests.supports.retract" />
                             ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : retractText }
