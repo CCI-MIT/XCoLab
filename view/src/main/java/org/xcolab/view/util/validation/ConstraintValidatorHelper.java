@@ -62,6 +62,8 @@ public abstract class ConstraintValidatorHelper {
         switch (comparisonMode) {
             case EQUAL_IGNORE_CASE:
                 ignoreCase = true;
+                break;
+            default:
         }
 
         List<String> values = new ArrayList<>(propertyValues.size());
