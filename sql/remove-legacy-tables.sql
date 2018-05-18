@@ -224,6 +224,7 @@ DROP TABLE IF EXISTS Survey;
 DROP TABLE IF EXISTS Subscription;
 DROP TABLE IF EXISTS SocialRequest;
 DROP TABLE IF EXISTS SocialRelation;
+DROP TABLE IF EXISTS SocialActivity;
 DROP TABLE IF EXISTS SocialActivitySetting;
 DROP TABLE IF EXISTS SocialActivitySet;
 DROP TABLE IF EXISTS SocialActivityLimit;
