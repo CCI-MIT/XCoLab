@@ -28,10 +28,13 @@ public class Member implements Serializable {
     private static final long serialVersionUID = 1;
 
     @JsonIgnore
-    private static final String USER_PROFILE_PATH = "/members/profile/";
+    private static final String USER_PROFILE_PATH = "/members/profile/%d";
 
     @JsonIgnore
-    private static final String USER_IMAGE_PATH = "/image/member/";
+    private static final String USER_PROFILE_EDIT_PATH = "/members/profile/%d/edit";
+
+    @JsonIgnore
+    private static final String USER_IMAGE_PATH = "/image/member/%d";
 
     public static final TypeProvider<Member> TYPES =
             new TypeProvider<>(Member.class,
@@ -417,7 +420,12 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public String getProfileLinkUrl()  {
-        return USER_PROFILE_PATH + getId_();
+        return String.format(USER_PROFILE_PATH, getId_());
+    }
+
+    @JsonIgnore
+    public String getProfileEditUrl()  {
+        return String.format(USER_PROFILE_EDIT_PATH, getId_());
     }
 
     @JsonIgnore
@@ -435,7 +443,7 @@ public class Member implements Serializable {
     }
 
     private String getRelativeImageUrl() {
-        return getPortraitId() != 0 ? USER_IMAGE_PATH + getPortraitId() : "";
+        return getPortraitId() != 0 ? String.format(USER_IMAGE_PATH, getPortraitId()) : "";
     }
 
     @JsonIgnore
@@ -446,6 +454,10 @@ public class Member implements Serializable {
     @JsonIgnore
     public int getNumberOfMessagesLeft() {
         return MessagingClient.getNumberOfMessagesLeft(getId_());
+    }
+
+    public boolean getIsProfileComplete() {
+        return firstName != null && lastName != null && emailAddress != null && country != null;
     }
 
     @Override

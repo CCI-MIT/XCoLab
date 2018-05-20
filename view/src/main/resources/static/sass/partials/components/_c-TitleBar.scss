@@ -2,7 +2,7 @@
 
 $c-TitleBar__backgroundColor: $t-Color__primary__gray--light !default;
 $c-TitleBar__borderBottom: 1px solid $t-Color__primary__gray !default;
-$c-TitleBar__contestSummary__backgroundColor--light: $t-Color__gray--medium-500 !default;
+$c-TitleBar__contestSummary__backgroundColor--light: $t-Color__gray--light-100 !default;
 $c-TitleBar__textColor: $t-Color__gray--dark-800 !default;
 $c-TitleBar__element--active__capitalization: none !default;
 $c-TitleBar__element--disabled__textColor: $t-Color__gray--dark-600 !default;
@@ -14,8 +14,8 @@ $c-TitleBar__capitalization: none !default;
 
 $c-TitleBar__contestSummary__backgroundColor: $t-Color__primary__gray--light !default;
 
-$c-TitleBar__actionButton__backgroundColor: $c-TitleBar__backgroundColor !default;
-$c-TitleBar__actionButton__backgroundColor--hover: $c-TitleBar__backgroundColor !default;
+$c-TitleBar__actionButton__backgroundColor: $primary !default;
+$c-TitleBar__actionButton__backgroundColor--hover: darken($c-TitleBar__actionButton__backgroundColor, 10%) !default;
 
 //TODO: theme
 $c-TitleBar__separator__color: #B9E3FF !default;
@@ -47,6 +47,12 @@ $_c-TitleBar__borderWidth: 6px;
 
   &.contestSummary {
     background: $c-TitleBar__contestSummary__backgroundColor;
+  }
+
+  .close {
+    position: absolute;
+    top: 8px;
+    right: 16px;
   }
 }
 

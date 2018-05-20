@@ -188,6 +188,27 @@
         </div>
     </c:if>
 
+    <c:if test="${_themeContext.authenticationVariables.isLoggedIn and !_themeContext.authenticationVariables.member.isProfileComplete}">
+        <c:if test="${not cookie.containsKey('xc-TitleBar__completeProfile--hidden')}">
+            <div class="c-TitleBar c-TitleBar--light" style="position: relative;">
+                <div class="container">
+                    <div class="c-TitleBar__content">
+                        <div class="c-TitleBar__element pl-0">
+                            Tell the ${_themeContext.colabName} community who you are and complete your profile!
+                        </div>
+
+                        <a class="c-TitleBar__actionButton" href="${_themeContext.authenticationVariables.member.profileEditUrl}">
+                            Complete profile
+                        </a>
+                    </div>
+                </div>
+                <button class="close" data-dismiss="c-TitleBar" aria-label="Close">
+                    <span aria-hidden="true">&#215;</span> <!-- &#215; == &times; -->
+                </button>
+            </div>
+        </c:if>
+    </c:if>
+
 
     <!-- ============ Navbar ============ -->
 
