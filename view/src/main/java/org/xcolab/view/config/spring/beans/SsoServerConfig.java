@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.security.oauth2.authserver.AuthorizationServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.authserver.OAuth2AuthorizationServerConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +38,7 @@ import java.util.Map;
 @SuppressWarnings("ProhibitedExceptionDeclared")
 @EnableAuthorizationServer
 @RestController
+@ConditionalOnBean(BaseClientDetails.class)
 @Configuration
 public class SsoServerConfig extends OAuth2AuthorizationServerConfiguration {
 
