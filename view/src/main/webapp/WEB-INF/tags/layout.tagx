@@ -202,7 +202,7 @@
                         </a>
                     </div>
                 </div>
-                <button class="close" data-dismiss="c-TitleBar" aria-label="Close">
+                <button class="close js-Tooltip" data-dismiss="c-TitleBar" title="Remind me later" aria-label="Remind me later">
                     <span aria-hidden="true">&#215;</span> <!-- &#215; == &times; -->
                 </button>
             </div>
