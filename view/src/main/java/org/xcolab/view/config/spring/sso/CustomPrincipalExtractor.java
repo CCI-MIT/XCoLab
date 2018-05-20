@@ -88,6 +88,7 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
 
     @Override
     public Object extractPrincipal(Map<String, Object> userInfoMap) {
+        log.debug("Extracting principal from user info map: {}", userInfoMap);
         final IdT ssoId = extractId(userInfoMap);
         if (ssoId == null) {
             throw new InternalException("Could not extract ssoId from User Info map.");
@@ -110,7 +111,13 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                         ssoId, emailAddress);
 
                 String firstName = extractFirstName(userInfoMap);
+                if (firstName == null) {
+                    throw new InternalException("Could not extract firstName from User Info map.");
+                }
                 String lastName = extractLastName(userInfoMap);
+                if (lastName == null) {
+                    throw new InternalException("Could not extract lastName from User Info map.");
+                }
                 final Locale locale = LocaleUtils.toLocale((String) userInfoMap.get("locale"));
                 String country;
                 String language;
@@ -118,6 +125,7 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                     country = StringUtils.isEmpty(locale.getCountry()) ? null : locale.getCountry();
                     language = I18nUtils.getSupportedLanguage(locale);
                 } else {
+                    log.debug("No country found. Setting defaults...");
                     country = null;
                     language = I18nUtils.DEFAULT_LANGUAGE;
                 }
