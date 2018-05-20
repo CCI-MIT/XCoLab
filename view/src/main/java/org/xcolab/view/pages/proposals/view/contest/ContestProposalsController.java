@@ -125,7 +125,7 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("showContributorsColumn",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
-        boolean showEditLink = proposalContext.getPermissions().getCanEdit();
+        boolean showEditLink = proposalContext.getPermissions().getCanEditContest();
         boolean showDownloadLink = proposalContext.getPermissions().getCanDownload();
         model.addAttribute("showEditLink", showEditLink);
         model.addAttribute("showDownloadLink", showDownloadLink);
