@@ -74,10 +74,10 @@ public class SsoClientConfig {
                     throw new IllegalStateException("Hostname is not configured for SsoFilter " + path);
                 }
             }
+            log.info("Configuring SsoFilter {} (clientId = {})", path,
+                    clientResources.client.getClientId());
             ssoFilter.addFilter(clientResources, path, principalExtractorSupplier.apply(
                     loginRegisterService, memberDetailsService));
-        } else {
-            log.info("Skipped configuring SsoFilter {} because client is not configured.", path);
         }
     }
 
@@ -178,6 +178,7 @@ public class SsoClientConfig {
             return hostname;
         }
 
+        @SuppressWarnings("unused")
         public void setHostname(String hostname) {
             this.hostname = hostname;
         }
