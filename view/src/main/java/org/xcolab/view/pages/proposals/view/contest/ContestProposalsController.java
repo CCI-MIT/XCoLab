@@ -156,14 +156,14 @@ public class ContestProposalsController extends BaseProposalsController {
         }
     }
 
-    @PostMapping("/contests/assignAllJudges")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/assignAllJudges")
     public void assignAllJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
     }
 
-    @PostMapping("/contests/removeUnfinishedJudges")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/removeUnfinishedJudges")
     public void removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
