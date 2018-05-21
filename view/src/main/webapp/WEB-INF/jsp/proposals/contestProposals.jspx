@@ -56,8 +56,8 @@
         </c:if>
 
         <c:if test="${proposalsPermissions.canFellowActions}">
-            <c:set value="${contest.contestUrl}/removeRemainingJudges" var="removeRemainingJudgesLink"/>
-            <a class="btn btn-primary" rel="nofollow" href="${removeRemainingJudgesLink}">
+            <c:set value="${contest.contestUrl}/removeUnfinishedJudges" var="removeUnfinishedJudgesLink"/>
+            <a class="btn btn-primary" rel="nofollow" href="${removeUnfinishedJudgesLink}">
                 Remove unfinished Judges
             </a>
         </c:if>

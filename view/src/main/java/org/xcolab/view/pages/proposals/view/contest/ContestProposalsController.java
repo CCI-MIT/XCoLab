@@ -163,8 +163,8 @@ public class ContestProposalsController extends BaseProposalsController {
 
     }
 
-    @PostMapping("/contests/removeRemainingJudges")
-    public void removeRemainingJudges(HttpServletRequest request, HttpServletResponse response,
+    @PostMapping("/contests/removeUnfinishedJudges")
+    public void removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
