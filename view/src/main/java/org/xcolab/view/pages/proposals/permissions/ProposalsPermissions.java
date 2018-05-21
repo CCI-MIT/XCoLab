@@ -103,6 +103,14 @@ public class ProposalsPermissions {
         );
     }
 
+    public boolean getCanEditContest() {
+        return isLoggedIn && !isGuest && getCanAdminAll();
+    }
+
+    public boolean getCanDownload() {
+        return isLoggedIn && !isGuest && getCanAdminAll();
+    }
+
     public boolean getCanDelete() {
         return isLoggedIn && !isGuest
                 && (getCanAdminAll() || planIsEditable && isProposalMember());
