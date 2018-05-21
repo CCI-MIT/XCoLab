@@ -18,32 +18,32 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean;
 import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterLineBean;
 import org.xcolab.view.pages.contestmanagement.beans.ProposalReportBean;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
-import org.xcolab.view.pages.contestmanagement.beans.BatchRegisterBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCsvWriter;
+import org.xcolab.view.pages.contestmanagement.utils.ContributorCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalCsvWriter;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalExportType;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvWriter;
-import org.xcolab.view.pages.contestmanagement.utils.WinnerCsvWriter;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
 import org.xcolab.view.util.entity.enums.MemberRole;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -210,8 +210,15 @@ public class AdminTabController extends AbstractTabController {
                 }
                 break;
             }
+            case CONTRIBUTORS: {
+                try (ContributorCsvWriter csvWriter = new ContributorCsvWriter(response)) {
+                    contests.forEach(csvWriter::writeProposalsInContest);
+                }
+                break;
+            }
             case WINNING_CONTRIBUTORS: {
-                try (WinnerCsvWriter csvWriter = new WinnerCsvWriter(response)) {
+                try (ContributorCsvWriter csvWriter = new ContributorCsvWriter(response)) {
+                    csvWriter.addFilter(proposal -> proposal.getRibbonWrapper().getRibbon() > 0);
                     contests.forEach(csvWriter::writeProposalsInContest);
                 }
                 break;

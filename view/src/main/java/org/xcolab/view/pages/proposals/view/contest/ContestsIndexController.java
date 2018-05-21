@@ -168,7 +168,9 @@ public class ContestsIndexController extends BaseProposalsController {
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
 
             List<Contest> allContests = wrapContests(ContestClientUtil.getContests(
-                    null, false, contestType.getId()));
+                    null, false, contestType.getId())).stream()
+                    .filter(Contest::getShowInOutlineView)
+                    .collect(Collectors.toList());
 
             final List<Contest> activeContests = allContests.stream()
                     .filter(Contest::isContestActive)
