@@ -196,16 +196,16 @@ public class ContestProposalsController extends BaseProposalsController {
         if (proposalContext.getPermissions().getCanFellowActions()) {
 
             final Contest contest = proposalContext.getContest();
-            final Proposal proposal = proposalContext.getProposal();
-            long proposalId = proposal.getProposalId();
+            final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
-            ProposalsPermissions permissions = proposalContext.getPermissions();
 
-            proposalContext.getClients().getProposalPhaseClient()
-                    .persistSelectedJudgesAttribute(
-                            proposalId,
-                            contestPhaseId,
-                            null);
+            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getContestPK())) {
+                proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
+                        proposal.getProposalId(),
+                        contestPhaseId,
+                        null);
+            }
+
             return "redirect:" + contest.getContestLinkUrl();
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to remove unfinished judges");
