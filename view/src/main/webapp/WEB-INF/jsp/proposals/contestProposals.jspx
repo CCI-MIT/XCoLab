@@ -49,13 +49,15 @@
         </div>
 
         <c:if test="${proposalsPermissions.canFellowActions}">
-            <a class="btn btn-primary" rel="nofollow" href="#">
+            <c:set value="${contest.contestUrl}/assignAllJudges" var="assignAllJudgesLink"/>
+            <a class="btn btn-primary" rel="nofollow" href="${assignAllJudgesLink}">
                 Assign all Judges
             </a>
         </c:if>
 
         <c:if test="${proposalsPermissions.canFellowActions}">
-            <a class="btn btn-primary" rel="nofollow" href="#">
+            <c:set value="${contest.contestUrl}/removeRemainingJudges" var="removeRemainingJudgesLink"/>
+            <a class="btn btn-primary" rel="nofollow" href="${removeRemainingJudgesLink}">
                 Remove unfinished Judges
             </a>
         </c:if>
