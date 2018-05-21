@@ -225,7 +225,8 @@ public class UserProfileController {
                     permissions.getCanAdmin() && !currentUserProfile.isViewingOwnProfile();
             final String currentPassword = updatedUserBean.getCurrentPassword();
             if (MembersClient.validatePassword(currentPassword.trim(), currentUserProfile.getUser().getUserId())
-                    || isAdminEditingOtherProfile) {
+                    || (isAdminEditingOtherProfile && MembersClient.validatePassword(
+                            currentPassword.trim(), permissions.getLoggedInMember().getUserId()))) {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
