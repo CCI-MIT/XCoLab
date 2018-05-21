@@ -175,7 +175,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 selectedJudges.add(judge.getUserId());
             }
 
-            for (Proposal proposal : proposalClient.getAllProposals()) {
+            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getContestPK())) {
                 proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
                         proposal.getProposalId(),
                         contestPhaseId,
