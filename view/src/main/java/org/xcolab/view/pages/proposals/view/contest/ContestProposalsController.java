@@ -161,13 +161,23 @@ public class ContestProposalsController extends BaseProposalsController {
             Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
+        if (proposalContext.getPermissions().getCanFellowActions()) {
+
+        } else {
+            throw new ProposalsAuthorizationException("User isn't allowed to assign all judges");
+        }
     }
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/removeUnfinishedJudges")
     public void removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
+        
+        if (proposalContext.getPermissions().getCanFellowActions()) {
 
+        } else {
+            throw new ProposalsAuthorizationException("User isn't allowed to remove unfinished judges");
+        }
     }
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/downloadContestProposalsList")
