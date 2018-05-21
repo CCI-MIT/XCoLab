@@ -11,7 +11,7 @@ public class UserEmailBean {
     private boolean acceptTos;
 
     @NotBlank(message = "Please enter your email address.")
-    @Email(message = "Must be a valid email address.")
+    @Email
     private String email;
 
     public String getEmail() {

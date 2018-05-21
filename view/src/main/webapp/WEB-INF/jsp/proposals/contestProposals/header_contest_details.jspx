@@ -152,6 +152,12 @@
                     </c:forEach>
                 </div>
                 <div class="p-ContestProposals__header__buttons cb-btn-spacer">
+
+                    <c:if test="${showDownloadLink}">
+                        <c:set value="${contest.contestUrl}/downloadContestProposalsList" var="downloadContestProposalsList"/>
+                        <a class="btn cb-btn-outline-admin" href="${downloadContestProposalsList}">Export CSV</a>
+                    </c:if>
+
                     <c:if test="${showEditLink}">
                         <a href="/admin/contest/details/contestId/${contest.contestPK}" class="btn cb-btn-outline-admin ">
                             Edit Contest

@@ -8,16 +8,16 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.constraints.Pattern;
 
-@Target({ElementType.TYPE})
+@Pattern(regexp = "^[a-zA-Z0-9]*$")
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ValidScreenNameValidator.class)
+@Constraint(validatedBy = {})
 @Documented
 public @interface ValidScreenName {
 
-    String screenNameProperty();
-
-    String message() default "";
+    String message() default "{register.screenName.valid}";
 
     Class<?>[] groups() default {};
 

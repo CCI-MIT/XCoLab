@@ -11,7 +11,7 @@ public class ContactBean implements Serializable {
 
     private String name;
 
-    @Email(message = "Please enter a valid email address.")
+    @Email
     private String email;
 
     @NotBlank(message = "Please enter a message.")

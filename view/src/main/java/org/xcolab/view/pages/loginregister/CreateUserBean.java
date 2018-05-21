@@ -5,34 +5,32 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import org.xcolab.view.util.validation.CompareStrings;
+import org.xcolab.view.util.validation.HtmlMaxLength;
+import org.xcolab.view.util.validation.PasswordLength;
 import org.xcolab.view.util.validation.UniqueEmail;
 import org.xcolab.view.util.validation.UniqueScreenName;
-import org.xcolab.view.util.validation.ValidBioLength;
 import org.xcolab.view.util.validation.ValidScreenName;
 
 import java.io.Serializable;
 
 @CompareStrings(propertyNames = {"password,retypePassword", "email,retypeEmail"})
-@UniqueEmail(emailProperty = "email")
-@UniqueScreenName(screenNameProperty = "screenName")
-@ValidScreenName(screenNameProperty = "screenName")
-@ValidBioLength(bioProperty = "shortBio")
 public class CreateUserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final String EMAIL_REGEX =
-            "(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
     @NotBlank
     @Length(min = 3, max = 26)
+    @ValidScreenName
+    @UniqueScreenName
     private String screenName;
 
     @NotBlank
-    @Email(regexp = EMAIL_REGEX)
+    @Email
+    @UniqueEmail
     private String email;
 
     @NotBlank
-    @Email(regexp = EMAIL_REGEX)
+    @Email
     private String retypeEmail;
 
     @NotBlank
@@ -42,22 +40,19 @@ public class CreateUserBean implements Serializable {
     private String lastName;
 
     @NotBlank
-    @Length(min = 8, max = 24)
+    @PasswordLength
     private String password;
 
     @NotBlank
-    @Length(min = 8, max = 24)
     private String retypePassword;
 
+    @HtmlMaxLength(2000)
     private String shortBio;
 
     @NotBlank
-    @Length(max = 300)
     private String country;
 
-
-    @NotBlank(message = "register.form.validation.language")
-    @Length(max = 300)
+    @NotBlank
     private String language;
 
     private String recaptcha_response_field;

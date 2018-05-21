@@ -59,18 +59,12 @@ public class ContestProposalsController extends BaseProposalsController {
         return showContestProposalsPage(model, proposalContext, sortFilterPage, loggedInMember);
     }
 
-    private String showContestProposalsPage(Model model, ProposalContext proposalContext,
-            final SortFilterPage sortFilterPage, Member loggedInMember) {
+    private List<Proposal> getProposals(ProposalContext proposalContext, Member loggedInMember) {
+        final ClientHelper clients = proposalContext.getClients();
+        final ProposalClient proposalClient = clients.getProposalClient();
 
         ContestPhase contestPhase = proposalContext.getContestPhase();
         Contest contest = proposalContext.getContest();
-
-        if (contest == null || contestPhase == null) {
-            throw new ProposalIdOrContestIdInvalidException();
-        }
-
-        final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
 
         final List<Proposal> activeProposals;
         final ContestStatus phaseStatus = contestPhase.getStatus();
@@ -106,6 +100,21 @@ public class ContestProposalsController extends BaseProposalsController {
             }
         }
 
+        return proposals;
+    }
+
+    private String showContestProposalsPage(Model model, ProposalContext proposalContext,
+            final SortFilterPage sortFilterPage, Member loggedInMember) {
+
+        ContestPhase contestPhase = proposalContext.getContestPhase();
+        Contest contest = proposalContext.getContest();
+
+        if (contest == null || contestPhase == null) {
+            throw new ProposalIdOrContestIdInvalidException();
+        }
+
+        List<Proposal> proposals = getProposals(proposalContext, loggedInMember);
+
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("proposals", new SortedProposalList(proposals, sortFilterPage,
                 contestPhase));
@@ -116,14 +125,13 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("showContributorsColumn",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
-        boolean showEditLink = false;
-        if (loggedInMember != null) {
-            showEditLink = PermissionsClient.canAdminAll(loggedInMember.getUserId())
-                    || contest.getCanFellow(loggedInMember.getUserId());
-        }
+        boolean showEditLink = proposalContext.getPermissions().getCanEditContest();
+        boolean showDownloadLink = proposalContext.getPermissions().getCanDownload();
         model.addAttribute("showEditLink", showEditLink);
+        model.addAttribute("showDownloadLink", showDownloadLink);
 
         setBasePageAttributes(proposalContext, model);
+
         return "/proposals/contestProposals";
     }
 
@@ -162,6 +170,16 @@ public class ContestProposalsController extends BaseProposalsController {
 
     }
 
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/downloadContestProposalsList")
+    public void downloadContestProposalsList(HttpServletRequest request, HttpServletResponse response,
+            Member loggedInMember, ProposalContext proposalContext)
+            throws IOException {
+
+        try (ContestProposalsCsvWriter csvWriter = new ContestProposalsCsvWriter(response)) {
+            List<Proposal> contestProposalsList = getProposals(proposalContext, loggedInMember);
+            csvWriter.writeMembers(contestProposalsList);
+        }
+    }
 }
 
 
