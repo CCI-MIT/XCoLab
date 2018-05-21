@@ -167,21 +167,20 @@ public class ContestProposalsController extends BaseProposalsController {
         if (proposalContext.getPermissions().getCanFellowActions()) {
 
             final Contest contest = proposalContext.getContest();
-            final Proposal proposal = proposalContext.getProposal();
-            long proposalId = proposal.getProposalId();
+            final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
-            ProposalsPermissions permissions = proposalContext.getPermissions();
 
             List<Long> selectedJudges = new ArrayList<>();
             for (Member judge : contest.getContestJudges()) {
                 selectedJudges.add(judge.getUserId());
             }
 
-
-            proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
-                                proposalId,
-                                contestPhaseId,
-                                selectedJudges);
+            for (Proposal proposal : proposalClient.getAllProposals()) {
+                proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
+                        proposal.getProposalId(),
+                        contestPhaseId,
+                        selectedJudges);
+            }
 
             return "redirect:" + contest.getContestLinkUrl();
         } else {
