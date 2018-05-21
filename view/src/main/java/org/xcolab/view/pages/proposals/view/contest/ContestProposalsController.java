@@ -165,37 +165,23 @@ public class ContestProposalsController extends BaseProposalsController {
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanFellowActions()) {
+
             final Contest contest = proposalContext.getContest();
             final Proposal proposal = proposalContext.getProposal();
             long proposalId = proposal.getProposalId();
-            long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();
+            long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
             ProposalsPermissions permissions = proposalContext.getPermissions();
 
-            // Security handling
-            final boolean isContestFellow = permissions.getCanFellowActions()
-                    && proposal.isUserAmongFellows(currentMember.getUserId());
-            if (!isContestFellow && !permissions.getCanAdminAll()) {
-                return new AccessDeniedPage(currentMember).toViewName(response);
+            List<Long> selectedJudges = new ArrayList<>();
+
+            for (Member judge : contest.getContestJudges()) {
+                selectedJudges.add(judge.getUserId());
             }
 
-            // save selection of judges
-            if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions
-                    .FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
-                proposalContext.getClients().getProposalPhaseClient()
-                        .persistSelectedJudgesAttribute(
+            proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
                                 proposalId,
                                 contestPhaseId,
-                                fellowProposalScreeningBean.getSelectedJudges()
-                        );
-            } else {
-                //clear selected judges attribute since the decision is not to pass the proposal.
-                proposalContext.getClients().getProposalPhaseClient()
-                        .persistSelectedJudgesAttribute(
-                                proposalId,
-                                contestPhaseId,
-                                null
-                        );
-            }
+                                selectedJudges);
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to assign all judges");
         }
