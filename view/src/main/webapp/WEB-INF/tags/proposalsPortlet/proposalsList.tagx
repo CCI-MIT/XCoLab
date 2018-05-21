@@ -27,7 +27,7 @@
                 </c:otherwise>
             </c:choose>
         </c:if>
-        
+
         <div class="c-TableGrid__row c-TableGrid__row--continued ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'c-TableGrid__row--active' : ''}
                     ${contestPhase.completed ? 'completed' : ''}
                     ${additionalCSSClasses}">
