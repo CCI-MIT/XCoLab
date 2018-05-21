@@ -159,8 +159,8 @@ public class ContestProposalsController extends BaseProposalsController {
         }
     }
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/assignAllJudges")
-    public void assignAllJudges(HttpServletRequest request, HttpServletResponse response,
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/assignAllJudges")
+    public String assignAllJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
@@ -173,22 +173,24 @@ public class ContestProposalsController extends BaseProposalsController {
             ProposalsPermissions permissions = proposalContext.getPermissions();
 
             List<Long> selectedJudges = new ArrayList<>();
-
             for (Member judge : contest.getContestJudges()) {
                 selectedJudges.add(judge.getUserId());
             }
+
 
             proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
                                 proposalId,
                                 contestPhaseId,
                                 selectedJudges);
+
+            return "redirect:" + contest.getContestLinkUrl();
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to assign all judges");
         }
     }
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/removeUnfinishedJudges")
-    public void removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/removeUnfinishedJudges")
+    public String removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
 
@@ -205,6 +207,7 @@ public class ContestProposalsController extends BaseProposalsController {
                             proposalId,
                             contestPhaseId,
                             null);
+            return "redirect:" + contest.getContestLinkUrl();
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to remove unfinished judges");
         }
