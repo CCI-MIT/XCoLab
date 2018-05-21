@@ -83,6 +83,8 @@ public class SsoServerConfig extends OAuth2AuthorizationServerConfiguration {
     public Map<String, Object> user(Member member) {
         OAuth2Authentication authentication =
                 (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
+        log.debug("Received request with scopes {} for principal {}",
+                authentication.getOAuth2Request().getScope(), authentication.getPrincipal());
         final OpenIdHelper openIdHelper = new OpenIdHelper(authentication);
         Map<String, Object> map = new LinkedHashMap<>();
         openIdHelper.addSubjectField(map, member);
@@ -92,6 +94,7 @@ public class SsoServerConfig extends OAuth2AuthorizationServerConfiguration {
         if (openIdHelper.hasProfileScope()) {
             openIdHelper.addProfileScopedFields(map, member);
         }
+        log.debug("Sending userInfo map {}", map);
         return map;
     }
 
