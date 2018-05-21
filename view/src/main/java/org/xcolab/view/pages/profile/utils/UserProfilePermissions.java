@@ -25,6 +25,10 @@ public class UserProfilePermissions {
         return PermissionsClient.canAdminAll(loggedInMember);
     }
 
+    public Member getLoggedInMember() {
+        return loggedInMember;
+    }
+
     public boolean getCanEditMemberProfile(long memberId) {
         return isLoggedIn && getLoggedInMemberId() == memberId || getCanAdmin();
     }
