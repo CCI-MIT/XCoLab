@@ -18,9 +18,12 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
+import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
@@ -162,7 +165,37 @@ public class ContestProposalsController extends BaseProposalsController {
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanFellowActions()) {
+            final Contest contest = proposalContext.getContest();
+            final Proposal proposal = proposalContext.getProposal();
+            long proposalId = proposal.getProposalId();
+            long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();
+            ProposalsPermissions permissions = proposalContext.getPermissions();
 
+            // Security handling
+            final boolean isContestFellow = permissions.getCanFellowActions()
+                    && proposal.isUserAmongFellows(currentMember.getUserId());
+            if (!isContestFellow && !permissions.getCanAdminAll()) {
+                return new AccessDeniedPage(currentMember).toViewName(response);
+            }
+
+            // save selection of judges
+            if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions
+                    .FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
+                proposalContext.getClients().getProposalPhaseClient()
+                        .persistSelectedJudgesAttribute(
+                                proposalId,
+                                contestPhaseId,
+                                fellowProposalScreeningBean.getSelectedJudges()
+                        );
+            } else {
+                //clear selected judges attribute since the decision is not to pass the proposal.
+                proposalContext.getClients().getProposalPhaseClient()
+                        .persistSelectedJudgesAttribute(
+                                proposalId,
+                                contestPhaseId,
+                                null
+                        );
+            }
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to assign all judges");
         }
@@ -172,7 +205,7 @@ public class ContestProposalsController extends BaseProposalsController {
     public void removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
-        
+
         if (proposalContext.getPermissions().getCanFellowActions()) {
 
         } else {
