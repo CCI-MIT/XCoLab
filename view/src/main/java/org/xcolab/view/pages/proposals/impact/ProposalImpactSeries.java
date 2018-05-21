@@ -295,7 +295,7 @@ public class ProposalImpactSeries {
             authorObject.put("name", authorDescription);
 
             // update date
-            DateFormat dateFormatter = new SimpleDateFormat("MMMMMM d, YYYY, KK:mm a zzzz");
+            DateFormat dateFormatter = new SimpleDateFormat("MMMMMM d, yyyy, KK:mm a zzzz");
             dateFormatter.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
             returnObject.put("updateDate", dateFormatter.format(getUpdatedDate()));
         }
