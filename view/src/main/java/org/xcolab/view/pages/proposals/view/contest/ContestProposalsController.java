@@ -147,6 +147,21 @@ public class ContestProposalsController extends BaseProposalsController {
             throw new ProposalsAuthorizationException("User isn't allowed to subscribe contest");
         }
     }
+
+    @PostMapping("/contests/assignAllJudges")
+    public void assignAllJudges(HttpServletRequest request, HttpServletResponse response,
+            Member currentMember, ProposalContext proposalContext)
+            throws ProposalsAuthorizationException, IOException {
+
+    }
+
+    @PostMapping("/contests/removeRemainingJudges")
+    public void removeRemainingJudges(HttpServletRequest request, HttpServletResponse response,
+            Member currentMember, ProposalContext proposalContext)
+            throws ProposalsAuthorizationException, IOException {
+
+    }
+
 }
 
 
