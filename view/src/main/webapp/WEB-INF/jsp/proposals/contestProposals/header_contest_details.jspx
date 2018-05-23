@@ -188,7 +188,7 @@
                     <div class="p-ContestProposals__header__team">
                         <h2>Admin Information</h2>
                         <div class="judgingForm">
-                            <p>Remaining proposals to review for each Judge:</p>
+                            <p>Current proposal review status for each Judge.</p>
                             <div>
                                 <c:forEach var="judge" items="${contest.contestJudges}">
                                     <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.userId}">
