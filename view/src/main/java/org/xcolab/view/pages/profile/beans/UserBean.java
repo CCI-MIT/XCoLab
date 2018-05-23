@@ -36,10 +36,6 @@ public class UserBean implements Serializable {
     @UniqueEmail(groups = {UserBean.EmailChanged.class})
     private String email;
 
-    @NotBlank(groups = {UserBean.EmailChanged.class})
-    @Email(groups = {UserBean.EmailChanged.class})
-    private String retypeEmail;
-
     @NotBlank
     private String firstName;
 
@@ -164,16 +160,8 @@ public class UserBean implements Serializable {
         return emailStored;
     }
 
-    public String setEmailStored(String emailStored) {
-        return this.emailStored = emailStored;
-    }
-
-    public String getRetypeEmail() {
-        return retypeEmail;
-    }
-
-    public void setRetypeEmail(String retypeEmail) {
-        this.retypeEmail = retypeEmail;
+    public void setEmailStored(String emailStored) {
+        this.emailStored = emailStored;
     }
 
     public String getCurrentPassword() {
@@ -251,7 +239,7 @@ public class UserBean implements Serializable {
     @Override
     public String toString() {
         return "UserBean [screenName=" + screenName + ", email=" + email
-                + ", retypeEmail=" + retypeEmail + ", firstName=" + firstName + ", lastName=" + lastName
+                + ", firstName=" + firstName + ", lastName=" + lastName
                 + ", password=" + password + ", retypePassword="
                 + retypePassword + "]";
     }

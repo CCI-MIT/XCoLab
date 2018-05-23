@@ -30,10 +30,6 @@ public class CreateUserBean implements Serializable {
     private String email;
 
     @NotBlank
-    @Email
-    private String retypeEmail;
-
-    @NotBlank
     private String firstName;
 
     @NotBlank
@@ -111,14 +107,6 @@ public class CreateUserBean implements Serializable {
         this.email = email;
     }
 
-    public String getRetypeEmail() {
-        return retypeEmail;
-    }
-
-    public void setRetypeEmail(String retypeEmail) {
-        this.retypeEmail = retypeEmail;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -154,7 +142,7 @@ public class CreateUserBean implements Serializable {
     @Override
     public String toString() {
         return "CreateUserBean [screenName=" + screenName + ", email=" + email
-                + ", retypeEmail=" + retypeEmail + ", firstName=" + firstName + ", lastName=" + lastName
+                + ", firstName=" + firstName + ", lastName=" + lastName
                 + ", password=" + password + ", retypePassword="
                 + retypePassword + ", recaptcha_response_field="
                 + recaptcha_response_field + "]";
