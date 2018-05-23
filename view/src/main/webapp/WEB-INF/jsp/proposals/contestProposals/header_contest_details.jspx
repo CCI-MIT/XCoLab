@@ -200,7 +200,8 @@
                                         <br/>
                                         <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
                                             <xcolab:userLinkSimple memberId="${judge.userId}"
-                                                                   text="${judge.fullName} <br> (${proposalAlreadyJudgedCount} of ${proposalCount})"/>
+                                                                   text="${judge.fullName}"/>
+                                            <span>(${proposalAlreadyJudgedCount} of ${proposalCount})</span>
                                             <div class="hidden">
                                                 <span id="js-Tooltip__content__judgedata_${judge.userId}">
                                                     ${judge.fullName} has evaluated ${proposalAlreadyJudgedCount} out of the ${proposalCount} proposals assigned to them.
