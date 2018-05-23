@@ -13,7 +13,8 @@ import org.xcolab.view.util.validation.ValidScreenName;
 
 import java.io.Serializable;
 
-@CompareStrings(propertyNames = {"password,retypePassword", "email,retypeEmail"})
+@CompareStrings(propertyNames = {"password", "retypePassword"},
+        message = "{register.form.validation.passwordequal}")
 public class CreateUserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;

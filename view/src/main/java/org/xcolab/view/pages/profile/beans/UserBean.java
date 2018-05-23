@@ -16,8 +16,8 @@ import org.xcolab.view.util.validation.UniqueEmail;
 
 import java.io.Serializable;
 
-@CompareStrings(propertyNames = {"password,retypePassword", "email,retypeEmail"}, groups = {
-        UserBean.PasswordChanged.class, UserBean.EmailChanged.class})
+@CompareStrings(propertyNames = {"password","retypePassword"}, groups = {
+        UserBean.PasswordChanged.class}, message = "register.form.validation.passwordequal")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;

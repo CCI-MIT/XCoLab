@@ -202,7 +202,8 @@ public class LoginRegisterController {
         if (!captchaValid) {
             SessionErrors.clear(request);
             
-            result.addError(new ObjectError("createUserBean", resourceMessageResolver.getLocalizedMessage("register.form.validation.captcha.message")));
+            result.addError(new ObjectError("createUserBean", resourceMessageResolver.
+                    getLocalizedMessage("register.form.validation.captcha.message")));
             return showRegistrationError(model);
         }
         //TODO COLAB-2617: improve redirect to avoid double handling
