@@ -76,6 +76,8 @@ security:
   oauth2:
     client:
       scope: openid,email,profile
+    resource:
+      user-info-uri: /oauth/userinfo
 sso:
   facebook:
     client:
