@@ -86,6 +86,9 @@ sso:
       tokenName: oauth_token
       authenticationScheme: query
       clientAuthenticationScheme: form
+      scope:
+        - public_profile
+        - email
     resource:
       userInfoUri: https://graph.facebook.com/me?fields=id,email,first_name,last_name,location,locale,picture
   google:
