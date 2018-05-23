@@ -77,6 +77,9 @@ public class MemberService {
     }
 
     public boolean validatePassword(String password, String hash) {
+        if (StringUtils.isAnyEmpty(password, hash)) {
+            return false;
+        }
         SHA1PasswordEncryptor sha1PasswordEncryptor = new SHA1PasswordEncryptor();
         if (hash.startsWith("PBKDF2_")) {
             PBKDF2PasswordEncryptor pbkdf2PasswordEncryptor = new PBKDF2PasswordEncryptor();

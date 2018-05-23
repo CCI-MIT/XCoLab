@@ -91,10 +91,14 @@ public class ContestResourcesBean implements Serializable {
             SECTION_HELP_TEXT_REFERENCES
     };
 
-    private static final String OVERVIEW_SUBMIT_PROPOSALS_TITLE = "Submit <proposals/>:";
-    private static final String OVERVIEW_SUBMIT_PROPOSALS_CONTENT =
+    private static final String OVERVIEW_VIEW_PROPOSALS_TITLE = "View <proposals/>:";
+    private static final String OVERVIEW_VIEW_PROPOSALS_CONTENT =
             "<a href=\"<colab-url/><contest-link-url/>\" "
                     + "target=\"_blank\"><colab-url/><contest-link-url/></a>";
+    private static final String OVERVIEW_SUBMIT_PROPOSALS_TITLE = "Submit <proposals/>:";
+    private static final String OVERVIEW_SUBMIT_PROPOSALS_CONTENT =
+            "<a href=\"<colab-url/><contest-link-url/>/createProposal\" "
+                    + "target=\"_blank\"><colab-url/><contest-link-url/>/createProposal</a>";
     private static final String OVERVIEW_RULES_TITLE = "Rules:";
     private static final String OVERVIEW_DEADLINE_TITLE = "Deadline:";
     private static final String OVERVIEW_JUDGING_CRITERIA_PRIZES_TITLE =
@@ -304,15 +308,11 @@ public class ContestResourcesBean implements Serializable {
         overviewSectionValues.put("Question:", contest.getContestName());
 
         final String contestLinkUrl = contest.getContestLinkUrl();
-        final String overviewSubmitProposalsContent = TemplateReplacementUtil
-                .replaceContestTypeStrings(
-                        TemplateReplacementUtil
-                                .replacePlatformConstants(OVERVIEW_SUBMIT_PROPOSALS_CONTENT),
-                        contestType);
-        overviewSectionValues.put(
-                TemplateReplacementUtil
-                        .replaceContestTypeStrings(OVERVIEW_SUBMIT_PROPOSALS_TITLE,
-                                contestType),
+        final String overviewViewProposalsContent = resolvePlaceholders(OVERVIEW_VIEW_PROPOSALS_CONTENT);
+        overviewSectionValues.put(resolvePlaceholders(OVERVIEW_VIEW_PROPOSALS_TITLE),
+                overviewViewProposalsContent.replace("<contest-link-url/>", contestLinkUrl));
+        final String overviewSubmitProposalsContent = resolvePlaceholders(OVERVIEW_SUBMIT_PROPOSALS_CONTENT);
+        overviewSectionValues.put(resolvePlaceholders(OVERVIEW_SUBMIT_PROPOSALS_TITLE),
                 overviewSubmitProposalsContent.replace("<contest-link-url/>", contestLinkUrl));
 
         final String rulesLink = "<a href=\"" + contestType.getRulesPageUrl()
@@ -330,6 +330,11 @@ public class ContestResourcesBean implements Serializable {
             }
         }
 
+    }
+
+    private String resolvePlaceholders(String string) {
+        final String stringWithConstants = TemplateReplacementUtil.replacePlatformConstants(string);
+        return TemplateReplacementUtil.replaceContestTypeStrings(stringWithConstants, contestType);
     }
 }
 
