@@ -16,8 +16,8 @@ import org.xcolab.view.util.validation.UniqueEmail;
 
 import java.io.Serializable;
 
-@CompareStrings(propertyNames = {"password,retypePassword", "email,retypeEmail"}, groups = {
-        UserBean.PasswordChanged.class, UserBean.EmailChanged.class})
+@CompareStrings(propertyNames = {"password","retypePassword"}, groups = {
+        UserBean.PasswordChanged.class}, message = "register.form.validation.passwordequal")
 public class UserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,10 +35,6 @@ public class UserBean implements Serializable {
     @Email(groups = {UserBean.EmailChanged.class})
     @UniqueEmail(groups = {UserBean.EmailChanged.class})
     private String email;
-
-    @NotBlank(groups = {UserBean.EmailChanged.class})
-    @Email(groups = {UserBean.EmailChanged.class})
-    private String retypeEmail;
 
     @NotBlank
     private String firstName;
@@ -164,16 +160,8 @@ public class UserBean implements Serializable {
         return emailStored;
     }
 
-    public String setEmailStored(String emailStored) {
-        return this.emailStored = emailStored;
-    }
-
-    public String getRetypeEmail() {
-        return retypeEmail;
-    }
-
-    public void setRetypeEmail(String retypeEmail) {
-        this.retypeEmail = retypeEmail;
+    public void setEmailStored(String emailStored) {
+        this.emailStored = emailStored;
     }
 
     public String getCurrentPassword() {
@@ -251,7 +239,7 @@ public class UserBean implements Serializable {
     @Override
     public String toString() {
         return "UserBean [screenName=" + screenName + ", email=" + email
-                + ", retypeEmail=" + retypeEmail + ", firstName=" + firstName + ", lastName=" + lastName
+                + ", firstName=" + firstName + ", lastName=" + lastName
                 + ", password=" + password + ", retypePassword="
                 + retypePassword + "]";
     }

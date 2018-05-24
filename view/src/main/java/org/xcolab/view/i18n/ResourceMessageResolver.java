@@ -22,11 +22,7 @@ public class ResourceMessageResolver {
         this.messageSource = messageSource;
     }
 
-    public String getLocalizedMessage(String messageId) {
-        return getLocalizedMessage(messageId, null);
-    }
-
-    public String getLocalizedMessage(String messageId, Object[] args) {
+    public String getLocalizedMessage(String messageId, Object... args) {
         try {
             return messageSource.getMessage(messageId, args, LocaleContextHolder.getLocale());
         } catch (NoSuchMessageException e) {
