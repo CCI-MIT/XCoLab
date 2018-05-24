@@ -50,6 +50,15 @@ public class ContestProposalsController extends BaseProposalsController {
                 sortFilterPage, loggedInMember);
     }
 
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/judgeFilter/{judgeId}")
+    public String showContestProposalsWithJudgeFilter(HttpServletRequest request,
+            HttpServletResponse response, Model model, Member loggedInMember,
+            ProposalContext proposalContext, @PathVariable String contestYear,
+            @PathVariable String contestUrlName, @PathVariable String judgeId,
+            final SortFilterPage sortFilterPage) {
+        
+    }
+
     @GetMapping("/contests/{contestYear}/{contestUrlName}")
     public String showContestProposals(HttpServletRequest request, HttpServletResponse response,
             Model model, Member loggedInMember, ProposalContext proposalContext,

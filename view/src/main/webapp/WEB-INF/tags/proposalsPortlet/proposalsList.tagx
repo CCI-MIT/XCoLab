@@ -17,13 +17,13 @@
         <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}"><!-- Judges -->
             <c:choose>
                 <c:when test="${proposal.judgeReviewStatus.statusValue == 1}">
-                    <c:set var="additionalCSSClasses" scope="session" value="propbox-red"/>
+                    <c:set var="additionalCSSClasses" scope="session" value="propbox-red" />
                 </c:when>
                 <c:when test="${proposal.judgeReviewStatus.statusValue == 2}">
-                    <c:set var="additionalCSSClasses" scope="session" value="propbox-green"/>
+                    <c:set var="additionalCSSClasses" scope="session" value="propbox-green" />
                 </c:when>
                 <c:otherwise>
-                    <c:set var="additionalCSSClasses" scope="session" value=""/>
+                    <c:set var="additionalCSSClasses" scope="session" value="" />
                 </c:otherwise>
             </c:choose>
         </c:if>
@@ -37,23 +37,23 @@
                                   cssClass="float-left js-Tooltip mr-2" title="${proposal.ribbonWrapper.ribbonText}" />
                 </c:if>
                 <xcolab:proposalLink proposal="${proposal}" phase="${contestPhase}" escape="false" />
-                /
+
                 <c:choose>
                     <c:when test="${not empty proposal.team}">
-                        <xcolab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.team}"/>
+                        <xcolab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.team}" />
                     </c:when>
                     <c:when test="${proposal.members.size() > 1}">
                         <xcolab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.displayName} and ${proposal.members.size() - 1} ${proposal.members.size() > 2 ? 'others' : 'other'}"/>
                     </c:when>
                     <c:otherwise>
-                        <xcolab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.displayName}"/>
+                        <xcolab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.displayName}" />
                     </c:otherwise>
                 </c:choose>
             </div>
             <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                 <div class="col c-TableGrid__cell text-center votes">
                     <div class="highlight">
-                        <collab:image src="/images/icon-proposal-vote-small.png" cssClass="c-Icon"/>
+                        <collab:image src="/images/icon-proposal-vote-small.png" cssClass="c-Icon" />
                         <xcolab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
                     </div>
                 </div>
