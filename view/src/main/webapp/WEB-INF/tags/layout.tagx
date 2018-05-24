@@ -226,9 +226,7 @@
                           showLanguage="${_themeContext.i18NVariables.isI18NActive}"
                           showSearch="${_themeContext.themeVariables.showSearchMenuItem}"
                           languageSelectItems="${_themeContext.i18NVariables.languageSelectItems}"
-                          currentLocale="${_themeContext.i18NVariables.language}"
-                          showGoogleSso="${_themeContext.authenticationVariables.isGoogleSsoActive}"
-                          showFacebookSso="${_themeContext.authenticationVariables.isFacebookSsoActive}" />
+                          currentLocale="${_themeContext.i18NVariables.language}"/>
 
 
     <!-- ============ Load jQuery ============ -->
@@ -268,9 +266,7 @@
     <c:if test="${!_themeContext.authenticationVariables.isLoggedIn}">
         <xcolab-modals:loginModal show="${_themeContext.authenticationVariables.showLoginPopup}"
                                   redirect="${_themeContext.requestUri}"
-                                  authError="${_themeContext.authenticationVariables.authError}"
-                                  showFacebookSso="${_themeContext.authenticationVariables.isFacebookSsoActive}"
-                                  showGoogleSso="${_themeContext.authenticationVariables.isGoogleSsoActive}" />
+                                  authError="${_themeContext.authenticationVariables.authError}" />
         <xcolab:requireLibrary name="forgotPasswordModal"/>
     </c:if>
 

@@ -65,6 +65,14 @@ public class SsoClientConfig {
         return ssoFilter;
     }
 
+    @Bean
+    public SsoServices ssoServices() {
+        final boolean isFacebookEnabled = StringUtils.isNotEmpty(facebook().getClient().getClientId());
+        final boolean isGoogleEnabled = StringUtils.isNotEmpty(google().getClient().getClientId());
+        final boolean isClimateXEnabled = StringUtils.isNotEmpty(climateX().getClient().getClientId());
+        return new SsoServices(isFacebookEnabled, isGoogleEnabled, isClimateXEnabled);
+    }
+
     private void configureSsoFilter(SsoFilter ssoFilter, SsoClientResources clientResources,
             String path, boolean requireHostname,
             BiFunction<LoginRegisterService, MemberDetailsService, PrincipalExtractor> principalExtractorSupplier) {
@@ -181,6 +189,32 @@ public class SsoClientConfig {
         @SuppressWarnings("unused")
         public void setHostname(String hostname) {
             this.hostname = hostname;
+        }
+    }
+
+    public static class SsoServices {
+
+        private final boolean isFacebookEnabled;
+        private final boolean isGoogleEnabled;
+        private final boolean isClimateXEnabled;
+
+        public SsoServices(boolean isFacebookEnabled, boolean isGoogleEnabled,
+                boolean isClimateXEnabled) {
+            this.isFacebookEnabled = isFacebookEnabled;
+            this.isGoogleEnabled = isGoogleEnabled;
+            this.isClimateXEnabled = isClimateXEnabled;
+        }
+
+        public boolean isFacebookEnabled() {
+            return isFacebookEnabled;
+        }
+
+        public boolean isGoogleEnabled() {
+            return isGoogleEnabled;
+        }
+
+        public boolean isClimateXEnabled() {
+            return isClimateXEnabled;
         }
     }
 }
