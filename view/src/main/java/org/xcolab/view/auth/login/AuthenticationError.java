@@ -4,15 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 
-import org.xcolab.client.members.exceptions.LockoutLoginException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.exceptions.PasswordLoginException;
 
 public enum AuthenticationError {
     CREDENTIALS("Authentication failed, please check your screen name and password.",
-            BadCredentialsException.class, MemberNotFoundException.class,
-            PasswordLoginException.class),
-    LOCKOUT("This account has been locked", LockedException.class, LockoutLoginException.class),
+            BadCredentialsException.class, MemberNotFoundException.class),
+    LOCKOUT("This account has been locked", LockedException.class),
     UNKNOWN("An error occurred");
 
     private final String message;

@@ -382,11 +382,16 @@ public class Member implements Serializable {
         this.autoregisteredmemberstatus = autoregisteredmemberstatus;
     }
 
-    public String getUuid() {
+    @JsonIgnore
+    public String getOrGenerateUuid() {
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
             MembersClient.updateMember(this);
         }
+        return uuid;
+    }
+
+    public String getUuid() {
         return uuid;
     }
 

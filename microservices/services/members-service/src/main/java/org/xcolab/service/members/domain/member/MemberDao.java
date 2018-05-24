@@ -30,9 +30,7 @@ public interface MemberDao {
     Optional<Member> findOneByForgotPasswordHash(String newPasswordToken);
 
     boolean updateMember(Member member);
-    void createMember(String screenName, String password, String email,
-            String firstName, String lastName, String shortBio, String country,
-            Long facebookId, String openId, Long imageid, Long liferayUserId, String googleId, String defaultLocale);
+    Member createMember(Member pojo);
 
     List<Member> findByIp(String ip) ;
     List<Member> findByScreenNameName(String name);

@@ -145,10 +145,7 @@ public class MembersController {
 
     @PostMapping
     public Member register(@RequestBody Member member) {
-        return memberService.register(member.getScreenName(), member.getHashedPassword(),
-                member.getEmailAddress(), member.getFirstName(), member.getLastName(),
-                member.getShortBio(), member.getCountry(), member.getFacebookId(),
-                member.getOpenId(), member.getPortraitFileEntryId(), member.getId_(), member.getGoogleId(), member.getDefaultLocale());
+        return memberService.register(member);
     }
 
     @GetMapping("{memberId}/points")

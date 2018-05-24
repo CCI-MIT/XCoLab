@@ -275,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ImpactTemplateSeries` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `members_Member` (
-  `id_` bigint(20) NOT NULL PRIMARY KEY,
+  `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `screenName` varchar(42) DEFAULT NULL,
   `emailAddress` varchar(75) DEFAULT NULL,
   `isEmailConfirmed` tinyint(4) NOT NULL DEFAULT '0',

@@ -10,15 +10,15 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.MemberCategoryTable;
 import org.xcolab.model.tables.MemberTable;
 import org.xcolab.model.tables.Users_RolesTable;
 import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.model.tables.records.MemberRecord;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.SortColumn;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -331,7 +331,6 @@ public class MemberDaoImpl implements MemberDao {
 
         return this.dslContext.update(MEMBER)
                 .set(MEMBER.UUID, member.getUuid())
-                .set(MEMBER.CREATE_DATE, member.getCreateDate())
                 .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
                 .set(MEMBER.SCREEN_NAME, member.getScreenName())
                 .set(MEMBER.EMAIL_ADDRESS, member.getEmailAddress())
@@ -346,6 +345,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
                 .set(MEMBER.GOOGLE_ID, member.getGoogleId())
                 .set(MEMBER.COLAB_SSO_ID, member.getColabSsoId())
+                .set(MEMBER.CLIMATE_X_ID, member.getClimateXId())
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
                 .set(MEMBER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
                 .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
@@ -362,26 +362,44 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public void createMember(String screenName, String hashedPassword, String email,
-            String firstName, String lastName, String shortBio, String country, Long facebookId,
-            String openId, Long imageId, Long liferayUserId, String googleId,String defaultLocale) {
-        this.dslContext.insertInto(MEMBER)
-                .set(MEMBER.ID_, liferayUserId)
-                .set(MEMBER.SCREEN_NAME, screenName)
-                .set(MEMBER.HASHED_PASSWORD, hashedPassword)
-                .set(MEMBER.EMAIL_ADDRESS, email)
-                .set(MEMBER.FIRST_NAME, firstName)
-                .set(MEMBER.LAST_NAME, lastName)
-                .set(MEMBER.FACEBOOK_ID, facebookId)
-                .set(MEMBER.GOOGLE_ID, googleId)
-                .set(MEMBER.OPEN_ID, openId)
-                .set(MEMBER.SHORT_BIO, shortBio)
-                .set(MEMBER.DEFAULT_LOCALE, defaultLocale)
-                .set(MEMBER.COUNTRY, country)
-                .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, imageId)
-                .set(MEMBER.CREATE_DATE, new Timestamp(Instant.now().toEpochMilli()))
-                .set(MEMBER.MODIFIED_DATE, new Timestamp(Instant.now().toEpochMilli()))
-                .execute();
+    public Member createMember(Member member) {
+        final Optional<MemberRecord> memberRecord =
+                dslContext.insertInto(MEMBER)
+                        .set(MEMBER.UUID, member.getUuid())
+                        .set(MEMBER.SCREEN_NAME, member.getScreenName())
+                        .set(MEMBER.EMAIL_ADDRESS, member.getEmailAddress())
+                        .set(MEMBER.IS_EMAIL_CONFIRMED, member.getIsEmailConfirmed())
+                        .set(MEMBER.IS_EMAIL_BOUNCED, member.getIsEmailBounced())
+                        .set(MEMBER.OPEN_ID, member.getOpenId())
+                        .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
+                        .set(MEMBER.FIRST_NAME, member.getFirstName())
+                        .set(MEMBER.LAST_NAME, member.getLastName())
+                        .set(MEMBER.LOGIN_DATE, member.getLoginDate())
+                        .set(MEMBER.LOGIN_IP, member.getLoginIP())
+                        .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
+                        .set(MEMBER.GOOGLE_ID, member.getGoogleId())
+                        .set(MEMBER.COLAB_SSO_ID, member.getColabSsoId())
+                        .set(MEMBER.CLIMATE_X_ID, member.getClimateXId())
+                        .set(MEMBER.SHORT_BIO, member.getShortBio())
+                        .set(MEMBER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
+                        .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
+                        .set(MEMBER.COUNTRY, member.getCountry())
+                        .set(MEMBER.STATUS, member.getStatus())
+                        .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, member.getPortraitFileEntryId())
+                        .set(MEMBER.FORGOT_PASSWORD_TOKEN, member.getForgotPasswordToken())
+                        .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, member.getForgotPasswordTokenExpireTime())
+                        .set(MEMBER.LOGIN_TOKEN_ID, member.getLoginTokenId())
+                        .set(MEMBER.LOGIN_TOKEN_KEY, member.getLoginTokenKey())
+                        .set(MEMBER.LOGIN_TOKEN_EXPIRATION_DATE, member.getLoginTokenExpirationDate())
+                        .set(MEMBER.CREATE_DATE, DSL.currentTimestamp())
+                        .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
+                        .returning(MEMBER.ID_)
+                        .fetchOptional();
+        if (!memberRecord.isPresent()) {
+            throw new IllegalStateException("Could not fetch generated ID");
+        }
+        member.setId_(memberRecord.get().getValue(MEMBER.ID_));
+        return member;
     }
 
     @Override

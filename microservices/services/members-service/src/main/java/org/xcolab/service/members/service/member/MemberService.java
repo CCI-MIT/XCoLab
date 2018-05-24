@@ -7,26 +7,22 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.model.tables.pojos.LoginLog;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.members.domain.loginlog.LoginLogDao;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.domain.role.RoleDao;
-import org.xcolab.service.members.exceptions.ForbiddenException;
 import org.xcolab.service.members.exceptions.NotFoundException;
-import org.xcolab.service.members.exceptions.UnauthorizedException;
-import org.xcolab.service.members.service.login.LoginBean;
 import org.xcolab.service.members.util.PBKDF2PasswordEncryptor;
 import org.xcolab.service.members.util.SHA1PasswordEncryptor;
 import org.xcolab.service.members.util.SecureRandomUtil;
 import org.xcolab.service.members.util.UsernameGenerator;
 import org.xcolab.service.members.util.email.ConnectorEmmaAPI;
-import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Service
 public class MemberService {
@@ -99,32 +95,12 @@ public class MemberService {
         return memberDao.updatePassword(memberId, hashedPassword);
     }
 
-    public Member register(String screenName, String password, String email, String firstName,
-            String lastName, String shortBio, String country, Long facebookId, String openId,
-            Long imageId, Long liferayUserId, String googleId, String defaultLocale) {
-        memberDao.createMember(screenName, ((password.isEmpty())?(null):(hashPassword(password))), email, firstName, lastName,
-                shortBio, country, facebookId, openId, imageId, liferayUserId, googleId,defaultLocale);
-        final Member member = memberDao.findOneByScreenName(screenName)
-                .orElseThrow(IllegalStateException::new);
+    public Member register(Member pojo) {
+        final Member member = memberDao.createMember(pojo);
         //TODO COLAB-2609: centralize this ID in constant (see MemberRole enum)
         roleDao.assignMemberRole(member.getId_(), 10122L);
         subscribeToNewsletter(member.getEmailAddress());
         return member;
-    }
-
-    public void login(Member member, LoginBean loginBean)
-            throws UnauthorizedException, ForbiddenException {
-        if (member.getStatus() != null && member.getStatus() > 0) {
-            throw new ForbiddenException("Member locked");
-        }
-        if (validatePassword(loginBean.getPassword(), member.getHashedPassword())) {
-            createLoginLog(member.getId_(), loginBean.getIpAddress(), loginBean.getRedirectUrl());
-            member.setLoginDate(new Timestamp(new Date().getTime()));
-            member.setLoginIP(loginBean.getIpAddress());
-            memberDao.updateMember(member);
-        } else {
-            throw new UnauthorizedException("Invalid credentials provided");
-        }
     }
 
     public LoginLog createLoginLog(long memberId, String ipAddress, String redirectUrl) {

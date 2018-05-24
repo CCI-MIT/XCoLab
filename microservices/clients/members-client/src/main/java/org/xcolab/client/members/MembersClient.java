@@ -3,13 +3,10 @@ package org.xcolab.client.members;
 import org.springframework.util.Assert;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.members.exceptions.LockoutLoginException;
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
 import org.xcolab.client.members.legacy.enums.MemberRole;
-import org.xcolab.client.members.pojo.LoginBean;
 import org.xcolab.client.members.pojo.LoginLog;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
@@ -25,8 +22,6 @@ import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
-import org.xcolab.util.http.exceptions.Http401UnauthorizedException;
-import org.xcolab.util.http.exceptions.Http403ForbiddenException;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.UnsupportedEncodingException;
@@ -483,24 +478,6 @@ public final class MembersClient {
 
     public static Member register(Member member) {
         return memberResource.create(member).execute();
-    }
-
-    public static boolean login(long memberId, String password, String remoteIp, String redirectUrl)
-            throws PasswordLoginException, LockoutLoginException {
-        LoginBean loginBean = new LoginBean();
-        loginBean.setPassword(password);
-        loginBean.setIpAddress(remoteIp);
-        loginBean.setRedirectUrl(redirectUrl);
-        try {
-            return memberResource.service(memberId, "login", Boolean.class)
-                    .post(loginBean);
-        } catch (UncheckedEntityNotFoundException e) {
-            throw new UncheckedMemberNotFoundException(memberId);
-        } catch (Http401UnauthorizedException e) {
-            throw new PasswordLoginException();
-        } catch (Http403ForbiddenException e) {
-            throw new LockoutLoginException();
-        }
     }
 
     //TODO COLAB-2594: this shouldn't be done manually
