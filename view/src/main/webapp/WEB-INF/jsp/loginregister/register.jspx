@@ -88,17 +88,6 @@
                 </div>
             </div>
             <div class="form-row">
-                <label class="cb-form-col-label required-field" for="retypeEmail">
-                    <spring:message code="register.form.fields.retypeemail"/>
-                </label>
-                <div class="cb-form-col-input">
-                    <form:input cssClass="form-control" cssErrorClass="form-control is-invalid"
-                                autocomplete="email" path="retypeEmail" />
-                    <form:errors cssClass="invalid-feedback" cssErrorClass="form-control is-invalid"
-                                 path="retypeEmail" />
-                </div>
-            </div>
-            <div class="form-row">
                 <label class="cb-form-col-label required-field" for="firstName">
                     <spring:message code="register.form.fields.firstname"/>
                 </label>

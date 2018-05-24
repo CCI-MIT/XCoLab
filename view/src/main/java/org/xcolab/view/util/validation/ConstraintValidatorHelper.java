@@ -8,11 +8,6 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public abstract class ConstraintValidatorHelper {
 
@@ -56,51 +51,9 @@ public abstract class ConstraintValidatorHelper {
         return returnValue;
     }
 
-    public static boolean isValid(Collection<String> propertyValues,
-            StringComparisonMode comparisonMode) {
-        boolean ignoreCase = false;
-        switch (comparisonMode) {
-            case EQUAL_IGNORE_CASE:
-                ignoreCase = true;
-                break;
-            default:
-        }
-
-        List<String> values = new ArrayList<>(propertyValues.size());
-        for (String propertyValue : propertyValues) {
-            if (ignoreCase) {
-                values.add(propertyValue.toLowerCase());
-            } else {
-                values.add(propertyValue);
-            }
-        }
-
-        Set<String> uniqueValues = new HashSet<>(values);
-        // support all nulls
-        return uniqueValues.size() == 1 || uniqueValues.isEmpty();
-    }
-
-    //TODO COLAB-2621: it's not clear what this method does. What are the property names?
     public static String resolveMessage(String[] propertyNames,
             ResourceMessageResolver messageResolver) {
-        StringBuffer buffer = concatPropertyNames(propertyNames);
-        buffer.append(" ").append(messageResolver
-                .getLocalizedMessage("register.form.validation.equalfields"));
-        buffer.append('.');
-        return buffer.toString();
-    }
-
-    private static StringBuffer concatPropertyNames(String[] propertyNames) {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append('[');
-        for (String propertyName : propertyNames) {
-            char firstChar = Character.toUpperCase(propertyName.charAt(0));
-            buffer.append(firstChar);
-            buffer.append(propertyName.substring(1));
-            buffer.append(", ");
-        }
-        buffer.delete(buffer.length() - 2, buffer.length());
-        buffer.append("]");
-        return buffer;
+        return messageResolver.getLocalizedMessage("register.form.validation.equalfields",
+                propertyNames[0], propertyNames[1]);
     }
 }
