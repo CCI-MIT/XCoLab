@@ -57,7 +57,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>sharedcolab_SharedMember|sharedcolab_SharedContest</includes>
+                            <includes>sharedcolab_SharedContest</includes>
                         </database>
                     </generator>
                 </configuration>

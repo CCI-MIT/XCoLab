@@ -50,14 +50,6 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestTeamMember` (
   KEY `IX_E1468F04` (`contestId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `sharedcolab_SharedMember` (
-  `sharedMemberId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `screenName` varchar(255) DEFAULT NULL,
-  `emailAddress` varchar(255) DEFAULT NULL,
-  `createDate` datetime DEFAULT NULL,
-  `colabOrigin` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `flagging_ReportTarget` (
   `reportTargetId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `type` varchar(50) NOT NULL,

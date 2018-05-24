@@ -4,8 +4,7 @@ import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.client.enums.ResourceEnum;
 
 public enum SharedColabResource implements ResourceEnum {
-    CONTESTS("contests"),
-    USERS("members");
+    CONTESTS("contests");
 
     private final String resourceName;
 
