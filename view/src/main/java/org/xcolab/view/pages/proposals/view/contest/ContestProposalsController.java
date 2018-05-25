@@ -56,7 +56,7 @@ public class ContestProposalsController extends BaseProposalsController {
             ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @PathVariable String judgeId,
             final SortFilterPage sortFilterPage) {
-        
+
     }
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}")
