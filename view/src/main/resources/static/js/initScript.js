@@ -66,5 +66,6 @@ function disableDirtyCheck() {
 
 jQuery('.c-TitleBar .close[data-dismiss=c-TitleBar]').click(function() {
     Cookies.set('xc-TitleBar__completeProfile--hidden', '1', {expires: 1});
+    jQuery(this).closest('.c-TitleBar__container').hide();
     jQuery(this).closest('.c-TitleBar').hide();
 });

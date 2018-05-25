@@ -155,6 +155,9 @@
 
                     <a class="c-TitleBar__actionButton" href="${_themeContext.colabUrlProduction}">Take me to ${_themeContext.colabUrlProduction}.</a>
                 </div>
+                <button class="close js-Tooltip" data-dismiss="c-TitleBar" title="Remind me later" aria-label="Remind me later">
+                    <span aria-hidden="true">&#215;</span> <!-- &#215; == &times; -->
+                </button>
             </div>
         </div>
     </c:if>
