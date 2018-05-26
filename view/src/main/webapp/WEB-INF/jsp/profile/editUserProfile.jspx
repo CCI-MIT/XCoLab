@@ -143,17 +143,6 @@
                 </div>
             </div>
 
-            <div class="form-row" id="retypeEmailRow" style="${emailError ? '' : 'display: none;'}">
-                <div class="cb-form-col-label required-field">
-                    <spring:message code="profile.form.fields.retypeemail"/>
-                </div>
-                <div class="col">
-                    <form:input id="retypeEmail" path="retypeEmail"
-                                cssClass="form-control" cssErrorClass="form-control is-invalid" />
-                    <form:errors cssClass="invalid-feedback" path="retypeEmail" />
-                </div>
-            </div>
-
             <c:if test="${not empty currentUserProfile.user.loginTokenId}">
                 <div class="form-row">
                     <div class="cb-form-col-label">
@@ -422,16 +411,6 @@
     </script>
 
 	<script>
-
-		jQuery("#email").keyup(function(){
-			var $emailElement = jQuery("#email");
-            if ($emailElement.val() !== "" &amp;&amp; $emailElement.val() !== jQuery("#emailStored").val()) {
-				jQuery("#retypeEmailRow").slideDown();
-			} else {
-				jQuery("#retypeEmailRow").slideUp();
-			}
-		});
-
 		jQuery("#password").keyup(function(){
 			if (jQuery("#password").val() !== "") {
 				jQuery("#retypePasswordRow").slideDown();
