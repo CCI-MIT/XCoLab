@@ -14,19 +14,31 @@
     <c:forEach var="proposal" items="${proposals}" varStatus="status">
         <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
 
-        <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}"><!-- Judges -->
-            <c:choose>
-                <c:when test="${proposal.judgeReviewStatus.statusValue == 1}">
-                    <c:set var="additionalCSSClasses" scope="session" value="propbox-red" />
-                </c:when>
-                <c:when test="${proposal.judgeReviewStatus.statusValue == 2}">
-                    <c:set var="additionalCSSClasses" scope="session" value="propbox-green" />
-                </c:when>
-                <c:otherwise>
-                    <c:set var="additionalCSSClasses" scope="session" value="" />
-                </c:otherwise>
-            </c:choose>
-        </c:if>
+        <c:choose>
+            <c:when test="${proposalsPermissions.canAdminProposal and proposal.isUserAmongSelectedJudgeId(judgeId)}">
+                <c:choose>
+                    <c:when test="${proposal.getJudgeReviewFinishedStatusUserId(judgeId)}">
+                        <c:set var="additionalCSSClasses" scope="session" value="propbox-green" />
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="additionalCSSClasses" scope="session" value="propbox-red" />
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
+            <c:when test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}"><!-- Judges -->
+                <c:choose>
+                    <c:when test="${proposal.judgeReviewStatus.statusValue == 1}">
+                        <c:set var="additionalCSSClasses" scope="session" value="propbox-red" />
+                    </c:when>
+                    <c:when test="${proposal.judgeReviewStatus.statusValue == 2}">
+                        <c:set var="additionalCSSClasses" scope="session" value="propbox-green" />
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="additionalCSSClasses" scope="session" value="" />
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
+        </c:choose>
 
         <div class="c-TableGrid__row c-TableGrid__row--continued ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'c-TableGrid__row--active' : ''}
                     ${contestPhase.completed ? 'completed' : ''}
