@@ -33,6 +33,7 @@ import org.xcolab.view.util.pagination.SortFilterPage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -199,10 +200,14 @@ public class ContestProposalsController extends BaseProposalsController {
             long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
 
             for (Proposal proposal : proposalClient.getProposalsInContest(contest.getContestPK())) {
+                List<Long> newSelectedJudges = proposal.getSelectedJudges().stream()
+                        .filter(judgeId -> proposal.getJudgeReviewFinishedStatusUserId(judgeId))
+                        .collect(Collectors.toList());
+                
                 proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
                         proposal.getProposalId(),
                         contestPhaseId,
-                        null);
+                        newSelectedJudges);
             }
 
             AlertMessage.success("All judges who did not complete their reviews were removed.").flash(request);
