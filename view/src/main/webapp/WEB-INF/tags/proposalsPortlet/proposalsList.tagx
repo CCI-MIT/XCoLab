@@ -14,8 +14,9 @@
     <c:forEach var="proposal" items="${proposals}" varStatus="status">
         <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
 
+        <c:set var="additionalCSSClasses" scope="session" value="" />
         <c:choose>
-            <c:when test="${proposalsPermissions.canAdminProposal and proposal.isUserAmongSelectedJudgeId(judgeId)}">
+            <c:when test="${proposalsPermissions.canAdminProposal and proposal.isUserAmongSelectedJudgesById(judgeId)}"><!-- Judge Filter View -->
                 <c:choose>
                     <c:when test="${proposal.getJudgeReviewFinishedStatusUserId(judgeId)}">
                         <c:set var="additionalCSSClasses" scope="session" value="propbox-green" />
