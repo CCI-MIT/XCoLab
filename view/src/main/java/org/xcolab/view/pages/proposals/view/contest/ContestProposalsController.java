@@ -18,6 +18,7 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -179,6 +180,7 @@ public class ContestProposalsController extends BaseProposalsController {
                         selectedJudges);
             }
 
+            AlertMessage.success("All judges were assigned to every proposal.").flash(request);
             return "redirect:" + contest.getContestLinkUrl();
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to assign all judges");
@@ -203,6 +205,7 @@ public class ContestProposalsController extends BaseProposalsController {
                         null);
             }
 
+            AlertMessage.success("All judges who did not complete their reviews were removed.").flash(request);
             return "redirect:" + contest.getContestLinkUrl();
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to remove unfinished judges");
