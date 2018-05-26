@@ -156,7 +156,7 @@ public class ContestProposalsController extends BaseProposalsController {
         }
     }
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/assignAllJudges")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/assignAllJudges")
     public String assignAllJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
@@ -185,7 +185,7 @@ public class ContestProposalsController extends BaseProposalsController {
         }
     }
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/removeUnfinishedJudges")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/removeUnfinishedJudges")
     public String removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {
