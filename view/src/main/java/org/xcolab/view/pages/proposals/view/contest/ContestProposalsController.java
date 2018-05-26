@@ -203,7 +203,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 List<Long> newSelectedJudges = proposal.getSelectedJudges().stream()
                         .filter(judgeId -> proposal.getJudgeReviewFinishedStatusUserId(judgeId))
                         .collect(Collectors.toList());
-                
+
                 proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
                         proposal.getProposalId(),
                         contestPhaseId,
