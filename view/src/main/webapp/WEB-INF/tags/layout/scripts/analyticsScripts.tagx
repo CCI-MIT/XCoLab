@@ -26,6 +26,7 @@
         <script>
             window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+_firstByteDate;
             ga('create', '${googleAnalyticsKey}', 'auto');
+            ga('set', 'anonymizeIp', true);
             ga('send', 'pageview');
         </script>
     </c:if>
