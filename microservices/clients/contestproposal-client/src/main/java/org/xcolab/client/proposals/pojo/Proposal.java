@@ -602,12 +602,8 @@ public class Proposal extends AbstractProposal {
             return isUserAmongJudges(judgeId);
         }
 
-        for (Long userId : getSelectedJudges()) {
-            if (userId == judgeId) {
-                return true;
-            }
-        }
-        return false;
+        return getSelectedJudges().stream()
+                .anyMatch(userId -> userId == judgeId);
     }
 
     public boolean isUserAmongSelectedJudges(Member user) {
