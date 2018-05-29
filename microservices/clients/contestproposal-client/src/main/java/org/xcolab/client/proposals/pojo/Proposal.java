@@ -597,7 +597,7 @@ public class Proposal extends AbstractProposal {
         return selectedJudges;
     }
 
-    public boolean isUserAmongSelectedJudgesById(long judgeId) {
+    public boolean isUserAmongSelectedJudges(long judgeId) {
         if (!getFellowScreeningNecessary()) {
             return isUserAmongJudges(judgeId);
         }
@@ -610,8 +610,8 @@ public class Proposal extends AbstractProposal {
         return false;
     }
 
-    public boolean isUserAmongSelectedJudge(Member user) {
-        return this.isUserAmongSelectedJudgesById(user.getUserId());
+    public boolean isUserAmongSelectedJudges(Member user) {
+        return this.isUserAmongSelectedJudges(user.getUserId());
     }
 
     public long getVotesCount() {
