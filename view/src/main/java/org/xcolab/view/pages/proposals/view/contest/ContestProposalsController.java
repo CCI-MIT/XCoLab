@@ -115,7 +115,6 @@ public class ContestProposalsController extends BaseProposalsController {
         return proposals;
     }
 
-    // TODO: COLAB-2759 - integrate judges filtering
     private String showContestProposalsPage(Model model, ProposalContext proposalContext,
             final SortFilterPage sortFilterPage, Member loggedInMember) {
 
