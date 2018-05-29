@@ -188,7 +188,7 @@
                     <div class="p-ContestProposals__header__team">
                         <h2>Admin Information</h2>
                         <div class="judgingForm">
-                            <p>Current proposal review status for each Judge.</p>
+                            <p>Current proposal review status for each Judge. Click to filter proposals for a specific judge.</p>
                             <div>
                                 <c:forEach var="judge" items="${contest.contestJudges}">
                                     <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.userId}">
@@ -199,8 +199,7 @@
                                         </div>
                                         <br/>
                                         <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
-                                            <xcolab:userLinkSimple memberId="${judge.userId}"
-                                                                   text="${judge.fullName}"/>
+                                            <a href="${contest.contestUrl}/judgeFilter/${judge.userId}">${judge.fullName}</a>
                                             <br /><span>(${proposalAlreadyJudgedCount} of ${proposalCount})</span>
                                             <div class="hidden">
                                                 <span id="js-Tooltip__content__judgedata_${judge.userId}">
