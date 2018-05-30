@@ -21,6 +21,8 @@ create table members_Member
 	shortBio text null,
 	facebookId bigint null,
 	googleId varchar(50) null,
+  colabSsoId varchar(50) DEFAULT NULL,
+  climateXId varchar(75) DEFAULT NULL,
 	openId varchar(255) null,
 	loginIP varchar(75) null,
 	loginDate datetime null,

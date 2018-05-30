@@ -1,5 +1,6 @@
 package org.xcolab.view.auth.login.spring;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -134,5 +135,14 @@ public class MemberDetails implements UserDetails {
     @Override
     public int hashCode() {
         return (int) (memberId ^ memberId >>> 32);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("memberId", memberId)
+                .append("screenName", getMember().getScreenName())
+                .append("authorities", authorities)
+                .toString();
     }
 }

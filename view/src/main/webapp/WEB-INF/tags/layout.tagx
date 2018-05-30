@@ -155,6 +155,9 @@
 
                     <a class="c-TitleBar__actionButton" href="${_themeContext.colabUrlProduction}">Take me to ${_themeContext.colabUrlProduction}.</a>
                 </div>
+                <button class="close js-Tooltip" data-dismiss="c-TitleBar" title="Remind me later" aria-label="Remind me later">
+                    <span aria-hidden="true">&#215;</span> <!-- &#215; == &times; -->
+                </button>
             </div>
         </div>
     </c:if>
@@ -188,6 +191,27 @@
         </div>
     </c:if>
 
+    <c:if test="${_themeContext.authenticationVariables.isLoggedIn and !_themeContext.authenticationVariables.member.isProfileComplete}">
+        <c:if test="${not cookie.containsKey('xc-TitleBar__completeProfile--hidden')}">
+            <div class="c-TitleBar c-TitleBar--light" style="position: relative;">
+                <div class="container">
+                    <div class="c-TitleBar__content">
+                        <div class="c-TitleBar__element pl-0">
+                            Tell the ${_themeContext.colabName} community who you are and complete your profile!
+                        </div>
+
+                        <a class="c-TitleBar__actionButton" href="${_themeContext.authenticationVariables.member.profileEditUrl}">
+                            Complete profile
+                        </a>
+                    </div>
+                </div>
+                <button class="close js-Tooltip" data-dismiss="c-TitleBar" title="Remind me later" aria-label="Remind me later">
+                    <span aria-hidden="true">&#215;</span> <!-- &#215; == &times; -->
+                </button>
+            </div>
+        </c:if>
+    </c:if>
+
 
     <!-- ============ Navbar ============ -->
 
@@ -205,9 +229,7 @@
                           showLanguage="${_themeContext.i18NVariables.isI18NActive}"
                           showSearch="${_themeContext.themeVariables.showSearchMenuItem}"
                           languageSelectItems="${_themeContext.i18NVariables.languageSelectItems}"
-                          currentLocale="${_themeContext.i18NVariables.language}"
-                          showGoogleSso="${_themeContext.authenticationVariables.isGoogleSsoActive}"
-                          showFacebookSso="${_themeContext.authenticationVariables.isFacebookSsoActive}" />
+                          currentLocale="${_themeContext.i18NVariables.language}"/>
 
 
     <!-- ============ Load jQuery ============ -->
@@ -247,9 +269,7 @@
     <c:if test="${!_themeContext.authenticationVariables.isLoggedIn}">
         <xcolab-modals:loginModal show="${_themeContext.authenticationVariables.showLoginPopup}"
                                   redirect="${_themeContext.requestUri}"
-                                  authError="${_themeContext.authenticationVariables.authError}"
-                                  showFacebookSso="${_themeContext.authenticationVariables.isFacebookSsoActive}"
-                                  showGoogleSso="${_themeContext.authenticationVariables.isGoogleSsoActive}" />
+                                  authError="${_themeContext.authenticationVariables.authError}" />
         <xcolab:requireLibrary name="forgotPasswordModal"/>
     </c:if>
 
@@ -266,14 +286,6 @@
     <c:if test="${_librariesToLoad['flagging']}">
         <xcolab-modals:flaggingModal />
     </c:if>
-
-    <!-- TODO COLAB-2172: rework as part of SSO improvements -->
-    <!-- post registration popup -->
-    <c:if test='${request.getParameter("postRegistration")}'>
-        <xcolab-modals:postRegistrationModal member="${_themeContext.authenticationVariables.member}" redirect="${_themeContext.requestUri}" />
-        <collab:script src="/js/postRegistration.js" />
-    </c:if>
-
 
     <!-- ============ Scripts ============ -->
 

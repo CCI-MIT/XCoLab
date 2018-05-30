@@ -9,6 +9,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.util.TestUtil;
 
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 
 public class MembersClientMockerHelper {
@@ -31,6 +32,9 @@ public class MembersClientMockerHelper {
         Mockito.when(MembersClient.findMemberByEmailAddress(anyString()))
                 .thenAnswer(invocation -> getDefaultMember());
 
+        Mockito.when(MembersClient.register(anyObject()))
+                .thenAnswer(invocation -> getDefaultMember());
+
         Mockito.when(MembersClient.findMemberByScreenName(anyString()))
                 .thenAnswer(invocation -> {
 
@@ -40,8 +44,6 @@ public class MembersClientMockerHelper {
                         return getDefaultMember();
                     }
                 });
-        Mockito.when(MembersClient.login(anyLong(), anyString(), anyString(), anyString()))
-                .thenAnswer(invocationOnMock -> true);
 
         Mockito.when(MembersClient.getMemberUnchecked(anyLong()))
                 .thenAnswer(invocationOnMock-> getDefaultMember());

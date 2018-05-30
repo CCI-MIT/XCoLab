@@ -275,9 +275,8 @@ public class AdminTabController extends AbstractTabController {
 
         for (BatchRegisterLineBean registerLineBean : registerLineBeans) {
             Member member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
-                                                              registerLineBean.getFirstName(),
-                                                              registerLineBean.getLastName());
-            if (batchRegisterBean.getAsGuests()) { // TODO: throws a null pointer exception...
+                    registerLineBean.getFirstName(), registerLineBean.getLastName());
+            if (batchRegisterBean.getAsGuests()) {
                 MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
                 MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
             }

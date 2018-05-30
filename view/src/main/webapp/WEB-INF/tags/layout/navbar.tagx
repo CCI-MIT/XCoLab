@@ -13,8 +13,6 @@
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="colabName" type="java.lang.String" required="true" rtexprvalue="true" description="The name of this CoLab" />
     <jsp:directive.attribute name="member" type="org.xcolab.client.members.pojo.Member" required="true" rtexprvalue="true" description="The logged in member, if any" />
-    <jsp:directive.attribute name="showFacebookSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, Facebook SSO is shown" />
-    <jsp:directive.attribute name="showGoogleSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, Google SSO is shown" />
     <jsp:directive.attribute name="activePageLink" type="java.lang.String" required="true" rtexprvalue="true" description="The name of the active page" />
     <jsp:directive.attribute name="showLanguage" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, a language picker is shown to guest users" />
     <jsp:directive.attribute name="showSearch" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, a search bar is shown" />
@@ -128,7 +126,7 @@
                                         </div>
                                     </a>
 
-                                    <xcolab-dropdowns:loginDropdown showFacebookSso="${showFacebookSso}" showGoogleSso="${showGoogleSso}" />
+                                    <xcolab-dropdowns:loginDropdown/>
                                 </li>
                                 <c:if test="${showLanguage}">
                                     <li class="nav-item cb-nav-item-gray cb-nav-item-sm dropdown cb-dropdown-inverse ${navItemRightIconClass}">

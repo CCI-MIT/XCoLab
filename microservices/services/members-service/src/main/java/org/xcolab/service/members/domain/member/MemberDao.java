@@ -10,7 +10,7 @@ public interface MemberDao {
 
     List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
-            String googleId, List<Long> roleIds);
+            String googleId, String colabSsoId, String climateXId, List<Long> roleIds);
     int countByGiven(String partialName, String partialEmail, String roleName);
 
     Optional<Member> getMember(long memberId);
@@ -30,9 +30,7 @@ public interface MemberDao {
     Optional<Member> findOneByForgotPasswordHash(String newPasswordToken);
 
     boolean updateMember(Member member);
-    void createMember(String screenName, String password, String email,
-            String firstName, String lastName, String shortBio, String country,
-            Long facebookId, String openId, Long imageid, Long liferayUserId, String googleId, String defaultLocale);
+    Member createMember(Member pojo);
 
     List<Member> findByIp(String ip) ;
     List<Member> findByScreenNameName(String name);

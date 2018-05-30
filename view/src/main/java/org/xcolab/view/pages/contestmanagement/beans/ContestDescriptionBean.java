@@ -118,7 +118,6 @@ public class ContestDescriptionBean implements Serializable {
             SharedColabClient
                     .updateSharedContestName(contest.getContestPK(), contest.getContestName());
         }
-
     }
 
     private static void updateContestSchedule(Contest contest, Long contestScheduleId) {

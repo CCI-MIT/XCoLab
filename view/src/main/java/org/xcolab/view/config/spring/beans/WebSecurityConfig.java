@@ -3,14 +3,17 @@ package org.xcolab.view.config.spring.beans;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
 import org.springframework.session.web.http.SessionRepositoryFilter;
@@ -21,6 +24,7 @@ import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.handlers.LogoutSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.auth.login.spring.MemberPasswordEncoder;
+import org.xcolab.view.config.spring.beans.SsoClientConfig.SsoFilter;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.spring.properties.WebProperties.GuestAccess;
 
@@ -30,6 +34,7 @@ import javax.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @SuppressWarnings("ProhibitedExceptionDeclared")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -38,6 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final RememberMeServices rememberMeServices;
     private final MemberDetailsService memberDetailsService;
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final SsoFilter ssoFilter;
 
     private final WebProperties webProperties;
     private final XCoLabProperties xCoLabProperties;
@@ -46,18 +52,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public WebSecurityConfig(RememberMeServices rememberMeServices,
             MemberDetailsService memberDetailsService, WebProperties webProperties,
             XCoLabProperties xCoLabProperties,
-            AuthenticationSuccessHandler authenticationSuccessHandler) {
+            AuthenticationSuccessHandler authenticationSuccessHandler, SsoFilter ssoFilter) {
         this.rememberMeServices = rememberMeServices;
         this.memberDetailsService = memberDetailsService;
         this.webProperties = webProperties;
         this.xCoLabProperties = xCoLabProperties;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
+        this.ssoFilter = ssoFilter;
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/admin/management/**").hasRole("ADMIN");
+                .antMatchers("/admin/management/**").hasRole("ADMIN")
+                .antMatchers("/oauth/authorize").authenticated();
 
         final GuestAccess guestAccessProperties = webProperties.getGuestAccess();
 
@@ -102,6 +110,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     // need to specify same key that is used in rememberMeServices
                     .key(xCoLabProperties.getSecret())
                     .and()
+                .addFilterBefore(ssoFilter.getFilter(), BasicAuthenticationFilter.class)
                 .logout()
                     .permitAll()
                     .logoutSuccessHandler(new LogoutSuccessHandler())

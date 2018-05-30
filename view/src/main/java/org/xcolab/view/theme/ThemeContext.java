@@ -7,6 +7,7 @@ import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.view.auth.AuthenticationService;
+import org.xcolab.view.config.spring.beans.SsoClientConfig.SsoServices;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,10 +36,11 @@ public class ThemeContext {
 
     private final String requestUri;
 
-    public ThemeContext(AuthenticationService authenticationService,
+    public ThemeContext(AuthenticationService authenticationService, SsoServices ssoServices,
                         HttpServletRequest request) {
         this.i18NVariables = new I18nVariables();
-        this.authenticationVariables = new AuthenticationVariables(authenticationService, request);
+        this.authenticationVariables = new AuthenticationVariables(authenticationService,
+                ssoServices, request);
         this.credentialVariables = new CredentialVariables();
         this.themeVariables = new ThemeVariables(request, this.getI18NVariables());
         this.metaVariables = new MetaVariables(request, this.getI18NVariables());

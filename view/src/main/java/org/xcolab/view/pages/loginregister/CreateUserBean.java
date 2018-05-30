@@ -54,17 +54,17 @@ public class CreateUserBean implements Serializable {
 
     private String recaptcha_response_field;
 
-    private String imageId;
+    private Long imageId;
 
     private String captchaText;
 
     private boolean isCaptchaNeeded = true;
 
-    public String getImageId() {
+    public Long getImageId() {
         return imageId;
     }
 
-    public void setImageId(String imageId) {
+    public void setImageId(Long imageId) {
         this.imageId = imageId;
     }
 
