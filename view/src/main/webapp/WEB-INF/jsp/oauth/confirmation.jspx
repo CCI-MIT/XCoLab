@@ -30,7 +30,7 @@
                         </c:if>
                         <c:if test="${approvalModel.hasProfileScope()}">
                             <li>
-                                Your public profile
+                                The public profile you created on ${_themeContext.colabName}
                                 <input type="hidden" name="scope.profile" value="true"/>
                             </li>
                         </c:if>
