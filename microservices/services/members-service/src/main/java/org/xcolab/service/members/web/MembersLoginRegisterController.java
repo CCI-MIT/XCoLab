@@ -54,11 +54,10 @@ public class MembersLoginRegisterController {
     }
 
     @GetMapping("hashPassword")
-    public String hashPassword(@RequestParam String password,
-            @RequestParam(required = false) Boolean liferayCompatible) {
+    public String hashPassword(@RequestParam String password) {
         password = decode(password);
         return memberService
-                .hashPassword(password, liferayCompatible != null ? liferayCompatible : false);
+                .hashPassword(password);
     }
 
     @PostMapping("validatePassword")

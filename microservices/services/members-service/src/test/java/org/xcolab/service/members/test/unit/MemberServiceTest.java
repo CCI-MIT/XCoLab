@@ -26,14 +26,7 @@ public class MemberServiceTest {
     }
 
     @Test
-    public void hashPassword_liferayCompatible() throws NoSuchAlgorithmException {
-        final String hash = memberService.hashPassword("colab123", true);
-        Assert.assertEquals("{SHA-1}NS2PVQOqtxe9YlFzf3xNa8/6XDo=", hash);
-    }
-
-    @Test
-    public void validatePassword() throws NoSuchAlgorithmException {
+    public void validatePassword_sha1() throws NoSuchAlgorithmException {
         Assert.assertTrue(memberService.validatePassword("colab123", "{SHA-1}NS2PVQOqtxe9YlFzf3xNa8/6XDo="));
     }
-
 }

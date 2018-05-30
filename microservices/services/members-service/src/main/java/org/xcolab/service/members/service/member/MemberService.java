@@ -54,14 +54,6 @@ public class MemberService {
     }
 
     public String hashPassword(String password) {
-        return hashPassword(password, false);
-    }
-
-    public String hashPassword(String password, boolean liferayCompatible) {
-        if (liferayCompatible) {
-            SHA1PasswordEncryptor sha1PasswordEncryptor = new SHA1PasswordEncryptor();
-            return "{SHA-1}" + sha1PasswordEncryptor.doEncrypt("SHA-1", password);
-        }
         PBKDF2PasswordEncryptor pbkdf2PasswordEncryptor = new PBKDF2PasswordEncryptor();
         return "PBKDF2_" + pbkdf2PasswordEncryptor
                 .doEncrypt(PBKDF2PasswordEncryptor.DEFAULT_ALGORITHM, password, "");
@@ -96,6 +88,7 @@ public class MemberService {
     }
 
     public Member register(Member pojo) {
+        pojo.setHashedPassword(hashPassword(pojo.getHashedPassword()));
         final Member member = memberDao.createMember(pojo);
         //TODO COLAB-2609: centralize this ID in constant (see MemberRole enum)
         roleDao.assignMemberRole(member.getId_(), 10122L);

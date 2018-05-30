@@ -151,6 +151,7 @@ public class LoginRegisterService {
         member.setHashedPassword(password);
         member.setLastName(lastName);
         member.setDefaultLocale(language != null ? language : I18nUtils.DEFAULT_LANGUAGE);
+        member.setStatus(0);
 
         final String baseUri = PlatformAttributeKey.COLAB_URL.get();
         member.setShortBio(HtmlUtil.cleanSome(shortBio, baseUri));

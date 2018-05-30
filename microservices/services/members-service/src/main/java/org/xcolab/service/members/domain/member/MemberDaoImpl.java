@@ -376,6 +376,7 @@ public class MemberDaoImpl implements MemberDao {
                         .set(MEMBER.LAST_NAME, member.getLastName())
                         .set(MEMBER.LOGIN_DATE, member.getLoginDate())
                         .set(MEMBER.LOGIN_IP, member.getLoginIP())
+                        .set(MEMBER.HASHED_PASSWORD, member.getHashedPassword())
                         .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
                         .set(MEMBER.GOOGLE_ID, member.getGoogleId())
                         .set(MEMBER.COLAB_SSO_ID, member.getColabSsoId())
