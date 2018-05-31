@@ -488,14 +488,13 @@
 		}
 
 		function deleteSection(event){
-			if(confirm("Do you want to remove this section ?")) {
-				var section = event.target;
+			if (confirm("Do you want to remove this section ?")) {
 				var newNumberOfSections = getNumberOfSections() - 1;
 				setNumberOfSections(newNumberOfSections);
-				var sectionElement = section.parentNode;
-				var previousDropzone = section.parentNode.previousSibling;
-				document.getElementById("editForm").removeChild(previousDropzone);
-				document.getElementById("editForm").removeChild(sectionElement);
+				var sectionElement = jQuery(event.target).closest('.js-SectionParent.deletable');
+				var previousDropzone = sectionElement.prev();
+                sectionElement.remove();
+                previousDropzone.remote();
 				reCalculateWeights();
 			}
 		}
