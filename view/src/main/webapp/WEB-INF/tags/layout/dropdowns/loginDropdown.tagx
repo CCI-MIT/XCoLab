@@ -9,7 +9,7 @@
     <div class="dropdown-menu dropdown-menu-right cb-dropdown-box" style="min-width: 300px;">
         <div class="row">
             <div class="col-md-12">
-                <div class="d-flex justify-content-around">
+                <div class="d-flex justify-content-around mb-2">
                     <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
                         <a href="/sso/facebook" class="c-SocialButton border-0" rel="nofollow">
                             <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
@@ -22,14 +22,14 @@
                             <span class="c-SocialButton__text">Google</span>
                         </a>
                     </c:if>
-                    <c:if test="${_themeContext.authenticationVariables.isClimateXEnabled}">
+                    <c:if test="${_themeContext.authenticationVariables.isClimateXSsoActive}">
                         <a href="/sso/climatex" class="c-SocialButton border-0"  rel="nofollow">
                             <!--<collab:image src="/images/icons/social/climatex.svg" ariaHidden="true" />-->
                             <span class="c-SocialButton__text">ClimateX</span>
                         </a>
                     </c:if>
                 </div>
-                <c:if test="${showFacebookSso or showGoogleSso}">
+                <c:if test="${_themeContext.authenticationVariables.isAnySsoActive}">
                     <div class="c-TextRule c-TextRule--inverse">
                         OR
                     </div>

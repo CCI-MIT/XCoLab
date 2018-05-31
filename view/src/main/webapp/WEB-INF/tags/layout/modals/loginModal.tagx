@@ -40,7 +40,7 @@
                                 <span class="c-SocialButton__text">Google</span>
                             </a>
                         </c:if>
-                        <c:if test="${_themeContext.authenticationVariables.isClimateXEnabled}">
+                        <c:if test="${_themeContext.authenticationVariables.isClimateXSsoActive}">
                             <a href="/sso/climatex" class="c-SocialButton text-dark" rel="nofollow">
                                 <!--<collab:image src="/images/icons/social/climatex.svg" ariaHidden="true"/>-->
                                 <span class="c-SocialButton__text">ClimateX</span>
