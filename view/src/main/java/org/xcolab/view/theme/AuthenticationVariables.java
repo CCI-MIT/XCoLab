@@ -5,6 +5,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.login.AuthenticationError;
+import org.xcolab.view.config.spring.beans.SsoClientConfig.SsoServices;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +17,7 @@ public class AuthenticationVariables {
     private final boolean isAdmin;
 
     private final boolean isGoogleSsoActive;
+    private final boolean isClimateXEnabled;
     private final boolean isFacebookSsoActive;
     private final String facebookId;
     private final boolean showLoginPopup;
@@ -24,7 +26,7 @@ public class AuthenticationVariables {
     private final boolean showSsoPopup;
 
     public AuthenticationVariables(AuthenticationService authenticationService,
-                          HttpServletRequest request) {
+            SsoServices ssoServices, HttpServletRequest request) {
         this.isLoggedIn = authenticationService.isLoggedIn();
 
         this.isImpersonating = authenticationService.isImpersonating(request);
@@ -38,8 +40,9 @@ public class AuthenticationVariables {
         boolean isSSOSigningIn = readBooleanParameter(request, "isSSOSigningIn");
         this.authError = AuthenticationError.fromName(request.getParameter("signinRegError"));
 
-        this.isGoogleSsoActive = ConfigurationAttributeKey.GOOGLE_SSO_IS_ACTIVE.get();
-        this.isFacebookSsoActive = ConfigurationAttributeKey.FACEBOOK_SSO_IS_ACTIVE.get();
+        this.isGoogleSsoActive = ssoServices.isGoogleEnabled();
+        this.isClimateXEnabled = ssoServices.isClimateXEnabled();
+        this.isFacebookSsoActive = ssoServices.isFacebookEnabled();
         this.facebookId = ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get();
 
         this.showLoginPopup = isSigningIn;
@@ -97,5 +100,9 @@ public class AuthenticationVariables {
 
     public boolean getShowSsoPopup() {
         return showSsoPopup;
+    }
+
+    public boolean getIsClimateXEnabled() {
+        return isClimateXEnabled;
     }
 }

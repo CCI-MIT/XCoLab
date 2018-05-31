@@ -143,7 +143,7 @@ public class BalloonService {
 
         String uuid;
         if (member != null) {
-            uuid = member.getUuid();
+            uuid = member.getOrGenerateUuid();
         } else {
             uuid = UUID.randomUUID().toString();
         }
@@ -217,7 +217,7 @@ public class BalloonService {
 
     private static BalloonUserTracking getBalloonUserTrackingForMember(Member member) {
         try {
-            return BalloonsClient.getBalloonUserTracking(member.getUuid());
+            return BalloonsClient.getBalloonUserTracking(member.getOrGenerateUuid());
         } catch (BalloonUserTrackingNotFoundException ignored) {
             List<BalloonUserTracking> buts =
                     BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress());

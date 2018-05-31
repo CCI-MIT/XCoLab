@@ -3,6 +3,7 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:judging="urn:jsptld:/WEB-INF/tlds/xcolab-judging.tld"
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
@@ -151,6 +152,7 @@
                         </div>
                     </c:forEach>
                 </div>
+
                 <div class="p-ContestProposals__header__buttons cb-btn-spacer">
 
                     <c:if test="${showDownloadLink}">
@@ -181,6 +183,38 @@
                         </a>
                     </c:if>
                 </div>
+
+                <c:if test="${showJudgingStatus}">
+                    <div class="p-ContestProposals__header__team">
+                        <h2>Admin Information</h2>
+                        <div class="judgingForm">
+                            <p>Current proposal review status for each Judge. Click to filter proposals for a specific judge.</p>
+                            <div>
+                                <c:forEach var="judge" items="${contest.contestJudges}">
+                                    <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.userId}">
+                                        <div class="review-status-container">
+                                            <xcolab:userPortrait portraitId="${judge.portraitId}"
+                                                                 memberId="${judge.userId}"
+                                                                 width="30" height="30"/>
+                                        </div>
+                                        <br/>
+                                        <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
+                                            <a href="${contest.contestUrl}/judgeFilter/${judge.userId}">${judge.fullName}</a>
+                                            <br /><span>(${proposalAlreadyJudgedCount} of ${proposalCount})</span>
+                                            <div class="hidden">
+                                                <span id="js-Tooltip__content__judgedata_${judge.userId}">
+                                                    ${judge.fullName} has evaluated ${proposalAlreadyJudgedCount} out of the ${proposalCount} proposals assigned to them.
+                                                </span>
+                                            </div>
+                                        </judging:judgeAssignedProposalCount>
+                                        <br/>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+
             </div>
 
             <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">

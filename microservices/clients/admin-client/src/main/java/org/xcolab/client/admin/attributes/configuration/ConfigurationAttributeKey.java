@@ -119,18 +119,6 @@ public final class ConfigurationAttributeKey {
                     .defaultValue("")
                     .build();
 
-    public static final AttributeGetter<String> GOOGLE_AUTH_CLIENT_ID =
-            ConfigurationAttributes.newStringAttribute("GOOGLE_AUTH_CLIENT_ID")
-                    .defaultValue("")
-                    .build();
-    public static final AttributeGetter<String> GOOGLE_AUTH_CLIENT_SECRET =
-            ConfigurationAttributes.newStringAttribute("GOOGLE_AUTH_CLIENT_SECRET")
-                    .build();
-    public static final AttributeGetter<Boolean> GOOGLE_SSO_IS_ACTIVE =
-            ConfigurationAttributes.newBooleanAttribute("GOOGLE_SSO_IS_ACTIVE")
-                    .defaultValue(TransformedAttribute.of(GOOGLE_AUTH_CLIENT_ID, StringUtils::isNotEmpty))
-                    .build();
-
     public static final AttributeGetter<String> FACEBOOK_URL =
             ConfigurationAttributes.newStringAttribute("FACEBOOK_URL")
                     .defaultValue("")
@@ -138,17 +126,6 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> FACEBOOK_APPLICATION_ID =
             ConfigurationAttributes.newStringAttribute("FACEBOOK_APPLICATION_ID")
                     .defaultValue("")
-                    .build();
-    public static final AttributeGetter<String> FACEBOOK_APPLICATION_SECRET =
-            ConfigurationAttributes.newStringAttribute("FACEBOOK_APPLICATION_SECRET")
-                    .build();
-    public static final AttributeGetter<Boolean> FACEBOOK_SSO_IS_ACTIVE =
-            ConfigurationAttributes.newBooleanAttribute("FACEBOOK_SSO_IS_ACTIVE")
-                    .defaultValue(TransformedAttribute.of(FACEBOOK_APPLICATION_ID, StringUtils::isNotEmpty))
-                    .build();
-    public static final AttributeGetter<Boolean> FACEBOOK_VERIFIED_REQUIRED =
-            ConfigurationAttributes.newBooleanAttribute("FACEBOOK_VERIFIED_REQUIRED")
-                    .defaultValue(false)
                     .build();
 
     public static final AttributeGetter<String> TWITTER_ACCOUNT =

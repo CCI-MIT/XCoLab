@@ -597,17 +597,17 @@ public class Proposal extends AbstractProposal {
         return selectedJudges;
     }
 
-    public boolean isUserAmongSelectedJudge(Member user) {
+    public boolean isUserAmongSelectedJudges(long judgeId) {
         if (!getFellowScreeningNecessary()) {
-            return isUserAmongJudges(user.getUserId());
+            return isUserAmongJudges(judgeId);
         }
 
-        for (Long userId : getSelectedJudges()) {
-            if (userId == user.getUserId()) {
-                return true;
-            }
-        }
-        return false;
+        return getSelectedJudges().stream()
+                .anyMatch(userId -> userId == judgeId);
+    }
+
+    public boolean isUserAmongSelectedJudges(Member user) {
+        return this.isUserAmongSelectedJudges(user.getUserId());
     }
 
     public long getVotesCount() {

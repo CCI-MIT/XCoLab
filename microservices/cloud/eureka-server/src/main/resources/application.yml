@@ -6,7 +6,8 @@ eureka:
     registerWithEureka: false
     fetchRegistry: false
   server:
-      waitTimeInMsWhenSyncEmpty: 0
+    waitTimeInMsWhenSyncEmpty: 0
+
 
 
 logging:

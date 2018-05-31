@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.text.WordUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -27,10 +28,13 @@ public class Member implements Serializable {
     private static final long serialVersionUID = 1;
 
     @JsonIgnore
-    private static final String USER_PROFILE_PATH = "/members/profile/";
+    private static final String USER_PROFILE_PATH = "/members/profile/%d";
 
     @JsonIgnore
-    private static final String USER_IMAGE_PATH = "/image/member/";
+    private static final String USER_PROFILE_EDIT_PATH = "/members/profile/%d/edit";
+
+    @JsonIgnore
+    private static final String USER_IMAGE_PATH = "/image/member/%d";
 
     public static final TypeProvider<Member> TYPES =
             new TypeProvider<>(Member.class,
@@ -52,6 +56,8 @@ public class Member implements Serializable {
     private String shortBio;
     private Long facebookId;
     private String googleId;
+    private String colabSsoId;
+    private String climateXSsoId;
     private String openId;
     private String loginIP;
     private Timestamp loginDate;
@@ -77,11 +83,15 @@ public class Member implements Serializable {
         this.createDate = value.createDate;
         this.modifiedDate = value.modifiedDate;
         this.passwordModifiedDate = value.passwordModifiedDate;
+        this.hashedPassword = value.hashedPassword;
         this.firstName = value.firstName;
         this.lastName = value.lastName;
         this.country = value.country;
         this.shortBio = value.shortBio;
         this.facebookId = value.facebookId;
+        this.googleId = value.googleId;
+        this.colabSsoId = value.colabSsoId;
+        this.climateXSsoId = value.climateXSsoId;
         this.openId = value.openId;
         this.loginIP = value.loginIP;
         this.loginDate = value.loginDate;
@@ -91,6 +101,9 @@ public class Member implements Serializable {
         this.autoregisteredmemberstatus = value.autoregisteredmemberstatus;
         this.uuid = value.uuid;
         this.defaultlocale = value.defaultlocale;
+        this.loginTokenId = value.loginTokenId;
+        this.loginTokenKey = value.loginTokenKey;
+        this.loginTokenExpirationDate = value.loginTokenExpirationDate;
     }
 
     public static Member fromId(String memberIdString) {
@@ -229,6 +242,22 @@ public class Member implements Serializable {
         this.googleId = googleId;
     }
 
+    public String getColabSsoId() {
+        return colabSsoId;
+    }
+
+    public void setColabSsoId(String colabSsoId) {
+        this.colabSsoId = colabSsoId;
+    }
+
+    public String getClimateXSsoId() {
+        return climateXSsoId;
+    }
+
+    public void setClimateXSsoId(String climateXSsoId) {
+        this.climateXSsoId = climateXSsoId;
+    }
+
     public String getOpenId() {
         return this.openId;
     }
@@ -353,11 +382,16 @@ public class Member implements Serializable {
         this.autoregisteredmemberstatus = autoregisteredmemberstatus;
     }
 
-    public String getUuid() {
+    @JsonIgnore
+    public String getOrGenerateUuid() {
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
             MembersClient.updateMember(this);
         }
+        return uuid;
+    }
+
+    public String getUuid() {
         return uuid;
     }
 
@@ -389,37 +423,32 @@ public class Member implements Serializable {
         this.loginTokenExpirationDate = loginTokenExpirationDate;
     }
 
-    @Override
-    public String toString() {
-
-        return "Member (" + id_ +
-                ", " + screenName +
-                ", " + emailAddress +
-                ", " + createDate +
-                ", " + modifiedDate +
-                ", " + passwordModifiedDate +
-                ", " + firstName +
-                ", " + lastName +
-                ", " + country +
-                ", " + shortBio +
-                ", " + facebookId +
-                ", " + googleId +
-                ", " + openId +
-                ", " + loginIP +
-                ", " + loginDate +
-                ", " + reportKarma +
-                ")";
+    @JsonIgnore
+    public String getProfileLinkUrl()  {
+        return String.format(USER_PROFILE_PATH, getId_());
     }
 
     @JsonIgnore
-    public String getProfileLinkUrl()  {
-        return USER_PROFILE_PATH + getId_();
+    public String getProfileEditUrl()  {
+        return String.format(USER_PROFILE_EDIT_PATH, getId_());
     }
 
     @JsonIgnore
     public String getImageLinkUrl() {
         final String userImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
-        return getPortraitId() != 0 ? userImageDomain + USER_IMAGE_PATH + getPortraitId() : "";
+        return getPortraitId() != 0 ? userImageDomain + getRelativeImageUrl() : "";
+    }
+
+    @JsonIgnore
+    public String getAbsoluteImageUrl() {
+        final String cdnUrl = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
+        final String userImageDomain = StringUtils.isNotEmpty(cdnUrl) ? cdnUrl
+                : PlatformAttributeKey.COLAB_URL.get();
+        return getPortraitId() != 0 ? userImageDomain + getRelativeImageUrl() : "";
+    }
+
+    private String getRelativeImageUrl() {
+        return getPortraitId() != 0 ? String.format(USER_IMAGE_PATH, getPortraitId()) : "";
     }
 
     @JsonIgnore
@@ -430,6 +459,10 @@ public class Member implements Serializable {
     @JsonIgnore
     public int getNumberOfMessagesLeft() {
         return MessagingClient.getNumberOfMessagesLeft(getId_());
+    }
+
+    public boolean getIsProfileComplete() {
+        return firstName != null && lastName != null && emailAddress != null && country != null;
     }
 
     @Override
@@ -443,4 +476,36 @@ public class Member implements Serializable {
         return (int) (this.getId_() ^ this.getId_() >>> 32);
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id_", id_)
+                .append("screenName", screenName)
+                .append("emailAddress", emailAddress)
+                .append("isEmailConfirmed", isEmailConfirmed)
+                .append("isEmailBounced", isEmailBounced)
+                .append("createDate", createDate)
+                .append("modifiedDate", modifiedDate)
+                .append("passwordModifiedDate", passwordModifiedDate)
+                .append("hashedPassword", hashedPassword != null ? "REDACTED" : null)
+                .append("firstName", firstName)
+                .append("lastName", lastName)
+                .append("country", country)
+                .append("shortBio", shortBio)
+                .append("facebookId", facebookId)
+                .append("googleId", googleId)
+                .append("colabSsoId", colabSsoId)
+                .append("climateXSsoId", climateXSsoId)
+                .append("openId", openId)
+                .append("loginIP", loginIP)
+                .append("loginDate", loginDate)
+                .append("status", status)
+                .append("reportKarma", reportKarma)
+                .append("portraitFileEntryId", portraitFileEntryId)
+                .append("autoregisteredmemberstatus", autoregisteredmemberstatus)
+                .append("uuid", uuid)
+                .append("defaultlocale", defaultlocale)
+                .append("loginTokenId", loginTokenId)
+                .append("loginTokenKey", loginTokenKey != null ? "REDACTED" : null)
+                .append("loginTokenExpirationDate", loginTokenExpirationDate).toString();
+    }
 }

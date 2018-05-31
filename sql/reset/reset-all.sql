@@ -2,10 +2,6 @@ delete from members_Member;
 INSERT INTO members_Member (id_, screenName, emailAddress, isEmailConfirmed, firstName, lastName, hashedPassword, createDate, modifiedDate, passwordModifiedDate, country, shortBio, facebookId, googleId, openId, loginIP, loginDate, status, forgotPasswordToken, forgotPasswordTokenExpireTime, portraitFileEntryId, reportKarma, autoRegisteredMemberStatus, uuid)
   VALUES (10144, 'admin', 'admin+u10144@example.com', 0, 'Admin', 'CoLab', 'PBKDF2_160_128000_g81/ioSNrXo=_pRj14MUWBMdoAVhbI7pqUlGdrII=', '2009-08-19 01:00:00', '2009-08-19 01:00:00', '2009-08-19 01:00:00', 'United States', '', 0, null, '', '127.0.0.1', '2009-08-19 01:00:00', 0, null, null, 0, 100, 0, null),
     (10145, 'member', 'member+u10145@example.com', 0, 'Member', 'CoLab', 'PBKDF2_160_128000_g81/ioSNrXo=_pRj14MUWBMdoAVhbI7pqUlGdrII=', '2009-08-19 01:00:00', '2009-08-19 01:00:00', '2009-08-19 01:00:00', 'United States', '', 0, null, '', '127.0.0.1', '2009-08-19 01:00:00', 0, null, null, 0, 100, 0, null);
-delete from sharedcolab_SharedMember;
-INSERT INTO sharedcolab_SharedMember (sharedMemberId, screenName, emailAddress, createDate, colabOrigin)
-  VALUES (10144, 'admin', 'admin+u10144@example.com', '2009-08-19 01:00:00', 'XCoLab'),
-    (10145, 'member', 'member+u10145@example.com', '2009-08-19 01:00:00', 'XCoLab');
 delete from Users_Roles;
 INSERT INTO Users_Roles (userId, roleId) VALUES (10144, 10118), (10144, 10122), (10145, 10122);
 

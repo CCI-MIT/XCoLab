@@ -30,6 +30,14 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
@@ -291,8 +299,8 @@
                             <goal>install-node-and-yarn</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v9.11.1</nodeVersion>
-                            <yarnVersion>v1.5.1</yarnVersion>
+                            <nodeVersion>v8.11.2</nodeVersion>
+                            <yarnVersion>v1.6.0</yarnVersion>
                         </configuration>
                     </execution>
 

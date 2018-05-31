@@ -18,6 +18,7 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -32,6 +33,7 @@ import org.xcolab.view.util.pagination.SortFilterPage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +47,18 @@ public class ContestProposalsController extends BaseProposalsController {
             ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @PathVariable String phaseId,
             final SortFilterPage sortFilterPage) {
+        setBasePageAttributes(proposalContext, model);
+        return showContestProposalsPage(model, proposalContext,
+                sortFilterPage, loggedInMember);
+    }
+
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/judgeFilter/{judgeId}")
+    public String showContestProposalsWithJudgeFilter(HttpServletRequest request,
+            HttpServletResponse response, Model model, Member loggedInMember,
+            ProposalContext proposalContext, @PathVariable String contestYear,
+            @PathVariable String contestUrlName, @PathVariable String judgeId,
+            final SortFilterPage sortFilterPage) {
+        model.addAttribute("judgeId", judgeId);
         setBasePageAttributes(proposalContext, model);
         return showContestProposalsPage(model, proposalContext,
                 sortFilterPage, loggedInMember);
@@ -153,6 +167,65 @@ public class ContestProposalsController extends BaseProposalsController {
             response.sendRedirect(proposalContext.getContest().getContestLinkUrl());
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to subscribe contest");
+        }
+    }
+
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/assignAllJudges")
+    public String assignAllJudges(HttpServletRequest request, HttpServletResponse response,
+            Member currentMember, ProposalContext proposalContext)
+            throws ProposalsAuthorizationException, IOException {
+
+        if (proposalContext.getPermissions().getCanFellowActions()) {
+
+            final Contest contest = proposalContext.getContest();
+            final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
+            long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
+
+            List<Long> selectedJudges = new ArrayList<>();
+            for (Member judge : contest.getContestJudges()) {
+                selectedJudges.add(judge.getUserId());
+            }
+
+            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getContestPK())) {
+                proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
+                        proposal.getProposalId(),
+                        contestPhaseId,
+                        selectedJudges);
+            }
+
+            AlertMessage.success("All judges were assigned to every proposal.").flash(request);
+            return "redirect:" + contest.getContestLinkUrl();
+        } else {
+            throw new ProposalsAuthorizationException("User isn't allowed to assign all judges");
+        }
+    }
+
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/removeUnfinishedJudges")
+    public String removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
+            Member currentMember, ProposalContext proposalContext)
+            throws ProposalsAuthorizationException, IOException {
+
+        if (proposalContext.getPermissions().getCanFellowActions()) {
+
+            final Contest contest = proposalContext.getContest();
+            final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
+            long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
+
+            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getContestPK())) {
+                List<Long> newSelectedJudges = proposal.getSelectedJudges().stream()
+                        .filter(judgeId -> proposal.getJudgeReviewFinishedStatusUserId(judgeId))
+                        .collect(Collectors.toList());
+
+                proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
+                        proposal.getProposalId(),
+                        contestPhaseId,
+                        newSelectedJudges);
+            }
+
+            AlertMessage.success("All judges who did not complete their reviews were removed.").flash(request);
+            return "redirect:" + contest.getContestLinkUrl();
+        } else {
+            throw new ProposalsAuthorizationException("User isn't allowed to remove unfinished judges");
         }
     }
 

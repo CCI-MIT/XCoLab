@@ -50,14 +50,6 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestTeamMember` (
   KEY `IX_E1468F04` (`contestId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `sharedcolab_SharedMember` (
-  `sharedMemberId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `screenName` varchar(255) DEFAULT NULL,
-  `emailAddress` varchar(255) DEFAULT NULL,
-  `createDate` datetime DEFAULT NULL,
-  `colabOrigin` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `flagging_ReportTarget` (
   `reportTargetId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `type` varchar(50) NOT NULL,
@@ -275,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ImpactTemplateSeries` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `members_Member` (
-  `id_` bigint(20) NOT NULL PRIMARY KEY,
+  `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `screenName` varchar(42) DEFAULT NULL,
   `emailAddress` varchar(75) DEFAULT NULL,
   `isEmailConfirmed` tinyint(4) NOT NULL DEFAULT '0',
@@ -291,6 +283,8 @@ CREATE TABLE IF NOT EXISTS `members_Member` (
   `shortBio` text,
   `facebookId` bigint(20) DEFAULT NULL,
   `googleId` varchar(50) DEFAULT NULL,
+  `colabSsoId` varchar(50) DEFAULT NULL,
+  `climateXId` varchar(75) DEFAULT NULL,
   `openId` varchar(255) DEFAULT NULL,
   `loginIP` varchar(75) DEFAULT NULL,
   `loginDate` datetime DEFAULT NULL,
@@ -310,7 +304,9 @@ CREATE TABLE IF NOT EXISTS `members_Member` (
   KEY `IX_XCOLAB_MEMBERS_CREATE_DATE` (`createDate`,`modifiedDate`),
   KEY `IX_XCOLAB_MEMBERS_MODIFIED_DATE` (`modifiedDate`),
   KEY `IX_XCOLAB_MEMBERS_FACEBOOK_ID` (`facebookId`),
-  KEY `IX_XCOLAB_MEMBERS_OPEN_ID` (`openId`)
+  KEY `IX_XCOLAB_MEMBERS_GOOGLE_ID` (`googleId`),
+  KEY `IX_XCOLAB_MEMBERS_COLAB_SSO_ID` (`colabSsoId`),
+  KEY `IX_XCOLAB_MEMBERS_CLIMTE_X_ID` (`climateXId`)
   /*, FULLTEXT KEY `members_Member_names_bio` (`firstName`,`lastName`,`shortBio`,`screenName`)*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

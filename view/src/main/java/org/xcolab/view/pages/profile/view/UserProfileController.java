@@ -221,11 +221,10 @@ public class UserProfileController {
         boolean changedUserPart = false;
         boolean validationError = false;
         if (StringUtils.isNotBlank(updatedUserBean.getPassword())) {
-            final boolean isAdminEditingOtherProfile =
-                    permissions.getCanAdmin() && !currentUserProfile.isViewingOwnProfile();
             final String currentPassword = updatedUserBean.getCurrentPassword();
             if (MembersClient.validatePassword(currentPassword.trim(), currentUserProfile.getUser().getUserId())
-                    || isAdminEditingOtherProfile) {
+                    || (permissions.getCanAdmin() && MembersClient.validatePassword(
+                            currentPassword.trim(), permissions.getLoggedInMember().getUserId()))) {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {

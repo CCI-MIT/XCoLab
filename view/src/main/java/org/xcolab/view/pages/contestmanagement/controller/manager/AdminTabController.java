@@ -24,6 +24,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
+import org.xcolab.commons.servlet.ManifestUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
@@ -46,7 +47,6 @@ import org.xcolab.view.util.entity.EntityIdListUtil;
 import org.xcolab.view.util.entity.enums.MemberRole;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,8 +55,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
@@ -73,8 +71,6 @@ public class AdminTabController extends AbstractTabController {
 
     private static final ContestManagerTabs tab = ContestManagerTabs.ADMIN;
     private static final String TAB_VIEW = "contestmanagement/manager/adminTab";
-    private static final Attributes.Name MANIFEST_ATTRIBUTE_GIT_COMMIT
-            = new Attributes.Name("Git-Commit");
 
     private final LoginRegisterService loginRegisterService;
     private final ServletContext servletContext;
@@ -150,31 +146,12 @@ public class AdminTabController extends AbstractTabController {
         List<Notification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
 
-        model.addAttribute("buildCommit", getBuildCommit());
+        model.addAttribute("buildCommit", ManifestUtil.getBuildCommit(servletContext)
+                .orElse("unknown"));
         model.addAttribute("javaVersion", Runtime.class.getPackage().getImplementationVersion());
         model.addAttribute("javaVendor", Runtime.class.getPackage().getImplementationVendor());
 
         return TAB_VIEW;
-    }
-
-    private String getBuildCommit() {
-        try (final InputStream manifestInputStream =
-                servletContext.getResourceAsStream("/META-INF/MANIFEST.MF")) {
-            if (manifestInputStream != null) {
-                final Manifest manifest = new Manifest(manifestInputStream);
-                final Attributes mainAttributes = manifest.getMainAttributes();
-                if (mainAttributes.containsKey(MANIFEST_ATTRIBUTE_GIT_COMMIT)) {
-                    return (String) mainAttributes.get(MANIFEST_ATTRIBUTE_GIT_COMMIT);
-                } else {
-                    log.warn("Manifest does not contain 'Git-Commit' attribute.");
-                }
-            } else {
-                log.error("Could not open input stream for manifest.");
-            }
-        } catch (IOException e) {
-            log.error("Exception while opening input stream for manifest: {}", e.getMessage() );
-        }
-        return "unknown";
     }
 
     @GetMapping("tab/ADMIN/votingReport")
@@ -298,9 +275,8 @@ public class AdminTabController extends AbstractTabController {
 
         for (BatchRegisterLineBean registerLineBean : registerLineBeans) {
             Member member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
-                                                              registerLineBean.getFirstName(),
-                                                              registerLineBean.getLastName());
-            if (batchRegisterBean.getAsGuests()) { // TODO: throws a null pointer exception...
+                    registerLineBean.getFirstName(), registerLineBean.getLastName());
+            if (batchRegisterBean.getAsGuests()) {
                 MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
                 MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
             }

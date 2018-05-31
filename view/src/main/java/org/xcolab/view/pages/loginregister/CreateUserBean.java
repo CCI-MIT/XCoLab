@@ -13,7 +13,8 @@ import org.xcolab.view.util.validation.ValidScreenName;
 
 import java.io.Serializable;
 
-@CompareStrings(propertyNames = {"password,retypePassword", "email,retypeEmail"})
+@CompareStrings(propertyNames = {"password", "retypePassword"},
+        message = "{register.form.validation.passwordequal}")
 public class CreateUserBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,10 +29,6 @@ public class CreateUserBean implements Serializable {
     @Email
     @UniqueEmail
     private String email;
-
-    @NotBlank
-    @Email
-    private String retypeEmail;
 
     @NotBlank
     private String firstName;
@@ -57,17 +54,17 @@ public class CreateUserBean implements Serializable {
 
     private String recaptcha_response_field;
 
-    private String imageId;
+    private Long imageId;
 
     private String captchaText;
 
     private boolean isCaptchaNeeded = true;
 
-    public String getImageId() {
+    public Long getImageId() {
         return imageId;
     }
 
-    public void setImageId(String imageId) {
+    public void setImageId(Long imageId) {
         this.imageId = imageId;
     }
 
@@ -111,14 +108,6 @@ public class CreateUserBean implements Serializable {
         this.email = email;
     }
 
-    public String getRetypeEmail() {
-        return retypeEmail;
-    }
-
-    public void setRetypeEmail(String retypeEmail) {
-        this.retypeEmail = retypeEmail;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -154,7 +143,7 @@ public class CreateUserBean implements Serializable {
     @Override
     public String toString() {
         return "CreateUserBean [screenName=" + screenName + ", email=" + email
-                + ", retypeEmail=" + retypeEmail + ", firstName=" + firstName + ", lastName=" + lastName
+                + ", firstName=" + firstName + ", lastName=" + lastName
                 + ", password=" + password + ", retypePassword="
                 + retypePassword + ", recaptcha_response_field="
                 + recaptcha_response_field + "]";

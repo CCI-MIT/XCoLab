@@ -5,8 +5,8 @@
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form">
 
-    <jsp:directive.attribute name="showFacebookSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, Facebook SSO is shown" />
-    <jsp:directive.attribute name="showGoogleSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, Google SSO is shown" />
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
     <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="Redirect URL for registration link" />
     <jsp:directive.attribute name="show" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, modal will be shown on load" />
     <jsp:directive.attribute name="authError" type="org.xcolab.view.auth.login.AuthenticationError" required="false" rtexprvalue="true" description="Auth error, if any" />
@@ -28,16 +28,22 @@
 
                 <div class="form-group clearfix">
                     <div class="d-flex justify-content-around">
-                        <c:if test="${showFacebookSso}">
-                            <a href="/sso/facebook/register" class="c-SocialButton text-dark" rel="nofollow">
+                        <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
+                            <a href="/sso/facebook" class="c-SocialButton text-dark" rel="nofollow">
                                 <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
                                 <span class="c-SocialButton__text">Facebook</span>
                             </a>
                         </c:if>
-                        <c:if test="${showGoogleSso}">
-                            <a href="/sso/google/register" class="c-SocialButton text-dark" rel="nofollow">
+                        <c:if test="${_themeContext.authenticationVariables.isGoogleSsoActive}">
+                            <a href="/sso/google" class="c-SocialButton text-dark" rel="nofollow">
                                 <collab:image src="/images/icons/social/google.svg" ariaHidden="true"/>
                                 <span class="c-SocialButton__text">Google</span>
+                            </a>
+                        </c:if>
+                        <c:if test="${_themeContext.authenticationVariables.isClimateXEnabled}">
+                            <a href="/sso/climatex" class="c-SocialButton text-dark" rel="nofollow">
+                                <!--<collab:image src="/images/icons/social/climatex.svg" ariaHidden="true"/>-->
+                                <span class="c-SocialButton__text">ClimateX</span>
                             </a>
                         </c:if>
                     </div>

@@ -9,6 +9,7 @@ cache:
   yarn: true
   directories:
   - $HOME/.m2
+  - view/node
 
 env:
   - RUN_SLOW_TESTS=false

@@ -24,7 +24,6 @@ import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
@@ -64,7 +63,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.activities.ActivitiesClientUtil.class,
         org.xcolab.client.admin.ContestTypeClient.class,
         org.xcolab.client.contest.ContestClientUtil.class,
-        org.xcolab.client.sharedcolab.SharedColabClient.class,
         org.xcolab.client.members.MembersClient.class,
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.emails.EmailClient.class,
@@ -84,7 +82,6 @@ public class LoginRegisterControllerTest {
         PowerMockito.mockStatic(ActivitiesClient.class);
         PowerMockito.mockStatic(ActivitiesClientUtil.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
-        PowerMockito.mockStatic(SharedColabClient.class);
         PowerMockito.mockStatic(ContestTypeClient.class);
 
         PowerMockito.mockStatic(EmailClient.class);
@@ -123,7 +120,6 @@ public class LoginRegisterControllerTest {
                 .param("email", "")
                 .param("imageId", "")
                 .param("file", "")
-                .param("retypeEmail", "")
                 .param("firstName", "")
                 .param("lastName", "")
                 .param("password", "")
@@ -144,7 +140,6 @@ public class LoginRegisterControllerTest {
                 .param("email", "username@gmail.com")
                 .param("imageId", "")
                 .param("file", "")
-                .param("retypeEmail", "username@gmail.com")
                 .param("firstName", "User")
                 .param("lastName", "Name")
                 .param("password", "username")

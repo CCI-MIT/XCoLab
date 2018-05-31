@@ -3,7 +3,7 @@ package org.xcolab.view.util.validation;
 import org.jooq.tools.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 import javax.validation.ConstraintValidatorContext;
@@ -35,7 +35,7 @@ public class UniqueScreenNameValidator extends CustomValidator<UniqueScreenName>
             return true;
         }
 
-        boolean isValid = !SharedColabClient.isScreenNameUsed(screenName);
+        boolean isValid = !MembersClient.isScreenNameUsed(screenName);
 
         if (!isValid) {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
