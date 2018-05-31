@@ -197,10 +197,10 @@ function replaceContestTypeNameVariables(proposalNames, proposalNamesPlural, con
 }
 
 /* click "select" in the picker */
-function selectProposal(proposalId, proposalName, contestName, proposalLinkUrl, linkClicked, contestId){
-	
+function selectProposal(proposalId, proposalName, contestName, proposalLinkUrl, rowClicked, contestId){
+    console.debug('Selecting proposal: ' + proposalId);
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
-    linkClicked.parent().parent().addClass('ui-datatable-highlight');
+    rowClicked.addClass('ui-datatable-highlight');
     //linkClicked.remove();
     if (pickMultipleProposals) {
     	var idx = -1;
@@ -211,13 +211,13 @@ function selectProposal(proposalId, proposalName, contestName, proposalLinkUrl, 
 				idx = i;
 			}
 		}
-    	if (linkClicked.hasClass('selected')) {
-    		linkClicked.removeClass('selected');
+    	if (rowClicked.hasClass('selected')) {
+    		rowClicked.removeClass('selected');
 			pickedProposals.splice(idx, 1);
 			return;
     	}
     	else {
-    		linkClicked.addClass('selected');
+    		rowClicked.addClass('selected');
     		if (idx == -1) {
     			pickedProposals.push({proposalId: proposalId, proposalName: proposalName, linkUrl: proposalLinkUrl, contestName: contestName, contestId: contestId});
     		}
@@ -268,7 +268,7 @@ function addToProposalPickerTable(data, even){
     		sectionId: currentSectionId});
     	
     	jQuery(document).trigger(event);
-    	selectProposal(data.id, data.proposalName,  data.contestName, data.linkUrl, $(this),data.contestId);
+    	selectProposal(data.id, data.proposalName, data.contestName, data.linkUrl, $(this), data.contestId);
     });
     //$('#proposalPickerTable > tbody').append(tableRow);
 }
