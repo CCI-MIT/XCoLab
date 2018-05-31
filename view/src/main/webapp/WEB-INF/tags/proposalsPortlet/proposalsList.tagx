@@ -51,7 +51,7 @@
                                   cssClass="float-left js-Tooltip mr-2" title="${proposal.ribbonWrapper.ribbonText}" />
                 </c:if>
                 <xcolab:proposalLink proposal="${proposal}" phase="${contestPhase}" escape="false" />
-
+                /
                 <c:choose>
                     <c:when test="${not empty proposal.team}">
                         <xcolab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.team}" />
