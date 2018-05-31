@@ -25,6 +25,7 @@ import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationExceptio
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
+import org.xcolab.view.pages.proposals.view.proposal.helpers.JudgeFilterHelper;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.view.pages.proposals.wrappers.SortedProposalList;
 import org.xcolab.view.util.entity.enums.MemberRole;
@@ -56,9 +57,10 @@ public class ContestProposalsController extends BaseProposalsController {
     public String showContestProposalsWithJudgeFilter(HttpServletRequest request,
             HttpServletResponse response, Model model, Member loggedInMember,
             ProposalContext proposalContext, @PathVariable String contestYear,
-            @PathVariable String contestUrlName, @PathVariable String judgeId,
+            @PathVariable String contestUrlName, @PathVariable Long judgeId,
             final SortFilterPage sortFilterPage) {
-        model.addAttribute("judgeId", judgeId);
+        model.addAttribute("judgeFilterHelper",
+                new JudgeFilterHelper(proposalContext.getProposal(), judgeId));
         setBasePageAttributes(proposalContext, model);
         return showContestProposalsPage(model, proposalContext,
                 sortFilterPage, loggedInMember);
@@ -213,7 +215,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
             for (Proposal proposal : proposalClient.getProposalsInContest(contest.getContestPK())) {
                 List<Long> newSelectedJudges = proposal.getSelectedJudges().stream()
-                        .filter(judgeId -> proposal.getJudgeReviewFinishedStatusUserId(judgeId))
+                        .filter(proposal::getIsReviewFinishedForJudge)
                         .collect(Collectors.toList());
 
                 proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(

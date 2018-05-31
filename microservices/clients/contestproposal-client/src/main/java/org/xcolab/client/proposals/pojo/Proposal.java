@@ -603,11 +603,7 @@ public class Proposal extends AbstractProposal {
         }
 
         return getSelectedJudges().stream()
-                .anyMatch(userId -> userId == judgeId);
-    }
-
-    public boolean isUserAmongSelectedJudges(Member user) {
-        return this.isUserAmongSelectedJudges(user.getUserId());
+                .anyMatch(userId -> Objects.equals(userId, judgeId));
     }
 
     public long getVotesCount() {
@@ -893,14 +889,12 @@ public class Proposal extends AbstractProposal {
         return true;
     }
 
-    public boolean getJudgeReviewFinishedStatusUserId(long userId) {
-
+    public boolean getIsReviewFinishedForJudge(long judgeId) {
         List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                 .getProposalRatingsByProposalUserContestPhase(
-                        this.getProposalId(), contestPhase.getContestPhasePK(), userId);
-        ProposalRatings wrapper = new ProposalRatings(userId, proposalRatings);
+                        getProposalId(), contestPhase.getContestPhasePK(), judgeId);
+        ProposalRatings wrapper = new ProposalRatings(judgeId, proposalRatings);
         return wrapper.isReviewComplete();
-
     }
 
     public Proposal getBaseProposal() {

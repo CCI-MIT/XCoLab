@@ -16,9 +16,10 @@
 
         <c:set var="additionalCSSClasses" scope="session" value="" />
         <c:choose>
-            <c:when test="${proposalsPermissions.canAdminProposal and proposal.isUserAmongSelectedJudges(judgeId)}"><!-- Judge Filter View -->
+            <!--@elvariable id="judgeFilterHelper" type="org.xcolab.view.pages.proposals.view.proposal.helpers.JudgeFilterHelper"-->
+            <c:when test="${proposalsPermissions.canAdminProposal and not empty judgeFilterHelper and judgeFilterHelper.isUserAmongSelectedJudges}"><!-- Judge Filter View -->
                 <c:choose>
-                    <c:when test="${proposal.getJudgeReviewFinishedStatusUserId(judgeId)}">
+                    <c:when test="${judgeFilterHelper}">
                         <c:set var="additionalCSSClasses" scope="session" value="propbox-green" />
                     </c:when>
                     <c:otherwise>

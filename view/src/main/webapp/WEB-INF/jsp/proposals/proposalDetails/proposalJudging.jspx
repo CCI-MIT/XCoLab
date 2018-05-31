@@ -30,7 +30,7 @@
                             portraitId="${judge.portraitId}"
                             userId="${judge.userId}"
                             width="30" height="30"
-                            judgeRatingSatus="${proposal.getJudgeReviewFinishedStatusUserId(judge.userId)}"/>
+                            judgeRatingSatus="${proposal.isReviewFinishedForJudge(judge.userId)}"/>
                 </c:forEach>
             </select>
         </c:if>
