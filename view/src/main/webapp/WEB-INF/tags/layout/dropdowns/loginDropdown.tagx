@@ -9,7 +9,7 @@
     <div class="dropdown-menu dropdown-menu-right cb-dropdown-box" style="min-width: 300px;">
         <div class="row">
             <div class="col-md-12">
-                <div class="d-flex justify-content-around mb-2">
+                <div class="d-flex justify-content-around">
                     <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
                         <a href="/sso/facebook" class="c-SocialButton border-0" rel="nofollow">
                             <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
