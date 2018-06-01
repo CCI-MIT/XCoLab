@@ -7,6 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
+
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private static final Logger log = LoggerFactory.getLogger(AuthenticationSuccessHandler.class);
+
+    private static final String COLAB_URL = PlatformAttributeKey.COLAB_URL.get();
 
     private final AuthenticationService authenticationService;
     private final BalloonService balloonService;
@@ -70,7 +74,9 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         if (redirectOnSuccess) {
             try {
-                if (StringUtils.isNotBlank(refererHeader) && !refererHeader.endsWith("/login")) {
+                if (StringUtils.isNotBlank(refererHeader)
+                        && refererHeader.startsWith(COLAB_URL)
+                        && !refererHeader.endsWith("/login")) {
                     getRedirectStrategy().sendRedirect(request, response, refererHeader);
                 } else {
                     super.onAuthenticationSuccess(request, response, authentication);
