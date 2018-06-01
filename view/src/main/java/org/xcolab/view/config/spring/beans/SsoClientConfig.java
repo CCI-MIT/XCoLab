@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.client.token.grant.code.Authorization
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.filter.CompositeFilter;
 
+import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.config.spring.sso.ClimateXPrincipalExtractor;
 import org.xcolab.view.config.spring.sso.ColabPrincipalExtractor;
@@ -42,18 +43,21 @@ public class SsoClientConfig {
     private final OAuth2ClientContext oauth2ClientContext;
     private final LoginRegisterService loginRegisterService;
     private final MemberDetailsService memberDetailsService;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
     public SsoClientConfig(OAuth2ClientContext oauth2ClientContext,
-            LoginRegisterService loginRegisterService, MemberDetailsService memberDetailsService) {
+            LoginRegisterService loginRegisterService, MemberDetailsService memberDetailsService,
+            AuthenticationSuccessHandler authenticationSuccessHandler) {
         this.oauth2ClientContext = oauth2ClientContext;
         this.loginRegisterService = loginRegisterService;
         this.memberDetailsService = memberDetailsService;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
     }
 
     @Bean
     public SsoFilter ssoFilter() {
-        SsoFilter ssoFilter = new SsoFilter(oauth2ClientContext);
+        SsoFilter ssoFilter = new SsoFilter(oauth2ClientContext, authenticationSuccessHandler);
         configureSsoFilter(ssoFilter, facebook(), "/sso/facebook", false,
                 FacebookPrincipalExtractor::new);
         configureSsoFilter(ssoFilter, google(), "/sso/google", false,
@@ -130,10 +134,13 @@ public class SsoClientConfig {
     public static class SsoFilter {
 
         private final OAuth2ClientContext oAuth2ClientContext;
+        private final AuthenticationSuccessHandler authenticationSuccessHandler;
         private final List<Filter> filters = new ArrayList<>();
 
-        public SsoFilter(OAuth2ClientContext oAuth2ClientContext) {
+        public SsoFilter(OAuth2ClientContext oAuth2ClientContext,
+                AuthenticationSuccessHandler authenticationSuccessHandler) {
             this.oAuth2ClientContext = oAuth2ClientContext;
+            this.authenticationSuccessHandler = authenticationSuccessHandler;
         }
 
         public Filter getFilter() {
@@ -157,6 +164,7 @@ public class SsoClientConfig {
             tokenServices.setPrincipalExtractor(principalExtractor);
             tokenServices.setRestTemplate(template);
             filter.setTokenServices(tokenServices);
+            filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
             return filter;
         }
     }

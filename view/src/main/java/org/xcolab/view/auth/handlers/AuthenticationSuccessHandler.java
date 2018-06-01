@@ -1,5 +1,6 @@
 package org.xcolab.view.auth.handlers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -57,7 +58,11 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         if (redirectOnSuccess) {
             try {
-                super.onAuthenticationSuccess(request, response, authentication);
+                if (StringUtils.isNotBlank(refererHeader) && !refererHeader.endsWith("/login")) {
+                    getRedirectStrategy().sendRedirect(request, response, refererHeader);
+                } else {
+                    super.onAuthenticationSuccess(request, response, authentication);
+                }
             } catch (ServletException e) {
                 // Not reachable - no ServletException is thrown by the implementations
                 throw new InternalException(e);
