@@ -74,9 +74,8 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         if (redirectOnSuccess) {
             try {
-                if (StringUtils.isNotBlank(refererHeader)
-                        && refererHeader.startsWith(COLAB_URL)
-                        && !refererHeader.endsWith("/login")) {
+                if (StringUtils.isNotBlank(refererHeader) && isLocalReferer(refererHeader)
+                        && !isFromLoginPage(refererHeader)) {
                     getRedirectStrategy().sendRedirect(request, response, refererHeader);
                 } else {
                     super.onAuthenticationSuccess(request, response, authentication);
@@ -86,5 +85,13 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                 throw new InternalException(e);
             }
         }
+    }
+
+    private boolean isLocalReferer(String refererHeader) {
+        return refererHeader.startsWith(COLAB_URL);
+    }
+
+    private boolean isFromLoginPage(String refererHeader) {
+        return refererHeader.endsWith("/login");
     }
 }
