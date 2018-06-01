@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.commons.http.servlet.RequestUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
@@ -111,8 +113,9 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                         ssoId, emailAddress);
 
                 if (MembersClient.isEmailUsed(emailAddress)) {
-                    //Email is already used (e.g. by a deleted member)
-                    log.debug("User with email {} already exists in database", emailAddress);
+                    // Email is already used (e.g. by a deleted member)
+                    AlertMessage.danger("An account using your email address was previously deleted.")
+                            .flash(RequestUtil.getRequest());
                     return null;
                 }
 
