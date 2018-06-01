@@ -1,6 +1,8 @@
 package org.xcolab.view.auth.handlers;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -19,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationSuccessHandler.class);
 
     private final AuthenticationService authenticationService;
     private final BalloonService balloonService;
@@ -44,6 +48,14 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication, boolean redirectOnSuccess) throws IOException {
         final Member member = authenticationService.getRealMemberOrNull();
+        if (member == null) {
+            // This can currently happen when there's an error during SSO
+            // In that case, the CustomPrincipalExtractor returns null
+            // An error message will already be saved in an AlertMessage
+            log.warn("Member was null after authentication: {}", authentication.toString());
+            getRedirectStrategy().sendRedirect(request, response, "/");
+            return;
+        }
 
         if (!allowLogin && !PermissionsClient.canAdminAll(member)) {
             authenticationService.logout(request, response);
