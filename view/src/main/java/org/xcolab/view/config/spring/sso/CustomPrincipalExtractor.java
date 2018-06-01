@@ -110,6 +110,12 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                 log.debug("No user found for sssId={} or email={}. Generating profile...",
                         ssoId, emailAddress);
 
+                if (MembersClient.isEmailUsed(emailAddress)) {
+                    //Email is already used (e.g. by a deleted member)
+                    log.debug("User with email {} already exists in database", emailAddress);
+                    return null;
+                }
+
                 String firstName = extractFirstName(userInfoMap);
                 if (firstName == null) {
                     throw new InternalException("Could not extract firstName from User Info map.");
