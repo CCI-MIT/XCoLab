@@ -597,7 +597,7 @@ public class Proposal extends AbstractProposal {
         return selectedJudges;
     }
 
-    public boolean isUserAmongSelectedJudges(long judgeId) {
+    public boolean getIsUserAmongSelectedJudges(long judgeId) {
         if (!getFellowScreeningNecessary()) {
             return isUserAmongJudges(judgeId);
         }

@@ -25,7 +25,6 @@ import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationExceptio
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
-import org.xcolab.view.pages.proposals.view.proposal.helpers.JudgeFilterHelper;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.view.pages.proposals.wrappers.SortedProposalList;
 import org.xcolab.view.util.entity.enums.MemberRole;
@@ -59,8 +58,7 @@ public class ContestProposalsController extends BaseProposalsController {
             ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @PathVariable Long judgeId,
             final SortFilterPage sortFilterPage) {
-        model.addAttribute("judgeFilterHelper",
-                new JudgeFilterHelper(proposalContext.getProposal(), judgeId));
+        model.addAttribute("judgeId", judgeId);
         setBasePageAttributes(proposalContext, model);
         return showContestProposalsPage(model, proposalContext,
                 sortFilterPage, loggedInMember);

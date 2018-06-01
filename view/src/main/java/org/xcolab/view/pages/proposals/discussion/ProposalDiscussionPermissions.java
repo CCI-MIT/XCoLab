@@ -100,7 +100,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
         Contest contestWrapper =  proposalWrapper.getContest();
 
-        boolean isJudge = proposalWrapper.isUserAmongSelectedJudges(memberId);
+        boolean isJudge = proposalWrapper.getIsUserAmongSelectedJudges(memberId);
         boolean isFellow = proposalWrapper.isUserAmongFellows(memberId);
         boolean isAdvisor = contestWrapper.isUserAmongAdvisors(memberId);
 

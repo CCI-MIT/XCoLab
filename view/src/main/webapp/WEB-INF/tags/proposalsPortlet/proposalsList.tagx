@@ -8,6 +8,8 @@
     <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
     <!--@elvariable id="contestPhase" type="org.xcolab.client.contest.pojo.phases.ContestPhase"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
+    <!--@elvariable id="proposalsDisplayPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions"-->
+    <!--@elvariable id="judgeId" type="java.lang.Long"-->
 
     <jsp:directive.attribute name="proposals" type="java.util.Collection" required="true" rtexprvalue="true" description="proposals" />
 
@@ -16,10 +18,9 @@
 
         <c:set var="additionalCSSClasses" scope="session" value="" />
         <c:choose>
-            <!--@elvariable id="judgeFilterHelper" type="org.xcolab.view.pages.proposals.view.proposal.helpers.JudgeFilterHelper"-->
-            <c:when test="${proposalsPermissions.canAdminProposal and not empty judgeFilterHelper and judgeFilterHelper.isUserAmongSelectedJudges}"><!-- Judge Filter View -->
+            <c:when test="${proposalsPermissions.canAdminProposal and not empty judgeId and proposal.getIsUserAmongSelectedJudges(judgeId)}"><!-- Judge Filter View -->
                 <c:choose>
-                    <c:when test="${judgeFilterHelper}">
+                    <c:when test="${proposal.getIsReviewFinishedForJudge(judgeId)}">
                         <c:set var="additionalCSSClasses" scope="session" value="propbox-green" />
                     </c:when>
                     <c:otherwise>
