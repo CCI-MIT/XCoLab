@@ -97,7 +97,7 @@ public class WebProperties {
         /**
          * Browser caching for theme images.
          */
-        private final CacheSettings images = new CacheSettings(true, 365);
+        private final CacheSettings images = new CacheSettings();
 
         public CacheSettings getImages() {
             return images;
@@ -120,7 +120,6 @@ public class WebProperties {
         }
 
         public CacheSettings(boolean active, long maxAgeDays) {
-
             this.active = active;
             this.maxAgeDays = maxAgeDays;
         }
