@@ -114,9 +114,13 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
 
                 if (MembersClient.isEmailUsed(emailAddress)) {
                     // Email is already used (e.g. by a deleted member)
+
+                    // Invalidate session, otherwise the exception messes up the OAuthClientContext
+                    RequestUtil.getRequest().getSession().invalidate();
+
                     AlertMessage.danger("An account using your email address was previously deleted.")
                             .flash(RequestUtil.getRequest());
-                    return null;
+                    throw new EmailUsedByDeletedMemberException(emailAddress);
                 }
 
                 String firstName = extractFirstName(userInfoMap);
@@ -162,5 +166,11 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
             }
         }
         return memberDetails;
+    }
+
+    public static class EmailUsedByDeletedMemberException extends RuntimeException {
+        public EmailUsedByDeletedMemberException(String email) {
+            super("Email " + email + " is already in use by a deleted member.");
+        }
     }
 }
