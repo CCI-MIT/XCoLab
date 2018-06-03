@@ -4,9 +4,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.tabs.ProposalTabWrapper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -45,20 +42,5 @@ public class BaseProposalTabController extends BaseProposalsController {
         model.addAttribute("currentTabWrapped", new ProposalTabWrapper(tab, request, proposalContext));
         
         setBasePageAttributes(proposalContext, model);
-    }
-
-    protected long createDiscussionThread(ProposalContext proposalContext,
-            String threadTitleSuffix, boolean isQuiet) {
-        final ContestType contestType = proposalContext.getContestType();
-        CommentThread thread = new CommentThread();
-        final Proposal proposal = proposalContext.getProposal();
-        thread.setAuthorId(proposal.getAuthorId());
-        thread.setTitle(
-                contestType.getProposalName()
-                        + proposalContext.getProposal().getName()
-                        + threadTitleSuffix);
-        thread.setIsQuiet(isQuiet);
-        return proposalContext.getClients().getThreadClient()
-                .createThread(thread).getThreadId();
     }
 }

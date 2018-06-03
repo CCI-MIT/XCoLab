@@ -9,7 +9,10 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -55,13 +58,13 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.enums.modeling.ModelRegions;
 import org.xcolab.util.enums.promotion.AssessmentStatus;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
-import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
@@ -337,6 +340,35 @@ public class Proposal extends AbstractProposal {
 
     public long getEvaluationCommentsCount() {
         return 0;
+    }
+
+    private long createDiscussionThread(String threadTitleSuffix, boolean isQuiet) {
+        final ContestType contestType = getContest().getContestType();
+        CommentThread thread = new CommentThread();
+        thread.setAuthorId(getAuthorId());
+        thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
+        thread.setIsQuiet(isQuiet);
+        return clients.thread.createThread(thread).getThreadId();
+    }
+
+    public long getDiscussionIdOrCreate() {
+        Long discussionId = getDiscussionId();
+        if (discussionId == null) {
+            discussionId = createDiscussionThread(" comments", false);
+            setDiscussionId(discussionId);
+            clients.proposal.updateProposal(this);
+        }
+        return discussionId;
+    }
+
+    public long getResultsDiscussionIdOrCreate() {
+        Long discussionId = getDiscussionId();
+        if (discussionId == null) {
+            discussionId = createDiscussionThread(" results discussion", true);
+            setResultsDiscussionId(discussionId);
+            clients.proposal.updateProposal(this);
+        }
+        return discussionId;
     }
 
     public Date getLastModifiedDate() {
@@ -955,6 +987,7 @@ public class Proposal extends AbstractProposal {
         final ContestClient contest;
         final ProposalClient proposal;
         final CommentClient comment;
+        final ThreadClient thread;
 
         final ProposalMemberRatingClient proposalMemberRating;
         final ProposalJudgeRatingClient proposalJudgeRating;
@@ -981,6 +1014,7 @@ public class Proposal extends AbstractProposal {
                 proposalPhase = ProposalPhaseClient.fromNamespace(serviceNamespace);
                 contestTeamMember =  ContestTeamMemberClient.fromService(serviceNamespace);
                 comment = CommentClient.fromService(serviceNamespace);
+                thread = ThreadClient.fromService(serviceNamespace);
                 proposalMemberRating = ProposalMemberRatingClient.fromNamespace(serviceNamespace);
                 proposalJudgeRating = ProposalJudgeRatingClient.fromNamespace(serviceNamespace);
                 membership = MembershipClient.fromNamespace(serviceNamespace);
@@ -992,6 +1026,7 @@ public class Proposal extends AbstractProposal {
                 proposalPhase = ProposalPhaseClientUtil.getClient();
                 contestTeamMember = ContestTeamMemberClientUtil.getClient();
                 comment = CommentClientUtil.getClient();
+                thread = ThreadClientUtil.getClient();
                 proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
                 membership = MembershipClientUtil.getClient();
                 planTemplate = PlanTemplateClientUtil.getClient();

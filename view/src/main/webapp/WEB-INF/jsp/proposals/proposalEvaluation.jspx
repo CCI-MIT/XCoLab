@@ -15,7 +15,6 @@
     <!--@elvariable id="showPublicRatingForm" type="java.lang.Boolean"-->
     <!--@elvariable id="showEvaluation" type="java.lang.Boolean"-->
     <!--@elvariable id="proposalRevisionPhaseActive" type="java.lang.Boolean"-->
-    <!--@elvariable id="evaluationDiscussionId" type="java.lang.Long"-->
         <!--@elvariable id="averageRatingsPerPhase" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.ProposalRatings>"-->
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
@@ -67,10 +66,11 @@
                     </c:if>
                     <c:choose>
                         <c:when test="${contest.isSharedContestInForeignColab}">
-                            <xcolab:discussionComments threadId="${evaluationDiscussionId }" sharedColabId="${contest.contestPK}" />
+                            <xcolab:discussionComments threadId="${proposal.resultsDiscussionIdOrCreate}"
+                                                       sharedColabId="${contest.contestPK}" />
                         </c:when>
                         <c:otherwise>
-                            <xcolab:discussionComments threadId="${evaluationDiscussionId}"  />
+                            <xcolab:discussionComments threadId="${proposal.resultsDiscussionIdOrCreate}"  />
                         </c:otherwise>
                     </c:choose>
                 </c:when>
