@@ -1,6 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:spring="http://www.springframework.org/tags">
 
 	<jsp:directive.attribute name="section" type="org.xcolab.client.contest.pojo.templates.PlanSectionDefinition"
 		required="true" rtexprvalue="true" description="Section which content should be displayed" />
@@ -21,25 +22,35 @@
 			</c:choose>
 		</c:when>
         <c:when test="${section.type == 'PROPOSAL_REFERENCE' }">
-            <c:set var="p" value="${section.numericValueAsProposal }" />
+            <c:set var="proposal" value="${section.numericValueAsProposal}" />
             <c:choose>
-                <c:when test="${empty p  }">
+                <c:when test="${empty proposal  }">
                     Value not set.
                 </c:when>
                 <c:otherwise>
-                    <xcolab:proposalLink proposal="${p}" />
+                    <xcolab:proposalLink proposal="${proposal}" />
                 </c:otherwise>
             </c:choose>
         </c:when>
         <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
-            <c:set var="pl" value="${section.stringValueAsProposalArray }" />
+            <c:set var="proposalList" value="${section.stringValueAsProposalArray}" />
             <c:choose>
-                <c:when test="${empty pl  }">
+                <c:when test="${empty proposalList}">
                     Value not set.
                 </c:when>
                 <c:otherwise>
-                    <c:forEach var="p" items="${pl}">
-                        <li><xcolab:proposalLink proposal="${p}" /></li>
+                    <c:forEach var="proposal" items="${proposalList}">
+                        <li>
+                            <xcolab:proposalLink proposal="${proposal}"/>
+                            <c:choose>
+                                <c:when test="${proposal.votesCountFromCache eq 1}">
+                                    (1 <spring:message code="contests.vote"/>)
+                                </c:when>
+                                <c:when test="${proposal.votesCountFromCache gt 1}">
+                                    (${proposal.votesCountFromCache} <spring:message code="contests.votes"/>)
+                                </c:when>
+                            </c:choose>
+                        </li>
                     </c:forEach>
                 </c:otherwise>
             </c:choose>
