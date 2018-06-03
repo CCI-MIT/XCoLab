@@ -2,6 +2,7 @@ package org.xcolab.view.pages.proposals.tabs;
 
 import org.xcolab.view.pages.proposals.tabs.access.AdaptationImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.AdvancingAccessAlgorithm;
+import org.xcolab.view.pages.proposals.tabs.access.CommentAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.EvaluationAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.ImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.LegacyImpactAccessAlgorithm;
@@ -28,7 +29,7 @@ public enum ProposalTab {
             Type.NORMAL, ProposalTabAccess.ALWAYS, ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.membersCount),
     COMMENTS("Comments", "contests.proposal.tabs.comments",
-            Type.NORMAL, ProposalTabAccess.ALWAYS, ProposalTabAccess.NEVER,
+            Type.NORMAL, new CommentAccessAlgorithm(), ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.commentsCount),
     SCREENING("Screening", "contests.proposal.tabs.screening",
             Type.HIGHLIGHT, new ScreeningAccessAlgorithm(),

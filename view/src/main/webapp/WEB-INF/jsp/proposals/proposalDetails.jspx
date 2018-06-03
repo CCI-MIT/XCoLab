@@ -198,6 +198,7 @@
                 </c:forEach>
             </c:if>
 
+            <!-- Judging -->
             <c:catch var ="catchException">
                 <c:if test="${proposalsPermissions.canJudgeActions and
                 (not proposalsPermissions.canFellowActions or (proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions) and proposal.selectedJudges.size() > 0)}">
@@ -210,6 +211,32 @@
             <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
         </div>
     </div>
+
+    <!-- Comments, if they aren't in a separate tab -->
+    <c:if test="${not _themeContext.themeVariables.isCommentsInOwnTab}">
+        <hr class="cb-hr-tan cb-hr-xl"/>
+        <c:choose>
+            <c:when test="${contest.isSharedContestInForeignColab}">
+                <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
+                                           sharedColabId="${contest.contestPK}"
+                                           proposalId="${proposal.proposalId}"
+                                           shareTitle="Discussion for ${proposal.name} in ${contest.contestShortName}"  />
+            </c:when>
+            <c:otherwise>
+                <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
+                                           proposalId="${proposal.proposalId}"
+                                           shareTitle="Discussion for ${proposal.name} in ${contest.contestShortName}" />
+            </c:otherwise>
+        </c:choose>
+
+        <script>
+            jQuery(function() {
+                enableDirtyCheck();
+            });
+        </script>
+    </c:if>
+
+
     <c:if test="${voted}">
         <spring:message code="contests.proposal.voting.thankyou" var="justVotedModalTitle" />
         <xcolab:modal modalId="justVotedModal" title="${justVotedModalTitle}">

@@ -25,6 +25,8 @@ public class ThemeVariables {
     private final boolean isRegistrationOpen;
     private final boolean isPointsActive;
 
+    private final boolean isCommentsInOwnTab;
+
     private final ColabTheme activeTheme;
 
     public ThemeVariables(HttpServletRequest request, I18nVariables i18NVariables) {
@@ -51,6 +53,7 @@ public class ThemeVariables {
         this.isRegistrationOpen = ConfigurationAttributeKey.REGISTRATION_IS_OPEN.get();
         this.isPointsActive = ConfigurationAttributeKey.POINTS_IS_ACTIVE.get();
 
+        this.isCommentsInOwnTab = ConfigurationAttributeKey.PROPOSALS_COMMENTS_IN_SEPARATE_TAB.get();
         this.activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
     }
 
@@ -96,6 +99,10 @@ public class ThemeVariables {
 
     public boolean getIsPointsActive() {
         return isPointsActive;
+    }
+
+    public boolean getIsCommentsInOwnTab() {
+        return isCommentsInOwnTab;
     }
 
     public ColabTheme getActiveTheme() {
