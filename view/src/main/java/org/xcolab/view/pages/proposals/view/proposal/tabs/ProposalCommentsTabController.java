@@ -32,8 +32,7 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
         pdp.setProposalId(proposalContext.getProposal().getProposalId(),
                 proposalContext.getContestPhase().getContestPhasePK());
 
-        request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME,
-                pdp);
+        request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, pdp);
 
         model.addAttribute("discussionId", discussionId);
         model.addAttribute("authorId", proposal.getAuthorId());

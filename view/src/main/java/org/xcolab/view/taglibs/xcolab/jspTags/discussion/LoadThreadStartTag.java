@@ -16,15 +16,14 @@ import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
-import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
+import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 public class LoadThreadStartTag extends BodyTagSupport {
@@ -37,10 +36,10 @@ public class LoadThreadStartTag extends BodyTagSupport {
     private Long sharedColabId;
 
     @Override
-    public int doStartTag() throws JspException {
+    public int doStartTag() {
         try {
 
-            HttpServletRequest portletRequest = (HttpServletRequest) pageContext.getRequest();
+            HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 
             ThreadClient threadClient;
             CategoryClient categoryClient;
@@ -82,12 +81,12 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
             CommentThread thread = threadClient.getThread(threadId);
 
-            DiscussionPermissions discussionPermissions = (DiscussionPermissions) portletRequest
+            DiscussionPermissions discussionPermissions = (DiscussionPermissions) request
                     .getAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);
             if (discussionPermissions == null) {
-                discussionPermissions = new DiscussionPermissions(portletRequest);
+                discussionPermissions = new DiscussionPermissions(request);
             } else {
-                _log.info("Found custom DiscussionPermissions of type {}",
+                _log.debug("Using custom DiscussionPermissions of type {}",
                         discussionPermissions.getClass().getName());
             }
 
