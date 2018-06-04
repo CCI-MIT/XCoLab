@@ -9,23 +9,28 @@
     <div class="dropdown-menu dropdown-menu-right cb-dropdown-box" style="min-width: 300px;">
         <div class="row">
             <div class="col-md-12">
+                <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive
+                                and _themeContext.authenticationVariables.isGoogleSsoActive
+                                and _themeContext.authenticationVariables.isClimateXSsoActive}">
+                    <c:set var="loginDropdownSsoTextExtraClasses" value="small"/>
+                </c:if>
                 <div class="d-flex justify-content-around">
                     <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
                         <a href="/sso/facebook" class="c-SocialButton border-0" rel="nofollow">
                             <collab:image src="/images/icons/social/facebook.svg" ariaHidden="true" />
-                            <span class="c-SocialButton__text">Facebook</span>
+                            <span class="c-SocialButton__text ${loginDropdownSsoTextExtraClasses}">Facebook</span>
                         </a>
                     </c:if>
                     <c:if test="${_themeContext.authenticationVariables.isGoogleSsoActive}">
                         <a href="/sso/google" class="c-SocialButton border-0"  rel="nofollow">
                             <collab:image src="/images/icons/social/google.svg" ariaHidden="true" />
-                            <span class="c-SocialButton__text">Google</span>
+                            <span class="c-SocialButton__text ${loginDropdownSsoTextExtraClasses}">Google</span>
                         </a>
                     </c:if>
                     <c:if test="${_themeContext.authenticationVariables.isClimateXSsoActive}">
                         <a href="/sso/climatex" class="c-SocialButton border-0"  rel="nofollow">
-                            <!--<collab:image src="/images/icons/social/climatex.svg" ariaHidden="true" />-->
-                            <span class="c-SocialButton__text">ClimateX</span>
+                            <collab:image src="/images/icons/social/climatex.svg" ariaHidden="true" />
+                            <span class="c-SocialButton__text ${loginDropdownSsoTextExtraClasses}">ClimateX</span>
                         </a>
                     </c:if>
                 </div>

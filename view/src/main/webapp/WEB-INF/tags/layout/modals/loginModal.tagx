@@ -42,7 +42,7 @@
                         </c:if>
                         <c:if test="${_themeContext.authenticationVariables.isClimateXSsoActive}">
                             <a href="/sso/climatex" class="c-SocialButton text-dark" rel="nofollow">
-                                <!--<collab:image src="/images/icons/social/climatex.svg" ariaHidden="true"/>-->
+                                <collab:image src="/images/icons/social/climatex.svg" ariaHidden="true"/>
                                 <span class="c-SocialButton__text">ClimateX</span>
                             </a>
                         </c:if>
