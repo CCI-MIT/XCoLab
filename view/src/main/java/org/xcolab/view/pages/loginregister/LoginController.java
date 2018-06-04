@@ -1,6 +1,11 @@
 package org.xcolab.view.pages.loginregister;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.savedrequest.DefaultSavedRequest;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +17,10 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.TokenValidity;
-import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
-import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.commons.servlet.flash.ErrorPage;
+import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
+import org.xcolab.view.auth.AuthenticationService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +32,7 @@ public class LoginController {
     private static final String LOGIN_TOKEN_VIEW_NAME = "loginregister/loginWithToken";
 
     private final AuthenticationService authenticationService;
+    private final RequestCache requestCache = new HttpSessionRequestCache();
 
     @Autowired
     public LoginController(AuthenticationService authenticationService) {
@@ -34,8 +40,28 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request, HttpServletResponse response, Model model) {
+        boolean isOauthLogin = false;
+        boolean hideClimateXLogin = false;
+        SavedRequest savedRequest = this.requestCache.getRequest(request, response);
+        if (savedRequest != null) {
+            DefaultSavedRequest defaultSavedRequest = (DefaultSavedRequest) savedRequest;
+            final String requestURI = defaultSavedRequest.getRequestURI();
+            isOauthLogin = StringUtils.isNotEmpty(requestURI) && requestURI.startsWith("/oauth/authorize");
+            hideClimateXLogin = getBooleanParameter(defaultSavedRequest, "hideClimateXLogin");
+        }
+        model.addAttribute("hideRegisterPrompt", isOauthLogin);
+        model.addAttribute("hideClimateXLogin", hideClimateXLogin);
         return LOGIN_VIEW_NAME;
+    }
+
+    private boolean getBooleanParameter(DefaultSavedRequest defaultSavedRequest, String paramName) {
+        final String[] stringValueArray =
+                defaultSavedRequest.getParameterValues(paramName);
+        if (stringValueArray != null) {
+            return Boolean.valueOf(stringValueArray[0]);
+        }
+        return false;
     }
 
     @GetMapping("/login/token/{tokenId}")
