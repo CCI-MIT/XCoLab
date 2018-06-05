@@ -304,7 +304,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   background-color: $t-Color__tan;
 }
 
-.historyTable .ui-datatable-highlighted a, #proposalPickerTable .ui-datatable-highlight {
+.historyTable .ui-datatable-highlighted a, .ui-datatable-highlight a {
   color: $t-Color__secondary !important;
 }
 

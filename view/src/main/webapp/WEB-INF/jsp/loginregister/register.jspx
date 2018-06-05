@@ -27,9 +27,7 @@
                 <span class="required-field"><!-- --></span> <spring:message code="register.header.validation.mandatory"/>.
             </div>
 
-            <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive
-                            or _themeContext.authenticationVariables.isGoogleSsoActive
-                            or _themeContext.authenticationVariables.isClimateXEnabled}">
+            <c:if test="${_themeContext.authenticationVariables.isAnySsoActive}">
                 <div class="col text-right">
                     <h2><spring:message code="register.header.joinwith"/>:</h2>
                     <c:if test="${_themeContext.authenticationVariables.isFacebookSsoActive}">
@@ -46,10 +44,10 @@
                             <span class="c-SocialButton__text">Google</span>
                         </a>
                     </c:if>
-                    <c:if test="${_themeContext.authenticationVariables.isClimateXEnabled}">
+                    <c:if test="${_themeContext.authenticationVariables.isClimateXSsoActive}">
                         <a href="/sso/climatex" rel="nofollow" title="Register with ClimateX"
                            class="c-SocialButton text-dark mx-2 js-Tooltip">
-                            <!--<collab:image src="/images/icons/social/climatex.svg" ariaHidden="true"/>-->
+                            <collab:image src="/images/icons/social/climatex.svg" ariaHidden="true"/>
                             <span class="c-SocialButton__text">ClimateX</span>
                         </a>
                     </c:if>

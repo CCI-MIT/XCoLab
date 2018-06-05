@@ -25,11 +25,13 @@ import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.view.errors.AccessDeniedPage;
+import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
@@ -39,8 +41,8 @@ import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.AddUpdateProposalControllerUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.util.entity.EntityGroupingUtil;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -163,6 +165,10 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         if (proposalsPermissions.getCanJudgeActions()) {
             setJudgeProposalBean(model, proposalContext, currentMember);
         }
+
+        ProposalDiscussionPermissions pdp = new ProposalDiscussionPermissions(request,
+                proposalContext);
+        request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, pdp);
 
         setLinkedProposals(model, proposalContext, proposal);
         final Contest contest = proposalContext.getContest();

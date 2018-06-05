@@ -184,9 +184,9 @@
                     </c:if>
                 </div>
 
-                <c:if test="${showJudgingStatus}">
+                <c:if test="${proposalsPermissions.canFellowActions and contestPhase.isJudged}">
                     <div class="p-ContestProposals__header__team">
-                        <h2>Admin Information</h2>
+                        <h2>Fellow Information</h2>
                         <div class="judgingForm">
                             <p>Current proposal review status for each Judge. Click to filter proposals for a specific judge.</p>
                             <div>

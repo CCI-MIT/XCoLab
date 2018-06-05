@@ -56,7 +56,7 @@ public class ContestProposalsController extends BaseProposalsController {
     public String showContestProposalsWithJudgeFilter(HttpServletRequest request,
             HttpServletResponse response, Model model, Member loggedInMember,
             ProposalContext proposalContext, @PathVariable String contestYear,
-            @PathVariable String contestUrlName, @PathVariable String judgeId,
+            @PathVariable String contestUrlName, @PathVariable Long judgeId,
             final SortFilterPage sortFilterPage) {
         model.addAttribute("judgeId", judgeId);
         setBasePageAttributes(proposalContext, model);
@@ -213,7 +213,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
             for (Proposal proposal : proposalClient.getProposalsInContest(contest.getContestPK())) {
                 List<Long> newSelectedJudges = proposal.getSelectedJudges().stream()
-                        .filter(judgeId -> proposal.getJudgeReviewFinishedStatusUserId(judgeId))
+                        .filter(proposal::getIsReviewFinishedForJudge)
                         .collect(Collectors.toList());
 
                 proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(

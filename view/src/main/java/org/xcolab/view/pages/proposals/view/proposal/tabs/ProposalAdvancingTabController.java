@@ -237,7 +237,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         }
 
         // Security handling
-        if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudges(member)
+        if (!(permissions.getCanJudgeActions() && proposal.getIsUserAmongSelectedJudges(member.getUserId())
                 || isPublicRating)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -253,7 +253,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             return "redirect:" + redirectUrl + "#rating";
         }
 
-        if (permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudges(member)) {
+        if (permissions.getCanJudgeActions() && proposal.getIsUserAmongSelectedJudges(member.getUserId())) {
             isPublicRating = false;
         }
 

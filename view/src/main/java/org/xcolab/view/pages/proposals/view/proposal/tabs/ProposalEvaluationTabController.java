@@ -63,17 +63,11 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             Proposal proposal = proposalContext.getProposal();
             Contest contest = proposalContext.getContest();
 
-            long discussionId = proposal.getResultsDiscussionId();
-            if (discussionId == 0) {
-                discussionId = createEvaluationThread(proposalContext);
-            }
+            long discussionId = proposal.getResultsDiscussionIdOrCreate();
 
             ProposalDiscussionPermissions pdp = new ProposalDiscussionPermissions(request,
                     proposalContext);
-            pdp.setProposalId(proposalContext.getProposal().getProposalId(),
-                    proposalContext.getContestPhase().getContestPhasePK());
-            request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME,pdp);
-
+            request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, pdp);
 
             model.addAttribute("evaluationDiscussionId", discussionId);
             model.addAttribute("averageRatingsPerPhase", getAverageRatingsForPastPhases(
@@ -87,15 +81,6 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.EVALUATION);
         return EVALUATION_TAB_VIEW_NAME;
-    }
-
-    private long createEvaluationThread(ProposalContext proposalContext) {
-        Proposal proposal = proposalContext.getProposal();
-        final long discussionThreadId = createDiscussionThread(proposalContext, " results discussion", true);
-        proposal.setResultsDiscussionId(discussionThreadId);
-
-        proposalContext.getClients().getProposalClient().updateProposal(proposal);
-        return discussionThreadId;
     }
 
     private JudgeProposalFeedbackBean getProposalRatingBean(Member currentMember,

@@ -20,9 +20,6 @@
     <!--@elvariable id="proposals" type="org.xcolab.view.pages.proposals.wrappers.SortedProposalList"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage"-->
 
-    <c:set var="showJudgingStatus" scope="request"
-           value="${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}"/>
-
     <jsp:directive.include file="./contestProposals/header.jspx"/>
     <jsp:directive.include file="./contestProposals/header_contest_details.jspx"/>
 
@@ -48,14 +45,14 @@
             </c:choose>
         </div>
 
-        <c:if test="${proposalsPermissions.canFellowActions}">
+        <c:if test="${proposalsPermissions.canFellowActions and contestPhase.fellowScreeningActive}">
             <c:set value="${contest.contestUrl}/assignAllJudges" var="assignAllJudgesLink"/>
             <button type="button" class="btn cb-btn-admin js-PostLink" data-url="${assignAllJudgesLink}">
                 Assign all Judges
             </button>
         </c:if>
 
-        <c:if test="${proposalsPermissions.canFellowActions}">
+        <c:if test="${proposalsPermissions.canFellowActions and contestPhase.isJudged}">
             <c:set value="${contest.contestUrl}/removeUnfinishedJudges" var="removeUnfinishedJudgesLink"/>
             <button type="button" class="btn cb-btn-admin js-PostLink" data-url="${removeUnfinishedJudgesLink}">
                 Remove unfinished Judges

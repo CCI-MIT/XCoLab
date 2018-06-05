@@ -209,6 +209,10 @@ public class ContestPhase extends AbstractContestPhase {
         return getStatus() == ContestStatus.COMPLETED;
     }
 
+    public boolean getIsJudged() {
+        return getContestPhaseTypeObject().getDefaultPromotionTypeEnum() == ContestPhasePromoteType.PROMOTE_JUDGED;
+    }
+
     public ContestPhase getWrapped() {
         return this;
     }

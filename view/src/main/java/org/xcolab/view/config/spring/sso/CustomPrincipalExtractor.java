@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.commons.http.servlet.RequestUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
@@ -110,6 +112,17 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                 log.debug("No user found for sssId={} or email={}. Generating profile...",
                         ssoId, emailAddress);
 
+                if (MembersClient.isEmailUsed(emailAddress)) {
+                    // Email is already used (e.g. by a deleted member)
+
+                    // Invalidate session, otherwise the exception messes up the OAuthClientContext
+                    RequestUtil.getRequest().getSession().invalidate();
+
+                    AlertMessage.danger("An account using your email address was previously deleted.")
+                            .flash(RequestUtil.getRequest());
+                    throw new EmailUsedByDeletedMemberException(emailAddress);
+                }
+
                 String firstName = extractFirstName(userInfoMap);
                 if (firstName == null) {
                     throw new InternalException("Could not extract firstName from User Info map.");
@@ -153,5 +166,11 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
             }
         }
         return memberDetails;
+    }
+
+    public static class EmailUsedByDeletedMemberException extends RuntimeException {
+        public EmailUsedByDeletedMemberException(String email) {
+            super("Email " + email + " is already in use by a deleted member.");
+        }
     }
 }

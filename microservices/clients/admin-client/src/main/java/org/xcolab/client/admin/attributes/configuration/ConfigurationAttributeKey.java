@@ -355,6 +355,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_VOTING_VALIDATION_IS_ACTIVE")
                     .defaultValue(true)
                     .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_COMMENTS_IN_SEPARATE_TAB =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_COMMENTS_IN_SEPARATE_TAB")
+                    .defaultValue(true)
+                    .build();
 
     // Points
     public static final AttributeGetter<Boolean> POINTS_IS_ACTIVE =

@@ -4,21 +4,23 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 public enum ColabTheme {
-    CLIMATE_COLAB(205),
-    CROWDSENSOR(109, true),
-    RESILIENCE_DIALOGUES(136),
-    CLIMATE_RISKS_COLAB(145, true),
-    FUTURES_COLAB(145, true);
+    CLIMATE_COLAB("30a3fb", 205),
+    CROWDSENSOR("d71a11", 109, true),
+    RESILIENCE_DIALOGUES("30a3fb", 136),
+    CLIMATE_RISKS_COLAB("aa2029", 145, true),
+    FUTURES_COLAB("30a3fb", 145, true);
 
     private final String themeName;
     private final int logoWidth;
     private final boolean hasCustomStylesheet;
+    private final String primaryColorHex;
 
-    ColabTheme(int logoWidth) {
-        this(logoWidth, false);
+    ColabTheme(String primaryColorHex, int logoWidth) {
+        this(primaryColorHex, logoWidth, false);
     }
 
-    ColabTheme(int logoWidth, boolean hasCustomStylesheet) {
+    ColabTheme(String primaryColorHex, int logoWidth, boolean hasCustomStylesheet) {
+        this.primaryColorHex = primaryColorHex;
         this.logoWidth = logoWidth;
         this.hasCustomStylesheet = hasCustomStylesheet;
         final String camelCaseName = WordUtils.capitalizeFully(name(), '_')
@@ -55,5 +57,9 @@ public enum ColabTheme {
 
     public String getOverrideImagePath() {
         return "/static/themes/" + themeName + "/images";
+    }
+
+    public String getPrimaryColorHex() {
+        return primaryColorHex;
     }
 }

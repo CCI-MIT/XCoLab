@@ -125,7 +125,19 @@
     <!-- TODO COLAB-2586: make this configurable -->
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
 
-    <link href="/images/favicon.ico" rel="Shortcut Icon" />
+    <!-- Shortcut icons generated via https://realfavicongenerator.net -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png"/>
+    <link rel="manifest" href="/images/favicon/site.webmanifest"/>
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg"
+          color="#${_themeContext.themeVariables.activeTheme.primaryColorHex}"/>
+    <link rel="shortcut icon" href="/images/favicon/favicon.ico"/>
+    <meta name="msapplication-TileColor"
+          content="#${_themeContext.themeVariables.activeTheme.primaryColorHex}"/>
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml"/>
+    <meta name="theme-color" content="#ffffff"/>
+
     <c:if test="${not empty canonicalUrlRelative}">
         <link rel="canonical" href="${_themeContext.colabUrl}${canonicalUrlRelative}" />
     </c:if>

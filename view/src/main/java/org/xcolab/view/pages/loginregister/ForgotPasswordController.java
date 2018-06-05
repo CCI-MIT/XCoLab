@@ -14,8 +14,8 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
 import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
 import org.xcolab.view.util.entity.portlet.session.SessionErrors;
 import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
@@ -25,11 +25,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @Controller
 public class ForgotPasswordController {
 
-    private static final String FORGOT_PASSWORD_URL = "/login/resetPassword/update?resetToken=";
+    private static final String FORGOT_PASSWORD_URL
+            = "/login/resetPassword/update?resetToken=%s&screenName=%s";
     private final LoginRegisterService loginRegisterService;
 
     @Autowired
@@ -54,7 +56,7 @@ public class ForgotPasswordController {
 
         try {
             Member member;
-            if (screenNameOrEmail!= null && screenNameOrEmail.contains("@")) {
+            if (screenNameOrEmail != null && screenNameOrEmail.contains("@")) {
                 member = MembersClient.findMemberByEmailAddress(screenNameOrEmail);
             } else {
                 member = MembersClient.findMemberByScreenName(screenNameOrEmail);
@@ -62,11 +64,11 @@ public class ForgotPasswordController {
 
             String token = MembersClient.createForgotPasswordToken(member.getUserId());
             String colabUrl = PlatformAttributeKey.COLAB_URL.get();
-            String passwordLink = colabUrl + FORGOT_PASSWORD_URL + token;
+            String passwordLink = colabUrl + String.format(FORGOT_PASSWORD_URL, token,
+                    member.getScreenName());
 
-            sendEmailNotificationToForPasswordReset(request.getRemoteAddr(),
-                    passwordLink,  member);
-            AlertMessage.success("A password retrieval message has been sent, please check your email")
+            sendEmailNotificationToForPasswordReset(request.getRemoteAddr(), passwordLink, member);
+            AlertMessage.success("A password retrieval message has been sent. Please check your email")
                     .flash(request);
         } catch (MemberNotFoundException e) {
             Map<String, String> parameters = new HashMap<>();
@@ -105,40 +107,45 @@ public class ForgotPasswordController {
 
     @GetMapping("/login/resetPassword/update")
     public String openResetPassword(HttpServletRequest request, HttpServletResponse response,
-                                    Model model, @RequestParam String resetToken) {
+            ForgotPasswordBean forgotPasswordBean, Model model, @RequestParam String resetToken,
+            @RequestParam(required = false) String screenName) {
 
         if (!MembersClient.isForgotPasswordTokenValid(resetToken)) {
             return redirectToErrorPageOnPasswordReset(model);
         } else {
-            CreateUserBean userBean = new CreateUserBean();
-            model.addAttribute("createUserBean", userBean);
+            model.addAttribute("screenName", screenName);
+            model.addAttribute("forgotPasswordBean", forgotPasswordBean);
             model.addAttribute("resetToken", resetToken);
             return "loginregister/password_reset";
         }
     }
 
     @PostMapping("/login/resetPassword/update")
-    public void updatePassword(HttpServletRequest request, HttpServletResponse response,
-            Model model, CreateUserBean newAccountBean, BindingResult result,
-            @RequestParam(required = false) String resetToken)
-            throws IOException {
+    public String updatePassword(HttpServletRequest request, HttpServletResponse response,
+            Model model, @Valid ForgotPasswordBean forgotPasswordBean, BindingResult result,
+            @RequestParam(required = false) String resetToken,
+            @RequestParam(required = false) String screenName) {
 
-        String newPassword = newAccountBean.getPassword();
+        if (result.hasErrors()) {
+            return openResetPassword(request, response, forgotPasswordBean, model, resetToken,
+                    screenName);
+        }
+
+        String newPassword = forgotPasswordBean.getPassword();
 
         if (MembersClient.isForgotPasswordTokenValid(resetToken)) {
             try {
                 loginRegisterService.updatePassword(resetToken, newPassword);
-                AlertMessage.success("Your password was successfully updated!")
-                        .flash(request);
+                AlertMessage.success("Your password was successfully updated!").flash(request);
                 SessionErrors.clear(request);
                 SessionMessages.clear(request);
-                response.sendRedirect("/");
+                return "redirect:/";
             } catch (MemberNotFoundException e) {
-                response.sendRedirect("/login/resetPassword/error");
+                return "redirect:/login/resetPassword/error";
             }
 
         } else {
-            response.sendRedirect("/login/resetPassword/error");
+            return "redirect:/login/resetPassword/error";
         }
     }
 }

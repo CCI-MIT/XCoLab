@@ -17,7 +17,7 @@ public class AuthenticationVariables {
     private final boolean isAdmin;
 
     private final boolean isGoogleSsoActive;
-    private final boolean isClimateXEnabled;
+    private final boolean isClimateXSsoActive;
     private final boolean isFacebookSsoActive;
     private final String facebookId;
     private final boolean showLoginPopup;
@@ -41,7 +41,7 @@ public class AuthenticationVariables {
         this.authError = AuthenticationError.fromName(request.getParameter("signinRegError"));
 
         this.isGoogleSsoActive = ssoServices.isGoogleEnabled();
-        this.isClimateXEnabled = ssoServices.isClimateXEnabled();
+        this.isClimateXSsoActive = ssoServices.isClimateXEnabled();
         this.isFacebookSsoActive = ssoServices.isFacebookEnabled();
         this.facebookId = ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get();
 
@@ -82,6 +82,14 @@ public class AuthenticationVariables {
         return isFacebookSsoActive;
     }
 
+    public boolean getIsClimateXSsoActive() {
+        return isClimateXSsoActive;
+    }
+
+    public boolean getIsAnySsoActive() {
+        return isGoogleSsoActive || isFacebookSsoActive || isClimateXSsoActive;
+    }
+
     public String getFacebookId() {
         return facebookId;
     }
@@ -100,9 +108,5 @@ public class AuthenticationVariables {
 
     public boolean getShowSsoPopup() {
         return showSsoPopup;
-    }
-
-    public boolean getIsClimateXEnabled() {
-        return isClimateXEnabled;
     }
 }
