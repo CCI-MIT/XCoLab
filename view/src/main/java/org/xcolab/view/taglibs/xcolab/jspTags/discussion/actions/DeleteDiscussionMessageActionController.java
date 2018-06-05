@@ -26,7 +26,7 @@ public class DeleteDiscussionMessageActionController extends BaseDiscussionsActi
     public void deleteMessage(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long commentId,
             @RequestParam(value = "contestId", required = false) Long contestId)
-            throws IOException {
+            throws IOException, DiscussionAuthorizationException {
 
         try {
             checkPermissions(request, "User isn't allowed to delete message", commentId);

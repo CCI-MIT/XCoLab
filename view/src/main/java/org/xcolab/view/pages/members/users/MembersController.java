@@ -148,7 +148,7 @@ public class MembersController {
     @GetMapping("/api/members/getUserByScreenName")
     public void getUserByScreenName(HttpServletRequest request, HttpServletResponse response,
             @RequestParam String term)
-            throws IOException {
+            throws IOException, MemberNotFoundException {
         final List<Member> members = MembersClient.findByScreenNameOrName(term);
         final JSONArray jsonArray = new JSONArray();
         for(Member member: members) {

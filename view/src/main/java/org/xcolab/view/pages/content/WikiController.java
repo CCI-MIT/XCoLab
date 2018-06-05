@@ -45,7 +45,7 @@ public class WikiController {
 
     @GetMapping("/wiki/{pageTitle:.*}")
     public String showWikiPage(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable String pageTitle) {
+            Model model, Member member, @PathVariable String pageTitle) throws IOException {
         final long folderId = ConfigurationAttributeKey.WIKI_CONTENT_FOLDER_ID.get();
 
         if (folderId > 0 && StringUtils.isNotBlank(pageTitle)) {
@@ -70,7 +70,7 @@ public class WikiController {
     @GetMapping("/resources/{contestYear}/{contestUrlName}")
     public String showResourcePage(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable long contestYear, @PathVariable String contestUrlName)
-            throws ContestNotFoundException {
+            throws ContestNotFoundException, IOException {
 
         final Contest contest = ContestClientUtil.getContest(contestUrlName, contestYear);
 

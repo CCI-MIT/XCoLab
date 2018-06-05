@@ -77,7 +77,7 @@ public class OverviewTabController extends AbstractTabController {
     public String updateContestOverviewTabController(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper)
-            throws IOException {
+            throws IOException, InvocationTargetException, IllegalAccessException {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -95,7 +95,7 @@ public class OverviewTabController extends AbstractTabController {
     public void updateContestOrder(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper)
-            throws IOException {
+            throws IOException, InvocationTargetException, IllegalAccessException {
         if (!tabWrapper.getCanEdit()) {
             response.sendError(403);
         }
@@ -108,7 +108,7 @@ public class OverviewTabController extends AbstractTabController {
     @PostMapping("api/massAction")
     public void getExportController(HttpServletRequest request, Model model,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
-            HttpServletResponse response) {
+            HttpServletResponse response) throws InvocationTargetException, IllegalAccessException {
         if (!tabWrapper.getCanEdit()) {
             return;
         }

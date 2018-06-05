@@ -332,7 +332,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             @RequestParam(required = false) String impactAuthorComment,
             @RequestParam(required = false) String impactIAFComment,
             @RequestParam(required = false) Boolean isConsolidatedScenario)
-            throws IOException, ScenarioNotFoundException,
+            throws ProposalsAuthorizationException, IOException, ScenarioNotFoundException,
             ModelNotFoundException {
 
         if (proposalContext.getProposal() != null && !canEditImpactTab(proposalContext)) {

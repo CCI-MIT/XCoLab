@@ -47,7 +47,7 @@ public class PageEditorController extends BaseContentEditor {
     @GetMapping("/content-editor/previewContentPage")
     public String previewContentPage(HttpServletRequest request, HttpServletResponse response,
             Member member, @RequestParam(required = false) Long mainContentArticleId,
-            @RequestParam(required = false) Long menuArticleId, Model model) {
+            @RequestParam(required = false) Long menuArticleId, Model model) throws IOException {
 
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);

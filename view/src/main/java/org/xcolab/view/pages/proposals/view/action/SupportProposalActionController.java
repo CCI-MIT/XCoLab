@@ -35,7 +35,8 @@ public class SupportProposalActionController {
     @PostMapping("supportProposalAction")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,
             Model model, Member currentMember, ProposalContext proposalContext,
-            @RequestParam(required = false) String forwardToTab) {
+            @RequestParam(required = false) String forwardToTab)
+            throws ProposalsAuthorizationException, IOException {
 
         if (!proposalContext.getPermissions().getCanSupportProposal()) {
             return new AccessDeniedPage(currentMember).toViewName(response);

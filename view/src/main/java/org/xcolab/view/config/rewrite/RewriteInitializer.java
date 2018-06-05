@@ -17,7 +17,7 @@ public class RewriteInitializer implements ServletContextInitializer {
             "org.ocpsoft.rewrite.annotation.BASE_PACKAGES";
 
     @Override
-    public void onStartup(ServletContext servletContext) {
+    public void onStartup(ServletContext servletContext) throws ServletException {
         //disable annotation scanning, as it doesn't work in embedded containers
         servletContext.setInitParameter(ANNOTATION_SCAN_PARAM, "none");
 

@@ -39,7 +39,7 @@ public enum ErrorText {
         errorMessage.flashAndRedirect(request, response);
     }
 
-    public String flashAndReturnRedirect(HttpServletRequest request) {
+    public String flashAndReturnRedirect(HttpServletRequest request) throws IOException {
         return errorMessage.flashAndReturnRedirect(request);
     }
 

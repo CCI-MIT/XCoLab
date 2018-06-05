@@ -18,7 +18,7 @@ public class LoadContentArticleTag extends BodyTagSupport {
     private long articleId;
 
     @Override
-    public int doStartTag() {
+    public int doStartTag() throws JspException {
         if (articleId > 0) {
             try {
                 final ContentArticle contentArticle = ContentsClient.getContentArticle(articleId);

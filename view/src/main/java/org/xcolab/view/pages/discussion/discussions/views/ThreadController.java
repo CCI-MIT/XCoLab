@@ -36,7 +36,7 @@ public class ThreadController extends BaseDiscussionController {
     @GetMapping("/discussion/thread/{threadId}")
     public String showThread(HttpServletRequest request, HttpServletResponse response, Model model,
             Member member, @PathVariable Long threadId)
-            throws ThreadNotFoundException {
+            throws DiscussionAuthorizationException, ThreadNotFoundException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
         CommentThread thread = ThreadClientUtil.getThread(threadId);
@@ -55,7 +55,8 @@ public class ThreadController extends BaseDiscussionController {
 
     @GetMapping("/discussion/threads/create")
     public String createThread(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
+            Model model, Member member)
+            throws DiscussionAuthorizationException {
 
 
         CategoryGroup categoryGroup = getCategoryGroup(request);

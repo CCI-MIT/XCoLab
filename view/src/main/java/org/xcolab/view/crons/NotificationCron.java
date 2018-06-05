@@ -59,7 +59,7 @@ public class NotificationCron {
 
         @RequestMapping("/crons/notifications/run")
         public ResponseEntity<String> sendEmailNotifications(HttpServletRequest request,
-                HttpServletResponse response) {
+                HttpServletResponse response) throws IOException {
             _log.debug("Cron triggered via http endpoint.");
             notificationCron.sendNotifications();
             return ResponseEntity.ok("Emails sent.");

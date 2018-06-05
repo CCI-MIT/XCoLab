@@ -125,7 +125,8 @@ public class BatchCreationController {
     @PostMapping("manager/batchCreateContest")
     public String createBatchContestController(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
-            @Valid ContestBatchBean contestBatchBean, BindingResult result) {
+            @Valid ContestBatchBean contestBatchBean, BindingResult result)
+            throws IOException {
 
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);

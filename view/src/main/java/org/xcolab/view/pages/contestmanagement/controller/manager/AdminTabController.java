@@ -235,7 +235,7 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/batchRegister")
     public String batchRegisterMembers(HttpServletRequest request, HttpServletResponse response,
-            BatchRegisterBean batchRegisterBean) {
+            BatchRegisterBean batchRegisterBean) throws IOException {
         if (!tabWrapper.getCanView()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
@@ -288,7 +288,8 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/notificationMessageDelete")
     public String saveNotification(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String notificationId, Member loggedInMember) {
+            @RequestParam String notificationId, Member loggedInMember)
+            throws IOException {
 
         if (!PermissionsClient.canAdminAll(loggedInMember)) {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
@@ -304,7 +305,7 @@ public class AdminTabController extends AbstractTabController {
     public String saveNotification(HttpServletRequest request,
             HttpServletResponse response, Member member, @RequestParam String notificationText,
             @RequestParam String expiretime)
-            throws ParseException {
+            throws IOException, ParseException {
 
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);

@@ -26,7 +26,7 @@ public class FacebookExceptionTranslatorTest {
             null);
 
     @Test
-    public void testGetExceptionObject__oauthError() {
+    public void testGetExceptionObject__oauthError() throws Exception {
         final FacebookExceptionTranslator translator = new FacebookExceptionTranslator();
         final FacebookErrorResponseObject exceptionObject = translator
                 .getExceptionObject(FACEBOOK_OAUTH_EXCEPTION, null, null);
@@ -43,7 +43,7 @@ public class FacebookExceptionTranslatorTest {
     }
 
     @Test(expected = FacebookException.class)
-    public void testTranslateException__oauthError() {
+    public void testTranslateException__oauthError() throws Exception {
         final FacebookExceptionTranslator translator = new FacebookExceptionTranslator();
         translator.translateException(FACEBOOK_OAUTH_EXCEPTION, null, null);
     }

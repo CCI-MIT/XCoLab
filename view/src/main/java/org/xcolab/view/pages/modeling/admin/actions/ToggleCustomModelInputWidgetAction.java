@@ -23,7 +23,7 @@ public class ToggleCustomModelInputWidgetAction {
     @PostMapping("model/{modelId}/toggleCustomInputs")
     public void update(HttpServletRequest request, HttpServletResponse response,
             UpdateModelInputWidgetsBean updateModelWidgetsBean, @PathVariable long modelId)
-            throws IOException {
+            throws IllegalUIConfigurationException, IOException {
 
         ModelGlobalPreference modelPreferences = ModelingClientUtil.getModelPreference(modelId);
         modelPreferences.setUsesCustomInputs(!modelPreferences.getUsesCustomInputs());

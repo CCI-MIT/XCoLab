@@ -36,7 +36,7 @@ public class ProposalPickerJSONController {
             @RequestParam(required = false) String sortOrder,
             @RequestParam(required = false) String sortColumn,
             @RequestParam(required = false) Long sectionId,
-            @RequestParam(required = false) long contestPK) {
+            @RequestParam(required = false) long contestPK) throws IOException {
 
         List<Proposal> proposals;
         final long userId = user.getUserId();
@@ -89,7 +89,7 @@ public class ProposalPickerJSONController {
             @RequestParam(required = false) int start, @RequestParam(required = false) int end,
             @RequestParam(required = false) String sortOrder,
             @RequestParam(required = false, value = "contestSortColumn") String sortColumn,
-            @RequestParam(required = false) Long sectionId) {
+            @RequestParam(required = false) Long sectionId) throws IOException {
 
         List<Contest> contests =
                 ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
@@ -114,7 +114,7 @@ public class ProposalPickerJSONController {
     public int proposalPickerCounter(HttpServletRequest request, HttpServletResponse response,
             Member user, ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @RequestParam String filterKey,
-            @RequestParam long sectionId, @RequestParam Tab tab) {
+            @RequestParam long sectionId, @RequestParam Tab tab) throws IOException {
         long memberId = user.getUserId();
 
         switch (tab) {

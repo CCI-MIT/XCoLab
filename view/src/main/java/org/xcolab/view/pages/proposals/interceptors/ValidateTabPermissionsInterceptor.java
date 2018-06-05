@@ -17,7 +17,8 @@ public class ValidateTabPermissionsInterceptor extends HandlerInterceptorAdapter
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
-            Object handler, ModelAndView modelAndView) {
+            Object handler, ModelAndView modelAndView)
+            throws IOException {
 
         if (modelAndView != null) {
             if (modelAndView.getModel().containsKey("currentTabWrapped")) {

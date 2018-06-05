@@ -102,7 +102,7 @@ public class MessagingController {
     @PostMapping("archiveMessages")
     public String archiveMessages(HttpServletRequest request, HttpServletResponse response,
             Model model, @ModelAttribute("messagingBean") MessagingBean messagingBean,
-            Member loggedInMember) throws MessageNotFoundException {
+            Member loggedInMember) throws MessageNotFoundException, IOException {
 
         if (loggedInMember == null) {
             return new AccessDeniedPage(null).toViewName(response);
@@ -125,7 +125,7 @@ public class MessagingController {
     @PostMapping("sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
-            @RequestParam String messageContent, Member loggedInMember) {
+            @RequestParam String messageContent, Member loggedInMember) throws IOException {
 
         if (loggedInMember == null) {
             return new AccessDeniedPage(null).toViewName(response);

@@ -55,7 +55,7 @@ public class GetRoleNameStartTag extends BodyTagSupport {
     private ProposalClient proposalClient;
 
     @Override
-    public int doStartTag() {
+    public int doStartTag() throws JspException {
         try {
             Member member = MembersClient.getMember(userId);
             MemberRole role = MemberRole.getHighestRole(member.getRoles());

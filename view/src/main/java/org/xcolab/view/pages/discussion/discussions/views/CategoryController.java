@@ -69,7 +69,7 @@ public class CategoryController extends BaseDiscussionController {
             Model model, @PathVariable long categoryId,
             @RequestParam(required = false) String sortColumn,
             @RequestParam(defaultValue = "false") boolean sortAscending)
-            throws CategoryNotFoundException {
+            throws DiscussionAuthorizationException, CategoryNotFoundException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
 
@@ -126,7 +126,8 @@ public class CategoryController extends BaseDiscussionController {
 
     // @RenderMapping(params = "action=createCategory")
     public String createCategory(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @RequestParam long categoryId) {
+            Model model, Member member, @RequestParam long categoryId)
+            throws DiscussionAuthorizationException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
@@ -142,7 +143,7 @@ public class CategoryController extends BaseDiscussionController {
     // @ActionMapping(params = "action=createCategory")
     public String createCategoryAction(HttpServletRequest request, HttpServletResponse response,
             Member member, @RequestParam String title, @RequestParam String description)
-            throws OperationNotSupportedException {
+            throws IOException, DiscussionAuthorizationException, OperationNotSupportedException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
@@ -157,7 +158,8 @@ public class CategoryController extends BaseDiscussionController {
 
     @GetMapping("/discussion/subscribeCategory")
     public String subscribeCategory(HttpServletRequest request, HttpServletResponse response,
-            Member member, @RequestParam long categoryId) {
+            Member member, @RequestParam long categoryId)
+            throws DiscussionAuthorizationException, IOException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
         CategoryGroup categoryGroup = getCategoryGroup(request);
@@ -184,7 +186,8 @@ public class CategoryController extends BaseDiscussionController {
 
     @GetMapping("/discussion/unsubscribeCategory")
     public String unsubscribeCategory(HttpServletRequest request, HttpServletResponse response,
-            Member member, @RequestParam long categoryId) {
+            Member member, @RequestParam long categoryId)
+            throws DiscussionAuthorizationException, IOException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
         CategoryGroup categoryGroup = getCategoryGroup(request);
