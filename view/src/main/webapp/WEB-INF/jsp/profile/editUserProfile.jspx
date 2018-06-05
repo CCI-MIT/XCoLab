@@ -221,8 +221,12 @@
                 <div class="clearfix">&#160;</div>
             </div>
 
-            <a class="btn btn-primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();"><spring:message code="profile.form.button.save"/></a>
-            <a class="btn btn-gray ml-2" href="/members/profile/${currentUserProfile.userId}"><spring:message code="profile.form.button.cancel"/></a>
+            <a class="btn btn-primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">
+                <spring:message code="profile.form.button.save"/>
+            </a>
+            <a class="btn btn-gray ml-2" href="/members/profile/${currentUserProfile.userId}">
+                <spring:message code="profile.form.button.cancel"/>
+            </a>
         </div>
 
         <div class="l-Content__sidebar l-Content__sidebar--right l-Content__sidebar--small l-Content__sidebar--collapseBottom">
