@@ -243,22 +243,22 @@
                         });
                         $("#createAllContestsAbove").click(function (){
                             if(!validCSV) {
-                                alert("Please select a valid CSV file! Follow the structure described in the field Contests in CSV!")
+                                alert("Please select a valid CSV file! Follow the structure described in the field Contests in CSV!");
                                 $("#fileCSV").focus();
                                 return;
                             }
                             if($("#scheduleTemplateId").val()==0){
-                                alert("Please select a Schedule Template")
+                                alert("Please select a Schedule Template");
                                 $("#scheduleTemplateId").focus();
                                 return;
                             }
                             if($("#contestTier").val()==0){
-                                alert("Please select a Contest Tier")
+                                alert("Please select a Contest Tier");
                                 $("#contestTier").focus();
                                 return;
                             }
                             if($("#contestTier").val()==0){
-                                alert("Please select a Contest Tier")
+                                alert("Please select a Contest Tier");
                                 $("#contestTier").focus();
                                 return;
                             }
