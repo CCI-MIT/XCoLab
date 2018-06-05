@@ -50,9 +50,7 @@ public final class I18nUtils {
 
     public static boolean hasCapitalNouns(String language) {
         if (language != null) {
-            if ("de".equalsIgnoreCase(language)) {
-                return true;
-            }
+            return "de".equalsIgnoreCase(language);
         }
         return false;
     }
