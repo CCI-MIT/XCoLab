@@ -93,7 +93,8 @@ public class PageNavigation {
     }
 
     private PageLink createPageLink(int page) {
-        String pageUrl = baseUrl.cloneBuilder().queryParam(pageParamName, page).build().toUriString();;
+        String pageUrl = baseUrl.cloneBuilder().queryParam(pageParamName, page).build().toUriString();
+
         return new PageLink(pageUrl, currentPage, page);
     }
 }
