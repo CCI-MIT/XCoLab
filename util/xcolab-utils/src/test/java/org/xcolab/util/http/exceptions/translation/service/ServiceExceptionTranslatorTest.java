@@ -52,14 +52,14 @@ public class ServiceExceptionTranslatorTest {
             null);
 
     @Test(expected = ServiceNotFoundException.class)
-    public void testGetExceptionObject__ServiceNotFoundException() throws Exception {
+    public void testGetExceptionObject__ServiceNotFoundException() {
         final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
         translator.getExceptionObject(
                 HTTP_404_EMPTY_CLIENT_ERROR_EXCEPTION, null, null);
     }
 
     @Test
-    public void testGetExceptionObject__500InternalServerError() throws Exception {
+    public void testGetExceptionObject__500InternalServerError() {
         final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
         final HttpServiceExceptionObject exceptionObject = translator
                 .getExceptionObject(HTTP_500_SERVER_ERROR_EXCEPTION, null, null);
@@ -77,19 +77,19 @@ public class ServiceExceptionTranslatorTest {
     }
 
     @Test(expected = Http500InternalServiceException.class)
-    public void testTranslateException__500InternalServerError() throws Exception {
+    public void testTranslateException__500InternalServerError() {
         final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
         translator.translateException(HTTP_500_SERVER_ERROR_EXCEPTION, null, null);
     }
 
     @Test(expected = Http400BadRequestException.class)
-    public void testTranslateException__400BadRequest() throws Exception {
+    public void testTranslateException__400BadRequest() {
         final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
         translator.translateException(HTTP_400_BAD_REQUEST_EXCEPTION, null, null);
     }
 
     @Test(expected = UncheckedEntityNotFoundException.class)
-    public void testTranslateException__404NotFound() throws Exception {
+    public void testTranslateException__404NotFound() {
         final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
         translator.translateException(HTTP_404_NOT_FOUND_EXCEPTION, null, null);
     }

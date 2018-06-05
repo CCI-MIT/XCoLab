@@ -60,7 +60,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
     }
 
     @Override
-    public int doStartTag() throws JspException {
+    public int doStartTag() {
         try {
             Member judge = MembersClient.getMember(userId);
             Contest contest = ContestClientUtil.getContest(contestId);

@@ -28,7 +28,7 @@ public class JudgeAssignedProposalCountTag extends BodyTagSupport {
     }
 
     @Override
-    public int doStartTag() throws JspException {
+    public int doStartTag() {
 
         int judgeAssignedProposalCount = ProposalClientUtil
                 .getNumberOfProposalsForJudge(userId, contestPhaseId);

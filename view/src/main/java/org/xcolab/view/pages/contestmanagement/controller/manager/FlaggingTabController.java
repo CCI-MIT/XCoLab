@@ -99,8 +99,7 @@ public class FlaggingTabController extends AbstractTabController {
     @PostMapping("tab/FLAGGING/handle/{reportId}/{managerAction}")
     public String approveContent(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member,
-            @PathVariable long reportId, @PathVariable ManagerAction managerAction)
-            throws IOException {
+            @PathVariable long reportId, @PathVariable ManagerAction managerAction) {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -131,7 +130,7 @@ public class FlaggingTabController extends AbstractTabController {
     @PostMapping("tab/FLAGGING/delete/{reportTargetId}")
     public String deleteEmailTemplateTabController(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
-            @PathVariable long reportTargetId) throws IOException {
+            @PathVariable long reportTargetId) {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }

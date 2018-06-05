@@ -84,7 +84,7 @@ public class UserProfileController {
 
     @GetMapping
     public String showProfile(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) throws IOException {
+            Model model, Member member) {
         if (member != null) {
             return "redirect:/members/profile/" + member.getId_();
         }
@@ -199,7 +199,7 @@ public class UserProfileController {
     public String updateUserProfile(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable long memberId, @ModelAttribute UserBean updatedUserBean,
             BindingResult result, Member loggedInMember)
-            throws IOException, MemberNotFoundException {
+            throws MemberNotFoundException {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         model.addAttribute("permissions", permissions);
         model.addAttribute("_activePageLink", "community");

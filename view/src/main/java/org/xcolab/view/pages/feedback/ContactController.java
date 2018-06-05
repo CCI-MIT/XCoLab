@@ -69,7 +69,7 @@ public class ContactController {
     @PostMapping("/feedback")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @Valid ContactBean contactBean, BindingResult result,
-            @RequestParam(required = false) String redirect) throws IOException {
+            @RequestParam(required = false) String redirect) {
 
         Locale locale = LocaleContextHolder.getLocale();
         ContactPreferences contactPreferences = new ContactPreferences(null, locale.getLanguage());

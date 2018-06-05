@@ -58,7 +58,7 @@ public class PromotionCron {
         }
 
         @RequestMapping("/crons/promotions/run")
-        public ResponseEntity<String> triggerPromotion() throws IOException {
+        public ResponseEntity<String> triggerPromotion() {
             _log.debug("Cron triggered via http endpoint.");
             final int promotedProposals = promotionCron.doPromotion();
             return ResponseEntity.ok("Promoted " + promotedProposals + " proposals.");

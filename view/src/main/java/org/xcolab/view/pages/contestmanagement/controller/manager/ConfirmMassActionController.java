@@ -30,7 +30,7 @@ public class ConfirmMassActionController {
     public String confirmMassActionExecution(HttpServletRequest request, Model model, Member member,
             @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
             HttpServletResponse response)
-            throws IOException, InvocationTargetException, IllegalAccessException {
+            throws IOException {
         massActionConfirmationWrapper.setMemberId(member.getId_());
 
         List<Long> contestIds = massActionConfirmationWrapper.getSelectedContestIds();

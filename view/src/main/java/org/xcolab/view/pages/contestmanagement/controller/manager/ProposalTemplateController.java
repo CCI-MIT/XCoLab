@@ -83,8 +83,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/create")
     public String createNewProposalTemplateTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member)
-            throws IOException {
+            HttpServletResponse response, Model model, Member member) {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -97,7 +96,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
     @PostMapping("tab/PROPOSAL_TEMPLATES/delete/{elementId}")
     public String deleteProposalTemplateTabController(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
-            @PathVariable Long elementId) throws IOException {
+            @PathVariable Long elementId) {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -111,7 +110,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
     public String updateProposalTemplatesTabController(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
             @ModelAttribute ProposalTemplateWrapper updatedProposalTemplateWrapper,
-            BindingResult result) throws IOException {
+            BindingResult result) {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);

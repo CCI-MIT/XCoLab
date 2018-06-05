@@ -173,7 +173,7 @@ public class ContestProposalsController extends BaseProposalsController {
     @PostMapping("/contests/{contestYear}/{contestUrlName}/assignAllJudges")
     public String assignAllJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
-            throws ProposalsAuthorizationException, IOException {
+            throws ProposalsAuthorizationException {
 
         if (proposalContext.getPermissions().getCanFellowActions()) {
 
@@ -203,7 +203,7 @@ public class ContestProposalsController extends BaseProposalsController {
     @PostMapping("/contests/{contestYear}/{contestUrlName}/removeUnfinishedJudges")
     public String removeUnfinishedJudges(HttpServletRequest request, HttpServletResponse response,
             Member currentMember, ProposalContext proposalContext)
-            throws ProposalsAuthorizationException, IOException {
+            throws ProposalsAuthorizationException {
 
         if (proposalContext.getPermissions().getCanFellowActions()) {
 

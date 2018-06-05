@@ -28,7 +28,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
     public void handleAction(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long commentId, @RequestParam("comment") String content,
             @RequestParam(value = "contestId", required = false) Long contestId)
-            throws IOException, DiscussionAuthorizationException, CommentNotFoundException {
+            throws IOException, CommentNotFoundException {
 
         try {
             checkPermissions(request, "User isn't allowed to edit message", commentId);

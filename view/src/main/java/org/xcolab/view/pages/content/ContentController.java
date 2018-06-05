@@ -28,7 +28,7 @@ public class ContentController {
 
     @GetMapping("/page/{pageTitle}")
     public String showContentPage(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable String pageTitle) throws IOException {
+            Model model, Member member, @PathVariable String pageTitle) {
 
         try {
             final ContentPage contentPage = ContentsClient.getContentPage(pageTitle);

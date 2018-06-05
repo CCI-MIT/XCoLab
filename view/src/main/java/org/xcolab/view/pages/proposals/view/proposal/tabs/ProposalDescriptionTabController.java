@@ -294,8 +294,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             Model model, ProposalContext proposalContext, Member currentMember,
             @PathVariable String contestYear, @PathVariable String contestUrlName,
             @PathVariable String proposalUrlString, @PathVariable String proposalId,
-            @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result)
-            throws ProposalsAuthorizationException, IOException {
+            @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result) {
 
         Proposal proposal = proposalContext.getProposal();
         final ProposalsPermissions permissions = proposalContext.getPermissions();

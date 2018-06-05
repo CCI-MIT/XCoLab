@@ -220,8 +220,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
     public String saveJudgingFeedback(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, ProposalContext proposalContext,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
-            BindingResult result, RedirectAttributes redirectAttributes)
-            throws IOException {
+            BindingResult result, RedirectAttributes redirectAttributes) {
 
         final Contest contest = proposalContext.getContest();
         Proposal proposal = proposalContext.getProposal();

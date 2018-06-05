@@ -68,7 +68,7 @@ public class CustomRewriteFilter implements Filter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         log.info("CustomRewriteFilter starting up...");
 
         servletContext = filterConfig.getServletContext();
