@@ -15,10 +15,16 @@ class AbstractProposalVote implements Serializable {
     private Long userid;
     private Integer value;
     private Timestamp createdate;
+    private String voterIp;
+    private String voterUserAgent;
     private Boolean isvalid;
     private Timestamp confirmationemailsenddate;
     private String confirmationtoken;
     private String initialValidationResult;
+    private String lastValidationResult;
+    private Boolean isValidOverride;
+    private String manualValidationResult;
+
 
     public AbstractProposalVote() {}
 
@@ -28,10 +34,15 @@ class AbstractProposalVote implements Serializable {
         this.userid = value.userid;
         this.value = value.value;
         this.createdate = value.createdate;
+        this.voterIp = value.voterIp;
+        this.voterUserAgent = value.voterUserAgent;
         this.isvalid = value.isvalid;
         this.confirmationemailsenddate = value.confirmationemailsenddate;
         this.confirmationtoken = value.confirmationtoken;
         this.initialValidationResult = value.initialValidationResult;
+        this.lastValidationResult = value.lastValidationResult;
+        this.isValidOverride = value.isValidOverride;
+        this.manualValidationResult = value.manualValidationResult;
     }
 
     public Long getProposalId() {
@@ -74,6 +85,22 @@ class AbstractProposalVote implements Serializable {
         this.createdate = createdate;
     }
 
+    public String getVoterIp() {
+        return voterIp;
+    }
+
+    public void setVoterIp(String voterIp) {
+        this.voterIp = voterIp;
+    }
+
+    public String getVoterUserAgent() {
+        return voterUserAgent;
+    }
+
+    public void setVoterUserAgent(String voterUserAgent) {
+        this.voterUserAgent = voterUserAgent;
+    }
+
     public Boolean getIsValid() {
         return this.isvalid;
     }
@@ -106,6 +133,30 @@ class AbstractProposalVote implements Serializable {
         this.initialValidationResult = initialValidationResult;
     }
 
+    public String getLastValidationResult() {
+        return lastValidationResult;
+    }
+
+    public void setLastValidationResult(String lastValidationResult) {
+        this.lastValidationResult = lastValidationResult;
+    }
+
+    public Boolean getValidOverride() {
+        return isValidOverride;
+    }
+
+    public void setValidOverride(Boolean validOverride) {
+        isValidOverride = validOverride;
+    }
+
+    public String getManualValidationResult() {
+        return manualValidationResult;
+    }
+
+    public void setManualValidationResult(String manualValidationResult) {
+        this.manualValidationResult = manualValidationResult;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -118,32 +169,43 @@ class AbstractProposalVote implements Serializable {
         return Objects.equals(proposalid, that.proposalid)
                 && Objects.equals(contestphaseid, that.contestphaseid)
                 && Objects.equals(userid, that.userid)
-                && Objects.equals(value, that.value)
+                && Objects.equals(getValue(), that.getValue())
                 && Objects.equals(createdate, that.createdate)
+                && Objects.equals(voterIp, that.voterIp)
+                && Objects.equals(voterUserAgent, that.voterUserAgent)
                 && Objects.equals(isvalid, that.isvalid)
                 && Objects.equals(confirmationemailsenddate, that.confirmationemailsenddate)
                 && Objects.equals(confirmationtoken, that.confirmationtoken)
-                && Objects.equals(initialValidationResult, that.initialValidationResult);
+                && Objects.equals(getInitialValidationResult(), that.getInitialValidationResult())
+                && Objects.equals(lastValidationResult, that.lastValidationResult)
+                && Objects.equals(isValidOverride, that.isValidOverride)
+                && Objects.equals(manualValidationResult, that.manualValidationResult);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(proposalid, contestphaseid, userid, value, createdate, isvalid,
-                confirmationemailsenddate, confirmationtoken, initialValidationResult);
+        return Objects.hash(proposalid, contestphaseid, userid, getValue(), createdate, voterIp,
+                voterUserAgent, isvalid, confirmationemailsenddate, confirmationtoken,
+                getInitialValidationResult(), lastValidationResult, isValidOverride,
+                manualValidationResult);
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("proposalid", proposalid)
+        return new ToStringBuilder(this).append("proposalid", proposalid)
                 .append("contestphaseid", contestphaseid)
                 .append("userid", userid)
                 .append("value", value)
                 .append("createdate", createdate)
+                .append("voterIp", voterIp)
+                .append("voterUserAgent", voterUserAgent)
                 .append("isvalid", isvalid)
                 .append("confirmationemailsenddate", confirmationemailsenddate)
                 .append("confirmationtoken", confirmationtoken)
                 .append("initialValidationResult", initialValidationResult)
+                .append("lastValidationResult", lastValidationResult)
+                .append("isValidOverride", isValidOverride)
+                .append("manualValidationResult", manualValidationResult)
                 .toString();
     }
 }

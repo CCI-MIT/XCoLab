@@ -225,7 +225,6 @@ public final class ProposalMemberRatingClient {
         pv.setContestPhaseId(contestPhaseId);
         pv.setUserId(memberId);
         pv.setValue(value);
-        pv.setCreateDate(new Timestamp(new Date().getTime()));
         pv.setIsValid(true);// should this default to true?
         return createProposalVote(pv);
     }
