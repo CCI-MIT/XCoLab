@@ -112,6 +112,7 @@ public class VoteOnProposalActionController {
 
             //populate tracking fields
             vote.setVoterIp(request.getRemoteAddr());
+            vote.setVoterUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
             proposalMemberRatingClient.updateProposalVote(vote);
 
             final boolean isVoteValidationActive = ConfigurationAttributeKey
