@@ -360,8 +360,7 @@
                 if (currentProposal.proposalId > 0) {
                     disableButtons(true);
                     saveIfValid();
-                }
-                else {
+                } else {
                     disableButtons(false);
                     showAcceptTosPopup();
                 }

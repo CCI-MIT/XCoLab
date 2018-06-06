@@ -116,13 +116,12 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, vote.getVoterIp());
             addLocationForIp(row, vote.getVoterIp());
             addValue(row, vote.getVoterUserAgent());
-            addValue(row, vote.getCreateDate());
-            addValue(row, vote.getConfirmationEmailSendDate());
+            addValue(row, vote.getConfirmationEmailSendDate() != null ? vote.getConfirmationEmailSendDate() : "");
             addValue(row, vote.getInitialValidationResult());
             addValue(row, vote.getLastValidationResult());
             addValue(row, vote.getIsValid());
-            addValue(row, vote.getIsValidOverride());
-            addValue(row, vote.getManualValidationResult());
+            addValue(row, vote.getIsValidOverride() != null ? vote.getIsValidOverride() : "");
+            addValue(row, vote.getManualValidationResult() != null ? vote.getManualValidationResult() : "");
             writeRow(row);
         }
     }
