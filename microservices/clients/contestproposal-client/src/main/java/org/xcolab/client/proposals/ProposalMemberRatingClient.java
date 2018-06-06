@@ -183,12 +183,13 @@ public final class ProposalMemberRatingClient {
                 .execute(), serviceNamespace);
     }
 
-    public void invalidateVotesForMember(long memberId) {
+    public void invalidateVotesForMember(long memberId, String reason) {
         final List<ProposalVote> votes = getVotesByMember(memberId);
         votes.stream()
                 .filter(ProposalVote::getIsValid)
                 .forEach(vote -> {
                     vote.setIsValid(false);
+                    vote.setLastValidationResult(reason);
                     updateProposalVote(vote);
                 });
     }

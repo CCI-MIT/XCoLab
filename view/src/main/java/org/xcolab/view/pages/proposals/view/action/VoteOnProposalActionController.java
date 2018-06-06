@@ -180,6 +180,7 @@ public class VoteOnProposalActionController {
             MembersClient.updateMember(member);
 
             vote.setIsValid(true);
+            vote.setLastValidationResult("USER_CONFIRMED_VOTE");
             vote.setConfirmationToken(null);
             proposalMemberRatingClient.updateProposalVote(vote);
 

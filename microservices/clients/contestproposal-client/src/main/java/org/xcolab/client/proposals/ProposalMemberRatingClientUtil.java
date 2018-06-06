@@ -98,8 +98,8 @@ public final class ProposalMemberRatingClientUtil {
         return client.getVotesByMember(memberId);
     }
 
-    public static void invalidateVotesForMember(long memberId) {
-        client.invalidateVotesForMember(memberId);
+    public static void invalidateVotesForMember(long memberId, String reason) {
+        client.invalidateVotesForMember(memberId, reason);
     }
 
     public static boolean updateProposalVote(ProposalVote proposalVote) {

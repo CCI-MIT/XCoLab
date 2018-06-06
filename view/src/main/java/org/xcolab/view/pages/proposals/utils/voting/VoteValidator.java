@@ -50,6 +50,7 @@ public class VoteValidator {
             vote.setIsValid(false);
         }
         vote.setInitialValidationResult(validationResult.name());
+        vote.setLastValidationResult(validationResult.name());
         clients.getProposalMemberRatingClient().updateProposalVote(vote);
         return validationResult;
     }
