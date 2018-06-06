@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -41,6 +42,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
             "screenName",
             "firstName",
             "lastName",
+            "Activity",
             "Login Ip",
             "Country of login",
             "Region of login ",
@@ -92,6 +94,8 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? member.getScreenName() : "Member not found");
             addValue(row, member != null ? member.getFirstName() : "Member not found");
             addValue(row, member != null ? member.getLastName() : "Member not found");
+            addValue(row, member != null ? ActivitiesClientUtil.countActivities(
+                    member.getId_(),null) : "Member not found");
             addValue(row, member != null ? member.getLoginIP() : "Member not found");
 
             Location loginLocation = null;
