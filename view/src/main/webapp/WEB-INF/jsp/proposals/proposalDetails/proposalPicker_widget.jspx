@@ -116,6 +116,11 @@
                                             </div>
                                         </th>
                                         <th>
+                                            <a href="#" data-sort-column="Votes" class="js-Tooltip" title="click to sort by number of votes">
+                                                Votes
+                                            </a>
+                                        </th>
+                                        <th>
                                             <a href="#" data-sort-column="Supporters" class="js-Tooltip" title="click to sort by number of supporters">
                                                 Supporters
                                             </a>
@@ -181,6 +186,9 @@
                     <div class="clear" ><!--  --></div>
                 </div>
 			</td>
+            <td>
+                {{data.votesCount}}
+            </td>
             <td>
                 {{data.supportersCount}}
             </td>

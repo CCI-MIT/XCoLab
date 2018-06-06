@@ -45,6 +45,7 @@ public class ProposalsResult {
         private final long dateSubscribed;
         private final long commentsCount;
         private final long supportersCount;
+        private final long votesCount;
         private final String pitch;
         private final int ribbon;
         private final String ribbonText;
@@ -66,6 +67,7 @@ public class ProposalsResult {
             this.dateSubscribed = new Date().getTime();
             this.commentsCount = proposal.getCommentsCount();
             this.supportersCount = proposal.getSupportersCount();
+            this.votesCount = proposal.getVotesCountFromCache();
             this.pitch = proposal.getPitch();
             final ProposalRibbon ribbonWrapper = proposal.getRibbonWrapper();
             this.ribbon = ribbonWrapper.getRibbon();
@@ -115,6 +117,10 @@ public class ProposalsResult {
 
         public long getSupportersCount() {
             return supportersCount;
+        }
+
+        public long getVotesCount() {
+            return votesCount;
         }
 
         public String getPitch() {
