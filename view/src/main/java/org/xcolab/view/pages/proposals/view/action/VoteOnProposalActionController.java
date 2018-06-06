@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -106,8 +107,12 @@ public class VoteOnProposalActionController {
                 return "redirect:" + proposalLinkUrl;
             }
 
-            proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId,
-                    voteValue);
+            ProposalVote vote = proposalMemberRatingClient.addProposalVote(proposalId,
+                    contestPhaseId, memberId, voteValue);
+
+            //populate tracking fields
+            vote.setVoterIp(request.getRemoteAddr());
+            proposalMemberRatingClient.updateProposalVote(vote);
 
             final boolean isVoteValidationActive = ConfigurationAttributeKey
                     .PROPOSALS_VOTING_VALIDATION_IS_ACTIVE.get();
