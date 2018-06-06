@@ -53,9 +53,17 @@ public class VoteCsvWriter extends CsvResponseWriter {
             "Email is verified",
             "Email bounced",
             "Vote date",
-            "vote_is_valid",
+            "Voter IP",
+            "Voter country",
+            "Voter region",
+            "Voter city (inaccurate)",
+            "Voter browser",
             "confirmationEmailSendDate",
-            "initialValidationResult");
+            "initialValidationResult",
+            "lastValidationResult",
+            "Vote is valid (generated)",
+            "Vote is valid (manual override)",
+            "manualValidationResult");
 
     public VoteCsvWriter(HttpServletResponse response) throws IOException {
         super("votingReport", COLUMN_NAMES, response);
@@ -97,30 +105,41 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? ActivitiesClientUtil.countActivities(
                     member.getId_(),null) : "Member not found");
             addValue(row, member != null ? member.getLoginIP() : "Member not found");
+            addLocationForIp(row, member != null ? member.getLoginIP() : null);
 
-            Location loginLocation = null;
-            if (member != null && StringUtils.isNotEmpty(member.getLoginIP())) {
-                loginLocation = TrackingClient.getLocationForIp(member.getLoginIP());
-            }
-            if (loginLocation != null) {
-                addValue(row, loginLocation.getCountryNameInEnglish());
-                addValue(row, loginLocation.getRegion());
-                addValue(row, loginLocation.getCity());
-            } else {
-                addValue(row, "unknown");
-                addValue(row, "unknown");
-                addValue(row, "unknown");
-            }
             addValue(row, member != null ? member.getCreateDate() : "Member not found");
             addValue(row, member != null ? member.hasLinkedSocialAccount() : "Member not found");
             addValue(row, member != null ? member.getEmailAddress() : "Member not found");
             addValue(row, member != null ? member.getIsEmailConfirmed() : "Member not found");
             addValue(row, member != null ? member.getIsEmailBounced() : "Member not found");
             addValue(row, vote.getCreateDate());
-            addValue(row, vote.getIsValid());
+            addValue(row, vote.getVoterIp());
+            addLocationForIp(row, vote.getVoterIp());
+            addValue(row, vote.getVoterUserAgent());
+            addValue(row, vote.getCreateDate());
             addValue(row, vote.getConfirmationEmailSendDate());
             addValue(row, vote.getInitialValidationResult());
+            addValue(row, vote.getLastValidationResult());
+            addValue(row, vote.getIsValid());
+            addValue(row, vote.getIsValidOverride());
+            addValue(row, vote.getManualValidationResult());
             writeRow(row);
+        }
+    }
+
+    private void addLocationForIp(List<String> row, String ipAddress) {
+        Location loginLocation = null;
+        if (StringUtils.isNotEmpty(ipAddress)) {
+            loginLocation = TrackingClient.getLocationForIp(ipAddress);
+        }
+        if (loginLocation != null) {
+            addValue(row, loginLocation.getCountryNameInEnglish());
+            addValue(row, loginLocation.getRegion());
+            addValue(row, loginLocation.getCity());
+        } else {
+            addValue(row, "unknown");
+            addValue(row, "unknown");
+            addValue(row, "unknown");
         }
     }
 

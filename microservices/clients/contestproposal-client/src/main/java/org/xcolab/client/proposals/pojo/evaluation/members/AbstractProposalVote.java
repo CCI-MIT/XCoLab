@@ -141,11 +141,11 @@ class AbstractProposalVote implements Serializable {
         this.lastValidationResult = lastValidationResult;
     }
 
-    public Boolean getValidOverride() {
+    public Boolean getIsValidOverride() {
         return isValidOverride;
     }
 
-    public void setValidOverride(Boolean validOverride) {
+    public void setIsValidOverride(Boolean validOverride) {
         isValidOverride = validOverride;
     }
 
