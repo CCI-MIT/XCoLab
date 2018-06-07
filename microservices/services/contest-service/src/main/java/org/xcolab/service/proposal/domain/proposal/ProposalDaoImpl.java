@@ -148,7 +148,7 @@ public class ProposalDaoImpl implements ProposalDao {
         query.addConditions(visibleAttribute.ID_.isNull());
     }
 
-    private SelectQuery<Record1<Long>> addFindByGivenConditions(PaginationHelper paginationHelper, Long contestId,
+    private SelectQuery<Record1<Long>> addFindByGivenConditions(Long contestId,
             Boolean visible, Long contestPhaseId, Integer ribbon,
             SelectQuery<Record1<Long>> query) {
         if (contestId != null || contestPhaseId != null || ribbon != null
@@ -194,7 +194,7 @@ public class ProposalDaoImpl implements ProposalDao {
                 .from(PROPOSAL)
                 .getQuery();
 
-        query = this.addFindByGivenConditions(paginationHelper, contestId, visible, contestPhaseId, ribbon, query);
+        query = this.addFindByGivenConditions(contestId, visible, contestPhaseId, ribbon, query);
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
 
         return query.fetchInto(Long.class);
@@ -207,7 +207,7 @@ public class ProposalDaoImpl implements ProposalDao {
                 .from(PROPOSAL)
                 .getQuery();
 
-        query = this.addFindByGivenConditions(paginationHelper, contestId, visible, contestPhaseId, ribbon, query);
+        query = this.addFindByGivenConditions(contestId, visible, contestPhaseId, ribbon, query);
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
 
         return query.fetchInto(Long.class);
