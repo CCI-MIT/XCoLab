@@ -189,7 +189,7 @@
                         }//<small>
                     },
                     onCanMoveTo: function (moved_node, target_node, position) {
-                        console.log("target_node " + target_node.id + " - " + target_node.kind)
+                        console.log("target_node " + target_node.id + " - " + target_node.kind);
                         return target_node.kind == "folder";
                     },
                     onCanMove: function (node) {

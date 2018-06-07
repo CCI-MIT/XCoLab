@@ -239,7 +239,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
 
         });
 
-    }
+    };
     CustomInputsRenderer.prototype.showScreen = function (screenName, dontPushBack) {
         var self = this;
         for (var i in self.definition.screens) {
@@ -289,7 +289,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
         }
         this.updateCurrentScreenButtons();
         this.updateSelectedOptionsInfo();
-    }
+    };
 
     CustomInputsRenderer.prototype.navigateBack = function () {
         var self = this;
@@ -314,7 +314,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
         self.showScreen(previousScreen, true);
 
 
-    }
+    };
     CustomInputsRenderer.prototype.findCurrentScreenTransition = function () {
         var self = this;
         var currentScreen = self.screensStack[self.screensStack.length - 1];
@@ -342,7 +342,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
                 }
             }
         }
-    }
+    };
     CustomInputsRenderer.prototype.navigateNext = function () {
         var self = this;
         var transition = this.findCurrentScreenTransition();
@@ -350,7 +350,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
             this.processTransition(transition);
         }
         window.location.hash = escape(JSON.stringify({screens: self.screensStack, values: self.values}));
-    }
+    };
 
     CustomInputsRenderer.prototype.processTransition = function (transition) {
         var self = this;
@@ -360,7 +360,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
         if (transition.showRunButton) {
             self.container.find('.wizardRunTheModel').show();
         }
-    }
+    };
 
     CustomInputsRenderer.prototype.updateCurrentScreenButtons = function () {
         var self = this;
@@ -392,7 +392,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
         if (!showNext) {
             screenElem.find(".wizardNavigateNext").hide();
         }
-    }
+    };
 
     CustomInputsRenderer.prototype.findCurrentResult = function () {
         var self = this;
@@ -418,7 +418,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
             }
         }
         return defaultResult;
-    }
+    };
 
     CustomInputsRenderer.prototype.updateWizardOutputsValues = function () {
 

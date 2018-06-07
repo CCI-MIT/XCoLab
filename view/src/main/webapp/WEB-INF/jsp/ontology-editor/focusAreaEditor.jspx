@@ -75,7 +75,7 @@
 
         function saveFocusArea(){
 
-            $("#article-view").mask()
+            $("#article-view").mask();
             var url = saveFocusAreaURL;
 
             var id = $('#focusAreaId').val();
@@ -108,7 +108,7 @@
                 $("#infoBox").html("Focus area updated successfully!");
                 $("#infoBox").show();
                 $("#infoBox").delay(5000).fadeOut('slow');
-                $("#article-view").unmask()
+                $("#article-view").unmask();
 
 
                 if($("#fa_"+ id).length ) {

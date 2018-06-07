@@ -270,7 +270,7 @@
 		
 		function renderContests(contests, space) {
 			//contests.sort(function(a, b) { - (a.created - b.created) });
-            console.log("renderContests length: "+contests.length)
+            console.log("renderContests length: "+contests.length);
 			contests.sort(function(a, b) { 
 				var orderArrayA = a.orderFromTerm[space.id],  orderArrayB = b.orderFromTerm[space.id];
 				for (var i = 0; i < orderArrayA.length && i < orderArrayB.length; i++) {

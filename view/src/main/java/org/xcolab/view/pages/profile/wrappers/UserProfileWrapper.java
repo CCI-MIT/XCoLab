@@ -328,22 +328,20 @@ public class UserProfileWrapper implements Serializable {
         return linkingProposals;
     }
 
-    public String getProposalsString() {
+    private String getProposalWithPlurality(String plurality) {
         if (proposalsString == null) {
-            proposalsString =
-                    ContestTypeClient.getProposalNames(
-                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.PLURAL.name(),
-                    "or");
+            proposalsString = ContestTypeClient.getProposalNames(
+                            new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()),
+                                            plurality,"or");
         }
         return proposalsString;
     }
 
+    public String getProposalsString() {
+        return this.getProposalWithPlurality(Plurality.PLURAL.name());
+    }
+
     public String getProposalString() {
-        if (proposalString == null) {
-            proposalString = ContestTypeClient.getProposalNames(
-                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(),
-                    "or");
-        }
-        return proposalString;
+        return this.getProposalWithPlurality(Plurality.SINGULAR.name());
     }
 }

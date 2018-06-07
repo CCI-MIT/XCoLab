@@ -393,7 +393,7 @@
 
 			if(!srcSectionElement.previousSibling.isEqualNode(targetDropzoneElement)) {
 
-			    console.log("  -  " + targetDropzoneElement.getAttribute("data-bind-id"))
+			    console.log("  -  " + targetDropzoneElement.getAttribute("data-bind-id"));
 				var posTargetDropzone = parseInt(targetDropzoneElement.getAttribute("data-bind-id"))+1;
 			    console.log(" ( " + posTargetDropzone + " ) ");
 				var posSectionElement = parseInt(srcSectionElement.getElementsByClassName("weightInput")[0].value);

@@ -127,7 +127,7 @@ if (typeof(XCoLab.modeling) == 'undefined')
         this.container.find(".model_description .brand").remove();
         brand.addClass(model.modelName);
         this.container.find(".model_description").prepend(brand);
-    }
+    };
 
     XCoLab.modeling.headerRenderers.push(function (modelingWidget) {
         return new DefaultHeaderRenderer(modelingWidget);

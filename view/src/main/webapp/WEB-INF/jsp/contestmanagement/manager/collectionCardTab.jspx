@@ -264,7 +264,7 @@
 
             var collectionCard = collectionCards[collectionCardId];
 
-            jQuery(".collectionCard-edit-form #title").html(collectionCard.description)
+            jQuery(".collectionCard-edit-form #title").html(collectionCard.description);
             jQuery("#deleteCollectionCardForm #collectionCardId").val(collectionCardId);
             jQuery(".collectionCard-edit-form #id").val(collectionCardId);
             jQuery(".collectionCard-edit-form #description").val(collectionCard.description);

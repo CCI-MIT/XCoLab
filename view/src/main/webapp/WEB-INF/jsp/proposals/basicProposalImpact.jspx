@@ -918,7 +918,7 @@
             }
 
             function updateSeriesValues(resultValues) {
-                console.log(" - updateSeriesValues - ")
+                console.log(" - updateSeriesValues - ");
                 for (var i = 0; i &lt; resultValues.length; i++) {
                     var valueCell = $($('tr#impact-row-' + currentEditingRowIndex + ' td.impact-value')[i]);
                     valueCell.text($(resultValues[i]).text());

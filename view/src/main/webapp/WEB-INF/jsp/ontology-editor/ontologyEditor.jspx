@@ -107,7 +107,7 @@
                         }
                     },
                     onCanMoveTo: function (moved_node, target_node, position) {
-                        console.log("target_node " + target_node.id + " - " + target_node.kind)
+                        console.log("target_node " + target_node.id + " - " + target_node.kind);
                         if (target_node.kind == "folder") {
                             return true;
                         }
@@ -203,7 +203,7 @@
 
             function newOntologyTermAtOntologyTerm(folderId, folderName) {
                 var idz = folderId.split("_");
-                $("#article-view").unmask()
+                $("#article-view").unmask();
                 clearForm();
                 $('#ontologySpaceId').val(idz[0]);
                 $('#ontologyTermParentId').val(idz[1]);
@@ -237,7 +237,7 @@
             }
 
             function deleteOntologyTerm() {
-                $("#article-view").mask()
+                $("#article-view").mask();
                 var url = deleteOntologyTermURL;
 
                 var id = $('#ontologyTermId').val();
@@ -248,7 +248,7 @@
                     $("#infoBox").html("Ontology term deleted successfully!");
                     $("#infoBox").show();
                     $("#infoBox").delay(5000).fadeOut('slow');
-                    $("#article-view").unmask()
+                    $("#article-view").unmask();
                     clearForm();
                     $("#article-view").mask({
                         'label': "Please click on an Ontology term or <br/>create a new one clicking on the add new term link!",
@@ -260,7 +260,7 @@
 
             function saveOntologyTerm() {
 
-                $("#article-view").mask()
+                $("#article-view").mask();
                 var url = saveOntologyTermURL;
 
                 var id = $('#ontologyTermId').val();
@@ -284,7 +284,7 @@
                     $("#infoBox").html("Ontology term updated successfully!");
                     $("#infoBox").show();
                     $("#infoBox").delay(5000).fadeOut('slow');
-                    $("#article-view").unmask()
+                    $("#article-view").unmask();
                     $('#tree-view').tree('reload');
 
                 });

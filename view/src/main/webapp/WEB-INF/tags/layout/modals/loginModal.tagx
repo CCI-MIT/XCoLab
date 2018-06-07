@@ -69,7 +69,10 @@
             </div>
             <div class="modal-footer">
                 <div style="float: left;">
-                    <em><a href="javascript:;" style="color:#900;" onclick="showForgotPasswordModal()"><spring:message code="homepage.login.forgotyourpassword"/></a></em><br />
+                    <em><a href="javascript:;" style="color:#900;" onclick="showForgotPasswordModal()">
+                        <spring:message code="homepage.login.forgotyourpassword"/>
+                    </a></em>
+                    <br />
                     <c:if test="${not hideRegisterPrompt}">
                         <em><a href="/register?redirect=${redirect}" ><spring:message code="homepage.login.notregisteredyet"/></a></em><br />
                     </c:if>

@@ -32,9 +32,8 @@ public class CollectionCardWrapper{
 
     public boolean hasParent() {
         if(this.contestCollectionCard.getParent() != null) {
-            if(ContestClientUtil.getContestCollectionCard(this.contestCollectionCard.getParent()) != null) {
-                return true;
-            }
+            return ContestClientUtil
+                    .getContestCollectionCard(this.contestCollectionCard.getParent()) != null;
         }
         return false;
     }

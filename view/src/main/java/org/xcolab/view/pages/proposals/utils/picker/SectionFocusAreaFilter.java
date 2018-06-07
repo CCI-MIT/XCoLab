@@ -50,9 +50,7 @@ public class SectionFocusAreaFilter {
                 try {
                     final Contest filterExceptionContest =
                             ContestClientUtil.getContest(filterExceptionContestId);
-                    if (!contests.contains(filterExceptionContest)) {
-                        contests.add(filterExceptionContest);
-                    }
+                    contests.add(filterExceptionContest);
                 } catch (ContestNotFoundException ignored) {
 
                 }
