@@ -148,13 +148,8 @@ public class ProposalDaoImpl implements ProposalDao {
         query.addConditions(visibleAttribute.ID_.isNull());
     }
 
-    @Override
-    public List<Long> findIdsByGiven(PaginationHelper paginationHelper, Long contestId,
-            Boolean visible, Long contestPhaseId, Integer ribbon) {
-        final SelectQuery<Record1<Long>> query = dslContext.select(PROPOSAL.PROPOSAL_ID)
-                .from(PROPOSAL)
-                .getQuery();
-
+    private void addFindByGivenConditions(Long contestId, Boolean visible, Long contestPhaseId,
+            Integer ribbon, SelectQuery<Record1<Long>> query) {
         if (contestId != null || contestPhaseId != null || ribbon != null
                 || (visible != null && visible)) {
             query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
@@ -187,7 +182,18 @@ public class ProposalDaoImpl implements ProposalDao {
         if (contestId != null) {
             query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));
         }
+    }
+
+    @Override
+    public List<Long> findIdsByGiven(PaginationHelper paginationHelper, Long contestId,
+            Boolean visible, Long contestPhaseId, Integer ribbon) {
+        final SelectQuery<Record1<Long>> query = dslContext.select(PROPOSAL.PROPOSAL_ID)
+                .from(PROPOSAL)
+                .getQuery();
+
+         this.addFindByGivenConditions(contestId, visible, contestPhaseId, ribbon, query);
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
+
         return query.fetchInto(Long.class);
     }
 
@@ -198,39 +204,9 @@ public class ProposalDaoImpl implements ProposalDao {
                 .from(PROPOSAL)
                 .getQuery();
 
-        if (contestId != null || contestPhaseId != null || ribbon != null
-                || (visible != null && visible)) {
-            query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
-            query.addJoin(CONTEST_PHASE,
-                    CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
-        }
-
-
-        if (ribbon != null) {
-            final ProposalContestPhaseAttributeTable ribbonAttribute =
-                    PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("ribbonAttribute");
-            query.addJoin(ribbonAttribute, ribbonAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
-                    .and(ribbonAttribute.CONTEST_PHASE_ID.eq(CONTEST_PHASE.CONTEST_PHASE_PK)));
-            query.addJoin(CONTEST_PHASE_RIBBON_TYPE,
-                    ribbonAttribute.NAME.eq(ProposalContestPhaseAttributeKeys.RIBBON)
-                            .and(CONTEST_PHASE_RIBBON_TYPE.ID_.eq(ribbonAttribute.NUMERIC_VALUE)));
-        }
-
-        if (contestPhaseId != null) {
-            query.addConditions(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhaseId));
-        }
-
-        if (visible != null) {
-            query.addConditions(PROPOSAL.VISIBLE.eq(visible));
-            if (visible) {
-                isVisibleInCurrentPhase(query);
-            }
-        }
-
-        if (contestId != null) {
-            query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));
-        }
+        this.addFindByGivenConditions(contestId, visible, contestPhaseId, ribbon, query);
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
+
         return query.fetchInto(Long.class);
     }
 
