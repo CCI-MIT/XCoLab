@@ -74,7 +74,7 @@
 
 		if(options.overlaySize !== false) {
 			if(options.overlaySize.height !== undefined)
-				maskDiv.height(options.overlaySize.height);
+				maskDiv.height(options.overlaySize.height)
 
 			if(options.overlaySize.width !== undefined)
 				maskDiv.width(options.overlaySize.width)
@@ -100,7 +100,7 @@
 				maskMsgDiv.append(new Spinner(options.spinner).spin().el);
 
 			if(options.label.length > 0) {
-				var label = $('<div class="loadmask-label">' + options.label + '</div>');
+				var label = $('<div class="loadmask-label">' + options.label + '</div>')
 				maskMsgDiv.append(label)
 			}
 
@@ -113,7 +113,7 @@
 			maskMsgDiv.show();
 
 			if(options.spinner !== false && options.label.length > 0) {
-				var spinnerSquare = options.spinner.radius * 2 + (options.spinner.width + options.spinner.length) * 2;
+				var spinnerSquare = options.spinner.radius * 2 + (options.spinner.width + options.spinner.length) * 2
 
 				// The center of the spinner is positioned at the top left corner of this DIV
 				// center the label text vertically, and align the label to the right of the spinner
