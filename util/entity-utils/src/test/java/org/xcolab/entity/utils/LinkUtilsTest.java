@@ -44,8 +44,9 @@ public class LinkUtilsTest {
         assertEquals("Blank uri handled incorrectly", "/", result);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetRelativeUri__null__shouldFail() throws Exception {
-        LinkUtils.getRelativeUri(null);
+    @Test
+    public void testGetRelativeUri__null__shouldReturnNull() throws Exception {
+        final String result = LinkUtils.getRelativeUri(null);
+        assertEquals("Null uri handled incorrectly", null, result);
     }
 }
