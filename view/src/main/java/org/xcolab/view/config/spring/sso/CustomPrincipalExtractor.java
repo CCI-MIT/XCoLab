@@ -5,13 +5,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.http.servlet.RequestUtil;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
@@ -104,7 +104,9 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
         }
         final String emailAddress = extractEmailAddress(userInfoMap);
         if (emailAddress == null) {
-            throw new InternalException("Could not extract email address from User Info map.");
+            // Invalidate session, otherwise the exception messes up the OAuthClientContext
+            RequestUtil.getRequest().getSession().invalidate();
+            throw new NoEmailReceivedOauthException();
         }
         MemberDetails memberDetails;
         try {
@@ -124,9 +126,6 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
 
                     // Invalidate session, otherwise the exception messes up the OAuthClientContext
                     RequestUtil.getRequest().getSession().invalidate();
-
-                    AlertMessage.danger("An account using your email address was previously deleted.")
-                            .flash(RequestUtil.getRequest());
                     throw new EmailUsedByDeletedMemberException(emailAddress);
                 }
 
@@ -188,9 +187,15 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
         return locale;
     }
 
-    public static class EmailUsedByDeletedMemberException extends RuntimeException {
+    public static class EmailUsedByDeletedMemberException extends AuthenticationException {
         public EmailUsedByDeletedMemberException(String email) {
             super("Email " + email + " is already in use by a deleted member.");
+        }
+    }
+
+    public static class NoEmailReceivedOauthException extends AuthenticationException {
+        public NoEmailReceivedOauthException() {
+            super("No email was received in user info map.");
         }
     }
 }

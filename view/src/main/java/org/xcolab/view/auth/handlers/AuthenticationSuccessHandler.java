@@ -5,14 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-
+import org.springframework.security.web.authentication
+        .SavedRequestAwareAuthenticationSuccessHandler;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.pages.redballoon.utils.BalloonService;
 
@@ -74,9 +75,11 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         if (redirectOnSuccess) {
             try {
-                if (StringUtils.isNotBlank(refererHeader) && isLocalReferer(refererHeader)
-                        && !isFromLoginPage(refererHeader)) {
-                    getRedirectStrategy().sendRedirect(request, response, refererHeader);
+                //Make URI relative to prevent injection of external redirect URIs
+                final String redirect = LinkUtils.getRelativeUri(refererHeader);
+                if (StringUtils.isNotBlank(redirect) && isLocalReferer(redirect)
+                        && !isFromLoginPage(redirect)) {
+                    getRedirectStrategy().sendRedirect(request, response, redirect);
                 } else {
                     super.onAuthenticationSuccess(request, response, authentication);
                 }

@@ -40,6 +40,9 @@ public final class LinkUtils {
      * @return a relative uri
      */
     public static String getRelativeUri(String uri) {
+        if (uri == null) {
+            return null;
+        }
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
         final UriComponents uriComponents = uriBuilder.build();
         StringBuilder relativeUri = new StringBuilder();
