@@ -22,6 +22,9 @@ public class ErrorReportingController {
 
     private static final String MESSAGE_BODY_HEADER_FORMAT_STRING =
             "<p><strong>An exception occurred at:</strong><br>%s</p>"
+                    + "<p><strong>HTTP status:</strong><br/>%d</p>"
+                    + "<p><strong>Error:</strong><br/>%s</p>"
+                    + "<p><strong>Message:</strong><br/>%s</p>"
                     + "<p><strong>User Agent:</strong><br/>%s</p>"
                     + "<p><strong>Referer:</strong><br/>%s</p>"
                     + "<p><strong>Message from user (%s):</strong><br/>" + "%s</p>";
@@ -34,6 +37,7 @@ public class ErrorReportingController {
     @PostMapping("/reportError")
     public void reportError(HttpServletRequest request, HttpServletResponse response,
             @RequestParam String url, @RequestParam String email, @RequestParam String description,
+            @RequestParam Integer status, @RequestParam String error, @RequestParam String message,
             @RequestParam String stackTrace, @RequestParam String referer) throws IOException {
 
         final String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
@@ -51,24 +55,24 @@ public class ErrorReportingController {
 
             if (StringUtils.isNotEmpty(url)) {
                 String descriptionInHtmlFormat = description.replaceAll("(\r\n|\n)", "<br />");
-                String body = buildErrorReportBody(url, userScreenName, email, stackTrace,
-                        descriptionInHtmlFormat, userAgent != null ? userAgent : "Unknown",
-                        referer);
+                String body = buildErrorReportBody(url, status, error, message, userScreenName,
+                        email, stackTrace, descriptionInHtmlFormat,
+                        userAgent != null ? userAgent : "Unknown", referer);
                 new EmailToAdminDispatcher(EMAIL_SUBJECT, body).sendMessage();
             }
         }
         response.sendRedirect("/");
     }
 
-    private String buildErrorReportBody(String url, String userScreenName, String email,
-            String stackTrace, String descriptionInHtmlFormat, String userAgent, String referer)
-            throws UnsupportedEncodingException {
+    private String buildErrorReportBody(String url, Integer status, String error, String message,
+            String userScreenName, String email, String stackTrace, String descriptionInHtmlFormat,
+            String userAgent, String referer) throws UnsupportedEncodingException {
         StringBuilder messageBuilder = new StringBuilder();
 
         if (StringUtils.isNotEmpty(url)) {
             messageBuilder.append(String
-                    .format(MESSAGE_BODY_HEADER_FORMAT_STRING, url, userAgent, referer,
-                            userScreenName, descriptionInHtmlFormat));
+                    .format(MESSAGE_BODY_HEADER_FORMAT_STRING, url, status, error, message,
+                            userAgent, referer, userScreenName, descriptionInHtmlFormat));
 
             if (StringUtils.isNotEmpty(email)) {
                 messageBuilder.append(String.format(MESSAGE_BODY_EMAIL_FORMAT_STRING, email));
