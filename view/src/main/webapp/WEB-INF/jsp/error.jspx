@@ -44,6 +44,9 @@
                     <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0;">
                         <form:form id="signInForm_form" method="post" action="/reportError">
                             <input name="url" type="hidden" value="${_themeContext.requestUri}" />
+                            <input name="status" type="hidden" value="${status}"/>
+                            <input name="error" type="hidden" value="${error}"/>
+                            <input name="message" type="hidden" value="${message}"/>
                             <input name="stackTrace" type="hidden" value="${trace}"/>
                             <input name="referer" type="hidden" value="${header.get('referer')}"/>
                             <div class="alert alert-danger" role="alert">
