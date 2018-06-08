@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 import org.xcolab.client.members.pojo.Member;
 
-public class AccessDeniedPage extends ErrorPage {
+public class AccessDeniedPage extends AbstractErrorPage {
 
     public AccessDeniedPage(Member member) {
         super("errors/accessDenied",

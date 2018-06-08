@@ -6,9 +6,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class ErrorPage extends ModelAndView {
+public abstract class AbstractErrorPage extends ModelAndView {
 
-    public ErrorPage(String view, HttpStatus status) {
+    public AbstractErrorPage(String view, HttpStatus status) {
         super(view);
         setStatus(status);
     }
