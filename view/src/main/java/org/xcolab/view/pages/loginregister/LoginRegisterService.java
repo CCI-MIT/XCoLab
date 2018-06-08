@@ -17,6 +17,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
 import org.xcolab.entity.utils.notifications.member.MemberRegistrationNotification;
 import org.xcolab.util.activities.enums.MemberActivityType;
@@ -79,7 +80,14 @@ public class LoginRegisterService {
                     .build().toUriString();
         }
 
-        response.sendRedirect(redirect);
+        //Make URI relative to prevent injection of external redirect URIs
+        redirect = LinkUtils.getRelativeUri(redirect);
+
+        if (!redirect.startsWith("/login") && !redirect.startsWith("/sso/")) {
+            response.sendRedirect(redirect);
+        } else {
+            response.sendRedirect("/");
+        }
     }
 
     private void updateBalloonTracking(Member member, HttpServletRequest request) {
