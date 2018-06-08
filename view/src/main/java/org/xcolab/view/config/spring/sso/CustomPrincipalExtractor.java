@@ -74,6 +74,13 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
     }
 
     /**
+     * This method extracts the locale from the user info map.
+     */
+    protected String extractLocaleString(Map<String, Object> userInfoMap) {
+        return (String) userInfoMap.get("locale");
+    }
+
+    /**
      * This method extracts the first name the user info map.
      */
     protected abstract String extractFirstName(Map<String, Object> userInfoMap);
@@ -131,7 +138,9 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                 if (lastName == null) {
                     throw new InternalException("Could not extract lastName from User Info map.");
                 }
-                final Locale locale = LocaleUtils.toLocale((String) userInfoMap.get("locale"));
+
+                final String localeString = extractLocaleString(userInfoMap);
+                Locale locale = getLocale(localeString);
                 String country;
                 String language;
                 if (locale != null) {
@@ -166,6 +175,17 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
             }
         }
         return memberDetails;
+    }
+
+    private Locale getLocale(String localeString) {
+        Locale locale;
+        try {
+            locale = LocaleUtils.toLocale(localeString);
+        } catch (IllegalArgumentException e3) {
+            log.warn("Error while parsing locale: {}", e3.getMessage());
+            locale = null;
+        }
+        return locale;
     }
 
     public static class EmailUsedByDeletedMemberException extends RuntimeException {
