@@ -1,3 +1,5 @@
+$p-Homepage__homespot__background: $t-Color__tan;
+
 .p-Homepage {
 
   // Reset the container's spacing so the background can span the whole page's width
@@ -25,7 +27,7 @@
 
 .p-Homepage__homespot { //.homespot
   margin-bottom: 1.5rem;
-  background: $t-Color__tan;
+  background: $p-Homepage__homespot__background;
 }
 
 // Background can optionally start at various breakpoints
