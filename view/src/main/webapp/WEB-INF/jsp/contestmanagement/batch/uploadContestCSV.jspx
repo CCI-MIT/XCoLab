@@ -107,7 +107,7 @@
                     </label>
 
                     <div class="p-Proposal__formBox__helpText collapse" id="js-Help__sponsorLink">
-                        An optional link that it opened when a user clicks on the sponsor logo.
+                        An optional link that is opened when a user clicks on the sponsor logo.
                     </div>
 
                     <form:input path="sponsorLink" id="sponsorLink" cssClass="form-control"/>
