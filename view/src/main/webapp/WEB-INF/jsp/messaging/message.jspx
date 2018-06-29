@@ -39,7 +39,9 @@
         </p>
 
         <p>
-            ${messageBean.content}
+            <div id="messageContents">
+                ${messageBean.content}
+            </div>
         </p>
 
         <c:if test="${user.userId != messageBean.from.userId}">
@@ -50,11 +52,12 @@
             </button>
             <div id="replyMessageContent" class="d-none">
                 <br /><br />-- original message begin --<br /><br />
-                ${messageBean.content}
+                    ${messageBean.content}
                 <br /><br />-- original message end --<br />
             </div>
             <xcolab:requireLibrary name="sendMessage"/>
         </c:if>
     </div>
+    <script src="/js/messages/messageThreads.js"><!--script--> </script>
 </xcolab:layout>
 </jsp:root>

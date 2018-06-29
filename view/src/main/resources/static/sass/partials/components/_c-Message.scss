@@ -24,3 +24,10 @@ $c-Message__input__background: #F2F1E9 url(/images/sendMessage_textarea.gif) no-
   font-weight: $t-Typography__fontWeight;
 }
 
+.c-Previous__message {
+  color: $t-Color__primary--darkest;
+  border-left: 1px solid ;
+  margin-left: 10px;
+  padding-left: 5px;
+
+}
