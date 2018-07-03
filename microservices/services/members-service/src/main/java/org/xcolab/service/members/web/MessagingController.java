@@ -85,6 +85,12 @@ public class MessagingController {
         return messageDao.getMessage(messageId);
     }
 
+    @RequestMapping(value = "/messages/all/{messageId}", method = RequestMethod.GET)
+    public List<Message> getFullConversation(@PathVariable long messageId) throws NotFoundException {
+        System.out.println("Controller");
+        return messageDao.getFullConversation(messageId);
+    }
+
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
     public List<Member> getMessageRecipients(@PathVariable long messageId) {
         return messageDao.getRecipients(messageId);

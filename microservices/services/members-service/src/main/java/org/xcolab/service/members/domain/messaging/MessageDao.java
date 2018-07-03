@@ -13,6 +13,8 @@ public interface MessageDao {
 
     Message getMessage(long messageId) throws NotFoundException;
 
+    List<Message> getFullConversation(long messageId) throws NotFoundException;
+
     int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate);
 
     List<Message> findByGiven(PaginationHelper paginationHelper, Long senderId, Long recipientId,

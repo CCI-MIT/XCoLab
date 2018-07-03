@@ -23,6 +23,7 @@ public class Message implements Serializable {
     private Long messageId;
     private Long fromId;
     private Long repliesTo;
+    private Long threadId;
     private Timestamp createDate;
     private String subject;
     private String content;
@@ -36,6 +37,7 @@ public class Message implements Serializable {
         this.messageId = value.messageId;
         this.fromId = value.fromId;
         this.repliesTo = value.repliesTo;
+        this.threadId=value.threadId;
         this.createDate = value.createDate;
         this.subject = value.subject;
         this.content = value.content;
@@ -47,11 +49,12 @@ public class Message implements Serializable {
         this.archived = archived;
     }
 
-    public Message(Long messageId, Long fromId, Long repliesTo, Timestamp createDate,
+    public Message(Long messageId, Long fromId, Long repliesTo, Long threadId, Timestamp createDate,
             String subject, String content, Boolean opened, Boolean archived) {
         this.messageId = messageId;
         this.fromId = fromId;
         this.repliesTo = repliesTo;
+        this.threadId= threadId;
         this.createDate = createDate;
         this.subject = subject;
         this.content = content;
@@ -81,6 +84,14 @@ public class Message implements Serializable {
 
     public void setRepliesTo(Long repliesTo) {
         this.repliesTo = repliesTo;
+    }
+
+    public Long getThreadId() {
+        return this.threadId;
+    }
+
+    public void setThreadId(Long threadId) {
+        this.threadId = threadId;
     }
 
     public Timestamp getCreateDate() {

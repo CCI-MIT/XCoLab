@@ -43,6 +43,48 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
+    public List<Message> getFullConversation(long messageId) throws NotFoundException {
+
+        final Record messageThread=dslContext.select(MESSAGE.THREAD_ID)
+                .from(MESSAGE)
+                .where(MESSAGE.MESSAGE_ID.eq(messageId))
+                .fetchOne();
+        List<Message> messageList;
+        if (messageThread==null) {
+            throw new NotFoundException("Message with id " + messageId + "does not exist");
+        }
+
+        if (messageThread.get(0) != null){
+            // There is thread info, get it all up to this message
+            messageList=dslContext.select()
+                    .from(MESSAGE)
+                    .where(
+                            MESSAGE.THREAD_ID.eq(
+                                    (Long) messageThread.get(0)
+                            )
+                                    .and(MESSAGE.MESSAGE_ID.lessOrEqual(messageId))
+                    )
+                    .fetchInto(Message.class);
+        }else {
+            //There is no thread info, just get this message (backwards compatibility)
+            messageList=dslContext.select()
+                    .from(MESSAGE)
+                    .where(MESSAGE.MESSAGE_ID.eq(messageId))
+                    .fetchInto(Message.class);
+        }
+        return messageList;
+
+        //SQL equivalent:
+        /*
+        SELECT * FROM xcolab_Message WHERE
+        ((SELECT threadId FROM xcolab_Message WHERE messageId=2) IS NULL AND messageId=2) //No thread info, just get this message
+        OR
+        (threadId=(SELECT threadId FROM xcolab_Message WHERE messageId=2) AND messageId<=2) //If present, get thread up to this message
+         */
+
+    }
+
+    @Override
     public int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate) {
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(MESSAGE)
