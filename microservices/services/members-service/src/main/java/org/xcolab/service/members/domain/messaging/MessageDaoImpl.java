@@ -204,9 +204,38 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public Optional<Message> createMessage(Message message) {
+        Long messageThread=null;
+        if (message.getRepliesTo()!=-1){
+            //This is a response. Use threadId of previous message, if found
+            Record currentThread=dslContext.select(MESSAGE.THREAD_ID)
+                    .from(MESSAGE)
+                    .where(MESSAGE.MESSAGE_ID.eq(message.getRepliesTo())).fetchOne();
+            if (currentThread!=null){
+                // Check that user is replying to a message he received
+                //NOTE: YOU CANNOT REPLY TO YOURSELF (it would create new thread). IS THIS THE DESIRED BEHAVIOR?
+                Record verification=dslContext.selectCount().from(MESSAGE_RECIPIENT_STATUS)
+                        .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(message.getRepliesTo()))
+                        .and(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(message.getFromId())).fetchOne();
+                if ((int)verification.get(0) > 0){
+                    messageThread=(Long)currentThread.get(0);
+                }
+            }
+        }
+        if (messageThread==null){
+            //New thread or previous message not found
+            Record max=dslContext.select(MESSAGE.THREAD_ID.max()).from(MESSAGE).fetchOne();
+            //We check just in case the database is empty
+            if (max.get(0)!=null) {
+                messageThread = (Long) max.get(0) + 1;
+            }else{
+                messageThread =  1L;
+            }
+        }
+
         final MessageRecord record = dslContext.insertInto(MESSAGE)
                 .set(MESSAGE.FROM_ID, message.getFromId())
                 .set(MESSAGE.REPLIES_TO, message.getRepliesTo())
+                .set(MESSAGE.THREAD_ID, messageThread)
                 .set(MESSAGE.SUBJECT, message.getSubject())
                 .set(MESSAGE.CONTENT, message.getContent())
                 .set(MESSAGE.CREATE_DATE, DSL.currentTimestamp())
