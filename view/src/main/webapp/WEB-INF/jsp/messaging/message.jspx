@@ -47,7 +47,7 @@
         <c:if test="${user.userId != messageBean.from.userId}">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendMessageModal"
                     data-message-content="#replyMessageContent" data-message-recipient="${messageBean.from.id_}"
-                    data-message-subject="RE: ${messageBean.subject}">
+                    data-message-subject="RE: ${messageBean.subject}" data-message-id="${messageBean.messageId}">
                 <spring:message code="message.reply.button"/>
             </button>
             <div id="replyMessageContent" class="d-none">

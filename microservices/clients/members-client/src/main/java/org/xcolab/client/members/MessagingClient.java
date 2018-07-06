@@ -118,7 +118,16 @@ public final class MessagingClient {
     public static void checkLimitAndSendMessage(String subject, String content,
             long fromId, List<Long> recipientIds) throws MessageLimitExceededException {
         try {
-            sendMessage(subject, content, fromId, fromId, recipientIds, true);
+            sendMessage(subject, content, fromId, -1, recipientIds, true);
+        } catch (Http429TooManyRequestsException e) {
+            throw new MessageLimitExceededException(fromId);
+        }
+    }
+    //Overload this method to accept optionally the messageID of the previous message
+    public static void checkLimitAndSendMessage(String subject, String content,
+            long fromId, long repliesTo, List<Long> recipientIds) throws MessageLimitExceededException {
+        try {
+            sendMessage(subject, content, fromId, repliesTo, recipientIds, true);
         } catch (Http429TooManyRequestsException e) {
             throw new MessageLimitExceededException(fromId);
         }

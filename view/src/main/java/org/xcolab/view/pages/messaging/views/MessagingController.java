@@ -125,7 +125,8 @@ public class MessagingController {
     @PostMapping("sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
-            @RequestParam String messageContent, Member loggedInMember) throws IOException {
+            @RequestParam String messageContent,@RequestParam(defaultValue = "-1") String repliesTo,
+            Member loggedInMember) throws IOException {
 
         if (loggedInMember == null) {
             return new AccessDeniedPage(null).toViewName(response);
@@ -139,7 +140,7 @@ public class MessagingController {
                 final String baseUri = PlatformAttributeKey.COLAB_URL.get();
                 MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
                         HtmlUtil.cleanSome(messageContent, baseUri), loggedInMember.getUserId(),
-                        recipientIds);
+                        Long.parseLong(HtmlUtil.cleanAll(repliesTo),10), recipientIds);
                 AlertMessage.success("The message has been sent!").flash(request);
             } catch (MessageLimitExceededException e) {
                 AlertMessage.danger("You have exceeded your daily message limit. "

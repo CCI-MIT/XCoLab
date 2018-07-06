@@ -22,6 +22,7 @@
                     <textarea name="messageContent" id="messageContent"
                               class="rte-editorPlaceholder form-control" ><!-- --></textarea>
                 </div>
+                <input type="hidden" name="repliesTo" id="messageId"/>
             </div>
             <div class="modal-footer">
                 <button type="close" class="btn btn-gray" data-dismiss="modal">
@@ -48,6 +49,7 @@
             var recipient = $el.data('messageRecipient');
             var subject = $el.data('messageSubject');
             var content = $el.data('messageContent');
+            var messageId = $el.data('messageId');
 
             if (recipient) {
                 jQuery('#userIdsRecipients').val(recipient);
@@ -55,6 +57,11 @@
             }
             if (subject) {
                 jQuery('#messageSubject').val(subject);
+            }
+            if (messageId) {
+                console.log('The id is: '+messageId);
+                jQuery('#messageId').val(messageId);
+                console.log('The value of the input is: '+jQuery('#messageId').val());
             }
             if (content) {
                 if (content.startsWith('#')) {
