@@ -84,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_Message` (
   `messageId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `fromId` bigint(20) DEFAULT NULL,
   `repliesTo` bigint(20) DEFAULT NULL,
+  `threadId` bigint(20) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
   `subject` varchar(2048) DEFAULT NULL,
   `content` longtext,
