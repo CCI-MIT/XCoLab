@@ -43,7 +43,7 @@ public class MessagingService {
         this.messagingUserPreferencesService = messagingUserPreferencesService;
     }
 
-    public Message sendMessage(Message message, Collection<Long> recipientIds, boolean checkLimit)
+    public Message sendMessage(Message message, Collection<Long> recipientIds, boolean checkLimit, String threadId)
             throws MessageLimitExceededException {
         if (checkLimit) {
             Long fromId = message.getFromId();
@@ -75,14 +75,14 @@ public class MessagingService {
                     throw new MessageLimitExceededException(fromId);
                 }
 
-                return sendMessage(message, recipientIds);
+                return sendMessage(message, recipientIds, threadId);
             }
         } else {
-            return sendMessage(message, recipientIds);
+            return sendMessage(message, recipientIds, threadId);
         }
     }
 
-    private Message sendMessage(Message messageBean, Collection<Long> recipientIds) {
+    private Message sendMessage(Message messageBean, Collection<Long> recipientIds, String threadId) {
         if (messageBean.getSubject().isEmpty()) {
             messageBean.setSubject("(No Subject)");
         }
@@ -97,7 +97,7 @@ public class MessagingService {
         final Set<Long> recipientsFound = new HashSet<>();
         for (long memberId : recipientIds) {
             memberDao.getMember(memberId).ifPresent((recipientMember) -> {
-                messageDao.createMessageRecipient(messageId, memberId);
+                messageDao.createMessageRecipient(messageId, memberId, threadId);
                 if (messagingUserPreferencesService.getByMemberId(memberId).getEmailOnReceipt()) {
                     copyRecipient(recipientMember, message);
                 }

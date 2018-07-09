@@ -43,45 +43,38 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public List<Message> getFullConversation(long messageId) throws NotFoundException {
-
-        final Record messageThread=dslContext.select(MESSAGE.THREAD_ID)
-                .from(MESSAGE)
-                .where(MESSAGE.MESSAGE_ID.eq(messageId))
-                .fetchOne();
+    public List<Message> getFullConversation(long messageId, String threadId) throws NotFoundException {
         List<Message> messageList;
-        if (messageThread==null) {
-            throw new NotFoundException("Message with id " + messageId + "does not exist");
-        }
-
-        if (messageThread.get(0) != null){
+        if (!threadId.equals("-1")){
             // There is thread info, get it all up to this message
             messageList=dslContext.select()
-                    .from(MESSAGE)
+                    .from(MESSAGE
+                        .join(MESSAGE_RECIPIENT_STATUS)
+                        .on(MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID)))
                     .where(
-                            MESSAGE.THREAD_ID.eq(
-                                    (Long) messageThread.get(0)
-                            )
-                                    .and(MESSAGE.MESSAGE_ID.lessOrEqual(messageId))
+                        MESSAGE_RECIPIENT_STATUS.THREAD_ID.eq(threadId)
+                        .and(MESSAGE.MESSAGE_ID.lessOrEqual(messageId))
                     )
                     .fetchInto(Message.class);
+
+            if (messageList.isEmpty()) {
+                throw new NotFoundException("Thread " + threadId + "does not exist or does not contain messages with id <= "+messageId);
+            }
+            /*
+            SELECT () FROM
+            xcolab_Message join xcolab_MessageRecipientStatus on xcolab_Message.messageId=xcolab_MessageRecipientStatus.messageId
+            WHERE xcolab_Message.messageId <= messageId AND xcolab_MessageRecipientStatus.threadId= threadId
+             */
         }else {
-            //There is no thread info, just get this message (backwards compatibility)
             messageList=dslContext.select()
                     .from(MESSAGE)
                     .where(MESSAGE.MESSAGE_ID.eq(messageId))
                     .fetchInto(Message.class);
+            if (messageList.isEmpty()) {
+                throw new NotFoundException("Message with id " + messageId + "does not exist");
+            }
         }
         return messageList;
-
-        //SQL equivalent:
-        /*
-        SELECT * FROM xcolab_Message WHERE
-        ((SELECT threadId FROM xcolab_Message WHERE messageId=2) IS NULL AND messageId=2) //No thread info, just get this message
-        OR
-        (threadId=(SELECT threadId FROM xcolab_Message WHERE messageId=2) AND messageId<=2) //If present, get thread up to this message
-         */
-
     }
 
     @Override
@@ -204,38 +197,9 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public Optional<Message> createMessage(Message message) {
-        Long messageThread=null;
-        if (message.getRepliesTo()!=-1){
-            //This is a response. Use threadId of previous message, if found
-            Record currentThread=dslContext.select(MESSAGE.THREAD_ID)
-                    .from(MESSAGE)
-                    .where(MESSAGE.MESSAGE_ID.eq(message.getRepliesTo())).fetchOne();
-            if (currentThread!=null){
-                // Check that user is replying to a message he received
-                //NOTE: YOU CANNOT REPLY TO YOURSELF (it would create new thread). IS THIS THE DESIRED BEHAVIOR?
-                Record verification=dslContext.selectCount().from(MESSAGE_RECIPIENT_STATUS)
-                        .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(message.getRepliesTo()))
-                        .and(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(message.getFromId())).fetchOne();
-                if ((int)verification.get(0) > 0){
-                    messageThread=(Long)currentThread.get(0);
-                }
-            }
-        }
-        if (messageThread==null){
-            //New thread or previous message not found
-            Record max=dslContext.select(MESSAGE.THREAD_ID.max()).from(MESSAGE).fetchOne();
-            //We check just in case the database is empty
-            if (max.get(0)!=null) {
-                messageThread = (Long) max.get(0) + 1;
-            }else{
-                messageThread =  1L;
-            }
-        }
-
         final MessageRecord record = dslContext.insertInto(MESSAGE)
                 .set(MESSAGE.FROM_ID, message.getFromId())
                 .set(MESSAGE.REPLIES_TO, message.getRepliesTo())
-                .set(MESSAGE.THREAD_ID, messageThread)
                 .set(MESSAGE.SUBJECT, message.getSubject())
                 .set(MESSAGE.CONTENT, message.getContent())
                 .set(MESSAGE.CREATE_DATE, DSL.currentTimestamp())
@@ -250,13 +214,14 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public void createMessageRecipient(long messageId, long recipientId) {
+    public void createMessageRecipient(long messageId, long recipientId, String threadId) {
         dslContext.insertInto(MESSAGE_RECIPIENT_STATUS)
-                .set(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID, messageId)
-                .set(MESSAGE_RECIPIENT_STATUS.USER_ID, recipientId)
-                .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, false)
-                .set(MESSAGE_RECIPIENT_STATUS.OPENED, false)
-                .execute();
+            .set(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID, messageId)
+            .set(MESSAGE_RECIPIENT_STATUS.USER_ID, recipientId)
+            .set(MESSAGE_RECIPIENT_STATUS.THREAD_ID, threadId)
+            .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, false)
+            .set(MESSAGE_RECIPIENT_STATUS.OPENED, false)
+            .execute();
     }
 
     @Override

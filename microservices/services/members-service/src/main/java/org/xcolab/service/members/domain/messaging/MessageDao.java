@@ -13,7 +13,7 @@ public interface MessageDao {
 
     Message getMessage(long messageId) throws NotFoundException;
 
-    List<Message> getFullConversation(long messageId) throws NotFoundException;
+    List<Message> getFullConversation(long messageId, String threadId) throws NotFoundException;
 
     int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate);
 
@@ -27,8 +27,8 @@ public interface MessageDao {
     boolean setOpened(long messageId, long memberId, boolean isOpened);
 
     Optional<Message> createMessage(Message message);
-
-    void createMessageRecipient(long messageId, long recipientId);
+    
+    void createMessageRecipient(long messageId, long recipientId, String threadId);
 
     boolean delete(long messageId);
 }

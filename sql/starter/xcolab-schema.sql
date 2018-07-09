@@ -84,12 +84,10 @@ CREATE TABLE IF NOT EXISTS `xcolab_Message` (
   `messageId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `fromId` bigint(20) DEFAULT NULL,
   `repliesTo` bigint(20) DEFAULT NULL,
-  `threadId` bigint(20) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
   `subject` varchar(2048) DEFAULT NULL,
   `content` longtext,
-  KEY `IX_9DF5C6F0` (`fromId`),
-  KEY `xcolab_Message_threadId_index` (`threadId`)
+  KEY `IX_9DF5C6F0` (`fromId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestDiscussion` (
@@ -904,12 +902,14 @@ CREATE TABLE IF NOT EXISTS `xcolab_MessageRecipientStatus` (
   `messageRecipientId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `messageId` bigint(20) DEFAULT NULL,
   `userId` bigint(20) DEFAULT NULL,
+  `threadId` varchar(75) DEFAULT NULL,
   `opened` tinyint(4) DEFAULT NULL,
   `archived` tinyint(4) DEFAULT NULL,
   KEY `IX_E4B60412` (`messageId`),
   KEY `IX_76FF2A4C` (`messageId`,`userId`),
   KEY `IX_74DCC2DA` (`userId`),
-  KEY `IX_88CD5CB0` (`userId`,`archived`)
+  KEY `IX_88CD5CB0` (`userId`,`archived`),
+  KEY `xcolab_MessageRecipientStatus_threadId_index` (`threadId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_AnalyticsUserEvent` (

@@ -85,10 +85,9 @@ public class MessagingController {
         return messageDao.getMessage(messageId);
     }
 
-    @RequestMapping(value = "/messages/all/{messageId}", method = RequestMethod.GET)
-    public List<Message> getFullConversation(@PathVariable long messageId) throws NotFoundException {
-        System.out.println("Controller");
-        return messageDao.getFullConversation(messageId);
+    @RequestMapping(value = "/messages/all/{messageId}/{threadId}", method = RequestMethod.GET)
+    public List<Message> getFullConversation(@PathVariable long messageId, @PathVariable String threadId) throws NotFoundException {
+        return messageDao.getFullConversation(messageId, threadId);
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
@@ -98,10 +97,11 @@ public class MessagingController {
 
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
     public Message createMessage(@RequestBody SendMessageBean sendMessageBean,
-            @RequestParam(required = false, defaultValue = "true") boolean checkLimit)
+            @RequestParam(required = false, defaultValue = "true") boolean checkLimit,
+            @RequestParam(required = false, defaultValue="-1") String threadId)
             throws MessageLimitExceededException {
         return messagingService
-                .sendMessage(sendMessageBean, sendMessageBean.getRecipientIds(), checkLimit);
+                .sendMessage(sendMessageBean, sendMessageBean.getRecipientIds(), checkLimit, threadId);
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients/{memberId}", method = RequestMethod.PUT)
