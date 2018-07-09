@@ -88,7 +88,8 @@ CREATE TABLE IF NOT EXISTS `xcolab_Message` (
   `createDate` datetime DEFAULT NULL,
   `subject` varchar(2048) DEFAULT NULL,
   `content` longtext,
-  KEY `IX_9DF5C6F0` (`fromId`)
+  KEY `IX_9DF5C6F0` (`fromId`),
+  KEY `xcolab_Message_threadId_index` (`threadId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestDiscussion` (
