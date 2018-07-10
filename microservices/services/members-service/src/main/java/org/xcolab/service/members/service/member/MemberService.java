@@ -54,6 +54,9 @@ public class MemberService {
     }
 
     public String hashPassword(String password) {
+        if (password == null) {
+            return null;
+        }
         PBKDF2PasswordEncryptor pbkdf2PasswordEncryptor = new PBKDF2PasswordEncryptor();
         return "PBKDF2_" + pbkdf2PasswordEncryptor
                 .doEncrypt(PBKDF2PasswordEncryptor.DEFAULT_ALGORITHM, password, "");

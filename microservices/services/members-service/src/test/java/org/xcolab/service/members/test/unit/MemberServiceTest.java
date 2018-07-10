@@ -29,4 +29,9 @@ public class MemberServiceTest {
     public void validatePassword_sha1() throws NoSuchAlgorithmException {
         Assert.assertTrue(memberService.validatePassword("colab123", "{SHA-1}NS2PVQOqtxe9YlFzf3xNa8/6XDo="));
     }
+
+    @Test
+    public void hashPassword_null() {
+        Assert.assertNull(memberService.hashPassword(null));
+    }
 }
