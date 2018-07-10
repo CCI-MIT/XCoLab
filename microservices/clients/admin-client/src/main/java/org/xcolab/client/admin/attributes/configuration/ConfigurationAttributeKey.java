@@ -76,6 +76,11 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(true)
                     .build();
 
+    public static final AttributeGetter<Long> LOGIN_LINK_EXPIRATION_IN_DAYS =
+            ConfigurationAttributes.newLongAttribute("LOGIN_LINK_EXPIRATION_IN_DAYS")
+                    .defaultValue(30L)
+                    .build();
+
     public static final AttributeGetter<Long> DEFAULT_CONTEST_TYPE_ID =
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TYPE_ID")
                     .defaultValue(0L)
