@@ -41,8 +41,9 @@
                 </form:form>
             </c:when>
             <c:when test="${isExpired}">
-                <div class="alert alert-danger">
-                    Your login link has expired!
+                <div class="alert alert-warning">
+                    Your login link has expired! Please click the button below to send a new
+                    login link to your email address.
                 </div>
                 <form:form action="/login/token/${tokenId}" method="post">
                     <input type="hidden" name="tokenKey" value="${tokenKey}" />
@@ -52,7 +53,7 @@
             <c:otherwise>
                 <div class="alert alert-danger">
                     The token you entered is invalid. Make sure you are using the most recent
-                    login link as only once link is valid at a time.
+                    login link as only one link is valid at a time.
                 </div>
             </c:otherwise>
         </c:choose>
