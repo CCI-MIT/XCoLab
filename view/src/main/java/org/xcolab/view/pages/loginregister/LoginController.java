@@ -66,8 +66,12 @@ public class LoginController {
 
     @GetMapping("/login/token/{tokenId}")
     public String loginWithToken(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable String tokenId,
+            Model model, Member loggedInMember, @PathVariable String tokenId,
             @RequestParam(defaultValue = "false") String tokenKey) {
+        if (loggedInMember != null) {
+            AlertMessage.warning("You are already logged in.");
+            return "redirect:/";
+        }
         model.addAttribute("tokenId", tokenId);
         model.addAttribute("tokenKey", tokenKey);
         final boolean isIncomplete = tokenKey == null;
