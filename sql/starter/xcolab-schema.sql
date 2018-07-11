@@ -64,15 +64,6 @@ CREATE TABLE IF NOT EXISTS `flagging_ReportTarget` (
   UNIQUE KEY `flagging_ReportTarget__typeReason` (`type`,`reason`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `xcolab_BalloonLink` (
-  `uuid_` varchar(75) NOT NULL PRIMARY KEY,
-  `targetUrl` varchar(75) DEFAULT NULL,
-  `visits` int(11) DEFAULT NULL,
-  `balloonUserUuid` varchar(75) DEFAULT NULL,
-  `createDate` datetime DEFAULT NULL,
-  KEY `IX_1AD9FFEC` (`balloonUserUuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `xcolab_FocusArea` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(256) DEFAULT NULL,
@@ -168,28 +159,6 @@ CREATE TABLE IF NOT EXISTS `xcolab_StaffMember` (
   `organization` varchar(75) DEFAULT NULL,
   `sort` int(11) DEFAULT NULL,
   KEY `IX_9C5CE364` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `xcolab_BalloonUserTracking` (
-  `uuid_` varchar(75) NOT NULL PRIMARY KEY,
-  `email` varchar(200) DEFAULT NULL,
-  `parent` varchar(75) DEFAULT NULL,
-  `ip` varchar(75) DEFAULT NULL,
-  `createDate` datetime DEFAULT NULL,
-  `registrationDate` datetime DEFAULT NULL,
-  `formFiledDate` datetime DEFAULT NULL,
-  `userId` bigint(20) DEFAULT NULL,
-  `balloonTextId` bigint(20) DEFAULT NULL,
-  `referrer` varchar(500) DEFAULT NULL,
-  `latitude` double DEFAULT NULL,
-  `longitude` double DEFAULT NULL,
-  `city` varchar(75) DEFAULT NULL,
-  `country` varchar(75) DEFAULT NULL,
-  `extraData` longtext,
-  `balloonLinkUuid` varchar(75) DEFAULT NULL,
-  `balloonLinkContext` varchar(75) DEFAULT NULL,
-  `userAgent` varchar(500) DEFAULT NULL,
-  KEY `IX_AFDD82EB` (`email`(50))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestPhase` (
@@ -352,20 +321,6 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContentArticleVersion` (
   `title` varchar(555) DEFAULT NULL,
   `lang` varchar(2) DEFAULT 'en',
   `content` longtext
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `xcolab_TrackedVisit` (
-  `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `uuid_` varchar(36) DEFAULT NULL,
-  `ip` varchar(45) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  `country` varchar(2) DEFAULT NULL,
-  `url` varchar(2048) DEFAULT NULL,
-  `browser` longtext,
-  `headers` longtext,
-  `referer` varchar(2048) DEFAULT NULL,
-  `createDate` datetime DEFAULT NULL,
-  KEY `IX_21569857` (`uuid_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestSchedule` (
@@ -659,12 +614,6 @@ CREATE TABLE IF NOT EXISTS `xcolab_ConfigurationAttribute` (
   PRIMARY KEY (`name`, `additionalId`, `locale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `xcolab_TrackedVisitor2User` (
-  `uuid_` varchar(36) NOT NULL PRIMARY KEY,
-  `userId` bigint(20) DEFAULT NULL,
-  `createDate` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `Users_Groups` (
   `userId` bigint(20) NOT NULL,
   `groupId` bigint(20) NOT NULL,
@@ -707,19 +656,6 @@ CREATE TABLE IF NOT EXISTS `comment_Category` (
   `sort` int(11) DEFAULT NULL,
   `isQuiet` tinyint(4) DEFAULT '0',
   KEY `comment_Category__groupId` (`groupId`,`sort`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `xcolab_BalloonText` (
-  id_ bigint auto_increment PRIMARY KEY,
-	name varchar(75) null,
-	textBeforeForm longtext null,
-	textBeforeShareButtons longtext null,
-	emailTemplate longtext null,
-	emailSubjectTemplate varchar(255) null,
-	shareTitle varchar(255) null,
-	shareDescription text null,
-	enabled tinyint null,
-  KEY `IX_CE6BAAA5` (`enabled`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ImpactDefaultSeries` (
@@ -1135,5 +1071,73 @@ CREATE TABLE IF NOT EXISTS `xcolab_PlatformTeamMember` (
     CONSTRAINT xcolab_PlatformTeamMember_xcolab_PlatformTeam_id__fk FOREIGN KEY (teamId)
       REFERENCES xcolab_PlatformTeam (id_) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+-- Tracking service
+CREATE TABLE IF NOT EXISTS `xcolab_BalloonLink` (
+  `uuid_` varchar(75) NOT NULL PRIMARY KEY,
+  `targetUrl` varchar(75) DEFAULT NULL,
+  `visits` int(11) DEFAULT NULL,
+  `balloonUserUuid` varchar(75) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  KEY `IX_1AD9FFEC` (`balloonUserUuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `xcolab_BalloonText` (
+  id_ bigint auto_increment PRIMARY KEY,
+	name varchar(75) null,
+	textBeforeForm longtext null,
+	textBeforeShareButtons longtext null,
+	emailTemplate longtext null,
+	emailSubjectTemplate varchar(255) null,
+	shareTitle varchar(255) null,
+	shareDescription text null,
+	enabled tinyint null,
+  KEY `IX_CE6BAAA5` (`enabled`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `xcolab_BalloonUserTracking` (
+  `uuid_` varchar(75) NOT NULL PRIMARY KEY,
+  `email` varchar(200) DEFAULT NULL,
+  `parent` varchar(75) DEFAULT NULL,
+  `ip` varchar(75) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `registrationDate` datetime DEFAULT NULL,
+  `formFiledDate` datetime DEFAULT NULL,
+  `userId` bigint(20) DEFAULT NULL,
+  `balloonTextId` bigint(20) DEFAULT NULL,
+  `referrer` varchar(500) DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
+  `city` varchar(75) DEFAULT NULL,
+  `country` varchar(75) DEFAULT NULL,
+  `extraData` longtext,
+  `balloonLinkUuid` varchar(75) DEFAULT NULL,
+  `balloonLinkContext` varchar(75) DEFAULT NULL,
+  `userAgent` varchar(500) DEFAULT NULL,
+  KEY `IX_AFDD82EB` (`email`(50))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `xcolab_TrackedVisit` (
+  `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `uuid_` varchar(36) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `country` varchar(2) DEFAULT NULL,
+  `url` varchar(2048) DEFAULT NULL,
+  `browser` longtext,
+  `headers` longtext,
+  `referer` varchar(2048) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  KEY `IX_21569857` (`uuid_`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `xcolab_TrackedVisitor2User` (
+  `uuid_` varchar(36) NOT NULL PRIMARY KEY,
+  `userId` bigint(20) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 SET FOREIGN_KEY_CHECKS = 1
