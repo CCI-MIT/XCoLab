@@ -418,7 +418,11 @@ public class Proposal extends AbstractProposal {
     }
 
     public String getProposalDiscussionUrl() {
-        return this.getProposalLinkUrl(contest) + "/tab/COMMENTS";
+        boolean isSeparateTab = ConfigurationAttributeKey.PROPOSALS_COMMENTS_IN_SEPARATE_TAB.get();
+        if (isSeparateTab) {
+            return this.getProposalLinkUrl(contest) + "/tab/COMMENTS";
+        }
+        return getProposalUrl() + "#Comments";
     }
 
     public String getProposalUrl(ContestPhase inPhase) {

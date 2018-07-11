@@ -84,7 +84,10 @@
             <div class="col c-TableGrid__cell text-center">
                 <div class="highlight">
                     <collab:image src="/images/icon-proposal-comments.png" cssClass="c-Icon"/>
-                    <xcolab:proposalLink proposal="${proposal}" text="${proposal.commentsCount}" tab="COMMENTS" />
+
+                    <a href="${proposal.proposalDiscussionUrl}">
+                        ${proposal.commentsCount}
+                    </a>
                 </div>
             </div>
             <c:if test="${not contestPhase.completed}">
