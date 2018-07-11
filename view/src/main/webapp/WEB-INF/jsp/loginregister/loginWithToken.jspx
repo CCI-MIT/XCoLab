@@ -14,6 +14,12 @@
     </c:if>
     <c:if test="${not _themeContext.authenticationVariables.isLoggedIn}">
         <c:choose>
+            <c:when test="${isIncomplete}">
+                <div class="alert alert-danger">
+                    Your login link is incomplete. Please go back to the email and make sure you
+                    used the full link.
+                </div>
+            </c:when>
             <c:when test="${isValid}">
                 <div class="alert alert-info">
                     You clicked a unique login link. Click the "Log in" button below to complete the login.

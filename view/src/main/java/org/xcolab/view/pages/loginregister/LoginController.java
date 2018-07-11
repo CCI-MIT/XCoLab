@@ -66,19 +66,29 @@ public class LoginController {
 
     @GetMapping("/login/token/{tokenId}")
     public String loginWithToken(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable String tokenId, @RequestParam String tokenKey) {
+            Model model, @PathVariable String tokenId,
+            @RequestParam(defaultValue = "false") String tokenKey) {
         model.addAttribute("tokenId", tokenId);
         model.addAttribute("tokenKey", tokenKey);
-        final TokenValidity tokenValidity = MembersClient.validateLoginToken(tokenId, tokenKey);
-        model.addAttribute("isValid", tokenValidity == TokenValidity.VALID);
-        model.addAttribute("isExpired", tokenValidity == TokenValidity.EXPIRED);
+        final boolean isIncomplete = tokenKey == null;
+        model.addAttribute("isIncomplete", isIncomplete);
+        if (!isIncomplete) {
+            final TokenValidity tokenValidity = MembersClient.validateLoginToken(tokenId, tokenKey);
+            model.addAttribute("isValid", tokenValidity == TokenValidity.VALID);
+            model.addAttribute("isExpired", tokenValidity == TokenValidity.EXPIRED);
+        }
         return LOGIN_TOKEN_VIEW_NAME;
     }
 
     @PostMapping(value = "/login/token/{tokenId}")
     public String doLoginWithToken(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable String tokenId, @RequestParam String tokenKey,
+            Model model, @PathVariable String tokenId,
+            @RequestParam(defaultValue = "false") String tokenKey,
             @RequestParam(defaultValue = "false") boolean invalidateLink) {
+        if (tokenKey == null) {
+            AlertMessage.warning("Login link incomplete, make sure you used the full link.");
+            return "redirect:/";
+        }
         final TokenValidity tokenValidity = MembersClient.validateLoginToken(tokenId, tokenKey);
         switch (tokenValidity) {
             case VALID: {
