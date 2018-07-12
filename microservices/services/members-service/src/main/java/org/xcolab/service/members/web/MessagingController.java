@@ -66,28 +66,28 @@ public class MessagingController {
             @RequestParam(required = false) Boolean isOpened,
             @RequestParam(required = false) Timestamp sinceDate,
             @RequestParam(required = false) String sort,
-            @RequestParam(required = false, defaultValue = "true") boolean includeCount) {
+            @RequestParam(required = false, defaultValue = "true") boolean includeCount,
+            @RequestParam(required = false) Long messageId,
+            @RequestParam(required = false) String threadId) throws NotFoundException {
+        if (messageId!=null && threadId!=null){
+            return messageDao.getFullConversation(messageId, threadId);
+        } else {
+            final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
+                    sort);
 
-        final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
-                sort);
-
-        if (includeCount) {
-            response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                    Integer.toString(messageDao
-                            .countByGiven(senderId, recipientId, isArchived, isOpened, sinceDate)));
+            if (includeCount) {
+                response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
+                        Integer.toString(messageDao
+                                .countByGiven(senderId, recipientId, isArchived, isOpened, sinceDate)));
+            }
+            return messageDao.findByGiven(paginationHelper, senderId, recipientId, isArchived, isOpened,
+                    sinceDate);
         }
-        return messageDao.findByGiven(paginationHelper, senderId, recipientId, isArchived, isOpened,
-                sinceDate);
     }
 
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.GET)
     public Message getMessage(@PathVariable long messageId) throws NotFoundException {
         return messageDao.getMessage(messageId);
-    }
-
-    @RequestMapping(value = "/messages/all/{messageId}/{threadId}", method = RequestMethod.GET)
-    public List<Message> getFullConversation(@PathVariable long messageId, @PathVariable String threadId) throws NotFoundException {
-        return messageDao.getFullConversation(messageId, threadId);
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)

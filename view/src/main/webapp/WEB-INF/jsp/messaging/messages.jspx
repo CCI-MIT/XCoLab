@@ -78,7 +78,7 @@
                                 </c:if>
                             </td>
                             <td class="${isHighlighted ? 'cb-text-bold' : ''}">
-                                <a href="${message.linkUrl}">${message.subject}</a>
+                                <a href="${message.linkUrl}${message.threadId}">${message.subject}</a>
                             </td>
                             <td>
                                 <c:choose>

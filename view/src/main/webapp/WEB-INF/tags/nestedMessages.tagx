@@ -1,0 +1,15 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
+    <jsp:directive.attribute name="messageBeanList" type="java.util.List" required="true" description="The list of message beans"/>
+
+    <div class="c-Previous__message">
+        ${messageBeanList.get(i).content}
+        <c:if test = "${i lt messageBeanList.size()-1}">
+            <c:set var="i" value="${i + 1}" scope="request"/>
+            <xcolab:nestedMessages messageBeanList="${messageBeanList}"/>
+        </c:if>
+    </div>
+
+</jsp:root>

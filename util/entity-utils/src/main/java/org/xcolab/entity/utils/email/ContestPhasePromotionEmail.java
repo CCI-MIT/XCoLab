@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -26,8 +27,13 @@ public class ContestPhasePromotionEmail {
         String messageBody = reviewContentHelper.getPromotionComment(true);
         String subject =  reviewContentHelper.getSubject();
         if (StringUtils.isNotEmpty(messageBody)) {
-            MessagingClient
-                    .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
+            try {
+                MessagingClient
+                        .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, "-1", getMemberUserIds(proposal));
+            } catch (ReplyingToManyException e) {
+                //This should never be reached. TO-DO: Log a message to alert of this situation
+            }
+
         }
     }
 

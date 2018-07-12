@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.messaging.views;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +17,15 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
+import org.xcolab.client.members.exceptions.MessageOrThreadNotFoundException;
+import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 import org.xcolab.view.pages.messaging.beans.MessagingBean;
@@ -30,6 +34,9 @@ import org.xcolab.view.pages.messaging.utils.MessagingPermissions;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -99,6 +106,61 @@ public class MessagingController {
         return "/messaging/message";
     }
 
+    @GetMapping("fullConversation/{messageId}")
+    public String showFullConversation(HttpServletRequest request, HttpServletResponse response, Model model,
+            @PathVariable Integer messageId, Member loggedInMember,
+            @RequestParam(required=false) String threadId) throws MessageOrThreadNotFoundException, MessageNotFoundException {
+        List<Message> fullConversation = new ArrayList<>();
+        //Retrieve conversation and check if it was found
+        if (threadId!=null){
+            try {
+                fullConversation = MessagingClient.getFullConversation(messageId, threadId);
+            } catch (UncheckedEntityNotFoundException e) {
+                throw new MessageOrThreadNotFoundException((long) messageId, threadId);
+            }
+        } else {
+            fullConversation.add(MessagingClient.getMessage(messageId));
+        }
+
+
+        //Transform messages into beans
+        List<MessageBean> messageBeanList = new ArrayList<>();
+        for (Message message : fullConversation){
+            messageBeanList.add(new MessageBean(message));
+        }
+
+        final int numberOfMessages = messageBeanList.size();
+
+        //Manage permissions
+        final MessagingPermissions messagingPermissions =
+                new MessagingPermissions(loggedInMember, messageBeanList.get(numberOfMessages-1));
+        if (!messagingPermissions.getCanViewThread(threadId, messageBeanList)){
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
+        }
+
+        //Mark last message as read (if it's for me)
+        if (messagingPermissions.isRecipient()) {
+            messageBeanList.get(numberOfMessages-1).markMessageAsOpened(loggedInMember.getId_());
+        }
+
+        //Add model attributes
+        model.addAttribute("user", loggedInMember);
+        final SendMessageBean sendMessageBean = new SendMessageBean(
+                messageBeanList.get(numberOfMessages-1));
+        model.addAttribute("sendMessageBean", sendMessageBean);
+        model.addAttribute("_activePageLink", "community");
+        //Reverse the list to render it in an easier way
+        Collections.reverse(messageBeanList);
+        model.addAttribute("messageBeanList",messageBeanList);
+        model.addAttribute("threadId",threadId);
+
+        //TEST ONLY CODE. REMOVE WHEN DONE
+        model.addAttribute("messageBean", messageBeanList.get(numberOfMessages - 1));
+        //END OF TEST CODE
+
+        return "/messaging/message";
+    }
+
     @PostMapping("archiveMessages")
     public String archiveMessages(HttpServletRequest request, HttpServletResponse response,
             Model model, @ModelAttribute("messagingBean") MessagingBean messagingBean,
@@ -125,26 +187,49 @@ public class MessagingController {
     @PostMapping("sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
-            @RequestParam String messageContent,@RequestParam(defaultValue = "-1") String repliesTo,
+            @RequestParam String messageContent,@RequestParam(defaultValue = "-1") String threadId,
             Member loggedInMember) throws IOException {
 
+        //Check if I'm logged in
         if (loggedInMember == null) {
             return new AccessDeniedPage(null).toViewName(response);
         }
 
         final MessagingPermissions messagingPermissions = new MessagingPermissions(loggedInMember);
 
+        //Check if I can send 1 message
         if (messagingPermissions.getCanSendMessage()) {
             List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
+
             try {
+                //If I specify a thread, check that I have permissions on it
+                if (!threadId.equals("-1")){
+                    //Check the permissions for the first message in the thread
+                    String[] threadParts=threadId.split("-");
+                    Long firstMessageId = Long.parseLong(threadParts[0]);
+                        List<MessageBean> firstMessageBeanList = new ArrayList<>(Arrays.asList(
+                                new MessageBean(MessagingClient.getMessage(firstMessageId))));
+                        if (!messagingPermissions.getCanViewThread(threadId,firstMessageBeanList)){
+                            //Permission denied
+                            AlertMessage.danger("You don't have permissions on this thread" ).flash(request);
+                            return new AccessDeniedPage(loggedInMember).toViewName(response);
+                        }
+                }
+
                 final String baseUri = PlatformAttributeKey.COLAB_URL.get();
                 MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
                         HtmlUtil.cleanSome(messageContent, baseUri), loggedInMember.getUserId(),
-                        Long.parseLong(HtmlUtil.cleanAll(repliesTo),10), recipientIds);
+                        HtmlUtil.cleanAll(threadId), recipientIds);
                 AlertMessage.success("The message has been sent!").flash(request);
             } catch (MessageLimitExceededException e) {
                 AlertMessage.danger("You have exceeded your daily message limit. "
                         + "Please try again later and send fewer messages.").flash(request);
+            } catch (ReplyingToManyException e) {
+                AlertMessage.danger("You are trying to reply to many conversations at a time. "
+                + "Please reply to each user individually").flash(request);
+            } catch (MessageNotFoundException e) {
+                AlertMessage.danger("Original message of the conversation not found "
+                        + "Permissions can't be granted").flash(request);
             }
         } else {
             AlertMessage.danger("Sorry, you are not allowed to send any more messages today.")

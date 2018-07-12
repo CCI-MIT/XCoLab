@@ -4,6 +4,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -63,9 +64,12 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
             List<Contest> contestList, StringBuilder contestNames) {
         final String messageSubject = massMessageBean.getSubject();
         final String messageBody = massMessageBean.getBody();
-        MessagingClient.sendMessage(messageSubject, messageBody, CLIMATE_COLAB_TEAM_USER_ID,
-                CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<>(recipientIds));
-
+        try {
+            MessagingClient.sendMessage(messageSubject, messageBody, CLIMATE_COLAB_TEAM_USER_ID,
+                    "-1", new ArrayList<>(recipientIds));
+        } catch (ReplyingToManyException e) {
+            //This should never be reached. TODO: Log a message to alert of this situation
+        }
         final String emailSubject = "Mass message: " + messageSubject;
         final String emailBody = String.format(
                 "The following message was sent to %d users in %d contests (%s): <br /><br /><br />",

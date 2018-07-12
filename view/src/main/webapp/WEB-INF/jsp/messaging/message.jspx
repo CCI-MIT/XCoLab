@@ -28,6 +28,7 @@
         </nav>
 
         <h1>${messageBean.subject}</h1>
+
         <p>
             <strong>
                 <spring:message code="message.from.message" arguments="${messageBean.from.displayName},${messageBean.to.get(0).displayName}" argumentSeparator=","/>
@@ -40,14 +41,19 @@
 
         <p>
             <div id="messageContents">
-                ${messageBean.content}
+                ${messageBeanList.get(0).content}
+                <c:set var = "i" scope = "request" value = "${1}"/>
+                <c:if test = "${messageBeanList.size()>1}">
+                <xcolab:nestedMessages messageBeanList="${messageBeanList}"/>
+                </c:if>
+                <!--            ${messageBean.content} -->
             </div>
         </p>
 
-        <c:if test="${user.userId != messageBean.from.userId}">
+        <c:if test="${user.userId != messageBeanList.get(0).from.userId}">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendMessageModal"
-                    data-message-content="#replyMessageContent" data-message-recipient="${messageBean.from.id_}"
-                    data-message-subject="RE: ${messageBean.subject}" data-message-id="${messageBean.messageId}">
+                    data-message-content="#replyMessageContent" data-message-recipient="${messageBeanList.get(0).from.id_}"
+                    data-message-subject="RE: ${messageBean.subject}" data-thread-id="${threadId}">
                 <spring:message code="message.reply.button"/>
             </button>
             <div id="replyMessageContent" class="d-none">

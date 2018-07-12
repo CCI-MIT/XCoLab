@@ -5,6 +5,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
+import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
@@ -51,9 +52,13 @@ public class MessageBean implements Serializable {
     public Date getCreateDate() {
         return message.getCreateDate();
     }
-
+/*
     public String getLinkUrl() {
         return "/messaging/message/" + getMessageId();
+    }
+*/
+    public String getLinkUrl() {
+        return "/messaging/fullConversation/" + getMessageId() + "?threadId=";
     }
 
     public Long getMessageId() {
@@ -81,6 +86,10 @@ public class MessageBean implements Serializable {
         return getMessage().getOpened();
     }
 
+    public String getThreadId() throws MessageNotFoundException {
+        return getMessage().getThreadId();
+    }
+
     public boolean isSelected() {
         return selected;
     }
@@ -103,4 +112,6 @@ public class MessageBean implements Serializable {
     public List<Member> getTo() {
         return recipients;
     }
+
+
 }

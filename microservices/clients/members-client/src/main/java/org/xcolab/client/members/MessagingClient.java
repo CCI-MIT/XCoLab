@@ -3,6 +3,7 @@ package org.xcolab.client.members;
 import org.apache.commons.text.StringEscapeUtils;
 
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
+import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
@@ -85,6 +86,13 @@ public final class MessagingClient {
         }
     }
 
+    public static List<Message> getFullConversation(long messageId, String threadId) {
+        return messageResource.list()
+                .queryParam("messageId",messageId)
+                .queryParam("threadId", threadId)
+                .execute();
+    }
+
     private static int countMessagesForUser(long userId, boolean isArchived) {
         return messageResource.count()
                 .queryParam("recipientId", userId)
@@ -116,40 +124,51 @@ public final class MessagingClient {
     }
 
     public static void checkLimitAndSendMessage(String subject, String content,
-            long fromId, List<Long> recipientIds) throws MessageLimitExceededException {
+            long fromId, List<Long> recipientIds) throws MessageLimitExceededException,ReplyingToManyException {
         try {
-            sendMessage(subject, content, fromId, -1, recipientIds, true);
+            sendMessage(subject, content, fromId, "-1", recipientIds, true);
         } catch (Http429TooManyRequestsException e) {
             throw new MessageLimitExceededException(fromId);
         }
     }
     //Overload this method to accept optionally the messageID of the previous message
     public static void checkLimitAndSendMessage(String subject, String content,
-            long fromId, long repliesTo, List<Long> recipientIds) throws MessageLimitExceededException {
+            long fromId, String threadId, List<Long> recipientsIds) throws MessageLimitExceededException, ReplyingToManyException {
         try {
-            sendMessage(subject, content, fromId, repliesTo, recipientIds, true);
+            sendMessage(subject, content, fromId, threadId, recipientsIds, true);
         } catch (Http429TooManyRequestsException e) {
             throw new MessageLimitExceededException(fromId);
         }
     }
 
     public static void sendMessage(String subject, String content, Long fromId,
-            long replyToId, List<Long> recipientIds) {
-        sendMessage(subject, content, fromId, replyToId, recipientIds, false);
+            String threadId, List<Long> recipientIds) throws ReplyingToManyException {
+        sendMessage(subject, content, fromId, threadId, recipientIds, false);
     }
 
-    private static void sendMessage(String subject, String content, long fromId, long replyToId,
-            List<Long> recipientIds, boolean checkLimit) {
+    private static void sendMessage(String subject, String content, long fromId, String threadId,
+            List<Long> recipientIds, boolean checkLimit) throws ReplyingToManyException {
         SendMessageBean sendMessageBean = new SendMessageBean();
         sendMessageBean.setSubject(StringEscapeUtils.unescapeXml(subject));
         sendMessageBean.setContent(content.replaceAll("\n", ""));
         sendMessageBean.setFromId(fromId);
-        sendMessageBean.setRepliesTo(replyToId);
         sendMessageBean.setRecipientIds(recipientIds);
 
-        messageResource.create(sendMessageBean)
-                .queryParam("checkLimit", checkLimit)
-                .execute();
+        if (!threadId.equals("-1")) {
+            if (sendMessageBean.getRecipientIds().size()==1) {
+                messageResource.create(sendMessageBean)
+                        .queryParam("checkLimit", checkLimit)
+                        .queryParam("threadId", threadId)
+                        .execute();
+            } else {
+                //You are trying to reply to many, which is not permitted. Throw an exception
+                throw new ReplyingToManyException(recipientIds, threadId);
+            }
+        } else {
+            messageResource.create(sendMessageBean)
+                    .queryParam("checkLimit", checkLimit)
+                    .execute();
+        }
     }
 
     public static void setArchived(long messageId, long memberId, boolean isArchived) {

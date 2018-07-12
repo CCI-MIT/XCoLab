@@ -10,6 +10,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
@@ -125,6 +126,10 @@ public class MembershipInvitationResponseController {
     }
 
     private void sendMessage(long sender, List<Long> recipients, String subject, String content) {
-        MessagingClient.sendMessage(subject, content, sender, sender, recipients);
+        try {
+            MessagingClient.sendMessage(subject, content, sender, "-1", recipients);
+        } catch (ReplyingToManyException e) {
+            //This should never be reached. TODO: Log a message to alert of this situation
+        }
     }
 }

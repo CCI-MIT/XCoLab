@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.messaging.beans;
 
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.IdListUtil;
@@ -47,7 +48,7 @@ public class SendMessageBean implements Serializable {
         this.recipientList = new ArrayList<>();
     }
 
-    public void send(Member sender, String baseUri) throws MessageLimitExceededException {
+    public void send(Member sender, String baseUri) throws MessageLimitExceededException, ReplyingToManyException {
         //TODO COLAB-2620: do we need this?
 //        if (messageHoneypot != null && !messageHoneypot.isEmpty()) {
 //            _log.info("Message was not sent because honeypot was filled - text: " + messageContent + " honeypot: "
