@@ -14,6 +14,7 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
 
@@ -28,6 +29,10 @@ public class ForgotPasswordController {
 
     private static final String FORGOT_PASSWORD_URL
             = "/login/resetPassword/update?resetToken=%s&screenName=%s";
+
+    private static final String INVALID_TOKEN_ERROR_MESSAGE =
+            "Your password reset token has expired or is invalid. Please try to reset your password again";
+
     private final LoginRegisterService loginRegisterService;
 
     @Autowired
@@ -88,26 +93,15 @@ public class ForgotPasswordController {
                 .sendEmailNotification();
     }
 
-    @GetMapping("/login/resetPassword/error")
-    public String resetPasswordError(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return redirectToErrorPageOnPasswordReset(model);
-    }
-
-    private String redirectToErrorPageOnPasswordReset(Model model) {
-        model.addAttribute("message",
-                "Your password reset ticket has expired or is invalid. Please try to reset your password again.");
-        model.addAttribute("redirect_url", "/");
-        return "loginregister/password_reset_error";
-    }
-
-
     @GetMapping("/login/resetPassword/update")
     public String openResetPassword(HttpServletRequest request, HttpServletResponse response,
             ForgotPasswordBean forgotPasswordBean, Model model, @RequestParam String resetToken,
             @RequestParam(required = false) String screenName) {
 
         if (!MembersClient.isForgotPasswordTokenValid(resetToken)) {
-            return redirectToErrorPageOnPasswordReset(model);
+            AlertMessage.danger(INVALID_TOKEN_ERROR_MESSAGE)
+                    .flash(request);
+            return "redirect:/";
         } else {
             model.addAttribute("screenName", screenName);
             model.addAttribute("forgotPasswordBean", forgotPasswordBean);
@@ -133,13 +127,14 @@ public class ForgotPasswordController {
             try {
                 loginRegisterService.updatePassword(resetToken, newPassword);
                 AlertMessage.success("Your password was successfully updated!").flash(request);
-                return "redirect:/";
             } catch (MemberNotFoundException e) {
-                return "redirect:/login/resetPassword/error";
+                throw new InternalException(e);
             }
 
         } else {
-            return "redirect:/login/resetPassword/error";
+            AlertMessage.danger(INVALID_TOKEN_ERROR_MESSAGE)
+                    .flash(request);
         }
+        return "redirect:/";
     }
 }
