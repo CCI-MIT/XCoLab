@@ -27,7 +27,22 @@
             </ol>
         </nav>
 
+        <div class="c-TitleWrap">
         <h1>${messageBeanList.get(0).subject}</h1>
+        <c:if test="${user.userId != messageBeanList.get(0).from.userId}">
+            <button type="button" class="btn btn-primary c-Reply-button" data-toggle="modal" data-target="#sendMessageModal"
+                    data-message-content="#replyMessageContent" data-message-recipient="${messageBeanList.get(0).from.id_}"
+                    data-message-subject="RE: ${messageBeanList.get(0).subject}" data-thread-id="${threadId}">
+                <spring:message code="message.reply.button"/>
+            </button>
+            <div id="replyMessageContent" class="d-none">
+                <br /><br />-- original message begin --<br /><br />
+                ${messageBeanList.get(0).content}
+                <br /><br />-- original message end --<br />
+            </div>
+            <xcolab:requireLibrary name="sendMessage"/>
+        </c:if>
+        </div>
 
         <p>
             <strong>
@@ -50,19 +65,6 @@
             </div>
         </p>
 
-        <c:if test="${user.userId != messageBeanList.get(0).from.userId}">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendMessageModal"
-                    data-message-content="#replyMessageContent" data-message-recipient="${messageBeanList.get(0).from.id_}"
-                    data-message-subject="RE: ${messageBeanList.get(0).subject}" data-thread-id="${threadId}">
-                <spring:message code="message.reply.button"/>
-            </button>
-            <div id="replyMessageContent" class="d-none">
-                <br /><br />-- original message begin --<br /><br />
-                    ${messageBeanList.get(0).content}
-                <br /><br />-- original message end --<br />
-            </div>
-            <xcolab:requireLibrary name="sendMessage"/>
-        </c:if>
     </div>
     <script src="/js/messages/messageThreads.js"><!--script--> </script>
 </xcolab:layout>
