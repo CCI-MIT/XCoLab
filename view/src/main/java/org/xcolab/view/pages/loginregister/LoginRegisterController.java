@@ -29,8 +29,6 @@ import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
-import org.xcolab.view.util.entity.portlet.session.SessionErrors;
-import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
 import java.io.IOException;
 
@@ -148,16 +146,12 @@ public class LoginRegisterController {
             captchaValid = recaptchaValidator.verify(gRecaptchaResponse);
         }
         if (!captchaValid) {
-            SessionErrors.clear(request);
-            
             result.addError(new ObjectError("createUserBean", resourceMessageResolver.
                     getLocalizedMessage("register.form.validation.captcha.message")));
             return showRegistrationError(model);
         }
         //TODO COLAB-2617: improve redirect to avoid double handling
         loginRegisterService.completeRegistration(request, response, newAccountBean, redirect, false);
-        SessionErrors.clear(request);
-        SessionMessages.clear(request);
         return REGISTER_VIEW_NAME;
     }
 

@@ -16,12 +16,8 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
-import org.xcolab.view.util.entity.portlet.session.SessionErrors;
-import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,10 +45,10 @@ public class ForgotPasswordController {
 
         redirect = !StringUtils.isBlank(redirect) ? redirect : PlatformAttributeKey.COLAB_URL.get();
 
-        redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isSigningIn");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isRegistering");
+        redirect = removeParamFromRequestStr(redirect, "signinRegError");
+        redirect = removeParamFromRequestStr(redirect, "isPasswordReminder");
+        redirect = removeParamFromRequestStr(redirect, "isSigningIn");
+        redirect = removeParamFromRequestStr(redirect, "isRegistering");
 
         try {
             Member member;
@@ -71,19 +67,19 @@ public class ForgotPasswordController {
             AlertMessage.success("A password retrieval message has been sent. Please check your email")
                     .flash(request);
         } catch (MemberNotFoundException e) {
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("isPasswordReminder", "true");
 
-            redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
+            //TODO: better way of passing this on
+            redirect += "isPasswordReminder=true";
 
             AlertMessage.danger("Could not send password retrieval message, please check your screen name or email")
                     .flash(request);
         }
 
-        SessionErrors.clear(request);
-        SessionMessages.clear(request);
-
         response.sendRedirect(redirect);
+    }
+
+    public static String removeParamFromRequestStr(String requestStr, String param) {
+        return requestStr == null ? null : requestStr.replaceAll("&?" + param + "=[^&#]*", "");
     }
 
     private static void sendEmailNotificationToForPasswordReset(String memberIp, String link,
@@ -137,8 +133,6 @@ public class ForgotPasswordController {
             try {
                 loginRegisterService.updatePassword(resetToken, newPassword);
                 AlertMessage.success("Your password was successfully updated!").flash(request);
-                SessionErrors.clear(request);
-                SessionMessages.clear(request);
                 return "redirect:/";
             } catch (MemberNotFoundException e) {
                 return "redirect:/login/resetPassword/error";
