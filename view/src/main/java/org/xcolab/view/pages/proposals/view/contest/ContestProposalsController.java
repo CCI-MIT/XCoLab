@@ -20,7 +20,6 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -121,11 +120,6 @@ public class ContestProposalsController extends BaseProposalsController {
             final SortFilterPage sortFilterPage, Member loggedInMember) {
 
         ContestPhase contestPhase = proposalContext.getContestPhase();
-        Contest contest = proposalContext.getContest();
-
-        if (contest == null || contestPhase == null) {
-            throw new ProposalIdOrContestIdInvalidException();
-        }
 
         List<Proposal> proposals = getProposals(proposalContext, loggedInMember);
 

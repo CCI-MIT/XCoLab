@@ -18,9 +18,11 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.commons.servlet.RequestParamUtil;
+import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.pages.proposals.exceptions.InvalidContestUrlException;
+import org.xcolab.view.pages.proposals.exceptions.InvalidProposalUrlException;
+import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -112,14 +114,14 @@ public class ProposalContextHelper {
         return MemberAuthUtil.getMemberOrNull(request);
     }
 
-    public Contest getContest() throws InvalidAccessException {
+    public Contest getContest() throws InvalidContestUrlException {
         if (contest == null) {
             final boolean contestUserSupplied = StringUtils.isNotBlank(givenContestUrlName)
                     || givenContestId > 0;
             if (contestUserSupplied) {
                 log.debug("Invalid contest supplied: givenContestUrlName = {}, givenContestId = {}",
                         givenContestUrlName, givenContestId);
-                throw new InvalidAccessException();
+                throw new InvalidContestUrlException(givenContestUrlName, givenContestId);
             }
         }
         return contest;
@@ -160,7 +162,7 @@ public class ProposalContextHelper {
         }
     }
 
-    public Proposal getProposal(Contest contest) throws InvalidAccessException {
+    public Proposal getProposal(Contest contest) throws InvalidProposalUrlException {
         final ProposalClient proposalClient = clientHelper.getProposalClient();
         Proposal proposal = null;
         if (givenProposalId > 0) {
@@ -169,7 +171,7 @@ public class ProposalContextHelper {
                 proposal = new Proposal(proposalClient.getProposal(givenProposalId), version, contest);
             } catch (ProposalNotFoundException e) {
                 log.debug("Invalid proposal supplied: givenProposalId = {}", givenProposalId);
-                throw new InvalidAccessException();
+                throw new InvalidProposalUrlException(contest, null, givenProposalId);
             }
         }
         return proposal;
@@ -232,7 +234,4 @@ public class ProposalContextHelper {
         return givenProposalId;
     }
 
-    public static class InvalidAccessException extends Exception {
-
-    }
 }
