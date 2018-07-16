@@ -1,7 +1,10 @@
 package org.xcolab.service.members.domain.messaging;
 
+import net.sf.ehcache.search.expression.Not;
+
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Message;
+
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -21,6 +24,10 @@ public interface MessageDao {
             Boolean isArchived, Boolean isOpened, Timestamp sinceDate);
 
     List<Member> getRecipients(long messageId);
+
+    List<String> getThreads(long messageId);
+
+    long getLastMessageId(String threadId) throws NotFoundException;
 
     boolean setArchived(long messageId, long memberId, boolean isArchived);
 

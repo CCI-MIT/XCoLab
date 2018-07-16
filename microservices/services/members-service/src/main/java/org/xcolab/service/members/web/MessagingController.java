@@ -1,5 +1,6 @@
 package org.xcolab.service.members.web;
 
+import net.sf.ehcache.search.expression.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -93,6 +94,16 @@ public class MessagingController {
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
     public List<Member> getMessageRecipients(@PathVariable long messageId) {
         return messageDao.getRecipients(messageId);
+    }
+
+    @RequestMapping(value = "/messages/{messageId}/threads", method = RequestMethod.GET)
+    public List<String> getMessageThreads(@PathVariable long messageId) {
+        return messageDao.getThreads(messageId);
+    }
+
+    @RequestMapping(value = "/messages/0/lastMessageId", method = RequestMethod.GET)
+    public long getLastMessageId(@RequestParam String threadId) throws NotFoundException {
+        return messageDao.getLastMessageId(threadId);
     }
 
     @RequestMapping(value = "/messages", method = RequestMethod.POST)

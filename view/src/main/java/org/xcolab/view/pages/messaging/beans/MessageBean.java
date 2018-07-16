@@ -21,6 +21,7 @@ public class MessageBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private List<Member> recipients = new ArrayList<>();
+    private List<String> threads = new ArrayList<>();
     private Message message;
     private long messageId;
     private boolean selected;
@@ -32,6 +33,7 @@ public class MessageBean implements Serializable {
         this.message = message;
         this.messageId = message.getMessageId();
         this.recipients = MessagingClient.getMessageRecipients(message.getMessageId());
+        this.threads = MessagingClient.getMessageThreads(message.getMessageId());
     }
 
     public String getSubject() {
@@ -113,5 +115,8 @@ public class MessageBean implements Serializable {
         return recipients;
     }
 
+    public List<String> getThreads(){
+        return this.threads;
+    }
 
 }

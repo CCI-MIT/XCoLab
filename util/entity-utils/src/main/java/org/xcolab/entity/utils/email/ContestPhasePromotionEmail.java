@@ -31,7 +31,8 @@ public class ContestPhasePromotionEmail {
                 MessagingClient
                         .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, "-1", getMemberUserIds(proposal));
             } catch (ReplyingToManyException e) {
-                //This should never be reached. TO-DO: Log a message to alert of this situation
+                //This should never be reached
+                throw new IllegalStateException("The phase promotion notification is a reply to a previous message, which is not expected behavior", e);
             }
 
         }

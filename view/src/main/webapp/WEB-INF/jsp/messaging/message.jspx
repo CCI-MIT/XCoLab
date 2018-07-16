@@ -6,7 +6,7 @@
     <!--@elvariable id="user" type="org.xcolab.client.members.pojo.Member"-->
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-<xcolab:layout title="${messageBean.subject} - Messages">
+<xcolab:layout title="${messageBeanList.get(0).subject} - Messages">
     <xcolab:content articleId="${communityTopContentArticleId}" loadWidgetLibrary="false"/>
     <div id="content">
         <nav aria-label="breadcrumb">
@@ -23,18 +23,18 @@
                 <li class="breadcrumb-item">
                     <a href="/messaging"><spring:message code="colab.breadcrumbs.messages"/></a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">${messageBean.subject}</li>
+                <li class="breadcrumb-item active" aria-current="page">${messageBeanList.get(0).subject}</li>
             </ol>
         </nav>
 
-        <h1>${messageBean.subject}</h1>
+        <h1>${messageBeanList.get(0).subject}</h1>
 
         <p>
             <strong>
-                <spring:message code="message.from.message" arguments="${messageBean.from.displayName},${messageBean.to.get(0).displayName}" argumentSeparator=","/>
+                <spring:message code="message.from.message" arguments="${messageBeanList.get(0).from.displayName},${messageBeanList.get(0).to.get(0).displayName}" argumentSeparator=","/>
 
-                <c:if test="${messageBean.to.size() > 1}">
-                    <spring:message code="message.from.messageandothers" arguments="${messageBean.to.size() - 1}"/>
+                <c:if test="${messageBeanList.get(0).to.size() > 1}">
+                    <spring:message code="message.from.messageandothers" arguments="${messageBeanList.get(0).to.size() - 1}"/>
                 </c:if>
             </strong>
         </p>
@@ -53,12 +53,12 @@
         <c:if test="${user.userId != messageBeanList.get(0).from.userId}">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sendMessageModal"
                     data-message-content="#replyMessageContent" data-message-recipient="${messageBeanList.get(0).from.id_}"
-                    data-message-subject="RE: ${messageBean.subject}" data-thread-id="${threadId}">
+                    data-message-subject="RE: ${messageBeanList.get(0).subject}" data-thread-id="${threadId}">
                 <spring:message code="message.reply.button"/>
             </button>
             <div id="replyMessageContent" class="d-none">
                 <br /><br />-- original message begin --<br /><br />
-                    ${messageBean.content}
+                    ${messageBeanList.get(0).content}
                 <br /><br />-- original message end --<br />
             </div>
             <xcolab:requireLibrary name="sendMessage"/>

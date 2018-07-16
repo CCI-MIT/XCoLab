@@ -19,8 +19,10 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.exceptions.MessageOrThreadNotFoundException;
 import org.xcolab.client.members.exceptions.ReplyingToManyException;
+import org.xcolab.client.members.exceptions.ThreadNotFoundException;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
+import org.xcolab.client.members.pojo.LastMessageId;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.commons.IdListUtil;
@@ -111,10 +113,12 @@ public class MessagingController {
             @PathVariable Integer messageId, Member loggedInMember,
             @RequestParam(required=false) String threadId) throws MessageOrThreadNotFoundException, MessageNotFoundException {
         List<Message> fullConversation = new ArrayList<>();
+        LastMessageId lastMessageId = new LastMessageId(0L);
         //Retrieve conversation and check if it was found
         if (threadId!=null){
             try {
                 fullConversation = MessagingClient.getFullConversation(messageId, threadId);
+                //lastMessageId = MessagingClient.getLastMessageId(threadId);
             } catch (UncheckedEntityNotFoundException e) {
                 throw new MessageOrThreadNotFoundException((long) messageId, threadId);
             }
@@ -154,9 +158,10 @@ public class MessagingController {
         model.addAttribute("messageBeanList",messageBeanList);
         model.addAttribute("threadId",threadId);
 
-        //TEST ONLY CODE. REMOVE WHEN DONE
-        model.addAttribute("messageBean", messageBeanList.get(numberOfMessages - 1));
-        //END OF TEST CODE
+        /*TODO COLAB-1087: This should be the Id of the last message of the thread, obtained with the messaging client.*/
+        lastMessageId.setLastMessageId(messageBeanList.get(0).getMessageId());
+
+        model.addAttribute("lastMessageId", lastMessageId);
 
         return "/messaging/message";
     }

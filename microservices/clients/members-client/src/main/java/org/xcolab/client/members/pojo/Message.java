@@ -118,9 +118,7 @@ public class Message implements Serializable {
         return this.threadId;
     }
 
-    public void setThreadId(String threadId) {
-        this.threadId = threadId;
-    }
+    public void setThreadId(String threadId) { this.threadId = threadId; }
 
     public void setOpened(Boolean opened) {
         this.opened = opened;
@@ -144,6 +142,7 @@ public class Message implements Serializable {
                 ", " + content +
                 ", " + opened +
                 ", " + archived +
+                ", " + threadId +
                 ")";
     }
 }

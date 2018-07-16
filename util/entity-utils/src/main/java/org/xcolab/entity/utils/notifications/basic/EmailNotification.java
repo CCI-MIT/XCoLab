@@ -261,7 +261,8 @@ public abstract class EmailNotification {
                         .sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, "-1",
                                 recipients);
             } catch (ReplyingToManyException e) {
-                //This should never be reached. TODO: Log a message to alert of this situation
+                //This should never be reached.
+                throw new IllegalStateException("Email notification is a reply to a previous message, which is not expected behavior", e);
             }
         }
     }
