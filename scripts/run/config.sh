@@ -16,19 +16,6 @@ VCS_ROOT=${ROOT_PATH}
 LOG_SERVER_FOLDER=xcolab
 
 
-#= Derived configuration variables, should remain unchanged in most deployments
-
-# Source directory from which to retrieve the latest binaries
-export BINARY_SOURCE_DIR="${ROOT_PATH}/binaries"
-
-# Directory from which to run binaries
-export DEPLOY_DIR="${ROOT_PATH}/bundle"
-
-CLOUD_DEPLOY_DIR=${DEPLOY_DIR}/cloud
-SERVICE_DEPLOY_DIR=${DEPLOY_DIR}/services
-VIEW_DEPLOY_DIR=${DEPLOY_DIR}/view
-
-
 #= Load external config files id they exist and allow them to override variables
 # config file in home directory
 if [ -f ~/.xcolab.run-config.sh ]; then
@@ -43,3 +30,14 @@ if [ -f ../run-config.sh ]; then
 fi
 
 
+#= Derived configuration variables, should remain unchanged in most deployments
+
+# Source directory from which to retrieve the latest binaries
+export BINARY_SOURCE_DIR="${ROOT_PATH}/binaries"
+
+# Directory from which to run binaries
+export DEPLOY_DIR="${ROOT_PATH}/bundle"
+
+CLOUD_DEPLOY_DIR=${DEPLOY_DIR}/cloud
+SERVICE_DEPLOY_DIR=${DEPLOY_DIR}/services
+VIEW_DEPLOY_DIR=${DEPLOY_DIR}/view
