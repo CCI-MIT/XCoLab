@@ -30,20 +30,11 @@
         <div class="c-TitleWrap">
         <h1 class="c-MessageSubject">${messageBeanList.get(0).subject}</h1>
         <c:if test="${user.userId != messageBeanList.get(0).from.userId}">
-            <button type="button" class="btn btn-primary c-Reply-button" data-toggle="modal" data-target="#sendMessageModal"
-                    data-message-content="#replyMessageContent" data-message-recipient="${messageBeanList.get(0).from.id_}"
-                    data-message-subject="RE: ${messageBeanList.get(0).subject}" data-thread-id="${threadId}">
+            <button type="button" class="btn btn-primary c-Reply-button" id="reply-button">
                 <spring:message code="message.reply.button"/>
             </button>
-            <div id="replyMessageContent" class="d-none">
-                <br /><br />-- original message begin --<br /><br />
-                ${messageBeanList.get(0).content}
-                <br /><br />-- original message end --<br />
-            </div>
-            <xcolab:requireLibrary name="sendMessage"/>
         </c:if>
         </div>
-
         <p>
             <strong>
                 <spring:message code="message.from.message" arguments="${messageBeanList.get(0).from.displayName},${messageBeanList.get(0).to.get(0).displayName}" argumentSeparator=","/>
@@ -53,7 +44,7 @@
                 </c:if>
             </strong>
         </p>
-
+        <jsp:include page="Reply.jspx" />
         <p>
             <div id="messageContents">
                 ${messageBeanList.get(0).content}
@@ -66,6 +57,12 @@
         </p>
 
     </div>
-    <script src="/js/messages/messageThreads.js"><!--script--> </script>
+
+    <script src="/js/messages/messageThreads.js"> <!-- Script --></script>
+
+
 </xcolab:layout>
+
+<xcolab:requireLibrary name="CKEditor" />
+
 </jsp:root>

@@ -1,6 +1,19 @@
 $(document).ready(function(){
     identifyPreviousMessages();
     removeSpaces();
+
+    jQuery('#reply-button').click(function () {
+        $( "#replyContainer" ).show();
+    });
+
+    jQuery('#close-reply').click(function () {
+        $( "#replyContainer" ).css("display","none");
+    });
+
+    jQuery('#replyForm').submit(function(event){
+        checkMessageForm(event);
+            });
+
 });
 function identifyPreviousMessages(){
     var beginPattern="-- original message begin --";

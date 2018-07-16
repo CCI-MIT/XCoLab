@@ -28,6 +28,7 @@ $c-Message__input__background: #F2F1E9 url(/images/sendMessage_textarea.gif) no-
   color: $t-Color__primary--darkest;
   border-left: 1px solid ;
   margin-left: 10px;
+  margin-top: 2%;
   padding-left: 5px;
 
 }
@@ -43,7 +44,7 @@ $c-Message__input__background: #F2F1E9 url(/images/sendMessage_textarea.gif) no-
 
 .c-Reply-button {
   float: right;
-  margin-right: 25%;
+  //margin-right: 25%;
 }
 
 .c-Previous__message__header {
