@@ -28,7 +28,7 @@
         </nav>
 
         <div class="c-TitleWrap">
-        <h1>${messageBeanList.get(0).subject}</h1>
+        <h1 class="c-MessageSubject">${messageBeanList.get(0).subject}</h1>
         <c:if test="${user.userId != messageBeanList.get(0).from.userId}">
             <button type="button" class="btn btn-primary c-Reply-button" data-toggle="modal" data-target="#sendMessageModal"
                     data-message-content="#replyMessageContent" data-message-recipient="${messageBeanList.get(0).from.id_}"

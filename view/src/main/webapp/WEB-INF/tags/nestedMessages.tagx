@@ -5,6 +5,7 @@
     <jsp:directive.attribute name="messageBeanList" type="java.util.List" required="true" description="The list of message beans"/>
 
     <div class="c-Previous__message">
+        <p class="c-Previous__message__header">From <i>${messageBeanList.get(i).from.displayName}</i> on ${messageBeanList.get(i).createDate} (EST) : </p>
         ${messageBeanList.get(i).content}
         <c:if test = "${i lt messageBeanList.size()-1}">
             <c:set var="i" value="${i + 1}" scope="request"/>
