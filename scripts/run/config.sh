@@ -32,11 +32,13 @@ VIEW_DEPLOY_DIR=${DEPLOY_DIR}/view
 #= Load external config files id they exist and allow them to override variables
 # config file in home directory
 if [ -f ~/.xcolab.run-config.sh ]; then
+    echo "[INFO] Loading configuration from '~/.xcolab.run-config.sh'"
     source ~/.xcolab.run-config.sh
 fi
 
 # config file in parent directory
 if [ -f ../run-config.sh ]; then
+    echo "[INFO] Loading configuration from '../run-config.sh'"
     source ../run-config.sh
 fi
 
