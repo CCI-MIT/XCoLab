@@ -51,6 +51,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
+                            <!--TODO: xcolab_Proposal and xcolab_Proposal2Phase should not be here -->
 							<includes>comment_.* | xcolab_Proposal | xcolab_Proposal2Phase</includes>
 						</database>
 					</generator>

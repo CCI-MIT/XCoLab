@@ -77,7 +77,7 @@
 					<generator>
 						<database>
 							<includes>
-                                | members_Member | members_ColabSSO
+                                | members_Member
                                 | Users_Roles | Role_ | xcolab_MemberCategory
                                 | xcolab_ContestTeamMember | members_RoleGroupRoles | members_RoleGroup
                                 | Users_Groups | xcolab_StaffMember

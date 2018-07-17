@@ -16,6 +16,6 @@ logging:
     org.springframework.boot.web: WARN
     org.springframework.boot.actuate: WARN
 
-
+# This service does not manage any entities
 flyway:
-  table: search_flyway_schema_version
+  enabled: false

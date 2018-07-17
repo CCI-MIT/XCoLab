@@ -17,4 +17,4 @@ logging:
     org.springframework.boot.actuate: WARN
 
 flyway:
-  table: sharedcolab_flyway_schema_version
+  enabled: false

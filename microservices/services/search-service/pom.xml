@@ -36,10 +36,11 @@
                 <artifactId>properties-maven-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-            </plugin>
+            <!--
+                Note: this service does not manage any database entities.
+                Hence, there is no flyway plugin.
+            -->
+
             <plugin>
 				<groupId>org.jooq</groupId>
 				<artifactId>jooq-codegen-maven</artifactId>

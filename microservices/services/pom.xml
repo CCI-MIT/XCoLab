@@ -73,6 +73,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+            <version>5.0.7</version>
         </dependency>
 
         <!-- testing dependencies -->
@@ -150,7 +151,7 @@
                 <plugin>
                     <groupId>org.flywaydb</groupId>
                     <artifactId>flyway-maven-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>5.0.7</version>
                     <executions>
                         <execution>
                             <phase>generate-sources</phase>
@@ -170,6 +171,10 @@
                         <table>${flyway.table}</table>
 
                         <baselineOnMigrate>true</baselineOnMigrate>
+                        <baselineVersion>0</baselineVersion>
+
+                        <!-- Allow migrations to be applied even if a higher version was already run -->
+                        <outOfOrder>true</outOfOrder>
                     </configuration>
                 </plugin>
                 <plugin>
