@@ -18,4 +18,6 @@ logging:
     org.xcolab.service.contest.utils.promotion: INFO;
 
 flyway:
-  table: contest_flyway_schema_version
+  table: flyway_contest_schema_version
+  baselineOnMigrate: true
+  baselineVersion: 0

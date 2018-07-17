@@ -18,4 +18,6 @@ logging:
 
 
 flyway:
-  table: email_flyway_schema_version
+  table: flyway_email_schema_version
+  baselineOnMigrate: true
+  baselineVersion: 0

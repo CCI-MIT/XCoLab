@@ -170,9 +170,6 @@
                         <!--suppress MavenModelInspection (read from application.yml) -->
                         <table>${flyway.table}</table>
 
-                        <baselineOnMigrate>true</baselineOnMigrate>
-                        <baselineVersion>0</baselineVersion>
-
                         <!-- Allow migrations to be applied even if a higher version was already run -->
                         <outOfOrder>true</outOfOrder>
                     </configuration>

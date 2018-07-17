@@ -18,4 +18,6 @@ logging:
 
 
 flyway:
-  table: activity_flyway_schema_version
+  table: flyway_activity_schema_version
+  baselineOnMigrate: true
+  baselineVersion: 0

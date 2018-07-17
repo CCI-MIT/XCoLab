@@ -17,4 +17,6 @@ logging:
     org.springframework.boot.actuate: WARN
 
 flyway:
-  table: content_flyway_schema_version
+  table: flyway_content_schema_version
+  baselineOnMigrate: true
+  baselineVersion: 0
