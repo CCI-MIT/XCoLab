@@ -16,4 +16,5 @@ logging:
     org.springframework.boot.web: WARN
     org.springframework.boot.actuate: WARN
 
-flyway.table: comment_flyway_schema_version
+flyway:
+  table: comment_flyway_schema_version

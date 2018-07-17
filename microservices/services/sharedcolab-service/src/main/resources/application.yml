@@ -16,4 +16,5 @@ logging:
     org.springframework.boot.web: WARN
     org.springframework.boot.actuate: WARN
 
-flyway.table: sharedcolab_flyway_schema_version
+flyway:
+  table: sharedcolab_flyway_schema_version

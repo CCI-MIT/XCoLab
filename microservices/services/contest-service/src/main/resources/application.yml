@@ -17,4 +17,5 @@ logging:
     org.springframework.boot.actuate: WARN
     org.xcolab.service.contest.utils.promotion: INFO;
 
-flyway.table: contest_flyway_schema_version
+flyway:
+  table: contest_flyway_schema_version

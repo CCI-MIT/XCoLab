@@ -17,4 +17,5 @@ logging:
     org.springframework.boot.actuate: WARN
 
 
-flyway.table: activity_flyway_schema_version
+flyway:
+  table: activity_flyway_schema_version

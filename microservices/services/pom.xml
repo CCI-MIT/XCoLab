@@ -109,140 +109,146 @@
     <!-- jooq plugin configuration-->
 
     <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>src/main/resources/application.properties</file>
-                                <file>${user.home}/.xcolab.application.properties</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>migrate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!--suppress MavenModelInspection (read from database-config) -->
-                    <url>${db.url.base}/${db.schema}?${db.url.params}</url>
-                    <!--suppress MavenModelInspection (read from database-config) -->
-                    <user>${db.username}</user>
-                    <!--suppress MavenModelInspection (read from database-config) -->
-                    <password>${db.password}}</password>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-codegen-maven</artifactId>
-                <version>${jooq.version}</version>
-
-                <!-- The plugin should hook into the generate goal -->
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
-                <dependencies>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>5.1.46</version>
-                    </dependency>
-                    
-                    <dependency>
-                        <groupId>org.xcolab</groupId>
-                        <artifactId>service-utils</artifactId>
-                        <version>1.0-SNAPSHOT</version>
-                    </dependency>
-                </dependencies>
-
-                <!-- Specify the plugin configuration.
-                     The configuration format is the same as for the standalone code generator -->
-                <configuration>
-
-                    <logging>WARN</logging>
-
-                    <!-- JDBC connection parameters -->
-                    <jdbc>
-                        <driver>${db.driver}</driver>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>it.ozimov</groupId>
+                    <artifactId>yaml-properties-maven-plugin</artifactId>
+                    <version>1.1.3</version>
+                    <executions>
+                        <execution>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>read-project-properties</goal>
+                            </goals>
+                            <configuration>
+                                <files>
+                                    <file>src/main/resources/application.yml</file>
+                                </files>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+                    <executions>
+                        <execution>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>read-project-properties</goal>
+                            </goals>
+                            <configuration>
+                                <files>
+                                    <file>${user.home}/.xcolab.application.properties</file>
+                                </files>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.flywaydb</groupId>
+                    <artifactId>flyway-maven-plugin</artifactId>
+                    <version>3.2.1</version>
+                    <executions>
+                        <execution>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>migrate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!--suppress MavenModelInspection (read from ~/.xcolab.application.properties) -->
                         <url>${db.url.base}/${db.schema}?${db.url.params}</url>
+                        <!--suppress MavenModelInspection (read from ~/.xcolab.application.properties) -->
                         <user>${db.username}</user>
+                        <!--suppress MavenModelInspection (read from ~/.xcolab.application.properties) -->
                         <password>${db.password}</password>
-                    </jdbc>
+                        <!--suppress MavenModelInspection (read from application.yml) -->
+                        <table>${flyway.table}</table>
 
-                    <!-- Generator parameters -->
-                    <generator>
-                        <name>org.jooq.util.JavaGenerator</name>
-                        <database>
-                            <name>org.jooq.util.mysql.MySQLDatabase</name>
-                            <includes>empty</includes>
-                            <inputSchema>${db.schema}</inputSchema>
-                            <forcedTypes>
-                                <forcedType>
-                                    <name>BOOLEAN</name>
-                                    <types>(?i:TINYINT(\s*\(\d+\))?(\s*UNSIGNED)?)</types>
-                                </forcedType>
-                            </forcedTypes>
+                        <baselineOnMigrate>true</baselineOnMigrate>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jooq</groupId>
+                    <artifactId>jooq-codegen-maven</artifactId>
+                    <version>${jooq.version}</version>
 
-                            <!-- creates unqualified table names in queries to allow binaries to be used with different schemas -->
-                            <outputSchemaToDefault>true</outputSchemaToDefault>
-                        </database>
-                        <generate>
-                            <pojos>true</pojos>
-                            <pojosEqualsAndHashCode>true</pojosEqualsAndHashCode>
-                        </generate>
-                        <target>
-                            <packageName>org.xcolab.model</packageName>
-                            <directory>target/generated-sources/jooq</directory>
-                        </target>
-                        <strategy>
-                            <name>org.xcolab.service.utils.db.jooq.generator.XColabGeneratorStrategy</name>
-                        </strategy>
-                    </generator>
-                </configuration>
-            </plugin>
-        </plugins>
+                    <!-- The plugin should hook into the generate goal -->
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+
+                    <dependencies>
+                        <dependency>
+                            <groupId>mysql</groupId>
+                            <artifactId>mysql-connector-java</artifactId>
+                            <version>5.1.46</version>
+                        </dependency>
+
+                        <dependency>
+                            <groupId>org.xcolab</groupId>
+                            <artifactId>service-utils</artifactId>
+                            <version>1.0-SNAPSHOT</version>
+                        </dependency>
+                    </dependencies>
+
+                    <!-- Specify the plugin configuration.
+                         The configuration format is the same as for the standalone code generator -->
+                    <configuration>
+
+                        <logging>WARN</logging>
+
+                        <!-- JDBC connection parameters -->
+                        <jdbc>
+                            <driver>${db.driver}</driver>
+                            <url>${db.url.base}/${db.schema}?${db.url.params}</url>
+                            <user>${db.username}</user>
+                            <password>${db.password}</password>
+                        </jdbc>
+
+                        <!-- Generator parameters -->
+                        <generator>
+                            <name>org.jooq.util.JavaGenerator</name>
+                            <database>
+                                <name>org.jooq.util.mysql.MySQLDatabase</name>
+                                <includes>empty</includes>
+                                <inputSchema>${db.schema}</inputSchema>
+                                <forcedTypes>
+                                    <forcedType>
+                                        <name>BOOLEAN</name>
+                                        <types>(?i:TINYINT(\s*\(\d+\))?(\s*UNSIGNED)?)</types>
+                                    </forcedType>
+                                </forcedTypes>
+
+                                <!-- creates unqualified table names in queries to allow binaries to be used with different schemas -->
+                                <outputSchemaToDefault>true</outputSchemaToDefault>
+                            </database>
+                            <generate>
+                                <pojos>true</pojos>
+                                <pojosEqualsAndHashCode>true</pojosEqualsAndHashCode>
+                            </generate>
+                            <target>
+                                <packageName>org.xcolab.model</packageName>
+                                <directory>target/generated-sources/jooq</directory>
+                            </target>
+                            <strategy>
+                                <name>org.xcolab.service.utils.db.jooq.generator.XColabGeneratorStrategy</name>
+                            </strategy>
+                        </generator>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+
     </build>
 
     <profiles>
