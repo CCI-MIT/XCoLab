@@ -199,7 +199,7 @@ public class ContestClient {
 
     public Integer getProposalCount(Long contestId) {
         try {
-            return contestResource.<Proposal, Integer>service(contestId,
+            return contestResource.<Proposal, Integer>elementService(contestId,
                     "proposalCountForActivePhase", Integer.class)
                     .withCache(CacheKeys.withClass(Proposal.class)
                             .withParameter("contestId", contestId).asCount(), CacheName.MISC_MEDIUM)
@@ -246,7 +246,7 @@ public class ContestClient {
     }
 
     public boolean isContestShared(long contestId) {
-        return contestResource.<Contest, Boolean>service(contestId, "isShared", Boolean.class)
+        return contestResource.<Contest, Boolean>elementService(contestId, "isShared", Boolean.class)
                 .withCache(CacheKeys.withClass(Contest.class)
                         .withParameter("contestId", contestId)
                         .withParameter("service", "isShared")
@@ -257,7 +257,7 @@ public class ContestClient {
 
     public boolean isContestNameYearUnique(String contestShortName, Long year,Long currentContestId) {
 
-        return contestResource.service("isContestNameYearUnique", Boolean.class)
+        return contestResource.collectionService("isContestNameYearUnique", Boolean.class)
                 .queryParam("contestShortName", contestShortName)
                 .queryParam("year",year)
                 .queryParam("currentContestId",currentContestId)
@@ -311,7 +311,7 @@ public class ContestClient {
     //TODO COLAB-2595: Confusing Variable naming
     public List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
         return DtoUtil.toPojos(contestResource
-                .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
+                .collectionService("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
                 .queryParam("focusAreaIds", ontologyTermIds.toArray())
                 .getList(), serviceNamespace);
     }
@@ -323,7 +323,7 @@ public class ContestClient {
 
     public Contest getContestByThreadId(Long threadId) {
         try {
-            return contestResource.service("getContestByThreadId", ContestDto.class)
+            return contestResource.collectionService("getContestByThreadId", ContestDto.class)
                     .queryParam("threadId", threadId).execute().toPojo(serviceNamespace);
         } catch (UncheckedEntityNotFoundException e) {
             throw new ContestNotFoundException("No contest with threadId = " + threadId);
@@ -332,14 +332,14 @@ public class ContestClient {
 
     public Contest getContestByResourceArticleId(Long resourceArticleId) {
         return contestResource
-                .service("getContestByResourceArticleId", ContestDto.class)
+                .collectionService("getContestByResourceArticleId", ContestDto.class)
                 .queryParam("resourceArticleId", resourceArticleId)
                 .execute().toPojo(serviceNamespace);
     }
 
 
     public int getNumberOfAllContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
-        return contestResource.service("getNumberOfAllContestsInCollectionCard", Integer.class)
+        return contestResource.collectionService("getNumberOfAllContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
                 .queryParam("viewType", viewType)
                 .queryParam("onlyFeatured", onlyFeatured)
@@ -347,7 +347,7 @@ public class ContestClient {
     }
 
     public int getNumberOfActiveContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
-        return contestResource.service("getNumberOfActiveContestsInCollectionCard", Integer.class)
+        return contestResource.collectionService("getNumberOfActiveContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
                 .queryParam("viewType", viewType)
                 .queryParam("onlyFeatured", onlyFeatured)
@@ -355,7 +355,7 @@ public class ContestClient {
     }
 
     public int getNumberOfPriorContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
-        return contestResource.service("getNumberOfPriorContestsInCollectionCard", Integer.class)
+        return contestResource.collectionService("getNumberOfPriorContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
                 .queryParam("viewType", viewType)
                 .queryParam("onlyFeatured", onlyFeatured)
@@ -378,20 +378,20 @@ public class ContestClient {
 
     public List<Contest> getContestByOntologyTerm(Long ontologyTermId, Boolean getActive) {
         return DtoUtil.toPojos(contestResource
-                .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
+                .collectionService("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
                 .queryParam("focusAreaOntologyTerm", ontologyTermId)
                 .queryParam("getActive", getActive)
                 .getList(), serviceNamespace);
     }
 
     public int getNumberOfContestsByOntologyTerm(Long ontologyTermId) {
-        return contestResource.service("getNumberOfContestsByOntologyTerm", Integer.class)
+        return contestResource.collectionService("getNumberOfContestsByOntologyTerm", Integer.class)
                 .queryParam("ontologyTermId", ontologyTermId)
                 .execute();
     }
 
     public List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
-        return DtoUtil.toPojos(contestResource.service(contestId, "getSubContestsByOntologySpaceId",
+        return DtoUtil.toPojos(contestResource.elementService(contestId, "getSubContestsByOntologySpaceId",
                 ContestDto.TYPES.getTypeReference())
                 .optionalQueryParam("ontologySpaceId", ontologySpaceId)
                 .getList(), serviceNamespace);
@@ -399,12 +399,12 @@ public class ContestClient {
     }
 
     public int autoPromoteProposals() {
-        return contestPhasesResource.service("autoPromoteProposals", Integer.class).get();
+        return contestPhasesResource.collectionService("autoPromoteProposals", Integer.class).get();
     }
 
     public void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId) {
         contestPhasesResource
-                .service(contestPhaseId, "forcePromotionOfProposalInContestPhaseId", Boolean.class)
+                .elementService(contestPhaseId, "forcePromotionOfProposalInContestPhaseId", Boolean.class)
                 .queryParam("proposalId", proposalId)
                 .put();
 
@@ -548,7 +548,7 @@ public class ContestClient {
     }
 
     public boolean isContestScheduleUsed(long contestScheduleId) {
-        return contestScheduleResource.service(contestScheduleId, "isUsed", Boolean.class)
+        return contestScheduleResource.elementService(contestScheduleId, "isUsed", Boolean.class)
                 .get();
     }
 
@@ -583,7 +583,7 @@ public class ContestClient {
     }
 
     public ContestPhase getActivePhase(Long contestId) {
-        return contestResource.<ContestPhaseDto, ContestPhaseDto>service(contestId, "activePhase", ContestPhaseDto.class)
+        return contestResource.<ContestPhaseDto, ContestPhaseDto>elementService(contestId, "activePhase", ContestPhaseDto.class)
                 .withCache(CacheKeys.withClass(ContestPhaseDto.class)
                         .withParameter("contestId", contestId)
                         .withParameter("active", true).build(), CacheName.MISC_REQUEST)

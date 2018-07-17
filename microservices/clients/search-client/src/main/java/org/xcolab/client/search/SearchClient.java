@@ -31,7 +31,7 @@ public final class SearchClient {
     }
     public static Integer searchCount(String sort, String query) {
         try {
-            return searchResource.service("count", Integer.class)
+            return searchResource.collectionService("count", Integer.class)
                     .optionalQueryParam("sort", sort)
                     .optionalQueryParam("query", query)
                     .getChecked();

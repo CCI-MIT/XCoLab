@@ -201,14 +201,14 @@ public class OntologyClient {
 
     public List<OntologyTerm> getAllOntologyTermDescendant(Long ontologyTermId) {
         return DtoUtil.toPojos(ontologyTermResource
-                .service("getAllOntologyTermDescendant", OntologyTermDto.TYPES.getTypeReference())
+                .collectionService("getAllOntologyTermDescendant", OntologyTermDto.TYPES.getTypeReference())
                 .queryParam("ontologyTermId", ontologyTermId)
                 .getList(), serviceNamespace);
     }
 
     public List<OntologyTerm> getOntologyTermsByFocusAreaOntologySpaceName(Long focusAreaId, String ontologySpaceName) {
         return DtoUtil.toPojos(ontologyTermResource
-                .service("getOntologyTermsByFocusAreaOntologySpaceName", OntologyTermDto.TYPES.getTypeReference())
+                .collectionService("getOntologyTermsByFocusAreaOntologySpaceName", OntologyTermDto.TYPES.getTypeReference())
                 .queryParam("focusAreaId", focusAreaId)
                 .queryParam("ontologySpaceName", ontologySpaceName)
                 .getList(), serviceNamespace);
@@ -236,7 +236,7 @@ public class OntologyClient {
     }
 
     public boolean deleteFocusAreaOntologyTerm(Long focusAreaId,Long ontologyTermId) {
-        return  focusAreaOntologyTermResource.service("deleteFocusAreaOntologyTerm",Boolean.class)
+        return  focusAreaOntologyTermResource.collectionService("deleteFocusAreaOntologyTerm",Boolean.class)
                 .queryParam("focusAreaId",focusAreaId)
                 .queryParam("ontologyTermId", ontologyTermId).delete();
     }

@@ -113,7 +113,7 @@ public class ContestTeamMemberClient {
                 .execute(), serviceNamespace);
     }
     public List<ContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
-        return DtoUtil.toPojos(contestTeamMemberResource.service("getByContestYear",ContestTeamMemberDto.TYPES.getTypeReference())
+        return DtoUtil.toPojos(contestTeamMemberResource.collectionService("getByContestYear",ContestTeamMemberDto.TYPES.getTypeReference())
                 .optionalQueryParam("categoryId", categoryId)
                 .optionalQueryParam("contestYear", contestYear)
                 .getList(), serviceNamespace);

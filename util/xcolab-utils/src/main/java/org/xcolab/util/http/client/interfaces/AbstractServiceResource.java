@@ -27,52 +27,37 @@ public abstract class AbstractServiceResource implements ServiceResource {
     }
 
     @Override
-    public <T, R> ServiceQuery<T, R> service(long id, String serviceEndpoint, Class<R> returnType) {
-        return new ServiceQuery<>(this, id, serviceEndpoint, returnType);
-    }
-
-    @Override
-    public <T, R> ServiceQuery<T, R> service(String id, String serviceEndpoint,
+    public <T, R> ServiceQuery<T, R> elementService(Object id, String serviceEndpoint,
             Class<R> returnType) {
-        return new ServiceQuery<>(this, id, serviceEndpoint, returnType);
+        return ServiceQuery.createElementService(this, id, serviceEndpoint, returnType);
     }
 
     @Override
-    public <T, R> ServiceQuery<T, R> service(String serviceEndpoint, Class<R> returnType) {
-        return new ServiceQuery<>(this, serviceEndpoint, returnType);
+    public <T, R> ServiceQuery<T, R> collectionService(String serviceEndpoint, Class<R> returnType) {
+        return ServiceQuery.createCollectionService(this, serviceEndpoint, returnType);
     }
 
     @Override
-    public <T, R> ServiceQuery<T, R> query(long id, Class<R> returnType) {
-        return new ServiceQuery<>(this, id, returnType);
+    public <T, R> ServiceQuery<T, R> elementQuery(Object id, Class<R> returnType) {
+        return ServiceQuery.createElementQuery(this, id, returnType);
     }
 
     @Override
-    public <T, R> ServiceQuery<T, R> query(String id, Class<R> returnType) {
-        return new ServiceQuery<>(this, id, returnType);
+    public <T, R> ServiceQuery<T, R> collectionQuery(Class<R> returnType) {
+        return ServiceQuery.createCollectionQuery(this, returnType);
     }
 
     @Override
-    public <T, R> ServiceQuery<T, R> query(Class<R> returnType) {
-        return new ServiceQuery<>(this, returnType);
-    }
-
-    @Override
-    public <T, R> ServiceQuery<T, R> service(long id, String serviceEndpoint,
+    public <T, R> ServiceQuery<T, R> elementService(Object id, String serviceEndpoint,
             ParameterizedTypeReference<List<T>> typeReference) {
-        return new ServiceQuery<>(this, id, serviceEndpoint, typeReference);
+        return ServiceQuery.createElementService(this, id, serviceEndpoint,
+                typeReference);
     }
 
     @Override
-    public <T, R> ServiceQuery<T, R> service(String id, String serviceEndpoint,
+    public <T, R> ServiceQuery<T, R> collectionService(String serviceEndpoint,
             ParameterizedTypeReference<List<T>> typeReference) {
-        return new ServiceQuery<>(this, id, serviceEndpoint, typeReference);
-    }
-
-    @Override
-    public <T, R> ServiceQuery<T, R> service(String serviceEndpoint,
-            ParameterizedTypeReference<List<T>> typeReference) {
-        return new ServiceQuery<>(this, serviceEndpoint, typeReference);
+        return ServiceQuery.createCollectionService(this, serviceEndpoint, typeReference);
     }
 
 }

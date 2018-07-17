@@ -107,7 +107,7 @@ public class PlanTemplateClient {
     }
 
     public Boolean deletePlanTemplateSection(Long planTemplateId, Long planSectionDefinitionId) {
-        return planTemplateSectionResource.service("deletePlanTemplateSection", Boolean.class)
+        return planTemplateSectionResource.collectionService("deletePlanTemplateSection", Boolean.class)
                 .queryParam("planTemplateId", planTemplateId)
                 .queryParam("planSectionDefinitionId", planSectionDefinitionId)
                 .delete();
@@ -124,7 +124,7 @@ public class PlanTemplateClient {
     }
 
     public boolean updatePlanTemplateSection(PlanTemplateSection planTemplateSection) {
-        return planTemplateSectionResource.service("updateTemplateSection",Boolean.class)
+        return planTemplateSectionResource.collectionService("updateTemplateSection",Boolean.class)
                 .post(new PlanTemplateSectionDto(planTemplateSection));
     }
 

@@ -76,7 +76,7 @@ class CommentServiceWrapper {
     public int countCommentsInContestPhase(long contestPhaseId, long contestId,
             CacheName cacheName) {
         try {
-            return commentResource.<Comment, Integer>service("countCommentsInContestPhase", Integer.class)
+            return commentResource.<Comment, Integer>collectionService("countCommentsInContestPhase", Integer.class)
                     .queryParam("contestPhaseId", contestPhaseId)
                     .queryParam("contestId", contestId)
                     .withCache(CacheKeys.withClass(Comment.class)
@@ -91,7 +91,7 @@ class CommentServiceWrapper {
 
     public int countCommentsInProposals(List<Long> threadIds, CacheName cacheName) {
         try {
-            return commentResource.<Comment, Integer>service("countCommentsInProposals", Integer.class)
+            return commentResource.<Comment, Integer>collectionService("countCommentsInProposals", Integer.class)
                     .queryParam("threadIds", convertListToGetParameter(threadIds, "threadIds"))
                     .withCache(CacheKeys.withClass(Comment.class)
                             .withParameter("threadIds", convertListToGetParameter(threadIds, "threadIds"))
@@ -167,13 +167,13 @@ class CommentServiceWrapper {
     }
 
     public void deleteProposalThreads(List<Long> proposalPKs) {
-        threadResource.service("deleteProposalThreads", Boolean.class)
+        threadResource.collectionService("deleteProposalThreads", Boolean.class)
                 .post(proposalPKs);
     }
 
     public Date getLastActivityDate(long threadId, CacheName cacheName) {
         try {
-            return threadResource.<CommentThread, Date>service(threadId, "lastActivityDate", Date.class)
+            return threadResource.<CommentThread, Date>elementService(threadId, "lastActivityDate", Date.class)
                     .withCache(CacheKeys.withClass(CommentThread.class)
                             .withParameter("threadId", threadId)
                             .withParameter("date", "lastActivity")
@@ -186,7 +186,7 @@ class CommentServiceWrapper {
 
     public long getLastActivityAuthorId(long threadId, CacheName cacheName) {
         try {
-            return threadResource.<CommentThread, Long>service(threadId, "lastActivityAuthorId", Long.class)
+            return threadResource.<CommentThread, Long>elementService(threadId, "lastActivityAuthorId", Long.class)
                     .withCache(CacheKeys.withClass(CommentThread.class)
                             .withParameter("threadId", threadId)
                             .withParameter("author", "lastActivity")

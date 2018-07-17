@@ -88,7 +88,7 @@ public final class ActivitiesClient {
 
     public int countActivities(Long memberId, List<Long> memberIdsToExclude) {
         try {
-            return activityEntryResource.<ActivityEntry, Integer>service("count", Integer.class)
+            return activityEntryResource.<ActivityEntry, Integer>collectionService("count", Integer.class)
                     .optionalQueryParam("memberId", memberId)
                     .optionalQueryParam("memberIdsToExclude", memberIdsToExclude)
                     .withCache(CacheKeys.withClass(ActivityEntry.class)
@@ -132,7 +132,7 @@ public final class ActivitiesClient {
     }
 
     public ActivitySubscription addSubscription(long memberId, ActivityCategory activityCategory, long categoryId) {
-        return activitySubscriptionResource.service("subscribe", ActivitySubscription.class)
+        return activitySubscriptionResource.collectionService("subscribe", ActivitySubscription.class)
                 .queryParam("receiverId", memberId)
                 .queryParam("activityCategory", activityCategory)
                 .queryParam("categoryId", categoryId)
@@ -141,7 +141,7 @@ public final class ActivitiesClient {
 
     public boolean deleteSubscription(Long receiverId, ActivityCategory activityCategory,
             Long categoryId) {
-        return activitySubscriptionResource.service("deleteIfSubscribed", Boolean.class)
+        return activitySubscriptionResource.collectionService("deleteIfSubscribed", Boolean.class)
                 .queryParam("receiverId", receiverId)
                 .queryParam("activityCategory", activityCategory)
                 .queryParam("categoryId", categoryId)
@@ -153,14 +153,14 @@ public final class ActivitiesClient {
     }
 
     public boolean batchDelete(ActivityCategory activityCategory, List<Long> categoryIds) {
-        return activitySubscriptionResource.service("batchDelete", Boolean.class)
+        return activitySubscriptionResource.collectionService("batchDelete", Boolean.class)
                 .queryParam("activityCategory", activityCategory)
                 .post(categoryIds);
     }
 
     public boolean isSubscribedToActivity(Long receiverId, ActivityCategory activityCategory,
             Long categoryId) {
-        return activitySubscriptionResource.service("isSubscribed", Boolean.class)
+        return activitySubscriptionResource.collectionService("isSubscribed", Boolean.class)
                 .queryParam("receiverId", receiverId)
                 .queryParam("activityCategory", activityCategory)
                 .queryParam("categoryId", categoryId)

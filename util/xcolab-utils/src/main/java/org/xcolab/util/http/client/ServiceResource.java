@@ -9,24 +9,18 @@ import java.util.List;
 
 public interface ServiceResource extends HttpResource {
 
-    <T, R> ServiceQuery<T, R> service(long id, String serviceEndpoint, Class<R> returnType);
+    <T, R> ServiceQuery<T, R> elementService(Object id, String serviceEndpoint,
+            Class<R> returnType);
 
-    <T, R> ServiceQuery<T, R> service(String id, String serviceEndpoint, Class<R> returnType);
+    <T, R> ServiceQuery<T, R> collectionService(String serviceEndpoint, Class<R> returnType);
 
-    <T, R> ServiceQuery<T, R> service(String serviceEndpoint, Class<R> returnType);
+    <T, R> ServiceQuery<T, R> elementQuery(Object id, Class<R> returnType);
 
-    <T, R> ServiceQuery<T, R> query(long id, Class<R> returnType);
+    <T, R> ServiceQuery<T, R> collectionQuery(Class<R> returnType);
 
-    <T, R> ServiceQuery<T, R> query(String id, Class<R> returnType);
-
-    <T, R> ServiceQuery<T, R> query(Class<R> returnType);
-
-    <T, R> ServiceQuery<T, R> service(long id, String serviceEndpoint,
+    <T, R> ServiceQuery<T, R> elementService(Object id, String serviceEndpoint,
             ParameterizedTypeReference<List<T>> typeReference);
 
-    <T, R> ServiceQuery<T, R> service(String id, String serviceEndpoint,
-            ParameterizedTypeReference<List<T>> typeReference);
-
-    <T, R> ServiceQuery<T, R> service(String serviceEndpoint,
+    <T, R> ServiceQuery<T, R> collectionService(String serviceEndpoint,
             ParameterizedTypeReference<List<T>> typeReference);
 }

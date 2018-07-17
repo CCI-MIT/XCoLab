@@ -225,7 +225,7 @@ public final class ContentsClient {
     public static ContentPage getContentPageByContentArticleId(Long contentArticleId) {
         try {
             return contentPageResource
-                    .service("getByContentArticleId", ContentPage.TYPES.getEntityType())
+                    .collectionService("getByContentArticleId", ContentPage.TYPES.getEntityType())
                     .queryParam("contentArticleId", contentArticleId).getChecked();
         } catch (EntityNotFoundException enfe) {
             return null;

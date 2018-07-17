@@ -160,7 +160,7 @@ public final class MessagingClient {
     }
 
     public static MessagingUserPreferences getMessagingPreferencesForMember(long memberId) {
-        return memberResource.service(memberId, "messagingPreferences", MessagingUserPreferences.class)
+        return memberResource.elementService(memberId, "messagingPreferences", MessagingUserPreferences.class)
                 .get();
     }
 
@@ -182,13 +182,13 @@ public final class MessagingClient {
 
 
     public static boolean canMemberSendMessage(long memberId, int messagesToSend) {
-        return memberResource.service(memberId, "canSendMessage", Boolean.class)
+        return memberResource.elementService(memberId, "canSendMessage", Boolean.class)
                 .queryParam("messagesToSend", messagesToSend)
                 .get();
     }
 
     public static int getNumberOfMessagesLeft(long memberId) {
-        return memberResource.service(memberId, "numberOfMessagesLeft", Integer.class)
+        return memberResource.elementService(memberId, "numberOfMessagesLeft", Integer.class)
                 .get();
     }
 }

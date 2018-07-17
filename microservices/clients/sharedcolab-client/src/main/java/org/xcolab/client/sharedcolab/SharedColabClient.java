@@ -20,13 +20,13 @@ public class SharedColabClient {
 
 
     public static void updateSharedContestName(Long sharedContestId, String sharedContestName) {
-        sharedContestResource.service(sharedContestId,"updateSharedContestName", Boolean.class)
+        sharedContestResource.elementService(sharedContestId,"updateSharedContestName", Boolean.class)
                 .queryParam("sharedContestName", sharedContestName)
                 .put();
     }
 
     public static Long retrieveContestSharedId(String sharedContestName, String colabName) {
-        return sharedContestResource.service("retrieveSharedId", Long.class)
+        return sharedContestResource.collectionService("retrieveSharedId", Long.class)
                 .queryParam("sharedContestName", sharedContestName)
                 .queryParam("colabOrigin", colabName)
                 .post();

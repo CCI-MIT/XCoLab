@@ -31,14 +31,14 @@ public class UsersGroupsClient {
     }
 
     public void removeMemberFromGroup(long memberId, long groupId) {
-        usersGroupsResource.service("deleteUsersGroups", Boolean.class)
+        usersGroupsResource.collectionService("deleteUsersGroups", Boolean.class)
                 .queryParam("userId", memberId)
                 .queryParam("groupId", groupId)
                 .delete();
     }
 
     public boolean deleteGroups(List<Long> groupIds) {
-        return usersGroupsResource.service("batchDelete", Boolean.class)
+        return usersGroupsResource.collectionService("batchDelete", Boolean.class)
                 .post(groupIds);
     }
 

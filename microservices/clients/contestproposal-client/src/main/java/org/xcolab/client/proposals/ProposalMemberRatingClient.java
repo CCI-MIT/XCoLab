@@ -71,7 +71,7 @@ public final class ProposalMemberRatingClient {
     }
 
     public Integer getProposalSupportersCount(Long proposalId) {
-        return proposalSupporterResource.<ProposalSupporterDto, Integer>service("count", Integer.class)
+        return proposalSupporterResource.<ProposalSupporterDto, Integer>collectionService("count", Integer.class)
                 .optionalQueryParam("proposalId", proposalId)
                 .withCache(CacheKeys.withClass(ProposalSupporterDto.class)
                         .withParameter("proposalId", proposalId)
@@ -80,7 +80,7 @@ public final class ProposalMemberRatingClient {
     }
 
     public Integer getProposalSupportersCountCached(Long proposalId) {
-        return proposalSupporterResource.<ProposalSupporterDto, Integer>service("count", Integer.class)
+        return proposalSupporterResource.<ProposalSupporterDto, Integer>collectionService("count", Integer.class)
             .optionalQueryParam("proposalId", proposalId)
             .withCache(CacheKeys.withClass(ProposalSupporterDto.class)
                 .withParameter("proposalId", proposalId)
@@ -89,7 +89,7 @@ public final class ProposalMemberRatingClient {
     }
 
     public Boolean isMemberProposalSupporter(Long proposalId, Long memberId) {
-        return proposalSupporterResource.service("isMemberProposalSupporter", Boolean.class)
+        return proposalSupporterResource.collectionService("isMemberProposalSupporter", Boolean.class)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("memberId", memberId)
                 .get();
@@ -121,7 +121,7 @@ public final class ProposalMemberRatingClient {
     }
 
     public Boolean deleteProposalSupporter(Long proposalId, Long memberId) {
-        return proposalSupporterResource.service("deleteProposalSupporter", Boolean.class)
+        return proposalSupporterResource.collectionService("deleteProposalSupporter", Boolean.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("memberId", memberId)
                 .delete();
@@ -129,7 +129,7 @@ public final class ProposalMemberRatingClient {
 
     public Integer countProposalVotesInContestPhase(Long contestPhaseId) {
         try {
-            return proposalVoteResource.<Proposal, Integer>service("count", Integer.class)
+            return proposalVoteResource.<Proposal, Integer>collectionService("count", Integer.class)
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
                     .withCache(CacheKeys.withClass(Proposal.class)
                             .withParameter("contestPhaseId", contestPhaseId)
@@ -141,7 +141,7 @@ public final class ProposalMemberRatingClient {
     }
 
     public int countVotesByUserInPhase(long userId, long phaseId) {
-        return proposalVoteResource.<ProposalVoteDto, Integer>service("count", Integer.class)
+        return proposalVoteResource.<ProposalVoteDto, Integer>collectionService("count", Integer.class)
                 .queryParam("userId", userId)
                 .queryParam("contestPhaseId", phaseId)
                 .get();
@@ -149,7 +149,7 @@ public final class ProposalMemberRatingClient {
 
     public Integer countProposalVotesInContestPhaseProposalId(long contestPhaseId, long proposalId,
             CacheName cacheName) {
-        return proposalVoteResource.<ProposalVoteDto, Integer>service("count", Integer.class)
+        return proposalVoteResource.<ProposalVoteDto, Integer>collectionService("count", Integer.class)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .queryParam("proposalId", proposalId)
                 .withCache(CacheKeys.withClass(ProposalVoteDto.class)
@@ -160,14 +160,14 @@ public final class ProposalMemberRatingClient {
     }
 
     public Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long memberId) {
-        return proposalVoteResource.service("hasUserVoted", Boolean.class)
+        return proposalVoteResource.collectionService("hasUserVoted", Boolean.class)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("memberId", memberId)
                 .optionalQueryParam("proposalId", proposalId)
                 .get();
     }
     public  Boolean hasUserVoted(Long contestPhaseId, Long memberId) {
-        return proposalVoteResource.service("hasUserVoted", Boolean.class)
+        return proposalVoteResource.collectionService("hasUserVoted", Boolean.class)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("memberId", memberId)
                 .get();
@@ -207,12 +207,12 @@ public final class ProposalMemberRatingClient {
     }
 
     public boolean updateProposalVote(ProposalVote proposalVote) {
-        return proposalVoteResource.service("updateVote", Boolean.class)
+        return proposalVoteResource.collectionService("updateVote", Boolean.class)
                 .post(proposalVote);
     }
 
     public boolean deleteProposalVote(long proposalId, long contestPhaseId, long memberId) {
-        return proposalVoteResource.service("deleteVote", Boolean.class)
+        return proposalVoteResource.collectionService("deleteVote", Boolean.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("memberId", memberId)
                 .queryParam("contestPhaseId", contestPhaseId)
@@ -237,7 +237,7 @@ public final class ProposalMemberRatingClient {
     public ProposalVote getProposalVoteByProposalIdUserId(Long proposalId, Long userId) {
         try {
             return proposalVoteResource
-                    .service("getProposalVoteByProposalIdUserId", ProposalVoteDto.class)
+                    .collectionService("getProposalVoteByProposalIdUserId", ProposalVoteDto.class)
                     .optionalQueryParam("proposalId", proposalId)
                     .optionalQueryParam("userId", userId)
                     .getChecked()

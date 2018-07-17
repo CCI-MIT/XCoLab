@@ -110,7 +110,7 @@ public final class MembersClient {
 
     public static Integer countMembers(String categoryFilterValue, String screenNameFilterValue) {
         try {
-            return memberResource.<Member, Integer>service("count", Integer.class)
+            return memberResource.<Member, Integer>collectionService("count", Integer.class)
                     .optionalQueryParam("screenName", screenNameFilterValue)
                     .optionalQueryParam("category", categoryFilterValue)
                     .withCache(CacheKeys.withClass(Member.class)
@@ -124,7 +124,7 @@ public final class MembersClient {
 
     public static Integer getMemberMaterializedPoints(long memberId) {
         try {
-            return memberResource.<Member, Integer>service(memberId,"points", Integer.class)
+            return memberResource.<Member, Integer>elementService(memberId,"points", Integer.class)
                     .withCache(CacheKeys.withClass(Member.class)
                             .withParameter("memberId", memberId)
                             .asCount(), CacheName.MISC_REQUEST)
@@ -137,7 +137,7 @@ public final class MembersClient {
 
     public static Integer getMemberHypotheticalPoints(long memberId) {
         try {
-            return memberResource.service(memberId, "points", Integer.class)
+            return memberResource.elementService(memberId, "points", Integer.class)
                     .queryParam("hypothetical", true)
                     .getChecked();
         } catch (EntityNotFoundException e) {
@@ -278,21 +278,21 @@ public final class MembersClient {
     }
 
     public static List<Member> findMembersByIp(String ip) {
-            return memberResource.service("findByIp",
+            return memberResource.collectionService("findByIp",
                     Member.TYPES.getTypeReference())
                     .queryParam("ip", ip).getList();
     }
 
 
     public static List<Member> findByScreenNameOrName(String ip) {
-        return memberResource.service("findByScreenNameOrName",
+        return memberResource.collectionService("findByScreenNameOrName",
                 Member.TYPES.getTypeReference())
                 .queryParam("name", ip).getList();
     }
 
     public static Member findMemberByScreenNameNoRole(String screenName) throws MemberNotFoundException {
         try {
-            return memberResource.service("findByScreenName", Member.class)
+            return memberResource.collectionService("findByScreenName", Member.class)
                     .queryParam("screenName", screenName).getChecked();
         } catch (EntityNotFoundException ignored) {
             throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
@@ -357,13 +357,13 @@ public final class MembersClient {
     }
 
     public static boolean isScreenNameUsed(String screenName) {
-        return memberResource.service("isUsed", Boolean.class)
+        return memberResource.collectionService("isUsed", Boolean.class)
                 .queryParam("screenName", screenName)
                 .get();
     }
 
     public static boolean isEmailUsed(String email) {
-        return memberResource.service("isUsed", Boolean.class)
+        return memberResource.collectionService("isUsed", Boolean.class)
                 .queryParam("email", email)
                 .get();
     }
@@ -371,7 +371,7 @@ public final class MembersClient {
     public static Long updateUserPassword(String forgotPasswordToken, String password) {
         password = encode(password);
 
-        final Long result = memberResource.service("updateForgottenPassword", Long.class)
+        final Long result = memberResource.collectionService("updateForgottenPassword", Long.class)
                 .queryParam("forgotPasswordToken", forgotPasswordToken)
                 .queryParam("password", password)
                 .post();
@@ -391,7 +391,7 @@ public final class MembersClient {
 
     public static boolean isForgotPasswordTokenValid(String passwordToken) {
         try {
-            return memberResource.service("validateForgotPasswordToken", Boolean.class)
+            return memberResource.collectionService("validateForgotPasswordToken", Boolean.class)
                     .queryParam("passwordToken", passwordToken)
                     .getChecked();
         } catch (EntityNotFoundException e) {
@@ -400,7 +400,7 @@ public final class MembersClient {
     }
 
     public static String createForgotPasswordToken(long memberId) {
-        return memberResource.service("createForgotPasswordToken", String.class)
+        return memberResource.collectionService("createForgotPasswordToken", String.class)
                 .queryParam("memberId", memberId)
                 //TODO COLAB-2594: this should be posted!
                 .get();
@@ -408,14 +408,14 @@ public final class MembersClient {
 
     public static LoginToken createLoginToken(long memberId) {
         final LoginToken loginToken =
-                memberResource.service(memberId, "loginToken", LoginToken.class).post();
+                memberResource.elementService(memberId, "loginToken", LoginToken.class).post();
         ServiceRequestUtils.clearCache(CacheName.MEMBER);
         return loginToken;
     }
 
     public static TokenValidity validateLoginToken(String tokenId, String tokenKey) {
         try {
-            return loginTokenResource.service(tokenId, "validate", TokenValidity.class)
+            return loginTokenResource.elementService(tokenId, "validate", TokenValidity.class)
                     .queryParam("tokenKey", tokenKey).get();
         } catch (UncheckedEntityNotFoundException e) {
             return TokenValidity.INVALID;
@@ -423,26 +423,26 @@ public final class MembersClient {
     }
 
     public static void invalidateLoginToken(String tokenId) {
-        loginTokenResource.service(tokenId,"invalidate", Void.class)
+        loginTokenResource.elementService(tokenId,"invalidate", Void.class)
                 .post();
     }
 
     public static Member getMemberForLoginToken(String tokenId) {
-        return loginTokenResource.service(tokenId, "member", Member.class)
+        return loginTokenResource.elementService(tokenId, "member", Member.class)
                 .get();
     }
 
     public static String generateScreenName(String lastName, String firstName) {
         Assert.notNull(lastName, "First name is required");
         Assert.notNull(lastName, "Last name is required");
-        return memberResource.service("generateScreenName", String.class)
+        return memberResource.collectionService("generateScreenName", String.class)
                 .queryParam("values", firstName, lastName)
                 .get();
     }
 
     public static String hashPassword(String password) {
         password = encode(password);
-        return memberResource.service("hashPassword", String.class)
+        return memberResource.collectionService("hashPassword", String.class)
                 .queryParam("password", password)
                 .get();
     }
@@ -450,7 +450,7 @@ public final class MembersClient {
     public static boolean validatePassword(String password, long memberId) {
 
         password = encode(password);
-        return memberResource.service("validatePassword", Boolean.class)
+        return memberResource.collectionService("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("memberId", memberId)
                 .post();
@@ -460,7 +460,7 @@ public final class MembersClient {
         hashedPassword = encode(hashedPassword);
         password = encode(password);
 
-        return memberResource.service("validatePassword", Boolean.class)
+        return memberResource.collectionService("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("hash", hashedPassword)
                 .post();
@@ -468,7 +468,7 @@ public final class MembersClient {
 
     public static boolean updatePassword(long memberId, String newPassword) {
         newPassword = encode(newPassword);
-        final Boolean result = memberResource.service(memberId, "updatePassword", Boolean.class)
+        final Boolean result = memberResource.elementService(memberId, "updatePassword", Boolean.class)
                 .queryParam("newPassword", newPassword)
                 .post();
         //TODO COLAB-2589: improve endpoint for caching
@@ -494,14 +494,14 @@ public final class MembersClient {
     }
 
     public static boolean subscribeToNewsletter(long memberId) {
-        return memberResource.service(memberId, "subscribe", Boolean.class).put();
+        return memberResource.elementService(memberId, "subscribe", Boolean.class).put();
     }
 
     public static boolean unsubscribeFromNewsletter(long memberId) {
-        return memberResource.service(memberId, "unsubscribe", Boolean.class).put();
+        return memberResource.elementService(memberId, "unsubscribe", Boolean.class).put();
     }
 
     public static boolean isSubscribedToNewsletter(long memberId) {
-        return memberResource.service(memberId, "isSubscribed", Boolean.class).get();
+        return memberResource.elementService(memberId, "isSubscribed", Boolean.class).get();
     }
 }

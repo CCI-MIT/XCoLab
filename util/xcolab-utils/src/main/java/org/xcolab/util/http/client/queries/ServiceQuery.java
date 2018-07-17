@@ -11,6 +11,13 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
+/**
+ * Represents a query that does not follow the standard REST interface.
+ *
+ * Service queries come in the form of "services" and simple "queries".
+ * A service is a named function on either an element or a collection while a query is a
+ * non-standard request on an element or collection URL.
+ */
 public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
 
     private final UriBuilder uriBuilder;
@@ -19,73 +26,62 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
     private CacheKey<T, R> cacheKey;
     private CacheName cacheName;
 
-    public ServiceQuery(HttpResource httpResource, long id, String serviceName,
+    private ServiceQuery(UriBuilder uriBuilder, Class<R> returnType) {
+        this.uriBuilder = uriBuilder;
+        this.returnType = returnType;
+        this.typeReference = null;
+    }
+
+    private ServiceQuery(UriBuilder uriBuilder, ParameterizedTypeReference<List<T>> typeReference) {
+        this.uriBuilder = uriBuilder;
+        this.returnType = null;
+        this.typeReference = typeReference;
+    }
+
+    public static <T, R> ServiceQuery<T, R> createElementService(HttpResource httpResource,
+            Object id, String serviceName, Class<R> returnType) {
+        return new ServiceQuery<>(httpResource.getResourceUrl(id).path("/" + serviceName),
+                returnType);
+    }
+
+    public static <T, R> ServiceQuery<T, R> createElementService(HttpResource httpResource,
+            Object id, String serviceName, ParameterizedTypeReference<List<T>> typeReference) {
+        return new ServiceQuery<>(httpResource.getResourceUrl(id).path("/" + serviceName),
+                typeReference);
+    }
+
+    public static <T, R> ServiceQuery<T, R> createElementQuery(HttpResource httpResource, Object id,
             Class<R> returnType) {
-        this.returnType = returnType;
-        this.typeReference = null;
-        this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
+        return new ServiceQuery<>(httpResource.getResourceUrl(id), returnType);
     }
 
-    public ServiceQuery(HttpResource httpResource, String id, String serviceName,
+    public static <T, R> ServiceQuery<T, R> createElementQuery(HttpResource httpResource, Object id,
+            ParameterizedTypeReference<List<T>> typeReference) {
+        return new ServiceQuery<>(httpResource.getResourceUrl(id), typeReference);
+    }
+
+    public static <T, R> ServiceQuery<T, R> createCollectionService(HttpResource httpResource,
+            String serviceName, Class<R> returnType) {
+        return new ServiceQuery<>(httpResource.getResourceUrl().path("/" + serviceName),
+                returnType);
+    }
+
+    public static <T, R> ServiceQuery<T, R> createCollectionService(HttpResource httpResource,
+            String serviceName, ParameterizedTypeReference<List<T>> typeReference) {
+        return new ServiceQuery<>(httpResource.getResourceUrl().path("/" + serviceName),
+                typeReference);
+    }
+
+    public static <T, R> ServiceQuery<T, R> createCollectionQuery(HttpResource httpResource,
             Class<R> returnType) {
-        this.returnType = returnType;
-        this.typeReference = null;
-        this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
+        return new ServiceQuery<>(httpResource.getResourceUrl(), returnType);
     }
 
-    public ServiceQuery(HttpResource httpResource, long id, Class<R> returnType) {
-        this.returnType = returnType;
-        this.typeReference = null;
-        this.uriBuilder = httpResource.getResourceUrl(id);
-    }
-
-    public ServiceQuery(HttpResource httpResource, String serviceNameOrId, Class<R> returnType) {
-        this.returnType = returnType;
-        this.typeReference = null;
-        this.uriBuilder = httpResource.getResourceUrl().path("/" + serviceNameOrId);
-    }
-
-    public ServiceQuery(HttpResource httpResource, Class<R> returnType) {
-        this.returnType = returnType;
-        this.typeReference = null;
-        this.uriBuilder = httpResource.getResourceUrl();
-    }
-
-
-    public ServiceQuery(HttpResource httpResource, long id, String serviceName,
+    public static <T, R> ServiceQuery<T, R> createCollectionQuery(HttpResource httpResource,
             ParameterizedTypeReference<List<T>> typeReference) {
-        this.returnType = null;
-        this.typeReference = typeReference;
-        this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
+        return new ServiceQuery<>(httpResource.getResourceUrl(), typeReference);
     }
 
-    public ServiceQuery(HttpResource httpResource, String id, String serviceName,
-            ParameterizedTypeReference<List<T>> typeReference) {
-        this.returnType = null;
-        this.typeReference = typeReference;
-        this.uriBuilder = httpResource.getResourceUrl(id).path("/" + serviceName);
-    }
-
-    public ServiceQuery(HttpResource httpResource, long id,
-            ParameterizedTypeReference<List<T>> typeReference) {
-        this.typeReference = typeReference;
-        this.returnType = null;
-        this.uriBuilder = httpResource.getResourceUrl(id);
-    }
-
-    public ServiceQuery(HttpResource httpResource, String serviceNameOrId,
-            ParameterizedTypeReference<List<T>> typeReference) {
-        this.typeReference = typeReference;
-        this.returnType = null;
-        this.uriBuilder = httpResource.getResourceUrl().path("/" + serviceNameOrId);
-    }
-
-    public ServiceQuery(HttpResource httpResource,
-            ParameterizedTypeReference<List<T>> typeReference) {
-        this.typeReference = typeReference;
-        this.returnType = null;
-        this.uriBuilder = httpResource.getResourceUrl();
-    }
 
     @Override
     public R execute() {

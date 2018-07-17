@@ -104,18 +104,18 @@ public final class ProposalPhaseClient {
     }
 
     public void updateProposal2Phase(Proposal2Phase proposal2Phase) {
-        proposal2PhaseResource.service("updateProposal2Phase", Boolean.class).post(proposal2Phase);
+        proposal2PhaseResource.collectionService("updateProposal2Phase", Boolean.class).post(proposal2Phase);
     }
 
     public void deleteProposal2Phase(Proposal2Phase proposal2Phase) {
-        proposal2PhaseResource.service("deleteProposal2Phase", Boolean.class)
+        proposal2PhaseResource.collectionService("deleteProposal2Phase", Boolean.class)
                 .post(proposal2Phase);
     }
 
     public Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
 
         try {
-            return proposal2PhaseResource.service(contestPhasePK, "getProposalCount", Integer.class)
+            return proposal2PhaseResource.elementService(contestPhasePK, "getProposalCount", Integer.class)
                     .getChecked();
         } catch (EntityNotFoundException ignored) {
             return 0;
@@ -124,7 +124,7 @@ public final class ProposalPhaseClient {
 
     public void promoteProposal(Long proposalId, Long activePhaseForContest,
             Long currentProposalContestPhase) {
-        proposal2PhaseResource.service("promoteProposal", Boolean.class)
+        proposal2PhaseResource.collectionService("promoteProposal", Boolean.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("activePhaseForContest", activePhaseForContest)
                 .queryParam("currentProposalContestPhase", currentProposalContestPhase)
@@ -155,7 +155,7 @@ public final class ProposalPhaseClient {
             Long contestPhaseId, String name) {
         try {
             return proposalContestPhaseAttributeResource
-                    .service("getByContestPhaseProposalIdName", ProposalContestPhaseAttributeDto.class)
+                    .collectionService("getByContestPhaseProposalIdName", ProposalContestPhaseAttributeDto.class)
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
                     .optionalQueryParam("proposalId", proposalId)
                     .optionalQueryParam("name", name)
