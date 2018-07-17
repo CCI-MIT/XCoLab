@@ -29,7 +29,7 @@
 
         <div class="c-TitleWrap">
         <h1 class="c-MessageSubject">${messageBeanList.get(0).subject}</h1>
-        <c:if test="${user.userId != messageBeanList.get(0).from.userId}">
+        <c:if test="${(user.userId != messageBeanList.get(0).from.userId) &amp;&amp; isLastMessage}">
             <button type="button" class="btn btn-primary c-Reply-button" id="reply-button">
                 <spring:message code="message.reply.button"/>
             </button>

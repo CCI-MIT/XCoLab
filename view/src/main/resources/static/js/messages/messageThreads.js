@@ -15,7 +15,8 @@ $(document).ready(function(){
             });
 
 });
-function identifyPreviousMessages(){
+
+function identifyPreviousMessages() {
     var beginPattern="-- original message begin --";
     var endPattern="-- original message end --";
     var message=$("#messageContents")[0].innerHTML;
@@ -32,6 +33,16 @@ function identifyPreviousMessages(){
     }
     $("#messageContents")[0].innerHTML=message;
 }
-function removeSpaces(){
+
+function removeSpaces() {
     $("#messageContents")[0].innerHTML=$("#messageContents")[0].innerHTML.replace(/<p>(&nbsp;|<br> *)<\/p>/g,'');
+}
+
+function checkMessageForm(event) {
+    var contents = $("#messageContent").val();
+    var messages = getDynamicJSPMessages();
+    if (CKEDITOR.instances["messageContent"].getData() === "") {
+        event.preventDefault();
+        noty({text: messages["emptyMessageContent"] , type: 'error'});
+    }
 }

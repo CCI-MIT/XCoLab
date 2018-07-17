@@ -39,7 +39,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -110,17 +112,16 @@ public class MessagingController {
 
     @GetMapping("fullConversation/{messageId}")
     public String showFullConversation(HttpServletRequest request, HttpServletResponse response, Model model,
-            @PathVariable Integer messageId, Member loggedInMember,
+            @PathVariable Long messageId, Member loggedInMember,
             @RequestParam(required=false) String threadId) throws MessageOrThreadNotFoundException, MessageNotFoundException {
         List<Message> fullConversation = new ArrayList<>();
-        LastMessageId lastMessageId = new LastMessageId(0L);
         //Retrieve conversation and check if it was found
         if (threadId!=null){
             try {
                 fullConversation = MessagingClient.getFullConversation(messageId, threadId);
                 //lastMessageId = MessagingClient.getLastMessageId(threadId);
             } catch (UncheckedEntityNotFoundException e) {
-                throw new MessageOrThreadNotFoundException((long) messageId, threadId);
+                throw new MessageOrThreadNotFoundException(messageId, threadId);
             }
         } else {
             fullConversation.add(MessagingClient.getMessage(messageId));
@@ -142,26 +143,49 @@ public class MessagingController {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        //Mark last message as read (if it's for me)
+        //Mark first message as read (if it's for me)
         if (messagingPermissions.isRecipient()) {
-            messageBeanList.get(numberOfMessages-1).markMessageAsOpened(loggedInMember.getId_());
+            messageBeanList.get(0).markMessageAsOpened(loggedInMember.getId_());
+        }
+
+        boolean isLastMessage = messageId.equals(messageBeanList.get(0).getMessageId());
+
+        //Remove messages until we reach the one we asked for
+        ListIterator<MessageBean> itr = messageBeanList.listIterator();
+        while(itr.hasNext()) {
+            if (!itr.next().getMessageId().equals(messageId)) {
+                itr.remove();
+                System.out.println("Remove");
+            } else {
+                System.out.println("Break");
+                break;
+            }
+
         }
 
         //Add model attributes
         model.addAttribute("user", loggedInMember);
         final SendMessageBean sendMessageBean = new SendMessageBean(
-                messageBeanList.get(numberOfMessages-1));
+                messageBeanList.get(0));
         model.addAttribute("sendMessageBean", sendMessageBean);
         model.addAttribute("_activePageLink", "community");
         //Reverse the list to render it in an easier way
-        Collections.reverse(messageBeanList);
+        //Collections.reverse(messageBeanList);
         model.addAttribute("messageBeanList",messageBeanList);
         model.addAttribute("threadId",threadId);
 
         /*TODO COLAB-1087: This should be the Id of the last message of the thread, obtained with the messaging client.*/
-        lastMessageId.setLastMessageId(messageBeanList.get(0).getMessageId());
+        //lastMessageId.setLastMessageId(messageBeanList.get(0).getMessageId());
 
-        model.addAttribute("lastMessageId", lastMessageId);
+
+        model.addAttribute("isLastMessage", isLastMessage);
+        model.addAttribute("requestedMessageId", messageId);
+
+        System.out.println("Requested message Id: "+messageId);
+        System.out.println("Last message Id: "+messageBeanList.get(0).getMessageId());
+        System.out.println("Sender Id: "+messageBeanList.get(0).getFrom().getUserId());
+        System.out.println("My Id: "+loggedInMember.getUserId());
+
 
         return "/messaging/message";
     }

@@ -34,10 +34,11 @@ public class MessagingPermissions {
     }
 
     public boolean getCanViewThread(String threadId, List<MessageBean> fullConversation) {
+        MessageBean originalMessage = fullConversation.get(fullConversation.size()-1);
         //I sent first message
-        boolean firstMessageSent = fullConversation.get(0).getFrom().getUserId() == loggedInMember.getId_();
+        boolean firstMessageSent = originalMessage.getFrom().getUserId() == loggedInMember.getId_();
         //I received it
-        boolean firstMessageReceived = fullConversation.get(0).getTo().stream()
+        boolean firstMessageReceived = originalMessage.getTo().stream()
                 .anyMatch(recipient -> recipient.getId_() == loggedInMember.getId_());
         //ThreadId ends with my ID
         boolean myThread = false;

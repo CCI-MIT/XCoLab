@@ -31,13 +31,10 @@
 
 <script>
     <![CDATA[
-    function checkMessageForm(event) {
-        var contents = $("#messageContent").val();
-        if (!contents) {
-            event.preventDefault();
-            noty({text: "${emptyMessageContent}" , type: 'error'});
+        //Auxiliary function to retrieve values that come from JSP engine
+        function getDynamicJSPMessages() {
+            return {"emptyMessageContent" : "${emptyMessageContent}"}
         }
-    }
     ]]>
 </script>
 

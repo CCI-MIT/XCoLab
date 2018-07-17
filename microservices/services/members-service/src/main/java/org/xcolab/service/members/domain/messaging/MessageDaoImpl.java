@@ -53,8 +53,9 @@ public class MessageDaoImpl implements MessageDao {
                         .on(MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID)))
                     .where(
                         MESSAGE_RECIPIENT_STATUS.THREAD_ID.eq(threadId)
-                        .and(MESSAGE.MESSAGE_ID.lessOrEqual(messageId))
+                        //.and(MESSAGE.MESSAGE_ID.lessOrEqual(messageId))
                     )
+                    .orderBy(MESSAGE.CREATE_DATE.desc())
                     .fetchInto(Message.class);
 
             if (messageList.isEmpty()) {
