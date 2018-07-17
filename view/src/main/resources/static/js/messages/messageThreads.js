@@ -3,11 +3,13 @@ $(document).ready(function(){
     removeSpaces();
 
     jQuery('#reply-button').click(function () {
-        $( "#replyContainer" ).show();
+        $( '#replyContainer' ).show();
+        $(this).hide();
     });
 
     jQuery('#close-reply').click(function () {
-        $( "#replyContainer" ).css("display","none");
+        $( '#replyContainer' ).css('display','none');
+        $('#reply-button').show();
     });
 
     jQuery('#replyForm').submit(function(event){

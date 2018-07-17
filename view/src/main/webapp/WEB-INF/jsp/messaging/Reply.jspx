@@ -11,7 +11,9 @@
                 <textarea name="messageContent" id="messageContent"
                           class="rte-editorPlaceholder form-control" ><!-- --></textarea>
             </div>
-            <input type="hidden" name="messageSubject" id="messageSubject" value="${messageBeanList.get(0).subject}"/>
+            <input type="hidden" name="messageSubject" id="messageSubject"
+                   value="${(messageBeanList.get(0).subject.startsWith(&quot;RE:&quot;)) ? (messageBeanList.get(0).subject) : &quot;RE: &quot;}
+                   ${(messageBeanList.get(0).subject.startsWith(&quot;RE:&quot;)) ? &quot;&quot; : (messageBeanList.get(0).subject)}"/>
             <input type="hidden" name="userIdsRecipients" id="userIdsRecipients" value="${messageBeanList.get(0).from.id_}"/>
             <input type="hidden" name="threadId" id="threadId" value="${threadId}"/>
         </div>
@@ -31,7 +33,7 @@
 
 <script>
     <![CDATA[
-        //Auxiliary function to retrieve values that come from JSP engine
+        //Auxiliary function to retrieve values from JSP engine
         function getDynamicJSPMessages() {
             return {"emptyMessageContent" : "${emptyMessageContent}"}
         }

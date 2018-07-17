@@ -211,7 +211,7 @@ public class MessagingController {
 
             try {
                 //If I specify a thread, check that I have permissions on it
-                if (!threadId.equals("-1")){
+                if (!threadId.equals("-1")) {
                     //Check the permissions for the first message in the thread
                     String[] threadParts=threadId.split("-");
                     Long firstMessageId = Long.parseLong(threadParts[0]);
