@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.messaging.views;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +18,8 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.exceptions.MessageOrThreadNotFoundException;
 import org.xcolab.client.members.exceptions.ReplyingToManyException;
-import org.xcolab.client.members.exceptions.ThreadNotFoundException;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
-import org.xcolab.client.members.pojo.LastMessageId;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.commons.IdListUtil;
@@ -38,8 +35,6 @@ import org.xcolab.commons.servlet.flash.AlertMessage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -119,14 +114,12 @@ public class MessagingController {
         if (threadId!=null){
             try {
                 fullConversation = MessagingClient.getFullConversation(messageId, threadId);
-                //lastMessageId = MessagingClient.getLastMessageId(threadId);
             } catch (UncheckedEntityNotFoundException e) {
                 throw new MessageOrThreadNotFoundException(messageId, threadId);
             }
         } else {
             fullConversation.add(MessagingClient.getMessage(messageId));
         }
-
 
         //Transform messages into beans
         List<MessageBean> messageBeanList = new ArrayList<>();
@@ -138,7 +131,7 @@ public class MessagingController {
 
         //Manage permissions
         final MessagingPermissions messagingPermissions =
-                new MessagingPermissions(loggedInMember, messageBeanList.get(numberOfMessages-1));
+                new MessagingPermissions(loggedInMember, messageBeanList.get(0));
         if (!messagingPermissions.getCanViewThread(threadId, messageBeanList)){
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
@@ -155,37 +148,23 @@ public class MessagingController {
         while(itr.hasNext()) {
             if (!itr.next().getMessageId().equals(messageId)) {
                 itr.remove();
-                System.out.println("Remove");
             } else {
-                System.out.println("Break");
                 break;
             }
 
         }
 
-        //Add model attributes
-        model.addAttribute("user", loggedInMember);
         final SendMessageBean sendMessageBean = new SendMessageBean(
                 messageBeanList.get(0));
+
+        //Add model attributes
+        model.addAttribute("user", loggedInMember);
         model.addAttribute("sendMessageBean", sendMessageBean);
         model.addAttribute("_activePageLink", "community");
-        //Reverse the list to render it in an easier way
-        //Collections.reverse(messageBeanList);
         model.addAttribute("messageBeanList",messageBeanList);
         model.addAttribute("threadId",threadId);
-
-        /*TODO COLAB-1087: This should be the Id of the last message of the thread, obtained with the messaging client.*/
-        //lastMessageId.setLastMessageId(messageBeanList.get(0).getMessageId());
-
-
         model.addAttribute("isLastMessage", isLastMessage);
         model.addAttribute("requestedMessageId", messageId);
-
-        System.out.println("Requested message Id: "+messageId);
-        System.out.println("Last message Id: "+messageBeanList.get(0).getMessageId());
-        System.out.println("Sender Id: "+messageBeanList.get(0).getFrom().getUserId());
-        System.out.println("My Id: "+loggedInMember.getUserId());
-
 
         return "/messaging/message";
     }

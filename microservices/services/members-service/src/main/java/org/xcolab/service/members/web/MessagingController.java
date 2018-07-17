@@ -101,11 +101,6 @@ public class MessagingController {
         return messageDao.getThreads(messageId);
     }
 
-    @RequestMapping(value = "/messages/0/lastMessageId", method = RequestMethod.GET)
-    public long getLastMessageId(@RequestParam String threadId) throws NotFoundException {
-        return messageDao.getLastMessageId(threadId);
-    }
-
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
     public Message createMessage(@RequestBody SendMessageBean sendMessageBean,
             @RequestParam(required = false, defaultValue = "true") boolean checkLimit,

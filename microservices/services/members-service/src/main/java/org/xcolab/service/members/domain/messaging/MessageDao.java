@@ -27,8 +27,6 @@ public interface MessageDao {
 
     List<String> getThreads(long messageId);
 
-    long getLastMessageId(String threadId) throws NotFoundException;
-
     boolean setArchived(long messageId, long memberId, boolean isArchived);
 
     boolean setOpened(long messageId, long memberId, boolean isOpened);

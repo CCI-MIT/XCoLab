@@ -186,19 +186,6 @@ public class MessageDaoImpl implements MessageDao {
                 .fetch().getValues(MESSAGE_RECIPIENT_STATUS.THREAD_ID);
     }
 
-    @Override
-    public long getLastMessageId(String threadId) throws NotFoundException {
-
-        Long result = dslContext.select(MESSAGE.MESSAGE_ID.max())
-                .from(MESSAGE)
-                .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
-                .where(MESSAGE_RECIPIENT_STATUS.THREAD_ID.eq(threadId)).fetchOne(MESSAGE.MESSAGE_ID.max());
-
-        if (result==null){
-            throw new NotFoundException("Thread with id " + threadId + "does not exist");
-        }
-        return result;
-    }
 
     @Override
     public boolean setArchived(long messageId, long memberId, boolean isArchived) {

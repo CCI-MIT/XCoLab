@@ -4,14 +4,11 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
-import org.xcolab.client.members.exceptions.MessageOrThreadNotFoundException;
-import org.xcolab.client.members.exceptions.ThreadNotFoundException;
 import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.members.pojo.LastMessageId;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.client.members.pojo.SendMessageBean;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -31,8 +28,6 @@ public final class MessagingClient {
             new RestResource1<>(UserResource.USER, Member.TYPES);
     private static final RestResource1<Message, Long> messageResource =
             new RestResource1<>(UserResource.MESSAGES, Message.TYPES);
-    private static final RestResource1<LastMessageId, Long> threadResource =
-            new RestResource1<>(UserResource.MESSAGES, LastMessageId.TYPES);
 
 
     private static final RestResource2L<Member, MessagingUserPreferences> messagePreferencesResource
@@ -45,8 +40,6 @@ public final class MessagingClient {
             new RestResource2L<>(messageResource, "threads",
                     new TypeProvider<>(String.class, new ParameterizedTypeReference<List<String>>() {}));
 
-    private static final RestResource2L<LastMessageId, LastMessageId> lastMessageThreadResource =
-            new RestResource2L<>(threadResource, "lastMessageId", LastMessageId.TYPES);
 
 
     private MessagingClient() { }
@@ -144,18 +137,6 @@ public final class MessagingClient {
                 .list().execute();
     }
 
-    public static LastMessageId getLastMessageId(String threadId) throws ThreadNotFoundException {
-        //TODO COLAB-1087: This list can only have 1 element, adapt the interface
-        List<LastMessageId> results = lastMessageThreadResource.resolveParent(threadResource.id(0L))
-                .list()
-                .queryParam("threadId",threadId)
-                .execute();
-        if (results.size()>1){
-            return results.get(0);
-        } else {
-            throw new ThreadNotFoundException(threadId);
-        }
-    }
 
     public static void checkLimitAndSendMessage(String subject, String content,
             long fromId, List<Long> recipientIds) throws MessageLimitExceededException,ReplyingToManyException {
