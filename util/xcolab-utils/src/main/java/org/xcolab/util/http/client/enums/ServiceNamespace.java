@@ -3,6 +3,12 @@ package org.xcolab.util.http.client.enums;
 import org.xcolab.commons.attributes.AttributeGetter;
 import org.xcolab.util.http.ServiceRequestUtils;
 
+/**
+ * Represents a service namespace.
+ *
+ * Service namespaces are used to allow services of several xCoLabs to communicate with each other
+ * for data sharing.
+ */
 public interface ServiceNamespace {
 
     String getNamespace();

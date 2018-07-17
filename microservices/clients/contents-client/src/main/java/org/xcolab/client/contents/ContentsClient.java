@@ -196,7 +196,7 @@ public final class ContentsClient {
 
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
         return contentFolderResource
-                .nestedResource(folderId, "contentArticleVersions", ContentArticleVersion.TYPES)
+                .nestedResource("contentArticleVersions", ContentArticleVersion.TYPES, folderId)
                 .list()
                 .withCache(CacheName.CONTENT)
                 .execute();

@@ -73,14 +73,14 @@ public class ModelingClient {
     }
 
     public ModelGlobalPreference getModelPreference(long modelId) {
-        return modelPreferenceResource.resolveParent(modelResource.id(modelId))
+        return modelPreferenceResource.resolveParentId(modelResource.id(modelId))
                 .list()
                 .executeWithResult()
                 .getOneIfExists().toPojo(namespace);
     }
 
     public boolean updateModelPreference(ModelGlobalPreference pojo) {
-        return modelPreferenceResource.resolveParent(modelResource.id(pojo.getModelId()))
+        return modelPreferenceResource.resolveParentId(modelResource.id(pojo.getModelId()))
                 .update(new ModelGlobalPreferenceDto(pojo), pojo.getModelId())
                 .execute();
     }

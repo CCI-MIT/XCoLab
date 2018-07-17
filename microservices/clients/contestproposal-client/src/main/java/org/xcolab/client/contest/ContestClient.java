@@ -231,7 +231,7 @@ public class ContestClient {
 
     public List<ContestTranslation> getTranslationsForContestId(long contestId) {
         final List<ContestTranslationDto> dtos =
-                contestTranslationResource.resolveParent(contestResource.id(contestId))
+                contestTranslationResource.resolveParentId(contestResource.id(contestId))
                         .list()
                         .queryParam("contestId", contestId)
                         .execute();
@@ -240,7 +240,7 @@ public class ContestClient {
 
     public boolean saveTranslation(ContestTranslation contestTranslation) {
         return contestTranslationResource
-                .resolveParent(contestResource.id(contestTranslation.getContestId()))
+                .resolveParentId(contestResource.id(contestTranslation.getContestId()))
                 .update(new ContestTranslationDto(contestTranslation), contestTranslation.getLang())
                 .execute();
     }
@@ -562,7 +562,7 @@ public class ContestClient {
     }
 
     public List<ContestPhase> getVisibleContestPhases(Long contestId) {
-        return DtoUtil.toPojos(visiblePhasesResource.resolveParent(contestResource.id(contestId))
+        return DtoUtil.toPojos(visiblePhasesResource.resolveParentId(contestResource.id(contestId))
                 .list()
                 .withCache(CacheKeys.withClass(ContestPhaseDto.class)
                                 .withParameter("contestId", contestId)

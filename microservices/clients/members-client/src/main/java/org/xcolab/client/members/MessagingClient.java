@@ -107,7 +107,7 @@ public final class MessagingClient {
     }
 
     public static List<Member> getMessageRecipients(long messageId) {
-        return messageRecipientResource.resolveParent(messageResource.id(messageId))
+        return messageRecipientResource.resolveParentId(messageResource.id(messageId))
                 .list()
                 .withCache(CacheKeys.withClass(Member.class)
                         .withParameter("messageId", messageId)
@@ -144,16 +144,16 @@ public final class MessagingClient {
     }
 
     public static void setArchived(long messageId, long memberId, boolean isArchived) {
-        messageRecipientResource.resolveParent(messageResource.id(messageId))
-                .query(memberId, Void.class)
+        messageRecipientResource.resolveParentId(messageResource.id(messageId))
+                .elementQuery(memberId, Void.class)
                 .queryParam("memberId", memberId)
                 .queryParam("isArchived", isArchived)
                 .put();
     }
 
     public static void setOpened(long messageId, long memberId, boolean isOpened) {
-        messageRecipientResource.resolveParent(messageResource.id(messageId))
-                .query(memberId, Void.class)
+        messageRecipientResource.resolveParentId(messageResource.id(messageId))
+                .elementQuery(memberId, Void.class)
                 .queryParam("memberId", memberId)
                 .queryParam("isOpened", isOpened)
                 .put();
@@ -165,7 +165,7 @@ public final class MessagingClient {
     }
 
     public static MessagingUserPreferences createMessagingPreferences(MessagingUserPreferences messagingUserPreferences) {
-        return messagePreferencesResource.resolveParent(memberResource.id(messagingUserPreferences.getUserId()))
+        return messagePreferencesResource.resolveParentId(memberResource.id(messagingUserPreferences.getUserId()))
                 .create(messagingUserPreferences)
                 .execute();
     }
@@ -175,7 +175,7 @@ public final class MessagingClient {
             createMessagingPreferences(messagingUserPreferences);
             return true;
         }
-        return messagePreferencesResource.resolveParent(memberResource.id(messagingUserPreferences.getUserId()))
+        return messagePreferencesResource.resolveParentId(memberResource.id(messagingUserPreferences.getUserId()))
                 .update(messagingUserPreferences, messagingUserPreferences.getMessagingPreferencesId())
                 .execute();
     }

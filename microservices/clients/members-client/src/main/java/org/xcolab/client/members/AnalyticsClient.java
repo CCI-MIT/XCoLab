@@ -23,13 +23,13 @@ public final class AnalyticsClient {
         analyticsUserEvent.setLabel(label);
         analyticsUserEvent.setValue(value);
 
-        return analyticsUserEventResource.resolveParent(memberResource.id(memberId))
+        return analyticsUserEventResource.resolveParentId(memberResource.id(memberId))
                 .create(analyticsUserEvent).execute();
     }
 
     public static boolean exists(long memberId, String idString) {
-        return analyticsUserEventResource.resolveParent(memberResource.id(memberId))
-                .service(idString, "exists", Boolean.class)
+        return analyticsUserEventResource.resolveParentId(memberResource.id(memberId))
+                .elementService(idString, "exists", Boolean.class)
                 .get();
     }
 }

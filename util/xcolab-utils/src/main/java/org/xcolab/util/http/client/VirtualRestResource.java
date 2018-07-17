@@ -12,9 +12,9 @@ import org.xcolab.util.http.client.interfaces.IdentifiableHttpResource;
  * resources can be used as a parent for a {@link RestResource2} and can then be used to resolve
  * the corresponding {@link QueryId} when a call is made to the nested resource.
  *
- * @param <ResourceT> The resource type of the nested object. Usually either an entity in another
- * service or {@link Void}.
- * @param <IdT> The type of the resource identifier. Often a {@link Long} or {@link String}.
+ * @param <ResourceT> the resource type of the nested object - usually either an entity in another
+ * service or {@link Void}
+ * @param <IdT> the type of the resource identifier - often a {@link Long} or {@link String}
  */
 public class VirtualRestResource<ResourceT, IdT>
         implements IdentifiableHttpResource<ResourceT, IdT> {

@@ -141,8 +141,8 @@ public final class ProposalAttributeClient {
 
     public ProposalAttributeHelperDataDto getProposalAttributeHelperData(long proposalId,
             long version) {
-        return proposalVersionResource.resolveParent(proposalResource.id(proposalId))
-                .<ProposalAttributeHelperDataDto, ProposalAttributeHelperDataDto>service(
+        return proposalVersionResource.resolveParentId(proposalResource.id(proposalId))
+                .<ProposalAttributeHelperDataDto, ProposalAttributeHelperDataDto>elementService(
                         version, "attributeHelper",
                         ProposalAttributeHelperDataDto.class)
                 .withCache(CacheKeys.withClass(ProposalAttributeHelperDataDto.class)

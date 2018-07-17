@@ -146,7 +146,7 @@ public final class MembersClient {
     }
 
     public static List<Role_> getMemberRoles(long memberId) {
-        return memberRoleResource.resolveParent(memberResource.id(memberId))
+        return memberRoleResource.resolveParentId(memberResource.id(memberId))
                 .list()
                 .withCache(CacheName.ROLES)
                 .execute();
@@ -170,14 +170,14 @@ public final class MembersClient {
     }
 
     public static void assignMemberRole(long memberId, long roleId) {
-        memberRoleResource.resolveParent(memberResource.id(memberId))
+        memberRoleResource.resolveParentId(memberResource.id(memberId))
                 .update(null, roleId)
                 .execute();
         ServiceRequestUtils.clearCache(CacheName.ROLES);
     }
 
     public static void removeMemberRole(long memberId, long roleId) {
-        memberRoleResource.resolveParent(memberResource.id(memberId))
+        memberRoleResource.resolveParentId(memberResource.id(memberId))
                 .delete(roleId)
                 .execute();
         ServiceRequestUtils.clearCache(CacheName.ROLES);
@@ -185,7 +185,7 @@ public final class MembersClient {
 
     //TODO COLAB-2594: this seems to be duplicated in the ContestTeamMemberClient
     public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
-        return memberRoleResource.resolveParent(memberResource.id(memberId))
+        return memberRoleResource.resolveParentId(memberResource.id(memberId))
                 .list()
                 .queryParam("contestId", contestId)
                 .withCache(CacheName.CONTEST_DETAILS)

@@ -7,6 +7,14 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 
+/**
+ * Represents a request to retrieve the count of elements in a collection.
+ *
+ * The constructed HTTP request has the format {@code HEAD /resourceName/{resourceId}}
+ * and reads the count from the {@code X-Total-Count} header.
+ *
+ * @param <ElementT> the type of the REST resource
+ */
 public class CountQuery<ElementT> implements CacheableQuery<ElementT, Integer> {
 
     private final UriBuilder uriBuilder;

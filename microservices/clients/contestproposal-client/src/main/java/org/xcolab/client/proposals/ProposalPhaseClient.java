@@ -265,7 +265,7 @@ public final class ProposalPhaseClient {
     }
 
     public List<Long> getContestPhasesForProposal(long proposalId) {
-        return proposalPhaseIdResource.resolveParent(proposalResource.id(proposalId))
+        return proposalPhaseIdResource.resolveParentId(proposalResource.id(proposalId))
                 .list()
                 .execute();
     }
