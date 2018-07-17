@@ -3,7 +3,12 @@ package org.xcolab.util.http.client.queries;
 /**
  * Provides the basic interface for sending queries to an HTTP endpoint.
  *
- * Subclasses
+ * @see GetQuery
+ * @see ListQuery
+ * @see CreateQuery
+ * @see UpdateQuery
+ * @see DeleteQuery
+ * @see CountQuery
  *
  * @param <ElementT> the type of the element the query represents - in a RESTful query, this is the resource
  * @param <ReturnT> the type of the value returned when the query is executed

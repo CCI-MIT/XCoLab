@@ -11,6 +11,9 @@ import org.xcolab.util.http.client.queries.UpdateQuery;
 /**
  * Represents a REST resource that can be queried.
  *
+ * @see RestResource1
+ * @see RestResource2
+ *
  * @param <ResourceT> the type of the resource elements
  * @param <IdT> the type of the element identifier
  */
