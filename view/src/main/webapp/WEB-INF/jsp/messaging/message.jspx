@@ -58,11 +58,8 @@
 
     </div>
 
-    <script src="/js/messages/messageThreads.js"> <!-- Script --></script>
-
+    <xcolab:requireLibrary name="messageThreads"/>
 
 </xcolab:layout>
-
-<xcolab:requireLibrary name="CKEditor" />
 
 </jsp:root>

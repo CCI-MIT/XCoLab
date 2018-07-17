@@ -391,6 +391,9 @@
     <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="/js/lib/jquery.ddslick.min.js" />
 
     <xcolab:loadScript shouldLoad="${_librariesToLoad['clipboard.js']}" src="/vendor/clipboard/dist/clipboard.min.js" />
+
+    <!-- Messaging javascript-->
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['messageThreads']}" src="/js/messages/messageThreads.js" />
     
     <collab:script src="/js/initScript.js" />
 

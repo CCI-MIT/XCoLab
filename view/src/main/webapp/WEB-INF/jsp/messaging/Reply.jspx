@@ -1,6 +1,8 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:form="http://www.springframework.org/tags/form">
+
 <div id="replyContainer" style="display:none;">
     <form:form method="post" action="/messaging/sendMessage" id="replyForm">
         <div class="modal-body">
@@ -22,17 +24,21 @@
         </div>
     </form:form>
 </div>
+
 <spring:message code="message.empty.content" var="emptyMessageContent" />
 
-    <script>
-        <![CDATA[
-            function checkMessageForm(event) {
-                var contents = $("#messageContent").val();
-                if (!contents) {
-                event.preventDefault();
-                noty({text: "${emptyMessageContent}" , type: 'error'});
-                }
-            }
-        ]]>
-    </script>
+<xcolab:requireLibrary name="CKEditor" />
+
+<script>
+    <![CDATA[
+    function checkMessageForm(event) {
+        var contents = $("#messageContent").val();
+        if (!contents) {
+            event.preventDefault();
+            noty({text: "${emptyMessageContent}" , type: 'error'});
+        }
+    }
+    ]]>
+</script>
+
 </jsp:root>
