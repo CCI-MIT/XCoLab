@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalVote` (
   KEY `IX_A4D26028` (`contestPhaseId`,`userId`),
   KEY `IX_5E8D7ED3` (`proposalId`,`userId`),
   KEY `IX_497348F2` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestTeamMember` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -25,27 +25,27 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestTeamMember` (
   `userId` bigint(20) DEFAULT NULL,
   `roleId` bigint(20) DEFAULT NULL,
   KEY `IX_E1468F04` (`contestId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestTeamMemberRole` (
   `id_` bigint(20) NOT NULL PRIMARY KEY,
   `role` varchar(75) DEFAULT NULL,
   `sort` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_FocusArea` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(256) DEFAULT NULL,
   `order_` int(11) DEFAULT NULL,
   KEY `IX_B61888D4` (`name`(50))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestDiscussion` (
   `DiscussionId` bigint(20) NOT NULL PRIMARY KEY,
   `ContestId` bigint(20) DEFAULT NULL,
   `Tab` varchar(75) DEFAULT NULL,
   KEY `IX_DD06DA92` (`ContestId`,`Tab`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalMoveHistory` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalMoveHistory` (
   KEY `IX_FA79AD74` (`targetPhaseId`),
   KEY `IX_4110BC53` (`targetProposalId`),
   KEY `IX_6001D87B` (`targetProposalId`,`targetContestId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalContestPhaseAttribute` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalContestPhaseAttribute` (
   KEY `IX_EAA7A52A` (`contestPhaseId`,`proposalId`),
   KEY `IX_68DFE42A` (`proposalId`,`contestPhaseId`),
   KEY `IX_8F351DBF` (`proposalId`,`contestPhaseId`,`name`,`additionalId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestPhase` (
   `ContestPhasePK` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestPhase` (
   KEY `IX_2BA2B787` (`ContestPK`,`PhaseStartDate`,`PhaseEndDate`),
   KEY `IX_1BB9EC37` (`contestPhaseAutopromote`),
   KEY `IX_D9B6142C` (`contestScheduleId`,`ContestPK`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestPhaseRibbonType` (
   `id_` bigint(20) NOT NULL PRIMARY KEY,
@@ -108,12 +108,12 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestPhaseRibbonType` (
   `description` varchar(75) DEFAULT NULL,
   `copyOnPromote` tinyint(4) DEFAULT NULL,
   `sortOrder` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ImpactTemplateFocusAreaList` (
   `focusAreaListId` bigint(20) NOT NULL PRIMARY KEY,
   `name` varchar(75) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_OntologySpace` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_OntologySpace` (
   `description` longtext,
   `order_` int(11) DEFAULT NULL,
   KEY `IX_18FC4546` (`name`(50))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_FocusAreaOntologyTerm` (
   `focusAreaId` bigint(20) NOT NULL,
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_FocusAreaOntologyTerm` (
   `order_` int(11) DEFAULT NULL,
   PRIMARY KEY (`focusAreaId`,`ontologyTermId`),
   KEY `IX_CE67B1A0` (`focusAreaId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalReference` (
   `proposalId` bigint(20) NOT NULL,
@@ -138,13 +138,13 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalReference` (
   PRIMARY KEY (`proposalId`,`subProposalId`),
   KEY `IX_3C82622A` (`proposalId`),
   KEY `IX_AABA9B94` (`subProposalId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ImpactTemplateSeries` (
   `seriesId` bigint(20) NOT NULL PRIMARY KEY,
   `iterationId` bigint(20) DEFAULT NULL,
   `name` varchar(75) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalVersion` (
   `proposalId` bigint(20) NOT NULL,
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalVersion` (
   `updateAdditionalId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`proposalId`,`version`),
   KEY `IX_59E3C2F7` (`proposalId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_Points` (
   `id_` bigint(20) NOT NULL PRIMARY KEY,
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_Points` (
   KEY `IX_6EC5952C` (`pointsSourceId`),
   KEY `IX_5A8893C0` (`proposalId`),
   KEY `IX_AF313899` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_PointsDistributionConfiguration` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_PointsDistributionConfiguration` (
   KEY `IX_27247AAA` (`targetPlanSectionDefinitionId`),
   KEY `IX_7D0AD60D` (`targetSubProposalId`),
   KEY `IX_D44477AA` (`targetUserId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestSchedule` (
@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestSchedule` (
   `description` varchar(75) DEFAULT NULL,
   `status` varchar(75) DEFAULT NULL,
   `baseScheduleId` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestCollectionCard` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -213,14 +213,14 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestCollectionCard` (
   KEY `small_ontology_term_idx` (`small_ontology_term`),
   KEY `ontology_term_to_load_idx` (`ontology_term_to_load`),
   KEY `FK_parent` (`parent`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ImpactIteration` (
   `iterationId` bigint(20) NOT NULL,
   `year` int(11) NOT NULL,
   PRIMARY KEY (`iterationId`,`year`),
   KEY `IX_512E56E1` (`iterationId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalRating` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -232,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalRating` (
   `commentEnabled` tinyint(4) DEFAULT NULL,
   `otherDataString` varchar(75) DEFAULT NULL,
   `onlyForInternalUsage` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestPhaseType` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -246,7 +246,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestPhaseType` (
   `defaultPromotionType` varchar(75) DEFAULT NULL,
   `defaultFlagText` varchar(60) DEFAULT NULL,
   `isDeprecated` tinyint(4) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_OntologyTerm` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -259,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_OntologyTerm` (
   KEY `IX_3E2347AB` (`ontologySpaceId`),
   KEY `IX_FEB70AB0` (`parentId`),
   KEY `IX_A6AC072` (`parentId`,`ontologySpaceId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ImpactDefaultSeriesData` (
   `seriesId` bigint(20) NOT NULL,
@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ImpactDefaultSeriesData` (
   PRIMARY KEY (`seriesId`,`year`),
   KEY `IX_E8941CB2` (`seriesId`),
   KEY `IX_97B70823` (`seriesId`,`year`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalRatingValue` (
   `id_` bigint(20) NOT NULL PRIMARY KEY,
@@ -276,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalRatingValue` (
   `value` bigint(20) DEFAULT NULL,
   `name` varchar(75) DEFAULT NULL,
   `description` longtext
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `MembershipRequest` (
   `membershipRequestId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -293,7 +293,7 @@ CREATE TABLE IF NOT EXISTS `MembershipRequest` (
   KEY `IX_C28C72EC` (`groupId`,`statusId`),
   KEY `IX_66D70879` (`userId`),
   KEY `IX_35AA8FA6` (`groupId`,`userId`,`statusId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_PlanTemplate` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -301,7 +301,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_PlanTemplate` (
   `baseTemplateId` bigint(20) DEFAULT NULL,
   `impactSeriesTemplateId` bigint(20) DEFAULT NULL,
   `focusAreaListTemplateId` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS `xcolab_PointType` (
@@ -313,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_PointType` (
   `name` varchar(75) DEFAULT NULL,
   `sort` bigint(20) DEFAULT NULL,
   KEY `IX_8DD75651` (`parentPointTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_Proposal2Phase` (
   `proposalId` bigint(20) NOT NULL,
@@ -325,7 +325,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_Proposal2Phase` (
   PRIMARY KEY (`proposalId`,`contestPhaseId`),
   KEY `IX_DBA8038D` (`contestPhaseId`),
   KEY `IX_D273A4B8` (`proposalId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ImpactDefaultSeries` (
   `seriesId` bigint(20) NOT NULL,
@@ -339,12 +339,12 @@ CREATE TABLE IF NOT EXISTS `xcolab_ImpactDefaultSeries` (
   KEY `IX_89A73E2D` (`focusAreaId`,`name`),
   KEY `IX_6E3A15E8` (`seriesId`),
   KEY `IX_D1CD440` (`seriesId`,`editable`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalContestPhaseAttributeType` (
   `name` varchar(75) NOT NULL PRIMARY KEY,
   `copyOnPromote` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_Proposal` (
   `proposalId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -356,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_Proposal` (
   `resultsDiscussionId` bigint(20) DEFAULT NULL,
   `groupId` bigint(20) DEFAULT NULL,
   KEY `IX_BBC99B8B` (`updatedDate`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalAttribute` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -371,7 +371,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalAttribute` (
   KEY `IX_F4926C2` (`proposalId`,`version`,`name`,`additionalId`)
   /*,
   FULLTEXT KEY `stringValue_ProposalAtribute` (`stringValue`)*/
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalUnversionedAttribute` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -387,7 +387,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalUnversionedAttribute` (
   `realValue` double DEFAULT NULL,
   KEY `IX_2FC1B0ED` (`proposalId`),
   KEY `IX_417CDAEC` (`proposalId`,`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalSupporter` (
   `proposalId` bigint(20) NOT NULL,
@@ -396,7 +396,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalSupporter` (
   PRIMARY KEY (`proposalId`,`userId`),
   KEY `IX_2AAA1DDB` (`proposalId`),
   KEY `IX_1DCA0834` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_PlanSectionDefinition` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -414,14 +414,14 @@ CREATE TABLE IF NOT EXISTS `xcolab_PlanSectionDefinition` (
   `locked` tinyint(4) DEFAULT NULL,
   `contestIntegrationRelevance` tinyint(4) DEFAULT NULL,
   includeInJudgingReport TINYINT(4) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ImpactTemplateMaxFocusArea` (
   `focusAreaListId` bigint(20) NOT NULL,
   `focusAreaId` bigint(20) NOT NULL,
   PRIMARY KEY (`focusAreaListId`,`focusAreaId`),
   KEY `IX_E0F07F11` (`focusAreaListId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalRatingType` (
   `id_` bigint(20) NOT NULL PRIMARY KEY,
@@ -429,7 +429,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ProposalRatingType` (
   `description` longtext,
   `judgeType` int(11) DEFAULT NULL,
   `isActive` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_Contest` (
   `ContestPK` bigint(20) NOT NULL PRIMARY KEY,
@@ -502,7 +502,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_Contest` (
   KEY `IX_58A2B737` (`contestTier`,`contestTypeId`),
   KEY `IX_95122F5` (`contestTypeId`)/*,
   FULLTEXT KEY `ContestDescription_xcolab_Contest` (`ContestDescription`)*/
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContestTranslation` (
 	contestId bigint(20) not null,
@@ -514,7 +514,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestTranslation` (
 	modifiedDate timestamp not null,
 	authorId bigint(20) null,
 	primary key (contestId, lang)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_PlanTemplateSection` (
   `planTemplateId` bigint(20) NOT NULL,
@@ -523,7 +523,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_PlanTemplateSection` (
   PRIMARY KEY (`planTemplateId`,`planSectionId`),
   KEY `IX_CAECF835` (`planSectionId`),
   KEY `IX_32F8E764` (`planTemplateId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 -- To be gutted:
@@ -557,7 +557,7 @@ CREATE TABLE IF NOT EXISTS `Group_` (
   KEY `IX_63A2AABD` (`companyId`,`site`),
   KEY `IX_F981514E` (`uuid_`),
   KEY `IX_26CC761A` (`uuid_`,`companyId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
@@ -568,4 +568,4 @@ CREATE TABLE IF NOT EXISTS `sharedcolab_SharedContest` (
   `contestName` varchar(255) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
   `colabOrigin` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

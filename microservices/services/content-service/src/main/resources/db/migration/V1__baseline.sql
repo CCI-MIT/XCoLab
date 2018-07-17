@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `files_FileEntry` (
   `fileEntryExtension` varchar(10) DEFAULT NULL,
   `fileEntryName` varchar(255) DEFAULT NULL,
   `fileEntrySize` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContentArticle` (
   `contentArticleId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContentArticle` (
   `editRoleGroupId` bigint(20) DEFAULT NULL,
   `viewRoleGroupId` bigint(20) DEFAULT NULL,
   `visible` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContentArticleVersion` (
   `contentArticleVersionId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -26,14 +26,14 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContentArticleVersion` (
   `title` varchar(555) DEFAULT NULL,
   `lang` varchar(2) DEFAULT 'en',
   `content` longtext
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContentFolder` (
   `contentFolderId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `contentFolderName` varchar(255) DEFAULT NULL,
   `contentFolderDescription` text,
   `parentFolderId` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ContentPage` (
   `pageId` bigint(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -44,5 +44,5 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContentPage` (
   `createdDate` timestamp NULL DEFAULT NULL,
   `modifiedDate` timestamp NULL DEFAULT NULL,
   UNIQUE KEY `xcolab_ContentPage_title_uindex` (`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `comment_CategoryGroup` (
   `description` text,
   `url` varchar(200) DEFAULT NULL,
   `isQuiet` tinyint(4) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `comment_Category` (
   `categoryId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `comment_Category` (
   `sort` int(11) DEFAULT NULL,
   `isQuiet` tinyint(4) DEFAULT '0',
   KEY `comment_Category__groupId` (`groupId`,`sort`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `comment_Comment` (
   `commentId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `comment_Comment` (
   KEY `comment_Comment__threadId` (`threadId`,`createDate`),
   KEY `comment_Comment__authorId` (`authorId`)/*,
   FULLTEXT KEY `content_comment_Comment` (`content`)*/
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `comment_Thread` (
   `threadId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -41,4 +41,4 @@ CREATE TABLE IF NOT EXISTS `comment_Thread` (
   `isQuiet` tinyint(4) DEFAULT '0',
   `sharedColabThreadId` bigint(20) DEFAULT NULL,
   KEY `comment_Thread__categoryId` (`categoryId`,`createDate`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

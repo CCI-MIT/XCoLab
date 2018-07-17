@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `members_Member` (
   KEY `IX_XCOLAB_MEMBERS_COLAB_SSO_ID` (`colabSsoId`),
   KEY `IX_XCOLAB_MEMBERS_CLIMTE_X_ID` (`climateXId`)
   /*, FULLTEXT KEY `members_Member_names_bio` (`firstName`,`lastName`,`shortBio`,`screenName`)*/
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `Role_` (
   `roleId` bigint(20) NOT NULL PRIMARY KEY,
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `Role_` (
   KEY `IX_F92B66E6` (`type_`),
   KEY `IX_26DB26C5` (`uuid_`),
   KEY `IX_B9FF6043` (`uuid_`,`companyId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `Users_Roles` (
   `userId` bigint(20) NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `Users_Roles` (
   PRIMARY KEY (`userId`,`roleId`),
   KEY `IX_C19E5F31` (`roleId`),
   KEY `IX_C1A01806` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_MemberCategory` (
   `roleId` bigint(20) NOT NULL PRIMARY KEY,
@@ -87,18 +87,18 @@ CREATE TABLE IF NOT EXISTS `xcolab_MemberCategory` (
   `description` varchar(2048) DEFAULT NULL,
   KEY `IX_B3858EE9` (`displayName`),
   KEY `IX_8336AE28` (`showInList`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `members_RoleGroupRoles` (
   `roleGroupId` bigint(20) NOT NULL,
   `roleId` bigint(20) NOT NULL,
   PRIMARY KEY (`roleGroupId`,`roleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `members_RoleGroup` (
   `roleGroupId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `Users_Groups` (
   `userId` bigint(20) NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `Users_Groups` (
   PRIMARY KEY (`userId`,`groupId`),
   KEY `IX_C4F9E699` (`groupId`),
   KEY `IX_F10B6C6B` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_StaffMember` (
   `id_` bigint(20) NOT NULL PRIMARY KEY,
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_StaffMember` (
   `organization` varchar(75) DEFAULT NULL,
   `sort` int(11) DEFAULT NULL,
   KEY `IX_9C5CE364` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_Message` (
   `messageId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_Message` (
   `subject` varchar(2048) DEFAULT NULL,
   `content` longtext,
   KEY `IX_9DF5C6F0` (`fromId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_MessagingUserPreferences` (
   `messagingPreferencesId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_MessagingUserPreferences` (
   `emailActivityDailyDigest` tinyint(4) DEFAULT NULL,
   `dailyMessageLimit` int(11) DEFAULT NULL,
   KEY `IX_F504493F` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_MessageRecipientStatus` (
   `messageRecipientId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -153,18 +153,18 @@ CREATE TABLE IF NOT EXISTS `xcolab_MessageRecipientStatus` (
   KEY `IX_76FF2A4C` (`messageId`,`userId`),
   KEY `IX_74DCC2DA` (`userId`),
   KEY `IX_88CD5CB0` (`userId`,`archived`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_PlatformTeam` (
     `id_` BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(256) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_PlatformTeamMember` (
     `userId` BIGINT(20) NOT NULL,
     `teamId` BIGINT(20) NOT NULL,
     PRIMARY KEY (userId, teamId)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_LoginLog` (
   `city` varchar(75) DEFAULT NULL,
   `country` varchar(75) DEFAULT NULL,
   `entryUrl` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_AnalyticsUserEvent` (
   `userId` bigint(20) NOT NULL,
@@ -190,5 +190,5 @@ CREATE TABLE IF NOT EXISTS `xcolab_AnalyticsUserEvent` (
   `value` int(11) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`userId`,`idString`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

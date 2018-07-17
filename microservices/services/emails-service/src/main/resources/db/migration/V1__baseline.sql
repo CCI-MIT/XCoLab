@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS `xcolab_ColabEmail` (
   `emailBodyHash` VARCHAR(255) NOT NULL,
   `sent` TINYINT(1) NULL DEFAULT 0,
   INDEX `index2` (`emailSubject` ASC, `emailTo` ASC, `dateSent` ASC, `emailBodyHash` ASC)
-) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4;

@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `flagging_ReportTarget` (
   `notificationThreshold` int(11) NOT NULL DEFAULT '0',
   `screeningThreshold` int(11) NOT NULL DEFAULT '-1',
   UNIQUE KEY `flagging_ReportTarget__typeReason` (`type`,`reason`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `flagging_Report` (
   `reportId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -24,4 +24,4 @@ CREATE TABLE IF NOT EXISTS `flagging_Report` (
   KEY `flagging_Report__createDate` (`createDate`),
   KEY `flagging_Report__reporter` (`reporterMemberId`),
   KEY `flagging_Report__manager` (`managerMemberId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

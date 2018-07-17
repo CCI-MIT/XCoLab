@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContestEmailTemplate` (
   `subject` longtext,
   `header` longtext,
   `footer` longtext
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ConfigurationAttribute` (
   `name` varchar(75) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ConfigurationAttribute` (
   `stringValue` longtext,
   `realValue` double DEFAULT NULL,
   PRIMARY KEY (`name`, `additionalId`, `locale`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `admin_ContestTypeAttribute` (
 	name varchar(75) not null,
@@ -23,4 +23,4 @@ CREATE TABLE IF NOT EXISTS `admin_ContestTypeAttribute` (
 	stringValue longtext null,
 	realValue double null,
 	primary key (name, additionalId, locale)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
