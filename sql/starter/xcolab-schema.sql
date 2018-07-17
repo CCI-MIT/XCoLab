@@ -1,4 +1,5 @@
 SET FOREIGN_KEY_CHECKS = 0;
+
 CREATE TABLE IF NOT EXISTS `activities_ActivityEntry` (
   `activityEntryId` bigint(20) NOT NULL AUTO_INCREMENT,
   `memberId` bigint(20) NOT NULL,
@@ -426,7 +427,7 @@ CREATE TABLE IF NOT EXISTS `members_RoleGroupRoles` (
   `roleGroupId` bigint(20) NOT NULL,
   `roleId` bigint(20) NOT NULL,
   PRIMARY KEY (`roleGroupId`,`roleId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `comment_Thread` (
   `threadId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -532,7 +533,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContentPage` (
 CREATE TABLE IF NOT EXISTS `members_RoleGroup` (
   `roleGroupId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `comment_CategoryGroup` (
   `groupId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -675,7 +676,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ImpactDefaultSeries` (
 CREATE TABLE IF NOT EXISTS `xcolab_ProposalContestPhaseAttributeType` (
   `name` varchar(75) NOT NULL PRIMARY KEY,
   `copyOnPromote` tinyint(4) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_Proposal` (
   `proposalId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -814,7 +815,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_RolesCategory` (
   `roleId` bigint(20) NOT NULL PRIMARY KEY,
   `categoryName` varchar(75) DEFAULT NULL,
   `roleOrdinal` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ImpactTemplateMaxFocusArea` (
   `focusAreaListId` bigint(20) NOT NULL,
