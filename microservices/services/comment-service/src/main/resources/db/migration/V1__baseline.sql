@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `comment_Category` (
   `deletedDate` datetime DEFAULT NULL,
   `sort` int(11) DEFAULT NULL,
   `isQuiet` tinyint(4) DEFAULT '0',
-  KEY `comment_Category__groupId` (`groupId`,`sort`)
+  INDEX `comment_Category__groupId` (`groupId`,`sort`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `comment_Comment` (
@@ -26,9 +26,9 @@ CREATE TABLE IF NOT EXISTS `comment_Comment` (
   `modifiedDate` datetime DEFAULT NULL,
   `deletedDate` datetime DEFAULT NULL,
   `content` text,
-  KEY `comment_Comment__threadId` (`threadId`,`createDate`),
-  KEY `comment_Comment__authorId` (`authorId`)/*,
-  FULLTEXT KEY `content_comment_Comment` (`content`)*/
+  INDEX `comment_Comment__threadId` (`threadId`,`createDate`),
+  INDEX `comment_Comment__authorId` (`authorId`)/*,
+  FULLTEXT INDEX `content_comment_Comment` (`content`)*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `comment_Thread` (
@@ -40,5 +40,5 @@ CREATE TABLE IF NOT EXISTS `comment_Thread` (
   `deletedDate` datetime DEFAULT NULL,
   `isQuiet` tinyint(4) DEFAULT '0',
   `sharedColabThreadId` bigint(20) DEFAULT NULL,
-  KEY `comment_Thread__categoryId` (`categoryId`,`createDate`)
+  INDEX `comment_Thread__categoryId` (`categoryId`,`createDate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

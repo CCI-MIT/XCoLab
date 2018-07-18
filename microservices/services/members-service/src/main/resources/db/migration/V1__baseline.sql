@@ -31,15 +31,15 @@ CREATE TABLE IF NOT EXISTS `members_Member` (
   loginTokenId VARCHAR(75) NULL,
   loginTokenKey VARCHAR(75) NULL,
   loginTokenExpirationDate DATETIME NULL,
-  UNIQUE KEY `IX_XCOLAB_MEMBERS_SCREEN_NAME` (`screenName`),
-  UNIQUE KEY `IX_XCOLAB_MEMBERS_EMAIL_ADDRESS` (`emailAddress`),
-  KEY `IX_XCOLAB_MEMBERS_CREATE_DATE` (`createDate`,`modifiedDate`),
-  KEY `IX_XCOLAB_MEMBERS_MODIFIED_DATE` (`modifiedDate`),
-  KEY `IX_XCOLAB_MEMBERS_FACEBOOK_ID` (`facebookId`),
-  KEY `IX_XCOLAB_MEMBERS_GOOGLE_ID` (`googleId`),
-  KEY `IX_XCOLAB_MEMBERS_COLAB_SSO_ID` (`colabSsoId`),
-  KEY `IX_XCOLAB_MEMBERS_CLIMTE_X_ID` (`climateXId`)
-  /*, FULLTEXT KEY `members_Member_names_bio` (`firstName`,`lastName`,`shortBio`,`screenName`)*/
+  UNIQUE `IX_XCOLAB_MEMBERS_SCREEN_NAME` (`screenName`),
+  UNIQUE `IX_XCOLAB_MEMBERS_EMAIL_ADDRESS` (`emailAddress`),
+  INDEX `IX_XCOLAB_MEMBERS_CREATE_DATE` (`createDate`,`modifiedDate`),
+  INDEX `IX_XCOLAB_MEMBERS_MODIFIED_DATE` (`modifiedDate`),
+  INDEX `IX_XCOLAB_MEMBERS_FACEBOOK_ID` (`facebookId`),
+  INDEX `IX_XCOLAB_MEMBERS_GOOGLE_ID` (`googleId`),
+  INDEX `IX_XCOLAB_MEMBERS_COLAB_SSO_ID` (`colabSsoId`),
+  INDEX `IX_XCOLAB_MEMBERS_CLIMTE_X_ID` (`climateXId`)
+  /*, FULLTEXT INDEX `members_Member_names_bio` (`firstName`,`lastName`,`shortBio`,`screenName`)*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `Role_` (
@@ -57,24 +57,24 @@ CREATE TABLE IF NOT EXISTS `Role_` (
   `userName` varchar(75) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
   `modifiedDate` datetime DEFAULT NULL,
-  UNIQUE KEY `IX_A88E424E` (`companyId`,`classNameId`,`classPK`),
-  UNIQUE KEY `IX_EBC931B8` (`companyId`,`name`),
-  KEY `IX_449A10B9` (`companyId`),
-  KEY `IX_CBE204` (`type_`,`subtype`),
-  KEY `IX_F436EC8E` (`name`),
-  KEY `IX_5EB4E2FB` (`subtype`),
-  KEY `IX_F3E1C6FC` (`companyId`,`type_`),
-  KEY `IX_F92B66E6` (`type_`),
-  KEY `IX_26DB26C5` (`uuid_`),
-  KEY `IX_B9FF6043` (`uuid_`,`companyId`)
+  UNIQUE `IX_A88E424E` (`companyId`,`classNameId`,`classPK`),
+  UNIQUE `IX_EBC931B8` (`companyId`,`name`),
+  INDEX `IX_449A10B9` (`companyId`),
+  INDEX `IX_CBE204` (`type_`,`subtype`),
+  INDEX `IX_F436EC8E` (`name`),
+  INDEX `IX_5EB4E2FB` (`subtype`),
+  INDEX `IX_F3E1C6FC` (`companyId`,`type_`),
+  INDEX `IX_F92B66E6` (`type_`),
+  INDEX `IX_26DB26C5` (`uuid_`),
+  INDEX `IX_B9FF6043` (`uuid_`,`companyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `Users_Roles` (
   `userId` bigint(20) NOT NULL,
   `roleId` bigint(20) NOT NULL,
   PRIMARY KEY (`userId`,`roleId`),
-  KEY `IX_C19E5F31` (`roleId`),
-  KEY `IX_C1A01806` (`userId`)
+  INDEX `IX_C19E5F31` (`roleId`),
+  INDEX `IX_C1A01806` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_MemberCategory` (
@@ -85,8 +85,8 @@ CREATE TABLE IF NOT EXISTS `xcolab_MemberCategory` (
   `showInList` tinyint(4) DEFAULT NULL,
   `imageName` varchar(75) DEFAULT NULL,
   `description` varchar(2048) DEFAULT NULL,
-  KEY `IX_B3858EE9` (`displayName`),
-  KEY `IX_8336AE28` (`showInList`)
+  INDEX `IX_B3858EE9` (`displayName`),
+  INDEX `IX_8336AE28` (`showInList`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `members_RoleGroupRoles` (
@@ -104,8 +104,8 @@ CREATE TABLE IF NOT EXISTS `Users_Groups` (
   `userId` bigint(20) NOT NULL,
   `groupId` bigint(20) NOT NULL,
   PRIMARY KEY (`userId`,`groupId`),
-  KEY `IX_C4F9E699` (`groupId`),
-  KEY `IX_F10B6C6B` (`userId`)
+  INDEX `IX_C4F9E699` (`groupId`),
+  INDEX `IX_F10B6C6B` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_StaffMember` (
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_StaffMember` (
   `role` varchar(75) DEFAULT NULL,
   `organization` varchar(75) DEFAULT NULL,
   `sort` int(11) DEFAULT NULL,
-  KEY `IX_9C5CE364` (`userId`)
+  INDEX `IX_9C5CE364` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_Message` (
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_Message` (
   `createDate` datetime DEFAULT NULL,
   `subject` varchar(2048) DEFAULT NULL,
   `content` longtext,
-  KEY `IX_9DF5C6F0` (`fromId`)
+  INDEX `IX_9DF5C6F0` (`fromId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_MessagingUserPreferences` (
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_MessagingUserPreferences` (
   `emailOnActivity` tinyint(4) DEFAULT NULL,
   `emailActivityDailyDigest` tinyint(4) DEFAULT NULL,
   `dailyMessageLimit` int(11) DEFAULT NULL,
-  KEY `IX_F504493F` (`userId`)
+  INDEX `IX_F504493F` (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_MessageRecipientStatus` (
@@ -149,10 +149,10 @@ CREATE TABLE IF NOT EXISTS `xcolab_MessageRecipientStatus` (
   `userId` bigint(20) DEFAULT NULL,
   `opened` tinyint(4) DEFAULT NULL,
   `archived` tinyint(4) DEFAULT NULL,
-  KEY `IX_E4B60412` (`messageId`),
-  KEY `IX_76FF2A4C` (`messageId`,`userId`),
-  KEY `IX_74DCC2DA` (`userId`),
-  KEY `IX_88CD5CB0` (`userId`,`archived`)
+  INDEX `IX_E4B60412` (`messageId`),
+  INDEX `IX_76FF2A4C` (`messageId`,`userId`),
+  INDEX `IX_74DCC2DA` (`userId`),
+  INDEX `IX_88CD5CB0` (`userId`,`archived`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_PlatformTeam` (

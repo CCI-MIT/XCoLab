@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_BalloonLink` (
   `visits` int(11) DEFAULT NULL,
   `balloonUserUuid` varchar(75) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
-  KEY `IX_1AD9FFEC` (`balloonUserUuid`)
+  INDEX `IX_1AD9FFEC` (`balloonUserUuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_BalloonText` (
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_BalloonText` (
 	shareTitle varchar(255) null,
 	shareDescription text null,
 	enabled tinyint null,
-  KEY `IX_CE6BAAA5` (`enabled`)
+  INDEX `IX_CE6BAAA5` (`enabled`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_BalloonUserTracking` (
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_BalloonUserTracking` (
   `balloonLinkUuid` varchar(75) DEFAULT NULL,
   `balloonLinkContext` varchar(75) DEFAULT NULL,
   `userAgent` varchar(500) DEFAULT NULL,
-  KEY `IX_AFDD82EB` (`email`(50))
+  INDEX `IX_AFDD82EB` (`email`(50))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_TrackedVisit` (
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_TrackedVisit` (
   `headers` longtext,
   `referer` varchar(2048) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
-  KEY `IX_21569857` (`uuid_`)
+  INDEX `IX_21569857` (`uuid_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_TrackedVisitor2User` (

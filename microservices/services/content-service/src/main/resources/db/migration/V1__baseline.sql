@@ -43,6 +43,6 @@ CREATE TABLE IF NOT EXISTS `xcolab_ContentPage` (
   `contentArticleId` bigint(11) NOT NULL,
   `createdDate` timestamp NULL DEFAULT NULL,
   `modifiedDate` timestamp NULL DEFAULT NULL,
-  UNIQUE KEY `xcolab_ContentPage_title_uindex` (`title`)
+  UNIQUE `xcolab_ContentPage_title_uindex` (`title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

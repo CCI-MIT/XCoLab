@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS `activities_ActivityEntry` (
   `classPrimaryKey` bigint(20) DEFAULT NULL,
   `extraData` VARCHAR(75),
   PRIMARY KEY (`activityEntryId`),
-  KEY `activityEntry_memberId` (`memberId`),
-  KEY `activityEntry_createDate` (`createDate`)
+  INDEX `activityEntry_memberId` (`memberId`),
+  INDEX `activityEntry_createDate` (`createDate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ActivitySubscription` (
@@ -26,6 +26,6 @@ CREATE TABLE IF NOT EXISTS `xcolab_ActivitySubscription` (
   `extraData` varchar(256) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
   `modifiedDate` datetime DEFAULT NULL,
-  KEY `ActivitySubscription_receiver_index` (`receiverId`),
-  KEY `ActivitySubscription_category_id_receiver_index` (`activityCategory`, `categoryId`, `receiverId`)
+  INDEX `ActivitySubscription_receiver_index` (`receiverId`),
+  INDEX `ActivitySubscription_category_id_receiver_index` (`activityCategory`, `categoryId`, `receiverId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

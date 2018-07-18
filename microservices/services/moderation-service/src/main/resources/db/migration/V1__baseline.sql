@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `flagging_ReportTarget` (
   `reason` varchar(50) NOT NULL,
   `notificationThreshold` int(11) NOT NULL DEFAULT '0',
   `screeningThreshold` int(11) NOT NULL DEFAULT '-1',
-  UNIQUE KEY `flagging_ReportTarget__typeReason` (`type`,`reason`)
+  UNIQUE `flagging_ReportTarget__typeReason` (`type`,`reason`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `flagging_Report` (
@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS `flagging_Report` (
   `managerMemberId` bigint(20) DEFAULT NULL,
   `managerActionDate` datetime DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
-  UNIQUE KEY `flagging_Report__target` (`targetType`,`targetId`,`targetAdditionalId`,`reporterMemberId`),
-  KEY `flagging_Report__createDate` (`createDate`),
-  KEY `flagging_Report__reporter` (`reporterMemberId`),
-  KEY `flagging_Report__manager` (`managerMemberId`)
+  UNIQUE `flagging_Report__target` (`targetType`,`targetId`,`targetAdditionalId`,`reporterMemberId`),
+  INDEX `flagging_Report__createDate` (`createDate`),
+  INDEX `flagging_Report__reporter` (`reporterMemberId`),
+  INDEX `flagging_Report__manager` (`managerMemberId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ModelOutputItem` (
   `modelItemIsVisible` tinyint(4) DEFAULT NULL,
   `itemType` varchar(256) DEFAULT NULL,
   `relatedOutputItem` bigint(20) DEFAULT NULL,
-  KEY `IX_A17AABB` (`modelOutputItemId`)
+  INDEX `IX_A17AABB` (`modelOutputItemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ModelCategory` (
@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS `xcolab_ModelDiscussion` (
   `modelDiscussionId` bigint(20) NOT NULL PRIMARY KEY,
   `modelId` bigint(20) DEFAULT NULL,
   `categoryId` bigint(20) DEFAULT NULL,
-  KEY `IX_C4F6226E` (`categoryId`),
-  KEY `IX_72D6F073` (`modelId`)
+  INDEX `IX_C4F6226E` (`categoryId`),
+  INDEX `IX_72D6F073` (`modelId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ModelInputGroup` (
@@ -38,8 +38,8 @@ CREATE TABLE IF NOT EXISTS `xcolab_ModelInputGroup` (
   `displayItemOrder` int(11) DEFAULT NULL,
   `groupType` varchar(256) DEFAULT NULL,
   `parentGroupPK` bigint(20) DEFAULT NULL,
-  KEY `IX_23506DA6` (`modelId`),
-  KEY `IX_CC01932` (`parentGroupPK`)
+  INDEX `IX_23506DA6` (`modelId`),
+  INDEX `IX_CC01932` (`parentGroupPK`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ModelOutputChartOrder` (
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ModelOutputChartOrder` (
   `modelIndexErrorPolicy` varchar(2048) DEFAULT NULL,
   `modelIndexErrorMessage` varchar(2048) DEFAULT NULL,
   `modelChartIsVisible` tinyint(4) DEFAULT NULL,
-  KEY `IX_6D3808C8` (`modelId`,`modelOutputLabel`(50))
+  INDEX `IX_6D3808C8` (`modelId`,`modelOutputLabel`(50))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ModelInputItem` (
@@ -63,10 +63,10 @@ CREATE TABLE IF NOT EXISTS `xcolab_ModelInputItem` (
   `displayItemOrder` int(11) DEFAULT NULL,
   `type_` varchar(256) DEFAULT NULL,
   `properties` varchar(2048) DEFAULT NULL,
-  KEY `IX_39326F55` (`modelGroupId`),
-  KEY `IX_13790D44` (`modelId`),
-  KEY `IX_EF979667` (`modelId`,`modelInputItemID`),
-  KEY `IX_CCEFE733` (`modelInputItemID`)
+  INDEX `IX_39326F55` (`modelGroupId`),
+  INDEX `IX_13790D44` (`modelId`),
+  INDEX `IX_EF979667` (`modelId`,`modelInputItemID`),
+  INDEX `IX_CCEFE733` (`modelInputItemID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ModelGlobalPreference` (
@@ -78,13 +78,13 @@ CREATE TABLE IF NOT EXISTS `xcolab_ModelGlobalPreference` (
   `modelCategoryId` bigint(20) DEFAULT NULL,
   `usesCustomInputs` tinyint(4) DEFAULT NULL,
   `customInputsDefinition` longtext,
-  KEY `IX_16CBB25B` (`modelCategoryId`),
-  KEY `IX_E9B5E03D` (`modelId`)
+  INDEX `IX_16CBB25B` (`modelCategoryId`),
+  INDEX `IX_E9B5E03D` (`modelId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ModelPosition` (
   `id_` bigint(20) NOT NULL PRIMARY KEY,
   `positionId` bigint(20) DEFAULT NULL,
   `modelId` bigint(20) DEFAULT NULL,
-  KEY `IX_E7C0C412` (`modelId`)
+  INDEX `IX_E7C0C412` (`modelId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
