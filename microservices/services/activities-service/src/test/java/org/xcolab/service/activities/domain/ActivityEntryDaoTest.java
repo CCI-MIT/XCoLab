@@ -9,15 +9,15 @@ import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.activities.enums.MemberActivityType;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
+import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.MemberActivityType;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,14 +30,8 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@TestPropertySource(
-    properties = {
-        "cache.enabled=false",
-        "eureka.client.enabled=false",
-        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL"
-    }
-)
 @ComponentScan("org.xcolab.service.activities")
+@ActiveProfiles("test")
 public class ActivityEntryDaoTest {
 
     @Autowired

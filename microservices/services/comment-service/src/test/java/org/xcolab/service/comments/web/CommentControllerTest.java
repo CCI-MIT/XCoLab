@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -37,12 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(CommentController.class)
 @ComponentScan("org.xcolab.service.comments")
 @ComponentScan("com.netflix.discovery")
-@TestPropertySource(properties = {
-        "cache.enabled=false",
-        "eureka.client.enabled=false",
-        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL"
-})
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@ActiveProfiles("test")
 @WebAppConfiguration
 public class CommentControllerTest {
 
