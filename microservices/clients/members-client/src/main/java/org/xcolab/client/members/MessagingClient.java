@@ -133,7 +133,7 @@ public final class MessagingClient {
     }
 
     public static List<String> getMessageThreads(long messageId) {
-        return messageThreadResource.resolveParent(messageResource.id(messageId))
+        return messageThreadResource.resolveParentId(messageResource.id(messageId))
                 .list().execute();
     }
 
