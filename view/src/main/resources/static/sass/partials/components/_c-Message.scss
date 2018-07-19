@@ -33,6 +33,28 @@ $c-Message__input__background: #F2F1E9 url(/images/sendMessage_textarea.gif) no-
 
 }
 
+//Maximum of 5 levels of indentation
+.c-Previous__message .c-Previous__message .c-Previous__message .c-Previous__message .c-Previous__message{
+  color: $t-Color__primary--darkest;
+  border-left: none ;
+  margin-left: 0px;
+  margin-top: 0%;
+  padding-top: 2%;
+  padding-left: 0px;
+  position: relative;
+}
+
+.c-Previous__message .c-Previous__message .c-Previous__message .c-Previous__message .c-Previous__message::after {
+  content:"";
+  background: $t-Color__secondary--darkest;
+  opacity: 0.8;
+  position: absolute;
+  top: 0;
+  left: 10%;
+  height: 1px;
+  width: 80%;
+}
+
 .c-TitleWrap {
   float: left;
   width: 100%;
