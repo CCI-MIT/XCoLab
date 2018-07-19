@@ -111,7 +111,7 @@ public class MessagingController {
             @RequestParam(required=false) String threadId) throws MessageOrThreadNotFoundException, MessageNotFoundException {
         List<Message> fullConversation = new ArrayList<>();
         //Retrieve conversation and check if it was found
-        if (threadId!=null){
+        if (threadId!=null && !threadId.equals("")){
             try {
                 fullConversation = MessagingClient.getFullConversation(messageId, threadId);
             } catch (UncheckedEntityNotFoundException e) {

@@ -38,21 +38,21 @@ $c-Message__input__background: #F2F1E9 url(/images/sendMessage_textarea.gif) no-
   color: $t-Color__primary--darkest;
   border-left: none ;
   margin-left: 0px;
-  margin-top: 0%;
+  margin-top: 1%;
   padding-top: 2%;
   padding-left: 0px;
   position: relative;
 }
-
+//Horizontal ruler after maximum indentation
 .c-Previous__message .c-Previous__message .c-Previous__message .c-Previous__message .c-Previous__message::after {
   content:"";
-  background: $t-Color__secondary--darkest;
+  background: $t-Color__primary__gray;
   opacity: 0.8;
   position: absolute;
   top: 0;
   left: 10%;
   height: 1px;
-  width: 80%;
+  width: 70%;
 }
 
 .c-TitleWrap {
