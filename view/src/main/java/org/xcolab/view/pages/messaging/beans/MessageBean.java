@@ -5,7 +5,6 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
-import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;

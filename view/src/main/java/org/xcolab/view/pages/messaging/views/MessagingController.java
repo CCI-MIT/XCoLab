@@ -126,9 +126,7 @@ public class MessagingController {
         for (Message message : fullConversation){
             messageBeanList.add(new MessageBean(message));
         }
-
-        final int numberOfMessages = messageBeanList.size();
-
+        
         //Manage permissions
         final MessagingPermissions messagingPermissions =
                 new MessagingPermissions(loggedInMember, messageBeanList.get(0));
@@ -211,7 +209,7 @@ public class MessagingController {
 
             try {
                 //If I specify a thread, check that I have permissions on it
-                if (!threadId.equals("-1")) {
+                if (!"-1".equals(threadId)) {
                     //Check the permissions for the first message in the thread
                     String[] threadParts=threadId.split("-");
                     Long firstMessageId = Long.parseLong(threadParts[0]);

@@ -169,7 +169,7 @@ public final class MessagingClient {
         sendMessageBean.setFromId(fromId);
         sendMessageBean.setRecipientIds(recipientIds);
 
-        if (!threadId.equals("-1")) {
+        if (!"-1".equals(threadId)) {
             if (sendMessageBean.getRecipientIds().size()==1) {
                 messageResource.create(sendMessageBean)
                         .queryParam("checkLimit", checkLimit)

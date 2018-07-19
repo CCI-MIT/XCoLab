@@ -1,7 +1,5 @@
 package org.xcolab.service.members.domain.messaging;
 
-import net.sf.ehcache.search.expression.Not;
-
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Message;
 
