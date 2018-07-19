@@ -41,7 +41,6 @@ function removeSpaces() {
 }
 
 function checkMessageForm(event) {
-    var contents = $("#messageContent").val();
     var messages = getDynamicJSPMessages();
     if (CKEDITOR.instances["messageContent"].getData() === "") {
         event.preventDefault();

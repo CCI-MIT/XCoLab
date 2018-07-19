@@ -45,7 +45,7 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public List<Message> getFullConversation(long messageId, String threadId) throws NotFoundException {
         List<Message> messageList;
-        if (!threadId.equals("-1")){
+        if (!"-1".equals(threadId)){
             // There is thread info, get it all up to this message
             messageList=dslContext.select()
                     .from(MESSAGE
@@ -61,11 +61,6 @@ public class MessageDaoImpl implements MessageDao {
             if (messageList.isEmpty()) {
                 throw new NotFoundException("Thread " + threadId + "does not exist or does not contain messages with id <= "+messageId);
             }
-            /*
-            SELECT () FROM
-            xcolab_Message join xcolab_MessageRecipientStatus on xcolab_Message.messageId=xcolab_MessageRecipientStatus.messageId
-            WHERE xcolab_Message.messageId <= messageId AND xcolab_MessageRecipientStatus.threadId= threadId
-             */
         }else {
             messageList=dslContext.select()
                     .from(MESSAGE)
