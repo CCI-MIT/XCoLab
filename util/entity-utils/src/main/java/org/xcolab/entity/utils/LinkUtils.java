@@ -52,4 +52,12 @@ public final class LinkUtils {
         }
         return relativeUri.toString();
     }
+
+    public static boolean isLocalUrl(String url) {
+        return isRelativeUrl(url) || url.startsWith(PlatformAttributeKey.COLAB_URL.get());
+    }
+
+    public static boolean isRelativeUrl(String url) {
+        return url.startsWith("/");
+    }
 }

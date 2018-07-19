@@ -77,7 +77,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
             try {
                 //Make URI relative to prevent injection of external redirect URIs
                 final String redirect = LinkUtils.getRelativeUri(refererHeader);
-                if (StringUtils.isNotBlank(redirect) && isLocalReferer(refererHeader)
+                if (StringUtils.isNotBlank(redirect) && LinkUtils.isLocalUrl(refererHeader)
                         && !isFromLoginPage(redirect)) {
                     getRedirectStrategy().sendRedirect(request, response, redirect);
                 } else {
@@ -88,10 +88,6 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                 throw new InternalException(e);
             }
         }
-    }
-
-    private boolean isLocalReferer(String refererHeader) {
-        return refererHeader.startsWith(COLAB_URL);
     }
 
     private boolean isFromLoginPage(String refererHeader) {
