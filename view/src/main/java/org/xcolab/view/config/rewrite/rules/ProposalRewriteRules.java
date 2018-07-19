@@ -37,8 +37,6 @@ public class ProposalRewriteRules implements RewriteRuleProvider {
                         .to(PROPOSAL_PATH))
                 .addRule(Join.path(PROPOSAL_PATH + "/version/{version}")
                         .to(PROPOSAL_PATH))
-                .addRule(Join.path(PROPOSAL_PATH + "/voted")
-                        .to(PROPOSAL_PATH + "?voted=true"))
                 .addRule(Join.path(PROPOSAL_PATH
                             + "/moveFromContestPhaseId/{moveFromContestPhaseId}/move/{moveType}")
                         .to(PROPOSAL_PATH));

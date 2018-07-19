@@ -26,7 +26,7 @@
                             </span>
                         </div>
                         <c:if test="${proposalsPermissions.votingEnabled}">
-                            <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction" />
+                            <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/vote" />
 
                             <form:form action="${voteOnProposalURL}" method="post">
                                 <c:if test="${proposalsDisplayPermissions.canSeeVoteButton and contest.maxVotesPerProposal > 1}">
