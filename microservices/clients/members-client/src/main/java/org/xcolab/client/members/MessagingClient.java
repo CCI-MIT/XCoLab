@@ -124,7 +124,7 @@ public final class MessagingClient {
     }
 
     public static List<Member> getMessageRecipients(long messageId) {
-        return messageRecipientResource.resolveParent(messageResource.id(messageId))
+        return messageRecipientResource.resolveParentId(messageResource.id(messageId))
                 .list()
                 .withCache(CacheKeys.withClass(Member.class)
                         .withParameter("messageId", messageId)
