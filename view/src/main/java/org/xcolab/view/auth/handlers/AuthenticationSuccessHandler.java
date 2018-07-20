@@ -78,7 +78,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                 //Make URI relative to prevent injection of external redirect URIs
                 final String redirect = LinkUtils.getRelativeUri(refererHeader);
                 if (StringUtils.isNotBlank(redirect) && LinkUtils.isLocalUrl(refererHeader)
-                        && !isFromLoginPage(redirect)) {
+                        && !LinkUtils.isLoginPageLink(redirect)) {
                     getRedirectStrategy().sendRedirect(request, response, redirect);
                 } else {
                     super.onAuthenticationSuccess(request, response, authentication);
@@ -88,9 +88,5 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                 throw new InternalException(e);
             }
         }
-    }
-
-    private boolean isFromLoginPage(String refererHeader) {
-        return refererHeader.endsWith("/login");
     }
 }

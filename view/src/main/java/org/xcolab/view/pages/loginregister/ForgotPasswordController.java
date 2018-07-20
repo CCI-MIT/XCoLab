@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
@@ -16,6 +17,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
 
 import java.io.IOException;
@@ -81,6 +83,21 @@ public class ForgotPasswordController {
         }
 
         response.sendRedirect(redirect);
+    }
+
+    @GetMapping("/login/resetPassword")
+    public String handleInvalidHttpMethod(HttpServletRequest request) {
+        AlertMessage.warning("Warning: page reloaded before password reset was finished.")
+                .flash(request);
+        String referrer = request.getHeader(HttpHeaders.REFERER);
+        String redirect = "/";
+        if (StringUtils.isNotEmpty(referrer) && LinkUtils.isLocalUrl(referrer)
+                && !LinkUtils.isLoginPageLink(referrer) && !referrer.endsWith("resetPassword")) {
+            redirect = referrer;
+        }
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(redirect);
+        uriBuilder.queryParam("isPasswordReminder", true);
+        return "redirect:" + uriBuilder.build().toUriString();
     }
 
     public static String removeParamFromRequestStr(String requestStr, String param) {

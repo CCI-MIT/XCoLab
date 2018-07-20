@@ -60,4 +60,9 @@ public final class LinkUtils {
     public static boolean isRelativeUrl(String url) {
         return url.startsWith("/");
     }
+
+    public static boolean isLoginPageLink(String url) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
+        return uriBuilder.build().getPath().startsWith("/login");
+    }
 }
