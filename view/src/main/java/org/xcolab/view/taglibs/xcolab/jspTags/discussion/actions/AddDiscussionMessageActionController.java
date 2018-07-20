@@ -1,9 +1,11 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,14 +27,17 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
-import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
+        .DiscussionAuthorizationException;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
@@ -160,6 +165,19 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
         String redirectUrl = request.getHeader(HttpHeaders.REFERER);
         response.sendRedirect(redirectUrl);
+    }
+
+    @GetMapping("/discussions/addDiscussionMessage")
+    public String handleInvalidHttpMethod(HttpServletRequest request) {
+        AlertMessage.warning("Warning: page reloaded before comment was added.")
+                .flash(request);
+        String referrer = request.getHeader(HttpHeaders.REFERER);
+        if (StringUtils.isNotEmpty(referrer) && LinkUtils.isLocalUrl(referrer)
+                //avoid circular redirect
+                && !referrer.endsWith("addDiscussionMessage")) {
+            return "redirect:" + referrer;
+        }
+        return "redirect:/messaging";
     }
 
     private Contest getContest(CommentThread commentThread) {
