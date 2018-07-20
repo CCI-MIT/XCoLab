@@ -123,7 +123,7 @@ public class MessagingController {
         return showMessages(response, model, "INBOX", 1, loggedInMember);
     }
 
-    @PostMapping("sendMessage")
+    @PostMapping("/sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
             @RequestParam String messageContent, Member loggedInMember) throws IOException {
@@ -159,7 +159,7 @@ public class MessagingController {
         return showMessages(response, model, "INBOX", 1, loggedInMember);
     }
 
-    @GetMapping("sendMessage")
+    @GetMapping("/sendMessage")
     public String handleInvalidHttpMethod(HttpServletRequest request) {
         AlertMessage.warning("Warning: page reloaded before message was sent.")
                 .flash(request);
