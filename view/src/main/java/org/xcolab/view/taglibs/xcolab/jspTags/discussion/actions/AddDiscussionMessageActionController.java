@@ -177,7 +177,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                 && !referrer.endsWith("addDiscussionMessage")) {
             return "redirect:" + referrer;
         }
-        return "redirect:/messaging";
+        return "redirect:/discussions";
     }
 
     private Contest getContest(CommentThread commentThread) {
