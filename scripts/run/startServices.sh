@@ -18,6 +18,12 @@ function startService {
         SAVED_DIR=`pwd`
         cd ${SERVICE_DEPLOY_DIR}
         OUT_FILE=${service}.out
+        if ! [ -z ${LOG_SERVER+x} ]; then
+            DATE="$(date +"%Y-%m-%d_%H-%M-%S")"
+            REMOTE_LOG_FILE_DEST="${LOG_SERVER}:${LOG_SERVER_FOLDER}/${DATE}-${OUT_FILE}"
+            echo "[INFO] Copying logs to ${REMOTE_LOG_FILE_DEST}"
+            scp ${OUT_FILE} ${REMOTE_LOG_FILE_DEST}
+        fi
         rm ${OUT_FILE} > /dev/null 2>&1
         exec java -Xmx1G -Xms256M -jar ${service}-1.0-SNAPSHOT.jar > ${OUT_FILE} & echo $! > ${PID_FILE}
         cd ${SAVED_DIR}

@@ -10,12 +10,23 @@ the binaries yourself, make sure you run
 If you are not building from source and using the
 default directories, you will need to configure
 the directories in `config.sh` before using these
-scripts. `BINARY_SOURCE_DIR` is be the directory
+scripts. If you use the standard directories for
+the binaries and the bundle, you just need to set
+the `ROOT_DIR` variable to the directory containing
+the xCoLab installation.
+
+If you want to customize the binary or bundle locations,
+you can configure the derived variables as follows:
+`BINARY_SOURCE_DIR` is be the directory
 containing the XCoLab binaries you want to deploy
-and`DEPLOY_DIR` is the target directory of
+and `DEPLOY_DIR` is the target directory of
 the deployment. The jars will be run from the
 `DEPLOY_DIR` directory and all configuration
 files should reside there.
+
+You can also optionally configure the `LOG_SERVER` variable.
+If the variable is set, logs will be copied to the destination
+during each restart, before the original is deleted. 
 
 ## Running the scripts
 

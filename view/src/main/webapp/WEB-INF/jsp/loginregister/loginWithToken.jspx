@@ -9,54 +9,55 @@
 
 <layout:layout title="Login link">
     <h2>Login with unique link</h2>
-    <c:if test="${_themeContext.authenticationVariables.isLoggedIn}">
-        You are already logged in.
-    </c:if>
-    <c:if test="${not _themeContext.authenticationVariables.isLoggedIn}">
-        <c:choose>
-            <c:when test="${isValid}">
-                <div class="alert alert-info">
-                    You clicked a unique login link. Click the "Log in" button below to complete the login.
-                </div>
+    <c:choose>
+        <c:when test="${isIncomplete}">
+            <div class="alert alert-danger">
+                Your login link is incomplete. Please go back to the email and make sure you
+                used the full link.
+            </div>
+        </c:when>
+        <c:when test="${isValid}">
+            <div class="alert alert-info">
+                You clicked a unique login link. Click the "Log in" button below to complete the login.
+            </div>
 
-                <form:form action="/login/token/${tokenId}" method="post">
-                    <input type="hidden" name="tokenKey" value="${tokenKey}" />
-                    <div class="form-check">
-                        <input type="checkbox" id="remember-me" name="remember-me" checked="checked" class="form-check-input" />
-                        <label class="form-check-label" for="remember-me">
-                            Remember me
-                        </label> &#160;
-                        <collab:image src="/images/icon-addprop-question-bar.png" cssClass="js-Tooltip"
-                             title="If this box is checked, you will stay logged into the site automatically for one month." />
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" id="invalidate-link" name="invalidateLink" class="form-check-input" />
-                        <label class="form-check-label" for="invalidate-link">
-                            Invalidate link after login
-                        </label> &#160;
-                        <collab:image src="/images/icon-addprop-question-bar.png" cssClass="js-Tooltip"
-                             title="If you are using a public computer, check this box to prevent others from being able to use your login." />
-                    </div>
-                    <button type="submit" class="btn btn-primary">Log in</button>
-                </form:form>
-            </c:when>
-            <c:when test="${isExpired}">
-                <div class="alert alert-danger">
-                    Your login link has expired!
+            <form:form action="/login/token/${tokenId}" method="post">
+                <input type="hidden" name="tokenKey" value="${tokenKey}" />
+                <div class="form-check">
+                    <input type="checkbox" id="remember-me" name="remember-me" checked="checked" class="form-check-input" />
+                    <label class="form-check-label" for="remember-me">
+                        Remember me
+                    </label> &#160;
+                    <collab:image src="/images/icon-addprop-question-bar.png" cssClass="js-Tooltip"
+                         title="If this box is checked, you will stay logged into the site automatically for one month." />
                 </div>
-                <form:form action="/login/token/${tokenId}" method="post">
-                    <input type="hidden" name="tokenKey" value="${tokenKey}" />
-                    <button type="submit" class="btn btn-primary">Send new link</button>
-                </form:form>
-            </c:when>
-            <c:otherwise>
-                <div class="alert alert-danger">
-                    The token you entered is invalid. Make sure you are using the most recent
-                    login link as only once link is valid at a time.
+                <div class="form-check">
+                    <input type="checkbox" id="invalidate-link" name="invalidateLink" class="form-check-input" />
+                    <label class="form-check-label" for="invalidate-link">
+                        Invalidate link after login
+                    </label> &#160;
+                    <collab:image src="/images/icon-addprop-question-bar.png" cssClass="js-Tooltip"
+                         title="If you are using a public computer, check this box to prevent others from being able to use your login." />
                 </div>
-            </c:otherwise>
-        </c:choose>
-
-    </c:if>
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </form:form>
+        </c:when>
+        <c:when test="${isExpired}">
+            <div class="alert alert-warning">
+                Your login link has expired! Please click the button below to send a new
+                login link to your email address.
+            </div>
+            <form:form action="/login/token/${tokenId}" method="post">
+                <input type="hidden" name="tokenKey" value="${tokenKey}" />
+                <button type="submit" class="btn btn-primary">Send new link</button>
+            </form:form>
+        </c:when>
+        <c:otherwise>
+            <div class="alert alert-danger">
+                The token you entered is invalid. Make sure you are using the most recent
+                login link as only one link is valid at a time.
+            </div>
+        </c:otherwise>
+    </c:choose>
 </layout:layout>
 </jsp:root>

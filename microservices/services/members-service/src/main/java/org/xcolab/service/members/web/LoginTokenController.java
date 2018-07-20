@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
@@ -65,7 +66,8 @@ public class LoginTokenController {
     public LoginToken generateToken(@PathVariable long memberId) throws NotFoundException {
         String tokenId = Long.toHexString(SecureRandomUtil.nextLong());
         String tokenKey = Long.toHexString(SecureRandomUtil.nextLong());
-        Instant tokenExpirationDate = Instant.now().plus(7, ChronoUnit.DAYS);
+        final long expirationInDays = ConfigurationAttributeKey.LOGIN_LINK_EXPIRATION_IN_DAYS.get();
+        Instant tokenExpirationDate = Instant.now().plus(expirationInDays, ChronoUnit.DAYS);
 
         final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
         member.setLoginTokenId(tokenId);

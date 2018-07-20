@@ -33,6 +33,6 @@ public final class EmailClient {
         email.setReplyToName(((replyToName == null ? ("") : (replyToName))));
         email.setReferenceId(referenceId);
 
-        emailResource.service("send", String.class).post(email);
+        emailResource.collectionService("send", String.class).post(email);
     }
 }

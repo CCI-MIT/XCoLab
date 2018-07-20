@@ -215,7 +215,7 @@
 
     <!-- Comments, if they aren't in a separate tab -->
     <c:if test="${not _themeContext.themeVariables.isCommentsInOwnTab}">
-        <hr class="cb-hr-tan cb-hr-xl"/>
+        <hr class="cb-hr-tan cb-hr-xl" id="Comments"/>
         <c:choose>
             <c:when test="${contest.isSharedContestInForeignColab}">
                 <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"

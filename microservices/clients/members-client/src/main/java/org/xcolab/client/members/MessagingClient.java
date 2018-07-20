@@ -187,28 +187,28 @@ public final class MessagingClient {
     }
 
     public static void setArchived(long messageId, long memberId, boolean isArchived) {
-        messageRecipientResource.resolveParent(messageResource.id(messageId))
-                .query(memberId, Void.class)
+        messageRecipientResource.resolveParentId(messageResource.id(messageId))
+                .elementQuery(memberId, Void.class)
                 .queryParam("memberId", memberId)
                 .queryParam("isArchived", isArchived)
                 .put();
     }
 
     public static void setOpened(long messageId, long memberId, boolean isOpened) {
-        messageRecipientResource.resolveParent(messageResource.id(messageId))
-                .query(memberId, Void.class)
+        messageRecipientResource.resolveParentId(messageResource.id(messageId))
+                .elementQuery(memberId, Void.class)
                 .queryParam("memberId", memberId)
                 .queryParam("isOpened", isOpened)
                 .put();
     }
 
     public static MessagingUserPreferences getMessagingPreferencesForMember(long memberId) {
-        return memberResource.service(memberId, "messagingPreferences", MessagingUserPreferences.class)
+        return memberResource.elementService(memberId, "messagingPreferences", MessagingUserPreferences.class)
                 .get();
     }
 
     public static MessagingUserPreferences createMessagingPreferences(MessagingUserPreferences messagingUserPreferences) {
-        return messagePreferencesResource.resolveParent(memberResource.id(messagingUserPreferences.getUserId()))
+        return messagePreferencesResource.resolveParentId(memberResource.id(messagingUserPreferences.getUserId()))
                 .create(messagingUserPreferences)
                 .execute();
     }
@@ -218,20 +218,20 @@ public final class MessagingClient {
             createMessagingPreferences(messagingUserPreferences);
             return true;
         }
-        return messagePreferencesResource.resolveParent(memberResource.id(messagingUserPreferences.getUserId()))
+        return messagePreferencesResource.resolveParentId(memberResource.id(messagingUserPreferences.getUserId()))
                 .update(messagingUserPreferences, messagingUserPreferences.getMessagingPreferencesId())
                 .execute();
     }
 
 
     public static boolean canMemberSendMessage(long memberId, int messagesToSend) {
-        return memberResource.service(memberId, "canSendMessage", Boolean.class)
+        return memberResource.elementService(memberId, "canSendMessage", Boolean.class)
                 .queryParam("messagesToSend", messagesToSend)
                 .get();
     }
 
     public static int getNumberOfMessagesLeft(long memberId) {
-        return memberResource.service(memberId, "numberOfMessagesLeft", Integer.class)
+        return memberResource.elementService(memberId, "numberOfMessagesLeft", Integer.class)
                 .get();
     }
 }

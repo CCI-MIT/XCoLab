@@ -43,7 +43,7 @@ public abstract class AbstractRestResource<ResourceT, IdT> extends AbstractServi
 
     @Override
     public GetQuery<ResourceT, IdT> get(IdT id) {
-        return new GetQuery<>(this, id, entityType);
+        return new GetQuery<>(this, entityType, id);
     }
 
     @Override

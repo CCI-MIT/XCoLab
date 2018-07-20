@@ -165,7 +165,7 @@ public final class FlaggingClient {
     }
 
     public static boolean handleReport(long managerId, ManagerAction managerAction, long reportId) {
-        return reportResource.service(reportId, "handle", Boolean.class)
+        return reportResource.elementService(reportId, "handle", Boolean.class)
                 .queryParam("managerMemberId", managerId)
                 .queryParam("managerAction", managerAction)
                 .post();

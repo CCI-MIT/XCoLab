@@ -185,12 +185,12 @@ public final class ProposalClient {
     }
 
     public List<Member> getProposalMembers(Long proposalId) {
-        return proposalResource.service(proposalId, "allMembers", Member.TYPES.getTypeReference())
+        return proposalResource.elementService(proposalId, "allMembers", Member.TYPES.getTypeReference())
                 .getList();
     }
 
     public void removeMemberFromProposalTeam(Long proposalId, Long userId) {
-        proposalResource.service(proposalId, "removeMemberFromProposalTeam", Boolean.class)
+        proposalResource.elementService(proposalId, "removeMemberFromProposalTeam", Boolean.class)
                 .queryParam("memberId", userId)
                 .delete();
 
@@ -199,13 +199,13 @@ public final class ProposalClient {
     }
 
     public void promoteMemberToProposalOwner(Long proposalId, Long memberId) {
-        proposalResource.service(proposalId, "promoteMemberToProposalOwner", Boolean.class)
+        proposalResource.elementService(proposalId, "promoteMemberToProposalOwner", Boolean.class)
                 .queryParam("memberId", memberId)
                 .post();
     }
 
     public Boolean isUserInProposalTeam(Long proposalId, Long memberUserId) {
-        return proposalResource.service(proposalId, "isUserInProposalTeam", Boolean.class)
+        return proposalResource.elementService(proposalId, "isUserInProposalTeam", Boolean.class)
                 .queryParam("memberUserId", memberUserId)
                 .get();
     }
@@ -225,7 +225,7 @@ public final class ProposalClient {
     }
 
     public Proposal createProposal(long authorId, long contestPhaseId, boolean publishActivity) {
-        return proposalResource.service("createProposal", ProposalDto.class)
+        return proposalResource.collectionService("createProposal", ProposalDto.class)
                 .queryParam("authorId", authorId)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .queryParam("publishActivity", publishActivity)
@@ -233,7 +233,7 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getContestIntegrationRelevantSubproposals(Long proposalId) {
-        return DtoUtil.toPojos(proposalResource.service(proposalId, "contestIntegrationRelevantSubproposal",
+        return DtoUtil.toPojos(proposalResource.elementService(proposalId, "contestIntegrationRelevantSubproposal",
                 ProposalDto.TYPES.getTypeReference()).getList(), serviceNamespace);
     }
 
@@ -247,7 +247,7 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getMemberProposals(Long userId) {
-        return DtoUtil.toPojos(proposalResource.service("getMemberProposals", ProposalDto.TYPES.getTypeReference())
+        return DtoUtil.toPojos(proposalResource.collectionService("getMemberProposals", ProposalDto.TYPES.getTypeReference())
                 .queryParam("userId", userId)
                 .getList(), serviceNamespace);
     }
@@ -313,31 +313,31 @@ public final class ProposalClient {
 
     public List<Proposal> getSubproposals(Long proposalId, Boolean includeProposalsInSameContest) {
         return DtoUtil.toPojos(proposalResource
-                .service(proposalId, "getSubproposals", ProposalDto.TYPES.getTypeReference())
+                .elementService(proposalId, "getSubproposals", ProposalDto.TYPES.getTypeReference())
                 .queryParam("includeProposalsInSameContest", includeProposalsInSameContest)
                 .getList(), serviceNamespace);
     }
 
 
     public List<Proposal> getLinkingProposalsForProposalID(Long proposalId) {
-        return DtoUtil.toPojos(proposalResource.service(proposalId, "listProposalLinks", ProposalDto.TYPES.getTypeReference())
+        return DtoUtil.toPojos(proposalResource.elementService(proposalId, "listProposalLinks", ProposalDto.TYPES.getTypeReference())
                 .getList(), serviceNamespace);
     }
 
     public Integer getProposalMaterializedPoints(Long proposalId) {
-        return proposalResource.service(proposalId, "materializedPoints", Integer.class).get();
+        return proposalResource.elementService(proposalId, "materializedPoints", Integer.class).get();
     }
 
 
     public Integer getNumberOfProposalsAlreadyJudgedForJudge(Long userId, Long contestPhaseId) {
-        return proposalResource.service("numberOfProposalsAlreadyJudgedForJudge", Integer.class)
+        return proposalResource.collectionService("numberOfProposalsAlreadyJudgedForJudge", Integer.class)
                 .queryParam("userId", userId)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .get();
 
     }
     public Integer getNumberOfProposalsForJudge(Long userId, Long contestPhaseId) {
-        return proposalResource.service("numberOfProposalsForJudge", Integer.class)
+        return proposalResource.collectionService("numberOfProposalsForJudge", Integer.class)
                 .queryParam("userId", userId)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .get();
@@ -371,14 +371,14 @@ public final class ProposalClient {
     }
 
     public ProposalVersion getProposalVersionByProposalIdVersion(Long proposalId, Integer version) {
-        return proposalVersionResource.service("getByProposalIdVersion", ProposalVersionDto.class)
+        return proposalVersionResource.collectionService("getByProposalIdVersion", ProposalVersionDto.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("version", version)
                 .get()
                 .toPojo(serviceNamespace);
     }
     public List<ProposalVersion> getProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId, int start, int end) {
-        return DtoUtil.toPojos(proposalVersionResource.service("getGroupedVersionsByContest", ProposalVersionDto.TYPES.getTypeReference())
+        return DtoUtil.toPojos(proposalVersionResource.collectionService("getGroupedVersionsByContest", ProposalVersionDto.TYPES.getTypeReference())
                 .queryParam("proposalId", proposalId)
                 .queryParam("contestId", contestId)
                 .queryParam("start", start)
@@ -387,23 +387,23 @@ public final class ProposalClient {
 
     }
     public Integer getMaxVersion(Long proposalId) {
-        return proposalResource.service(proposalId, "maxVersion", Integer.class)
+        return proposalResource.elementService(proposalId, "maxVersion", Integer.class)
                 .get();
     }
     public Integer countProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId) {
-        return proposalVersionResource.service("countGroupedVersionsByContest", Integer.class)
+        return proposalVersionResource.collectionService("countGroupedVersionsByContest", Integer.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("contestId", contestId)
                 .get();
     }
     public Integer countProposalVersions(Long proposalId) {
-        return proposalVersionResource.service("count", Integer.class)
+        return proposalVersionResource.collectionService("count", Integer.class)
                 .optionalQueryParam("proposalId", proposalId)
                 .get();
     }
 
     public ProposalVersion getProposalVersionByProposal(Long proposalId) {
-        return proposalVersionResource.service("getByProposalIdVersion", ProposalVersionDto.class)
+        return proposalVersionResource.collectionService("getByProposalIdVersion", ProposalVersionDto.class)
                 .queryParam("proposalId", proposalId)
                 .get()
                 .toPojo(serviceNamespace);
@@ -433,7 +433,7 @@ public final class ProposalClient {
     }
 
     public Long getLatestContestPhaseIdInProposal(Long proposalId) {
-        return proposalResource.service(proposalId, "getLatestContestPhaseIdInProposal", Long.class)
+        return proposalResource.elementService(proposalId, "getLatestContestPhaseIdInProposal", Long.class)
                 .get();
     }
 
@@ -450,7 +450,7 @@ public final class ProposalClient {
 
 
     public void populateTableWithProposal(long proposalId) {
-        proposalReferenceResource.service("populateTableWithProposal", Boolean.class)
+        proposalReferenceResource.collectionService("populateTableWithProposal", Boolean.class)
                 .queryParam("proposalId", proposalId)
                 .get();
 

@@ -51,7 +51,7 @@ public final class PointsClient {
             long targetPlanSectionDefinitionId) {
         try {
             return pointsDistributionConfigurationResource
-                    .service("getByTargetPlanSectionDefinitionId",
+                    .collectionService("getByTargetPlanSectionDefinitionId",
                             PointsDistributionConfigurationDto.class)
                     .queryParam("targetPlanSectionDefinitionId", targetPlanSectionDefinitionId)
                     .getChecked().toPojo(serviceNamespace);
@@ -83,12 +83,12 @@ public final class PointsClient {
     }
 
     public void verifyDistributionConfigurationsForProposalId(Long proposalId) {
-         pointsDistributionConfigurationResource.service("verifyDistributionConfigurationsForProposalId", String.class)
+         pointsDistributionConfigurationResource.collectionService("verifyDistributionConfigurationsForProposalId", String.class)
                 .queryParam("proposalId", proposalId).execute();
     }
 
     public Boolean deletePointsDistributionConfigurationByProposalId(Long proposalId) {
-        return pointsDistributionConfigurationResource.service("removeByProposalId", Boolean.class)
+        return pointsDistributionConfigurationResource.collectionService("removeByProposalId", Boolean.class)
                 .queryParam("proposalId", proposalId).delete();
     }
 

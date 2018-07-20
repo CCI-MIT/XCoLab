@@ -26,7 +26,7 @@ public class PersistenceContext {
 
     @Bean(destroyMethod = "shutdown")
     public HikariDataSource hikariDataSource() {
-        return DataSourceUtil.getConfiguredDataSource(env);
+        return DataSourceUtil.getConfiguredDataSource(env, "db.tracking.schema");
     }
 
 //    @Bean

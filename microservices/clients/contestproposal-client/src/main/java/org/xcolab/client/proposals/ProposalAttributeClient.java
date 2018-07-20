@@ -98,7 +98,7 @@ public final class ProposalAttributeClient {
 
     public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) {
         return DtoUtil.toPojos(proposalAttributeResource
-                .service("getImpactProposalAttributes", ProposalAttributeDto.TYPES.getTypeReference())
+                .collectionService("getImpactProposalAttributes", ProposalAttributeDto.TYPES.getTypeReference())
                 .queryParam("proposalId", proposal.getProposalId())
                 .queryParam("currentVersion", proposal.getCurrentVersion())
                 .getList(), serviceNamespace);
@@ -141,8 +141,8 @@ public final class ProposalAttributeClient {
 
     public ProposalAttributeHelperDataDto getProposalAttributeHelperData(long proposalId,
             long version) {
-        return proposalVersionResource.resolveParent(proposalResource.id(proposalId))
-                .<ProposalAttributeHelperDataDto, ProposalAttributeHelperDataDto>service(
+        return proposalVersionResource.resolveParentId(proposalResource.id(proposalId))
+                .<ProposalAttributeHelperDataDto, ProposalAttributeHelperDataDto>elementService(
                         version, "attributeHelper",
                         ProposalAttributeHelperDataDto.class)
                 .withCache(CacheKeys.withClass(ProposalAttributeHelperDataDto.class)
@@ -155,7 +155,7 @@ public final class ProposalAttributeClient {
     public ProposalUnversionedAttributeHelperDataDto getProposalUnversionedAttributeHelperData(
             long proposalId) {
         return proposalResource
-                .service(proposalId,"attributeHelper",
+                .elementService(proposalId,"attributeHelper",
                         ProposalUnversionedAttributeHelperDataDto.class)
                 .get();
     }
@@ -183,7 +183,7 @@ public final class ProposalAttributeClient {
         //        .optionalQueryParam("version", version)
         //        .withCache(CacheName.PROPOSAL_DETAILS)
 
-        return proposalAttributeResource.service("setProposalAttribute", ProposalAttributeDto.class)
+        return proposalAttributeResource.collectionService("setProposalAttribute", ProposalAttributeDto.class)
                 .queryParam("authorId", authorId)
                 .post(proposalAttribute)
                 .toPojo(serviceNamespace);
@@ -276,7 +276,7 @@ public final class ProposalAttributeClient {
     public ProposalUnversionedAttribute getProposalUnversionedAttribute(Long proposalId,
             String name) throws EntityNotFoundException{
         return proposalUnversionedAttributeResource
-                .service("getByProposalIdName", ProposalUnversionedAttributeDto.class)
+                .collectionService("getByProposalIdName", ProposalUnversionedAttributeDto.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("name", name)
                 .getChecked()

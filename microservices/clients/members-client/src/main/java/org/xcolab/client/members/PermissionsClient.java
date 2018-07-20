@@ -69,7 +69,7 @@ public final class PermissionsClient {
 
     private static List<Role_> getRoleGroupRoles(long roleGroupId) {
         //TODO COLAB-2594: think about structure
-        return roleGroupRoleResource.resolveParent(roleGroupResource.id(roleGroupId))
+        return roleGroupRoleResource.resolveParentId(roleGroupResource.id(roleGroupId))
                 .list()
                 .withCache(CacheName.CONFIGURATION)
                 .execute();

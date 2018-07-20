@@ -25,7 +25,7 @@ public final class DataSourceUtil {
     private static final String DB_USERNAME_PROPERTY_NAME = "db.username";
     private static final String DB_PASSWORD_PROPERTY_NAME = "db.password";
     private static final String DB_SCHEMA_PROPERTY_NAME = "db.schema";
-    public static final int LEAK_DETECTION_THRESHOLD_MS = 20_000;
+    private static final int LEAK_DETECTION_THRESHOLD_MS = 20_000;
 
     private DataSourceUtil() {
     }

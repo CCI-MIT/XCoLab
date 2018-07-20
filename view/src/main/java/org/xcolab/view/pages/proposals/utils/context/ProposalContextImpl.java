@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.proposals.utils.context;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.LocaleResolver;
@@ -13,15 +15,18 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
+import org.xcolab.view.pages.proposals.exceptions.InvalidAccessException;
+import org.xcolab.view.pages.proposals.exceptions.InvalidContestUrlException;
+import org.xcolab.view.pages.proposals.exceptions.InvalidProposalUrlException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
-import org.xcolab.view.pages.proposals.utils.context.ProposalContextHelper.InvalidAccessException;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class ProposalContextImpl implements ProposalContext {
+
+    private static final Logger log = LoggerFactory.getLogger(ProposalContextImpl.class);
 
     private final LocaleResolver localeResolver;
     private final HttpServletRequest request;
@@ -66,7 +71,8 @@ public class ProposalContextImpl implements ProposalContext {
                     final boolean isMove = request.getParameter("moveType") != null;
                     if (proposal2Phase == null && !isMove) {
                         if (contextHelper.getGivenPhaseId() > 0) {
-                            throw new InvalidAccessException();
+                            throw new InvalidProposalUrlException(contest, contestPhase,
+                                    proposal.getProposalId());
                         }
                         throw new InternalException(String.format(
                                 "Proposal %d has no phase association with phase %d in contest %d",
@@ -87,22 +93,24 @@ public class ProposalContextImpl implements ProposalContext {
             if (contestType == null) {
                 contestType = preferences.getContestType(language);
             }
-
-        } catch (InvalidAccessException e) {
-            handleAccessedInvalidUrlIdInUrl(member, currentUrl, referrerUrl, userAgent);
+        } catch (InvalidProposalUrlException | InvalidContestUrlException e) {
+            reportAccessOfInvalidUrl(member, currentUrl, referrerUrl, userAgent, e);
+            throw e;
         }
     }
 
     //TODO COLAB-2624: report to table rather than email (or external service)
     @SuppressWarnings("UnusedParameters")
-    private void handleAccessedInvalidUrlIdInUrl(Member member, String currentUrl,
-            String referralUrl, String userAgent)
-            throws ProposalIdOrContestIdInvalidException {
+    private void reportAccessOfInvalidUrl(Member member, String currentUrl,
+            String referralUrl, String userAgent, InvalidAccessException exception) {
+
+        log.warn("Invalid URL {} accessed from {} by {}: {}", currentUrl, referralUrl,
+                member != null ?member.getScreenName() : "[no user logged in]",
+                exception.getMessage());
+
         //        if (member != null) {
         //            reportInvalidUrlToAdmins(member, currentUrl, referralUrl, userAgent);
         //        }
-
-        throw new ProposalIdOrContestIdInvalidException();
     }
 
     //    private void reportInvalidUrlToAdmins(User currentUser, String currentUrl, String referralUrl,

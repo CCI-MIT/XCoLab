@@ -196,7 +196,7 @@ public final class ContentsClient {
 
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
         return contentFolderResource
-                .nestedResource(folderId, "contentArticleVersions", ContentArticleVersion.TYPES)
+                .nestedResource("contentArticleVersions", ContentArticleVersion.TYPES, folderId)
                 .list()
                 .withCache(CacheName.CONTENT)
                 .execute();
@@ -225,7 +225,7 @@ public final class ContentsClient {
     public static ContentPage getContentPageByContentArticleId(Long contentArticleId) {
         try {
             return contentPageResource
-                    .service("getByContentArticleId", ContentPage.TYPES.getEntityType())
+                    .collectionService("getByContentArticleId", ContentPage.TYPES.getEntityType())
                     .queryParam("contentArticleId", contentArticleId).getChecked();
         } catch (EntityNotFoundException enfe) {
             return null;

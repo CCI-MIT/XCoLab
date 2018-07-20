@@ -79,7 +79,7 @@ public final class ProposalJudgeRatingClient {
             int judgeType) {
 
         return DtoUtil.toPojos(proposalRatingResource
-                .service("findByProposalIdJudgeTypeJudgeIdContestPhaseId",
+                .collectionService("findByProposalIdJudgeTypeJudgeIdContestPhaseId",
                         ProposalRatingDto.TYPES.getTypeReference())
                 .queryParam("proposalId", proposalId)
                 .queryParam("judgeType", judgeType)
@@ -100,7 +100,7 @@ public final class ProposalJudgeRatingClient {
     protected List<ProposalRating> getRatingsForProposalAndUser(long proposalId, int judgeType,
             long userId, long contestPhaseId) {
         return DtoUtil.toPojos(proposalRatingResource
-                .service("findByProposalIdJudgeTypeJudgeIdContestPhaseId",
+                .collectionService("findByProposalIdJudgeTypeJudgeIdContestPhaseId",
                         ProposalRatingDto.TYPES.getTypeReference())
                 .queryParam("proposalId", proposalId)
                 .queryParam("judgeType", judgeType)

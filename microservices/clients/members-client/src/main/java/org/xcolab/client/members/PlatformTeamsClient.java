@@ -53,7 +53,7 @@ public class PlatformTeamsClient {
 
     public static List<Member> getTeamMembers(PlatformTeam team) {
         return platformTeamResource
-                .service(team.getId_(), "members", Member.TYPES.getTypeReference())
+                .elementService(team.getId_(), "members", Member.TYPES.getTypeReference())
                 .getList();
     }
 
@@ -67,14 +67,14 @@ public class PlatformTeamsClient {
     public static boolean addMember(PlatformTeam team, Member member) {
         ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
         return platformTeamResource
-                .service(team.getId_(), "members/" + member.getId_(), Boolean.class)
+                .elementService(team.getId_(), "members/" + member.getId_(), Boolean.class)
                 .put();
     }
 
     public static boolean removeMember(PlatformTeam team, Member member) {
         ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
         return platformTeamResource
-                .service(team.getId_(), "members/" + member.getId_(), Boolean.class)
+                .elementService(team.getId_(), "members/" + member.getId_(), Boolean.class)
                 .delete();
     }
 

@@ -29,14 +29,11 @@ import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
-import org.xcolab.view.util.entity.portlet.session.SessionErrors;
-import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -44,12 +41,6 @@ public class LoginRegisterController {
 
     private static final Logger _log = LoggerFactory.getLogger(LoginRegisterController.class);
 
-    public static final String SSO_TARGET_KEY = "SSO_TARGET_KEY";
-    public static final String SSO_TARGET_REGISTRATION = "SSO_TARGET_REGISTRATION";
-    public static final String SSO_TARGET_LOGIN = "SSO_TARGET_LOGIN";
-    public static final String PRE_LOGIN_REFERRER_KEY = "PRE_LOGIN_REFERRER_KEY";
-
-    private static final String USER_NAME_REGEX = "^[a-zA-Z0-9]+$";
     private static final String REGISTER_VIEW_NAME = "loginregister/register";
     private final LoginRegisterService loginRegisterService;
 
@@ -80,10 +71,6 @@ public class LoginRegisterController {
 
         if (redirect == null || redirect.trim().isEmpty()) {
             redirect = request.getParameter("redirect");
-            if (redirect == null) {
-                HttpSession session = request.getSession();
-                redirect = (String) session.getAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY);
-            }
             if (redirect == null) {
                 redirect = request.getHeader(HttpHeaders.REFERER);
             }
@@ -148,16 +135,12 @@ public class LoginRegisterController {
             captchaValid = recaptchaValidator.verify(gRecaptchaResponse);
         }
         if (!captchaValid) {
-            SessionErrors.clear(request);
-            
             result.addError(new ObjectError("createUserBean", resourceMessageResolver.
                     getLocalizedMessage("register.form.validation.captcha.message")));
             return showRegistrationError(model);
         }
         //TODO COLAB-2617: improve redirect to avoid double handling
         loginRegisterService.completeRegistration(request, response, newAccountBean, redirect, false);
-        SessionErrors.clear(request);
-        SessionMessages.clear(request);
         return REGISTER_VIEW_NAME;
     }
 

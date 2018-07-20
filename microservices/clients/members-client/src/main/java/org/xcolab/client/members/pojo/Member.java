@@ -359,7 +359,7 @@ public class Member implements Serializable {
     }
 
     public String getHashedPassword() {
-        return this.hashedPassword == null ? "" : this.hashedPassword;
+        return this.hashedPassword;
     }
 
     public void setHashedPassword(String hashedPassword) {

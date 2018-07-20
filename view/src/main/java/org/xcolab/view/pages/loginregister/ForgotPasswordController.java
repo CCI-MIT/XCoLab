@@ -14,14 +14,11 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
-import org.xcolab.view.util.entity.portlet.session.SessionErrors;
-import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +29,10 @@ public class ForgotPasswordController {
 
     private static final String FORGOT_PASSWORD_URL
             = "/login/resetPassword/update?resetToken=%s&screenName=%s";
+
+    private static final String INVALID_TOKEN_ERROR_MESSAGE =
+            "Your password reset token has expired or is invalid. Please try to reset your password again";
+
     private final LoginRegisterService loginRegisterService;
 
     @Autowired
@@ -49,10 +50,10 @@ public class ForgotPasswordController {
 
         redirect = !StringUtils.isBlank(redirect) ? redirect : PlatformAttributeKey.COLAB_URL.get();
 
-        redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isSigningIn");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isRegistering");
+        redirect = removeParamFromRequestStr(redirect, "signinRegError");
+        redirect = removeParamFromRequestStr(redirect, "isPasswordReminder");
+        redirect = removeParamFromRequestStr(redirect, "isSigningIn");
+        redirect = removeParamFromRequestStr(redirect, "isRegistering");
 
         try {
             Member member;
@@ -71,19 +72,19 @@ public class ForgotPasswordController {
             AlertMessage.success("A password retrieval message has been sent. Please check your email")
                     .flash(request);
         } catch (MemberNotFoundException e) {
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("isPasswordReminder", "true");
 
-            redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
+            //TODO: better way of passing this on
+            redirect += "isPasswordReminder=true";
 
             AlertMessage.danger("Could not send password retrieval message, please check your screen name or email")
                     .flash(request);
         }
 
-        SessionErrors.clear(request);
-        SessionMessages.clear(request);
-
         response.sendRedirect(redirect);
+    }
+
+    public static String removeParamFromRequestStr(String requestStr, String param) {
+        return requestStr == null ? null : requestStr.replaceAll("&?" + param + "=[^&#]*", "");
     }
 
     private static void sendEmailNotificationToForPasswordReset(String memberIp, String link,
@@ -92,26 +93,15 @@ public class ForgotPasswordController {
                 .sendEmailNotification();
     }
 
-    @GetMapping("/login/resetPassword/error")
-    public String resetPasswordError(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return redirectToErrorPageOnPasswordReset(model);
-    }
-
-    private String redirectToErrorPageOnPasswordReset(Model model) {
-        model.addAttribute("message",
-                "Your password reset ticket has expired or is invalid. Please try to reset your password again.");
-        model.addAttribute("redirect_url", "/");
-        return "loginregister/password_reset_error";
-    }
-
-
     @GetMapping("/login/resetPassword/update")
     public String openResetPassword(HttpServletRequest request, HttpServletResponse response,
             ForgotPasswordBean forgotPasswordBean, Model model, @RequestParam String resetToken,
             @RequestParam(required = false) String screenName) {
 
         if (!MembersClient.isForgotPasswordTokenValid(resetToken)) {
-            return redirectToErrorPageOnPasswordReset(model);
+            AlertMessage.danger(INVALID_TOKEN_ERROR_MESSAGE)
+                    .flash(request);
+            return "redirect:/";
         } else {
             model.addAttribute("screenName", screenName);
             model.addAttribute("forgotPasswordBean", forgotPasswordBean);
@@ -137,15 +127,14 @@ public class ForgotPasswordController {
             try {
                 loginRegisterService.updatePassword(resetToken, newPassword);
                 AlertMessage.success("Your password was successfully updated!").flash(request);
-                SessionErrors.clear(request);
-                SessionMessages.clear(request);
-                return "redirect:/";
             } catch (MemberNotFoundException e) {
-                return "redirect:/login/resetPassword/error";
+                throw new InternalException(e);
             }
 
         } else {
-            return "redirect:/login/resetPassword/error";
+            AlertMessage.danger(INVALID_TOKEN_ERROR_MESSAGE)
+                    .flash(request);
         }
+        return "redirect:/";
     }
 }
