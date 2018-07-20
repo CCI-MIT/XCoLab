@@ -69,7 +69,7 @@ public class MessagingController {
             @RequestParam(required = false, defaultValue = "true") boolean includeCount,
             @RequestParam(required = false) Long messageId,
             @RequestParam(required = false) String threadId) throws NotFoundException {
-        if (messageId!=null && threadId!=null){
+        if (messageId!=null && threadId!=null) {
             return messageDao.getFullConversation(messageId, threadId);
         } else {
             final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,

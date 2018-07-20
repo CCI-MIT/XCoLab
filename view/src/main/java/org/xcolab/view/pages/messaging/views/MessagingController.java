@@ -111,7 +111,7 @@ public class MessagingController {
             @RequestParam(required=false) String threadId) throws MessageOrThreadNotFoundException, MessageNotFoundException {
         List<Message> fullConversation = new ArrayList<>();
         //Retrieve conversation and check if it was found
-        if (threadId!=null && !threadId.equals("")){
+        if (StringUtils.isNotEmpty(threadId)) {
             try {
                 fullConversation = MessagingClient.getFullConversation(messageId, threadId);
             } catch (UncheckedEntityNotFoundException e) {
@@ -193,7 +193,7 @@ public class MessagingController {
     @PostMapping("sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
-            @RequestParam String messageContent,@RequestParam(defaultValue = "-1") String threadId,
+            @RequestParam String messageContent, @RequestParam(defaultValue = "-1") String threadId,
             Member loggedInMember) throws IOException {
 
         //Check if I'm logged in
@@ -211,11 +211,11 @@ public class MessagingController {
                 //If I specify a thread, check that I have permissions on it
                 if (!"-1".equals(threadId)) {
                     //Check the permissions for the first message in the thread
-                    String[] threadParts=threadId.split("-");
+                    String[] threadParts = threadId.split("-");
                     Long firstMessageId = Long.parseLong(threadParts[0]);
                         List<MessageBean> firstMessageBeanList = new ArrayList<>(Arrays.asList(
                                 new MessageBean(MessagingClient.getMessage(firstMessageId))));
-                        if (!messagingPermissions.getCanViewThread(threadId,firstMessageBeanList)){
+                        if (!messagingPermissions.getCanViewThread(threadId, firstMessageBeanList)) {
                             //Permission denied
                             AlertMessage.danger("You don't have permissions on this thread" ).flash(request);
                             return new AccessDeniedPage(loggedInMember).toViewName(response);

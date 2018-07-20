@@ -19,6 +19,7 @@ $(document).ready(function(){
 });
 
 function identifyPreviousMessages() {
+    //TODO COLAB-2836: Remove once old messages are migrated.
     var beginPattern="-- original message begin --";
     var endPattern="-- original message end --";
     var message=$("#messageContents")[0].innerHTML;

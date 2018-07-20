@@ -34,21 +34,18 @@ public class MessagingPermissions {
     }
 
     public boolean getCanViewThread(String threadId, List<MessageBean> fullConversation) {
-        MessageBean originalMessage = fullConversation.get(fullConversation.size()-1);
-        //I sent first message
-        boolean firstMessageSent = originalMessage.getFrom().getUserId() == loggedInMember.getId_();
-        //I received it
-        boolean firstMessageReceived = originalMessage.getTo().stream()
+        MessageBean originalMessage = fullConversation.get(fullConversation.size() - 1);
+        boolean didSendOriginalMessage = originalMessage.getFrom().getUserId() == loggedInMember.getId_();
+        boolean didReceiveOriginalMessage = originalMessage.getTo().stream()
                 .anyMatch(recipient -> recipient.getId_() == loggedInMember.getId_());
-        //ThreadId ends with my ID
-        boolean myThread = false;
-        if (threadId!=null){
-            myThread = threadId.endsWith(String.valueOf(loggedInMember.getId_()));
+        boolean isMyThread = false;
+        if (threadId != null) {
+            isMyThread = threadId.endsWith(String.valueOf(loggedInMember.getId_()));
         }
         //Looking for a single message (backwards compatibility)
-        boolean singleMessage=fullConversation.size()==1 && this.getCanViewMessage();
+        boolean isSingleMessage = fullConversation.size() == 1 && this.getCanViewMessage();
 
-        return firstMessageSent || (firstMessageReceived && myThread) || singleMessage;
+        return didSendOriginalMessage || (didReceiveOriginalMessage && isMyThread) || isSingleMessage;
     }
 
     public boolean isSender() {

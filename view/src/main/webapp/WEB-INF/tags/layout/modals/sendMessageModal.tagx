@@ -59,9 +59,7 @@
                 jQuery('#messageSubject').val(subject);
             }
             if (threadId) {
-                console.log('The thread id is: '+threadId);
                 jQuery('#threadId').val(threadId);
-                console.log('The value of the input is: '+jQuery('#threadId').val());
             }
             if (content) {
                 if (content.startsWith('#')) {

@@ -139,11 +139,13 @@ public final class MessagingClient {
 
 
     public static void checkLimitAndSendMessage(String subject, String content,
-            long fromId, List<Long> recipientIds) throws MessageLimitExceededException,ReplyingToManyException {
+            long fromId, List<Long> recipientIds) throws MessageLimitExceededException {
         try {
             sendMessage(subject, content, fromId, "-1", recipientIds, true);
         } catch (Http429TooManyRequestsException e) {
             throw new MessageLimitExceededException(fromId);
+        } catch (ReplyingToManyException e) {
+            throw new IllegalStateException("This is a new message, but ReplyToManyException was encountered", e);
         }
     }
     //Overload this method to accept optionally the threadId
@@ -170,7 +172,7 @@ public final class MessagingClient {
         sendMessageBean.setRecipientIds(recipientIds);
 
         if (!"-1".equals(threadId)) {
-            if (sendMessageBean.getRecipientIds().size()==1) {
+            if (sendMessageBean.getRecipientIds().size() == 1) {
                 messageResource.create(sendMessageBean)
                         .queryParam("checkLimit", checkLimit)
                         .queryParam("threadId", threadId)

@@ -49,7 +49,7 @@
             <div id="messageContents">
                 ${messageBeanList.get(0).content}
                 <c:set var = "i" scope = "request" value = "${1}"/>
-                <c:if test = "${messageBeanList.size()>1}">
+                <c:if test = "${messageBeanList.size() > 1}">
                 <xcolab:nestedMessages messageBeanList="${messageBeanList}"/>
                 </c:if>
                 <!--            ${messageBean.content} -->

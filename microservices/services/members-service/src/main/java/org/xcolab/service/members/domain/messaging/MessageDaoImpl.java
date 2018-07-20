@@ -45,15 +45,14 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public List<Message> getFullConversation(long messageId, String threadId) throws NotFoundException {
         List<Message> messageList;
-        if (!"-1".equals(threadId)){
-            // There is thread info, get it all up to this message
-            messageList=dslContext.select()
+        if (!"-1".equals(threadId)) {
+            // There is thread info, get all the thread
+            messageList = dslContext.select()
                     .from(MESSAGE
                         .join(MESSAGE_RECIPIENT_STATUS)
                         .on(MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID)))
                     .where(
                         MESSAGE_RECIPIENT_STATUS.THREAD_ID.eq(threadId)
-                        //.and(MESSAGE.MESSAGE_ID.lessOrEqual(messageId))
                     )
                     .orderBy(MESSAGE.CREATE_DATE.desc())
                     .fetchInto(Message.class);
@@ -61,8 +60,8 @@ public class MessageDaoImpl implements MessageDao {
             if (messageList.isEmpty()) {
                 throw new NotFoundException("Thread " + threadId + "does not exist or does not contain messages with id <= "+messageId);
             }
-        }else {
-            messageList=dslContext.select()
+        } else {
+            messageList = dslContext.select()
                     .from(MESSAGE)
                     .where(MESSAGE.MESSAGE_ID.eq(messageId))
                     .fetchInto(Message.class);

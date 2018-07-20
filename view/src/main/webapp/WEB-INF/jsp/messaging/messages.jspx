@@ -83,9 +83,9 @@
                                         <!-- What if thread is null -->
                                         <a href="${message.linkUrl}${message.threads.get(0)}">${message.subject}</a>
                                     </c:when>
-                                    <c:when test="${messagingBean.type != 'SENT'}">
+                                    <c:otherwise>
                                         <a href="${message.linkUrl}${message.threadId}">${message.subject}</a>
-                                    </c:when>
+                                    </c:otherwise>
                                 </c:choose>
                             </td>
                             <td>
