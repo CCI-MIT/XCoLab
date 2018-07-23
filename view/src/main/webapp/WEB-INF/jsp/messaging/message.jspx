@@ -27,10 +27,10 @@
             </ol>
         </nav>
 
-        <div class="c-TitleWrap">
-        <h1 class="c-MessageSubject">${currentMessageBean.subject}</h1>
+        <div class="c-Message__titleWrap">
+        <h1 class="c-Message__subject">${currentMessageBean.subject}</h1>
         <c:if test="${(user.userId != currentMessageBean.from.userId) &amp;&amp; isLastMessage}">
-            <button type="button" class="btn btn-primary c-Reply-button" id="reply-button">
+            <button type="button" class="btn btn-primary float-right" id="reply-button">
                 <spring:message code="message.reply.button"/>
             </button>
         </c:if>

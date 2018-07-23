@@ -24,54 +24,11 @@ $c-Message__input__background: #F2F1E9 url(/images/sendMessage_textarea.gif) no-
   font-weight: $t-Typography__fontWeight;
 }
 
-.c-Previous__message {
-  color: $t-Color__primary--darkest;
-  border-left: 1px solid ;
-  margin-left: 10px;
-  margin-top: 2%;
-  padding-left: 5px;
-
-}
-
-//Maximum of 5 levels of indentation
-.c-Previous__message .c-Previous__message .c-Previous__message .c-Previous__message .c-Previous__message{
-  color: $t-Color__primary--darkest;
-  border-left: none ;
-  margin-left: 0px;
-  margin-top: 1%;
-  padding-top: 2%;
-  padding-left: 0px;
-  position: relative;
-  &:after {
-    content:"";
-    background: $t-Color__primary__gray;
-    opacity: 0.8;
-    position: absolute;
-    top: 0;
-    left: 10%;
-    height: 1px;
-    width: 70%;
-  }
-}
-//Horizontal ruler after maximum indentation
-.c-Previous__message .c-Previous__message .c-Previous__message .c-Previous__message .c-Previous__message
-
-.c-TitleWrap {
+.c-Message__titleWrap {
   float: left;
   width: 100%;
 }
 
-.c-MessageSubject {
+.c-Message__subject {
   display:inline-block;
-}
-
-.c-Reply-button {
-  float: right;
-  //margin-right: 25%;
-}
-
-.c-Previous__message__header {
-  color: $t-Color__secondary--darkest;
-  opacity: 0.8;
-  font-size: smaller;
 }

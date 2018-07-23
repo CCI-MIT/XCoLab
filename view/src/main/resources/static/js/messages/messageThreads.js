@@ -26,7 +26,7 @@ function identifyPreviousMessages() {
 
     while (message.search(beginPattern)!=-1 && message.search(endPattern)!=-1) {
         try {
-            message=message.replace(beginPattern,"<div class=\"c-Previous__message\">");
+            message=message.replace(beginPattern,"<div class=\"c-PreviousMessage\">");
             var pos=message.lastIndexOf(endPattern);
             message=message.substring(0,pos)+"</div>"+message.substring(pos+endPattern.length);
 
