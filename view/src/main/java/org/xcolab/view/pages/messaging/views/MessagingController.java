@@ -121,6 +121,8 @@ public class MessagingController {
             fullConversation.add(MessagingClient.getMessage(messageId));
         }
 
+        boolean isLastMessage = messageId.equals(fullConversation.get(0).getMessageId());
+
         //Transform messages into beans and discard messages newer than this one
         List<MessageBean> messageBeanListNewestFirst = new ArrayList<>();
         boolean reachedRequiredMessage = false;
@@ -144,9 +146,6 @@ public class MessagingController {
         if (messagingPermissions.isRecipient()) {
             messageBeanListNewestFirst.get(0).markMessageAsOpened(loggedInMember.getId_());
         }
-
-        boolean isLastMessage = messageId.equals(messageBeanListNewestFirst.get(0).getMessageId());
-
 
         final SendMessageBean sendMessageBean = new SendMessageBean(
                 messageBeanListNewestFirst.get(0));
