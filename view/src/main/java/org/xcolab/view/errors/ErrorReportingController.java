@@ -11,21 +11,26 @@ import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.util.entity.email.EmailToAdminDispatcher;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ErrorReportingController {
 
     private static final String MESSAGE_BODY_HEADER_FORMAT_STRING =
             "<p><strong>An exception occurred at:</strong><br>%s</p>"
-                    + "<p><strong>HTTP status:</strong><br/>%d</p>"
-                    + "<p><strong>Error:</strong><br/>%s</p>"
-                    + "<p><strong>Message:</strong><br/>%s</p>"
+                    + "<p><strong>Error:</strong><br/>%d - %s<br/>Message: %s</p>"
                     + "<p><strong>User Agent:</strong><br/>%s</p>"
+                    + "<p><strong>Cookies:</strong><br/>%s</p>"
+                    + "<p><strong>Session info:</strong><br/>%s</p>"
                     + "<p><strong>Referer:</strong><br/>%s</p>"
                     + "<p><strong>Message from user (%s):</strong><br/>" + "%s</p>";
 
@@ -41,6 +46,27 @@ public class ErrorReportingController {
             @RequestParam String stackTrace, @RequestParam String referer) throws IOException {
 
         final String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
+        final Cookie[] cookies = request.getCookies();
+        final String cookieNames = Arrays.stream(cookies)
+            .map(Cookie::getName)
+            .collect(Collectors.joining(", "));
+
+        final HttpSession session = request.getSession(false);
+        String sessionInfo;
+        if (session == null) {
+            sessionInfo = "No session found";
+        } else {
+            final String sessionAttributeNames = Collections.list(session.getAttributeNames())
+                    .stream().collect(Collectors.joining(", "));
+            sessionInfo = String.format("ID: %s,<br/>"
+                            + "Created: %s,<br/>"
+                            + "Last accessed: %s,<br/>"
+                            + "Attribute names: %s",
+                    session.getId().substring(0, 7) + "...",
+                    Instant.ofEpochMilli(session.getCreationTime()).toString(),
+                    Instant.ofEpochMilli(session.getLastAccessedTime()).toString(),
+                    sessionAttributeNames);
+        }
 
         if (!stackTrace.equals("${exception.stackTrace}")) {
             String userScreenName = "no user was logged in";
@@ -54,33 +80,35 @@ public class ErrorReportingController {
             }
 
             if (StringUtils.isNotEmpty(url)) {
+                final String userAgentString = userAgent != null ? userAgent : "Unknown";
+                StringBuilder messageBodyBuilder = new StringBuilder();
+
                 String descriptionInHtmlFormat = description.replaceAll("(\r\n|\n)", "<br />");
-                String body = buildErrorReportBody(url, status, error, message, userScreenName,
-                        email, stackTrace, descriptionInHtmlFormat,
-                        userAgent != null ? userAgent : "Unknown", referer);
-                new EmailToAdminDispatcher(EMAIL_SUBJECT, body).sendMessage();
+                messageBodyBuilder.append(String.format(MESSAGE_BODY_HEADER_FORMAT_STRING, url,
+                        status, error, message, userAgentString, cookieNames, sessionInfo, referer,
+                        userScreenName, descriptionInHtmlFormat));
+
+                if (StringUtils.isNotEmpty(email)) {
+                    messageBodyBuilder.append(String.format(MESSAGE_BODY_EMAIL_FORMAT_STRING, email));
+                }
+
+                //TODO COLAB-2841: Remove debug logging
+                //Add debug info for invalid CSRF token errors
+                final String csrfCookieValue = Arrays.stream(cookies)
+                        .filter(cookie -> cookie.getName().equals("XSRF-TOKEN"))
+                        .map(cookie -> StringUtils.substring(cookie.getValue(), 0, 7))
+                        .findAny().orElse("no cookie found");
+                final String csrfParameterValue = StringUtils.substring(
+                        request.getParameter("_csrf"), 0, 7);
+                messageBodyBuilder.append("<p><strong>CSRF debug info:</strong><br/>")
+                        .append("Cookie value: ").append(csrfCookieValue).append("<br/>")
+                        .append("Parameter value: ").append(csrfParameterValue).append("</p>");
+
+                messageBodyBuilder.append(URLDecoder.decode(stackTrace, "UTF-8"));
+
+                new EmailToAdminDispatcher(EMAIL_SUBJECT, messageBodyBuilder.toString()).sendMessage();
             }
         }
         response.sendRedirect("/");
-    }
-
-    private String buildErrorReportBody(String url, Integer status, String error, String message,
-            String userScreenName, String email, String stackTrace, String descriptionInHtmlFormat,
-            String userAgent, String referer) throws UnsupportedEncodingException {
-        StringBuilder messageBuilder = new StringBuilder();
-
-        if (StringUtils.isNotEmpty(url)) {
-            messageBuilder.append(String
-                    .format(MESSAGE_BODY_HEADER_FORMAT_STRING, url, status, error, message,
-                            userAgent, referer, userScreenName, descriptionInHtmlFormat));
-
-            if (StringUtils.isNotEmpty(email)) {
-                messageBuilder.append(String.format(MESSAGE_BODY_EMAIL_FORMAT_STRING, email));
-            }
-
-            messageBuilder.append(URLDecoder.decode(stackTrace, "UTF-8"));
-        }
-
-        return messageBuilder.toString();
     }
 }
