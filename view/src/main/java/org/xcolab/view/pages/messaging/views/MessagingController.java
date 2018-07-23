@@ -24,7 +24,6 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
-import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 import org.xcolab.view.pages.messaging.beans.MessagingBean;
@@ -111,11 +110,7 @@ public class MessagingController {
         List<Message> fullConversation = new ArrayList<>();
         //Retrieve conversation and check if it was found
         if (StringUtils.isNotEmpty(threadId)) {
-            try {
                 fullConversation = MessagingClient.getFullConversation(messageId, threadId);
-            } catch (UncheckedEntityNotFoundException e) {
-                throw new MessageOrThreadNotFoundException(messageId, threadId);
-            }
         } else {
             fullConversation.add(MessagingClient.getMessage(messageId));
         }

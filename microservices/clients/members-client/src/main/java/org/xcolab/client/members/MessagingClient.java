@@ -5,6 +5,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
+import org.xcolab.client.members.exceptions.MessageOrThreadNotFoundException;
 import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
@@ -19,6 +20,7 @@ import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.Http429TooManyRequestsException;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.util.Collections;
 import java.util.List;
@@ -96,11 +98,15 @@ public final class MessagingClient {
         }
     }
 
-    public static List<Message> getFullConversation(long messageId, String threadId) {
-        return messageResource.list()
-                .queryParam("messageId",messageId)
-                .queryParam("threadId", threadId)
-                .execute();
+    public static List<Message> getFullConversation(long messageId, String threadId) throws MessageOrThreadNotFoundException {
+        try {
+            return messageResource.list()
+                    .queryParam("messageId",messageId)
+                    .queryParam("threadId", threadId)
+                    .execute();
+        } catch (UncheckedEntityNotFoundException e) {
+            throw new MessageOrThreadNotFoundException(messageId, threadId);
+        }
     }
 
     private static int countMessagesForUser(long userId, boolean isArchived) {
