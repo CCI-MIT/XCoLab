@@ -17,7 +17,6 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.exceptions.MessageOrThreadNotFoundException;
-import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
@@ -186,7 +185,7 @@ public class MessagingController {
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
             @RequestParam String messageContent, @RequestParam(required = false) String threadId,
-            Member loggedInMember) throws ReplyingToManyException, MessageNotFoundException {
+            Member loggedInMember) throws MessageNotFoundException {
 
         //Check if I'm logged in
         if (loggedInMember == null) {

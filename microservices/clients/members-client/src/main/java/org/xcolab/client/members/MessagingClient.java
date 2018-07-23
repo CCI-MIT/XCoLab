@@ -151,13 +151,11 @@ public final class MessagingClient {
             sendMessage(subject, content, fromId, null, recipientIds, true);
         } catch (Http429TooManyRequestsException e) {
             throw new MessageLimitExceededException(fromId);
-        } catch (ReplyingToManyException e) {
-            throw new IllegalStateException("This is a new message, but ReplyToManyException was encountered", e);
         }
     }
     //Overload this method to accept optionally the threadId
     public static void checkLimitAndSendMessage(String subject, String content,
-            long fromId, String threadId, List<Long> recipientsIds) throws MessageLimitExceededException, ReplyingToManyException {
+            long fromId, String threadId, List<Long> recipientsIds) throws MessageLimitExceededException {
         try {
             sendMessage(subject, content, fromId, threadId, recipientsIds, true);
         } catch (Http429TooManyRequestsException e) {
@@ -166,12 +164,12 @@ public final class MessagingClient {
     }
 
     public static void sendMessage(String subject, String content, Long fromId,
-            String threadId, List<Long> recipientIds) throws ReplyingToManyException {
+            String threadId, List<Long> recipientIds) {
         sendMessage(subject, content, fromId, threadId, recipientIds, false);
     }
 
     private static void sendMessage(String subject, String content, long fromId, String threadId,
-            List<Long> recipientIds, boolean checkLimit) throws ReplyingToManyException {
+            List<Long> recipientIds, boolean checkLimit) {
         SendMessageBean sendMessageBean = new SendMessageBean();
         sendMessageBean.setSubject(StringEscapeUtils.unescapeXml(subject));
         sendMessageBean.setContent(content.replaceAll("\n", ""));

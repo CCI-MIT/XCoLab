@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -27,14 +26,8 @@ public class ContestPhasePromotionEmail {
         String messageBody = reviewContentHelper.getPromotionComment(true);
         String subject =  reviewContentHelper.getSubject();
         if (StringUtils.isNotEmpty(messageBody)) {
-            try {
-                MessagingClient
-                        .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, null, getMemberUserIds(proposal));
-            } catch (ReplyingToManyException e) {
-                //This should never be reached
-                throw new IllegalStateException("The phase promotion notification is a reply to a previous message, which is not expected behavior", e);
-            }
-
+            MessagingClient
+                    .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, null, getMemberUserIds(proposal));
         }
     }
 

@@ -15,7 +15,6 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.ReplyingToManyException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -256,14 +255,9 @@ public abstract class EmailNotification {
             EmailTemplateWrapper template = getTemplateWrapper();
             String content = template.getHeader() + template.getFooter();
             content = content.replace("\n", " ").replace("\r", " ");
-            try {
-                MessagingClient
-                        .sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, null,
+            MessagingClient
+                    .sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, null,
                                 recipients);
-            } catch (ReplyingToManyException e) {
-                //This should never be reached.
-                throw new IllegalStateException("Email notification is a reply to a previous message, which is not expected behavior", e);
-            }
         }
     }
 
