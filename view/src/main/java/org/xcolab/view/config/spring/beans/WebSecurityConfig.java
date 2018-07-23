@@ -110,7 +110,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     // need to specify same key that is used in rememberMeServices
                     .key(xCoLabProperties.getSecret())
                     .and()
-                .addFilterBefore(ssoFilter.getFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
                 .logout()
                     .permitAll()
                     .logoutSuccessHandler(new LogoutSuccessHandler())
