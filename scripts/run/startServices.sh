@@ -39,7 +39,7 @@ else
     for serviceJar in *-service-*; do
         service="$(echo ${serviceJar} | cut -d'-' -f1,2)"
         startService ${service}
-        sleep 5
+        sleep 1
     done
 fi
 
