@@ -186,7 +186,7 @@ public class MessagingController {
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
             @RequestParam String messageContent, @RequestParam(required = false) String threadId,
-            Member loggedInMember) throws IOException {
+            Member loggedInMember) throws ReplyingToManyException, MessageNotFoundException {
 
         //Check if I'm logged in
         if (loggedInMember == null) {
@@ -222,12 +222,6 @@ public class MessagingController {
             } catch (MessageLimitExceededException e) {
                 AlertMessage.danger("You have exceeded your daily message limit. "
                         + "Please try again later and send fewer messages.").flash(request);
-            } catch (ReplyingToManyException e) {
-                AlertMessage.danger("You are trying to reply to many conversations at a time. "
-                + "Please reply to each user individually").flash(request);
-            } catch (MessageNotFoundException e) {
-                AlertMessage.danger("Original message of the conversation not found "
-                        + "Permissions can't be granted").flash(request);
             }
         } else {
             AlertMessage.danger("Sorry, you are not allowed to send any more messages today.")
