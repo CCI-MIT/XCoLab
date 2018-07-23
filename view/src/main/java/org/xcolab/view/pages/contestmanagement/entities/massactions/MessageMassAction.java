@@ -66,7 +66,7 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
         final String messageBody = massMessageBean.getBody();
         try {
             MessagingClient.sendMessage(messageSubject, messageBody, CLIMATE_COLAB_TEAM_USER_ID,
-                    "-1", new ArrayList<>(recipientIds));
+                    null, new ArrayList<>(recipientIds));
         } catch (ReplyingToManyException e) {
             //This should never be reached.
             throw new IllegalStateException("This mass message is a reply to a previous message, which is not expected behavior", e);

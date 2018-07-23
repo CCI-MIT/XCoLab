@@ -258,7 +258,7 @@ public abstract class EmailNotification {
             content = content.replace("\n", " ").replace("\r", " ");
             try {
                 MessagingClient
-                        .sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, "-1",
+                        .sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, null,
                                 recipients);
             } catch (ReplyingToManyException e) {
                 //This should never be reached.

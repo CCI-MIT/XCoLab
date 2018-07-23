@@ -127,9 +127,10 @@ public class MembershipInvitationResponseController {
 
     private void sendMessage(long sender, List<Long> recipients, String subject, String content) {
         try {
-            MessagingClient.sendMessage(subject, content, sender, "-1", recipients);
+            MessagingClient.sendMessage(subject, content, sender, null, recipients);
         } catch (ReplyingToManyException e) {
-            //This should never be reached. TODO: Log a message to alert of this situation
+            //This should never be reached.
+            throw new IllegalStateException("Trying to reply to many, not expected behavior", e);
         }
     }
 }
