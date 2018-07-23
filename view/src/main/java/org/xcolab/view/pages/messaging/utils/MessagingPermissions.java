@@ -5,7 +5,6 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 
-import java.util.Collections;
 import java.util.List;
 
 
