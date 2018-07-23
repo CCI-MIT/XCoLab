@@ -121,45 +121,41 @@ public class MessagingController {
             fullConversation.add(MessagingClient.getMessage(messageId));
         }
 
-        //Transform messages into beans
-        List<MessageBean> messageBeanList = new ArrayList<>();
+        //Transform messages into beans and discard messages newer than this one
+        List<MessageBean> messageBeanListNewestFirst = new ArrayList<>();
+        boolean reachedRequiredMessage = false;
         for (Message message : fullConversation){
-            messageBeanList.add(new MessageBean(message));
+            if (message.getMessageId().equals(messageId)) {
+                reachedRequiredMessage = true;
+            }
+            if (reachedRequiredMessage) {
+                messageBeanListNewestFirst.add(new MessageBean(message));
+            }
         }
         
         //Manage permissions
         final MessagingPermissions messagingPermissions =
-                new MessagingPermissions(loggedInMember, messageBeanList.get(0));
-        if (!messagingPermissions.getCanViewThread(threadId, messageBeanList)){
+                new MessagingPermissions(loggedInMember, messageBeanListNewestFirst.get(0));
+        if (!messagingPermissions.getCanViewThread(threadId, messageBeanListNewestFirst)){
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
         //Mark first message as read (if it's for me)
         if (messagingPermissions.isRecipient()) {
-            messageBeanList.get(0).markMessageAsOpened(loggedInMember.getId_());
+            messageBeanListNewestFirst.get(0).markMessageAsOpened(loggedInMember.getId_());
         }
 
-        boolean isLastMessage = messageId.equals(messageBeanList.get(0).getMessageId());
+        boolean isLastMessage = messageId.equals(messageBeanListNewestFirst.get(0).getMessageId());
 
-        //Remove messages until we reach the one we asked for
-        ListIterator<MessageBean> itr = messageBeanList.listIterator();
-        while(itr.hasNext()) {
-            if (!itr.next().getMessageId().equals(messageId)) {
-                itr.remove();
-            } else {
-                break;
-            }
-
-        }
 
         final SendMessageBean sendMessageBean = new SendMessageBean(
-                messageBeanList.get(0));
+                messageBeanListNewestFirst.get(0));
 
         //Add model attributes
         model.addAttribute("user", loggedInMember);
         model.addAttribute("sendMessageBean", sendMessageBean);
         model.addAttribute("_activePageLink", "community");
-        model.addAttribute("messageBeanList",messageBeanList);
+        model.addAttribute("messageBeanList",messageBeanListNewestFirst);
         model.addAttribute("threadId",threadId);
         model.addAttribute("isLastMessage", isLastMessage);
         model.addAttribute("requestedMessageId", messageId);
