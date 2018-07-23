@@ -149,9 +149,12 @@ public class MessagingController {
         final SendMessageBean sendMessageBean = new SendMessageBean(
                 messageBeanListNewestFirst.get(0));
 
+        final MessageBean currentMessageBean = messageBeanListNewestFirst.remove(0);
+
         //Add model attributes
         model.addAttribute("user", loggedInMember);
         model.addAttribute("sendMessageBean", sendMessageBean);
+        model.addAttribute("currentMessageBean", currentMessageBean);
         model.addAttribute("_activePageLink", "community");
         model.addAttribute("messageBeanList",messageBeanListNewestFirst);
         model.addAttribute("threadId",threadId);
