@@ -10,7 +10,7 @@
             <spring:message code="message.thread.metadata" arguments="${messageBeanList.get(i).from.displayName},${messageBeanList.get(i).createDate}" argumentSeparator=","/>
         </p>
         ${messageBeanList.get(i).content}
-        <c:if test = "${i lt messageBeanList.size()-1}">
+        <c:if test = "${i lt messageBeanList.size() - 1}">
             <c:set var="i" value="${i + 1}" scope="request"/>
             <xcolab:nestedMessages messageBeanList="${messageBeanList}"/>
         </c:if>
