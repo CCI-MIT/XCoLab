@@ -103,7 +103,7 @@ public class MessagingController {
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
     public Message createMessage(@RequestBody SendMessageBean sendMessageBean,
             @RequestParam(required = false, defaultValue = "true") boolean checkLimit,
-            @RequestParam(required = false, defaultValue="-1") String threadId)
+            @RequestParam(required = false) String threadId)
             throws MessageLimitExceededException {
         return messagingService
                 .sendMessage(sendMessageBean, sendMessageBean.getRecipientIds(), checkLimit, threadId);

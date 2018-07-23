@@ -193,7 +193,7 @@ public class MessagingController {
     @PostMapping("sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
-            @RequestParam String messageContent, @RequestParam(defaultValue = "-1") String threadId,
+            @RequestParam String messageContent, @RequestParam(required = false) String threadId,
             Member loggedInMember) throws IOException {
 
         //Check if I'm logged in
@@ -209,7 +209,7 @@ public class MessagingController {
 
             try {
                 //If I specify a thread, check that I have permissions on it
-                if (!"-1".equals(threadId)) {
+                if (StringUtils.isNotEmpty(threadId)) {
                     //Check the permissions for the first message in the thread
                     String[] threadParts = threadId.split("-");
                     Long firstMessageId = Long.parseLong(threadParts[0]);

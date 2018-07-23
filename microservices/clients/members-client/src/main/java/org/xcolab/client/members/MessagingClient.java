@@ -1,5 +1,6 @@
 package org.xcolab.client.members;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -141,7 +142,7 @@ public final class MessagingClient {
     public static void checkLimitAndSendMessage(String subject, String content,
             long fromId, List<Long> recipientIds) throws MessageLimitExceededException {
         try {
-            sendMessage(subject, content, fromId, "-1", recipientIds, true);
+            sendMessage(subject, content, fromId, null, recipientIds, true);
         } catch (Http429TooManyRequestsException e) {
             throw new MessageLimitExceededException(fromId);
         } catch (ReplyingToManyException e) {
@@ -171,7 +172,7 @@ public final class MessagingClient {
         sendMessageBean.setFromId(fromId);
         sendMessageBean.setRecipientIds(recipientIds);
 
-        if (!"-1".equals(threadId)) {
+        if (StringUtils.isNotEmpty(threadId)) {
             if (sendMessageBean.getRecipientIds().size() == 1) {
                 messageResource.create(sendMessageBean)
                         .queryParam("checkLimit", checkLimit)

@@ -45,7 +45,7 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public List<Message> getFullConversation(long messageId, String threadId) throws NotFoundException {
         List<Message> messageList;
-        if (!"-1".equals(threadId)) {
+        if (threadId != null) {
             // There is thread info, get all the thread
             messageList = dslContext.select()
                     .from(MESSAGE

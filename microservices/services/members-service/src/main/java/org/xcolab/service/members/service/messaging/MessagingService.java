@@ -97,7 +97,7 @@ public class MessagingService {
         final Set<Long> recipientsFound = new HashSet<>();
         for (long memberId : recipientIds) {
             memberDao.getMember(memberId).ifPresent((recipientMember) -> {
-                 if ("-1".equals(threadId)) {
+                 if (threadId == null) {
                      messageDao.createMessageRecipient(messageId, memberId,
                              String.valueOf(messageId) + "-" + String.valueOf(memberId));
                  } else {

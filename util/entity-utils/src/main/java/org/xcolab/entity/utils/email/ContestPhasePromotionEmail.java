@@ -29,7 +29,7 @@ public class ContestPhasePromotionEmail {
         if (StringUtils.isNotEmpty(messageBody)) {
             try {
                 MessagingClient
-                        .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, "-1", getMemberUserIds(proposal));
+                        .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, null, getMemberUserIds(proposal));
             } catch (ReplyingToManyException e) {
                 //This should never be reached
                 throw new IllegalStateException("The phase promotion notification is a reply to a previous message, which is not expected behavior", e);
