@@ -5,6 +5,8 @@
 
     <jsp:directive.attribute name="messageBeanList" type="java.util.List" required="true" description="The list of message beans"/>
 
+    <!--@elvariable id="messageBeanList" type="java.util.List<org.xcolab.view.pages.messaging.beans.MessageBean>"-->
+
     <div class="c-PreviousMessage">
         <p class="c-PreviousMessage__header">
             <spring:message code="message.thread.metadata" arguments="${messageBeanList.get(i).from.displayName}" argumentSeparator=","/>
