@@ -53,11 +53,7 @@ public class MessageBean implements Serializable {
     public Date getCreateDate() {
         return message.getCreateDate();
     }
-/*
-    public String getLinkUrl() {
-        return "/messaging/message/" + getMessageId();
-    }
-*/
+
     public String getLinkUrl() {
         return "/messaging/fullConversation/" + getMessageId() + "?threadId=";
     }
@@ -118,4 +114,7 @@ public class MessageBean implements Serializable {
         return this.threads;
     }
 
+    public String getReplySubject() {
+        return (this.getSubject()).startsWith("RE:") ? this.getSubject() : ("RE: "+this.getSubject());
+    }
 }

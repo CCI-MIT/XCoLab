@@ -3,7 +3,10 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:form="http://www.springframework.org/tags/form">
 
-<div id="replyContainer" style="display:none;">
+    <!--@elvariable id="currentMessageBean" type="org.xcolab.view.pages.messaging.beans.MessageBean"-->
+    <!--@elvariable id="threadId" type="java.lang.String"-->
+
+    <div id="replyContainer" style="display:none;">
     <form:form method="post" action="/messaging/sendMessage" id="replyForm">
         <div class="modal-body">
             <div class="form-group">
@@ -12,8 +15,7 @@
                           class="rte-editorPlaceholder form-control" ><!-- --></textarea>
             </div>
             <input type="hidden" name="messageSubject" id="messageSubject"
-                   value="${(currentMessageBean.subject.startsWith(&quot;RE:&quot;)) ? (currentMessageBean.subject) : &quot;RE: &quot;}
-                   ${(currentMessageBean.subject.startsWith(&quot;RE:&quot;)) ? &quot;&quot; : (currentMessageBean.subject)}"/>
+                   value="${currentMessageBean.replySubject}"/>
             <input type="hidden" name="userIdsRecipients" id="userIdsRecipients" value="${currentMessageBean.from.id_}"/>
             <input type="hidden" name="threadId" id="threadId" value="${threadId}"/>
         </div>
