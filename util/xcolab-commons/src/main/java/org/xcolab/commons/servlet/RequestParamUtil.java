@@ -2,8 +2,10 @@ package org.xcolab.commons.servlet;
 
 import org.springframework.web.servlet.HandlerMapping;
 
+import java.util.Collections;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 public class RequestParamUtil {
@@ -67,5 +69,9 @@ public class RequestParamUtil {
             }
         }
         return defaultValue;
+    }
+
+    public static boolean contains(ServletRequest request, String paramName) {
+        return Collections.list(request.getParameterNames()).contains(paramName);
     }
 }

@@ -22,6 +22,10 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import static org.xcolab.view.config.spring.beans.SsoClientConfig.SsoFilter
+        .SSO_SAVED_REFERER_SESSION_ATTRIBUTE;
 
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
@@ -70,7 +74,14 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         balloonService.associateBalloonTrackingWithUser(request, member);
 
-        String refererHeader = request.getHeader(HttpHeaders.REFERER);
+        final HttpSession session = request.getSession();
+        String refererHeader;
+        if (session.getAttribute(SSO_SAVED_REFERER_SESSION_ATTRIBUTE) != null) {
+            refererHeader = (String) session.getAttribute(SSO_SAVED_REFERER_SESSION_ATTRIBUTE);
+            session.removeAttribute(SSO_SAVED_REFERER_SESSION_ATTRIBUTE);
+        } else {
+            refererHeader = request.getHeader(HttpHeaders.REFERER);
+        }
         MembersClient.createLoginLog(member.getId_(), request.getRemoteAddr(), refererHeader);
 
         if (redirectOnSuccess) {
