@@ -25,7 +25,8 @@ function startService {
             scp ${OUT_FILE} ${REMOTE_LOG_FILE_DEST}
         fi
         rm ${OUT_FILE} > /dev/null 2>&1
-        exec java -Xmx1G -Xms256M -jar ${service}-1.0-SNAPSHOT.jar > ${OUT_FILE} & echo $! > ${PID_FILE}
+        exec java -Xmx1G -Xms256M -XX:-OmitStackTraceInFastThrow \
+         -jar ${service}-1.0-SNAPSHOT.jar > ${OUT_FILE} & echo $! > ${PID_FILE}
         cd ${SAVED_DIR}
     fi
 }

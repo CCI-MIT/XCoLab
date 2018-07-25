@@ -24,7 +24,8 @@ else
         scp ${OUT_FILE} ${REMOTE_LOG_FILE_DEST}
     fi
     rm ${OUT_FILE} > /dev/null 2>&1
-    exec java -Xmx4G -Xms1G -jar ${VIEW}-1.0-SNAPSHOT.war > ${OUT_FILE}  & echo $! > ${PID_FILE}
+    exec java -Xmx4G -Xms1G -XX:-OmitStackTraceInFastThrow \
+        -jar ${VIEW}-1.0-SNAPSHOT.war > ${OUT_FILE}  & echo $! > ${PID_FILE}
 fi
 
 echo "[INFO] Done."
