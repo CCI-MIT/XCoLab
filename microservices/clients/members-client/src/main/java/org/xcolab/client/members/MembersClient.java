@@ -381,10 +381,12 @@ public final class MembersClient {
     }
 
     private static String encode(String password) {
-        try {
-            password = URLEncoder.encode(password, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new InternalException(e);
+        if (password != null) {
+            try {
+                password = URLEncoder.encode(password, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new InternalException(e);
+            }
         }
         return password;
     }
