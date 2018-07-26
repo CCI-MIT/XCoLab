@@ -35,10 +35,23 @@
 
 <script>
     <![CDATA[
-        //Auxiliary function to retrieve values from JSP engine
-        function getDynamicJSPMessages() {
-            return {"emptyMessageContent" : "${emptyMessageContent}"}
+        function checkMessageForm(event) {
+            if (CKEDITOR.instances["messageContent"].getData() === "") {
+                event.preventDefault();
+                noty({text: "${emptyMessageContent}" , type: 'error'});
+            }
         }
+        jQuery('#reply-button').click(function () {
+            $( '#replyContainer' ).show();
+            $(this).hide();
+        });
+        jQuery('#close-reply').click(function () {
+            $( '#replyContainer' ).css('display','none');
+            $('#reply-button').show();
+        });
+        jQuery('#replyForm').submit(function(event){
+            checkMessageForm(event);
+        });
     ]]>
 </script>
 
