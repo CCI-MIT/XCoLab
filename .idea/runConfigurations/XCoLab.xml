@@ -3,6 +3,6 @@
     <toRun type="CompoundRunConfigurationType" name="XCoLab Services" />
     <toRun type="SpringBootApplicationConfigurationType" name="ColabViewApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="EurekaServerApplication" />
-    <method />
+    <method v="2" />
   </configuration>
 </component>
