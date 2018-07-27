@@ -81,7 +81,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         if (redirectOnSuccess) {
             try {
-                if (StringUtils.isNotBlank(refererHeader) && !isFromLoginPage(refererHeader)) {
+                if (StringUtils.isNotBlank(refererHeader) && !LinkUtils.isLoginPageLink(refererHeader)) {
                     //Make URI relative to prevent injection of external redirect URIs
                     final String redirect = LinkUtils.getLocalUrl(refererHeader);
                     getRedirectStrategy().sendRedirect(request, response, redirect);
@@ -93,9 +93,5 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                 throw new InternalException(e);
             }
         }
-    }
-
-    private boolean isFromLoginPage(String refererHeader) {
-        return refererHeader.endsWith("/login");
     }
 }

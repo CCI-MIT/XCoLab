@@ -68,18 +68,17 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             Model model, ProposalContext proposalContext, Member currentMember,
             @PathVariable Long contestYear,
             @PathVariable String contestUrlName, @PathVariable Long proposalId,
-            @RequestParam(defaultValue = "false") boolean voted,
             @RequestParam(defaultValue = "false") boolean edit,
             @RequestParam(required = false) Integer version,
             @RequestParam(required = false) Long moveFromContestPhaseId,
             @RequestParam(required = false) String moveType,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult bindingResult) {
-        return showProposalDetails(request, model, proposalContext, currentMember, voted,
+        return showProposalDetails(request, model, proposalContext, currentMember, false,
                 edit, moveFromContestPhaseId, moveType);
     }
 
-    private String showProposalDetails(HttpServletRequest request, Model model,
+    public String showProposalDetails(HttpServletRequest request, Model model,
             ProposalContext proposalContext, Member currentMember,
             boolean voted, boolean edit, Long moveFromContestPhaseId, String moveType) {
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.DESCRIPTION);

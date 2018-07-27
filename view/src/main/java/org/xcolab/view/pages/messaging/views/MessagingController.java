@@ -22,6 +22,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 import org.xcolab.view.pages.messaging.beans.MessagingBean;
@@ -122,7 +123,7 @@ public class MessagingController {
         return showMessages(response, model, "INBOX", 1, loggedInMember);
     }
 
-    @PostMapping("sendMessage")
+    @PostMapping("/sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
             @RequestParam String messageContent, Member loggedInMember) throws IOException {
@@ -156,5 +157,18 @@ public class MessagingController {
             return "redirect:" + UriComponentsBuilder.fromHttpUrl(refererHeader).build().getPath();
         }
         return showMessages(response, model, "INBOX", 1, loggedInMember);
+    }
+
+    @GetMapping("/sendMessage")
+    public String handleInvalidHttpMethod(HttpServletRequest request) {
+        AlertMessage.warning("Warning: page reloaded before message was sent.")
+                .flash(request);
+        String referrer = request.getHeader(HttpHeaders.REFERER);
+        if (StringUtils.isNotEmpty(referrer) && LinkUtils.isLocalUrl(referrer)
+                //avoid circular redirect
+                && !referrer.endsWith("sendMessage")) {
+            return "redirect:" + referrer;
+        }
+        return "redirect:/messaging";
     }
 }
