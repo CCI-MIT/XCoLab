@@ -56,6 +56,7 @@
             parameterName: '${_csrf.parameterName}',
             headerName: '${_csrf.headerName}'
         }
+        var _i18nTexts = {};
     </script>
 
 

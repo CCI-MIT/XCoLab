@@ -1,6 +1,19 @@
 $(document).ready(function(){
     identifyPreviousMessages();
     removeSpaces();
+
+    jQuery("#reply-button").click(function () {
+        $("#replyContainer").show();
+        $(this).hide();
+    });
+    jQuery("#close-reply").click(function () {
+        $("#replyContainer").css("display","none");
+        $("#reply-button").show();
+    });
+    jQuery("#replyForm").submit(function(event){
+        checkMessageForm(event);
+    });
+
 });
 
 function identifyPreviousMessages() {
@@ -23,5 +36,12 @@ function identifyPreviousMessages() {
 }
 
 function removeSpaces() {
-    $("#messageContents")[0].innerHTML=$("#messageContents")[0].innerHTML.replace(/<p>(&nbsp;|<br> *)<\/p>/g,'');
+    $("#messageContents")[0].innerHTML=$("#messageContents")[0].innerHTML.replace(/<p>(&nbsp;|<br> *)<\/p>/g,"");
+}
+
+function checkMessageForm(event) {
+    if (CKEDITOR.instances["messageContent"].getData() === "") {
+        event.preventDefault();
+        noty({text: _i18nTexts["message.empty.content"] , type: "error"});
+    }
 }
