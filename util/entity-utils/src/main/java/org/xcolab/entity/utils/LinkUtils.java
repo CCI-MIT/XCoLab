@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public final class LinkUtils {
 
+    public static final String COLAB_URL = PlatformAttributeKey.COLAB_URL.get();
+
     private LinkUtils() {
     }
 
@@ -30,7 +32,7 @@ public final class LinkUtils {
     }
 
     public static String getAbsoluteUrl(String relativeUri) {
-        return PlatformAttributeKey.COLAB_URL.get() + relativeUri;
+        return COLAB_URL + relativeUri;
     }
 
     /**
@@ -51,5 +53,20 @@ public final class LinkUtils {
             relativeUri.append("?").append(uriComponents.getQuery());
         }
         return relativeUri.toString();
+    }
+
+    public static String getLocalUrl(String url) {
+        return getLocalUrl(url, "/");
+    }
+
+    public static String getLocalUrl(String url, String defaultRedirect) {
+        if (StringUtils.isNotBlank(url) && isLocalUrl(url)) {
+            return url;
+        }
+        return defaultRedirect;
+    }
+
+    public static boolean isLocalUrl(String url) {
+        return url.startsWith(COLAB_URL);
     }
 }
