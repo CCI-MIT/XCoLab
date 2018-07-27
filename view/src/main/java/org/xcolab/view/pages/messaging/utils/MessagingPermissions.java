@@ -5,6 +5,9 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 
+import java.util.List;
+
+
 public class MessagingPermissions {
 
     private final Member loggedInMember;
@@ -28,6 +31,22 @@ public class MessagingPermissions {
 
     public boolean getCanViewMessage() {
         return isRecipient() || isSender();
+    }
+
+    public boolean getCanViewThread(String threadId, List<MessageBean> fullConversation) {
+        fullConversation.sort(new MessageBeanDateComparator());
+        MessageBean originalMessage = fullConversation.get(fullConversation.size() - 1);
+        boolean didSendOriginalMessage = originalMessage.getFrom().getUserId() == loggedInMember.getId_();
+        boolean didReceiveOriginalMessage = originalMessage.getTo().stream()
+                .anyMatch(recipient -> recipient.getId_() == loggedInMember.getId_());
+        boolean isMyThread = false;
+        if (threadId != null) {
+            isMyThread = threadId.endsWith(String.valueOf(loggedInMember.getId_()));
+        }
+        //Looking for a single message (backwards compatibility)
+        boolean isSingleMessage = fullConversation.size() == 1 && this.getCanViewMessage();
+
+        return didSendOriginalMessage || (didReceiveOriginalMessage && isMyThread) || isSingleMessage;
     }
 
     public boolean isSender() {

@@ -24,3 +24,11 @@ $c-Message__input__background: #F2F1E9 url(/images/sendMessage_textarea.gif) no-
   font-weight: $t-Typography__fontWeight;
 }
 
+.c-Message__titleWrap {
+  float: left;
+  width: 100%;
+}
+
+.c-Message__subject {
+  display:inline-block;
+}

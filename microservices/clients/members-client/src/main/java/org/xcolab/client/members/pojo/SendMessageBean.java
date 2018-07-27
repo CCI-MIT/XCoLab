@@ -8,6 +8,7 @@ public class SendMessageBean extends Message implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private List<Long> recipientIds;
+    private List<String> threadIds;
 
     public SendMessageBean() {
     }
@@ -24,4 +25,9 @@ public class SendMessageBean extends Message implements Serializable {
     public void setRecipientIds(List<Long> recipientIds) {
         this.recipientIds = recipientIds;
     }
+
+    public List<String> getThreadIds() { return threadIds; }
+
+    public void setThreadIds(List<String> threadIds) { this.threadIds = threadIds; }
+
 }

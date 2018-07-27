@@ -839,12 +839,14 @@ CREATE TABLE IF NOT EXISTS `xcolab_MessageRecipientStatus` (
   `messageRecipientId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `messageId` bigint(20) DEFAULT NULL,
   `userId` bigint(20) DEFAULT NULL,
+  `threadId` varchar(75) DEFAULT NULL,
   `opened` tinyint(4) DEFAULT NULL,
   `archived` tinyint(4) DEFAULT NULL,
   KEY `IX_E4B60412` (`messageId`),
   KEY `IX_76FF2A4C` (`messageId`,`userId`),
   KEY `IX_74DCC2DA` (`userId`),
-  KEY `IX_88CD5CB0` (`userId`,`archived`)
+  KEY `IX_88CD5CB0` (`userId`,`archived`),
+  KEY `xcolab_MessageRecipientStatus_threadId_index` (`threadId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_AnalyticsUserEvent` (

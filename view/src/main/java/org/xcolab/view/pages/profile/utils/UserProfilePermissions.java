@@ -17,11 +17,6 @@ public class UserProfilePermissions {
         return isLoggedIn ? loggedInMember.getId_() : 0;
     }
 
-    //TODO: This function is the same as getCanEditMemberProfile!!!
-    public boolean getCanAdminProfile(long memberId) {
-        return isLoggedIn && getLoggedInMemberId() == memberId || getCanAdmin();
-    }
-
     public boolean getCanAdmin() {
         return PermissionsClient.canAdminAll(loggedInMember);
     }

@@ -27,7 +27,7 @@ public class ContestPhasePromotionEmail {
         String subject =  reviewContentHelper.getSubject();
         if (StringUtils.isNotEmpty(messageBody)) {
             MessagingClient
-                    .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
+                    .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, null, getMemberUserIds(proposal));
         }
     }
 

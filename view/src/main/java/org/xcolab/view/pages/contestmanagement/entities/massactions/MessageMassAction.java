@@ -64,8 +64,7 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
         final String messageSubject = massMessageBean.getSubject();
         final String messageBody = massMessageBean.getBody();
         MessagingClient.sendMessage(messageSubject, messageBody, CLIMATE_COLAB_TEAM_USER_ID,
-                CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<>(recipientIds));
-
+                    null, new ArrayList<>(recipientIds));
         final String emailSubject = "Mass message: " + messageSubject;
         final String emailBody = String.format(
                 "The following message was sent to %d users in %d contests (%s): <br /><br /><br />",

@@ -43,6 +43,36 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
+    public List<Message> getFullConversation(long messageId, String threadId) throws NotFoundException {
+        List<Message> messageList;
+        if (threadId != null) {
+            // There is thread info, get all the thread
+            messageList = dslContext.select()
+                    .from(MESSAGE
+                        .join(MESSAGE_RECIPIENT_STATUS)
+                        .on(MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID)))
+                    .where(
+                        MESSAGE_RECIPIENT_STATUS.THREAD_ID.eq(threadId)
+                    )
+                    .orderBy(MESSAGE.CREATE_DATE.desc())
+                    .fetchInto(Message.class);
+
+            if (messageList.isEmpty()) {
+                throw new NotFoundException("Thread " + threadId + "does not exist or does not contain messages with id <= "+messageId);
+            }
+        } else {
+            messageList = dslContext.select()
+                    .from(MESSAGE)
+                    .where(MESSAGE.MESSAGE_ID.eq(messageId))
+                    .fetchInto(Message.class);
+            if (messageList.isEmpty()) {
+                throw new NotFoundException("Message with id " + messageId + "does not exist");
+            }
+        }
+        return messageList;
+    }
+
+    @Override
     public int countByGiven(Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate) {
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(MESSAGE)
@@ -143,6 +173,15 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
+    public List<String> getThreads(long messageId) {
+        return dslContext.select()
+                .from(MESSAGE_RECIPIENT_STATUS)
+                .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId))
+                .fetch().getValues(MESSAGE_RECIPIENT_STATUS.THREAD_ID);
+    }
+
+
+    @Override
     public boolean setArchived(long messageId, long memberId, boolean isArchived) {
         return dslContext.update(MESSAGE_RECIPIENT_STATUS)
                 .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, isArchived)
@@ -179,13 +218,14 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public void createMessageRecipient(long messageId, long recipientId) {
+    public void createMessageRecipient(long messageId, long recipientId, String threadId) {
         dslContext.insertInto(MESSAGE_RECIPIENT_STATUS)
-                .set(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID, messageId)
-                .set(MESSAGE_RECIPIENT_STATUS.USER_ID, recipientId)
-                .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, false)
-                .set(MESSAGE_RECIPIENT_STATUS.OPENED, false)
-                .execute();
+            .set(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID, messageId)
+            .set(MESSAGE_RECIPIENT_STATUS.USER_ID, recipientId)
+            .set(MESSAGE_RECIPIENT_STATUS.THREAD_ID, threadId)
+            .set(MESSAGE_RECIPIENT_STATUS.ARCHIVED, false)
+            .set(MESSAGE_RECIPIENT_STATUS.OPENED, false)
+            .execute();
     }
 
     @Override
