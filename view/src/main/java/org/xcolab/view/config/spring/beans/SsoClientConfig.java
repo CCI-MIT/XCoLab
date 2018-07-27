@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -21,6 +22,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.web.authentication.ForwardAuthenticationFailureHandler;
 import org.springframework.web.filter.CompositeFilter;
 
+import org.xcolab.commons.servlet.RequestParamUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
@@ -44,6 +46,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @EnableOAuth2Client
 @Configuration
@@ -146,6 +149,8 @@ public class SsoClientConfig {
 
     public static class SsoFilter implements Filter {
 
+        public static final String SSO_SAVED_REFERER_SESSION_ATTRIBUTE = "SSO_SAVED_REFERRER";
+
         private final OAuth2ClientContext oAuth2ClientContext;
         private final AuthenticationSuccessHandler authenticationSuccessHandler;
         private final List<Filter> filters = new ArrayList<>();
@@ -194,14 +199,23 @@ public class SsoClientConfig {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-            final boolean isLoggedIn = AUTHENTICATION_CONTEXT.isLoggedIn();
-            if (isLoggedIn && httpRequest.getServletPath().startsWith("/sso")) {
-                // If the user is already logged in, the sso endpoints should not be accessed
-                AlertMessage.warning("You're already logged in!").flash(httpRequest);
-                httpResponse.sendRedirect("/");
-            } else {
-                getFilter().doFilter(request, response, chain);
+            if (httpRequest.getServletPath().startsWith("/sso")) {
+
+                final boolean isLoggedIn = AUTHENTICATION_CONTEXT.isLoggedIn();
+                if (isLoggedIn) {
+                    // If the user is already logged in, the sso endpoints should not be accessed
+                    AlertMessage.warning("You're already logged in!").flash(httpRequest);
+                    httpResponse.sendRedirect("/");
+                    return;
+                } else {
+                    final HttpSession session = httpRequest.getSession();
+                    if (!RequestParamUtil.contains(httpRequest, "code")) {
+                        session.setAttribute(SSO_SAVED_REFERER_SESSION_ATTRIBUTE, httpRequest
+                                .getHeader(HttpHeaders.REFERER));
+                    }
+                }
             }
+            getFilter().doFilter(request, response, chain);
         }
 
         @Override
