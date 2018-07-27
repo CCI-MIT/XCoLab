@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.WebUtils;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -29,6 +30,7 @@ public class ErrorReportingController {
             "<p><strong>An exception occurred at:</strong><br>%s</p>"
                     + "<p><strong>Error:</strong><br/>%d - %s<br/>Message: %s</p>"
                     + "<p><strong>User Agent:</strong><br/>%s</p>"
+                    + "<p><strong>Tracking UUID:</strong> %s</p>"
                     + "<p><strong>Cookies:</strong><br/>%s</p>"
                     + "<p><strong>Session info:</strong><br/>%s</p>"
                     + "<p><strong>Referer:</strong><br/>%s</p>"
@@ -50,6 +52,10 @@ public class ErrorReportingController {
         final String cookieNames = Arrays.stream(cookies)
             .map(Cookie::getName)
             .collect(Collectors.joining(", "));
+
+        final Cookie trackingCookie = WebUtils.getCookie(request, "userTrackingUuid");
+        final String trackingCookieValue = trackingCookie != null ? trackingCookie.getValue()
+                : "no cookie found";
 
         final HttpSession session = request.getSession(false);
         String sessionInfo;
@@ -85,8 +91,8 @@ public class ErrorReportingController {
 
                 String descriptionInHtmlFormat = description.replaceAll("(\r\n|\n)", "<br />");
                 messageBodyBuilder.append(String.format(MESSAGE_BODY_HEADER_FORMAT_STRING, url,
-                        status, error, message, userAgentString, cookieNames, sessionInfo, referer,
-                        userScreenName, descriptionInHtmlFormat));
+                        status, error, message, userAgentString, trackingCookieValue, cookieNames,
+                        sessionInfo, referer, userScreenName, descriptionInHtmlFormat));
 
                 if (StringUtils.isNotEmpty(email)) {
                     messageBodyBuilder.append(String.format(MESSAGE_BODY_EMAIL_FORMAT_STRING, email));
