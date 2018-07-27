@@ -41,8 +41,10 @@
 	<c:set var="updateUserProfileForm" value="/members/profile/${userBean.userId}/edit" />
 
     <c:set var="deleteProfileUrl" value="/members/profile/${userBean.userId}/delete" />
+    <c:set var="deleteAndAnonymizeProfileUrl" value="/members/profile/${userBean.userId}/delete?anonymize=true" />
 
-	<h1><spring:message code="profile.title.edit" /></h1>
+
+    <h1><spring:message code="profile.title.edit" /></h1>
 	<div class="text-muted">
 		<em>
             <span class="required-field"><!-- --></span> <spring:message code="profile.validation.mandatory" />.
@@ -349,6 +351,20 @@
                             <spring:message code="profile.account.delete.message" arguments="${_themeContext.colabName}"/>
                         </td>
                     </tr>
+                    <c:if test="${permissions.canAdmin}">
+                        <tr class="colabRow">
+                            <td class="actionColumn">
+                                <spring:message code="profile.account.anonymize.question" var="anonymizeMsg"/>
+                                <button type="button" class="btn btn-gray btn-sm js-PostLink" data-url="${deleteAndAnonymizeProfileUrl}" data-confirm="${anonymizeMsg}">
+                                    <spring:message code="profile.account.anonymize.button"/>
+                                </button>
+                            </td>
+                            <td>
+                                <spring:message code="profile.account.anonymize.message" />
+                            </td>
+                        </tr>
+                    </c:if>
+
                 </table>
             </div>
 
