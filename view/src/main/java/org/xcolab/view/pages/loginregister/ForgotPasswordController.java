@@ -95,8 +95,15 @@ public class ForgotPasswordController {
 
     @GetMapping("/login/resetPassword/update")
     public String openResetPassword(HttpServletRequest request, HttpServletResponse response,
-            ForgotPasswordBean forgotPasswordBean, Model model, @RequestParam String resetToken,
+            ForgotPasswordBean forgotPasswordBean, Model model,
+            @RequestParam (required = false) String resetToken,
             @RequestParam(required = false) String screenName) {
+
+        if (resetToken == null) {
+            AlertMessage.danger("Your reset link is incomplete. Please go back to the email and "
+                    + "make sure you used the full link.").flash(request);
+            return "redirect:/";
+        }
 
         if (!MembersClient.isForgotPasswordTokenValid(resetToken)) {
             AlertMessage.danger(INVALID_TOKEN_ERROR_MESSAGE)
