@@ -98,18 +98,6 @@ public class ErrorReportingController {
                     messageBodyBuilder.append(String.format(MESSAGE_BODY_EMAIL_FORMAT_STRING, email));
                 }
 
-                //TODO COLAB-2841: Remove debug logging
-                //Add debug info for invalid CSRF token errors
-                final String csrfCookieValue = Arrays.stream(cookies)
-                        .filter(cookie -> cookie.getName().equals("XSRF-TOKEN"))
-                        .map(cookie -> StringUtils.substring(cookie.getValue(), 0, 7))
-                        .findAny().orElse("no cookie found");
-                final String csrfParameterValue = StringUtils.substring(
-                        request.getParameter("_csrf"), 0, 7);
-                messageBodyBuilder.append("<p><strong>CSRF debug info:</strong><br/>")
-                        .append("Cookie value: ").append(csrfCookieValue).append("<br/>")
-                        .append("Parameter value: ").append(csrfParameterValue).append("</p>");
-
                 messageBodyBuilder.append(URLDecoder.decode(stackTrace, "UTF-8"));
 
                 new EmailToAdminDispatcher(EMAIL_SUBJECT, messageBodyBuilder.toString()).sendMessage();
