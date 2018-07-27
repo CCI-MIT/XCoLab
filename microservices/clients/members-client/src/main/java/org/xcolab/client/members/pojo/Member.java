@@ -465,6 +465,21 @@ public class Member implements Serializable {
         return firstName != null && lastName != null && emailAddress != null && country != null;
     }
 
+    public void anonymize() {
+        this.setFirstName("Member");
+        this.setLastName("Removed");
+        if (!this.getEmailAddress().startsWith("removed+")) {
+            this.setEmailAddress("removed+"+this.getEmailAddress());
+        }
+        this.setFacebookId(null);
+        this.setGoogleId(null);
+        this.setOpenId(null);
+        this.setColabSsoId(null);
+        this.setClimateXSsoId(null);
+        this.setLoginIP(null);
+        this.setShortBio(null);
+    }
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Member
