@@ -8,13 +8,15 @@ public class MessageReceived extends Message {
 
 	private Boolean opened;
 	private Boolean archived;
+    private String threadId;
 
 	public MessageReceived() {}
 
-	public MessageReceived(Message value, Boolean opened, Boolean archived) {
+	public MessageReceived(Message value, Boolean opened, Boolean archived, String threadId) {
         super(value);
 		this.opened = opened;
 		this.archived = archived;
+		this.threadId = threadId;
 	}
 
 	public MessageReceived(
@@ -25,10 +27,12 @@ public class MessageReceived extends Message {
 			String subject,
 			String content,
 			Boolean opened,
-            Boolean archived) {
+            Boolean archived,
+            String threadId) {
 		super(messageid, fromid, repliesto, createdate, subject, content);
 		this.opened = opened;
 		this.archived = archived;
+		this.threadId = threadId;
 	}
 
 	public Boolean getOpened() {
@@ -46,4 +50,8 @@ public class MessageReceived extends Message {
 	public void setArchived(Boolean archived) {
 		this.archived = archived;
 	}
+
+    public String getThreadId() { return threadId; }
+
+    public void setThreadId(String threadId) { this.threadId = threadId; }
 }

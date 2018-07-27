@@ -78,7 +78,15 @@
                                 </c:if>
                             </td>
                             <td class="${isHighlighted ? 'cb-text-bold' : ''}">
-                                <a href="${message.linkUrl}">${message.subject}</a>
+                                <c:choose>
+                                    <c:when test="${messagingBean.type == 'SENT'}">
+                                        <!-- What if thread is null -->
+                                        <a href="${message.linkUrl}${message.threads.get(0)}">${message.subject}</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${message.linkUrl}${message.threadId}">${message.subject}</a>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                             <td>
                                 <c:choose>

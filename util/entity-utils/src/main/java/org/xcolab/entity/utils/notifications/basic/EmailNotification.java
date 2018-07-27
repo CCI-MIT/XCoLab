@@ -255,8 +255,9 @@ public abstract class EmailNotification {
             EmailTemplateWrapper template = getTemplateWrapper();
             String content = template.getHeader() + template.getFooter();
             content = content.replace("\n", " ").replace("\r", " ");
-            MessagingClient.sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID,
-                    ADMINISTRATOR_USER_ID, recipients);
+            MessagingClient
+                    .sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID, null,
+                                recipients);
         }
     }
 
