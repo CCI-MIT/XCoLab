@@ -41,7 +41,7 @@
 	<c:set var="updateUserProfileForm" value="/members/profile/${userBean.userId}/edit" />
 
     <c:set var="deleteProfileUrl" value="/members/profile/${userBean.userId}/delete" />
-    <c:set var="deleteAndAnonymizeProfileUrl" value="/members/profile/${userBean.userId}/anonymize" />
+    <c:set var="deleteAndAnonymizeProfileUrl" value="/members/profile/${userBean.userId}/delete?anonymize=true" />
 
 
     <h1><spring:message code="profile.title.edit" /></h1>

@@ -424,9 +424,16 @@ public class UserProfileController {
 
     @PostMapping("{memberId}/delete")
     public void deleteUserProfile(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long memberId, Member loggedInMember)
-            throws IOException {
+            Model model, @PathVariable long memberId, Member loggedInMember,
+            @RequestParam(required=false, defaultValue = "false") boolean anonymize)
+            throws IOException, MemberNotFoundException {
         UserProfilePermissions permission = new UserProfilePermissions(loggedInMember);
+
+        if (anonymize && permission.getCanAdmin()) {
+            Member memberToAnonymize = new Member(MembersClient.getMember(memberId));
+            memberToAnonymize.anonymize();
+            MembersClient.updateMember(memberToAnonymize);
+        }
 
         if (permission.getCanEditMemberProfile(memberId)) {
             MembersClient.deleteMember(memberId);
@@ -439,28 +446,4 @@ public class UserProfileController {
             response.sendRedirect("/members");
         }
     }
-
-    @PostMapping("{memberId}/anonymize")
-    public void deleteAndAnonymizeUserProfile(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long memberId, Member loggedInMember) throws IOException, MemberNotFoundException {
-        UserProfilePermissions permission = new UserProfilePermissions(loggedInMember);
-
-        //TODO: This currently allows admin to anonymize himself. OK?
-        if (permission.getCanAdmin()) {
-            Member memberToAnonymize = new Member(MembersClient.getMember(memberId));
-            memberToAnonymize.anonymize();
-            MembersClient.updateMember(memberToAnonymize);
-            MembersClient.deleteMember(memberId);
-        }
-
-        //TODO: This redirection only makes sense if admin can anonymize himself
-        if (memberId == loggedInMember.getId_()) {
-            authenticationService.logout(request, response);
-            response.sendRedirect("/");
-        } else {
-            response.sendRedirect("/members");
-        }
-
-    }
-
 }
