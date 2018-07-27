@@ -147,12 +147,14 @@ CREATE TABLE IF NOT EXISTS `xcolab_MessageRecipientStatus` (
   `messageRecipientId` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `messageId` bigint(20) DEFAULT NULL,
   `userId` bigint(20) DEFAULT NULL,
+  `threadId` VARCHAR(75) DEFAULT NULL,
   `opened` tinyint(4) DEFAULT NULL,
   `archived` tinyint(4) DEFAULT NULL,
   INDEX `IX_E4B60412` (`messageId`),
   INDEX `IX_76FF2A4C` (`messageId`,`userId`),
   INDEX `IX_74DCC2DA` (`userId`),
-  INDEX `IX_88CD5CB0` (`userId`,`archived`)
+  INDEX `IX_88CD5CB0` (`userId`,`archived`),
+  INDEX `xcolab_MessageRecipientStatus_threadId_index` (threadId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `xcolab_PlatformTeam` (
