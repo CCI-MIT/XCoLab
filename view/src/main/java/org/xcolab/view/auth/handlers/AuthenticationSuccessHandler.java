@@ -5,10 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication
-        .SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
@@ -24,14 +22,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static org.xcolab.view.config.spring.beans.SsoClientConfig.SsoFilter
-        .SSO_SAVED_REFERER_SESSION_ATTRIBUTE;
+import static org.xcolab.view.config.spring.beans.SsoClientConfig.SsoFilter.SSO_SAVED_REFERER_SESSION_ATTRIBUTE;
 
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private static final Logger log = LoggerFactory.getLogger(AuthenticationSuccessHandler.class);
-
-    private static final String COLAB_URL = PlatformAttributeKey.COLAB_URL.get();
 
     private final AuthenticationService authenticationService;
     private final BalloonService balloonService;
@@ -86,10 +81,9 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         if (redirectOnSuccess) {
             try {
-                //Make URI relative to prevent injection of external redirect URIs
-                final String redirect = LinkUtils.getRelativeUri(refererHeader);
-                if (StringUtils.isNotBlank(redirect) && isLocalReferer(refererHeader)
-                        && !isFromLoginPage(redirect)) {
+                if (StringUtils.isNotBlank(refererHeader) && !isFromLoginPage(refererHeader)) {
+                    //Make URI relative to prevent injection of external redirect URIs
+                    final String redirect = LinkUtils.getLocalUrl(refererHeader);
                     getRedirectStrategy().sendRedirect(request, response, redirect);
                 } else {
                     super.onAuthenticationSuccess(request, response, authentication);
@@ -99,10 +93,6 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                 throw new InternalException(e);
             }
         }
-    }
-
-    private boolean isLocalReferer(String refererHeader) {
-        return refererHeader.startsWith(COLAB_URL);
     }
 
     private boolean isFromLoginPage(String refererHeader) {
