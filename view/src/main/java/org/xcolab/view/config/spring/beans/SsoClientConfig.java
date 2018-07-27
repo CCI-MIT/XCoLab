@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
@@ -21,6 +22,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.web.authentication.ForwardAuthenticationFailureHandler;
 import org.springframework.web.filter.CompositeFilter;
 
+import org.xcolab.commons.servlet.RequestParamUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.config.spring.sso.ClimateXPrincipalExtractor;
@@ -29,17 +33,28 @@ import org.xcolab.view.config.spring.sso.FacebookPrincipalExtractor;
 import org.xcolab.view.config.spring.sso.GooglePrincipalExtractor;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
 import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @EnableOAuth2Client
 @Configuration
 public class SsoClientConfig {
 
     private static final Logger log = LoggerFactory.getLogger(SsoClientConfig.class);
+
+    private static final AuthenticationContext AUTHENTICATION_CONTEXT = new AuthenticationContext();
 
     private final OAuth2ClientContext oauth2ClientContext;
     private final LoginRegisterService loginRegisterService;
@@ -132,7 +147,9 @@ public class SsoClientConfig {
         return new SsoClientResources();
     }
 
-    public static class SsoFilter {
+    public static class SsoFilter implements Filter {
+
+        public static final String SSO_SAVED_REFERER_SESSION_ATTRIBUTE = "SSO_SAVED_REFERRER";
 
         private final OAuth2ClientContext oAuth2ClientContext;
         private final AuthenticationSuccessHandler authenticationSuccessHandler;
@@ -169,6 +186,41 @@ public class SsoClientConfig {
             filter.setAuthenticationFailureHandler(new ForwardAuthenticationFailureHandler(
                     "/oauth/error/authenticationError"));
             return filter;
+        }
+
+        @Override
+        public void init(FilterConfig filterConfig) throws ServletException {
+            getFilter().init(filterConfig);
+        }
+
+        @Override
+        public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+                throws IOException, ServletException {
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+            if (httpRequest.getServletPath().startsWith("/sso")) {
+
+                final boolean isLoggedIn = AUTHENTICATION_CONTEXT.isLoggedIn();
+                if (isLoggedIn) {
+                    // If the user is already logged in, the sso endpoints should not be accessed
+                    AlertMessage.warning("You're already logged in!").flash(httpRequest);
+                    httpResponse.sendRedirect("/");
+                    return;
+                } else {
+                    final HttpSession session = httpRequest.getSession();
+                    if (!RequestParamUtil.contains(httpRequest, "code")) {
+                        session.setAttribute(SSO_SAVED_REFERER_SESSION_ATTRIBUTE, httpRequest
+                                .getHeader(HttpHeaders.REFERER));
+                    }
+                }
+            }
+            getFilter().doFilter(request, response, chain);
+        }
+
+        @Override
+        public void destroy() {
+            getFilter().destroy();
         }
     }
 

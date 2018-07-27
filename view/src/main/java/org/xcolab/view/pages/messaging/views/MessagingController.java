@@ -16,12 +16,14 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
+import org.xcolab.client.members.exceptions.MessageOrThreadNotFoundException;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 import org.xcolab.view.pages.messaging.beans.MessagingBean;
@@ -30,6 +32,8 @@ import org.xcolab.view.pages.messaging.utils.MessagingPermissions;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -99,6 +103,62 @@ public class MessagingController {
         return "/messaging/message";
     }
 
+    @GetMapping("fullConversation/{messageId}")
+    public String showFullConversation(HttpServletRequest request, HttpServletResponse response, Model model,
+            @PathVariable Long messageId, Member loggedInMember,
+            @RequestParam(required=false) String threadId) throws MessageOrThreadNotFoundException, MessageNotFoundException {
+        List<Message> fullConversation = new ArrayList<>();
+        //Retrieve conversation and check if it was found
+        if (StringUtils.isNotEmpty(threadId)) {
+                fullConversation = MessagingClient.getFullConversation(messageId, threadId);
+        } else {
+            fullConversation.add(MessagingClient.getMessage(messageId));
+        }
+
+        boolean isLastMessage = messageId.equals(fullConversation.get(0).getMessageId());
+
+        //Transform messages into beans and discard messages newer than this one
+        List<MessageBean> messageBeanListNewestFirst = new ArrayList<>();
+        boolean reachedRequiredMessage = false;
+        for (Message message : fullConversation){
+            if (message.getMessageId().equals(messageId)) {
+                reachedRequiredMessage = true;
+            }
+            if (reachedRequiredMessage) {
+                messageBeanListNewestFirst.add(new MessageBean(message));
+            }
+        }
+        
+        //Manage permissions
+        final MessagingPermissions messagingPermissions =
+                new MessagingPermissions(loggedInMember, messageBeanListNewestFirst.get(0));
+        if (!messagingPermissions.getCanViewThread(threadId, messageBeanListNewestFirst)){
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
+        }
+
+        //Mark first message as read (if it's for me)
+        if (messagingPermissions.isRecipient()) {
+            messageBeanListNewestFirst.get(0).markMessageAsOpened(loggedInMember.getId_());
+        }
+
+        final SendMessageBean sendMessageBean = new SendMessageBean(
+                messageBeanListNewestFirst.get(0));
+
+        final MessageBean currentMessageBean = messageBeanListNewestFirst.remove(0);
+
+        //Add model attributes
+        model.addAttribute("user", loggedInMember);
+        model.addAttribute("sendMessageBean", sendMessageBean);
+        model.addAttribute("currentMessageBean", currentMessageBean);
+        model.addAttribute("_activePageLink", "community");
+        model.addAttribute("messageBeanList",messageBeanListNewestFirst);
+        model.addAttribute("threadId",threadId);
+        model.addAttribute("isLastMessage", isLastMessage);
+        model.addAttribute("requestedMessageId", messageId);
+
+        return "/messaging/message";
+    }
+
     @PostMapping("archiveMessages")
     public String archiveMessages(HttpServletRequest request, HttpServletResponse response,
             Model model, @ModelAttribute("messagingBean") MessagingBean messagingBean,
@@ -122,24 +182,42 @@ public class MessagingController {
         return showMessages(response, model, "INBOX", 1, loggedInMember);
     }
 
-    @PostMapping("sendMessage")
+    @PostMapping("/sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
-            @RequestParam String messageContent, Member loggedInMember) throws IOException {
+            @RequestParam String messageContent, @RequestParam(required = false) String threadId,
+            Member loggedInMember) throws MessageNotFoundException {
 
+        //Check if I'm logged in
         if (loggedInMember == null) {
             return new AccessDeniedPage(null).toViewName(response);
         }
 
         final MessagingPermissions messagingPermissions = new MessagingPermissions(loggedInMember);
 
+        //Check if I can send 1 message
         if (messagingPermissions.getCanSendMessage()) {
             List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
+
             try {
+                //If I specify a thread, check that I have permissions on it
+                if (StringUtils.isNotEmpty(threadId)) {
+                    //Check the permissions for the first message in the thread
+                    String[] threadParts = threadId.split("-");
+                    Long firstMessageId = Long.parseLong(threadParts[0]);
+                        List<MessageBean> firstMessageBeanList = new ArrayList<>(Arrays.asList(
+                                new MessageBean(MessagingClient.getMessage(firstMessageId))));
+                        if (!messagingPermissions.getCanViewThread(threadId, firstMessageBeanList)) {
+                            //Permission denied
+                            AlertMessage.danger("You don't have permissions on this thread" ).flash(request);
+                            return new AccessDeniedPage(loggedInMember).toViewName(response);
+                        }
+                }
+
                 final String baseUri = PlatformAttributeKey.COLAB_URL.get();
                 MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
                         HtmlUtil.cleanSome(messageContent, baseUri), loggedInMember.getUserId(),
-                        recipientIds);
+                        HtmlUtil.cleanAll(threadId), recipientIds);
                 AlertMessage.success("The message has been sent!").flash(request);
             } catch (MessageLimitExceededException e) {
                 AlertMessage.danger("You have exceeded your daily message limit. "
@@ -156,5 +234,18 @@ public class MessagingController {
             return "redirect:" + UriComponentsBuilder.fromHttpUrl(refererHeader).build().getPath();
         }
         return showMessages(response, model, "INBOX", 1, loggedInMember);
+    }
+
+    @GetMapping("/sendMessage")
+    public String handleInvalidHttpMethod(HttpServletRequest request) {
+        AlertMessage.warning("Warning: page reloaded before message was sent.")
+                .flash(request);
+        String referrer = request.getHeader(HttpHeaders.REFERER);
+        if (StringUtils.isNotEmpty(referrer) && LinkUtils.isLocalUrl(referrer)
+                //avoid circular redirect
+                && !referrer.endsWith("sendMessage")) {
+            return "redirect:" + referrer;
+        }
+        return "redirect:/messaging";
     }
 }

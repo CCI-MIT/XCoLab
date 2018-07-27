@@ -18,6 +18,11 @@
                 <c:choose>
                     <c:when test='${authError != null}'>
                         <div class="alert alert-danger">${authError.message}</div>
+                        <c:if test="${_themeContext.authenticationVariables.isAnySsoActive}">
+                            <div class="alert alert-info">
+                                <spring:message code="login.error.social-media-info"/>
+                            </div>
+                        </c:if>
                     </c:when>
                     <c:otherwise>
                         <div class="alert alert-info">

@@ -1,0 +1,42 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
+
+    <!--@elvariable id="currentMessageBean" type="org.xcolab.view.pages.messaging.beans.MessageBean"-->
+    <!--@elvariable id="threadId" type="java.lang.String"-->
+
+    <div id="replyContainer" style="display:none;">
+    <form:form method="post" action="/messaging/sendMessage" id="replyForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="messageContent">Content: </label>
+                <textarea name="messageContent" id="messageContent"
+                          class="rte-editorPlaceholder form-control" ><!-- --></textarea>
+            </div>
+            <input type="hidden" name="messageSubject" id="messageSubject"
+                   value="${currentMessageBean.replySubject}"/>
+            <input type="hidden" name="userIdsRecipients" id="userIdsRecipients" value="${currentMessageBean.from.id_}"/>
+            <input type="hidden" name="threadId" id="threadId" value="${threadId}"/>
+        </div>
+        <div class="modal-footer">
+            <input type="reset" value="Cancel" class="btn btn-gray" id="close-reply" />
+
+            <button class="btn btn-primary">
+                <spring:message code="message.modal.buttons.send"/>
+            </button>
+        </div>
+    </form:form>
+</div>
+
+<spring:message code="message.empty.content" var="emptyMessageContent" />
+
+<xcolab:requireLibrary name="CKEditor" />
+
+<script>
+    <![CDATA[
+        _i18nTexts['message.empty.content'] = '${emptyMessageContent}';
+    ]]>
+</script>
+
+</jsp:root>

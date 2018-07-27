@@ -7,7 +7,7 @@ echo "[INFO] Starting XCoLab..."
 
 ./startServices.sh
 
-sleep 20
+sleep 10
 
 ./startView.sh
 

@@ -22,6 +22,7 @@
                     <textarea name="messageContent" id="messageContent"
                               class="rte-editorPlaceholder form-control" ><!-- --></textarea>
                 </div>
+                <input type="hidden" name="threadId" id="threadId"/>
             </div>
             <div class="modal-footer">
                 <button type="close" class="btn btn-gray" data-dismiss="modal">
@@ -48,6 +49,7 @@
             var recipient = $el.data('messageRecipient');
             var subject = $el.data('messageSubject');
             var content = $el.data('messageContent');
+            var threadId = $el.data('threadId');
 
             if (recipient) {
                 jQuery('#userIdsRecipients').val(recipient);
@@ -55,6 +57,9 @@
             }
             if (subject) {
                 jQuery('#messageSubject').val(subject);
+            }
+            if (threadId) {
+                jQuery('#threadId').val(threadId);
             }
             if (content) {
                 if (content.startsWith('#')) {

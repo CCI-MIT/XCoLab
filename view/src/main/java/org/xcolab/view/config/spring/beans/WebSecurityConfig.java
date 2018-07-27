@@ -25,6 +25,7 @@ import org.xcolab.view.auth.handlers.LogoutSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.auth.login.spring.MemberPasswordEncoder;
 import org.xcolab.view.config.spring.beans.SsoClientConfig.SsoFilter;
+import org.xcolab.view.config.spring.errors.CustomAccessDeniedHandler;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.spring.properties.WebProperties.GuestAccess;
 
@@ -110,10 +111,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     // need to specify same key that is used in rememberMeServices
                     .key(xCoLabProperties.getSecret())
                     .and()
-                .addFilterBefore(ssoFilter.getFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(ssoFilter, BasicAuthenticationFilter.class)
                 .logout()
                     .permitAll()
                     .logoutSuccessHandler(new LogoutSuccessHandler())
+                    .and()
+                .exceptionHandling()
+                    .accessDeniedHandler(new CustomAccessDeniedHandler())
                     .and()
                 .csrf()
                     .ignoringAntMatchers("/webhooks/**")

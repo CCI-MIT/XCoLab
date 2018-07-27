@@ -1,0 +1,22 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
+    <jsp:directive.attribute name="messageBeanList" type="java.util.List" required="true" description="The list of message beans"/>
+
+    <!--@elvariable id="messageBeanList" type="java.util.List<org.xcolab.view.pages.messaging.beans.MessageBean>"-->
+
+    <div class="c-PreviousMessage">
+        <p class="c-PreviousMessage__header">
+            <spring:message code="message.thread.metadata" arguments="${messageBeanList.get(i).from.displayName}" argumentSeparator=","/>
+            <xcolab:formatDateTime millis="${messageBeanList.get(i).createDate.time}" type="datetime"/>
+        </p>
+        ${messageBeanList.get(i).content}
+        <c:if test = "${i lt messageBeanList.size() - 1}">
+            <c:set var="i" value="${i + 1}" scope="request"/>
+            <xcolab:nestedMessages messageBeanList="${messageBeanList}"/>
+        </c:if>
+    </div>
+
+</jsp:root>

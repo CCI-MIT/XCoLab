@@ -369,11 +369,9 @@ public final class MembersClient {
     }
 
     public static Long updateUserPassword(String forgotPasswordToken, String password) {
-        password = encode(password);
-
         final Long result = memberResource.collectionService("updateForgottenPassword", Long.class)
                 .queryParam("forgotPasswordToken", forgotPasswordToken)
-                .queryParam("password", password)
+                .queryParam("password", encode(password))
                 .post();
         //TODO COLAB-2589: improve API so we can do more fine-grained cache refreshing
         ServiceRequestUtils.clearCache(CacheName.MEMBER);
@@ -381,10 +379,12 @@ public final class MembersClient {
     }
 
     private static String encode(String password) {
-        try {
-            password = URLEncoder.encode(password, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new InternalException(e);
+        if (password != null) {
+            try {
+                password = URLEncoder.encode(password, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new InternalException(e);
+            }
         }
         return password;
     }
@@ -448,28 +448,22 @@ public final class MembersClient {
     }
 
     public static boolean validatePassword(String password, long memberId) {
-
-        password = encode(password);
         return memberResource.collectionService("validatePassword", Boolean.class)
-                .queryParam("password", password)
+                .queryParam("password", encode(password))
                 .queryParam("memberId", memberId)
                 .post();
     }
 
     public static boolean validatePassword(String password, String hashedPassword) {
-        hashedPassword = encode(hashedPassword);
-        password = encode(password);
-
         return memberResource.collectionService("validatePassword", Boolean.class)
-                .queryParam("password", password)
-                .queryParam("hash", hashedPassword)
+                .queryParam("password", encode(password))
+                .queryParam("hash", encode(hashedPassword))
                 .post();
     }
 
     public static boolean updatePassword(long memberId, String newPassword) {
-        newPassword = encode(newPassword);
         final Boolean result = memberResource.elementService(memberId, "updatePassword", Boolean.class)
-                .queryParam("newPassword", newPassword)
+                .queryParam("newPassword", encode(newPassword))
                 .post();
         //TODO COLAB-2589: improve endpoint for caching
         memberResource.get(memberId).withCache(CacheName.MEMBER).deleteFromCache();

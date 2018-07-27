@@ -47,7 +47,7 @@ public class SubscriptionsController {
             HttpServletResponse response, Model model, Member loggedInMember,
             @PathVariable long memberId, @RequestParam(defaultValue = "1") int page) {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
-        if (!permissions.getCanAdminProfile(memberId)) {
+        if (!permissions.getCanEditMemberProfile(memberId)) {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
