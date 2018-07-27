@@ -360,7 +360,7 @@
                                 </button>
                             </td>
                             <td>
-                                <spring:message code="profile.account.anonymize.message" arguments="${_themeContext.colabName}"/>
+                                <spring:message code="profile.account.anonymize.message" />
                             </td>
                         </tr>
                     </c:if>
