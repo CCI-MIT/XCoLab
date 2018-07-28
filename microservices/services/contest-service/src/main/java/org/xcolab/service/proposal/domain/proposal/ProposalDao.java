@@ -17,8 +17,9 @@ public interface ProposalDao {
     List<Long> findIdsByGiven(PaginationHelper paginationHelper, Long contestId, Boolean visible,
             Long contestPhaseId, Integer ribbon);
 
-    List<Long> findThreadIdsByGiven(PaginationHelper paginationHelper, Long contestId, Boolean visible,
-            Long contestPhaseId, Integer ribbon);
+    List<Long> findDiscussionThreadIdsByGiven(List<Long> proposalIds, Long contestId, Long contestPhaseId, Integer ribbon);
+
+    List<Long> findResultsDiscussionThreadIds(List<Long> proposalIds, Long contestId, Long contestPhaseId, Integer ribbon);
 
     List<Proposal> findLinkedProposalIdsByGivenProposalId(Long proposalId);
 

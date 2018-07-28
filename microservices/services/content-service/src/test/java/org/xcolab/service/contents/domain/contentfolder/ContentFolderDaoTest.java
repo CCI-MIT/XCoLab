@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.model.tables.pojos.ContentFolder;
@@ -22,15 +22,8 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@TestPropertySource(
-        properties = {
-                "cache.enabled=false",
-                "eureka.client.enabled=false",
-                "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL"
-        }
-)
 @ComponentScan("org.xcolab.service.contents")
-
+@ActiveProfiles("test")
 public class ContentFolderDaoTest {
 
     @Autowired

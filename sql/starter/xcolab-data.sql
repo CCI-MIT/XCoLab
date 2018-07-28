@@ -211,14 +211,3 @@ INSERT INTO xcolab_ProposalRatingType (id_, label, description, judgeType, isAct
 INSERT INTO xcolab_ProposalRatingType (id_, label, description, judgeType, isActive) VALUES (13, 'Impact', 'The degree to which the proposal, if successfully implemented, will be effective at solving the challenge in the contest prompt.', 3, 1);
 INSERT INTO xcolab_ProposalRatingType (id_, label, description, judgeType, isActive) VALUES (14, 'Thoroughness', 'The degree to which the proposal is worked out in detail and there is a clear relationship between the recommended action and the expected outcome.', 3, 0);
 INSERT INTO xcolab_ProposalRatingType (id_, label, description, judgeType, isActive) VALUES (15, 'Presentation', 'The degree to which the proposal is presented in a clear, persuasive and appealing manner.', 3, 1);
-
-INSERT INTO xcolab_RolesCategory (roleId, categoryName, roleOrdinal) VALUES (10122, 'Member', 2);
-INSERT INTO xcolab_RolesCategory (roleId, categoryName, roleOrdinal) VALUES (31704, 'Staff', 8);
-INSERT INTO xcolab_RolesCategory (roleId, categoryName, roleOrdinal) VALUES (44201, 'Expert', 6);
-INSERT INTO xcolab_RolesCategory (roleId, categoryName, roleOrdinal) VALUES (193260, 'Advisor', 5);
-INSERT INTO xcolab_RolesCategory (roleId, categoryName, roleOrdinal) VALUES (193261, 'Fellow', 4);
-INSERT INTO xcolab_RolesCategory (roleId, categoryName, roleOrdinal) VALUES (312213, 'Moderator', 9);
-INSERT INTO xcolab_RolesCategory (roleId, categoryName, roleOrdinal) VALUES (1251483, 'Judges', 7);
-INSERT INTO xcolab_RolesCategory (roleId, categoryName, roleOrdinal) VALUES (1430078, 'Catalyst', 3);
-INSERT INTO xcolab_RolesCategory (roleId, categoryName, roleOrdinal) VALUES (1958405, 'Contest Manager', 6);
-INSERT INTO xcolab_RolesCategory (roleId, categoryName, roleOrdinal) VALUES (1975251, 'Impact Assessment Fellow', 4);

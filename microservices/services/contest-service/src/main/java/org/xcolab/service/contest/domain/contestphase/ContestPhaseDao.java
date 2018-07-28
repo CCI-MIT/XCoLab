@@ -24,4 +24,6 @@ public interface ContestPhaseDao {
     boolean exists(Long contestPhasePK);
 
     boolean isPhaseActive(ContestPhase contestPhase);
+
+    List<Long> getProposalDiscussionThreadsInPhase(long phaseId);
 }

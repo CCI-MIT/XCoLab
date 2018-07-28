@@ -8,17 +8,16 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.pojos.Comment;
 import org.xcolab.model.tables.records.CommentRecord;
 import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.SortColumn;
 
+import java.util.Collection;
 import java.util.List;
 
 import static org.xcolab.model.Tables.COMMENT;
-import static org.xcolab.model.Tables.PROPOSAL;
-import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
 
 @Repository
 public class CommentDaoImpl implements CommentDao {
@@ -27,36 +26,23 @@ public class CommentDaoImpl implements CommentDao {
     private DSLContext dslContext;
 
     @Override
-    public int countByGiven(Long authorId, Long threadId) {
+    public int countByGiven(Long authorId, Collection<Long> threadIds) {
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(COMMENT)
                 .getQuery();
         if (authorId != null) {
             query.addConditions(COMMENT.AUTHOR_ID.eq(authorId));
         }
-        if (threadId != null) {
-            query.addConditions(COMMENT.THREAD_ID.eq(threadId));
+        if (threadIds != null) {
+            query.addConditions(COMMENT.THREAD_ID.in(threadIds));
         }
-        query.addConditions(COMMENT.DELETED_DATE.isNull());
-        return query.fetchOne().into(Integer.class);
-    }
-
-    @Override
-    public int countByGiven(List<Long> threadIds) {
-        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
-                .from(COMMENT)
-                .getQuery();
-        if (threadIds == null || threadIds.isEmpty()) {
-            return 0;
-        }
-        query.addConditions(COMMENT.THREAD_ID.in(threadIds));
         query.addConditions(COMMENT.DELETED_DATE.isNull());
         return query.fetchOne().into(Integer.class);
     }
 
     @Override
     public List<Comment> findByGiven(PaginationHelper paginationHelper,
-            Long authorId, Long threadId, boolean includeDeleted) {
+            Long authorId, Collection<Long> threadIds, boolean includeDeleted) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(COMMENT)
                 .getQuery();
@@ -64,8 +50,8 @@ public class CommentDaoImpl implements CommentDao {
         if (authorId != null) {
             query.addConditions(COMMENT.AUTHOR_ID.eq(authorId));
         }
-        if (threadId != null) {
-            query.addConditions(COMMENT.THREAD_ID.eq(threadId));
+        if (threadIds != null) {
+            query.addConditions(COMMENT.THREAD_ID.in(threadIds));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
@@ -132,18 +118,5 @@ public class CommentDaoImpl implements CommentDao {
             return comment;
         }
         return null;
-    }
-
-    @Override
-    public int countProposalCommentsByContestPhase(Long contestPhaseId) {
-        return dslContext.selectCount()
-                .from(COMMENT)
-                .join(PROPOSAL).on(PROPOSAL.DISCUSSION_ID.eq(COMMENT.THREAD_ID))
-                .join(PROPOSAL_2_PHASE).on(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID))
-                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId)
-                        .and(COMMENT.DELETED_DATE.isNull())
-                        .and(PROPOSAL.VISIBLE.eq(true))
-                )
-                .fetchOne().into(Integer.class);
     }
 }

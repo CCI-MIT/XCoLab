@@ -198,15 +198,30 @@ public class ProposalDaoImpl implements ProposalDao {
     }
 
     @Override
-    public List<Long> findThreadIdsByGiven(PaginationHelper paginationHelper, Long contestId,
-            Boolean visible, Long contestPhaseId, Integer ribbon) {
+    public List<Long> findDiscussionThreadIdsByGiven(List<Long> proposalIds, Long contestId,
+            Long contestPhaseId, Integer ribbon) {
         final SelectQuery<Record1<Long>> query = dslContext.select(PROPOSAL.DISCUSSION_ID)
                 .from(PROPOSAL)
                 .getQuery();
 
-        this.addFindByGivenConditions(contestId, visible, contestPhaseId, ribbon, query);
-        query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
+        this.addFindByGivenConditions(contestId, true, contestPhaseId, ribbon, query);
+        if (proposalIds != null) {
+            query.addConditions(PROPOSAL.PROPOSAL_ID.in(proposalIds));
+        }
+        return query.fetchInto(Long.class);
+    }
 
+    @Override
+    public List<Long> findResultsDiscussionThreadIds(List<Long> proposalIds, Long contestId,
+            Long contestPhaseId, Integer ribbon) {
+        final SelectQuery<Record1<Long>> query = dslContext.select(PROPOSAL.RESULTS_DISCUSSION_ID)
+                .from(PROPOSAL)
+                .getQuery();
+
+        this.addFindByGivenConditions(contestId, true, contestPhaseId, ribbon, query);
+        if (proposalIds != null) {
+            query.addConditions(PROPOSAL.PROPOSAL_ID.in(proposalIds));
+        }
         return query.fetchInto(Long.class);
     }
 

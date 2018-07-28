@@ -60,7 +60,8 @@ public class ContestClient {
     private final RestResource<ContestDiscussionDto, Long> contestDiscussionResource;
 
     private final RestResource2L<ContestDto, ContestPhaseDto> visiblePhasesResource;
-    private final RestResource<ContestPhaseDto, Long> contestPhasesResource;
+    private final RestResource2<ContestPhaseDto, Long, Long, Void> proposalThreadsInPhaseResource;
+    private final RestResource1<ContestPhaseDto, Long> contestPhasesResource;
     private final RestResource<ContestPhaseTypeDto, Long> contestPhaseTypesResource;
     private final RestResource1<ContestPhaseRibbonTypeDto, Long> contestPhaseRibbonTypeResource;
 
@@ -85,6 +86,8 @@ public class ContestClient {
         contestYearResource = new RestResource1<>(ContestResource.CONTEST_YEAR, TypeProvider.LONG, serviceNamespace);
         contestTranslationResource = new RestResource2<>(contestResource,
                 "translations", ContestTranslationDto.TYPES);
+        proposalThreadsInPhaseResource = contestPhasesResource
+                .nestedResource("proposalDiscussionThreads", TypeProvider.LONG);
     }
 
     public static ContestClient fromNamespace(ServiceNamespace serviceNamespace) {
@@ -569,6 +572,14 @@ public class ContestClient {
                                 .withParameter("visible", true).asList(),
                         CacheName.CONTEST_DETAILS)
                 .execute(), serviceNamespace);
+    }
+
+    public List<Long> getProposalDiscussionThreads(long contestPhaseId) {
+        return proposalThreadsInPhaseResource
+                .resolveParentId(contestPhasesResource.id(contestPhaseId))
+                .list()
+                .withCache(CacheName.CONTEST_LIST)
+                .execute();
     }
 
     public int getPointsAccessibleForActivePhaseOfContest(Contest contest) {

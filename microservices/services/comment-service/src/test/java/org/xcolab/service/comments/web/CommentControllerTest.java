@@ -13,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,12 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(CommentController.class)
 @ComponentScan("org.xcolab.service.comments")
 @ComponentScan("com.netflix.discovery")
-@TestPropertySource(properties = {
-        "cache.enabled=false",
-        "eureka.client.enabled=false",
-        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL"
-})
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@ActiveProfiles("test")
 @WebAppConfiguration
 public class CommentControllerTest {
 
@@ -124,16 +120,6 @@ public class CommentControllerTest {
 
         mockMvc.perform(get("/comments/399").contentType(contentType).accept(contentType))
                 .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void testCountCommentsInThread__shouldReturnCorrectCount() throws Exception {
-
-        mockMvc.perform(get("/comments/countCommentsInProposals")
-                    .param("threadIds", "201")
-                    .contentType(contentType).accept(contentType))
-                .andExpect(status().isOk())
-                .andExpect(content().string("2"));
     }
 
     @Test

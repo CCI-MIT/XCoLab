@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.model.tables.pojos.ContestEmailTemplate;
@@ -22,13 +22,8 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@TestPropertySource(
-    properties = {
-        "cache.enabled=false",
-        "eureka.client.enabled=false"
-    }
-)
 @ComponentScan("org.xcolab.service.admin")
+@ActiveProfiles("test")
 public class EmailTemplateDaoTest {
 
     @Autowired

@@ -95,6 +95,15 @@ public class ContestPhaseController {
         throw new NotFoundException();
     }
 
+    @GetMapping(value = "/contestPhases/{phaseId}/proposalDiscussionThreads")
+    public List<Long> getContestPhaseProposalDiscussionIds(@PathVariable long phaseId)
+            throws NotFoundException {
+        if (!contestPhaseDao.exists(phaseId)) {
+            throw new NotFoundException("No ContestPhase with id " + phaseId);
+        }
+        return contestPhaseDao.getProposalDiscussionThreadsInPhase(phaseId);
+    }
+
     @PutMapping(value = "/contestPhases/{contestPhasePK}/forcePromotionOfProposalInContestPhaseId")
     public boolean forcePromotionOfProposalInContestPhaseId(@PathVariable long contestPhasePK,
                                       @RequestParam Long proposalId) throws NotFoundException {

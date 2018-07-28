@@ -22,6 +22,7 @@ import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -58,48 +59,16 @@ class CommentServiceWrapper {
                 .addRange(startRecord, limitRecord)
                 .optionalQueryParam("sort", sort)
                 .optionalQueryParam("authorId", authorId)
-                .optionalQueryParam("threadId", threadId)
+                .optionalQueryParam("threadIds", threadId)
                 .optionalQueryParam("includeDeleted", includeDeleted)
                 .execute();
     }
 
-    public int countComments(
-            Long authorId, Long threadId, Boolean includeDeleted) {
+    public int countComments(Long authorId, Collection<Long> threadIds) {
         return commentResource.count()
                 .optionalQueryParam("authorId", authorId)
-                .optionalQueryParam("threadId", threadId)
-                .optionalQueryParam("includeDeleted", includeDeleted)
+                .optionalQueryParam("threadIds", threadIds)
                 .execute();
-    }
-
-
-    public int countCommentsInContestPhase(long contestPhaseId, long contestId,
-            CacheName cacheName) {
-        try {
-            return commentResource.<Comment, Integer>collectionService("countCommentsInContestPhase", Integer.class)
-                    .queryParam("contestPhaseId", contestPhaseId)
-                    .queryParam("contestId", contestId)
-                    .withCache(CacheKeys.withClass(Comment.class)
-                            .withParameter("contestPhaseId", contestPhaseId)
-                            .withParameter("contestId", contestId)
-                            .asCount(), cacheName)
-                    .getChecked();
-        } catch(EntityNotFoundException ignored) {
-            return 0;
-        }
-    }
-
-    public int countCommentsInProposals(List<Long> threadIds, CacheName cacheName) {
-        try {
-            return commentResource.<Comment, Integer>collectionService("countCommentsInProposals", Integer.class)
-                    .queryParam("threadIds", convertListToGetParameter(threadIds, "threadIds"))
-                    .withCache(CacheKeys.withClass(Comment.class)
-                            .withParameter("threadIds", convertListToGetParameter(threadIds, "threadIds"))
-                            .asCount(), cacheName)
-                    .getChecked();
-        } catch(EntityNotFoundException ignored) {
-            return 0;
-        }
     }
 
     public CommentDto getComment(long commentId, boolean includeDeleted,
@@ -164,11 +133,6 @@ class CommentServiceWrapper {
 
     public void deleteThread(long threadId) {
         threadResource.delete(threadId);
-    }
-
-    public void deleteProposalThreads(List<Long> proposalPKs) {
-        threadResource.collectionService("deleteProposalThreads", Boolean.class)
-                .post(proposalPKs);
     }
 
     public Date getLastActivityDate(long threadId, CacheName cacheName) {
