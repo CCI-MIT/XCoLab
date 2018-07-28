@@ -14,11 +14,10 @@ import org.springframework.util.CollectionUtils;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.members.UsersGroupsClientUtil;
+import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.SortColumn;
 import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.util.ArrayList;
@@ -52,11 +51,9 @@ import static org.xcolab.model.Tables.PROPOSAL_VOTE;
 public class ContestDaoImpl implements ContestDao {
 
     private final DSLContext dslContext;
-    private final ProposalDao proposalDao;
 
     @Autowired
-    public ContestDaoImpl(DSLContext dslContext, ProposalDao proposalDao) {
-        this.proposalDao = proposalDao;
+    public ContestDaoImpl(DSLContext dslContext) {
         Assert.notNull(dslContext, "DSLContext bean is required");
         this.dslContext = dslContext;
     }
