@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.xcolab.model.Tables.CONTEST_PHASE;
+import static org.xcolab.model.Tables.PROPOSAL;
 import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
 
 @Repository
@@ -143,6 +144,16 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .from(CONTEST_PHASE)
                 .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
                 .fetchOne().into(Integer.class) > 0;
+    }
+
+    @Override
+    public List<Long> getProposalDiscussionThreadsInPhase(long phaseId) {
+        return dslContext.select(PROPOSAL.DISCUSSION_ID)
+                .from(PROPOSAL_2_PHASE)
+                .join(PROPOSAL).on(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID))
+                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(phaseId)
+                        .and(PROPOSAL.VISIBLE.eq(true)))
+                .fetch().into(Long.class);
     }
 
 }

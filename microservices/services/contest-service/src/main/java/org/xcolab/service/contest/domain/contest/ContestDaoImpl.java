@@ -16,10 +16,12 @@ import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.util.activities.enums.ActivityCategory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -50,9 +52,11 @@ import static org.xcolab.model.Tables.PROPOSAL_VOTE;
 public class ContestDaoImpl implements ContestDao {
 
     private final DSLContext dslContext;
+    private final ProposalDao proposalDao;
 
     @Autowired
-    public ContestDaoImpl(DSLContext dslContext) {
+    public ContestDaoImpl(DSLContext dslContext, ProposalDao proposalDao) {
+        this.proposalDao = proposalDao;
         Assert.notNull(dslContext, "DSLContext bean is required");
         this.dslContext = dslContext;
     }
@@ -476,6 +480,14 @@ public class ContestDaoImpl implements ContestDao {
                 .where(PROPOSAL.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal discussion threads and comments.
-        ThreadClientUtil.deleteProposalThreads(proposalIds);
+        final List<Long> threadIdsToDelete = new ArrayList<>();
+        threadIdsToDelete.addAll(ctx.select(PROPOSAL.DISCUSSION_ID).from(PROPOSAL)
+                .where(PROPOSAL.PROPOSAL_ID.in(proposalIds)).fetch().into(Long.class));
+        threadIdsToDelete.addAll(ctx.select(PROPOSAL.RESULTS_DISCUSSION_ID).from(PROPOSAL)
+                .where(PROPOSAL.PROPOSAL_ID.in(proposalIds)).fetch().into(Long.class));
+
+        for (long threadId : threadIdsToDelete) {
+            ThreadClientUtil.deleteThread(threadId);
+        }
     }
 }

@@ -26,6 +26,7 @@ import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -59,26 +60,14 @@ public class CommentController {
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Long authorId,
-            @RequestParam(required = false) Long threadId,
+            @RequestParam(required = false) List<Long> threadIds,
             @RequestParam(required = false, defaultValue = "false") boolean includeDeleted) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                Integer.toString(commentDao.countByGiven(authorId, threadId)));
+                Integer.toString(commentDao.countByGiven(authorId, threadIds)));
 
-        return commentDao.findByGiven(paginationHelper, authorId, threadId, includeDeleted);
-    }
-
-    //TODO COLAB-2594: move to contestPhase endpoint in contest-service
-    @GetMapping("/comments/countCommentsInContestPhase")
-    public Integer countCommentsInContestPhase(@RequestParam long contestPhaseId,
-            @RequestParam long contestId) {
-        return commentDao.countProposalCommentsByContestPhase(contestPhaseId);
-    }
-
-    @GetMapping("/comments/countCommentsInProposals")
-    public Integer countCommentsInThreads(@RequestParam List<Long> threadIds) {
-        return commentDao.countByGiven(threadIds);
+        return commentDao.findByGiven(paginationHelper, authorId, threadIds, includeDeleted);
     }
 
     @GetMapping("/comments/{commentId}")
@@ -106,7 +95,7 @@ public class CommentController {
         Comment comment = commentDao.get(commentId);
         comment.setDeletedDate(new Timestamp(new Date().getTime()));
         //If last comment in thread, delete thread
-        if(commentDao.countByGiven(null, comment.getThreadId()) == 1) {
+        if(commentDao.countByGiven(null, Collections.singletonList(comment.getThreadId())) == 1) {
             Thread thread = threadDao.get(comment.getThreadId());
             thread.setDeletedDate(new Timestamp(new Date().getTime()));
             threadDao.update(thread);
@@ -187,16 +176,6 @@ public class CommentController {
         boolean result = false;
         if (threadId != null) {
             result = threadDao.delete(threadId);
-        }
-        return result;
-    }
-
-    @PostMapping("/threads/deleteProposalThreads")
-    public boolean deleteThreads(@RequestBody List<Long> proposalPKs) {
-        boolean result = false;
-        if (proposalPKs != null) {
-            List<Long> threadIDs = threadDao.getProposalThreads(proposalPKs);
-            result = threadDao.deleteThreads(threadIDs);
         }
         return result;
     }
