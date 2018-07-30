@@ -50,7 +50,7 @@
                 </form:form>
             </div>
             <div class="card-footer">
-                Logged in as ${_themeContext.authenticationVariables.member.fullName}. <a href="/logout" data-url="/logout" class="js-PostLink">Not you?</a>
+                Logged in as ${_themeContext.authenticationVariables.member.fullName}. <a href="/logout" data-url="/logout" data-method="post" class="js-EnhancedLink">Not you?</a>
             </div>
         </div>
     </xcolab:layout>

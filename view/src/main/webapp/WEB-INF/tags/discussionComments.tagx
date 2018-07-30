@@ -159,7 +159,8 @@
 
                                             <spring:message code="discussion.commmentstag.candeletemsg" var="canDeleteMsg"/>
                                             <spring:message code="discussion.commmentstag.confirmdelete" var="confirmDelete"/>
-											<button type="button" class="btn btn-link js-Tooltip js-PostLink ml-2" data-url="${deleteMessageURL }"
+											<button type="button" class="btn btn-link js-Tooltip js-EnhancedLink ml-2"
+                                                    data-method="post" data-url="${deleteMessageURL }"
                                                     data-confirm="${confirmDelete}" title="${canDeleteMsg}">
 												<spring:message code="discussion.commmentstag.delete.button"/>
 											</button>

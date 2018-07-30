@@ -47,14 +47,16 @@
 
         <c:if test="${proposalsPermissions.canFellowActions and contestPhase.fellowScreeningActive}">
             <c:set value="${contest.contestUrl}/assignAllJudges" var="assignAllJudgesLink"/>
-            <button type="button" class="btn cb-btn-admin js-PostLink" data-url="${assignAllJudgesLink}">
+            <button type="button" class="btn cb-btn-admin js-EnhancedLink" data-method="post"
+                    data-url="${assignAllJudgesLink}">
                 Assign all Judges
             </button>
         </c:if>
 
         <c:if test="${proposalsPermissions.canFellowActions and contestPhase.isJudged}">
             <c:set value="${contest.contestUrl}/removeUnfinishedJudges" var="removeUnfinishedJudgesLink"/>
-            <button type="button" class="btn cb-btn-admin js-PostLink" data-url="${removeUnfinishedJudgesLink}">
+            <button type="button" class="btn cb-btn-admin js-EnhancedLink" data-method="post"
+                    data-url="${removeUnfinishedJudgesLink}">
                 Remove unfinished Judges
             </button>
         </c:if>

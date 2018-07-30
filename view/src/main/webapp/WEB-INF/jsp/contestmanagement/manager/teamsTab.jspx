@@ -16,8 +16,9 @@
     <div class="c-ContentBox">
         <div class="text-right cb-btn-spacer">
             <button type="button" class="btn btn-primary"  onclick="saveTeam()">SAVE team</button>
-            <button type="button" class="btn btn-primary js-PostLink" data-url="TEAMS">CREATE new team</button>
-            <button type="button" class="btn btn-outline-danger js-PostLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</button>
+            <button type="button" class="btn btn-primary js-EnhancedLink" data-method="post"
+                    data-url="TEAMS">CREATE new team</button>
+            <button type="button" class="btn btn-outline-danger js-EnhancedLink" data-url="TEAMS/${teamId}/delete" data-confirm="Delete this team?">DELETE team</button>
         </div>
     </div>
 
@@ -70,7 +71,8 @@
                                         <xcolab:userLinkSimple memberId="${member.userId }" text="${member.displayName }" />
                                     </td>
                                     <td style="vertical-align: middle">
-                                        <button type="button" class="btn btn-link js-PostLink" data-url="TEAMS/${teamId}/removeMember/${member.id_}">Remove</button>
+                                        <button type="button" class="btn btn-link js-EnhancedLink" data-method="post"
+                                                data-url="TEAMS/${teamId}/removeMember/${member.id_}">Remove</button>
                                     </td>
                                 </tr>
                             </c:forEach>
