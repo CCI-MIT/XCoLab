@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.util.activities.enums.ActivityType;
-import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
@@ -21,14 +20,17 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.notifications.proposal.ProposalVoteNotification;
+import org.xcolab.util.activities.enums.ActivityType;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator.ValidationResult;
+import org.xcolab.view.pages.proposals.view.proposal.tabs.ProposalDescriptionTabController;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsUtils;
 
@@ -46,7 +48,15 @@ public class VoteOnProposalActionController {
     private static final String VOTE_ANALYTICS_ACTION = "Vote contest entry";
     private static final String VOTE_ANALYTICS_LABEL = "";
 
-    @PostMapping("voteOnProposalAction")
+    private final ProposalDescriptionTabController proposalDescriptionTabController;
+
+    @Autowired
+    public VoteOnProposalActionController(
+            ProposalDescriptionTabController proposalDescriptionTabController) {
+        this.proposalDescriptionTabController = proposalDescriptionTabController;
+    }
+
+    @PostMapping("vote")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member member,
             @RequestParam(defaultValue = "1") int voteValue)
@@ -164,6 +174,28 @@ public class VoteOnProposalActionController {
             return "redirect:" + proposalLinkUrl + "/voted";
         }
         return "redirect:" + proposalLinkUrl;
+    }
+
+    @GetMapping("vote")
+    public String handleInvalidGetRequestToVotePage(HttpServletRequest request,
+            HttpServletResponse response, Model model, ProposalContext proposalContext,
+            Member member) {
+
+        AlertMessage.warning(
+                "Your vote hasn't been recorded, please make sure to click the button only once.")
+                .flash(request);
+        final Contest contest = proposalContext.getContest();
+        final Proposal proposal = proposalContext.getProposal();
+        return "redirect:" + proposal.getProposalLinkUrl(contest);
+    }
+
+    @GetMapping("voted")
+    public String showVoteSuccess(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member currentMember,
+            @PathVariable Long contestYear,
+            @PathVariable String contestUrlName, @PathVariable Long proposalId) {
+        return proposalDescriptionTabController.showProposalDetails(request, model,
+                proposalContext, currentMember, true, false, null, null);
     }
 
     @GetMapping("confirmVote/{userId}/{confirmationToken}")

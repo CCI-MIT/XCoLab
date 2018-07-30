@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
 import org.xcolab.model.tables.pojos.ProposalRating;
@@ -22,8 +23,7 @@ import org.xcolab.model.tables.pojos.ProposalVersion;
 import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
-import org.xcolab.service.proposal.domain.proposalcontestphaseattribute
-        .ProposalContestPhaseAttributeDao;
+import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
 import org.xcolab.service.proposal.domain.proposalrating.ProposalRatingDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 import org.xcolab.service.proposal.domain.proposalvote.ProposalVoteDao;
@@ -33,6 +33,7 @@ import org.xcolab.service.proposal.service.proposal2phase.Proposal2PhaseService;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -369,17 +370,19 @@ public class ProposalsController {
                 .findIdsByGiven(paginationHelper, contestId, visible, contestPhaseId, ribbon);
     }
 
-    @RequestMapping(value = "proposalThreadIds", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<Long> listThreadIds(@RequestParam(required = false) Integer startRecord,
-            @RequestParam(required = false) Integer limitRecord,
+    @ListMapping("proposalThreadIds")
+    public List<Long> listThreadIds(@RequestParam(required = false) List<Long> proposalIds,
             @RequestParam(required = false) Long contestId,
-            @RequestParam(required = false) Boolean visible,
             @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Integer ribbon,
-            @RequestParam(required = false) String sort) {
-        PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
+            @RequestParam(required = false) Boolean includeResultsDiscussion) {
 
-        return proposalDao
-                .findThreadIdsByGiven(paginationHelper, contestId, visible, contestPhaseId, ribbon);
+        final List<Long> threadIds = new ArrayList<>(proposalDao
+                .findDiscussionThreadIdsByGiven(proposalIds, contestId, contestPhaseId, ribbon));
+        if (includeResultsDiscussion) {
+            threadIds.addAll(proposalDao.findResultsDiscussionThreadIds(proposalIds, contestId,
+                            contestPhaseId, ribbon));
+        }
+        return threadIds;
     }
 }

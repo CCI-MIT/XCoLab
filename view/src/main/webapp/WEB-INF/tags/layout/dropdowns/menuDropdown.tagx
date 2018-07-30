@@ -27,7 +27,7 @@
             </a>
         </li>
         <li class="dropdown-item">
-            <a data-url="/logout" class="js-PostLink">
+            <a href="/logout" data-method="post" class="js-EnhancedLink">
                 <spring:message code="homepage.menu.user.logout" />
             </a>
         </li>

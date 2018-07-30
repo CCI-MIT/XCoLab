@@ -91,7 +91,8 @@
                             <c:if test="${member.memberType != 'OWNER'}">
                                 <c:set var="removeMemberFromTeam" value="${proposal.proposalUrl}/tab/TEAM/removeMemberFromTeam?memberId=${member.userId}" />
 
-                                <button type="button" class="btn btn-link js-PostLink" data-url="${removeMemberFromTeam}">
+                                <button type="button" class="btn btn-link js-EnhancedLink" data-method="post"
+                                        data-url="${removeMemberFromTeam}">
                                     <spring:message code="contests.proposal.team.remove" />
                                 </button>
                             </c:if>
@@ -101,7 +102,8 @@
                                 <c:if test="${member.memberType != 'OWNER'}">
                                     <c:set var="promoteMemberToOwner" value="${proposal.proposalUrl}/tab/TEAM/promoteMemberToOwner?memberId=${member.userId}" />
 
-                                    <button type="button" class="btn btn-link js-PostLink" data-url="${promoteMemberToOwner }" data-confirm="${confirmPromoteText}">
+                                    <button type="button" class="btn btn-link js-EnhancedLink" data-method="post"
+                                            data-url="${promoteMemberToOwner }" data-confirm="${confirmPromoteText}">
                                         <spring:message code="contests.proposal.team.promote" />
                                     </button>
                                 </c:if>
@@ -127,7 +129,8 @@
                     <collab:image src="/images/icon-proposal-thumb.png" width="20" height="22"
                                   cssClass="mr-2" alt="support ${contestType.proposalName}" />
 
-                    <button type="button" class="btn btn-primary js-PostLink" data-require-login="true" rel="nofollow"
+                    <button type="button" class="btn btn-primary js-EnhancedLink" data-method="post"
+                            data-require-login="true" rel="nofollow"
                             data-url="${supportProposalActionURL}">
                         <c:choose>
                             <c:when test="${proposalsDisplayPermissions.canSeeSupportButton}">

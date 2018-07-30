@@ -125,6 +125,6 @@ public class MembershipInvitationResponseController {
     }
 
     private void sendMessage(long sender, List<Long> recipients, String subject, String content) {
-        MessagingClient.sendMessage(subject, content, sender, sender, recipients);
+        MessagingClient.sendMessage(subject, content, sender, null, recipients);
     }
 }

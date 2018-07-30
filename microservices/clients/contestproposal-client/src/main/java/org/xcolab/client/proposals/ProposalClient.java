@@ -159,12 +159,11 @@ public final class ProposalClient {
                 .execute();
     }
 
-    public List<Long> listThreadIds(int start, int limit, Long contestId,
-            Boolean visible, Long contestPhaseId, Integer ribbon) {
+    public List<Long> listThreadIds(List<Long> proposalIds, Long contestId, Long contestPhaseId,
+            Integer ribbon) {
         return proposalThreadIdResource.list()
-                .addRange(start, limit)
+                .optionalQueryParam("proposalIds", proposalIds)
                 .optionalQueryParam("contestId", contestId)
-                .optionalQueryParam("visible", visible)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("ribbon", ribbon)
                 .execute();

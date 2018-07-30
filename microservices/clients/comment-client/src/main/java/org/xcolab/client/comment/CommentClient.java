@@ -1,5 +1,7 @@
 package org.xcolab.client.comment;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentDto;
@@ -7,6 +9,8 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.dto.DtoUtil;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,21 +40,18 @@ public class CommentClient {
         if (threadId == null) {
             return 0;
         }
-        return commentServiceWrapper.countComments(null, threadId, null);
+        return commentServiceWrapper.countComments(null, Collections.singleton(threadId));
+    }
+
+    public int countComments(Collection<Long> threadIds) {
+        if (CollectionUtils.isEmpty(threadIds)) {
+            return 0;
+        }
+        return commentServiceWrapper.countComments(null, threadIds);
     }
 
     public int countCommentsByAuthor(long authorId) {
-        return commentServiceWrapper.countComments(authorId, null, null);
-    }
-
-    public int countCommentsInContestPhase(long contestPhaseId, long contestId) {
-        return commentServiceWrapper.countCommentsInContestPhase(contestPhaseId, contestId,
-                CacheName.MISC_SHORT);
-    }
-
-    public int countCommentsInProposals(List<Long> threadIds) {
-        return commentServiceWrapper.countCommentsInProposals(threadIds,
-                CacheName.MISC_LONG);
+        return commentServiceWrapper.countComments(authorId, null);
     }
 
     public Comment getComment(long commentId) throws CommentNotFoundException {

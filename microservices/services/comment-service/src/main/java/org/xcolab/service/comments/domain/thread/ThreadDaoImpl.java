@@ -11,20 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.CommentTable;
 import org.xcolab.model.tables.pojos.Comment;
 import org.xcolab.model.tables.pojos.Thread;
 import org.xcolab.model.tables.records.ThreadRecord;
 import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.SortColumn;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.xcolab.model.Tables.CATEGORY;
 import static org.xcolab.model.Tables.COMMENT;
-import static org.xcolab.model.Tables.PROPOSAL;
 import static org.xcolab.model.Tables.THREAD;
 
 @Repository
@@ -194,27 +193,4 @@ public class ThreadDaoImpl implements ThreadDao {
                 .execute() > 0;
         return result;
     }
-
-    @Override
-    public boolean deleteThreads(List<Long> threadIDs) {
-        boolean result = dslContext.deleteFrom(COMMENT)
-                .where(COMMENT.THREAD_ID.in(threadIDs))
-                .execute() > 0;
-        result = result || dslContext.deleteFrom(THREAD)
-                .where(THREAD.THREAD_ID.in(threadIDs))
-                .execute() > 0;
-        return result;
-    }
-
-    @Override
-    public List<Long> getProposalThreads(List<Long> proposalPKs) {
-        return dslContext.select(THREAD.THREAD_ID)
-                .from(THREAD)
-                .join(PROPOSAL)
-                .on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                .or(PROPOSAL.RESULTS_DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                .where(PROPOSAL.PROPOSAL_ID.in(proposalPKs))
-                .fetchInto(Long.class);
-    }
-
 }

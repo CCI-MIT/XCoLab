@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
 
     private static final String LOGIN_VIEW_NAME = "loginregister/login";
+    private static final String LOGOUT_VIEW_NAME = "loginregister/logout";
     private static final String LOGIN_TOKEN_VIEW_NAME = "loginregister/loginWithToken";
 
     private final AuthenticationService authenticationService;
@@ -53,6 +54,11 @@ public class LoginController {
         model.addAttribute("hideRegisterPrompt", isOauthLogin);
         model.addAttribute("hideClimateXLogin", hideClimateXLogin);
         return LOGIN_VIEW_NAME;
+    }
+
+    @GetMapping("/logout")
+    public String showLogoutPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+        return LOGOUT_VIEW_NAME;
     }
 
     private boolean getBooleanParameter(DefaultSavedRequest defaultSavedRequest, String paramName) {

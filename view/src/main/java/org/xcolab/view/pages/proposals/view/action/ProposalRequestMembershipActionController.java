@@ -194,8 +194,7 @@ public class ProposalRequestMembershipActionController {
     private void sendMessage(long sender, long recipient, String subject, String content) {
         List<Long> recipients = new ArrayList<>();
         recipients.add(recipient);
-
-        MessagingClient.sendMessage(subject, content, sender, sender, recipients);
+        MessagingClient.sendMessage(subject, content, sender, null, recipients);
     }
 
 }

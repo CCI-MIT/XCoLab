@@ -66,18 +66,23 @@ public class MessagingController {
             @RequestParam(required = false) Boolean isOpened,
             @RequestParam(required = false) Timestamp sinceDate,
             @RequestParam(required = false) String sort,
-            @RequestParam(required = false, defaultValue = "true") boolean includeCount) {
+            @RequestParam(required = false, defaultValue = "true") boolean includeCount,
+            @RequestParam(required = false) Long messageId,
+            @RequestParam(required = false) String threadId) throws NotFoundException {
+        if (messageId!=null && threadId!=null) {
+            return messageDao.getFullConversation(messageId, threadId);
+        } else {
+            final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
+                    sort);
 
-        final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
-                sort);
-
-        if (includeCount) {
-            response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                    Integer.toString(messageDao
-                            .countByGiven(senderId, recipientId, isArchived, isOpened, sinceDate)));
+            if (includeCount) {
+                response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
+                        Integer.toString(messageDao
+                                .countByGiven(senderId, recipientId, isArchived, isOpened, sinceDate)));
+            }
+            return messageDao.findByGiven(paginationHelper, senderId, recipientId, isArchived, isOpened,
+                    sinceDate);
         }
-        return messageDao.findByGiven(paginationHelper, senderId, recipientId, isArchived, isOpened,
-                sinceDate);
     }
 
     @RequestMapping(value = "/messages/{messageId}", method = RequestMethod.GET)
@@ -90,12 +95,18 @@ public class MessagingController {
         return messageDao.getRecipients(messageId);
     }
 
+    @RequestMapping(value = "/messages/{messageId}/threads", method = RequestMethod.GET)
+    public List<String> getMessageThreads(@PathVariable long messageId) {
+        return messageDao.getThreads(messageId);
+    }
+
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
     public Message createMessage(@RequestBody SendMessageBean sendMessageBean,
-            @RequestParam(required = false, defaultValue = "true") boolean checkLimit)
+            @RequestParam(required = false, defaultValue = "true") boolean checkLimit,
+            @RequestParam(required = false) String threadId)
             throws MessageLimitExceededException {
         return messagingService
-                .sendMessage(sendMessageBean, sendMessageBean.getRecipientIds(), checkLimit);
+                .sendMessage(sendMessageBean, sendMessageBean.getRecipientIds(), checkLimit, threadId);
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients/{memberId}", method = RequestMethod.PUT)

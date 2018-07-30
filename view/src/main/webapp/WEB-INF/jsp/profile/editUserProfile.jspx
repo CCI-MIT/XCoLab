@@ -41,8 +41,10 @@
 	<c:set var="updateUserProfileForm" value="/members/profile/${userBean.userId}/edit" />
 
     <c:set var="deleteProfileUrl" value="/members/profile/${userBean.userId}/delete" />
+    <c:set var="deleteAndAnonymizeProfileUrl" value="/members/profile/${userBean.userId}/delete?anonymize=true" />
 
-	<h1><spring:message code="profile.title.edit" /></h1>
+
+    <h1><spring:message code="profile.title.edit" /></h1>
 	<div class="text-muted">
 		<em>
             <span class="required-field"><!-- --></span> <spring:message code="profile.validation.mandatory" />.
@@ -203,7 +205,8 @@
             </c:choose>
 
             <c:if test="${permissions.canAdmin}">
-                <button type="button" class="btn btn-link js-PostLink" data-url="/impersonate?memberId=${currentUserProfile.userId}">
+                <button type="button" class="btn btn-link js-EnhancedLink" data-method="post"
+                        data-url="/impersonate?memberId=${currentUserProfile.userId}">
                     Impersonate ${userBean.firstName}
                 </button>
             </c:if>
@@ -341,7 +344,8 @@
                     <tr class="colabRow">
                         <td class="actionColumn">
                             <spring:message code="profile.account.delete.question" arguments="${_themeContext.colabName}" var="deleteMsg"/>
-                            <button type="button" class="btn btn-gray btn-sm js-PostLink" data-url="${deleteProfileUrl}" data-confirm="${deleteMsg}">
+                            <button type="button" class="btn btn-gray btn-sm js-EnhancedLink" data-method="post"
+                                    data-url="${deleteProfileUrl}" data-confirm="${deleteMsg}">
                                 <spring:message code="profile.account.delete.button"/>
                             </button>
                         </td>
@@ -349,6 +353,21 @@
                             <spring:message code="profile.account.delete.message" arguments="${_themeContext.colabName}"/>
                         </td>
                     </tr>
+                    <c:if test="${permissions.canAdmin}">
+                        <tr class="colabRow">
+                            <td class="actionColumn">
+                                <spring:message code="profile.account.anonymize.question" var="anonymizeMsg"/>
+                                <button type="button" class="btn btn-gray btn-sm js-EnhancedLink" data-method="post"
+                                        data-url="${deleteAndAnonymizeProfileUrl}" data-confirm="${anonymizeMsg}">
+                                    <spring:message code="profile.account.anonymize.button"/>
+                                </button>
+                            </td>
+                            <td>
+                                <spring:message code="profile.account.anonymize.message" />
+                            </td>
+                        </tr>
+                    </c:if>
+
                 </table>
             </div>
 

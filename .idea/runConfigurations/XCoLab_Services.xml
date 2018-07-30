@@ -12,6 +12,6 @@
     <toRun type="SpringBootApplicationConfigurationType" name="SearchServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="SharedColabServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="TrackingServiceApplication" />
-    <method />
+    <method v="2" />
   </configuration>
 </component>

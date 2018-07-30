@@ -472,10 +472,11 @@ public class Contest extends AbstractContest implements Serializable {
         }
     }
     public long getTotalCommentsCount() {
-        Integer contestComments = commentClient.countComments(this.getDiscussionGroupId());
+        int contestComments = commentClient.countComments(this.getDiscussionGroupId());
         ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
-        contestComments += commentClient.countCommentsInContestPhase(
-                phase.getContestPhasePK(), phase.getContestPK());
+        final List<Long> proposalDiscussionThreads =
+                contestClient.getProposalDiscussionThreads(phase.getContestPhasePK());
+        contestComments += commentClient.countComments(proposalDiscussionThreads);
 
         return contestComments;
     }

@@ -15,3 +15,9 @@ logging:
     org.springframework.web: WARN
     org.springframework.boot.web: WARN
     org.springframework.boot.actuate: WARN
+
+
+flyway:
+  table: flyway_activity_schema_version
+  baselineOnMigrate: true
+  baselineVersion: 0

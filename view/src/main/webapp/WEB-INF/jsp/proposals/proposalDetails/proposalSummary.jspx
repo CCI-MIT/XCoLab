@@ -26,7 +26,7 @@
                             </span>
                         </div>
                         <c:if test="${proposalsPermissions.votingEnabled}">
-                            <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction" />
+                            <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/vote" />
 
                             <form:form action="${voteOnProposalURL}" method="post">
                                 <c:if test="${proposalsDisplayPermissions.canSeeVoteButton and contest.maxVotesPerProposal > 1}">
@@ -71,8 +71,9 @@
                         </div>
                     </div>
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
-                        <button type="button" class="btn btn-primary btn-sm js-PostLink float-right"
-                                data-require-login="true" data-url="${supportProposalActionURL}">
+                        <button type="button" class="btn btn-primary btn-sm js-EnhancedLink float-right"
+                                data-require-login="true" data-method="post"
+                                data-url="${supportProposalActionURL}">
                             <collab:message var="supportText" code="contests.supports.support" contestType="${contestType}" />
                             <spring:message var="retractText" code="contests.supports.retract" />
                             ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : retractText }

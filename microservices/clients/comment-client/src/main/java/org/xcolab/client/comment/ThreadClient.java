@@ -49,10 +49,6 @@ public class ThreadClient {
         commentServiceWrapper.deleteThread(threadId);
     }
 
-    public void deleteProposalThreads(List<Long> proposalPKs) {
-        commentServiceWrapper.deleteProposalThreads(proposalPKs);
-    }
-
     public Date getLastActivityDate(long threadId) {
         return commentServiceWrapper.getLastActivityDate(threadId, CacheName.MISC_REQUEST);
     }

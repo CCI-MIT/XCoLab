@@ -1,7 +1,6 @@
 package org.xcolab.entity.utils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -46,13 +45,14 @@ public final class LinkUtils {
             return null;
         }
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
-        final UriComponents uriComponents = uriBuilder.build();
-        StringBuilder relativeUri = new StringBuilder();
-        relativeUri.append(uriComponents.getPath() != null ? uriComponents.getPath() : "/");
-        if (uriComponents.getQuery() != null) {
-            relativeUri.append("?").append(uriComponents.getQuery());
-        }
-        return relativeUri.toString();
+
+        // Clear scheme, host, and port
+        uriBuilder.scheme(null);
+        uriBuilder.host(null);
+        uriBuilder.port(-1);
+
+        final String newUri = uriBuilder.toUriString();
+        return StringUtils.isEmpty(newUri) ? "/" : newUri;
     }
 
     public static String getLocalUrl(String url) {
@@ -67,6 +67,26 @@ public final class LinkUtils {
     }
 
     public static boolean isLocalUrl(String url) {
-        return url.startsWith(COLAB_URL);
+        return isRelativeUrl(url) || url.startsWith(PlatformAttributeKey.COLAB_URL.get());
+    }
+
+    public static boolean isRelativeUrl(String url) {
+        return url.startsWith("/");
+    }
+
+    public static boolean isLoginPageLink(String url) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
+        return uriBuilder.build().getPath().startsWith("/login");
+    }
+
+    public static String getSafeRedirectUri(String uri) {
+        return getSafeRedirectUri(uri, "/");
+    }
+
+    public static String getSafeRedirectUri(String uri, String defaultUri) {
+        if (uri == null || isLoginPageLink(uri)) {
+            return defaultUri;
+        }
+        return getLocalUrl(uri, defaultUri);
     }
 }

@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.loginregister;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -9,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
@@ -16,6 +16,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
 
 import java.io.IOException;
@@ -44,16 +45,13 @@ public class ForgotPasswordController {
     public void sendPassword(HttpServletRequest request, HttpServletResponse response,
             @RequestParam String screenNameOrEmail) throws IOException {
 
-        String redirect = request.getParameter("redirect");
         String referer = request.getHeader(HttpHeaders.REFERER);
-        redirect = !StringUtils.isBlank(redirect) ? redirect : referer;
 
-        redirect = !StringUtils.isBlank(redirect) ? redirect : PlatformAttributeKey.COLAB_URL.get();
-
-        redirect = removeParamFromRequestStr(redirect, "signinRegError");
-        redirect = removeParamFromRequestStr(redirect, "isPasswordReminder");
-        redirect = removeParamFromRequestStr(redirect, "isSigningIn");
-        redirect = removeParamFromRequestStr(redirect, "isRegistering");
+        final UriComponentsBuilder redirectBuilder =
+                UriComponentsBuilder.fromUriString(LinkUtils.getSafeRedirectUri(referer))
+                        .replaceQueryParam("signinRegError")
+                        .replaceQueryParam("isPasswordReminder")
+                        .replaceQueryParam("isSigningIn");
 
         try {
             Member member;
@@ -72,19 +70,23 @@ public class ForgotPasswordController {
             AlertMessage.success("A password retrieval message has been sent. Please check your email")
                     .flash(request);
         } catch (MemberNotFoundException e) {
-
-            //TODO: better way of passing this on
-            redirect += "isPasswordReminder=true";
-
+            redirectBuilder.queryParam("isPasswordReminder", true);
             AlertMessage.danger("Could not send password retrieval message, please check your screen name or email")
                     .flash(request);
         }
 
-        response.sendRedirect(redirect);
+        response.sendRedirect(redirectBuilder.toUriString());
     }
 
-    public static String removeParamFromRequestStr(String requestStr, String param) {
-        return requestStr == null ? null : requestStr.replaceAll("&?" + param + "=[^&#]*", "");
+    @GetMapping("/login/resetPassword")
+    public String handleInvalidHttpMethod(HttpServletRequest request) {
+        AlertMessage.warning("Warning: page reloaded before password reset was finished.")
+                .flash(request);
+        String referrer = request.getHeader(HttpHeaders.REFERER);
+        String redirect = LinkUtils.getSafeRedirectUri(referrer);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(redirect);
+        uriBuilder.queryParam("isPasswordReminder", true);
+        return "redirect:" + uriBuilder.build().toUriString();
     }
 
     private static void sendEmailNotificationToForPasswordReset(String memberIp, String link,
@@ -95,8 +97,15 @@ public class ForgotPasswordController {
 
     @GetMapping("/login/resetPassword/update")
     public String openResetPassword(HttpServletRequest request, HttpServletResponse response,
-            ForgotPasswordBean forgotPasswordBean, Model model, @RequestParam String resetToken,
+            ForgotPasswordBean forgotPasswordBean, Model model,
+            @RequestParam (required = false) String resetToken,
             @RequestParam(required = false) String screenName) {
+
+        if (resetToken == null) {
+            AlertMessage.danger("Your reset link is incomplete. Please go back to the email and "
+                    + "make sure you used the full link.").flash(request);
+            return "redirect:/";
+        }
 
         if (!MembersClient.isForgotPasswordTokenValid(resetToken)) {
             AlertMessage.danger(INVALID_TOKEN_ERROR_MESSAGE)

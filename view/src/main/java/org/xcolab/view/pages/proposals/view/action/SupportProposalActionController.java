@@ -3,12 +3,16 @@ package org.xcolab.view.pages.proposals.view.action;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -68,4 +72,16 @@ public class SupportProposalActionController {
         return "redirect:" + proposalLinkUrl;
     }
 
+    @GetMapping("supportProposalAction")
+    public String handleInvalidGetRequest(HttpServletRequest request,
+            HttpServletResponse response, Model model, ProposalContext proposalContext,
+            Member member) {
+
+        AlertMessage.warning(
+                "Your support hasn't been recorded, please make sure to click the button only once.")
+                .flash(request);
+        final Contest contest = proposalContext.getContest();
+        final Proposal proposal = proposalContext.getProposal();
+        return "redirect:" + proposal.getProposalLinkUrl(contest);
+    }
 }

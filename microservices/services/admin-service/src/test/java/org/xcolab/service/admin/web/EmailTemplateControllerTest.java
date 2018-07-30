@@ -15,7 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -45,16 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(AdminController.class)
 @ComponentScan("org.xcolab.service.admin")
 @ComponentScan("com.netflix.discovery")
-
-
-
-@TestPropertySource(
-    properties = {
-        "cache.enabled=false",
-        "eureka.client.enabled=false"
-    }
-)
-
+@ActiveProfiles("test")
 @WebAppConfiguration
 public class EmailTemplateControllerTest {
 

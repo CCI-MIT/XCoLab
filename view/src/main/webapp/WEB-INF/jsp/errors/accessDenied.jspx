@@ -5,6 +5,8 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 
+    <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
+
     <h2>
         ${_themeContext.authenticationVariables.isLoggedIn ? 'Access denied' : 'Login required'}
     </h2>

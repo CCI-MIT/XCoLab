@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -41,12 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ContestPhaseController.class)
 @ComponentScan("org.xcolab.service.contest")
-
 @ComponentScan("com.netflix.discovery")
-
-
-@TestPropertySource(
-        properties = {"cache.enabled=false", "eureka.client.enabled=false"})
 @PrepareForTest({org.xcolab.client.contest.pojo.Contest.class,
         org.xcolab.client.contest.ContestClient.class,
         org.xcolab.client.contest.ContestTeamMemberClient.class,
@@ -54,7 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.comment.CommentClient.class, org.xcolab.client.comment.ThreadClient.class
 
 })
-
+@ActiveProfiles("test")
 public class ContestPhaseControllerTest {
 
     private MockMvc mockMvc;

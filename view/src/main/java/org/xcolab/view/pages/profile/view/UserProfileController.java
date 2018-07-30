@@ -424,9 +424,16 @@ public class UserProfileController {
 
     @PostMapping("{memberId}/delete")
     public void deleteUserProfile(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long memberId, Member loggedInMember)
-            throws IOException {
+            Model model, @PathVariable long memberId, Member loggedInMember,
+            @RequestParam(required=false, defaultValue = "false") boolean anonymize)
+            throws IOException, MemberNotFoundException {
         UserProfilePermissions permission = new UserProfilePermissions(loggedInMember);
+
+        if (anonymize && permission.getCanAdmin()) {
+            Member memberToAnonymize = new Member(MembersClient.getMember(memberId));
+            memberToAnonymize.anonymize();
+            MembersClient.updateMember(memberToAnonymize);
+        }
 
         if (permission.getCanEditMemberProfile(memberId)) {
             MembersClient.deleteMember(memberId);

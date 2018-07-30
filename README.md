@@ -18,15 +18,20 @@ The xCoLab is a generic version of the [Climate CoLab](https://climatecolab.org)
 You can set up a copy of the xCoLab like this:
 
 ```bash
-# Create and initialize database
+# Create database
 mysql -u root -p -e 'CREATE DATABASE xcolab CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
-cat sql/starter/xcolab-schema.sql | mysql -u root -p xcolab
-cat sql/starter/xcolab-data.sql | mysql -u root -p xcolab
+
+# Create the file conf/application.properties with your database credentials
+# (use conf/sample-application.properties file as a guide)
 
 # Check prerequesites and set up configuration file
 ./INSTALL.sh
 
-# Update the ~/.xcolab.application.properties file with your database credentials
+# Compile the sources, defining database schema
+./mvnw compile
+
+# Populate database
+cat sql/starter/xcolab-data.sql | mysql -u root -p xcolab
 
 # Run the xCoLab:
 ./RUN.sh
