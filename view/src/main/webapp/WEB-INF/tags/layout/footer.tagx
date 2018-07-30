@@ -29,7 +29,7 @@
                         <c:choose>
                             <c:when test="${showProfileLink}">
                                 <li class="nav-item">
-                                    <a data-url="/logout" class="nav-link js-PostLink">
+                                    <a href="/logout" data-method="post" class="nav-link js-EnhancedLink">
                                         <spring:message code="homepage.bottom.menu.signout" />
                                     </a>
                                 </li>

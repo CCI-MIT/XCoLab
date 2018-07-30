@@ -14,7 +14,8 @@
 
 	<div class="c-ContentBox clearfix">
         <div class="float-right">
-            <button type="button" class="btn btn-primary js-PostLink" data-url="/admin/contest/manager/createContest">Create new Contest</button>
+            <button type="button" class="btn btn-primary js-EnhancedLink" data-method="post"
+                    data-url="/admin/contest/manager/createContest">Create new Contest</button>
             <a class="btn btn-primary ml-2" href="/admin/contest/manager/batchCreateContest">Batch Contest creation</a>
         </div>
     </div>

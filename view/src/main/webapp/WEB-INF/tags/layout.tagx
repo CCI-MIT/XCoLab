@@ -182,7 +182,8 @@
                     Impersonating member ${_themeContext.authenticationVariables.member.screenName} (Logged in as ${_themeContext.authenticationVariables.realMember.screenName})
                 </div>
 
-                <button type="button" class="c-TitleBar__actionButton js-PostLink" data-url="/impersonate/logout">
+                <button type="button" class="c-TitleBar__actionButton js-EnhancedLink"
+                        data-method="post" data-url="/impersonate/logout">
                     Stop impersonating
                 </button>
             </div>
