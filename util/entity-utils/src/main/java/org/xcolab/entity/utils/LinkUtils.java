@@ -84,7 +84,7 @@ public final class LinkUtils {
     }
 
     public static String getSafeRedirectUri(String uri, String defaultUri) {
-        if (isLoginPageLink(uri)) {
+        if (uri == null || isLoginPageLink(uri)) {
             return defaultUri;
         }
         return getLocalUrl(uri, defaultUri);
