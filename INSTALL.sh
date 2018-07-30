@@ -62,6 +62,5 @@ else
 fi
 
 echo "[INFO] Setup complete"
-echo "[INFO] If you haven't, make sure to initialize the database by running the following scripts:"
-echo "       sql/starter/xcolab-schema.sql"
+echo "[INFO] If you haven't, make sure to compile (mvn compile) and then initialize the database by running the following script:"
 echo "       sql/starter/xcolab-data.sql"
