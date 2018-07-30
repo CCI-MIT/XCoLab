@@ -129,7 +129,7 @@ public class MemberService {
                 () -> ReferenceResolutionException.toObject(Member.class, memberId).build());
         String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
         member.setForgotPasswordToken(confirmationToken);
-        LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(10L);
+        LocalDateTime localDateTime = LocalDateTime.now().plusHours(1L);
         member.setForgotPasswordTokenExpireTime(Timestamp.valueOf(localDateTime));
         memberDao.updateMember(member);
         return confirmationToken;
