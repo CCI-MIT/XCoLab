@@ -1,7 +1,6 @@
 package org.xcolab.entity.utils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -46,13 +45,14 @@ public final class LinkUtils {
             return null;
         }
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
-        final UriComponents uriComponents = uriBuilder.build();
-        StringBuilder relativeUri = new StringBuilder();
-        relativeUri.append(uriComponents.getPath() != null ? uriComponents.getPath() : "/");
-        if (uriComponents.getQuery() != null) {
-            relativeUri.append("?").append(uriComponents.getQuery());
-        }
-        return relativeUri.toString();
+
+        // Clear scheme, host, and port
+        uriBuilder.scheme(null);
+        uriBuilder.host(null);
+        uriBuilder.port(-1);
+
+        final String newUri = uriBuilder.toUriString();
+        return StringUtils.isEmpty(newUri) ? "/" : newUri;
     }
 
     public static String getLocalUrl(String url) {
