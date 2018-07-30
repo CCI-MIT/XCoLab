@@ -78,4 +78,15 @@ public final class LinkUtils {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);
         return uriBuilder.build().getPath().startsWith("/login");
     }
+
+    public static String getSafeRedirectUri(String uri) {
+        return getSafeRedirectUri(uri, "/");
+    }
+
+    public static String getSafeRedirectUri(String uri, String defaultUri) {
+        if (isLoginPageLink(uri)) {
+            return defaultUri;
+        }
+        return getLocalUrl(uri, defaultUri);
+    }
 }

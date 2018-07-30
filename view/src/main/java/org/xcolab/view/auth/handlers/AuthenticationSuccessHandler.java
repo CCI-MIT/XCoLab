@@ -81,9 +81,10 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         if (redirectOnSuccess) {
             try {
-                if (StringUtils.isNotBlank(refererHeader) && !LinkUtils.isLoginPageLink(refererHeader)) {
+                if (StringUtils.isNotBlank(refererHeader) && !LinkUtils
+                        .isLoginPageLink(refererHeader)) {
                     //Make URI relative to prevent injection of external redirect URIs
-                    final String redirect = LinkUtils.getLocalUrl(refererHeader);
+                    final String redirect = LinkUtils.getSafeRedirectUri(refererHeader);
                     getRedirectStrategy().sendRedirect(request, response, redirect);
                 } else {
                     super.onAuthenticationSuccess(request, response, authentication);
