@@ -96,7 +96,7 @@ $(function() {
     });
 
     $recipientInput.bind("autocompleteselect", "select", function(event) {
-
+        event.stopPropagation();
     });
 });
 
