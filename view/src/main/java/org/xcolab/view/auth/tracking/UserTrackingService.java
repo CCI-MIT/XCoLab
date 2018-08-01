@@ -3,6 +3,7 @@ package org.xcolab.view.auth.tracking;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
@@ -34,6 +35,8 @@ public class UserTrackingService {
 
     private static final String[] IGNORED_COOKIES = {"_ga", "_gid", "SESSION"};
 
+
+    @Async
     public void trackVisitor(HttpServletRequest request, HttpServletResponse response,
             Member loggedInMember, String url, String referer) {
 
