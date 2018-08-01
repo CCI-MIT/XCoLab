@@ -15,6 +15,7 @@ logging:
     org.springframework.web: WARN
     org.springframework.boot.web: WARN
     org.springframework.boot.actuate: WARN
+    org.xcolab.service.tracking.service.iptranslation: INFO
 
 flyway:
   table: flyway_tracking_schema_version

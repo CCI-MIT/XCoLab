@@ -32,6 +32,8 @@ import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.view.auth.AuthenticationContext;
+import org.xcolab.view.auth.tracking.UserTrackingFilter;
+import org.xcolab.view.auth.tracking.UserTrackingService;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.spring.converters.CaseInsensitiveStringToEnumConverterFactory;
 import org.xcolab.view.config.spring.filters.CdnUrlEncodingFilter;
@@ -146,6 +148,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public FilterRegistrationBean etagFilter() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new ShallowEtagHeaderFilter());
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean trackingFilter(UserTrackingService userTrackingService) {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(new UserTrackingFilter(userTrackingService));
         return registrationBean;
     }
 

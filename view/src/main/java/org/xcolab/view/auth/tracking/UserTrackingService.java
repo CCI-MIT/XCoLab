@@ -1,26 +1,32 @@
-package org.xcolab.view.auth.endpoints;
+package org.xcolab.view.auth.tracking;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.TrackedVisit;
-import org.xcolab.view.config.spring.resolvers.RealMember;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@RestController
-public class UserTrackingController {
+@Service
+public class UserTrackingService {
+
+    private static final String COOKIE_NAME = "userTrackingUuid";
+    private static final long COOKIE_MAX_AGE = Duration.of(365, ChronoUnit.DAYS).getSeconds();
+    //Minimum age at which the cookie should be refreshed
+    private static final long COOKIE_MIN_AGE = Duration.of(180, ChronoUnit.DAYS).getSeconds();
 
     private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT, HttpHeaders.REFERER,
             HttpHeaders.HOST, HttpHeaders.ORIGIN, HttpHeaders.CONNECTION,
@@ -28,11 +34,11 @@ public class UserTrackingController {
 
     private static final String[] IGNORED_COOKIES = {"_ga", "_gid", "SESSION"};
 
-    @PostMapping("/trackVisitor")
-    protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
-            @RealMember Member loggedInMember, @RequestParam String url,
-            @RequestParam(required = false) String uuid,
-            @RequestParam(required = false) String referer) {
+    public void trackVisitor(HttpServletRequest request, HttpServletResponse response,
+            Member loggedInMember, String url, String referer) {
+
+        Cookie userTrackingCookie = WebUtils.getCookie(request, COOKIE_NAME);
+        String uuid = userTrackingCookie != null ? userTrackingCookie.getValue() : null;
 
         String browser = request.getHeader(HttpHeaders.USER_AGENT);
         String ip = getClientIpAddress(request);
@@ -42,7 +48,15 @@ public class UserTrackingController {
         final TrackedVisit trackedVisit =
                 TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, userId);
 
-        return new ResponseJson(trackedVisit.getUuid_());
+        if (userTrackingCookie == null) {
+            userTrackingCookie =  new Cookie("userTrackingUuid", trackedVisit.getUuid_());
+            userTrackingCookie.setHttpOnly(true);
+            userTrackingCookie.setMaxAge((int) COOKIE_MAX_AGE);
+            response.addCookie(userTrackingCookie);
+        } else if (userTrackingCookie.getMaxAge() < COOKIE_MIN_AGE) {
+            userTrackingCookie.setMaxAge((int) COOKIE_MAX_AGE);
+            response.addCookie(userTrackingCookie);
+        }
     }
 
     private String getClientIpAddress(HttpServletRequest request) {
