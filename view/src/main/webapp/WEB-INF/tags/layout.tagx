@@ -325,7 +325,15 @@
 
     <!-- Bootstrap -->
     <collab:script src="/vendor/popper.js/dist/umd/popper.min.js" />
-    <collab:script src="/vendor/bootstrap/dist/js/bootstrap.min.js" />
+    <c:choose>
+        <c:when test="${_themeContext.serverEnvironment.isProductionOrStaging}">
+            <collab:script src="/vendor/bootstrap/dist/js/bootstrap.min.js" />
+        </c:when>
+        <c:otherwise>
+            <collab:script src="/vendor/bootstrap/dist/js/bootstrap.js" />
+        </c:otherwise>
+    </c:choose>
+
 
     <!-- Cookies -->
     <!-- TODO COLAB-2546: not minified-->

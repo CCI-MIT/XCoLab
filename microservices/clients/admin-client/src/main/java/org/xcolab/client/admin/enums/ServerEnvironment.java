@@ -6,4 +6,8 @@ public enum ServerEnvironment {
     public boolean getIsProduction() {
         return PRODUCTION == this;
     }
+
+    public boolean getIsProductionOrStaging() {
+        return getIsProduction() || STAGING == this;
+    }
 }
