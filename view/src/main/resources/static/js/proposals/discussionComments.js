@@ -14,19 +14,6 @@ function setCkEditorTextfieldContent(textfieldId, content) {
     }
 }
 
-function isAddCommentFormValid() {
-    var $thecomment = jQuery(".c-Comment__new");
-    var isValid = getCkEditorTextfieldContent('js-Comment__content') !== '';
-
-    if (isValid) {
-        $thecomment.find('#js-Comment__error').hide();
-    } else {
-        $thecomment.find('#js-Comment__error').show();
-    }
-    return isValid;
-}
-
-
 function getTimeRemaining(endtime) {
     var t = Date.parse(endtime) - Date.parse(new Date());
     var seconds = Math.floor((t / 1000) % 60);
@@ -65,9 +52,6 @@ function initializeClock(id, endtime) {
     updateClock();
     var timeinterval = setInterval(updateClock, 1000);
 }
-
-
-
 
 function editComment(commentCreationTimestamp,messageId, url){
     var comment = jQuery('#' + 'message_' + messageId).html(); //extractText('message_' + messageId);
@@ -111,22 +95,6 @@ function extractText(elementId) {
     } else {
         return text;
     }
-}
-
-jQuery(function() {
-    //submit button functionality for adding new comments
-    $("#addCommentButton").click(handleClickOnDiscussion);
-});
-
-function handleClickOnDiscussion(event) {
-    if (!window.isAddCommentFormValid()) {
-        event.preventDefault();
-        return false;
-    }
-
-    saveCommentInCookie();
-    disableDirtyCheck();
-    $('#addCommentForm').submit();
 }
 
 function saveCommentInCookie() {

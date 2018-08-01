@@ -36,14 +36,11 @@ import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
-        .DiscussionAuthorizationException;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsUtils;
-
-import java.io.IOException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -62,9 +59,18 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
 
     @PostMapping("/discussions/addDiscussionMessage")
-    public void handleAction(HttpServletRequest request, HttpServletResponse response,
+    public String handleAction(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(value = "contestId", required = false) String contestId,
-            NewMessageWrapper newMessage) throws IOException, DiscussionAuthorizationException {
+            NewMessageWrapper newMessage) throws DiscussionAuthorizationException {
+
+        final String referer = request.getHeader(HttpHeaders.REFERER);
+        final String redirectUri = LinkUtils.getSafeRedirectUri(referer);
+
+        if (StringUtils.isBlank(newMessage.getDescription())) {
+            //TODO i18n: use message key discussion.commmentstag.valuerequired
+            AlertMessage.danger("Please enter your comment").flash(request);
+            return "redirect:" + redirectUri + "#addCommentForm";
+        }
 
         long memberId = MemberAuthUtil.getMemberId(request);
 
@@ -163,8 +169,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         } catch (ThreadNotFoundException ignored) {
         }
 
-        String redirectUrl = request.getHeader(HttpHeaders.REFERER);
-        response.sendRedirect(redirectUrl);
+        return "redirect:" + redirectUri;
     }
 
     @GetMapping("/discussions/addDiscussionMessage")

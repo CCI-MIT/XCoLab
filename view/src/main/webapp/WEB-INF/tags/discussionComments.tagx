@@ -194,14 +194,13 @@
 				</div>
 				<div class="col-12 col-md-9">
 					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
-					<form:form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
+					<form:form id="addCommentForm" action="${addCommentURL}" method="post">
                         <input type="hidden" name="threadId" value="${thread.threadId}" />
-						<textarea id="js-Comment__content" name="description"  class="rte-editorPlaceholder c-Comment__box"><!-- --></textarea>
-						<div class="alert alert-danger my-2" id="js-Comment__error" style="display: none;">
-                            <spring:message code="discussion.commmentstag.valuerequired"/>
-                        </div>
-                        <button type="button" class="btn btn-primary mt-2" id="addCommentButton"
-                                onclick="if (!deferUntilLogin(this)) event.preventDefault()">
+						<textarea id="js-Comment__content" name="description" required="required"
+                                  class="rte-editorPlaceholder c-Comment__box"><!-- --></textarea>
+                        <button type="submit" class="btn btn-primary mt-2 js-EnhancedLink"
+                                data-require-login="true" id="addCommentButton"
+                                onclick="saveCommentInCookie(); disableDirtyCheck();">
                             <spring:message code="discussion.commmentstag.addcomment.button"/>
                         </button>
 					</form:form>
