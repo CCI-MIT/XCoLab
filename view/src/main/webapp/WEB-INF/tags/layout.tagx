@@ -410,9 +410,6 @@
 
     <!-- ============ Analytics and tracking ============ -->
 
-    <!-- Custom user tracking -->
-    <collab:script src="/js/usertracking.js" defer="true"/>
-
     <!-- Show update notification to outdated browsers -->
     <xcolab-scripts:browserUpdate />
 
