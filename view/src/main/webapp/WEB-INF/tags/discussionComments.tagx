@@ -51,7 +51,7 @@
 
             <c:if test="${discussionPermissions.canSeeAddCommentButton}">
                 <div class="col-12 col-md">
-                    <a href="#addCommentForm" onclick='if(!deferUntilLogin()) return false' class="btn btn-link">
+                    <a href="#addCommentForm" class="btn btn-link js-EnhancedLink" data-require-login="true">
                         <collab:image src="/images/icon-add-comment.png" width="24" height="22"
                                       cssClass="cb-btn-image" ariaHidden="true"/>
                         <span class="cb-btn-image-text">

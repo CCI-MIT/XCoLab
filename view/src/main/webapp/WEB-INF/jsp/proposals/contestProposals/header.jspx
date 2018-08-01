@@ -29,7 +29,8 @@
             <c:set var="createProposalUrl" value="${contest.newProposalLinkUrl}"/>
             <c:set var="createProposalBtnClass"
                    value="${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}"/>
-            <a class="btn ${createProposalBtnClass} btn-sm" onclick="if(!deferUntilLogin()) return false;" rel="nofollow"
+            <a class="btn ${createProposalBtnClass} btn-sm js-EnhancedLink"
+               data-require-login="true" rel="nofollow"
                href="${proposalsPermissions.canCreate ? createProposalUrl : '#'}">
                 ${contestType.creationPrompt}
             </a>

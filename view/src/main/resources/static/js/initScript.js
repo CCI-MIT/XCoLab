@@ -1,17 +1,5 @@
 // Globally required scripts
 
-function deferUntilLogin(source) {
-    if (_isLoggedIn) {
-        return true;
-    } else {
-        if (source != null) {
-            var $source = $(source);
-            jQuery("#signInForm_form").find("input[name=redirect]").val($source.attr('href'));
-        }
-        $('#loginModal').modal();
-    }
-}
-
 function showForgotPasswordModal() {
     jQuery('#loginModal').modal('hide');
     jQuery('#forgotPasswordModal').modal();

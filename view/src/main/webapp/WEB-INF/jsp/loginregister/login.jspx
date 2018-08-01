@@ -10,7 +10,7 @@
         <c:when test="${not _themeContext.authenticationVariables.isLoggedIn}">
             <h2>Restricted access - login required</h2>
             <p>
-                Use popup to login or click <a rel="nofollow" href="javascript:deferUntilLogin();">here</a>.
+                Use popup to login or click <a href="#" data-require-login="true" class="js-EnhancedLink">here</a>.
             </p>
             <script>
                 jQuery(function() {

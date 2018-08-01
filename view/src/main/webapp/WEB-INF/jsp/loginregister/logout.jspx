@@ -20,7 +20,7 @@
         <c:otherwise>
             <h2>You are already logged out.</h2>
             <p>
-                Click <a rel="nofollow" href="javascript:deferUntilLogin();">here</a> if you want to log in.
+                Click <a href="#" data-require-login="true" class="js-EnhancedLink">here</a> to log in.
             </p>
         </c:otherwise>
     </c:choose>

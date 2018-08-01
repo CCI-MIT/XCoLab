@@ -65,7 +65,7 @@
             <c:set var="createProposalUrl" value="${contest.newProposalLinkUrl}"/>
             <c:set var="createProposalBtnClass"
                    value="${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}"/>
-            <a class="btn ${createProposalBtnClass}" onclick="if(!deferUntilLogin()) return false;"
+            <a class="btn ${createProposalBtnClass} js-EnhancedLink" data-require-login="true"
                href="${proposalsPermissions.canCreate ? createProposalUrl : '#'}">
                 ${contestType.creationPrompt}
             </a>

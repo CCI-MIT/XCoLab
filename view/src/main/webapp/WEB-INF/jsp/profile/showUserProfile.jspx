@@ -205,10 +205,11 @@
                                 <c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
 
                                     <div>
-                                        <a class="btn btn-primary" rel="nofollow"
+                                        <a class="btn btn-primary js-EnhancedLink"
+                                           data-require-login="true"
                                            data-message-recipient="${currentUserProfile.user.id_}"
-                                           data-toggle="modal" href="#sendMessageModal"
-                                           onclick="if (!deferUntilLogin()) event.stopPropagation()">
+                                           data-toggle="modal" href="#sendMessageModal">
+
                                             <spring:message code="profile.show.sendmessage"
                                                         arguments="${userBean.displayNameShort}"/>
                                         </a>

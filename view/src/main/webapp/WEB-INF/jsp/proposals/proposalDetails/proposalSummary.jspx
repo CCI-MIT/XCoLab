@@ -35,8 +35,8 @@
                                            name="voteValue" id="voteValue" value="1"
                                            type="number" min="1" max="${contest.maxVotesPerProposal}"/>
                                 </c:if>
-                                <button class="btn btn-primary" type="submit"
-                                        onclick="if(!deferUntilLogin(this)){return false;}">
+                                <button type="submit" class="btn btn-primary js-EnhancedLink"
+                                        data-require-login="true">
                                     <collab:message var="voteForText" code="contests.voting.vote" contestType="${contestType}"/>
                                     <spring:message var="retractVoteText" code="contests.voting.retract"/>
                                     ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : retractVoteText}

@@ -65,8 +65,8 @@
                     </div>
                     <c:if test="${discussionPermissions.canSeeAddThreadButton}">
                         <div class="col-12 col-md-6 my-2 text-right">
-                            <a class="btn btn-link" href="/discussion/threads/create"
-                               rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
+                            <a class="btn btn-link js-EnhancedLink" data-require-login="true"
+                               href="/discussion/threads/create" rel="nofollow" >
                                 <collab:image height="30" src="/images/icon_new-topic.png" cssClass="cb-btn-image"/>
                                 <span class="cb-btn-image-text">
                                     <spring:message code="discussion.categorypage.newdiscussion"/>
@@ -137,8 +137,8 @@
             <div class="l-Content__sidebar l-Content__sidebar--right l-Content__sidebar--small">
                 <c:set var="subscribeUrl" value="/discussion/subscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                 <c:set var="unsubscribeUrl" value="/discussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
-                <a class="btn btn-link" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
-                   rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
+                <a class="btn btn-link js-EnhancedLink" data-require-login="true"
+                   href="${isSubscribed ? unsubscribeUrl : subscribeUrl}" rel="nofollow">
                     <collab:image src="/images/subscribe_small_2.png" cssClass="cb-btn-image" />
                     <span class="cb-btn-image-text">${isSubscribed ? 'Unsubscribe' : 'Subscribe'}</span>
                 </a>

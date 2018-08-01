@@ -136,7 +136,7 @@
                         <strong>Move ${contestType.proposalName} to different ${contestType.contestName}</strong>
                         <div>
                             <button type="button" class="btn ${proposalsPermissions.isCreationAllowedByPhase ? 'btn-primary' : 'cb-btn-admin'}"
-                                    onclick="if(!deferUntilLogin()){return false;} showCopyProposalPopup('MOVE_PERMANENTLY')">
+                                    onclick="showCopyProposalPopup('MOVE_PERMANENTLY')">
                                 <span>Move</span> this ${contestType.proposalName}
                             </button>
                         </div>
@@ -150,8 +150,7 @@
                         <strong>Reopen ${contestType.proposalName} in different ${contestType.contestName}</strong>
                         <div>
                             <a class="btn btn-primary" href="javascript:;" rel="nofollow"
-                               onclick="if(!deferUntilLogin()){return false;
-        } showCopyProposalPopup('COPY')">
+                               onclick="showCopyProposalPopup('COPY')">
                                 <span>Reopen</span> this ${contestType.proposalName}
                             </a>
                         </div>
@@ -165,8 +164,7 @@
                         <strong>Fork ${contestType.proposalName} in different ${contestType.contestName}</strong>
                         <div>
                             <a class="btn btn-primary" href="javascript:;" rel="nofollow"
-                               onclick="if(!deferUntilLogin()){return false;
-        } showCopyProposalPopup('FORK')">
+                               onclick="showCopyProposalPopup('FORK')">
                                 <span>Fork</span> this ${contestType.proposalName}
                             </a>
                         </div>

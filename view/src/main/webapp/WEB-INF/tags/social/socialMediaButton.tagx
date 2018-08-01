@@ -54,8 +54,8 @@
                 </c:when>
                 <c:when test="${socialEngine.equals('colab')}">
                     <xcolab:requireLibrary name="sendMessage"/>
-                    <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass}" href="#sendMessageModal" data-toggle="modal"
-                       onclick="if (!deferUntilLogin()) event.stopPropagation();"
+                    <a class="c-SocialButton c-SocialButton--hoverTranslate ${sizeClass} js-EnhancedLink"
+                       data-require-login="true" href="#sendMessageModal" data-toggle="modal"
                        data-message-subject="${not empty messageTitle ? messageTitle : title}"
                        data-message-content="${content} ${finalShareUrl}">
                         <collab:image src="${socialEngineLogoUrl}" alt="${socialEngine}" />
