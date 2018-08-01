@@ -28,6 +28,7 @@ import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.TrackingClientMockerHelper;
 
 import java.util.ArrayList;
 
@@ -67,7 +68,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.emails.EmailClient.class,
         org.xcolab.client.members.MessagingClient.class,
-        org.xcolab.client.balloons.BalloonsClient.class
+        org.xcolab.client.balloons.BalloonsClient.class,
+        org.xcolab.client.tracking.TrackingClient.class
 })
 
 public class LoginRegisterControllerTest {
@@ -92,6 +94,7 @@ public class LoginRegisterControllerTest {
         MembersClientMockerHelper.mockMembersClient();
         AdminClientMockerHelper.mockAdminClient();
         EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        TrackingClientMockerHelper.mockTrackingClient();
 
         Mockito.when(ContestTypeClient.getAllContestTypes())
                 .thenReturn(new ArrayList<>());
@@ -104,11 +107,8 @@ public class LoginRegisterControllerTest {
 
     @Test
     public void shouldReturnRegisterForm() throws Exception {
-
-
         this.mockMvc.perform(get("/register")).andExpect(status().isOk())
                 .andExpect(forwardedUrl("/WEB-INF/jsp/loginregister/register.jspx"));
-
     }
 
     @Test

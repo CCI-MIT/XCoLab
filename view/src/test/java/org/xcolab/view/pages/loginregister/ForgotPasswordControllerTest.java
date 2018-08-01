@@ -25,6 +25,7 @@ import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.TrackingClientMockerHelper;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -57,7 +58,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.emails.EmailClient.class,
         AlertMessage.class,
-        org.xcolab.client.members.MessagingClient.class
+        org.xcolab.client.members.MessagingClient.class,
+        org.xcolab.client.tracking.TrackingClient.class
 
 })
 
@@ -81,6 +83,7 @@ public class ForgotPasswordControllerTest {
         MembersClientMockerHelper.mockMembersClient();
         AdminClientMockerHelper.mockAdminClient();
         EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        TrackingClientMockerHelper.mockTrackingClient();
     }
 
     @Test
