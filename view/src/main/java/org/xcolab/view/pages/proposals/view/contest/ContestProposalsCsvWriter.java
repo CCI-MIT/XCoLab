@@ -55,7 +55,7 @@ public class ContestProposalsCsvWriter extends CsvResponseWriter {
         super("contestProposalsList", COLUMN_NAMES, response);
     }
 
-    public void writeMembers(List<Proposal> proposals) {
+    public void writeProposals(List<Proposal> proposals) {
         proposals.stream()
                 .map(COLUMN_EXTRACTION_FUNCTION)
                 .forEach(this::writeRow);

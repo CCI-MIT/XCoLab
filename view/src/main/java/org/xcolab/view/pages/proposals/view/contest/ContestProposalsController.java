@@ -230,7 +230,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         try (ContestProposalsCsvWriter csvWriter = new ContestProposalsCsvWriter(response)) {
             List<Proposal> contestProposalsList = getProposals(proposalContext, loggedInMember);
-            csvWriter.writeMembers(contestProposalsList);
+            csvWriter.writeProposals(contestProposalsList);
         }
     }
 }
