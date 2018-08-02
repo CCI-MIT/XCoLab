@@ -358,22 +358,5 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <id>integration-tests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>nl.geodienstencentrum.maven</groupId>
-                        <artifactId>sass-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>sass-compilation</id>
-                                <phase>none</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
     </profiles>
 </project>
