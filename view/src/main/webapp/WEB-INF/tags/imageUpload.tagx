@@ -48,6 +48,7 @@
             var FILE_UPLOAD_MAX_HEIGHT = ${FILE_UPLOAD_MAX_HEIGHT};
             var FILE_UPLOAD_MAX_FILE_SIZE = ${FILE_UPLOAD_MAX_FILE_SIZE};
             var fileUploadVars = {};
+            var CLEAR_IMAGE_ID = '0';
         </script>
 
         <c:set var="_imageUploadScriptsLoaded" value="true" scope="request"/>
@@ -57,13 +58,23 @@
     </c:if>
 
     <div class="c-Upload ${compactView ? 'c-Upload--compact' : ''}">
+       <!--<div class="${!compactView ? 'c-Upload__image__wrapper' : ''}">-->
+            <c:if test="${!compactView}">
+                <collab:image id='${uniqueName}_clear' cssClass="c-Upload__icon__clear" src="/images/unsubscribe_small.png" />
+            </c:if>
         <collab:image id="${previewImgId}"
              src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
+        <!--</div>-->
         <div class="c-Upload__button">
             <span class="btn btn-primary fileinput-button">
                 ${buttonText}
                 <input id="${uploadImageInputId}" type="file" name="file" tabindex="-1" />
             </span>
+            <c:if test="${compactView}">
+                <span id='${uniqueName}_clear' class="btn btn-danger c-Upload__button__clear" >
+                    Clear
+                </span>
+            </c:if>
         </div>
 
         <div style="${shouldDisplayUrl ? '' : 'display: none'}">
@@ -150,6 +161,16 @@
             }).prop('disabled', !jQuery.support.fileInput)
                 .parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
         });
+
+        $('#${uniqueName}_clear').bind('click', function() {
+            var vars = fileUploadVars['${uniqueName}'];
+            var defaultImageUrl = '/image?img_id='+CLEAR_IMAGE_ID+'&amp;defaultImage=${defaultImage}';
+            jQuery(vars.previewImgId).attr('src', defaultImageUrl);
+            jQuery(vars.imageIdInputId).val(CLEAR_IMAGE_ID);
+            jQuery(vars.urlDisplayDiv).attr('href', defaultImageUrl);
+            jQuery(vars.urlDisplayDiv).text(defaultImageUrl);
+        });
+
     </script>
 
 </jsp:root>
