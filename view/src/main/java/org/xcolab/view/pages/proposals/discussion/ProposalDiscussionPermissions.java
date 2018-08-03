@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.discussion;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.UsersGroupsClientUtil;
@@ -36,6 +37,11 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     @Override
     public boolean getCanSeeAddCommentButton() {
+        final Boolean isReadyOnly = ConfigurationAttributeKey.PROPOSALS_COMMENTS_READ_ONLY.get();
+        if (isReadyOnly) {
+            return getCanAdminAll();
+        }
+
         boolean isEvaluationTab = ProposalTab.EVALUATION.name().equals(discussionTabName);
         if (isEvaluationTab) {
             return isLoggedIn && isAllowedToAddCommentsToProposalEvaluationInContestPhase();
