@@ -108,7 +108,7 @@ CREATE TABLE `xcolab_Contest` (
   `show_in_list_view` tinyint(4) DEFAULT NULL,
   `show_in_outline_view` tinyint(4) DEFAULT NULL,
   `hideRibbons` tinyint(4) DEFAULT NULL,
-  `resourceArticleId` bigint(20) DEFAULT NULL
+  `resourceArticleId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ContestPK`) /*,
   KEY `IX_3CD643E3` (`ContestUrlName`(50),`ContestYear`),
   KEY `IX_4E7AA29D` (`ContestYear`),
