@@ -51,6 +51,21 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         return super.getCanSeeAddCommentButton();
     }
 
+    @Override
+    public boolean getCanAddComment() {
+        final Boolean isReadyOnly = ConfigurationAttributeKey.PROPOSALS_COMMENTS_READ_ONLY.get();
+        if (isReadyOnly && !getCanAdminAll()) {
+            return false;
+        }
+
+        boolean isEvaluationTab = ProposalTab.EVALUATION.name().equals(discussionTabName);
+        if (isEvaluationTab && !isAllowedToAddCommentsToProposalEvaluationInContestPhase()) {
+            return false;
+        }
+
+        return super.getCanAddComment();
+    }
+
     private boolean isAllowedToAddCommentsToProposalEvaluationInContestPhase() {
         try {
             return isUserFellowOrJudgeOrAdvisor()
