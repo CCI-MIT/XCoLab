@@ -11,7 +11,6 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 
 import java.io.Serializable;
@@ -114,10 +113,6 @@ public class ContestDescriptionBean implements Serializable {
         contest.setDefaultProposalLogoId(defaultproposallogoid);
         contest.setIsSharedContest(isSharedContest);
         ContestClientUtil.updateContest(contest);
-        if (contest.getIsSharedContest()) {
-            SharedColabClient
-                    .updateSharedContestName(contest.getContestPK(), contest.getContestName());
-        }
     }
 
     private static void updateContestSchedule(Contest contest, Long contestScheduleId) {

@@ -15,7 +15,6 @@ import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
-import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 
@@ -29,11 +28,8 @@ public final class ContestCreatorUtil {
 
     private ContestCreatorUtil() { }
 
-    public static Contest createNewContest(String contestShortName) {
-
-        Long sharedId = SharedColabClient.retrieveContestSharedId(contestShortName,
-                ConfigurationAttributeKey.COLAB_NAME.get());
-        Contest contest = ContestClientUtil.createContest(sharedId, 10144L, contestShortName);
+    public static Contest createNewContest(String contestShortName, long authorId) {
+        Contest contest = ContestClientUtil.createContest(authorId, contestShortName);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
         contest.setShow_in_tile_view(true);

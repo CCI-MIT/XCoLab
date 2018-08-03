@@ -1,6 +1,0 @@
-flyway:
-  enabled: false
-
-eureka:
-  client:
-    enabled: false
