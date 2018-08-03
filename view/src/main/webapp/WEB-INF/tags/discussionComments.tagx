@@ -171,7 +171,7 @@
 
 			</c:otherwise>
 		</c:choose>
-		<c:if test="${discussionPermissions.canSeeAddCommentButton }">
+		<c:if test="${discussionPermissions.canSeeAddCommentButton}">
 			<div class="row mt-3">
 				<div class="col-12 col-md-3">
 					<strong><spring:message code="discussion.commmentstag.addyourcomment"/></strong><br />

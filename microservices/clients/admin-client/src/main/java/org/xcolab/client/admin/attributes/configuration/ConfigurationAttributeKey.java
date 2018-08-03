@@ -345,6 +345,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_COMMENTS_IN_SEPARATE_TAB")
                     .defaultValue(true)
                     .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_COMMENTS_READ_ONLY =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_COMMENTS_READ_ONLY")
+                    .defaultValue(false)
+                    .build();
 
     // Points
     public static final AttributeGetter<Boolean> POINTS_IS_ACTIVE =

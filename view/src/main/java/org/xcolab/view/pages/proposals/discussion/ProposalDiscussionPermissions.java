@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.discussion;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.UsersGroupsClientUtil;
@@ -15,12 +16,14 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private final String discussionTabName;
     private final ProposalContext proposalContext;
+    private final Proposal proposal;
 
     public ProposalDiscussionPermissions(HttpServletRequest request,
             ProposalContext proposalContext) {
         super(request);
         this.proposalContext = proposalContext;
         this.discussionTabName = getTabName(request);
+        proposal = proposalContext.getProposal();
     }
 
     private String getTabName(HttpServletRequest request) {
@@ -36,6 +39,11 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     @Override
     public boolean getCanSeeAddCommentButton() {
+        final Boolean isReadyOnly = ConfigurationAttributeKey.PROPOSALS_COMMENTS_READ_ONLY.get();
+        if (isReadyOnly) {
+            return getCanAdminAll();
+        }
+
         boolean isEvaluationTab = ProposalTab.EVALUATION.name().equals(discussionTabName);
         if (isEvaluationTab) {
             return isLoggedIn && isAllowedToAddCommentsToProposalEvaluationInContestPhase();
@@ -43,18 +51,32 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         return super.getCanSeeAddCommentButton();
     }
 
+    @Override
+    public boolean getCanAddComment() {
+        final Boolean isReadyOnly = ConfigurationAttributeKey.PROPOSALS_COMMENTS_READ_ONLY.get();
+        if (isReadyOnly && !getCanAdminAll()) {
+            return false;
+        }
+
+        boolean isEvaluationTab = ProposalTab.EVALUATION.name().equals(discussionTabName);
+        if (isEvaluationTab && !isAllowedToAddCommentsToProposalEvaluationInContestPhase()) {
+            return false;
+        }
+
+        return super.getCanAddComment();
+    }
+
     private boolean isAllowedToAddCommentsToProposalEvaluationInContestPhase() {
         try {
-            Proposal proposal = proposalContext.getProposal();
-            return isUserFellowOrJudgeOrAdvisor(proposal)
-                    || isUserProposalAuthorOrTeamMember(proposal)
+            return isUserFellowOrJudgeOrAdvisor()
+                    || isUserProposalAuthorOrTeamMember()
                     || getCanAdminAll();
         } catch (ProposalNotFoundException ignored) {
             return false;
         }
     }
 
-    private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
+    private boolean isUserFellowOrJudgeOrAdvisor() {
         ContestPhase contestPhase = proposalContext.getContestPhase();
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
 
@@ -67,7 +89,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         return isFellow || isJudge || isAdvisor;
     }
 
-    private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {
+    private boolean isUserProposalAuthorOrTeamMember() {
         boolean isAuthor = proposal.getAuthorId() == memberId;
         boolean isMember = UsersGroupsClientUtil.isMemberInGroup(memberId, proposal.getProposalId());
 
