@@ -16,12 +16,14 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private final String discussionTabName;
     private final ProposalContext proposalContext;
+    private final Proposal proposal;
 
     public ProposalDiscussionPermissions(HttpServletRequest request,
             ProposalContext proposalContext) {
         super(request);
         this.proposalContext = proposalContext;
         this.discussionTabName = getTabName(request);
+        proposal = proposalContext.getProposal();
     }
 
     private String getTabName(HttpServletRequest request) {
@@ -51,16 +53,15 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private boolean isAllowedToAddCommentsToProposalEvaluationInContestPhase() {
         try {
-            Proposal proposal = proposalContext.getProposal();
-            return isUserFellowOrJudgeOrAdvisor(proposal)
-                    || isUserProposalAuthorOrTeamMember(proposal)
+            return isUserFellowOrJudgeOrAdvisor()
+                    || isUserProposalAuthorOrTeamMember()
                     || getCanAdminAll();
         } catch (ProposalNotFoundException ignored) {
             return false;
         }
     }
 
-    private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
+    private boolean isUserFellowOrJudgeOrAdvisor() {
         ContestPhase contestPhase = proposalContext.getContestPhase();
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
 
@@ -73,7 +74,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         return isFellow || isJudge || isAdvisor;
     }
 
-    private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {
+    private boolean isUserProposalAuthorOrTeamMember() {
         boolean isAuthor = proposal.getAuthorId() == memberId;
         boolean isMember = UsersGroupsClientUtil.isMemberInGroup(memberId, proposal.getProposalId());
 
