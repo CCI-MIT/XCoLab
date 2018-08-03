@@ -26,7 +26,6 @@
         <module>members-client</module>
         <module>modeling-client</module>
         <module>search-client</module>
-        <module>sharedcolab-client</module>
         <module>tracking-client</module>
     </modules>
 
