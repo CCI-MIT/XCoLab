@@ -36,11 +36,6 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>sharedcolab-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xcolab</groupId>
             <artifactId>emails-client</artifactId>
             <version>${project.version}</version>
         </dependency>
