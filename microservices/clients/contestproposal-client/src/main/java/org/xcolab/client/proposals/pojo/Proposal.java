@@ -220,13 +220,7 @@ public class Proposal extends AbstractProposal {
 
     public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
         Long proposalId = this.getProposalId();
-        ContestType contestType;
-        if (contest.getIsSharedContestInForeignColab()) {
-            contestType = ContestTypeClient
-                    .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-        } else {
-            contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
-        }
+        ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
         String link = "/";
         link += contestType.getFriendlyUrlStringContests();
 
@@ -400,12 +394,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public String getLogoPath() {
-        String imageDomain;
-        if (contest.getIsSharedContestInForeignColab()) {
-            imageDomain = ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get();
-        } else {
-            imageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
-        }
+        String imageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
         return imageDomain + "/image/proposal/" + getImageId();
     }
 

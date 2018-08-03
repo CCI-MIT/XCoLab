@@ -24,9 +24,7 @@ public class ModelSettingsMassAction extends AbstractContestMassAction {
         }
 
         for (Contest contest : contests) {
-            if (!contest.getIsSharedContestInForeignColab()) {
-                contestModelSettingsBean.persist(contest);
-            }
+            contestModelSettingsBean.persist(contest);
         }
     }
 }

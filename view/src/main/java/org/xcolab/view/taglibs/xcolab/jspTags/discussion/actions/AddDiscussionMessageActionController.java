@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
@@ -33,7 +32,6 @@ import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.activities.enums.ContestActivityType;
 import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
@@ -75,37 +73,10 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         long memberId = MemberAuthUtil.getMemberId(request);
 
         try {
-            final CommentClient commentClient;
-            final ThreadClient threadClient;
-            final ActivitiesClient activityClient;
-            final ProposalClient proposalClient;
-
-
-            if (contestId != null && !contestId.isEmpty() && !contestId.equals("0")) {
-                Long contestIdLong = Long.parseLong(contestId);
-
-                Contest contest = ContestClientUtil.getContest(contestIdLong);
-                if (contest.getIsSharedContestInForeignColab()) {
-                    ServiceNamespace serviceNamespace = ServiceNamespace.instance(
-                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-
-                    activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
-                    commentClient = CommentClient.fromService(serviceNamespace);
-                    threadClient = ThreadClient.fromService(serviceNamespace);
-                    proposalClient = ProposalClient.fromNamespace(serviceNamespace);
-                } else {
-                    threadClient = ThreadClientUtil.getClient();
-                    commentClient = CommentClientUtil.getClient();
-                    activityClient = ActivitiesClientUtil.getClient();
-                    proposalClient = ProposalClientUtil.getClient();
-                }
-            } else {
-                threadClient = ThreadClientUtil.getClient();
-                commentClient = CommentClientUtil.getClient();
-                activityClient = ActivitiesClientUtil.getClient();
-                proposalClient = ProposalClientUtil.getClient();
-            }
-
+            final ThreadClient threadClient = ThreadClientUtil.getClient();
+            final CommentClient commentClient = CommentClientUtil.getClient();
+            final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
+            final ProposalClient proposalClient = ProposalClientUtil.getClient();
 
             long threadId = Long.parseLong(newMessage.getThreadId());
 
@@ -132,8 +103,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     final Proposal proposal = getProposal(proposalClient, commentThread);
                     if (proposal != null) {
                         //proposal
-                        activityClient.createActivityEntry(ProposalActivityType.COMMENT_ADDED,
-                                memberId, proposal.getProposalId(), comment.getCommentId());
+                        activityClient
+                                .createActivityEntry(ProposalActivityType.COMMENT_ADDED, memberId,
+                                        proposal.getProposalId(), comment.getCommentId());
                     } else {
                         final Contest contest = getContest(commentThread);
                         if (contest != null) {
@@ -141,8 +113,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                             activityClient.createActivityEntry(ContestActivityType.COMMENT_ADDED,
                                     memberId, contest.getContestPK(), comment.getCommentId());
 
-                            GoogleAnalyticsUtils.pushEventAsync(
-                                    GoogleAnalyticsEventType.COMMENT_CONTEST);
+                            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.COMMENT_CONTEST);
                         }
                     }
                 }
@@ -160,12 +131,6 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     }
                 }
             }
-        } catch (ContestNotFoundException e1) {
-            _log.warn("Could not find contest ");
-        } catch (NumberFormatException e) {
-            _log.warn(String.format(
-                    "Could not convert discussionId %s and threadId %s to longs (userId = %d)",
-                    newMessage.getDiscussionId(), newMessage.getThreadId(), memberId));
         } catch (ThreadNotFoundException ignored) {
         }
 

@@ -2,7 +2,6 @@ package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 
 import java.util.List;
@@ -24,10 +23,8 @@ public class DeleteWithPhasesMassAction extends AbstractContestMassAction {
         }
 
         for (Contest contest : contests) {
-            if (!contest.getIsSharedContestInForeignColab()) {
-                Long contestId = contest.getContestPK();
-                ContestClientUtil.deleteContest(contestId);
-            }
+            Long contestId = contest.getContestPK();
+            ContestClientUtil.deleteContest(contestId);
         }
     }
 }

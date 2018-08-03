@@ -9,7 +9,6 @@ delete from activities_ActivityEntry;
 delete from xcolab_ActivitySubscription;
 delete from xcolab_ColabEmail;
 
-delete from sharedcolab_SharedContest;
 delete from xcolab_Contest;
 delete from xcolab_ContestCollectionCard;
 delete from xcolab_ContestDiscussion;

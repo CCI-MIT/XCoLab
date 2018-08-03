@@ -35,8 +35,6 @@ public final class ContestCreatorUtil {
         contest.setShow_in_tile_view(true);
         contest.setShow_in_list_view(true);
         contest.setShow_in_outline_view(true);
-        contest.setIsSharedContest(false);
-        contest.setSharedOrigin(ConfigurationAttributeKey.COLAB_NAME.get());
         final Long templateId = getOrCreateDefaultTemplate().getId_();
         contest.setPlanTemplateId(templateId);
         final Long contestScheduleId = getOrCreateDefaultContestSchedule().getId_();

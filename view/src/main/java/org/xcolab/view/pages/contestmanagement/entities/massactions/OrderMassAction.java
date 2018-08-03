@@ -17,9 +17,7 @@ public class OrderMassAction extends AbstractContestMassAction {
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response) {
         for (Contest contest : contests) {
-            if (contest.getIsSharedContestInForeignColab()) {
-                contest = ContestClientUtil.getContest(contest.getContestPK());
-            }
+            contest = ContestClientUtil.getContest(contest.getContestPK());
             ContestClientUtil.updateContest(contest);
         }
     }

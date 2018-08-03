@@ -54,8 +54,6 @@ public class ContestDescriptionBean implements Serializable {
 
     private boolean shouldUpdateContestUrlName;
 
-    private boolean isSharedContest;
-
     @SuppressWarnings("unused")
     public ContestDescriptionBean() {
     }
@@ -74,7 +72,6 @@ public class ContestDescriptionBean implements Serializable {
             sponsorLink = contest.getSponsorLink();
             defaultproposallogoid = contest.getDefaultProposalLogoId();
             shouldUpdateContestUrlName = !contest.getContestActive();
-            isSharedContest = contest.getIsSharedContest();
         }
     }
 
@@ -111,7 +108,6 @@ public class ContestDescriptionBean implements Serializable {
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setSponsorLink(sponsorLink);
         contest.setDefaultProposalLogoId(defaultproposallogoid);
-        contest.setIsSharedContest(isSharedContest);
         ContestClientUtil.updateContest(contest);
     }
 
@@ -209,13 +205,5 @@ public class ContestDescriptionBean implements Serializable {
 
     public void setShouldUpdateContestUrlName(Boolean shouldUpdateContestUrlName) {
         this.shouldUpdateContestUrlName = shouldUpdateContestUrlName;
-    }
-
-    public boolean getIsSharedContest() {
-        return isSharedContest;
-    }
-
-    public void setIsSharedContest(boolean sharedContest) {
-        isSharedContest = sharedContest;
     }
 }

@@ -2,7 +2,6 @@ package org.xcolab.view.pages.proposals.utils.context;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
@@ -19,7 +18,6 @@ import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.PointsClient;
@@ -36,7 +34,6 @@ import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ClientHelper {
 
@@ -64,52 +61,27 @@ public class ClientHelper {
     // Activity
     private final ActivitiesClient activitiesClient;
 
-    public ClientHelper(Contest contest) {
-        if (contest != null && contest.getIsSharedContestInForeignColab()) {
-            ServiceNamespace serviceNamespace = ServiceNamespace.instance(
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-            proposalClient = ProposalClient.fromNamespace(serviceNamespace);
-            membershipClient = MembershipClient.fromNamespace(serviceNamespace);
-            pointsClient = PointsClient.fromNamespace(serviceNamespace);
-            proposalPhaseClient = ProposalPhaseClient.fromNamespace(serviceNamespace);
-            proposalAttributeClient = ProposalAttributeClient.fromNamespace(serviceNamespace);
-            proposalMoveClient = ProposalMoveClient.fromNamespace(serviceNamespace);
-            proposalJudgeRatingClient = ProposalJudgeRatingClient.fromNamespace(serviceNamespace);
-            proposalMemberRatingClient = ProposalMemberRatingClient.fromNamespace(serviceNamespace);
+    public ClientHelper() {
+        proposalClient = ProposalClientUtil.getClient();
+        membershipClient = MembershipClientUtil.getClient();
+        pointsClient = PointsClientUtil.getClient();
+        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
+        proposalAttributeClient = ProposalAttributeClientUtil.getClient();
+        proposalMoveClient = ProposalMoveClientUtil.getClient();
+        proposalJudgeRatingClient = ProposalJudgeRatingClientUtil.getClient();
+        proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
 
-            contestClient = ContestClient.fromNamespace(serviceNamespace);
-            contestTeamMemberClient = ContestTeamMemberClient.fromService(serviceNamespace);
-            impactClient = ImpactClient.fromService(serviceNamespace);
-            ontologyClient = OntologyClient.fromService(serviceNamespace);
-            planTemplateClient = PlanTemplateClient.fromNamespace(serviceNamespace);
+        contestClient = ContestClientUtil.getClient();
+        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        impactClient = ImpactClientUtil.getClient();
+        ontologyClient = OntologyClientUtil.getClient();
+        planTemplateClient = PlanTemplateClientUtil.getClient();
 
-            commentClient = new CommentClient(serviceNamespace);
-            threadClient = new ThreadClient(serviceNamespace);
-            categoryClient = new CategoryClient(serviceNamespace);
+        commentClient = CommentClientUtil.getClient();
+        threadClient = ThreadClientUtil.getClient();
+        categoryClient = CategoryClientUtil.getClient();
 
-            activitiesClient = ActivitiesClient.fromNamespace(serviceNamespace);
-        } else {
-            proposalClient = ProposalClientUtil.getClient();
-            membershipClient = MembershipClientUtil.getClient();
-            pointsClient = PointsClientUtil.getClient();
-            proposalPhaseClient = ProposalPhaseClientUtil.getClient();
-            proposalAttributeClient = ProposalAttributeClientUtil.getClient();
-            proposalMoveClient = ProposalMoveClientUtil.getClient();
-            proposalJudgeRatingClient = ProposalJudgeRatingClientUtil.getClient();
-            proposalMemberRatingClient = ProposalMemberRatingClientUtil.getClient();
-
-            contestClient = ContestClientUtil.getClient();
-            contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
-            impactClient = ImpactClientUtil.getClient();
-            ontologyClient = OntologyClientUtil.getClient();
-            planTemplateClient = PlanTemplateClientUtil.getClient();
-
-            commentClient = CommentClientUtil.getClient();
-            threadClient = ThreadClientUtil.getClient();
-            categoryClient = CategoryClientUtil.getClient();
-
-            activitiesClient = ActivitiesClientUtil.getClient();
-        }
+        activitiesClient = ActivitiesClientUtil.getClient();
     }
 
     public ActivitiesClient getActivitiesClient() {

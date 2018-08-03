@@ -13,7 +13,6 @@
     <jsp:directive.attribute name="categoryGroupId" type="java.lang.Long" required="false" rtexprvalue="true" description="CategoryGroup id" />
     <jsp:directive.attribute name="categoryId" type="java.lang.Long" required="false" rtexprvalue="true" description="Category id" />
     <jsp:directive.attribute name="proposalId" type="java.lang.Long" required="false" rtexprvalue="true" description="Proposal id" />
-    <jsp:directive.attribute name="sharedColabId" type="java.lang.Long" required="false" rtexprvalue="true" description="The id of the partner CoLab, if applicable" />
     <jsp:directive.attribute name="shareTitle" type="java.lang.String" required="false" rtexprvalue="true" description="The shareTitle for the discussion"  />
 
     <c:set var="shareTitlePageScope" scope="page" value="${shareTitle}" />
@@ -22,7 +21,7 @@
     <c:set var="proposalId" value="${empty proposalId ? 0 : proposalId}" />
 
 
-	<discussions:loadThread threadId="${threadId}" categoryGroupId="${categoryGroupId }" categoryId="${categoryId}" sharedColabId="${sharedColabId}">
+	<discussions:loadThread threadId="${threadId}" categoryGroupId="${categoryGroupId }" categoryId="${categoryId}">
         <!--@elvariable id="thread" type="org.xcolab.client.comment.pojo.CommentThread"-->
         <!--@elvariable id="newMessage" type="org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper"-->
         <!--@elvariable id="discussionPermissions" type="org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions"-->
@@ -86,7 +85,7 @@
 				<table class="c-Comment__list" id="commentsTable" >
 					<c:forEach var="message" items="${thread.comments }" varStatus="status">
                         <!-- TODO COLAB-1387: replace client calls -->
-						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}" contestId="${sharedColabId}">
+						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}">
                             <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
@@ -139,23 +138,21 @@
 									</div>
 									<div class="c-Comment__actions">
 
-										<c:if test="${empty sharedColabId} ">
-											<c:if test="${discussionPermissions.getCanReportMessage(message) }">
-                                                <xcolab:requireLibrary name="flagging"/>
-												<button type="button" class="btn btn-link" onclick="reportComment(${message.commentId})">
-                                                    Report
-                                                </button>
-											</c:if>
-										</c:if>
+                                        <c:if test="${discussionPermissions.getCanReportMessage(message) }">
+                                            <xcolab:requireLibrary name="flagging"/>
+                                            <button type="button" class="btn btn-link" onclick="reportComment(${message.commentId})">
+                                                Report
+                                            </button>
+                                        </c:if>
 										<c:if test="${discussionPermissions.getCanViewAdminMessage(message) }">
-											<c:set var="editCommentURL" value="/discussions/editComment?commentId=${message.commentId}&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
+											<c:set var="editCommentURL" value="/discussions/editComment?commentId=${message.commentId}&amp;proposalId=${proposalId}" />
 
                                             <spring:message code="discussion.commmentstag.caneditmsg" var="canEditMsg"/>
 											<button type="button" class="btn btn-link js-Tooltip ml-2" onclick="editComment(${message.createDate.time}, ${message.commentId},'${editCommentURL}');"
 												 title="${canEditMsg}"><spring:message code="discussion.commmentstag.edit" />
                                             </button>
 
-											<c:set var="deleteMessageURL" value="/discussions/deleteDiscussionMessageFlag?commentId=${message.commentId }&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
+											<c:set var="deleteMessageURL" value="/discussions/deleteDiscussionMessageFlag?commentId=${message.commentId }&amp;proposalId=${proposalId}" />
 
                                             <spring:message code="discussion.commmentstag.candeletemsg" var="canDeleteMsg"/>
                                             <spring:message code="discussion.commmentstag.confirmdelete" var="confirmDelete"/>
@@ -193,7 +190,7 @@
 					</c:choose>
 				</div>
 				<div class="col-12 col-md-9">
-					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
+					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}" />
 					<form:form id="addCommentForm" action="${addCommentURL}" method="post">
                         <input type="hidden" name="threadId" value="${thread.threadId}" />
 						<textarea id="js-Comment__content" name="description" required="required"

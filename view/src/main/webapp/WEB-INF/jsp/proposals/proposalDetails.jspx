@@ -216,19 +216,9 @@
     <!-- Comments, if they aren't in a separate tab -->
     <c:if test="${not _themeContext.themeVariables.isCommentsInOwnTab}">
         <hr class="cb-hr-tan cb-hr-xl" id="Comments"/>
-        <c:choose>
-            <c:when test="${contest.isSharedContestInForeignColab}">
-                <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
-                                           sharedColabId="${contest.contestPK}"
-                                           proposalId="${proposal.proposalId}"
-                                           shareTitle="Discussion for ${proposal.name} in ${contest.contestShortName}"  />
-            </c:when>
-            <c:otherwise>
-                <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
-                                           proposalId="${proposal.proposalId}"
-                                           shareTitle="Discussion for ${proposal.name} in ${contest.contestShortName}" />
-            </c:otherwise>
-        </c:choose>
+        <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
+                                   proposalId="${proposal.proposalId}"
+                                   shareTitle="Discussion for ${proposal.name} in ${contest.contestShortName}" />
 
         <script>
             jQuery(function() {

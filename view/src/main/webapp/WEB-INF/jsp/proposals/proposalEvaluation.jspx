@@ -64,15 +64,7 @@
                                             contestType="${contestType}" />
                         </p>
                     </c:if>
-                    <c:choose>
-                        <c:when test="${contest.isSharedContestInForeignColab}">
-                            <xcolab:discussionComments threadId="${proposal.resultsDiscussionIdOrCreate}"
-                                                       sharedColabId="${contest.contestPK}" />
-                        </c:when>
-                        <c:otherwise>
-                            <xcolab:discussionComments threadId="${proposal.resultsDiscussionIdOrCreate}"  />
-                        </c:otherwise>
-                    </c:choose>
+                    <xcolab:discussionComments threadId="${proposal.resultsDiscussionIdOrCreate}"  />
                 </c:when>
                 <c:otherwise>
                     <h2><spring:message code="contests.proposal.evaluation.resultswillbevisible" /></h2>

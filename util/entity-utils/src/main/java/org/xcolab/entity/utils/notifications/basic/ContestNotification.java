@@ -16,7 +16,6 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,14 +57,7 @@ public class ContestNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final EmailTemplateClient emailTemplateClient;
-        if (contest.getIsSharedContestInForeignColab()) {
-            emailTemplateClient = EmailTemplateClient.fromNamespace(
-                    ServiceNamespace.instance(ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE));
-        } else {
-            emailTemplateClient = EmailTemplateClientUtil.getClient();
-        }
-
+        final EmailTemplateClient emailTemplateClient = EmailTemplateClientUtil.getClient();
         final ContestEmailTemplate emailTemplate =
                 emailTemplateClient.getContestEmailTemplateByType(templateName);
 
@@ -79,17 +71,8 @@ public class ContestNotification extends EmailNotification {
         return this.contest.getContestPK();
     }
     private Date getActivePhaseDeadline() {
-        ContestClient contestClient;
-        if(contest.getIsSharedContestInForeignColab()) {
-            final ServiceNamespace serviceNamespace =
-                    ServiceNamespace.instance(ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-            contestClient = ContestClient.fromNamespace(serviceNamespace);
-        }else{
-            contestClient = ContestClientUtil.getClient();
-        }
-            return contestClient.getActivePhase(contest.getContestPK()).getPhaseEndDate();
-
-
+        ContestClient contestClient = ContestClientUtil.getClient();
+        return contestClient.getActivePhase(contest.getContestPK()).getPhaseEndDate();
     }
 
     private String getOtherContestLink(String linkText) {

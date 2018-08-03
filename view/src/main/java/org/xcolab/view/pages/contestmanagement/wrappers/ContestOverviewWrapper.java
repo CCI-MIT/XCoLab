@@ -1,13 +1,10 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelValue;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
@@ -50,24 +47,9 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         // LinkedHashMap will maintain insertion order
         allContests.sort(Comparator.comparing(AbstractContest::getWeight));
         for (Contest contest : allContests) {
-            if (contest.getIsSharedContestInForeignColab()) {
-                ServiceNamespace serviceNamespace = ServiceNamespace.instance(
-                        ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-
-                Contest foreignContest = ContestClient.fromNamespace(serviceNamespace)
-                        .getContest(contest.getContestPK());
-                foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
-
-                addContestToMaps(foreignContest);
-            } else {
-                addContestToMaps(contest);
-            }
+            contests.put(contest.getContestPK(), contest);
+            selectedContests.put(contest.getContestPK(), false);
         }
-    }
-
-    private void addContestToMaps(Contest contest) {
-        contests.put(contest.getContestPK(), contest);
-        selectedContests.put(contest.getContestPK(), false);
     }
 
     private void populateSubscribedToContestList(Member member) {

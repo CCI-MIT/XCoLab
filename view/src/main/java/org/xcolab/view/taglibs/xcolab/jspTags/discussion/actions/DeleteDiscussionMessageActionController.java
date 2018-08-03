@@ -37,12 +37,7 @@ public class DeleteDiscussionMessageActionController extends BaseDiscussionsActi
             return;
         }
 
-        final CommentClient commentClient;
-        if (contestId != null) {
-            commentClient = getCommentClient(contestId);
-        } else {
-            commentClient = CommentClientUtil.getClient();
-        }
+        final CommentClient commentClient = CommentClientUtil.getClient();
 
         commentClient.deleteComment(commentId);
         String redirectUrl = request.getHeader(HttpHeaders.REFERER);

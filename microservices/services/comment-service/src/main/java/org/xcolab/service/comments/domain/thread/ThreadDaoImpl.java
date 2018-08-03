@@ -3,7 +3,6 @@ package org.xcolab.service.comments.domain.thread;
 import org.jooq.DSLContext;
 import org.jooq.JoinType;
 import org.jooq.Record;
-import org.jooq.Record1;
 import org.jooq.SelectField;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
@@ -123,18 +122,6 @@ public class ThreadDaoImpl implements ThreadDao {
         return dslContext.fetchExists(DSL.select()
                 .from(THREAD)
                 .where(THREAD.THREAD_ID.eq(threadId)));
-    }
-
-    @Override
-    public Optional<Long> getSharedColabThreadId(long threadId) {
-        final Record1<Long> record = dslContext.select(THREAD.SHARED_COLAB_THREAD_ID)
-                .from(THREAD)
-                .where(THREAD.THREAD_ID.eq(threadId))
-                .fetchOne();
-        if (record == null) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(record.into(Long.class));
     }
 
     @Override

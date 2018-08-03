@@ -320,11 +320,6 @@ public class ContestController {
 
     }
 
-    @GetMapping("/contests/{contestId}/isShared")
-    public boolean isContestShared(@PathVariable long contestId) {
-        return contestDao.isShared(contestId);
-    }
-
     @GetMapping("/contests/{contestId}/visiblePhases")
     public List<ContestPhase> getVisiblePhases(@PathVariable Long contestId) {
         return contestService.getVisiblePhases(contestId);

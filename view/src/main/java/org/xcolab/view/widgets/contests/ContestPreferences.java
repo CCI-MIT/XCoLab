@@ -10,7 +10,6 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.attributes.AttributeGetter;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
@@ -120,16 +119,9 @@ public class ContestPreferences extends WidgetPreference {
         });
 
         for (Contest c : contests) {
-            ContestPhase activeOrLastPhase = null;
 
-            ContestClient contestClient;
-            if (c.getIsSharedContestInForeignColab()) {
-                contestClient = ContestClient.fromNamespace(ServiceNamespace.instance());
-                activeOrLastPhase = contestClient.getActivePhase(c.getContestPK());
-            } else {
-                contestClient = ContestClientUtil.getClient();
-                activeOrLastPhase = contestClient.getActivePhase(c.getContestPK());
-            }
+            ContestClient contestClient = ContestClientUtil.getClient();
+            ContestPhase activeOrLastPhase = contestClient.getActivePhase(c.getContestPK());
             final String phaseName;
             if (activeOrLastPhase != null) {
                 final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseType();

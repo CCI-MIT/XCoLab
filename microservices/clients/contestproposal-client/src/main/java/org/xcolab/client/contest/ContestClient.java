@@ -247,15 +247,6 @@ public class ContestClient {
                 .execute();
     }
 
-    public boolean isContestShared(long contestId) {
-        return contestResource.<Contest, Boolean>elementService(contestId, "isShared", Boolean.class)
-                .withCache(CacheKeys.withClass(Contest.class)
-                        .withParameter("contestId", contestId)
-                        .withParameter("service", "isShared")
-                        .build(Boolean.class), CacheName.CONTEST_DETAILS)
-                .get();
-    }
-
 
     public boolean isContestNameYearUnique(String contestShortName, Long year,Long currentContestId) {
 

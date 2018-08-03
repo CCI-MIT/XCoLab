@@ -84,10 +84,6 @@ public final class ContestClientUtil {
         return contestClient.getContestDiscussion(contestId, tab);
     }
 
-    public static boolean isContestShared(long contestId) {
-        return contestClient.isContestShared(contestId);
-    }
-
     public static Contest getContestByResourceArticleId(Long resourceArticleId) {
         return contestClient.getContestByResourceArticleId(resourceArticleId);
     }

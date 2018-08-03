@@ -71,7 +71,7 @@ public class ProposalVersionsJsonController {
 
         Contest c = ProposalClientUtil.getCurrentContestForProposal(proposalId);
 
-        ClientHelper clientHelper = new ClientHelper(c);
+        ClientHelper clientHelper = new ClientHelper();
         int index = clientHelper.getProposalClient()
                 .countProposalVersionsGroupedVersionsByContest(proposalId, c.getContestPK());
 
@@ -89,7 +89,7 @@ public class ProposalVersionsJsonController {
 
         Proposal2Phase p2p = null;
         Contest contest = ContestClientUtil.getContest(contestId);
-        ClientHelper clientHelper = new ClientHelper(contest);
+        ClientHelper clientHelper = new ClientHelper();
         ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         ProposalClient proposalClient = clientHelper.getProposalClient();
         ContestClient contestClient = clientHelper.getContestClient();
