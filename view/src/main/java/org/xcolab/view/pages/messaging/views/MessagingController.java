@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -23,13 +22,13 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 import org.xcolab.view.pages.messaging.beans.MessagingBean;
 import org.xcolab.view.pages.messaging.beans.SendMessageBean;
 import org.xcolab.view.pages.messaging.utils.MessagingPermissions;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -231,7 +230,7 @@ public class MessagingController {
         String refererHeader = request.getHeader(HttpHeaders.REFERER);
 
         if (StringUtils.isNotBlank(refererHeader)) {
-            return "redirect:" + UriComponentsBuilder.fromHttpUrl(refererHeader).build().getPath();
+            return "redirect:" + LinkUtils.getSafeRedirectUri(refererHeader, "/messaging");
         }
         return showMessages(response, model, "INBOX", 1, loggedInMember);
     }
