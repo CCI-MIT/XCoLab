@@ -46,7 +46,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_ColabEmail</includes>
+                            <includes>email__.+</includes>
                         </database>
                     </generator>
                 </configuration>
