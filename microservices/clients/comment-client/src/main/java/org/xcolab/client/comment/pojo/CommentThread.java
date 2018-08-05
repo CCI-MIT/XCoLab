@@ -37,9 +37,9 @@ public class CommentThread extends AbstractCommentThread {
         categoryClient = CategoryClientUtil.getClient();
     }
 
-    public CommentThread(Long threadId, Long categoryId, Long authorId, String title,
+    public CommentThread(Long threadId, Long categoryId, Long authorUserid, String title,
             Timestamp createdAt, Timestamp deletedAt, Boolean isQuiet) {
-        super(threadId, categoryId, authorId, title, createdAt, deletedAt, isQuiet);
+        super(threadId, categoryId, authorUserid, title, createdAt, deletedAt, isQuiet);
         commentClient = CommentClientUtil.getClient();
         threadClient = ThreadClientUtil.getClient();
         categoryClient = CategoryClientUtil.getClient();
@@ -64,14 +64,14 @@ public class CommentThread extends AbstractCommentThread {
     }
 
     @JsonIgnore
-    public long getLastActivityAuthorId() {
-        return threadClient.getLastActivityAuthorId(getId());
+    public long getLastActivityauthorUserid() {
+        return threadClient.getLastActivityauthorUserid(getId());
     }
 
     @JsonIgnore
     public Member getLastActivityAuthor() {
         try {
-            return MembersClient.getMember(getLastActivityAuthorId());
+            return MembersClient.getMember(getLastActivityauthorUserid());
         } catch (MemberNotFoundException e) {
             throw new KeyReferenceException(e);
         }

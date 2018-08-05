@@ -188,7 +188,7 @@ public class ContentEditorController extends BaseContentEditor {
         newContentArticleVersion.setContent(contentArticleVersion.getContent());
         newContentArticleVersion.setContentArticleId(contentArticleVersion.getContentArticleId());
 
-        newContentArticleVersion.setAuthorId(userId);
+        newContentArticleVersion.setauthorUserid(userId);
         newContentArticleVersion.setFolderId(folderId);
         ContentsClient.createContentArticleVersion(newContentArticleVersion);
 
@@ -226,7 +226,7 @@ public class ContentEditorController extends BaseContentEditor {
         contentArticleVersion.setContentArticleId(articleId);
         contentArticleVersion.setLang(lang);
 
-        contentArticleVersion.setAuthorId(member.getId_());
+        contentArticleVersion.setauthorUserid(member.getId_());
         contentArticleVersion.setFolderId((folderId));
         contentArticleVersion.setTitle(title);
         contentArticleVersion.setContent(content);

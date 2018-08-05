@@ -60,7 +60,7 @@ public class ProposalAttributeService {
         return new ProposalUnversionedAttributeHelperData(attributes);
     }
 
-    public ProposalAttribute setAttribute(ProposalAttribute proposalAttribute, Long authorId) {
+    public ProposalAttribute setAttribute(ProposalAttribute proposalAttribute, Long authorUserid) {
 
         try {
             Proposal proposal = proposalDao.get(proposalAttribute.getProposalId());
@@ -104,7 +104,7 @@ public class ProposalAttributeService {
 
             // create newly created version descriptor
             if (isNewVersion) {
-                createProposalVersionDescription(authorId, proposalAttribute.getProposalId(),
+                createProposalVersionDescription(authorUserid, proposalAttribute.getProposalId(),
                         version, proposalAttribute.getName(), proposalAttribute.getAdditionalId());
             }
             proposalDao.update(proposal);
@@ -154,13 +154,13 @@ public class ProposalAttributeService {
         }
     }
 
-    private void createProposalVersionDescription(long authorId, long proposalId, int version,
+    private void createProposalVersionDescription(long authorUserid, long proposalId, int version,
             String updateType, long additionalId) {
 
         ProposalVersion proposalVersion = new ProposalVersion();
         proposalVersion.setProposalId(proposalId);
         proposalVersion.setVersion(version);
-        proposalVersion.setAuthorId(authorId);
+        proposalVersion.setauthorUserid(authorUserid);
         proposalVersion.setUpdateType(updateType);
         proposalVersion.setUpdateAdditionalId(additionalId);
 

@@ -69,8 +69,8 @@ public final class ProposalAttributeClientUtil {
 
     public static ProposalAttribute setProposalAttribute(
             ProposalAttribute proposalAttribute,
-            Long authorId) {
-        return client.setProposalAttribute(proposalAttribute, authorId);
+            Long authorUserid) {
+        return client.setProposalAttribute(proposalAttribute, authorUserid);
     }
 
     public static ProposalAttribute setProposalAttribute(

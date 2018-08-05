@@ -11,6 +11,6 @@ public class ContestCreationNotification extends ContestNotification {
 
     public ContestCreationNotification(Contest contest)
             throws MemberNotFoundException {
-        super(contest, MembersClient.getMember(contest.getAuthorId()), TEMPLATE_NAME);
+        super(contest, MembersClient.getMember(contest.getauthorUserid()), TEMPLATE_NAME);
     }
 }

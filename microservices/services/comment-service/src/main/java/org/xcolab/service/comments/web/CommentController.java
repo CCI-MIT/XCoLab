@@ -59,15 +59,15 @@ public class CommentController {
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
-            @RequestParam(required = false) Long authorId,
+            @RequestParam(required = false) Long authorUserid,
             @RequestParam(required = false) List<Long> threadIds,
             @RequestParam(required = false, defaultValue = "false") boolean includeDeleted) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                Integer.toString(commentDao.countByGiven(authorId, threadIds)));
+                Integer.toString(commentDao.countByGiven(authorUserid, threadIds)));
 
-        return commentDao.findByGiven(paginationHelper, authorId, threadIds, includeDeleted);
+        return commentDao.findByGiven(paginationHelper, authorUserid, threadIds, includeDeleted);
     }
 
     @GetMapping("/comments/{commentId}")
@@ -130,11 +130,11 @@ public class CommentController {
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
-            @RequestParam(required = false) Long authorId,
+            @RequestParam(required = false) Long authorUserid,
             @RequestParam(required = false) Long groupId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
-        return categoryDao.findByGiven(paginationHelper, groupId, authorId);
+        return categoryDao.findByGiven(paginationHelper, groupId, authorUserid);
     }
 
     @GetMapping("/categories/{categoryId}")
@@ -163,12 +163,12 @@ public class CommentController {
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
-            @RequestParam(required = false) Long authorId,
+            @RequestParam(required = false) Long authorUserid,
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long groupId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
-        return threadDao.findByGiven(paginationHelper, authorId, categoryId, groupId);
+        return threadDao.findByGiven(paginationHelper, authorUserid, categoryId, groupId);
     }
 
     @DeleteMapping("/threads/{threadId}")
@@ -209,7 +209,7 @@ public class CommentController {
                 .orElse(new Date(0));
     }
 
-    @GetMapping("/threads/{threadId}/lastActivityAuthorId")
+    @GetMapping("/threads/{threadId}/lastActivityauthorUserid")
     public long getLastActivityAuthor(@PathVariable long threadId) throws NotFoundException {
         return threadDao.getLastComment(threadId)
                 .map(Comment::getAuthorUserId)

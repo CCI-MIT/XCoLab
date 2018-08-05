@@ -223,9 +223,9 @@ public final class ProposalClient {
         return getActiveProposalsInContestPhase(contestPhaseId, CacheName.PROPOSAL_LIST);
     }
 
-    public Proposal createProposal(long authorId, long contestPhaseId, boolean publishActivity) {
+    public Proposal createProposal(long authorUserid, long contestPhaseId, boolean publishActivity) {
         return proposalResource.collectionService("createProposal", ProposalDto.class)
-                .queryParam("authorId", authorId)
+                .queryParam("authorUserid", authorUserid)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .queryParam("publishActivity", publishActivity)
                 .post().toPojo(serviceNamespace);

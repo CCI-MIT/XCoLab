@@ -242,7 +242,7 @@ public class ProposalDaoImpl implements ProposalDao {
         ProposalRecord ret = this.dslContext.insertInto(PROPOSAL)
                 .set(PROPOSAL.CREATE_DATE, DSL.currentTimestamp())
                 .set(PROPOSAL.UPDATED_DATE, DSL.currentTimestamp())
-                .set(PROPOSAL.AUTHOR_ID, proposal.getAuthorId())
+                .set(PROPOSAL.AUTHOR_ID, proposal.getauthorUserid())
                 .set(PROPOSAL.VISIBLE, proposal.getVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
                 .set(PROPOSAL.RESULTS_DISCUSSION_ID, proposal.getResultsDiscussionId())
@@ -282,7 +282,7 @@ public class ProposalDaoImpl implements ProposalDao {
 
         return dslContext.update(PROPOSAL)
                 .set(PROPOSAL.UPDATED_DATE, DSL.currentTimestamp())
-                .set(PROPOSAL.AUTHOR_ID, proposal.getAuthorId())
+                .set(PROPOSAL.AUTHOR_ID, proposal.getauthorUserid())
                 .set(PROPOSAL.VISIBLE, proposal.getVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
                 .set(PROPOSAL.RESULTS_DISCUSSION_ID, proposal.getResultsDiscussionId())

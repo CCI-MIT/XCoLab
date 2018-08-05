@@ -80,7 +80,7 @@ public class CommentControllerTest {
     public void testListComments__shouldFilterByAuthor() throws Exception {
 
         mockMvc.perform(get("/comments")
-                    .param("authorId", "12345")
+                    .param("authorUserid", "12345")
                     .contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -142,9 +142,9 @@ public class CommentControllerTest {
     }
 
     @Test
-    public void testGetLastActivityAuthorId__shouldReturnCorrectId() throws Exception {
+    public void testGetLastActivityauthorUserid__shouldReturnCorrectId() throws Exception {
 
-        mockMvc.perform(get("/threads/201/lastActivityAuthorId").contentType(contentType).accept(contentType))
+        mockMvc.perform(get("/threads/201/lastActivityauthorUserid").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().string("12345"));
     }

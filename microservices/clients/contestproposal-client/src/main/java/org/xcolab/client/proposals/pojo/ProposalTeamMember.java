@@ -36,7 +36,7 @@ public class ProposalTeamMember {
     
     public ProposalMemberType getMemberType() {
         if (memberType == null) {
-            if (proposal.getAuthorId() == member.getUserId()) {
+            if (proposal.getauthorUserid() == member.getUserId()) {
                 memberType = ProposalMemberType.OWNER;
             } else {
                 memberType = ProposalMemberType.MEMBER;

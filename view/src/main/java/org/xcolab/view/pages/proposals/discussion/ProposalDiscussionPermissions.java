@@ -68,7 +68,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     }
 
     private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {
-        boolean isAuthor = proposal.getAuthorId() == memberId;
+        boolean isAuthor = proposal.getauthorUserid() == memberId;
         boolean isMember = UsersGroupsClientUtil.isMemberInGroup(memberId, proposal.getProposalId());
 
         return isAuthor || isMember;

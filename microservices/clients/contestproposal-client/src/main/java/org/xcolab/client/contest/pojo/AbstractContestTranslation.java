@@ -15,7 +15,7 @@ public abstract class AbstractContestTranslation implements Serializable {
     private String contestDescription;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Long authorId;
+    private Long authorUserid;
 
     public AbstractContestTranslation() {}
 
@@ -27,7 +27,7 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.contestDescription = value.contestDescription;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
-        this.authorId = value.authorId;
+        this.authorUserid = value.authorUserid;
     }
 
     public Long getContestId() {
@@ -86,12 +86,12 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Long getAuthorId() {
-        return this.authorId;
+    public Long getauthorUserid() {
+        return this.authorUserid;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setauthorUserid(Long authorUserid) {
+        this.authorUserid = authorUserid;
     }
 
     @Override
@@ -109,13 +109,13 @@ public abstract class AbstractContestTranslation implements Serializable {
                 && Objects.equals(contestDescription, that.contestDescription)
                 && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(updatedAt, that.updatedAt)
-                && Objects.equals(authorId, that.authorId);
+                && Objects.equals(authorUserid, that.authorUserid);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(contestId, lang, contestName, contestShortName, contestDescription,
-                createdAt, updatedAt, authorId);
+                createdAt, updatedAt, authorUserid);
     }
 
     @Override
@@ -123,6 +123,6 @@ public abstract class AbstractContestTranslation implements Serializable {
 
         return "ContestTranslation (" + contestId + ", " + lang + ", " + contestName + ", "
                 + contestShortName + ", " + contestDescription + ", " + createdAt + ", "
-                + updatedAt + ", " + authorId + ")";
+                + updatedAt + ", " + authorUserid + ")";
     }
 }

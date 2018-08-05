@@ -109,7 +109,7 @@ public class ContestControllerTest {
 
     private static AbstractContest getContest() {
         AbstractContest contest = new AbstractContest() {};
-        contest.setAuthorId(1L);
+        contest.setauthorUserid(1L);
         return contest;
     }
 

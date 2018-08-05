@@ -102,7 +102,7 @@ public class ProposalVersionsJsonController {
 
                 long cphId = proposalVersion.getContestPhaseId();
                 final ContestPhase contestPhase = contestClient.getContestPhase(cphId);
-                Member author = Member.fromId(proposalVersion.getAuthorId());
+                Member author = Member.fromId(proposalVersion.getauthorUserid());
                 proposalVersionsArray.add(Json.createObjectBuilder()
                         .add("version", proposalVersion.getVersion())
                         .add("date", proposalVersion.getCreatedAt().getTime())

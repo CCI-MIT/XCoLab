@@ -28,8 +28,8 @@ public final class ContestCreatorUtil {
 
     private ContestCreatorUtil() { }
 
-    public static Contest createNewContest(String contestShortName, long authorId) {
-        Contest contest = ContestClientUtil.createContest(authorId, contestShortName);
+    public static Contest createNewContest(String contestShortName, long authorUserid) {
+        Contest contest = ContestClientUtil.createContest(authorUserid, contestShortName);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
         contest.setShow_in_tile_view(true);

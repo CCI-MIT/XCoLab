@@ -69,11 +69,11 @@ public class ProposalService {
         this.groupDao = groupDao;
     }
 
-    public Proposal create(long authorId, long contestPhaseId, boolean publishActivity) {
+    public Proposal create(long authorUserid, long contestPhaseId, boolean publishActivity) {
         try {
             Proposal proposal = new Proposal();
             proposal.setVisible(true);
-            proposal.setAuthorId(authorId);
+            proposal.setauthorUserid(authorUserid);
 
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             final Contest contest = ContestClientUtil.getContest(contestPhase.getContestPK());
@@ -86,23 +86,23 @@ public class ProposalService {
 
 
             final CommentThread mainCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " main discussion",
-                    authorId, false);
+                    authorUserid, false);
 
             proposal.setDiscussionId(mainCommentThread.getId());
 
 
             final CommentThread resultsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " results discussion",
-                    authorId, true);
+                    authorUserid, true);
 
             proposal.setResultsDiscussionId(resultsCommentThread.getId());
 
             // create group
-            Group_ group = createGroupAndSetUpPermissions(authorId, proposalId, contest);
+            Group_ group = createGroupAndSetUpPermissions(authorUserid, proposalId, contest);
             proposal.setGroupId(group.getGroupId());
 
             proposalDao.update(proposal);
 
-            UsersGroupsClientUtil.addMemberToGroup(authorId, proposal.getGroupId());
+            UsersGroupsClientUtil.addMemberToGroup(authorUserid, proposal.getGroupId());
 
             if (contestPhaseId > 0) {
                 // associate proposal with phase
@@ -118,7 +118,7 @@ public class ProposalService {
             }
 
             // Automatically subscribe author to own proposal
-            subscribeMemberToProposal(proposalId, authorId, true);
+            subscribeMemberToProposal(proposalId, authorUserid, true);
 
             return proposal;
         } catch (ContestNotFoundException ignored) {
@@ -131,7 +131,7 @@ public class ProposalService {
         ActivitiesClientUtil.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
     }
 
-    private Group_ createGroupAndSetUpPermissions(long authorId, long proposalId, Contest contest) {
+    private Group_ createGroupAndSetUpPermissions(long authorUserid, long proposalId, Contest contest) {
 
         // create new group
         final ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
@@ -144,7 +144,7 @@ public class ProposalService {
         Group_ group = new Group_();
 
         group.setCompanyId(10112L);
-        group.setCreatorUserId(authorId);
+        group.setCreatorUserId(authorUserid);
         group.setClassNameId(10009L);
         group.setParentGroupId(0L);
         group.setLiveGroupId(0L);
@@ -165,9 +165,9 @@ public class ProposalService {
         return group;
     }
 
-    private CommentThread createCommentThreadForProposal(String title, Long authorId, boolean isQuiet) {
+    private CommentThread createCommentThreadForProposal(String title, Long authorUserid, boolean isQuiet) {
         CommentThread commentThread = new CommentThread();
-        commentThread.setAuthorUserId(authorId);
+        commentThread.setAuthorUserId(authorUserid);
         commentThread.setCategoryId(null);
         commentThread.setTitle(title);
         commentThread.setIsQuiet(isQuiet);
@@ -309,7 +309,7 @@ public class ProposalService {
     public void promoteMemberToProposalOwner(Long proposalId, Long memberId) throws ProposalNotFoundException {
         try {
             Proposal proposal = proposalDao.get(proposalId);
-            proposal.setAuthorId(memberId);
+            proposal.setauthorUserid(memberId);
             proposalDao.update(proposal);
         } catch (NotFoundException ignored) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");

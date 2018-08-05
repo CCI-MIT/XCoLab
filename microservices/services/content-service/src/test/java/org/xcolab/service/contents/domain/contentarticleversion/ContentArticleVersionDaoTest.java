@@ -85,12 +85,12 @@ public class ContentArticleVersionDaoTest {
     @Test
     public void shouldUpdateContentArticle() throws Exception {
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setAuthorId(3L);
+        ae.setauthorUserid(3L);
         ae = contentArticleVersionDao.create(ae);
-        ae.setAuthorId(1L);
+        ae.setauthorUserid(1L);
         contentArticleVersionDao.update(ae);
         ContentArticleVersion az = contentArticleVersionDao.get(ae.getContentArticleVersionId());
-        assertEquals(az.getAuthorId(),ae.getAuthorId());
+        assertEquals(az.getauthorUserid(),ae.getauthorUserid());
 
     }
 }

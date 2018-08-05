@@ -24,7 +24,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     public ContentArticle create(ContentArticle contentArticle) {
 
         ContentArticleRecord ret = this.dslContext.insertInto(CONTENT_ARTICLE)
-                .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getAuthorId())
+                .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getauthorUserid())
                 .set(CONTENT_ARTICLE.EDIT_ROLE_GROUP_ID, contentArticle.getEditRoleGroupId())
                 .set(CONTENT_ARTICLE.VIEW_ROLE_GROUP_ID, contentArticle.getViewRoleGroupId())
                 .set(CONTENT_ARTICLE.MAX_VERSION_ID, contentArticle.getMaxVersionId())
@@ -52,7 +52,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     @Override
     public boolean update(ContentArticle contentArticle) {
         return dslContext.update(CONTENT_ARTICLE)
-                .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getAuthorId())
+                .set(CONTENT_ARTICLE.AUTHOR_ID, contentArticle.getauthorUserid())
                 .set(CONTENT_ARTICLE.EDIT_ROLE_GROUP_ID, contentArticle.getEditRoleGroupId())
                 .set(CONTENT_ARTICLE.VIEW_ROLE_GROUP_ID, contentArticle.getViewRoleGroupId())
                 .set(CONTENT_ARTICLE.MAX_VERSION_ID, contentArticle.getMaxVersionId())

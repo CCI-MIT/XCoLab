@@ -50,8 +50,8 @@ public class CommentClient {
         return commentServiceWrapper.countComments(null, threadIds);
     }
 
-    public int countCommentsByAuthor(long authorId) {
-        return commentServiceWrapper.countComments(authorId, null);
+    public int countCommentsByAuthor(long authorUserid) {
+        return commentServiceWrapper.countComments(authorUserid, null);
     }
 
     public Comment getComment(long commentId) throws CommentNotFoundException {

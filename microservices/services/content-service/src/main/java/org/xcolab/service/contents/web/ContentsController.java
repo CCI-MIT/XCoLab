@@ -123,7 +123,7 @@ public class ContentsController {
         if (contentArticleVersion.getContentArticleId() == null
                 || contentArticleVersion.getContentArticleId() == 0L) {
             contentArticle = new ContentArticle();
-            contentArticle.setAuthorId(contentArticleVersion.getAuthorId());
+            contentArticle.setauthorUserid(contentArticleVersion.getauthorUserid());
             contentArticle.setVisible(true);
             contentArticle.setCreatedAt(contentArticleVersion.getCreatedAt());
             contentArticle = this.contentArticleDao.create(contentArticle);

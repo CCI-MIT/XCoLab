@@ -55,7 +55,7 @@ public class AdaptationService {
     public void save(AdaptationImpactBean adaptationImpactBean,
             ProposalAttributeClient attributeClient) {
         AttributeHelper attributeHelper = new AttributeHelper(attributeClient,
-                adaptationImpactBean.getProposalId(), adaptationImpactBean.getAuthorId());
+                adaptationImpactBean.getProposalId(), adaptationImpactBean.getauthorUserid());
 
         for (Entry<String, AdaptationValue> entry : adaptationImpactBean.getValues().entrySet()) {
             final AdaptationCategory category = AdaptationCategory.valueOf(entry.getKey());
@@ -74,22 +74,22 @@ public class AdaptationService {
 
         private final ProposalAttributeClient attributeClient;
         private final long proposalId;
-        private final long authorId;
+        private final long authorUserid;
 
-        AttributeHelper(ProposalAttributeClient attributeClient, long proposalId, long authorId) {
+        AttributeHelper(ProposalAttributeClient attributeClient, long proposalId, long authorUserid) {
             this.attributeClient = attributeClient;
             this.proposalId = proposalId;
-            this.authorId = authorId;
+            this.authorUserid = authorUserid;
         }
 
         void saveFloatValue(AdaptationCategory category, String valueType, float value) {
             attributeClient.createOrUpdateUnversionedDoubleAttribute(proposalId,
-                    attributeName(category, valueType), authorId, value);
+                    attributeName(category, valueType), authorUserid, value);
         }
 
         void saveStringValue(AdaptationCategory category, String valueType, String value) {
             attributeClient.createOrUpdateUnversionedStringAttribute(proposalId,
-                    attributeName(category, valueType), authorId, value);
+                    attributeName(category, valueType), authorUserid, value);
         }
 
         float getFloatValue(AdaptationCategory category, String valueType) {

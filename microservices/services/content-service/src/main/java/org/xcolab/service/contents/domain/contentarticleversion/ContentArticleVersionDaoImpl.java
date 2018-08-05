@@ -41,7 +41,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     @Override
     public ContentArticleVersion create(ContentArticleVersion contentArticleVersion) {
         ContentArticleVersionRecord ret = this.dslContext.insertInto(CONTENT_ARTICLE_VERSION)
-                .set(CONTENT_ARTICLE_VERSION.AUTHOR_ID, contentArticleVersion.getAuthorId())
+                .set(CONTENT_ARTICLE_VERSION.AUTHOR_ID, contentArticleVersion.getauthorUserid())
                 .set(CONTENT_ARTICLE_VERSION.CREATE_DATE, contentArticleVersion.getCreatedAt())
                 .set(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID, contentArticleVersion.getContentArticleId())
                 .set(CONTENT_ARTICLE_VERSION.FOLDER_ID, contentArticleVersion.getFolderId())
@@ -69,7 +69,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     @Override
     public boolean update(ContentArticleVersion contentArticleVersion) {
         return dslContext.update(CONTENT_ARTICLE_VERSION)
-                .set(CONTENT_ARTICLE_VERSION.AUTHOR_ID, contentArticleVersion.getAuthorId())
+                .set(CONTENT_ARTICLE_VERSION.AUTHOR_ID, contentArticleVersion.getauthorUserid())
                 .set(CONTENT_ARTICLE_VERSION.CREATE_DATE, contentArticleVersion.getCreatedAt())
                 .set(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID, contentArticleVersion.getContentArticleId())
                 .set(CONTENT_ARTICLE_VERSION.FOLDER_ID, contentArticleVersion.getFolderId())

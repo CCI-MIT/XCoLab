@@ -333,7 +333,7 @@ public class ProposalImpactSeries {
 
     private Member getSeriesAuthor() {
         if (lastModifiedVersion != null) {
-            return MembersClient.getMemberUnchecked(lastModifiedVersion.getAuthorId());
+            return MembersClient.getMemberUnchecked(lastModifiedVersion.getauthorUserid());
         }
         return null;
     }

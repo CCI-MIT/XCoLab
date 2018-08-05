@@ -112,7 +112,7 @@ public class ContestClient {
 
     public Contest createContest(Long userId, String name) {
         Contest c = new Contest();
-        c.setAuthorId(userId);
+        c.setauthorUserid(userId);
         c.setContestName(name);
         c.setContestShortName(name);
         c.setContestUrlName(c.generateContestUrlName());

@@ -11,8 +11,8 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
 
     private Long id_;
     private Long proposalid;
-    private Long createauthorid;
-    private Long lastauthorid;
+    private Long createauthorUserid;
+    private Long lastauthorUserid;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
@@ -22,20 +22,20 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         super(value);
         this.id_ = value.id_;
         this.proposalid = value.proposalid;
-        this.createauthorid = value.createauthorid;
-        this.lastauthorid = value.lastauthorid;
+        this.createauthorUserid = value.createauthorUserid;
+        this.lastauthorUserid = value.lastauthorUserid;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
     }
 
-    public AbstractProposalUnversionedAttribute(Long id_, Long proposalid, Long createauthorid,
-            Long lastauthorid, Timestamp createdAt, Timestamp updatedAt, String name,
+    public AbstractProposalUnversionedAttribute(Long id_, Long proposalid, Long createauthorUserid,
+            Long lastauthorUserid, Timestamp createdAt, Timestamp updatedAt, String name,
             Integer additionalId, Long numericvalue, String stringvalue, Double realvalue) {
         super(name, additionalId, null, numericvalue, stringvalue, realvalue);
         this.id_ = id_;
         this.proposalid = proposalid;
-        this.createauthorid = createauthorid;
-        this.lastauthorid = lastauthorid;
+        this.createauthorUserid = createauthorUserid;
+        this.lastauthorUserid = lastauthorUserid;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -56,20 +56,20 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         this.proposalid = proposalid;
     }
 
-    public Long getCreateAuthorId() {
-        return this.createauthorid;
+    public Long getCreateauthorUserid() {
+        return this.createauthorUserid;
     }
 
-    public void setCreateAuthorId(Long createauthorid) {
-        this.createauthorid = createauthorid;
+    public void setCreateauthorUserid(Long createauthorUserid) {
+        this.createauthorUserid = createauthorUserid;
     }
 
-    public Long getLastAuthorId() {
-        return this.lastauthorid;
+    public Long getLastauthorUserid() {
+        return this.lastauthorUserid;
     }
 
-    public void setLastAuthorId(Long lastauthorid) {
-        this.lastauthorid = lastauthorid;
+    public void setLastauthorUserid(Long lastauthorUserid) {
+        this.lastauthorUserid = lastauthorUserid;
     }
 
     public Timestamp getCreatedAt() {
@@ -102,22 +102,22 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         AbstractProposalUnversionedAttribute that = (AbstractProposalUnversionedAttribute) o;
         return Objects.equals(getId_(), that.getId_())
                 && Objects.equals(proposalid, that.proposalid)
-                && Objects.equals(createauthorid, that.createauthorid)
-                && Objects.equals(lastauthorid, that.lastauthorid)
+                && Objects.equals(createauthorUserid, that.createauthorUserid)
+                && Objects.equals(lastauthorUserid, that.lastauthorUserid)
                 && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId_(), proposalid, createauthorid, lastauthorid,
+        return Objects.hash(super.hashCode(), getId_(), proposalid, createauthorUserid, lastauthorUserid,
                 createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
-        String sb = super.toString() + "(" + id_ + ", " + proposalid + ", " + createauthorid + ", "
-                + lastauthorid + ", " + createdAt + ", " + updatedAt + ")";
+        String sb = super.toString() + "(" + id_ + ", " + proposalid + ", " + createauthorUserid + ", "
+                + lastauthorUserid + ", " + createdAt + ", " + updatedAt + ")";
 
         return sb;
     }

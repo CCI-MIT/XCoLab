@@ -16,7 +16,7 @@ public abstract class AbstractContest {
     private String contestpositionsdescription;
     private Timestamp created;
     private Timestamp updated;
-    private Long authorid;
+    private Long authorUserid;
     private Boolean contestactive;
     private Long plantemplateid;
     private Long contestscheduleid;
@@ -70,7 +70,7 @@ public abstract class AbstractContest {
         this.contestpositionsdescription = value.contestpositionsdescription;
         this.created = value.created;
         this.updated = value.updated;
-        this.authorid = value.authorid;
+        this.authorUserid = value.authorUserid;
         this.contestactive = value.contestactive;
         this.plantemplateid = value.plantemplateid;
         this.contestscheduleid = value.contestscheduleid;
@@ -114,7 +114,7 @@ public abstract class AbstractContest {
     public AbstractContest(Long contestpk, Long contesttypeid, String contestname,
             String contestshortname, String contesturlname, Long contestyear,
             String contestdescription, String contestmodeldescription,
-            String contestpositionsdescription, Timestamp created, Timestamp updated, Long authorid,
+            String contestpositionsdescription, Timestamp created, Timestamp updated, Long authorUserid,
             Boolean contestactive, Long plantemplateid, Long contestscheduleid,
             String proposalcreationtemplatestring, String votetemplatestring,
             String proposalvotetemplatestring, String proposalvoteconfirmationtemplatestring,
@@ -138,7 +138,7 @@ public abstract class AbstractContest {
         this.contestpositionsdescription = contestpositionsdescription;
         this.created = created;
         this.updated = updated;
-        this.authorid = authorid;
+        this.authorUserid = authorUserid;
         this.contestactive = contestactive;
         this.plantemplateid = plantemplateid;
         this.contestscheduleid = contestscheduleid;
@@ -250,12 +250,12 @@ public abstract class AbstractContest {
         this.contestpositionsdescription = contestpositionsdescription;
     }
 
-    public Long getAuthorId() {
-        return this.authorid;
+    public Long getauthorUserid() {
+        return this.authorUserid;
     }
 
-    public void setAuthorId(Long authorid) {
-        this.authorid = authorid;
+    public void setauthorUserid(Long authorUserid) {
+        this.authorUserid = authorUserid;
     }
 
     public Boolean getContestActive() {
@@ -583,7 +583,7 @@ public abstract class AbstractContest {
     public int hashCode() {
         return Objects.hash(contestpk, contesttypeid, contestname, contestshortname, contesturlname,
                 contestyear, contestdescription, contestmodeldescription,
-                contestpositionsdescription, getCreated(), getUpdated(), authorid, contestactive,
+                contestpositionsdescription, getCreated(), getUpdated(), authorUserid, contestactive,
                 plantemplateid, contestscheduleid, proposalcreationtemplatestring,
                 votetemplatestring, proposalvotetemplatestring,
                 proposalvoteconfirmationtemplatestring, votequestiontemplatestring, focusareaid,
@@ -615,7 +615,7 @@ public abstract class AbstractContest {
                 .equals(contestmodeldescription, that.contestmodeldescription) && Objects
                 .equals(contestpositionsdescription, that.contestpositionsdescription) && Objects
                 .equals(getCreated(), that.getCreated()) && Objects
-                .equals(getUpdated(), that.getUpdated()) && Objects.equals(authorid, that.authorid)
+                .equals(getUpdated(), that.getUpdated()) && Objects.equals(authorUserid, that.authorUserid)
                 && Objects.equals(contestactive, that.contestactive) && Objects
                 .equals(plantemplateid, that.plantemplateid) && Objects
                 .equals(contestscheduleid, that.contestscheduleid) && Objects
@@ -662,7 +662,7 @@ public abstract class AbstractContest {
         return "Contest (" + contestpk + ", " + contesttypeid + ", " + contestname + ", "
                 + contestshortname + ", " + contesturlname + ", " + contestyear + ", "
                 + contestdescription + ", " + contestmodeldescription + ", "
-                + contestpositionsdescription + ", " + created + ", " + updated + ", " + authorid
+                + contestpositionsdescription + ", " + created + ", " + updated + ", " + authorUserid
                 + ", " + contestactive + ", " + plantemplateid + ", " + contestscheduleid + ", "
                 + proposalcreationtemplatestring + ", " + votetemplatestring + ", "
                 + proposalvotetemplatestring + ", " + proposalvoteconfirmationtemplatestring + ", "

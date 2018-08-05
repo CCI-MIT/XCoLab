@@ -41,7 +41,7 @@ public class ProposalsResult {
         private final long contestId;
         private final String team;
         private final String authorName;
-        private final long authorId;
+        private final long authorUserid;
         private final long dateSubscribed;
         private final long commentsCount;
         private final long supportersCount;
@@ -62,7 +62,7 @@ public class ProposalsResult {
             this.contestId = proposal.getContestPK();
             this.team = proposal.getTeam();
             this.authorName = proposal.getAuthorName();
-            this.authorId = proposal.getAuthorId();
+            this.authorUserid = proposal.getauthorUserid();
             //TODO COLAB-2628: get right date
             this.dateSubscribed = new Date().getTime();
             this.commentsCount = proposal.getCommentsCount();
@@ -103,8 +103,8 @@ public class ProposalsResult {
             return authorName;
         }
 
-        public long getAuthorId() {
-            return authorId;
+        public long getauthorUserid() {
+            return authorUserid;
         }
 
         public long getDateSubscribed() {

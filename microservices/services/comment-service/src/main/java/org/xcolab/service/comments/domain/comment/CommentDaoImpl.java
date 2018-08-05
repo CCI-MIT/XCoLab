@@ -26,12 +26,12 @@ public class CommentDaoImpl implements CommentDao {
     private DSLContext dslContext;
 
     @Override
-    public int countByGiven(Long authorId, Collection<Long> threadIds) {
+    public int countByGiven(Long authorUserid, Collection<Long> threadIds) {
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(COMMENT)
                 .getQuery();
-        if (authorId != null) {
-            query.addConditions(COMMENT.ID.eq(authorId));
+        if (authorUserid != null) {
+            query.addConditions(COMMENT.ID.eq(authorUserid));
         }
         if (threadIds != null) {
             query.addConditions(COMMENT.THREAD_ID.in(threadIds));
@@ -42,13 +42,13 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public List<Comment> findByGiven(PaginationHelper paginationHelper,
-            Long authorId, Collection<Long> threadIds, boolean includeDeleted) {
+            Long authorUserid, Collection<Long> threadIds, boolean includeDeleted) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(COMMENT)
                 .getQuery();
 
-        if (authorId != null) {
-            query.addConditions(COMMENT.ID.eq(authorId));
+        if (authorUserid != null) {
+            query.addConditions(COMMENT.ID.eq(authorUserid));
         }
         if (threadIds != null) {
             query.addConditions(COMMENT.THREAD_ID.in(threadIds));

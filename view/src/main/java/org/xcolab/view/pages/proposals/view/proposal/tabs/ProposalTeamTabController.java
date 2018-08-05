@@ -119,7 +119,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
     private void checkIsRemovingOwner(Proposal proposal, long removedMemberId)
             throws ProposalsAuthorizationException {
-        if (removedMemberId == proposal.getAuthorId()) {
+        if (removedMemberId == proposal.getauthorUserid()) {
             generateAuthorizationError(
                     String.format("The owner %d of proposal %d can not be removed from the team.",
                             removedMemberId, proposal.getProposalId()));

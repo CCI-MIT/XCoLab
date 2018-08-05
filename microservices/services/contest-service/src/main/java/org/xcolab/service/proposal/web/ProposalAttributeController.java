@@ -36,7 +36,7 @@ public class ProposalAttributeController {
 
     @PostMapping("/proposalAttributes/setProposalAttribute")
     public ProposalAttribute createProposalAttribute(
-            @RequestBody ProposalAttribute proposalAttribute, @RequestParam Long authorId) {
+            @RequestBody ProposalAttribute proposalAttribute, @RequestParam Long authorUserid) {
         if (proposalAttribute.getAdditionalId() == null) {
             proposalAttribute.setAdditionalId(0L);
         }
@@ -49,7 +49,7 @@ public class ProposalAttributeController {
         if (proposalAttribute.getNumericValue() == null) {
             proposalAttribute.setNumericValue(0L);
         }
-        return this.proposalAttributeService.setAttribute(proposalAttribute, authorId);
+        return this.proposalAttributeService.setAttribute(proposalAttribute, authorUserid);
     }
 
     @GetMapping("/proposalAttributes/{proposalAttributeId}")

@@ -27,8 +27,8 @@ public final class CommentClientUtil {
         return commentClient.countComments(threadId);
     }
 
-    public static int countCommentsByAuthor(long authorId) {
-        return commentClient.countCommentsByAuthor(authorId);
+    public static int countCommentsByAuthor(long authorUserid) {
+        return commentClient.countCommentsByAuthor(authorUserid);
     }
 
     public static Comment getComment(long commentId) throws CommentNotFoundException {

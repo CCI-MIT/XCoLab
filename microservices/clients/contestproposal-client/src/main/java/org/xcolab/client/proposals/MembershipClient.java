@@ -48,12 +48,12 @@ public class MembershipClient {
     }
 
     public void denyMembershipRequest(long proposalId, long userId, long membershipRequestId,
-            String reply, long updateAuthorId) {
+            String reply, long updateauthorUserid) {
         if (hasUserRequestedMembership(proposalId, userId)) {
             try {
                 MembershipRequest membershipRequest = getMembershipRequest(membershipRequestId);
                 membershipRequest.setStatusId(MembershipRequestStatus.STATUS_DENIED);
-                membershipRequest.setReplierUserId(updateAuthorId);
+                membershipRequest.setReplierUserId(updateauthorUserid);
                 membershipRequest.setReplyComments(reply);
                 membershipRequest.setReplyDate(new Timestamp((new Date()).getTime()));
                 updateMembershipRequest(membershipRequest);
@@ -100,14 +100,14 @@ public class MembershipClient {
     }
 
     public void approveMembershipRequest(long proposalId, Long userId, MembershipRequest request,
-            String reply, Long updateAuthorId) {
+            String reply, Long updateauthorUserid) {
 
         if (hasUserRequestedMembership(proposalId, userId)) {
             try {
                 MembershipRequest membershipRequest =
                         getMembershipRequest(request.getMembershipRequestId());
                 membershipRequest.setStatusId(MembershipRequestStatus.STATUS_APPROVED);
-                membershipRequest.setReplierUserId(updateAuthorId);
+                membershipRequest.setReplierUserId(updateauthorUserid);
                 membershipRequest.setReplyComments(reply);
                 membershipRequest.setReplyDate(new Timestamp((new Date()).getTime()));
                 updateMembershipRequest(membershipRequest);

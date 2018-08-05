@@ -146,9 +146,9 @@ public class ProposalsController {
     }
 
     @PostMapping(value = "/proposals/createProposal")
-    public Proposal createProposal(@RequestParam long authorId, @RequestParam long contestPhaseId,
+    public Proposal createProposal(@RequestParam long authorUserid, @RequestParam long contestPhaseId,
             @RequestParam boolean publishActivity) {
-        return proposalService.create(authorId, contestPhaseId, publishActivity);
+        return proposalService.create(authorUserid, contestPhaseId, publishActivity);
     }
 
     @PutMapping(value = "/proposals/{proposalId}")

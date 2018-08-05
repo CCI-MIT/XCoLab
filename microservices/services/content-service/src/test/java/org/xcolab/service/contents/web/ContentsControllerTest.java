@@ -91,7 +91,7 @@ public class ContentsControllerTest {
     @Test
     public void shouldCreateNewContentArticlesPost() throws Exception {
         ContentArticle contentArticle = new ContentArticle();
-        contentArticle.setAuthorId(1L);
+        contentArticle.setauthorUserid(1L);
         this.mockMvc.perform(
                 post("/contentArticles")
                         .contentType(contentType).accept(contentType)
@@ -183,7 +183,7 @@ public class ContentsControllerTest {
     public void shouldUpdateContentArticle() throws Exception {
 
         ContentArticle contentArticle = new ContentArticle();
-        contentArticle.setAuthorId(1L);
+        contentArticle.setauthorUserid(1L);
         contentArticle.setContentArticleId(12L);
         contentArticle.setFolderId(12L);
         this.mockMvc.perform(

@@ -87,9 +87,9 @@ public final class ProposalClientUtil {
         return client.getActiveProposalsInContestPhase(contestPhaseId);
     }
 
-    public static Proposal createProposal(long authorId, long contestPhaseId,
+    public static Proposal createProposal(long authorUserid, long contestPhaseId,
             boolean publishActivity) {
-        return client.createProposal(authorId, contestPhaseId, publishActivity);
+        return client.createProposal(authorUserid, contestPhaseId, publishActivity);
     }
 
     public static List<Proposal> getContestIntegrationRelevantSubproposals(

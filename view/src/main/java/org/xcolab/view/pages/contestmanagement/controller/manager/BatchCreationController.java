@@ -234,9 +234,9 @@ public class BatchCreationController {
             Long contestScheduleId,
             Long contestTierId,
             Long contestTypeId,
-            long authorId) {
+            long authorUserid) {
 
-        Contest contest = ContestCreatorUtil.createNewContest(contestShortName, authorId);
+        Contest contest = ContestCreatorUtil.createNewContest(contestShortName, authorUserid);
         contest.setContestDescription(contestDescription);
         contest.setContestName(contestQuestion);
         contest.setContestLogoId(contestLogoId);

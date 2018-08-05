@@ -77,12 +77,12 @@ public class ContentArticleDaoTest {
     @Test
     public void shouldUpdateContentArticle() throws Exception {
         ContentArticle ae = new ContentArticle();
-        ae.setAuthorId(3L);
+        ae.setauthorUserid(3L);
         ae = contentArticleDao.create(ae);
-        ae.setAuthorId(1L);
+        ae.setauthorUserid(1L);
         contentArticleDao.update(ae);
         ContentArticle az = contentArticleDao.get(ae.getContentArticleId());
-        assertEquals(az.getAuthorId(),ae.getAuthorId());
+        assertEquals(az.getauthorUserid(),ae.getauthorUserid());
 
     }
 

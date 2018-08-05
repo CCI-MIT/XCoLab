@@ -126,7 +126,7 @@
 								</td>
 								<td class="c-Comment ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
 									<c:choose>
-										<c:when test="${authorId == message.author.userId}">
+										<c:when test="${authorUserid == message.author.userId}">
 											<div class="thread-ribbon-container"><div>${contestType.proposalName} <br /> <spring:message code="discussion.commmentstag.proposal.creator"/></div></div>
 										</c:when>
 										<c:when test="${isContributing}">

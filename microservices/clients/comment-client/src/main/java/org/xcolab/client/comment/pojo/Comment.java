@@ -28,9 +28,9 @@ public class Comment extends AbstractComment {
         threadClient = ThreadClientUtil.getClient();
     }
 
-    public Comment(Long commentId, Long threadId, Long authorId, Timestamp createdAt,
+    public Comment(Long commentId, Long threadId, Long authorUserid, Timestamp createdAt,
             Timestamp updatedAt, Timestamp deletedAt, String content) {
-        super(commentId, threadId, authorId, createdAt, updatedAt, deletedAt, content);
+        super(commentId, threadId, authorUserid, createdAt, updatedAt, deletedAt, content);
         threadClient = ThreadClientUtil.getClient();
     }
 

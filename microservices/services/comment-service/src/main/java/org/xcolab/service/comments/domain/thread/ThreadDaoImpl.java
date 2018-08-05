@@ -37,7 +37,7 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorId,
+    public List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorUserid,
             Long categoryId, Long groupId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(THREAD)
@@ -47,8 +47,8 @@ public class ThreadDaoImpl implements ThreadDao {
             query.addJoin(CATEGORY, CATEGORY.ID.eq(THREAD.ID));
             query.addConditions(CATEGORY.GROUP_ID.eq(groupId));
         }
-        if (authorId != null) {
-            query.addConditions(THREAD.AUTHOR_USER_ID.eq(authorId));
+        if (authorUserid != null) {
+            query.addConditions(THREAD.AUTHOR_USER_ID.eq(authorUserid));
         }
         if (categoryId != null) {
             query.addConditions(THREAD.ID.eq(categoryId));
