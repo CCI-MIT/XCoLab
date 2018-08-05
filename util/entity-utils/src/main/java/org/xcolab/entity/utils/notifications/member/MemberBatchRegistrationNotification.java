@@ -6,7 +6,7 @@ import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.notifications.basic.MemberNotification;
@@ -41,7 +41,7 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
             return templateWrapper;
         }
 
-        final ContestEmailTemplate emailTemplate =
+        final EmailTemplate emailTemplate =
                 EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
         templateWrapper = new MemberBatchRegistrationTemplate(emailTemplate);
 
@@ -57,7 +57,7 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
 
     protected class MemberBatchRegistrationTemplate extends MemberNotificationTemplate {
 
-        public MemberBatchRegistrationTemplate(ContestEmailTemplate template) {
+        public MemberBatchRegistrationTemplate(EmailTemplate template) {
             super(template, null, null);
         }
 

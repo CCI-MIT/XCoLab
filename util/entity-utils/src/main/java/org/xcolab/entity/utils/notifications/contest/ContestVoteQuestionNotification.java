@@ -4,7 +4,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -39,7 +39,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
         if (voteQuestionTemplateString.isEmpty()) {
             voteQuestionTemplateString = DEFAULT_TEMPLATE_STRING;
         }
-        final ContestEmailTemplate emailTemplate =
+        final EmailTemplate emailTemplate =
                 EmailTemplateClientUtil.getContestEmailTemplateByType(voteQuestionTemplateString);
         templateWrapper = new ContestVoteQuestionTemplate(emailTemplate, contest.getContestShortName());
 
@@ -48,7 +48,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
 
     private class ContestVoteQuestionTemplate extends ContestNotificationTemplate {
 
-        public ContestVoteQuestionTemplate(ContestEmailTemplate template, String contestName) {
+        public ContestVoteQuestionTemplate(EmailTemplate template, String contestName) {
             super(template, "", contestName);
         }
 

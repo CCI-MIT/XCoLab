@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.wrappers;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
 import org.xcolab.commons.attributes.AttributeGetter;
@@ -71,7 +71,7 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
     @Override
     public void savePreferences() {
 
-        ContestEmailTemplate template = EmailTemplateClientUtil
+        EmailTemplate template = EmailTemplateClientUtil
                 .getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF);
         template.setHeader(termsOfService);
         EmailTemplateClientUtil.updateContestEmailTemplate(template);

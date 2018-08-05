@@ -5,7 +5,7 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -40,7 +40,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
         final String proposalName =
                 getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        final ContestEmailTemplate emailTemplate =
+        final EmailTemplate emailTemplate =
                 EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
         templateWrapper = new ProposalUserActionNotificationTemplate(emailTemplate,
                 proposalName, contest.getContestShortName());
@@ -50,7 +50,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
 
     protected class ProposalUserActionNotificationTemplate extends ProposalNotificationTemplate {
 
-        public ProposalUserActionNotificationTemplate(ContestEmailTemplate template, String proposalName,
+        public ProposalUserActionNotificationTemplate(EmailTemplate template, String proposalName,
                 String contestName) {
             super(template, proposalName, contestName);
         }

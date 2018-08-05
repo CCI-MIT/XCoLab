@@ -9,42 +9,42 @@ import java.io.Serializable;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ContestEmailTemplate implements Serializable {
+public class EmailTemplate implements Serializable {
 
-	public static final TypeProvider<ContestEmailTemplate> TYPES =
-			new TypeProvider<>(ContestEmailTemplate.class,
-					new ParameterizedTypeReference<List<ContestEmailTemplate>>() {
+	public static final TypeProvider<EmailTemplate> TYPES =
+			new TypeProvider<>(EmailTemplate.class,
+					new ParameterizedTypeReference<List<EmailTemplate>>() {
 					});
 
 	private static final long serialVersionUID = -689051730;
 
-	private String type_;
+	private String name;
 	private String subject;
 	private String header;
 	private String footer;
 
-	public ContestEmailTemplate() {}
+	public EmailTemplate() {}
 
-	public ContestEmailTemplate(ContestEmailTemplate value) {
-		this.type_ = value.type_;
+	public EmailTemplate(EmailTemplate value) {
+		this.name = value.name;
 		this.subject = value.subject;
 		this.header = value.header;
 		this.footer = value.footer;
 	}
 
-	public ContestEmailTemplate(String type_, String subject, String header, String footer) {
-		this.type_ = type_;
+	public EmailTemplate(String name, String subject, String header, String footer) {
+		this.name = name;
 		this.subject = subject;
 		this.header = header;
 		this.footer = footer;
 	}
 
-	public String getType_() {
-		return this.type_;
+	public String getName() {
+		return this.name;
 	}
 
-	public void setType_(String type_) {
-		this.type_ = type_;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getSubject() {
@@ -74,7 +74,7 @@ public class ContestEmailTemplate implements Serializable {
 	@Override
 	public String toString() {
 
-		return "ContestEmailTemplate (" + type_ +
+		return "ContestEmailTemplate (" + name +
 				", " + subject +
 				", " + header +
 				", " + footer +

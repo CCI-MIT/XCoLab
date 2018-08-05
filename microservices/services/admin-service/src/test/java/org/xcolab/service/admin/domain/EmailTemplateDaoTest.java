@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.ContestEmailTemplate;
+import org.xcolab.model.tables.pojos.EmailTemplate;
 import org.xcolab.service.admin.AdminTestUtils;
 import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
 
@@ -32,10 +32,10 @@ public class EmailTemplateDaoTest {
     @Test
     public void shouldSaveNewContestEmailTemplate(){
 
-        ContestEmailTemplate cet = AdminTestUtils.getContestEmailTemplate();
+        EmailTemplate cet = AdminTestUtils.getContestEmailTemplate();
         emailTemplateDao.createEmailTemplate(cet);
 
-        assertNotNull(emailTemplateDao.getEmailTemplate(cet.getType_()));
+        assertNotNull(emailTemplateDao.getEmailTemplate(cet.getName()));
 
     }
 
@@ -48,14 +48,14 @@ public class EmailTemplateDaoTest {
     public void shouldUpdateEmailTemplate(){
         String newStr = "DUPER2";
 
-        ContestEmailTemplate cet = AdminTestUtils.getContestEmailTemplate();
-        cet.setType_("NEWTYPEEMAILUPDATE");
+        EmailTemplate cet = AdminTestUtils.getContestEmailTemplate();
+        cet.setName("NEWTYPEEMAILUPDATE");
         emailTemplateDao.createEmailTemplate(cet);
 
         cet.setSubject(newStr);
         assertTrue(emailTemplateDao.updateEmailTemplate(cet));
 
-        cet = emailTemplateDao.getEmailTemplate(cet.getType_());
+        cet = emailTemplateDao.getEmailTemplate(cet.getName());
 
         assertNotNull(cet);
         assertEquals(cet.getSubject(),newStr);

@@ -6,7 +6,7 @@ import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.notifications.basic.MemberNotification;
 
@@ -39,7 +39,7 @@ public class MemberForgotPasswordNotification extends MemberNotification {
             return templateWrapper;
         }
 
-        final ContestEmailTemplate emailTemplate =
+        final EmailTemplate emailTemplate =
                 EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
         templateWrapper = new MemberForgotPasswordTemplate(emailTemplate, "", "");
 
@@ -53,7 +53,7 @@ public class MemberForgotPasswordNotification extends MemberNotification {
 
     protected class MemberForgotPasswordTemplate extends EmailNotificationTemplate {
 
-        public MemberForgotPasswordTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
+        public MemberForgotPasswordTemplate(EmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 

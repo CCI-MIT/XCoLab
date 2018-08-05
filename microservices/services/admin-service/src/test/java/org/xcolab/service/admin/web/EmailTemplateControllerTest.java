@@ -21,7 +21,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.model.tables.pojos.ContestEmailTemplate;
+import org.xcolab.model.tables.pojos.EmailTemplate;
 import org.xcolab.service.admin.AdminTestUtils;
 import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
 
@@ -90,7 +90,7 @@ public class EmailTemplateControllerTest {
     @Test
     public void shouldCreateNewEmailTemplatesInPost() throws Exception {
 
-        ContestEmailTemplate contestEmailTemplate = AdminTestUtils.getContestEmailTemplate();
+        EmailTemplate contestEmailTemplate = AdminTestUtils.getContestEmailTemplate();
         this.mockMvc.perform(
             post("/emailTemplates")
                 .contentType(contentType).accept(contentType)
@@ -102,9 +102,9 @@ public class EmailTemplateControllerTest {
     @Test
     public void shouldUpdateEmailTemplatesInPost() throws Exception {
 
-        ContestEmailTemplate contestEmailTemplate = AdminTestUtils.getContestEmailTemplate();
+        EmailTemplate contestEmailTemplate = AdminTestUtils.getContestEmailTemplate();
         this.mockMvc.perform(
-            put("/emailTemplates/"+contestEmailTemplate.getType_())
+            put("/emailTemplates/"+contestEmailTemplate.getName())
                 .contentType(contentType).accept(contentType)
                 .content(objectMapper.writeValueAsString(contestEmailTemplate)))
             .andExpect(status().isOk());

@@ -1,18 +1,30 @@
-DROP TABLE `xcolab_ConfigurationAttribute` IF EXISTS;
-CREATE TABLE  `xcolab_ConfigurationAttribute`  (
-  `name` varchar(75) NOT NULL,
-  `additionalId` bigint(20) NOT NULL,
-  locale varchar(5) default '' not null,
-  `numericValue` bigint(20) DEFAULT NULL,
-  `stringValue` longtext,
-  `realValue` double DEFAULT NULL,
-  PRIMARY KEY (`name`,`additionalId`)
+create table admin__configuration_attribute
+(
+  name          varchar(75)           not null,
+  additional_id bigint                not null,
+  numeric_value bigint                null,
+  string_value  longtext              null,
+  real_value    double                null,
+  locale        varchar(5) default '' not null,
+  primary key (name, additional_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `xcolab_ContestEmailTemplate` (
-  `type_` varchar(75) NOT NULL,
-  `subject` longtext,
-  `header` longtext,
-  `footer` longtext,
-  PRIMARY KEY (`type_`)
+  create table admin__contest_type_attribute
+(
+  name          varchar(75)           not null,
+  additional_id bigint                not null,
+  locale        varchar(5) default '' not null,
+  numeric_value bigint                null,
+  string_value  longtext              null,
+  real_value    double                null,
+  primary key (name, additional_id, locale)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+  create table admin__email_template
+(
+  name    varchar(75) not null
+    primary key,
+  subject longtext    null,
+  header  longtext    null,
+  footer  longtext    null
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

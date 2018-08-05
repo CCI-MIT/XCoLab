@@ -7,7 +7,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -44,7 +44,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
         final String proposalName = getProposalAttributeHelper()
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        final ContestEmailTemplate emailTemplate =
+        final EmailTemplate emailTemplate =
                 EmailTemplateClientUtil.getContestEmailTemplateByType(DEFAULT_TEMPLATE_NAME);
 
         templateWrapper = new ProposalMembershipRequestTemplate(emailTemplate,
@@ -77,7 +77,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
 
     private class ProposalMembershipRequestTemplate extends ProposalUserActionNotificationTemplate {
 
-        public ProposalMembershipRequestTemplate(ContestEmailTemplate template,
+        public ProposalMembershipRequestTemplate(EmailTemplate template,
                 String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
