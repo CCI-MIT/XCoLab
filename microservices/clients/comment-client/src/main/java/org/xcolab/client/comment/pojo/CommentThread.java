@@ -38,8 +38,8 @@ public class CommentThread extends AbstractCommentThread {
     }
 
     public CommentThread(Long threadId, Long categoryId, Long authorId, String title,
-            Timestamp createdAt, Timestamp deletedDate, Boolean isQuiet) {
-        super(threadId, categoryId, authorId, title, createdAt, deletedDate, isQuiet);
+            Timestamp createdAt, Timestamp deletedAt, Boolean isQuiet) {
+        super(threadId, categoryId, authorId, title, createdAt, deletedAt, isQuiet);
         commentClient = CommentClientUtil.getClient();
         threadClient = ThreadClientUtil.getClient();
         categoryClient = CategoryClientUtil.getClient();
