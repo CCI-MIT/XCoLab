@@ -596,11 +596,11 @@ public class Contest extends AbstractContest implements Serializable {
         if (discussionGroupId == null) {
             ContestType contestType = getContestType();
             CommentThread thread = new CommentThread();
-            thread.setAuthorId(getAuthorId());
+            thread.setAuthorUserId(getAuthorId());
             thread.setTitle(contestType.getContestName() + " discussion");
             thread.setIsQuiet(false);
             thread = threadClient.createThread(thread);
-            discussionGroupId = thread.getThreadId();
+            discussionGroupId = thread.getId();
             setDiscussionGroupId(discussionGroupId);
         }
         return discussionGroupId;

@@ -88,13 +88,13 @@ public class ProposalService {
             final CommentThread mainCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " main discussion",
                     authorId, false);
 
-            proposal.setDiscussionId(mainCommentThread.getThreadId());
+            proposal.setDiscussionId(mainCommentThread.getId());
 
 
             final CommentThread resultsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " results discussion",
                     authorId, true);
 
-            proposal.setResultsDiscussionId(resultsCommentThread.getThreadId());
+            proposal.setResultsDiscussionId(resultsCommentThread.getId());
 
             // create group
             Group_ group = createGroupAndSetUpPermissions(authorId, proposalId, contest);
@@ -167,7 +167,7 @@ public class ProposalService {
 
     private CommentThread createCommentThreadForProposal(String title, Long authorId, boolean isQuiet) {
         CommentThread commentThread = new CommentThread();
-        commentThread.setAuthorId(authorId);
+        commentThread.setAuthorUserId(authorId);
         commentThread.setCategoryId(null);
         commentThread.setTitle(title);
         commentThread.setIsQuiet(isQuiet);

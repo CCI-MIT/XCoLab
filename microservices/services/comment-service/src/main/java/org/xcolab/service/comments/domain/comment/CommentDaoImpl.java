@@ -31,12 +31,12 @@ public class CommentDaoImpl implements CommentDao {
                 .from(COMMENT)
                 .getQuery();
         if (authorId != null) {
-            query.addConditions(COMMENT.AUTHOR_ID.eq(authorId));
+            query.addConditions(COMMENT.ID.eq(authorId));
         }
         if (threadIds != null) {
             query.addConditions(COMMENT.THREAD_ID.in(threadIds));
         }
-        query.addConditions(COMMENT.DELETED_DATE.isNull());
+        query.addConditions(COMMENT.DELETED_AT.isNull());
         return query.fetchOne().into(Integer.class);
     }
 
@@ -48,7 +48,7 @@ public class CommentDaoImpl implements CommentDao {
                 .getQuery();
 
         if (authorId != null) {
-            query.addConditions(COMMENT.AUTHOR_ID.eq(authorId));
+            query.addConditions(COMMENT.ID.eq(authorId));
         }
         if (threadIds != null) {
             query.addConditions(COMMENT.THREAD_ID.in(threadIds));
@@ -58,12 +58,12 @@ public class CommentDaoImpl implements CommentDao {
             switch (sortColumn.getColumnName()) {
                 case "createDate":
                     query.addOrderBy(sortColumn.isAscending()
-                            ? COMMENT.CREATE_DATE.asc() : COMMENT.CREATE_DATE.desc());
+                            ? COMMENT.CREATED_AT.asc() : COMMENT.CREATED_AT.desc());
                     break;
             }
         }
         if (!includeDeleted) {
-            query.addConditions(COMMENT.DELETED_DATE.isNull());
+            query.addConditions(COMMENT.DELETED_AT.isNull());
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Comment.class);
@@ -73,7 +73,7 @@ public class CommentDaoImpl implements CommentDao {
     public Comment get(long commentId) throws NotFoundException {
         final Record commentRecord = dslContext.select()
                 .from(COMMENT)
-                .where(COMMENT.COMMENT_ID.eq(commentId))
+                .where(COMMENT.ID.eq(commentId))
                 .fetchOne();
         if (commentRecord == null) {
             throw new NotFoundException("Comment with id " + commentId + " does not exist");
@@ -85,7 +85,7 @@ public class CommentDaoImpl implements CommentDao {
     public boolean exists(long commentId) {
         return dslContext.fetchExists(DSL.select()
                 .from(COMMENT)
-                .where(COMMENT.COMMENT_ID.eq(commentId)));
+                .where(COMMENT.ID.eq(commentId)));
     }
 
     @Override
@@ -93,12 +93,12 @@ public class CommentDaoImpl implements CommentDao {
 
         return dslContext.update(COMMENT)
                 .set(COMMENT.THREAD_ID, comment.getThreadId())
-                .set(COMMENT.CREATE_DATE, comment.getCreateDate())
-                .set(COMMENT.MODIFIED_DATE, comment.getModifiedDate())
-                .set(COMMENT.AUTHOR_ID, comment.getAuthorId())
+                .set(COMMENT.CREATED_AT, comment.getCreatedAt())
+                .set(COMMENT.UPDATED_AT, comment.getUpdatedAt())
+                .set(COMMENT.ID, comment.getAuthorUserId())
                 .set(COMMENT.CONTENT, comment.getContent())
-                .set(COMMENT.DELETED_DATE, comment.getDeletedDate())
-                .where(COMMENT.COMMENT_ID.equal(comment.getCommentId()))
+                .set(COMMENT.DELETED_AT, comment.getDeletedAt())
+                .where(COMMENT.ID.equal(comment.getId()))
                 .execute() > 0;
     }
 
@@ -106,15 +106,15 @@ public class CommentDaoImpl implements CommentDao {
     public Comment create(Comment comment) {
         final CommentRecord commentRecord = dslContext.insertInto(COMMENT)
                 .set(COMMENT.THREAD_ID, comment.getThreadId())
-                .set(COMMENT.CREATE_DATE, comment.getCreateDate())
-                .set(COMMENT.MODIFIED_DATE, comment.getModifiedDate())
-                .set(COMMENT.AUTHOR_ID, comment.getAuthorId())
+                .set(COMMENT.CREATED_AT, comment.getCreatedAt())
+                .set(COMMENT.UPDATED_AT, comment.getUpdatedAt())
+                .set(COMMENT.ID, comment.getAuthorUserId())
                 .set(COMMENT.CONTENT, comment.getContent())
-                .set(COMMENT.DELETED_DATE, comment.getDeletedDate())
-                .returning(COMMENT.COMMENT_ID)
+                .set(COMMENT.DELETED_AT, comment.getDeletedAt())
+                .returning(COMMENT.ID)
                 .fetchOne();
         if (commentRecord != null) {
-            comment.setCommentId(commentRecord.getCommentId());
+            comment.setId(commentRecord.getId());
             return comment;
         }
         return null;

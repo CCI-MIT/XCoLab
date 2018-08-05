@@ -75,7 +75,7 @@ public class CommentController {
             @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
             throws NotFoundException {
         final Comment comment = commentDao.get(commentId);
-        if (comment.getDeletedDate() == null || includeDeleted) {
+        if (comment.getDeletedAt() == null || includeDeleted) {
             return comment;
         } else {
             throw new NotFoundException();
@@ -86,18 +86,18 @@ public class CommentController {
 
     @PostMapping("/comments")
     public Comment createComment(@RequestBody Comment comment) {
-        comment.setCreateDate(new Timestamp(new Date().getTime()));
+        comment.setCreatedAt(new Timestamp(new Date().getTime()));
         return commentDao.create(comment);
     }
 
     @DeleteMapping("/comments/{commentId}")
     public boolean deleteComment(@PathVariable Long commentId) throws NotFoundException {
         Comment comment = commentDao.get(commentId);
-        comment.setDeletedDate(new Timestamp(new Date().getTime()));
+        comment.setDeletedAt(new Timestamp(new Date().getTime()));
         //If last comment in thread, delete thread
         if(commentDao.countByGiven(null, Collections.singletonList(comment.getThreadId())) == 1) {
             Thread thread = threadDao.get(comment.getThreadId());
-            thread.setDeletedDate(new Timestamp(new Date().getTime()));
+            thread.setDeletedAt(new Timestamp(new Date().getTime()));
             threadDao.update(thread);
         }
         return commentDao.update(comment);
@@ -107,7 +107,7 @@ public class CommentController {
     public boolean updateComment(@RequestBody Comment comment, @PathVariable Long commentId)
             throws NotFoundException {
         commentDao.get(commentId);
-        comment.setModifiedDate(new Timestamp(new Date().getTime()));
+        comment.setUpdatedAt(new Timestamp(new Date().getTime()));
         return commentDao.update(comment);
     }
 
@@ -144,7 +144,7 @@ public class CommentController {
 
     @PostMapping("/categories")
     public Category createCategory(@RequestBody Category category) {
-        category.setCreateDate(new Timestamp(new Date().getTime()));
+        category.setCreatedAt(new Timestamp(new Date().getTime()));
         return categoryDao.create(category);
     }
 
@@ -187,7 +187,7 @@ public class CommentController {
 
     @PostMapping("/threads")
     public Thread createThread(@RequestBody Thread thread) {
-        thread.setCreateDate(new Timestamp(new Date().getTime()));
+        thread.setCreatedAt(new Timestamp(new Date().getTime()));
         return threadDao.create(thread);
     }
 
@@ -204,7 +204,7 @@ public class CommentController {
     @GetMapping("/threads/{threadId}/lastActivityDate")
     public Date getLastActivityDate(@PathVariable long threadId) {
         return threadDao.getLastComment(threadId)
-                .map(Comment::getCreateDate)
+                .map(Comment::getCreatedAt)
                 .map(timestamp -> new Date(timestamp.getTime()))
                 .orElse(new Date(0));
     }
@@ -212,7 +212,7 @@ public class CommentController {
     @GetMapping("/threads/{threadId}/lastActivityAuthorId")
     public long getLastActivityAuthor(@PathVariable long threadId) throws NotFoundException {
         return threadDao.getLastComment(threadId)
-                .map(Comment::getAuthorId)
+                .map(Comment::getAuthorUserId)
                 .orElseThrow(NotFoundException::new);
     }
 }

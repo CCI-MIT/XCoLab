@@ -94,21 +94,21 @@ public class ThreadController extends BaseDiscussionController {
             CommentThread thread = new CommentThread();
             thread.setCategoryId(categoryId);
             thread.setTitle(HtmlUtil.cleanAll(title));
-            thread.setAuthorId(memberId);
+            thread.setAuthorUserId(memberId);
             thread.setIsQuiet(false);
             thread = ThreadClientUtil.createThread(thread);
 
             Comment comment = new Comment();
-            comment.setThreadId(thread.getThreadId());
+            comment.setThreadId(thread.getId());
             final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             comment.setContent(HtmlUtil.cleanSome(body, baseUri));
-            comment.setAuthorId(memberId);
+            comment.setAuthorUserId(memberId);
             comment = CommentClientUtil.createComment(comment);
 
             if (!thread.getIsQuiet()) {
                 final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
                 activityClient.createActivityEntry(DiscussionThreadActivityType.CREATED, memberId,
-                        thread.getThreadId());
+                        thread.getId());
             }
 
             return "redirect:" + thread.getLinkUrl();
@@ -121,8 +121,8 @@ public class ThreadController extends BaseDiscussionController {
     public boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
         try {
             CommentThread thread = ThreadClientUtil.getThread(additionalId);
-            return thread.getCategory().getCategoryGroup().getGroupId()
-                    .equals(categoryGroup.getGroupId());
+            return thread.getCategory().getCategoryGroup().getId()
+                    .equals(categoryGroup.getId());
         } catch (ThreadNotFoundException e) {
             return false;
         }

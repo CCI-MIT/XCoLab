@@ -34,7 +34,7 @@ public class CategoryGroupDaoImpl implements CategoryGroupDao {
     public CategoryGroup get(long groupId) throws NotFoundException {
         final Record groupRecord = dslContext.select()
                 .from(CATEGORY_GROUP)
-                .where(CATEGORY_GROUP.GROUP_ID.eq(groupId))
+                .where(CATEGORY_GROUP.ID.eq(groupId))
                 .fetchOne();
         if (groupRecord == null) {
             throw new NotFoundException("CategoryGroup with id " + groupId + " does not exist");
@@ -48,7 +48,7 @@ public class CategoryGroupDaoImpl implements CategoryGroupDao {
                 .set(CATEGORY_GROUP.IS_QUIET, group.getIsQuiet())
                 .set(CATEGORY_GROUP.DESCRIPTION, group.getDescription())
                 .set(CATEGORY_GROUP.URL, group.getUrl())
-                .where(CATEGORY_GROUP.GROUP_ID.equal(group.getGroupId()))
+                .where(CATEGORY_GROUP.ID.equal(group.getId()))
                 .execute() > 0;
     }
 
@@ -58,10 +58,10 @@ public class CategoryGroupDaoImpl implements CategoryGroupDao {
                 .set(CATEGORY_GROUP.IS_QUIET, group.getIsQuiet())
                 .set(CATEGORY_GROUP.DESCRIPTION, group.getDescription())
                 .set(CATEGORY_GROUP.URL, group.getUrl())
-                .returning(CATEGORY_GROUP.GROUP_ID)
+                .returning(CATEGORY_GROUP.ID)
                 .fetchOne();
         if (groupRecord != null) {
-            group.setGroupId(groupRecord.getGroupId());
+            group.setId(groupRecord.getId());
             return group;
         }
         return null;

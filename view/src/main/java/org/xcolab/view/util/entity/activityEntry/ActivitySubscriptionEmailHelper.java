@@ -221,7 +221,7 @@ public class ActivitySubscriptionEmailHelper {
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
                         Long commentId = activityEntry.getAdditionalId();
                         Comment comment = CommentClientUtil.getComment(commentId, true);
-                        if (comment.getDeletedDate() != null) {
+                        if (comment.getDeletedAt() != null) {
                             bodyWithComment.append("<b>COMMENT ALREADY DELETED</b>");
                         }
                         bodyWithComment.append(comment.getContent());

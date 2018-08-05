@@ -55,17 +55,17 @@ public class CommentThread extends AbstractCommentThread {
 
     @JsonIgnore
     public int getCommentsCount() {
-        return commentClient.countComments(getThreadId());
+        return commentClient.countComments(getId());
     }
 
     @JsonIgnore
     public List<Comment> getComments() {
-        return commentClient.listComments(0, Integer.MAX_VALUE, getThreadId());
+        return commentClient.listComments(0, Integer.MAX_VALUE, getId());
     }
 
     @JsonIgnore
     public long getLastActivityAuthorId() {
-        return threadClient.getLastActivityAuthorId(getThreadId());
+        return threadClient.getLastActivityAuthorId(getId());
     }
 
     @JsonIgnore
@@ -79,7 +79,7 @@ public class CommentThread extends AbstractCommentThread {
 
     @JsonIgnore
     public Date getLastActivityDate() {
-        return threadClient.getLastActivityDate(getThreadId());
+        return threadClient.getLastActivityDate(getId());
     }
 
     @JsonIgnore
@@ -90,7 +90,7 @@ public class CommentThread extends AbstractCommentThread {
     @JsonIgnore
     public Member getAuthor() {
         try {
-            return MembersClient.getMember(getAuthorId());
+            return MembersClient.getMember(getAuthorUserId());
         } catch (MemberNotFoundException e) {
             throw new KeyReferenceException(e);
         }
@@ -115,7 +115,7 @@ public class CommentThread extends AbstractCommentThread {
         if(category!=null) {
             final CategoryGroup categoryGroup = category.getCategoryGroup();
             if (categoryGroup != null) {
-                return categoryGroup.getLinkUrl() + "/thread/" + getThreadId();
+                return categoryGroup.getLinkUrl() + "/thread/" + getId();
             }
         }
         //TODO COLAB-2592: handle proposal comments

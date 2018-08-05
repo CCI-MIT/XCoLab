@@ -339,10 +339,10 @@ public class Proposal extends AbstractProposal {
     private long createDiscussionThread(String threadTitleSuffix, boolean isQuiet) {
         final ContestType contestType = getContest().getContestType();
         CommentThread thread = new CommentThread();
-        thread.setAuthorId(getAuthorId());
+        thread.setAuthorUserId(getAuthorId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return clients.thread.createThread(thread).getThreadId();
+        return clients.thread.createThread(thread).getId();
     }
 
     public long getDiscussionIdOrCreate() {

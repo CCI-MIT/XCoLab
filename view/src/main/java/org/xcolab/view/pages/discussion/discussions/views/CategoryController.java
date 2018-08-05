@@ -55,7 +55,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortAscending", sortAscending);
 
         model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(
-                memberId, ActivityCategory.DISCUSSION, categoryGroup.getGroupId(), ""));
+                memberId, ActivityCategory.DISCUSSION, categoryGroup.getId(), ""));
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         model.addAttribute("discussionPermissions", discussionPermissions);
@@ -93,7 +93,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortAscending", sortAscending);
 
         model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(memberId,
-                ActivityCategory.DISCUSSION, currentCategory.getCategoryId()));
+                ActivityCategory.DISCUSSION, currentCategory.getId()));
 
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
@@ -176,7 +176,7 @@ public class CategoryController extends BaseDiscussionController {
                 return "redirect:/discussion/category/"+categoryId;
             } else {
                 ActivitiesClientUtil.addSubscription(memberId,
-                        ActivityCategory.DISCUSSION, categoryGroup.getGroupId(), "");
+                        ActivityCategory.DISCUSSION, categoryGroup.getId(), "");
                 return "redirect:/discussion";
             }
         }
@@ -205,7 +205,7 @@ public class CategoryController extends BaseDiscussionController {
 
             } else {
                 ActivitiesClientUtil.deleteSubscription(memberId,
-                        ActivityCategory.DISCUSSION, categoryGroup.getGroupId());
+                        ActivityCategory.DISCUSSION, categoryGroup.getId());
                 return "redirect:/discussion";
             }
         }

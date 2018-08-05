@@ -88,7 +88,7 @@ class CommentServiceWrapper {
     }
 
     public boolean updateComment(CommentDto comment) {
-        return commentResource.update(comment, comment.getCommentId()).execute();
+        return commentResource.update(comment, comment.getId()).execute();
     }
 
     public CommentDto createComment(CommentDto comment) {
@@ -124,7 +124,7 @@ class CommentServiceWrapper {
     }
 
     public boolean updateThread(CommentThreadDto thread) {
-        return threadResource.update(thread, thread.getThreadId()).execute();
+        return threadResource.update(thread, thread.getId()).execute();
     }
 
     public CommentThreadDto createThread(CommentThreadDto thread) {
@@ -190,7 +190,7 @@ class CommentServiceWrapper {
     }
 
     public boolean updateCategory(CategoryDto category) {
-        return categoryResource.update(category, category.getCategoryId()).execute();
+        return categoryResource.update(category, category.getId()).execute();
     }
 
     public CategoryDto createCategory(CategoryDto category) {

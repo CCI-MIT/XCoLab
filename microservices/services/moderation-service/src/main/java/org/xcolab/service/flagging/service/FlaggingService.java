@@ -121,8 +121,8 @@ public class FlaggingService {
 
     private void approveComment(long commentId) throws CommentNotFoundException {
         final Comment comment = CommentClientUtil.getComment(commentId, true);
-        if (comment.getDeletedDate() != null) {
-            comment.setDeletedDate(null);
+        if (comment.getDeletedAt() != null) {
+            comment.setDeletedAt(null);
             CommentClientUtil.updateComment(comment);
         }
     }

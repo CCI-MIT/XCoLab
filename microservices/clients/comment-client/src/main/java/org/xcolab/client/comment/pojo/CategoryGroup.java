@@ -41,12 +41,12 @@ public class CategoryGroup extends AbstractCategoryGroup {
     @JsonIgnore
     public List<CommentThread> getThreads(ThreadSortColumn sortColumn, boolean ascending) {
         return threadClient.listThreads(0, Integer.MAX_VALUE,
-                null, getGroupId(), sortColumn, ascending);
+                null, getId(), sortColumn, ascending);
     }
 
     @JsonIgnore
     public List<Category> getCategories() {
-        return categoryClient.listCategories(0, Integer.MAX_VALUE, getGroupId());
+        return categoryClient.listCategories(0, Integer.MAX_VALUE, getId());
     }
 
     @JsonIgnore

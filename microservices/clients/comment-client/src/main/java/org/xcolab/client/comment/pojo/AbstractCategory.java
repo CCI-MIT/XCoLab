@@ -7,50 +7,50 @@ abstract class AbstractCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long categoryId;
+    private Long id;
     private Long groupId;
-    private Long authorId;
+    private Long authorUserId;
     private String name;
     private String description;
-    private Timestamp createDate;
-    private Timestamp deletedDate;
+    private Timestamp createdAt;
+    private Timestamp deletedAt;
     private Integer sort;
     private Boolean isQuiet;
 
     AbstractCategory() {
     }
 
-    AbstractCategory(Long categoryId, Long groupId, Long authorId, String name, String description,
-            Timestamp createDate, Timestamp deletedDate, Integer sort, Boolean isQuiet) {
-        this.categoryId = categoryId;
+    AbstractCategory(Long id, Long groupId, Long authorUserId, String name, String description,
+            Timestamp createdAt, Timestamp deletedAt, Integer sort, Boolean isQuiet) {
+        this.id = id;
         this.groupId = groupId;
-        this.authorId = authorId;
+        this.authorUserId = authorUserId;
         this.name = name;
         this.description = description;
-        this.createDate = createDate;
-        this.deletedDate = deletedDate;
+        this.createdAt = createdAt;
+        this.deletedAt = deletedAt;
         this.sort = sort;
         this.isQuiet = isQuiet;
     }
 
     AbstractCategory(AbstractCategory category) {
-        this.categoryId = category.categoryId;
+        this.id = category.id;
         this.groupId = category.groupId;
-        this.authorId = category.authorId;
+        this.authorUserId = category.authorUserId;
         this.name = category.name;
         this.description = category.description;
-        this.createDate = category.createDate;
-        this.deletedDate = category.deletedDate;
+        this.createdAt = category.createdAt;
+        this.deletedAt = category.deletedAt;
         this.sort = category.sort;
         this.isQuiet = category.isQuiet;
     }
 
-    public Long getCategoryId() {
-        return this.categoryId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getGroupId() {
@@ -61,12 +61,12 @@ abstract class AbstractCategory implements Serializable {
         this.groupId = groupId;
     }
 
-    public Long getAuthorId() {
-        return this.authorId;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
     public String getName() {
@@ -85,20 +85,20 @@ abstract class AbstractCategory implements Serializable {
         this.description = description;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getDeletedDate() {
-        return this.deletedDate;
+    public Timestamp getDeletedAt() {
+        return this.deletedAt;
     }
 
-    public void setDeletedDate(Timestamp deletedDate) {
-        this.deletedDate = deletedDate;
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     public Integer getSort() {
@@ -121,13 +121,13 @@ abstract class AbstractCategory implements Serializable {
     public String toString() {
 
         return  getClass().getSimpleName() +
-                " (" + categoryId +
+                " (" + id +
                 ", " + groupId +
-                ", " + authorId +
+                ", " + authorUserId +
                 ", " + name +
                 ", " + description +
-                ", " + createDate +
-                ", " + deletedDate +
+                ", " + createdAt +
+                ", " + deletedAt +
                 ", " + sort +
                 ", " + isQuiet +
                 ")";

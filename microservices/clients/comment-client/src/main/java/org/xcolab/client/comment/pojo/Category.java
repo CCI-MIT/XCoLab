@@ -46,7 +46,7 @@ public class Category extends AbstractCategory {
     @JsonIgnore
     public List<CommentThread> getThreads(ThreadSortColumn sortColumn, boolean ascending) {
         return threadClient.listThreads(0, Integer.MAX_VALUE,
-                getCategoryId(), null, sortColumn, ascending);
+                getId(), null, sortColumn, ascending);
     }
 
     @JsonIgnore
@@ -66,7 +66,7 @@ public class Category extends AbstractCategory {
     public String getLinkUrl() {
         final CategoryGroup categoryGroup = getCategoryGroup();
         if (categoryGroup != null) {
-            return categoryGroup.getLinkUrl() + "/category/" + getCategoryId();
+            return categoryGroup.getLinkUrl() + "/category/" + getId();
         }
         return "";
     }

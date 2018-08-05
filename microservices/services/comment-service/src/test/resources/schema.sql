@@ -5,10 +5,10 @@ drop table comment_CategoryGroup if exists;
 
 create table comment_Category
 (
-	categoryId bigint not null auto_increment
+	id bigint not null auto_increment
     primary key,
 	groupId bigint null,
-	authorId bigint null,
+	authorUserId bigint null,
 	name varchar(75) null,
 	description text null,
 	createDate datetime not null,
@@ -31,7 +31,7 @@ create table comment_Comment
 	commentId bigint not null auto_increment
 		primary key,
 	threadId bigint not null,
-	authorId bigint null,
+	authorUserId bigint null,
 	createDate datetime null,
 	modifiedDate datetime null,
 	deletedDate datetime null,
@@ -42,8 +42,8 @@ create table comment_Thread
 (
 	threadId bigint not null auto_increment
 		primary key,
-	categoryId bigint null,
-	authorId bigint not null,
+	id bigint null,
+	authorUserId bigint not null,
 	title varchar(255) not null,
 	createDate datetime not null,
 	deletedDate datetime null,

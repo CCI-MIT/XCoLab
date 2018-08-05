@@ -31,7 +31,7 @@
                 enableDirtyCheck();
             });
         </script>
-        <xcolab:discussionComments threadId="${thread.threadId}"/>
+        <xcolab:discussionComments threadId="${thread.id}"/>
     </div>
 </xcolab:layout>
 </jsp:root>

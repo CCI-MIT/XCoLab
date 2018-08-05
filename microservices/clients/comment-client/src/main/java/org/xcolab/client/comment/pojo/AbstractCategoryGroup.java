@@ -6,7 +6,7 @@ abstract class AbstractCategoryGroup implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long groupId;
+    private Long id;
     private String description;
     private String url;
     private Boolean isQuiet;
@@ -14,26 +14,26 @@ abstract class AbstractCategoryGroup implements Serializable {
     AbstractCategoryGroup() {
     }
 
-    AbstractCategoryGroup(Long groupId, String description, String url, Boolean isQuiet) {
-        this.groupId = groupId;
+    AbstractCategoryGroup(Long id, String description, String url, Boolean isQuiet) {
+        this.id = id;
         this.description = description;
         this.url = url;
         this.isQuiet = isQuiet;
     }
 
     AbstractCategoryGroup(AbstractCategoryGroup categoryGroup) {
-        this.groupId = categoryGroup.groupId;
+        this.id = categoryGroup.id;
         this.description = categoryGroup.description;
         this.url = categoryGroup.url;
         this.isQuiet = categoryGroup.isQuiet;
     }
 
-    public Long getGroupId() {
-        return this.groupId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -64,7 +64,7 @@ abstract class AbstractCategoryGroup implements Serializable {
     public String toString() {
 
         return getClass().getSimpleName() +
-                " (" + groupId +
+                " (" + id +
                 ", " + description +
                 ", " + url +
                 ", " + isQuiet +

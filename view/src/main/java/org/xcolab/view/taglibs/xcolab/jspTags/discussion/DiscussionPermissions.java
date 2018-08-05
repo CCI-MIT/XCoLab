@@ -38,8 +38,8 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanReportMessage(Comment comment) {
-        return getCanReport() && comment.getAuthorId() != memberId && FlaggingClient
-                .countReports(memberId, TargetType.COMMENT, comment.getCommentId(), null, null)
+        return getCanReport() && comment.getAuthorUserId() != memberId && FlaggingClient
+                .countReports(memberId, TargetType.COMMENT, comment.getId(), null, null)
                 == 0;
     }
 
@@ -72,12 +72,12 @@ public class DiscussionPermissions {
     }
 
     private boolean isAuthor(Comment comment) {
-        return comment.getAuthorId() == memberId;
+        return comment.getAuthorUserId() == memberId;
     }
 
     private boolean isRecent(Comment comment, int recencyInMinutes) {
         Instant now = Instant.now();
-        return comment.getCreateDate().toInstant().plus(recencyInMinutes, ChronoUnit.MINUTES)
+        return comment.getCreatedAt().toInstant().plus(recencyInMinutes, ChronoUnit.MINUTES)
                 .isAfter(now);
     }
 

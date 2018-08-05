@@ -55,7 +55,7 @@ public class Comment extends AbstractComment {
 
     public Member getAuthor() {
         try {
-            return MembersClient.getMember(getAuthorId());
+            return MembersClient.getMember(getAuthorUserId());
         } catch (MemberNotFoundException e) {
             throw new KeyReferenceException(e);
         }
@@ -74,6 +74,6 @@ public class Comment extends AbstractComment {
     }
 
     public String getLinkUrl() {
-        return getThread().getLinkUrl() + "#message_" + getCommentId();
+        return getThread().getLinkUrl() + "#message_" + getId();
     }
 }
