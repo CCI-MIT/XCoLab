@@ -16,12 +16,6 @@
 
 	<dependencies>
 
-        <dependency>
-            <groupId>org.xcolab</groupId>
-            <artifactId>admin-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
     </dependencies>
 	
 	<build>
@@ -49,7 +43,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>xcolab_TrackedVisit|xcolab_TrackedVisitor2User|xcolab_BalloonUserTracking|xcolab_BalloonLink|xcolab_BalloonText</includes>
+							<includes>tracking__.+</includes>
 						</database>
 					</generator>
 				</configuration>

@@ -68,7 +68,7 @@ public class UserTrackingFilter extends OncePerRequestFilter {
             // that is being generated
             try {
                 final TrackedVisit trackedVisit = trackedVisitFuture.get();
-                userTrackingCookie =  new Cookie(COOKIE_NAME, trackedVisit.getUuid_());
+                userTrackingCookie =  new Cookie(COOKIE_NAME, trackedVisit.getVisitorUuid());
                 userTrackingCookie.setHttpOnly(true);
                 userTrackingCookie.setMaxAge((int) COOKIE_MAX_AGE);
                 response.addCookie(userTrackingCookie);

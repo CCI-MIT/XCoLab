@@ -58,7 +58,7 @@ public class BalloonController {
                 balloonService.getOrCreateBalloonUserTracking(request, response, null, null);
         try {
             BalloonLink balloonLink =
-                    BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
+                    BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid());
             return "redirect:" + balloonLink.getTargetUrl();
         } catch (BalloonLinkNotFoundException e) {
             // user has no link -> continue and show page
@@ -105,7 +105,7 @@ public class BalloonController {
 
         try {
             BalloonLink balloonLink =
-                    BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
+                    BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid());
             return "redirect:" + balloonLink.getTargetUrl();
         } catch (BalloonLinkNotFoundException e) {
             // user has no link -> continue and create one
@@ -176,7 +176,7 @@ public class BalloonController {
 
         if (StringUtils.isNotBlank(but.getEmail())) {
             try {
-                BalloonLink bl = BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
+                BalloonLink bl = BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid());
                 model.addAttribute("shareLink", LinkUtils.getAbsoluteUrl(bl.getTargetUrl()));
                 model.addAttribute("balloonLink", bl);
                 return SHARE_VIEW;

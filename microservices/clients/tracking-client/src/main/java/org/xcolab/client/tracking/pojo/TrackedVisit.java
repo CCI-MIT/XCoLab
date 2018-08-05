@@ -15,8 +15,8 @@ public class TrackedVisit implements Serializable {
 
     private static final long serialVersionUID = 1556490672;
 
-    private Long id_;
-    private String uuid_;
+    private Long id;
+    private String visitorUuid;
     private String ip;
     private String city;
     private String country;
@@ -30,8 +30,8 @@ public class TrackedVisit implements Serializable {
     }
 
     public TrackedVisit(TrackedVisit value) {
-        this.id_ = value.id_;
-        this.uuid_ = value.uuid_;
+        this.id = value.id;
+        this.visitorUuid = value.visitorUuid;
         this.ip = value.ip;
         this.city = value.city;
         this.country = value.country;
@@ -42,10 +42,10 @@ public class TrackedVisit implements Serializable {
         this.createdAt = value.createdAt;
     }
 
-    public TrackedVisit(Long id_, String uuid_, String ip, String city, String country,
+    public TrackedVisit(Long id, String visitorUuid, String ip, String city, String country,
             String url, String browser, String headers, String referer, Timestamp createdAt) {
-        this.id_ = id_;
-        this.uuid_ = uuid_;
+        this.id = id;
+        this.visitorUuid = visitorUuid;
         this.ip = ip;
         this.city = city;
         this.country = country;
@@ -56,20 +56,20 @@ public class TrackedVisit implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getUuid_() {
-        return this.uuid_;
+    public String getVisitorUuid() {
+        return this.visitorUuid;
     }
 
-    public void setUuid_(String uuid_) {
-        this.uuid_ = uuid_;
+    public void setVisitorUuid(String visitorUuid) {
+        this.visitorUuid = visitorUuid;
     }
 
     public String getIp() {
@@ -148,18 +148,18 @@ public class TrackedVisit implements Serializable {
             return false;
         }
         final TrackedVisit other = (TrackedVisit) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
-        if (uuid_ == null) {
-            if (other.uuid_ != null) {
+        if (visitorUuid == null) {
+            if (other.visitorUuid != null) {
                 return false;
             }
-        } else if (!uuid_.equals(other.uuid_)) {
+        } else if (!visitorUuid.equals(other.visitorUuid)) {
             return false;
         }
         if (ip == null) {
@@ -225,8 +225,8 @@ public class TrackedVisit implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
-        result = prime * result + ((uuid_ == null) ? 0 : uuid_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((visitorUuid == null) ? 0 : visitorUuid.hashCode());
         result = prime * result + ((ip == null) ? 0 : ip.hashCode());
         result = prime * result + ((city == null) ? 0 : city.hashCode());
         result = prime * result + ((country == null) ? 0 : country.hashCode());
@@ -241,8 +241,8 @@ public class TrackedVisit implements Serializable {
     @Override
     public String toString() {
 
-        return "TrackedVisit (" + id_ +
-                ", " + uuid_ +
+        return "TrackedVisit (" + id +
+                ", " + visitorUuid +
                 ", " + ip +
                 ", " + city +
                 ", " + country +

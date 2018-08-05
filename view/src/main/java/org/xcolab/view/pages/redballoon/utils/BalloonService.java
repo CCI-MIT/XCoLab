@@ -58,10 +58,10 @@ public class BalloonService {
             throws BalloonTextNotFoundException {
 
         BalloonLink link = new BalloonLink();
-        link.setUuid_(UUID.randomUUID().toString());
-        link.setBalloonUserUuid(but.getUuid_());
+        link.setUuid(UUID.randomUUID().toString());
+        link.setBalloonUserUuid(but.getUuid());
         link.setCreatedAt(new Timestamp(new Date().getTime()));
-        link.setTargetUrl(getSnpLinkUrl(link.getUuid_()));
+        link.setTargetUrl(getSnpLinkUrl(link.getUuid()));
         link = BalloonsClient.createBalloonLink(link);
 
         BalloonText text = BalloonsClient.getBalloonText(but.getBalloonTextId());
@@ -121,7 +121,7 @@ public class BalloonService {
             BalloonUserTracking but = getBalloonUserTrackingForMember(member);
             if (but != null) {
                 but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
-                BalloonCookie cookie = BalloonCookie.of(but.getUuid_());
+                BalloonCookie cookie = BalloonCookie.of(but.getUuid());
                 response.addCookie(cookie.getHttpCookie());
                 return Optional.of(but);
             }
@@ -183,7 +183,7 @@ public class BalloonService {
     private BalloonUserTracking createBalloonUserTracking(String uuid, String parent,
             String linkUuid, Member member, String remoteIp, String referrer, String userAgent) {
         BalloonUserTracking but = new BalloonUserTracking();
-        but.setUuid_(uuid);
+        but.setUuid(uuid);
         but.setIp(remoteIp);
         but.setParent(parent);
         but.setBalloonLinkUuid(linkUuid);
@@ -206,7 +206,7 @@ public class BalloonService {
         // pick random balloon text to be displayed
         List<BalloonText> texts = BalloonsClient.getAllEnabledBalloonTexts();
         if (!texts.isEmpty()) {
-            but.setBalloonTextId(texts.get(RandomUtils.nextInt(0, texts.size())).getId_());
+            but.setBalloonTextId(texts.get(RandomUtils.nextInt(0, texts.size())).getId());
         } else {
             but.setBalloonTextId(0L);
         }

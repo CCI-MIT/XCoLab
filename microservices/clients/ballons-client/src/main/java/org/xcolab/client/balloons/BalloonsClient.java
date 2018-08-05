@@ -34,7 +34,7 @@ public final class BalloonsClient {
         return balloonLinkResource.create(balloonLink).execute();
     }
     public static boolean updateBalloonLink(BalloonLink balloonLink) {
-        return balloonLinkResource.update(balloonLink, balloonLink.getUuid_()).execute();
+        return balloonLinkResource.update(balloonLink, balloonLink.getUuid()).execute();
     }
 
     public static BalloonLink getLinkByBalloonUserTrackingUuid(String butUuid)
@@ -85,7 +85,7 @@ public final class BalloonsClient {
     }
     public static boolean updateBalloonUserTracking(BalloonUserTracking balloonUserTracking) {
         return balloonUserTrackingResource.update(balloonUserTracking,
-                balloonUserTracking.getUuid_()).execute();
+                balloonUserTracking.getUuid()).execute();
     }
 
     public static BalloonText getBalloonText(Long id) throws BalloonTextNotFoundException {
@@ -105,7 +105,7 @@ public final class BalloonsClient {
     }
 
     public static boolean updateBalloonText(BalloonText balloonText) {
-        return balloonTextResource.update(balloonText, balloonText.getId_()).execute();
+        return balloonTextResource.update(balloonText, balloonText.getId()).execute();
     }
 
     public static boolean deleteBalloonText(Long id) {

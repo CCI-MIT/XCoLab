@@ -19,7 +19,7 @@ public class BalloonLink implements Serializable {
                     new ParameterizedTypeReference<List<BalloonLink>>() {
                     });
 
-    private String    uuid_;
+    private String uuid;
     private String    targeturl;
     private Integer   visits;
     private String    balloonuseruuid;
@@ -28,7 +28,7 @@ public class BalloonLink implements Serializable {
     public BalloonLink() {}
 
     public BalloonLink(BalloonLink value) {
-        this.uuid_ = value.uuid_;
+        this.uuid = value.uuid;
         this.targeturl = value.targeturl;
         this.visits = value.visits;
         this.balloonuseruuid = value.balloonuseruuid;
@@ -36,25 +36,25 @@ public class BalloonLink implements Serializable {
     }
 
     public BalloonLink(
-        String    uuid_,
+        String uuid,
         String    targeturl,
         Integer   visits,
         String    balloonuseruuid,
         Timestamp createdAt
     ) {
-        this.uuid_ = uuid_;
+        this.uuid = uuid;
         this.targeturl = targeturl;
         this.visits = visits;
         this.balloonuseruuid = balloonuseruuid;
         this.createdAt = createdAt;
     }
 
-    public String getUuid_() {
-        return this.uuid_;
+    public String getUuid() {
+        return this.uuid;
     }
 
-    public void setUuid_(String uuid_) {
-        this.uuid_ = uuid_;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getTargetUrl() {
@@ -92,7 +92,7 @@ public class BalloonLink implements Serializable {
     @Override
     public String toString() {
         String sb =
-                "BalloonLink (" + uuid_ + ", " + targeturl + ", " + visits + ", " + balloonuseruuid
+                "BalloonLink (" + uuid + ", " + targeturl + ", " + visits + ", " + balloonuseruuid
                         + ", " + createdAt + ")";
 
         return sb;

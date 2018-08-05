@@ -28,7 +28,7 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
     public BalloonUserTracking getBalloonUserTrackingByUuid(String uuid) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(BALLOON_USER_TRACKING)
-                .where(BALLOON_USER_TRACKING.UUID_.eq(uuid)).fetchOne();
+                .where(BALLOON_USER_TRACKING.UUID.eq(uuid)).fetchOne();
         if (record == null) {
             throw new NotFoundException();
         }
@@ -56,7 +56,7 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
     @Override
     public boolean update(BalloonUserTracking balloonUserTracking) {
         return dslContext.update(BALLOON_USER_TRACKING)
-                .set(BALLOON_USER_TRACKING.UUID_, balloonUserTracking.getUuid_())
+                .set(BALLOON_USER_TRACKING.UUID, balloonUserTracking.getUuid())
                 .set(BALLOON_USER_TRACKING.EMAIL, balloonUserTracking.getEmail())
                 .set(BALLOON_USER_TRACKING.PARENT, balloonUserTracking.getParent())
                 .set(BALLOON_USER_TRACKING.IP, balloonUserTracking.getIp())
@@ -72,18 +72,18 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
                 .set(BALLOON_USER_TRACKING.BALLOON_LINK_UUID, balloonUserTracking.getBalloonLinkUuid())
                 .set(BALLOON_USER_TRACKING.BALLOON_LINK_CONTEXT, balloonUserTracking.getBalloonLinkContext())
                 .set(BALLOON_USER_TRACKING.USER_AGENT, balloonUserTracking.getUserAgent())
-                .where(BALLOON_USER_TRACKING.UUID_.eq(balloonUserTracking.getUuid_()))
+                .where(BALLOON_USER_TRACKING.UUID.eq(balloonUserTracking.getUuid()))
                 .execute() > 0;
     }
 
     @Override
     public BalloonUserTracking create(BalloonUserTracking balloonUserTracking) {
         this.dslContext.insertInto(BALLOON_USER_TRACKING)
-                .set(BALLOON_USER_TRACKING.UUID_, balloonUserTracking.getUuid_())
+                .set(BALLOON_USER_TRACKING.UUID, balloonUserTracking.getUuid())
                 .set(BALLOON_USER_TRACKING.EMAIL, balloonUserTracking.getEmail())
                 .set(BALLOON_USER_TRACKING.PARENT, balloonUserTracking.getParent())
                 .set(BALLOON_USER_TRACKING.IP, balloonUserTracking.getIp())
-                .set(BALLOON_USER_TRACKING.CREATE_DATE, DSL.currentTimestamp())
+                .set(BALLOON_USER_TRACKING.CREATED_AT, DSL.currentTimestamp())
                 .set(BALLOON_USER_TRACKING.REGISTRATION_DATE, balloonUserTracking.getRegistrationDate())
                 .set(BALLOON_USER_TRACKING.FORM_FILED_DATE, balloonUserTracking.getFormFiledDate())
                 .set(BALLOON_USER_TRACKING.USER_ID, balloonUserTracking.getUserId())
@@ -106,7 +106,7 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
     @Override
     public boolean delete(String uuid) {
         return dslContext.deleteFrom(BALLOON_USER_TRACKING)
-                .where(BALLOON_USER_TRACKING.UUID_.eq(uuid))
+                .where(BALLOON_USER_TRACKING.UUID.eq(uuid))
                 .execute() > 0;
     }
 

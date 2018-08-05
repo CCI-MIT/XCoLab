@@ -24,7 +24,7 @@ public class BalloonUserTracking implements Serializable {
             new TypeProvider<>(BalloonUserTracking.class,
                     new ParameterizedTypeReference<List<BalloonUserTracking>>() {});
 
-    private String uuid_;
+    private String uuid;
     private String email;
     private String parent;
     private String ip;
@@ -46,7 +46,7 @@ public class BalloonUserTracking implements Serializable {
     public BalloonUserTracking() {}
 
     public BalloonUserTracking(BalloonUserTracking value) {
-        this.uuid_ = value.uuid_;
+        this.uuid = value.uuid;
         this.email = value.email;
         this.parent = value.parent;
         this.ip = value.ip;
@@ -66,12 +66,12 @@ public class BalloonUserTracking implements Serializable {
         this.useragent = value.useragent;
     }
 
-    public String getUuid_() {
-        return this.uuid_;
+    public String getUuid() {
+        return this.uuid;
     }
 
-    public void setUuid_(String uuid_) {
-        this.uuid_ = uuid_;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getEmail() {
@@ -232,7 +232,7 @@ public class BalloonUserTracking implements Serializable {
 
     @JsonIgnore
     public BalloonLink getBalloonLink() {
-        return getOrNull(() -> BalloonsClient.getLinkByBalloonUserTrackingUuid(getUuid_()));
+        return getOrNull(() -> BalloonsClient.getLinkByBalloonUserTrackingUuid(getUuid()));
     }
 
     @JsonIgnore
@@ -249,7 +249,7 @@ public class BalloonUserTracking implements Serializable {
             return false;
         }
         BalloonUserTracking that = (BalloonUserTracking) o;
-        return Objects.equals(getUuid_(), that.getUuid_())
+        return Objects.equals(getUuid(), that.getUuid())
                 && Objects.equals(getEmail(), that.getEmail())
                 && Objects.equals(getParent(), that.getParent())
                 && Objects.equals(getIp(), that.getIp())
@@ -271,7 +271,7 @@ public class BalloonUserTracking implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUuid_(), getEmail(), getParent(), getIp(), createdAt,
+        return Objects.hash(getUuid(), getEmail(), getParent(), getIp(), createdAt,
                 registrationdate, formfileddate, userid, balloontextid, getReferrer(),
                 getLatitude(), getLongitude(), getCity(), getCountry(), extradata,
                 balloonlinkuuid, balloonlinkcontext, useragent);
@@ -279,7 +279,7 @@ public class BalloonUserTracking implements Serializable {
 
     @Override
     public String toString() {
-        return "BalloonUserTracking (" + uuid_ + ", " + email + ", " + parent + ", " + ip + ", "
+        return "BalloonUserTracking (" + uuid + ", " + email + ", " + parent + ", " + ip + ", "
                 + createdAt + ", " + registrationdate + ", " + formfileddate + ", " + userid + ", "
                 + balloontextid + ", " + referrer + ", " + latitude + ", " + longitude + ", " + city
                 + ", " + country + ", " + extradata + ", " + balloonlinkuuid + ", "

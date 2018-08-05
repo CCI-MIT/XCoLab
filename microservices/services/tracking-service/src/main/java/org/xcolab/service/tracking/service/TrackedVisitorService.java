@@ -4,46 +4,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.model.tables.pojos.TrackedVisit;
-import org.xcolab.model.tables.pojos.TrackedVisitor2User;
-import org.xcolab.service.tracking.domain.trackedvisitor2user.TrackedVisitor2UserDao;
+import org.xcolab.model.tables.pojos.TrackedVisitor;
+import org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao;
 
 import java.util.UUID;
 
 @Service
-public class TrackedVisitor2UserService {
+public class TrackedVisitorService {
 
     private static final int UUID_GENERATION_MAX_ITERATIONS = 5;
 
-    private final TrackedVisitor2UserDao trackedVisitor2UserDao;
+    private final TrackedVisitorDao trackedVisitorDao;
 
     @Autowired
-    public TrackedVisitor2UserService(TrackedVisitor2UserDao trackedVisitor2UserDao) {
-        this.trackedVisitor2UserDao = trackedVisitor2UserDao;
+    public TrackedVisitorService(TrackedVisitorDao trackedVisitorDao) {
+        this.trackedVisitorDao = trackedVisitorDao;
     }
 
     public void getOrCreateTrackedVisitor(TrackedVisit trackedVisit, Long userId) {
-        TrackedVisitor2User trackedVisitor;
+        TrackedVisitor trackedVisitor;
         if (userId != null) {
             trackedVisitor = getOrCreate(userId);
         } else {
             trackedVisitor = createUnknownVisitor();
         }
-        trackedVisit.setUuid_(trackedVisitor.getUuid_());
+        trackedVisit.setVisitorUuid(trackedVisitor.getUuid());
     }
 
-    public TrackedVisitor2User getOrCreate(long userId) {
-        return trackedVisitor2UserDao.getByuserId(userId).orElse(create(userId));
+    public TrackedVisitor getOrCreate(long userId) {
+        return trackedVisitorDao.getByUserId(userId).orElse(create(userId));
     }
 
-    public TrackedVisitor2User createUnknownVisitor() {
+    public TrackedVisitor createUnknownVisitor() {
         return create(null);
     }
 
-    private TrackedVisitor2User create(Long userId) {
-        TrackedVisitor2User trackedVisitor = new TrackedVisitor2User();
+    private TrackedVisitor create(Long userId) {
+        TrackedVisitor trackedVisitor = new TrackedVisitor();
         trackedVisitor.setUserId(userId);
-        trackedVisitor.setUuid_(generateUniqueUUID());
-        return trackedVisitor2UserDao.create(trackedVisitor);
+        trackedVisitor.setUuid(generateUniqueUUID());
+        return trackedVisitorDao.create(trackedVisitor);
     }
 
     private String generateUniqueUUID() {
@@ -54,7 +54,7 @@ public class TrackedVisitor2UserService {
             if (++counter > UUID_GENERATION_MAX_ITERATIONS) {
                 throw new UUIDGenerationException();
             }
-        } while (trackedVisitor2UserDao.getByUUID(uuid).isPresent());
+        } while (trackedVisitorDao.getByUuid(uuid).isPresent());
         return uuid;
     }
 

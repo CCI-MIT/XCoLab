@@ -13,7 +13,7 @@ public class TrackingClientMockerHelper {
 
     public static TrackedVisit getDefaultTrackedVisit(){
         TrackedVisit trackedVisit = new TrackedVisit();
-        trackedVisit.setUuid_("trackedVisitUuid");
+        trackedVisit.setVisitorUuid("trackedVisitUuid");
         return trackedVisit;
     }
 
