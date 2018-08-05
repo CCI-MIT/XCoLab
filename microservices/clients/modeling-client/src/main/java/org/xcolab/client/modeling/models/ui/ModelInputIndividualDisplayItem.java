@@ -37,7 +37,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
         ModelInputItem item = new ModelInputItem();
         item.setModelId(sim.getId());
         item.setModelInputItemID(md.getId());
-        item.setType_(type.name());
+        item.setType(type.name());
         ModelingClientUtil.createModelInputItem(item);
         return new ModelInputIndividualDisplayItem(item);
     }
@@ -110,8 +110,8 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
      */
     @Override
     public ModelInputWidgetType getType() {
-        return item.getType_() == null ? ModelInputWidgetType.TEXT_FIELD
-                : ModelInputWidgetType.valueOf(item.getType_());
+        return item.getType() == null ? ModelInputWidgetType.TEXT_FIELD
+                : ModelInputWidgetType.valueOf(item.getType());
     }
 
     /**
@@ -119,7 +119,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
      */
     @Override
     public void setType(ModelInputWidgetType type) {
-        item.setType_(type.name());
+        item.setType(type.name());
         ModelingClientUtil.updateModelInputItem(item);
     }
 

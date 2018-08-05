@@ -28,7 +28,7 @@ public class ModelOutputChartOrderDaoImpl implements ModelOutputChartOrderDao {
     public Optional<ModelOutputChartOrder> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_OUTPUT_CHART_ORDER)
-                .where(MODEL_OUTPUT_CHART_ORDER.MODEL_OUTPUT_CHART_ORDER_PK.eq(id))
+                .where(MODEL_OUTPUT_CHART_ORDER.ID.eq(id))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
@@ -76,7 +76,7 @@ public class ModelOutputChartOrderDaoImpl implements ModelOutputChartOrderDao {
         if (record == null) {
             throw new IllegalStateException("Could not retrieve id of inserted object");
         }
-        pojo.setModelOutputChartOrderPK(record.getValue(MODEL_OUTPUT_CHART_ORDER.MODEL_OUTPUT_CHART_ORDER_PK));
+        pojo.setId(record.getValue(MODEL_OUTPUT_CHART_ORDER.ID));
         return pojo;
     }
 
@@ -92,14 +92,14 @@ public class ModelOutputChartOrderDaoImpl implements ModelOutputChartOrderDao {
                 .set(MODEL_OUTPUT_CHART_ORDER.MODEL_INDEX_RANGE_POLICY, pojo.getModelIndexRangePolicy())
                 .set(MODEL_OUTPUT_CHART_ORDER.MODEL_OUTPUT_LABEL, pojo.getModelOutputLabel())
                 .set(MODEL_OUTPUT_CHART_ORDER.MODEL_INDEX_RANGE_POLICY, pojo.getModelIndexRangePolicy())
-                .where(MODEL_OUTPUT_CHART_ORDER.MODEL_OUTPUT_CHART_ORDER_PK.eq(pojo.getModelOutputChartOrderPK()))
+                .where(MODEL_OUTPUT_CHART_ORDER.ID.eq(pojo.getId()))
                 .execute() > 0;
     }
 
     @Override
     public boolean delete(long id) {
         return dslContext.deleteFrom(MODEL_OUTPUT_CHART_ORDER)
-                .where(MODEL_OUTPUT_CHART_ORDER.MODEL_OUTPUT_CHART_ORDER_PK.eq(id))
+                .where(MODEL_OUTPUT_CHART_ORDER.ID.eq(id))
                 .execute() > 0;
     }
 }

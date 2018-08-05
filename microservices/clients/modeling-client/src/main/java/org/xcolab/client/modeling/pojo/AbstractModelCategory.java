@@ -6,63 +6,63 @@ public abstract class AbstractModelCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long modelcategorypk;
-    private String modelcategoryname;
-    private String modelcategorydescription;
-    private Integer modelcategorydisplayweight;
+    private Long id;
+    private String name;
+    private String description;
+    private Integer displayWeight;
 
     public AbstractModelCategory() {
     }
 
     public AbstractModelCategory(AbstractModelCategory value) {
-        this.modelcategorypk = value.modelcategorypk;
-        this.modelcategoryname = value.modelcategoryname;
-        this.modelcategorydescription = value.modelcategorydescription;
-        this.modelcategorydisplayweight = value.modelcategorydisplayweight;
+        this.id = value.id;
+        this.name = value.name;
+        this.description = value.description;
+        this.displayWeight = value.displayWeight;
     }
 
-    public Long getModelCategoryPK() {
-        return this.modelcategorypk;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setModelCategoryPK(Long modelcategorypk) {
-        this.modelcategorypk = modelcategorypk;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getModelCategoryName() {
-        return this.modelcategoryname;
+    public String getName() {
+        return this.name;
     }
 
-    public void setModelCategoryName(String modelcategoryname) {
-        this.modelcategoryname = modelcategoryname;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getModelCategoryDescription() {
-        return this.modelcategorydescription;
+    public String getDescription() {
+        return this.description;
     }
 
-    public void setModelCategoryDescription(String modelcategorydescription) {
-        this.modelcategorydescription = modelcategorydescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Integer getModelCategoryDisplayWeight() {
-        return this.modelcategorydisplayweight;
+    public Integer getDisplayWeight() {
+        return this.displayWeight;
     }
 
-    public void setModelCategoryDisplayWeight(Integer modelcategorydisplayweight) {
-        this.modelcategorydisplayweight = modelcategorydisplayweight;
+    public void setDisplayWeight(Integer displayWeight) {
+        this.displayWeight = displayWeight;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((modelcategorypk == null) ? 0 : modelcategorypk.hashCode());
-        result = prime * result + ((modelcategoryname == null) ? 0 : modelcategoryname.hashCode());
-        result = prime * result + ((modelcategorydescription == null) ? 0
-                : modelcategorydescription.hashCode());
-        result = prime * result + ((modelcategorydisplayweight == null) ? 0
-                : modelcategorydisplayweight.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((description == null) ? 0
+                : description.hashCode());
+        result = prime * result + ((displayWeight == null) ? 0
+                : displayWeight.hashCode());
         return result;
     }
 
@@ -78,32 +78,32 @@ public abstract class AbstractModelCategory implements Serializable {
             return false;
         }
         final AbstractModelCategory other = (AbstractModelCategory) obj;
-        if (modelcategorypk == null) {
-            if (other.modelcategorypk != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!modelcategorypk.equals(other.modelcategorypk)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
-        if (modelcategoryname == null) {
-            if (other.modelcategoryname != null) {
+        if (name == null) {
+            if (other.name != null) {
                 return false;
             }
-        } else if (!modelcategoryname.equals(other.modelcategoryname)) {
+        } else if (!name.equals(other.name)) {
             return false;
         }
-        if (modelcategorydescription == null) {
-            if (other.modelcategorydescription != null) {
+        if (description == null) {
+            if (other.description != null) {
                 return false;
             }
-        } else if (!modelcategorydescription.equals(other.modelcategorydescription)) {
+        } else if (!description.equals(other.description)) {
             return false;
         }
-        if (modelcategorydisplayweight == null) {
-            if (other.modelcategorydisplayweight != null) {
+        if (displayWeight == null) {
+            if (other.displayWeight != null) {
                 return false;
             }
-        } else if (!modelcategorydisplayweight.equals(other.modelcategorydisplayweight)) {
+        } else if (!displayWeight.equals(other.displayWeight)) {
             return false;
         }
         return true;
@@ -111,8 +111,8 @@ public abstract class AbstractModelCategory implements Serializable {
 
     @Override
     public String toString() {
-        String sb = "ModelCategory (" + modelcategorypk + ", " + modelcategoryname + ", "
-                + modelcategorydescription + ", " + modelcategorydisplayweight + ")";
+        String sb = "ModelCategory (" + id + ", " + name + ", "
+                + description + ", " + displayWeight + ")";
 
         return sb;
     }

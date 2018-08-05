@@ -93,18 +93,18 @@ public class ModelingClient {
 
     public List<ModelInputGroup> getChildGroups(ModelInputGroup group) {
         return DtoUtil.toPojos(modelInputGroupResource.list()
-                .queryParam("parentGroupPk", group.getModelInputGroupPK())
+                .queryParam("parentGroupPk", group.getId())
                 .execute(), namespace);
     }
 
     public List<ModelInputItem> getInputItems(ModelInputGroup group) {
         return DtoUtil.toPojos(modelInputItemResource.list()
-                .queryParam("modelInputGroupPk", group.getModelInputGroupPK())
+                .queryParam("modelInputGroupPk", group.getId())
                 .execute(), namespace);
     }
 
     public ModelInputGroup getParentGroup(ModelInputGroup group) {
-        final Long parentGroupPK = group.getParentGroupPK();
+        final Long parentGroupPK = group.getParentGroupId();
         return modelInputGroupResource.get(parentGroupPK)
                 .execute().toPojo(namespace);
     }
@@ -126,7 +126,7 @@ public class ModelingClient {
     }
 
     public void updateModelInputGroup(ModelInputGroup group) {
-        modelInputGroupResource.update(new ModelInputGroupDto(group), group.getModelInputGroupPK())
+        modelInputGroupResource.update(new ModelInputGroupDto(group), group.getId())
                 .execute();
     }
 
@@ -204,20 +204,20 @@ public class ModelingClient {
     }
 
     public void store(ModelInputItem item) {
-        if (item.getModelInputItemPK() == null) {
+        if (item.getId() == null) {
             modelInputItemResource.create(new ModelInputItemDto(item));
         } else {
-            modelInputItemResource.update(new ModelInputItemDto(item), item.getModelInputItemPK());
+            modelInputItemResource.update(new ModelInputItemDto(item), item.getId());
         }
     }
 
     public void deleteModelInputItem(ModelInputItem item) {
-        modelInputItemResource.delete(item.getModelInputItemPK())
+        modelInputItemResource.delete(item.getId())
                 .execute();
     }
 
     public void updateModelInputItem(ModelInputItem item) {
-        modelInputItemResource.update(new ModelInputItemDto(item), item.getModelInputItemPK())
+        modelInputItemResource.update(new ModelInputItemDto(item), item.getId())
                 .execute();
     }
 
@@ -241,13 +241,13 @@ public class ModelingClient {
 
     public void updateModelOutputChartOrder(ModelOutputChartOrder pojo) {
         modelOutputChartOrderResource
-                .update(new ModelOutputChartOrderDto(pojo), pojo.getModelOutputChartOrderPK())
+                .update(new ModelOutputChartOrderDto(pojo), pojo.getId())
                 .execute();
     }
 
     public void deleteModelOutputChartOrder(ModelOutputChartOrder pojo) {
         modelOutputChartOrderResource
-                .delete(pojo.getModelOutputChartOrderPK())
+                .delete(pojo.getId())
                 .execute();
     }
 

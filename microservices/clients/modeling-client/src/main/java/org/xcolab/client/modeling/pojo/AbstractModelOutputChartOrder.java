@@ -6,7 +6,7 @@ public abstract class AbstractModelOutputChartOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long modeloutputchartorderpk;
+    private Long id;
     private Long modelid;
     private String modeloutputlabel;
     private Integer modeloutputchartorder;
@@ -20,7 +20,7 @@ public abstract class AbstractModelOutputChartOrder implements Serializable {
     }
 
     public AbstractModelOutputChartOrder(AbstractModelOutputChartOrder value) {
-        this.modeloutputchartorderpk = value.modeloutputchartorderpk;
+        this.id = value.id;
         this.modelid = value.modelid;
         this.modeloutputlabel = value.modeloutputlabel;
         this.modeloutputchartorder = value.modeloutputchartorder;
@@ -31,12 +31,12 @@ public abstract class AbstractModelOutputChartOrder implements Serializable {
         this.modelchartisvisible = value.modelchartisvisible;
     }
 
-    public Long getModelOutputChartOrderPK() {
-        return this.modeloutputchartorderpk;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setModelOutputChartOrderPK(Long modeloutputchartorderpk) {
-        this.modeloutputchartorderpk = modeloutputchartorderpk;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getModelId() {
@@ -107,8 +107,8 @@ public abstract class AbstractModelOutputChartOrder implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((modeloutputchartorderpk == null) ? 0
-                : modeloutputchartorderpk.hashCode());
+        result = prime * result + ((id == null) ? 0
+                : id.hashCode());
         result = prime * result + ((modelid == null) ? 0 : modelid.hashCode());
         result = prime * result + ((modeloutputlabel == null) ? 0 : modeloutputlabel.hashCode());
         result = prime * result + ((modeloutputchartorder == null) ? 0
@@ -138,11 +138,11 @@ public abstract class AbstractModelOutputChartOrder implements Serializable {
             return false;
         }
         final AbstractModelOutputChartOrder other = (AbstractModelOutputChartOrder) obj;
-        if (modeloutputchartorderpk == null) {
-            if (other.modeloutputchartorderpk != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!modeloutputchartorderpk.equals(other.modeloutputchartorderpk)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (modelid == null) {
@@ -206,7 +206,7 @@ public abstract class AbstractModelOutputChartOrder implements Serializable {
 
     @Override
     public String toString() {
-        String sb = "ModelOutputChartOrder (" + modeloutputchartorderpk + ", " + modelid + ", "
+        String sb = "ModelOutputChartOrder (" + id + ", " + modelid + ", "
                 + modeloutputlabel + ", " + modeloutputchartorder + ", " + modelindexrangepolicy
                 + ", " + modelindexrangemessage + ", " + modelindexerrorpolicy + ", "
                 + modelindexerrormessage + ", " + modelchartisvisible + ")";

@@ -61,7 +61,7 @@ public class ModelOutputItemDaoImpl implements ModelOutputItemDao {
         if (record == null) {
             throw new IllegalStateException("Could not retrieve id of inserted object");
         }
-        pojo.setModelOutputItemModifierPK(record.getValue(MODEL_OUTPUT_ITEM.MODEL_OUTPUT_ITEM_MODIFIER_PK));
+        pojo.setModelOutputItemModifierPk(record.getValue(MODEL_OUTPUT_ITEM.MODEL_OUTPUT_ITEM_MODIFIER_PK));
         return pojo;
     }
 
@@ -79,7 +79,7 @@ public class ModelOutputItemDaoImpl implements ModelOutputItemDao {
                 .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_RANGE_MESSAGE, pojo.getModelItemRangeMessage())
                 .set(MODEL_OUTPUT_ITEM.MODEL_ITEM_RANGE_POLICY, pojo.getModelItemRangePolicy())
                 .set(MODEL_OUTPUT_ITEM.MODEL_OUTPUT_ITEM_ORDER, pojo.getModelOutputItemOrder())
-                .where(MODEL_OUTPUT_ITEM.MODEL_OUTPUT_ITEM_MODIFIER_PK.eq(pojo.getModelOutputItemModifierPK()))
+                .where(MODEL_OUTPUT_ITEM.MODEL_OUTPUT_ITEM_MODIFIER_PK.eq(pojo.getModelOutputItemModifierPk()))
                 .execute() > 0;
     }
 

@@ -28,7 +28,7 @@ public class ModelInputItemDaoImpl implements ModelInputItemDao {
     public Optional<ModelInputItem> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_INPUT_ITEM)
-                .where(MODEL_INPUT_ITEM.MODEL_INPUT_ITEM_PK.eq(id))
+                .where(MODEL_INPUT_ITEM.ID.eq(id))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
@@ -69,15 +69,15 @@ public class ModelInputItemDaoImpl implements ModelInputItemDao {
         final ModelInputItemRecord record = dslContext.insertInto(MODEL_INPUT_ITEM)
                 .set(MODEL_INPUT_ITEM.MODEL_GROUP_ID, pojo.getModelGroupId())
                 .set(MODEL_INPUT_ITEM.MODEL_ID, pojo.getModelId())
-                .set(MODEL_INPUT_ITEM.MODEL_INPUT_ITEM_ID, pojo.getModelInputItemID())
+                .set(MODEL_INPUT_ITEM.MODEL_INPUT_ITEM_ID, pojo.getModelInputItemId())
                 .set(MODEL_INPUT_ITEM.PROPERTIES, pojo.getProperties())
-                .set(MODEL_INPUT_ITEM.TYPE_, pojo.getType_())
+                .set(MODEL_INPUT_ITEM.TYPE, pojo.getType())
                 .returning()
                 .fetchOne();
         if (record == null) {
             throw new IllegalStateException("Could not retrieve id of inserted object");
         }
-        pojo.setModelInputItemPK(record.getValue(MODEL_INPUT_ITEM.MODEL_INPUT_ITEM_PK));
+        pojo.setId(record.getValue(MODEL_INPUT_ITEM.ID));
         return pojo;
     }
 
@@ -86,17 +86,17 @@ public class ModelInputItemDaoImpl implements ModelInputItemDao {
         return dslContext.update(MODEL_INPUT_ITEM)
                 .set(MODEL_INPUT_ITEM.MODEL_GROUP_ID, pojo.getModelGroupId())
                 .set(MODEL_INPUT_ITEM.MODEL_ID, pojo.getModelId())
-                .set(MODEL_INPUT_ITEM.MODEL_INPUT_ITEM_ID, pojo.getModelInputItemID())
+                .set(MODEL_INPUT_ITEM.MODEL_INPUT_ITEM_ID, pojo.getModelInputItemId())
                 .set(MODEL_INPUT_ITEM.PROPERTIES, pojo.getProperties())
-                .set(MODEL_INPUT_ITEM.TYPE_, pojo.getType_())
-                .where(MODEL_INPUT_ITEM.MODEL_INPUT_ITEM_PK.eq(pojo.getModelInputItemPK()))
+                .set(MODEL_INPUT_ITEM.TYPE, pojo.getType())
+                .where(MODEL_INPUT_ITEM.ID.eq(pojo.getId()))
                 .execute() > 0;
     }
 
     @Override
     public boolean delete(long id) {
         return dslContext.deleteFrom(MODEL_INPUT_ITEM)
-                .where(MODEL_INPUT_ITEM.MODEL_INPUT_ITEM_PK.eq(id))
+                .where(MODEL_INPUT_ITEM.ID.eq(id))
                 .execute() > 0;
     }
 }

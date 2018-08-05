@@ -27,7 +27,7 @@ public class ModelCategoryDaoImpl implements ModelCategoryDao {
     public Optional<ModelCategory> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_CATEGORY)
-                .where(MODEL_CATEGORY.MODEL_CATEGORY_PK.eq(id))
+                .where(MODEL_CATEGORY.ID.eq(id))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
@@ -45,34 +45,32 @@ public class ModelCategoryDaoImpl implements ModelCategoryDao {
     @Override
     public ModelCategory create(ModelCategory pojo) {
         final ModelCategoryRecord record = dslContext.insertInto(MODEL_CATEGORY)
-                .set(MODEL_CATEGORY.MODEL_CATEGORY_DESCRIPTION, pojo.getModelCategoryDescription())
-                .set(MODEL_CATEGORY.MODEL_CATEGORY_DISPLAY_WEIGHT,
-                        pojo.getModelCategoryDisplayWeight())
-                .set(MODEL_CATEGORY.MODEL_CATEGORY_NAME, pojo.getModelCategoryName())
+                .set(MODEL_CATEGORY.DESCRIPTION, pojo.getDescription())
+                .set(MODEL_CATEGORY.DISPLAY_WEIGHT, pojo.getDisplayWeight())
+                .set(MODEL_CATEGORY.NAME, pojo.getName())
                 .returning()
                 .fetchOne();
         if (record == null) {
             throw new IllegalStateException("Could not retrieve id of inserted object");
         }
-        pojo.setModelCategoryPK(record.getValue(MODEL_CATEGORY.MODEL_CATEGORY_PK));
+        pojo.setId(record.getValue(MODEL_CATEGORY.ID));
         return pojo;
     }
 
     @Override
     public boolean update(ModelCategory pojo) {
         return dslContext.update(MODEL_CATEGORY)
-                .set(MODEL_CATEGORY.MODEL_CATEGORY_DESCRIPTION, pojo.getModelCategoryDescription())
-                .set(MODEL_CATEGORY.MODEL_CATEGORY_DISPLAY_WEIGHT,
-                        pojo.getModelCategoryDisplayWeight())
-                .set(MODEL_CATEGORY.MODEL_CATEGORY_NAME, pojo.getModelCategoryName())
-                .where(MODEL_CATEGORY.MODEL_CATEGORY_PK.eq(pojo.getModelCategoryPK()))
+                .set(MODEL_CATEGORY.DESCRIPTION, pojo.getDescription())
+                .set(MODEL_CATEGORY.DISPLAY_WEIGHT, pojo.getDisplayWeight())
+                .set(MODEL_CATEGORY.NAME, pojo.getName())
+                .where(MODEL_CATEGORY.ID.eq(pojo.getId()))
                 .execute() > 0;
     }
 
     @Override
     public boolean delete(long id) {
         return dslContext.delete(MODEL_CATEGORY)
-                .where(MODEL_CATEGORY.MODEL_CATEGORY_PK.eq(id))
+                .where(MODEL_CATEGORY.ID.eq(id))
                 .execute() > 0;
     }
 }
