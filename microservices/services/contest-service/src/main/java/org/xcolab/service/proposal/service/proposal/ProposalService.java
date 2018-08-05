@@ -22,25 +22,23 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.model.tables.pojos.Group_;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalReference;
+import org.xcolab.model.tables.pojos.ProposalTeamMember;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-import org.xcolab.service.proposal.domain.group.GroupDao;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
+import org.xcolab.service.proposal.domain.proposalteammember.ProposalTeamMemberDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,17 +54,19 @@ public class ProposalService {
 
     private final ProposalVersionDao proposalVersionDao;
 
-    private final GroupDao groupDao;
+    private final ProposalTeamMemberDao proposalTeamMemberDao;
 
 
     @Autowired
-    public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao, ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao, ProposalVersionDao proposalVersionDao, GroupDao groupDao) {
+    public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao,
+            ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao,
+            ProposalVersionDao proposalVersionDao, ProposalTeamMemberDao proposalTeamMemberDao) {
         this.proposalDao = proposalDao;
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposal2PhaseDao = proposal2PhaseDao;
         this.proposalVersionDao = proposalVersionDao;
-        this.groupDao = groupDao;
+        this.proposalTeamMemberDao = proposalTeamMemberDao;
     }
 
     public Proposal create(long authorUserid, long contestPhaseId, boolean publishActivity) {
@@ -96,13 +96,9 @@ public class ProposalService {
 
             proposal.setResultsDiscussionId(resultsCommentThread.getId());
 
-            // create group
-            Group_ group = createGroupAndSetUpPermissions(authorUserid, proposalId, contest);
-            proposal.setGroupId(group.getGroupId());
-
             proposalDao.update(proposal);
 
-            UsersGroupsClientUtil.addMemberToGroup(authorUserid, proposal.getGroupId());
+            proposalTeamMemberDao.addUserToTeam(proposalId, authorUserid);
 
             if (contestPhaseId > 0) {
                 // associate proposal with phase
@@ -129,40 +125,6 @@ public class ProposalService {
 
     public void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
         ActivitiesClientUtil.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
-    }
-
-    private Group_ createGroupAndSetUpPermissions(long authorUserid, long proposalId, Contest contest) {
-
-        // create new group
-        final ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
-
-        String groupName = contestType.getProposalName() + "_" + proposalId + "_" + new Date().getTime();
-
-        final ContestType contestTypeForLiferay = ContestTypeClient.getContestType(contestType.getId());
-        final String groupDescription = "Group working on " + contestTypeForLiferay.getProposalName();
-
-        Group_ group = new Group_();
-
-        group.setCompanyId(10112L);
-        group.setCreatorUserId(authorUserid);
-        group.setClassNameId(10009L);
-        group.setParentGroupId(0L);
-        group.setLiveGroupId(0L);
-        group.setName(groupName);
-        group.setDescription(groupDescription);
-        group.setType_(2);
-        group.setFriendlyURL("/" + groupName);
-        group.setActive_(true);
-        group.setSite(true);
-        group.setUuid_(UUID.randomUUID().toString());
-        group.setManualMembership(true);
-        group.setMembershipRestriction(0);
-        group.setRemoteStagingGroupCount(0);
-        group = groupDao.create(group);
-        group.setTreePath("/" + group.getGroupId() + "/");
-        group.setClassPK(group.getGroupId());
-        groupDao.update(group);
-        return group;
     }
 
     private CommentThread createCommentThreadForProposal(String title, Long authorUserid, boolean isQuiet) {
@@ -280,28 +242,19 @@ public class ProposalService {
     }
 
     public List<Member> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
-
-        try {
-            Proposal proposal = proposalDao.get(proposalId);
-            ArrayList<Member> members = new ArrayList<>();
-            for (UsersGroups user : UsersGroupsClientUtil.getUserGroupsByGroupId(proposal.getGroupId())) {
-                try {
-                    members.add(MembersClient.getMember(user.getUserId()));
-                } catch (MemberNotFoundException ignored) {
-
-                }
-            }
-            return members;
-        } catch (NotFoundException ignored) {
+        final List<Member> members = proposalTeamMemberDao.findByProposalId(proposalId).stream()
+                .map(ProposalTeamMember::getUserId)
+                .map(userId -> MembersClient.getMember(userId))
+                .collect(Collectors.toList());
+        if (members.isEmpty()) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found");
         }
+        return members;
     }
 
     public void removeProposalTeamMember(Long proposalId, Long userId) throws ProposalNotFoundException {
-        try {
-            Proposal proposal = proposalDao.get(proposalId);
-            UsersGroupsClientUtil.deleteUsersGroups(userId, proposal.getGroupId());
-        } catch (NotFoundException ignored) {
+        final boolean success = proposalTeamMemberDao.delete(proposalId, userId);
+        if (!success) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");
         }
     }
@@ -317,22 +270,16 @@ public class ProposalService {
     }
 
     public List<Proposal> getMemberProposals(Long userId) {
-        List<UsersGroups> userGroups = UsersGroupsClientUtil.getUserGroupsByuserId(userId);
-        return userGroups.stream()
-                .map(UsersGroups::getGroupId)
-                .map(groupId -> proposalDao.getByGroupId(groupId, true, false))
+        final List<ProposalTeamMember> proposalTeamMembers = proposalTeamMemberDao.findByUserId(userId);
+        return proposalTeamMembers.stream()
+                .map(ProposalTeamMember::getProposalId)
+                .map(proposalDao::getOpt)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
     }
 
-    public Boolean isUserAMember(long proposalId, long userId) {
-
-        try {
-            Proposal proposal = proposalDao.get(proposalId);
-            return UsersGroupsClientUtil.isUserInGroups(userId, proposal.getGroupId());
-        } catch (NotFoundException ignored) {
-            return false;
-        }
+    public boolean isUserAMember(long proposalId, long userId) {
+        return proposalTeamMemberDao.exists(proposalId, userId);
     }
 }

@@ -213,7 +213,7 @@ public class ProposalUpdateHelper {
                 for (Member member : members) {
                     Long userId = member.getUserId();
                     MembershipClient client = proposalContext.getClients().getMembershipClient();
-                    client.addUserToProposalTeam(userId, groupId, proposalId);
+                    client.addUserToProposalTeam(userId, proposalId);
                 }
 
                 // Set team name

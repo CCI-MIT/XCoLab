@@ -25,11 +25,8 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.UsersGroupsClient;
-import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
@@ -519,32 +516,23 @@ public class Proposal extends AbstractProposal {
     }
 
     public List<ProposalTeamMember> getMembers() {
+
         if (members == null) {
             members = new ArrayList<>();
             boolean hasOwner = false;
 
-            for (UsersGroups user : clients.usersGroup.getUserGroupsByGroupId(getGroupId())) {
-                try {
-                    Member member = MembersClient.getMember(user.getUserId());
-
-                    final ProposalTeamMember teamMemberWrapper = new ProposalTeamMember(
-                            this, member);
-                    members.add(teamMemberWrapper);
-                    if (teamMemberWrapper.getMemberType() == ProposalMemberType.OWNER) {
-                        hasOwner = true;
-                    }
-                } catch (MemberNotFoundException ignored) {
-
+            for (Member member : clients.proposal.getProposalMembers(getProposalId())) {
+                final ProposalTeamMember teamMemberWrapper = new ProposalTeamMember(
+                        this, member);
+                members.add(teamMemberWrapper);
+                if (teamMemberWrapper.getMemberType() == ProposalMemberType.OWNER) {
+                    hasOwner = true;
                 }
             }
             if (!hasOwner) {
-                UsersGroups usersGroups = new UsersGroups();
-                usersGroups.setGroupId(this.getGroupId());
-                usersGroups.setUserId(this.getauthorUserid());
+                clients.membership.addUserToProposalTeam(getProposalId(), getauthorUserid());
             }
-
         }
-
         return members;
     }
 
@@ -992,8 +980,6 @@ public class Proposal extends AbstractProposal {
         final ContestTeamMemberClient contestTeamMember;
         final PlanTemplateClient planTemplate;
 
-        final UsersGroupsClient usersGroup;
-
         Clients() {
             this(null);
         }
@@ -1011,7 +997,6 @@ public class Proposal extends AbstractProposal {
                 proposalMemberRating = ProposalMemberRatingClient.fromNamespace(serviceNamespace);
                 proposalJudgeRating = ProposalJudgeRatingClient.fromNamespace(serviceNamespace);
                 membership = MembershipClient.fromNamespace(serviceNamespace);
-                usersGroup = UsersGroupsClient.fromNamespace(serviceNamespace);
             } else {
                 contest = ContestClientUtil.getClient();
                 proposal = ProposalClientUtil.getClient();
@@ -1024,7 +1009,6 @@ public class Proposal extends AbstractProposal {
                 membership = MembershipClientUtil.getClient();
                 planTemplate = PlanTemplateClientUtil.getClient();
                 proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
-                usersGroup = UsersGroupsClientUtil.getClient();
             }
         }
     }

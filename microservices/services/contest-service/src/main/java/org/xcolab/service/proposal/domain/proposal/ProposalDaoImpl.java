@@ -246,7 +246,7 @@ public class ProposalDaoImpl implements ProposalDao {
                 .set(PROPOSAL.VISIBLE, proposal.getVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
                 .set(PROPOSAL.RESULTS_DISCUSSION_ID, proposal.getResultsDiscussionId())
-                .set(PROPOSAL.GROUP_ID, proposal.getGroupId()).returning(PROPOSAL.PROPOSAL_ID)
+                .returning(PROPOSAL.PROPOSAL_ID)
                 .fetchOne();
         if (ret != null) {
             proposal.setProposalId(ret.getValue(PROPOSAL.PROPOSAL_ID));
@@ -260,15 +260,20 @@ public class ProposalDaoImpl implements ProposalDao {
     @Override
     public Proposal get(Long proposalId) throws NotFoundException {
 
+        return getOpt(proposalId).orElseThrow(
+                () -> new NotFoundException("Proposal with id " + proposalId + " does not exist"));
+    }
+
+    @Override
+    public Optional<Proposal> getOpt(long proposalId) {
         final Record record =
                 this.dslContext.selectFrom(PROPOSAL).where(PROPOSAL.PROPOSAL_ID.eq(proposalId))
                         .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("Proposal with id " + proposalId + " does not exist");
+            return Optional.empty();
         }
-        return record.into(Proposal.class);
-
+        return Optional.of(record.into(Proposal.class));
     }
 
     @Override
@@ -286,7 +291,6 @@ public class ProposalDaoImpl implements ProposalDao {
                 .set(PROPOSAL.VISIBLE, proposal.getVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
                 .set(PROPOSAL.RESULTS_DISCUSSION_ID, proposal.getResultsDiscussionId())
-                .set(PROPOSAL.GROUP_ID, proposal.getGroupId())
                 .where(PROPOSAL.PROPOSAL_ID.eq(proposal.getProposalId())).execute() > 0;
     }
 
@@ -295,29 +299,6 @@ public class ProposalDaoImpl implements ProposalDao {
 
         return dslContext.select(sum(POINTS.MATERIALIZED_POINTS)).from(POINTS)
                 .where(POINTS.PROPOSAL_ID.eq(proposalId)).fetchOne(0, Integer.class);
-    }
-
-    @Override
-    public Optional<Proposal> getByGroupId(Long groupId, Boolean visible, Boolean contestPrivate) {
-        final SelectQuery<Record> query =
-                dslContext.selectDistinct(PROPOSAL.fields())
-                        .from(PROPOSAL)
-                        .where(PROPOSAL.GROUP_ID.eq(groupId))
-                        .getQuery();
-
-        final boolean requiresContest = contestPrivate != null;
-        final boolean requiresPhase = visible != null;
-        addJoins(query, requiresContest, requiresPhase);
-
-        addVisibilityConditions(visible, contestPrivate, query);
-
-        final Record record = query
-                        .fetchOne();
-
-        if (record == null) {
-            return Optional.empty();
-        }
-        return Optional.of(record.into(Proposal.class));
     }
 
     @Override

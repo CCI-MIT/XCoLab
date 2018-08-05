@@ -1,7 +1,6 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
@@ -15,12 +14,11 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.ProposalVersionDto;
-import org.xcolab.client.proposals.pojo.group.GroupDto;
-import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReferenceDto;
-import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
+import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
@@ -48,8 +46,6 @@ public final class ProposalClient {
     private final RestResource1<ProposalVersionDto, Long> proposalVersionResource;
     private final RestResource1<ProposalReferenceDto, Long> proposalReferenceResource;
 
-    private final RestResource<GroupDto, Long> groupResource;
-
     //TODO COLAB-2600: methods that use this should be in the service!
     private final ContestClient contestClient;
 
@@ -69,12 +65,8 @@ public final class ProposalClient {
         proposalReferenceResource = new RestResource1<>(ProposalResource.PROPOSAL_REFERENCE,
                 ProposalReferenceDto.TYPES, serviceNamespace);
 
-        groupResource = new RestResource1<>(ProposalResource.GROUP, GroupDto.TYPES,
-                serviceNamespace);
-
         contestClient = ContestClient.fromNamespace(serviceNamespace);
         activitiesClient = ActivitiesClient.fromNamespace(serviceNamespace);
-
     }
 
     public static ProposalClient fromNamespace(ServiceNamespace proposalService) {
@@ -183,11 +175,13 @@ public final class ProposalClient {
         return listProposals(0, Integer.MAX_VALUE, null, true, cp.getContestPhasePK(), null);
     }
 
+    //TODO: move to proposals/{proposalId}/teamMembers endpoint
     public List<Member> getProposalMembers(Long proposalId) {
         return proposalResource.elementService(proposalId, "allMembers", Member.TYPES.getTypeReference())
                 .getList();
     }
 
+    //TODO: move to proposals/{proposalId}/teamMembers endpoint
     public void removeMemberFromProposalTeam(Long proposalId, Long userId) {
         proposalResource.elementService(proposalId, "removeMemberFromProposalTeam", Boolean.class)
                 .queryParam("userId", userId)
@@ -476,13 +470,6 @@ public final class ProposalClient {
 
     private void unsubscribeMemberFromProposal(long proposalId, long userId, boolean automatic) {
         activitiesClient.deleteSubscription(userId, ActivityCategory.PROPOSAL, proposalId);
-    }
-    public  Group_ createGroup(Group_ group) {
-        return groupResource.create(new GroupDto(group)).execute().toPojo(serviceNamespace);
-    }
-
-    public boolean updateGroup(Group_ group) {
-        return groupResource.update(new GroupDto(group), group.getGroupId()).execute();
     }
 
     private static String convertListToGetParameter(List<Long> list, String parameterName) {

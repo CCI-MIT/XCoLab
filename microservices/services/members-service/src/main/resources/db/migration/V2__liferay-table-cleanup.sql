@@ -10,4 +10,6 @@ ALTER TABLE Role_ DROP modifiedDate;
 
 -- Delete unused roles
 delete from Role_ where roleId in (10120, 10123 ,10124 ,10125, 10126, 10127, 10128, 26021, 1015916,
-    1015917,1015918,1411593);
+    1015917, 1015918, 1411593);
+
+delete from Users_Groups where groupId not in (select groupId from xcolab_Proposal);

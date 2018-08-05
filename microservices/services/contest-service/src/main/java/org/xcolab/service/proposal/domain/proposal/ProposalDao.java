@@ -27,13 +27,13 @@ public interface ProposalDao {
 
     Proposal get(Long proposalId) throws NotFoundException;
 
+    Optional<Proposal> getOpt(long proposalId);
+
     boolean exists(long proposalId);
 
     boolean update(Proposal proposal);
 
     Integer getProposalMaterializedPoints(Long proposalId);
-
-    Optional<Proposal> getByGroupId(Long groupId, Boolean visible, Boolean contestPrivate);
 
     List<Proposal> filterByGiven(Collection<Long> proposalIds, Boolean visible, Boolean contestPrivate);
 }

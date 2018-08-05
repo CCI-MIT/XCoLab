@@ -13,7 +13,6 @@ import org.springframework.util.CollectionUtils;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -31,7 +30,6 @@ import static org.xcolab.model.Tables.CONTEST_DISCUSSION;
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.CONTEST_TEAM_MEMBER;
 import static org.xcolab.model.Tables.CONTEST_TRANSLATION;
-import static org.xcolab.model.Tables.GROUP_;
 import static org.xcolab.model.Tables.MEMBERSHIP_REQUEST;
 import static org.xcolab.model.Tables.POINTS;
 import static org.xcolab.model.Tables.POINTS_DISTRIBUTION_CONFIGURATION;
@@ -413,19 +411,9 @@ public class ContestDaoImpl implements ContestDao {
                 .execute();
         // Delete proposal subscriptions and activity entries.
         ActivitiesClientUtil.batchDelete(ActivityCategory.PROPOSAL, proposalIds);
-        // Select proposal groups.
-        List<Long> groups = ctx.select(PROPOSAL.GROUP_ID).from(PROPOSAL)
-                .where(PROPOSAL.PROPOSAL_ID.in(proposalIds))
-                .fetchInto(Long.class);
-        // Delete proposal group members
-        UsersGroupsClientUtil.deleteGroups(groups);
-        // Delete group membership requests
+        // Delete membership requests
         ctx.deleteFrom(MEMBERSHIP_REQUEST)
-                .where(MEMBERSHIP_REQUEST.GROUP_ID.in(groups))
-                .execute();
-        // Delete proposal groups
-        ctx.deleteFrom(GROUP_)
-                .where(GROUP_.GROUP_ID.in(groups))
+                .where(MEMBERSHIP_REQUEST.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal supports
         ctx.deleteFrom(PROPOSAL_SUPPORTER)

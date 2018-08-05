@@ -10,7 +10,6 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
-import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
@@ -69,8 +68,7 @@ public final class ProposalClientUtil {
         return client.getProposalsInContest(contestPK);
     }
 
-    public static List<Member> getProposalMembers(
-            Long proposalId) {
+    public static List<Member> getProposalMembers(Long proposalId) {
         return client.getProposalMembers(proposalId);
     }
 
@@ -240,13 +238,6 @@ public final class ProposalClientUtil {
     public static  List<Proposal> getProposalsByCurrentContests(List<Long> contestTypeIds, List<Long> contestTierIds,
             String filterText) {
         return client.getProposalsInPublicContests(contestTypeIds, contestTierIds, filterText);
-    }
-
-    public static Group_ createGroup(Group_ group) {
-        return client.createGroup(group);
-    }
-    public static boolean updateGroup(Group_ group) {
-        return client.updateGroup(group);
     }
 
     public static List<Long> getProposalIdsFromLinksInText(String text) {

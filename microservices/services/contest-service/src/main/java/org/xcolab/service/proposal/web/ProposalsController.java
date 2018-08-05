@@ -248,15 +248,15 @@ public class ProposalsController {
         }
     }
 
+    //TODO: this service should not be returning a member!
     @GetMapping("/proposals/{proposalId}/allMembers")
     public List<Member> getProposalMembers(@PathVariable Long proposalId) throws NotFoundException {
 
         try {
             return proposalService.getProposalMembers(proposalId);
         } catch (ProposalNotFoundException ignored) {
-
+            throw new NotFoundException();
         }
-        throw new NotFoundException();
     }
 
     @RequestMapping(value = "/proposalVersions", method = {RequestMethod.GET, RequestMethod.HEAD})

@@ -2,9 +2,9 @@ package org.xcolab.view.pages.proposals.discussion;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalTeamMember;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -69,7 +69,9 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {
         boolean isAuthor = proposal.getauthorUserid() == userId;
-        boolean isMember = UsersGroupsClientUtil.isMemberInGroup(userId, proposal.getProposalId());
+        boolean isMember = proposal.getMembers().stream()
+                .map(ProposalTeamMember::getUserId)
+                .anyMatch(id -> id == userId);
 
         return isAuthor || isMember;
     }

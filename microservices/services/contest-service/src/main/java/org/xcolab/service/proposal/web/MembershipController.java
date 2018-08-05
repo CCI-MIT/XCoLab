@@ -2,24 +2,35 @@ package org.xcolab.service.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.MembershipRequest;
 import org.xcolab.service.proposal.domain.membershiprequest.MembershipRequestDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.proposal.domain.proposalteammember.ProposalTeamMemberDao;
+import org.xcolab.service.exceptions.ConflictException;
 
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 @RestController
-public class MembershipRequestController {
+public class MembershipController {
+
+    private final MembershipRequestDao membershipRequestDao;
+    private final ProposalTeamMemberDao proposalTeamMemberDao;
 
     @Autowired
-    private MembershipRequestDao membershipRequestDao;
+    public MembershipController(MembershipRequestDao membershipRequestDao,
+            ProposalTeamMemberDao proposalTeamMemberDao) {
+        this.membershipRequestDao = membershipRequestDao;
+        this.proposalTeamMemberDao = proposalTeamMemberDao;
+    }
 
     @RequestMapping(value = "/membershipRequests", method = RequestMethod.POST)
     public MembershipRequest createMembershipRequest(@RequestBody MembershipRequest membershipRequest) {
@@ -59,4 +70,12 @@ public class MembershipRequestController {
     }
 
 
+    @PostMapping("/proposals/{proposalId}/teamMembers")
+    public Long addTeamMember(@PathVariable long proposalId, @RequestBody Long userId) {
+        if (proposalTeamMemberDao.exists(proposalId, userId)) {
+            throw new ConflictException();
+        }
+        proposalTeamMemberDao.addUserToTeam(proposalId, userId);
+        return userId;
+    }
 }

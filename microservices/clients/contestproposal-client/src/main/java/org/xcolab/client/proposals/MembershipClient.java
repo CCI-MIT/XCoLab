@@ -1,21 +1,23 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.client.contest.resources.ProposalResource;
-import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.client.proposals.pojo.team.MembershipRequestDto;
-import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ProposalActivityType;
+import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.Http409ConflictException;
 
@@ -31,15 +33,22 @@ public class MembershipClient {
     private static final Map<ServiceNamespace, MembershipClient> instances = new HashMap<>();
 
     private final ServiceNamespace serviceNamespace;
+
+    private final RestResource1<ProposalDto, Long> proposalResource;
+
     private final RestResource1<MembershipRequestDto, Long> membershipRequestResource;
+    private final RestResource2<ProposalDto, Long, Long, Long> proposalTeamMemberResource;
 
     private final ProposalClient proposalClient;
 
     private MembershipClient(ServiceNamespace serviceNamespace) {
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
         membershipRequestResource = new RestResource1<>(ProposalResource.MEMBERSHIP_REQUEST,
                 MembershipRequestDto.TYPES);
         proposalClient = ProposalClient.fromNamespace(serviceNamespace);
         this.serviceNamespace = serviceNamespace;
+        proposalTeamMemberResource = proposalResource
+                .nestedResource("teamMembers", TypeProvider.LONG);
     }
 
     public static MembershipClient fromNamespace(ServiceNamespace proposalService) {
@@ -111,18 +120,19 @@ public class MembershipClient {
                 membershipRequest.setReplyComments(reply);
                 membershipRequest.setReplyDate(new Timestamp((new Date()).getTime()));
                 updateMembershipRequest(membershipRequest);
-                addUserToProposalTeam(userId, membershipRequest.getGroupId(), proposalId);
+                addUserToProposalTeam(userId, proposalId);
             } catch (MembershipRequestNotFoundException e) {
                 throw new InternalException(e);
             }
         }
     }
 
-    public void addUserToProposalTeam(Long userId, Long groupId, Long proposalId) {
-        UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromNamespace(serviceNamespace);
+    public void addUserToProposalTeam(Long userId, Long proposalId) {
 
         try {
-            usersGroupsClient.addMemberToGroup(userId, groupId);
+            proposalTeamMemberResource.resolveParentId(proposalResource.id(proposalId))
+                    .create(userId)
+                    .execute();
 
             ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
 
