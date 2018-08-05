@@ -20,38 +20,40 @@ public class ActivitySubscription implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long pk;
-    private Long receiverId;
+    private Long id;
+    private Long receiverUserId;
     private String activityCategory;
     private Long categoryId;
     private Integer automaticSubscriptionCounter;
-    private Timestamp createDate;
-    private Timestamp modifiedDate;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public ActivitySubscription() {}
 
     public ActivitySubscription(ActivitySubscription value) {
-        this.pk = value.pk;
-        this.receiverId = value.receiverId;
+        this.id = value.id;
+        this.receiverUserId = value.receiverUserId;
         this.automaticSubscriptionCounter = value.automaticSubscriptionCounter;
-        this.createDate = value.createDate;
-        this.modifiedDate = value.modifiedDate;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
+        this.activityCategory = value.activityCategory;
+        this.categoryId = value.categoryId;
     }
 
-    public Long getPk() {
-        return pk;
+    public Long getId() {
+        return id;
     }
 
-    public void setPk(Long pk) {
-        this.pk = pk;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getReceiverId() {
-        return receiverId;
+    public Long getReceiverUserId() {
+        return receiverUserId;
     }
 
-    public void setReceiverId(Long receiverId) {
-        this.receiverId = receiverId;
+    public void setReceiverUserId(Long receiverUserId) {
+        this.receiverUserId = receiverUserId;
     }
 
     @JsonIgnore
@@ -85,20 +87,20 @@ public class ActivitySubscription implements Serializable {
         this.automaticSubscriptionCounter = automaticSubscriptionCounter;
     }
 
-    public Timestamp getCreateDate() {
-        return createDate;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getModifiedDate() {
-        return modifiedDate;
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -110,31 +112,31 @@ public class ActivitySubscription implements Serializable {
             return false;
         }
         ActivitySubscription that = (ActivitySubscription) o;
-        return Objects.equals(getPk(), that.getPk())
-                && Objects.equals(getReceiverId(), that.getReceiverId())
+        return Objects.equals(getId(), that.getId())
+                && Objects.equals(getReceiverUserId(), that.getReceiverUserId())
                 && Objects.equals(getActivityCategory(), that.getActivityCategory())
                 && Objects.equals(getCategoryId(), that.getCategoryId())
                 && Objects.equals(getAutomaticSubscriptionCounter(),
                         that.getAutomaticSubscriptionCounter())
-                && Objects.equals(getCreateDate(), that.getCreateDate())
-                && Objects.equals(getModifiedDate(), that.getModifiedDate());
+                && Objects.equals(getCreatedAt(), that.getCreatedAt())
+                && Objects.equals(getUpdatedAt(), that.getUpdatedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPk(), getReceiverId(), getActivityCategory(), getCategoryId(),
-                getAutomaticSubscriptionCounter(), getCreateDate(), getModifiedDate());
+        return Objects.hash(getId(), getReceiverUserId(), getActivityCategory(), getCategoryId(),
+                getAutomaticSubscriptionCounter(), getCreatedAt(), getUpdatedAt());
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("pk", pk)
-                .append("receiverId", receiverId)
+        return new ToStringBuilder(this).append("id", id)
+                .append("receiverUserId", receiverUserId)
                 .append("activityCategory", activityCategory)
                 .append("categoryId", categoryId)
                 .append("automaticSubscriptionCounter", automaticSubscriptionCounter)
-                .append("createDate", createDate)
-                .append("modifiedDate", modifiedDate)
+                .append("createdAt", createdAt)
+                .append("updatedAt", updatedAt)
                 .toString();
     }
 }

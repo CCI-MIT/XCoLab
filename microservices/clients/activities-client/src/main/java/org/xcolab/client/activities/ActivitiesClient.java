@@ -46,7 +46,7 @@ public final class ActivitiesClient {
         ActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setActivityCategory(activityType.getCategory().name());
         activityEntry.setActivityType(activityType.name());
-        activityEntry.setMemberId(memberId);
+        activityEntry.setUserId(memberId);
         activityEntry.setCategoryId(categoryId);
         activityEntry.setAdditionalId(additionalId);
         return activityEntryResource.create(activityEntry).execute();

@@ -21,13 +21,13 @@ public class UserActivityWrapper implements Serializable {
             body = activityEntryHelper.getActivityBody(this.activity);
             if (body != null) {
                 body = body.replaceAll("c.my_sites[^\\\"]*",
-                        "web/guest/member/-/member/userId/" + activity.getMemberId());
+                        "web/guest/member/-/member/userId/" + activity.getUserId());
             }
         }
     }
 
     public Date getCreatedDate() {
-        return new Date(activity.getCreateDate().getTime());
+        return new Date(activity.getCreatedAt().getTime());
     }
 
     public String getBody() {
@@ -35,7 +35,7 @@ public class UserActivityWrapper implements Serializable {
     }
 
     public long getDaysAgo() {
-        long createDay = activity.getCreateDate().getTime() / MILLISECONDS_IN_DAY;
+        long createDay = activity.getCreatedAt().getTime() / MILLISECONDS_IN_DAY;
         long daysNow = new Date().getTime() / MILLISECONDS_IN_DAY;
         return daysNow - createDay;
     }

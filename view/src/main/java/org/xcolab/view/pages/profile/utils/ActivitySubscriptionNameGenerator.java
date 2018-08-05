@@ -68,7 +68,7 @@ public class ActivitySubscriptionNameGenerator {
             return String.format(HYPERLINK, thread.getLinkUrl(), thread.getTitle());
         } catch (ThreadNotFoundException e) {
             _log.warn("Could not resolve discussion subscription name for subscription {}",
-                    subscription.getPk() , e);
+                    subscription.getId() , e);
         }
 
         return "[No title]";

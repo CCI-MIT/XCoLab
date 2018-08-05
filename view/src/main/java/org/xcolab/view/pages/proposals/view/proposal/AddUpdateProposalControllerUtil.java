@@ -77,7 +77,7 @@ public final class AddUpdateProposalControllerUtil {
                     .getActivitySubscriptions(ActivityCategory.CONTEST,
                             contest.getContestPK(), null);
             for (ActivitySubscription activitySubscription : activitySubscriptions) {
-                final Long receiverId = activitySubscription.getReceiverId();
+                final Long receiverId = activitySubscription.getReceiverUserId();
                 activitiesClient.addSubscription(receiverId, ActivityCategory.PROPOSAL,
                         proposal.getProposalId(), "");
 

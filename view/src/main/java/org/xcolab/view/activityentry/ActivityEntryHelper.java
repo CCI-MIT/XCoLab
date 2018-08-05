@@ -42,12 +42,12 @@ public class ActivityEntryHelper {
                     .findAny();
             if (!providerOpt.isPresent()) {
                 log.warn("Activity entry {} has no valid content provider",
-                        entry.getActivityEntryId());
+                        entry.getId());
                 return null;
 
                 //TODO COLAB-2486: Fix legacy activity entries and throw an exception on error
                 // throw new IllegalStateException("Activity provider for entry "
-                //        + entry.getActivityEntryId() + " does not exist");
+                //        + entry.getId() + " does not exist");
             }
             final ActivityEntryContentProvider provider = providerOpt.get();
             provider.initialize(entry);

@@ -32,7 +32,7 @@ public class ProposalCreatedActivityEntry extends ContestBaseActivityEntry {
         try {
             proposal = ProposalClientUtil.getProposal(getActivityEntry().getAdditionalId(), true);
         } catch (ProposalNotFoundException e) {
-            throw new ActivityInitializationException(getActivityEntry().getActivityEntryId(), e);
+            throw new ActivityInitializationException(getActivityEntry().getId(), e);
         }
     }
 

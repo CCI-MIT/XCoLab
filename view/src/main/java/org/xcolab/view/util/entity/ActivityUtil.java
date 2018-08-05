@@ -39,7 +39,7 @@ public class ActivityUtil {
             Map<String, Set<ActivityEntry>> activitiesMap) {
         List<ActivityEntry> aggregatedActivities = new LinkedList<>();
         Comparator<ActivityEntry> sorter =
-                Comparator.comparingLong(o -> o.getCreateDate().getTime());
+                Comparator.comparingLong(o -> o.getCreatedAt().getTime());
         for (Set<ActivityEntry> activitiesMapValue : activitiesMap.values()) {
             List<ActivityEntry> sortedActivities = new ArrayList<>(activitiesMapValue);
             sortedActivities.sort(sorter);
@@ -47,7 +47,7 @@ public class ActivityUtil {
             ActivityEntry curMin = null;
             for (ActivityEntry socialActivity : sortedActivities) {
                 if (curMin == null ||
-                        socialActivity.getCreateDate().getTime() - curMin.getCreateDate().getTime()
+                        socialActivity.getCreatedAt().getTime() - curMin.getCreatedAt().getTime()
                                 < AGGREGATION_TIME_WINDOW) {
                     curMin = socialActivity;
                 } else {
@@ -66,6 +66,6 @@ public class ActivityUtil {
 
     private static String getSocialActivityKey(ActivityEntry sa) {
         return sa.getActivityCategory() + "_" + sa.getCategoryId() + "_" + sa.getActivityType()
-                + "_" + sa.getMemberId();
+                + "_" + sa.getUserId();
     }
 }

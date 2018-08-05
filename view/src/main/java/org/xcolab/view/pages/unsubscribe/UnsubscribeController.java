@@ -70,7 +70,7 @@ public class UnsubscribeController {
         String responseText = null;
         // unregister user
         if (subscription != null) {
-            ActivitiesClientUtil.deleteSubscriptionById(subscription.getPk());
+            ActivitiesClientUtil.deleteSubscriptionById(subscription.getId());
             responseText = UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT;
         }
 

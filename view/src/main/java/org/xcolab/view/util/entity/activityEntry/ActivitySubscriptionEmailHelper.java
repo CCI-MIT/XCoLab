@@ -194,7 +194,7 @@ public class ActivitySubscriptionEmailHelper {
         Comparator<ActivityEntry> activityCategoryComparator =
                 Comparator.comparing(ActivityEntry::getActivityCategory);
         Comparator<ActivityEntry> socialActivityCreateDateComparator =
-                (o1, o2) -> (int) (o1.getCreateDate().getTime() - o2.getCreateDate().getTime());
+                (o1, o2) -> (int) (o1.getCreatedAt().getTime() - o2.getCreatedAt().getTime());
 
         ComparatorChain comparatorChain = new ComparatorChain();
         comparatorChain.addComparator(activityCategoryComparator);
@@ -255,9 +255,9 @@ public class ActivitySubscriptionEmailHelper {
             // Aggregate all activities for all users
             for (ActivitySubscription subscriptionObj : getActivitySubscribers(activity)) {
 
-                Long recipientId = subscriptionObj.getReceiverId();
+                Long recipientId = subscriptionObj.getReceiverUserId();
 
-                if (subscriptionObj.getReceiverId() == activity.getMemberId().longValue()) {
+                if (subscriptionObj.getReceiverUserId() == activity.getUserId().longValue()) {
                     continue;
                 }
 
@@ -300,11 +300,11 @@ public class ActivitySubscriptionEmailHelper {
         for (Object subscriptionObj : getActivitySubscribers(activity)) {
             ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
 
-            if (subscription.getReceiverId() == activity.getMemberId().longValue()) {
+            if (subscription.getReceiverUserId() == activity.getUserId().longValue()) {
                 continue;
             }
             try {
-                Member member = MembersClient.getMember(subscription.getReceiverId());
+                Member member = MembersClient.getMember(subscription.getReceiverUserId());
                 recipients.add(member);
                 subscriptionsPerUser.put(member.getUserId(), subscription);
             } catch (MemberNotFoundException ignored) {
@@ -326,7 +326,7 @@ public class ActivitySubscriptionEmailHelper {
                                 .getUnregisterLink(
                                         subscriptionsPerUser.get(recipient.getUserId())));
                 sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter,
-                        PlatformAttributeKey.COLAB_URL.get(), activity.getActivityEntryId());
+                        PlatformAttributeKey.COLAB_URL.get(), activity.getId());
             }
         }
     }
@@ -387,7 +387,7 @@ public class ActivitySubscriptionEmailHelper {
         if (subscriptionConstraint.areSubscribersConstrained()) {
             for (Long userId : subscriptionConstraint.getWhitelist(activity.getCategoryId())) {
                 for (ActivitySubscription as : ret) {
-                    if (as.getReceiverId() == userId.longValue()) {
+                    if (as.getReceiverUserId() == userId.longValue()) {
                         filteredResults.add(as);
                     }
                 }

@@ -19,7 +19,7 @@ public class ActivitySubscriptionWrapper implements Serializable {
 
     public ActivitySubscriptionWrapper(ActivitySubscription subscription) {
         this.subscription = subscription;
-        this.subscriptionPk = subscription.getPk();
+        this.subscriptionPk = subscription.getId();
     }
 
     public String getName() {
@@ -27,7 +27,7 @@ public class ActivitySubscriptionWrapper implements Serializable {
     }
 
     public Date getUpdated() {
-        return subscription.getModifiedDate();
+        return subscription.getUpdatedAt();
     }
 
     public SubscriptionType getType() {

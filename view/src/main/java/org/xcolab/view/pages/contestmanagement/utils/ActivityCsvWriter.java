@@ -65,7 +65,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? member.getLastName() : MEMBER_NOT_FOUND_MESSAGE);
             addValue(row, activityType.getCategory().name());
             addValue(row, activityType.name());
-            addValue(row, DATE_FORMAT.format(activityEntry.getCreateDate()));
+            addValue(row, DATE_FORMAT.format(activityEntry.getCreatedAt()));
             addValue(row, activityEntryHelper.getActivityBody(activityEntry));
 
             writeRow(row);
@@ -77,9 +77,9 @@ public class ActivityCsvWriter extends CsvResponseWriter {
 
     private Member getMemberOrNull(ActivityEntry activityEntry) {
         try {
-            return MembersClient.getMember(activityEntry.getMemberId());
+            return MembersClient.getMember(activityEntry.getUserId());
         } catch (MemberNotFoundException e) {
-            _log.warn("Member {} not found when generating report", activityEntry.getMemberId());
+            _log.warn("Member {} not found when generating report", activityEntry.getUserId());
             return null;
         }
     }

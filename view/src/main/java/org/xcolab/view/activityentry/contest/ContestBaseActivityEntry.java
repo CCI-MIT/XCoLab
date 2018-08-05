@@ -27,7 +27,7 @@ public abstract class ContestBaseActivityEntry extends AbstractActivityEntryCont
                         .getContest();
             } else {
                 throw new ActivityInitializationException(
-                        getActivityEntry().getActivityEntryId(), e);
+                        getActivityEntry().getId(), e);
             }
         }
 

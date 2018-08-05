@@ -34,11 +34,11 @@ public class ActivitySubscriptionDaoTest {
     @Test
     public void shouldCreateNewActivitySubscription() {
         ActivitySubscription as = new ActivitySubscription();
-        as.setReceiverId(300L);
+        as.setReceiverUserId(300L);
         as.setActivityCategory("PROPOSAL");
         as.setCategoryId(3000L);
         as = activitySubscriptionDao.create(as);
-        assertNotNull(activitySubscriptionDao.get(as.getPk()));
+        assertNotNull(activitySubscriptionDao.get(as.getId()));
     }
 
     @Test

@@ -33,7 +33,7 @@ public class ProposalVoteActivityEntry extends ProposalBaseActivityEntry {
     public void initializeInternal() throws ActivityInitializationException {
         super.initializeInternal();
         long proposalId = getActivityEntry().getCategoryId();
-        long userId = getActivityEntry().getMemberId();
+        long userId = getActivityEntry().getUserId();
         final List<ProposalVote> proposalVotes =
                 ProposalMemberRatingClientUtil.getProposalVotes(null, proposalId, userId);
         //TODO COLAB-2657: we should store the actual vote ID in additionalId

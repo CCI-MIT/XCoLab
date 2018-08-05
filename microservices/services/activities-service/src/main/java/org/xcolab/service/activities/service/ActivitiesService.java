@@ -60,7 +60,7 @@ public class ActivitiesService {
             ActivityCategory activityCategory, long categoryId,
             int automaticSubscriptionCounter) {
         ActivitySubscription activitySubscription = new ActivitySubscription();
-        activitySubscription.setReceiverId(receiverId);
+        activitySubscription.setReceiverUserId(receiverId);
         activitySubscription.setActivityCategory(activityCategory.name());
         activitySubscription.setCategoryId(categoryId);
         activitySubscription.setAutomaticSubscriptionCounter(automaticSubscriptionCounter);

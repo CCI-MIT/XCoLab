@@ -100,7 +100,7 @@ public class ActivitiesServiceTest {
             activitiesService.subscribe(11112, ActivityCategory.PROPOSAL, 2221);
         ActivitySubscription asp2 =
             activitiesService.subscribe(11112, ActivityCategory.PROPOSAL, 2221);
-        assertEquals(asp1.getPk(), asp2.getPk());
+        assertEquals(asp1.getId(), asp2.getId());
     }
 
     @Test
@@ -109,7 +109,7 @@ public class ActivitiesServiceTest {
             activitiesService.subscribe(111132, ActivityCategory.CONTEST,22241);
         ActivitySubscription asp4 =
             activitiesService.subscribe(111132, ActivityCategory.CONTEST,22241);
-        assertEquals(asp3.getPk(),asp4.getPk());
+        assertEquals(asp3.getId(),asp4.getId());
 
     }
     @Test

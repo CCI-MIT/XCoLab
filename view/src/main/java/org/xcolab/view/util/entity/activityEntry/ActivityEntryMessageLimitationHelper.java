@@ -32,7 +32,7 @@ public class ActivityEntryMessageLimitationHelper {
         if (limitedCategories.contains(sa.getActivityCategoryEnum())) {
             return sa.getActivityCategory() + "_" + sa.getActivityType();
         } else {
-            return "0_" + sa.getActivityEntryId();
+            return "0_" + sa.getId();
         }
     }
 }

@@ -31,16 +31,16 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     @Override
     public ActivityEntry create(ActivityEntry activityEntry) {
         ActivityEntryRecord ret = this.dslContext.insertInto(ACTIVITY_ENTRY)
-                .set(ACTIVITY_ENTRY.MEMBER_ID, activityEntry.getMemberId())
-                .set(ACTIVITY_ENTRY.CREATE_DATE, DSL.currentTimestamp())
+                .set(ACTIVITY_ENTRY.USER_ID, activityEntry.getUserId())
+                .set(ACTIVITY_ENTRY.CREATED_AT, DSL.currentTimestamp())
                 .set(ACTIVITY_ENTRY.ACTIVITY_CATEGORY, activityEntry.getActivityCategory())
                 .set(ACTIVITY_ENTRY.ACTIVITY_TYPE, activityEntry.getActivityType())
                 .set(ACTIVITY_ENTRY.CATEGORY_ID, activityEntry.getCategoryId())
                 .set(ACTIVITY_ENTRY.ADDITIONAL_ID, activityEntry.getAdditionalId())
-                .returning(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID)
+                .returning(ACTIVITY_ENTRY.ID)
                 .fetchOne();
         if (ret != null) {
-            activityEntry.setActivityEntryId(ret.getValue(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID));
+            activityEntry.setId(ret.getValue(ACTIVITY_ENTRY.ID));
             return activityEntry;
         } else {
             return null;
@@ -51,7 +51,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     public ActivityEntry get(Long activityEntryId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(ACTIVITY_ENTRY)
-                .where(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID.eq(activityEntryId)).fetchOne();
+                .where(ACTIVITY_ENTRY.ID.eq(activityEntryId)).fetchOne();
 
         if (record == null) {
             throw new NotFoundException(
@@ -69,8 +69,8 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
         final SelectQuery<Record> query = dslContext.select()
                 .from(ACTIVITY_ENTRY)
                 .getQuery();
-        query.addConditions(ACTIVITY_ENTRY.CREATE_DATE.gt(new Timestamp(date.getTime())));
-        query.addOrderBy(ACTIVITY_ENTRY.CREATE_DATE.desc());
+        query.addConditions(ACTIVITY_ENTRY.CREATED_AT.gt(new Timestamp(date.getTime())));
+        query.addOrderBy(ACTIVITY_ENTRY.CREATED_AT.desc());
         return query.fetchInto(ActivityEntry.class);
 
     }
@@ -91,14 +91,14 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
                 .getQuery();
 
         if (memberId != null) {
-            query.addConditions(ACTIVITY_ENTRY.MEMBER_ID.eq(memberId));
+            query.addConditions(ACTIVITY_ENTRY.USER_ID.eq(memberId));
         }
 
         if (memberIdsToExclude != null) {
-            query.addConditions(ACTIVITY_ENTRY.MEMBER_ID.notIn(memberIdsToExclude));
+            query.addConditions(ACTIVITY_ENTRY.USER_ID.notIn(memberIdsToExclude));
         }
 
-        query.addOrderBy(ACTIVITY_ENTRY.CREATE_DATE.desc());
+        query.addOrderBy(ACTIVITY_ENTRY.CREATED_AT.desc());
 
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(ActivityEntry.class);
@@ -112,14 +112,14 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
                 .getQuery();
 
         if (memberId != null) {
-            query.addConditions(ACTIVITY_ENTRY.MEMBER_ID.eq(memberId));
+            query.addConditions(ACTIVITY_ENTRY.USER_ID.eq(memberId));
         }
 
         if (memberIdsToExclude != null) {
-            query.addConditions(ACTIVITY_ENTRY.MEMBER_ID.notIn(memberIdsToExclude));
+            query.addConditions(ACTIVITY_ENTRY.USER_ID.notIn(memberIdsToExclude));
         }
 
-        query.addOrderBy(ACTIVITY_ENTRY.ACTIVITY_ENTRY_ID.desc());
+        query.addOrderBy(ACTIVITY_ENTRY.ID.desc());
 
         return query.fetchOne(0, Integer.class);
     }
