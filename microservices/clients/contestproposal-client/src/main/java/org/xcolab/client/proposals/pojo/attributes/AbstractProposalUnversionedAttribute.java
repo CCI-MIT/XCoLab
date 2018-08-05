@@ -14,7 +14,7 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
     private Long createauthorid;
     private Long lastauthorid;
     private Timestamp createdAt;
-    private Timestamp lastupdatedate;
+    private Timestamp updatedAt;
 
     public AbstractProposalUnversionedAttribute() {}
 
@@ -25,11 +25,11 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         this.createauthorid = value.createauthorid;
         this.lastauthorid = value.lastauthorid;
         this.createdAt = value.createdAt;
-        this.lastupdatedate = value.lastupdatedate;
+        this.updatedAt = value.updatedAt;
     }
 
     public AbstractProposalUnversionedAttribute(Long id_, Long proposalid, Long createauthorid,
-            Long lastauthorid, Timestamp createdAt, Timestamp lastupdatedate, String name,
+            Long lastauthorid, Timestamp createdAt, Timestamp updatedAt, String name,
             Integer additionalId, Long numericvalue, String stringvalue, Double realvalue) {
         super(name, additionalId, null, numericvalue, stringvalue, realvalue);
         this.id_ = id_;
@@ -37,7 +37,7 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         this.createauthorid = createauthorid;
         this.lastauthorid = lastauthorid;
         this.createdAt = createdAt;
-        this.lastupdatedate = lastupdatedate;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId_() {
@@ -80,12 +80,12 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getLastUpdateDate() {
-        return this.lastupdatedate;
+    public Timestamp getupdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setLastUpdateDate(Timestamp lastupdatedate) {
-        this.lastupdatedate = lastupdatedate;
+    public void setupdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -105,19 +105,19 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
                 && Objects.equals(createauthorid, that.createauthorid)
                 && Objects.equals(lastauthorid, that.lastauthorid)
                 && Objects.equals(createdAt, that.createdAt)
-                && Objects.equals(lastupdatedate, that.lastupdatedate);
+                && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getId_(), proposalid, createauthorid, lastauthorid,
-                createdAt, lastupdatedate);
+                createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
         String sb = super.toString() + "(" + id_ + ", " + proposalid + ", " + createauthorid + ", "
-                + lastauthorid + ", " + createdAt + ", " + lastupdatedate + ")";
+                + lastauthorid + ", " + createdAt + ", " + updatedAt + ")";
 
         return sb;
     }

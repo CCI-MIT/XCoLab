@@ -365,13 +365,13 @@ public class Proposal extends AbstractProposal {
         return discussionId;
     }
 
-    public Date getLastModifiedDate() {
+    public Date getLastupdatedAt() {
         return this.getUpdatedDate();
     }
 
-    public Date getLastModifiedDateForContestPhase() {
+    public Date getLastupdatedAtForContestPhase() {
         if (proposal2Phase.getVersionTo() == -1) {
-            return getLastModifiedDate();
+            return getLastupdatedAt();
         }
         return clients.proposal
                 .getProposalVersionByProposalIdVersion(this.getProposalId(), this.getVersion()).getCreatedAt();

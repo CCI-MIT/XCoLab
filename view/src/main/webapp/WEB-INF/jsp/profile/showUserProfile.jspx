@@ -264,7 +264,7 @@
                                                     </td>
                                                     <td style="text-align: right;">
                                                         <xcolab:formatDateTime
-                                                                millis="${linkingProposal.lastModifiedDate.time}"
+                                                                millis="${linkingProposal.lastupdatedAt.time}"
                                                                 type="date"/>
                                                     </td>
                                                 </tr>

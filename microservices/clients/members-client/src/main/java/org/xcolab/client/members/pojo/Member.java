@@ -47,8 +47,8 @@ public class Member implements Serializable {
     private boolean isEmailConfirmed;
     private boolean isEmailBounced;
     private Timestamp createdAt;
-    private Timestamp modifiedDate;
-    private Timestamp passwordModifiedDate;
+    private Timestamp updatedAt;
+    private Timestamp passwordupdatedAt;
     private String hashedPassword;
     private String firstName;
     private String lastName;
@@ -81,8 +81,8 @@ public class Member implements Serializable {
         this.isEmailConfirmed = value.isEmailConfirmed;
         this.isEmailBounced = value.isEmailBounced;
         this.createdAt = value.createdAt;
-        this.modifiedDate = value.modifiedDate;
-        this.passwordModifiedDate = value.passwordModifiedDate;
+        this.updatedAt = value.updatedAt;
+        this.passwordupdatedAt = value.passwordupdatedAt;
         this.hashedPassword = value.hashedPassword;
         this.firstName = value.firstName;
         this.lastName = value.lastName;
@@ -178,20 +178,20 @@ public class Member implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getModifiedDate() {
-        return this.modifiedDate;
+    public Timestamp getupdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setupdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Timestamp getPasswordModifiedDate() {
-        return this.passwordModifiedDate;
+    public Timestamp getPasswordupdatedAt() {
+        return this.passwordupdatedAt;
     }
 
-    public void setPasswordModifiedDate(Timestamp passwordModifiedDate) {
-        this.passwordModifiedDate = passwordModifiedDate;
+    public void setPasswordupdatedAt(Timestamp passwordupdatedAt) {
+        this.passwordupdatedAt = passwordupdatedAt;
     }
 
     public String getFirstName() {
@@ -499,8 +499,8 @@ public class Member implements Serializable {
                 .append("isEmailConfirmed", isEmailConfirmed)
                 .append("isEmailBounced", isEmailBounced)
                 .append("createdAt", createdAt)
-                .append("modifiedDate", modifiedDate)
-                .append("passwordModifiedDate", passwordModifiedDate)
+                .append("updatedAt", updatedAt)
+                .append("passwordupdatedAt", passwordupdatedAt)
                 .append("hashedPassword", hashedPassword != null ? "REDACTED" : null)
                 .append("firstName", firstName)
                 .append("lastName", lastName)

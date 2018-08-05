@@ -18,14 +18,14 @@ public class ProposalUnversionedAttribute extends AbstractProposalUnversionedAtt
             Long createauthorid,
             Long lastauthorid,
             Timestamp createdAt,
-            Timestamp lastupdatedate,
+            Timestamp updatedAt,
             String name,
             Integer addtionalid,
             Long numericvalue,
             String stringvalue,
             Double realvalue
     ) {
-        super(id_, proposalid, createauthorid, lastauthorid, createdAt, lastupdatedate,
+        super(id_, proposalid, createauthorid, lastauthorid, createdAt, updatedAt,
                 name, addtionalid, numericvalue, stringvalue, realvalue);
     }
 

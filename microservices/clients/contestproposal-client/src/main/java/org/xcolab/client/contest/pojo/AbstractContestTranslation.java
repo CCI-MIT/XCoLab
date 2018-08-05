@@ -14,7 +14,7 @@ public abstract class AbstractContestTranslation implements Serializable {
     private String contestShortName;
     private String contestDescription;
     private Timestamp createdAt;
-    private Timestamp modifiedDate;
+    private Timestamp updatedAt;
     private Long authorId;
 
     public AbstractContestTranslation() {}
@@ -26,7 +26,7 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.contestShortName = value.contestShortName;
         this.contestDescription = value.contestDescription;
         this.createdAt = value.createdAt;
-        this.modifiedDate = value.modifiedDate;
+        this.updatedAt = value.updatedAt;
         this.authorId = value.authorId;
     }
 
@@ -78,12 +78,12 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getModifiedDate() {
-        return this.modifiedDate;
+    public Timestamp getupdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setupdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Long getAuthorId() {
@@ -108,14 +108,14 @@ public abstract class AbstractContestTranslation implements Serializable {
                 && Objects.equals(contestShortName, that.contestShortName)
                 && Objects.equals(contestDescription, that.contestDescription)
                 && Objects.equals(createdAt, that.createdAt)
-                && Objects.equals(modifiedDate, that.modifiedDate)
+                && Objects.equals(updatedAt, that.updatedAt)
                 && Objects.equals(authorId, that.authorId);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(contestId, lang, contestName, contestShortName, contestDescription,
-                createdAt, modifiedDate, authorId);
+                createdAt, updatedAt, authorId);
     }
 
     @Override
@@ -123,6 +123,6 @@ public abstract class AbstractContestTranslation implements Serializable {
 
         return "ContestTranslation (" + contestId + ", " + lang + ", " + contestName + ", "
                 + contestShortName + ", " + contestDescription + ", " + createdAt + ", "
-                + modifiedDate + ", " + authorId + ")";
+                + updatedAt + ", " + authorId + ")";
     }
 }

@@ -30,7 +30,7 @@ public class ContentPage implements Serializable {
     private Long menuArticleId;
     private Long contentArticleId;
     private Timestamp createdAt;
-    private Timestamp modifiedDate;
+    private Timestamp updatedAt;
 
     public ContentPage() {
     }
@@ -41,7 +41,7 @@ public class ContentPage implements Serializable {
         this.menuArticleId = value.menuArticleId;
         this.contentArticleId = value.contentArticleId;
         this.createdAt = value.createdAt;
-        this.modifiedDate = value.modifiedDate;
+        this.updatedAt = value.updatedAt;
     }
 
     public static ContentPage forId(long pageId) {
@@ -96,12 +96,12 @@ public class ContentPage implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getModifiedDate() {
-        return this.modifiedDate;
+    public Timestamp getupdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setupdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @JsonIgnore
@@ -124,13 +124,13 @@ public class ContentPage implements Serializable {
                 && Objects.equals(getMenuArticleId(), that.getMenuArticleId())
                 && Objects.equals(getContentArticleId(), that.getContentArticleId())
                 && Objects.equals(getCreatedAt(), that.getCreatedAt())
-                && Objects.equals(getModifiedDate(), that.getModifiedDate());
+                && Objects.equals(getupdatedAt(), that.getupdatedAt());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getPageId(), getTitle(), getMetaDescription(), getMenuArticleId(),
-                getContentArticleId(), createdAt, getModifiedDate());
+                getContentArticleId(), createdAt, getupdatedAt());
     }
 
     @Override
@@ -141,7 +141,7 @@ public class ContentPage implements Serializable {
                 ", " + menuArticleId +
                 ", " + contentArticleId +
                 ", " + createdAt +
-                ", " + modifiedDate +
+                ", " + updatedAt +
                 ")";
     }
 }
