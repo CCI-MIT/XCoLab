@@ -105,7 +105,7 @@ public class FlaggingController {
         if (reportDao.get(reportId) == null) {
             throw new NotFoundException();
         }
-        report.setReportId(reportId);
+        report.setId(reportId);
         return reportDao.update(report);
     }
 
@@ -140,7 +140,7 @@ public class FlaggingController {
         if (reportTargetDao.get(reportTargetId) == null) {
             throw new NotFoundException();
         }
-        reportTarget.setReportTargetId(reportTargetId);
+        reportTarget.setId(reportTargetId);
         return reportTargetDao.update(reportTarget);
     }
 

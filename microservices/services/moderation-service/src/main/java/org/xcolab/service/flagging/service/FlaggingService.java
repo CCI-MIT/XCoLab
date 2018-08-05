@@ -94,7 +94,7 @@ public class FlaggingService {
 
         for (Report singleReport : equivalentReports) {
             singleReport.setManagerAction(managerAction.name());
-            singleReport.setManageruserId(manageruserId);
+            singleReport.setManagerUserId(manageruserId);
             singleReport.setManagerActionDate(actionDate);
             reportDao.update(singleReport);
         }

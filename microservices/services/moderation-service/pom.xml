@@ -51,7 +51,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>flagging_.*</includes>
+                            <includes>moderation__.*</includes>
                         </database>
                     </generator>
                 </configuration>
