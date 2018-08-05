@@ -75,7 +75,7 @@ public class NotificationUnregisterUtils {
 
     public static String getToken(Member user) {
         return getToken(
-                Math.floor(1.0 * user.getCreateDate().getTime() / 1000.f) + "" + user.getUserId());
+                Math.floor(1.0 * user.getCreatedAt().getTime() / 1000.f) + "" + user.getUserId());
     }
 
     private static String getToken(String baseString) {

@@ -47,7 +47,7 @@ public class ContentsController {
     @RequestMapping(value = "/contentArticles", method = RequestMethod.POST)
     public ContentArticle createContentArticle(@RequestBody ContentArticle contentArticle) {
         java.util.Date date = new java.util.Date();
-        contentArticle.setCreateDate(new Timestamp(date.getTime()));
+        contentArticle.setCreatedAt(new Timestamp(date.getTime()));
         return this.contentArticleDao.create(contentArticle);
     }
 
@@ -117,7 +117,7 @@ public class ContentsController {
     public ContentArticleVersion createContentArticleVersion(
             @RequestBody ContentArticleVersion contentArticleVersion) {
         java.util.Date date = new java.util.Date();
-        contentArticleVersion.setCreateDate(new Timestamp(date.getTime()));
+        contentArticleVersion.setCreatedAt(new Timestamp(date.getTime()));
 
         ContentArticle contentArticle;
         if (contentArticleVersion.getContentArticleId() == null
@@ -125,7 +125,7 @@ public class ContentsController {
             contentArticle = new ContentArticle();
             contentArticle.setAuthorId(contentArticleVersion.getAuthorId());
             contentArticle.setVisible(true);
-            contentArticle.setCreateDate(contentArticleVersion.getCreateDate());
+            contentArticle.setCreatedAt(contentArticleVersion.getCreatedAt());
             contentArticle = this.contentArticleDao.create(contentArticle);
         } else {
             try {

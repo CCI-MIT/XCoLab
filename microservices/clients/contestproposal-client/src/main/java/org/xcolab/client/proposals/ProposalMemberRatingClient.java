@@ -103,7 +103,7 @@ public final class ProposalMemberRatingClient {
         ProposalSupporter supporter = new ProposalSupporter();
         supporter.setProposalId(proposalId);
         supporter.setUserId(userId);
-        supporter.setCreateDate(new Timestamp(new Date().getTime()));
+        supporter.setCreatedAt(new Timestamp(new Date().getTime()));
         createProposalSupporter(supporter);
 
         ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);

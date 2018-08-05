@@ -54,7 +54,7 @@ public class FileUploadController {
             }
 
             FileEntry fileEntry = new FileEntry();
-            fileEntry.setCreateDate(new Timestamp(new Date().getTime()));
+            fileEntry.setCreatedAt(new Timestamp(new Date().getTime()));
             String nameExt = file.getOriginalFilename();
             fileEntry.setFileEntryExtension((FilenameUtils.getExtension(nameExt)).toLowerCase());
             fileEntry.setFileEntrySize(bytes.length);

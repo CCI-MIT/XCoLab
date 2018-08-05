@@ -6,7 +6,7 @@
     <!--@elvariable id="contentArticleVersions" type="java.util.List<org.xcolab.client.contents.pojo.ContentArticleVersion>"-->
     <c:forEach var="contentArticleVersion" items="${contentArticleVersions}">
         <div>
-            <a href="${contentArticleVersion.linkUrl}">${contentArticleVersion.title}</a> by ${contentArticleVersion.authorId} on ${contentArticleVersion.createDate} - <a target="_blank" href="/resources/-/wiki/Main/${contentArticleVersion.title.replace(' ', '+')}">Resources link</a>
+            <a href="${contentArticleVersion.linkUrl}">${contentArticleVersion.title}</a> by ${contentArticleVersion.authorId} on ${contentArticleVersion.createdAt} - <a target="_blank" href="/resources/-/wiki/Main/${contentArticleVersion.title.replace(' ', '+')}">Resources link</a>
             <br />
         </div>
     </c:forEach>

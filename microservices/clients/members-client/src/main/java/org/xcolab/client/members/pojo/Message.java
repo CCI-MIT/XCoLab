@@ -23,7 +23,7 @@ public class Message implements Serializable {
     private Long messageId;
     private Long fromId;
     private Long repliesTo;
-    private Timestamp createDate;
+    private Timestamp createdAt;
     private String subject;
     private String content;
     private Boolean opened;
@@ -37,7 +37,7 @@ public class Message implements Serializable {
         this.messageId = value.messageId;
         this.fromId = value.fromId;
         this.repliesTo = value.repliesTo;
-        this.createDate = value.createDate;
+        this.createdAt = value.createdAt;
         this.subject = value.subject;
         this.content = value.content;
     }
@@ -49,12 +49,12 @@ public class Message implements Serializable {
         this.threadId = threadId;
     }
 
-    public Message(Long messageId, Long fromId, Long repliesTo, Timestamp createDate,
+    public Message(Long messageId, Long fromId, Long repliesTo, Timestamp createdAt,
             String subject, String content, Boolean opened, Boolean archived, String threadId) {
         this.messageId = messageId;
         this.fromId = fromId;
         this.repliesTo = repliesTo;
-        this.createDate = createDate;
+        this.createdAt = createdAt;
         this.subject = subject;
         this.content = content;
         this.opened = opened;
@@ -86,12 +86,12 @@ public class Message implements Serializable {
         this.repliesTo = repliesTo;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getSubject() {
@@ -137,7 +137,7 @@ public class Message implements Serializable {
         return "Message (" + messageId +
                 ", " + fromId +
                 ", " + repliesTo +
-                ", " + createDate +
+                ", " + createdAt +
                 ", " + subject +
                 ", " + content +
                 ", " + opened +

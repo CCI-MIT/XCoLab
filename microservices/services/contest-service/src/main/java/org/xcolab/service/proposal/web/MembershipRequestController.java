@@ -23,7 +23,7 @@ public class MembershipRequestController {
 
     @RequestMapping(value = "/membershipRequests", method = RequestMethod.POST)
     public MembershipRequest createMembershipRequest(@RequestBody MembershipRequest membershipRequest) {
-            membershipRequest.setCreateDate(new Timestamp(new Date().getTime()));
+            membershipRequest.setCreatedAt(new Timestamp(new Date().getTime()));
         return this.membershipRequestDao.create(membershipRequest);
     }
 

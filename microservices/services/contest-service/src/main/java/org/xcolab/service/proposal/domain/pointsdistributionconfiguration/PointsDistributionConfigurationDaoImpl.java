@@ -31,7 +31,7 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_PLAN_SECTION_DEFINITION_ID, pointsDistributionConfiguration.getTargetPlanSectionDefinitionId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.PERCENTAGE, pointsDistributionConfiguration.getPercentage())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATOR, pointsDistributionConfiguration.getCreator())
-                .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATE_DATE, pointsDistributionConfiguration.getCreateDate())
+                .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATE_DATE, pointsDistributionConfiguration.getCreatedAt())
                 .returning(POINTS_DISTRIBUTION_CONFIGURATION.ID_)
                 .fetchOne();
         if (ret != null) {
@@ -54,7 +54,7 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_PLAN_SECTION_DEFINITION_ID, pointsDistributionConfiguration.getTargetPlanSectionDefinitionId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.PERCENTAGE, pointsDistributionConfiguration.getPercentage())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATOR, pointsDistributionConfiguration.getCreator())
-                .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATE_DATE, pointsDistributionConfiguration.getCreateDate())
+                .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATE_DATE, pointsDistributionConfiguration.getCreatedAt())
                 .where(POINTS_DISTRIBUTION_CONFIGURATION.ID_.eq(pointsDistributionConfiguration.getId_()))
                 .execute() > 0;
     }

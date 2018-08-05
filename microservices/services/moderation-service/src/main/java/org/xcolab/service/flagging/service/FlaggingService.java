@@ -34,7 +34,7 @@ public class FlaggingService {
     }
 
     public Report createReport(Report report) {
-        report.setCreateDate(new Timestamp(new Date().getTime()));
+        report.setCreatedAt(new Timestamp(new Date().getTime()));
         report = reportDao.create(report);
         int totalWeight = reportDao.getTotalWeight(report.getTargetType(), report.getTargetId(),
                 report.getTargetAdditionalId());

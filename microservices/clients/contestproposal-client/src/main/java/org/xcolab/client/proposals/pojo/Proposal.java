@@ -374,7 +374,7 @@ public class Proposal extends AbstractProposal {
             return getLastModifiedDate();
         }
         return clients.proposal
-                .getProposalVersionByProposalIdVersion(this.getProposalId(), this.getVersion()).getCreateDate();
+                .getProposalVersionByProposalIdVersion(this.getProposalId(), this.getVersion()).getCreatedAt();
 
     }
 

@@ -46,12 +46,12 @@ public class MessageBean implements Serializable {
         return message.getContent();
     }
 
-    public String getCreateDateFormatted() {
-        return DurationFormatter.forRequestLocale().format(getCreateDate());
+    public String getCreatedAtFormatted() {
+        return DurationFormatter.forRequestLocale().format(getCreatedAt());
     }
 
-    public Date getCreateDate() {
-        return message.getCreateDate();
+    public Date getCreatedAt() {
+        return message.getCreatedAt();
     }
 
     public String getLinkUrl() {

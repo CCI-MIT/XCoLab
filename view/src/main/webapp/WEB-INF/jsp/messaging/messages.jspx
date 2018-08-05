@@ -102,7 +102,7 @@
                                 </c:choose>
 
                             </td>
-                            <td>${message.createDateFormatted}</td>
+                            <td>${message.createdAtFormatted}</td>
                         </tr>
                     </c:forEach>
                     </tbody>

@@ -52,7 +52,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
                 .set(BALLOON_LINK.UUID_, balloonLink.getUuid_())
                 .set(BALLOON_LINK.TARGET_URL, balloonLink.getTargetUrl())
                 .set(BALLOON_LINK.BALLOON_USER_UUID, balloonLink.getBalloonUserUuid())
-                .set(BALLOON_LINK.CREATE_DATE, balloonLink.getCreateDate())
+                .set(BALLOON_LINK.CREATE_DATE, balloonLink.getCreatedAt())
                 .set(BALLOON_LINK.VISITS, balloonLink.getVisits())
                 .where(BALLOON_LINK.UUID_.eq(balloonLink.getUuid_()))
                 .execute() > 0;
@@ -65,7 +65,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
                 .set(BALLOON_LINK.TARGET_URL, balloonLink.getTargetUrl())
                 .set(BALLOON_LINK.VISITS, ((balloonLink.getVisits() == null) ? (0) : (balloonLink.getVisits())))
                 .set(BALLOON_LINK.BALLOON_USER_UUID, balloonLink.getBalloonUserUuid())
-                .set(BALLOON_LINK.CREATE_DATE, balloonLink.getCreateDate())
+                .set(BALLOON_LINK.CREATE_DATE, balloonLink.getCreatedAt())
                 .execute();
         return balloonLink;
     }

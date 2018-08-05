@@ -6,6 +6,6 @@ import java.util.Comparator;
 
 public class MessageBeanDateComparator implements Comparator<MessageBean> {
     public int compare (MessageBean messageBean1, MessageBean messageBean2) {
-        return messageBean2.getCreateDate().compareTo(messageBean1.getCreateDate());
+        return messageBean2.getCreatedAt().compareTo(messageBean1.getCreatedAt());
     }
 }

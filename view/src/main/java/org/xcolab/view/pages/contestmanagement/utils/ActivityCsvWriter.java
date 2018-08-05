@@ -36,7 +36,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
             "lastName",
             "activityCategory",
             "activityType",
-            "activityCreateDate",
+            "activityCreatedAt",
             "activityBody"
             );
 

@@ -71,7 +71,7 @@ public class ProposalCsvWriter extends CsvResponseWriter {
             addValue(row, proposal.getCommentsCount());
             addValue(row, proposal.getSupportersCount());
             addValue(row, proposal.getVotesCount());
-            addValue(row, proposal.getCreateDate());
+            addValue(row, proposal.getCreatedAt());
             addValue(row, proposal.getUpdatedDate());
             addValue(row, proposal.getPitch());
 

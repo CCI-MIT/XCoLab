@@ -339,7 +339,7 @@ public class ProposalImpactSeries {
     }
 
     public Date getUpdatedDate() {
-        return lastModifiedVersion.getCreateDate();
+        return lastModifiedVersion.getCreatedAt();
     }
 
     public Proposal getProposalWrapper() {

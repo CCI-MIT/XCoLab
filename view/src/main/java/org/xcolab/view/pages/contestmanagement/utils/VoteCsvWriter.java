@@ -107,12 +107,12 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? member.getLoginIP() : "Member not found");
             addLocationForIp(row, member != null ? member.getLoginIP() : null);
 
-            addValue(row, member != null ? member.getCreateDate() : "Member not found");
+            addValue(row, member != null ? member.getCreatedAt() : "Member not found");
             addValue(row, member != null ? member.hasLinkedSocialAccount() : "Member not found");
             addValue(row, member != null ? member.getEmailAddress() : "Member not found");
             addValue(row, member != null ? member.getIsEmailConfirmed() : "Member not found");
             addValue(row, member != null ? member.getIsEmailBounced() : "Member not found");
-            addValue(row, vote.getCreateDate());
+            addValue(row, vote.getCreatedAt());
             addValue(row, vote.getVoterIp());
             addLocationForIp(row, vote.getVoterIp());
             addValue(row, vote.getVoterUserAgent());

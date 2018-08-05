@@ -23,7 +23,7 @@ public class BalloonLink implements Serializable {
     private String    targeturl;
     private Integer   visits;
     private String    balloonuseruuid;
-    private Timestamp createdate;
+    private Timestamp createdAt;
 
     public BalloonLink() {}
 
@@ -32,7 +32,7 @@ public class BalloonLink implements Serializable {
         this.targeturl = value.targeturl;
         this.visits = value.visits;
         this.balloonuseruuid = value.balloonuseruuid;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
     }
 
     public BalloonLink(
@@ -40,13 +40,13 @@ public class BalloonLink implements Serializable {
         String    targeturl,
         Integer   visits,
         String    balloonuseruuid,
-        Timestamp createdate
+        Timestamp createdAt
     ) {
         this.uuid_ = uuid_;
         this.targeturl = targeturl;
         this.visits = visits;
         this.balloonuseruuid = balloonuseruuid;
-        this.createdate = createdate;
+        this.createdAt = createdAt;
     }
 
     public String getUuid_() {
@@ -81,19 +81,19 @@ public class BalloonLink implements Serializable {
         this.balloonuseruuid = balloonuseruuid;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
     public String toString() {
         String sb =
                 "BalloonLink (" + uuid_ + ", " + targeturl + ", " + visits + ", " + balloonuseruuid
-                        + ", " + createdate + ")";
+                        + ", " + createdAt + ")";
 
         return sb;
     }

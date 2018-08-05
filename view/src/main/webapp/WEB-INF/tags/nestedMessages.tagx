@@ -10,7 +10,7 @@
     <div class="c-PreviousMessage">
         <p class="c-PreviousMessage__header">
             <spring:message code="message.thread.metadata" arguments="${messageBeanList.get(i).from.displayName}" argumentSeparator=","/>
-            <xcolab:formatDateTime millis="${messageBeanList.get(i).createDate.time}" type="datetime"/>
+            <xcolab:formatDateTime millis="${messageBeanList.get(i).createdAt.time}" type="datetime"/>
         </p>
         ${messageBeanList.get(i).content}
         <c:if test = "${i lt messageBeanList.size() - 1}">

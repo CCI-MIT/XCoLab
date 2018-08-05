@@ -24,7 +24,7 @@ public class ContentArticleVersion implements Serializable {
     private Long contentArticleId;
     private Long folderId;
     private Long authorId;
-    private Timestamp createDate;
+    private Timestamp createdAt;
     private String title;
     private String content;
     private String    lang;
@@ -33,12 +33,12 @@ public class ContentArticleVersion implements Serializable {
     }
 
     public ContentArticleVersion(Long contentArticleVersionId, Long contentArticleId,
-            Long folderId, Long authorId, Timestamp createDate, String title, String content,String lang) {
+            Long folderId, Long authorId, Timestamp createdAt, String title, String content,String lang) {
         this.contentArticleVersionId = contentArticleVersionId;
         this.contentArticleId = contentArticleId;
         this.folderId = folderId;
         this.authorId = authorId;
-        this.createDate = createDate;
+        this.createdAt = createdAt;
         this.title = title;
         this.content = content;
         this.lang = lang;
@@ -76,12 +76,12 @@ public class ContentArticleVersion implements Serializable {
         this.authorId = authorId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getTitle() {
@@ -119,7 +119,7 @@ public class ContentArticleVersion implements Serializable {
                 ", " + contentArticleId +
                 ", " + folderId +
                 ", " + authorId +
-                ", " + createDate +
+                ", " + createdAt +
                 ", " + title +
                 ", " + content +
                 ")";

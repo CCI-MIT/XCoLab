@@ -30,9 +30,9 @@ public class Category extends AbstractCategory {
     }
 
     public Category(Long categoryId, Long groupId, Long authorId, String name, String description,
-            Timestamp createDate, Timestamp deletedDate, Integer sort, Boolean isQuiet) {
+            Timestamp createdAt, Timestamp deletedDate, Integer sort, Boolean isQuiet) {
         super(categoryId, groupId, authorId, name, description,
-                createDate, deletedDate, sort, isQuiet);
+                createdAt, deletedDate, sort, isQuiet);
         categoryClient = CategoryClientUtil.getClient();
         threadClient = ThreadClientUtil.getClient();
     }

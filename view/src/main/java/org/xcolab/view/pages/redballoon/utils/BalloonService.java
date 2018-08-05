@@ -60,7 +60,7 @@ public class BalloonService {
         BalloonLink link = new BalloonLink();
         link.setUuid_(UUID.randomUUID().toString());
         link.setBalloonUserUuid(but.getUuid_());
-        link.setCreateDate(new Timestamp(new Date().getTime()));
+        link.setCreatedAt(new Timestamp(new Date().getTime()));
         link.setTargetUrl(getSnpLinkUrl(link.getUuid_()));
         link = BalloonsClient.createBalloonLink(link);
 

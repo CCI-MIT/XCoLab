@@ -34,7 +34,7 @@ public class MembershipRequestDaoImpl implements MembershipRequestDao {
                 .set(MEMBERSHIP_REQUEST.MEMBERSHIP_REQUEST_ID, membershipRequest.getMembershipRequestId())
                 .set(MEMBERSHIP_REQUEST.COMPANY_ID, membershipRequest.getCompanyId())
                 .set(MEMBERSHIP_REQUEST.USER_ID, membershipRequest.getUserId())
-                .set(MEMBERSHIP_REQUEST.CREATE_DATE, membershipRequest.getCreateDate())
+                .set(MEMBERSHIP_REQUEST.CREATE_DATE, membershipRequest.getCreatedAt())
                 .set(MEMBERSHIP_REQUEST.GROUP_ID, membershipRequest.getGroupId())
                 .set(MEMBERSHIP_REQUEST.COMMENTS, membershipRequest.getComments())
                 .set(MEMBERSHIP_REQUEST.REPLY_COMMENTS, membershipRequest.getReplyComments())

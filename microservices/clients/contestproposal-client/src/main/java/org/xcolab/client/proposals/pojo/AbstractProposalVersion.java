@@ -10,7 +10,7 @@ class AbstractProposalVersion implements Serializable {
     private Long proposalid;
     private Integer version;
     private Long authorid;
-    private Timestamp createdate;
+    private Timestamp createdAt;
     private String updatetype;
     private Long updateadditionalid;
 
@@ -20,7 +20,7 @@ class AbstractProposalVersion implements Serializable {
         this.proposalid = value.proposalid;
         this.version = value.version;
         this.authorid = value.authorid;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
         this.updatetype = value.updatetype;
         this.updateadditionalid = value.updateadditionalid;
     }
@@ -29,14 +29,14 @@ class AbstractProposalVersion implements Serializable {
             Long proposalid,
             Integer version,
             Long authorid,
-            Timestamp createdate,
+            Timestamp createdAt,
             String updatetype,
             Long updateadditionalid
     ) {
         this.proposalid = proposalid;
         this.version = version;
         this.authorid = authorid;
-        this.createdate = createdate;
+        this.createdAt = createdAt;
         this.updatetype = updatetype;
         this.updateadditionalid = updateadditionalid;
     }
@@ -65,12 +65,12 @@ class AbstractProposalVersion implements Serializable {
         this.authorid = authorid;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getUpdateType() {
@@ -96,7 +96,7 @@ class AbstractProposalVersion implements Serializable {
         result = prime * result + ((proposalid == null) ? 0 : proposalid.hashCode());
         result = prime * result + ((version == null) ? 0 : version.hashCode());
         result = prime * result + ((authorid == null) ? 0 : authorid.hashCode());
-        result = prime * result + ((createdate == null) ? 0 : createdate.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         result = prime * result + ((updatetype == null) ? 0 : updatetype.hashCode());
         result =
                 prime * result + ((updateadditionalid == null) ? 0 : updateadditionalid.hashCode());
@@ -136,11 +136,11 @@ class AbstractProposalVersion implements Serializable {
         } else if (!authorid.equals(other.authorid)) {
             return false;
         }
-        if (createdate == null) {
-            if (other.createdate != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!createdate.equals(other.createdate)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         if (updatetype == null) {
@@ -163,7 +163,7 @@ class AbstractProposalVersion implements Serializable {
     @Override
     public String toString() {
         String sb = "ProposalVersion (" + proposalid + ", " + version + ", " + authorid + ", "
-                + createdate + ", " + updatetype + ", " + updateadditionalid + ")";
+                + createdAt + ", " + updatetype + ", " + updateadditionalid + ")";
 
         return sb;
     }

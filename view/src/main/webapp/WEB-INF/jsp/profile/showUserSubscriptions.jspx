@@ -53,7 +53,7 @@
             <tr class="colabRow">
                 <td>${activity.body}</td>
                 <td>
-                    <xcolab:formatDateTime millis="${activity.createdDate.time}"/>
+                    <xcolab:formatDateTime millis="${activity.createdAt.time}"/>
                 </td>
             </tr>
 

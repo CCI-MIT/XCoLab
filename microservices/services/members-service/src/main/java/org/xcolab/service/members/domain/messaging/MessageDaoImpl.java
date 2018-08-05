@@ -148,7 +148,7 @@ public class MessageDaoImpl implements MessageDao {
                             ? MESSAGE_RECIPIENT_STATUS.OPENED.asc()
                             : MESSAGE_RECIPIENT_STATUS.OPENED.desc());
                     break;
-                case "createDate":
+                case "createdAt":
                     query.addOrderBy(sortColumn.isAscending()
                             ? MESSAGE.CREATE_DATE.asc()
                             : MESSAGE.CREATE_DATE.desc());

@@ -32,7 +32,7 @@ public class CommentClient {
 
     public List<Comment> listComments(int start, int last, Long threadId) {
         return DtoUtil.toPojos(
-                commentServiceWrapper.listComments(start, last, "createDate", null, threadId, null),
+                commentServiceWrapper.listComments(start, last, "createdAt", null, threadId, null),
                 serviceNamespace);
     }
 

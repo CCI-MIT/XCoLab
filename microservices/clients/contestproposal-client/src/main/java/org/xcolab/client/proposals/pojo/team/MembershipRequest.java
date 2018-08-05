@@ -23,7 +23,7 @@ public class MembershipRequest extends AbstractMembershipRequest {
             Long membershiprequestid,
             Long companyid,
             Long userid,
-            Timestamp createdate,
+            Timestamp createdAt,
             Long groupid,
             String comments,
             String replycomments,
@@ -31,7 +31,7 @@ public class MembershipRequest extends AbstractMembershipRequest {
             Long replieruserid,
             Integer statusid
     ) {
-        super(membershiprequestid, companyid, userid, createdate, groupid, comments, replycomments,
+        super(membershiprequestid, companyid, userid, createdAt, groupid, comments, replycomments,
                 replydate, replieruserid, statusid);
 
     }

@@ -72,13 +72,13 @@ public class MessageBean implements Serializable {
         return message.getContent();
     }
 
-    public Date getCreateDate() {
-        return message.getCreateDate();
+    public Date getCreatedAt() {
+        return message.getCreatedAt();
     }
 
     public long getDaysAgo() {
         final int millisecondsInDay = 1000 * 60 * 60 * 24;
-        long createDay = message.getCreateDate().getTime() / millisecondsInDay;
+        long createDay = message.getCreatedAt().getTime() / millisecondsInDay;
         long daysNow = new Date().getTime() / millisecondsInDay;
         return daysNow - createDay;
     }

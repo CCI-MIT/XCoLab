@@ -51,9 +51,9 @@ public class ProposalVersionsJsonController {
                 break;
             }
 
-            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
+            if (Math.abs(oldDate.getTime() - proposalVersion.getCreatedAt().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
                 index++;
-                oldDate = proposalVersion.getCreateDate();
+                oldDate = proposalVersion.getCreatedAt();
             }
         }
 
@@ -105,7 +105,7 @@ public class ProposalVersionsJsonController {
                 Member author = Member.fromId(proposalVersion.getAuthorId());
                 proposalVersionsArray.add(Json.createObjectBuilder()
                         .add("version", proposalVersion.getVersion())
-                        .add("date", proposalVersion.getCreateDate().getTime())
+                        .add("date", proposalVersion.getCreatedAt().getTime())
                         .add("author", Json.createObjectBuilder()
                                 .add("userId", author.getId_())
                                 .add("screenName", author.getScreenName())

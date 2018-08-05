@@ -17,7 +17,7 @@ public class LoginLog implements Serializable {
 
     private Long pk;
     private Long userId;
-    private Timestamp createDate;
+    private Timestamp createdAt;
     private String ipAddress;
     private String city;
     private String country;
@@ -29,18 +29,18 @@ public class LoginLog implements Serializable {
     public LoginLog(LoginLog value) {
         this.pk = value.pk;
         this.userId = value.userId;
-        this.createDate = value.createDate;
+        this.createdAt = value.createdAt;
         this.ipAddress = value.ipAddress;
         this.city = value.city;
         this.country = value.country;
         this.entryUrl = value.entryUrl;
     }
 
-    public LoginLog(Long pk, Long userId, Timestamp createDate, String ipAddress,
+    public LoginLog(Long pk, Long userId, Timestamp createdAt, String ipAddress,
             String city, String country, String entryUrl) {
         this.pk = pk;
         this.userId = userId;
-        this.createDate = createDate;
+        this.createdAt = createdAt;
         this.ipAddress = ipAddress;
         this.city = city;
         this.country = country;
@@ -63,12 +63,12 @@ public class LoginLog implements Serializable {
         this.userId = userId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getIpAddress() {
@@ -129,11 +129,11 @@ public class LoginLog implements Serializable {
         } else if (!userId.equals(other.userId)) {
             return false;
         }
-        if (createDate == null) {
-            if (other.createDate != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!createDate.equals(other.createDate)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         if (ipAddress == null) {
@@ -173,7 +173,7 @@ public class LoginLog implements Serializable {
         int result = 1;
         result = prime * result + ((pk == null) ? 0 : pk.hashCode());
         result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-        result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         result = prime * result + ((ipAddress == null) ? 0 : ipAddress.hashCode());
         result = prime * result + ((city == null) ? 0 : city.hashCode());
         result = prime * result + ((country == null) ? 0 : country.hashCode());
@@ -185,7 +185,7 @@ public class LoginLog implements Serializable {
     public String toString() {
         return "LoginLog (" + pk +
                 ", " + userId +
-                ", " + createDate +
+                ", " + createdAt +
                 ", " + ipAddress +
                 ", " + city +
                 ", " + country +

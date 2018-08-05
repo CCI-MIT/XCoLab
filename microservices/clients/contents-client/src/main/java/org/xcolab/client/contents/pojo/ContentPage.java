@@ -29,7 +29,7 @@ public class ContentPage implements Serializable {
     private String metaDescription;
     private Long menuArticleId;
     private Long contentArticleId;
-    private Timestamp createDate;
+    private Timestamp createdAt;
     private Timestamp modifiedDate;
 
     public ContentPage() {
@@ -40,7 +40,7 @@ public class ContentPage implements Serializable {
         this.title = value.title;
         this.menuArticleId = value.menuArticleId;
         this.contentArticleId = value.contentArticleId;
-        this.createDate = value.createDate;
+        this.createdAt = value.createdAt;
         this.modifiedDate = value.modifiedDate;
     }
 
@@ -88,12 +88,12 @@ public class ContentPage implements Serializable {
         this.contentArticleId = contentArticleId;
     }
 
-    public Timestamp getCreatedDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreatedDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Timestamp getModifiedDate() {
@@ -123,14 +123,14 @@ public class ContentPage implements Serializable {
                 && Objects.equals(getMetaDescription(), that.getMetaDescription())
                 && Objects.equals(getMenuArticleId(), that.getMenuArticleId())
                 && Objects.equals(getContentArticleId(), that.getContentArticleId())
-                && Objects.equals(getCreatedDate(), that.getCreatedDate())
+                && Objects.equals(getCreatedAt(), that.getCreatedAt())
                 && Objects.equals(getModifiedDate(), that.getModifiedDate());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getPageId(), getTitle(), getMetaDescription(), getMenuArticleId(),
-                getContentArticleId(), createDate, getModifiedDate());
+                getContentArticleId(), createdAt, getModifiedDate());
     }
 
     @Override
@@ -140,7 +140,7 @@ public class ContentPage implements Serializable {
                 ", " + title +
                 ", " + menuArticleId +
                 ", " + contentArticleId +
-                ", " + createDate +
+                ", " + createdAt +
                 ", " + modifiedDate +
                 ")";
     }

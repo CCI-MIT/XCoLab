@@ -56,7 +56,7 @@ public class CommentDaoImpl implements CommentDao {
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
-                case "createDate":
+                case "createdAt":
                     query.addOrderBy(sortColumn.isAscending()
                             ? COMMENT.CREATED_AT.asc() : COMMENT.CREATED_AT.desc());
                     break;

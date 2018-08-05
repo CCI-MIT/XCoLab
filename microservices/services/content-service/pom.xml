@@ -42,7 +42,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>files_FileEntry|xcolab_ContentArticle|xcolab_ContentArticleVersion|xcolab_ContentFolder|xcolab_ContentPage</includes>
+                            <includes>content__.+| files_FileEntry|xcolab_ContentArticle|xcolab_ContentArticleVersion|xcolab_ContentFolder|xcolab_ContentPage</includes>
                         </database>
                     </generator>
                 </configuration>

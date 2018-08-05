@@ -24,7 +24,7 @@ public class TrackedVisit implements Serializable {
     private String browser;
     private String headers;
     private String referer;
-    private Timestamp createDate;
+    private Timestamp createdAt;
 
     public TrackedVisit() {
     }
@@ -39,11 +39,11 @@ public class TrackedVisit implements Serializable {
         this.browser = value.browser;
         this.headers = value.headers;
         this.referer = value.referer;
-        this.createDate = value.createDate;
+        this.createdAt = value.createdAt;
     }
 
     public TrackedVisit(Long id_, String uuid_, String ip, String city, String country,
-            String url, String browser, String headers, String referer, Timestamp createDate) {
+            String url, String browser, String headers, String referer, Timestamp createdAt) {
         this.id_ = id_;
         this.uuid_ = uuid_;
         this.ip = ip;
@@ -53,7 +53,7 @@ public class TrackedVisit implements Serializable {
         this.browser = browser;
         this.headers = headers;
         this.referer = referer;
-        this.createDate = createDate;
+        this.createdAt = createdAt;
     }
 
     public Long getId_() {
@@ -128,12 +128,12 @@ public class TrackedVisit implements Serializable {
         this.referer = referer;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -211,11 +211,11 @@ public class TrackedVisit implements Serializable {
         } else if (!referer.equals(other.referer)) {
             return false;
         }
-        if (createDate == null) {
-            if (other.createDate != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!createDate.equals(other.createDate)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         return true;
@@ -234,7 +234,7 @@ public class TrackedVisit implements Serializable {
         result = prime * result + ((browser == null) ? 0 : browser.hashCode());
         result = prime * result + ((headers == null) ? 0 : headers.hashCode());
         result = prime * result + ((referer == null) ? 0 : referer.hashCode());
-        result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         return result;
     }
 
@@ -250,7 +250,7 @@ public class TrackedVisit implements Serializable {
                 ", " + browser +
                 ", " + headers +
                 ", " + referer +
-                ", " + createDate +
+                ", " + createdAt +
                 ")";
     }
 }

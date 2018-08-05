@@ -27,7 +27,7 @@ public class ContentArticle implements Serializable {
 
     private Long contentArticleId;
     private Long authorId;
-    private Timestamp createDate;
+    private Timestamp createdAt;
     private Long maxVersionId;
     private Long editRoleGroupId;
     private Long viewRoleGroupId;
@@ -38,12 +38,12 @@ public class ContentArticle implements Serializable {
     public ContentArticle() {
     }
 
-    public ContentArticle(Long contentArticleId, Long authorId, Timestamp createDate,
+    public ContentArticle(Long contentArticleId, Long authorId, Timestamp createdAt,
             Long maxVersionId, Long editRoleGroupId, Long viewRoleGroupId, Boolean visible,
             String title, Long folderId) {
         this.contentArticleId = contentArticleId;
         this.authorId = authorId;
-        this.createDate = createDate;
+        this.createdAt = createdAt;
         this.maxVersionId = maxVersionId;
         this.editRoleGroupId = editRoleGroupId;
         this.viewRoleGroupId = viewRoleGroupId;
@@ -68,12 +68,12 @@ public class ContentArticle implements Serializable {
         this.authorId = authorId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getMaxVersionId() {
@@ -145,7 +145,7 @@ public class ContentArticle implements Serializable {
     public String toString() {
         return "ContentArticle (" + contentArticleId +
                 ", " + authorId +
-                ", " + createDate +
+                ", " + createdAt +
                 ", " + maxVersionId +
                 ", " + editRoleGroupId +
                 ", " + viewRoleGroupId +

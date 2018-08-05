@@ -35,7 +35,7 @@ public class ImageUploadUtils {
 
 
             FileEntry file = new FileEntry();
-            file.setCreateDate(new Timestamp(new Date().getTime()));
+            file.setCreatedAt(new Timestamp(new Date().getTime()));
             file.setFileEntryExtension("png");
             file.setFileEntrySize(imgBArr.length);
             file.setFileEntryName(url.toString());

@@ -193,12 +193,12 @@ public class ActivitySubscriptionEmailHelper {
     private String getDigestMessageBody(List<ActivityEntry> userDigestActivities) {
         Comparator<ActivityEntry> activityCategoryComparator =
                 Comparator.comparing(ActivityEntry::getActivityCategory);
-        Comparator<ActivityEntry> socialActivityCreateDateComparator =
+        Comparator<ActivityEntry> socialActivityCreatedAtComparator =
                 (o1, o2) -> (int) (o1.getCreatedAt().getTime() - o2.getCreatedAt().getTime());
 
         ComparatorChain comparatorChain = new ComparatorChain();
         comparatorChain.addComparator(activityCategoryComparator);
-        comparatorChain.addComparator(socialActivityCreateDateComparator);
+        comparatorChain.addComparator(socialActivityCreatedAtComparator);
         StringBuilder body = new StringBuilder();
         try {
             userDigestActivities.sort(comparatorChain);

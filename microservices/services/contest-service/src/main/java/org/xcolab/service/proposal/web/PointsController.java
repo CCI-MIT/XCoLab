@@ -36,7 +36,7 @@ public class PointsController {
 
     @RequestMapping(value = "/pointsDistributionConfigurations", method = RequestMethod.POST)
     public PointsDistributionConfiguration createPointsDistributionConfiguration(@RequestBody PointsDistributionConfiguration pointsDistributionConfiguration) {
-        pointsDistributionConfiguration.setCreateDate(new Timestamp(new Date().getTime()));
+        pointsDistributionConfiguration.setCreatedAt(new Timestamp(new Date().getTime()));
         return this.pointsDistributionConfigurationDao.create(pointsDistributionConfiguration);
     }
 

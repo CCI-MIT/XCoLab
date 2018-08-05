@@ -94,7 +94,7 @@ public class ThreadDaoImpl implements ThreadDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? a1.AUTHOR_USER_ID.asc() : a1.AUTHOR_USER_ID.desc());
                     break;
-                case "createDate":
+                case "createdAt":
                     query.addOrderBy(sortColumn.isAscending()
                             ? THREAD.CREATED_AT.asc() : THREAD.CREATED_AT.desc());
                     break;

@@ -28,7 +28,7 @@ public class FileEntryDaoImpl implements FileEntryDao {
 
         FileEntryRecord ret = this.dslContext.insertInto(FILE_ENTRY)
                 .set(FILE_ENTRY.FILE_ENTRY_EXTENSION, fileEntry.getFileEntryExtension())
-                .set(FILE_ENTRY.CREATE_DATE, fileEntry.getCreateDate())
+                .set(FILE_ENTRY.CREATE_DATE, fileEntry.getCreatedAt())
                 .set(FILE_ENTRY.FILE_ENTRY_SIZE, fileEntry.getFileEntrySize())
                 .set(FILE_ENTRY.FILE_ENTRY_NAME, fileEntry.getFileEntryName())
                 .returning(FILE_ENTRY.FILE_ENTRY_ID)

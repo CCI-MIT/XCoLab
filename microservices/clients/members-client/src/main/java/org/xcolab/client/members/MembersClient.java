@@ -90,7 +90,7 @@ public final class MembersClient {
                     memberListQuery.queryParam("sort", prefix + sortType);
                     break;
                 case "MEMBER_SINCE":
-                    memberListQuery.queryParam("sort", prefix + "createDate");
+                    memberListQuery.queryParam("sort", prefix + "createdAt");
                     break;
                 case "CATEGORY":
                     memberListQuery.queryParam("sort", prefix + "roleName");

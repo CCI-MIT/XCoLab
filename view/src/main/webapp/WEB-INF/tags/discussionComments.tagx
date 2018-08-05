@@ -148,7 +148,7 @@
 											<c:set var="editCommentURL" value="/discussions/editComment?commentId=${message.id}&amp;proposalId=${proposalId}" />
 
                                             <spring:message code="discussion.commmentstag.caneditmsg" var="canEditMsg"/>
-											<button type="button" class="btn btn-link js-Tooltip ml-2" onclick="editComment(${message.createDate.time}, ${message.commentId},'${editCommentURL}');"
+											<button type="button" class="btn btn-link js-Tooltip ml-2" onclick="editComment(${message.createdAt.time}, ${message.commentId},'${editCommentURL}');"
 												 title="${canEditMsg}"><spring:message code="discussion.commmentstag.edit" />
                                             </button>
 

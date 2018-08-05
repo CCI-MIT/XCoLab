@@ -38,7 +38,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
-                case "createDate":
+                case "createdAt":
                     query.addOrderBy(sortColumn.isAscending()
                             ? CATEGORY.CREATED_AT.asc() : CATEGORY.CREATED_AT.desc());
                     break;

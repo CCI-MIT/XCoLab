@@ -8,7 +8,7 @@ class AbstractProposal implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long proposalid;
-    private Timestamp createdate;
+    private Timestamp createdAt;
     private Timestamp updateddate;
     private Long authorid;
     private Boolean visible;
@@ -20,7 +20,7 @@ class AbstractProposal implements Serializable {
 
     public AbstractProposal(AbstractProposal value) {
         this.proposalid = value.proposalid;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
         this.updateddate = value.updateddate;
         this.authorid = value.authorid;
         this.visible = value.visible;
@@ -38,12 +38,12 @@ class AbstractProposal implements Serializable {
         this.proposalid = proposalid;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Timestamp getUpdatedDate() {
@@ -97,7 +97,7 @@ class AbstractProposal implements Serializable {
 
     @Override
     public String toString() {
-        return "Proposal (" + proposalid + ", " + createdate + ", " + updateddate + ", "
+        return "Proposal (" + proposalid + ", " + createdAt + ", " + updateddate + ", "
                 + authorid + ", " + visible + ", " + discussionid + ", "
                 + resultsdiscussionid + ", " + groupid + ")";
     }

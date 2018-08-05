@@ -26,14 +26,14 @@ public class Report implements Serializable {
     private String managerAction;
     private Long managerMemberId;
     private Timestamp managerActionDate;
-    private Timestamp createDate;
+    private Timestamp createdAt;
 
     public Report() {
     }
 
     public Report(Long reportId, Long reporterMemberId, String targetType, Long targetId,
             String reason, String comment, Integer weight, String managerAction,
-            Long managerMemberId, Timestamp managerActionDate, Timestamp createDate) {
+            Long managerMemberId, Timestamp managerActionDate, Timestamp createdAt) {
         this.reportId = reportId;
         this.reporterMemberId = reporterMemberId;
         this.targetType = targetType;
@@ -44,7 +44,7 @@ public class Report implements Serializable {
         this.managerAction = managerAction;
         this.managerMemberId = managerMemberId;
         this.managerActionDate = managerActionDate;
-        this.createDate = createDate;
+        this.createdAt = createdAt;
     }
 
     public Long getReportId() {
@@ -127,12 +127,12 @@ public class Report implements Serializable {
         this.managerActionDate = manageractiondate;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createDate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getTargetAdditionalId() {
@@ -157,7 +157,7 @@ public class Report implements Serializable {
                 ", " + managerAction +
                 ", " + managerMemberId +
                 ", " + managerActionDate +
-                ", " + createDate +
+                ", " + createdAt +
                 ")";
     }
 }

@@ -31,7 +31,7 @@ public class Role_ implements Serializable {
 	private String    uuid_;
 	private Long      userid;
 	private String    username;
-	private Timestamp createdate;
+	private Timestamp createdAt;
 	private Timestamp modifieddate;
 
 	public Role_() {}
@@ -49,7 +49,7 @@ public class Role_ implements Serializable {
 		this.uuid_ = value.uuid_;
 		this.userid = value.userid;
 		this.username = value.username;
-		this.createdate = value.createdate;
+		this.createdAt = value.createdAt;
 		this.modifieddate = value.modifieddate;
 	}
 
@@ -66,7 +66,7 @@ public class Role_ implements Serializable {
 		String    uuid_,
 		Long      userid,
 		String    username,
-		Timestamp createdate,
+		Timestamp createdAt,
 		Timestamp modifieddate
 	) {
 		this.roleid = roleid;
@@ -81,7 +81,7 @@ public class Role_ implements Serializable {
 		this.uuid_ = uuid_;
 		this.userid = userid;
 		this.username = username;
-		this.createdate = createdate;
+		this.createdAt = createdAt;
 		this.modifieddate = modifieddate;
 	}
 
@@ -181,12 +181,12 @@ public class Role_ implements Serializable {
 		this.username = username;
 	}
 
-	public Timestamp getCreateDate() {
-		return this.createdate;
+	public Timestamp getCreatedAt() {
+		return this.createdAt;
 	}
 
-	public void setCreateDate(Timestamp createdate) {
-		this.createdate = createdate;
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public Timestamp getModifiedDate() {
@@ -202,7 +202,7 @@ public class Role_ implements Serializable {
         String sb =
                 "Role_ (" + roleid + ", " + companyid + ", " + classnameid + ", " + classpk + ", "
                         + name + ", " + title + ", " + description + ", " + type_ + ", " + subtype
-                        + ", " + uuid_ + ", " + userid + ", " + username + ", " + createdate + ", "
+                        + ", " + uuid_ + ", " + userid + ", " + username + ", " + createdAt + ", "
                         + modifieddate + ")";
 
         return sb;

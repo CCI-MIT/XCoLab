@@ -9,24 +9,24 @@ class AbstractProposalSupporter implements Serializable {
 
     private Long proposalid;
     private Long userid;
-    private Timestamp createdate;
+    private Timestamp createdAt;
 
     public AbstractProposalSupporter() {}
 
     public AbstractProposalSupporter(AbstractProposalSupporter value) {
         this.proposalid = value.proposalid;
         this.userid = value.userid;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
     }
 
     public AbstractProposalSupporter(
             Long proposalid,
             Long userid,
-            Timestamp createdate
+            Timestamp createdAt
     ) {
         this.proposalid = proposalid;
         this.userid = userid;
-        this.createdate = createdate;
+        this.createdAt = createdAt;
     }
 
     public Long getProposalId() {
@@ -45,12 +45,12 @@ class AbstractProposalSupporter implements Serializable {
         this.userid = userid;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -59,7 +59,7 @@ class AbstractProposalSupporter implements Serializable {
         int result = 1;
         result = prime * result + ((proposalid == null) ? 0 : proposalid.hashCode());
         result = prime * result + ((userid == null) ? 0 : userid.hashCode());
-        result = prime * result + ((createdate == null) ? 0 : createdate.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         return result;
     }
 
@@ -89,11 +89,11 @@ class AbstractProposalSupporter implements Serializable {
         } else if (!userid.equals(other.userid)) {
             return false;
         }
-        if (createdate == null) {
-            if (other.createdate != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!createdate.equals(other.createdate)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         return true;
@@ -101,7 +101,7 @@ class AbstractProposalSupporter implements Serializable {
 
     @Override
     public String toString() {
-        String sb = "ProposalSupporter (" + proposalid + ", " + userid + ", " + createdate + ")";
+        String sb = "ProposalSupporter (" + proposalid + ", " + userid + ", " + createdAt + ")";
 
         return sb;
     }

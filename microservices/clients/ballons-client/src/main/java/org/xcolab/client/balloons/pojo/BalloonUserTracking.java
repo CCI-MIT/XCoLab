@@ -28,7 +28,7 @@ public class BalloonUserTracking implements Serializable {
     private String email;
     private String parent;
     private String ip;
-    private Timestamp createdate;
+    private Timestamp createdAt;
     private Timestamp registrationdate;
     private Timestamp formfileddate;
     private Long userid;
@@ -50,7 +50,7 @@ public class BalloonUserTracking implements Serializable {
         this.email = value.email;
         this.parent = value.parent;
         this.ip = value.ip;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
         this.registrationdate = value.registrationdate;
         this.formfileddate = value.formfileddate;
         this.userid = value.userid;
@@ -98,12 +98,12 @@ public class BalloonUserTracking implements Serializable {
         this.ip = ip;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Timestamp getRegistrationDate() {
@@ -253,7 +253,7 @@ public class BalloonUserTracking implements Serializable {
                 && Objects.equals(getEmail(), that.getEmail())
                 && Objects.equals(getParent(), that.getParent())
                 && Objects.equals(getIp(), that.getIp())
-                && Objects.equals(createdate, that.createdate)
+                && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(registrationdate, that.registrationdate)
                 && Objects.equals(formfileddate, that.formfileddate)
                 && Objects.equals(userid, that.userid)
@@ -271,7 +271,7 @@ public class BalloonUserTracking implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUuid_(), getEmail(), getParent(), getIp(), createdate,
+        return Objects.hash(getUuid_(), getEmail(), getParent(), getIp(), createdAt,
                 registrationdate, formfileddate, userid, balloontextid, getReferrer(),
                 getLatitude(), getLongitude(), getCity(), getCountry(), extradata,
                 balloonlinkuuid, balloonlinkcontext, useragent);
@@ -280,7 +280,7 @@ public class BalloonUserTracking implements Serializable {
     @Override
     public String toString() {
         return "BalloonUserTracking (" + uuid_ + ", " + email + ", " + parent + ", " + ip + ", "
-                + createdate + ", " + registrationdate + ", " + formfileddate + ", " + userid + ", "
+                + createdAt + ", " + registrationdate + ", " + formfileddate + ", " + userid + ", "
                 + balloontextid + ", " + referrer + ", " + latitude + ", " + longitude + ", " + city
                 + ", " + country + ", " + extradata + ", " + balloonlinkuuid + ", "
                 + balloonlinkcontext + ", " + useragent + ")";

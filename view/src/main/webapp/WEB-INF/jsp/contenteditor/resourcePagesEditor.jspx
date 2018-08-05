@@ -308,13 +308,13 @@
                 input1.attr("value", data.title);
 
                 var div = $('#articleVersions');
-                $("#createdAtDate").html("Created at: " + formatDate(data.createdDate));
+                $("#createdAtDate").html("Created at: " + formatDate(data.createdAt));
 
                 $('#articleVersions').empty();
 
                 for (var i = 0; i < data.versions.length; i++) {
                     var version = data.versions[i];
-                    var adjustedDateString = formatDate(version.createdDate);
+                    var adjustedDateString = formatDate(version.createdAt);
                     div.append("<span class='oldArticleVersion' data-attribute='"
                             + version.contentArticleVersionId + "'> Created at: "
                             + adjustedDateString + "</span><br/>")

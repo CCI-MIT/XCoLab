@@ -110,7 +110,7 @@ public class MemberDaoImpl implements MemberDao {
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
-                case "createDate":
+                case "createdAt":
                     query.addOrderBy(sortColumn.isAscending()
                             ? member.CREATE_DATE.asc() : member.CREATE_DATE.desc());
                     break;

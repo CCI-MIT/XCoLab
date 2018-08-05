@@ -133,7 +133,7 @@ public class VoteValidator {
     }
 
     private boolean isRecentVote(ProposalVote otherVote) {
-        final DateTime otherVoteTime = new DateTime(otherVote.getCreateDate());
+        final DateTime otherVoteTime = new DateTime(otherVote.getCreatedAt());
         return otherVoteTime.plusHours(VOTE_RECENCY_THRESHOLD_HOURS).isAfterNow();
     }
 

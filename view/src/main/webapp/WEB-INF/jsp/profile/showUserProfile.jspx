@@ -238,7 +238,7 @@
                                                             proposal="${userProposal}"/></td>
                                                     <td style="text-align: right;">
                                                         <xcolab:formatDateTime
-                                                                millis="${userProposal.createDate.time}"
+                                                                millis="${userProposal.createdAt.time}"
                                                                 type="date"/>
                                                     </td>
                                                 </tr>
@@ -309,7 +309,7 @@
                                                 <td>${activity.body}</td>
                                                 <td style="text-align: right;">
                                                     <xcolab:formatDateTime
-                                                            millis="${activity.createdDate.time}"
+                                                            millis="${activity.createdAt.time}"
                                                             type="date"/>
                                                 </td>
                                             </tr>
@@ -425,7 +425,7 @@
                                                 </c:when>
                                             </c:choose>
                                             <xcolab:formatDateTime
-                                                    millis="${message.createDate.time}"
+                                                    millis="${message.createdAt.time}"
                                                     type="time"/>
                                         </div>
 
@@ -481,7 +481,7 @@
                                             </c:choose>
 
                                             <xcolab:formatDateTime
-                                                    millis="${activity.createdDate.time}"
+                                                    millis="${activity.createdAt.time}"
                                                     type="time"/>
                                         </div>
 

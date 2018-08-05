@@ -234,7 +234,7 @@ public class ContestDaoImpl implements ContestDao {
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
-                case "createDate":
+                case "createdAt":
                     query.addOrderBy(sortColumn.isAscending() ? CONTEST.CREATED.asc()
                             : CONTEST.CREATED.desc());
                     break;

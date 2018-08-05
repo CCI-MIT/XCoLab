@@ -100,7 +100,7 @@ public class MessageLimitManager {
     }
 
     private boolean isMoreThan2DaysOld(Member member) {
-        return member.getCreateDate().toInstant()
+        return member.getCreatedAt().toInstant()
                 .plus(2, ChronoUnit.DAYS).isBefore(Instant.now());
     }
 

@@ -20,8 +20,8 @@ public class ProposalVersion extends AbstractProposalVersion {
     }
 
     public ProposalVersion(Long proposalid, Integer version, Long authorid,
-            Timestamp createdate, String updatetype, Long updateadditionalid) {
-        super(proposalid, version, authorid, createdate, updatetype, updateadditionalid);
+            Timestamp createdAt, String updatetype, Long updateadditionalid) {
+        super(proposalid, version, authorid, createdAt, updatetype, updateadditionalid);
         proposalPhaseClient = ProposalPhaseClientUtil.getClient();
     }
 

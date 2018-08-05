@@ -37,7 +37,7 @@ public final class FlaggingClient {
 
         return reportResource.list()
                 .addRange(start, last)
-                .queryParam("sort", "createDate")
+                .queryParam("sort", "createdAt")
                 .optionalQueryParam("reporterMemberId", reporterMemberId)
                 .optionalQueryParam("targetType", targetType)
                 .optionalQueryParam("targetId", targetId)

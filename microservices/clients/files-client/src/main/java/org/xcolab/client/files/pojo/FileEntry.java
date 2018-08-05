@@ -23,7 +23,7 @@ public class FileEntry implements Serializable {
                     });
 
     private Long fileentryid;
-    private Timestamp createdate;
+    private Timestamp createdAt;
     private String fileentryextension;
     private String fileentryname;
     private Integer fileentrysize;
@@ -32,16 +32,16 @@ public class FileEntry implements Serializable {
 
     public FileEntry(FileEntry value) {
         this.fileentryid = value.fileentryid;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
         this.fileentryextension = value.fileentryextension;
         this.fileentryname = value.fileentryname;
         this.fileentrysize = value.fileentrysize;
     }
 
-    public FileEntry(Long fileentryid, Timestamp createdate, String fileentryextension,
+    public FileEntry(Long fileentryid, Timestamp createdAt, String fileentryextension,
             String fileentryname, Integer fileentrysize) {
         this.fileentryid = fileentryid;
-        this.createdate = createdate;
+        this.createdAt = createdAt;
         this.fileentryextension = fileentryextension;
         this.fileentryname = fileentryname;
         this.fileentrysize = fileentrysize;
@@ -55,12 +55,12 @@ public class FileEntry implements Serializable {
         this.fileentryid = fileentryid;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getFileEntryExtension() {
@@ -101,7 +101,7 @@ public class FileEntry implements Serializable {
     public String toString() {
 
         return "FileEntry (" + fileentryid +
-                ", " + createdate +
+                ", " + createdAt +
                 ", " + fileentryextension +
                 ", " + fileentryname +
                 ", " + fileentrysize +

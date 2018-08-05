@@ -10,7 +10,7 @@ class AbstractMembershipRequest implements Serializable {
     private Long membershiprequestid;
     private Long companyid;
     private Long userid;
-    private Timestamp createdate;
+    private Timestamp createdAt;
     private Long groupid;
     private String comments;
     private String replycomments;
@@ -24,7 +24,7 @@ class AbstractMembershipRequest implements Serializable {
         this.membershiprequestid = value.membershiprequestid;
         this.companyid = value.companyid;
         this.userid = value.userid;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
         this.groupid = value.groupid;
         this.comments = value.comments;
         this.replycomments = value.replycomments;
@@ -37,7 +37,7 @@ class AbstractMembershipRequest implements Serializable {
             Long membershiprequestid,
             Long companyid,
             Long userid,
-            Timestamp createdate,
+            Timestamp createdAt,
             Long groupid,
             String comments,
             String replycomments,
@@ -48,7 +48,7 @@ class AbstractMembershipRequest implements Serializable {
         this.membershiprequestid = membershiprequestid;
         this.companyid = companyid;
         this.userid = userid;
-        this.createdate = createdate;
+        this.createdAt = createdAt;
         this.groupid = groupid;
         this.comments = comments;
         this.replycomments = replycomments;
@@ -81,12 +81,12 @@ class AbstractMembershipRequest implements Serializable {
         this.userid = userid;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getGroupId() {
@@ -145,7 +145,7 @@ class AbstractMembershipRequest implements Serializable {
                 : membershiprequestid.hashCode());
         result = prime * result + ((companyid == null) ? 0 : companyid.hashCode());
         result = prime * result + ((userid == null) ? 0 : userid.hashCode());
-        result = prime * result + ((createdate == null) ? 0 : createdate.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         result = prime * result + ((groupid == null) ? 0 : groupid.hashCode());
         result = prime * result + ((comments == null) ? 0 : comments.hashCode());
         result = prime * result + ((replycomments == null) ? 0 : replycomments.hashCode());
@@ -188,11 +188,11 @@ class AbstractMembershipRequest implements Serializable {
         } else if (!userid.equals(other.userid)) {
             return false;
         }
-        if (createdate == null) {
-            if (other.createdate != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!createdate.equals(other.createdate)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         if (groupid == null) {
@@ -243,7 +243,7 @@ class AbstractMembershipRequest implements Serializable {
     @Override
     public String toString() {
         String sb = "MembershipRequest (" + membershiprequestid + ", " + companyid + ", " + userid
-                + ", " + createdate + ", " + groupid + ", " + comments + ", " + replycomments + ", "
+                + ", " + createdAt + ", " + groupid + ", " + comments + ", " + replycomments + ", "
                 + replydate + ", " + replieruserid + ", " + statusid + ")";
 
         return sb;

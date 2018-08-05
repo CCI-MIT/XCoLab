@@ -167,7 +167,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public Date getJoinDate() {
-        return member.getCreateDate();
+        return member.getCreatedAt();
     }
 
     public String getRealName() {

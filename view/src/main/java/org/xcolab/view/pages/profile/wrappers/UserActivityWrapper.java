@@ -26,7 +26,7 @@ public class UserActivityWrapper implements Serializable {
         }
     }
 
-    public Date getCreatedDate() {
+    public Date getCreatedAt() {
         return new Date(activity.getCreatedAt().getTime());
     }
 

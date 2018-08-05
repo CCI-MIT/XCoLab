@@ -13,7 +13,7 @@ public abstract class AbstractContestTranslation implements Serializable {
     private String contestName;
     private String contestShortName;
     private String contestDescription;
-    private Timestamp createDate;
+    private Timestamp createdAt;
     private Timestamp modifiedDate;
     private Long authorId;
 
@@ -25,7 +25,7 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.contestName = value.contestName;
         this.contestShortName = value.contestShortName;
         this.contestDescription = value.contestDescription;
-        this.createDate = value.createDate;
+        this.createdAt = value.createdAt;
         this.modifiedDate = value.modifiedDate;
         this.authorId = value.authorId;
     }
@@ -70,12 +70,12 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.contestDescription = contestDescription;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Timestamp getModifiedDate() {
@@ -107,7 +107,7 @@ public abstract class AbstractContestTranslation implements Serializable {
                 && Objects.equals(contestName, that.contestName)
                 && Objects.equals(contestShortName, that.contestShortName)
                 && Objects.equals(contestDescription, that.contestDescription)
-                && Objects.equals(createDate, that.createDate)
+                && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(modifiedDate, that.modifiedDate)
                 && Objects.equals(authorId, that.authorId);
     }
@@ -115,14 +115,14 @@ public abstract class AbstractContestTranslation implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(contestId, lang, contestName, contestShortName, contestDescription,
-                createDate, modifiedDate, authorId);
+                createdAt, modifiedDate, authorId);
     }
 
     @Override
     public String toString() {
 
         return "ContestTranslation (" + contestId + ", " + lang + ", " + contestName + ", "
-                + contestShortName + ", " + contestDescription + ", " + createDate + ", "
+                + contestShortName + ", " + contestDescription + ", " + createdAt + ", "
                 + modifiedDate + ", " + authorId + ")";
     }
 }

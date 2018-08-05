@@ -15,7 +15,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
     private Long targetplansectiondefinitionid;
     private Double percentage;
     private Long creator;
-    private Timestamp createdate;
+    private Timestamp createdAt;
 
     public AbstractPointsDistributionConfiguration() {}
 
@@ -28,7 +28,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         this.targetplansectiondefinitionid = value.targetplansectiondefinitionid;
         this.percentage = value.percentage;
         this.creator = value.creator;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
     }
 
     public AbstractPointsDistributionConfiguration(
@@ -40,7 +40,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
             Long targetplansectiondefinitionid,
             Double percentage,
             Long creator,
-            Timestamp createdate
+            Timestamp createdAt
     ) {
         this.id_ = id_;
         this.proposalid = proposalid;
@@ -50,7 +50,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         this.targetplansectiondefinitionid = targetplansectiondefinitionid;
         this.percentage = percentage;
         this.creator = creator;
-        this.createdate = createdate;
+        this.createdAt = createdAt;
     }
 
     public Long getId_() {
@@ -117,12 +117,12 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         this.creator = creator;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -139,7 +139,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
                 : targetplansectiondefinitionid.hashCode());
         result = prime * result + ((percentage == null) ? 0 : percentage.hashCode());
         result = prime * result + ((creator == null) ? 0 : creator.hashCode());
-        result = prime * result + ((createdate == null) ? 0 : createdate.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         return result;
     }
 
@@ -212,11 +212,11 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         } else if (!creator.equals(other.creator)) {
             return false;
         }
-        if (createdate == null) {
-            if (other.createdate != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!createdate.equals(other.createdate)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         return true;
@@ -228,7 +228,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
                 "PointsDistributionConfiguration (" + id_ + ", " + proposalid + ", " + pointtypeid
                         + ", " + targetuserid + ", " + targetsubproposalid + ", "
                         + targetplansectiondefinitionid + ", " + percentage + ", " + creator + ", "
-                        + createdate + ")";
+                        + createdAt + ")";
 
         return sb;
     }

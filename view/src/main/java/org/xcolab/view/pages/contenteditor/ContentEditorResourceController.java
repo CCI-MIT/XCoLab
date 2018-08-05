@@ -66,7 +66,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
         JSONObject articleVersion;
         for (ContentArticleVersion cav : cavs) {
             articleVersion = new JSONObject();
-            articleVersion.put("createdDate", cav.getCreateDate());
+            articleVersion.put("createdAt", cav.getCreatedAt());
             articleVersion.put("contentArticleVersionId", cav.getContentArticleVersionId());
             versions.put(articleVersion);
         }
@@ -76,7 +76,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
             articleVersion.put("folderId", contentArticleVersion.getFolderId());
             articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
             articleVersion.put("content", contentArticleVersion.getContent());
-            articleVersion.put("createdDate", contentArticleVersion.getCreateDate());
+            articleVersion.put("createdAt", contentArticleVersion.getCreatedAt());
             articleVersion.put("versions", versions);
             articleVersion.put("contestURL", contestURL);
             articleVersion.put("contestArticleURL", contestArticleUrl);

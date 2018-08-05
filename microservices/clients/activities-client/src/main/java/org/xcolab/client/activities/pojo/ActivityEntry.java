@@ -60,8 +60,8 @@ public class ActivityEntry implements Serializable {
         return this.createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdate) {
-        this.createdAt = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getActivityCategory() {

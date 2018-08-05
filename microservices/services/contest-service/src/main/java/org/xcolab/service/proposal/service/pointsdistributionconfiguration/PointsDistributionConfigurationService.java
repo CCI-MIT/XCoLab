@@ -138,7 +138,7 @@ public class PointsDistributionConfigurationService {
         }
         model.setPercentage(percentage);
         model.setCreator(creator);
-        model.setCreateDate(new Timestamp((new Date()).getTime()));
+        model.setCreatedAt(new Timestamp((new Date()).getTime()));
 
         model = pointsDistributionConfigurationDao.create(model);
 

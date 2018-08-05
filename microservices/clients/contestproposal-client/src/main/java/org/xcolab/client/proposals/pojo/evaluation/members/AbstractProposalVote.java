@@ -14,7 +14,7 @@ class AbstractProposalVote implements Serializable {
     private Long contestphaseid;
     private Long userid;
     private Integer value;
-    private Timestamp createdate;
+    private Timestamp createdAt;
     private String voterIp;
     private String voterUserAgent;
     private Boolean isvalid;
@@ -33,7 +33,7 @@ class AbstractProposalVote implements Serializable {
         this.contestphaseid = value.contestphaseid;
         this.userid = value.userid;
         this.value = value.value;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
         this.voterIp = value.voterIp;
         this.voterUserAgent = value.voterUserAgent;
         this.isvalid = value.isvalid;
@@ -77,12 +77,12 @@ class AbstractProposalVote implements Serializable {
         this.value = value;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getVoterIp() {
@@ -170,7 +170,7 @@ class AbstractProposalVote implements Serializable {
                 && Objects.equals(contestphaseid, that.contestphaseid)
                 && Objects.equals(userid, that.userid)
                 && Objects.equals(getValue(), that.getValue())
-                && Objects.equals(createdate, that.createdate)
+                && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(voterIp, that.voterIp)
                 && Objects.equals(voterUserAgent, that.voterUserAgent)
                 && Objects.equals(isvalid, that.isvalid)
@@ -184,7 +184,7 @@ class AbstractProposalVote implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(proposalid, contestphaseid, userid, getValue(), createdate, voterIp,
+        return Objects.hash(proposalid, contestphaseid, userid, getValue(), createdAt, voterIp,
                 voterUserAgent, isvalid, confirmationemailsenddate, confirmationtoken,
                 getInitialValidationResult(), lastValidationResult, isValidOverride,
                 manualValidationResult);
@@ -196,7 +196,7 @@ class AbstractProposalVote implements Serializable {
                 .append("contestphaseid", contestphaseid)
                 .append("userid", userid)
                 .append("value", value)
-                .append("createdate", createdate)
+                .append("createdAt", createdAt)
                 .append("voterIp", voterIp)
                 .append("voterUserAgent", voterUserAgent)
                 .append("isvalid", isvalid)

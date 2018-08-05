@@ -274,7 +274,7 @@
                         $('#leftMenu').val(menuArticleId);
                     }
 
-                    $("#createdAtDate").html("Created at: " + formatDate(data.createdDate));
+                    $("#createdAtDate").html("Created at: " + formatDate(data.createdAt));
 
                     $("#article-view").unmask()
 

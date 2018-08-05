@@ -27,7 +27,7 @@ public class SocialActivityWrapper implements Serializable {
         return body;
     }
 
-    public Date getCreateDate() {
+    public Date getCreatedAt() {
         return new Date(activity.getCreatedAt().getTime());
     }
 

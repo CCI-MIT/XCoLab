@@ -53,7 +53,7 @@ public class ReportDaoImpl implements ReportDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? REPORT.MANAGER_ACTION.asc() : REPORT.MANAGER_ACTION.desc());
                     break;
-                case "createDate":
+                case "createdAt":
                     query.addOrderBy(sortColumn.isAscending()
                             ? REPORT.CREATE_DATE.asc() : REPORT.CREATE_DATE.desc());
                     break;
@@ -202,7 +202,7 @@ public class ReportDaoImpl implements ReportDao {
                 .set(REPORT.MANAGER_ACTION, report.getManagerAction())
                 .set(REPORT.MANAGER_MEMBER_ID, report.getManagerMemberId())
                 .set(REPORT.MANAGER_ACTION_DATE, report.getManagerActionDate())
-                .set(REPORT.CREATE_DATE, report.getCreateDate())
+                .set(REPORT.CREATE_DATE, report.getCreatedAt())
                 .where(REPORT.REPORT_ID.eq(report.getReportId()))
                 .execute() > 0;
     }
@@ -220,7 +220,7 @@ public class ReportDaoImpl implements ReportDao {
                 .set(REPORT.MANAGER_ACTION, report.getManagerAction())
                 .set(REPORT.MANAGER_MEMBER_ID, report.getManagerMemberId())
                 .set(REPORT.MANAGER_ACTION_DATE, report.getManagerActionDate())
-                .set(REPORT.CREATE_DATE, report.getCreateDate())
+                .set(REPORT.CREATE_DATE, report.getCreatedAt())
                 .returning(REPORT.REPORT_ID)
                 .fetchOne();
         if (record != null) {

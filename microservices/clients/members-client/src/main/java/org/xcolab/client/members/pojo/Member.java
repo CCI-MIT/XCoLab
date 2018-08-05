@@ -46,7 +46,7 @@ public class Member implements Serializable {
     private String emailAddress;
     private boolean isEmailConfirmed;
     private boolean isEmailBounced;
-    private Timestamp createDate;
+    private Timestamp createdAt;
     private Timestamp modifiedDate;
     private Timestamp passwordModifiedDate;
     private String hashedPassword;
@@ -80,7 +80,7 @@ public class Member implements Serializable {
         this.emailAddress = value.emailAddress;
         this.isEmailConfirmed = value.isEmailConfirmed;
         this.isEmailBounced = value.isEmailBounced;
-        this.createDate = value.createDate;
+        this.createdAt = value.createdAt;
         this.modifiedDate = value.modifiedDate;
         this.passwordModifiedDate = value.passwordModifiedDate;
         this.hashedPassword = value.hashedPassword;
@@ -170,12 +170,12 @@ public class Member implements Serializable {
         isEmailBounced = emailBounced;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Timestamp getModifiedDate() {
@@ -498,7 +498,7 @@ public class Member implements Serializable {
                 .append("emailAddress", emailAddress)
                 .append("isEmailConfirmed", isEmailConfirmed)
                 .append("isEmailBounced", isEmailBounced)
-                .append("createDate", createDate)
+                .append("createdAt", createdAt)
                 .append("modifiedDate", modifiedDate)
                 .append("passwordModifiedDate", passwordModifiedDate)
                 .append("hashedPassword", hashedPassword != null ? "REDACTED" : null)

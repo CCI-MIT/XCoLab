@@ -51,7 +51,7 @@ public class ProposalSupportService {
         }
 
         public Timestamp getSupportDate() {
-            return proposalSupporter.getCreateDate();
+            return proposalSupporter.getCreatedAt();
         }
 
         public Long getSupporterUserId() {

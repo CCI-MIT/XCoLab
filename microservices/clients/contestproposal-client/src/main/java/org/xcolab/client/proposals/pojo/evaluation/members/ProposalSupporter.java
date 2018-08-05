@@ -15,9 +15,9 @@ public class ProposalSupporter extends AbstractProposalSupporter {
     public ProposalSupporter(
             Long proposalid,
             Long userid,
-            Timestamp createdate
+            Timestamp createdAt
     ) {
-        super(proposalid, userid, createdate);
+        super(proposalid, userid, createdAt);
     }
 
     public ProposalSupporter(AbstractProposalSupporter abstractProposalSupporter,
