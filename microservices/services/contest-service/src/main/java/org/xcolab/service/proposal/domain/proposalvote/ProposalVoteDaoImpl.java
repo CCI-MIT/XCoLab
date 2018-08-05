@@ -122,10 +122,10 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
     }
 
     @Override
-    public int delete(long proposalId, long memberId, long contestPhaseId) {
+    public int delete(long proposalId, long userId, long contestPhaseId) {
         return dslContext.deleteFrom(PROPOSAL_VOTE)
                 .where(PROPOSAL_VOTE.PROPOSAL_ID.eq(proposalId)
-                        .and(PROPOSAL_VOTE.USER_ID.eq(memberId))
+                        .and(PROPOSAL_VOTE.USER_ID.eq(userId))
                         .and(PROPOSAL_VOTE.CONTEST_PHASE_ID.eq(contestPhaseId)))
                 .execute();
     }

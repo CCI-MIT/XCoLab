@@ -18,31 +18,31 @@ public class RoleService {
         this.roleDao = roleDao;
     }
 
-    public List<Role_> getMemberRoles(Long memberId) {
-        return this.roleDao.getMemberRoles(memberId);
+    public List<Role_> getMemberRoles(Long userId) {
+        return this.roleDao.getMemberRoles(userId);
     }
 
-    public List<Role_> getMemberRolesInContest(Long memberId, Long contestId) {
-        return this.roleDao.getMemberRolesInContest(memberId, contestId);
+    public List<Role_> getMemberRolesInContest(Long userId, Long contestId) {
+        return this.roleDao.getMemberRolesInContest(userId, contestId);
     }
 
-    public boolean assignMemberRole(long memberId, long roleId) {
-        if(!memberHasRole(memberId,roleId)) {
-            this.roleDao.assignMemberRole(memberId, roleId);
+    public boolean assignMemberRole(long userId, long roleId) {
+        if(!memberHasRole(userId,roleId)) {
+            this.roleDao.assignMemberRole(userId, roleId);
         }
         return true;
     }
 
-    public boolean deleteMemberRole(long memberId, long roleId) {
-        this.roleDao.deleteMemberRole(memberId, roleId);
+    public boolean deleteMemberRole(long userId, long roleId) {
+        this.roleDao.deleteMemberRole(userId, roleId);
         return true;
     }
 
-    public boolean memberHasRole(Long memberId, Long roleId){
-        return this.roleDao.memberHasRole(memberId,roleId);
+    public boolean memberHasRole(Long userId, Long roleId){
+        return this.roleDao.memberHasRole(userId,roleId);
     }
 
-    public boolean isAdmin(long memberId) {
-        return roleDao.memberHasRole(memberId, 10118L);
+    public boolean isAdmin(long userId) {
+        return roleDao.memberHasRole(userId, 10118L);
     }
 }

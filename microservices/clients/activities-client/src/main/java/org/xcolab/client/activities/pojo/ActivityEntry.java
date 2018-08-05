@@ -52,8 +52,8 @@ public class ActivityEntry implements Serializable {
         return this.userId;
     }
 
-    public void setUserId(Long memberid) {
-        this.userId = memberid;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Timestamp getCreatedAt() {

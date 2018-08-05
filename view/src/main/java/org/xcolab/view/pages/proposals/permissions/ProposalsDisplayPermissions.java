@@ -17,18 +17,18 @@ public class ProposalsDisplayPermissions {
     private final ClientHelper clientHelper;
     private final Proposal proposal;
     private final ContestPhase contestPhase;
-    private final long memberId;
+    private final long userId;
     private final boolean isGuest;
     private final boolean isLoggedIn;
 
     public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions, Proposal proposal,
-            ContestPhase contestPhase, ClientHelper clientHelper, long memberId) {
+            ContestPhase contestPhase, ClientHelper clientHelper, long userId) {
         this.proposalsPermissions = proposalsPermissions;
         this.proposal = proposal;
         this.contestPhase = contestPhase;
-        this.memberId = memberId;
-        this.isLoggedIn = memberId > 0;
-        this.isGuest = PermissionsClient.isGuest(memberId);
+        this.userId = userId;
+        this.isLoggedIn = userId > 0;
+        this.isGuest = PermissionsClient.isGuest(userId);
         this.clientHelper = clientHelper;
     }
 
@@ -46,7 +46,7 @@ public class ProposalsDisplayPermissions {
     public boolean getUserHasOpenMembershipRequest() {
         for (MembershipRequest mr : clientHelper.getMembershipClient()
                 .getMembershipRequests(proposal.getProposalId())) {
-            if (mr.getUserId() == memberId && (
+            if (mr.getUserId() == userId && (
                     (mr.getStatusId() == MembershipRequestStatus.STATUS_PENDING)
                             || mr.getStatusId()
                             == MembershipRequestStatus.STATUS_PENDING_REQUESTED)) {
@@ -63,7 +63,7 @@ public class ProposalsDisplayPermissions {
     private boolean hasVotedOnThisProposal() {
         return proposal != null && proposal.getProposalId() > 0
                 && clientHelper.getProposalMemberRatingClient().hasUserVoted(
-                proposal.getProposalId(), contestPhase.getContestPhasePK(), memberId);
+                proposal.getProposalId(), contestPhase.getContestPhasePK(), userId);
     }
 
     public boolean getCanSeeUnsubscribeProposalButton() {
@@ -73,7 +73,7 @@ public class ProposalsDisplayPermissions {
     private boolean isSubscribedToProposal() {
         return proposal != null && proposal.getProposalId() > 0
                 && (clientHelper.getProposalClient()
-                .isMemberSubscribedToProposal(proposal.getProposalId(),memberId));
+                .isMemberSubscribedToProposal(proposal.getProposalId(),userId));
     }
 
     public boolean getCanSeeUnsubscribeContestButton() {
@@ -82,7 +82,7 @@ public class ProposalsDisplayPermissions {
 
     private boolean isSubscribedToContest() {
         return contestPhase != null
-                && clientHelper.getActivitiesClient().isSubscribedToActivity(memberId,
+                && clientHelper.getActivitiesClient().isSubscribedToActivity(userId,
                         ActivityCategory.CONTEST, contestPhase.getContestPK());
     }
 
@@ -102,7 +102,7 @@ public class ProposalsDisplayPermissions {
     private boolean isSupporter() {
         return proposal != null && proposal.getProposalId() > 0
                 && clientHelper.getProposalMemberRatingClient()
-                .isMemberProposalSupporter(proposal.getProposalId(), memberId);
+                .isMemberProposalSupporter(proposal.getProposalId(), userId);
     }
 
     public boolean getCanSeeSupportButton() {

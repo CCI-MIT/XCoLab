@@ -238,10 +238,10 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public Optional<Member> getMember(long memberId) {
+    public Optional<Member> getMember(long userId) {
         final Record memberRecord = dslContext.select()
                 .from(MEMBER)
-                .where(MEMBER.ID_.eq(memberId))
+                .where(MEMBER.ID_.eq(userId))
                 .fetchOne();
         if (memberRecord == null) {
             return Optional.empty();
@@ -250,14 +250,14 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public boolean updatePassword(long memberId, String hashedPassword) {
+    public boolean updatePassword(long userId, String hashedPassword) {
         return dslContext.update(MEMBER)
                 .set(MEMBER.HASHED_PASSWORD, hashedPassword)
                 .set(MEMBER.PASSWORD_MODIFIED_DATE, DSL.currentTimestamp())
                 .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
                 .set(MEMBER.FORGOT_PASSWORD_TOKEN, (String) null)
                 .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, (Timestamp) null)
-                .where(MEMBER.ID_.eq(memberId))
+                .where(MEMBER.ID_.eq(userId))
                 .execute() > 0;
     }
 
@@ -404,14 +404,14 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public Integer getMemberMaterializedPoints(Long memberId) {
+    public Integer getMemberMaterializedPoints(Long userId) {
         return this.dslContext.select(sum(POINTS.MATERIALIZED_POINTS))
-                .from(POINTS).where(POINTS.USER_ID.equal(memberId)).fetchOne(0, Integer.class);
+                .from(POINTS).where(POINTS.USER_ID.equal(userId)).fetchOne(0, Integer.class);
     }
 
     @Override
-    public Integer getMemberHypotheticalPoints(Long memberId) {
+    public Integer getMemberHypotheticalPoints(Long userId) {
         return dslContext.select(sum(POINTS.HYPOTHETICAL_POINTS))
-                .from(POINTS).where(POINTS.USER_ID.eq(memberId)).fetchOne(0, Integer.class);
+                .from(POINTS).where(POINTS.USER_ID.eq(userId)).fetchOne(0, Integer.class);
     }
 }

@@ -128,7 +128,7 @@
                         <tr>
                             <td><a href="${thread.linkUrl}">${thread.title}</a></td>
                             <td>${thread.commentsCount}</td>
-                            <td><xcolab:userLinkSimple memberId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.displayName}"/></td>
+                            <td><xcolab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.displayName}"/></td>
                             <td>${thread.lastActivityDateFormatted}</td>
                         </tr>
                     </c:forEach>

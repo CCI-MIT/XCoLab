@@ -95,18 +95,18 @@ public class MessagingService {
             throw MessageRecipientException.empty(messageId);
         }
         final Set<Long> recipientsFound = new HashSet<>();
-        for (long memberId : recipientIds) {
-            memberDao.getMember(memberId).ifPresent((recipientMember) -> {
+        for (long userId : recipientIds) {
+            memberDao.getMember(userId).ifPresent((recipientMember) -> {
                  if (threadId == null) {
-                     messageDao.createMessageRecipient(messageId, memberId,
-                             String.valueOf(messageId) + "-" + String.valueOf(memberId));
+                     messageDao.createMessageRecipient(messageId, userId,
+                             String.valueOf(messageId) + "-" + String.valueOf(userId));
                  } else {
-                     messageDao.createMessageRecipient(messageId, memberId, threadId);
+                     messageDao.createMessageRecipient(messageId, userId, threadId);
                  }
-                if (messagingUserPreferencesService.getByMemberId(memberId).getEmailOnReceipt()) {
+                if (messagingUserPreferencesService.getByuserId(userId).getEmailOnReceipt()) {
                     copyRecipient(recipientMember, message);
                 }
-                recipientsFound.add(memberId);
+                recipientsFound.add(userId);
             });
 
         }

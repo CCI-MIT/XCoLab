@@ -109,48 +109,48 @@ public class MessagingController {
                 .sendMessage(sendMessageBean, sendMessageBean.getRecipientIds(), checkLimit, threadId);
     }
 
-    @RequestMapping(value = "/messages/{messageId}/recipients/{memberId}", method = RequestMethod.PUT)
-    public boolean updateRecipientStatus(@PathVariable long messageId, @PathVariable long memberId,
+    @RequestMapping(value = "/messages/{messageId}/recipients/{userId}", method = RequestMethod.PUT)
+    public boolean updateRecipientStatus(@PathVariable long messageId, @PathVariable long userId,
             @RequestParam(required = false) Boolean isArchived,
             @RequestParam(required = false) Boolean isOpened) {
         boolean success = true;
         if (isOpened != null) {
-            success = messageDao.setOpened(messageId, memberId, isOpened);
+            success = messageDao.setOpened(messageId, userId, isOpened);
         }
         if (isArchived != null) {
-            success = success && messageDao.setArchived(messageId, memberId, isArchived);
+            success = success && messageDao.setArchived(messageId, userId, isArchived);
         }
         return success;
     }
 
-    @GetMapping("/members/{memberId}/messagingPreferences")
-    public MessagingUserPreferences getMessagingPreferences(@PathVariable long memberId) {
-        return messagingUserPreferencesService.getByMemberId(memberId);
+    @GetMapping("/members/{userId}/messagingPreferences")
+    public MessagingUserPreferences getMessagingPreferences(@PathVariable long userId) {
+        return messagingUserPreferencesService.getByuserId(userId);
     }
 
-    @PutMapping("/members/{memberId}/messagingPreferences/{messagingPreferencesId}")
-    public boolean updateMessagingPreferences(@PathVariable long memberId,
+    @PutMapping("/members/{userId}/messagingPreferences/{messagingPreferencesId}")
+    public boolean updateMessagingPreferences(@PathVariable long userId,
             @PathVariable long messagingPreferencesId,
             @RequestBody MessagingUserPreferences messagingUserPreferences) {
         return messagingUserPreferencesDao.update(messagingUserPreferences);
     }
 
-    @PostMapping("/members/{memberId}/messagingPreferences")
-    public MessagingUserPreferences createMessagingPreferences(@PathVariable long memberId,
+    @PostMapping("/members/{userId}/messagingPreferences")
+    public MessagingUserPreferences createMessagingPreferences(@PathVariable long userId,
             @RequestBody MessagingUserPreferences messagingUserPreferences) {
         return messagingUserPreferencesDao.create(messagingUserPreferences)
                 .orElseThrow(() -> new InternalException(
                 "Could not retrieve id of created messagingPreferences: " + messagingUserPreferences));
     }
 
-    @RequestMapping(value = "/members/{memberId}/canSendMessage", method = RequestMethod.GET)
-    public boolean canMemberSendMessage(@PathVariable long memberId,
+    @RequestMapping(value = "/members/{userId}/canSendMessage", method = RequestMethod.GET)
+    public boolean canMemberSendMessage(@PathVariable long userId,
             @RequestParam(required = false, defaultValue = "1") int messagesToSend) {
-        return messageLimitManager.canSendMessages(messagesToSend, memberId);
+        return messageLimitManager.canSendMessages(messagesToSend, userId);
     }
 
-    @RequestMapping(value = "/members/{memberId}/numberOfMessagesLeft", method = RequestMethod.GET)
-    public int getNumberOfMessagesLeft(@PathVariable long memberId) {
-        return messageLimitManager.getNumberOfMessagesLeft(memberId);
+    @RequestMapping(value = "/members/{userId}/numberOfMessagesLeft", method = RequestMethod.GET)
+    public int getNumberOfMessagesLeft(@PathVariable long userId) {
+        return messageLimitManager.getNumberOfMessagesLeft(userId);
     }
 }

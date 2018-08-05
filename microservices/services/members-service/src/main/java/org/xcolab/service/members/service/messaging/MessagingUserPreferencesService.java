@@ -17,8 +17,8 @@ public class MessagingUserPreferencesService {
         this.messagingUserPreferencesDao = messagingUserPreferencesDao;
     }
 
-    public MessagingUserPreferences getByMemberId(long memberId) {
-        return messagingUserPreferencesDao.getByMemberId(memberId)
-                .orElse(new DefaultMessagingUserPreferences(memberId));
+    public MessagingUserPreferences getByuserId(long userId) {
+        return messagingUserPreferencesDao.getByuserId(userId)
+                .orElse(new DefaultMessagingUserPreferences(userId));
     }
 }

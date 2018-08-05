@@ -74,8 +74,8 @@ public final class ProposalClientUtil {
         return client.getProposalMembers(proposalId);
     }
 
-    public static void removeMemberFromProposalTeam(Long proposalId, Long memberId) {
-        client.removeMemberFromProposalTeam(proposalId, memberId);
+    public static void removeMemberFromProposalTeam(Long proposalId, Long userId) {
+        client.removeMemberFromProposalTeam(proposalId, userId);
     }
 
     public static Boolean isUserInProposalTeam(Long proposalId, Long memberUserId) {

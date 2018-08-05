@@ -25,9 +25,9 @@ public interface MessageDao {
 
     List<String> getThreads(long messageId);
 
-    boolean setArchived(long messageId, long memberId, boolean isArchived);
+    boolean setArchived(long messageId, long userId, boolean isArchived);
 
-    boolean setOpened(long messageId, long memberId, boolean isOpened);
+    boolean setOpened(long messageId, long userId, boolean isOpened);
 
     Optional<Message> createMessage(Message message);
     

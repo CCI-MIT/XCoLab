@@ -40,14 +40,14 @@ public class ProposalRevertActionController {
                             + ", proposal: " + proposalContext.getProposal().getProposalId());
         }
 
-        long memberId = MemberAuthUtil.getMemberId(request);
+        long userId = MemberAuthUtil.getuserId(request);
 
         if (proposalContext.getProposal() != null) {
             Proposal oldProposalVersionToBeBecomeCurrent = proposalContext.getProposal();
 
-            Integer version = updateProposalSpecialAttributes(memberId, oldProposalVersionToBeBecomeCurrent);
+            Integer version = updateProposalSpecialAttributes(userId, oldProposalVersionToBeBecomeCurrent);
 
-            updateProposalAttributes(proposalContext, memberId,
+            updateProposalAttributes(proposalContext, userId,
                     oldProposalVersionToBeBecomeCurrent, version);
 
             response.sendRedirect(oldProposalVersionToBeBecomeCurrent.getProposalUrl());

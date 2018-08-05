@@ -49,8 +49,8 @@ public class ResourcesTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        long memberId = MemberAuthUtil.getMemberId(request);
-        wikiPageWrapper = new WikiPageWrapper(getContest(), memberId);
+        long userId = MemberAuthUtil.getuserId(request);
+        wikiPageWrapper = new WikiPageWrapper(getContest(), userId);
         model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
         return TAB_VIEW;
     }

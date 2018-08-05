@@ -18,7 +18,7 @@
                     <a href="/members"><spring:message code="colab.breadcrumbs.members"/></a>
                 </li>
                 <li class="breadcrumb-item">
-                    <xcolab:userLinkSimple memberId="${user.userId}" text="${user.displayName}" />
+                    <xcolab:userLinkSimple userId="${user.userId}" text="${user.displayName}" />
                 </li>
                 <li class="breadcrumb-item">
                     <a href="/messaging"><spring:message code="colab.breadcrumbs.messages"/></a>

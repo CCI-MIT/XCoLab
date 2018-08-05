@@ -31,17 +31,17 @@ public class TrackedVisitor2UserService {
         trackedVisit.setUuid_(trackedVisitor.getUuid_());
     }
 
-    public TrackedVisitor2User getOrCreate(long memberId) {
-        return trackedVisitor2UserDao.getByMemberId(memberId).orElse(create(memberId));
+    public TrackedVisitor2User getOrCreate(long userId) {
+        return trackedVisitor2UserDao.getByuserId(userId).orElse(create(userId));
     }
 
     public TrackedVisitor2User createUnknownVisitor() {
         return create(null);
     }
 
-    private TrackedVisitor2User create(Long memberId) {
+    private TrackedVisitor2User create(Long userId) {
         TrackedVisitor2User trackedVisitor = new TrackedVisitor2User();
-        trackedVisitor.setUserId(memberId);
+        trackedVisitor.setUserId(userId);
         trackedVisitor.setUuid_(generateUniqueUUID());
         return trackedVisitor2UserDao.create(trackedVisitor);
     }

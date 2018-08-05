@@ -38,13 +38,13 @@ public final class ProposalCreationUtil {
     private ProposalCreationUtil() {
     }
 
-    public static Proposal createProposal(long memberId,
+    public static Proposal createProposal(long userId,
             @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
             Contest contest, ContestPhase contestPhase) {
         final ClientHelper clientHelper = new ClientHelper();
         try {
             Proposal newProposal = clientHelper.getProposalClient()
-                    .createProposal(memberId, contestPhase.getContestPhasePK(), true);
+                    .createProposal(userId, contestPhase.getContestPhasePK(), true);
             Proposal2Phase newProposal2Phase = clientHelper.getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(
                     newProposal.getProposalId(), contestPhase.getContestPhasePK());
 
@@ -56,16 +56,16 @@ public final class ProposalCreationUtil {
                 final ProposalAttributeClient proposalAttributeClient =
                         clientHelper.getProposalAttributeClient();
                 Integer proposalAttributeVersion = proposalAttributeClient.setProposalAttribute(
-                        memberId, proposalWrapper.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID,
+                        userId, proposalWrapper.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID,
                         0L, baseProposalId, null).getVersion();
                 final long baseContestId = updateProposalSectionsBean.getBaseProposalContestId();
                 proposalAttributeVersion = proposalAttributeClient
-                        .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
+                        .setProposalAttribute(userId, proposalWrapper.getProposalId(),
                                 ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0L, baseContestId,
                                 proposalAttributeVersion).getVersion();
                 clientHelper.getProposalMoveClient()
                         .createForkProposalMoveHistory(baseProposalId, proposalWrapper.getProposalId(),
-                        baseContestId, contest.getContestPK(), contestPhase.getContestPhasePK(), memberId);
+                        baseContestId, contest.getContestPK(), contestPhase.getContestPhasePK(), userId);
 
                 for (ProposalAttribute attribute : proposalAttributeClient
                         .getAllProposalAttributes(baseProposalId)) {
@@ -74,7 +74,7 @@ public final class ProposalCreationUtil {
                     }
 
                     proposalAttributeVersion = proposalAttributeClient
-                            .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
+                            .setProposalAttribute(userId, proposalWrapper.getProposalId(),
                                     attribute.getName(), attribute.getAdditionalId(),
                                     attribute.getStringValue(), attribute.getNumericValue(),
                                     attribute.getRealValue(), proposalAttributeVersion)

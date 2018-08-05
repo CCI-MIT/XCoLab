@@ -88,23 +88,23 @@ public class VoteOnProposalActionController {
         boolean hasVoted = false;
         long proposalId = proposal.getProposalId();
         long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
-        long memberId = member.getUserId();
+        long userId = member.getUserId();
         ActivityType activitySubType = null;
-        if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, memberId)) {
+        if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, userId)) {
             // User has voted for this proposal and would like to retract the vote
-            proposalMemberRatingClient.deleteProposalVote(proposalId, contestPhaseId, memberId);
+            proposalMemberRatingClient.deleteProposalVote(proposalId, contestPhaseId, userId);
             activitySubType = ProposalActivityType.VOTE_RETRACTED;
         } else {
             final int votesInContest = proposalMemberRatingClient
-                    .countVotesByUserInPhase(memberId, contestPhaseId);
+                    .countVotesByUserInPhase(userId, contestPhaseId);
             final boolean isSwitchingVote = votesInContest > 0 && maxContestVotes == 1
                     && voteValue == 1;
             if (isSwitchingVote) {
                 final List<ProposalVote> userVotesInPhase = proposalMemberRatingClient
-                        .getProposalVotesByUserInPhase(memberId, contestPhaseId);
+                        .getProposalVotesByUserInPhase(userId, contestPhaseId);
                 final ProposalVote oldVote = userVotesInPhase.get(0);
                 proposalMemberRatingClient.deleteProposalVote(oldVote.getProposalId(),
-                        contestPhaseId, memberId);
+                        contestPhaseId, userId);
             } else if (voteValue > maxProposalVotes) {
                 AlertMessage.danger(String.format("You cannot assign more than %d votes per %s.",
                         maxProposalVotes, contestType.getProposalNameLowercase()))
@@ -118,7 +118,7 @@ public class VoteOnProposalActionController {
             }
 
             ProposalVote vote = proposalMemberRatingClient.addProposalVote(proposalId,
-                    contestPhaseId, memberId, voteValue);
+                    contestPhaseId, userId, voteValue);
 
             //populate tracking fields
             vote.setVoterIp(request.getRemoteAddr());
@@ -151,7 +151,7 @@ public class VoteOnProposalActionController {
                 new ProposalVoteNotification(proposal, contest, member).sendMessage();
                 //publish event per contestPhaseId to allow voting on exactly one proposal per
                 // contest(phase)
-                AnalyticsUtil.publishEvent(request, memberId, VOTE_ANALYTICS_KEY + contestPhaseId,
+                AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY + contestPhaseId,
                         VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
 				GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
                 if (isSwitchingVote) {
@@ -165,7 +165,7 @@ public class VoteOnProposalActionController {
 
         if (activitySubType != null) {
             final ActivitiesClient activityClient = clients.getActivitiesClient();
-            activityClient.createActivityEntry(activitySubType, memberId, proposalId);
+            activityClient.createActivityEntry(activitySubType, userId, proposalId);
         }
 
         // Redirect to prevent page-refreshing from influencing the vote

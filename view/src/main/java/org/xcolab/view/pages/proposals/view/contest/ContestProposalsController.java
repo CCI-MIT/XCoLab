@@ -150,12 +150,12 @@ public class ContestProposalsController extends BaseProposalsController {
 
         if (proposalContext.getPermissions().getCanSubscribeContest()) {
             long contestId = proposalContext.getContest().getContestPK();
-            long memberId = currentMember.getUserId();
-            if (ContestClientUtil.isMemberSubscribedToContest(contestId, memberId)) {
-                ContestClientUtil.unsubscribeMemberFromContest(contestId, memberId);
+            long userId = currentMember.getUserId();
+            if (ContestClientUtil.isMemberSubscribedToContest(contestId, userId)) {
+                ContestClientUtil.unsubscribeMemberFromContest(contestId, userId);
             }
             else {
-                ContestClientUtil.subscribeMemberToContest(contestId, memberId);
+                ContestClientUtil.subscribeMemberToContest(contestId, userId);
 
             }
             response.sendRedirect(proposalContext.getContest().getContestLinkUrl());

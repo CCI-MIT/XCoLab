@@ -5,13 +5,13 @@ import org.xcolab.model.tables.pojos.Role_;
 import java.util.List;
 
 public interface RoleDao {
-    List<Role_> getMemberRoles(Long memberId);
+    List<Role_> getMemberRoles(Long userId);
 
-    List<Role_> getMemberRolesInContest(Long memberId, Long contestId);
+    List<Role_> getMemberRolesInContest(Long userId, Long contestId);
 
-    void assignMemberRole(Long memberId, Long roleId);
+    void assignMemberRole(Long userId, Long roleId);
 
-    boolean memberHasRole(Long memberId, Long roleId);
+    boolean memberHasRole(Long userId, Long roleId);
 
-    boolean deleteMemberRole(long memberId, long roleId);
+    boolean deleteMemberRole(long userId, long roleId);
 }

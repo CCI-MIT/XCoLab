@@ -88,10 +88,10 @@ public final class ProposalMemberRatingClient {
             .get();
     }
 
-    public Boolean isMemberProposalSupporter(Long proposalId, Long memberId) {
+    public Boolean isMemberProposalSupporter(Long proposalId, Long userId) {
         return proposalSupporterResource.collectionService("isMemberProposalSupporter", Boolean.class)
                 .optionalQueryParam("proposalId", proposalId)
-                .optionalQueryParam("memberId", memberId)
+                .optionalQueryParam("userId", userId)
                 .get();
     }
 
@@ -120,10 +120,10 @@ public final class ProposalMemberRatingClient {
                 .execute().toPojo(serviceNamespace);
     }
 
-    public Boolean deleteProposalSupporter(Long proposalId, Long memberId) {
+    public Boolean deleteProposalSupporter(Long proposalId, Long userId) {
         return proposalSupporterResource.collectionService("deleteProposalSupporter", Boolean.class)
                 .queryParam("proposalId", proposalId)
-                .queryParam("memberId", memberId)
+                .queryParam("userId", userId)
                 .delete();
     }
 
@@ -159,17 +159,17 @@ public final class ProposalMemberRatingClient {
                 .get();
     }
 
-    public Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long memberId) {
+    public Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long userId) {
         return proposalVoteResource.collectionService("hasUserVoted", Boolean.class)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
-                .optionalQueryParam("memberId", memberId)
+                .optionalQueryParam("userId", userId)
                 .optionalQueryParam("proposalId", proposalId)
                 .get();
     }
-    public  Boolean hasUserVoted(Long contestPhaseId, Long memberId) {
+    public  Boolean hasUserVoted(Long contestPhaseId, Long userId) {
         return proposalVoteResource.collectionService("hasUserVoted", Boolean.class)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
-                .optionalQueryParam("memberId", memberId)
+                .optionalQueryParam("userId", userId)
                 .get();
     }
 
@@ -177,14 +177,14 @@ public final class ProposalMemberRatingClient {
         return getProposalVotes(contestPhaseId, null, null);
     }
 
-    public List<ProposalVote> getVotesByMember(long memberId) {
+    public List<ProposalVote> getVotesByMember(long userId) {
         return DtoUtil.toPojos(proposalVoteResource.list()
-                .queryParam("userId", memberId)
+                .queryParam("userId", userId)
                 .execute(), serviceNamespace);
     }
 
-    public void invalidateVotesForMember(long memberId, String reason) {
-        final List<ProposalVote> votes = getVotesByMember(memberId);
+    public void invalidateVotesForMember(long userId, String reason) {
+        final List<ProposalVote> votes = getVotesByMember(userId);
         votes.stream()
                 .filter(ProposalVote::getIsValid)
                 .forEach(vote -> {
@@ -211,20 +211,20 @@ public final class ProposalMemberRatingClient {
                 .post(proposalVote);
     }
 
-    public boolean deleteProposalVote(long proposalId, long contestPhaseId, long memberId) {
+    public boolean deleteProposalVote(long proposalId, long contestPhaseId, long userId) {
         return proposalVoteResource.collectionService("deleteVote", Boolean.class)
                 .queryParam("proposalId", proposalId)
-                .queryParam("memberId", memberId)
+                .queryParam("userId", userId)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .delete();
     }
 
-    public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId,
+    public ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long userId,
             int value) {
         ProposalVote pv = new ProposalVote();
         pv.setProposalId(proposalId);
         pv.setContestPhaseId(contestPhaseId);
-        pv.setUserId(memberId);
+        pv.setUserId(userId);
         pv.setValue(value);
         pv.setIsValid(true);// should this default to true?
         return createProposalVote(pv);

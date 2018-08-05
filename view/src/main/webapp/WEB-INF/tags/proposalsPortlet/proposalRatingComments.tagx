@@ -19,9 +19,9 @@
                 <div class="comment">
                     <div class="c-Comment__commentor">
                         <xcolab:userPortrait portraitId="${wrapper.author.portraitId}"
-                                             memberId="${wrapper.author.userId}" width="59" height="59" />
+                                             userId="${wrapper.author.userId}" width="59" height="59" />
                         <br />
-                        <xcolab:userLinkSimple text="${wrapper.author.displayName}" memberId="${wrapper.author.userId}" /> <br />
+                        <xcolab:userLinkSimple text="${wrapper.author.displayName}" userId="${wrapper.author.userId}" /> <br />
                         <br />
 
                         <div class="role-indicator">

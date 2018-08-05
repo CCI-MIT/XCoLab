@@ -4,7 +4,7 @@
 	<jsp:directive.attribute name="portraitId" type="java.lang.Long" required="true" rtexprvalue="true" description="Portrait id" />
 	<jsp:directive.attribute name="width" type="java.lang.Integer" required="true" rtexprvalue="true" description="Width" />
 	<jsp:directive.attribute name="height" type="java.lang.Integer" required="true" rtexprvalue="true" description="Height" />
-	<jsp:directive.attribute name="memberId" type="java.lang.Long" required="true" rtexprvalue="true" description="UserId" />
+	<jsp:directive.attribute name="userId" type="java.lang.Long" required="true" rtexprvalue="true" description="UserId" />
 
     <collab:image src="/image/member/${portraitId}" width="${width}" height="${height}" />
 </jsp:root>

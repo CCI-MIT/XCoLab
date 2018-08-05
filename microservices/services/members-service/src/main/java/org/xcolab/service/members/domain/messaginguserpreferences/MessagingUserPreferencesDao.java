@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface MessagingUserPreferencesDao {
 
     Optional<MessagingUserPreferences> get(long id);
-    Optional<MessagingUserPreferences> getByMemberId(long memberId);
+    Optional<MessagingUserPreferences> getByuserId(long userId);
     Optional<MessagingUserPreferences> create(MessagingUserPreferences messagingUserPreferences);
     boolean update(MessagingUserPreferences messagingUserPreferences);
     boolean delete(long messagingPreferencesId);

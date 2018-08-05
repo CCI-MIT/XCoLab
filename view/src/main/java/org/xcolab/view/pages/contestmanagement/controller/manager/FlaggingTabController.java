@@ -104,8 +104,8 @@ public class FlaggingTabController extends AbstractTabController {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        long memberId = MemberAuthUtil.getMemberId(request);
-        FlaggingClient.handleReport(memberId, managerAction, reportId);
+        long userId = MemberAuthUtil.getuserId(request);
+        FlaggingClient.handleReport(userId, managerAction, reportId);
         AlertMessage.success("Report " + managerAction.name() + "D").flash(request);
         return "redirect:" + tab.getTabUrl();
     }

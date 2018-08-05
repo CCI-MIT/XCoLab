@@ -36,17 +36,17 @@ public final class ActivitiesClient {
                 ActivitySubscription.TYPES, serviceNamespace);
     }
 
-    public ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+    public ActivityEntry createActivityEntry(ActivityType activityType, long userId,
             long categoryId) {
-        return createActivityEntry(activityType, memberId, categoryId, null);
+        return createActivityEntry(activityType, userId, categoryId, null);
     }
 
-    public ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+    public ActivityEntry createActivityEntry(ActivityType activityType, long userId,
             long categoryId, Long additionalId) {
         ActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setActivityCategory(activityType.getCategory().name());
         activityEntry.setActivityType(activityType.name());
-        activityEntry.setUserId(memberId);
+        activityEntry.setUserId(userId);
         activityEntry.setCategoryId(categoryId);
         activityEntry.setAdditionalId(additionalId);
         return activityEntryResource.create(activityEntry).execute();
@@ -66,12 +66,12 @@ public final class ActivitiesClient {
     }
 
     public  List<ActivityEntry> getActivityEntries(Integer startRecord,
-            Integer limitRecord, Long memberId, List<Long> memberIdsToExclude) {
+            Integer limitRecord, Long userId, List<Long> userIdsToExclude) {
         return activityEntryResource.list()
                 .optionalQueryParam("startRecord", startRecord)
                 .optionalQueryParam("limitRecord", limitRecord)
-                .optionalQueryParam("memberId", memberId)
-                .optionalQueryParam("memberIdsToExclude", IdListUtil.getStringFromIds(memberIdsToExclude))
+                .optionalQueryParam("userId", userId)
+                .optionalQueryParam("userIdsToExclude", IdListUtil.getStringFromIds(userIdsToExclude))
                 .execute();
     }
 
@@ -86,14 +86,14 @@ public final class ActivitiesClient {
                 .execute();
     }
 
-    public int countActivities(Long memberId, List<Long> memberIdsToExclude) {
+    public int countActivities(Long userId, List<Long> userIdsToExclude) {
         try {
             return activityEntryResource.<ActivityEntry, Integer>collectionService("count", Integer.class)
-                    .optionalQueryParam("memberId", memberId)
-                    .optionalQueryParam("memberIdsToExclude", memberIdsToExclude)
+                    .optionalQueryParam("userId", userId)
+                    .optionalQueryParam("userIdsToExclude", userIdsToExclude)
                     .withCache(CacheKeys.withClass(ActivityEntry.class)
-                                    .withParameter("memberId", memberId)
-                                    .withParameter("memberIdsToExclude", memberIdsToExclude)
+                                    .withParameter("userId", userId)
+                                    .withParameter("userIdsToExclude", userIdsToExclude)
                                     .asCount(),
                             CacheName.MISC_MEDIUM)
                     .getChecked();
@@ -126,14 +126,14 @@ public final class ActivitiesClient {
         return activitySubscriptionResource.delete(pk).execute();
     }
 
-    public ActivitySubscription addSubscription(long memberId, ActivityCategory activityCategory,
+    public ActivitySubscription addSubscription(long userId, ActivityCategory activityCategory,
             long categoryId, String extraInfo) {
-        return addSubscription(memberId, activityCategory, categoryId);
+        return addSubscription(userId, activityCategory, categoryId);
     }
 
-    public ActivitySubscription addSubscription(long memberId, ActivityCategory activityCategory, long categoryId) {
+    public ActivitySubscription addSubscription(long userId, ActivityCategory activityCategory, long categoryId) {
         return activitySubscriptionResource.collectionService("subscribe", ActivitySubscription.class)
-                .queryParam("receiverId", memberId)
+                .queryParam("receiverId", userId)
                 .queryParam("activityCategory", activityCategory)
                 .queryParam("categoryId", categoryId)
                 .post();
@@ -176,8 +176,8 @@ public final class ActivitiesClient {
                 .execute();
     }
 
-    public List<ActivitySubscription> getActivitySubscriptionsForMember(Long memberId) {
-        return getActivitySubscriptions(null, null, memberId);
+    public List<ActivitySubscription> getActivitySubscriptionsForMember(Long userId) {
+        return getActivitySubscriptions(null, null, userId);
     }
 
     public static ActivitiesClient fromNamespace(ServiceNamespace serviceNamespace) {

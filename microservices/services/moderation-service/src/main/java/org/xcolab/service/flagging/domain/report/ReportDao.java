@@ -7,12 +7,12 @@ import org.xcolab.service.utils.PaginationHelper;
 import java.util.List;
 
 public interface ReportDao {
-    List<Report> findByGiven(PaginationHelper paginationHelper, Long reporterMemberId,
-            Long managerMemberId, String targetType, Long targetId, Long targetAdditionalId,
+    List<Report> findByGiven(PaginationHelper paginationHelper, Long reporteruserId,
+            Long manageruserId, String targetType, Long targetId, Long targetAdditionalId,
             String managerAction);
     List<AggregatedReport> findAggregatedByGiven(
-            PaginationHelper paginationHelper, Long reporterMemberId,
-            Long managerMemberId, String targetType, Long targetId, Long targetAdditionalId,
+            PaginationHelper paginationHelper, Long reporteruserId,
+            Long manageruserId, String targetType, Long targetId, Long targetAdditionalId,
             String managerAction);
 
     Report get(long reportId);
@@ -21,8 +21,8 @@ public interface ReportDao {
 
     int getTotalWeight(String targetType, long targetId, long targetAdditionalId);
 
-    int countByGiven(Long reporterMemberId, Long managerMemberId, String targetType, Long targetId,
+    int countByGiven(Long reporteruserId, Long manageruserId, String targetType, Long targetId,
             Long targetAdditionalId, String managerAction);
-    int countAggregatedByGiven(Long reporterMemberId, Long managerMemberId,
+    int countAggregatedByGiven(Long reporteruserId, Long manageruserId,
             String targetType, Long targetId, Long targetAdditionalId, String managerAction);
 }

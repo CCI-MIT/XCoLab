@@ -136,9 +136,9 @@ public class ContentArticle implements Serializable {
     }
 
     @JsonIgnore
-    public boolean canEdit(Long memberId) {
+    public boolean canEdit(Long userId) {
         return editRoleGroupId == null
-                || (memberId != null && PermissionsClient.hasRoleGroup(memberId, editRoleGroupId));
+                || (userId != null && PermissionsClient.hasRoleGroup(userId, editRoleGroupId));
     }
 
     @Override

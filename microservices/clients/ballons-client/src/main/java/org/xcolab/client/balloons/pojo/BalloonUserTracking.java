@@ -214,10 +214,10 @@ public class BalloonUserTracking implements Serializable {
         this.useragent = useragent;
     }
 
-    public void updateUserIdAndEmailIfEmpty(long memberId, String email) {
+    public void updateUserIdAndEmailIfEmpty(long userId, String email) {
         final boolean isUserIdEmpty = getUserId() == null;
         if (isUserIdEmpty) {
-            setUserId(memberId);
+            setUserId(userId);
         }
 
         final boolean isEmailBlank = StringUtils.isBlank(getEmail());

@@ -190,16 +190,16 @@ public final class ProposalClient {
 
     public void removeMemberFromProposalTeam(Long proposalId, Long userId) {
         proposalResource.elementService(proposalId, "removeMemberFromProposalTeam", Boolean.class)
-                .queryParam("memberId", userId)
+                .queryParam("userId", userId)
                 .delete();
 
         ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
         activityClient.createActivityEntry(ProposalActivityType.MEMBER_REMOVED, userId, proposalId);
     }
 
-    public void promoteMemberToProposalOwner(Long proposalId, Long memberId) {
+    public void promoteMemberToProposalOwner(Long proposalId, Long userId) {
         proposalResource.elementService(proposalId, "promoteMemberToProposalOwner", Boolean.class)
-                .queryParam("memberId", memberId)
+                .queryParam("userId", userId)
                 .post();
     }
 

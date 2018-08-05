@@ -86,7 +86,7 @@ public class ProposalContextImpl implements ProposalContext {
                     contestPhase);
             displayPermissions =
                     new ProposalsDisplayPermissions(permissions, proposal, contestPhase,
-                            clientHelper, MemberAuthUtil.getMemberId(request));
+                            clientHelper, MemberAuthUtil.getuserId(request));
 
             preferences = new ProposalsPreferencesWrapper(request.getParameter("preferenceId"),localeResolver.resolveLocale(request).getLanguage());
 

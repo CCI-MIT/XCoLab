@@ -67,10 +67,10 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
 
     }
     @Override
-    public ContestTeamMember findOneBy(Long memberId, Long contestId, Long roleId) {
+    public ContestTeamMember findOneBy(Long userId, Long contestId, Long roleId) {
 
         final Record record =  this.dslContext.selectFrom(CONTEST_TEAM_MEMBER)
-                .where(CONTEST_TEAM_MEMBER.USER_ID.eq(memberId))
+                .where(CONTEST_TEAM_MEMBER.USER_ID.eq(userId))
                 .and(CONTEST_TEAM_MEMBER.CONTEST_ID.eq(contestId))
                 .and(CONTEST_TEAM_MEMBER.ROLE_ID.eq(roleId))
                 .fetchOne();
@@ -92,12 +92,12 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public List<ContestTeamMember> findByGiven(Long memberId, Long contestId, Long roleId) {
+    public List<ContestTeamMember> findByGiven(Long userId, Long contestId, Long roleId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_TEAM_MEMBER).getQuery();
 
-        if (memberId != null) {
-            query.addConditions(CONTEST_TEAM_MEMBER.USER_ID.eq(memberId));
+        if (userId != null) {
+            query.addConditions(CONTEST_TEAM_MEMBER.USER_ID.eq(userId));
         }
         if (contestId != null) {
             query.addConditions(CONTEST_TEAM_MEMBER.CONTEST_ID.eq(contestId));

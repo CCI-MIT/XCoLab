@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProposalVoteDao {
 
-    int delete(long proposalId, long memberId, long contestPhaseId);
+    int delete(long proposalId, long userId, long contestPhaseId);
 
     List<ProposalVote> findByGiven(Long proposalId, Long contestPhaseId, Long userId);
 

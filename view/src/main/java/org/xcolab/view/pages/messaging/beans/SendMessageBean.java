@@ -37,9 +37,9 @@ public class SendMessageBean implements Serializable {
         this.replyMessage = replyMessage;
     }
 
-    public SendMessageBean(long memberId) {
+    public SendMessageBean(long userId) {
         this();
-        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(memberId);
+        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(userId);
     }
 
     public SendMessageBean() {

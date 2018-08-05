@@ -102,7 +102,7 @@ public class StaffMemberWrapper implements Serializable {
         return nl2br(staffMember.getOrganization());
     }
 
-    public Long getStaffMemberId() {
+    public Long getStaffuserId() {
         return staffMember.getId_();
     }
 }

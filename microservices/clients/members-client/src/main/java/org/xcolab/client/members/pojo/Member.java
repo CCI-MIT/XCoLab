@@ -106,12 +106,12 @@ public class Member implements Serializable {
         this.loginTokenExpirationDate = value.loginTokenExpirationDate;
     }
 
-    public static Member fromId(String memberIdString) {
-        return fromId(Long.parseLong(memberIdString));
+    public static Member fromId(String userIdString) {
+        return fromId(Long.parseLong(userIdString));
     }
 
-    public static Member fromId(long memberId) {
-        return MembersClient.getMemberUnchecked(memberId);
+    public static Member fromId(long userId) {
+        return MembersClient.getMemberUnchecked(userId);
     }
 
     public long getId_() {

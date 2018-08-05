@@ -40,9 +40,9 @@ public class ContestTeamMembersController {
 
     }
 
-    @GetMapping(value = "/contestTeamMembers/{contestTeamMemberId}")
-    public ContestTeamMember getContestTeamMember(@PathVariable("contestTeamMemberId") Long contestTeamMemberId) throws NotFoundException {
-        return contestTeamMemberDao.get(contestTeamMemberId)
+    @GetMapping(value = "/contestTeamMembers/{contestTeamuserId}")
+    public ContestTeamMember getContestTeamMember(@PathVariable("contestTeamuserId") Long contestTeamuserId) throws NotFoundException {
+        return contestTeamMemberDao.get(contestTeamuserId)
                 .orElseThrow(NotFoundException::new);
     }
 
@@ -59,11 +59,11 @@ public class ContestTeamMembersController {
 
     @RequestMapping(value = "/contestTeamMembers", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestTeamMember> getContestTeamMembers(
-            @RequestParam(required = false) Long memberId,
+            @RequestParam(required = false) Long userId,
             @RequestParam(required = false) Long contestId,
             @RequestParam(required = false) Long roleId
     ) {
-        return contestTeamMemberDao.findByGiven(memberId, contestId, roleId);
+        return contestTeamMemberDao.findByGiven(userId, contestId, roleId);
     }
 
     @RequestMapping(value = "/contestTeamMembers/getByContestYear", method = {RequestMethod.GET, RequestMethod.HEAD})

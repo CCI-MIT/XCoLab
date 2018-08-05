@@ -230,19 +230,19 @@ public class ProposalImpactJSONController {
                 .getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
 
         if (impactAuthorComment != null || impactIAFComment != null) {
-            final long memberId = currentMember.getUserId();
+            final long userId = currentMember.getUserId();
             final ClientHelper clients = proposalContext.getClients();
             if (impactAuthorComment != null) {
                 clients.getProposalAttributeClient().createOrUpdateUnversionedStringAttribute(
                         proposal.getProposalId(),
-                        ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(), memberId,
+                        ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(), userId,
                         HtmlUtil.cleanAll(impactAuthorComment));
             }
 
             if (impactIAFComment != null) {
                 clients.getProposalAttributeClient().createOrUpdateUnversionedStringAttribute(
                         proposal.getProposalId(),
-                        ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(), memberId,
+                        ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(), userId,
                         HtmlUtil.cleanAll(impactIAFComment));
             }
         }

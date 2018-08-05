@@ -88,13 +88,13 @@ public class ThreadController extends BaseDiscussionController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        long memberId = MemberAuthUtil.getMemberId(request);
+        long userId = MemberAuthUtil.getuserId(request);
 
         if (!title.isEmpty() && !body.isEmpty()) {
             CommentThread thread = new CommentThread();
             thread.setCategoryId(categoryId);
             thread.setTitle(HtmlUtil.cleanAll(title));
-            thread.setAuthorUserId(memberId);
+            thread.setAuthorUserId(userId);
             thread.setIsQuiet(false);
             thread = ThreadClientUtil.createThread(thread);
 
@@ -102,12 +102,12 @@ public class ThreadController extends BaseDiscussionController {
             comment.setThreadId(thread.getId());
             final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             comment.setContent(HtmlUtil.cleanSome(body, baseUri));
-            comment.setAuthorUserId(memberId);
+            comment.setAuthorUserId(userId);
             comment = CommentClientUtil.createComment(comment);
 
             if (!thread.getIsQuiet()) {
                 final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
-                activityClient.createActivityEntry(DiscussionThreadActivityType.CREATED, memberId,
+                activityClient.createActivityEntry(DiscussionThreadActivityType.CREATED, userId,
                         thread.getId());
             }
 

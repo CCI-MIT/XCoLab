@@ -30,7 +30,7 @@
                         <spring:argument>
                             <c:choose>
                                 <c:when test="${empty proposal.team}">
-                                    <xcolab:userLinkSimple memberId="${proposal.authorUserid}"
+                                    <xcolab:userLinkSimple userId="${proposal.authorUserid}"
                                                            text="${proposal.author.screenName}"/>
                                 </c:when>
                                 <c:otherwise>

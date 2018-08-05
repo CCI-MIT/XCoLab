@@ -91,10 +91,10 @@
 								<td class="c-Comment__commentor">
 									<a id="_message_${message.id}"><!-- empty --></a>
 									<xcolab:userPortrait portraitId="${message.author.portraitId}"
-                                                         memberId="${message.author.userId}"
+                                                         userId="${message.author.userId}"
                                                          width="59" height="59" />
 									<br />
-									<xcolab:userLinkSimple text="${message.author.displayName}" memberId="${message.author.userId}" /> <br />
+									<xcolab:userLinkSimple text="${message.author.displayName}" userId="${message.author.userId}" /> <br />
 									<br />
 									<xcolab:formatDateTime millis="${message.createdAt.time}" type="date" zoneDisplay="none" /><br />
 									<xcolab:formatDateTime millis="${message.createdAt.time}" type="time" /><br />

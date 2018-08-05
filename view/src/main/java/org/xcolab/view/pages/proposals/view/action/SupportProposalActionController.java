@@ -45,19 +45,19 @@ public class SupportProposalActionController {
         if (!proposalContext.getPermissions().getCanSupportProposal()) {
             return new AccessDeniedPage(currentMember).toViewName(response);
         }
-        long memberId = currentMember.getUserId();
+        long userId = currentMember.getUserId();
         long proposalId = proposalContext.getProposal().getProposalId();
         ProposalMemberRatingClient proposalMemberRatingClient =
                 proposalContext.getClients().getProposalMemberRatingClient();
-        if (proposalMemberRatingClient.isMemberProposalSupporter(proposalId, memberId)) {
-            proposalMemberRatingClient.deleteProposalSupporter(proposalId, memberId);
+        if (proposalMemberRatingClient.isMemberProposalSupporter(proposalId, userId)) {
+            proposalMemberRatingClient.deleteProposalSupporter(proposalId, userId);
         } else {
-            proposalMemberRatingClient.addProposalSupporter(proposalId, memberId);
-            int supportedCount = proposalMemberRatingClient.getProposalSupportersCount(memberId);
+            proposalMemberRatingClient.addProposalSupporter(proposalId, userId);
+            int supportedCount = proposalMemberRatingClient.getProposalSupportersCount(userId);
             if (supportedCount > 0) {
                 int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(supportedCount);
                 AnalyticsUtil
-                        .publishEvent(request, memberId, SUPPORT_ANALYTICS_KEY + analyticsValue,
+                        .publishEvent(request, userId, SUPPORT_ANALYTICS_KEY + analyticsValue,
                                 SUPPORT_ANALYTICS_CATEGORY, SUPPORT_ANALYTICS_ACTION,
                                 SUPPORT_ANALYTICS_LABEL, analyticsValue);
 				GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_SUPPORT);

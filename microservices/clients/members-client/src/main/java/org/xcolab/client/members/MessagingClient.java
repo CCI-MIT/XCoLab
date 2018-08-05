@@ -193,24 +193,24 @@ public final class MessagingClient {
         }
     }
 
-    public static void setArchived(long messageId, long memberId, boolean isArchived) {
+    public static void setArchived(long messageId, long userId, boolean isArchived) {
         messageRecipientResource.resolveParentId(messageResource.id(messageId))
-                .elementQuery(memberId, Void.class)
-                .queryParam("memberId", memberId)
+                .elementQuery(userId, Void.class)
+                .queryParam("userId", userId)
                 .queryParam("isArchived", isArchived)
                 .put();
     }
 
-    public static void setOpened(long messageId, long memberId, boolean isOpened) {
+    public static void setOpened(long messageId, long userId, boolean isOpened) {
         messageRecipientResource.resolveParentId(messageResource.id(messageId))
-                .elementQuery(memberId, Void.class)
-                .queryParam("memberId", memberId)
+                .elementQuery(userId, Void.class)
+                .queryParam("userId", userId)
                 .queryParam("isOpened", isOpened)
                 .put();
     }
 
-    public static MessagingUserPreferences getMessagingPreferencesForMember(long memberId) {
-        return memberResource.elementService(memberId, "messagingPreferences", MessagingUserPreferences.class)
+    public static MessagingUserPreferences getMessagingPreferencesForMember(long userId) {
+        return memberResource.elementService(userId, "messagingPreferences", MessagingUserPreferences.class)
                 .get();
     }
 
@@ -231,14 +231,14 @@ public final class MessagingClient {
     }
 
 
-    public static boolean canMemberSendMessage(long memberId, int messagesToSend) {
-        return memberResource.elementService(memberId, "canSendMessage", Boolean.class)
+    public static boolean canMemberSendMessage(long userId, int messagesToSend) {
+        return memberResource.elementService(userId, "canSendMessage", Boolean.class)
                 .queryParam("messagesToSend", messagesToSend)
                 .get();
     }
 
-    public static int getNumberOfMessagesLeft(long memberId) {
-        return memberResource.elementService(memberId, "numberOfMessagesLeft", Integer.class)
+    public static int getNumberOfMessagesLeft(long userId) {
+        return memberResource.elementService(userId, "numberOfMessagesLeft", Integer.class)
                 .get();
     }
 }

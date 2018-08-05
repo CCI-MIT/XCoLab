@@ -85,55 +85,55 @@ public class MembersController {
             return memberDao.findOneByScreenName(screenName).orElseThrow(NotFoundException::new);
         }
     }
-    @GetMapping("{memberId}")
-    public Member getMember(@PathVariable long memberId) throws NotFoundException {
-        if (memberId == 0) {
+    @GetMapping("{userId}")
+    public Member getMember(@PathVariable long userId) throws NotFoundException {
+        if (userId == 0) {
             throw new NotFoundException("No member id given");
         } else {
-            return memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+            return memberDao.getMember(userId).orElseThrow(NotFoundException::new);
         }
     }
 
-    @PutMapping(value = "{memberId}")
-    public boolean updateMember(@RequestBody Member member, @PathVariable Long memberId)
+    @PutMapping(value = "{userId}")
+    public boolean updateMember(@RequestBody Member member, @PathVariable Long userId)
             throws NotFoundException {
-        if (memberId == 0 || memberDao.getMember(memberId) == null) {
-            throw new NotFoundException("No member with id " + memberId);
+        if (userId == 0 || memberDao.getMember(userId) == null) {
+            throw new NotFoundException("No member with id " + userId);
         }
         return memberDao.updateMember(member);
     }
 
-    @DeleteMapping("{memberId}")
-    public boolean deleteMember(@PathVariable long memberId) throws NotFoundException {
-        if (memberId == 0) {
+    @DeleteMapping("{userId}")
+    public boolean deleteMember(@PathVariable long userId) throws NotFoundException {
+        if (userId == 0) {
             throw new NotFoundException("No message id given");
         } else {
-            final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+            final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
             member.setStatus(5);
             return memberDao.updateMember(member);
         }
     }
 
-    @GetMapping("{memberId}/roles")
-    public List<Role_> getMemberRoles(@PathVariable long memberId,
+    @GetMapping("{userId}/roles")
+    public List<Role_> getMemberRoles(@PathVariable long userId,
             @RequestParam(required =  false) Long contestId) {
         if (contestId == null) {
-            return this.roleService.getMemberRoles(memberId);
+            return this.roleService.getMemberRoles(userId);
         } else {
-            return roleService.getMemberRolesInContest(memberId, contestId);
+            return roleService.getMemberRolesInContest(userId, contestId);
         }
     }
 
-    @PutMapping("{memberId}/roles/{roleId}")
-    public boolean assignMemberRole(@PathVariable long memberId,
+    @PutMapping("{userId}/roles/{roleId}")
+    public boolean assignMemberRole(@PathVariable long userId,
             @PathVariable Long roleId) {
-        return this.roleService.assignMemberRole(memberId, roleId);
+        return this.roleService.assignMemberRole(userId, roleId);
     }
 
-    @DeleteMapping("{memberId}/roles/{roleId}")
-    public boolean deleteMemberRole(@PathVariable long memberId,
+    @DeleteMapping("{userId}/roles/{roleId}")
+    public boolean deleteMemberRole(@PathVariable long userId,
             @PathVariable Long roleId) {
-        return this.roleService.deleteMemberRole(memberId, roleId);
+        return this.roleService.deleteMemberRole(userId, roleId);
     }
 
     @GetMapping("count")
@@ -148,34 +148,34 @@ public class MembersController {
         return memberService.register(member);
     }
 
-    @GetMapping("{memberId}/points")
-    public int getMemberPoints(@PathVariable Long memberId,
+    @GetMapping("{userId}/points")
+    public int getMemberPoints(@PathVariable Long userId,
             @RequestParam (required = false, defaultValue = "false") boolean hypothetical) {
-        if (memberId == null) {
+        if (userId == null) {
             return 0;
         } else {
             Integer ret;
             if (hypothetical) {
-                ret = memberDao.getMemberHypotheticalPoints(memberId);
+                ret = memberDao.getMemberHypotheticalPoints(userId);
             } else {
-                ret = memberDao.getMemberMaterializedPoints(memberId);
+                ret = memberDao.getMemberMaterializedPoints(userId);
             }
             return ((ret == null) ? (0) : (ret));
         }
     }
 
-    @PutMapping("{memberId}/subscribe")
-    public boolean subscribe(@PathVariable long memberId) throws NotFoundException {
-        return memberService.subscribeToNewsletter(memberId);
+    @PutMapping("{userId}/subscribe")
+    public boolean subscribe(@PathVariable long userId) throws NotFoundException {
+        return memberService.subscribeToNewsletter(userId);
     }
 
-    @PutMapping("{memberId}/unsubscribe")
-    public boolean unsubscribe(@PathVariable long memberId) throws NotFoundException {
-        return memberService.unsubscribeFromNewsletter(memberId);
+    @PutMapping("{userId}/unsubscribe")
+    public boolean unsubscribe(@PathVariable long userId) throws NotFoundException {
+        return memberService.unsubscribeFromNewsletter(userId);
     }
 
-    @GetMapping("{memberId}/isSubscribed")
-    public boolean isSubscribed(@PathVariable long memberId) throws IOException, NotFoundException {
-        return memberService.isSubscribedToNewsletter(memberId);
+    @GetMapping("{userId}/isSubscribed")
+    public boolean isSubscribed(@PathVariable long userId) throws IOException, NotFoundException {
+        return memberService.isSubscribedToNewsletter(userId);
     }
 }

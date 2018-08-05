@@ -64,7 +64,7 @@ public class MembersLoginRegisterController {
     public Boolean validatePassword(
             @RequestParam String password,
             @RequestParam(required = false) String hash,
-            @RequestParam(required = false) Long memberId)
+            @RequestParam(required = false) Long userId)
             throws NotFoundException {
         if (hash != null) {
             hash = decode(hash);
@@ -75,26 +75,26 @@ public class MembersLoginRegisterController {
             return memberService.validatePassword(password, hash);
         }
 
-        if (memberId != null) {
-            final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+        if (userId != null) {
+            final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
             return memberService.validatePassword(password, member.getHashedPassword());
         }
         throw new NotFoundException("The endpoint you requested is not available for the given attributes");
     }
 
-    @PostMapping("{memberId}/updatePassword")
-    public boolean updateForgottenPasswordByToken(@PathVariable long memberId,
+    @PostMapping("{userId}/updatePassword")
+    public boolean updateForgottenPasswordByToken(@PathVariable long userId,
             @RequestParam String newPassword)
             throws NotFoundException {
         newPassword = decode(newPassword);
-        return memberService.updatePassword(memberId, newPassword);
+        return memberService.updatePassword(userId, newPassword);
     }
 
     @GetMapping("createForgotPasswordToken")
     public String createForgotPasswordToken(
-            @RequestParam(required = false) Long memberId) throws NotFoundException {
-        if (memberId != null) {
-            return memberService.createNewForgotPasswordToken(memberId);
+            @RequestParam(required = false) Long userId) throws NotFoundException {
+        if (userId != null) {
+            return memberService.createNewForgotPasswordToken(userId);
         }
         throw new NotFoundException(
                 "The endpoint you requested is not available for the given attributes");

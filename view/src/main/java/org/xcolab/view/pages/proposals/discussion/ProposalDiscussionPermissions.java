@@ -60,16 +60,16 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
         Contest contestWrapper =  proposalWrapper.getContest();
 
-        boolean isJudge = proposalWrapper.getIsUserAmongSelectedJudges(memberId);
-        boolean isFellow = proposalWrapper.isUserAmongFellows(memberId);
-        boolean isAdvisor = contestWrapper.isUserAmongAdvisors(memberId);
+        boolean isJudge = proposalWrapper.getIsUserAmongSelectedJudges(userId);
+        boolean isFellow = proposalWrapper.isUserAmongFellows(userId);
+        boolean isAdvisor = contestWrapper.isUserAmongAdvisors(userId);
 
         return isFellow || isJudge || isAdvisor;
     }
 
     private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {
-        boolean isAuthor = proposal.getauthorUserid() == memberId;
-        boolean isMember = UsersGroupsClientUtil.isMemberInGroup(memberId, proposal.getProposalId());
+        boolean isAuthor = proposal.getauthorUserid() == userId;
+        boolean isMember = UsersGroupsClientUtil.isMemberInGroup(userId, proposal.getProposalId());
 
         return isAuthor || isMember;
     }

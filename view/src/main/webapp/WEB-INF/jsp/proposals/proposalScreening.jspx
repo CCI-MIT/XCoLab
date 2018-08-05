@@ -41,7 +41,7 @@
 
                                             <div class="review-status-container">
                                                 <xcolab:userPortrait portraitId="${judge.portraitId}"
-                                                                     memberId="${judge.userId}"
+                                                                     userId="${judge.userId}"
                                                                      width="30" height="30"/>
                                                 <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}"
                                                                            proposalId="${proposal.proposalId}" contestId="${contest.contestPK}">
@@ -57,7 +57,7 @@
                                             </div>
                                             <br/>
                                             <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
-                                                <xcolab:userLinkSimple memberId="${judge.userId}"
+                                                <xcolab:userLinkSimple userId="${judge.userId}"
                                                                        text="${judge.fullName} (${proposalCount})"/>
                                                         <div class="hidden">
                                                             <span id="js-Tooltip__content__judgedata_${judge.userId}">

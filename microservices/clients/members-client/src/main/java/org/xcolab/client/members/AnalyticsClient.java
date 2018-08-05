@@ -13,22 +13,22 @@ public final class AnalyticsClient {
     private static final RestResource2L<Member, AnalyticsUserEvent> analyticsUserEventResource =
             new RestResource2L<>(memberResource, "analyticsEvents", AnalyticsUserEvent.TYPES);
 
-    public static AnalyticsUserEvent create(long memberId, String idString, String category,
+    public static AnalyticsUserEvent create(long userId, String idString, String category,
             String action, String label, int value) {
         AnalyticsUserEvent analyticsUserEvent = new AnalyticsUserEvent();
-        analyticsUserEvent.setUserId(memberId);
+        analyticsUserEvent.setUserId(userId);
         analyticsUserEvent.setIdString(idString);
         analyticsUserEvent.setCategory(category);
         analyticsUserEvent.setAction(action);
         analyticsUserEvent.setLabel(label);
         analyticsUserEvent.setValue(value);
 
-        return analyticsUserEventResource.resolveParentId(memberResource.id(memberId))
+        return analyticsUserEventResource.resolveParentId(memberResource.id(userId))
                 .create(analyticsUserEvent).execute();
     }
 
-    public static boolean exists(long memberId, String idString) {
-        return analyticsUserEventResource.resolveParentId(memberResource.id(memberId))
+    public static boolean exists(long userId, String idString) {
+        return analyticsUserEventResource.resolveParentId(memberResource.id(userId))
                 .elementService(idString, "exists", Boolean.class)
                 .get();
     }

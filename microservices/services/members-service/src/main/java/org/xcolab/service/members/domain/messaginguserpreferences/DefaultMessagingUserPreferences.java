@@ -7,9 +7,9 @@ public class DefaultMessagingUserPreferences extends MessagingUserPreferences {
 
     private static final boolean EMAIL_ON_SEND = false;
 
-    public DefaultMessagingUserPreferences(long memberId) {
+    public DefaultMessagingUserPreferences(long userId) {
         super();
-        setUserId(memberId);
+        setUserId(userId);
         setEmailOnSend(EMAIL_ON_SEND);
         setEmailOnReceipt(ConfigurationAttributeKey.MESSAGING_EMAIL_ON_RECEIPT_DEFAULT.get());
         setEmailOnActivity(ConfigurationAttributeKey.MESSAGING_EMAIL_ON_ACTIVITY_DEFAULT.get());

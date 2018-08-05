@@ -22,7 +22,7 @@ public interface PlatformTeamDao {
 
     int delete(long teamId);
 
-    int addMember(long teamId, long memberId);
+    int addMember(long teamId, long userId);
 
-    int removeMember(long teamId, long memberId);
+    int removeMember(long teamId, long userId);
 }

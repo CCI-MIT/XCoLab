@@ -28,7 +28,7 @@ public final class ProposalMoveUtil {
 
     public static void moveProposal(ProposalContext proposalContext,
             UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
-            ContestPhase contestPhase, Contest targetContest, long memberId) {
+            ContestPhase contestPhase, Contest targetContest, long userId) {
         try {
             final ClientHelper clients = proposalContext.getClients();
             final ProposalClient proposalClient = clients.getProposalClient();
@@ -51,7 +51,7 @@ public final class ProposalMoveUtil {
                 case MOVE_PERMANENTLY:
                     proposalMoveClient.createProposalMoveHistory(proposal.getProposalId(),
                             fromContest.getContestPK(), targetContest.getContestPK(), targetPhase.getContestPhasePK(),
-                            memberId);
+                            userId);
                     for (Proposal2Phase p2p : ProposalPhaseClientUtil
                             .getProposal2PhaseByProposalId(proposal.getProposalId())) {
                         if (ContestClientUtil.getContestPhase(p2p.getContestPhaseId()).getContestPK()
@@ -80,7 +80,7 @@ public final class ProposalMoveUtil {
                 case COPY:
                     proposalMoveClient.createCopyProposalMoveHistory(proposal.getProposalId(),
                             fromContest.getContestPK(), targetContest.getContestPK(), targetPhase.getContestPhasePK(),
-                            memberId);
+                            userId);
                     for (Proposal2Phase p2p : ProposalPhaseClientUtil
                             .getProposal2PhaseByProposalId(proposal.getProposalId())) {
                         if (p2p.getVersionTo() < 0) {

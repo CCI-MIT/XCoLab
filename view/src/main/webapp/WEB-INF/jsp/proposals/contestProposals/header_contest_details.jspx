@@ -143,9 +143,9 @@
                             <c:forEach var="teamRoleMember" items="${teamRoleMembers}" varStatus="status">
                                 <div class="p-ContestProposals__header__team__member">
                                     <xcolab:userPortrait portraitId="${teamRoleMember.portraitId}"
-                                                         memberId="${teamRoleMember.userId}"
+                                                         userId="${teamRoleMember.userId}"
                                                          width="30" height="30"/>
-                                    <xcolab:userLinkSimple memberId="${teamRoleMember.userId}"
+                                    <xcolab:userLinkSimple userId="${teamRoleMember.userId}"
                                                            text="${teamRoleMember.fullName}"/>
                                 </div>
                             </c:forEach>
@@ -194,7 +194,7 @@
                                     <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.userId}">
                                         <div class="review-status-container">
                                             <xcolab:userPortrait portraitId="${judge.portraitId}"
-                                                                 memberId="${judge.userId}"
+                                                                 userId="${judge.userId}"
                                                                  width="30" height="30"/>
                                         </div>
                                         <br/>

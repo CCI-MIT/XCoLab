@@ -62,9 +62,9 @@ public class MemberService {
                 .doEncrypt(PBKDF2PasswordEncryptor.DEFAULT_ALGORITHM, password, "");
     }
 
-    public boolean validatePassword(String password, long memberId) throws NotFoundException {
+    public boolean validatePassword(String password, long userId) throws NotFoundException {
         return validatePassword(password,
-                memberDao.getMember(memberId).orElseThrow(NotFoundException::new).getHashedPassword());
+                memberDao.getMember(userId).orElseThrow(NotFoundException::new).getHashedPassword());
     }
 
     public boolean validatePassword(String password, String hash) {
@@ -85,9 +85,9 @@ public class MemberService {
         return sha1PasswordEncryptor.doEncrypt("SHA-1", password).equals(hash);
     }
 
-    public boolean updatePassword(long memberId, String newPassword) {
+    public boolean updatePassword(long userId, String newPassword) {
         final String hashedPassword = hashPassword(newPassword);
-        return memberDao.updatePassword(memberId, hashedPassword);
+        return memberDao.updatePassword(userId, hashedPassword);
     }
 
     public Member register(Member pojo) {
@@ -99,9 +99,9 @@ public class MemberService {
         return member;
     }
 
-    public LoginLog createLoginLog(long memberId, String ipAddress, String redirectUrl) {
+    public LoginLog createLoginLog(long userId, String ipAddress, String redirectUrl) {
         LoginLog loginLog = new LoginLog();
-        loginLog.setUserId(memberId);
+        loginLog.setUserId(userId);
         loginLog.setIpAddress(ipAddress);
         loginLog.setEntryUrl(StringUtils.left(redirectUrl, 250));
 
@@ -124,9 +124,9 @@ public class MemberService {
         }
     }
 
-    public String createNewForgotPasswordToken(Long memberId) {
-        Member member = memberDao.getMember(memberId).orElseThrow(
-                () -> ReferenceResolutionException.toObject(Member.class, memberId).build());
+    public String createNewForgotPasswordToken(Long userId) {
+        Member member = memberDao.getMember(userId).orElseThrow(
+                () -> ReferenceResolutionException.toObject(Member.class, userId).build());
         String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
         member.setForgotPasswordToken(confirmationToken);
         LocalDateTime localDateTime = LocalDateTime.now().plusHours(1L);
@@ -141,15 +141,15 @@ public class MemberService {
         return member.getId_();
     }
 
-    public boolean isSubscribedToNewsletter(long memberId) throws IOException, NotFoundException {
-        final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+    public boolean isSubscribedToNewsletter(long userId) throws IOException, NotFoundException {
+        final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
         final String email = member.getEmailAddress();
         JSONObject memberDetails = connectorEmmaAPI.getMemberJSONfromEmail(email);
         return ConnectorEmmaAPI.hasMemberActiveSubscription(memberDetails, false);
     }
 
-    public boolean subscribeToNewsletter(long memberId) throws NotFoundException {
-        final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+    public boolean subscribeToNewsletter(long userId) throws NotFoundException {
+        final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
         final String email = member.getEmailAddress();
         return subscribeToNewsletter(email);
     }
@@ -163,8 +163,8 @@ public class MemberService {
         }
     }
 
-    public boolean unsubscribeFromNewsletter(long memberId) throws NotFoundException {
-        final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+    public boolean unsubscribeFromNewsletter(long userId) throws NotFoundException {
+        final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
         final String email = member.getEmailAddress();
         try {
             return connectorEmmaAPI.unSubscribeMemberWithEmail(email);

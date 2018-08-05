@@ -122,11 +122,11 @@ public final class MembersClient {
         }
     }
 
-    public static Integer getMemberMaterializedPoints(long memberId) {
+    public static Integer getMemberMaterializedPoints(long userId) {
         try {
-            return memberResource.<Member, Integer>elementService(memberId,"points", Integer.class)
+            return memberResource.<Member, Integer>elementService(userId,"points", Integer.class)
                     .withCache(CacheKeys.withClass(Member.class)
-                            .withParameter("memberId", memberId)
+                            .withParameter("userId", userId)
                             .asCount(), CacheName.MISC_REQUEST)
                     .getChecked();
 
@@ -135,9 +135,9 @@ public final class MembersClient {
         }
     }
 
-    public static Integer getMemberHypotheticalPoints(long memberId) {
+    public static Integer getMemberHypotheticalPoints(long userId) {
         try {
-            return memberResource.elementService(memberId, "points", Integer.class)
+            return memberResource.elementService(userId, "points", Integer.class)
                     .queryParam("hypothetical", true)
                     .getChecked();
         } catch (EntityNotFoundException e) {
@@ -145,8 +145,8 @@ public final class MembersClient {
         }
     }
 
-    public static List<Role_> getMemberRoles(long memberId) {
-        return memberRoleResource.resolveParentId(memberResource.id(memberId))
+    public static List<Role_> getMemberRoles(long userId) {
+        return memberRoleResource.resolveParentId(memberResource.id(userId))
                 .list()
                 .withCache(CacheName.ROLES)
                 .execute();
@@ -169,23 +169,23 @@ public final class MembersClient {
         return category;
     }
 
-    public static void assignMemberRole(long memberId, long roleId) {
-        memberRoleResource.resolveParentId(memberResource.id(memberId))
+    public static void assignMemberRole(long userId, long roleId) {
+        memberRoleResource.resolveParentId(memberResource.id(userId))
                 .update(null, roleId)
                 .execute();
         ServiceRequestUtils.clearCache(CacheName.ROLES);
     }
 
-    public static void removeMemberRole(long memberId, long roleId) {
-        memberRoleResource.resolveParentId(memberResource.id(memberId))
+    public static void removeMemberRole(long userId, long roleId) {
+        memberRoleResource.resolveParentId(memberResource.id(userId))
                 .delete(roleId)
                 .execute();
         ServiceRequestUtils.clearCache(CacheName.ROLES);
     }
 
     //TODO COLAB-2594: this seems to be duplicated in the ContestTeamMemberClient
-    public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
-        return memberRoleResource.resolveParentId(memberResource.id(memberId))
+    public static List<Role_> getMemberRolesInContest(long userId, long contestId) {
+        return memberRoleResource.resolveParentId(memberResource.id(userId))
                 .list()
                 .queryParam("contestId", contestId)
                 .withCache(CacheName.CONTEST_DETAILS)
@@ -226,33 +226,33 @@ public final class MembersClient {
                 .execute();
     }
 
-    public static Member getMember(long memberId) throws MemberNotFoundException {
+    public static Member getMember(long userId) throws MemberNotFoundException {
         try {
-            return getMemberInternal(memberId);
+            return getMemberInternal(userId);
         } catch (EntityNotFoundException e) {
-            throw new MemberNotFoundException("Member with id " + memberId + " not found.");
+            throw new MemberNotFoundException("Member with id " + userId + " not found.");
         }
     }
 
-    public static Member getMemberOrNull(long memberId) {
+    public static Member getMemberOrNull(long userId) {
         try {
-            return getMemberInternal(memberId);
+            return getMemberInternal(userId);
         } catch (EntityNotFoundException e) {
             return null;
         }
     }
 
-    public static Member getMemberUnchecked(long memberId) {
+    public static Member getMemberUnchecked(long userId) {
         try {
-            return getMemberInternal(memberId);
+            return getMemberInternal(userId);
         } catch (EntityNotFoundException e) {
-            throw new UncheckedMemberNotFoundException(memberId);
+            throw new UncheckedMemberNotFoundException(userId);
         }
     }
 
-    private static Member getMemberInternal(long memberId) throws EntityNotFoundException {
+    private static Member getMemberInternal(long userId) throws EntityNotFoundException {
 
-        return memberResource.get(memberId)
+        return memberResource.get(userId)
                 .withCache(CacheName.MEMBER)
                 .executeChecked();
     }
@@ -346,8 +346,8 @@ public final class MembersClient {
                 .execute();
     }
 
-    public static boolean deleteMember(long memberId) {
-        boolean result = memberResource.delete(memberId)
+    public static boolean deleteMember(long userId) {
+        boolean result = memberResource.delete(userId)
                 .cacheName(CacheName.MEMBER)
                 .execute();
         if (result) {
@@ -399,16 +399,16 @@ public final class MembersClient {
         }
     }
 
-    public static String createForgotPasswordToken(long memberId) {
+    public static String createForgotPasswordToken(long userId) {
         return memberResource.collectionService("createForgotPasswordToken", String.class)
-                .queryParam("memberId", memberId)
+                .queryParam("userId", userId)
                 //TODO COLAB-2594: this should be posted!
                 .get();
     }
 
-    public static LoginToken createLoginToken(long memberId) {
+    public static LoginToken createLoginToken(long userId) {
         final LoginToken loginToken =
-                memberResource.elementService(memberId, "loginToken", LoginToken.class).post();
+                memberResource.elementService(userId, "loginToken", LoginToken.class).post();
         ServiceRequestUtils.clearCache(CacheName.MEMBER);
         return loginToken;
     }
@@ -447,10 +447,10 @@ public final class MembersClient {
                 .get();
     }
 
-    public static boolean validatePassword(String password, long memberId) {
+    public static boolean validatePassword(String password, long userId) {
         return memberResource.collectionService("validatePassword", Boolean.class)
                 .queryParam("password", encode(password))
-                .queryParam("memberId", memberId)
+                .queryParam("userId", userId)
                 .post();
     }
 
@@ -461,12 +461,12 @@ public final class MembersClient {
                 .post();
     }
 
-    public static boolean updatePassword(long memberId, String newPassword) {
-        final Boolean result = memberResource.elementService(memberId, "updatePassword", Boolean.class)
+    public static boolean updatePassword(long userId, String newPassword) {
+        final Boolean result = memberResource.elementService(userId, "updatePassword", Boolean.class)
                 .queryParam("newPassword", encode(newPassword))
                 .post();
         //TODO COLAB-2589: improve endpoint for caching
-        memberResource.get(memberId).withCache(CacheName.MEMBER).deleteFromCache();
+        memberResource.get(userId).withCache(CacheName.MEMBER).deleteFromCache();
         return result;
     }
 
@@ -475,9 +475,9 @@ public final class MembersClient {
     }
 
     //TODO COLAB-2594: this shouldn't be done manually
-    public static LoginLog createLoginLog(long memberId, String ipAddress, String redirectUrl) {
+    public static LoginLog createLoginLog(long userId, String ipAddress, String redirectUrl) {
         LoginLog loginLog = new LoginLog();
-        loginLog.setUserId(memberId);
+        loginLog.setUserId(userId);
         loginLog.setIpAddress(ipAddress);
         loginLog.setEntryUrl(redirectUrl != null
                 ? redirectUrl.substring(0, Math.min(250, redirectUrl.length()))
@@ -487,15 +487,15 @@ public final class MembersClient {
                 .execute();
     }
 
-    public static boolean subscribeToNewsletter(long memberId) {
-        return memberResource.elementService(memberId, "subscribe", Boolean.class).put();
+    public static boolean subscribeToNewsletter(long userId) {
+        return memberResource.elementService(userId, "subscribe", Boolean.class).put();
     }
 
-    public static boolean unsubscribeFromNewsletter(long memberId) {
-        return memberResource.elementService(memberId, "unsubscribe", Boolean.class).put();
+    public static boolean unsubscribeFromNewsletter(long userId) {
+        return memberResource.elementService(userId, "unsubscribe", Boolean.class).put();
     }
 
-    public static boolean isSubscribedToNewsletter(long memberId) {
-        return memberResource.elementService(memberId, "isSubscribed", Boolean.class).get();
+    public static boolean isSubscribedToNewsletter(long userId) {
+        return memberResource.elementService(userId, "isSubscribed", Boolean.class).get();
     }
 }

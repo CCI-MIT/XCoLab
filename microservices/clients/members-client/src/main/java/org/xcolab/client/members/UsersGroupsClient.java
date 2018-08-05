@@ -23,16 +23,16 @@ public class UsersGroupsClient {
         return instances.computeIfAbsent(serviceNamespace, UsersGroupsClient::new);
     }
 
-    public UsersGroups addMemberToGroup(long memberId, long groupId) {
+    public UsersGroups addMemberToGroup(long userId, long groupId) {
         UsersGroups ug = new UsersGroups();
-        ug.setUserId(memberId);
+        ug.setUserId(userId);
         ug.setGroupId(groupId);
         return usersGroupsResource.create(ug).execute();
     }
 
-    public void removeMemberFromGroup(long memberId, long groupId) {
+    public void removeMemberFromGroup(long userId, long groupId) {
         usersGroupsResource.collectionService("deleteUsersGroups", Boolean.class)
-                .queryParam("userId", memberId)
+                .queryParam("userId", userId)
                 .queryParam("groupId", groupId)
                 .delete();
     }
@@ -48,15 +48,15 @@ public class UsersGroupsClient {
                 .execute();
     }
 
-    public List<UsersGroups> getUserGroupsByMemberId(long memberId) {
+    public List<UsersGroups> getUserGroupsByuserId(long userId) {
         return usersGroupsResource.list()
-                .queryParam("userId", memberId)
+                .queryParam("userId", userId)
                 .execute();
     }
 
-    public boolean isMemberInGroup(long memberId, long groupId) {
+    public boolean isMemberInGroup(long userId, long groupId) {
         List<UsersGroups> list = usersGroupsResource.list()
-                .queryParam("userId", memberId)
+                .queryParam("userId", userId)
                 .queryParam("groupId", groupId)
                 .execute();
         return list != null && !list.isEmpty();

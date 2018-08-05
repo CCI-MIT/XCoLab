@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 
 public class MembersPermissions {
 
-    private final long memberId;
+    private final long userId;
 
     public MembersPermissions(HttpServletRequest request) {
-        memberId = MemberAuthUtil.getMemberId(request);
+        userId = MemberAuthUtil.getuserId(request);
     }
 
     public boolean getCanDownloadMemberList() {
@@ -18,6 +18,6 @@ public class MembersPermissions {
     }
 
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(memberId);
+        return PermissionsClient.canAdminAll(userId);
     }
 }

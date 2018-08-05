@@ -16,7 +16,7 @@ public class AggregatedReport implements Serializable {
             AggregatedReport.class, new ParameterizedTypeReference<List<AggregatedReport>>() {});
 
     private Long firstReportId;
-    private Long reporterMemberId;
+    private Long reporteruserId;
     private String targetType;
     private Long targetId;
     private Long targetAdditionalId;
@@ -30,10 +30,10 @@ public class AggregatedReport implements Serializable {
     public AggregatedReport() {
     }
 
-    public AggregatedReport(Long firstReportId, Long reporterMemberId, String targetType, Long targetId,
+    public AggregatedReport(Long firstReportId, Long reporteruserId, String targetType, Long targetId,
             String reason, String comment, Integer aggregatedWeight) {
         this.firstReportId = firstReportId;
-        this.reporterMemberId = reporterMemberId;
+        this.reporteruserId = reporteruserId;
         this.targetType = targetType;
         this.targetId = targetId;
         this.reason = reason;
@@ -41,12 +41,12 @@ public class AggregatedReport implements Serializable {
         this.aggregatedWeight = aggregatedWeight;
     }
 
-    public Long getReporterMemberId() {
-        return this.reporterMemberId;
+    public Long getReporteruserId() {
+        return this.reporteruserId;
     }
 
-    public void setReporterMemberId(Long reportermemberid) {
-        this.reporterMemberId = reportermemberid;
+    public void setReporteruserId(Long reporteruserId) {
+        this.reporteruserId = reporteruserId;
     }
 
     public String getTargetType() {

@@ -20,7 +20,7 @@
                 <a href="/members">Members</a>
             </li>
             <li class="breadcrumb-item">
-                <xcolab:userLinkSimple memberId="${messagingBean.user.userId}" text="${messagingBean.user.displayName}" />
+                <xcolab:userLinkSimple userId="${messagingBean.user.userId}" text="${messagingBean.user.displayName}" />
             </li>
             <li class="breadcrumb-item active" aria-current="page">Messages</li>
         </ol>
@@ -91,13 +91,13 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${messagingBean.type == 'SENT'}">
-                                        <xcolab:userLinkSimple memberId="${message.to.get(0).id_}" text="${message.to.get(0).displayName}" />
+                                        <xcolab:userLinkSimple userId="${message.to.get(0).id_}" text="${message.to.get(0).displayName}" />
                                         <c:if test="${message.to.size() > 1}">
                                             + ${message.to.size() - 1}
                                         </c:if>
                                     </c:when>
                                     <c:when test="${messagingBean.type != 'SENT'}">
-                                        <xcolab:userLinkSimple memberId="${message.from.userId}" text="${message.from.displayName}" />
+                                        <xcolab:userLinkSimple userId="${message.from.userId}" text="${message.from.displayName}" />
                                     </c:when>
                                 </c:choose>
 

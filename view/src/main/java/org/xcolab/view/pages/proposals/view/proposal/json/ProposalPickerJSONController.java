@@ -115,7 +115,7 @@ public class ProposalPickerJSONController {
             Member user, ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @RequestParam String filterKey,
             @RequestParam long sectionId, @RequestParam Tab tab) throws IOException {
-        long memberId = user.getUserId();
+        long userId = user.getUserId();
 
         switch (tab) {
             case ALL_CONTESTS:
@@ -126,15 +126,15 @@ public class ProposalPickerJSONController {
                         .size();
             case SUBSCRIBED_PROPOSALS:
                 return ProposalPickerFilterUtil
-                        .getFilteredSubscribedProposalsForUser(proposalContext, memberId, filterKey,
+                        .getFilteredSubscribedProposalsForUser(proposalContext, userId, filterKey,
                                 sectionId).size();
             case SUPPORTED_PROPOSALS:
                 return ProposalPickerFilterUtil
-                        .getFilteredSupportingProposalsForUser(proposalContext, memberId, filterKey,
+                        .getFilteredSupportingProposalsForUser(proposalContext, userId, filterKey,
                                 sectionId).size();
             case SUBSCRIBED_SUPPORTED_PROPOSALS:
                 return ProposalPickerFilterUtil
-                        .getFilteredSubscribedSupportingProposalsForUser(proposalContext, memberId,
+                        .getFilteredSubscribedSupportingProposalsForUser(proposalContext, userId,
                                 filterKey, sectionId).size();
             default:
                 throw new IllegalArgumentException("Unknown tab: " + tab);

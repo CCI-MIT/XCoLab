@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/members/profile/{memberId}/api/settings/messaging")
+@RequestMapping("/members/profile/{userId}/api/settings/messaging")
 public class MessageSettingsJSONController extends JSONHelper {
 
     public MessageSettingsJSONController() { }
@@ -24,7 +24,7 @@ public class MessageSettingsJSONController extends JSONHelper {
     @PostMapping("updateEmailOnMessage")
     public @ResponseBody void handleUpdateUserSendEmailOnMessageSettingAJAXRequest(
             HttpServletRequest request, HttpServletResponse response,
-            @PathVariable long memberId,
+            @PathVariable long userId,
             @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
@@ -33,13 +33,13 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private boolean updateSendEmailOnMessageSettings(HttpServletRequest request, boolean messageSetting) {
-        long memberId = MemberAuthUtil.getMemberId(request);
-        updateUserSendEmailOnMessagePreferences(memberId, messageSetting);
+        long userId = MemberAuthUtil.getuserId(request);
+        updateUserSendEmailOnMessagePreferences(userId, messageSetting);
         return true;
     }
 
-    private void updateUserSendEmailOnMessagePreferences(long memberId, boolean setting) {
-        MessagingUserPreferences preferences = MessagingClient.getMessagingPreferencesForMember(memberId);
+    private void updateUserSendEmailOnMessagePreferences(long userId, boolean setting) {
+        MessagingUserPreferences preferences = MessagingClient.getMessagingPreferencesForMember(userId);
         preferences.setEmailOnReceipt(setting);
         MessagingClient.updateMessagingPreferences(preferences);
     }
@@ -47,7 +47,7 @@ public class MessageSettingsJSONController extends JSONHelper {
     @PostMapping("updateEmailOnActivity")
     public @ResponseBody void handleUpdateUserSendEmailOnActivityAJAXRequest(
             HttpServletRequest request, HttpServletResponse response,
-            @PathVariable long memberId,
+            @PathVariable long userId,
             @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
@@ -56,22 +56,22 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private boolean updateSendEmailOnActivitySettings(HttpServletRequest request, boolean messageSetting) {
-        long memberId = MemberAuthUtil.getMemberId(request);
-        updateUserSendEmailOnActivityPreferences(memberId, messageSetting);
+        long userId = MemberAuthUtil.getuserId(request);
+        updateUserSendEmailOnActivityPreferences(userId, messageSetting);
         if (!messageSetting) {
-            updateUserSendDailyEmailOnActivityPreferences(memberId, false);
+            updateUserSendDailyEmailOnActivityPreferences(userId, false);
         }
         return true;
     }
 
-    private void updateUserSendEmailOnActivityPreferences(long memberId, boolean setting) {
-        MessagingUserPreferences preferences = MessagingClient.getMessagingPreferencesForMember(memberId);
+    private void updateUserSendEmailOnActivityPreferences(long userId, boolean setting) {
+        MessagingUserPreferences preferences = MessagingClient.getMessagingPreferencesForMember(userId);
         preferences.setEmailOnActivity(setting);
         MessagingClient.updateMessagingPreferences(preferences);
     }
 
-    private void updateUserSendDailyEmailOnActivityPreferences(long memberId, boolean setting) {
-        MessagingUserPreferences preferences = MessagingClient.getMessagingPreferencesForMember(memberId);
+    private void updateUserSendDailyEmailOnActivityPreferences(long userId, boolean setting) {
+        MessagingUserPreferences preferences = MessagingClient.getMessagingPreferencesForMember(userId);
         preferences.setEmailActivityDailyDigest(setting);
         MessagingClient.updateMessagingPreferences(preferences);
     }
@@ -79,7 +79,7 @@ public class MessageSettingsJSONController extends JSONHelper {
     @PostMapping("updateDailyEmail")
     public @ResponseBody void handleUpdateUserSendDailyEmailOnActivityAJAXRequest(
             HttpServletRequest request, HttpServletResponse response,
-            @PathVariable long memberId,
+            @PathVariable long userId,
             @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
@@ -88,8 +88,8 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private boolean updateSendDailyEmailOnActivitySettings(HttpServletRequest request, boolean messageSetting) {
-        long memberId = MemberAuthUtil.getMemberId(request);
-        updateUserSendDailyEmailOnActivityPreferences(memberId, messageSetting);
+        long userId = MemberAuthUtil.getuserId(request);
+        updateUserSendDailyEmailOnActivityPreferences(userId, messageSetting);
         return true;
     }
 

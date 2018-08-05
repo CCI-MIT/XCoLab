@@ -23,24 +23,24 @@ public class UsersGroupsClientUtil {
         return client.deleteGroups(groupIds);
     }
 
-    public static List<UsersGroups> getUserGroupsByMemberId(long memberId) {
-        return client.getUserGroupsByMemberId(memberId);
+    public static List<UsersGroups> getUserGroupsByuserId(long userId) {
+        return client.getUserGroupsByuserId(userId);
     }
 
-    public static UsersGroups addMemberToGroup(long memberId, long groupId) {
-        return client.addMemberToGroup(memberId, groupId);
+    public static UsersGroups addMemberToGroup(long userId, long groupId) {
+        return client.addMemberToGroup(userId, groupId);
     }
 
-    public static void removeMemberFromGroup(long memberId, long groupId) {
-        client.removeMemberFromGroup(memberId, groupId);
+    public static void removeMemberFromGroup(long userId, long groupId) {
+        client.removeMemberFromGroup(userId, groupId);
     }
 
     public static List<UsersGroups> getUserGroupsByGroupId(long groupId) {
         return client.getUserGroupsByGroupId(groupId);
     }
 
-    public static boolean isMemberInGroup(long memberId, long groupId) {
-        return client.isMemberInGroup(memberId, groupId);
+    public static boolean isMemberInGroup(long userId, long groupId) {
+        return client.isMemberInGroup(userId, groupId);
     }
 
     public static boolean isUserInGroups(Long userId, Long groupId) {

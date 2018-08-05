@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface TrackedVisitor2UserDao {
 
     Optional<TrackedVisitor2User> getByUUID(String uuid);
-    Optional<TrackedVisitor2User> getByMemberId(long memberId);
+    Optional<TrackedVisitor2User> getByuserId(long userId);
 
     TrackedVisitor2User create(TrackedVisitor2User trackedVisitor2User);
 

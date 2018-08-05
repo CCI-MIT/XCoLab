@@ -70,7 +70,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             return "redirect:" + redirectUri + "#addCommentForm";
         }
 
-        long memberId = MemberAuthUtil.getMemberId(request);
+        long userId = MemberAuthUtil.getuserId(request);
 
         try {
             final ThreadClient threadClient = ThreadClientUtil.getClient();
@@ -87,31 +87,31 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
             Comment comment = new Comment();
             comment.setContent(body);
-            comment.setAuthorUserId(memberId);
+            comment.setAuthorUserId(userId);
             comment.setThreadId(threadId);
             comment = commentClient.createComment(comment);
             CommentThread commentThread = threadClient.getThread(threadId);
 
-            updateAnalyticsAndActivities(commentThread, comment, memberId, request);
+            updateAnalyticsAndActivities(commentThread, comment, userId, request);
 
             if (commentThread.getIsQuiet() != null && !commentThread.getIsQuiet()) {
 
                 if (commentThread.getCategory() != null) {
                     activityClient.createActivityEntry(DiscussionThreadActivityType.COMMENT_ADDED,
-                            memberId, commentThread.getId(), comment.getId());
+                            userId, commentThread.getId(), comment.getId());
                 } else {
                     final Proposal proposal = getProposal(proposalClient, commentThread);
                     if (proposal != null) {
                         //proposal
                         activityClient
-                                .createActivityEntry(ProposalActivityType.COMMENT_ADDED, memberId,
+                                .createActivityEntry(ProposalActivityType.COMMENT_ADDED, userId,
                                         proposal.getProposalId(), comment.getId());
                     } else {
                         final Contest contest = getContest(commentThread);
                         if (contest != null) {
                             //contest
                             activityClient.createActivityEntry(ContestActivityType.COMMENT_ADDED,
-                                    memberId, contest.getContestPK(), comment.getId());
+                                    userId, contest.getContestPK(), comment.getId());
 
                             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.COMMENT_CONTEST);
                         }

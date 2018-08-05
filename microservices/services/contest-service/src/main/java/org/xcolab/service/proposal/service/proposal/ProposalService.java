@@ -297,27 +297,27 @@ public class ProposalService {
         }
     }
 
-    public void removeProposalTeamMember(Long proposalId, Long memberId) throws ProposalNotFoundException {
+    public void removeProposalTeamMember(Long proposalId, Long userId) throws ProposalNotFoundException {
         try {
             Proposal proposal = proposalDao.get(proposalId);
-            UsersGroupsClientUtil.deleteUsersGroups(memberId, proposal.getGroupId());
+            UsersGroupsClientUtil.deleteUsersGroups(userId, proposal.getGroupId());
         } catch (NotFoundException ignored) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");
         }
     }
 
-    public void promoteMemberToProposalOwner(Long proposalId, Long memberId) throws ProposalNotFoundException {
+    public void promoteMemberToProposalOwner(Long proposalId, Long userId) throws ProposalNotFoundException {
         try {
             Proposal proposal = proposalDao.get(proposalId);
-            proposal.setauthorUserid(memberId);
+            proposal.setauthorUserid(userId);
             proposalDao.update(proposal);
         } catch (NotFoundException ignored) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");
         }
     }
 
-    public List<Proposal> getMemberProposals(Long memberId) {
-        List<UsersGroups> userGroups = UsersGroupsClientUtil.getUserGroupsByMemberId(memberId);
+    public List<Proposal> getMemberProposals(Long userId) {
+        List<UsersGroups> userGroups = UsersGroupsClientUtil.getUserGroupsByuserId(userId);
         return userGroups.stream()
                 .map(UsersGroups::getGroupId)
                 .map(groupId -> proposalDao.getByGroupId(groupId, true, false))

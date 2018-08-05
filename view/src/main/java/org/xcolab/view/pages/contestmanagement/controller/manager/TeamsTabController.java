@@ -115,15 +115,15 @@ public class TeamsTabController extends AbstractTabController {
         return "redirect:" + ContestManagerTabs.TEAMS.getTabUrl();
     }
 
-    @PostMapping("tab/TEAMS/{teamId}/removeMember/{memberId}")
+    @PostMapping("tab/TEAMS/{teamId}/removeMember/{userId}")
     public String removeMember(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable long teamId, @PathVariable long memberId) {
+            Model model, Member member, @PathVariable long teamId, @PathVariable long userId) {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        removeMember(teamId, memberId);
+        removeMember(teamId, userId);
 
         return "redirect:" + ContestManagerTabs.TEAMS.getTabUrl(teamId);
     }
@@ -161,23 +161,23 @@ public class TeamsTabController extends AbstractTabController {
         return teamItems;
     }
 
-    private void addMember(Long teamId, Long memberId) {
+    private void addMember(Long teamId, Long userId) {
         try {
             PlatformTeam team = PlatformTeamsClient.getPlatformTeam(teamId);
-            Member member = MembersClient.getMember(memberId);
+            Member member = MembersClient.getMember(userId);
             PlatformTeamsClient.addMember(team, member);
         } catch (EntityNotFoundException | MemberNotFoundException e) {
-            throw new IllegalArgumentException("Invalid teamId or memberId.");
+            throw new IllegalArgumentException("Invalid teamId or userId.");
         }
     }
 
-    private void removeMember(Long teamId, Long memberId) {
+    private void removeMember(Long teamId, Long userId) {
         try {
             PlatformTeam team = PlatformTeamsClient.getPlatformTeam(teamId);
-            Member member = MembersClient.getMember(memberId);
+            Member member = MembersClient.getMember(userId);
             PlatformTeamsClient.removeMember(team, member);
         } catch (EntityNotFoundException | MemberNotFoundException e) {
-            throw new IllegalArgumentException("Invalid teamId or memberId.");
+            throw new IllegalArgumentException("Invalid teamId or userId.");
         }
     }
 

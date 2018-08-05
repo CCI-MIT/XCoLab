@@ -117,7 +117,7 @@
                             </c:when>
                         </c:choose>
                         <c:if test="${proposalsPermissions.canAdminAll}">
-                            by <xcolab:userLinkSimple memberId="${targetMoveHistory.movingUser.userId}" text="${targetMoveHistory.movingUser.screenName}"/>
+                            by <xcolab:userLinkSimple userId="${targetMoveHistory.movingUser.userId}" text="${targetMoveHistory.movingUser.screenName}"/>
                         </c:if>
                     </div>
                 </c:if>
@@ -134,7 +134,7 @@
                                     </spring:argument>
                                 </collab:message>
                                 <c:if test="${proposalsPermissions.canAdminAll}">
-                                    by <xcolab:userLinkSimple memberId="${sourceMoveHistory.movingUser.userId}" text="${sourceMoveHistory.movingUser.screenName}"/>
+                                    by <xcolab:userLinkSimple userId="${sourceMoveHistory.movingUser.userId}" text="${sourceMoveHistory.movingUser.screenName}"/>
                                 </c:if>
                             </div>
                         </c:when>
@@ -150,7 +150,7 @@
                             triggerHistoryVisibility();
                         </script>
                         by
-                        <xcolab:userLinkSimple memberId="${proposal.selectedVersion.authorUserid}"
+                        <xcolab:userLinkSimple userId="${proposal.selectedVersion.authorUserid}"
                                                text="${proposal.userForSelectedVersion.screenName}"/>
                     </div>
                 </c:if>

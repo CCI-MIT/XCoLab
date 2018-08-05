@@ -89,7 +89,7 @@
                     <c:if test="${proposalsPermissions.canManageUsers}">
                         <td>
                             <c:if test="${member.memberType != 'OWNER'}">
-                                <c:set var="removeMemberFromTeam" value="${proposal.proposalUrl}/tab/TEAM/removeMemberFromTeam?memberId=${member.userId}" />
+                                <c:set var="removeMemberFromTeam" value="${proposal.proposalUrl}/tab/TEAM/removeMemberFromTeam?userId=${member.userId}" />
 
                                 <button type="button" class="btn btn-link js-EnhancedLink" data-method="post"
                                         data-url="${removeMemberFromTeam}">
@@ -100,7 +100,7 @@
                         <c:if test="${proposalsPermissions.canPromoteToOwner}">
                             <td>
                                 <c:if test="${member.memberType != 'OWNER'}">
-                                    <c:set var="promoteMemberToOwner" value="${proposal.proposalUrl}/tab/TEAM/promoteMemberToOwner?memberId=${member.userId}" />
+                                    <c:set var="promoteMemberToOwner" value="${proposal.proposalUrl}/tab/TEAM/promoteMemberToOwner?userId=${member.userId}" />
 
                                     <button type="button" class="btn btn-link js-EnhancedLink" data-method="post"
                                             data-url="${promoteMemberToOwner }" data-confirm="${confirmPromoteText}">
@@ -148,10 +148,10 @@
             <table class="contributors">
                 <c:forEach var="supporter" items="${proposal.supporters }" varStatus="status" step="2">
                     <tr class="${(status.index / 2) mod 2 > 0 ? 'even' : 'odd'}">
-                        <td><xcolab:userLinkSimple memberId="${supporter.userId}" text="${supporter.displayName}" /></td>
+                        <td><xcolab:userLinkSimple userId="${supporter.userId}" text="${supporter.displayName}" /></td>
                         <td>
                             <c:if test="${fn:length(proposal.supporters) > status.index}">
-                                <xcolab:userLinkSimple memberId="${proposal.supporters[status.index+1].userId}" text="${proposal.supporters[status.index+1].displayName}" />
+                                <xcolab:userLinkSimple userId="${proposal.supporters[status.index+1].userId}" text="${proposal.supporters[status.index+1].displayName}" />
                             </c:if>
                         </td>
                     </tr>
@@ -184,7 +184,7 @@
                             <table class="contributors2">
 
                                 <c:forEach var="contributingMember" items="${contributingProposals.value}" varStatus="statusMember">
-                                    <xcolab:userLinkSimple memberId="${contributingMember.userId}" text="${contributingMember.screenName}" />
+                                    <xcolab:userLinkSimple userId="${contributingMember.userId}" text="${contributingMember.screenName}" />
                                     <c:if test="${fn:length(contributingProposals.value) != 1 and statusMember.index+1 != fn:length(contributingProposals.value)}">, </c:if>
                                 </c:forEach>
 

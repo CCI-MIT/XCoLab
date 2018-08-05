@@ -62,14 +62,14 @@ public class LoginTokenController {
         return memberDao.findOneByLoginTokenId(tokenId).orElseThrow(NotFoundException::new);
     }
 
-    @PostMapping("/members/{memberId}/loginToken")
-    public LoginToken generateToken(@PathVariable long memberId) throws NotFoundException {
+    @PostMapping("/members/{userId}/loginToken")
+    public LoginToken generateToken(@PathVariable long userId) throws NotFoundException {
         String tokenId = Long.toHexString(SecureRandomUtil.nextLong());
         String tokenKey = Long.toHexString(SecureRandomUtil.nextLong());
         final long expirationInDays = ConfigurationAttributeKey.LOGIN_LINK_EXPIRATION_IN_DAYS.get();
         Instant tokenExpirationDate = Instant.now().plus(expirationInDays, ChronoUnit.DAYS);
 
-        final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+        final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
         member.setLoginTokenId(tokenId);
         member.setLoginTokenKey(memberService.hashPassword(tokenKey));
         member.setLoginTokenExpirationDate(Timestamp.from(tokenExpirationDate));

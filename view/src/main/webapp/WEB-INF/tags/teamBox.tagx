@@ -38,7 +38,7 @@
                             <li id="${member.userId}">
                                 <span class="portrait">
                                     <xcolab:userPortrait portraitId="${member.portraitId}"
-                                                         memberId="${member.userId}"
+                                                         userId="${member.userId}"
                                                          height="40" width="40"/>
                                 </span>
                                 <span class="name">${member.firstName} ${member.lastName}</span>
@@ -59,19 +59,19 @@
             var unsavedStarTitle = "${unsavedStar}";
             var membersTitle = "${title}";
             var members = [];
-            var memberIds = [];
+            var userIds = [];
             var initialMembers = [];
             var memberList = "${memberList}";
             var currentUserMap = {};
 
         <c:forEach var="member" items = "${list}">
-            memberIds.push("" + ${member.id_});
+            userIds.push("" + ${member.id_});
             members.push(${member.id_});
             initialMembers.push(${member.id_});
         </c:forEach>
 
             function updateMemberList() {
-                jQuery("#" + memberList).val(memberIds);
+                jQuery("#" + memberList).val(userIds);
             }
 
             function removeMemberFromList(userId, userName, userListId) {
@@ -80,10 +80,10 @@
                 console.log("userId: " + userId);
                 var elementIndex = members.indexOf(userId);
                 members.splice(elementIndex, 1);
-                var IdElementIndex = memberIds.indexOf(userId);
+                var IdElementIndex = userIds.indexOf(userId);
                 console.log("array index: " + IdElementIndex);
-                memberIds.splice(IdElementIndex, 1);
-                console.log("memberIds: " + memberIds);
+                userIds.splice(IdElementIndex, 1);
+                console.log("userIds: " + userIds);
                 jQuery("#" + userListId + " #" + userId).remove();
                 noty({text: userName + ' was removed from ' + membersTitle, type: 'success'});
                 if ($(members).not(initialMembers).length === 0 &amp;&amp; $(initialMembers).not(
@@ -139,7 +139,7 @@
 
             function initSearchMemberForm() {
 
-                jQuery("#" + memberList).val(memberIds);
+                jQuery("#" + memberList).val(userIds);
 
                 jQuery(userSelectorInput).focus(function () {
                     jQuery(${pleaseChooseFromList}).hide();
@@ -201,7 +201,7 @@
                                     var userId = ui.item.id; //currentUserMap[jQuery.trim(ui.item.value)]; //userMap
                                     if (members.indexOf(userId) == -1) {
                                         members.push(userId);
-                                        memberIds.push("" + userId);
+                                        userIds.push("" + userId);
                                         addUserToList(userId, ui.item.value, userListId);
                                     }
                                     this.value = "";

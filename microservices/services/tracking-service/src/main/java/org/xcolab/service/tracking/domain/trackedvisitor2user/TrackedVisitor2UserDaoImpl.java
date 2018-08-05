@@ -35,10 +35,10 @@ public class TrackedVisitor2UserDaoImpl implements TrackedVisitor2UserDao {
     }
 
     @Override
-    public Optional<TrackedVisitor2User> getByMemberId(long memberId) {
+    public Optional<TrackedVisitor2User> getByuserId(long userId) {
         final Record record = dslContext.select()
                 .from(TRACKED_VISITOR_2_USER)
-                .where(TRACKED_VISITOR_2_USER.USER_ID.eq(memberId))
+                .where(TRACKED_VISITOR_2_USER.USER_ID.eq(userId))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();

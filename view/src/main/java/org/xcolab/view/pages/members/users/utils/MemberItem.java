@@ -16,23 +16,23 @@ import java.util.List;
 public class MemberItem implements Serializable {
     private final long activityCount;
     private final Date joinDate;
-    private final Long memberId;
+    private final Long userId;
     private final String screenName;
     private final int points;
     private final MemberCategory memberCategory;
 
     public MemberItem(Member member, String memberCategoryParam) {
 
-        memberId = member.getId_();
+        userId = member.getId_();
         activityCount = ActivitiesClientUtil.countActivities(member.getId_(), null);
         screenName = member.getDisplayName();
         joinDate = member.getCreatedAt();
-        points = MembersClient.getMemberMaterializedPoints(memberId);
+        points = MembersClient.getMemberMaterializedPoints(userId);
 
         if (StringUtils.isNotEmpty(memberCategoryParam)) {
             memberCategory = MembersClient.getMemberCategory(memberCategoryParam);
         } else {
-            List<Role_> roles = MembersClient.getMemberRoles(memberId);
+            List<Role_> roles = MembersClient.getMemberRoles(userId);
             memberCategory = MembersClient.getHighestCategory(roles);
         }
     }
@@ -76,8 +76,8 @@ public class MemberItem implements Serializable {
         }
     }
 
-    public Long getMemberId() {
-        return memberId;
+    public Long getuserId() {
+        return userId;
     }
     
     public String getScreenName() {

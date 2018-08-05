@@ -44,15 +44,15 @@ public class ConnectorEmmaAPI {
 
     public boolean unSubscribeMemberWithEmail(String email) throws IOException {
         JSONObject memberDetails = getMemberJSONfromEmail(email);
-        return !memberDetails.has("member_id") || unSubscribeMemberWithMemberId(memberDetails.getLong("member_id"));
+        return !memberDetails.has("member_id") || unSubscribeMemberWithuserId(memberDetails.getLong("member_id"));
     }
 
-    private boolean unSubscribeMemberWithMemberId(long emmaMemberId) throws IOException {
+    private boolean unSubscribeMemberWithuserId(long emmauserId) throws IOException {
         boolean unsubscribeSuccessful = false;
 
         if (accountDetailsEmmaAPI.isEnabled()) {
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-                HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(getMyEmmaApiBaseUrl() + "/members/" + emmaMemberId,
+                HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(getMyEmmaApiBaseUrl() + "/members/" + emmauserId,
                         CONTENT_TYPE, CHARSET, accountDetailsEmmaAPI.getEncodedAuthorization());
 
                 try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {

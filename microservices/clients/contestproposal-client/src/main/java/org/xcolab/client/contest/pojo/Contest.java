@@ -352,21 +352,21 @@ public class Contest extends AbstractContest implements Serializable {
         return contestTeamMembersByRole;
     }
 
-    public boolean getHasUserRoleInContest(long memberId, long roleId) {
+    public boolean getHasUserRoleInContest(long userId, long roleId) {
         for (Entry<ContestTeamMemberRole, List<Member>> entry
                 : getContestTeamMembersByRole().entrySet()) {
             final ContestTeamMemberRole role = entry.getKey();
             final List<Member> members = entry.getValue();
             if (role.getId_() == roleId) {
                 return members.stream()
-                        .anyMatch(p -> p.getId_() == memberId);
+                        .anyMatch(p -> p.getId_() == userId);
             }
         }
         return false;
     }
 
-    public boolean getCanFellow(long memberId) {
-        return getHasUserRoleInContest(memberId, MemberRole.FELLOW.getRoleId());
+    public boolean getCanFellow(long userId) {
+        return getHasUserRoleInContest(userId, MemberRole.FELLOW.getRoleId());
     }
 
     public ContestPhase getActivePhase() {
@@ -581,9 +581,9 @@ public class Contest extends AbstractContest implements Serializable {
         return getFocusAreaId() != null;
     }
 
-    public boolean isUserAmongAdvisors(long memberId) {
+    public boolean isUserAmongAdvisors(long userId) {
         for (Member judge : getContestAdvisors()) {
-            if (judge.getUserId() == memberId) {
+            if (judge.getUserId() == userId) {
                 return true;
             }
         }

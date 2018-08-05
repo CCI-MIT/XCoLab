@@ -86,12 +86,12 @@ public class FlaggingReportWrapper {
         return "";
     }
 
-    public void approveContent(long memberId) {
-        FlaggingClient.handleReport(memberId, ManagerAction.APPROVE, report.getFirstReportId());
+    public void approveContent(long userId) {
+        FlaggingClient.handleReport(userId, ManagerAction.APPROVE, report.getFirstReportId());
     }
 
-    public void removeContent(long memberId) {
-        FlaggingClient.handleReport(memberId, ManagerAction.REMOVE, report.getFirstReportId());
+    public void removeContent(long userId) {
+        FlaggingClient.handleReport(userId, ManagerAction.REMOVE, report.getFirstReportId());
     }
 
     public long getFirstReportId() {
@@ -102,12 +102,12 @@ public class FlaggingReportWrapper {
         report.setFirstReportId(firstReportId);
     }
 
-    public Long getReporterMemberId() {
-        return report.getReporterMemberId();
+    public Long getReporteruserId() {
+        return report.getReporteruserId();
     }
 
-    public void setReporterMemberId(Long reporterMemberId) {
-        report.setReporterMemberId(reporterMemberId);
+    public void setReporteruserId(Long reporteruserId) {
+        report.setReporteruserId(reporteruserId);
     }
 
     public String getTargetType() {

@@ -74,10 +74,10 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Proposal> getFilteredSubscribedProposalsForUser(
-            ProposalContext proposalContext, long memberId, String filterKey, long sectionId) {
+            ProposalContext proposalContext, long userId, String filterKey, long sectionId) {
         List<Proposal> proposals = new ArrayList<>();
         List<ActivitySubscription> activitySubscriptions =
-                ActivitiesClientUtil.getActivitySubscriptions(null, null, memberId);
+                ActivitiesClientUtil.getActivitySubscriptions(null, null, userId);
 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();

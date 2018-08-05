@@ -20,7 +20,7 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
     private List<Boolean> selectedContest;
     private ContestMassActions selectedMassAction;
     private Integer itemCount;
-    private Long memberId;
+    private Long userId;
 
     public MassActionConfirmationWrapper() {
         this.selectedContest = new ArrayList<>();
@@ -91,12 +91,12 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
     }
 
     @Override
-    public Long getMemberId() {
-        return memberId;
+    public Long getuserId() {
+        return userId;
     }
 
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
+    public void setuserId(Long userId) {
+        this.userId = userId;
     }
 
     public List<Long> getSelectedContestIds() {

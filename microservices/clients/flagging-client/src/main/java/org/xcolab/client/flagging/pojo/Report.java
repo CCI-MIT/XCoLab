@@ -16,7 +16,7 @@ public class Report implements Serializable {
                     new ParameterizedTypeReference<List<Report>>() {});
 
     private Long reportId;
-    private Long reporterMemberId;
+    private Long reporteruserId;
     private String targetType;
     private Long targetId;
     private Long targetAdditionalId;
@@ -24,25 +24,25 @@ public class Report implements Serializable {
     private String comment;
     private Integer weight;
     private String managerAction;
-    private Long managerMemberId;
+    private Long manageruserId;
     private Timestamp managerActionDate;
     private Timestamp createdAt;
 
     public Report() {
     }
 
-    public Report(Long reportId, Long reporterMemberId, String targetType, Long targetId,
+    public Report(Long reportId, Long reporteruserId, String targetType, Long targetId,
             String reason, String comment, Integer weight, String managerAction,
-            Long managerMemberId, Timestamp managerActionDate, Timestamp createdAt) {
+            Long manageruserId, Timestamp managerActionDate, Timestamp createdAt) {
         this.reportId = reportId;
-        this.reporterMemberId = reporterMemberId;
+        this.reporteruserId = reporteruserId;
         this.targetType = targetType;
         this.targetId = targetId;
         this.reason = reason;
         this.comment = comment;
         this.weight = weight;
         this.managerAction = managerAction;
-        this.managerMemberId = managerMemberId;
+        this.manageruserId = manageruserId;
         this.managerActionDate = managerActionDate;
         this.createdAt = createdAt;
     }
@@ -55,12 +55,12 @@ public class Report implements Serializable {
         this.reportId = reportid;
     }
 
-    public Long getReporterMemberId() {
-        return this.reporterMemberId;
+    public Long getReporteruserId() {
+        return this.reporteruserId;
     }
 
-    public void setReporterMemberId(Long reportermemberid) {
-        this.reporterMemberId = reportermemberid;
+    public void setReporteruserId(Long reporteruserId) {
+        this.reporteruserId = reporteruserId;
     }
 
     public String getTargetType() {
@@ -111,12 +111,12 @@ public class Report implements Serializable {
         this.managerAction = manageraction;
     }
 
-    public Long getManagerMemberId() {
-        return this.managerMemberId;
+    public Long getManageruserId() {
+        return this.manageruserId;
     }
 
-    public void setManagerMemberId(Long managermemberid) {
-        this.managerMemberId = managermemberid;
+    public void setManageruserId(Long manageruserId) {
+        this.manageruserId = manageruserId;
     }
 
     public Timestamp getManagerActionDate() {
@@ -147,7 +147,7 @@ public class Report implements Serializable {
     public String toString() {
 
         return "Report (" + reportId +
-                ", " + reporterMemberId +
+                ", " + reporteruserId +
                 ", " + targetType +
                 ", " + targetId +
                 ", " + targetAdditionalId +
@@ -155,7 +155,7 @@ public class Report implements Serializable {
                 ", " + comment +
                 ", " + weight +
                 ", " + managerAction +
-                ", " + managerMemberId +
+                ", " + manageruserId +
                 ", " + managerActionDate +
                 ", " + createdAt +
                 ")";

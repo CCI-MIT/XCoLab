@@ -134,12 +134,12 @@
 
             <div class="p-Proposal__sidebar__section">
                 <xcolab:userPortrait portraitId="${proposal.author.portraitId }"
-                                     memberId="${proposal.author.userId}"
+                                     userId="${proposal.author.userId}"
                                      width="42" height="42" />
                 By:&#160;
                 <c:choose>
                     <c:when test="${empty proposal.team }">
-                        <xcolab:userLinkSimple memberId="${proposal.authorUserid }" text="${proposal.authorName }" />
+                        <xcolab:userLinkSimple userId="${proposal.authorUserid }" text="${proposal.authorName }" />
                     </c:when>
                     <c:otherwise>
                         ${proposal.authorName }

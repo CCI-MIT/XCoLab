@@ -69,7 +69,7 @@ public class ActivityEntryDaoTest {
     }
 
     @Test
-    public void shouldFindByGivenMemberId() throws Exception {
+    public void shouldFindByGivenuserId() throws Exception {
 
         List<ActivityEntry> list = activityEntryDao.findByGiven(PaginationHelper.EVERYTHING,
                 2666739L,null);

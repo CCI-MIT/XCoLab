@@ -32,16 +32,16 @@ public class UnsubscribeController {
                     + "button underneath “Subscribed Activity” on the right-hand side.";
 
 
-    @GetMapping("member/{memberId}/subscription/{subscriptionId}/token/{token}/type/{typeId}")
+    @GetMapping("member/{userId}/subscription/{subscriptionId}/token/{token}/type/{typeId}")
     public String unsubscribe(HttpServletRequest request, HttpServletResponse response, Model model,
-            @PathVariable long memberId, @PathVariable long subscriptionId,
+            @PathVariable long userId, @PathVariable long subscriptionId,
             @PathVariable String token, @PathVariable long typeId) {
 
         Member member = null;
         boolean error = false;
-        if (memberId > 0) {
+        if (userId > 0) {
             try {
-                member = MembersClient.getMember(memberId);
+                member = MembersClient.getMember(userId);
                 error = !NotificationUnregisterUtils.isTokenValid(token, member)
                         || typeId != NotificationUnregisterUtils.ACTIVITY_TYPE;
             } catch (MemberNotFoundException e) {

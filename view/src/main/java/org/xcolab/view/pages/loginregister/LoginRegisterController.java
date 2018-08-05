@@ -75,7 +75,7 @@ public class LoginRegisterController {
                 redirect = request.getHeader(HttpHeaders.REFERER);
             }
         }
-        if (MemberAuthUtil.getMemberId(request) > 0) {
+        if (MemberAuthUtil.getuserId(request) > 0) {
             return "redirect:/";
         }
 

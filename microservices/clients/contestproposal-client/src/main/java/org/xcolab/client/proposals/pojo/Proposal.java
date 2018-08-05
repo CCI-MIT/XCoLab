@@ -281,18 +281,18 @@ public class Proposal extends AbstractProposal {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
     }
 
-    public boolean isUserAmongFellows(long memberId) {
+    public boolean isUserAmongFellows(long userId) {
         for (Long fellowId : clients.contestTeamMember.getFellowsForContest(contest.getContestPK())) {
-            if (fellowId == memberId) {
+            if (fellowId == userId) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isUserAmongJudges(long memberId) {
+    public boolean isUserAmongJudges(long userId) {
         for (Long judge : clients.contestTeamMember.getJudgesForContest(contest.getContestPK())) {
-            if (judge == memberId) {
+            if (judge == userId) {
                 return true;
             }
         }

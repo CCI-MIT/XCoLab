@@ -206,7 +206,7 @@
 
             <c:if test="${permissions.canAdmin}">
                 <button type="button" class="btn btn-link js-EnhancedLink" data-method="post"
-                        data-url="/impersonate?memberId=${currentUserProfile.userId}">
+                        data-url="/impersonate?userId=${currentUserProfile.userId}">
                     Impersonate ${userBean.firstName}
                 </button>
             </c:if>

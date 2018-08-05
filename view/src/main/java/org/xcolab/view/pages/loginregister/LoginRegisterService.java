@@ -128,8 +128,8 @@ public class LoginRegisterService {
 
     public void updatePassword(String forgotPasswordToken, String newPassword)
             throws MemberNotFoundException {
-        Long memberId = MembersClient.updateUserPassword(forgotPasswordToken, newPassword);
-        if (memberId == null) {
+        Long userId = MembersClient.updateUserPassword(forgotPasswordToken, newPassword);
+        if (userId == null) {
             throw new MemberNotFoundException(
                     "Member with forgotPasswordToken: " + forgotPasswordToken + " was not found");
         }

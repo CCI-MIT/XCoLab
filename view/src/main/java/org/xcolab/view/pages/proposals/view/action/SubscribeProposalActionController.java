@@ -31,12 +31,12 @@ public class SubscribeProposalActionController {
         if (proposalContext.getPermissions().getCanSubscribeProposal()) {
             final Proposal proposal = proposalContext.getProposal();
             long proposalId = proposal.getProposalId();
-            long memberId = currentMember.getId_();
+            long userId = currentMember.getId_();
             final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
-            if (proposalClient.isMemberSubscribedToProposal(proposalId, memberId)) {
-                proposalClient.unsubscribeMemberFromProposal(proposalId, memberId);
+            if (proposalClient.isMemberSubscribedToProposal(proposalId, userId)) {
+                proposalClient.unsubscribeMemberFromProposal(proposalId, userId);
             } else {
-                proposalClient.subscribeMemberToProposal(proposalId, memberId);
+                proposalClient.subscribeMemberToProposal(proposalId, userId);
             }
             response.sendRedirect(proposal.getProposalLinkUrl(proposalContext.getContest()));
         } else {

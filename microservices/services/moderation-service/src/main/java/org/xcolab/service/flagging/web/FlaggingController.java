@@ -50,19 +50,19 @@ public class FlaggingController {
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
-            @RequestParam(required = false) Long reporterMemberId,
-            @RequestParam(required = false) Long managerMemberId,
+            @RequestParam(required = false) Long reporteruserId,
+            @RequestParam(required = false) Long manageruserId,
             @RequestParam(required = false) TargetType targetType,
             @RequestParam(required = false) Long targetId,
             @RequestParam(required = false) Long targetAdditionalId,
             @RequestParam(required = false) String managerAction) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                Integer.toString(reportDao.countByGiven(reporterMemberId, managerMemberId,
+                Integer.toString(reportDao.countByGiven(reporteruserId, manageruserId,
                         targetType != null ?targetType.name() : null,
                         targetId, targetAdditionalId, managerAction)));
-        return reportDao.findByGiven(paginationHelper, reporterMemberId,
-                managerMemberId, targetType != null ?targetType.name() : null,
+        return reportDao.findByGiven(paginationHelper, reporteruserId,
+                manageruserId, targetType != null ?targetType.name() : null,
                 targetId, targetAdditionalId, managerAction);
     }
 
@@ -71,18 +71,18 @@ public class FlaggingController {
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
-            @RequestParam(required = false) Long reporterMemberId,
-            @RequestParam(required = false) Long managerMemberId,
+            @RequestParam(required = false) Long reporteruserId,
+            @RequestParam(required = false) Long manageruserId,
             @RequestParam(required = false) String targetType,
             @RequestParam(required = false) Long targetId,
             @RequestParam(required = false) Long targetAdditionalId,
             @RequestParam(required = false) String managerAction) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                Integer.toString(reportDao.countByGiven(reporterMemberId, managerMemberId,
+                Integer.toString(reportDao.countByGiven(reporteruserId, manageruserId,
                         targetType, targetId, targetAdditionalId, managerAction)));
-        return reportDao.findAggregatedByGiven(paginationHelper, reporterMemberId,
-                managerMemberId, targetType, targetId, targetAdditionalId, managerAction);
+        return reportDao.findAggregatedByGiven(paginationHelper, reporteruserId,
+                manageruserId, targetType, targetId, targetAdditionalId, managerAction);
     }
 
     @GetMapping("/reports/{reportId}")
@@ -146,9 +146,9 @@ public class FlaggingController {
 
 
     @PostMapping("/reports/{reportId}/handle")
-    public boolean handleReport(@PathVariable long reportId, @RequestParam long managerMemberId,
+    public boolean handleReport(@PathVariable long reportId, @RequestParam long manageruserId,
             @RequestParam ManagerAction managerAction) {
-        return flaggingService.handleReport(reportId, managerMemberId, managerAction);
+        return flaggingService.handleReport(reportId, manageruserId, managerAction);
     }
 
     @DeleteMapping("/reportTargets/{reportTargetId}")

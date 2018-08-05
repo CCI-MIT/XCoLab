@@ -13,7 +13,7 @@ import org.xcolab.model.tables.pojos.AnalyticsUserEvent;
 import org.xcolab.service.members.domain.analyticsuserevent.AnalyticsUserEventDao;
 
 @RestController
-@RequestMapping("/members/{memberId}/analyticsEvents")
+@RequestMapping("/members/{userId}/analyticsEvents")
 public class AnalyticsController {
 
     private final AnalyticsUserEventDao analyticsUserEventDao;
@@ -25,12 +25,12 @@ public class AnalyticsController {
     }
 
     @GetMapping("/{idString}/exists")
-    public boolean exists(@PathVariable long memberId, @PathVariable String idString) {
-        return analyticsUserEventDao.exists(memberId, idString);
+    public boolean exists(@PathVariable long userId, @PathVariable String idString) {
+        return analyticsUserEventDao.exists(userId, idString);
     }
 
     @PostMapping
-    public AnalyticsUserEvent create(@PathVariable long memberId,
+    public AnalyticsUserEvent create(@PathVariable long userId,
             @RequestBody AnalyticsUserEvent analyticsUserEvent) {
         return analyticsUserEventDao.create(analyticsUserEvent);
     }

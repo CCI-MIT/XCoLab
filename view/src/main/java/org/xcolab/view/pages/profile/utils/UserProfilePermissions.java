@@ -13,7 +13,7 @@ public class UserProfilePermissions {
         isLoggedIn = loggedInMember != null;
     }
 
-    private long getLoggedInMemberId() {
+    private long getLoggedInuserId() {
         return isLoggedIn ? loggedInMember.getId_() : 0;
     }
 
@@ -25,8 +25,8 @@ public class UserProfilePermissions {
         return loggedInMember;
     }
 
-    public boolean getCanEditMemberProfile(long memberId) {
-        return isLoggedIn && getLoggedInMemberId() == memberId || getCanAdmin();
+    public boolean getCanEditMemberProfile(long userId) {
+        return isLoggedIn && getLoggedInuserId() == userId || getCanAdmin();
     }
 
 }

@@ -13,11 +13,11 @@ public interface MemberDao {
             String googleId, String colabSsoId, String climateXId, List<Long> roleIds);
     int countByGiven(String partialName, String partialEmail, String roleName);
 
-    Optional<Member> getMember(long memberId);
-    boolean updatePassword(long memberId, String hashedPassword);
+    Optional<Member> getMember(long userId);
+    boolean updatePassword(long userId, String hashedPassword);
 
-    Integer getMemberMaterializedPoints(Long memberId);
-    Integer getMemberHypotheticalPoints(Long memberId);
+    Integer getMemberMaterializedPoints(Long userId);
+    Integer getMemberHypotheticalPoints(Long userId);
 
     Optional<Member> findOneByScreenName(String screenName);
     Optional<Member> findOneByEmail(String email);

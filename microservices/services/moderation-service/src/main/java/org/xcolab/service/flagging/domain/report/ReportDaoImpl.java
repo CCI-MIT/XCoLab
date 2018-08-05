@@ -29,14 +29,14 @@ public class ReportDaoImpl implements ReportDao {
     private DSLContext dslContext;
 
     @Override
-    public List<Report> findByGiven(PaginationHelper paginationHelper, Long reporterMemberId,
-            Long managerMemberId, String targetType, Long targetId, Long targetAdditionalId,
+    public List<Report> findByGiven(PaginationHelper paginationHelper, Long reporteruserId,
+            Long manageruserId, String targetType, Long targetId, Long targetAdditionalId,
             String managerAction) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(REPORT)
                 .getQuery();
 
-        filterConditions(reporterMemberId, managerMemberId, targetType, targetId,
+        filterConditions(reporteruserId, manageruserId, targetType, targetId,
                 targetAdditionalId, managerAction, query);
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
@@ -45,7 +45,7 @@ public class ReportDaoImpl implements ReportDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? REPORT.TARGET_TYPE.asc() : REPORT.TARGET_TYPE.desc());
                     break;
-                case "managerMemberId":
+                case "manageruserId":
                     query.addOrderBy(sortColumn.isAscending()
                             ? REPORT.MANAGER_MEMBER_ID.asc() : REPORT.MANAGER_MEMBER_ID.desc());
                     break;
@@ -65,7 +65,7 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public List<AggregatedReport> findAggregatedByGiven(PaginationHelper paginationHelper,
-            Long reporterMemberId, Long managerMemberId, String targetType, Long targetId,
+            Long reporteruserId, Long manageruserId, String targetType, Long targetId,
             Long targetAdditionalId, String managerAction) {
 
         final Field<Long> firstReportId = DSL.min(REPORT.REPORT_ID).as("firstReportId");
@@ -85,7 +85,7 @@ public class ReportDaoImpl implements ReportDao {
                         REPORT.TARGET_ID, REPORT.TARGET_ADDITIONAL_ID)
                 .getQuery();
 
-        filterConditions(reporterMemberId, managerMemberId, targetType, targetId,
+        filterConditions(reporteruserId, manageruserId, targetType, targetId,
                 targetAdditionalId, managerAction, query);
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
@@ -94,7 +94,7 @@ public class ReportDaoImpl implements ReportDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? REPORT.TARGET_TYPE.asc() : REPORT.TARGET_TYPE.desc());
                     break;
-                case "managerMemberId":
+                case "manageruserId":
                     query.addOrderBy(sortColumn.isAscending()
                             ? REPORT.MANAGER_MEMBER_ID.asc() : REPORT.MANAGER_MEMBER_ID.desc());
                     break;
@@ -125,21 +125,21 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
-    public int countByGiven(Long reporterMemberId, Long managerMemberId, String targetType,
+    public int countByGiven(Long reporteruserId, Long manageruserId, String targetType,
             Long targetId, Long targetAdditionalId, String managerAction) {
         final SelectQuery<Record1<Integer>> query = dslContext.select(DSL.countDistinct(
                         REPORT.TARGET_TYPE, REPORT.TARGET_ID, REPORT.TARGET_ADDITIONAL_ID))
                 .from(REPORT)
                 .getQuery();
 
-        filterConditions(reporterMemberId, managerMemberId, targetType, targetId,
+        filterConditions(reporteruserId, manageruserId, targetType, targetId,
                 targetAdditionalId, managerAction, query);
 
         return query.fetchOne().into(Integer.class);
     }
 
     @Override
-    public int countAggregatedByGiven(Long reporterMemberId, Long managerMemberId,
+    public int countAggregatedByGiven(Long reporteruserId, Long manageruserId,
             String targetType, Long targetId, Long targetAdditionalId, String managerAction) {
         final SelectQuery<Record1<Integer>> query = dslContext.select(DSL.countDistinct(
                 REPORT.TARGET_TYPE, REPORT.TARGET_ID, REPORT.TARGET_ADDITIONAL_ID))
@@ -148,20 +148,20 @@ public class ReportDaoImpl implements ReportDao {
                         REPORT.TARGET_ID, REPORT.TARGET_ADDITIONAL_ID)
                 .getQuery();
 
-        filterConditions(reporterMemberId, managerMemberId, targetType, targetId,
+        filterConditions(reporteruserId, manageruserId, targetType, targetId,
                 targetAdditionalId, managerAction, query);
 
         return query.fetchOne().into(Integer.class);
     }
 
-    private void filterConditions(Long reporterMemberId, Long managerMemberId, String targetType,
+    private void filterConditions(Long reporteruserId, Long manageruserId, String targetType,
             Long targetId, Long targetAdditionalId, String managerAction,
             SelectQuery<? extends Record> query) {
-        if (reporterMemberId != null) {
-            query.addConditions(REPORT.REPORTER_MEMBER_ID.eq(reporterMemberId));
+        if (reporteruserId != null) {
+            query.addConditions(REPORT.REPORTER_MEMBER_ID.eq(reporteruserId));
         }
-        if (managerMemberId != null) {
-            query.addConditions(REPORT.MANAGER_MEMBER_ID.eq(managerMemberId));
+        if (manageruserId != null) {
+            query.addConditions(REPORT.MANAGER_MEMBER_ID.eq(manageruserId));
         }
         if (targetType != null) {
             query.addConditions(REPORT.TARGET_TYPE.eq(targetType));
@@ -193,14 +193,14 @@ public class ReportDaoImpl implements ReportDao {
     public boolean update(Report report) {
         return dslContext
                 .update(REPORT)
-                .set(REPORT.REPORTER_MEMBER_ID, report.getReporterMemberId())
+                .set(REPORT.REPORTER_MEMBER_ID, report.getReporteruserId())
                 .set(REPORT.TARGET_TYPE, report.getTargetType())
                 .set(REPORT.TARGET_ID, report.getTargetId())
                 .set(REPORT.TARGET_ADDITIONAL_ID, report.getTargetAdditionalId())
                 .set(REPORT.REASON, report.getReason())
                 .set(REPORT.WEIGHT, report.getWeight())
                 .set(REPORT.MANAGER_ACTION, report.getManagerAction())
-                .set(REPORT.MANAGER_MEMBER_ID, report.getManagerMemberId())
+                .set(REPORT.MANAGER_MEMBER_ID, report.getManageruserId())
                 .set(REPORT.MANAGER_ACTION_DATE, report.getManagerActionDate())
                 .set(REPORT.CREATE_DATE, report.getCreatedAt())
                 .where(REPORT.REPORT_ID.eq(report.getReportId()))
@@ -210,7 +210,7 @@ public class ReportDaoImpl implements ReportDao {
     @Override
     public Report create(Report report) {
         final ReportRecord record = dslContext.insertInto(REPORT)
-                .set(REPORT.REPORTER_MEMBER_ID, report.getReporterMemberId())
+                .set(REPORT.REPORTER_MEMBER_ID, report.getReporteruserId())
                 .set(REPORT.TARGET_TYPE, report.getTargetType())
                 .set(REPORT.TARGET_ID, report.getTargetId())
                 .set(REPORT.TARGET_ADDITIONAL_ID, report.getTargetAdditionalId())
@@ -218,7 +218,7 @@ public class ReportDaoImpl implements ReportDao {
                 .set(REPORT.WEIGHT, report.getWeight())
                 .set(REPORT.COMMENT, report.getComment())
                 .set(REPORT.MANAGER_ACTION, report.getManagerAction())
-                .set(REPORT.MANAGER_MEMBER_ID, report.getManagerMemberId())
+                .set(REPORT.MANAGER_MEMBER_ID, report.getManageruserId())
                 .set(REPORT.MANAGER_ACTION_DATE, report.getManagerActionDate())
                 .set(REPORT.CREATE_DATE, report.getCreatedAt())
                 .returning(REPORT.REPORT_ID)

@@ -94,16 +94,16 @@ public class PointsDistributionConfigurationService {
     private void verifyTeamMemberships(long proposalId, long pointTypeId, List<PointsDistributionConfiguration> pdcs) {
 
         try {
-            Set<Long> memberIds = new HashSet<>();
-            Set<Long> missingMemberIds = new HashSet<>();
+            Set<Long> userIds = new HashSet<>();
+            Set<Long> missinguserIds = new HashSet<>();
             for (Member user : proposalService.getProposalMembers(proposalId)) {
-                memberIds.add(user.getUserId());
-                missingMemberIds.add(user.getUserId());
+                userIds.add(user.getUserId());
+                missinguserIds.add(user.getUserId());
             }
 
             for (PointsDistributionConfiguration pdc : pdcs) {
-                if (memberIds.contains(pdc.getTargetUserId())) {
-                    missingMemberIds.remove(pdc.getTargetUserId());
+                if (userIds.contains(pdc.getTargetUserId())) {
+                    missinguserIds.remove(pdc.getTargetUserId());
                 } else {
                     pointsDistributionConfigurationDao.delete(pdc.getId_());
                     //_log.info(String.format("Removing PointsDistributionConfiguration non-team member %d for proposal %d pointType %d.",
@@ -111,8 +111,8 @@ public class PointsDistributionConfigurationService {
                 }
             }
 
-            for (long userId : missingMemberIds) {
-                addDistributionConfiguration(proposalId, pointTypeId, userId, 0L, 1.0 / memberIds.size(), 0L);
+            for (long userId : missinguserIds) {
+                addDistributionConfiguration(proposalId, pointTypeId, userId, 0L, 1.0 / userIds.size(), 0L);
                 // _log.info(String.format("Adding missing PointsDistributionConfiguration for team member %d for proposal %d pointType %d.",
                 //        userId, proposalId, pointTypeId));
             }

@@ -226,10 +226,10 @@ public class ProposalsController {
 
     @DeleteMapping("/proposals/{proposalId}/removeMemberFromProposalTeam")
     public Boolean removeMemberFromProposalTeam(@PathVariable Long proposalId,
-            @RequestParam Long memberId) throws NotFoundException {
+            @RequestParam Long userId) throws NotFoundException {
 
         try {
-            proposalService.removeProposalTeamMember(proposalId, memberId);
+            proposalService.removeProposalTeamMember(proposalId, userId);
             return true;
         } catch (ProposalNotFoundException ignored) {
             throw new NotFoundException();
@@ -238,10 +238,10 @@ public class ProposalsController {
 
     @PostMapping("/proposals/{proposalId}/promoteMemberToProposalOwner")
     public Boolean promoteMemberToProposalOwner(@PathVariable Long proposalId,
-            @RequestParam Long memberId) throws NotFoundException {
+            @RequestParam Long userId) throws NotFoundException {
 
         try {
-            proposalService.promoteMemberToProposalOwner(proposalId, memberId);
+            proposalService.promoteMemberToProposalOwner(proposalId, userId);
             return true;
         } catch (ProposalNotFoundException ignored) {
             throw new NotFoundException();
@@ -324,8 +324,8 @@ public class ProposalsController {
     @GetMapping("/proposalVotes/hasUserVoted")
     public Boolean hasUserVoted(@RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId,
-            @RequestParam(required = false) Long memberId) {
-        return proposalVoteDao.countByGiven(proposalId, contestPhaseId, memberId) != 0;
+            @RequestParam(required = false) Long userId) {
+        return proposalVoteDao.countByGiven(proposalId, contestPhaseId, userId) != 0;
     }
 
     @PostMapping("/proposalVotes")
@@ -335,8 +335,8 @@ public class ProposalsController {
 
     @DeleteMapping("/proposalVotes/deleteVote")
     public boolean deleteProposalVote(@RequestParam long proposalId,
-            @RequestParam long contestPhaseId, @RequestParam long memberId) {
-        return proposalVoteDao.delete(proposalId, memberId, contestPhaseId) > 0;
+            @RequestParam long contestPhaseId, @RequestParam long userId) {
+        return proposalVoteDao.delete(proposalId, userId, contestPhaseId) > 0;
     }
 
     @PostMapping("/proposalVotes/updateVote")

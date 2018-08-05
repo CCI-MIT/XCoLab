@@ -53,7 +53,7 @@ public class FlaggingService {
         return report;
     }
 
-    public boolean handleReport(long reportId, long managerMemberId, ManagerAction managerAction) {
+    public boolean handleReport(long reportId, long manageruserId, ManagerAction managerAction) {
         Report report = reportDao.get(reportId);
         final TargetType targetType = TargetType.valueOf(report.getTargetType());
 
@@ -94,7 +94,7 @@ public class FlaggingService {
 
         for (Report singleReport : equivalentReports) {
             singleReport.setManagerAction(managerAction.name());
-            singleReport.setManagerMemberId(managerMemberId);
+            singleReport.setManageruserId(manageruserId);
             singleReport.setManagerActionDate(actionDate);
             reportDao.update(singleReport);
         }

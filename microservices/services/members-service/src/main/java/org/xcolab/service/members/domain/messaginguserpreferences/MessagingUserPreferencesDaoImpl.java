@@ -30,10 +30,10 @@ public class MessagingUserPreferencesDaoImpl implements MessagingUserPreferences
     }
 
     @Override
-    public Optional<MessagingUserPreferences> getByMemberId(long memberId) {
+    public Optional<MessagingUserPreferences> getByuserId(long userId) {
         final Record record = dslContext.select()
                 .from(MESSAGING_USER_PREFERENCES)
-                .where(MESSAGING_USER_PREFERENCES.USER_ID.eq(memberId))
+                .where(MESSAGING_USER_PREFERENCES.USER_ID.eq(userId))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();

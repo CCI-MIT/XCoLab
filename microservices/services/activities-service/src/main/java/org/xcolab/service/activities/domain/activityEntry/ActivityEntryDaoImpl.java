@@ -85,17 +85,17 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
 
     @Override
     public List<ActivityEntry> findByGiven(PaginationHelper paginationHelper,
-            Long memberId, List<Long> memberIdsToExclude) {
+            Long userId, List<Long> userIdsToExclude) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(ACTIVITY_ENTRY)
                 .getQuery();
 
-        if (memberId != null) {
-            query.addConditions(ACTIVITY_ENTRY.USER_ID.eq(memberId));
+        if (userId != null) {
+            query.addConditions(ACTIVITY_ENTRY.USER_ID.eq(userId));
         }
 
-        if (memberIdsToExclude != null) {
-            query.addConditions(ACTIVITY_ENTRY.USER_ID.notIn(memberIdsToExclude));
+        if (userIdsToExclude != null) {
+            query.addConditions(ACTIVITY_ENTRY.USER_ID.notIn(userIdsToExclude));
         }
 
         query.addOrderBy(ACTIVITY_ENTRY.CREATED_AT.desc());
@@ -105,18 +105,18 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     }
 
     @Override
-    public Integer countByGiven(Long memberId, List<Long> memberIdsToExclude) {
+    public Integer countByGiven(Long userId, List<Long> userIdsToExclude) {
 
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(ACTIVITY_ENTRY)
                 .getQuery();
 
-        if (memberId != null) {
-            query.addConditions(ACTIVITY_ENTRY.USER_ID.eq(memberId));
+        if (userId != null) {
+            query.addConditions(ACTIVITY_ENTRY.USER_ID.eq(userId));
         }
 
-        if (memberIdsToExclude != null) {
-            query.addConditions(ACTIVITY_ENTRY.USER_ID.notIn(memberIdsToExclude));
+        if (userIdsToExclude != null) {
+            query.addConditions(ACTIVITY_ENTRY.USER_ID.notIn(userIdsToExclude));
         }
 
         query.addOrderBy(ACTIVITY_ENTRY.ID.desc());

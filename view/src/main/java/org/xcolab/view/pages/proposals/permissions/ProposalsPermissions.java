@@ -25,7 +25,7 @@ public class ProposalsPermissions {
 
     private final boolean planIsEditable;
 
-    private final long memberId;
+    private final long userId;
     private final Member member;
     private final boolean isLoggedIn;
     private final boolean isGuest;
@@ -66,9 +66,9 @@ public class ProposalsPermissions {
                     && contestPhase.getPhaseActive();
 
         }
-        this.memberId = member != null ? member.getId_() : 0;
-        this.isLoggedIn = this.memberId > 0;
-        this.isGuest = PermissionsClient.isGuest(memberId);
+        this.userId = member != null ? member.getId_() : 0;
+        this.isLoggedIn = this.userId > 0;
+        this.isGuest = PermissionsClient.isGuest(userId);
         this.proposal = proposal;
         this.contest = contest;
         this.contestPhase = contestPhase;
@@ -175,12 +175,12 @@ public class ProposalsPermissions {
 
     public boolean getIsTeamMember() {
         return proposal != null && proposal.getProposalId() > 0
-                && proposalClient.isUserInProposalTeam(proposal.getProposalId(),memberId)
+                && proposalClient.isUserInProposalTeam(proposal.getProposalId(),userId)
                 && isLoggedIn;
     }
 
     private boolean isOwner() {
-        return isLoggedIn && (proposal == null || memberId == proposal.getauthorUserid());
+        return isLoggedIn && (proposal == null || userId == proposal.getauthorUserid());
     }
 
     private boolean isProposalOpen() {
@@ -192,12 +192,12 @@ public class ProposalsPermissions {
      * Returns true if user is admin (not only proposal contributor)
      */
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(memberId);
+        return PermissionsClient.canAdminAll(userId);
     }
 
     private boolean isProposalMember() {
         return proposal != null && proposal.getProposalId() > 0 &&
-                proposalClient.isUserInProposalTeam(proposal.getProposalId(),memberId);
+                proposalClient.isUserInProposalTeam(proposal.getProposalId(),userId);
     }
 
     public boolean getCanFellowActions() {
@@ -205,14 +205,14 @@ public class ProposalsPermissions {
             return getCanAdminAll();
         }
 
-        return PermissionsClient.canFellow(memberId, contestPhase.getContestPK()) || getCanAdminAll();
+        return PermissionsClient.canFellow(userId, contestPhase.getContestPK()) || getCanAdminAll();
     }
 
     public boolean getCanJudgeActions() {
         if (contestPhase == null) {
             return getCanAdminAll();
         }
-        return PermissionsClient.canJudge(memberId, contestPhase.getContestPK())
+        return PermissionsClient.canJudge(userId, contestPhase.getContestPK())
                 || getCanAdminAll();
     }
 
@@ -223,7 +223,7 @@ public class ProposalsPermissions {
         final MemberRoleChoiceAlgorithm roleChoiceAlgorithm =
                 MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
         MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
-                MembersClient.getMemberUnchecked(memberId));
+                MembersClient.getMemberUnchecked(userId));
         return memberRole == MemberRole.CONTEST_MANAGER || memberRole == MemberRole.STAFF;
     }
 
@@ -234,7 +234,7 @@ public class ProposalsPermissions {
         final MemberRoleChoiceAlgorithm roleChoiceAlgorithm =
                 MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
         MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
-                MembersClient.getMemberUnchecked(memberId));
+                MembersClient.getMemberUnchecked(userId));
         return memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW;
     }
 
