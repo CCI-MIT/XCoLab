@@ -148,7 +148,7 @@ public class IntegratedProposalImpactSeries {
                                                 sectorOntologyTermIds) :
                                 impactSeriesList
                                         .getAggregatedSeriesValuesByRegionAndSectorOntologyTermIds(
-                                                regionOntologyTerm.getId_(), sectorOntologyTermIds);
+                                                regionOntologyTerm.getId(), sectorOntologyTermIds);
 
                 addUpProposalImpactSectorSeriesValues(sectorsProposalAggregatedSeriesValues);
             } catch (ContestNotFoundException cnf) {

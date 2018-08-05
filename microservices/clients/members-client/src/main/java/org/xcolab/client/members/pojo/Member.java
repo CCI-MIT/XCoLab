@@ -41,7 +41,7 @@ public class Member implements Serializable {
                     new ParameterizedTypeReference<List<Member>>() {
                     });
 
-    private long id_;
+    private long id;
     private String screenName;
     private String emailAddress;
     private boolean isEmailConfirmed;
@@ -75,7 +75,7 @@ public class Member implements Serializable {
     }
 
     public Member(Member value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.screenName = value.screenName;
         this.emailAddress = value.emailAddress;
         this.isEmailConfirmed = value.isEmailConfirmed;
@@ -114,18 +114,18 @@ public class Member implements Serializable {
         return MembersClient.getMemberUnchecked(userId);
     }
 
-    public long getId_() {
-        return this.id_;
+    public long getId() {
+        return this.id;
     }
 
     //For liferay/jsp compatibility
     @JsonIgnore
     public long getUserId() {
-        return this.id_;
+        return this.id;
     }
 
-    public void setId_(long id_) {
-        this.id_ = id_;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getScreenName() {
@@ -334,7 +334,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public List<Role_> getRoles() {
-        return MembersClient.getMemberRoles(this.getId_());
+        return MembersClient.getMemberRoles(this.getId());
     }
 
     @JsonIgnore
@@ -425,12 +425,12 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public String getProfileLinkUrl()  {
-        return String.format(USER_PROFILE_PATH, getId_());
+        return String.format(USER_PROFILE_PATH, getId());
     }
 
     @JsonIgnore
     public String getProfileEditUrl()  {
-        return String.format(USER_PROFILE_EDIT_PATH, getId_());
+        return String.format(USER_PROFILE_EDIT_PATH, getId());
     }
 
     @JsonIgnore
@@ -458,7 +458,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public int getNumberOfMessagesLeft() {
-        return MessagingClient.getNumberOfMessagesLeft(getId_());
+        return MessagingClient.getNumberOfMessagesLeft(getId());
     }
 
     public boolean getIsProfileComplete() {
@@ -483,17 +483,17 @@ public class Member implements Serializable {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Member
-                && ((Member) obj).getId_() == this.getId_();
+                && ((Member) obj).getId() == this.getId();
     }
 
     @Override
     public int hashCode() {
-        return (int) (this.getId_() ^ this.getId_() >>> 32);
+        return (int) (this.getId() ^ this.getId() >>> 32);
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id_", id_)
+        return new ToStringBuilder(this).append("id", id)
                 .append("screenName", screenName)
                 .append("emailAddress", emailAddress)
                 .append("isEmailConfirmed", isEmailConfirmed)

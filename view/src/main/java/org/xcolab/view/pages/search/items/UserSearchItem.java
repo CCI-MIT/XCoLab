@@ -35,7 +35,7 @@ public class UserSearchItem extends AbstractSearchItem {
 
     @Override
     public String getLinkUrl() {
-        return "/members/profile/" + member.getId_();
+        return "/members/profile/" + member.getId();
     }
 
 

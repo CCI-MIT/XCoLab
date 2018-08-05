@@ -39,10 +39,10 @@ public class ProposalTemplateWrapper {
         sections = new ArrayList<>();
         if (planTemplate != null) {
             for (PlanSectionDefinition planSectionDefinition : PlanTemplateClientUtil
-                    .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(), null)) {
+                    .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), null)) {
                 if (!planSectionDefinition.getLocked()) {
                     sections.add(new SectionDefinitionWrapper(planSectionDefinition,
-                            planTemplate.getId_()));
+                            planTemplate.getId()));
                 }
             }
         }
@@ -65,7 +65,7 @@ public class ProposalTemplateWrapper {
         List<LabelValue> selectItems = new ArrayList<>();
 
         for (PlanTemplate planTemplateItem : PlanTemplateClientUtil.getPlanTemplates()) {
-            selectItems.add(new LabelValue(planTemplateItem.getId_(), planTemplateItem.getName()));
+            selectItems.add(new LabelValue(planTemplateItem.getId(), planTemplateItem.getName()));
         }
 
         return selectItems;
@@ -73,7 +73,7 @@ public class ProposalTemplateWrapper {
 
     public Long getPlanTemplateId() {
         if (planTemplate != null) {
-            return planTemplate.getId_();
+            return planTemplate.getId();
         }
         return planTemplateId;
     }
@@ -172,19 +172,19 @@ public class ProposalTemplateWrapper {
 
 
         List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateClientUtil
-                .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(), null);
+                .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), null);
         for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if (!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId_())) {
+            if (!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())) {
                 if (!ProposalTemplateLifecycleUtil
                         .isPlanSectionDefinitionUsedInOtherTemplate(
-                                planSectionDefinition.getId_(),
-                                planTemplate.getId_())) {
+                                planSectionDefinition.getId(),
+                                planTemplate.getId())) {
                     PlanTemplateClientUtil
-                            .deletePlanSectionDefinition(planSectionDefinition.getId_());
+                            .deletePlanSectionDefinition(planSectionDefinition.getId());
                 }
                 PlanTemplateClientUtil
-                        .deletePlanTemplateSection(planTemplate.getId_(),
-                                planSectionDefinition.getId_());
+                        .deletePlanTemplateSection(planTemplate.getId(),
+                                planSectionDefinition.getId());
             }
         }
 
@@ -205,9 +205,9 @@ public class ProposalTemplateWrapper {
 
     private void duplicateExistingPlanTemplate() {
 
-        planTemplate.setId_(null);
+        planTemplate.setId(null);
         PlanTemplate newPlanTemplate = PlanTemplateClientUtil.createPlanTemplate(planTemplate);
-        planTemplateId = newPlanTemplate.getId_();
+        planTemplateId = newPlanTemplate.getId();
         planTemplate = newPlanTemplate;
 
         for (SectionDefinitionWrapper section : sections) {
@@ -225,7 +225,7 @@ public class ProposalTemplateWrapper {
     private void createOrUpdateIfExistsPlanTemplateSection(
             SectionDefinitionWrapper sectionDefinitionWrapper) {
         boolean wasUpdated = false;
-        Long planTemplateId = planTemplate.getId_();
+        Long planTemplateId = planTemplate.getId();
         Long sectionDefinitionId = sectionDefinitionWrapper.getId();
         Integer weight = sectionDefinitionWrapper.getWeight();
 
@@ -267,7 +267,7 @@ public class ProposalTemplateWrapper {
 
     public List<Contest> getContestsUsingTemplate() {
 
-        Long planTemplateId = planTemplate.getId_();
+        Long planTemplateId = planTemplate.getId();
         List<Contest> contestsUsingSelectedTemplateList =
                 ContestClientUtil.getContestsByPlanTemplateId(planTemplateId);
 

@@ -31,7 +31,7 @@ public class SubscribeProposalActionController {
         if (proposalContext.getPermissions().getCanSubscribeProposal()) {
             final Proposal proposal = proposalContext.getProposal();
             long proposalId = proposal.getProposalId();
-            long userId = currentMember.getId_();
+            long userId = currentMember.getId();
             final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             if (proposalClient.isMemberSubscribedToProposal(proposalId, userId)) {
                 proposalClient.unsubscribeMemberFromProposal(proposalId, userId);

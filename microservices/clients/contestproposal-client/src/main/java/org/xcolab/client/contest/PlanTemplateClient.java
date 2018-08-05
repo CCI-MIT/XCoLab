@@ -59,8 +59,8 @@ public class PlanTemplateClient {
                 .execute(), serviceNamespace);
     }
 
-    public  Boolean deletePlanTemplate(Long id_) {
-        return  planTemplateResource.delete(id_).execute();
+    public  Boolean deletePlanTemplate(Long id) {
+        return  planTemplateResource.delete(id).execute();
     }
 
 
@@ -70,7 +70,7 @@ public class PlanTemplateClient {
     }
 
     public boolean updatePlanTemplate(PlanTemplate planTemplate) {
-        return planTemplateResource.update(new PlanTemplateDto(planTemplate), planTemplate.getId_())
+        return planTemplateResource.update(new PlanTemplateDto(planTemplate), planTemplate.getId())
                 .execute();
     }
 
@@ -82,7 +82,7 @@ public class PlanTemplateClient {
 
     public boolean updatePlanSectionDefinition(PlanSectionDefinition planSectionDefinition) {
         return planSectionDefinitionResource.update(
-                new PlanSectionDefinitionDto(planSectionDefinition), planSectionDefinition.getId_())
+                new PlanSectionDefinitionDto(planSectionDefinition), planSectionDefinition.getId())
                 .execute();
     }
 

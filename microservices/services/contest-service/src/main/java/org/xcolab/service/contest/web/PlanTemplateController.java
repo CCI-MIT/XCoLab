@@ -38,12 +38,12 @@ public class PlanTemplateController {
         return this.planTemplateDao.create(planTemplate);
     }
 
-    @RequestMapping(value = "/planTemplates/{id_}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/planTemplates/{id}", method = RequestMethod.PUT)
     public boolean updatePlanTemplate(@RequestBody PlanTemplate planTemplate,
-                                      @PathVariable("id_") Long id_) throws NotFoundException {
+                                      @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || planTemplateDao.get(id_) == null) {
-            throw new NotFoundException("No PlanTemplate with id " + id_);
+        if (id == null || id == 0 || planTemplateDao.get(id) == null) {
+            throw new NotFoundException("No PlanTemplate with id " + id);
         } else {
             return planTemplateDao.update(planTemplate);
         }
@@ -64,16 +64,16 @@ public class PlanTemplateController {
         return planTemplateDao.findByGiven();
     }
 
-    @RequestMapping(value = "/planTemplates/{id_}", method = RequestMethod.DELETE)
-    public String deletePlanTemplate(@PathVariable("id_") Long id_)
+    @RequestMapping(value = "/planTemplates/{id}", method = RequestMethod.DELETE)
+    public String deletePlanTemplate(@PathVariable("id") Long id)
             throws NotFoundException {
 
-        if (id_ == null || id_ == 0) {
+        if (id == null || id == 0) {
             throw new NotFoundException("No PlanTemplate with id given");
         } else {
-            PlanTemplate planTemplate = this.planTemplateDao.get(id_);
+            PlanTemplate planTemplate = this.planTemplateDao.get(id);
             if (planTemplate != null) {
-                this.planTemplateDao.delete(planTemplate.getId_());
+                this.planTemplateDao.delete(planTemplate.getId());
                 return "PlanTemplate deleted successfully";
             } else {
                 throw new NotFoundException("No PlanTemplate with id given");
@@ -97,16 +97,16 @@ public class PlanTemplateController {
         }
     }
 
-    @RequestMapping(value = "/planSectionDefinitions/{id_}", method = RequestMethod.DELETE)
-    public String deletePlanSectionDefinition(@PathVariable("id_") Long id_)
+    @RequestMapping(value = "/planSectionDefinitions/{id}", method = RequestMethod.DELETE)
+    public String deletePlanSectionDefinition(@PathVariable("id") Long id)
             throws NotFoundException {
 
-        if (id_ == null || id_ == 0) {
+        if (id == null || id == 0) {
             throw new NotFoundException("No PlanSectionDefinition with id given");
         } else {
-            PlanSectionDefinition planSectionDefinition = this.planSectionDefinitionDao.get(id_);
+            PlanSectionDefinition planSectionDefinition = this.planSectionDefinitionDao.get(id);
             if (planSectionDefinition != null) {
-                this.planSectionDefinitionDao.delete(planSectionDefinition.getId_());
+                this.planSectionDefinitionDao.delete(planSectionDefinition.getId());
                 return "PlanSectionDefinition deleted successfully";
             } else {
                 throw new NotFoundException("No PlanSectionDefinition with id given");
@@ -114,12 +114,12 @@ public class PlanTemplateController {
         }
     }
 
-    @RequestMapping(value = "/planSectionDefinitions/{id_}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/planSectionDefinitions/{id}", method = RequestMethod.PUT)
     public boolean updatePlanSectionDefinition(@RequestBody PlanSectionDefinition planSectionDefinition,
-                                               @PathVariable("id_") Long id_) throws NotFoundException {
+                                               @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || planSectionDefinitionDao.get(id_) == null) {
-            throw new NotFoundException("No PlanSectionDefinition with id " + id_);
+        if (id == null || id == 0 || planSectionDefinitionDao.get(id) == null) {
+            throw new NotFoundException("No PlanSectionDefinition with id " + id);
         } else {
             return planSectionDefinitionDao.update(planSectionDefinition);
         }

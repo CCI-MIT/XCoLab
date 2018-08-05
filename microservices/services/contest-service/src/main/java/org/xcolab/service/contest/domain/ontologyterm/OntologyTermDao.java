@@ -6,11 +6,11 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import java.util.List;
 
 public interface OntologyTermDao {
-    OntologyTerm get(Long id_) throws NotFoundException;
+    OntologyTerm get(Long id) throws NotFoundException;
     List<OntologyTerm> findByGiven(String name, Long parentId, Long ontologySpaceId);
     boolean update(OntologyTerm ontologyTerm);
     OntologyTerm create(OntologyTerm ontologyTerm);
-    int delete(Long id_);
+    int delete(Long id);
 
     List<OntologyTerm> getOntologyTermByFocusAreaAndOntologySpaceName(Long focusArea,
             String ontologySpaceName);

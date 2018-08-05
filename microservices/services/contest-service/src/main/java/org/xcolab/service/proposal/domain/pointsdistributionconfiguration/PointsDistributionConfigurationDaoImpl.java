@@ -23,7 +23,7 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
     public PointsDistributionConfiguration create(PointsDistributionConfiguration pointsDistributionConfiguration) {
 
         PointsDistributionConfigurationRecord ret = this.dslContext.insertInto(POINTS_DISTRIBUTION_CONFIGURATION)
-                .set(POINTS_DISTRIBUTION_CONFIGURATION.ID_, pointsDistributionConfiguration.getId_())
+                .set(POINTS_DISTRIBUTION_CONFIGURATION.ID, pointsDistributionConfiguration.getId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.PROPOSAL_ID, pointsDistributionConfiguration.getProposalId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.POINT_TYPE_ID, pointsDistributionConfiguration.getPointTypeId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_USER_ID, pointsDistributionConfiguration.getTargetUserId())
@@ -32,10 +32,10 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.PERCENTAGE, pointsDistributionConfiguration.getPercentage())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATOR, pointsDistributionConfiguration.getCreator())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATE_DATE, pointsDistributionConfiguration.getCreatedAt())
-                .returning(POINTS_DISTRIBUTION_CONFIGURATION.ID_)
+                .returning(POINTS_DISTRIBUTION_CONFIGURATION.ID)
                 .fetchOne();
         if (ret != null) {
-            pointsDistributionConfiguration.setId_(ret.getValue(POINTS_DISTRIBUTION_CONFIGURATION.ID_));
+            pointsDistributionConfiguration.setId(ret.getValue(POINTS_DISTRIBUTION_CONFIGURATION.ID));
             return pointsDistributionConfiguration;
         } else {
             return null;
@@ -46,7 +46,7 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
     @Override
     public boolean update(PointsDistributionConfiguration pointsDistributionConfiguration) {
         return dslContext.update(POINTS_DISTRIBUTION_CONFIGURATION)
-                .set(POINTS_DISTRIBUTION_CONFIGURATION.ID_, pointsDistributionConfiguration.getId_())
+                .set(POINTS_DISTRIBUTION_CONFIGURATION.ID, pointsDistributionConfiguration.getId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.PROPOSAL_ID, pointsDistributionConfiguration.getProposalId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.POINT_TYPE_ID, pointsDistributionConfiguration.getPointTypeId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_USER_ID, pointsDistributionConfiguration.getTargetUserId())
@@ -55,7 +55,7 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.PERCENTAGE, pointsDistributionConfiguration.getPercentage())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATOR, pointsDistributionConfiguration.getCreator())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATE_DATE, pointsDistributionConfiguration.getCreatedAt())
-                .where(POINTS_DISTRIBUTION_CONFIGURATION.ID_.eq(pointsDistributionConfiguration.getId_()))
+                .where(POINTS_DISTRIBUTION_CONFIGURATION.ID.eq(pointsDistributionConfiguration.getId()))
                 .execute() > 0;
     }
 
@@ -80,21 +80,21 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
                 .execute();
     }
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(POINTS_DISTRIBUTION_CONFIGURATION)
-                .where(POINTS_DISTRIBUTION_CONFIGURATION.ID_.eq(id_))
+                .where(POINTS_DISTRIBUTION_CONFIGURATION.ID.eq(id))
                 .execute();
     }
 
     @Override
-    public PointsDistributionConfiguration get(Long id_) throws NotFoundException {
+    public PointsDistributionConfiguration get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(POINTS_DISTRIBUTION_CONFIGURATION)
-                .where(POINTS_DISTRIBUTION_CONFIGURATION.ID_.eq(id_))
+                .where(POINTS_DISTRIBUTION_CONFIGURATION.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("PointsDistributionConfiguration with id " + id_ + " does not exist");
+            throw new NotFoundException("PointsDistributionConfiguration with id " + id + " does not exist");
         }
         return record.into(PointsDistributionConfiguration.class);
 

@@ -33,7 +33,7 @@ public class OntologySpace extends AbstractOntologySpace {
 
 
     public long getId() {
-        return this.getId_();
+        return this.getId();
     }
 
     public List<OntologyTerm> getRootTerms() {

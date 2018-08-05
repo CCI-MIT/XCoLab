@@ -62,7 +62,7 @@ public class CreateProposalController extends BaseProposalsController {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        long userId = loggedInMember.getId_();
+        long userId = loggedInMember.getId();
 
         final ClientHelper clients = proposalContext.getClients();
         final ContestClient contestClient = clients.getContestClient();

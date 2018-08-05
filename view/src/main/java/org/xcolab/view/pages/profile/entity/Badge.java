@@ -79,6 +79,6 @@ public class Badge implements Serializable {
     @Override
     public String toString() {
         return String.format("Badge[type=%d, proposal=%d]",
-                ribbonType.getId_(), proposal.getProposalId());
+                ribbonType.getId(), proposal.getProposalId());
     }
 }

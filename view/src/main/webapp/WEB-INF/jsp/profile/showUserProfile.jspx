@@ -207,7 +207,7 @@
                                     <div>
                                         <a class="btn btn-primary js-EnhancedLink"
                                            data-require-login="true"
-                                           data-message-recipient="${currentUserProfile.user.id_}"
+                                           data-message-recipient="${currentUserProfile.user.id}"
                                            data-toggle="modal" href="#sendMessageModal">
 
                                             <spring:message code="profile.show.sendmessage"

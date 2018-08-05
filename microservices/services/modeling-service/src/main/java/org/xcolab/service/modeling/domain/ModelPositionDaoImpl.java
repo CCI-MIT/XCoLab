@@ -28,7 +28,7 @@ public class ModelPositionDaoImpl implements ModelPositionDao {
     public Optional<ModelPosition> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_POSITION)
-                .where(MODEL_POSITION.ID_.eq(id))
+                .where(MODEL_POSITION.ID.eq(id))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
@@ -65,7 +65,7 @@ public class ModelPositionDaoImpl implements ModelPositionDao {
         if (record == null) {
             throw new IllegalStateException("Could not retrieve id of inserted object");
         }
-        pojo.setId_(record.getValue(MODEL_POSITION.ID_));
+        pojo.setId(record.getValue(MODEL_POSITION.ID));
         return pojo;
     }
 
@@ -74,14 +74,14 @@ public class ModelPositionDaoImpl implements ModelPositionDao {
         return dslContext.update(MODEL_POSITION)
                 .set(MODEL_POSITION.MODEL_ID, pojo.getModelId())
                 .set(MODEL_POSITION.POSITION_ID, pojo.getPositionId())
-                .where(MODEL_POSITION.ID_.eq(pojo.getId_()))
+                .where(MODEL_POSITION.ID.eq(pojo.getId()))
                 .execute() > 0;
     }
 
     @Override
     public boolean delete(long id) {
         return dslContext.deleteFrom(MODEL_POSITION)
-                .where(MODEL_POSITION.ID_.eq(id))
+                .where(MODEL_POSITION.ID.eq(id))
                 .execute() > 0;
     }
 }

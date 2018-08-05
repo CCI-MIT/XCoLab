@@ -226,7 +226,7 @@ public class ContentEditorController extends BaseContentEditor {
         contentArticleVersion.setArticleId(articleId);
         contentArticleVersion.setLang(lang);
 
-        contentArticleVersion.setauthorUserid(member.getId_());
+        contentArticleVersion.setauthorUserid(member.getId());
         contentArticleVersion.setFolderId((folderId));
         contentArticleVersion.setTitle(title);
         contentArticleVersion.setContent(content);

@@ -24,7 +24,7 @@ public class PlatformTeamBean {
     }
 
     public Long getTeamId() {
-        return team == null ? teamId : team.getId_();
+        return team == null ? teamId : team.getId();
     }
 
     public void setTeamId(Long teamId) {

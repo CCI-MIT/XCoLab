@@ -10,13 +10,13 @@ public interface ContestScheduleDao {
 
     ContestSchedule create(ContestSchedule contestSchedule);
 
-    Optional<ContestSchedule> get(Long id_) throws NotFoundException;
+    Optional<ContestSchedule> get(Long id) throws NotFoundException;
 
-    boolean exists(Long id_);
+    boolean exists(Long id);
 
     boolean update(ContestSchedule contestSchedule);
 
     List<ContestSchedule> findByGiven();
 
-    boolean delete(Long id_);
+    boolean delete(Long id);
 }

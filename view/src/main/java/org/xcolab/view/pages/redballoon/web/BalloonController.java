@@ -79,7 +79,7 @@ public class BalloonController {
         if (!model.containsAttribute("userEmailBean")) {
             UserEmailBean ueb = new UserEmailBean();
 
-            if (member != null && member.getId_() > 0) {
+            if (member != null && member.getId() > 0) {
                 ueb.setEmail(member.getEmailAddress());
             }
             model.addAttribute("userEmailBean", ueb);

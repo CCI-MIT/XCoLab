@@ -341,7 +341,7 @@ public final class MembersClient {
     }
 
     public static boolean updateMember(Member member) {
-        return memberResource.update(member, member.getId_())
+        return memberResource.update(member, member.getId())
                 .cacheName(CacheName.MEMBER)
                 .execute();
     }

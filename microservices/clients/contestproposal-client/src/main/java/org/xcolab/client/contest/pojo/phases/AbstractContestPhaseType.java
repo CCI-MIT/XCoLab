@@ -6,7 +6,7 @@ abstract class AbstractContestPhaseType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private String name;
     private String description;
     private String status;
@@ -21,7 +21,7 @@ abstract class AbstractContestPhaseType implements Serializable {
     public AbstractContestPhaseType() {}
 
     public AbstractContestPhaseType(AbstractContestPhaseType value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.name = value.name;
         this.description = value.description;
         this.status = value.status;
@@ -34,12 +34,12 @@ abstract class AbstractContestPhaseType implements Serializable {
         this.isDeprecated = value.isDeprecated;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -118,7 +118,7 @@ abstract class AbstractContestPhaseType implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
@@ -146,11 +146,11 @@ abstract class AbstractContestPhaseType implements Serializable {
             return false;
         }
         final AbstractContestPhaseType other = (AbstractContestPhaseType) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (name == null) {
@@ -222,7 +222,7 @@ abstract class AbstractContestPhaseType implements Serializable {
     @Override
     public String toString() {
 
-        return "ContestPhaseType (" + id_ +
+        return "ContestPhaseType (" + id +
                 ", " + name +
                 ", " + description +
                 ", " + status +

@@ -19,7 +19,7 @@ public final class MemberAuthUtil {
         if (memberOrNull == null) {
             return 0L;
         }
-        return memberOrNull.getId_();
+        return memberOrNull.getId();
     }
 
     public static Member getMemberOrThrow(HttpServletRequest request)

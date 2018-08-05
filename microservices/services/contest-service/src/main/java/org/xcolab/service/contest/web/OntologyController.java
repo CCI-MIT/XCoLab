@@ -90,27 +90,27 @@ public class OntologyController {
         }
     }
 
-    @RequestMapping(value = "/ontologyTerms/{id_}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/ontologyTerms/{id}", method = RequestMethod.PUT)
     public boolean updateOntologyTerm(@RequestBody OntologyTerm ontologyTerm,
-            @PathVariable("id_") Long id_) throws NotFoundException {
+            @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || ontologyTermDao.get(id_) == null) {
-            throw new NotFoundException("No OntologyTerm with id " + id_);
+        if (id == null || id == 0 || ontologyTermDao.get(id) == null) {
+            throw new NotFoundException("No OntologyTerm with id " + id);
         } else {
             return ontologyTermDao.update(ontologyTerm);
         }
     }
 
-    @RequestMapping(value = "/ontologyTerms/{id_}", method = RequestMethod.DELETE)
-    public String deleteOntologyTerm(@PathVariable("id_") Long id_)
+    @RequestMapping(value = "/ontologyTerms/{id}", method = RequestMethod.DELETE)
+    public String deleteOntologyTerm(@PathVariable("id") Long id)
             throws NotFoundException {
 
-        if (id_ == null || id_ == 0) {
+        if (id == null || id == 0) {
             throw new NotFoundException("No OntologyTerm with id given");
         } else {
-            OntologyTerm ontologyTerm = this.ontologyTermDao.get(id_);
+            OntologyTerm ontologyTerm = this.ontologyTermDao.get(id);
             if (ontologyTerm != null) {
-                this.ontologyTermDao.delete(ontologyTerm.getId_());
+                this.ontologyTermDao.delete(ontologyTerm.getId());
                 return "OntologyTerm deleted successfully";
             } else {
                 throw new NotFoundException("No OntologyTerm with id given");
@@ -153,28 +153,28 @@ public class OntologyController {
         return this.focusAreaDao.create(focusArea);
     }
 
-    @RequestMapping(value = "/focusAreas/{id_}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/focusAreas/{id}", method = RequestMethod.PUT)
     public boolean updateFocusArea(@RequestBody FocusArea focusArea,
-            @PathVariable("id_") Long id_) throws NotFoundException {
+            @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || focusAreaDao.get(id_) == null) {
-            throw new NotFoundException("No FocusArea with id " + id_);
+        if (id == null || id == 0 || focusAreaDao.get(id) == null) {
+            throw new NotFoundException("No FocusArea with id " + id);
         } else {
             return focusAreaDao.update(focusArea);
         }
     }
 
 
-    @RequestMapping(value = "/focusAreas/{id_}", method = RequestMethod.DELETE)
-    public String deleteFocusArea(@PathVariable("id_") Long id_)
+    @RequestMapping(value = "/focusAreas/{id}", method = RequestMethod.DELETE)
+    public String deleteFocusArea(@PathVariable("id") Long id)
             throws NotFoundException {
 
-        if (id_ == null || id_ == 0) {
+        if (id == null || id == 0) {
             throw new NotFoundException("No FocusArea with id given");
         } else {
-            FocusArea focusArea = this.focusAreaDao.get(id_);
+            FocusArea focusArea = this.focusAreaDao.get(id);
             if (focusArea != null) {
-                this.focusAreaDao.delete(focusArea.getId_());
+                this.focusAreaDao.delete(focusArea.getId());
                 return "FocusArea deleted successfully";
             } else {
                 throw new NotFoundException("No FocusArea with id given");

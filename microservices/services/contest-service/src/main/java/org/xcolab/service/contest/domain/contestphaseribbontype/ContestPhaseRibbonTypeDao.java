@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface ContestPhaseRibbonTypeDao {
     List<ContestPhaseRibbonType> findByGiven();
-    Optional<ContestPhaseRibbonType> get(Long id_) throws NotFoundException ;
+    Optional<ContestPhaseRibbonType> get(Long id) throws NotFoundException ;
 }

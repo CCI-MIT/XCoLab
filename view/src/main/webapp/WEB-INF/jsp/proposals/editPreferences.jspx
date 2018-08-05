@@ -87,10 +87,10 @@
                                 <c:forEach var="ribbon" items="${availableRibbons }">
                                     <c:choose>
                                         <c:when test="${proposal.ribbonWrapper.ribbon == ribbon.ribbon }">
-                                            <form:option value="${ribbon.id_}" selected="selected" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
+                                            <form:option value="${ribbon.id}" selected="selected" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
                                         </c:when>
                                         <c:otherwise>
-                                            <form:option value="${ribbon.id_}" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
+                                            <form:option value="${ribbon.id}" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
                                         </c:otherwise>
                                     </c:choose>
                                 </c:forEach>

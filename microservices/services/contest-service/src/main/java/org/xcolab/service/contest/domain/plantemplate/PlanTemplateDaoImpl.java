@@ -22,14 +22,14 @@ public class PlanTemplateDaoImpl implements PlanTemplateDao {
     private DSLContext dslContext;
 
     @Override
-    public PlanTemplate get(Long id_) throws NotFoundException {
+    public PlanTemplate get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PLAN_TEMPLATE)
-                .where(PLAN_TEMPLATE.ID_.eq(id_))
+                .where(PLAN_TEMPLATE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("PlanTemplate with id " + id_ + " does not exist");
+            throw new NotFoundException("PlanTemplate with id " + id + " does not exist");
         }
         return record.into(PlanTemplate.class);
 
@@ -43,10 +43,10 @@ public class PlanTemplateDaoImpl implements PlanTemplateDao {
                 .set(PLAN_TEMPLATE.BASE_TEMPLATE_ID, planTemplate.getBaseTemplateId())
                 .set(PLAN_TEMPLATE.IMPACT_SERIES_TEMPLATE_ID, planTemplate.getImpactSeriesTemplateId())
                 .set(PLAN_TEMPLATE.FOCUS_AREA_LIST_TEMPLATE_ID, planTemplate.getFocusAreaListTemplateId())
-                .returning(PLAN_TEMPLATE.ID_)
+                .returning(PLAN_TEMPLATE.ID)
                 .fetchOne();
         if (ret != null) {
-            planTemplate.setId_(ret.getValue(PLAN_TEMPLATE.ID_));
+            planTemplate.setId(ret.getValue(PLAN_TEMPLATE.ID));
             return planTemplate;
         } else {
             return null;
@@ -55,9 +55,9 @@ public class PlanTemplateDaoImpl implements PlanTemplateDao {
     }
 
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(PLAN_TEMPLATE)
-                .where(PLAN_TEMPLATE.ID_.eq(id_))
+                .where(PLAN_TEMPLATE.ID.eq(id))
                 .execute();
     }
 
@@ -68,7 +68,7 @@ public class PlanTemplateDaoImpl implements PlanTemplateDao {
                 .set(PLAN_TEMPLATE.BASE_TEMPLATE_ID, planTemplate.getBaseTemplateId())
                 .set(PLAN_TEMPLATE.IMPACT_SERIES_TEMPLATE_ID, planTemplate.getImpactSeriesTemplateId())
                 .set(PLAN_TEMPLATE.FOCUS_AREA_LIST_TEMPLATE_ID, planTemplate.getFocusAreaListTemplateId())
-                .where(PLAN_TEMPLATE.ID_.eq(planTemplate.getId_()))
+                .where(PLAN_TEMPLATE.ID.eq(planTemplate.getId()))
                 .execute() > 0;
     }
 

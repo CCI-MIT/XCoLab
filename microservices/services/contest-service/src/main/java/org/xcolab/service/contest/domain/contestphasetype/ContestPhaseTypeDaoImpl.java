@@ -33,10 +33,10 @@ public class ContestPhaseTypeDaoImpl implements ContestPhaseTypeDao{
                 .set(CONTEST_PHASE_TYPE.POINTS_ACCESSIBLE, contestPhaseType.getPointsAccessible())
                 .set(CONTEST_PHASE_TYPE.DEFAULT_PROMOTION_TYPE, contestPhaseType.getDefaultPromotionType())
                 .set(CONTEST_PHASE_TYPE.DEFAULT_FLAG_TEXT, contestPhaseType.getDefaultFlagText())
-                .returning(CONTEST_PHASE_TYPE.ID_)
+                .returning(CONTEST_PHASE_TYPE.ID)
                 .fetchOne();
         if (ret != null) {
-            contestPhaseType.setId_(ret.getValue(CONTEST_PHASE_TYPE.ID_));
+            contestPhaseType.setId(ret.getValue(CONTEST_PHASE_TYPE.ID));
             return contestPhaseType;
         } else {
             return null;
@@ -44,10 +44,10 @@ public class ContestPhaseTypeDaoImpl implements ContestPhaseTypeDao{
 
     }
     @Override
-    public Optional<ContestPhaseType> get(Long id_) {
+    public Optional<ContestPhaseType> get(Long id) {
 
         final Record record =  this.dslContext.selectFrom(CONTEST_PHASE_TYPE)
-                .where(CONTEST_PHASE_TYPE.ID_.eq(id_))
+                .where(CONTEST_PHASE_TYPE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
@@ -68,14 +68,14 @@ public class ContestPhaseTypeDaoImpl implements ContestPhaseTypeDao{
                 .set(CONTEST_PHASE_TYPE.POINTS_ACCESSIBLE, contestPhaseType.getPointsAccessible())
                 .set(CONTEST_PHASE_TYPE.DEFAULT_PROMOTION_TYPE, contestPhaseType.getDefaultPromotionType())
                 .set(CONTEST_PHASE_TYPE.DEFAULT_FLAG_TEXT, contestPhaseType.getDefaultFlagText())
-                .where(CONTEST_PHASE_TYPE.ID_.eq(contestPhaseType.getId_()))
+                .where(CONTEST_PHASE_TYPE.ID.eq(contestPhaseType.getId()))
                 .execute() > 0;
     }
 
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(CONTEST_PHASE_TYPE)
-                .where(CONTEST_PHASE_TYPE.ID_.eq(id_))
+                .where(CONTEST_PHASE_TYPE.ID.eq(id))
                 .execute();
     }
 

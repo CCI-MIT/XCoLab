@@ -123,7 +123,7 @@ public class SendMessageBean implements Serializable {
     public List<Long> getRecipientIdList() {
         List<Long> recipientIds = new ArrayList<>();
         for (Member recipient : recipientList) {
-            recipientIds.add(recipient.getId_());
+            recipientIds.add(recipient.getId());
         }
         return recipientIds;
     }

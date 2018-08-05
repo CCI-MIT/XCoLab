@@ -34,7 +34,7 @@ public class StaffMemberWrapper implements Serializable {
             return MembersClient.getMember(staffMember.getUserId());
         } catch (MemberNotFoundException e) {
             _log.warn("Member account {} linked to staff member {} does not exist ",
-                    staffMember.getUserId(), staffMember.getId_());
+                    staffMember.getUserId(), staffMember.getId());
             return null;
         }
     }
@@ -103,6 +103,6 @@ public class StaffMemberWrapper implements Serializable {
     }
 
     public Long getStaffuserId() {
-        return staffMember.getId_();
+        return staffMember.getId();
     }
 }

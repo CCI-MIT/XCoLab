@@ -75,7 +75,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
         final List<PlanTemplate> planTemplates = PlanTemplateClientUtil
                 .getPlanTemplates();
         if (!planTemplates.isEmpty()) {
-            return planTemplates.get(0).getId_();
+            return planTemplates.get(0).getId();
         }
         return -1L;
 
@@ -91,7 +91,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
         }
 
         PlanTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
-        return "redirect:" + tab.getTabUrl(newTemplate.getId_());
+        return "redirect:" + tab.getTabUrl(newTemplate.getId());
     }
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/delete/{elementId}")

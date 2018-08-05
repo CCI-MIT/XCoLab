@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface PlanTemplateDao {
 
-    PlanTemplate get(Long id_) throws NotFoundException;
+    PlanTemplate get(Long id) throws NotFoundException;
     boolean update(PlanTemplate planTemplate);
     PlanTemplate create(PlanTemplate planTemplate);
     List<PlanTemplate> findByGiven();
-    int delete(Long id_);
+    int delete(Long id);
 }

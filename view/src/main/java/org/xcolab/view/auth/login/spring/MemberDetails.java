@@ -29,7 +29,7 @@ public class MemberDetails implements UserDetails {
 
     public MemberDetails(Member member) {
         Assert.notNull(member, "Member cannot be null");
-        userId = member.getId_();
+        userId = member.getId();
     }
 
     public Member getMember() {

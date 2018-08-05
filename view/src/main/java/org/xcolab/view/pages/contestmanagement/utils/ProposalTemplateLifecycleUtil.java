@@ -46,12 +46,12 @@ public final class ProposalTemplateLifecycleUtil {
 
     private static void deleteUnusedPlanSectionDefinitions(PlanTemplate planTemplate) {
         List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateClientUtil
-                .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(), true);
+                .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), true);
         for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId_(),
-                    planTemplate.getId_())) {
+            if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(),
+                    planTemplate.getId())) {
                 PlanTemplateClientUtil
-                        .deletePlanSectionDefinition(planSectionDefinition.getId_());
+                        .deletePlanSectionDefinition(planSectionDefinition.getId());
             }
         }
 

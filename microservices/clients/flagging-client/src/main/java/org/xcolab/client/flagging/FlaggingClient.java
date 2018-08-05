@@ -153,7 +153,7 @@ public final class FlaggingClient {
     public static Report report(Member reporter, long targetId, Long targetAdditionalId,
             TargetType targetType, String reason, String comment) {
         Report report = new Report();
-        report.setReporteruserId(reporter.getId_());
+        report.setReporteruserId(reporter.getId());
         report.setTargetType(targetType.name());
         report.setTargetId(targetId);
         report.setTargetAdditionalId(targetAdditionalId);

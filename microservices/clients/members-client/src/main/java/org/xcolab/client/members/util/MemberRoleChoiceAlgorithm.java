@@ -79,7 +79,7 @@ public abstract class MemberRoleChoiceAlgorithm {
 
     // Helper methods
     public Map<Long, Boolean> getRoleIdMap(Member member) {
-        List<Role_> userRoles = MembersClient.getMemberRoles(member.getId_());
+        List<Role_> userRoles = MembersClient.getMemberRoles(member.getId());
         Map<Long, Boolean> roleIdMap = new HashMap<>(userRoles.size());
         for (Role_ role : userRoles) {
             roleIdMap.put(role.getRoleId(), true);

@@ -85,15 +85,15 @@ public final class ProposalAttributeClient {
         return firstOrNull != null ? firstOrNull.toPojo(serviceNamespace) : null;
     }
 
-    public ProposalAttribute getProposalAttribute(long id_)
+    public ProposalAttribute getProposalAttribute(long id)
             throws ProposalAttributeNotFoundException {
-        return proposalAttributeResource.get(id_)
-                .withCache(CacheKeys.of(ProposalAttributeDto.class, id_), CacheName.MISC_REQUEST)
+        return proposalAttributeResource.get(id)
+                .withCache(CacheKeys.of(ProposalAttributeDto.class, id), CacheName.MISC_REQUEST)
                 .execute().toPojo(serviceNamespace);
     }
 
-    public Boolean deleteProposalAttribute(Long id_) {
-        return proposalAttributeResource.delete(id_).execute();
+    public Boolean deleteProposalAttribute(Long id) {
+        return proposalAttributeResource.delete(id).execute();
     }
 
     public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) {
@@ -106,8 +106,8 @@ public final class ProposalAttributeClient {
 
     public boolean updateProposalAttribute(ProposalAttribute proposalAttribute) {
         return proposalAttributeResource
-                .update(new ProposalAttributeDto(proposalAttribute), proposalAttribute.getId_())
-                .cacheKey(CacheKeys.of(ProposalAttributeDto.class, proposalAttribute.getId_()))
+                .update(new ProposalAttributeDto(proposalAttribute), proposalAttribute.getId())
+                .cacheKey(CacheKeys.of(ProposalAttributeDto.class, proposalAttribute.getId()))
                 .execute();
     }
 
@@ -213,8 +213,8 @@ public final class ProposalAttributeClient {
                 numericValue, null, version);
     }
 
-    public Boolean deleteProposalUnversionedAttribute(Long id_) {
-        return proposalUnversionedAttributeResource.delete(id_).execute();
+    public Boolean deleteProposalUnversionedAttribute(Long id) {
+        return proposalUnversionedAttributeResource.delete(id).execute();
     }
 
     public List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(
@@ -287,7 +287,7 @@ public final class ProposalAttributeClient {
             ProposalUnversionedAttribute proposalUnversionedAttribute) {
         return proposalUnversionedAttributeResource
                 .update(new ProposalUnversionedAttributeDto(proposalUnversionedAttribute)
-                        , proposalUnversionedAttribute.getId_())
+                        , proposalUnversionedAttribute.getId())
                 .execute();
     }
 }

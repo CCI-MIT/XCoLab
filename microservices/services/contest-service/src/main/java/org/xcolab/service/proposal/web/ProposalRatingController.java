@@ -86,12 +86,12 @@ public class ProposalRatingController {
         return this.proposalRatingDao.create(proposalRating);
     }
 
-    @RequestMapping(value = "/proposalRatings/{id_}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/proposalRatings/{id}", method = RequestMethod.PUT)
     public boolean updateProposalRating(@RequestBody ProposalRating proposalRating,
-                                        @PathVariable("id_") Long id_) throws NotFoundException {
+                                        @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || proposalRatingDao.get(id_) == null) {
-            throw new NotFoundException("No ProposalRating with id " + id_);
+        if (id == null || id == 0 || proposalRatingDao.get(id) == null) {
+            throw new NotFoundException("No ProposalRating with id " + id);
         } else {
             return proposalRatingDao.update(proposalRating);
         }

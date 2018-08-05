@@ -171,7 +171,7 @@ public class ProposalRequestMembershipActionController {
         if (comment == null || comment.equalsIgnoreCase("Optional response")) {
             comment = "no comments";
         }
-        final long senderId = loggedInMember.getId_();
+        final long senderId = loggedInMember.getId();
         final long recipientId = membershipRequest.getUserId();
         if (approve.equalsIgnoreCase("APPROVE")) {
             membershipClient

@@ -107,9 +107,9 @@ public class BalloonService {
                 }
 
                 final boolean butLinkedToOtherMember =
-                        but.getUserId() != null && but.getUserId() != member.getId_();
+                        but.getUserId() != null && but.getUserId() != member.getId();
                 if (!butLinkedToOtherMember) {
-                    but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
+                    but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
                     return Optional.of(but);
                 }
             } catch (ReferenceResolutionException rre) {
@@ -120,7 +120,7 @@ public class BalloonService {
         if (member != null) {
             BalloonUserTracking but = getBalloonUserTrackingForMember(member);
             if (but != null) {
-                but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
+                but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
                 BalloonCookie cookie = BalloonCookie.of(but.getUuid());
                 response.addCookie(cookie.getHttpCookie());
                 return Optional.of(but);
@@ -165,7 +165,7 @@ public class BalloonService {
                 BalloonUserTracking but =
                         BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
                 if (but != null) {
-                    but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
+                    but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
                 }
             } catch (BalloonUserTrackingNotFoundException e) {
                 _log.error("Invalid UUID: {}", balloonCookie);
@@ -199,7 +199,7 @@ public class BalloonService {
             but.setLongitude(location.getLongitude());
         }
 
-        if (member != null && member.getId_() > 0) {
+        if (member != null && member.getId() > 0) {
             but.setUserId(member.getUserId());
         }
 

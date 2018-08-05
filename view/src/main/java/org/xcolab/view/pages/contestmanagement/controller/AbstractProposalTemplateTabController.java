@@ -91,8 +91,8 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
         for (PointType pointType : PointsClientUtil.getAllPointTypes()) {
             if (pointType.getDistributionStrategy()
                     .equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
-                selectItems.add(new LabelValue(pointType.getId_(),
-                        String.format("%d - %s : %s", pointType.getId_(),
+                selectItems.add(new LabelValue(pointType.getId(),
+                        String.format("%d - %s : %s", pointType.getId(),
                                 pointType.getDistributionStrategy(),
                                 pointType.getReceiverLimitationStrategy())));
             }
@@ -212,7 +212,7 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
         for (Stack<OntologyTerm> ontologyTermParentsPath : allParentsPaths) {
             OntologyTerm childTerm = ontologyTermParentsPath.firstElement();
             String ontologyTermPathString = buildOntologyTermPathString(ontologyTermParentsPath);
-            termSelectItems.add(new LabelValue(childTerm.getId_(), ontologyTermPathString));
+            termSelectItems.add(new LabelValue(childTerm.getId(), ontologyTermPathString));
         }
 
         return termSelectItems;

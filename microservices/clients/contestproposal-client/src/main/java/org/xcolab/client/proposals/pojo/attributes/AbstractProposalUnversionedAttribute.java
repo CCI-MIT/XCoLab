@@ -9,7 +9,7 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long proposalid;
     private Long createauthorUserid;
     private Long lastauthorUserid;
@@ -20,7 +20,7 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
 
     public AbstractProposalUnversionedAttribute(AbstractProposalUnversionedAttribute value) {
         super(value);
-        this.id_ = value.id_;
+        this.id = value.id;
         this.proposalid = value.proposalid;
         this.createauthorUserid = value.createauthorUserid;
         this.lastauthorUserid = value.lastauthorUserid;
@@ -28,11 +28,11 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         this.updatedAt = value.updatedAt;
     }
 
-    public AbstractProposalUnversionedAttribute(Long id_, Long proposalid, Long createauthorUserid,
+    public AbstractProposalUnversionedAttribute(Long id, Long proposalid, Long createauthorUserid,
             Long lastauthorUserid, Timestamp createdAt, Timestamp updatedAt, String name,
             Integer additionalId, Long numericvalue, String stringvalue, Double realvalue) {
         super(name, additionalId, null, numericvalue, stringvalue, realvalue);
-        this.id_ = id_;
+        this.id = id;
         this.proposalid = proposalid;
         this.createauthorUserid = createauthorUserid;
         this.lastauthorUserid = lastauthorUserid;
@@ -40,12 +40,12 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         this.updatedAt = updatedAt;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getProposalId() {
@@ -100,7 +100,7 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
             return false;
         }
         AbstractProposalUnversionedAttribute that = (AbstractProposalUnversionedAttribute) o;
-        return Objects.equals(getId_(), that.getId_())
+        return Objects.equals(getId(), that.getId())
                 && Objects.equals(proposalid, that.proposalid)
                 && Objects.equals(createauthorUserid, that.createauthorUserid)
                 && Objects.equals(lastauthorUserid, that.lastauthorUserid)
@@ -110,13 +110,13 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId_(), proposalid, createauthorUserid, lastauthorUserid,
+        return Objects.hash(super.hashCode(), getId(), proposalid, createauthorUserid, lastauthorUserid,
                 createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
-        String sb = super.toString() + "(" + id_ + ", " + proposalid + ", " + createauthorUserid + ", "
+        String sb = super.toString() + "(" + id + ", " + proposalid + ", " + createauthorUserid + ", "
                 + lastauthorUserid + ", " + createdAt + ", " + updatedAt + ")";
 
         return sb;

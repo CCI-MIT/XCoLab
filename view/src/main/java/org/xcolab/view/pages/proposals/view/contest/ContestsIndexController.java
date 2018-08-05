@@ -189,24 +189,24 @@ public class ContestsIndexController extends BaseProposalsController {
         	Map<Long, FocusArea> focusAreas = new TreeMap<>();
 
             for (FocusArea area: focusAreasRaw) {
-        		focusAreas.put(area.getId_(), new FocusArea(area));
+        		focusAreas.put(area.getId(), new FocusArea(area));
         	}
 
             Map<Long, OntologySpace> ontologySpaces = new HashMap<>();
             for (OntologySpace space: ontologySpacesRaw) {
-        		ontologySpaces.put(space.getId_(), new OntologySpace(space));
+        		ontologySpaces.put(space.getId(), new OntologySpace(space));
         	}
 
             Map<Long, OntologyTerm> ontologyTerms = new TreeMap<>();
             for (OntologyTerm term: ontologyTermsRaw) {
         		OntologyTerm termWrapped = new OntologyTerm(term);
         		ontologySpaces.get(term.getOntologySpaceId()).addTerm(termWrapped);
-        		ontologyTerms.put(term.getId_(), termWrapped);
+        		ontologyTerms.put(term.getId(), termWrapped);
         	}
 
         	for (OntologyTerm term: ontologyTermsRaw) {
         		if (term.getParentId() > 0) {
-        			ontologyTerms.get(term.getId_()).setParent(ontologyTerms.get(term.getParentId()));
+        			ontologyTerms.get(term.getId()).setParent(ontologyTerms.get(term.getParentId()));
         		}
         	}
         	

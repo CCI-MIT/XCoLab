@@ -313,7 +313,7 @@ public class Contest extends AbstractContest implements Serializable {
                     ontologySpaceCache.put(space, null);
                     return null;
                 }
-                faCache.put(fa.getId_(), fa);
+                faCache.put(fa.getId(), fa);
             }
             List<OntologyTerm> terms = new ArrayList<>();
             terms.addAll(ontologyClient
@@ -357,9 +357,9 @@ public class Contest extends AbstractContest implements Serializable {
                 : getContestTeamMembersByRole().entrySet()) {
             final ContestTeamMemberRole role = entry.getKey();
             final List<Member> members = entry.getValue();
-            if (role.getId_() == roleId) {
+            if (role.getId() == roleId) {
                 return members.stream()
-                        .anyMatch(p -> p.getId_() == userId);
+                        .anyMatch(p -> p.getId() == userId);
             }
         }
         return false;
@@ -544,7 +544,7 @@ public class Contest extends AbstractContest implements Serializable {
                 ontologyClient.getFocusArea(focusAreaId), ontologyClient.getOntologySpace(ONTOLOGY_SPACE_ID_WHERE));
         List<Long> focusAreaOntologyTermIds = new ArrayList<>();
         for (OntologyTerm ot : list) {
-            focusAreaOntologyTermIds.add(ot.getId_());
+            focusAreaOntologyTermIds.add(ot.getId());
         }
 
         List<Contest> contests = contestClient

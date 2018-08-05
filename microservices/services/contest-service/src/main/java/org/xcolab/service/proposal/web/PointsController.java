@@ -70,12 +70,12 @@ public class PointsController {
 
         }
     }
-    @RequestMapping(value = "/pointsDistributionConfigurations/{id_}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/pointsDistributionConfigurations/{id}", method = RequestMethod.PUT)
     public boolean updatePointsDistributionConfiguration(@RequestBody PointsDistributionConfiguration pointsDistributionConfiguration,
-                                                         @PathVariable("id_") Long id_) throws NotFoundException {
+                                                         @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || pointsDistributionConfigurationDao.get(id_) == null) {
-            throw new NotFoundException("No PointsDistributionConfiguration with id " + id_);
+        if (id == null || id == 0 || pointsDistributionConfigurationDao.get(id) == null) {
+            throw new NotFoundException("No PointsDistributionConfiguration with id " + id);
         } else {
             return pointsDistributionConfigurationDao.update(pointsDistributionConfiguration);
         }
@@ -88,16 +88,16 @@ public class PointsController {
             return pointsDistributionConfigurationDao.getByPlanSectionDefinitionId(targetPlanSectionDefinitionId);
         }
     }
-    @RequestMapping(value = "/pointsDistributionConfigurations/{id_}", method = RequestMethod.DELETE)
-    public String deletePointsDistributionConfiguration(@PathVariable("id_") Long id_)
+    @RequestMapping(value = "/pointsDistributionConfigurations/{id}", method = RequestMethod.DELETE)
+    public String deletePointsDistributionConfiguration(@PathVariable("id") Long id)
             throws NotFoundException {
 
-        if (id_ == null || id_ == 0) {
+        if (id == null || id == 0) {
             throw new NotFoundException("No PointsDistributionConfiguration with id given");
         } else {
-            PointsDistributionConfiguration pointsDistributionConfiguration = this.pointsDistributionConfigurationDao.get(id_);
+            PointsDistributionConfiguration pointsDistributionConfiguration = this.pointsDistributionConfigurationDao.get(id);
             if (pointsDistributionConfiguration != null) {
-                this.pointsDistributionConfigurationDao.delete(pointsDistributionConfiguration.getId_());
+                this.pointsDistributionConfigurationDao.delete(pointsDistributionConfiguration.getId());
                 return "PointsDistributionConfiguration deleted successfully";
             } else {
                 throw new NotFoundException("No PointsDistributionConfiguration with id given");

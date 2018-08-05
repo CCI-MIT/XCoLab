@@ -27,10 +27,10 @@ public class ContestPhaseRibbonTypeDaoImpl implements ContestPhaseRibbonTypeDao{
     }
 
     @Override
-    public Optional<ContestPhaseRibbonType> get(Long id_) throws NotFoundException {
+    public Optional<ContestPhaseRibbonType> get(Long id) throws NotFoundException {
 
         final Record record =  dslContext.selectFrom(CONTEST_PHASE_RIBBON_TYPE)
-                .where(CONTEST_PHASE_RIBBON_TYPE.ID_.eq(id_))
+                .where(CONTEST_PHASE_RIBBON_TYPE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {

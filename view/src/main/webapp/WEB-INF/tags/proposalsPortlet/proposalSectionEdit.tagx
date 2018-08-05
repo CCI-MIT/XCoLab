@@ -13,7 +13,7 @@
 	<label class="p-Proposal__formBox__label">
 		<strong>${section.title}</strong>
         <c:if test="${not empty section.helpText}">
-		<a href="#js-Help__section${section.id_}" class="ml-1" data-toggle="collapse">
+		<a href="#js-Help__section${section.id}" class="ml-1" data-toggle="collapse">
             <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
         </a>
         </c:if>
@@ -25,7 +25,7 @@
     <div class="p-Proposal__formBox__main">
 
         <c:if test="${not empty section.helpText}">
-            <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__section${section.id_}">
+            <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__section${section.id}">
                 ${section.helpText}
             </div>
         </c:if>

@@ -7,7 +7,7 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long    id_;
+    private Long    id;
     private String  type_;
     private String  admintitle;
     private String  title;
@@ -26,7 +26,7 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
     public AbstractPlanSectionDefinition() {}
 
     public AbstractPlanSectionDefinition(AbstractPlanSectionDefinition value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.type_ = value.type_;
         this.admintitle = value.admintitle;
         this.title = value.title;
@@ -43,12 +43,12 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
         this.includeInJudgingReport = value.includeInJudgingReport;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getType_() {
@@ -172,7 +172,7 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
             return false;
         }
         AbstractPlanSectionDefinition that = (AbstractPlanSectionDefinition) o;
-        return Objects.equals(getId_(), that.getId_())
+        return Objects.equals(getId(), that.getId())
                 && Objects.equals(getType_(), that.getType_())
                 && Objects.equals(admintitle, that.admintitle)
                 && Objects.equals(getTitle(), that.getTitle())
@@ -191,7 +191,7 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId_(), getType_(), admintitle, getTitle(), defaulttext, helptext,
+        return Objects.hash(getId(), getType_(), admintitle, getTitle(), defaulttext, helptext,
                 characterlimit, focusareaid, getTier(), allowedcontesttypeids, allowedvalues,
                 additionalids, getLocked(), contestintegrationrelevance,
                 getIncludeInJudgingReport());
@@ -200,7 +200,7 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
     @Override
     public String toString() {
 
-        return "PlanSectionDefinition (" + id_ +
+        return "PlanSectionDefinition (" + id +
                 ", " + type_ +
                 ", " + admintitle +
                 ", " + title +

@@ -32,13 +32,13 @@ public final class ProposalAttributeClientUtil {
         return client.getProposalAttribute(proposalId, version, name, additionalId);
     }
 
-    public static ProposalAttribute getProposalAttribute(long id_)
+    public static ProposalAttribute getProposalAttribute(long id)
             throws ProposalAttributeNotFoundException {
-        return client.getProposalAttribute(id_);
+        return client.getProposalAttribute(id);
     }
 
-    public static Boolean deleteProposalAttribute(Long id_) {
-        return client.deleteProposalAttribute(id_);
+    public static Boolean deleteProposalAttribute(Long id) {
+        return client.deleteProposalAttribute(id);
     }
 
     public static List<ProposalAttribute> getImpactProposalAttributes(
@@ -87,8 +87,8 @@ public final class ProposalAttributeClientUtil {
                 .setProposalAttribute(userId, proposalId, name, aditionalId, stringValue, version);
     }
 
-    public static Boolean deleteProposalUnversionedAttribute(Long id_) {
-        return client.deleteProposalUnversionedAttribute(id_);
+    public static Boolean deleteProposalUnversionedAttribute(Long id) {
+        return client.deleteProposalUnversionedAttribute(id);
     }
 
     public static List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(

@@ -299,8 +299,8 @@ public final class ContestClientUtil {
         return contestClient.getContestPhaseName(ck);
     }
 
-    public static ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
-        return contestClient.getContestPhaseRibbonType(id_);
+    public static ContestPhaseRibbonType getContestPhaseRibbonType(long id) {
+        return contestClient.getContestPhaseRibbonType(id);
     }
 
     public static List<ContestPhaseRibbonType> getAllContestPhaseRibbonType() {

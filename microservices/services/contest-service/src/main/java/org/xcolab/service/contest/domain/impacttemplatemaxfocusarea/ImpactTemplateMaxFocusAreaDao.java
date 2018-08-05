@@ -6,6 +6,6 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import java.util.List;
 
 public interface ImpactTemplateMaxFocusAreaDao {
-    ImpactTemplateMaxFocusArea getByFocusAreaListId(Long id_) throws NotFoundException;
+    ImpactTemplateMaxFocusArea getByFocusAreaListId(Long id) throws NotFoundException;
     List<ImpactTemplateMaxFocusArea> findByGiven(Long focusAreaListId);
 }

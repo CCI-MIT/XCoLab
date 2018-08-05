@@ -35,9 +35,9 @@ public final class ContestCreatorUtil {
         contest.setShow_in_tile_view(true);
         contest.setShow_in_list_view(true);
         contest.setShow_in_outline_view(true);
-        final Long templateId = getOrCreateDefaultTemplate().getId_();
+        final Long templateId = getOrCreateDefaultTemplate().getId();
         contest.setPlanTemplateId(templateId);
-        final Long contestScheduleId = getOrCreateDefaultContestSchedule().getId_();
+        final Long contestScheduleId = getOrCreateDefaultContestSchedule().getId();
         contest.setContestScheduleId(contestScheduleId);
         contest.setContestTypeId(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
         ContestClientUtil.updateContest(contest);
@@ -60,11 +60,11 @@ public final class ContestCreatorUtil {
             ConfigurationAttribute defaultTemplateAttribute = new ConfigurationAttribute();
             defaultTemplateAttribute
                     .setName(ConfigurationAttributeKey.DEFAULT_CONTEST_TEMPLATE_ID.name());
-            defaultTemplateAttribute.setNumericValue(newDefaultTemplate.getId_());
+            defaultTemplateAttribute.setNumericValue(newDefaultTemplate.getId());
             AdminClient.createConfigurationAttribute(defaultTemplateAttribute);
 
             log.warn("No DEFAULT_TEMPLATE_SCHEDULE_ID found; created new Schedule with id {} "
-                    + "and corresponding ConfigurationAttribute.", newDefaultTemplate.getId_());
+                    + "and corresponding ConfigurationAttribute.", newDefaultTemplate.getId());
 
             return newDefaultTemplate;
         } catch (PlanTemplateNotFoundException e) {
@@ -88,11 +88,11 @@ public final class ContestCreatorUtil {
             ConfigurationAttribute defaultScheduleAttribute = new ConfigurationAttribute();
             defaultScheduleAttribute
                     .setName(ConfigurationAttributeKey.DEFAULT_CONTEST_SCHEDULE_ID.name());
-            defaultScheduleAttribute.setNumericValue(newDefaultSchedule.getId_());
+            defaultScheduleAttribute.setNumericValue(newDefaultSchedule.getId());
             AdminClient.createConfigurationAttribute(defaultScheduleAttribute);
 
             log.warn("No DEFAULT_CONTEST_SCHEDULE_ID found; created new Schedule with id {} "
-                    + "and corresponding ConfigurationAttribute.", newDefaultSchedule.getId_());
+                    + "and corresponding ConfigurationAttribute.", newDefaultSchedule.getId());
 
             return newDefaultSchedule;
         } catch (ContestScheduleNotFoundException e) {

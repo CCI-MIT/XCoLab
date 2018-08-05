@@ -48,7 +48,7 @@ public class OntologyService {
             try {
                 OntologyTerm ontologyTerm = ontologyTermDao.get(focusAreaOntologyTermOntologyTermId);
                 if (ontologyTerm.getOntologySpaceId() == ontologySpaceId) {
-                    return ontologyTerm.getId_();
+                    return ontologyTerm.getId();
                 }
             } catch (NotFoundException ignored) {
 
@@ -75,7 +75,7 @@ public class OntologyService {
             OntologyTerm ontologyTerm = ontologyTermDao.get(ontologyTermId);
 
             for (OntologyTerm ot : getAllOntologyTermDescendantTerms(ontologyTerm)) {
-                terms.add(ot.getId_());
+                terms.add(ot.getId());
             }
         } catch (NotFoundException ignored) {
         }
@@ -84,8 +84,8 @@ public class OntologyService {
 
     public List<OntologyTerm> getAllOntologyTermDescendantTerms(OntologyTerm ontologyTerm) {
         List<OntologyTerm> terms = new ArrayList<>();
-        if (ontologyTerm.getId_() != 0) {
-            for (OntologyTerm ot : ontologyTermDao.findByGiven(null, ontologyTerm.getId_(),null)) {
+        if (ontologyTerm.getId() != 0) {
+            for (OntologyTerm ot : ontologyTermDao.findByGiven(null, ontologyTerm.getId(),null)) {
                 terms.add(ot);
                 terms.addAll(getAllOntologyTermDescendantTerms(ot));
             }

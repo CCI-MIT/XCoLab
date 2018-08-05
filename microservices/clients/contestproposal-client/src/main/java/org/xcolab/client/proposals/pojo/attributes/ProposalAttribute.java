@@ -11,7 +11,7 @@ public class ProposalAttribute extends AbstractProposalAttribute {
     }
 
     public ProposalAttribute(
-            Long id_,
+            Long id,
             Long proposalid,
             Integer version,
             String name,
@@ -20,7 +20,7 @@ public class ProposalAttribute extends AbstractProposalAttribute {
             String stringvalue,
             Double realvalue
     ) {
-        super(id_, proposalid, version, name, additionalid, numericvalue, stringvalue, realvalue);
+        super(id, proposalid, version, name, additionalid, numericvalue, stringvalue, realvalue);
     }
 
     public ProposalAttribute(AbstractProposalAttribute abstractProposalAttribute,

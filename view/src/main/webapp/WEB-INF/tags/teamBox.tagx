@@ -65,9 +65,9 @@
             var currentUserMap = {};
 
         <c:forEach var="member" items = "${list}">
-            userIds.push("" + ${member.id_});
-            members.push(${member.id_});
-            initialMembers.push(${member.id_});
+            userIds.push("" + ${member.id});
+            members.push(${member.id});
+            initialMembers.push(${member.id});
         </c:forEach>
 
             function updateMemberList() {

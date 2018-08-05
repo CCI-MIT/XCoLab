@@ -245,27 +245,27 @@
                                 <strong class="name">Name</strong>
                             </li>
                             <c:forEach var="member" items="${assignPointsBean.getMembers(pointType.id)}">
-                                <li class="listItem${pointType.id}-${member.id_}">
+                                <li class="listItem${pointType.id}-${member.id}">
                                     <label class="percentageInput">
                                         <c:choose>
                                             <c:when test="${currentTabWrapped.canEdit}">
                                                 <form:input data-changed-by-user="true"
-                                                        path="assignmentsByUserIdByPointTypeId[${pointType.id}][${member.id_}]"
+                                                        path="assignmentsByUserIdByPointTypeId[${pointType.id}][${member.id}]"
                                                         class="form-control"
-                                                        value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id_]}"
+                                                        value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id]}"
                                                     />
                                             </c:when>
                                             <c:otherwise>
-                                                <span class="input" data-value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id_]}">
-                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id_]}"/>%
+                                                <span class="input" data-value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id]}">
+                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id]}"/>%
                                                 </span>
                                             </c:otherwise>
                                         </c:choose>
-                                        <a href="/members/profile/${member.id_}" target="_blank">
+                                        <a href="/members/profile/${member.id}" target="_blank">
                                             <span class="">${member.screenName}</span>
                                         </a>
                                         <c:if test="${currentTabWrapped.canEdit and pointType.receiverLimitationStrategy != 'ANY_TEAM_MEMBER'}">
-                                            <span class="deleteListItem" data-item-id="${pointType.id}-${member.id_}">x</span>
+                                            <span class="deleteListItem" data-item-id="${pointType.id}-${member.id}">x</span>
                                         </c:if>
                                     </label>
                                 </li>

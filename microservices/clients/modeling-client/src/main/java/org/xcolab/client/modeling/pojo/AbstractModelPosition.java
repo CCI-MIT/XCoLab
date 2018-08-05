@@ -6,7 +6,7 @@ public abstract class AbstractModelPosition implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    protected Long id_;
+    protected Long id;
     protected Long positionid;
     protected Long modelid;
 
@@ -14,17 +14,17 @@ public abstract class AbstractModelPosition implements Serializable {
     }
 
     public AbstractModelPosition(AbstractModelPosition value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.positionid = value.positionid;
         this.modelid = value.modelid;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getPositionId() {
@@ -47,7 +47,7 @@ public abstract class AbstractModelPosition implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((positionid == null) ? 0 : positionid.hashCode());
         result = prime * result + ((modelid == null) ? 0 : modelid.hashCode());
         return result;
@@ -65,11 +65,11 @@ public abstract class AbstractModelPosition implements Serializable {
             return false;
         }
         final ModelPosition other = (ModelPosition) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (positionid == null) {
@@ -92,7 +92,7 @@ public abstract class AbstractModelPosition implements Serializable {
     @Override
     public String toString() {
 
-        return "ModelPosition (" + id_ +
+        return "ModelPosition (" + id +
                 ", " + positionid +
                 ", " + modelid +
                 ")";

@@ -142,7 +142,7 @@ public class BalloonText implements Serializable {
 
     @Override
     public String toString() {
-        return "BalloonText{" + "id_=" + id + ", name='" + name + '\'' + ", textbeforeform='"
+        return "BalloonText{" + "id=" + id + ", name='" + name + '\'' + ", textbeforeform='"
                 + textbeforeform + '\'' + ", textbeforesharebuttons='" + textbeforesharebuttons
                 + '\'' + ", emailtemplate='" + emailtemplate + '\'' + ", emailsubjecttemplate='"
                 + emailsubjecttemplate + '\'' + ", shareTitle='" + shareTitle + '\''

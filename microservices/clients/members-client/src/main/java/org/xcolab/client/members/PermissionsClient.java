@@ -22,7 +22,7 @@ public final class PermissionsClient {
     }
 
     public static boolean isGuest(Member member) {
-        return member != null && isGuest(member.getId_());
+        return member != null && isGuest(member.getId());
     }
 
     public static boolean isGuest(long userId) {
@@ -38,7 +38,7 @@ public final class PermissionsClient {
     }
 
     public static boolean canAdminAll(Member member) {
-        return member != null && canAdminAll(member.getId_());
+        return member != null && canAdminAll(member.getId());
     }
 
     public static boolean canJudge(Long userId, Long contestId) {

@@ -81,11 +81,11 @@ public class FocusAreaEditorController {
 
     private void updateFocusAreaOntologyTerms(FocusArea focusArea, String[] ontologyTerms) {
 
-        OntologyClientUtil.deleteFocusAreaOntologyTerm(focusArea.getId_(), null);
+        OntologyClientUtil.deleteFocusAreaOntologyTerm(focusArea.getId(), null);
 
         if (ontologyTerms != null) {
             for (String ontId : ontologyTerms) {
-                OntologyClientUtil.addOntologyTermsToFocusAreaByOntologyTermId(focusArea.getId_(),
+                OntologyClientUtil.addOntologyTermsToFocusAreaByOntologyTermId(focusArea.getId(),
                         getOntologyTermId(ontId));
             }
         }

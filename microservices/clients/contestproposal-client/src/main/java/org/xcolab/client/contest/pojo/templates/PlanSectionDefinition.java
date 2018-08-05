@@ -218,7 +218,7 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
     }
 
     public Long getSectionDefinitionId() {
-        return this.getId_();
+        return this.getId();
     }
 
     public boolean isLocked() {
@@ -355,7 +355,7 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
         }
         ProposalAttributeHelper proposalAttributeHelper = proposal.getProposalAttributeHelper();
         return proposalAttributeHelper
-                .getAttributeOrNull(ProposalAttributeKeys.SECTION, this.getId_());
+                .getAttributeOrNull(ProposalAttributeKeys.SECTION, this.getId());
     }
 
     public static class ProposalFieldNotInitializedException extends RuntimeException {

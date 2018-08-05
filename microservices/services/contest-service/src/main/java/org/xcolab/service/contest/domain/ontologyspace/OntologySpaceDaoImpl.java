@@ -28,14 +28,14 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
     public OntologySpace create(OntologySpace ontologySpace) {
 
         OntologySpaceRecord ret = this.dslContext.insertInto(ONTOLOGY_SPACE)
-                .set(ONTOLOGY_SPACE.ID_, ontologySpace.getId_())
+                .set(ONTOLOGY_SPACE.ID, ontologySpace.getId())
                 .set(ONTOLOGY_SPACE.NAME, ontologySpace.getName())
                 .set(ONTOLOGY_SPACE.DESCRIPTION, ontologySpace.getDescription())
                 .set(ONTOLOGY_SPACE.ORDER_, ontologySpace.getOrder_())
-                .returning(ONTOLOGY_SPACE.ID_)
+                .returning(ONTOLOGY_SPACE.ID)
                 .fetchOne();
         if (ret != null) {
-            ontologySpace.setId_(ret.getValue(ONTOLOGY_SPACE.ID_));
+            ontologySpace.setId(ret.getValue(ONTOLOGY_SPACE.ID));
             return ontologySpace;
         } else {
             return null;
@@ -44,14 +44,14 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
     }
 
     @Override
-    public OntologySpace get(Long id_) throws NotFoundException {
+    public OntologySpace get(Long id) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(ONTOLOGY_SPACE)
-                .where(ONTOLOGY_SPACE.ID_.eq(id_))
+                .where(ONTOLOGY_SPACE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("OntologySpace with id " + id_ + " does not exist");
+            throw new NotFoundException("OntologySpace with id " + id + " does not exist");
         }
         return record.into(OntologySpace.class);
 
@@ -60,11 +60,11 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
     @Override
     public boolean update(OntologySpace ontologySpace) {
         return dslContext.update(ONTOLOGY_SPACE)
-                .set(ONTOLOGY_SPACE.ID_, ontologySpace.getId_())
+                .set(ONTOLOGY_SPACE.ID, ontologySpace.getId())
                 .set(ONTOLOGY_SPACE.NAME, ontologySpace.getName())
                 .set(ONTOLOGY_SPACE.DESCRIPTION, ontologySpace.getDescription())
                 .set(ONTOLOGY_SPACE.ORDER_, ontologySpace.getOrder_())
-                .where(ONTOLOGY_SPACE.ID_.eq(ontologySpace.getId_()))
+                .where(ONTOLOGY_SPACE.ID.eq(ontologySpace.getId()))
                 .execute() > 0;
     }
 
@@ -78,9 +78,9 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
     }
 
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(ONTOLOGY_SPACE)
-                .where(ONTOLOGY_SPACE.ID_.eq(id_))
+                .where(ONTOLOGY_SPACE.ID.eq(id))
                 .execute();
     }
 }

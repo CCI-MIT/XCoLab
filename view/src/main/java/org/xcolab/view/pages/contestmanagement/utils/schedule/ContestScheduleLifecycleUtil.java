@@ -93,7 +93,7 @@ public final class ContestScheduleLifecycleUtil {
         List<LabelValue> selectItems = new ArrayList<>();
         for (ContestSchedule candidateSchedule : ContestClientUtil.getAllContestSchedules()) {
             final List<ContestPhase> newSchedulePhases =
-                    getCurrentPhasesForSchedule(candidateSchedule.getId_());
+                    getCurrentPhasesForSchedule(candidateSchedule.getId());
             if (ContestScheduleChangeHelper
                     .isValidChange(currentSchedulePhases, newSchedulePhases)) {
                 selectItems.add(new ScheduleLabel(candidateSchedule));
@@ -129,7 +129,7 @@ public final class ContestScheduleLifecycleUtil {
 
         ContestPhase contestPhase = new ContestPhase();
         contestPhase.setContestPK(0L);
-        contestPhase.setContestScheduleId(newContestSchedule.getId_());
+        contestPhase.setContestScheduleId(newContestSchedule.getId());
         contestPhase.setContestPhaseType(ContestPhaseTypeValue.PROPOSAL_CREATION.getTypeId());
         contestPhase.setPhaseStartDate(new Timestamp(DateTime.now().getMillis()));
         contestPhase.setContestPhaseAutopromote(ContestPhasePromoteType.DEFAULT.getValue());
@@ -141,7 +141,7 @@ public final class ContestScheduleLifecycleUtil {
     private static class ScheduleLabel extends LabelValue {
 
         public ScheduleLabel(ContestSchedule schedule) {
-            super(schedule.getId_(), schedule.getName());
+            super(schedule.getId(), schedule.getName());
         }
     }
 }

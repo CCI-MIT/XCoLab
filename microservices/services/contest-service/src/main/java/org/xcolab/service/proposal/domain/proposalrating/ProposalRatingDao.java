@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ProposalRatingDao {
 
-    int delete(Long id_) ;
+    int delete(Long id) ;
 
     List<ProposalRating> findByGiven(Long proposalId, Long contestPhaseId, Long userId);
 
-    ProposalRating get(Long id_) throws NotFoundException;
+    ProposalRating get(Long id) throws NotFoundException;
 
     ProposalRating create(ProposalRating proposalRating);
 

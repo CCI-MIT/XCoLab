@@ -166,7 +166,7 @@
                         <c:if test="${userTeams.size() > 0}">
                             <div class="p-Proposal__formBox__helpText">Alternatively, you can select your team here.</div>
 
-                            <form:select path="selectedTeam" items="${userTeams}" itemLabel="name" itemValue="id_" />
+                            <form:select path="selectedTeam" items="${userTeams}" itemLabel="name" itemValue="id" />
                             <form:errors path="selectedTeam" />
                         </c:if>
                     </div>

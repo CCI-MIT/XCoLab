@@ -73,12 +73,12 @@
                                     <option value="-1">no ribbon</option>
                                     <c:forEach var="ribbon" items="${availableRibbons }">
                                         <c:choose>
-                                            <c:when test="${proposal.ribbonWrapper.ribbonId == ribbon.id_ }">
-                                                <option value="${ribbon.id_ }"
+                                            <c:when test="${proposal.ribbonWrapper.ribbonId == ribbon.id }">
+                                                <option value="${ribbon.id }"
                                                         selected="selected">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
                                             </c:when>
                                             <c:otherwise>
-                                                <option value="${ribbon.id_ }">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
+                                                <option value="${ribbon.id }">${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}</option>
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>

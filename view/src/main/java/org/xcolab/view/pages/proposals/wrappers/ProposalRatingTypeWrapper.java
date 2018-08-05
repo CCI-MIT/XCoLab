@@ -15,11 +15,11 @@ public class ProposalRatingTypeWrapper {
     }
 
     public List<ProposalRatingValue> getRatingValues() {
-        return ProposalJudgeRatingClientUtil.getProposalRatingValuesByProposalRatingTypeId(this.proposalRatingType.getId_());
+        return ProposalJudgeRatingClientUtil.getProposalRatingValuesByProposalRatingTypeId(this.proposalRatingType.getId());
     }
 
     public Long getId() {
-        return this.proposalRatingType.getId_();
+        return this.proposalRatingType.getId();
     }
 
     public String getLabel() {

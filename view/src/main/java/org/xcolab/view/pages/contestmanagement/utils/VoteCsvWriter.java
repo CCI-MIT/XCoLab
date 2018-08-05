@@ -103,7 +103,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? member.getFirstName() : "Member not found");
             addValue(row, member != null ? member.getLastName() : "Member not found");
             addValue(row, member != null ? ActivitiesClientUtil.countActivities(
-                    member.getId_(),null) : "Member not found");
+                    member.getId(),null) : "Member not found");
             addValue(row, member != null ? member.getLoginIP() : "Member not found");
             addLocationForIp(row, member != null ? member.getLoginIP() : null);
 

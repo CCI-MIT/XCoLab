@@ -28,7 +28,7 @@ public enum ReceiverLimitationStrategy {
 			List<PointsTarget> targets = new ArrayList<>();
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
 
-				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId_())) {
+				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
@@ -55,7 +55,7 @@ public enum ReceiverLimitationStrategy {
 			List<PointsTarget> targets = new ArrayList<>();
 			
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId_())) {
+				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0 && !proposalService.isUserAMember(proposal.getProposalId(), pdc.getTargetUserId())) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());
@@ -81,7 +81,7 @@ public enum ReceiverLimitationStrategy {
 			List<PointsTarget> targets = new ArrayList<>();
 
 			if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId_())) {
+				for (PointsDistributionConfiguration pdc: pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId())) {
 					if (pdc.getTargetUserId() > 0 && proposalService.isUserAMember(proposal.getProposalId(), pdc.getTargetUserId())) {
 						PointsTarget target = new PointsTarget();
 						target.setUserId(pdc.getTargetUserId());

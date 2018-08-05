@@ -24,7 +24,7 @@
                 <tr>
                     <c:forEach var="value" items="${type.ratingValues}">
                         <td>
-                            <label for="rating${value.id_}" class="${not empty value.description ? 'js-Tooltip' : ''}" title="${value.description}">
+                            <label for="rating${value.id}" class="${not empty value.description ? 'js-Tooltip' : ''}" title="${value.description}">
                                 ${value.name}
                             </label>
                         </td>
@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <c:forEach var="value" items="${type.ratingValues}">
-                        <td><form:radiobutton id="rating${value.id_}" path="${ratingValuesPath}[${type.id}]" value="${value.id_}"/></td>
+                        <td><form:radiobutton id="rating${value.id}" path="${ratingValuesPath}[${type.id}]" value="${value.id}"/></td>
                     </c:forEach>
                 </tr>
                 </tbody>

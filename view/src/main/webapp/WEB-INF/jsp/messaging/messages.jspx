@@ -91,7 +91,7 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${messagingBean.type == 'SENT'}">
-                                        <xcolab:userLinkSimple userId="${message.to.get(0).id_}" text="${message.to.get(0).displayName}" />
+                                        <xcolab:userLinkSimple userId="${message.to.get(0).id}" text="${message.to.get(0).displayName}" />
                                         <c:if test="${message.to.size() > 1}">
                                             + ${message.to.size() - 1}
                                         </c:if>

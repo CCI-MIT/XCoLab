@@ -62,9 +62,9 @@ public class BatchCreationController {
                         1300201L, 1300302L,
                         1300401L, 1300601L, 1300602L);
         for (PlanTemplate proposalTemplate : PlanTemplateClientUtil.getPlanTemplates()) {
-            if (!excludedList.contains(proposalTemplate.getId_())) {
+            if (!excludedList.contains(proposalTemplate.getId())) {
                 selectItems
-                        .add(new LabelValue(proposalTemplate.getId_(), proposalTemplate.getName()));
+                        .add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
             }
         }
 
@@ -151,7 +151,7 @@ public class BatchCreationController {
                         contestBatchBean.getPlanTemplateId(),
                         contestBatchBean.getScheduleTemplateId(),
                         contestBatchBean.getContestTier(),
-                        contestBatchBean.getContestType(), member.getId_());
+                        contestBatchBean.getContestType(), member.getId());
 
                 contestLinks.put("" + contest.getContestShortName(),
                         "/admin/contest/details/contestId/"
@@ -182,7 +182,7 @@ public class BatchCreationController {
             if (focusAreaId == 0L) {
                 FocusArea focusArea = new FocusArea();
                 focusArea = OntologyClientUtil.createFocusArea(focusArea);
-                focusAreaId = focusArea.getId_();
+                focusAreaId = focusArea.getId();
 
                 for (Map.Entry<Long, Integer> ontologyTerm : uniqueSelectedOntologyTerms
                         .entrySet()) {

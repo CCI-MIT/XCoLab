@@ -43,7 +43,7 @@ public class MemberNotification extends EmailNotification {
 
     @Override
     protected Long getReferenceId(){
-        return this.recipient.getId_();
+        return this.recipient.getId();
     }
 
     protected class MemberNotificationTemplate extends EmailNotificationTemplate {

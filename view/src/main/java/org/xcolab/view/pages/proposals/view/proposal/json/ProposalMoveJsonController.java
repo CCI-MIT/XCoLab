@@ -122,13 +122,13 @@ public class ProposalMoveJsonController {
 
         if (planTemplate != null) {
             for (PlanSectionDefinition psd : clientHelper.getPlanTemplateClient()
-                    .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(), false)) {
+                    .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), false)) {
                 ProposalAttribute attribute = clientHelper.getProposalAttributeClient()
                         .getProposalAttribute(proposalId, version,
-                                ProposalAttributeKeys.SECTION, psd.getId_());
+                                ProposalAttributeKeys.SECTION, psd.getId());
                 if (attribute != null && !attribute.getStringValue().trim().isEmpty()) {
                     returnList.add(new ImmutableSection(psd.getTitle(),
-                            psd.getId_(), attribute.getStringValue()));
+                            psd.getId(), attribute.getStringValue()));
                 }
             }
         }

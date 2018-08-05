@@ -656,7 +656,7 @@ public class Proposal extends AbstractProposal {
                 PlanTemplate planTemplate = clients.planTemplate.getPlanTemplate(contest.getPlanTemplateId());
                 if (planTemplate != null) {
                     for (PlanSectionDefinition psd : clients.planTemplate
-                            .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
+                            .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(),true)) {
 
                         sections.add(new PlanSectionDefinition(psd, this));
                     }

@@ -60,7 +60,7 @@ public class ProposalRibbon {
 
     public long getRibbonId() {
         if (contestPhaseRibbonType != null) {
-            return contestPhaseRibbonType.getId_();
+            return contestPhaseRibbonType.getId();
         }
         return 0L;
     }

@@ -132,7 +132,7 @@ public class ContentArticle implements Serializable {
     @JsonIgnore
     public boolean canView(Member member) {
         return viewRoleGroupId == null
-                || (member != null && PermissionsClient.hasRoleGroup(member.getId_(), viewRoleGroupId));
+                || (member != null && PermissionsClient.hasRoleGroup(member.getId(), viewRoleGroupId));
     }
 
     @JsonIgnore

@@ -69,7 +69,7 @@ public class UserBean implements Serializable {
     public UserBean() { }
 
     public UserBean(Member member) {
-        userId = member.getId_();
+        userId = member.getId();
         screenName = member.getScreenName();
         firstName = member.getFirstName();
         lastName = member.getLastName();
@@ -90,7 +90,7 @@ public class UserBean implements Serializable {
             imageId = member.getPortraitFileEntryId();
         }
         final MessagingUserPreferences messagingPreferences = MessagingClient
-                .getMessagingPreferencesForMember(member.getId_());
+                .getMessagingPreferencesForMember(member.getId());
         sendEmailOnMessage = messagingPreferences.getEmailOnReceipt();
         sendEmailOnActivity = messagingPreferences.getEmailOnActivity();
         sendDailyEmailOnActivity = messagingPreferences

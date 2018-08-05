@@ -67,7 +67,7 @@ public class ContestScheduleBean {
     }
 
     public Long getScheduleId() {
-        return contestSchedule.getId_();
+        return contestSchedule.getId();
     }
 
     public void setScheduleId(Long contestScheduleId) {
@@ -192,13 +192,13 @@ public class ContestScheduleBean {
 
         for (ContestPhaseBean contestPhaseBean : schedulePhases) {
             contestPhaseBean.setContestPhasePK(CREATE_CONTEST_PHASE_PK);
-            contestPhaseBean.setContestScheduleId(contestSchedule.getId_());
+            contestPhaseBean.setContestScheduleId(contestSchedule.getId());
         }
     }
 
     private void persistUpdatedSchedule() {
         updateScheduleContestPhases();
-        updateContestsUsingSchedule(contestSchedule.getId_());
+        updateContestsUsingSchedule(contestSchedule.getId());
 
         ContestClientUtil.updateContestSchedule(contestSchedule);
     }

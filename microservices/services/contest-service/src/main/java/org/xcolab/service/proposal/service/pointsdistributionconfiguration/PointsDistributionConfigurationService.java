@@ -105,7 +105,7 @@ public class PointsDistributionConfigurationService {
                 if (userIds.contains(pdc.getTargetUserId())) {
                     missinguserIds.remove(pdc.getTargetUserId());
                 } else {
-                    pointsDistributionConfigurationDao.delete(pdc.getId_());
+                    pointsDistributionConfigurationDao.delete(pdc.getId());
                     //_log.info(String.format("Removing PointsDistributionConfiguration non-team member %d for proposal %d pointType %d.",
                     //       pdc.getTargetUserId(), proposalId, pointTypeId));
                 }

@@ -6,7 +6,7 @@ class AbstractPointType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long parentpointtypeid;
     private Double percentageofparent;
     private String distributionstrategy;
@@ -17,7 +17,7 @@ class AbstractPointType implements Serializable {
     public AbstractPointType() {}
 
     public AbstractPointType(AbstractPointType value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.parentpointtypeid = value.parentpointtypeid;
         this.percentageofparent = value.percentageofparent;
         this.distributionstrategy = value.distributionstrategy;
@@ -27,7 +27,7 @@ class AbstractPointType implements Serializable {
     }
 
     public AbstractPointType(
-            Long id_,
+            Long id,
             Long parentpointtypeid,
             Double percentageofparent,
             String distributionstrategy,
@@ -35,7 +35,7 @@ class AbstractPointType implements Serializable {
             String name,
             Long sort
     ) {
-        this.id_ = id_;
+        this.id = id;
         this.parentpointtypeid = parentpointtypeid;
         this.percentageofparent = percentageofparent;
         this.distributionstrategy = distributionstrategy;
@@ -44,12 +44,12 @@ class AbstractPointType implements Serializable {
         this.sort = sort;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getParentPointTypeId() {
@@ -104,7 +104,7 @@ class AbstractPointType implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((parentpointtypeid == null) ? 0 : parentpointtypeid.hashCode());
         result =
                 prime * result + ((percentageofparent == null) ? 0 : percentageofparent.hashCode());
@@ -129,11 +129,11 @@ class AbstractPointType implements Serializable {
             return false;
         }
         final AbstractPointType other = (AbstractPointType) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (parentpointtypeid == null) {
@@ -184,7 +184,7 @@ class AbstractPointType implements Serializable {
     @Override
     public String toString() {
         String sb =
-                "PointType (" + id_ + ", " + parentpointtypeid + ", " + percentageofparent + ", "
+                "PointType (" + id + ", " + parentpointtypeid + ", " + percentageofparent + ", "
                         + distributionstrategy + ", " + receiverlimitationstrategy + ", " + name
                         + ", " + sort + ")";
 

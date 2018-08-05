@@ -356,7 +356,7 @@ public class ContestClient {
     }
 
     public boolean updateContestCollectionCard(ContestCollectionCard contestCollectionCard) {
-        return contestCollectionCardRestResource.update(new ContestCollectionCardDto(contestCollectionCard),contestCollectionCard.getId_())
+        return contestCollectionCardRestResource.update(new ContestCollectionCardDto(contestCollectionCard),contestCollectionCard.getId())
                 .execute();
     }
 
@@ -525,7 +525,7 @@ public class ContestClient {
 
     public boolean updateContestSchedule(ContestSchedule contestSchedule) {
         return contestScheduleResource
-                .update(new ContestScheduleDto(contestSchedule), contestSchedule.getId_())
+                .update(new ContestScheduleDto(contestSchedule), contestSchedule.getId())
                 .cacheName(CacheName.MISC_REQUEST)
                 .execute();
     }
@@ -681,8 +681,8 @@ public class ContestClient {
         return getContestPhaseType(ck.getContestPhaseType()).getName();
     }
 
-    public ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
-        return contestPhaseRibbonTypeResource.get(id_)
+    public ContestPhaseRibbonType getContestPhaseRibbonType(long id) {
+        return contestPhaseRibbonTypeResource.get(id)
                 .execute().toPojo(serviceNamespace);
     }
 

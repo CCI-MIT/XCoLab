@@ -86,7 +86,7 @@ public class UserProfileController {
     public String showProfile(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member) throws IOException {
         if (member != null) {
-            return "redirect:/members/profile/" + member.getId_();
+            return "redirect:/members/profile/" + member.getId();
         }
         return new AccessDeniedPage(null).toViewName(response);
     }
@@ -266,7 +266,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("First name change failed for userId: {}", currentUserProfile.getUser().getId_());
+                _log.warn("First name change failed for userId: {}", currentUserProfile.getUser().getId());
             }
         }
         if (updatedUserBean.getLastName() != null
@@ -277,7 +277,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Last name change failed for userId: {}", currentUserProfile.getUser().getId_());
+                _log.warn("Last name change failed for userId: {}", currentUserProfile.getUser().getId());
             }
         }
 
@@ -288,7 +288,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Country name change failed for userId: {}", currentUserProfile.getUser().getId_());
+                _log.warn("Country name change failed for userId: {}", currentUserProfile.getUser().getId());
             }
         }
 
@@ -299,7 +299,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Default language locale change failed for userId: {}", currentUserProfile.getUser().getId_());
+                _log.warn("Default language locale change failed for userId: {}", currentUserProfile.getUser().getId());
             }
         }
 
@@ -373,7 +373,7 @@ public class UserProfileController {
         }
 
         final MessagingUserPreferences messagingPreferences = MessagingClient
-                .getMessagingPreferencesForMember(currentUserProfile.getUser().getId_());
+                .getMessagingPreferencesForMember(currentUserProfile.getUser().getId());
         boolean changedMessagingPreferences = false;
         if (updatedUserBean.getSendEmailOnMessage() != messagingPreferences.getEmailOnReceipt()) {
             messagingPreferences.setEmailOnReceipt(updatedUserBean.getSendEmailOnMessage());
@@ -419,7 +419,7 @@ public class UserProfileController {
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
 
         EmailClient.sendEmail(addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(), user.getEmailAddress(), messageSubject,
-                messageBody, false, addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),user.getId_());
+                messageBody, false, addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),user.getId());
     }
 
     @PostMapping("{userId}/delete")
@@ -439,7 +439,7 @@ public class UserProfileController {
             MembersClient.deleteMember(userId);
         }
 
-        if (userId == loggedInMember.getId_()) {
+        if (userId == loggedInMember.getId()) {
             authenticationService.logout(request, response);
             response.sendRedirect("/");
         } else {

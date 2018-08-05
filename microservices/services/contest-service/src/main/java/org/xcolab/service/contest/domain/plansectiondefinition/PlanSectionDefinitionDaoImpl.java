@@ -31,7 +31,7 @@ public class PlanSectionDefinitionDaoImpl implements PlanSectionDefinitionDao {
     public List<PlanSectionDefinition> findByGiven(Long planTemplateId, Boolean weight) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PLAN_SECTION_DEFINITION)
-                .join(PLAN_TEMPLATE_SECTION).on(PLAN_TEMPLATE_SECTION.PLAN_SECTION_ID.eq(PLAN_SECTION_DEFINITION.ID_))
+                .join(PLAN_TEMPLATE_SECTION).on(PLAN_TEMPLATE_SECTION.PLAN_SECTION_ID.eq(PLAN_SECTION_DEFINITION.ID))
                 .getQuery();
 
         if (planTemplateId != null) {
@@ -44,14 +44,14 @@ public class PlanSectionDefinitionDaoImpl implements PlanSectionDefinitionDao {
     }
 
     @Override
-    public PlanSectionDefinition get(Long id_) throws NotFoundException {
+    public PlanSectionDefinition get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PLAN_SECTION_DEFINITION)
-                .where(PLAN_SECTION_DEFINITION.ID_.eq(id_))
+                .where(PLAN_SECTION_DEFINITION.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("PlanSectionDefinition with id " + id_ + " does not exist");
+            throw new NotFoundException("PlanSectionDefinition with id " + id + " does not exist");
         }
         return record.into(PlanSectionDefinition.class);
 
@@ -75,10 +75,10 @@ public class PlanSectionDefinitionDaoImpl implements PlanSectionDefinitionDao {
                 .set(PLAN_SECTION_DEFINITION.LOCKED, planSectionDefinition.getLocked())
                 .set(PLAN_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, planSectionDefinition.getContestIntegrationRelevance())
                 .set(PLAN_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, planSectionDefinition.getIncludeInJudgingReport())
-                .returning(PLAN_SECTION_DEFINITION.ID_)
+                .returning(PLAN_SECTION_DEFINITION.ID)
                 .fetchOne();
         if (ret != null) {
-            planSectionDefinition.setId_(ret.getValue(PLAN_SECTION_DEFINITION.ID_));
+            planSectionDefinition.setId(ret.getValue(PLAN_SECTION_DEFINITION.ID));
             return planSectionDefinition;
         } else {
             return null;
@@ -87,9 +87,9 @@ public class PlanSectionDefinitionDaoImpl implements PlanSectionDefinitionDao {
     }
 
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(PLAN_SECTION_DEFINITION)
-                .where(PLAN_SECTION_DEFINITION.ID_.eq(id_))
+                .where(PLAN_SECTION_DEFINITION.ID.eq(id))
                 .execute();
     }
 
@@ -110,7 +110,7 @@ public class PlanSectionDefinitionDaoImpl implements PlanSectionDefinitionDao {
                 .set(PLAN_SECTION_DEFINITION.LOCKED, planSectionDefinition.getLocked())
                 .set(PLAN_SECTION_DEFINITION.CONTEST_INTEGRATION_RELEVANCE, planSectionDefinition.getContestIntegrationRelevance())
                 .set(PLAN_SECTION_DEFINITION.INCLUDE_IN_JUDGING_REPORT, planSectionDefinition.getIncludeInJudgingReport())
-                .where(PLAN_SECTION_DEFINITION.ID_.eq(planSectionDefinition.getId_()))
+                .where(PLAN_SECTION_DEFINITION.ID.eq(planSectionDefinition.getId()))
                 .execute() > 0;
     }
 }

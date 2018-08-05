@@ -15,9 +15,9 @@ public class OntologyTerm extends AbstractOntologyTerm {
         super(value);
     }
 
-    public OntologyTerm(Long id_, Long parentid, Long ontologyspaceid, String name,
+    public OntologyTerm(Long id, Long parentid, Long ontologyspaceid, String name,
             String descriptionurl, Integer order_) {
-        super(id_, parentid, ontologyspaceid, name, descriptionurl, order_);
+        super(id, parentid, ontologyspaceid, name, descriptionurl, order_);
     }
 
     public OntologyTerm(AbstractOntologyTerm abstractOntologyTerm, ServiceNamespace serviceNamespace) {
@@ -26,7 +26,7 @@ public class OntologyTerm extends AbstractOntologyTerm {
 
     @JsonIgnore
     public Long getId() {
-        return getId_();
+        return getId();
     }
 
     private OntologyTerm parent;

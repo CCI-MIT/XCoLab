@@ -8,7 +8,7 @@ class AbstractProposalAttribute extends AbstractAttribute {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long proposalid;
     private Integer version;
 
@@ -16,26 +16,26 @@ class AbstractProposalAttribute extends AbstractAttribute {
 
     public AbstractProposalAttribute(AbstractProposalAttribute value) {
         super(value);
-        this.id_ = value.id_;
+        this.id = value.id;
         this.proposalid = value.proposalid;
         this.version = value.version;
     }
 
-    public AbstractProposalAttribute(Long id_, Long proposalid, Integer version, String name,
+    public AbstractProposalAttribute(Long id, Long proposalid, Integer version, String name,
             Long additionalid, Long numericvalue,
             String stringvalue, Double realvalue) {
         super(name, additionalid, null, numericvalue, stringvalue, realvalue);
-        this.id_ = id_;
+        this.id = id;
         this.proposalid = proposalid;
         this.version = version;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getProposalId() {
@@ -59,7 +59,7 @@ class AbstractProposalAttribute extends AbstractAttribute {
 
         return super.toString()
                 + "("
-                    + id_ + ", "
+                    + id + ", "
                     + proposalid + ", "
                     + version
                 + ")";
@@ -77,7 +77,7 @@ class AbstractProposalAttribute extends AbstractAttribute {
             return false;
         }
         AbstractProposalAttribute that = (AbstractProposalAttribute) o;
-        return Objects.equals(getId_(), that.getId_())
+        return Objects.equals(getId(), that.getId())
                 && Objects.equals(proposalid, that.proposalid)
                 && Objects.equals(getVersion(), that.getVersion());
     }
@@ -85,6 +85,6 @@ class AbstractProposalAttribute extends AbstractAttribute {
     @Override
     public int hashCode() {
         return Objects
-                .hash(super.hashCode(), getId_(), proposalid, getVersion());
+                .hash(super.hashCode(), getId(), proposalid, getVersion());
     }
 }

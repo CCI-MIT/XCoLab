@@ -164,7 +164,7 @@ public class ProposalImpactJSONController {
         }
 
         for (ProposalAttribute proposalAttribute : impactAttributes) {
-            proposalAttributeClient.deleteProposalAttribute(proposalAttribute.getId_());
+            proposalAttributeClient.deleteProposalAttribute(proposalAttribute.getId());
         }
 
         responseJSON.put("success", true);
@@ -263,7 +263,7 @@ public class ProposalImpactJSONController {
         // Sort by order and id, which reflects the order in the outline view
         terms.sort((o1, o2) -> {
             if (o1.getOrder_() == o2.getOrder_().longValue()) {
-                return (int) (o1.getId_() - o2.getId_());
+                return (int) (o1.getId() - o2.getId());
             } else {
                 return (o1.getOrder_() - o2.getOrder_());
             }
@@ -271,7 +271,7 @@ public class ProposalImpactJSONController {
         });
         for (OntologyTerm term: terms) {
             JSONObject termJson = new JSONObject();
-            termJson.put("id", term.getId_());
+            termJson.put("id", term.getId());
             termJson.put("name", term.getName());
             array.put(termJson);
         }

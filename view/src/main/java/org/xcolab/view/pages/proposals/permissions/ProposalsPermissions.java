@@ -66,7 +66,7 @@ public class ProposalsPermissions {
                     && contestPhase.getPhaseActive();
 
         }
-        this.userId = member != null ? member.getId_() : 0;
+        this.userId = member != null ? member.getId() : 0;
         this.isLoggedIn = this.userId > 0;
         this.isGuest = PermissionsClient.isGuest(userId);
         this.proposal = proposal;

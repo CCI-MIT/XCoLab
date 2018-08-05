@@ -63,26 +63,26 @@ public class ProposalAttributeController {
         }
     }
 
-    @PutMapping("/proposalAttributes/{id_}")
+    @PutMapping("/proposalAttributes/{id}")
     public boolean updateProposalAttribute(@RequestBody ProposalAttribute proposalAttribute,
-            @PathVariable("id_") Long id_) throws NotFoundException {
+            @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || proposalAttributeDao.get(id_) == null) {
-            throw new NotFoundException("No ProposalAttribute with id " + id_);
+        if (id == null || id == 0 || proposalAttributeDao.get(id) == null) {
+            throw new NotFoundException("No ProposalAttribute with id " + id);
         } else {
             return proposalAttributeDao.update(proposalAttribute);
         }
     }
 
-    @DeleteMapping("/proposalAttributes/{id_}")
-    public String deleteProposalAttribute(@PathVariable("id_") Long id_) throws NotFoundException {
+    @DeleteMapping("/proposalAttributes/{id}")
+    public String deleteProposalAttribute(@PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0) {
+        if (id == null || id == 0) {
             throw new NotFoundException("No ProposalAttribute with id given");
         } else {
-            ProposalAttribute proposalAttribute = this.proposalAttributeDao.get(id_);
+            ProposalAttribute proposalAttribute = this.proposalAttributeDao.get(id);
             if (proposalAttribute != null) {
-                this.proposalAttributeDao.delete(proposalAttribute.getId_());
+                this.proposalAttributeDao.delete(proposalAttribute.getId());
                 return "ProposalAttribute deleted successfully";
             } else {
                 throw new NotFoundException("No ProposalAttribute with id given");

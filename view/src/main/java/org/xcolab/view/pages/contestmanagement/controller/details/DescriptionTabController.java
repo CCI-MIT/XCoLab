@@ -49,9 +49,9 @@ public class DescriptionTabController extends AbstractTabController {
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L,
                         1300201L, 1300302L, 1300401L, 1300601L, 1300602L);
         for (PlanTemplate proposalTemplate : PlanTemplateClientUtil.getPlanTemplates()) {
-            if (!excludedList.contains(proposalTemplate.getId_())) {
+            if (!excludedList.contains(proposalTemplate.getId())) {
                 selectItems
-                        .add(new LabelValue(proposalTemplate.getId_(), proposalTemplate.getName()));
+                        .add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
             }
         }
         return selectItems;

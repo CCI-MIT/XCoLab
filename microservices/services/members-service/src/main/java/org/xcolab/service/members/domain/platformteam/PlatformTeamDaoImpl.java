@@ -37,7 +37,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     public Optional<PlatformTeam> getPlatformTeam(long teamId) {
         final Record memberRecord = dslContext.select()
                 .from(PLATFORM_TEAM)
-                .where(PLATFORM_TEAM.ID_.eq(teamId))
+                .where(PLATFORM_TEAM.ID.eq(teamId))
                 .fetchOne();
         if (memberRecord == null) {
             return Optional.empty();
@@ -47,21 +47,21 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
 
     @Override
     public PlatformTeam updateOrInsertPlatformTeam(PlatformTeam team) {
-        this.dslContext.insertInto(PLATFORM_TEAM, PLATFORM_TEAM.ID_, PLATFORM_TEAM.NAME)
-                .values(team.getId_(), team.getName())
+        this.dslContext.insertInto(PLATFORM_TEAM, PLATFORM_TEAM.ID, PLATFORM_TEAM.NAME)
+                .values(team.getId(), team.getName())
                 .onDuplicateKeyUpdate()
                 .set(PLATFORM_TEAM.NAME, team.getName())
                 .execute();
-        return getPlatformTeam(team.getId_()).orElse(null);
+        return getPlatformTeam(team.getId()).orElse(null);
     }
 
     @Override
     public PlatformTeam createPlatformTeam(String name) {
         Long teamId = this.dslContext.insertInto(PLATFORM_TEAM)
                 .set(PLATFORM_TEAM.NAME, name)
-                .returning(PLATFORM_TEAM.ID_, PLATFORM_TEAM.NAME)
+                .returning(PLATFORM_TEAM.ID, PLATFORM_TEAM.NAME)
                 .fetchOne()
-                .getId_();
+                .getId();
 
         if (teamId != null) {
             return new PlatformTeam(teamId, name);
@@ -74,7 +74,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     public List<PlatformTeam> getUserTeams(long userId) {
         return dslContext.select(PLATFORM_TEAM.fields())
                 .from(PLATFORM_TEAM.join(PLATFORM_TEAM_MEMBER)
-                        .on(PLATFORM_TEAM.ID_.eq(PLATFORM_TEAM_MEMBER.TEAM_ID)))
+                        .on(PLATFORM_TEAM.ID.eq(PLATFORM_TEAM_MEMBER.TEAM_ID)))
                 .where(PLATFORM_TEAM_MEMBER.USER_ID.eq(userId))
                 .fetchInto(PlatformTeam.class);
     }
@@ -83,7 +83,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     public List<Member> getTeamMembers(long teamId) {
         return dslContext.select(MEMBER.fields())
                 .from(MEMBER.join(PLATFORM_TEAM_MEMBER)
-                        .on(MEMBER.ID_.eq(PLATFORM_TEAM_MEMBER.USER_ID)))
+                        .on(MEMBER.ID.eq(PLATFORM_TEAM_MEMBER.USER_ID)))
                 .where(PLATFORM_TEAM_MEMBER.TEAM_ID.eq(teamId))
                 .fetchInto(Member.class);
     }
@@ -91,7 +91,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     @Override
     public int delete(long teamId) {
         return this.dslContext.deleteFrom(PLATFORM_TEAM)
-                .where(PLATFORM_TEAM.ID_.eq(teamId))
+                .where(PLATFORM_TEAM.ID.eq(teamId))
                 .execute();
     }
 

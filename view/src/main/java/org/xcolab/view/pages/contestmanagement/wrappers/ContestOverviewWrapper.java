@@ -56,7 +56,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         for (Entry<Long, Contest> contestEntry : contests.entrySet()) {
             final Long contestId = contestEntry.getKey();
             Boolean isUserSubscribedToContest = ContestClientUtil
-                    .isMemberSubscribedToContest(contestId, member.getId_());
+                    .isMemberSubscribedToContest(contestId, member.getId());
             subscribedToContest.put(contestId, isUserSubscribedToContest);
         }
     }

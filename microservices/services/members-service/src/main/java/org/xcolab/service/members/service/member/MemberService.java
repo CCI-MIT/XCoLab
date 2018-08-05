@@ -94,7 +94,7 @@ public class MemberService {
         pojo.setHashedPassword(hashPassword(pojo.getHashedPassword()));
         final Member member = memberDao.createMember(pojo);
         //TODO COLAB-2609: centralize this ID in constant (see MemberRole enum)
-        roleDao.assignMemberRole(member.getId_(), 10122L);
+        roleDao.assignMemberRole(member.getId(), 10122L);
         subscribeToNewsletter(member.getEmailAddress());
         return member;
     }
@@ -137,8 +137,8 @@ public class MemberService {
 
     public Long updateUserPasswordWithToken(String token, String newPassword) throws NotFoundException {
         Member member = memberDao.findOneByForgotPasswordHash(token).orElseThrow(NotFoundException::new);
-        updatePassword(member.getId_(), newPassword);
-        return member.getId_();
+        updatePassword(member.getId(), newPassword);
+        return member.getId();
     }
 
     public boolean isSubscribedToNewsletter(long userId) throws IOException, NotFoundException {

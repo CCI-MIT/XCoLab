@@ -140,8 +140,8 @@ public class ProposalImpactSeriesList {
     public void addProposalImpactSeries(ProposalImpactSeries proposalImpactSeries) {
         // Check whether serie already exists
         for (ProposalImpactSeries loopedSeries : this.impactSerieses) {
-            if (loopedSeries.getFocusArea().getId_() == proposalImpactSeries.getFocusArea()
-                    .getId_().longValue()) {
+            if (loopedSeries.getFocusArea().getId() == proposalImpactSeries.getFocusArea()
+                    .getId().longValue()) {
                 this.getImpactSerieses().remove(loopedSeries);
                 break;
             }
@@ -152,8 +152,8 @@ public class ProposalImpactSeriesList {
 
     public FocusArea getFocusAreaForTerms(OntologyTerm whatTerm, OntologyTerm whereTerm) {
         for (ProposalImpactSeries impactSeries : impactSerieses) {
-            if (impactSeries.getWhatTerm().getId_() == whatTerm.getId_().longValue() &&
-                    impactSeries.getWhereTerm().getId_() == whereTerm.getId_().longValue()) {
+            if (impactSeries.getWhatTerm().getId() == whatTerm.getId().longValue() &&
+                    impactSeries.getWhereTerm().getId() == whereTerm.getId().longValue()) {
 
                 return impactSeries.getFocusArea();
             }
@@ -193,7 +193,7 @@ public class ProposalImpactSeriesList {
 
             OntologyTerm ontologyRegionTerm = impactSeries.getWhereTerm();
             Map<Integer, Double> yearToValueFactor =
-                    ONTOLOGY_REGION_TERM_TO_YEAR_TO_VALUE_FACTOR.get(ontologyRegionTerm.getId_());
+                    ONTOLOGY_REGION_TERM_TO_YEAR_TO_VALUE_FACTOR.get(ontologyRegionTerm.getId());
 
             // Aggregate result impact series
             ProposalImpactSeriesValues integratedSeriesValues =
@@ -412,7 +412,7 @@ public class ProposalImpactSeriesList {
                     OntologyTerm ontologyRegionTerm = impactSeries.getWhereTerm();
                     Map<Integer, Double> yearToValueFactor =
                             ONTOLOGY_REGION_TERM_TO_YEAR_TO_VALUE_FACTOR
-                                    .get(ontologyRegionTerm.getId_());
+                                    .get(ontologyRegionTerm.getId());
                     integratedSeriesValues
                             .addImpactSeriesValues(impactSeriesValues, yearToValueFactor);
                 }

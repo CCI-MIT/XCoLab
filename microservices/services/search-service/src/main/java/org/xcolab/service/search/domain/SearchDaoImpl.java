@@ -46,7 +46,7 @@ public class SearchDaoImpl implements SearchDao {
         final Field<Double> relevance = match(PROPOSAL_ATTRIBUTE.STRING_VALUE).against(query)
                 .as("relevance");
         Field<Long> searchTypeId = DSL.val(SearchType.PROPOSAL.getId()).as("searchTypeId");
-        return dslContext.select(PROPOSAL_ATTRIBUTE.ID_.as("classPrimaryKey"), relevance, searchTypeId)
+        return dslContext.select(PROPOSAL_ATTRIBUTE.ID.as("classPrimaryKey"), relevance, searchTypeId)
                 .from(PROPOSAL_ATTRIBUTE)
                 .where(match(PROPOSAL_ATTRIBUTE.STRING_VALUE).against(query))
                 .groupBy(PROPOSAL_ATTRIBUTE.PROPOSAL_ID)
@@ -73,7 +73,7 @@ public class SearchDaoImpl implements SearchDao {
     @Override
     public List<SearchPojo> findMember(PaginationHelper paginationHelper, String query) {
         return getQueryForSearch(paginationHelper, query, SearchType.MEMBER.getId(), MEMBER,
-                MEMBER.ID_, MemberTable.MEMBER.SHORT_BIO, MEMBER.FIRST_NAME, MEMBER.LAST_NAME,
+                MEMBER.ID, MemberTable.MEMBER.SHORT_BIO, MEMBER.FIRST_NAME, MEMBER.LAST_NAME,
                 MEMBER.SCREEN_NAME)
                 .fetchInto(SearchPojo.class);
     }
@@ -115,7 +115,7 @@ public class SearchDaoImpl implements SearchDao {
         return dslContext.select()
                 .from(getProposalQueryForSearch(unlimitedPagination, query)
                         .unionAll(getQueryForSearch(unlimitedPagination, query,
-                                SearchType.MEMBER.getId(), MEMBER, MEMBER.ID_,
+                                SearchType.MEMBER.getId(), MEMBER, MEMBER.ID,
                                 MemberTable.MEMBER.SHORT_BIO, MEMBER.FIRST_NAME, MEMBER.LAST_NAME,
                                 MEMBER.SCREEN_NAME))
                         .union(getQueryForSearch(unlimitedPagination, query,

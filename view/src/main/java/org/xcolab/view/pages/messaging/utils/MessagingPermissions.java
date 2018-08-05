@@ -26,7 +26,7 @@ public class MessagingPermissions {
 
     public boolean getCanSendMessage() {
         return getCanAdminAll() || (isLoggedIn && MessagingClient
-                .canMemberSendMessage(loggedInMember.getId_(), 1));
+                .canMemberSendMessage(loggedInMember.getId(), 1));
     }
 
     public boolean getCanViewMessage() {
@@ -40,12 +40,12 @@ public class MessagingPermissions {
         
         fullConversation.sort(new MessageBeanDateComparator());
         MessageBean originalMessage = fullConversation.get(fullConversation.size() - 1);
-        boolean didSendOriginalMessage = originalMessage.getFrom().getUserId() == loggedInMember.getId_();
+        boolean didSendOriginalMessage = originalMessage.getFrom().getUserId() == loggedInMember.getId();
         boolean didReceiveOriginalMessage = originalMessage.getTo().stream()
-                .anyMatch(recipient -> recipient.getId_() == loggedInMember.getId_());
+                .anyMatch(recipient -> recipient.getId() == loggedInMember.getId());
         boolean isMyThread = false;
         if (threadId != null) {
-            isMyThread = threadId.endsWith(String.valueOf(loggedInMember.getId_()));
+            isMyThread = threadId.endsWith(String.valueOf(loggedInMember.getId()));
         }
         //Looking for a single message (backwards compatibility)
         boolean isSingleMessage = fullConversation.size() == 1 && this.getCanViewMessage();
@@ -55,12 +55,12 @@ public class MessagingPermissions {
 
     public boolean isSender() {
         return isLoggedIn && message != null && message.getFrom().getUserId() == loggedInMember
-                .getId_();
+                .getId();
     }
 
     public boolean isRecipient() {
         return isLoggedIn && message != null && message.getTo().stream()
-                .anyMatch(recipient -> recipient.getId_() == loggedInMember.getId_());
+                .anyMatch(recipient -> recipient.getId() == loggedInMember.getId());
     }
 
     public boolean getCanAdminAll() {

@@ -18,9 +18,9 @@ public class ContestSchedule extends AbstractContestSchedule {
         contestClient = ContestClientUtil.getClient();
     }
 
-    public ContestSchedule(Long   id_, String name, String description,
+    public ContestSchedule(Long   id, String name, String description,
         String status, Long   basescheduleid) {
-        super(id_, name, description, status, basescheduleid);
+        super(id, name, description, status, basescheduleid);
         contestClient = ContestClientUtil.getClient();
     }
 
@@ -31,7 +31,7 @@ public class ContestSchedule extends AbstractContestSchedule {
     }
 
     public boolean isUsedInNonEmptyContest() {
-        return contestClient.getContestsByContestScheduleId(getId_())
+        return contestClient.getContestsByContestScheduleId(getId())
                 .stream()
                 .anyMatch(Contest::isNotEmpty);
     }

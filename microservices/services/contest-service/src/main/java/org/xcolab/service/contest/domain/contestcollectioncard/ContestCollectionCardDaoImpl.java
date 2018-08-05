@@ -34,10 +34,10 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
                 .set(CONTEST_COLLECTION_CARD.ORDER, contestCollectionCard.getOrder())
                 .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD, contestCollectionCard.getOntology_term_to_load())
                 .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.getOnly_featured())
-                .returning(CONTEST_COLLECTION_CARD.ID_)
+                .returning(CONTEST_COLLECTION_CARD.ID)
                 .fetchOne();
         if (ret != null) {
-            contestCollectionCard.setId_(ret.getValue(CONTEST_COLLECTION_CARD.ID_));
+            contestCollectionCard.setId(ret.getValue(CONTEST_COLLECTION_CARD.ID));
             return contestCollectionCard;
         } else {
             return null;
@@ -58,14 +58,14 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
                 .set(CONTEST_COLLECTION_CARD.ORDER, contestCollectionCard.getOrder())
                 .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD, contestCollectionCard.getOntology_term_to_load())
                 .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.getOnly_featured())
-                .where(CONTEST_COLLECTION_CARD.ID_.eq(contestCollectionCard.getId_()))
+                .where(CONTEST_COLLECTION_CARD.ID.eq(contestCollectionCard.getId()))
                 .execute() > 0;
     }
 
     @Override
     public boolean delete(Long contestCollectionCardId) throws NotFoundException {
         return dslContext.deleteFrom(CONTEST_COLLECTION_CARD)
-                .where(CONTEST_COLLECTION_CARD.ID_.eq(contestCollectionCardId))
+                .where(CONTEST_COLLECTION_CARD.ID.eq(contestCollectionCardId))
                 .execute() > 0;
     }
 
@@ -74,7 +74,7 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
     public ContestCollectionCard get(Long contestCollectionCardId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(CONTEST_COLLECTION_CARD)
-                .where(CONTEST_COLLECTION_CARD.ID_.eq(contestCollectionCardId)).fetchOne();
+                .where(CONTEST_COLLECTION_CARD.ID.eq(contestCollectionCardId)).fetchOne();
 
         if (record == null) {
             throw new NotFoundException("ContestCollectionCard with id " + contestCollectionCardId + " does not exist");

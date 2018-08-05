@@ -91,7 +91,7 @@ public class MessagingController {
         }
 
         if (messagingPermissions.isRecipient()) {
-            messageBean.markMessageAsOpened(loggedInMember.getId_());
+            messageBean.markMessageAsOpened(loggedInMember.getId());
         }
         model.addAttribute("user", loggedInMember);
 
@@ -137,7 +137,7 @@ public class MessagingController {
 
         //Mark first message as read (if it's for me)
         if (messagingPermissions.isRecipient()) {
-            messageBeanListNewestFirst.get(0).markMessageAsOpened(loggedInMember.getId_());
+            messageBeanListNewestFirst.get(0).markMessageAsOpened(loggedInMember.getId());
         }
 
         final SendMessageBean sendMessageBean = new SendMessageBean(
@@ -173,7 +173,7 @@ public class MessagingController {
                 if (item.isSelected()) {
                     Message message = item.getMessage();
                     MessagingClient
-                            .setArchived(message.getMessageId(), loggedInMember.getId_(), true);
+                            .setArchived(message.getMessageId(), loggedInMember.getId(), true);
                 }
             }
         }

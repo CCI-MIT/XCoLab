@@ -154,7 +154,7 @@ public class MessagingService {
 
     private static String createProfileEditUrl(Member member) {
         String home = PlatformAttributeKey.COLAB_URL.get();
-        return home + "/members/profile/" + member.getId_() + "/edit";
+        return home + "/members/profile/" + member.getId() + "/edit";
     }
 
 }

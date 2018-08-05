@@ -31,7 +31,7 @@ public class ConfirmMassActionController {
             @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
             HttpServletResponse response)
             throws IOException, InvocationTargetException, IllegalAccessException {
-        massActionConfirmationWrapper.setuserId(member.getId_());
+        massActionConfirmationWrapper.setuserId(member.getId());
 
         List<Long> contestIds = massActionConfirmationWrapper.getSelectedContestIds();
         List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);

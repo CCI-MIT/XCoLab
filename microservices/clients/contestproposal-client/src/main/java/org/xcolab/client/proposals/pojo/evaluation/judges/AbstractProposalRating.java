@@ -6,7 +6,7 @@ class AbstractProposalRating implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long proposalid;
     private Long contestphaseid;
     private Long userid;
@@ -19,7 +19,7 @@ class AbstractProposalRating implements Serializable {
     public AbstractProposalRating() {}
 
     public AbstractProposalRating(AbstractProposalRating value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.proposalid = value.proposalid;
         this.contestphaseid = value.contestphaseid;
         this.userid = value.userid;
@@ -31,7 +31,7 @@ class AbstractProposalRating implements Serializable {
     }
 
     public AbstractProposalRating(
-            Long id_,
+            Long id,
             Long proposalid,
             Long contestphaseid,
             Long userid,
@@ -41,7 +41,7 @@ class AbstractProposalRating implements Serializable {
             String otherdatastring,
             Boolean onlyforinternalusage
     ) {
-        this.id_ = id_;
+        this.id = id;
         this.proposalid = proposalid;
         this.contestphaseid = contestphaseid;
         this.userid = userid;
@@ -52,12 +52,12 @@ class AbstractProposalRating implements Serializable {
         this.onlyforinternalusage = onlyforinternalusage;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getProposalId() {
@@ -128,7 +128,7 @@ class AbstractProposalRating implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((proposalid == null) ? 0 : proposalid.hashCode());
         result = prime * result + ((contestphaseid == null) ? 0 : contestphaseid.hashCode());
         result = prime * result + ((userid == null) ? 0 : userid.hashCode());
@@ -153,11 +153,11 @@ class AbstractProposalRating implements Serializable {
             return false;
         }
         final AbstractProposalRating other = (AbstractProposalRating) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (proposalid == null) {
@@ -222,7 +222,7 @@ class AbstractProposalRating implements Serializable {
     @Override
     public String toString() {
         String sb =
-                "ProposalRating (" + id_ + ", " + proposalid + ", " + contestphaseid + ", " + userid
+                "ProposalRating (" + id + ", " + proposalid + ", " + contestphaseid + ", " + userid
                         + ", " + ratingvalueid + ", " + comment_ + ", " + commentenabled + ", "
                         + otherdatastring + ", " + onlyforinternalusage + ")";
 

@@ -99,7 +99,7 @@ public class LoginRegisterService {
                         BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
                 if (but.getUserId() == null) {
                     but.setRegistrationDate(new Timestamp(new Date().getTime()));
-                    but.setUserId(member.getId_());
+                    but.setUserId(member.getId());
                     BalloonsClient.updateBalloonUserTracking(but);
                 }
             } catch (BalloonUserTrackingNotFoundException e) {
@@ -109,7 +109,7 @@ public class LoginRegisterService {
         }
         //update user association for all BUTs under this email address
         BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress()).forEach(
-                b -> b.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress()));
+                b -> b.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress()));
     }
 
     public void recordRegistrationEvent(Member member) {
@@ -172,7 +172,7 @@ public class LoginRegisterService {
         member = MembersClient.register(member);
 
         if (generateLoginUrl) {
-            final LoginToken loginToken = MembersClient.createLoginToken(member.getId_());
+            final LoginToken loginToken = MembersClient.createLoginToken(member.getId());
             new MemberBatchRegistrationNotification(member, loginToken).sendEmailNotification();
         } else {
             new MemberRegistrationNotification(member).sendEmailNotification();

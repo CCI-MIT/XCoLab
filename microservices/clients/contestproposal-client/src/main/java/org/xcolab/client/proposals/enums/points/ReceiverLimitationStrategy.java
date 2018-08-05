@@ -19,7 +19,7 @@ public enum ReceiverLimitationStrategy {
         // check if there is any configuration, if there is create appropriate targets
         List<PointsTarget> targets = new ArrayList<>();
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
                 if (pdc.getTargetUserId() > 0) {
                     PointsTarget target = new PointsTarget();
                     target.setUserId(pdc.getTargetUserId());
@@ -35,7 +35,7 @@ public enum ReceiverLimitationStrategy {
         List<PointsTarget> targets = new ArrayList<>();
 
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
                 if (pdc.getTargetUserId() > 0 && !ProposalClientUtil
                         .isUserInProposalTeam(proposal.getProposalId(), pdc.getTargetUserId())) {
                     PointsTarget target = new PointsTarget();
@@ -51,7 +51,7 @@ public enum ReceiverLimitationStrategy {
         List<PointsTarget> targets = new ArrayList<>();
 
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
                 if (pdc.getTargetUserId() > 0 && ProposalClientUtil
                         .isUserInProposalTeam(proposal.getProposalId(), pdc.getTargetUserId())) {
                     PointsTarget target = new PointsTarget();

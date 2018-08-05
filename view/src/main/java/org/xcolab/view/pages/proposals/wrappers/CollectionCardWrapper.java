@@ -51,7 +51,7 @@ public class CollectionCardWrapper{
     }
 
     public long getId() {
-       return this.contestCollectionCard.getId_();
+       return this.contestCollectionCard.getId();
     }
 
     public OntologyTerm getBigOntologyTerm() {

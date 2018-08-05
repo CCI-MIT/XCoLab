@@ -61,7 +61,7 @@ public class MemberDaoImpl implements MemberDao {
                 .getQuery();
 
         if (roleName != null || roleIds != null) {
-            query.addJoin(usersRoles, member.ID_.equal(usersRoles.USER_ID));
+            query.addJoin(usersRoles, member.ID.equal(usersRoles.USER_ID));
         }
         if (roleName != null) {
             query.addJoin(memberCategory, memberCategory.ROLE_ID.equal(usersRoles.ROLE_ID));
@@ -102,7 +102,7 @@ public class MemberDaoImpl implements MemberDao {
                     dslContext.select(userRolesInner.ROLE_ID)
                     .from(userRolesInner)
                     .innerJoin(memberCategoryInner).on(userRolesInner.ROLE_ID.eq(memberCategoryInner.ROLE_ID))
-                    .where(userRolesInner.USER_ID.eq(member.ID_))
+                    .where(userRolesInner.USER_ID.eq(member.ID))
                     .orderBy(memberCategoryInner.SORT_ORDER.desc())
                     .limit(0,1)
             ));
@@ -127,7 +127,7 @@ public class MemberDaoImpl implements MemberDao {
                     //TODO COLAB-2608: this property is owned by the activities-service
                     Field<Object> activityCount = this.dslContext.selectCount()
                             .from(ACTIVITY_ENTRY)
-                            .where(ACTIVITY_ENTRY.MEMBER_ID.equal(member.ID_))
+                            .where(ACTIVITY_ENTRY.MEMBER_ID.equal(member.ID))
                             .asField("activityCount");
                     query.addSelect(activityCount);
                     query.addSelect(member.fields());
@@ -139,7 +139,7 @@ public class MemberDaoImpl implements MemberDao {
                     Field<Object> roleNameField = dslContext.select(max(MEMBER_CATEGORY.SORT_ORDER))
                             .from(MEMBER_CATEGORY)
                             .join(USERS_ROLES).on(USERS_ROLES.ROLE_ID.eq(MEMBER_CATEGORY.ROLE_ID))
-                            .where(USERS_ROLES.USER_ID.eq(member.ID_))
+                            .where(USERS_ROLES.USER_ID.eq(member.ID))
                             .asField("roleName");
                     query.addSelect(roleNameField);
                     query.addOrderBy(sortColumn.isAscending()
@@ -150,7 +150,7 @@ public class MemberDaoImpl implements MemberDao {
                     Field<Object> points =
                             this.dslContext.select(sum(POINTS.MATERIALIZED_POINTS))
                                     .from(POINTS)
-                                    .where(POINTS.USER_ID.equal(member.ID_))
+                                    .where(POINTS.USER_ID.equal(member.ID))
                                     .asField("points");
                     query.addSelect(points);
                     query.addOrderBy(sortColumn.isAscending()
@@ -197,7 +197,7 @@ public class MemberDaoImpl implements MemberDao {
         final SelectQuery<Record> query = dslContext
                 .selectDistinct(MEMBER.fields())
                 .from(MEMBER)
-                .join(LOGIN_LOG).on(LOGIN_LOG.USER_ID.equal(MEMBER.ID_))
+                .join(LOGIN_LOG).on(LOGIN_LOG.USER_ID.equal(MEMBER.ID))
                 .where(LOGIN_LOG.IP_ADDRESS.eq(ip))
                 .getQuery();
         return query.fetchInto(Member.class);
@@ -221,9 +221,9 @@ public class MemberDaoImpl implements MemberDao {
         final MemberTable memberTable = MEMBER.as("member");
         final Users_RolesTable usersRoles = USERS_ROLES.as("usersRoles");
         final MemberCategoryTable memberCategory = MEMBER_CATEGORY.as("memberCategory");
-        final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(memberTable.ID_))
+        final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(memberTable.ID))
                 .from(memberTable)
-                .join(usersRoles).on(memberTable.ID_.equal(usersRoles.USER_ID))
+                .join(usersRoles).on(memberTable.ID.equal(usersRoles.USER_ID))
                 .join(memberCategory).on(memberCategory.ROLE_ID.equal(usersRoles.ROLE_ID))
                 .where(memberTable.STATUS.eq(0))
                 .getQuery();
@@ -241,7 +241,7 @@ public class MemberDaoImpl implements MemberDao {
     public Optional<Member> getMember(long userId) {
         final Record memberRecord = dslContext.select()
                 .from(MEMBER)
-                .where(MEMBER.ID_.eq(userId))
+                .where(MEMBER.ID.eq(userId))
                 .fetchOne();
         if (memberRecord == null) {
             return Optional.empty();
@@ -257,7 +257,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
                 .set(MEMBER.FORGOT_PASSWORD_TOKEN, (String) null)
                 .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, (Timestamp) null)
-                .where(MEMBER.ID_.eq(userId))
+                .where(MEMBER.ID.eq(userId))
                 .execute() > 0;
     }
 
@@ -357,7 +357,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.LOGIN_TOKEN_ID, member.getLoginTokenId())
                 .set(MEMBER.LOGIN_TOKEN_KEY, member.getLoginTokenKey())
                 .set(MEMBER.LOGIN_TOKEN_EXPIRATION_DATE, member.getLoginTokenExpirationDate())
-                .where(MEMBER.ID_.equal(member.getId_()))
+                .where(MEMBER.ID.equal(member.getId()))
                 .execute() > 0;
     }
 
@@ -394,12 +394,12 @@ public class MemberDaoImpl implements MemberDao {
                         .set(MEMBER.LOGIN_TOKEN_EXPIRATION_DATE, member.getLoginTokenExpirationDate())
                         .set(MEMBER.CREATE_DATE, DSL.currentTimestamp())
                         .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
-                        .returning(MEMBER.ID_)
+                        .returning(MEMBER.ID)
                         .fetchOptional();
         if (!memberRecord.isPresent()) {
             throw new IllegalStateException("Could not fetch generated ID");
         }
-        member.setId_(memberRecord.get().getValue(MEMBER.ID_));
+        member.setId(memberRecord.get().getValue(MEMBER.ID));
         return member;
     }
 

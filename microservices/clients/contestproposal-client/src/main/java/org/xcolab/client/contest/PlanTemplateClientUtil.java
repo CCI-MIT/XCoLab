@@ -19,8 +19,8 @@ public final class PlanTemplateClientUtil {
         return client;
     }
 
-    public static PlanTemplate getPlanTemplate(long Id_) {
-        return client.getPlanTemplate(Id_);
+    public static PlanTemplate getPlanTemplate(long Id) {
+        return client.getPlanTemplate(Id);
     }
 
     public static List<PlanTemplate> getPlanTemplates() {
@@ -32,8 +32,8 @@ public final class PlanTemplateClientUtil {
         return client.createPlanTemplate(planTemplate);
     }
 
-    public static  Boolean deletePlanTemplate(Long id_) {
-        return  client.deletePlanTemplate(id_);
+    public static  Boolean deletePlanTemplate(Long id) {
+        return  client.deletePlanTemplate(id);
     }
     public static boolean updatePlanTemplate(PlanTemplate planTemplate) {
         return client.updatePlanTemplate(planTemplate);

@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface PlanSectionDefinitionDao {
     List<PlanSectionDefinition> findByGiven(Long planTemplateId, Boolean weight);
-    PlanSectionDefinition get(Long id_) throws NotFoundException;
+    PlanSectionDefinition get(Long id) throws NotFoundException;
     PlanSectionDefinition create(PlanSectionDefinition planSectionDefinition);
     boolean update(PlanSectionDefinition planSectionDefinition);
-    int delete(Long id_);
+    int delete(Long id);
 }

@@ -6,7 +6,7 @@ public class AbstractContestTeamMember implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long contestid;
     private Long userid;
     private Long roleid;
@@ -14,25 +14,25 @@ public class AbstractContestTeamMember implements Serializable {
     public AbstractContestTeamMember() {}
 
     public AbstractContestTeamMember(AbstractContestTeamMember value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.contestid = value.contestid;
         this.userid = value.userid;
         this.roleid = value.roleid;
     }
 
-    public AbstractContestTeamMember(Long id_, Long contestid, Long userid, Long roleid) {
-        this.id_ = id_;
+    public AbstractContestTeamMember(Long id, Long contestid, Long userid, Long roleid) {
+        this.id = id;
         this.contestid = contestid;
         this.userid = userid;
         this.roleid = roleid;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getContestId() {
@@ -63,7 +63,7 @@ public class AbstractContestTeamMember implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((contestid == null) ? 0 : contestid.hashCode());
         result = prime * result + ((userid == null) ? 0 : userid.hashCode());
         result = prime * result + ((roleid == null) ? 0 : roleid.hashCode());
@@ -82,11 +82,11 @@ public class AbstractContestTeamMember implements Serializable {
             return false;
         }
         final AbstractContestTeamMember other = (AbstractContestTeamMember) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (contestid == null) {
@@ -116,7 +116,7 @@ public class AbstractContestTeamMember implements Serializable {
     @Override
     public String toString() {
 
-        return "ContestTeamMember (" + id_ +
+        return "ContestTeamMember (" + id +
                 ", " + contestid +
                 ", " + userid +
                 ", " + roleid +

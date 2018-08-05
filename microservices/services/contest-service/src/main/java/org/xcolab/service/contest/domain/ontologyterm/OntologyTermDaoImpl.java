@@ -26,14 +26,14 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
     }
 
     @Override
-    public OntologyTerm get(Long id_) throws NotFoundException {
+    public OntologyTerm get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(ONTOLOGY_TERM)
-                .where(ONTOLOGY_TERM.ID_.eq(id_))
+                .where(ONTOLOGY_TERM.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("OntologyTerm with id " + id_ + " does not exist");
+            throw new NotFoundException("OntologyTerm with id " + id + " does not exist");
         }
         return record.into(OntologyTerm.class);
 
@@ -64,13 +64,13 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
                 .set(ONTOLOGY_TERM.NAME, ontologyTerm.getName())
                 .set(ONTOLOGY_TERM.DESCRIPTION_URL, ontologyTerm.getDescriptionUrl())
                 .set(ONTOLOGY_TERM.ORDER_, ontologyTerm.getOrder_())
-                .where(ONTOLOGY_TERM.ID_.eq(ontologyTerm.getId_()))
+                .where(ONTOLOGY_TERM.ID.eq(ontologyTerm.getId()))
                 .execute() > 0;
     }
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(ONTOLOGY_TERM)
-                .where(ONTOLOGY_TERM.ID_.eq(id_))
+                .where(ONTOLOGY_TERM.ID.eq(id))
                 .execute();
     }
 
@@ -83,10 +83,10 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
                 .set(ONTOLOGY_TERM.NAME, ontologyTerm.getName())
                 .set(ONTOLOGY_TERM.DESCRIPTION_URL, ontologyTerm.getDescriptionUrl())
                 .set(ONTOLOGY_TERM.ORDER_, ontologyTerm.getOrder_())
-                .returning(ONTOLOGY_TERM.ID_)
+                .returning(ONTOLOGY_TERM.ID)
                 .fetchOne();
         if (ret != null) {
-            ontologyTerm.setId_(ret.getValue(ONTOLOGY_TERM.ID_));
+            ontologyTerm.setId(ret.getValue(ONTOLOGY_TERM.ID));
             return ontologyTerm;
         } else {
             return null;
@@ -101,9 +101,9 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
 
         final SelectQuery<Record> query = dslContext.select(ONTOLOGY_TERM.fields())
                 .from(FOCUS_AREA_ONTOLOGY_TERM).getQuery();
-        query.addJoin(ONTOLOGY_TERM,ONTOLOGY_TERM.ID_.eq(FOCUS_AREA_ONTOLOGY_TERM.ONTOLOGY_TERM_ID));
+        query.addJoin(ONTOLOGY_TERM,ONTOLOGY_TERM.ID.eq(FOCUS_AREA_ONTOLOGY_TERM.ONTOLOGY_TERM_ID));
 
-        query.addJoin(ONTOLOGY_SPACE,ONTOLOGY_SPACE.ID_.eq(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID));
+        query.addJoin(ONTOLOGY_SPACE,ONTOLOGY_SPACE.ID.eq(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID));
 
         query.addConditions(FOCUS_AREA_ONTOLOGY_TERM.FOCUS_AREA_ID.eq(focusArea));
         query.addConditions(ONTOLOGY_SPACE.NAME.eq(ontologySpaceName));

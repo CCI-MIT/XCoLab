@@ -6,7 +6,7 @@ abstract class AbstractContestPhaseRibbonType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Integer ribbon;
     private String title;
     private String hovertext;
@@ -18,7 +18,7 @@ abstract class AbstractContestPhaseRibbonType implements Serializable {
     public AbstractContestPhaseRibbonType() {}
 
     public AbstractContestPhaseRibbonType(AbstractContestPhaseRibbonType value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.ribbon = value.ribbon;
         this.title = value.title;
         this.hovertext = value.hovertext;
@@ -28,12 +28,12 @@ abstract class AbstractContestPhaseRibbonType implements Serializable {
         this.sortorder = value.sortorder;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Integer getRibbon() {
@@ -96,7 +96,7 @@ abstract class AbstractContestPhaseRibbonType implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((ribbon == null) ? 0 : ribbon.hashCode());
         result = prime * result + ((hovertext == null) ? 0 : hovertext.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
@@ -117,11 +117,11 @@ abstract class AbstractContestPhaseRibbonType implements Serializable {
             return false;
         }
         final AbstractContestPhaseRibbonType other = (AbstractContestPhaseRibbonType) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (ribbon == null) {
@@ -165,7 +165,7 @@ abstract class AbstractContestPhaseRibbonType implements Serializable {
     @Override
     public String toString() {
 
-        return "ContestPhaseRibbonType (" + id_ +
+        return "ContestPhaseRibbonType (" + id +
                 ", " + ribbon +
                 ", " + hovertext +
                 ", " + description +

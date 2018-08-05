@@ -72,7 +72,7 @@
                                     </td>
                                     <td style="vertical-align: middle">
                                         <button type="button" class="btn btn-link js-EnhancedLink" data-method="post"
-                                                data-url="TEAMS/${teamId}/removeMember/${member.id_}">Remove</button>
+                                                data-url="TEAMS/${teamId}/removeMember/${member.id}">Remove</button>
                                     </td>
                                 </tr>
                             </c:forEach>

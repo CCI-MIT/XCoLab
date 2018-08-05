@@ -40,7 +40,7 @@ public class ProposalImpactUtil {
             FocusArea focusArea = OntologyClientUtil.getFocusArea(impactFocusArea.getFocusAreaId());
 
             // Only consider focus areas where we did not have a filled out impact series
-            if (impactSeriesAvailableMap.get(focusArea.getId_()) == null) {
+            if (impactSeriesAvailableMap.get(focusArea.getId()) == null) {
                 OntologyTerm whatTerm = getWhatTerm(focusArea);
                 OntologyTerm whereTerm = getWhereTerm(focusArea);
 
@@ -77,7 +77,7 @@ public class ProposalImpactUtil {
         Map<Long, Boolean> impactSeriesAvailableMap = new HashMap<>();
 
         for (ProposalImpactSeries series : impactSerieses) {
-            impactSeriesAvailableMap.put(series.getFocusArea().getId_(), true);
+            impactSeriesAvailableMap.put(series.getFocusArea().getId(), true);
         }
 
         return impactSeriesAvailableMap;

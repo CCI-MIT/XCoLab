@@ -20,7 +20,7 @@ public class MemberListCsvWriter extends CsvResponseWriter {
                     member.getFirstName(),
                     member.getLastName(),
                     member.getEmailAddress(),
-                    Long.toString(member.getId_()),
+                    Long.toString(member.getId()),
                     member.getCountry(),
                     member.getShortBio(),
                     member.getLoginDateString(),

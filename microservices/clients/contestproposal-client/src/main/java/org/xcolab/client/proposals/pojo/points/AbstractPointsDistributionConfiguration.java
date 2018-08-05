@@ -7,7 +7,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long proposalid;
     private Long pointtypeid;
     private Long targetuserid;
@@ -20,7 +20,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
     public AbstractPointsDistributionConfiguration() {}
 
     public AbstractPointsDistributionConfiguration(AbstractPointsDistributionConfiguration value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.proposalid = value.proposalid;
         this.pointtypeid = value.pointtypeid;
         this.targetuserid = value.targetuserid;
@@ -32,7 +32,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
     }
 
     public AbstractPointsDistributionConfiguration(
-            Long id_,
+            Long id,
             Long proposalid,
             Long pointtypeid,
             Long targetuserid,
@@ -42,7 +42,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
             Long creator,
             Timestamp createdAt
     ) {
-        this.id_ = id_;
+        this.id = id;
         this.proposalid = proposalid;
         this.pointtypeid = pointtypeid;
         this.targetuserid = targetuserid;
@@ -53,12 +53,12 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getProposalId() {
@@ -129,7 +129,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((proposalid == null) ? 0 : proposalid.hashCode());
         result = prime * result + ((pointtypeid == null) ? 0 : pointtypeid.hashCode());
         result = prime * result + ((targetuserid == null) ? 0 : targetuserid.hashCode());
@@ -156,11 +156,11 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         }
         final AbstractPointsDistributionConfiguration
                 other = (AbstractPointsDistributionConfiguration) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (proposalid == null) {
@@ -225,7 +225,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
     @Override
     public String toString() {
         String sb =
-                "PointsDistributionConfiguration (" + id_ + ", " + proposalid + ", " + pointtypeid
+                "PointsDistributionConfiguration (" + id + ", " + proposalid + ", " + pointtypeid
                         + ", " + targetuserid + ", " + targetsubproposalid + ", "
                         + targetplansectiondefinitionid + ", " + percentage + ", " + creator + ", "
                         + createdAt + ")";

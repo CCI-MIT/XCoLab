@@ -132,7 +132,7 @@
 		</c:forEach>
 		
 		<c:forEach var="term" items="${ontologyTerms}" varStatus='termStatus'>
-			ontologyTerms[${term.id_}] = {id: ${term.id_}, parentId: ${term.parentId}, name: "${term.name}", contests: [], otherContests: [], space: ontologySpaces[${term.ontologySpaceId}], order: ${term.order != 0 ? term.order * 1000000 : termStatus.index}  };
+			ontologyTerms[${term.id}] = {id: ${term.id}, parentId: ${term.parentId}, name: "${term.name}", contests: [], otherContests: [], space: ontologySpaces[${term.ontologySpaceId}], order: ${term.order != 0 ? term.order * 1000000 : termStatus.index}  };
 		</c:forEach>
 		
 		for (var termId in ontologyTerms) {
@@ -144,7 +144,7 @@
 			}
 		}
 		<c:forEach var="focusArea" items="${focusAreas}">
-			focusAreas[${focusArea.id_}] = {id: ${focusArea.id_}, terms: ${focusArea.termsIdsStr}};
+			focusAreas[${focusArea.id}] = {id: ${focusArea.id}, terms: ${focusArea.termsIdsStr}};
 		</c:forEach>
 		var focusArea = null;
 		var contest = null;

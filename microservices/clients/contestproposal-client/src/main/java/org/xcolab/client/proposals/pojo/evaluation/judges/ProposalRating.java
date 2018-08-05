@@ -21,7 +21,7 @@ public class ProposalRating extends AbstractProposalRating {
     }
 
     public ProposalRating(
-            Long id_,
+            Long id,
             Long proposalid,
             Long contestphaseid,
             Long userid,
@@ -31,7 +31,7 @@ public class ProposalRating extends AbstractProposalRating {
             String otherdatastring,
             Boolean onlyforinternalusage
     ) {
-        super(id_, proposalid, contestphaseid, userid, ratingvalueid, comment_, commentenabled,
+        super(id, proposalid, contestphaseid, userid, ratingvalueid, comment_, commentenabled,
                 otherdatastring, onlyforinternalusage);
     }
 
@@ -85,7 +85,7 @@ public class ProposalRating extends AbstractProposalRating {
     public Long getRatingTypeId() {
         ProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
-            return ratingType.getId_();
+            return ratingType.getId();
         } else {
             return null;
         }

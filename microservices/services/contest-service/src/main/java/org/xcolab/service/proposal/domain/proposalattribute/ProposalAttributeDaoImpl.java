@@ -30,10 +30,10 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
                 .set(PROPOSAL_ATTRIBUTE.NUMERIC_VALUE, proposalAttribute.getNumericValue())
                 .set(PROPOSAL_ATTRIBUTE.STRING_VALUE, proposalAttribute.getStringValue())
                 .set(PROPOSAL_ATTRIBUTE.REAL_VALUE, proposalAttribute.getRealValue())
-                .returning(PROPOSAL_ATTRIBUTE.ID_)
+                .returning(PROPOSAL_ATTRIBUTE.ID)
                 .fetchOne();
         if (ret != null) {
-            proposalAttribute.setId_(ret.getValue(PROPOSAL_ATTRIBUTE.ID_));
+            proposalAttribute.setId(ret.getValue(PROPOSAL_ATTRIBUTE.ID));
             return proposalAttribute;
         } else {
             return null;
@@ -42,14 +42,14 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
     }
 
     @Override
-    public ProposalAttribute get(Long id_) throws NotFoundException {
+    public ProposalAttribute get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_ATTRIBUTE)
-                .where(PROPOSAL_ATTRIBUTE.ID_.eq(id_))
+                .where(PROPOSAL_ATTRIBUTE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ProposalAttribute with id " + id_ + " does not exist");
+            throw new NotFoundException("ProposalAttribute with id " + id + " does not exist");
         }
         return record.into(ProposalAttribute.class);
 
@@ -65,7 +65,7 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
                 .set(PROPOSAL_ATTRIBUTE.NUMERIC_VALUE, proposalAttribute.getNumericValue())
                 .set(PROPOSAL_ATTRIBUTE.STRING_VALUE, proposalAttribute.getStringValue())
                 .set(PROPOSAL_ATTRIBUTE.REAL_VALUE, proposalAttribute.getRealValue())
-                .where(PROPOSAL_ATTRIBUTE.ID_.eq(proposalAttribute.getId_()))
+                .where(PROPOSAL_ATTRIBUTE.ID.eq(proposalAttribute.getId()))
                 .execute() > 0;
     }
 
@@ -90,9 +90,9 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
     }
 
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(PROPOSAL_ATTRIBUTE)
-                .where(PROPOSAL_ATTRIBUTE.ID_.eq(id_))
+                .where(PROPOSAL_ATTRIBUTE.ID.eq(id))
                 .execute();
     }
 

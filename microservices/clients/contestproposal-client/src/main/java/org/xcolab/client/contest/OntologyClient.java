@@ -125,9 +125,9 @@ public class OntologyClient {
         return null;
     }
 
-    public OntologyTerm getOntologyTerm(long Id_) {
+    public OntologyTerm getOntologyTerm(long Id) {
          try {
-             return ontologyTermResource.get(Id_)
+             return ontologyTermResource.get(Id)
                      .withCache(CacheName.CONTEST_ONTOLOGY)
                      .executeChecked().toPojo(serviceNamespace);
          } catch (EntityNotFoundException ignored) {
@@ -146,7 +146,7 @@ public class OntologyClient {
 
     public boolean updateOntologyTerm(OntologyTerm ontologyTerm) {
         final Boolean result = ontologyTermResource
-                .update(new OntologyTermDto(ontologyTerm), ontologyTerm.getId_())
+                .update(new OntologyTermDto(ontologyTerm), ontologyTerm.getId())
                 .cacheName(CacheName.CONTEST_ONTOLOGY)
                 .execute();
         //TODO COLAB-2589: fine-grained cache removal
@@ -154,8 +154,8 @@ public class OntologyClient {
         return result;
     }
 
-    public boolean deleteOntologyTerm(Long id_) {
-        final Boolean result = ontologyTermResource.delete(id_)
+    public boolean deleteOntologyTerm(Long id) {
+        final Boolean result = ontologyTermResource.delete(id)
                 .cacheName(CacheName.CONTEST_ONTOLOGY)
                 .execute();
         //TODO COLAB-2589: fine-grained cache removal
@@ -171,7 +171,7 @@ public class OntologyClient {
 
         OntologyTerm ontologyParentTerm = getOntologyTerm(ontologyTermId);
         List<OntologyTerm> ontologyTermList =
-                getAllOntologyTermDescendant(ontologyParentTerm.getId_());
+                getAllOntologyTermDescendant(ontologyParentTerm.getId());
         ontologyTermList.add(ontologyParentTerm);
         List<FocusAreaOntologyTerm> focusAreaOntologyTerms =
                 getFocusAreaOntologyTermsByFocusArea(focusAreaId);
@@ -179,7 +179,7 @@ public class OntologyClient {
         Set<Long> ontologyTermIds = new HashSet<>();
 
         for (OntologyTerm ontologyTerm : ontologyTermList) {
-            ontologyTermIds.add(ontologyTerm.getId_());
+            ontologyTermIds.add(ontologyTerm.getId());
         }
 
         for (FocusAreaOntologyTerm focusAreaOntologyTerm : focusAreaOntologyTerms) {
@@ -227,12 +227,12 @@ public class OntologyClient {
     }
 
     public boolean updateFocusArea(FocusArea focusArea) {
-        return focusAreaResource.update(new FocusAreaDto(focusArea), focusArea.getId_())
+        return focusAreaResource.update(new FocusAreaDto(focusArea), focusArea.getId())
                 .execute();
     }
 
-    public boolean deleteFocusArea(Long id_) {
-        return  focusAreaResource.delete(id_).execute();
+    public boolean deleteFocusArea(Long id) {
+        return  focusAreaResource.delete(id).execute();
     }
 
     public boolean deleteFocusAreaOntologyTerm(Long focusAreaId,Long ontologyTermId) {
@@ -241,13 +241,13 @@ public class OntologyClient {
                 .queryParam("ontologyTermId", ontologyTermId).delete();
     }
 
-    public FocusArea getFocusArea(long Id_) {
-        return focusAreaResource.get(Id_)
+    public FocusArea getFocusArea(long Id) {
+        return focusAreaResource.get(Id)
                 .execute().toPojo(serviceNamespace);
     }
 
-    public OntologySpace getOntologySpace(long id_) {
-        return ontologySpaceResource.get(id_)
+    public OntologySpace getOntologySpace(long id) {
+        return ontologySpaceResource.get(id)
                 .execute().toPojo(serviceNamespace);
     }
 
@@ -255,7 +255,7 @@ public class OntologyClient {
             FocusArea focusArea, OntologySpace ontologySpace) {
         List<OntologyTerm> list = new ArrayList<>();
         for (OntologyTerm term : getOntologyTermsForFocusArea(focusArea)) {
-            if (term.getOntologySpaceId() == ontologySpace.getId_().longValue()) {
+            if (term.getOntologySpaceId() == ontologySpace.getId().longValue()) {
                 list.add(term);
             }
         }
@@ -266,7 +266,7 @@ public class OntologyClient {
     public List<OntologyTerm> getOntologyTermsForFocusArea(FocusArea focusArea) {
         List<OntologyTerm> ret = new ArrayList<>();
         for (FocusAreaOntologyTerm faot : getFocusAreaOntologyTermsByFocusArea(
-                focusArea.getId_())) {
+                focusArea.getId())) {
             ret.add(getOntologyTerm(faot.getOntologyTermId()));
         }
         return ret;
@@ -275,7 +275,7 @@ public class OntologyClient {
     public OntologyTerm getOntologyTermFromFocusAreaWithOntologySpace(FocusArea focusArea,
             OntologySpace ontologySpace) {
         for (OntologyTerm term : getOntologyTermsForFocusArea(focusArea)) {
-            if (term.getOntologySpaceId() == ontologySpace.getId_().longValue()) {
+            if (term.getOntologySpaceId() == ontologySpace.getId().longValue()) {
                 return term;
             }
         }

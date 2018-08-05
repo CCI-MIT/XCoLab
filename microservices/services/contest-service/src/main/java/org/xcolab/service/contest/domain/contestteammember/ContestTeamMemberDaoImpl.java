@@ -35,20 +35,20 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
                 .set(CONTEST_TEAM_MEMBER.CONTEST_ID, contestTeamMember.getContestId())
                 .set(CONTEST_TEAM_MEMBER.USER_ID, contestTeamMember.getUserId())
                 .set(CONTEST_TEAM_MEMBER.ROLE_ID, contestTeamMember.getRoleId())
-                .returning(CONTEST_TEAM_MEMBER.ID_)
+                .returning(CONTEST_TEAM_MEMBER.ID)
                 .fetchOne();
         if (ret == null) {
             throw new IllegalStateException("Could not retrieve inserted id");
         }
-        contestTeamMember.setId_(ret.getValue(CONTEST_TEAM_MEMBER.ID_));
+        contestTeamMember.setId(ret.getValue(CONTEST_TEAM_MEMBER.ID));
         return contestTeamMember;
     }
 
     @Override
-    public Optional<ContestTeamMember> get(Long id_) throws NotFoundException{
+    public Optional<ContestTeamMember> get(Long id) throws NotFoundException{
 
         final Record record =  this.dslContext.selectFrom(CONTEST_TEAM_MEMBER)
-                .where(CONTEST_TEAM_MEMBER.ID_.eq(id_))
+                .where(CONTEST_TEAM_MEMBER.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
@@ -59,10 +59,10 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public boolean exists(Long id_) {
+    public boolean exists(Long id) {
         return dslContext.selectCount()
                 .from(CONTEST_TEAM_MEMBER)
-                .where(CONTEST_TEAM_MEMBER.ID_.eq(id_))
+                .where(CONTEST_TEAM_MEMBER.ID.eq(id))
                 .fetchOne().into(Integer.class) > 0;
 
     }
@@ -87,7 +87,7 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
                 .set(CONTEST_TEAM_MEMBER.CONTEST_ID, contestTeamMember.getContestId())
                 .set(CONTEST_TEAM_MEMBER.USER_ID, contestTeamMember.getUserId())
                 .set(CONTEST_TEAM_MEMBER.ROLE_ID, contestTeamMember.getRoleId())
-                .where(CONTEST_TEAM_MEMBER.ID_.eq(contestTeamMember.getId_()))
+                .where(CONTEST_TEAM_MEMBER.ID.eq(contestTeamMember.getId()))
                 .execute() > 0;
     }
 
@@ -122,9 +122,9 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public boolean delete(Long id_) {
+    public boolean delete(Long id) {
         return dslContext.deleteFrom(CONTEST_TEAM_MEMBER)
-                .where(CONTEST_TEAM_MEMBER.ID_.eq(id_))
+                .where(CONTEST_TEAM_MEMBER.ID.eq(id))
                 .execute() > 0;
     }
 }

@@ -23,8 +23,8 @@ public class MemberItem implements Serializable {
 
     public MemberItem(Member member, String memberCategoryParam) {
 
-        userId = member.getId_();
-        activityCount = ActivitiesClientUtil.countActivities(member.getId_(), null);
+        userId = member.getId();
+        activityCount = ActivitiesClientUtil.countActivities(member.getId(), null);
         screenName = member.getDisplayName();
         joinDate = member.getCreatedAt();
         points = MembersClient.getMemberMaterializedPoints(userId);

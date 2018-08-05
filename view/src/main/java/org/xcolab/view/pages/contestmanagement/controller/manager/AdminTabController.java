@@ -277,8 +277,8 @@ public class AdminTabController extends AbstractTabController {
             Member member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
                     registerLineBean.getFirstName(), registerLineBean.getLastName());
             if (batchRegisterBean.getAsGuests()) {
-                MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
-                MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
+                MembersClient.assignMemberRole(member.getId(), MemberRole.GUEST.getRoleId());
+                MembersClient.removeMemberRole(member.getId(), MemberRole.MEMBER.getRoleId());
             }
         }
 

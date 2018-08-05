@@ -22,7 +22,7 @@ public class PointType extends AbstractPointType {
     }
 
     public PointType(
-            Long id_,
+            Long id,
             Long parentpointtypeid,
             Double percentageofparent,
             String distributionstrategy,
@@ -30,7 +30,7 @@ public class PointType extends AbstractPointType {
             String name,
             Long sort
     ) {
-        super(id_, parentpointtypeid, percentageofparent, distributionstrategy,
+        super(id, parentpointtypeid, percentageofparent, distributionstrategy,
                 receiverlimitationstrategy, name, sort);
         initChildren();
     }
@@ -47,9 +47,9 @@ public class PointType extends AbstractPointType {
 
     }
     private void initChildren(){
-        if(this.getId_()!= null) {
+        if(this.getId()!= null) {
             List<PointType> unwrappedChildren =
-                    PointsClientUtil.getClient().getChildrenOfPointType(this.getId_());
+                    PointsClientUtil.getClient().getChildrenOfPointType(this.getId());
             this.children = new ArrayList<>();
             for (PointType child : unwrappedChildren) {
                 this.children.add(new PointType(child, this.percentageOfTotal));
@@ -62,7 +62,7 @@ public class PointType extends AbstractPointType {
     }
 
     public Long getId() {
-        return this.getId_();
+        return this.getId();
     }
 
     //DEAL WITH IT

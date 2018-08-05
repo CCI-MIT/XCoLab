@@ -46,12 +46,12 @@ public class ContestTeamMembersController {
                 .orElseThrow(NotFoundException::new);
     }
 
-    @PutMapping(value = "/contestTeamMembers/{id_}")
+    @PutMapping(value = "/contestTeamMembers/{id}")
     public boolean updateContestTeamMember(@RequestBody ContestTeamMember contestTeamMember,
-                                           @PathVariable("id_") Long id_) throws NotFoundException {
+                                           @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || contestTeamMemberDao.get(id_) == null) {
-            throw new NotFoundException("No ContestTeamMember with id " + id_);
+        if (id == null || id == 0 || contestTeamMemberDao.get(id) == null) {
+            throw new NotFoundException("No ContestTeamMember with id " + id);
         } else {
             return contestTeamMemberDao.update(contestTeamMember);
         }
@@ -74,11 +74,11 @@ public class ContestTeamMembersController {
         return contestTeamMemberDao.findByContestYear(categoryId,contestYear);
     }
 
-    @DeleteMapping(value = "/contestTeamMembers/{id_}")
-    public boolean deleteContestTeamMember(@PathVariable long id_)
+    @DeleteMapping(value = "/contestTeamMembers/{id}")
+    public boolean deleteContestTeamMember(@PathVariable long id)
             throws NotFoundException {
-        if (contestTeamMemberDao.exists(id_)) {
-            return contestTeamMemberDao.delete(id_);
+        if (contestTeamMemberDao.exists(id)) {
+            return contestTeamMemberDao.delete(id);
         } else {
             throw new NotFoundException("No ContestTeamMember with id given");
         }

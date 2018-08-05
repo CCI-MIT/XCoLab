@@ -16,7 +16,7 @@
             </div>
             <input type="hidden" name="messageSubject" id="messageSubject"
                    value="${currentMessageBean.replySubject}"/>
-            <input type="hidden" name="userIdsRecipients" id="userIdsRecipients" value="${currentMessageBean.from.id_}"/>
+            <input type="hidden" name="userIdsRecipients" id="userIdsRecipients" value="${currentMessageBean.from.id}"/>
             <input type="hidden" name="threadId" id="threadId" value="${threadId}"/>
         </div>
         <div class="modal-footer">

@@ -65,11 +65,11 @@ public class ProposalDaoImpl implements ProposalDao {
                             .and(ribbonAttribute.CONTEST_PHASE_ID
                                     .eq(CONTEST_PHASE.CONTEST_PHASE_PK)));
             if (ribbon.contains(0)) {
-                query.addConditions(ribbonAttribute.ID_.isNull());
+                query.addConditions(ribbonAttribute.ID.isNull());
             } else {
                 query.addJoin(CONTEST_PHASE_RIBBON_TYPE,
                         ribbonAttribute.NAME.eq(ProposalContestPhaseAttributeKeys.RIBBON)
-                                .and(CONTEST_PHASE_RIBBON_TYPE.ID_
+                                .and(CONTEST_PHASE_RIBBON_TYPE.ID
                                         .eq(ribbonAttribute.NUMERIC_VALUE)));
                 query.addConditions(CONTEST_PHASE_RIBBON_TYPE.RIBBON.in(ribbon));
             }
@@ -145,7 +145,7 @@ public class ProposalDaoImpl implements ProposalDao {
                         .and(visibleAttribute.CONTEST_PHASE_ID.eq(CONTEST_PHASE.CONTEST_PHASE_PK))
                         .and(visibleAttribute.NAME.eq(ProposalContestPhaseAttributeKeys.VISIBLE))
                         .and(visibleAttribute.NUMERIC_VALUE.eq(0L)));
-        query.addConditions(visibleAttribute.ID_.isNull());
+        query.addConditions(visibleAttribute.ID.isNull());
     }
 
     private void addFindByGivenConditions(Long contestId, Boolean visible, Long contestPhaseId,
@@ -165,7 +165,7 @@ public class ProposalDaoImpl implements ProposalDao {
                     .and(ribbonAttribute.CONTEST_PHASE_ID.eq(CONTEST_PHASE.CONTEST_PHASE_PK)));
             query.addJoin(CONTEST_PHASE_RIBBON_TYPE,
                     ribbonAttribute.NAME.eq(ProposalContestPhaseAttributeKeys.RIBBON)
-                            .and(CONTEST_PHASE_RIBBON_TYPE.ID_.eq(ribbonAttribute.NUMERIC_VALUE)));
+                            .and(CONTEST_PHASE_RIBBON_TYPE.ID.eq(ribbonAttribute.NUMERIC_VALUE)));
         }
 
         if (contestPhaseId != null) {

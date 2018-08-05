@@ -65,7 +65,7 @@ public final class PointsClient {
             PointsDistributionConfiguration pointsDistributionConfiguration) {
         return pointsDistributionConfigurationResource
                 .update(new PointsDistributionConfigurationDto(pointsDistributionConfiguration),
-                        pointsDistributionConfiguration.getId_())
+                        pointsDistributionConfiguration.getId())
                 .execute();
     }
 
@@ -92,9 +92,9 @@ public final class PointsClient {
                 .queryParam("proposalId", proposalId).delete();
     }
 
-    public PointType getPointType(long Id_) {
-        return pointTypeResource.get(Id_)
-                .withCache(CacheKeys.of(PointTypeDto.class, Id_), CacheName.MISC_REQUEST)
+    public PointType getPointType(long Id) {
+        return pointTypeResource.get(Id)
+                .withCache(CacheKeys.of(PointTypeDto.class, Id), CacheName.MISC_REQUEST)
                 .execute().toPojo(serviceNamespace);
 
     }

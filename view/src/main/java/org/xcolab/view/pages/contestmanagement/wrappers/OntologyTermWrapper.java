@@ -19,7 +19,7 @@ public class OntologyTermWrapper {
     }
 
     public long getId() {
-        return ontologyTerm.getId_();
+        return ontologyTerm.getId();
     }
 
     public String getName() {

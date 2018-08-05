@@ -10,11 +10,11 @@ public interface OntologySpaceDao {
 
     List<OntologySpace> findByGiven();
 
-    int delete(Long id_);
+    int delete(Long id);
 
     boolean update(OntologySpace ontologySpace);
 
-    OntologySpace get(Long id_) throws NotFoundException;
+    OntologySpace get(Long id) throws NotFoundException;
 
     OntologySpace create(OntologySpace ontologySpace);
 }

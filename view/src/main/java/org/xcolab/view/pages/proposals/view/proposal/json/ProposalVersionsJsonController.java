@@ -107,7 +107,7 @@ public class ProposalVersionsJsonController {
                         .add("version", proposalVersion.getVersion())
                         .add("date", proposalVersion.getCreatedAt().getTime())
                         .add("author", Json.createObjectBuilder()
-                                .add("userId", author.getId_())
+                                .add("userId", author.getId())
                                 .add("screenName", author.getScreenName())
                                 .add("fullName", author.getFullName()))
                         .add("updateType", proposalVersion.getUpdateType())

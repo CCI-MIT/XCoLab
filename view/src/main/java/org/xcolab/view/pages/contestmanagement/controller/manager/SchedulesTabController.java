@@ -56,7 +56,7 @@ public class SchedulesTabController extends AbstractTabController {
     public List<LabelValue> populateContestPhaseTypesSelectionItems() {
         return ContestClientUtil.getAllContestPhaseTypes().stream()
                 .filter(phaseType -> !phaseType.getIsDeprecated())
-                .map(phaseType -> new LabelValue(phaseType.getId_(), phaseType.getName()))
+                .map(phaseType -> new LabelValue(phaseType.getId(), phaseType.getName()))
                 .collect(Collectors.toList());
     }
 
@@ -64,7 +64,7 @@ public class SchedulesTabController extends AbstractTabController {
     public List<LabelValue> populateContestPhaseTypesSelectionItemsDeprecated() {
         return ContestClientUtil.getAllContestPhaseTypes().stream()
                 .filter(phaseType -> phaseType.getIsDeprecated())
-                .map(phaseType -> new LabelValue(phaseType.getId_(), phaseType.getName() + " (Deprecated)"))
+                .map(phaseType -> new LabelValue(phaseType.getId(), phaseType.getName() + " (Deprecated)"))
                 .collect(Collectors.toList());
     }
 
@@ -105,7 +105,7 @@ public class SchedulesTabController extends AbstractTabController {
         final List<ContestSchedule> contestSchedules =
                 ContestClientUtil.getAllContestSchedules();
         if (!contestSchedules.isEmpty()) {
-            return contestSchedules.get(0).getId_();
+            return contestSchedules.get(0).getId();
         }
         return -1L;
     }
@@ -142,7 +142,7 @@ public class SchedulesTabController extends AbstractTabController {
 
         AlertMessage.CREATED.flash(request);
         model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
-        return showScheduleTabController(request, response, model, member, newContestSchedule.getId_());
+        return showScheduleTabController(request, response, model, member, newContestSchedule.getId());
     }
 
     private String updateSchedule(HttpServletRequest request, HttpServletResponse response,

@@ -59,7 +59,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
             Member member = getMemberOrNull(activityEntry);
 
             List<String> row = new ArrayList<>();
-            addValue(row, member != null ? member.getId_() : MEMBER_NOT_FOUND_MESSAGE);
+            addValue(row, member != null ? member.getId() : MEMBER_NOT_FOUND_MESSAGE);
             addValue(row, member != null ? member.getScreenName() : MEMBER_NOT_FOUND_MESSAGE);
             addValue(row, member != null ? member.getFirstName() : MEMBER_NOT_FOUND_MESSAGE);
             addValue(row, member != null ? member.getLastName() : MEMBER_NOT_FOUND_MESSAGE);

@@ -19,7 +19,7 @@ public class MembersClientMockerHelper {
         member.setScreenName(TestUtil.createStringWithLength(10));
         member.setFirstName(TestUtil.createStringWithLength(10));
         member.setLastName(TestUtil.createStringWithLength(10));
-        member.setId_(100L);
+        member.setId(100L);
         member.setHashedPassword(TestUtil.createStringWithLength(10));
         return member;
     }

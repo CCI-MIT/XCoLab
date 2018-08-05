@@ -101,7 +101,7 @@ public class ProposalReferenceService {
                 }
 
                 for (long subProposalId : subProposalIds) {
-                    addProposalReference(proposal.getProposalId(), subProposalId, attribute.getId_());
+                    addProposalReference(proposal.getProposalId(), subProposalId, attribute.getId());
                     try {
                         populateTableWithProposal(proposalDao.get(subProposalId), processedProposals);
                     } catch (NotFoundException ignored) {

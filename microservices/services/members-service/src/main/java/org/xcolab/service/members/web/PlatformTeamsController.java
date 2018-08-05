@@ -60,7 +60,7 @@ public class PlatformTeamsController {
     @PutMapping("{teamId}")
     public PlatformTeam updatePlatformTeam(@RequestBody PlatformTeam platformTeam, @PathVariable
             Long teamId) {
-        assert (platformTeam.getId_().equals(teamId));
+        assert (platformTeam.getId().equals(teamId));
         return platformTeamDao.updateOrInsertPlatformTeam(platformTeam);
     }
 

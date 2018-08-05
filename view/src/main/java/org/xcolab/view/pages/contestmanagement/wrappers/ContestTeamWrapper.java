@@ -68,9 +68,9 @@ public class ContestTeamWrapper {
 
     private void removeTeamMember(ContestTeamMember contestTeamMember) {
         try {
-            ContestTeamMemberClientUtil.deleteContestTeamMember(contestTeamMember.getId_());
+            ContestTeamMemberClientUtil.deleteContestTeamMember(contestTeamMember.getId());
         } catch (UncheckedEntityNotFoundException e) {
-            log.warn("ContestTeamMember {} already deleted", contestTeamMember.getId_());
+            log.warn("ContestTeamMember {} already deleted", contestTeamMember.getId());
         }
         Long userId = contestTeamMember.getUserId();
         Long roleId = contestTeamMember.getRoleId();

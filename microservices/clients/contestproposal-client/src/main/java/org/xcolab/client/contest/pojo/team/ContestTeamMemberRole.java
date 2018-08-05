@@ -13,8 +13,8 @@ public class ContestTeamMemberRole extends AbstractContestTeamMemberRole
         super(value);
     }
 
-    public ContestTeamMemberRole(Long id_, String role, Integer sort) {
-        super(id_, role, sort);
+    public ContestTeamMemberRole(Long id, String role, Integer sort) {
+        super(id, role, sort);
     }
 
     public ContestTeamMemberRole(AbstractContestTeamMemberRole abstractContestTeamMemberRole,
@@ -23,7 +23,7 @@ public class ContestTeamMemberRole extends AbstractContestTeamMemberRole
     }
 
     public ContestRole getContestRole() {
-        return ContestRole.fromRoleId(getId_());
+        return ContestRole.fromRoleId(getId());
     }
 
     @Override

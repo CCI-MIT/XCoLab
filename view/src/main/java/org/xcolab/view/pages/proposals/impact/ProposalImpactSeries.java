@@ -71,7 +71,7 @@ public class ProposalImpactSeries {
         this.impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
         // Retrieve static serieses
         bauSeries = OntologyClientUtil
-                .getImpactDefaultSeriesByFocusAreaAndSeriesName(focusArea.getId_(), SERIES_TYPE_BAU_KEY);
+                .getImpactDefaultSeriesByFocusAreaAndSeriesName(focusArea.getId(), SERIES_TYPE_BAU_KEY);
         addSeriesWithType(bauSeries, false, false);
 
         //        ddppSeries = ImpactDefaultSeriesLocalServiceUtil
@@ -112,7 +112,7 @@ public class ProposalImpactSeries {
     private void loadEditableData() {
         // Get default serieses
         List<ImpactDefaultSeries> impactDefaultSerieses =
-                OntologyClientUtil.getAllmpactDefaultSeriesByFocusArea(focusArea.getId_());
+                OntologyClientUtil.getAllmpactDefaultSeriesByFocusArea(focusArea.getId());
 
         final ProposalAttributeHelper proposalAttributeHelper =
                 proposal.getProposalAttributeHelper();
@@ -128,7 +128,7 @@ public class ProposalImpactSeries {
                 for (ImpactIteration iteration : impactIterations) {
                     String attributeName = defaultSeries.getName() + "_" + iteration.getYear();
                     final ProposalAttribute attribute = proposalAttributeHelper
-                            .getAttributeOrNull(attributeName, focusArea.getId_());
+                            .getAttributeOrNull(attributeName, focusArea.getId());
                     if (attribute != null) {
                         foundEnteredData = true;
                         addSeriesValueWithType(seriesType, iteration.getYear(),
@@ -168,7 +168,7 @@ public class ProposalImpactSeries {
         this(contest, proposal, focusArea, false);
 
         for (ImpactDefaultSeries defaultSeries : OntologyClientUtil
-                .getAllmpactDefaultSeriesByFocusArea(focusArea.getId_())) {
+                .getAllmpactDefaultSeriesByFocusArea(focusArea.getId())) {
             if (!defaultSeries.getEditable()) {
                 continue;
             }
@@ -251,7 +251,7 @@ public class ProposalImpactSeries {
                     version = ProposalAttributeClientUtil
                             .setProposalAttribute(author.getUserId(), proposal.getProposalId(),
                                     seriesType.getAttributeName(iteration.getYear()),
-                                    focusArea.getId_(), "", null,
+                                    focusArea.getId(), "", null,
                                     filteredValue, version).getVersion();
                 }
 
@@ -280,7 +280,7 @@ public class ProposalImpactSeries {
         JSONObject returnObject = new JSONObject();
         JSONObject serieses = new JSONObject();
 
-        returnObject.put("focusAreaId", getFocusArea().getId_());
+        returnObject.put("focusAreaId", getFocusArea().getId());
 
         if (getSeriesAuthor() != null && getUpdatedDate() != null) {
             // Author info
@@ -307,7 +307,7 @@ public class ProposalImpactSeries {
             final ProposalImpactSeriesValues seriesValues = seriesTypeToSeriesMap.get(seriesType);
 
             ImpactDefaultSeries defaultSeries = OntologyClientUtil
-                    .getImpactDefaultSeriesByFocusAreaAndSeriesName(focusArea.getId_(), seriesType.name());
+                    .getImpactDefaultSeriesByFocusAreaAndSeriesName(focusArea.getId(), seriesType.name());
 
             JSONObject series = new JSONObject();
             series.put("name", defaultSeries.getName());

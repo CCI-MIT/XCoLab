@@ -221,7 +221,7 @@ public final class ProposalPhaseClient {
             ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return proposalContestPhaseAttributeResource
                 .update(new ProposalContestPhaseAttributeDto(proposalContestPhaseAttribute),
-                        proposalContestPhaseAttribute.getId_())
+                        proposalContestPhaseAttribute.getId())
                 .execute();
     }
 
@@ -261,7 +261,7 @@ public final class ProposalPhaseClient {
             String name) {
         ProposalContestPhaseAttribute pcpa =
                 getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
-        return proposalContestPhaseAttributeResource.delete(pcpa.getId_()).execute();
+        return proposalContestPhaseAttributeResource.delete(pcpa.getId()).execute();
     }
 
     public List<Long> getContestPhasesForProposal(long proposalId) {

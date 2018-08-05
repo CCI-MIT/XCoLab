@@ -55,7 +55,7 @@ public class PointsDistributionUtil {
     public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds) {
         List<PointsTarget> targets = new ArrayList<>();
         //for (PointsDistributionConfiguration pdc : PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
-        for (PointsDistributionConfiguration pdc : pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId_())) {
+        for (PointsDistributionConfiguration pdc : pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId())) {
             if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getProposalId()) {
                 PointsTarget target = new PointsTarget();
                 target.setProposalId(pdc.getTargetSubProposalId());
