@@ -20,7 +20,7 @@ public class AbstractGroup_ implements Serializable {
     private String  friendlyurl;
     private Boolean active_;
     private Boolean site;
-    private String  uuid_;
+    private String  uuid;
     private String  treepath;
     private Boolean manualmembership;
     private Integer membershiprestriction;
@@ -43,7 +43,7 @@ public class AbstractGroup_ implements Serializable {
         this.friendlyurl = value.friendlyurl;
         this.active_ = value.active_;
         this.site = value.site;
-        this.uuid_ = value.uuid_;
+        this.uuid = value.uuid;
         this.treepath = value.treepath;
         this.manualmembership = value.manualmembership;
         this.membershiprestriction = value.membershiprestriction;
@@ -65,7 +65,7 @@ public class AbstractGroup_ implements Serializable {
             String  friendlyurl,
             Boolean active_,
             Boolean site,
-            String  uuid_,
+            String  uuid,
             String  treepath,
             Boolean manualmembership,
             Integer membershiprestriction,
@@ -85,7 +85,7 @@ public class AbstractGroup_ implements Serializable {
         this.friendlyurl = friendlyurl;
         this.active_ = active_;
         this.site = site;
-        this.uuid_ = uuid_;
+        this.uuid = uuid;
         this.treepath = treepath;
         this.manualmembership = manualmembership;
         this.membershiprestriction = membershiprestriction;
@@ -205,11 +205,11 @@ public class AbstractGroup_ implements Serializable {
     }
 
     public String getUuid_() {
-        return this.uuid_;
+        return this.uuid;
     }
 
-    public void setUuid_(String uuid_) {
-        this.uuid_ = uuid_;
+    public void setUuid_(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getTreePath() {
@@ -337,11 +337,11 @@ public class AbstractGroup_ implements Serializable {
         }
         else if (!site.equals(other.site))
             return false;
-        if (uuid_ == null) {
-            if (other.uuid_ != null)
+        if (uuid == null) {
+            if (other.uuid != null)
                 return false;
         }
-        else if (!uuid_.equals(other.uuid_))
+        else if (!uuid.equals(other.uuid))
             return false;
         if (treepath == null) {
             if (other.treepath != null)
@@ -388,7 +388,7 @@ public class AbstractGroup_ implements Serializable {
         result = prime * result + ((friendlyurl == null) ? 0 : friendlyurl.hashCode());
         result = prime * result + ((active_ == null) ? 0 : active_.hashCode());
         result = prime * result + ((site == null) ? 0 : site.hashCode());
-        result = prime * result + ((uuid_ == null) ? 0 : uuid_.hashCode());
+        result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
         result = prime * result + ((treepath == null) ? 0 : treepath.hashCode());
         result = prime * result + ((manualmembership == null) ? 0 : manualmembership.hashCode());
         result = prime * result + ((membershiprestriction == null) ? 0 : membershiprestriction.hashCode());
@@ -402,7 +402,7 @@ public class AbstractGroup_ implements Serializable {
         return "Group_ (" + groupid + ", " + companyid + ", " + creatoruserid + ", " + classnameid
                 + ", " + classpk + ", " + parentgroupid + ", " + livegroupid + ", " + name
                 + ", " + description + ", " + type_ + ", " + typesettings + ", "
-                + friendlyurl + ", " + active_ + ", " + site + ", " + uuid_ + ", "
+                + friendlyurl + ", " + active_ + ", " + site + ", " + uuid + ", "
                 + treepath + ", " + manualmembership + ", " + membershiprestriction + ", "
                 + remotestaginggroupcount + ")";
     }

@@ -28,7 +28,7 @@ public class Role_ implements Serializable {
 	private String    description;
 	private Integer   type_;
 	private String    subtype;
-	private String    uuid_;
+	private String    uuid;
 	private Long      userid;
 	private String    username;
 	private Timestamp createdAt;
@@ -46,7 +46,7 @@ public class Role_ implements Serializable {
 		this.description = value.description;
 		this.type_ = value.type_;
 		this.subtype = value.subtype;
-		this.uuid_ = value.uuid_;
+		this.uuid = value.uuid;
 		this.userid = value.userid;
 		this.username = value.username;
 		this.createdAt = value.createdAt;
@@ -63,7 +63,7 @@ public class Role_ implements Serializable {
 		String    description,
 		Integer   type_,
 		String    subtype,
-		String    uuid_,
+		String    uuid,
 		Long      userid,
 		String    username,
 		Timestamp createdAt,
@@ -78,7 +78,7 @@ public class Role_ implements Serializable {
 		this.description = description;
 		this.type_ = type_;
 		this.subtype = subtype;
-		this.uuid_ = uuid_;
+		this.uuid = uuid;
 		this.userid = userid;
 		this.username = username;
 		this.createdAt = createdAt;
@@ -158,11 +158,11 @@ public class Role_ implements Serializable {
 	}
 
 	public String getUuid_() {
-		return this.uuid_;
+		return this.uuid;
 	}
 
-	public void setUuid_(String uuid_) {
-		this.uuid_ = uuid_;
+	public void setUuid_(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public Long getUserId() {
@@ -202,7 +202,7 @@ public class Role_ implements Serializable {
         String sb =
                 "Role_ (" + roleid + ", " + companyid + ", " + classnameid + ", " + classpk + ", "
                         + name + ", " + title + ", " + description + ", " + type_ + ", " + subtype
-                        + ", " + uuid_ + ", " + userid + ", " + username + ", " + createdAt + ", "
+                        + ", " + uuid + ", " + userid + ", " + username + ", " + createdAt + ", "
                         + updatedAt + ")";
 
         return sb;
