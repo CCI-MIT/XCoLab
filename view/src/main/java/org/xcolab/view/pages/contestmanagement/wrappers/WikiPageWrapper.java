@@ -53,9 +53,9 @@ public class WikiPageWrapper {
 
             try {
                 contentArticle = ContentsClient.getContentArticle(
-                        contentArticleVersion.getContentArticleId());
+                        contentArticleVersion.getArticleId());
 
-                final long resourceArticleId = contentArticle.getContentArticleId();
+                final long resourceArticleId = contentArticle.getId();
                 contest.setResourceArticleId(resourceArticleId);
                 ContestClientUtil.updateContest(contest);
 
@@ -95,7 +95,7 @@ public class WikiPageWrapper {
         if (!contentArticleVersion.getContent().equals(updatedResourcesContent)) {
             contentArticleVersion.setTitle(contest.getContestShortName());
             contentArticleVersion.setContent(updatedResourcesContent);
-            contentArticleVersion.setContentArticleId(contentArticle.getContentArticleId());
+            contentArticleVersion.setArticleId(contentArticle.getId());
             contentArticleVersion.setauthorUserid(loggedInUserId);
             ContentsClient.updateContentArticleVersion(contentArticleVersion);
         }

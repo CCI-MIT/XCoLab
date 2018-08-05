@@ -139,7 +139,7 @@
                 By:&#160;
                 <c:choose>
                     <c:when test="${empty proposal.team }">
-                        <xcolab:userLinkSimple userId="${proposal.authorUserid }" text="${proposal.authorName }" />
+                        <xcolab:userLinkSimple userId="${proposal.authorUserId }" text="${proposal.authorName }" />
                     </c:when>
                     <c:otherwise>
                         ${proposal.authorName }

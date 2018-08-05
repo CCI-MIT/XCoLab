@@ -57,9 +57,9 @@ public class ContentEditorController extends BaseContentEditor {
 
         if (contentFolders != null) {
             for (ContentFolder cf : contentFolders) {
-                if (cf.getContentFolderId() != ContentFolder.RESOURCE_FOLDER_ID) {
-                    responseArray.put(folderNode(cf.getContentFolderName(),
-                            cf.getContentFolderId().toString()));
+                if (cf.getId() != ContentFolder.RESOURCE_FOLDER_ID) {
+                    responseArray.put(folderNode(cf.getName(),
+                            cf.getId().toString()));
                 }
             }
         }
@@ -68,9 +68,9 @@ public class ContentEditorController extends BaseContentEditor {
         if (contentArticles != null) {
             for (ContentArticleVersion ca : contentArticles) {
                 ContentArticle contentArticle =
-                        ContentsClient.getContentArticle(ca.getContentArticleId());
+                        ContentsClient.getContentArticle(ca.getArticleId());
                 if (contentArticle.getVisible()) {
-                    responseArray.put(articleNode(ca.getTitle(), ca.getContentArticleId()));
+                    responseArray.put(articleNode(ca.getTitle(), ca.getArticleId()));
                 }
             }
         }
@@ -95,7 +95,7 @@ public class ContentEditorController extends BaseContentEditor {
             //if there is no content for the encoding passed, get the default from the database
             contentArticleVersion = ContentsClient
                     .getLatestVersionByArticleIdAndLanguage(articleId, defaultEncoding);
-            contentArticleVersion.setContentArticleVersionId(0L);
+            contentArticleVersion.setId(0L);
             contentArticleVersion.setLang(encoding);
         }
 
@@ -113,7 +113,7 @@ public class ContentEditorController extends BaseContentEditor {
                 ContentsClient.getContentArticleVersion(articleVersionId);
 
         JSONObject articleVersion =
-                getContentArticleVersion(contentArticleVersion.getContentArticleId(),
+                getContentArticleVersion(contentArticleVersion.getArticleId(),
                         contentArticleVersion);
 
         response.getOutputStream().write(articleVersion.toString().getBytes());
@@ -131,19 +131,19 @@ public class ContentEditorController extends BaseContentEditor {
         for (ContentArticleVersion cav : cavs) {
             articleVersion = new JSONObject();
             articleVersion.put("createdAt", cav.getCreatedAt());
-            articleVersion.put("contentArticleVersionId", cav.getContentArticleVersionId());
+            articleVersion.put("contentArticleVersionId", cav.getId());
             versions.put(articleVersion);
         }
         articleVersion = new JSONObject();
         ContentPage cp = ContentsClient
-                .getContentPageByContentArticleId(contentArticleVersion.getContentArticleId());
+                .getContentPageByContentArticleId(contentArticleVersion.getArticleId());
 
         if (cp != null) {
             articleVersion.put("contentUrl", cp.getTitle());
         }
         articleVersion.put("title", contentArticleVersion.getTitle());
         articleVersion.put("folderId", contentArticleVersion.getFolderId());
-        articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
+        articleVersion.put("articleId", contentArticleVersion.getArticleId());
         articleVersion.put("content", contentArticleVersion.getContent());
         articleVersion.put("lang", contentArticleVersion.getLang());
         articleVersion.put("createdAt", contentArticleVersion.getCreatedAt());
@@ -166,7 +166,7 @@ public class ContentEditorController extends BaseContentEditor {
             @RequestParam(required = false) String folderName,
             @RequestParam(required = false) Long parentFolderId) throws IOException {
         ContentFolder contentFolder = new ContentFolder();
-        contentFolder.setContentFolderName(folderName);
+        contentFolder.setName(folderName);
         contentFolder.setParentFolderId(parentFolderId);
 
         ContentsClient.createContentFolder(contentFolder);
@@ -186,7 +186,7 @@ public class ContentEditorController extends BaseContentEditor {
         ContentArticleVersion newContentArticleVersion = new ContentArticleVersion();
         newContentArticleVersion.setTitle(contentArticleVersion.getTitle());
         newContentArticleVersion.setContent(contentArticleVersion.getContent());
-        newContentArticleVersion.setContentArticleId(contentArticleVersion.getContentArticleId());
+        newContentArticleVersion.setArticleId(contentArticleVersion.getArticleId());
 
         newContentArticleVersion.setauthorUserid(userId);
         newContentArticleVersion.setFolderId(folderId);
@@ -223,7 +223,7 @@ public class ContentEditorController extends BaseContentEditor {
         }
         ContentArticleVersion contentArticleVersion = new ContentArticleVersion();
 
-        contentArticleVersion.setContentArticleId(articleId);
+        contentArticleVersion.setArticleId(articleId);
         contentArticleVersion.setLang(lang);
 
         contentArticleVersion.setauthorUserid(member.getId_());
@@ -234,6 +234,6 @@ public class ContentEditorController extends BaseContentEditor {
 
 
         defaultOperationReturnMessage(true, "Article version created successfully",
-                contentArticleVersion.getContentArticleId().toString(), response);
+                contentArticleVersion.getArticleId().toString(), response);
     }
 }

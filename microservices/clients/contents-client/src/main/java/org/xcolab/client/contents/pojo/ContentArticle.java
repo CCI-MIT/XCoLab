@@ -25,8 +25,8 @@ public class ContentArticle implements Serializable {
                     new ParameterizedTypeReference<List<ContentArticle>>() {
                     });
 
-    private Long contentArticleId;
-    private Long authorUserid;
+    private Long id;
+    private Long authorUserId;
     private Timestamp createdAt;
     private Long maxVersionId;
     private Long editRoleGroupId;
@@ -38,11 +38,11 @@ public class ContentArticle implements Serializable {
     public ContentArticle() {
     }
 
-    public ContentArticle(Long contentArticleId, Long authorUserid, Timestamp createdAt,
+    public ContentArticle(Long id, Long authorUserId, Timestamp createdAt,
             Long maxVersionId, Long editRoleGroupId, Long viewRoleGroupId, Boolean visible,
             String title, Long folderId) {
-        this.contentArticleId = contentArticleId;
-        this.authorUserid = authorUserid;
+        this.id = id;
+        this.authorUserId = authorUserId;
         this.createdAt = createdAt;
         this.maxVersionId = maxVersionId;
         this.editRoleGroupId = editRoleGroupId;
@@ -52,20 +52,20 @@ public class ContentArticle implements Serializable {
         this.folderId = folderId;
     }
 
-    public Long getContentArticleId() {
-        return this.contentArticleId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setContentArticleId(Long contentArticleId) {
-        this.contentArticleId = contentArticleId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getauthorUserid() {
-        return this.authorUserid;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setauthorUserid(Long authorUserid) {
-        this.authorUserid = authorUserid;
+    public void setAuthorUserId(Long authorUserid) {
+        this.authorUserId = authorUserid;
     }
 
     public Timestamp getCreatedAt() {
@@ -143,8 +143,8 @@ public class ContentArticle implements Serializable {
 
     @Override
     public String toString() {
-        return "ContentArticle (" + contentArticleId +
-                ", " + authorUserid +
+        return "ContentArticle (" + id +
+                ", " + authorUserId +
                 ", " + createdAt +
                 ", " + maxVersionId +
                 ", " + editRoleGroupId +

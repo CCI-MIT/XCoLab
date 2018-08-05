@@ -90,7 +90,7 @@ public final class ProposalMoveUtil {
                     }
                     break;
                 case FORK:
-//                ProposalCreationUtil.createProposal(proposal.getauthorUserid(), updateProposalSectionsBean,
+//                ProposalCreationUtil.createProposal(proposal.getAuthorUserId(), updateProposalSectionsBean,
 //                        contest, themeDisplay, contestPhase);
 //                break;
                     //TODO COLAB-2625: verify if old implementation works

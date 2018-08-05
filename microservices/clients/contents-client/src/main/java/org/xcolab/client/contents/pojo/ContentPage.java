@@ -24,7 +24,7 @@ public class ContentPage implements Serializable {
     public static final TypeProvider<ContentPage> TYPES = new TypeProvider<>(ContentPage.class,
                     new ParameterizedTypeReference<List<ContentPage>>() {});
 
-    private Long pageId;
+    private Long id;
     private String title;
     private String metaDescription;
     private Long menuArticleId;
@@ -36,8 +36,9 @@ public class ContentPage implements Serializable {
     }
 
     public ContentPage(ContentPage value) {
-        this.pageId = value.pageId;
+        this.id = value.id;
         this.title = value.title;
+        this.metaDescription = value.metaDescription;
         this.menuArticleId = value.menuArticleId;
         this.contentArticleId = value.contentArticleId;
         this.createdAt = value.createdAt;
@@ -48,12 +49,12 @@ public class ContentPage implements Serializable {
         return ContentsClient.getContentPage(pageId);
     }
 
-    public Long getPageId() {
-        return this.pageId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setPageId(Long pageId) {
-        this.pageId = pageId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -118,7 +119,7 @@ public class ContentPage implements Serializable {
             return false;
         }
         ContentPage that = (ContentPage) o;
-        return Objects.equals(getPageId(), that.getPageId())
+        return Objects.equals(getId(), that.getId())
                 && Objects.equals(getTitle(), that.getTitle())
                 && Objects.equals(getMetaDescription(), that.getMetaDescription())
                 && Objects.equals(getMenuArticleId(), that.getMenuArticleId())
@@ -129,14 +130,14 @@ public class ContentPage implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPageId(), getTitle(), getMetaDescription(), getMenuArticleId(),
+        return Objects.hash(getId(), getTitle(), getMetaDescription(), getMenuArticleId(),
                 getContentArticleId(), createdAt, getupdatedAt());
     }
 
     @Override
     public String toString() {
 
-        return "ContentPage (" + pageId +
+        return "ContentPage (" + id +
                 ", " + title +
                 ", " + menuArticleId +
                 ", " + contentArticleId +

@@ -20,10 +20,10 @@ public class ContentArticleVersion implements Serializable {
                     new ParameterizedTypeReference<List<ContentArticleVersion>>() {
                     });
 
-    private Long contentArticleVersionId;
-    private Long contentArticleId;
+    private Long id;
+    private Long articleId;
     private Long folderId;
-    private Long authorUserid;
+    private Long authorUserId;
     private Timestamp createdAt;
     private String title;
     private String content;
@@ -32,32 +32,32 @@ public class ContentArticleVersion implements Serializable {
     public ContentArticleVersion() {
     }
 
-    public ContentArticleVersion(Long contentArticleVersionId, Long contentArticleId,
-            Long folderId, Long authorUserid, Timestamp createdAt, String title, String content,String lang) {
-        this.contentArticleVersionId = contentArticleVersionId;
-        this.contentArticleId = contentArticleId;
+    public ContentArticleVersion(Long id, Long articleId, Long folderId, Long authorUserId,
+            Timestamp createdAt, String title, String content, String lang) {
+        this.id = id;
+        this.articleId = articleId;
         this.folderId = folderId;
-        this.authorUserid = authorUserid;
+        this.authorUserId = authorUserId;
         this.createdAt = createdAt;
         this.title = title;
         this.content = content;
         this.lang = lang;
     }
 
-    public Long getContentArticleVersionId() {
-        return this.contentArticleVersionId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setContentArticleVersionId(Long contentArticleVersionId) {
-        this.contentArticleVersionId = contentArticleVersionId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getContentArticleId() {
-        return this.contentArticleId;
+    public Long getArticleId() {
+        return this.articleId;
     }
 
-    public void setContentArticleId(Long contentArticleId) {
-        this.contentArticleId = contentArticleId;
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     public Long getFolderId() {
@@ -69,11 +69,11 @@ public class ContentArticleVersion implements Serializable {
     }
 
     public Long getauthorUserid() {
-        return this.authorUserid;
+        return this.authorUserId;
     }
 
     public void setauthorUserid(Long authorUserid) {
-        this.authorUserid = authorUserid;
+        this.authorUserId = authorUserid;
     }
 
     public Timestamp getCreatedAt() {
@@ -115,10 +115,10 @@ public class ContentArticleVersion implements Serializable {
 
     @Override
     public String toString() {
-        return "ContentArticleVersion (" + contentArticleVersionId +
-                ", " + contentArticleId +
+        return "ContentArticleVersion (" + id +
+                ", " + articleId +
                 ", " + folderId +
-                ", " + authorUserid +
+                ", " + authorUserId +
                 ", " + createdAt +
                 ", " + title +
                 ", " + content +

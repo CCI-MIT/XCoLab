@@ -31,10 +31,10 @@ public class LoadContentArticleTag extends BodyTagSupport {
 
                 ContentArticleVersion contentArticleVersion = ContentsClient
                         .getLatestVersionByArticleIdAndLanguage(
-                                contentArticle.getContentArticleId(), localeString);
+                                contentArticle.getId(), localeString);
                 if (contentArticleVersion == null) {
                     contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(
-                            contentArticle.getContentArticleId(),
+                            contentArticle.getId(),
                             I18nUtils.DEFAULT_LOCALE.getLanguage());
                 }
 

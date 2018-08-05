@@ -120,27 +120,27 @@ public class ContentsController {
         contentArticleVersion.setCreatedAt(new Timestamp(date.getTime()));
 
         ContentArticle contentArticle;
-        if (contentArticleVersion.getContentArticleId() == null
-                || contentArticleVersion.getContentArticleId() == 0L) {
+        if (contentArticleVersion.getArticleId() == null
+                || contentArticleVersion.getArticleId() == 0L) {
             contentArticle = new ContentArticle();
-            contentArticle.setauthorUserid(contentArticleVersion.getauthorUserid());
+            contentArticle.setAuthorUserId(contentArticleVersion.getAuthorUserId());
             contentArticle.setVisible(true);
             contentArticle.setCreatedAt(contentArticleVersion.getCreatedAt());
             contentArticle = this.contentArticleDao.create(contentArticle);
         } else {
             try {
                 contentArticle = this.contentArticleDao
-                        .get(contentArticleVersion.getContentArticleId());
+                        .get(contentArticleVersion.getArticleId());
             } catch (NotFoundException e) {
                 throw new IllegalArgumentException(
-                        "ContentArticle " + contentArticleVersion.getContentArticleId()
+                        "ContentArticle " + contentArticleVersion.getArticleId()
                                 + " does not exist");
             }
         }
-        contentArticleVersion.setContentArticleId(contentArticle.getContentArticleId());
+        contentArticleVersion.setArticleId(contentArticle.getId());
         contentArticleVersion = this.contentArticleVersionDao.create(contentArticleVersion);
 
-        contentArticle.setMaxVersionId(contentArticleVersion.getContentArticleVersionId());
+        contentArticle.setMaxVersionId(contentArticleVersion.getId());
         contentArticle.setFolderId(contentArticleVersion.getFolderId());
         this.contentArticleDao.update(contentArticle);
 
@@ -234,6 +234,6 @@ public class ContentsController {
 
     @PutMapping("/contentPages/{pageId}")
     public boolean updateContentPage(@PathVariable long pageId, @RequestBody ContentPage page) {
-        return pageId == page.getPageId() && contentPageDao.update(page);
+        return pageId == page.getId() && contentPageDao.update(page);
     }
 }

@@ -57,7 +57,7 @@
         <!--@elvariable id="adaptationImpactBean" type="org.xcolab.view.pages.proposals.impact.adaptation.AdaptationImpactBean"-->
         <form:form modelAttribute="adaptationImpactBean" method="post">
             <form:hidden path="proposalId" />
-            <form:hidden path="authorUserid" />
+            <form:hidden path="authorUserId" />
             <table class="table table-bordered">
                 <thead class="thead-dark">
                 <tr>

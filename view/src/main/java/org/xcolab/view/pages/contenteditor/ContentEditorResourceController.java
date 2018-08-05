@@ -67,14 +67,14 @@ public class ContentEditorResourceController extends BaseContentEditor {
         for (ContentArticleVersion cav : cavs) {
             articleVersion = new JSONObject();
             articleVersion.put("createdAt", cav.getCreatedAt());
-            articleVersion.put("contentArticleVersionId", cav.getContentArticleVersionId());
+            articleVersion.put("contentArticleVersionId", cav.getId());
             versions.put(articleVersion);
         }
         articleVersion = new JSONObject();
         if (contentArticleVersion != null) {
             articleVersion.put("title", contentArticleVersion.getTitle());
             articleVersion.put("folderId", contentArticleVersion.getFolderId());
-            articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
+            articleVersion.put("articleId", contentArticleVersion.getArticleId());
             articleVersion.put("content", contentArticleVersion.getContent());
             articleVersion.put("createdAt", contentArticleVersion.getCreatedAt());
             articleVersion.put("versions", versions);

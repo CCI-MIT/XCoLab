@@ -116,7 +116,7 @@ public final class ContentsClient {
 
     public static boolean updateContentArticle(ContentArticle contentArticle) {
         final Boolean result =
-                contentArticleResource.update(contentArticle, contentArticle.getContentArticleId())
+                contentArticleResource.update(contentArticle, contentArticle.getId())
                         .cacheName(CacheName.CONTENT)
                         .execute();
         //TODO COLAB-2589: fine-grained cache control
@@ -147,7 +147,7 @@ public final class ContentsClient {
 
     public static boolean updateContentArticleVersion(ContentArticleVersion contentArticleVersion) {
         final Boolean result = contentArticleVersionResource
-                .update(contentArticleVersion, contentArticleVersion.getContentArticleVersionId())
+                .update(contentArticleVersion, contentArticleVersion.getId())
                 .cacheName(CacheName.CONTENT)
                 .execute();
         //TODO COLAB-2589: fine-grained cache control
@@ -176,7 +176,7 @@ public final class ContentsClient {
 
     public static boolean updateContentFolder(ContentFolder contentFolder) {
         final Boolean result =
-                contentFolderResource.update(contentFolder, contentFolder.getContentFolderId())
+                contentFolderResource.update(contentFolder, contentFolder.getId())
                         .cacheName(CacheName.CONTENT)
                         .execute();
         //TODO COLAB-2589: fine-grained cache control
@@ -190,7 +190,7 @@ public final class ContentsClient {
     }
 
     public static Boolean updateContentPage(ContentPage contentPage) {
-        return contentPageResource.update(contentPage, contentPage.getPageId())
+        return contentPageResource.update(contentPage, contentPage.getId())
                 .execute();
     }
 

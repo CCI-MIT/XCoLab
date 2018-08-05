@@ -364,7 +364,7 @@ public class UserProfileController {
                         () -> new IllegalStateException(
                                 "No file entry found for imageId " + newImageId + " for member " +
                                         updatedUserBean.getUserId()));
-                currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
+                currentUserProfile.getUser().setPortraitFileEntryId(fe.getId());
                 changedMember = true;
             } else {
                 currentUserProfile.getUser().setPortraitFileEntryId(0L);

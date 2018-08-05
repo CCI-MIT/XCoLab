@@ -38,7 +38,7 @@ public class ContentArticleVersionDaoTest {
 
         ContentArticleVersion ae = new ContentArticleVersion();
         ae = contentArticleVersionDao.create(ae);
-        assertNotNull(contentArticleVersionDao.get(ae.getContentArticleVersionId()));
+        assertNotNull(contentArticleVersionDao.get(ae.getId()));
 
     }
 
@@ -52,7 +52,7 @@ public class ContentArticleVersionDaoTest {
     public void shouldGetByFolderId() throws Exception {
 
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setContentArticleId(1000L);
+        ae.setId(1000L);
         ae.setFolderId(200L);
         ae = contentArticleVersionDao.create(ae);
 
@@ -73,24 +73,24 @@ public class ContentArticleVersionDaoTest {
     public void shouldDeleteContentArticleVersionByArticleId() throws Exception {
 
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setContentArticleId(1000L);
+        ae.setId(1000L);
         ae = contentArticleVersionDao.create(ae);
 
-        assertTrue(contentArticleVersionDao.deleteByArticleId(ae.getContentArticleId())==1);
+        assertTrue(contentArticleVersionDao.deleteByArticleId(ae.getArticleId())==1);
         thrown.expect(NotFoundException.class);
-        assertNotNull(contentArticleVersionDao.get(ae.getContentArticleVersionId()));
+        assertNotNull(contentArticleVersionDao.get(ae.getId()));
 
     }
 
     @Test
     public void shouldUpdateContentArticle() throws Exception {
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setauthorUserid(3L);
+        ae.setAuthorUserId(3L);
         ae = contentArticleVersionDao.create(ae);
-        ae.setauthorUserid(1L);
+        ae.setAuthorUserId(1L);
         contentArticleVersionDao.update(ae);
-        ContentArticleVersion az = contentArticleVersionDao.get(ae.getContentArticleVersionId());
-        assertEquals(az.getauthorUserid(),ae.getauthorUserid());
+        ContentArticleVersion az = contentArticleVersionDao.get(ae.getId());
+        assertEquals(az.getAuthorUserId(), ae.getAuthorUserId());
 
     }
 }

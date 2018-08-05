@@ -104,9 +104,9 @@ public class PageEditorController extends BaseContentEditor {
         List<ContentFolder> contentFolders = ContentsClient.getContentFolders(folderId);
         if (contentFolders != null) {
             for (ContentFolder cf : contentFolders) {
-                if (cf.getContentFolderId() != ContentFolder.RESOURCE_FOLDER_ID) {
-                    map = getArticles(cf.getContentFolderId(),
-                            path + "/" + cf.getContentFolderName(), map);
+                if (cf.getId() != ContentFolder.RESOURCE_FOLDER_ID) {
+                    map = getArticles(cf.getId(),
+                            path + "/" + cf.getName(), map);
                 }
             }
         }
@@ -114,7 +114,7 @@ public class PageEditorController extends BaseContentEditor {
                 ContentsClient.getChildArticleVersions(folderId);
         if (contentArticles != null) {
             for (ContentArticleVersion ca : contentArticles) {
-                map.put(path + "/" + ca.getTitle(), ca.getContentArticleId().toString());
+                map.put(path + "/" + ca.getTitle(), ca.getArticleId().toString());
             }
         }
         return map;
@@ -133,7 +133,7 @@ public class PageEditorController extends BaseContentEditor {
         List<ContentPage> pages = ContentsClient.getContentPages(null);
         JSONArray responseArray = new JSONArray();
         for (ContentPage cp : pages) {
-            responseArray.put(articleNode(cp.getTitle(), cp.getPageId()));
+            responseArray.put(articleNode(cp.getTitle(), cp.getId()));
         }
         response.getOutputStream().write(responseArray.toString().getBytes());
     }

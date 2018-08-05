@@ -150,7 +150,7 @@
                             triggerHistoryVisibility();
                         </script>
                         by
-                        <xcolab:userLinkSimple userId="${proposal.selectedVersion.authorUserid}"
+                        <xcolab:userLinkSimple userId="${proposal.selectedVersion.authorUserId}"
                                                text="${proposal.userForSelectedVersion.screenName}"/>
                     </div>
                 </c:if>

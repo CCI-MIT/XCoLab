@@ -36,13 +36,13 @@ public class ImageUploadUtils {
 
             FileEntry file = new FileEntry();
             file.setCreatedAt(new Timestamp(new Date().getTime()));
-            file.setFileEntryExtension("png");
-            file.setFileEntrySize(imgBArr.length);
-            file.setFileEntryName(url.toString());
+            file.setFileExtension("png");
+            file.setFileSize(imgBArr.length);
+            file.setFileName(url.toString());
 
             file = FilesClient.createFileEntry(file, imgBArr, UPLOAD_PATH);
 
-            return file.getFileEntryId();
+            return file.getId();
         } catch (IOException  e) {
             _log.error("Could not upload picture {}", url.toString(), e);
         }

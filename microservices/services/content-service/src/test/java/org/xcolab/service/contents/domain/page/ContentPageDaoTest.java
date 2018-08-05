@@ -37,7 +37,7 @@ public class ContentPageDaoTest {
         ae.setTitle("pagetitle");
         ae.setContentArticleId(1L);
         ae = contentPageDao.create(ae);
-        assertTrue(contentPageDao.get(ae.getPageId()).isPresent());
+        assertTrue(contentPageDao.get(ae.getId()).isPresent());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class ContentPageDaoTest {
         ae.setTitle("bbb");
         contentPageDao.update(ae);
 
-        ContentPage cp = contentPageDao.get(ae.getPageId()).get();
+        ContentPage cp = contentPageDao.get(ae.getId()).get();
         assertEquals(cp.getTitle(),ae.getTitle());
     }
 }

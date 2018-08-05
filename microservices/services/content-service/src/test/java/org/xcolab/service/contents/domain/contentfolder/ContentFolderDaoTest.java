@@ -36,20 +36,19 @@ public class ContentFolderDaoTest {
     public void shouldCreateNewContentFolder() throws Exception {
 
         ContentFolder ae = new ContentFolder();
-        ae.setContentFolderName("upper");
-        ae.setContentFolderDescription("");
+        ae.setName("upper");
+        ae.setDescription("");
         ae.setParentFolderId(0L);
         ae = contentFolderDao.create(ae);
-        assertNotNull(contentFolderDao.get(ae.getContentFolderId()));
+        assertNotNull(contentFolderDao.get(ae.getId()));
 
     }
 
     @Test
     public void shouldGetContentFolder() throws Exception {
-
         assertNotNull(contentFolderDao.get(2L));
-
     }
+
     @Test
     public void shouldFindByAncestorFolderId() throws Exception {
         assertEquals(1,contentFolderDao.findByAncestorFolderId(2L).size());
@@ -58,15 +57,14 @@ public class ContentFolderDaoTest {
     @Test
     public void shouldUpdateContentFolder() throws Exception {
         ContentFolder ae = new ContentFolder();
-        ae.setContentFolderName("nuper");
-        ae.setContentFolderDescription("");
+        ae.setName("nuper");
+        ae.setDescription("");
         ae.setParentFolderId(0L);
         ae = contentFolderDao.create(ae);
-        ae.setContentFolderName("super");
+        ae.setName("super");
         contentFolderDao.update(ae);
-        ContentFolder az = contentFolderDao.get(ae.getContentFolderId());
-        assertEquals(az.getContentFolderName(),ae.getContentFolderName());
-
+        ContentFolder az = contentFolderDao.get(ae.getId());
+        assertEquals(az.getName(), ae.getName());
     }
 
     @Test

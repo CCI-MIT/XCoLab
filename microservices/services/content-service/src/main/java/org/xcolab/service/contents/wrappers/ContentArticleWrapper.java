@@ -44,8 +44,8 @@ public class ContentArticleWrapper extends ContentArticle {
 
     @Override
     public String toString() {
-        return "ContentArticleWrapper (" + getContentArticleId() +
-                ", " + getauthorUserid() +
+        return "ContentArticleWrapper (" + getId() +
+                ", " + getAuthorUserId() +
                 ", " + getCreatedAt() +
                 ", " + getMaxVersionId() +
                 ", " + getEditRoleGroupId() +

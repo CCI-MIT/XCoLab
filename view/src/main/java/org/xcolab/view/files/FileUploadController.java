@@ -56,13 +56,13 @@ public class FileUploadController {
             FileEntry fileEntry = new FileEntry();
             fileEntry.setCreatedAt(new Timestamp(new Date().getTime()));
             String nameExt = file.getOriginalFilename();
-            fileEntry.setFileEntryExtension((FilenameUtils.getExtension(nameExt)).toLowerCase());
-            fileEntry.setFileEntrySize(bytes.length);
-            fileEntry.setFileEntryName(FilenameUtils.getName(nameExt));
+            fileEntry.setFileExtension((FilenameUtils.getExtension(nameExt)).toLowerCase());
+            fileEntry.setFileSize(bytes.length);
+            fileEntry.setFileName(FilenameUtils.getName(nameExt));
 
             fileEntry = FilesClient.createFileEntry(fileEntry, bytes, path);
 
-            final String imageIdString = String.valueOf(fileEntry.getFileEntryId());
+            final String imageIdString = String.valueOf(fileEntry.getId());
             return new ImageResponse(imageIdString, fileEntry.getLinkUrl(), true, "");
         } catch (IOException e) {
             return new ImageResponse(null, null, false, e.getMessage());

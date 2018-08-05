@@ -32,13 +32,13 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
     @Override
     public ContentFolder create(ContentFolder contentFolder) {
         ContentFolderRecord ret = this.dslContext.insertInto(CONTENT_FOLDER)
-                .set(CONTENT_FOLDER.CONTENT_FOLDER_NAME, contentFolder.getContentFolderName())
-                .set(CONTENT_FOLDER.CONTENT_FOLDER_DESCRIPTION, contentFolder.getContentFolderDescription())
+                .set(CONTENT_FOLDER.NAME, contentFolder.getName())
+                .set(CONTENT_FOLDER.DESCRIPTION, contentFolder.getDescription())
                 .set(CONTENT_FOLDER.PARENT_FOLDER_ID, contentFolder.getParentFolderId())
-                .returning(CONTENT_FOLDER.CONTENT_FOLDER_ID)
+                .returning(CONTENT_FOLDER.ID)
                 .fetchOne();
         if (ret != null) {
-            contentFolder.setContentFolderId(ret.getValue(CONTENT_FOLDER.CONTENT_FOLDER_ID));
+            contentFolder.setId(ret.getValue(CONTENT_FOLDER.ID));
             return contentFolder;
         } else {
             return null;
@@ -49,10 +49,10 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
     @Override
     public boolean update(ContentFolder contentFolder) {
          return dslContext.update(CONTENT_FOLDER)
-                .set(CONTENT_FOLDER.CONTENT_FOLDER_NAME, contentFolder.getContentFolderName())
-                .set(CONTENT_FOLDER.CONTENT_FOLDER_DESCRIPTION, contentFolder.getContentFolderDescription())
+                .set(CONTENT_FOLDER.NAME, contentFolder.getName())
+                .set(CONTENT_FOLDER.DESCRIPTION, contentFolder.getDescription())
                 .set(CONTENT_FOLDER.PARENT_FOLDER_ID, contentFolder.getParentFolderId())
-                .where(CONTENT_FOLDER.CONTENT_FOLDER_ID.eq(contentFolder.getContentFolderId()))
+                .where(CONTENT_FOLDER.ID.eq(contentFolder.getId()))
                 .execute() > 0;
     }
 
@@ -60,7 +60,7 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
     public ContentFolder get(Long contentFolderId) {
         return this.dslContext.select()
                 .from(CONTENT_FOLDER)
-                .where(CONTENT_FOLDER.CONTENT_FOLDER_ID.eq(contentFolderId))
+                .where(CONTENT_FOLDER.ID.eq(contentFolderId))
                 .fetchOneInto(ContentFolder.class);
     }
 
@@ -79,8 +79,8 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
             switch (sortColumn.getColumnName()) {
                 case "contentFolderName":
                     query.addOrderBy(sortColumn.isAscending()
-                            ? CONTENT_FOLDER.CONTENT_FOLDER_NAME.asc()
-                            : CONTENT_FOLDER.CONTENT_FOLDER_NAME.desc());
+                            ? CONTENT_FOLDER.NAME.asc()
+                            : CONTENT_FOLDER.NAME.desc());
                     break;
 
                 case "parentFolderId":
@@ -91,8 +91,8 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
                 default:
                 case "contentFolderId":
                     query.addOrderBy(sortColumn.isAscending()
-                            ? CONTENT_FOLDER.CONTENT_FOLDER_ID.asc()
-                            : CONTENT_FOLDER.CONTENT_FOLDER_ID.desc());
+                            ? CONTENT_FOLDER.ID.asc()
+                            : CONTENT_FOLDER.ID.desc());
                     break;
             }
         }
@@ -108,7 +108,7 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
         }
         List<ContentFolder> descendants = new ArrayList<>(children);
         for (ContentFolder child : children) {
-            descendants.addAll(findByAncestorFolderId(child.getContentFolderId()));
+            descendants.addAll(findByAncestorFolderId(child.getId()));
         }
         return descendants;
     }
