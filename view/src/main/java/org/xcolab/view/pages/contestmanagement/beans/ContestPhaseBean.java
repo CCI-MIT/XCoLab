@@ -43,11 +43,11 @@ public class ContestPhaseBean implements Serializable {
     }
 
     public ContestPhaseBean(ContestPhase contestPhase) {
-        this.contestPhasePK = contestPhase.getContestPhasePK();
-        this.contestPK = contestPhase.getContestPK();
-        this.contestPhaseType = contestPhase.getContestPhaseType();
-        if (contestPhase.getContestPhaseType() != null) {
-            this.contestPhaseTypeOld = contestPhase.getContestPhaseType();
+        this.contestPhasePK = contestPhase.getId();
+        this.contestPK = contestPhase.getContestId();
+        this.contestPhaseType = contestPhase.getContestPhaseTypeId();
+        if (contestPhase.getContestPhaseTypeId() != null) {
+            this.contestPhaseTypeOld = contestPhase.getContestPhaseTypeId();
         }
         this.contestScheduleId = contestPhase.getContestScheduleId();
         this.phaseStartDate = contestPhase.getPhaseStartDate();
@@ -59,12 +59,12 @@ public class ContestPhaseBean implements Serializable {
         for (Contest contest : contestsUsingThisContestPhase) {
             List<ContestPhase> contestPhases = ContestClientUtil
                     .getPhasesForContestScheduleIdAndContest(this.contestScheduleId,
-                            contest.getContestPK());
+                            contest.getId());
             for (ContestPhase contestPhase1 : contestPhases) {
                 if (Objects
-                        .equals(contestPhase1.getContestPhaseType(), this.contestPhaseType)) {
+                        .equals(contestPhase1.getContestPhaseTypeId(), this.contestPhaseType)) {
                     List<Proposal2Phase> proposal2PhaseList = ProposalPhaseClientUtil.
-                            getProposal2PhaseByContestPhaseId(contestPhase1.getContestPhasePK());
+                            getProposal2PhaseByContestPhaseId(contestPhase1.getId());
                     if (!proposal2PhaseList.isEmpty()) {
                         this.contestPhaseHasProposalAssociations = true;
                         break;
@@ -174,7 +174,7 @@ public class ContestPhaseBean implements Serializable {
     private void createNewContestPhase() {
         ContestPhase contestPhase = new ContestPhase();
         contestPhase = ContestClientUtil.createContestPhase(contestPhase);
-        contestPhasePK = contestPhase.getContestPhasePK();
+        contestPhasePK = contestPhase.getId();
     }
 
     //TODO COLAB-2595: improve naming?
@@ -185,11 +185,11 @@ public class ContestPhaseBean implements Serializable {
         } else {
             contestPhase = new ContestPhase();
         }
-        contestPhase.setContestPK(contestPK);
+        contestPhase.setContestId(contestPK);
         if (contestPhaseType != null) {
-            contestPhase.setContestPhaseType(contestPhaseType);
+            contestPhase.setContestPhaseTypeId(contestPhaseType);
         } else {
-            contestPhase.setContestPhaseType(contestPhaseTypeOld);
+            contestPhase.setContestPhaseTypeId(contestPhaseTypeOld);
         }
         contestPhase.setContestScheduleId(contestScheduleId);
         if (phaseStartDate != null) {

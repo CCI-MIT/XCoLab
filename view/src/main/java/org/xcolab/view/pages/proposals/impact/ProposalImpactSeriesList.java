@@ -76,7 +76,7 @@ public class ProposalImpactSeriesList {
     private final List<ProposalImpactSeries> impactSerieses;
 
     public ProposalImpactSeriesList(Proposal proposal) throws ContestNotFoundException {
-        this(ProposalClientUtil.getLatestContestInProposal(proposal.getProposalId()), proposal);
+        this(ProposalClientUtil.getLatestContestInProposal(proposal.getId()), proposal);
     }
 
     public ProposalImpactSeriesList(Contest contest, Proposal proposal) {

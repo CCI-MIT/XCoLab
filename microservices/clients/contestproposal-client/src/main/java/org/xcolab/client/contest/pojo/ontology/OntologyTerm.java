@@ -56,6 +56,6 @@ public class OntologyTerm extends AbstractOntologyTerm {
 
 
     public int getOrder() {
-        return this.getOrder_();
+        return this.getSortOrder();
     }
 }

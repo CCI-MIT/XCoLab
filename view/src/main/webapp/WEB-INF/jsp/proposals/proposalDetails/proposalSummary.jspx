@@ -11,7 +11,7 @@
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
     <c:if test="${contestType.showProposalSummary}">
-        <c:if test="${proposal.proposalId > 0}">
+        <c:if test="${proposal.id > 0}">
             <div class="c-Box c-Box--colorDark c-Box--hasShadow c-Box--straightCorners mb-3">
                 <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                     <div class="c-Box__bodyFlex c-Box__bodyFlex--columns">
@@ -59,7 +59,7 @@
                 </c:if>
 
                 <div class="c-Box__bodyFlex">
-                    <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+                    <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }" />
 
                     <div>
                         <collab:image src="/images/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" cssClass="mr-2" />
@@ -126,7 +126,7 @@
                     </c:choose>
 
                     <c:if test="${proposalsPermissions.canAdminProposal and false}">
-                        <a href="${proposal.proposalId }/tab/ADMIN">Change settings</a>
+                        <a href="${proposal.id }/tab/ADMIN">Change settings</a>
                     </c:if>
 
                 </div>
@@ -150,7 +150,7 @@
             <div class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background">
                 <strong>${contestType.contestName}: </strong>
                 <xcolab:contestLink contest="${contest }" /><br />
-                ${contest.contestName}
+                ${contest.contestQuestion}
             </div>
             <c:if test="${not empty linkedProposalContestTypeProposalWrappersByContestTypeId}">
                 <c:forEach var="contestTypeProposalWrapper" items="${linkedProposalContestTypeProposalWrappersByContestTypeId}">

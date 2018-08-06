@@ -18,7 +18,7 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 
@@ -58,7 +58,7 @@ public class MembershipInvitationResponseController {
         ProposalClient proposalClient = ProposalClientUtil.getClient();
         ProposalAttributeClient proposalAttributeClient = ProposalAttributeClientUtil.getClient();
 
-        MembershipRequest membershipRequest = membershipClient.getMembershipRequest(requestId);
+        ProposalTeamMembershipRequest membershipRequest = membershipClient.getMembershipRequest(requestId);
 
         List<Long> recipients = new ArrayList<>();
         List<Member> contributors = proposalClient.getProposalMembers(proposalId);

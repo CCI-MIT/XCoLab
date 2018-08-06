@@ -43,7 +43,7 @@ public class SupportedProposal extends Proposal {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("proposalId", getProposalId())
+                .append("proposalId", getId())
                 .append("supportDate", supportDate)
                 .append("supporterUserId", supporterUserId).toString();
     }

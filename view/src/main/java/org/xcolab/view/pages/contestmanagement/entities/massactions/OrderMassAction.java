@@ -17,7 +17,7 @@ public class OrderMassAction extends AbstractContestMassAction {
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response) {
         for (Contest contest : contests) {
-            contest = ContestClientUtil.getContest(contest.getContestPK());
+            contest = ContestClientUtil.getContest(contest.getId());
             ContestClientUtil.updateContest(contest);
         }
     }

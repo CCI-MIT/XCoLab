@@ -94,7 +94,7 @@ public class ProposalImpactJSONController {
             response.getOutputStream().write(impactSeries.toJSONObject() .toString().getBytes());
         } catch (IOException e) {
             _log.error("Could not load impact series for contestId {}",
-                    proposalContext.getContest().getContestPK(), e);
+                    proposalContext.getContest().getId(), e);
             JSONObject responseJSON = new JSONObject();
             responseJSON.put("success", false);
             response.getOutputStream().write(responseJSON.toString().getBytes());
@@ -154,11 +154,11 @@ public class ProposalImpactJSONController {
         final List<ProposalAttribute> impactAttributes = new ArrayList<>();
         for (ImpactIteration iteration : iterations) {
             impactAttributes.addAll(proposalAttributeClient
-                    .getAllProposalAttributes(proposal.getProposalId(),
+                    .getAllProposalAttributes(proposal.getId(),
                             ImpactSeriesType.IMPACT_ADOPTION_RATE.getAttributeName(iteration.getYear()),
                             focusAreaId));
             impactAttributes.addAll(proposalAttributeClient
-                    .getAllProposalAttributes(proposal.getProposalId(),
+                    .getAllProposalAttributes(proposal.getId(),
                             ImpactSeriesType.IMPACT_REDUCTION.getAttributeName(iteration.getYear()),
                             focusAreaId));
         }
@@ -227,21 +227,21 @@ public class ProposalImpactJSONController {
         Proposal proposal = proposalContext.getProposal();
 
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalAttributeClientUtil
-                .getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
+                .getProposalUnversionedAttributesByProposalId(proposal.getId());
 
         if (impactAuthorComment != null || impactIAFComment != null) {
             final long userId = currentMember.getUserId();
             final ClientHelper clients = proposalContext.getClients();
             if (impactAuthorComment != null) {
                 clients.getProposalAttributeClient().createOrUpdateUnversionedStringAttribute(
-                        proposal.getProposalId(),
+                        proposal.getId(),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(), userId,
                         HtmlUtil.cleanAll(impactAuthorComment));
             }
 
             if (impactIAFComment != null) {
                 clients.getProposalAttributeClient().createOrUpdateUnversionedStringAttribute(
-                        proposal.getProposalId(),
+                        proposal.getId(),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(), userId,
                         HtmlUtil.cleanAll(impactIAFComment));
             }
@@ -262,10 +262,10 @@ public class ProposalImpactJSONController {
 
         // Sort by order and id, which reflects the order in the outline view
         terms.sort((o1, o2) -> {
-            if (o1.getOrder_() == o2.getOrder_().longValue()) {
+            if (o1.getSortOrder() == o2.getSortOrder().longValue()) {
                 return (int) (o1.getId() - o2.getId());
             } else {
-                return (o1.getOrder_() - o2.getOrder_());
+                return (o1.getSortOrder() - o2.getSortOrder());
             }
 
         });

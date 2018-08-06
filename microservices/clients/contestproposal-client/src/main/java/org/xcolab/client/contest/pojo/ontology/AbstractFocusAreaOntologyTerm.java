@@ -8,20 +8,20 @@ abstract class AbstractFocusAreaOntologyTerm implements Serializable {
 
     private Long focusareaid;
     private Long ontologytermid;
-    private Integer order_;
+    private Integer sortOrder;
 
     public AbstractFocusAreaOntologyTerm() {}
 
     public AbstractFocusAreaOntologyTerm(AbstractFocusAreaOntologyTerm value) {
         this.focusareaid = value.focusareaid;
         this.ontologytermid = value.ontologytermid;
-        this.order_ = value.order_;
+        this.sortOrder = value.sortOrder;
     }
 
-    public AbstractFocusAreaOntologyTerm(Long focusareaid, Long ontologytermid, Integer order_) {
+    public AbstractFocusAreaOntologyTerm(Long focusareaid, Long ontologytermid, Integer sortOrder) {
         this.focusareaid = focusareaid;
         this.ontologytermid = ontologytermid;
-        this.order_ = order_;
+        this.sortOrder = sortOrder;
     }
 
     public Long getFocusAreaId() {
@@ -40,12 +40,12 @@ abstract class AbstractFocusAreaOntologyTerm implements Serializable {
         this.ontologytermid = ontologytermid;
     }
 
-    public Integer getOrder_() {
-        return this.order_;
+    public Integer getSortOrder() {
+        return this.sortOrder;
     }
 
-    public void setOrder_(Integer order_) {
-        this.order_ = order_;
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     @Override
@@ -54,7 +54,7 @@ abstract class AbstractFocusAreaOntologyTerm implements Serializable {
         int result = 1;
         result = prime * result + ((focusareaid == null) ? 0 : focusareaid.hashCode());
         result = prime * result + ((ontologytermid == null) ? 0 : ontologytermid.hashCode());
-        result = prime * result + ((order_ == null) ? 0 : order_.hashCode());
+        result = prime * result + ((sortOrder == null) ? 0 : sortOrder.hashCode());
         return result;
     }
 
@@ -84,11 +84,11 @@ abstract class AbstractFocusAreaOntologyTerm implements Serializable {
         } else if (!ontologytermid.equals(other.ontologytermid)) {
             return false;
         }
-        if (order_ == null) {
-            if (other.order_ != null) {
+        if (sortOrder == null) {
+            if (other.sortOrder != null) {
                 return false;
             }
-        } else if (!order_.equals(other.order_)) {
+        } else if (!sortOrder.equals(other.sortOrder)) {
             return false;
         }
         return true;
@@ -99,7 +99,7 @@ abstract class AbstractFocusAreaOntologyTerm implements Serializable {
 
         return "FocusAreaOntologyTerm (" + focusareaid +
                 ", " + ontologytermid +
-                ", " + order_ +
+                ", " + sortOrder +
                 ")";
     }
 }

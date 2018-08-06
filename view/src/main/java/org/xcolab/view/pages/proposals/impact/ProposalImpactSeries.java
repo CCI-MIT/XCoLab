@@ -136,7 +136,7 @@ public class ProposalImpactSeries {
 
                         // Set author and modification date
                         this.lastModifiedVersion = ProposalClientUtil
-                                .getProposalVersionByProposalIdVersion(proposal.getProposalId(),
+                                .getProposalVersionByProposalIdVersion(proposal.getId(),
                                 attribute.getVersion());
                     }
                 }
@@ -249,7 +249,7 @@ public class ProposalImpactSeries {
                             .filterValueForImpactSeriesType(
                                     seriesValues.getValueForYear(iteration.getYear()), seriesType.name());
                     version = ProposalAttributeClientUtil
-                            .setProposalAttribute(author.getUserId(), proposal.getProposalId(),
+                            .setProposalAttribute(author.getUserId(), proposal.getId(),
                                     seriesType.getAttributeName(iteration.getYear()),
                                     focusArea.getId(), "", null,
                                     filteredValue, version).getVersion();

@@ -53,7 +53,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
         final EmailTemplate emailTemplate =
                 emailTemplateClient.getContestEmailTemplateByType(proposalVoteConfirmationTemplateString);
         templateWrapper =
-                new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getContestShortName());
+                new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getContestTitle());
 
         return templateWrapper;
     }

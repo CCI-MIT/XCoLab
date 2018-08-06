@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -48,7 +48,7 @@ public class DescriptionTabController extends AbstractTabController {
         List<Long> excludedList =
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L,
                         1300201L, 1300302L, 1300401L, 1300601L, 1300602L);
-        for (PlanTemplate proposalTemplate : PlanTemplateClientUtil.getPlanTemplates()) {
+        for (ProposalTemplate proposalTemplate : ProposalTemplateClientUtil.getPlanTemplates()) {
             if (!excludedList.contains(proposalTemplate.getId())) {
                 selectItems
                         .add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
@@ -104,8 +104,8 @@ public class DescriptionTabController extends AbstractTabController {
         //check for contest name year uniqueness
         final Contest contest = getContest();
         if (!ContestClientUtil
-                .isContestNameYearUnique(contestDescriptionBean.getContestShortName(), contest.getContestYear(),
-                        contest.getContestPK())) {
+                .isContestTitleYearUnique(contestDescriptionBean.getContestShortName(), contest.getContestYear(),
+                        contest.getId())) {
             AlertMessage
                     .danger("Contest name and year must be unique, a contest with the given name "
                             + "already exists for this year.")

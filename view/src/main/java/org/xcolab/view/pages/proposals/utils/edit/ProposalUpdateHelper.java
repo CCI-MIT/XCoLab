@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.utils.edit;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.PlatformTeam;
@@ -52,19 +52,19 @@ public class ProposalUpdateHelper {
         this.userId = userId;
     }
 
-    private ProposalAttribute updateAttribute(String stringValue, PlanSectionDefinition section,
+    private ProposalAttribute updateAttribute(String stringValue, ProposalTemplateSectionDefinition section,
             Integer version) {
         return proposalContext.getClients().getProposalAttributeClient()
-                .setProposalAttribute(userId, proposalWrapper.getProposalId(),
+                .setProposalAttribute(userId, proposalWrapper.getId(),
                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                         stringValue, version);
     }
 
-    private ProposalAttribute updateAttribute(Long newNumericVal, PlanSectionDefinition section,
+    private ProposalAttribute updateAttribute(Long newNumericVal, ProposalTemplateSectionDefinition section,
             Integer version) {
         return proposalContext.getClients().getProposalAttributeClient().setProposalAttribute(
                 userId,
-                proposalWrapper.getProposalId(), ProposalAttributeKeys.SECTION,
+                proposalWrapper.getId(), ProposalAttributeKeys.SECTION,
                 section.getSectionDefinitionId(), newNumericVal, version);
     }
 
@@ -73,7 +73,7 @@ public class ProposalUpdateHelper {
 
         boolean updateProposalReferences = false;
         boolean evictCache = false;
-        for (PlanSectionDefinition section : proposalWrapper.getSections()) {
+        for (ProposalTemplateSectionDefinition section : proposalWrapper.getSections()) {
             String newSectionValue =
                     updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId());
             switch (section.getType()) {
@@ -144,7 +144,7 @@ public class ProposalUpdateHelper {
         if (p2p != null && p2p.getVersionTo() != -1) {
             // we are in a completed phase - need to adjust the end version
             try {
-                final Proposal updatedProposal = proposalContext.getClients().getProposalClient().getProposal(proposalWrapper.getProposalId());
+                final Proposal updatedProposal = proposalContext.getClients().getProposalClient().getProposal(proposalWrapper.getId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
                 proposalContext.getClients().getProposalPhaseClient().updateProposal2Phase(p2p);
             } catch (ProposalNotFoundException ignored) {
@@ -153,15 +153,15 @@ public class ProposalUpdateHelper {
         }
 
         if (updateProposalReferences) {
-            proposalContext.getClients().getProposalClient().populateTableWithProposal(proposalWrapper.getWrapped().getProposalId());
+            proposalContext.getClients().getProposalClient().populateTableWithProposal(proposalWrapper.getWrapped().getId());
         }
 
         if(evictCache){
             proposalContext.getClients().getProposalAttributeClient().invalidateProposalAttibuteCache(proposalWrapper);
-            proposalContext.getClients().getProposalClient().invalidateProposalCache(proposalWrapper.getProposalId());
+            proposalContext.getClients().getProposalClient().invalidateProposalCache(proposalWrapper.getId());
             if(p2p!=null) {
                 proposalContext.getClients().getProposalPhaseClient()
-                        .invalidateProposal2PhaseCache(proposalWrapper.getProposalId(), p2p
+                        .invalidateProposal2PhaseCache(proposalWrapper.getId(), p2p
                                 .getContestPhaseId());
             }
         }
@@ -173,7 +173,7 @@ public class ProposalUpdateHelper {
 
         if (!StringUtils.equals(updateProposalSectionsBean.getName(), proposalWrapper.getName())) {
             version = proposalContext.getClients().getProposalAttributeClient()
-                    .setProposalAttribute(userId, proposalWrapper.getProposalId(),
+                    .setProposalAttribute(userId, proposalWrapper.getId(),
                             ProposalAttributeKeys.NAME, 0L,
                             HtmlUtil.cleanMost(updateProposalSectionsBean.getName()), version)
                     .getVersion();
@@ -184,7 +184,7 @@ public class ProposalUpdateHelper {
         if (!StringUtils.equals(updateProposalSectionsBean.getPitch(), proposalWrapper.getPitch())) {
             final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             version = proposalContext.getClients().getProposalAttributeClient()
-                    .setProposalAttribute(userId, proposalWrapper.getProposalId(),
+                    .setProposalAttribute(userId, proposalWrapper.getId(),
                             ProposalAttributeKeys.PITCH, 0L,
                             HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch(), baseUri),
                             version).getVersion();
@@ -195,7 +195,7 @@ public class ProposalUpdateHelper {
         if (!StringUtils.equals(updateProposalSectionsBean.getDescription(), proposalWrapper.getDescription())) {
             final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             version = proposalContext.getClients().getProposalAttributeClient()
-                    .setProposalAttribute(userId, proposalWrapper.getProposalId(),
+                    .setProposalAttribute(userId, proposalWrapper.getId(),
                             ProposalAttributeKeys.DESCRIPTION, 0L,
                             HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription(),
                                     baseUri), version).getVersion();
@@ -209,7 +209,7 @@ public class ProposalUpdateHelper {
                 PlatformTeam team = PlatformTeamsClient.getPlatformTeam(updateProposalSectionsBean.getSelectedTeam());
                 List<Member> members = PlatformTeamsClient.getTeamMembers(team);
                 Long groupId = proposalWrapper.getGroupId();
-                Long proposalId = proposalWrapper.getProposalId();
+                Long proposalId = proposalWrapper.getId();
                 for (Member member : members) {
                     Long userId = member.getUserId();
                     MembershipClient client = proposalContext.getClients().getMembershipClient();
@@ -223,7 +223,7 @@ public class ProposalUpdateHelper {
 
         if (!StringUtils.equals(updateProposalSectionsBean.getTeam(), proposalWrapper.getTeam())) {
             version = proposalContext.getClients().getProposalAttributeClient()
-                    .setProposalAttribute(userId, proposalWrapper.getProposalId(),
+                    .setProposalAttribute(userId, proposalWrapper.getId(),
                             ProposalAttributeKeys.TEAM, 0L,
                             HtmlUtil.cleanMost(updateProposalSectionsBean.getTeam()), version)
                     .getVersion();
@@ -234,7 +234,7 @@ public class ProposalUpdateHelper {
         if (updateProposalSectionsBean.getImageId() > 0
                 && updateProposalSectionsBean.getImageId() != proposalWrapper.getImageId()) {
             version = proposalContext.getClients().getProposalAttributeClient()
-                    .setProposalAttribute(userId, proposalWrapper.getProposalId(),
+                    .setProposalAttribute(userId, proposalWrapper.getId(),
                             ProposalAttributeKeys.IMAGE_ID, 0L,
                             updateProposalSectionsBean.getImageId(), version).getVersion();
         } else {

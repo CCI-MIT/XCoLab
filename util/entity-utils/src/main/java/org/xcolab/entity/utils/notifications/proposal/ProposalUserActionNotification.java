@@ -43,7 +43,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
         final EmailTemplate emailTemplate =
                 EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
         templateWrapper = new ProposalUserActionNotificationTemplate(emailTemplate,
-                proposalName, contest.getContestShortName());
+                proposalName, contest.getContestTitle());
 
         return templateWrapper;
     }

@@ -16,7 +16,7 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
-    <c:set var="updateUrl" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/DESCRIPTION" />
+    <c:set var="updateUrl" value="/admin/contest/details/contestId/${contestWrapper.id}/tab/DESCRIPTION" />
 
     <xcolab:requireLibrary name="CKEditor" />
 

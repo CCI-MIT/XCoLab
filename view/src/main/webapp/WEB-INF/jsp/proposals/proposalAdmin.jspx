@@ -23,7 +23,7 @@
                             <strong>This ${contestType.proposalName} can be edited by:</strong>
                             <div>
                                 <c:set var="toggleProposalOpenURL"
-                                       value="${proposal.proposalUrl}/tab/ADMIN/toggleProposalOpen?&amp;contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
+                                       value="${proposal.proposalUrl}/tab/ADMIN/toggleProposalOpen?&amp;contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }"/>
 
                                 <form:form action="${toggleProposalOpenURL }" method="post">
                                     <div class="radio">
@@ -66,7 +66,7 @@
                         <strong>${contestType.proposalName} ribbon in ${contestType.contestName} phase</strong>
                         <div><!--  -->
                             <c:set var="assignRibbonURL"
-                                   value="${proposal.proposalUrl}/tab/ADMIN/assignRibbon?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
+                                   value="${proposal.proposalUrl}/tab/ADMIN/assignRibbon?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }"/>
 
                             <form:form action="${assignRibbonURL}" method="post" cssClass="form-inline">
                                 <select name="ribbon" class="form-control form-control-sm w-75">
@@ -90,13 +90,13 @@
                 </div>
             </c:if>
 
-            <c:if test="${proposalsPermissions.canDelete and contestPhase.getProposalVisibility(proposal.proposalId) }">
+            <c:if test="${proposalsPermissions.canDelete and contestPhase.getProposalVisibility(proposal.id) }">
                 <div class="c-Box c-Box--colorTan">
                     <div class="c-Box__body">
                         <strong>Owner actions</strong>
                         <div>
                             <c:set var="deleteProposalURL"
-                                   value="${proposal.proposalUrl}/tab/ADMIN/deleteProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }&amp;delete=true"/>
+                                   value="${proposal.proposalUrl}/tab/ADMIN/deleteProposal?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }&amp;delete=true"/>
 
                             <form:form action="${deleteProposalURL }" method="post"
                                   id="deleteProposalForm">
@@ -114,7 +114,7 @@
             <c:if test="${ proposalsPermissions.canPromoteProposalToNextPhase }">
 
                 <c:set var="promoteProposalURL"
-                       value="${proposal.proposalUrl}/tab/ADMIN/promoteProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }&amp;contestPhaseId=${proposal.contestPhase.contestPhasePK}"/>
+                       value="${proposal.proposalUrl}/tab/ADMIN/promoteProposal?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }&amp;contestPhaseId=${proposal.contestPhase.id}"/>
 
                 <form:form action="${promoteProposalURL }" method="post">
                     <div class="c-Box c-Box--colorTan">
@@ -180,7 +180,7 @@
                         <div><i>No new requests</i></div>
                     </c:if>
                     <c:set var="replyToMembershipRequest"
-                           value="${proposal.proposalUrl}/tab/ADMIN/replyToMembershipRequest?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
+                           value="${proposal.proposalUrl}/tab/ADMIN/replyToMembershipRequest?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }"/>
                     <c:set var="count" value="1" scope="page"/>
                     <c:forEach items="${proposal.membershipRequests}" var="request">
                         <form:form action="${replyToMembershipRequest }" method="post"
@@ -189,7 +189,7 @@
                                                    text="${request.requestUser.firstName} ${request.requestUser.lastName} (${request.requestUser.screenName})"/>
                             <div>${request.membershipRequest.comments }</div>
                             <input type="hidden" name="requestId"
-                                   value="${request.membershipRequest.membershipRequestId}"/>
+                                   value="${request.membershipRequest.id}"/>
                             <textarea name="comment" class="form-control mt-2"
                                       placeholder="Optional response"><!-- empty --></textarea>
 

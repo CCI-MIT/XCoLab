@@ -51,29 +51,29 @@ public class ContestTeamBean implements Serializable {
 
     private void populateJudges() {
         userIdsJudges
-                .addAll(ContestTeamMemberClientUtil.getJudgesForContest(contest.getContestPK()));
+                .addAll(ContestTeamMemberClientUtil.getJudgesForContest(contest.getId()));
     }
 
     private void poupulateAIF() {
         userIdsIAFellows
-                .addAll(ContestTeamMemberClientUtil.getIAFellowsForContest(contest.getContestPK()));
+                .addAll(ContestTeamMemberClientUtil.getIAFellowsForContest(contest.getId()));
 
     }
 
     private void populateFellows() {
         userIdsFellows
-                .addAll(ContestTeamMemberClientUtil.getFellowsForContest(contest.getContestPK()));
+                .addAll(ContestTeamMemberClientUtil.getFellowsForContest(contest.getId()));
     }
 
     private void populateAdvisors() {
         userIdsAdvisors
-                .addAll(ContestTeamMemberClientUtil.getAdvisorsForContest(contest.getContestPK()));
+                .addAll(ContestTeamMemberClientUtil.getAdvisorsForContest(contest.getId()));
     }
 
     private void populateContestManagers() {
 
         userIdsContestManagers.addAll(ContestTeamMemberClientUtil
-                .getContestManagersForContest(contest.getContestPK()));
+                .getContestManagersForContest(contest.getId()));
 
     }
 
@@ -102,7 +102,7 @@ public class ContestTeamBean implements Serializable {
     }
 
     public Long getContestId() {
-        return contest.getContestPK();
+        return contest.getId();
     }
 
     public List<Long> getUserIdsContestManagers() {

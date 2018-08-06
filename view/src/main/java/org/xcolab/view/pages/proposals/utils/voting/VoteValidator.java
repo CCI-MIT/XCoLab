@@ -128,7 +128,7 @@ public class VoteValidator {
 
     private ProposalVote getVote(Member votingMember) {
         return clients.getProposalMemberRatingClient()
-                .getProposalVoteByProposalIdUserId(proposal.getProposalId(),
+                .getProposalVoteByProposalIdUserId(proposal.getId(),
                         votingMember.getUserId());
     }
 

@@ -99,7 +99,7 @@ public final class ProposalAttributeClient {
     public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) {
         return DtoUtil.toPojos(proposalAttributeResource
                 .collectionService("getImpactProposalAttributes", ProposalAttributeDto.TYPES.getTypeReference())
-                .queryParam("proposalId", proposal.getProposalId())
+                .queryParam("proposalId", proposal.getId())
                 .queryParam("currentVersion", proposal.getCurrentVersion())
                 .getList(), serviceNamespace);
     }
@@ -172,7 +172,7 @@ public final class ProposalAttributeClient {
 
     public void invalidateProposalAttibuteCache(Proposal proposal) {
         ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalDto.class)
-                .withParameter("proposalId", proposal.getProposalId())
+                .withParameter("proposalId", proposal.getId())
                 .withParameter("version", proposal.getVersion()).asList(), CacheName.PROPOSAL_DETAILS);
     }
     public ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute,

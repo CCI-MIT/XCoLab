@@ -53,7 +53,7 @@ public class ProposalsResult {
 
         public SimpleProposal(Proposal proposal) {
 
-            this.id = proposal.getProposalId();
+            this.id = proposal.getId();
             this.proposalName = StringUtils.abbreviate(
                 StringEscapeUtils.unescapeXml(proposal.getName()), MAX_CHARS_FOR_NAMES);
             this.contestName = StringUtils.abbreviate(proposal

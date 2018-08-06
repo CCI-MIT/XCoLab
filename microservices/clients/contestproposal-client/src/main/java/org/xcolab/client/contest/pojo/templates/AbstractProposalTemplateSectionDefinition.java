@@ -3,7 +3,7 @@ package org.xcolab.client.contest.pojo.templates;
 import java.io.Serializable;
 import java.util.Objects;
 
-abstract class AbstractPlanSectionDefinition implements Serializable {
+abstract class AbstractProposalTemplateSectionDefinition implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,9 +23,9 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
     private Boolean contestintegrationrelevance;
     private Boolean includeInJudgingReport;
 
-    public AbstractPlanSectionDefinition() {}
+    public AbstractProposalTemplateSectionDefinition() {}
 
-    public AbstractPlanSectionDefinition(AbstractPlanSectionDefinition value) {
+    public AbstractProposalTemplateSectionDefinition(AbstractProposalTemplateSectionDefinition value) {
         this.id = value.id;
         this.type_ = value.type_;
         this.admintitle = value.admintitle;
@@ -168,10 +168,10 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AbstractPlanSectionDefinition)) {
+        if (!(o instanceof AbstractProposalTemplateSectionDefinition)) {
             return false;
         }
-        AbstractPlanSectionDefinition that = (AbstractPlanSectionDefinition) o;
+        AbstractProposalTemplateSectionDefinition that = (AbstractProposalTemplateSectionDefinition) o;
         return Objects.equals(getId(), that.getId())
                 && Objects.equals(getType_(), that.getType_())
                 && Objects.equals(admintitle, that.admintitle)

@@ -7,43 +7,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.xcolab.model.tables.pojos.PlanSectionDefinition;
-import org.xcolab.model.tables.pojos.PlanTemplate;
-import org.xcolab.model.tables.pojos.PlanTemplateSection;
-import org.xcolab.service.contest.domain.plansectiondefinition.PlanSectionDefinitionDao;
-import org.xcolab.service.contest.domain.plantemplate.PlanTemplateDao;
-import org.xcolab.service.contest.domain.plantemplatesection.PlanTemplateSectionDao;
+import org.xcolab.model.tables.pojos.ProposalTemplateSectionDefinition;
+import org.xcolab.model.tables.pojos.ProposalTemplate;
+import org.xcolab.model.tables.pojos.ProposalTemplateSection;
+import org.xcolab.service.contest.domain.plansectiondefinition.ProposalTemplateSectionDefinitionDao;
+import org.xcolab.service.contest.domain.plantemplate.ProposalTemplateDao;
+import org.xcolab.service.contest.domain.plantemplatesection.ProposalTemplateSectionDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
 @RestController
-public class PlanTemplateController {
+public class ProposalTemplateController {
 
     @Autowired
-    private PlanSectionDefinitionDao planSectionDefinitionDao;
+    private ProposalTemplateSectionDefinitionDao planSectionDefinitionDao;
 
     @Autowired
-    private PlanTemplateDao planTemplateDao;
+    private ProposalTemplateDao planTemplateDao;
 
     @Autowired
-    private PlanTemplateSectionDao planTemplateSectionDao;
-
-
+    private ProposalTemplateSectionDao planTemplateSectionDao;
 
 
     @RequestMapping(value = "/planTemplates", method = RequestMethod.POST)
-    public PlanTemplate createPlanTemplate(@RequestBody PlanTemplate planTemplate) {
+    public ProposalTemplate createProposalTemplate(@RequestBody ProposalTemplate planTemplate) {
 
         return this.planTemplateDao.create(planTemplate);
     }
 
     @RequestMapping(value = "/planTemplates/{id}", method = RequestMethod.PUT)
-    public boolean updatePlanTemplate(@RequestBody PlanTemplate planTemplate,
+    public boolean updateProposalTemplate(@RequestBody ProposalTemplate planTemplate,
                                       @PathVariable("id") Long id) throws NotFoundException {
 
         if (id == null || id == 0 || planTemplateDao.get(id) == null) {
-            throw new NotFoundException("No PlanTemplate with id " + id);
+            throw new NotFoundException("No ProposalTemplate with id " + id);
         } else {
             return planTemplateDao.update(planTemplate);
         }
@@ -51,7 +49,7 @@ public class PlanTemplateController {
 
 
     @RequestMapping(value = "/planTemplates/{planTemplateId}", method = RequestMethod.GET)
-    public PlanTemplate getPlanTemplate(@PathVariable("planTemplateId") Long planTemplateId) throws NotFoundException {
+    public ProposalTemplate getProposalTemplate(@PathVariable("planTemplateId") Long planTemplateId) throws NotFoundException {
         if (planTemplateId == null || planTemplateId == 0) {
             throw new NotFoundException("No planTemplateId given");
         } else {
@@ -60,36 +58,34 @@ public class PlanTemplateController {
     }
 
     @RequestMapping(value = "/planTemplates", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<PlanTemplate> getPlanTemplates() {
+    public List<ProposalTemplate> getProposalTemplates() {
         return planTemplateDao.findByGiven();
     }
 
     @RequestMapping(value = "/planTemplates/{id}", method = RequestMethod.DELETE)
-    public String deletePlanTemplate(@PathVariable("id") Long id)
+    public String deleteProposalTemplate(@PathVariable("id") Long id)
             throws NotFoundException {
 
         if (id == null || id == 0) {
-            throw new NotFoundException("No PlanTemplate with id given");
+            throw new NotFoundException("No ProposalTemplate with id given");
         } else {
-            PlanTemplate planTemplate = this.planTemplateDao.get(id);
+            ProposalTemplate planTemplate = this.planTemplateDao.get(id);
             if (planTemplate != null) {
                 this.planTemplateDao.delete(planTemplate.getId());
-                return "PlanTemplate deleted successfully";
+                return "ProposalTemplate deleted successfully";
             } else {
-                throw new NotFoundException("No PlanTemplate with id given");
+                throw new NotFoundException("No ProposalTemplate with id given");
             }
         }
     }
 
     @RequestMapping(value = "/planTemplateSections", method = RequestMethod.POST)
-    public PlanTemplateSection createPlanTemplateSection(@RequestBody PlanTemplateSection planTemplateSection) {
+    public ProposalTemplateSection createProposalTemplateSection(@RequestBody ProposalTemplateSection planTemplateSection) {
         return this.planTemplateSectionDao.create(planTemplateSection);
     }
 
-
-
     @RequestMapping(value = "/planSectionDefinitions/{planSectionDefinitionId}", method = RequestMethod.GET)
-    public PlanSectionDefinition getPlanSectionDefinition(@PathVariable("planSectionDefinitionId") Long planSectionDefinitionId) throws NotFoundException {
+    public ProposalTemplateSectionDefinition getProposalTemplateSectionDefinition(@PathVariable("planSectionDefinitionId") Long planSectionDefinitionId) throws NotFoundException {
         if (planSectionDefinitionId == null || planSectionDefinitionId == 0) {
             throw new NotFoundException("No planSectionDefinitionId given");
         } else {
@@ -98,45 +94,43 @@ public class PlanTemplateController {
     }
 
     @RequestMapping(value = "/planSectionDefinitions/{id}", method = RequestMethod.DELETE)
-    public String deletePlanSectionDefinition(@PathVariable("id") Long id)
+    public String deleteProposalTemplateSectionDefinition(@PathVariable("id") Long id)
             throws NotFoundException {
 
         if (id == null || id == 0) {
-            throw new NotFoundException("No PlanSectionDefinition with id given");
+            throw new NotFoundException("No ProposalTemplateSectionDefinition with id given");
         } else {
-            PlanSectionDefinition planSectionDefinition = this.planSectionDefinitionDao.get(id);
+            ProposalTemplateSectionDefinition planSectionDefinition = this.planSectionDefinitionDao.get(id);
             if (planSectionDefinition != null) {
                 this.planSectionDefinitionDao.delete(planSectionDefinition.getId());
-                return "PlanSectionDefinition deleted successfully";
+                return "ProposalTemplateSectionDefinition deleted successfully";
             } else {
-                throw new NotFoundException("No PlanSectionDefinition with id given");
+                throw new NotFoundException("No ProposalTemplateSectionDefinition with id given");
             }
         }
     }
 
     @RequestMapping(value = "/planSectionDefinitions/{id}", method = RequestMethod.PUT)
-    public boolean updatePlanSectionDefinition(@RequestBody PlanSectionDefinition planSectionDefinition,
+    public boolean updateProposalTemplateSectionDefinition(@RequestBody ProposalTemplateSectionDefinition planSectionDefinition,
                                                @PathVariable("id") Long id) throws NotFoundException {
 
         if (id == null || id == 0 || planSectionDefinitionDao.get(id) == null) {
-            throw new NotFoundException("No PlanSectionDefinition with id " + id);
+            throw new NotFoundException("No ProposalTemplateSectionDefinition with id " + id);
         } else {
             return planSectionDefinitionDao.update(planSectionDefinition);
         }
     }
+
     @RequestMapping(value = "/planSectionDefinitions", method = RequestMethod.POST)
-    public PlanSectionDefinition createPlanSectionDefinition(@RequestBody PlanSectionDefinition planSectionDefinition) {
+    public ProposalTemplateSectionDefinition createProposalTemplateSectionDefinition(@RequestBody ProposalTemplateSectionDefinition planSectionDefinition) {
         if(planSectionDefinition.getLocked() == null){
             planSectionDefinition.setLocked(false);
         }
         return this.planSectionDefinitionDao.create(planSectionDefinition);
     }
 
-
-
-
     @RequestMapping(value = "/planSectionDefinitions", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<PlanSectionDefinition> getPlanSectionDefinitions(
+    public List<ProposalTemplateSectionDefinition> getProposalTemplateSectionDefinitions(
             @RequestParam(required = false) Long planTemplateId,
             @RequestParam(required = false) Boolean weight
     ) {
@@ -144,25 +138,20 @@ public class PlanTemplateController {
     }
 
     @RequestMapping(value = "/planTemplateSections", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<PlanTemplateSection> getPlanTemplateSections(
+    public List<ProposalTemplateSection> getProposalTemplateSections(
             @RequestParam(required = false) Long planTemplateId,
             @RequestParam(required = false) Long planSectionId
     ) {
         return planTemplateSectionDao.findByGiven(planTemplateId,planSectionId);
     }
     @RequestMapping(value = "/planTemplateSections/updateTemplateSection", method = RequestMethod.POST)
-    public boolean updatePlanTemplateSection(@RequestBody PlanTemplateSection planTemplateSection) throws NotFoundException {
+    public boolean updateProposalTemplateSection(@RequestBody ProposalTemplateSection planTemplateSection) throws NotFoundException {
             return planTemplateSectionDao.update(planTemplateSection);
     }
 
-
-
-    @RequestMapping(value = "/planTemplateSections/deletePlanTemplateSection", method = RequestMethod.DELETE)
-    public Boolean deletePlanTemplateSection(@RequestParam Long planTemplateId, @RequestParam Long planSectionDefinitionId)
+    @RequestMapping(value = "/planTemplateSections/deleteProposalTemplateSection", method = RequestMethod.DELETE)
+    public Boolean deleteProposalTemplateSection(@RequestParam Long planTemplateId, @RequestParam Long planSectionDefinitionId)
             throws NotFoundException {
                 return this.planTemplateSectionDao.delete(planTemplateId,planSectionDefinitionId)> 0;
     }
-
-
-
 }

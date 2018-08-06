@@ -6,6 +6,8 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import java.util.List;
 
 public interface ProposalRatingValueDao {
+
     ProposalRatingValue get(Long id) throws NotFoundException;
+
     List<ProposalRatingValue> findByGiven(Long ratingTypeId);
 }

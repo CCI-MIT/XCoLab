@@ -93,7 +93,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory {
         return MoveType.valueOf(this.getMoveType());
     }
 
-//    public DateTime getMoveDate() {
-//        return new DateTime(this.getMoveDate());
+//    public DateTime getMovedAt() {
+//        return new DateTime(this.getMovedAt());
 //    }
 }

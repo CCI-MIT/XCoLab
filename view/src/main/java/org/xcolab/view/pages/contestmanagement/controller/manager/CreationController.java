@@ -29,7 +29,7 @@ public class CreationController {
         Contest contest = ContestCreatorUtil.createNewContest("created contest "
                 + DateTime.now().toString("yyyy.MM.dd HH.mm.ss"), member.getId());
         String newContestLink = "/admin/contest/details/contestId/"
-                + contest.getContestPK();
+                + contest.getId();
 
         return InfoPage.message("<a href=\"" + newContestLink + "\">Click here to start "
                 + "editing!</a>")

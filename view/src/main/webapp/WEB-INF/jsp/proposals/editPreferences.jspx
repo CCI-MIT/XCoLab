@@ -49,7 +49,7 @@
                         <form:select id="selectContest" path="moveFromContestId">
                             <form:option value="-1" label="Choose a contest" />
                             <c:forEach var="contest" items="${contests}">
-                                <form:option value="${contest.contestPK}" label="${contest.contestShortNameWithEndYear}" />
+                                <form:option value="${contest.id}" label="${contest.contestShortNameWithEndYear}" />
                             </c:forEach>
                         </form:select>
                     </label>

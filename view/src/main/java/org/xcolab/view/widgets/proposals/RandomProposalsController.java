@@ -76,7 +76,7 @@ public class RandomProposalsController
             Collections.shuffle(proposals);
             for (int i = 0; i < proposals.size() && i < preferences.getFeedSize(); ++i) {
                 try {
-                    ret.add((ProposalClientUtil.getProposal(proposals.get(i).getProposalId())));
+                    ret.add((ProposalClientUtil.getProposal(proposals.get(i).getId())));
                 } catch (ProposalNotFoundException e) {
                 }
             }

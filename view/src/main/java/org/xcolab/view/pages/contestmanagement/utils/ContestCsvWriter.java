@@ -42,10 +42,10 @@ public class ContestCsvWriter extends CsvResponseWriter {
 
             List<String> row = new ArrayList<>();
 
-            addValue(row, contest.getContestPK());
+            addValue(row, contest.getId());
             addValue(row, colabUrl + contest.getContestUrl());
-            addValue(row, contest.getContestShortName());
-            addValue(row, contest.getContestName());
+            addValue(row, contest.getContestTitle());
+            addValue(row, contest.getContestQuestion());
 
             addValue(row, getIdString(contest.getWhat()));
             addValue(row, getNames(contest.getWhat()));

@@ -122,18 +122,18 @@ public class RandomProposalsPreferences extends WidgetPreference {
 
         List<Contest> contests = ContestClientUtil.getAllContests();
 
-        contests.sort((o1, o2) -> (int) (o1.getContestPK() - o2.getContestPK()));
+        contests.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
 
         Map<Long, String> phases = new LinkedHashMap<>();
         for (Contest c : contests) {
-            for (ContestPhase cp : ContestClientUtil.getVisibleContestPhases(c.getContestPK())) {
+            for (ContestPhase cp : ContestClientUtil.getVisibleContestPhases(c.getId())) {
                 String prefix = "";
                 if (cp.getPhaseActive()) {
                     prefix = "* ACTIVE *";
                 }
-                phases.put(cp.getContestPhasePK(),
-                        String.format("%d %s %s - %d %s", c.getContestPK(), prefix,
-                                c.getContestShortNameWithEndYear(), cp.getContestPhasePK(),
+                phases.put(cp.getId(),
+                        String.format("%d %s %s - %d %s", c.getId(), prefix,
+                                c.getContestShortNameWithEndYear(), cp.getId(),
                                 cp.getContestStatusStr()));
             }
         }

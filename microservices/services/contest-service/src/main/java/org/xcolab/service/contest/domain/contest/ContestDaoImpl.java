@@ -30,11 +30,11 @@ import static org.xcolab.model.Tables.CONTEST_DISCUSSION;
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.CONTEST_TEAM_MEMBER;
 import static org.xcolab.model.Tables.CONTEST_TRANSLATION;
-import static org.xcolab.model.Tables.MEMBERSHIP_REQUEST;
+import static org.xcolab.model.Tables.PROPOSAL_TEAM_MEMBERSHIP_REQUEST;
 import static org.xcolab.model.Tables.POINTS;
 import static org.xcolab.model.Tables.POINTS_DISTRIBUTION_CONFIGURATION;
 import static org.xcolab.model.Tables.PROPOSAL;
-import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
+import static org.xcolab.model.Tables.PROPOSAL2_PHASE;
 import static org.xcolab.model.Tables.PROPOSAL_ATTRIBUTE;
 import static org.xcolab.model.Tables.PROPOSAL_CONTEST_PHASE_ATTRIBUTE;
 import static org.xcolab.model.Tables.PROPOSAL_MOVE_HISTORY;
@@ -59,21 +59,21 @@ public class ContestDaoImpl implements ContestDao {
     @Override
     public Contest create(Contest contest) {
 
-        this.dslContext.insertInto(CONTEST).set(CONTEST.CONTEST_PK, contest.getContestPK())
+        this.dslContext.insertInto(CONTEST).set(CONTEST.ID, contest.getId())
                 .set(CONTEST.CONTEST_TYPE_ID, contest.getContestTypeId())
-                .set(CONTEST.CONTEST_NAME, contest.getContestName())
-                .set(CONTEST.CONTEST_SHORT_NAME, contest.getContestShortName())
+                .set(CONTEST.QUESTION, contest.getQuestion())
+                .set(CONTEST.TITLE, contest.getTitle())
                 .set(CONTEST.CONTEST_URL_NAME, contest.getContestUrlName())
                 .set(CONTEST.CONTEST_YEAR, contest.getContestYear())
-                .set(CONTEST.CONTEST_DESCRIPTION, contest.getContestDescription())
+                .set(CONTEST.DESCRIPTION, contest.getDescription())
                 .set(CONTEST.CONTEST_MODEL_DESCRIPTION, contest.getContestModelDescription())
                 .set(CONTEST.CONTEST_POSITIONS_DESCRIPTION,
                         contest.getContestPositionsDescription())
-                .set(CONTEST.CREATED, contest.getCreated())
-                .set(CONTEST.UPDATED, contest.getUpdated())
-                .set(CONTEST.AUTHOR_ID, contest.getauthorUserid())
+                .set(CONTEST.CREATED_AT, contest.getCreatedAt())
+                .set(CONTEST.CREATED_AT, contest.getUpdatedAt())
+                .set(CONTEST.AUTHOR_USER_ID, contest.getAuthorUserId())
                 .set(CONTEST.CONTEST_ACTIVE, contest.getContestActive())
-                .set(CONTEST.PLAN_TEMPLATE_ID, contest.getPlanTemplateId())
+                .set(CONTEST.PROPOSAL_TEMPLATE_ID, contest.getProposalTemplateId())
                 .set(CONTEST.CONTEST_SCHEDULE_ID, contest.getContestScheduleId())
                 .set(CONTEST.PROPOSAL_CREATION_TEMPLATE_STRING,
                         contest.getProposalCreationTemplateString())
@@ -85,7 +85,7 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.FOCUS_AREA_ID, contest.getFocusAreaId())
                 .set(CONTEST.CONTEST_TIER, contest.getContestTier())
                 .set(CONTEST.CONTEST_LOGO_ID, contest.getContestLogoId())
-                .set(CONTEST.FEATURED_, contest.getFeatured_())
+                .set(CONTEST.FEATURED, contest.getFeatured())
                 .set(CONTEST.PLANS_OPEN_BY_DEFAULT, contest.getPlansOpenByDefault())
                 .set(CONTEST.DEFAULT_PROPOSAL_LOGO_ID, contest.getDefaultProposalLogoId())
                 .set(CONTEST.SPONSOR_LOGO_ID, contest.getSponsorLogoId())
@@ -106,9 +106,9 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.DEFAULT_PARENT_POINT_TYPE, contest.getDefaultParentPointType())
                 .set(CONTEST.POINT_DISTRIBUTION_STRATEGY, contest.getPointDistributionStrategy())
                 .set(CONTEST.EMAIL_TEMPLATE_URL, contest.getEmailTemplateUrl())
-                .set(CONTEST.SHOW_IN_TILE_VIEW, contest.getShow_in_tile_view())
-                .set(CONTEST.SHOW_IN_LIST_VIEW, contest.getShow_in_list_view())
-                .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShow_in_outline_view())
+                .set(CONTEST.SHOW_IN_TILE_VIEW, contest.getShowInTileView())
+                .set(CONTEST.SHOW_IN_LIST_VIEW, contest.getShowInListView())
+                .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShowInOutlineView())
                 .set(CONTEST.HIDE_RIBBONS, contest.getHideRibbons())
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
                 .execute();
@@ -117,21 +117,21 @@ public class ContestDaoImpl implements ContestDao {
 
     @Override
     public boolean update(Contest contest) {
-        return dslContext.update(CONTEST).set(CONTEST.CONTEST_PK, contest.getContestPK())
+        return dslContext.update(CONTEST).set(CONTEST.ID, contest.getId())
                 .set(CONTEST.CONTEST_TYPE_ID, contest.getContestTypeId())
-                .set(CONTEST.CONTEST_NAME, contest.getContestName())
-                .set(CONTEST.CONTEST_SHORT_NAME, contest.getContestShortName())
+                .set(CONTEST.QUESTION, contest.getQuestion())
+                .set(CONTEST.TITLE, contest.getTitle())
                 .set(CONTEST.CONTEST_URL_NAME, contest.getContestUrlName())
                 .set(CONTEST.CONTEST_YEAR, contest.getContestYear())
-                .set(CONTEST.CONTEST_DESCRIPTION, contest.getContestDescription())
+                .set(CONTEST.DESCRIPTION, contest.getDescription())
                 .set(CONTEST.CONTEST_MODEL_DESCRIPTION, contest.getContestModelDescription())
                 .set(CONTEST.CONTEST_POSITIONS_DESCRIPTION,
                         contest.getContestPositionsDescription())
-                .set(CONTEST.CREATED, contest.getCreated())
-                .set(CONTEST.UPDATED, contest.getUpdated())
-                .set(CONTEST.AUTHOR_ID, contest.getauthorUserid())
+                .set(CONTEST.CREATED_AT, contest.getCreatedAt())
+                .set(CONTEST.UPDATED_AT, contest.getUpdatedAt())
+                .set(CONTEST.AUTHOR_USER_ID, contest.getAuthorUserId())
                 .set(CONTEST.CONTEST_ACTIVE, contest.getContestActive())
-                .set(CONTEST.PLAN_TEMPLATE_ID, contest.getPlanTemplateId())
+                .set(CONTEST.PROPOSAL_TEMPLATE_ID, contest.getProposalTemplateId())
                 .set(CONTEST.CONTEST_SCHEDULE_ID, contest.getContestScheduleId())
                 .set(CONTEST.PROPOSAL_CREATION_TEMPLATE_STRING,
                         contest.getProposalCreationTemplateString())
@@ -143,7 +143,7 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.FOCUS_AREA_ID, contest.getFocusAreaId())
                 .set(CONTEST.CONTEST_TIER, contest.getContestTier())
                 .set(CONTEST.CONTEST_LOGO_ID, contest.getContestLogoId())
-                .set(CONTEST.FEATURED_, contest.getFeatured_())
+                .set(CONTEST.FEATURED, contest.getFeatured())
                 .set(CONTEST.PLANS_OPEN_BY_DEFAULT, contest.getPlansOpenByDefault())
                 .set(CONTEST.SPONSOR_LOGO_ID, contest.getSponsorLogoId())
                 .set(CONTEST.DEFAULT_PROPOSAL_LOGO_ID, contest.getDefaultProposalLogoId())
@@ -164,19 +164,19 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.DEFAULT_PARENT_POINT_TYPE, contest.getDefaultParentPointType())
                 .set(CONTEST.POINT_DISTRIBUTION_STRATEGY, contest.getPointDistributionStrategy())
                 .set(CONTEST.EMAIL_TEMPLATE_URL, contest.getEmailTemplateUrl())
-                .set(CONTEST.SHOW_IN_TILE_VIEW, contest.getShow_in_tile_view())
-                .set(CONTEST.SHOW_IN_LIST_VIEW, contest.getShow_in_list_view())
-                .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShow_in_outline_view())
+                .set(CONTEST.SHOW_IN_TILE_VIEW, contest.getShowInTileView())
+                .set(CONTEST.SHOW_IN_LIST_VIEW, contest.getShowInListView())
+                .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShowInOutlineView())
                 .set(CONTEST.HIDE_RIBBONS, contest.getHideRibbons())
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
-                .where(CONTEST.CONTEST_PK.eq(contest.getContestPK()))
+                .where(CONTEST.ID.eq(contest.getId()))
                 .execute() > 0;
     }
 
     @Override
     public Contest get(Long contestId) throws NotFoundException {
         final Record record =
-                dslContext.select().from(CONTEST).where(CONTEST.CONTEST_PK.eq(contestId))
+                dslContext.select().from(CONTEST).where(CONTEST.ID.eq(contestId))
                         .fetchOne();
         if (record == null) {
             throw new NotFoundException("Contest with id " + contestId + " was not found");
@@ -209,12 +209,12 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public boolean isContestNameYearUnique(String contestShortName, Long year, Long currentContestId) {
+    public boolean isContestTitleYearUnique(String title, Long year, Long currentContestId) {
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount().from(CONTEST).getQuery();
-        query.addConditions(CONTEST.CONTEST_SHORT_NAME.eq(contestShortName));
+        query.addConditions(CONTEST.TITLE.eq(title));
         query.addConditions(CONTEST.CONTEST_YEAR.eq(year));
         if (currentContestId != null) {
-            query.addConditions(CONTEST.CONTEST_PK.notEqual(currentContestId));
+            query.addConditions(CONTEST.ID.notEqual(currentContestId));
         }
         return query.fetchOne().into(Integer.class) == 0;
     }
@@ -232,13 +232,13 @@ public class ContestDaoImpl implements ContestDao {
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
-                case "createdAt":
-                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.CREATED.asc()
-                            : CONTEST.CREATED.desc());
+                case "created_atAt":
+                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.CREATED_AT.asc()
+                            : CONTEST.CREATED_AT.desc());
                     break;
                 case "ContestShortName":
-                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.CONTEST_SHORT_NAME.asc()
-                            : CONTEST.CONTEST_SHORT_NAME.desc());
+                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.TITLE.asc()
+                            : CONTEST.TITLE.desc());
                     break;
                 case "weight":
                     query.addOrderBy(sortColumn.isAscending() ? CONTEST.WEIGHT.asc()
@@ -280,11 +280,11 @@ public class ContestDaoImpl implements ContestDao {
             query.addConditions(CONTEST.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
         }
         if (planTemplateId != null) {
-            query.addConditions(CONTEST.PLAN_TEMPLATE_ID.eq(planTemplateId));
+            query.addConditions(CONTEST.PROPOSAL_TEMPLATE_ID.eq(planTemplateId));
         }
         if (searchTerm != null && !searchTerm.isEmpty()) {
-            query.addConditions(CONTEST.CONTEST_NAME.like("%" + searchTerm + "%")
-                    .or(CONTEST.CONTEST_SHORT_NAME.like("%" + searchTerm + "%")));
+            query.addConditions(CONTEST.TITLE.like("%" + searchTerm + "%")
+                    .or(CONTEST.TITLE.like("%" + searchTerm + "%")));
         }
         if (!CollectionUtils.isEmpty(focusAreaIds)) {
             query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaIds));
@@ -302,7 +302,7 @@ public class ContestDaoImpl implements ContestDao {
             query.addConditions(CONTEST.CONTEST_ACTIVE.eq(active));
         }
         if (featured != null) {
-            query.addConditions(CONTEST.FEATURED_.eq(featured));
+            query.addConditions(CONTEST.FEATURED.eq(featured));
         }
     }
 
@@ -339,7 +339,7 @@ public class ContestDaoImpl implements ContestDao {
 
     private static boolean deleteContest(DSLContext ctx, long contestPK) {
         return ctx.deleteFrom(CONTEST)
-                .where(CONTEST.CONTEST_PK.eq(contestPK))
+                .where(CONTEST.ID.eq(contestPK))
                 .execute() > 0;
     }
 
@@ -359,7 +359,7 @@ public class ContestDaoImpl implements ContestDao {
         // Retrieve contest discussion thread id.
         Long threadId = ctx.select(CONTEST.DISCUSSION_GROUP_ID)
                 .from(CONTEST)
-                .where(CONTEST.CONTEST_PK.eq(contestPK))
+                .where(CONTEST.ID.eq(contestPK))
                 .fetchOne()
                 .into(Long.class);
         // Delete contest thread and comments.
@@ -370,27 +370,27 @@ public class ContestDaoImpl implements ContestDao {
 
     private static void deleteContestPhases(DSLContext ctx, long contestPK) {
         // Select query for contest's phases
-        Select<Record1<Long>> contestPhases = ctx.select(CONTEST_PHASE.CONTEST_PHASE_PK)
+        Select<Record1<Long>> contestPhases = ctx.select(CONTEST_PHASE.ID)
                 .from(CONTEST_PHASE)
-                .where(CONTEST_PHASE.CONTEST_PK.eq(contestPK));
+                .where(CONTEST_PHASE.ID.eq(contestPK));
         // Delete Proposal2Phase rows associated with this contest.
-        ctx.deleteFrom(PROPOSAL_2_PHASE)
-                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.in(contestPhases))
+        ctx.deleteFrom(PROPOSAL2_PHASE)
+                .where(PROPOSAL2_PHASE.CONTEST_PHASE_ID.in(contestPhases))
                 .execute();
         // Delete contest's phases.
         ctx.deleteFrom(CONTEST_PHASE)
-                .where(CONTEST_PHASE.CONTEST_PK.eq(contestPK))
+                .where(CONTEST_PHASE.ID.eq(contestPK))
                 .execute();
     }
 
     // TODO COLAB-2466: move this to ProposalDao after cross-DAO transactions are possible
     public static void deleteOrphanProposals(DSLContext ctx) {
         // Retrieve orphaned proposals
-        List<Long> orphanProposals = ctx.select(PROPOSAL.PROPOSAL_ID)
+        List<Long> orphanProposals = ctx.select(PROPOSAL.ID)
                 .from(PROPOSAL)
                 .whereNotExists(ctx.select(val(1))
-                        .from(PROPOSAL_2_PHASE)
-                        .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)))
+                        .from(PROPOSAL2_PHASE)
+                        .where(PROPOSAL2_PHASE.PROPOSAL_ID.eq(PROPOSAL.ID)))
                 .fetchInto(Long.class);
         // Delete all orphaned proposals
         deleteProposals(ctx, orphanProposals);
@@ -412,8 +412,8 @@ public class ContestDaoImpl implements ContestDao {
         // Delete proposal subscriptions and activity entries.
         ActivitiesClientUtil.batchDelete(ActivityCategory.PROPOSAL, proposalIds);
         // Delete membership requests
-        ctx.deleteFrom(MEMBERSHIP_REQUEST)
-                .where(MEMBERSHIP_REQUEST.PROPOSAL_ID.in(proposalIds))
+        ctx.deleteFrom(PROPOSAL_TEAM_MEMBERSHIP_REQUEST)
+                .where(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal supports
         ctx.deleteFrom(PROPOSAL_SUPPORTER)
@@ -451,14 +451,14 @@ public class ContestDaoImpl implements ContestDao {
                 .execute();
         // Delete orphaned proposals
         ctx.deleteFrom(PROPOSAL)
-                .where(PROPOSAL.PROPOSAL_ID.in(proposalIds))
+                .where(PROPOSAL.ID.in(proposalIds))
                 .execute();
         // Delete proposal discussion threads and comments.
         final List<Long> threadIdsToDelete = new ArrayList<>();
         threadIdsToDelete.addAll(ctx.select(PROPOSAL.DISCUSSION_ID).from(PROPOSAL)
-                .where(PROPOSAL.PROPOSAL_ID.in(proposalIds)).fetch().into(Long.class));
+                .where(PROPOSAL.ID.in(proposalIds)).fetch().into(Long.class));
         threadIdsToDelete.addAll(ctx.select(PROPOSAL.RESULTS_DISCUSSION_ID).from(PROPOSAL)
-                .where(PROPOSAL.PROPOSAL_ID.in(proposalIds)).fetch().into(Long.class));
+                .where(PROPOSAL.ID.in(proposalIds)).fetch().into(Long.class));
 
         for (long threadId : threadIdsToDelete) {
             ThreadClientUtil.deleteThread(threadId);

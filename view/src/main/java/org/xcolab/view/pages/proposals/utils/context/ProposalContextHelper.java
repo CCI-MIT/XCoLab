@@ -68,7 +68,7 @@ public class ProposalContextHelper {
         log.trace("Fetched local contest: {}", localContest);
         clientHelper = new ClientHelper();
         if (localContest != null) {
-            final Long contestPK = localContest.getContestPK();
+            final Long contestPK = localContest.getId();
             if (contestPK != null) {
                 contest = setupContestFromTheRightClient(contestPK);
             } else {
@@ -139,15 +139,15 @@ public class ProposalContextHelper {
         if (givenPhaseId > 0) {
             contestPhase = contestClient.getContestPhase(givenPhaseId);
         } else if (proposal != null && proposal.isContestMatchesLatestContest()) {
-            contestPhase = proposalClient.getLatestContestPhaseInProposal(proposal.getProposalId());
+            contestPhase = proposalClient.getLatestContestPhaseInProposal(proposal.getId());
         } else {
-            contestPhase = contestClient.getActivePhase(contest.getContestPK());
+            contestPhase = contestClient.getActivePhase(contest.getId());
         }
 
         if (contestPhase == null) {
             throw ReferenceResolutionException
                     .toObject(ContestPhase.class, "")
-                    .fromObject(Contest.class, contest.getContestPK());
+                    .fromObject(Contest.class, contest.getId());
         }
         return contestPhase;
     }
@@ -156,7 +156,7 @@ public class ProposalContextHelper {
         final ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         try {
             return proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(givenProposalId,
-                            contestPhase.getContestPhasePK());
+                            contestPhase.getId());
         } catch (Proposal2PhaseNotFoundException e) {
             return null;
         }
@@ -182,7 +182,7 @@ public class ProposalContextHelper {
         Proposal proposalWrapper;
         if (givenVersion > 0) {
             if (member != null && PermissionsClient
-                    .canJudge(member.getUserId(), contest.getContestPK())) {
+                    .canJudge(member.getUserId(), contest.getId())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal, givenVersion,
                         contest, contestPhase, proposal2Phase, member);
             } else {
@@ -198,7 +198,7 @@ public class ProposalContextHelper {
                             : proposal.getCurrentVersion();
 
             if (member != null && PermissionsClient
-                    .canJudge(member.getUserId(), contest.getContestPK())) {
+                    .canJudge(member.getUserId(), contest.getId())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal,
                         localVersion,
                         contest, contestPhase, proposal2Phase, member);

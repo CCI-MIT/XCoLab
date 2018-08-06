@@ -225,7 +225,7 @@
                                 </c:otherwise>
                             </c:choose>
                             <td>
-                                <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestPK}"
+                                <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.id}"
                                        target="_blank">EDIT</a>
                             </td>
                         </tr>

@@ -41,7 +41,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
         }
         final EmailTemplate emailTemplate =
                 EmailTemplateClientUtil.getContestEmailTemplateByType(voteQuestionTemplateString);
-        templateWrapper = new ContestVoteQuestionTemplate(emailTemplate, contest.getContestShortName());
+        templateWrapper = new ContestVoteQuestionTemplate(emailTemplate, contest.getContestTitle());
 
         return templateWrapper;
     }
@@ -69,7 +69,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                             member = MembersClient.getMember(proposal.getauthorUserid());
                         } catch (MemberNotFoundException e) {
                             _log.error("Author {} of proposal {} does not exist",
-                                    proposal.getauthorUserid(), proposal.getProposalId());
+                                    proposal.getauthorUserid(), proposal.getId());
                             member = null;
                         }
                         //TODO COLAB-2505: this does not actually generate a link for direct voting

@@ -25,7 +25,7 @@ public class ContestTranslationBean implements Serializable {
     public ContestTranslationBean(Contest contest) {
         ContestClient contestClient = ContestClient.fromNamespace(contest.getServiceNamespace());
         final Map<String, ContestTranslation> translations =
-                contestClient.getTranslationsForContestId(contest.getContestPK())
+                contestClient.getTranslationsForContestId(contest.getId())
                 .stream()
                 .collect(Collectors.toMap(ContestTranslation::getLang, t -> t));
 
@@ -33,7 +33,7 @@ public class ContestTranslationBean implements Serializable {
             translations.computeIfAbsent(lang, k -> {
                 ContestTranslation translation = new ContestTranslation();
                 translation.setLang(lang);
-                translation.setContestId(contest.getContestPK());
+                translation.setContestId(contest.getId());
                 return translation;
             });
         }
@@ -54,7 +54,7 @@ public class ContestTranslationBean implements Serializable {
                 .filter(translation -> !StringUtils.isAllEmpty(translation.getContestName(),
                         translation.getContestShortName(), translation.getContestDescription()))
                 .map(translation -> {
-                    translation.setContestId(contest.getContestPK());
+                    translation.setContestId(contest.getId());
                     return translation;
                 })
                 .forEach(contestClient::saveTranslation);

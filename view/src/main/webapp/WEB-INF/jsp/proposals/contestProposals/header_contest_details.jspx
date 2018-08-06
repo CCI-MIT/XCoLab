@@ -29,11 +29,11 @@
                             </c:otherwise>
                         </c:choose>
                     </c:if>
-                    ${contest.contestName}
+                    ${contest.contestQuestion}
                 </div>
                 <div class="p-ContestProposals__header__description">
                     <p>
-                        ${contest.contestDescription}
+                        ${contest.description}
                         <c:if test="${contest.resourceArticleId > 0 and contestType.showResourceLinks}">
                             <a href="${contest.resourceArticleUrl}" id="readMoreLink" style="display: none"> Read more ...</a>
                         </c:if>
@@ -161,7 +161,7 @@
                     </c:if>
 
                     <c:if test="${showEditLink}">
-                        <a href="/admin/contest/details/contestId/${contest.contestPK}" class="btn cb-btn-outline-admin ">
+                        <a href="/admin/contest/details/contestId/${contest.id}" class="btn cb-btn-outline-admin ">
                             Edit Contest
                         </a>
                     </c:if>
@@ -198,7 +198,7 @@
                                                                  width="30" height="30"/>
                                         </div>
                                         <br/>
-                                        <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
+                                        <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.id}">
                                             <a href="${contest.contestUrl}/judgeFilter/${judge.userId}">${judge.fullName}</a>
                                             <br /><span>(${proposalAlreadyJudgedCount} of ${proposalCount})</span>
                                             <div class="hidden">
@@ -219,7 +219,7 @@
 
             <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                 <div class="p-ContestProposals__header__shareButtons">
-                    <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName)}"/>
+                    <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestTitle)}"/>
                 </div>
             </c:if>
 

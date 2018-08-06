@@ -61,18 +61,18 @@ public class ContestNotification extends EmailNotification {
         final EmailTemplate emailTemplate =
                 emailTemplateClient.getContestEmailTemplateByType(templateName);
 
-        templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getContestShortName());
+        templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getContestTitle());
 
         return templateWrapper;
     }
 
     @Override
     protected Long getReferenceId(){
-        return this.contest.getContestPK();
+        return this.contest.getId();
     }
     private Date getActivePhaseDeadline() {
         ContestClient contestClient = ContestClientUtil.getClient();
-        return contestClient.getActivePhase(contest.getContestPK()).getPhaseEndDate();
+        return contestClient.getActivePhase(contest.getId()).getPhaseEndDate();
     }
 
     private String getOtherContestLink(String linkText) {

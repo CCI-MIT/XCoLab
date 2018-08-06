@@ -284,10 +284,10 @@ public class ContestResourcesBean implements Serializable {
 
     public void fillOverviewSectionContent(Contest contest) {
         List<ContestPhase> contestPhaseList =
-                ContestClientUtil.getAllContestPhases(contest.getContestPK());
+                ContestClientUtil.getAllContestPhases(contest.getId());
         String proposalSubmissionEndDate = "";
         for (ContestPhase contestPhase : contestPhaseList) {
-            Long contestPhaseType = contestPhase.getContestPhaseType();
+            Long contestPhaseType = contestPhase.getContestPhaseTypeId();
             if (contestPhaseType == 1L) {
                 final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMAT
                         .withZone(
@@ -305,7 +305,7 @@ public class ContestResourcesBean implements Serializable {
             }
         }
         overviewSectionValues = new LinkedHashMap<>();
-        overviewSectionValues.put("Question:", contest.getContestName());
+        overviewSectionValues.put("Question:", contest.getContestQuestion());
 
         final String contestLinkUrl = contest.getContestLinkUrl();
         final String overviewViewProposalsContent = resolvePlaceholders(OVERVIEW_VIEW_PROPOSALS_CONTENT);

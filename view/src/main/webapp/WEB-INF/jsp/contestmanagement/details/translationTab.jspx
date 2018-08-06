@@ -12,7 +12,7 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
-    <c:set var="updateUrl" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/TRANSLATIONS" />
+    <c:set var="updateUrl" value="/admin/contest/details/contestId/${contestWrapper.id}/tab/TRANSLATIONS" />
 
     <div class="c-ContentBox l-BoxLayout__stacked">
         <p>*Be sure to click <strong>SAVE changes</strong> before exiting a tab or submitting a comment for the contest
@@ -39,7 +39,7 @@
                         <div class="c-Box c-Box--colorTan">
                             <div class="c-Box__body">
                                 <div>
-                                    <strong>English title:</strong> ${contestWrapper.contestShortName}
+                                    <strong>English title:</strong> ${contestWrapper.contestTitle}
                                 </div>
                                 <div>
                                     <strong><spring:message code="${lang['lable']}"/> title:</strong>
@@ -52,7 +52,7 @@
                         <div class="c-Box c-Box--colorTan">
                             <div class="c-Box__body">
                                 <div>
-                                    <strong>English question:</strong> ${contestWrapper.contestName}
+                                    <strong>English question:</strong> ${contestWrapper.contestQuestion}
                                 </div>
                                 <div>
                                     <strong><spring:message code="${lang['lable']}"/> question:</strong>
@@ -65,7 +65,7 @@
                         <div class="c-Box c-Box--colorTan">
                             <div class="c-Box__body">
                                 <div>
-                                    <strong>English description:</strong> ${contestWrapper.contestDescription}
+                                    <strong>English description:</strong> ${contestWrapper.description}
                                 </div>
                                 <div>
                                     <strong><spring:message code="${lang['lable']}"/> description:</strong>

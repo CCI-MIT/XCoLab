@@ -151,12 +151,12 @@ public class ContestController {
         return contestDao.getContestYears();
     }
 
-    @GetMapping("/contests/isContestNameYearUnique")
-    public Boolean isContestNameYearUnique(@RequestParam(required = false) String contestShortName,
+    @GetMapping("/contests/isContestTitleYearUnique")
+    public Boolean isContestTitleYearUnique(@RequestParam(required = false) String contestShortName,
             @RequestParam(required = false) Long year,
             @RequestParam(required = false) Long currentContestId) {
 
-        return contestService.isContestNameYearUnique(contestShortName, year, currentContestId);
+        return contestService.isContestTitleYearUnique(contestShortName, year, currentContestId);
     }
 
     @ListMapping("/contests/getContestsByOntologyTerm")
@@ -207,8 +207,8 @@ public class ContestController {
 
     @PostMapping("/contests")
     public Contest createContest(@RequestBody Contest contest) {
-        contest.setCreated(new Timestamp(new Date().getTime()));
-        contest.setUpdated(new Timestamp(new Date().getTime()));
+        contest.setCreatedAt(new Timestamp(new Date().getTime()));
+        contest.setUpdatedAt(new Timestamp(new Date().getTime()));
         return this.contestDao.create(contest);
     }
 
@@ -229,7 +229,7 @@ public class ContestController {
         if (contestDao.get(contestId) == null) {
             throw new NotFoundException("No Contest with id " + contestId);
         } else {
-            contest.setUpdated(new Timestamp(new Date().getTime()));
+            contest.setUpdatedAt(new Timestamp(new Date().getTime()));
             return contestDao.update(contest);
         }
     }
@@ -301,7 +301,7 @@ public class ContestController {
     public boolean updateContestDiscussion(@RequestBody ContestDiscussion contestDiscussion,
             @PathVariable long discussionId) throws NotFoundException {
 
-        if (contestDiscussionDao.get(discussionId) == null) {
+        if (!contestDiscussionDao.get(discussionId).isPresent()) {
             throw new NotFoundException("No ContestDiscussion with id " + discussionId);
         } else {
             return contestDiscussionDao.update(contestDiscussion);

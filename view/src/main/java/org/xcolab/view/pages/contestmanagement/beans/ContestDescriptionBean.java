@@ -61,10 +61,10 @@ public class ContestDescriptionBean implements Serializable {
     public ContestDescriptionBean(Contest contest) {
 
         if (contest != null) {
-            ContestPK = contest.getContestPK();
-            contestName = contest.getContestName();
-            contestShortName = contest.getContestShortName();
-            contestDescription = contest.getContestDescription();
+            ContestPK = contest.getId();
+            contestName = contest.getContestQuestion();
+            contestShortName = contest.getContestTitle();
+            contestDescription = contest.getDescription();
             planTemplateId = contest.getPlanTemplateId();
             scheduleTemplateId = contest.getContestScheduleId();
             contestLogoId = contest.getContestLogoId();
@@ -76,7 +76,7 @@ public class ContestDescriptionBean implements Serializable {
     }
 
     public void persist(Contest contest) {
-        String oldContestName = contest.getContestShortName();
+        String oldContestName = contest.getContestTitle();
         updateContestDescription(contest);
 
         try {
@@ -84,14 +84,14 @@ public class ContestDescriptionBean implements Serializable {
             ContestType contestType =
                     ContestTypeClient.getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
-                    contestType.getContestName(), contest.getContestShortName()));
+                    contestType.getContestName(), contest.getContestTitle()));
             ThreadClientUtil.updateThread(thread);
         } catch (ThreadNotFoundException e) {
             _log.warn("No thread (id = {}) exists for contest {}", contest.getDiscussionGroupId(),
-                    contest.getContestPK());
+                    contest.getId());
         }
 
-        if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestName)) {
+        if (shouldUpdateContestUrlName && !contest.getContestTitle().equals(oldContestName)) {
             contest.setContestUrlName((contest).generateContestUrlName());
             ContestClientUtil.updateContest(contest);
         }
@@ -100,9 +100,9 @@ public class ContestDescriptionBean implements Serializable {
     }
 
     private void updateContestDescription(Contest contest) {
-        contest.setContestName(contestName);
-        contest.setContestShortName(contestShortName);
-        contest.setContestDescription(contestDescription);
+        contest.setContestQuestion(contestName);
+        contest.setContestTitle(contestShortName);
+        contest.setDescription(contestDescription);
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);

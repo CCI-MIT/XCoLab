@@ -189,7 +189,7 @@ public class ProposalReview {
 
     private String getTeamOrNull(){
             for (ProposalAttribute attr: ProposalAttributeClientUtil
-                    .getAllProposalAttributes(proposal.getProposalId(), proposal.getCurrentVersion())) {
+                    .getAllProposalAttributes(proposal.getId(), proposal.getCurrentVersion())) {
                 if (attr.getName().equals(ProposalAttributeKeys.TEAM) && attr.getAdditionalId() == 0) {
                     return attr.getStringValue();
                 }

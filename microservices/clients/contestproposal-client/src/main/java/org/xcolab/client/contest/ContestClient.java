@@ -112,11 +112,11 @@ public class ContestClient {
 
     public Contest createContest(Long userId, String name) {
         Contest c = new Contest();
-        c.setauthorUserid(userId);
-        c.setContestName(name);
-        c.setContestShortName(name);
+        c.setAuthorUserId(userId);
+        c.setContestQuestion(name);
+        c.setContestTitle(name);
         c.setContestUrlName(c.generateContestUrlName());
-        c.setContestDescription("");
+        c.setDescription("");
         c.setContestModelDescription("");
         c.setContestPositionsDescription("");
         c.setContestActive(false);
@@ -177,7 +177,7 @@ public class ContestClient {
 
     public boolean updateContest(Contest contest) {
         final Boolean result =
-                contestResource.update(new ContestDto(contest), contest.getContestPK())
+                contestResource.update(new ContestDto(contest), contest.getId())
                         .execute();
         //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
@@ -248,9 +248,9 @@ public class ContestClient {
     }
 
 
-    public boolean isContestNameYearUnique(String contestShortName, Long year,Long currentContestId) {
+    public boolean isContestTitleYearUnique(String contestShortName, Long year,Long currentContestId) {
 
-        return contestResource.collectionService("isContestNameYearUnique", Boolean.class)
+        return contestResource.collectionService("isContestTitleYearUnique", Boolean.class)
                 .queryParam("contestShortName", contestShortName)
                 .queryParam("year",year)
                 .queryParam("currentContestId",currentContestId)
@@ -573,9 +573,9 @@ public class ContestClient {
     }
 
     public int getPointsAccessibleForActivePhaseOfContest(Contest contest) {
-        ContestPhase activePhase = getActivePhase(contest.getContestPK());
+        ContestPhase activePhase = getActivePhase(contest.getId());
         if (activePhase != null) {
-            ContestPhaseType cpType = getContestPhaseType(activePhase.getContestPhaseType());
+            ContestPhaseType cpType = getContestPhaseType(activePhase.getContestPhaseTypeId());
             if (cpType != null) {
                 return cpType.getPointsAccessible();
             }
@@ -605,7 +605,7 @@ public class ContestClient {
 
     public boolean updateContestPhase(ContestPhase contestPhase) {
         return contestPhasesResource
-                .update(new ContestPhaseDto(contestPhase), contestPhase.getContestPhasePK())
+                .update(new ContestPhaseDto(contestPhase), contestPhase.getId())
                 .execute();
     }
 
@@ -678,7 +678,7 @@ public class ContestClient {
     }
 
     public String getContestPhaseName(ContestPhase ck) {
-        return getContestPhaseType(ck.getContestPhaseType()).getName();
+        return getContestPhaseType(ck.getContestPhaseTypeId()).getName();
     }
 
     public ContestPhaseRibbonType getContestPhaseRibbonType(long id) {

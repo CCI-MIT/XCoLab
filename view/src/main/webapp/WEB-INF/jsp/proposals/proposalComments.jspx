@@ -13,8 +13,8 @@
 		<jsp:directive.include file="./proposalDetails/header.jspx" />
 
         <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
-                                           proposalId="${proposal.proposalId}"
-                                           shareTitle="Discussion for ${proposal.name} in ${contest.contestShortName}" />
+                                           proposalId="${proposal.id}"
+                                           shareTitle="Discussion for ${proposal.name} in ${contest.contestTitle}" />
 
         <script>
 			jQuery(function() {

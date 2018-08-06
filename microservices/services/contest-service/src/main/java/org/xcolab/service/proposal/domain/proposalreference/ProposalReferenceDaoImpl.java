@@ -16,7 +16,6 @@ import static org.xcolab.model.Tables.PROPOSAL_REFERENCE;
 @Repository
 public class ProposalReferenceDaoImpl implements ProposalReferenceDao {
 
-
     @Autowired
     private DSLContext dslContext;
 

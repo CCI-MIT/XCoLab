@@ -111,7 +111,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
             for (Contest c : contestsInYear) {
                 if (c.getResourceArticleId() != null && c.getResourceArticleId() != 0L) {
                     responseArray
-                            .put(articleNode(c.getContestShortName(), c.getResourceArticleId()));
+                            .put(articleNode(c.getContestTitle(), c.getResourceArticleId()));
                 }
             }
         }

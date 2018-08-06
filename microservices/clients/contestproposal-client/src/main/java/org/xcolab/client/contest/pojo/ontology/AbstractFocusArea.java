@@ -8,20 +8,20 @@ abstract class AbstractFocusArea implements Serializable {
 
     private Long id;
     private String name;
-    private Integer order_;
+    private Integer sortOrder;
 
     public AbstractFocusArea() {}
 
     public AbstractFocusArea(AbstractFocusArea value) {
         this.id = value.id;
         this.name = value.name;
-        this.order_ = value.order_;
+        this.sortOrder = value.sortOrder;
     }
 
-    public AbstractFocusArea(Long id, String name, Integer order_) {
+    public AbstractFocusArea(Long id, String name, Integer sortOrder) {
         this.id = id;
         this.name = name;
-        this.order_ = order_;
+        this.sortOrder = sortOrder;
     }
 
     public Long getId() {
@@ -40,12 +40,12 @@ abstract class AbstractFocusArea implements Serializable {
         this.name = name;
     }
 
-    public Integer getOrder_() {
-        return this.order_;
+    public Integer getSortOrder() {
+        return this.sortOrder;
     }
 
-    public void setOrder_(Integer order_) {
-        this.order_ = order_;
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     @Override
@@ -54,7 +54,7 @@ abstract class AbstractFocusArea implements Serializable {
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((order_ == null) ? 0 : order_.hashCode());
+        result = prime * result + ((sortOrder == null) ? 0 : sortOrder.hashCode());
         return result;
     }
 
@@ -84,11 +84,11 @@ abstract class AbstractFocusArea implements Serializable {
         } else if (!name.equals(other.name)) {
             return false;
         }
-        if (order_ == null) {
-            if (other.order_ != null) {
+        if (sortOrder == null) {
+            if (other.sortOrder != null) {
                 return false;
             }
-        } else if (!order_.equals(other.order_)) {
+        } else if (!sortOrder.equals(other.sortOrder)) {
             return false;
         }
         return true;
@@ -99,7 +99,7 @@ abstract class AbstractFocusArea implements Serializable {
 
         return "FocusArea (" + id +
                 ", " + name +
-                ", " + order_ +
+                ", " + sortOrder +
                 ")";
     }
 }

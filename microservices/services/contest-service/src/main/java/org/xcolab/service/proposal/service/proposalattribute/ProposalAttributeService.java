@@ -74,7 +74,7 @@ public class ProposalAttributeService {
             }
 
             List<ProposalAttribute> currentProposalAttributes =
-                    proposalAttributeDao.findByGiven(proposal.getProposalId(),
+                    proposalAttributeDao.findByGiven(proposal.getId(),
                             null, null, currentVersion);
 
             // for each attribute, if it isn't the one that we are changing, simply
@@ -160,7 +160,7 @@ public class ProposalAttributeService {
         ProposalVersion proposalVersion = new ProposalVersion();
         proposalVersion.setProposalId(proposalId);
         proposalVersion.setVersion(version);
-        proposalVersion.setauthorUserid(authorUserid);
+        proposalVersion.setAuthorId(authorUserid);
         proposalVersion.setUpdateType(updateType);
         proposalVersion.setUpdateAdditionalId(additionalId);
 

@@ -3,11 +3,11 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
-import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSection;
 import org.xcolab.commons.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 
@@ -21,7 +21,7 @@ public class ProposalTemplateWrapper {
 
     private List<SectionDefinitionWrapper> sections;
     private Integer numberOfSections;
-    private PlanTemplate planTemplate;
+    private ProposalTemplate planTemplate;
     private String templateName;
     private Long planTemplateId;
     private Boolean updateExistingSections = false;
@@ -31,14 +31,14 @@ public class ProposalTemplateWrapper {
     }
 
     public ProposalTemplateWrapper(Long planTemplateId) {
-        this.planTemplate = PlanTemplateClientUtil.getPlanTemplate(planTemplateId);
+        this.planTemplate = ProposalTemplateClientUtil.getPlanTemplate(planTemplateId);
         populateExistingProposalTemplateSections();
     }
 
     private void populateExistingProposalTemplateSections() {
         sections = new ArrayList<>();
         if (planTemplate != null) {
-            for (PlanSectionDefinition planSectionDefinition : PlanTemplateClientUtil
+            for (ProposalTemplateSectionDefinition planSectionDefinition : ProposalTemplateClientUtil
                     .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), null)) {
                 if (!planSectionDefinition.getLocked()) {
                     sections.add(new SectionDefinitionWrapper(planSectionDefinition,
@@ -64,7 +64,7 @@ public class ProposalTemplateWrapper {
     public static List<LabelValue> getAllPlanTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
 
-        for (PlanTemplate planTemplateItem : PlanTemplateClientUtil.getPlanTemplates()) {
+        for (ProposalTemplate planTemplateItem : ProposalTemplateClientUtil.getPlanTemplates()) {
             selectItems.add(new LabelValue(planTemplateItem.getId(), planTemplateItem.getName()));
         }
 
@@ -84,7 +84,7 @@ public class ProposalTemplateWrapper {
     }
 
     private void initPlanTemplate(Long planTemplateId) {
-        this.planTemplate = PlanTemplateClientUtil.getPlanTemplate(planTemplateId);
+        this.planTemplate = ProposalTemplateClientUtil.getPlanTemplate(planTemplateId);
     }
 
     public Boolean getUpdateExistingSections() {
@@ -95,11 +95,11 @@ public class ProposalTemplateWrapper {
         this.updateExistingSections = updateExistingSections;
     }
 
-    public PlanTemplate getPlanTemplate() {
+    public ProposalTemplate getPlanTemplate() {
         return planTemplate;
     }
 
-    public void setPlanTemplate(PlanTemplate planTemplate) {
+    public void setPlanTemplate(ProposalTemplate planTemplate) {
         this.planTemplate = planTemplate;
     }
 
@@ -171,18 +171,18 @@ public class ProposalTemplateWrapper {
         }
 
 
-        List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateClientUtil
+        List<ProposalTemplateSectionDefinition> planSectionDefinitions = ProposalTemplateClientUtil
                 .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), null);
-        for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
+        for (ProposalTemplateSectionDefinition planSectionDefinition : planSectionDefinitions) {
             if (!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())) {
                 if (!ProposalTemplateLifecycleUtil
                         .isPlanSectionDefinitionUsedInOtherTemplate(
                                 planSectionDefinition.getId(),
                                 planTemplate.getId())) {
-                    PlanTemplateClientUtil
+                    ProposalTemplateClientUtil
                             .deletePlanSectionDefinition(planSectionDefinition.getId());
                 }
-                PlanTemplateClientUtil
+                ProposalTemplateClientUtil
                         .deletePlanTemplateSection(planTemplate.getId(),
                                 planSectionDefinition.getId());
             }
@@ -206,7 +206,7 @@ public class ProposalTemplateWrapper {
     private void duplicateExistingPlanTemplate() {
 
         planTemplate.setId(null);
-        PlanTemplate newPlanTemplate = PlanTemplateClientUtil.createPlanTemplate(planTemplate);
+        ProposalTemplate newPlanTemplate = ProposalTemplateClientUtil.createPlanTemplate(planTemplate);
         planTemplateId = newPlanTemplate.getId();
         planTemplate = newPlanTemplate;
 
@@ -229,15 +229,15 @@ public class ProposalTemplateWrapper {
         Long sectionDefinitionId = sectionDefinitionWrapper.getId();
         Integer weight = sectionDefinitionWrapper.getWeight();
 
-        List<PlanTemplateSection> planTemplateSectionsWithSectionDefinition =
-                PlanTemplateClientUtil
+        List<ProposalTemplateSection> planTemplateSectionsWithSectionDefinition =
+                ProposalTemplateClientUtil
                         .getPlanTemplateSectionByPlanSectionDefinitionId(
                                 sectionDefinitionWrapper.getId());
 
-        for (PlanTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition) {
-            if (planTemplateSection.getPlanTemplateId().longValue() == planTemplateId) {
+        for (ProposalTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition) {
+            if (planTemplateSection.getId().longValue() == planTemplateId) {
                 planTemplateSection.setWeight(weight);
-                PlanTemplateClientUtil
+                ProposalTemplateClientUtil
                         .updatePlanTemplateSection(planTemplateSection);
 
                 wasUpdated = true;
@@ -246,12 +246,12 @@ public class ProposalTemplateWrapper {
         }
 
         if (!wasUpdated) {
-            PlanTemplateSection pts = new PlanTemplateSection();
-            pts.setPlanSectionId(sectionDefinitionId);
-            pts.setPlanTemplateId(planTemplateId);
+            ProposalTemplateSection pts = new ProposalTemplateSection();
+            pts.setSectionDefinitionId(sectionDefinitionId);
+            pts.setId(planTemplateId);
             pts.setWeight(weight);
 
-            PlanTemplateClientUtil.createPlanTemplateSection(pts);
+            ProposalTemplateClientUtil.createPlanTemplateSection(pts);
         }
 
     }
@@ -260,7 +260,7 @@ public class ProposalTemplateWrapper {
         if (planTemplate != null && templateName != null) {
             planTemplate.setName(templateName);
 
-            PlanTemplateClientUtil.updatePlanTemplate(planTemplate);
+            ProposalTemplateClientUtil.updatePlanTemplate(planTemplate);
 
         }
     }

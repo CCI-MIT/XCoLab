@@ -5,9 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 
@@ -34,7 +32,7 @@ public class ContestPhasePromotionEmail {
     private static  List<Long> getMemberUserIds(Proposal proposal) {
         List<Long> recipientIds = new ArrayList<>();
 
-        for (Member contributor : ProposalClientUtil.getProposalMembers(proposal.getProposalId())) {
+        for (Member contributor : ProposalClientUtil.getProposalMembers(proposal.getId())) {
             recipientIds.add(contributor.getUserId());
         }
 

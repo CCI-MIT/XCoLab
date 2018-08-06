@@ -129,7 +129,7 @@ public class OntologyEditorController {
         if (id != null && id != 0L) {
             OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(id);
             ontologyTerm.setDescriptionUrl(descriptionUrl);
-            ontologyTerm.setOrder_(order);
+            ontologyTerm.setSortOrder(order);
             ontologyTerm.setName(name);
 
             OntologyClientUtil.updateOntologyTerm(ontologyTerm);
@@ -138,7 +138,7 @@ public class OntologyEditorController {
             ontologyTerm.setOntologySpaceId(ontologySpaceId);
             ontologyTerm.setParentId(parentId);
             ontologyTerm.setDescriptionUrl(descriptionUrl);
-            ontologyTerm.setOrder_(order);
+            ontologyTerm.setSortOrder(order);
             ontologyTerm.setName(name);
             OntologyClientUtil.createOntologyTerm(ontologyTerm);
         }

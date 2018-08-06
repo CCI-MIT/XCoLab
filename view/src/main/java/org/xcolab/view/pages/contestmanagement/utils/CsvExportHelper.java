@@ -61,15 +61,15 @@ public class CsvExportHelper {
 
         try {
             Proposal2Phase proposal2Phase = ProposalPhaseClientUtil
-                    .getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(),
-                            contestPhase.getContestPhasePK());
+                    .getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(),
+                            contestPhase.getId());
             Proposal proposalWrapper =
                     getProposalWithLatestVersionInContestPhase(proposal2Phase, proposal);
-            Long contestId = contestPhase.getContestPK();
+            Long contestId = contestPhase.getContestId();
 
             Contest contest = ContestClientUtil.getContest(contestId);
 
-            String contestTitle = normalizeApostrophes(contest.getContestShortName());
+            String contestTitle = normalizeApostrophes(contest.getContestTitle());
             String proposalTitle = normalizeApostrophes(proposalWrapper.getName());
             String proposalLink = URL_DOMAIN + proposalWrapper.getProposalUrl();
             String lastPhaseTitle = getContestPhaseTitle(contestPhase);
@@ -103,7 +103,7 @@ public class CsvExportHelper {
     }
 
     private static String getContestPhaseTitle(ContestPhase contestPhase) {
-        Long contestPhaseTypeId = contestPhase.getContestPhaseType();
+        Long contestPhaseTypeId = contestPhase.getContestPhaseTypeId();
         ContestPhaseType contestPhaseType =
                 ContestClientUtil.getContestPhaseType(contestPhaseTypeId);
         return contestPhaseType.getName();

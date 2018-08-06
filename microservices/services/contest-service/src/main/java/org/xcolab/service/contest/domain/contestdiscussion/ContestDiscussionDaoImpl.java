@@ -28,8 +28,7 @@ public class ContestDiscussionDaoImpl implements ContestDiscussionDao {
     @Override
     public ContestDiscussion create(ContestDiscussion contest) {
         this.dslContext.insertInto(CONTEST_DISCUSSION)
-                .set(CONTEST_DISCUSSION.DISCUSSION_ID, contest.getDiscussionId())
-                .set(CONTEST_DISCUSSION.CONTEST_ID, contest.getContestId())
+                .set(CONTEST_DISCUSSION.ID, contest.getId())
                 .set(CONTEST_DISCUSSION.CONTEST_ID, contest.getContestId())
                 .execute();
         return contest;
@@ -39,16 +38,15 @@ public class ContestDiscussionDaoImpl implements ContestDiscussionDao {
     public boolean update(ContestDiscussion contest) {
         return dslContext.update(CONTEST_DISCUSSION)
                 .set(CONTEST_DISCUSSION.CONTEST_ID, contest.getContestId())
-                .set(CONTEST_DISCUSSION.CONTEST_ID, contest.getContestId())
                 .set(CONTEST_DISCUSSION.TAB, contest.getTab())
-                .where(CONTEST_DISCUSSION.DISCUSSION_ID.eq(contest.getDiscussionId()))
+                .where(CONTEST_DISCUSSION.ID.eq(contest.getId()))
                 .execute() > 0;
     }
 
     @Override
     public Optional<ContestDiscussion> get(Long contestDiscussion) throws NotFoundException {
         final Record record = this.dslContext.selectFrom(CONTEST_DISCUSSION)
-                .where(CONTEST_DISCUSSION.DISCUSSION_ID.eq(contestDiscussion))
+                .where(CONTEST_DISCUSSION.ID.eq(contestDiscussion))
                 .fetchOne();
 
         if (record == null) {

@@ -40,7 +40,7 @@
 	<div class="c-TitleBar c-TitleBar__content flex-column flex-md-row contestSummary m-Shadebar">
 		<jsp:directive.include file="./header_contestPhases.jspx" />
 		<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">
-			<c:set var="subscribeContestURL" value="/contests/subscribeContest?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }"/>
+			<c:set var="subscribeContestURL" value="/contests/subscribeContest?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }"/>
 
             <collab:message code="contests.details.subscribe.tooltip" var="tooltipSubscribe" contestType="${contestType}" />
             <button type="button" class="c-TitleBar__actionButton js-EnhancedLink js-Tooltip"

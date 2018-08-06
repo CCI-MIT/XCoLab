@@ -21,13 +21,13 @@ public class ProposalFellowWrapper extends Proposal {
         super(proposal,proposal.getContestPhase());
         try {
             //find out contestPhase
-            Contest baseContest = proposalContext.getClients().getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
-            ContestPhase contestPhase = ContestClientUtil.getActivePhase(baseContest.getContestPK());
+            Contest baseContest = proposalContext.getClients().getProposalClient().getCurrentContestForProposal(proposal.getId());
+            ContestPhase contestPhase = ContestClientUtil.getActivePhase(baseContest.getId());
 
             List<ProposalRating> list = ProposalJudgeRatingClientUtil.getFellowRatingForProposalAndUser(
                     currentMember.getUserId(),
-                    proposal.getProposalId(),
-                    contestPhase.getContestPhasePK());
+                    proposal.getId(),
+                    contestPhase.getId());
             Member m = MembersClient.getMemberUnchecked(currentMember.getUserId());
             this.proposalRatings = new ProposalRatings(m, list);
         } catch (ContestNotFoundException  e) {

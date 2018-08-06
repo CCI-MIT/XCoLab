@@ -30,7 +30,7 @@ class AbstractProposal implements Serializable {
     }
 
 
-    public Long getProposalId() {
+    public Long getId() {
         return this.proposalid;
     }
 

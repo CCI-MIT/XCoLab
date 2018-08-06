@@ -44,9 +44,9 @@ public final class ProposalCreationUtil {
         final ClientHelper clientHelper = new ClientHelper();
         try {
             Proposal newProposal = clientHelper.getProposalClient()
-                    .createProposal(userId, contestPhase.getContestPhasePK(), true);
+                    .createProposal(userId, contestPhase.getId(), true);
             Proposal2Phase newProposal2Phase = clientHelper.getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(
-                    newProposal.getProposalId(), contestPhase.getContestPhasePK());
+                    newProposal.getId(), contestPhase.getId());
 
             Proposal proposalWrapper = new Proposal(newProposal, 0, contest, contestPhase, newProposal2Phase);
 
@@ -56,16 +56,16 @@ public final class ProposalCreationUtil {
                 final ProposalAttributeClient proposalAttributeClient =
                         clientHelper.getProposalAttributeClient();
                 Integer proposalAttributeVersion = proposalAttributeClient.setProposalAttribute(
-                        userId, proposalWrapper.getProposalId(), ProposalAttributeKeys.BASE_PROPOSAL_ID,
+                        userId, proposalWrapper.getId(), ProposalAttributeKeys.BASE_PROPOSAL_ID,
                         0L, baseProposalId, null).getVersion();
                 final long baseContestId = updateProposalSectionsBean.getBaseProposalContestId();
                 proposalAttributeVersion = proposalAttributeClient
-                        .setProposalAttribute(userId, proposalWrapper.getProposalId(),
+                        .setProposalAttribute(userId, proposalWrapper.getId(),
                                 ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0L, baseContestId,
                                 proposalAttributeVersion).getVersion();
                 clientHelper.getProposalMoveClient()
-                        .createForkProposalMoveHistory(baseProposalId, proposalWrapper.getProposalId(),
-                        baseContestId, contest.getContestPK(), contestPhase.getContestPhasePK(), userId);
+                        .createForkProposalMoveHistory(baseProposalId, proposalWrapper.getId(),
+                        baseContestId, contest.getId(), contestPhase.getId(), userId);
 
                 for (ProposalAttribute attribute : proposalAttributeClient
                         .getAllProposalAttributes(baseProposalId)) {
@@ -74,7 +74,7 @@ public final class ProposalCreationUtil {
                     }
 
                     proposalAttributeVersion = proposalAttributeClient
-                            .setProposalAttribute(userId, proposalWrapper.getProposalId(),
+                            .setProposalAttribute(userId, proposalWrapper.getId(),
                                     attribute.getName(), attribute.getAdditionalId(),
                                     attribute.getStringValue(), attribute.getNumericValue(),
                                     attribute.getRealValue(), proposalAttributeVersion)
@@ -93,12 +93,12 @@ public final class ProposalCreationUtil {
         try {
             ContestClient contestClient = proposalContext.getClients().getContestClient();
             Contest contest = contestClient
-                    .getContest(contestClient.getContestPhase(contestPhase.getContestPhasePK()).getContestPK());
+                    .getContest(contestClient.getContestPhase(contestPhase.getId()).getContestId());
 
             final ProposalClient proposalClient =
                     proposalContext.getClients().getProposalClient();
-            Proposal updatedProposal = proposalClient.getProposal(proposalWrapper.getProposalId());
-            Contest contestMicro = contestClient.getContest(contest.getContestPK());
+            Proposal updatedProposal = proposalClient.getProposal(proposalWrapper.getId());
+            Contest contestMicro = contestClient.getContest(contest.getId());
             new ProposalCreationNotification(updatedProposal, contestMicro).sendMessage();
         } catch (ContestNotFoundException | ProposalNotFoundException ignored) {
 

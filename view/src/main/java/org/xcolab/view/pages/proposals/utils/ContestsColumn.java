@@ -56,7 +56,7 @@ public enum ContestsColumn {
     private static int compareContestsByStringValues(Contest c1, String s1, Contest c2, String s2) {
         if (s1.isEmpty()) {
             if (s2.isEmpty()) {
-                return (int) (c1.getContestPK() - c2.getContestPK());
+                return (int) (c1.getId() - c2.getId());
             }
             return -1;
         }

@@ -14,7 +14,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
     private Long targetsubproposalid;
     private Long targetplansectiondefinitionid;
     private Double percentage;
-    private Long creator;
+    private Long authorUserId;
     private Timestamp createdAt;
 
     public AbstractPointsDistributionConfiguration() {}
@@ -27,7 +27,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         this.targetsubproposalid = value.targetsubproposalid;
         this.targetplansectiondefinitionid = value.targetplansectiondefinitionid;
         this.percentage = value.percentage;
-        this.creator = value.creator;
+        this.authorUserId = value.authorUserId;
         this.createdAt = value.createdAt;
     }
 
@@ -39,7 +39,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
             Long targetsubproposalid,
             Long targetplansectiondefinitionid,
             Double percentage,
-            Long creator,
+            Long authorUserId,
             Timestamp createdAt
     ) {
         this.id = id;
@@ -49,7 +49,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         this.targetsubproposalid = targetsubproposalid;
         this.targetplansectiondefinitionid = targetplansectiondefinitionid;
         this.percentage = percentage;
-        this.creator = creator;
+        this.authorUserId = authorUserId;
         this.createdAt = createdAt;
     }
 
@@ -109,12 +109,12 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         this.percentage = percentage;
     }
 
-    public Long getCreator() {
-        return this.creator;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setCreator(Long creator) {
-        this.creator = creator;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
     public Timestamp getCreatedAt() {
@@ -138,7 +138,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         result = prime * result + ((targetplansectiondefinitionid == null) ? 0
                 : targetplansectiondefinitionid.hashCode());
         result = prime * result + ((percentage == null) ? 0 : percentage.hashCode());
-        result = prime * result + ((creator == null) ? 0 : creator.hashCode());
+        result = prime * result + ((authorUserId == null) ? 0 : authorUserId.hashCode());
         result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         return result;
     }
@@ -205,11 +205,11 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         } else if (!percentage.equals(other.percentage)) {
             return false;
         }
-        if (creator == null) {
-            if (other.creator != null) {
+        if (authorUserId == null) {
+            if (other.authorUserId != null) {
                 return false;
             }
-        } else if (!creator.equals(other.creator)) {
+        } else if (!authorUserId.equals(other.authorUserId)) {
             return false;
         }
         if (createdAt == null) {
@@ -227,7 +227,7 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         String sb =
                 "PointsDistributionConfiguration (" + id + ", " + proposalid + ", " + pointtypeid
                         + ", " + targetuserid + ", " + targetsubproposalid + ", "
-                        + targetplansectiondefinitionid + ", " + percentage + ", " + creator + ", "
+                        + targetplansectiondefinitionid + ", " + percentage + ", " + authorUserId + ", "
                         + createdAt + ")";
 
         return sb;

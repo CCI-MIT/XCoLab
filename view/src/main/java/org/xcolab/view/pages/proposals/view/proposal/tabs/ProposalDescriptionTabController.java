@@ -16,7 +16,7 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
@@ -103,7 +103,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
         final Contest baseContest = proposalClient
-                .getCurrentContestForProposal(proposal.getProposalId());
+                .getCurrentContestForProposal(proposal.getId());
 
         if (voted) {
             setVotingDeadline(model, proposalContext, baseContest);
@@ -113,7 +113,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         if (isMove) {
             // get base proposal from base contest
             ContestPhase baseContestPhase =
-                    ContestClientUtil.getActivePhase(baseContest.getContestPK());
+                    ContestClientUtil.getActivePhase(baseContest.getId());
 
             Proposal baseProposalWrapped = new Proposal(proposal, proposal.getCurrentVersion(),
                     baseContest, baseContestPhase, null);
@@ -122,7 +122,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     proposal, baseProposalWrapped, true,
                     MoveType.valueOf(moveType, true));
             updateProposalDetailsBean.setMoveFromContestPhaseId(moveFromContestPhaseId);
-            updateProposalDetailsBean.setMoveToContestId(proposalContext.getContest().getContestPK());
+            updateProposalDetailsBean.setMoveToContestId(proposalContext.getContest().getId());
 
             model.addAttribute("hasUnmappedSections",
                     hasUnmappedSections(proposalContext.getContest(), baseProposalWrapped));
@@ -178,7 +178,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
 
     private boolean hasUnmappedSections(Contest moveToContest, Proposal baseProposalWrapped) {
         Set<Long> newContestSections = moveToContest.getSections().stream()
-                .map(PlanSectionDefinition::getSectionDefinitionId)
+                .map(ProposalTemplateSectionDefinition::getSectionDefinitionId)
                 .collect(Collectors.toSet());
 
         return baseProposalWrapped.getSections().stream()
@@ -197,13 +197,13 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
         List<ProposalMoveHistory> sourceMoveHistories = proposalMoveClient
-                        .getBySourceProposalIdContestId(proposal.getProposalId(),
-                                contest.getContestPK());
+                        .getBySourceProposalIdContestId(proposal.getId(),
+                                contest.getId());
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
         ProposalMoveHistory targetMoveHistory = proposalMoveClient
-                        .getByTargetProposalIdContestId(proposal.getProposalId(),
-                                contest.getContestPK());
+                        .getByTargetProposalIdContestId(proposal.getId(),
+                                contest.getId());
         if (targetMoveHistory != null) {
             model.addAttribute("targetMoveHistory", targetMoveHistory);
         }
@@ -213,7 +213,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
         List<Proposal> linkedProposals = proposalClient
-                        .getSubproposals(proposal.getProposalId(), true);
+                        .getSubproposals(proposal.getId(), true);
         Map<ContestType, Set<Proposal>> proposalsByContestType =
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
@@ -246,7 +246,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposal, member);
             JudgeProposalFeedbackBean judgeProposalBean =
                     new JudgeProposalFeedbackBean(proposalJudgeWrapper);
-            judgeProposalBean.setContestPhaseId(contestPhase.getContestPhasePK());
+            judgeProposalBean.setContestPhaseId(contestPhase.getId());
 
             model.addAttribute("judgeProposalFeedbackBean", judgeProposalBean);
         }
@@ -264,7 +264,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
 
     private Date getVotingDeadline(ProposalContext proposalContext, Contest contest) {
         List<ContestPhase> contestPhases = proposalContext.getClients().getContestClient()
-                .getAllContestPhases(contest.getContestPK());
+                .getAllContestPhases(contest.getId());
         final ContestPhase activeVotingPhase = getActiveVotingPhase(contestPhases);
         if (activeVotingPhase != null) {
             return activeVotingPhase.getPhaseEndDate();
@@ -274,10 +274,10 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
 
     private ContestPhase getActiveVotingPhase(List<ContestPhase> contestPhases) {
         for (ContestPhase phase : contestPhases) {
-            if (phase.getContestPhaseType() == ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() ||
-                    phase.getContestPhaseType() == ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId() ||
-                    phase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId() ||
-                    phase.getContestPhaseType() == ContestPhaseTypeValue.VOTING_PHASE_SOLVE.getTypeId()
+            if (phase.getContestPhaseTypeId() == ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() ||
+                    phase.getContestPhaseTypeId() == ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId() ||
+                    phase.getContestPhaseTypeId() == ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId() ||
+                    phase.getContestPhaseTypeId() == ContestPhaseTypeValue.VOTING_PHASE_SOLVE.getTypeId()
                     ) {
                 if (phase.getPhaseActive()) {
                     return phase;

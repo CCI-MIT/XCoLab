@@ -13,20 +13,20 @@
 
 	<c:choose>
 		<c:when test="${edit }">
-			<a class="${cssClass}" data-proposal-id="${proposal.proposalId}" data-contest-id="${proposal.contestPK}"
+			<a class="${cssClass}" data-proposal-id="${proposal.id}" data-contest-id="${proposal.contestPK}"
                href="${proposal.proposalUrl}${not empty tab ? '/tab/' : '' }${tab }/edit" id="${linkId}">
                 <c:out value="${empty text ? proposal.name : text}" escapeXml="${escape ? true : false }" />
             </a>
 		</c:when>
-		<c:when test="${empty phase  or phase.contestPhasePK le 0}">
-			<a class="${cssClass}" data-proposal-id="${proposal.proposalId}" data-contest-id="${proposal.contestPK}"
+		<c:when test="${empty phase  or phase.id le 0}">
+			<a class="${cssClass}" data-proposal-id="${proposal.id}" data-contest-id="${proposal.contestPK}"
                href="${proposal.proposalUrl}${not empty tab ? '/tab/' : '' }${tab }${empty hashString ? '' : '#'}${hashString}"
                id="${linkId}">
                 <c:out value="${empty text ? proposal.name : text}" escapeXml="${escape ? true : false }" />
             </a>
 		</c:when>
 		<c:otherwise>
-			<a class="${cssClass}" data-proposal-id="${proposal.proposalId}" data-contest-id="${proposal.contestPK}"
+			<a class="${cssClass}" data-proposal-id="${proposal.id}" data-contest-id="${proposal.contestPK}"
                href="${proposal.getProposalUrl(phase.wrapped)}${not empty tab ? '/tab/' : '' }${tab }${empty hashString ? '' : '#'}${hashString}"
                id="${linkId}">
                 <c:out value="${empty text ? proposal.name : text}" escapeXml="${escape ? true : false }" />

@@ -80,7 +80,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
         for (ProposalVote vote : proposalVotes) {
             ContestPhase contestPhase = phases.computeIfAbsent(vote.getContestPhaseId(),
                     ContestClientUtil::getContestPhase);
-            Contest contest = contests.computeIfAbsent(contestPhase.getContestPK(),
+            Contest contest = contests.computeIfAbsent(contestPhase.getContestId(),
                     ContestClientUtil::getContest);
 
             Member member = getMemberOrNull(vote);
@@ -88,7 +88,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
 
             List<String> row = new ArrayList<>();
             addValue(row, vote.getProposalId());
-            addValue(row, contest.getContestShortName());
+            addValue(row, contest.getContestTitle());
             if (proposal != null) {
                 final String proposalUrl =
                         colabUrl + proposal.getProposalLinkUrl(contest, vote.getContestPhaseId());

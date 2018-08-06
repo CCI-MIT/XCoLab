@@ -26,14 +26,14 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
 
         ContestCollectionCardRecord ret = this.dslContext.insertInto(CONTEST_COLLECTION_CARD)
                 .set(CONTEST_COLLECTION_CARD.PARENT, contestCollectionCard.getParent())
-                .set(CONTEST_COLLECTION_CARD.BIG_ONTOLOGY_TERM, contestCollectionCard.getBig_ontology_term())
-                .set(CONTEST_COLLECTION_CARD.SMALL_ONTOLOGY_TERM, contestCollectionCard.getSmall_ontology_term())
+                .set(CONTEST_COLLECTION_CARD.BIG_ONTOLOGY_TERM, contestCollectionCard.getBigOntologyTerm())
+                .set(CONTEST_COLLECTION_CARD.SMALL_ONTOLOGY_TERM, contestCollectionCard.getSmallOntologyTerm())
                 .set(CONTEST_COLLECTION_CARD.DESCRIPTION, contestCollectionCard.getDescription())
-                .set(CONTEST_COLLECTION_CARD.SHORT_NAME, contestCollectionCard.getShort_name())
+                .set(CONTEST_COLLECTION_CARD.SHORT_NAME, contestCollectionCard.getShortName())
                 .set(CONTEST_COLLECTION_CARD.VISIBLE, contestCollectionCard.getVisible())
-                .set(CONTEST_COLLECTION_CARD.ORDER, contestCollectionCard.getOrder())
-                .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD, contestCollectionCard.getOntology_term_to_load())
-                .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.getOnly_featured())
+                .set(CONTEST_COLLECTION_CARD.SORT_ORDER, contestCollectionCard.getSortOrder())
+                .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD, contestCollectionCard.getOntologyTermToLoad())
+                .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.getOnlyFeatured())
                 .returning(CONTEST_COLLECTION_CARD.ID)
                 .fetchOne();
         if (ret != null) {
@@ -50,14 +50,14 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
 
         return dslContext.update(CONTEST_COLLECTION_CARD)
                 .set(CONTEST_COLLECTION_CARD.PARENT, contestCollectionCard.getParent())
-                .set(CONTEST_COLLECTION_CARD.BIG_ONTOLOGY_TERM, contestCollectionCard.getBig_ontology_term())
-                .set(CONTEST_COLLECTION_CARD.SMALL_ONTOLOGY_TERM, contestCollectionCard.getSmall_ontology_term())
+                .set(CONTEST_COLLECTION_CARD.BIG_ONTOLOGY_TERM, contestCollectionCard.getBigOntologyTerm())
+                .set(CONTEST_COLLECTION_CARD.SMALL_ONTOLOGY_TERM, contestCollectionCard.getSmallOntologyTerm())
                 .set(CONTEST_COLLECTION_CARD.DESCRIPTION, contestCollectionCard.getDescription())
-                .set(CONTEST_COLLECTION_CARD.SHORT_NAME, contestCollectionCard.getShort_name())
+                .set(CONTEST_COLLECTION_CARD.SHORT_NAME, contestCollectionCard.getShortName())
                 .set(CONTEST_COLLECTION_CARD.VISIBLE, contestCollectionCard.getVisible())
-                .set(CONTEST_COLLECTION_CARD.ORDER, contestCollectionCard.getOrder())
-                .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD, contestCollectionCard.getOntology_term_to_load())
-                .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.getOnly_featured())
+                .set(CONTEST_COLLECTION_CARD.SORT_ORDER, contestCollectionCard.getSortOrder())
+                .set(CONTEST_COLLECTION_CARD.ONTOLOGY_TERM_TO_LOAD, contestCollectionCard.getOntologyTermToLoad())
+                .set(CONTEST_COLLECTION_CARD.ONLY_FEATURED, contestCollectionCard.getOnlyFeatured())
                 .where(CONTEST_COLLECTION_CARD.ID.eq(contestCollectionCard.getId()))
                 .execute() > 0;
     }
@@ -92,7 +92,7 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
             query.addConditions(CONTEST_COLLECTION_CARD.PARENT.eq(parentCollectionCardId));
         }
 
-        query.addOrderBy(CONTEST_COLLECTION_CARD.ORDER.asc());
+        query.addOrderBy(CONTEST_COLLECTION_CARD.SORT_ORDER.asc());
         return query.fetchInto(ContestCollectionCard.class);
     }
 }

@@ -23,7 +23,7 @@ public abstract class SetContestPropertyMassAction extends AbstractContestMassAc
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response) {
         for (Contest contest : contests) {
-            contest = ContestClientUtil.getContest(contest.getContestPK());
+            contest = ContestClientUtil.getContest(contest.getId());
             setProperty(contest, setValue);
             contest.persist();
         }

@@ -8,11 +8,11 @@ import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
@@ -42,19 +42,19 @@ public final class ContestCreatorUtil {
         contest.setContestTypeId(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
         ContestClientUtil.updateContest(contest);
         ContestScheduleChangeHelper
-                changeHelper = new ContestScheduleChangeHelper(contest.getContestPK(), contestScheduleId);
+                changeHelper = new ContestScheduleChangeHelper(contest.getId(), contestScheduleId);
         changeHelper.changeScheduleForBlankContest();
 
         return contest;
     }
 
-    private static PlanTemplate getOrCreateDefaultTemplate() {
+    private static ProposalTemplate getOrCreateDefaultTemplate() {
         final long defaultTemplateId = ConfigurationAttributeKey.DEFAULT_CONTEST_TEMPLATE_ID.get();
         try {
             if (defaultTemplateId > 0) {
-                return PlanTemplateClientUtil.getPlanTemplate(defaultTemplateId);
+                return ProposalTemplateClientUtil.getPlanTemplate(defaultTemplateId);
             }
-            final PlanTemplate newDefaultTemplate = ProposalTemplateLifecycleUtil
+            final ProposalTemplate newDefaultTemplate = ProposalTemplateLifecycleUtil
                     .create(DEFAULT_TEMPLATE_NAME);
 
             ConfigurationAttribute defaultTemplateAttribute = new ConfigurationAttribute();
@@ -70,7 +70,7 @@ public final class ContestCreatorUtil {
         } catch (PlanTemplateNotFoundException e) {
             //fail early if it doesn't exist
             throw ReferenceResolutionException
-                    .toObject(PlanTemplate.class, defaultTemplateId)
+                    .toObject(ProposalTemplate.class, defaultTemplateId)
                     .fromObject(ConfigurationAttribute.class, "DEFAULT_CONTEST_TEMPLATE_ID");
         }
     }

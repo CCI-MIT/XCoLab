@@ -37,7 +37,7 @@ public class ProposalSupportService {
         final Boolean contestPrivate = excludePrivateContests ? false : null;
         return proposalDao.filterByGiven(supportsByProposalId.keySet(), visible, contestPrivate)
                 .stream().map(proposal -> new SupportedProposal(proposal,
-                        supportsByProposalId.get(proposal.getProposalId())))
+                        supportsByProposalId.get(proposal.getId())))
                 .collect(Collectors.toList());
     }
 

@@ -47,8 +47,8 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         // LinkedHashMap will maintain insertion order
         allContests.sort(Comparator.comparing(AbstractContest::getWeight));
         for (Contest contest : allContests) {
-            contests.put(contest.getContestPK(), contest);
-            selectedContests.put(contest.getContestPK(), false);
+            contests.put(contest.getId(), contest);
+            selectedContests.put(contest.getId(), false);
         }
     }
 

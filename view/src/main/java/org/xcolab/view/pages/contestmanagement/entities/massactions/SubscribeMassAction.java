@@ -26,10 +26,10 @@ public class SubscribeMassAction extends AbstractContestMassAction {
         }
         for (Contest contest : contests) {
             if (isSubscribe) {
-                ContestClientUtil.subscribeMemberToContest(contest.getContestPK(), userId);
+                ContestClientUtil.subscribeMemberToContest(contest.getId(), userId);
             } else {
                 ContestClientUtil
-                        .unsubscribeMemberFromContest(contest.getContestPK(), userId);
+                        .unsubscribeMemberFromContest(contest.getId(), userId);
             }
         }
     }

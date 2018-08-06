@@ -59,7 +59,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.POINTS);
 
         List<Proposal> subProposalsWrapped = ProposalClientUtil
-                .getSubproposals(proposal.getProposalId(), false);
+                .getSubproposals(proposal.getId(), false);
 
         //TODO COLAB-2597: make this flexible
         PointType pointType = pointsClient.getPointType(9L);
@@ -82,12 +82,12 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             basicPercentages.add(new PointsTargetProposalWrapper(target, 2L));
         }
 
-        final List<Proposal> linkingProposalsWrapped = proposalClient.getLinkingProposals(proposal.getProposalId());
+        final List<Proposal> linkingProposalsWrapped = proposalClient.getLinkingProposals(proposal.getId());
 
-        List<Member> members = proposalClient.getProposalMembers(proposal.getProposalId());
+        List<Member> members = proposalClient.getProposalMembers(proposal.getId());
 
         //this bean will be filled with the user input
-        AssignPointsBean assignPointsBean = new AssignPointsBean(proposal.getProposalId());
+        AssignPointsBean assignPointsBean = new AssignPointsBean(proposal.getId());
         assignPointsBean.addAllAssignments((contestParentPointType), members);
 
         model.addAttribute("pointsHelpText", ConfigurationAttributeKey.POINTS_HELP_TEXT.get(lang));
@@ -100,7 +100,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         model.addAttribute("regionalPercentages", regionalPercentages);
         model.addAttribute("basicPercentages", basicPercentages);
         model.addAttribute("members", members);
-        model.addAttribute("totalPoints", proposalClient.getProposalMaterializedPoints(proposal.getProposalId()));
+        model.addAttribute("totalPoints", proposalClient.getProposalMaterializedPoints(proposal.getId()));
         model.addAttribute("proposal", proposal);
         model.addAttribute("contest", contest);
         model.addAttribute("linkingProposals", linkingProposalsWrapped);

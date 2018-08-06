@@ -105,13 +105,13 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                         //proposal
                         activityClient
                                 .createActivityEntry(ProposalActivityType.COMMENT_ADDED, userId,
-                                        proposal.getProposalId(), comment.getId());
+                                        proposal.getId(), comment.getId());
                     } else {
                         final Contest contest = getContest(commentThread);
                         if (contest != null) {
                             //contest
                             activityClient.createActivityEntry(ContestActivityType.COMMENT_ADDED,
-                                    userId, contest.getContestPK(), comment.getId());
+                                    userId, contest.getId(), comment.getId());
 
                             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.COMMENT_CONTEST);
                         }

@@ -42,10 +42,10 @@ public class ContestsResult {
         private final long date;
 
         private SimpleContest(Contest contest) {
-            this.id = contest.getContestPK();
+            this.id = contest.getId();
             this.contestShortName = contest.getContestShortNameWithEndYear();
-            this.contestName = contest.getContestName();
-            this.contestPK = contest.getContestPK();
+            this.contestName = contest.getContestQuestion();
+            this.contestPK = contest.getId();
             this.flagText = contest.getFlagText();
             this.flag = contest.getFlag();
             this.flagTooltip = contest.getFlagTooltip();

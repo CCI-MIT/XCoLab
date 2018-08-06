@@ -16,7 +16,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 import org.xcolab.entity.utils.notifications.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.entity.utils.notifications.proposal.ProposalUserActionNotification;
 import org.xcolab.commons.html.HtmlUtil;
@@ -76,7 +76,7 @@ public class ProposalRequestMembershipActionController {
 
         final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();
-        membershipClient.addRequestedMembershipRequest(proposal.getProposalId(), sender.getUserId(),
+        membershipClient.addRequestedMembershipRequest(proposal.getId(), sender.getUserId(),
                 comment);
 
         new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor,
@@ -117,8 +117,8 @@ public class ProposalRequestMembershipActionController {
             if (StringUtils.isBlank(comment)) {
                 comment = "No message specified";
             }
-            MembershipRequest memberRequest = membershipClient
-                    .addInvitedMembershipRequest(proposal.getProposalId(), recipient.getUserId(),
+            ProposalTeamMembershipRequest memberRequest = membershipClient
+                    .addInvitedMembershipRequest(proposal.getId(), recipient.getUserId(),
                             comment);
 
             new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
@@ -153,11 +153,11 @@ public class ProposalRequestMembershipActionController {
         final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();
 
-        long proposalId = proposal.getProposalId();
+        long proposalId = proposal.getId();
 
-        MembershipRequest membershipRequest = null;
-        for (MembershipRequest mr : membershipClient.getMembershipRequests(proposalId)) {
-            if (mr.getMembershipRequestId() == requestId) {
+        ProposalTeamMembershipRequest membershipRequest = null;
+        for (ProposalTeamMembershipRequest mr : membershipClient.getMembershipRequests(proposalId)) {
+            if (mr.getId() == requestId) {
                 membershipRequest = mr;
             }
         }

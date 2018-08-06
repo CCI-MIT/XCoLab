@@ -40,13 +40,13 @@ public class WikiPageWrapper {
             } catch (ContentNotFoundException e) {
                 throw ReferenceResolutionException
                         .toObject(ContentArticle.class, contest.getResourceArticleId())
-                        .fromObject(Contest.class, contest.getContestPK());
+                        .fromObject(Contest.class, contest.getId());
             }
         } else {
             contentArticleVersion = new ContentArticleVersion();
             contentArticleVersion.setFolderId(ContentFolder.RESOURCE_FOLDER_ID);
             contentArticleVersion.setauthorUserid(loggedInUserId);
-            contentArticleVersion.setTitle(contest.getContestShortName());
+            contentArticleVersion.setTitle(contest.getContestTitle());
             contentArticleVersion.setContent("");
             contentArticleVersion = ContentsClient
                     .createContentArticleVersion(contentArticleVersion);
@@ -72,7 +72,7 @@ public class WikiPageWrapper {
             if (contest.getResourceArticleId() != null) {
                 final ContentArticleVersion resourceArticleVersion = ContentsClient
                         .getLatestContentArticleVersion(contest.getResourceArticleId());
-                resourceArticleVersion.setTitle(contest.getContestShortName());
+                resourceArticleVersion.setTitle(contest.getContestTitle());
                 ContentsClient.updateContentArticleVersion(resourceArticleVersion);
             }
         } catch (ContentNotFoundException ignored) {
@@ -93,7 +93,7 @@ public class WikiPageWrapper {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
         if (!contentArticleVersion.getContent().equals(updatedResourcesContent)) {
-            contentArticleVersion.setTitle(contest.getContestShortName());
+            contentArticleVersion.setTitle(contest.getContestTitle());
             contentArticleVersion.setContent(updatedResourcesContent);
             contentArticleVersion.setArticleId(contentArticle.getId());
             contentArticleVersion.setauthorUserid(loggedInUserId);

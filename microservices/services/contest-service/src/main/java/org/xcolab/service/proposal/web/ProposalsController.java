@@ -176,7 +176,7 @@ public class ProposalsController {
         int counter = 0;
         for (Proposal p : proposals) {
             List<ProposalRating> ret = proposalRatingDao
-                    .findByProposalIdJudgeTypeJudgeIdContestPhaseId(p.getProposalId(), null,
+                    .findByProposalIdJudgeTypeJudgeIdContestPhaseId(p.getId(), null,
                             contestPhaseId, userId);
             if (ret != null && !ret.isEmpty()) {
                 counter++;
@@ -197,11 +197,11 @@ public class ProposalsController {
         int counter = 0;
         for (Proposal p : proposals) {
             ProposalContestPhaseAttribute pcpa = proposalContestPhaseAttributeDao
-                    .getByProposalIdContestPhaseIdName(p.getProposalId(), contestPhaseId,
+                    .getByProposalIdContestPhaseIdName(p.getId(), contestPhaseId,
                             ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
             if (pcpa == null) {
                 pcpa = new ProposalContestPhaseAttribute();
-                pcpa.setProposalId(p.getProposalId());
+                pcpa.setProposalId(p.getId());
                 pcpa.setContestPhaseId(contestPhaseId);
                 pcpa.setName(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
                 pcpa.setStringValue("");

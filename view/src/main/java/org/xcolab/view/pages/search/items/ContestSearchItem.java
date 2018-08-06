@@ -41,7 +41,7 @@ public class ContestSearchItem extends AbstractSearchItem {
 
     @Override
     public String getContent() {
-        return super.getContent(contest.getContestDescription(), searchQuery);
+        return super.getContent(contest.getDescription(), searchQuery);
     }
 
 }

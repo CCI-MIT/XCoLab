@@ -12,7 +12,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 
 public class ProposalMembershipInviteNotification extends ProposalUserActionNotification {
 
@@ -23,12 +23,12 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     private static final String MESSAGE_PLACEHOLDER = "message";
     private static final String ACCEPT_LINK_PLACEHOLDER = "accept-link";
     private static final String DECLINE_LINK_PLACEHOLDER = "decline-link";
-    private final MembershipRequest membershipRequest;
+    private final ProposalTeamMembershipRequest membershipRequest;
     private final String message;
     private ProposalMembershipRequestTemplate templateWrapper;
 
     public ProposalMembershipInviteNotification(Proposal proposal, Contest contest, Member sender,
-            Member invitee, MembershipRequest membershipRequest, String message) {
+            Member invitee, ProposalTeamMembershipRequest membershipRequest, String message) {
         super(proposal, contest, sender, invitee, null,
                 PlatformAttributeKey.COLAB_URL.get());
         this.membershipRequest = membershipRequest;
@@ -48,7 +48,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
                 EmailTemplateClientUtil.getContestEmailTemplateByType(DEFAULT_TEMPLATE_NAME);
 
         templateWrapper = new ProposalMembershipRequestTemplate(emailTemplate,
-                proposalName, contest.getContestShortName());
+                proposalName, contest.getContestTitle());
 
         return templateWrapper;
     }
@@ -62,9 +62,9 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
 
     private String getMembershipResponseUrl() {
         return UriComponentsBuilder.fromHttpUrl(this.baseUrl + MEMBERSHIP_INVITE_RESPONSE_URL)
-                .queryParam("contestId", contest.getContestPK())
-                .queryParam("requestId", membershipRequest.getMembershipRequestId())
-                .queryParam("proposalId", proposal.getProposalId())
+                .queryParam("contestId", contest.getId())
+                .queryParam("requestId", membershipRequest.getId())
+                .queryParam("proposalId", proposal.getId())
                 .toUriString();
     }
 

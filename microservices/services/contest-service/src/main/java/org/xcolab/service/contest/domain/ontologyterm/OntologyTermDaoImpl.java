@@ -63,7 +63,7 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
                 .set(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID, ontologyTerm.getOntologySpaceId())
                 .set(ONTOLOGY_TERM.NAME, ontologyTerm.getName())
                 .set(ONTOLOGY_TERM.DESCRIPTION_URL, ontologyTerm.getDescriptionUrl())
-                .set(ONTOLOGY_TERM.ORDER_, ontologyTerm.getOrder_())
+                .set(ONTOLOGY_TERM.SORT_ORDER, ontologyTerm.getSortOrder())
                 .where(ONTOLOGY_TERM.ID.eq(ontologyTerm.getId()))
                 .execute() > 0;
     }
@@ -82,7 +82,7 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
                 .set(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID, ontologyTerm.getOntologySpaceId())
                 .set(ONTOLOGY_TERM.NAME, ontologyTerm.getName())
                 .set(ONTOLOGY_TERM.DESCRIPTION_URL, ontologyTerm.getDescriptionUrl())
-                .set(ONTOLOGY_TERM.ORDER_, ontologyTerm.getOrder_())
+                .set(ONTOLOGY_TERM.SORT_ORDER, ontologyTerm.getSortOrder())
                 .returning(ONTOLOGY_TERM.ID)
                 .fetchOne();
         if (ret != null) {

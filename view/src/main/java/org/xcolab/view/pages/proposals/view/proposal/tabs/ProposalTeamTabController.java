@@ -49,7 +49,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
         Map<Proposal, List<Member>> mapOfContributingProposals = new HashMap<>();
         for (Proposal temp : listOfLinkedProposals) {
-            List<Member> contributors = proposalClient.getProposalMembers(temp.getProposalId());
+            List<Member> contributors = proposalClient.getProposalMembers(temp.getId());
             mapOfContributingProposals.put(temp, contributors);
         }
         model.addAttribute("mapOfContributingProposals", mapOfContributingProposals);
@@ -93,7 +93,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
     }
 
     private long getProposalId(ProposalContext proposalContext) {
-        return proposalContext.getProposal().getProposalId();
+        return proposalContext.getProposal().getId();
     }
 
     private void sendRedirect(ProposalContext proposalContext, HttpServletResponse response)
@@ -106,7 +106,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
     private void checkHasManagePermissions(ProposalContext proposalContext, Member actingMember)
             throws ProposalsAuthorizationException {
         final Proposal proposal = proposalContext.getProposal();
-        final long proposalId = proposal.getProposalId();
+        final long proposalId = proposal.getId();
         final long actingUserId = actingMember.getUserId();
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
@@ -122,7 +122,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         if (removeduserId == proposal.getauthorUserid()) {
             generateAuthorizationError(
                     String.format("The owner %d of proposal %d can not be removed from the team.",
-                            removeduserId, proposal.getProposalId()));
+                            removeduserId, proposal.getId()));
         }
     }
 

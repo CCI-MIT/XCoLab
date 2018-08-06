@@ -20,7 +20,7 @@
 	</div>
 	<!-- /proposal-head -->
     <c:if test="${not empty availableModels }">
-        <proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" />
+        <proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.id }" />
     </c:if>
     <modeling:simulationEdit  modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
 </xcolab:layout>

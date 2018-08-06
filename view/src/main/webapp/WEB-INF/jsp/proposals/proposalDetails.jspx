@@ -58,13 +58,13 @@
                     <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                         <div class="text-center cb-flex-basis-100 cb-flex-sm-basis-auto order-first order-first order-sm-0">
                             <c:set var="shareMessageBody">Check out the ${contestType.proposalNameLowercase} ${proposal.name} ${contest.contestShortNameWithEndYear} ${contestType.contestNameLowercase}:</c:set>
-                            <xcolab-social:socialShareButtons title="${_themeContext.colabName} - ${contest.contestShortName} - ${proposal.name}"
+                            <xcolab-social:socialShareButtons title="${_themeContext.colabName} - ${contest.contestTitle} - ${proposal.name}"
                                                               messageTitle="I want to share a ${contestType.proposalNameLowercase} with you!"
                                                               content="${shareMessageBody}"/>
                         </div>
                     </c:if>
                     <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
-                        <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+                        <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }" />
                         <button type="button" class="btn btn-link btn-sm js-EnhancedLink" data-method="post"
                                 data-require-login="true" data-url="${subscribeProposalURL}">
                             <c:choose>
@@ -126,7 +126,7 @@
                     <c:choose>
                         <c:when test="${sourceMoveHistory.moveTypeEnum.name() == 'COPY'
                                     and (sourceMoveHistory.sourcePhaseId == null
-                                            or sourceMoveHistory.sourcePhaseId == contestPhase.contestPhasePK)}">
+                                            or sourceMoveHistory.sourcePhaseId == contestPhase.id)}">
                             <div>
                                 <collab:message code="contests.proposal.moving.reopenedin" contestType="${contestType}">
                                     <spring:argument>
@@ -217,8 +217,8 @@
     <c:if test="${not _themeContext.themeVariables.isCommentsInOwnTab}">
         <hr class="cb-hr-tan cb-hr-xl" id="Comments"/>
         <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
-                                   proposalId="${proposal.proposalId}"
-                                   shareTitle="Discussion for ${proposal.name} in ${contest.contestShortName}" />
+                                   proposalId="${proposal.id}"
+                                   shareTitle="Discussion for ${proposal.name} in ${contest.contestTitle}" />
 
         <script>
             jQuery(function() {
@@ -235,7 +235,7 @@
                 <p style="color: #545454; margin-top: 5px;">
                     <collab:message code="contests.proposal.voting.youjustvoted" contestType="${contestType}">
                         <spring:argument>${proposal.name}</spring:argument>
-                        <spring:argument>${proposal.contest.contestName}</spring:argument>
+                        <spring:argument>${proposal.contest.contestQuestion}</spring:argument>
                     </collab:message>
                     <br/><br/>
                     <c:if test="${not empty votingDeadline}">
@@ -248,7 +248,7 @@
                 <h4 style="color: #30a3fb;">
                     <spring:message code="contests.proposal.voting.share" />
                 </h4>
-                <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
+                <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestTitle).concat(' - ').concat(proposal.name)}"/>
             </div>
         </xcolab:modal>
         <script>
@@ -292,7 +292,7 @@
     </c:set>
 
     <spring:message var="menuItemName" text="${contestType.menuItemName}" javaScriptEscape="true" />
-    <spring:message var="contestShortName" text="${contest.contestShortName}" javaScriptEscape="true" />
+    <spring:message var="contestShortName" text="${contest.contestTitle}" javaScriptEscape="true" />
     <spring:message var="proposalName" text="${proposal.name}" javaScriptEscape="true" />
     <script type="application/ld+json">
         {

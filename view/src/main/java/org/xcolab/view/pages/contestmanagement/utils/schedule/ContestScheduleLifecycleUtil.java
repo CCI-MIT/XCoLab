@@ -58,7 +58,7 @@ public final class ContestScheduleLifecycleUtil {
     }
 
     private static void removeContestPhase(ContestPhase contestPhase) {
-        Long contestPhaseId = contestPhase.getContestPhasePK();
+        Long contestPhaseId = contestPhase.getId();
         List<Proposal2Phase> proposal2Phases = ProposalPhaseClientUtil
                 .getProposal2PhaseByContestPhaseId(contestPhaseId);
         if (!proposal2Phases.isEmpty()) {
@@ -66,7 +66,7 @@ public final class ContestScheduleLifecycleUtil {
             _log.warn("There are remaining proposal2phase entries for contestPhaseId: {}",
                     contestPhaseId);
         }
-        ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
+        ContestClientUtil.deleteContestPhase(contestPhase.getId());
     }
 
     private static void removeContestPhasesOfContestsThatAreUsingSchedule(Long scheduleId) {
@@ -77,7 +77,7 @@ public final class ContestScheduleLifecycleUtil {
             List<ContestPhase> contestSchedulePhases =
                     ContestClientUtil
                             .getPhasesForContestScheduleIdAndContest(scheduleId,
-                                    contestUsingSchedule.getContestPK());
+                                    contestUsingSchedule.getId());
             removeContestPhases(contestSchedulePhases);
         }
 
@@ -128,9 +128,9 @@ public final class ContestScheduleLifecycleUtil {
         newContestSchedule = ContestClientUtil.createContestSchedule(newContestSchedule);
 
         ContestPhase contestPhase = new ContestPhase();
-        contestPhase.setContestPK(0L);
+        contestPhase.setContestId(0L);
         contestPhase.setContestScheduleId(newContestSchedule.getId());
-        contestPhase.setContestPhaseType(ContestPhaseTypeValue.PROPOSAL_CREATION.getTypeId());
+        contestPhase.setContestPhaseTypeId(ContestPhaseTypeValue.PROPOSAL_CREATION.getTypeId());
         contestPhase.setPhaseStartDate(new Timestamp(DateTime.now().getMillis()));
         contestPhase.setContestPhaseAutopromote(ContestPhasePromoteType.DEFAULT.getValue());
         ContestClientUtil.createContestPhase(contestPhase);

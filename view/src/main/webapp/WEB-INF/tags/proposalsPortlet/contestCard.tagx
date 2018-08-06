@@ -12,7 +12,7 @@
                 <h3 class="c-ContestCard__text__title">
                     ${contest.contestShortNameWithEndYear}
                 </h3>
-                ${contest.contestName }
+                ${contest.contestQuestion }
             </div>
             <div class="c-ContestCard__meta__flags">
                 <c:if test="${contest.flag ge 0}">

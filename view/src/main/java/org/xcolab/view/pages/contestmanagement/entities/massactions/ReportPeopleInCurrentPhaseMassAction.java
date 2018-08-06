@@ -30,10 +30,10 @@ public class ReportPeopleInCurrentPhaseMassAction extends AbstractContestMassAct
         csvExportHelper.addRowToExportData(CSV_EXPORT_HEADER);
 
         for (Contest contest : contests) {
-            Long contestId = contest.getContestPK();
+            Long contestId = contest.getId();
             ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
             List<Proposal> proposalsInActiveContestPhase = ProposalClientUtil
-                    .getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
+                    .getActiveProposalsInContestPhase(activeContestPhase.getId());
             csvExportHelper
                     .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase,
                             activeContestPhase);

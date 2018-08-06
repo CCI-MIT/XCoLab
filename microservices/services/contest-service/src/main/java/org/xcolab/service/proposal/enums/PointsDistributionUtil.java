@@ -39,13 +39,13 @@ public class PointsDistributionUtil {
     public static List<PointsTarget> distributeSectionDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
         for (long subProposalId : subProposalIds) {
-            ProposalReference reference = proposalService.getReferenceByProposalIdAndSubProposalId(proposal.getProposalId(), subProposalId);
-            //ProposalReference reference = ProposalReferenceLocalServiceUtil.getByProposalIdSubProposalId(proposal.getProposalId(), subProposalId);
+            ProposalReference reference = proposalService.getReferenceByProposalIdAndSubProposalId(proposal.getId(), subProposalId);
+            //ProposalReference reference = ProposalReferenceLocalServiceUtil.getByProposalIdSubProposalId(proposal.getId(), subProposalId);
             final ProposalAttribute referenceSectionProposalAttribute = proposalService.getProposalAttribute(reference.getSectionAttributeId());
             //final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(reference.getSectionAttributeId());
             final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
             PointsDistributionConfiguration pdc = pointsDistributionConfigurationService.getPointsDistributionConfiguration(planSectionDefinitionId);
-                //PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(planSectionDefinitionId);
+                //PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByProposalTemplateSectionDefinitionId(planSectionDefinitionId);
             targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
 
         }
@@ -54,9 +54,9 @@ public class PointsDistributionUtil {
 
     public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds) {
         List<PointsTarget> targets = new ArrayList<>();
-        //for (PointsDistributionConfiguration pdc : PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId())) {
-        for (PointsDistributionConfiguration pdc : pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getProposalId(), pointType.getId())) {
-            if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getProposalId()) {
+        //for (PointsDistributionConfiguration pdc : PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
+        for (PointsDistributionConfiguration pdc : pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposal.getId(), pointType.getId())) {
+            if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getId()) {
                 PointsTarget target = new PointsTarget();
                 target.setProposalId(pdc.getTargetSubProposalId());
                 target.setPercentage(pdc.getPercentage());

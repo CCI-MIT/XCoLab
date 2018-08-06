@@ -33,7 +33,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
                 .set(POINT_TYPE.DISTRIBUTION_STRATEGY, pointType.getDistributionStrategy())
                 .set(POINT_TYPE.RECEIVER_LIMITATION_STRATEGY, pointType.getReceiverLimitationStrategy())
                 .set(POINT_TYPE.NAME, pointType.getName())
-                .set(POINT_TYPE.SORT, pointType.getSort())
+                .set(POINT_TYPE.SORT_ORDER, pointType.getSortOrder())
                 .returning(POINT_TYPE.ID)
                 .fetchOne();
         if (ret != null) {
@@ -68,7 +68,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
                 .set(POINT_TYPE.DISTRIBUTION_STRATEGY, pointType.getDistributionStrategy())
                 .set(POINT_TYPE.RECEIVER_LIMITATION_STRATEGY, pointType.getReceiverLimitationStrategy())
                 .set(POINT_TYPE.NAME, pointType.getName())
-                .set(POINT_TYPE.SORT, pointType.getSort())
+                .set(POINT_TYPE.SORT_ORDER, pointType.getSortOrder())
                 .where(POINT_TYPE.ID.eq(pointType.getId()))
                 .execute() > 0;
     }
@@ -81,7 +81,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
         if (parentPointTypeId != null) {
             query.addConditions(POINT_TYPE.PARENT_POINT_TYPE_ID.eq(parentPointTypeId));
         }
-        query.addOrderBy(POINT_TYPE.SORT.asc());
+        query.addOrderBy(POINT_TYPE.SORT_ORDER.asc());
 
         return query.fetchInto(PointType.class);
     }

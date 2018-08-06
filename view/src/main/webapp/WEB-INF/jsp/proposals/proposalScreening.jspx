@@ -18,7 +18,7 @@
         <form:errors cssClass="alert alert-danger" element="div" />
 
         This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
-        <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/tab/SCREENING?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
+        <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/tab/SCREENING?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }"/>
 
         <div class="l-BoxLayout__columns">
             <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
@@ -43,8 +43,8 @@
                                                 <xcolab:userPortrait portraitId="${judge.portraitId}"
                                                                      userId="${judge.userId}"
                                                                      width="30" height="30"/>
-                                                <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}"
-                                                                           proposalId="${proposal.proposalId}" contestId="${contest.contestPK}">
+                                                <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.id}"
+                                                                           proposalId="${proposal.id}" contestId="${contest.id}">
                                                     <c:choose>
                                                         <c:when test="${judgeReviewStatus.statusValue eq 1}">
                                                             <collab:image src="/images/icon_question-x.png" cssClass="review-status-icon"/>
@@ -56,7 +56,7 @@
                                                 </judging:judgeReviewStatus>
                                             </div>
                                             <br/>
-                                            <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
+                                            <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.id}">
                                                 <xcolab:userLinkSimple userId="${judge.userId}"
                                                                        text="${judge.fullName} (${proposalCount})"/>
                                                         <div class="hidden">

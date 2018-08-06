@@ -83,7 +83,7 @@ public class CreateProposalController extends BaseProposalsController {
                 Contest baseContest = contestClient.getContest(baseContestId);
                 Proposal baseProposalWrapper = new Proposal(
                         proposalClient.getProposal(baseProposalId),
-                        baseProposalVersion, baseContest, contestClient.getActivePhase(baseContest.getContestPK()), null);
+                        baseProposalVersion, baseContest, contestClient.getActivePhase(baseContest.getId()), null);
 
                 model.addAttribute("baseProposal", baseProposalWrapper);
 

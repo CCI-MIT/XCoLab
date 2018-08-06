@@ -124,7 +124,7 @@
             </div>
 
             <c:if test="${proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton  }">
-                <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?forwardToTab=TEAM&amp;contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+                <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?forwardToTab=TEAM&amp;contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }" />
                 <div>
                     <collab:image src="/images/icon-proposal-thumb.png" width="20" height="22"
                                   cssClass="mr-2" alt="support ${contestType.proposalName}" />

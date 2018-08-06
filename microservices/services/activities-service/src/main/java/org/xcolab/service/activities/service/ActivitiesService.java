@@ -79,9 +79,9 @@ public class ActivitiesService {
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
-            if (!processedProposals.contains(proposal.getProposalId())) {
-                subscribeProposal(userId, proposal.getProposalId(), true);
-                processedProposals.add(proposal.getProposalId());
+            if (!processedProposals.contains(proposal.getId())) {
+                subscribeProposal(userId, proposal.getId(), true);
+                processedProposals.add(proposal.getId());
             }
         }
         return contestSubscription;
@@ -168,10 +168,10 @@ public class ActivitiesService {
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
-            if (!processedProposals.contains(proposal.getProposalId())) {
+            if (!processedProposals.contains(proposal.getId())) {
                 queries.addAll(
-                        getProposalDeleteQueries(userId, proposal.getProposalId(), true));
-                processedProposals.add(proposal.getProposalId());
+                        getProposalDeleteQueries(userId, proposal.getId(), true));
+                processedProposals.add(proposal.getId());
             }
         }
         Contest contest = ContestClientUtil.getContest(contestId);

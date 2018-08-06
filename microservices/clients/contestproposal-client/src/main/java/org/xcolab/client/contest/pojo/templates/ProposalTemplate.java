@@ -2,15 +2,15 @@ package org.xcolab.client.contest.pojo.templates;
 
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
-public class PlanTemplate extends AbstractPlanTemplate {
+public class ProposalTemplate extends AbstractProposalTemplate {
 
-    public PlanTemplate() {}
+    public ProposalTemplate() {}
 
-    public PlanTemplate(PlanTemplate value) {
+    public ProposalTemplate(ProposalTemplate value) {
         super(value);
     }
 
-    public PlanTemplate(AbstractPlanTemplate abstractPlanTemplate,
+    public ProposalTemplate(AbstractProposalTemplate abstractPlanTemplate,
             ServiceNamespace serviceNamespace) {
         super(abstractPlanTemplate);
     }

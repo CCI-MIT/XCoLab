@@ -51,7 +51,7 @@ public class ProposalCreatedActivityEntry extends ContestBaseActivityEntry {
     @Override
     public String getTitle() {
         return String.format("New %s in %s", getContestType().getProposalNameLowercase(),
-                getContest().getContestShortName());
+                getContest().getContestTitle());
     }
 
     private String getProposalLink() {

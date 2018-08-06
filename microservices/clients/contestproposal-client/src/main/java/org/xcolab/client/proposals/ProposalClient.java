@@ -172,7 +172,7 @@ public final class ProposalClient {
     public List<Proposal> getProposalsInContest(Long contestPK) {
         ContestPhase cp = contestClient.getActivePhase(contestPK);
 
-        return listProposals(0, Integer.MAX_VALUE, null, true, cp.getContestPhasePK(), null);
+        return listProposals(0, Integer.MAX_VALUE, null, true, cp.getId(), null);
     }
 
     //TODO: move to proposals/{proposalId}/teamMembers endpoint
@@ -234,7 +234,7 @@ public final class ProposalClient {
         final List<Proposal> userProposals = getMemberProposals(userId);
         List<Proposal> linkingProposals = new ArrayList<>();
         for (Proposal proposal : userProposals) {
-            linkingProposals.addAll(getLinkingProposals(proposal.getProposalId()));
+            linkingProposals.addAll(getLinkingProposals(proposal.getId()));
         }
         return linkingProposals;
     }
@@ -352,9 +352,9 @@ public final class ProposalClient {
 
     public boolean updateProposal(Proposal proposal) {
         return proposalResource
-                .update(new ProposalDto(proposal), proposal.getProposalId())
+                .update(new ProposalDto(proposal), proposal.getId())
                 .cacheKey(CacheKeys.withClass(ProposalDto.class)
-                                .withParameter("proposalId", proposal.getProposalId())
+                                .withParameter("proposalId", proposal.getId())
                                 .withParameter("includeDeleted", false).build())
                 .execute();
     }
@@ -421,7 +421,7 @@ public final class ProposalClient {
     public Contest getCurrentContestForProposal(Long proposalId) throws ContestNotFoundException {
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
         ContestPhase contestPhase = contestClient.getContestPhase(contestPhaseId);
-        return contestClient.getContest(contestPhase.getContestPK());
+        return contestClient.getContest(contestPhase.getContestId());
 
     }
 
@@ -432,7 +432,7 @@ public final class ProposalClient {
 
     public Contest getLatestContestInProposal(Long proposalId) throws ContestNotFoundException {
         return contestClient
-                .getContest(getLatestContestPhaseInProposal(proposalId).getContestPK());
+                .getContest(getLatestContestPhaseInProposal(proposalId).getContestId());
     }
 
 

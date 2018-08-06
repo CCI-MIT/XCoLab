@@ -42,7 +42,7 @@ public class PointsDistributionConfigurationService {
     public PointsDistributionConfiguration getPointsDistributionConfiguration(long planSectionDefinitionId){
         PointsDistributionConfiguration config = null;
         try{
-            config = pointsDistributionConfigurationDao.getByPlanSectionDefinitionId(planSectionDefinitionId);
+            config = pointsDistributionConfigurationDao.getByProposalTemplateSectionDefinitionId(planSectionDefinitionId);
         } catch(NotFoundException ignored) {}
         return config;
     }
@@ -137,7 +137,7 @@ public class PointsDistributionConfigurationService {
             model.setTargetSubProposalId(targetSubProposalId);
         }
         model.setPercentage(percentage);
-        model.setCreator(creator);
+        model.setAuthorUserId(creator);
         model.setCreatedAt(new Timestamp((new Date()).getTime()));
 
         model = pointsDistributionConfigurationDao.create(model);

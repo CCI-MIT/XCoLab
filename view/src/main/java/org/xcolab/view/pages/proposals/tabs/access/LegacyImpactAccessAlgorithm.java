@@ -7,7 +7,7 @@ public class LegacyImpactAccessAlgorithm implements ProposalTabCanAccessAlgorith
 
     @Override
     public boolean canAccess(ProposalContext proposalContext) {
-        Long contestPK = proposalContext.getContest().getContestPK();
+        Long contestPK = proposalContext.getContest().getId();
         Long contestPKofFirst2015Contest = 1301101L;
         return contestPK <= contestPKofFirst2015Contest
                 && proposalContext.getProposal().getModelId() > 0;

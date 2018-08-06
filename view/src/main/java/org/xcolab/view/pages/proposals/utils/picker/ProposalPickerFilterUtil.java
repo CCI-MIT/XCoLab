@@ -5,10 +5,10 @@ import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -32,8 +32,8 @@ public class ProposalPickerFilterUtil {
 
     public static List<Contest> getTextFilteredContests(long sectionId, String contestName) {
 
-        PlanSectionDefinition planSectionDefinition =
-                PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
+        ProposalTemplateSectionDefinition planSectionDefinition =
+                ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
 
         final Long focusAreaId = planSectionDefinition.getFocusAreaId();
         List<Long> ontologyTermIds = null;
@@ -60,11 +60,11 @@ public class ProposalPickerFilterUtil {
 
         Set<Long> includedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
-            includedProposals.add(proposal.getProposalId());
+            includedProposals.add(proposal.getId());
         }
         for (Proposal proposal : getFilteredSupportingProposalsForUser(proposalContext, userId,
                 filterKey, sectionId)) {
-            if (includedProposals.contains(proposal.getProposalId())) {
+            if (includedProposals.contains(proposal.getId())) {
                 continue;
             }
             proposals.add(proposal);
@@ -126,8 +126,8 @@ public class ProposalPickerFilterUtil {
         ClientHelper clients = proposalContext.getClients();
         ProposalClient proposalClient = clients.getProposalClient();
 
-        PlanSectionDefinition planSectionDefinition =
-                PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
+        ProposalTemplateSectionDefinition planSectionDefinition =
+                ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
         List<Long> contestTypes = new ArrayList<>(
                 IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()));
 
@@ -178,8 +178,8 @@ public class ProposalPickerFilterUtil {
             proposals.removeIf(proposal -> !proposal.hasRibbon());
         }
 
-        PlanSectionDefinition planSectionDefinition =
-                PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
+        ProposalTemplateSectionDefinition planSectionDefinition =
+                ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
 
         List<Long> filterExceptionContestIds = planSectionDefinition.getAdditionalIdsAsList();
 

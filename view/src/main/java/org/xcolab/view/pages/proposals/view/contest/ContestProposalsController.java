@@ -85,11 +85,11 @@ public class ContestProposalsController extends BaseProposalsController {
             case OPEN_FOR_SUBMISSION:
             case OPEN_FOR_EDIT:
                 activeProposals = proposalClient.getActiveProposalsInContestPhase(
-                        contestPhase.getContestPhasePK());
+                        contestPhase.getId());
                 break;
             default:
                 activeProposals = proposalClient.getActiveProposalsInContestPhase(
-                        contestPhase.getContestPhasePK(), CacheName.PROPOSAL_LIST_CLOSED);
+                        contestPhase.getId(), CacheName.PROPOSAL_LIST_CLOSED);
         }
 
         List<Proposal> proposals = new ArrayList<>();
@@ -97,7 +97,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
             try {
                 final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
-                Proposal2Phase p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                Proposal2Phase p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
                 Proposal proposalWrapper;
 
                 if (loggedInMember != null && PermissionsClient.memberHasRole(loggedInMember.getUserId(), MemberRole.JUDGE.getRoleId())) {
@@ -149,7 +149,7 @@ public class ContestProposalsController extends BaseProposalsController {
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanSubscribeContest()) {
-            long contestId = proposalContext.getContest().getContestPK();
+            long contestId = proposalContext.getContest().getId();
             long userId = currentMember.getUserId();
             if (ContestClientUtil.isMemberSubscribedToContest(contestId, userId)) {
                 ContestClientUtil.unsubscribeMemberFromContest(contestId, userId);
@@ -173,16 +173,16 @@ public class ContestProposalsController extends BaseProposalsController {
 
             final Contest contest = proposalContext.getContest();
             final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
-            long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
+            long contestPhaseId = proposalContext.getContestPhase().getId();
 
             List<Long> selectedJudges = new ArrayList<>();
             for (Member judge : contest.getContestJudges()) {
                 selectedJudges.add(judge.getUserId());
             }
 
-            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getContestPK())) {
+            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getId())) {
                 proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
-                        proposal.getProposalId(),
+                        proposal.getId(),
                         contestPhaseId,
                         selectedJudges);
             }
@@ -203,15 +203,15 @@ public class ContestProposalsController extends BaseProposalsController {
 
             final Contest contest = proposalContext.getContest();
             final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
-            long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
+            long contestPhaseId = proposalContext.getContestPhase().getId();
 
-            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getContestPK())) {
+            for (Proposal proposal : proposalClient.getProposalsInContest(contest.getId())) {
                 List<Long> newSelectedJudges = proposal.getSelectedJudges().stream()
                         .filter(proposal::getIsReviewFinishedForJudge)
                         .collect(Collectors.toList());
 
                 proposalContext.getClients().getProposalPhaseClient().persistSelectedJudgesAttribute(
-                        proposal.getProposalId(),
+                        proposal.getId(),
                         contestPhaseId,
                         newSelectedJudges);
             }

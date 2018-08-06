@@ -32,7 +32,7 @@ public class Badge implements Serializable {
         // Associate the year and get hideRibbon property from contest
         hideRibbon = contest.getHideRibbons();
 
-        ContestPhase lastPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
+        ContestPhase lastPhase = ContestClientUtil.getActivePhase(contest.getId());
         Date referenceDate =
                 lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate()
                         : lastPhase.getPhaseEndDate();
@@ -79,6 +79,6 @@ public class Badge implements Serializable {
     @Override
     public String toString() {
         return String.format("Badge[type=%d, proposal=%d]",
-                ribbonType.getId(), proposal.getProposalId());
+                ribbonType.getId(), proposal.getId());
     }
 }

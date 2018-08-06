@@ -115,24 +115,24 @@ public class ContestPreferences extends WidgetPreference {
                     return -1;
                 }
             }
-            return (int) (o2.getContestPK() - o1.getContestPK());
+            return (int) (o2.getId() - o1.getId());
         });
 
         for (Contest c : contests) {
 
             ContestClient contestClient = ContestClientUtil.getClient();
-            ContestPhase activeOrLastPhase = contestClient.getActivePhase(c.getContestPK());
+            ContestPhase activeOrLastPhase = contestClient.getActivePhase(c.getId());
             final String phaseName;
             if (activeOrLastPhase != null) {
-                final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseType();
+                final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseTypeId();
                 final ContestPhaseType contestPhaseType =
                         contestClient.getContestPhaseType(contestPhaseTypeId);
                 phaseName = contestPhaseType.getName();
             } else {
                 phaseName = " ";
             }
-            contestMap.put(c.getContestPK(),
-                    String.format("%d [%s] %s", c.getContestPK(), phaseName,
+            contestMap.put(c.getId(),
+                    String.format("%d [%s] %s", c.getId(), phaseName,
                             c.getContestShortNameWithEndYear()));
         }
 

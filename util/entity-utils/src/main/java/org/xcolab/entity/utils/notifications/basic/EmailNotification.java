@@ -112,7 +112,7 @@ public abstract class EmailNotification {
      */
     private String getContestLink(Contest contest) {
         final String contestLinkUrl = baseUrl + contest.getContestLinkUrl();
-        return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getContestShortName());
+        return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getContestTitle());
     }
 
     protected Contest getContest() {

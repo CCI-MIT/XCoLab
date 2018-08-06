@@ -2,7 +2,7 @@ package org.xcolab.client.contest.pojo.templates;
 
 import java.io.Serializable;
 
-abstract class AbstractPlanTemplate implements Serializable {
+abstract class AbstractProposalTemplate implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -12,9 +12,9 @@ abstract class AbstractPlanTemplate implements Serializable {
     private Long impactseriestemplateid;
     private Long focusarealisttemplateid;
 
-    public AbstractPlanTemplate() {}
+    public AbstractProposalTemplate() {}
 
-    public AbstractPlanTemplate(AbstractPlanTemplate value) {
+    public AbstractProposalTemplate(AbstractProposalTemplate value) {
         this.id = value.id;
         this.name = value.name;
         this.basetemplateid = value.basetemplateid;
@@ -22,7 +22,7 @@ abstract class AbstractPlanTemplate implements Serializable {
         this.focusarealisttemplateid = value.focusarealisttemplateid;
     }
 
-    public AbstractPlanTemplate(Long id, String name, Long basetemplateid,
+    public AbstractProposalTemplate(Long id, String name, Long basetemplateid,
             Long impactseriestemplateid, Long focusarealisttemplateid) {
         this.id = id;
         this.name = name;
@@ -96,7 +96,7 @@ abstract class AbstractPlanTemplate implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final AbstractPlanTemplate other = (AbstractPlanTemplate) obj;
+        final AbstractProposalTemplate other = (AbstractProposalTemplate) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

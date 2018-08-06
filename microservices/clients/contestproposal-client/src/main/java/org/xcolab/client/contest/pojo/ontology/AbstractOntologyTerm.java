@@ -11,7 +11,7 @@ abstract class AbstractOntologyTerm implements Serializable {
     private Long ontologyspaceid;
     private String name;
     private String descriptionurl;
-    private Integer order_;
+    private Integer sortOrder;
 
     public AbstractOntologyTerm() {}
 
@@ -21,17 +21,17 @@ abstract class AbstractOntologyTerm implements Serializable {
         this.ontologyspaceid = value.ontologyspaceid;
         this.name = value.name;
         this.descriptionurl = value.descriptionurl;
-        this.order_ = value.order_;
+        this.sortOrder = value.sortOrder;
     }
 
     public AbstractOntologyTerm(Long id, Long parentid, Long ontologyspaceid,
-            String name, String descriptionurl, Integer order_) {
+            String name, String descriptionurl, Integer sortOrder) {
         this.id = id;
         this.parentid = parentid;
         this.ontologyspaceid = ontologyspaceid;
         this.name = name;
         this.descriptionurl = descriptionurl;
-        this.order_ = order_;
+        this.sortOrder = sortOrder;
     }
 
     public Long getId() {
@@ -74,12 +74,12 @@ abstract class AbstractOntologyTerm implements Serializable {
         this.descriptionurl = descriptionurl;
     }
 
-    public Integer getOrder_() {
-        return this.order_;
+    public Integer getSortOrder() {
+        return this.sortOrder;
     }
 
-    public void setOrder_(Integer order_) {
-        this.order_ = order_;
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     @Override
@@ -91,7 +91,7 @@ abstract class AbstractOntologyTerm implements Serializable {
         result = prime * result + ((ontologyspaceid == null) ? 0 : ontologyspaceid.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((descriptionurl == null) ? 0 : descriptionurl.hashCode());
-        result = prime * result + ((order_ == null) ? 0 : order_.hashCode());
+        result = prime * result + ((sortOrder == null) ? 0 : sortOrder.hashCode());
         return result;
     }
 
@@ -142,11 +142,11 @@ abstract class AbstractOntologyTerm implements Serializable {
         } else if (!descriptionurl.equals(other.descriptionurl)) {
             return false;
         }
-        if (order_ == null) {
-            if (other.order_ != null) {
+        if (sortOrder == null) {
+            if (other.sortOrder != null) {
                 return false;
             }
-        } else if (!order_.equals(other.order_)) {
+        } else if (!sortOrder.equals(other.sortOrder)) {
             return false;
         }
         return true;
@@ -160,7 +160,7 @@ abstract class AbstractOntologyTerm implements Serializable {
                 ", " + ontologyspaceid +
                 ", " + name +
                 ", " + descriptionurl +
-                ", " + order_ +
+                ", " + sortOrder +
                 ")";
     }
 }

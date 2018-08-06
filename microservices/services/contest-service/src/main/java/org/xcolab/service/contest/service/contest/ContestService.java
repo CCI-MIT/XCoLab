@@ -73,7 +73,7 @@ public class ContestService {
         return getAllContestPhases(contestId).stream()
                 .filter(contestPhase -> {
                     final Optional<ContestPhaseType> contestPhaseType = contestPhaseTypeDao
-                            .get(contestPhase.getContestPhaseType());
+                            .get(contestPhase.getContestPhaseTypeId());
                     return contestPhaseType.isPresent() && !contestPhaseType.get().getInvisible();
                 })
                 .collect(Collectors.toList());
@@ -101,8 +101,8 @@ public class ContestService {
         }
     }
 
-    public boolean isContestNameYearUnique(String contestShortName, Long year, Long currentContestId){
-        return contestDao.isContestNameYearUnique(contestShortName, year,currentContestId);
+    public boolean isContestTitleYearUnique(String contestShortName, Long year, Long currentContestId){
+        return contestDao.isContestTitleYearUnique(contestShortName, year,currentContestId);
     }
 
     public List<Contest> getContestsByOntologyTerm(Long ontologyTerm, Boolean active, Boolean onlyPrivate) {
@@ -178,18 +178,18 @@ public class ContestService {
 
     public Contest resolveTranslation(Contest contest, String lang) {
         final Optional<ContestTranslation> contestTranslation =
-                contestTranslationDao.get(contest.getContestPK(), lang);
+                contestTranslationDao.get(contest.getId(), lang);
         return contestTranslation
                 .map(translation -> {
                     Contest ret = new Contest(contest);
-                    if (StringUtils.isNotBlank(translation.getContestShortName())) {
-                        ret.setContestShortName(translation.getContestShortName());
+                    if (StringUtils.isNotBlank(translation.getTitle())) {
+                        ret.setTitle(translation.getTitle());
                     }
-                    if (StringUtils.isNotBlank(translation.getContestName())) {
-                        ret.setContestName(translation.getContestName());
+                    if (StringUtils.isNotBlank(translation.getQuestion())) {
+                        ret.setQuestion(translation.getQuestion());
                     }
-                    if (StringUtils.isNotBlank(translation.getContestDescription())) {
-                        ret.setContestDescription(translation.getContestDescription());
+                    if (StringUtils.isNotBlank(translation.getDescription())) {
+                        ret.setDescription(translation.getDescription());
                     }
                     return ret;
                 })

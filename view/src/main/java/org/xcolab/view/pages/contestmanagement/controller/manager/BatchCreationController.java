@@ -16,11 +16,11 @@ import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.IdListUtil;
@@ -61,7 +61,7 @@ public class BatchCreationController {
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L,
                         1300201L, 1300302L,
                         1300401L, 1300601L, 1300602L);
-        for (PlanTemplate proposalTemplate : PlanTemplateClientUtil.getPlanTemplates()) {
+        for (ProposalTemplate proposalTemplate : ProposalTemplateClientUtil.getPlanTemplates()) {
             if (!excludedList.contains(proposalTemplate.getId())) {
                 selectItems
                         .add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
@@ -153,9 +153,9 @@ public class BatchCreationController {
                         contestBatchBean.getContestTier(),
                         contestBatchBean.getContestType(), member.getId());
 
-                contestLinks.put("" + contest.getContestShortName(),
+                contestLinks.put("" + contest.getContestTitle(),
                         "/admin/contest/details/contestId/"
-                                + contest.getContestPK() + "/tab/DESCRIPTION");
+                                + contest.getId() + "/tab/DESCRIPTION");
 
                 processOntologyTerms(contestCSVBean, contest);
             }
@@ -237,8 +237,8 @@ public class BatchCreationController {
             long authorUserid) {
 
         Contest contest = ContestCreatorUtil.createNewContest(contestShortName, authorUserid);
-        contest.setContestDescription(contestDescription);
-        contest.setContestName(contestQuestion);
+        contest.setDescription(contestDescription);
+        contest.setContestQuestion(contestQuestion);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setSponsorLink(sponsorLink);

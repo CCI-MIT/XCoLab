@@ -5,8 +5,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.contest.PlanTemplateClientUtil;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalReference;
@@ -45,7 +45,7 @@ public class ProposalReferenceService {
     }
 
     public void populateTableWithProposal(Proposal proposal)  {
-        final List<ProposalReference> existingReferences = proposalReferenceDao.findByGiven(proposal.getProposalId(),null);
+        final List<ProposalReference> existingReferences = proposalReferenceDao.findByGiven(proposal.getId(),null);
         for (ProposalReference existingReference : existingReferences) {
             proposalReferenceDao.delete(existingReference.getProposalId(), existingReference.getSubProposalId());
         }
@@ -53,22 +53,22 @@ public class ProposalReferenceService {
     }
 
     private void populateTableWithProposal(Proposal proposal, Set<Long> processedProposals)  {
-        if (processedProposals.contains(proposal.getProposalId())) {
+        if (processedProposals.contains(proposal.getId())) {
             return;
         }
-        final List<ProposalReference> existingReferences = proposalReferenceDao.findByGiven(proposal.getProposalId(),null);
+        final List<ProposalReference> existingReferences = proposalReferenceDao.findByGiven(proposal.getId(),null);
         for (ProposalReference existingReference : existingReferences) {
             proposalReferenceDao.delete(existingReference.getProposalId(), existingReference.getSubProposalId());
         }
-        processedProposals.add(proposal.getProposalId());
+        processedProposals.add(proposal.getId());
         final ProposalAttributeHelper proposalAttributeHelper =
-                proposalAttributeService.getProposalAttributeHelper(proposal.getProposalId(),
+                proposalAttributeService.getProposalAttributeHelper(proposal.getId(),
                         ProposalAttributeService.LATEST_VERSION);
         final Collection<ProposalAttribute> sectionAttributes =
                 proposalAttributeHelper.getAttributes(ProposalAttributeKeys.SECTION);
         for (ProposalAttribute attribute : sectionAttributes) {
 
-                PlanSectionDefinition psd = PlanTemplateClientUtil.getPlanSectionDefinition(attribute.getAdditionalId());
+                ProposalTemplateSectionDefinition psd = ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(attribute.getAdditionalId());
 
                 if (StringUtils.isBlank(psd.getType_())) {
                     continue;
@@ -101,7 +101,7 @@ public class ProposalReferenceService {
                 }
 
                 for (long subProposalId : subProposalIds) {
-                    addProposalReference(proposal.getProposalId(), subProposalId, attribute.getId());
+                    addProposalReference(proposal.getId(), subProposalId, attribute.getId());
                     try {
                         populateTableWithProposal(proposalDao.get(subProposalId), processedProposals);
                     } catch (NotFoundException ignored) {

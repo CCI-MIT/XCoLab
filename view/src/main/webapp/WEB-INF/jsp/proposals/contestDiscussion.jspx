@@ -18,7 +18,7 @@
 		</div>
 		<!-- /proposal-head -->
 		<div id="content">
-            <xcolab:discussionComments threadId="${discussionId }" shareTitle="${contest.contestShortName} Discussion"  />
+            <xcolab:discussionComments threadId="${discussionId }" shareTitle="${contest.contestTitle} Discussion"  />
 		</div>
 	</xcolab:layout>
 </jsp:root>

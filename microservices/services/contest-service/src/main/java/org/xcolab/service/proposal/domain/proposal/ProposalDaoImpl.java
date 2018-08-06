@@ -27,7 +27,7 @@ import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.CONTEST_PHASE_RIBBON_TYPE;
 import static org.xcolab.model.Tables.POINTS;
 import static org.xcolab.model.Tables.PROPOSAL;
-import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
+import static org.xcolab.model.Tables.PROPOSAL2_PHASE;
 import static org.xcolab.model.Tables.PROPOSAL_ATTRIBUTE;
 import static org.xcolab.model.Tables.PROPOSAL_CONTEST_PHASE_ATTRIBUTE;
 
@@ -61,9 +61,9 @@ public class ProposalDaoImpl implements ProposalDao {
             final ProposalContestPhaseAttributeTable ribbonAttribute =
                     PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("ribbonAttribute");
             query.addJoin(ribbonAttribute, JoinType.LEFT_OUTER_JOIN,
-                    ribbonAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
+                    ribbonAttribute.PROPOSAL_ID.eq(PROPOSAL.ID)
                             .and(ribbonAttribute.CONTEST_PHASE_ID
-                                    .eq(CONTEST_PHASE.CONTEST_PHASE_PK)));
+                                    .eq(CONTEST_PHASE.ID)));
             if (ribbon.contains(0)) {
                 query.addConditions(ribbonAttribute.ID.isNull());
             } else {
@@ -76,13 +76,13 @@ public class ProposalDaoImpl implements ProposalDao {
         }
 
         if (contestPhaseId != null) {
-            query.addConditions(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhaseId));
+            query.addConditions(CONTEST_PHASE.ID.eq(contestPhaseId));
         }
 
         if (filterText != null) {
             //TODO COLAB-2602: replace wild carded search with match...against
             query.addJoin(PROPOSAL_ATTRIBUTE, JoinType.JOIN,
-                    PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_ATTRIBUTE.PROPOSAL_ID)
+                    PROPOSAL.ID.eq(PROPOSAL_ATTRIBUTE.PROPOSAL_ID)
                             .and(PROPOSAL_ATTRIBUTE.STRING_VALUE.like("%" + filterText + "%"))
                             .and(PROPOSAL_ATTRIBUTE.NAME.eq("NAME")));
         }
@@ -94,7 +94,7 @@ public class ProposalDaoImpl implements ProposalDao {
         }
 
         if (contestIds != null) {
-            query.addConditions(CONTEST_PHASE.CONTEST_PK.in(contestIds));
+            query.addConditions(CONTEST_PHASE.ID.in(contestIds));
         }
         if (contestTypeIds != null) {
             query.addConditions(CONTEST.CONTEST_TYPE_ID.in(contestTypeIds));
@@ -113,13 +113,13 @@ public class ProposalDaoImpl implements ProposalDao {
     private void addJoins(SelectQuery<Record> query, boolean addContest, boolean addPhase) {
         if (addPhase || addContest) {
             //TODO COLAB-2331: these joins cause duplicate entries
-            query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
+            query.addJoin(PROPOSAL2_PHASE, PROPOSAL.ID.eq(PROPOSAL2_PHASE.PROPOSAL_ID));
             query.addJoin(CONTEST_PHASE,
-                    CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
+                    CONTEST_PHASE.ID.eq(PROPOSAL2_PHASE.CONTEST_PHASE_ID));
         }
 
         if (addContest) {
-            query.addJoin(CONTEST, CONTEST.CONTEST_PK.eq(CONTEST_PHASE.CONTEST_PK));
+            query.addJoin(CONTEST, CONTEST.ID.eq(CONTEST_PHASE.ID));
         }
     }
 
@@ -141,8 +141,8 @@ public class ProposalDaoImpl implements ProposalDao {
         final ProposalContestPhaseAttributeTable visibleAttribute =
                 PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("visibleAttribute");
         query.addJoin(visibleAttribute, JoinType.LEFT_OUTER_JOIN,
-                visibleAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
-                        .and(visibleAttribute.CONTEST_PHASE_ID.eq(CONTEST_PHASE.CONTEST_PHASE_PK))
+                visibleAttribute.PROPOSAL_ID.eq(PROPOSAL.ID)
+                        .and(visibleAttribute.CONTEST_PHASE_ID.eq(CONTEST_PHASE.ID))
                         .and(visibleAttribute.NAME.eq(ProposalContestPhaseAttributeKeys.VISIBLE))
                         .and(visibleAttribute.NUMERIC_VALUE.eq(0L)));
         query.addConditions(visibleAttribute.ID.isNull());
@@ -152,24 +152,24 @@ public class ProposalDaoImpl implements ProposalDao {
             Integer ribbon, SelectQuery<Record1<Long>> query) {
         if (contestId != null || contestPhaseId != null || ribbon != null
                 || (visible != null && visible)) {
-            query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
+            query.addJoin(PROPOSAL2_PHASE, PROPOSAL.ID.eq(PROPOSAL2_PHASE.PROPOSAL_ID));
             query.addJoin(CONTEST_PHASE,
-                    CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
+                    CONTEST_PHASE.ID.eq(PROPOSAL2_PHASE.CONTEST_PHASE_ID));
         }
 
 
         if (ribbon != null) {
             final ProposalContestPhaseAttributeTable ribbonAttribute =
                     PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("ribbonAttribute");
-            query.addJoin(ribbonAttribute, ribbonAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
-                    .and(ribbonAttribute.CONTEST_PHASE_ID.eq(CONTEST_PHASE.CONTEST_PHASE_PK)));
+            query.addJoin(ribbonAttribute, ribbonAttribute.PROPOSAL_ID.eq(PROPOSAL.ID)
+                    .and(ribbonAttribute.CONTEST_PHASE_ID.eq(CONTEST_PHASE.ID)));
             query.addJoin(CONTEST_PHASE_RIBBON_TYPE,
                     ribbonAttribute.NAME.eq(ProposalContestPhaseAttributeKeys.RIBBON)
                             .and(CONTEST_PHASE_RIBBON_TYPE.ID.eq(ribbonAttribute.NUMERIC_VALUE)));
         }
 
         if (contestPhaseId != null) {
-            query.addConditions(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhaseId));
+            query.addConditions(CONTEST_PHASE.ID.eq(contestPhaseId));
         }
 
         if (visible != null) {
@@ -180,14 +180,14 @@ public class ProposalDaoImpl implements ProposalDao {
         }
 
         if (contestId != null) {
-            query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));
+            query.addConditions(CONTEST_PHASE.ID.eq(contestId));
         }
     }
 
     @Override
     public List<Long> findIdsByGiven(PaginationHelper paginationHelper, Long contestId,
             Boolean visible, Long contestPhaseId, Integer ribbon) {
-        final SelectQuery<Record1<Long>> query = dslContext.select(PROPOSAL.PROPOSAL_ID)
+        final SelectQuery<Record1<Long>> query = dslContext.select(PROPOSAL.ID)
                 .from(PROPOSAL)
                 .getQuery();
 
@@ -206,7 +206,7 @@ public class ProposalDaoImpl implements ProposalDao {
 
         this.addFindByGivenConditions(contestId, true, contestPhaseId, ribbon, query);
         if (proposalIds != null) {
-            query.addConditions(PROPOSAL.PROPOSAL_ID.in(proposalIds));
+            query.addConditions(PROPOSAL.ID.in(proposalIds));
         }
         return query.fetchInto(Long.class);
     }
@@ -220,7 +220,7 @@ public class ProposalDaoImpl implements ProposalDao {
 
         this.addFindByGivenConditions(contestId, true, contestPhaseId, ribbon, query);
         if (proposalIds != null) {
-            query.addConditions(PROPOSAL.PROPOSAL_ID.in(proposalIds));
+            query.addConditions(PROPOSAL.ID.in(proposalIds));
         }
         return query.fetchInto(Long.class);
     }
@@ -230,7 +230,7 @@ public class ProposalDaoImpl implements ProposalDao {
         final SelectQuery<Record> query =
                 dslContext.selectDistinct(PROPOSAL.fields()).from(PROPOSAL).getQuery();
 
-        query.addJoin(POINTS, PROPOSAL.PROPOSAL_ID.eq(POINTS.ORIGINATING_PROPOSAL_ID));
+        query.addJoin(POINTS, PROPOSAL.ID.eq(POINTS.ORIGINATING_PROPOSAL_ID));
         query.addConditions(POINTS.ORIGINATING_PROPOSAL_ID.notEqual(POINTS.PROPOSAL_ID));
         query.addConditions(POINTS.PROPOSAL_ID.eq(proposalId));
         return query.fetchInto(Proposal.class);
@@ -240,16 +240,16 @@ public class ProposalDaoImpl implements ProposalDao {
     public Proposal create(Proposal proposal) {
 
         ProposalRecord ret = this.dslContext.insertInto(PROPOSAL)
-                .set(PROPOSAL.CREATE_DATE, DSL.currentTimestamp())
-                .set(PROPOSAL.UPDATED_DATE, DSL.currentTimestamp())
-                .set(PROPOSAL.AUTHOR_ID, proposal.getauthorUserid())
+                .set(PROPOSAL.CREATED_AT, DSL.currentTimestamp())
+                .set(PROPOSAL.UPDATED_AT, DSL.currentTimestamp())
+                .set(PROPOSAL.AUTHOR_ID, proposal.getAuthorId())
                 .set(PROPOSAL.VISIBLE, proposal.getVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
                 .set(PROPOSAL.RESULTS_DISCUSSION_ID, proposal.getResultsDiscussionId())
-                .returning(PROPOSAL.PROPOSAL_ID)
+                .returning(PROPOSAL.ID)
                 .fetchOne();
         if (ret != null) {
-            proposal.setProposalId(ret.getValue(PROPOSAL.PROPOSAL_ID));
+            proposal.setId(ret.getValue(PROPOSAL.ID));
             return proposal;
         } else {
             return null;
@@ -267,7 +267,7 @@ public class ProposalDaoImpl implements ProposalDao {
     @Override
     public Optional<Proposal> getOpt(long proposalId) {
         final Record record =
-                this.dslContext.selectFrom(PROPOSAL).where(PROPOSAL.PROPOSAL_ID.eq(proposalId))
+                this.dslContext.selectFrom(PROPOSAL).where(PROPOSAL.ID.eq(proposalId))
                         .fetchOne();
 
         if (record == null) {
@@ -279,19 +279,19 @@ public class ProposalDaoImpl implements ProposalDao {
     @Override
     public boolean exists(long proposalId) {
         return dslContext.fetchExists(DSL.selectFrom(PROPOSAL)
-                .where(PROPOSAL.PROPOSAL_ID.eq(proposalId)));
+                .where(PROPOSAL.ID.eq(proposalId)));
     }
 
     @Override
     public boolean update(Proposal proposal) {
 
         return dslContext.update(PROPOSAL)
-                .set(PROPOSAL.UPDATED_DATE, DSL.currentTimestamp())
-                .set(PROPOSAL.AUTHOR_ID, proposal.getauthorUserid())
+                .set(PROPOSAL.UPDATED_AT, DSL.currentTimestamp())
+                .set(PROPOSAL.AUTHOR_ID, proposal.getAuthorId())
                 .set(PROPOSAL.VISIBLE, proposal.getVisible())
                 .set(PROPOSAL.DISCUSSION_ID, proposal.getDiscussionId())
                 .set(PROPOSAL.RESULTS_DISCUSSION_ID, proposal.getResultsDiscussionId())
-                .where(PROPOSAL.PROPOSAL_ID.eq(proposal.getProposalId())).execute() > 0;
+                .where(PROPOSAL.ID.eq(proposal.getId())).execute() > 0;
     }
 
     @Override
@@ -306,7 +306,7 @@ public class ProposalDaoImpl implements ProposalDao {
             Boolean contestPrivate) {
         final SelectQuery<Record> query = dslContext.selectDistinct(PROPOSAL.fields())
                         .from(PROPOSAL)
-                        .where(PROPOSAL.PROPOSAL_ID.in(proposalIds))
+                        .where(PROPOSAL.ID.in(proposalIds))
                         .getQuery();
 
         final boolean requiresContest = contestPrivate != null;

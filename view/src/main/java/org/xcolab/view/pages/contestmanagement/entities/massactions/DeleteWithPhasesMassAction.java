@@ -23,7 +23,7 @@ public class DeleteWithPhasesMassAction extends AbstractContestMassAction {
         }
 
         for (Contest contest : contests) {
-            Long contestId = contest.getContestPK();
+            Long contestId = contest.getId();
             ContestClientUtil.deleteContest(contestId);
         }
     }

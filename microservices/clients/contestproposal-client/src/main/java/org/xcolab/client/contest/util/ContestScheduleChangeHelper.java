@@ -54,8 +54,8 @@ public class ContestScheduleChangeHelper {
                 if (!newPhase.isAlreadyStarted()) {
                     return false;
                 }
-                boolean arePhaseTypesEqual = newPhase.getContestPhaseType().longValue()
-                                == oldPhase.getContestPhaseType();
+                boolean arePhaseTypesEqual = newPhase.getContestPhaseTypeId().longValue()
+                                == oldPhase.getContestPhaseTypeId();
                 if (!arePhaseTypesEqual) {
                     return false;
                 }
@@ -78,8 +78,8 @@ public class ContestScheduleChangeHelper {
             final SchedulePhase activeCurrentPhase = activeCurrentPhaseOpt.get();
             final SchedulePhase activeNewPhase = activeNewPhaseOpt.get();
 
-            final boolean typesMatch = activeCurrentPhase.getContestPhaseType().longValue()
-                    == activeNewPhase.getContestPhaseType();
+            final boolean typesMatch = activeCurrentPhase.getContestPhaseTypeId().longValue()
+                    == activeNewPhase.getContestPhaseTypeId();
             final boolean positionsMatch = activeCurrentPhase.getPosition()
                     == activeNewPhase.getPosition();
             return typesMatch && positionsMatch;
@@ -105,7 +105,7 @@ public class ContestScheduleChangeHelper {
     private void removeFutureContestPhases() {
         for (ContestPhase contestPhase : existingPhases) {
             if (!contestPhase.isAlreadyStarted()) {
-                ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
+                ContestClientUtil.deleteContestPhase(contestPhase.getId());
             }
         }
     }
@@ -126,8 +126,8 @@ public class ContestScheduleChangeHelper {
     private void updateStartedContestPhaseWithTemplate(SchedulePhase contestPhase,
             SchedulePhase templatePhase) {
 
-        final boolean isDifferentContestType = contestPhase.getContestPhaseType().longValue()
-                != templatePhase.getContestPhaseType();
+        final boolean isDifferentContestType = contestPhase.getContestPhaseTypeId().longValue()
+                != templatePhase.getContestPhaseTypeId();
         if (isDifferentContestType) {
             throw new PhaseTypeMismatchScheduleChangeException();
         }
@@ -145,8 +145,8 @@ public class ContestScheduleChangeHelper {
         }
 
         contestPhase.setContestScheduleId(templatePhase.getContestScheduleId());
-        contestPhase.setCreated(new Timestamp(new Date().getTime()));
-        contestPhase.setUpdated(new Timestamp(new Date().getTime()));
+        contestPhase.setCreatedAt(new Timestamp(new Date().getTime()));
+        contestPhase.setUpdatedAt(new Timestamp(new Date().getTime()));
 
         ContestClientUtil.updateContestPhase(contestPhase);
     }
@@ -168,7 +168,7 @@ public class ContestScheduleChangeHelper {
             ContestPhase contestSchedulePhase, Long contestId) {
 
         ContestPhase newContestPhase = ContestPhase.clone(contestSchedulePhase);
-        newContestPhase.setContestPK(contestId);
+        newContestPhase.setContestId(contestId);
         ContestClientUtil.createContestPhase(newContestPhase);
     }
 
@@ -184,7 +184,7 @@ public class ContestScheduleChangeHelper {
 
         List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
         for (ContestPhase contestPhase : contestPhases) {
-            ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
+            ContestClientUtil.deleteContestPhase(contestPhase.getId());
         }
     }
 

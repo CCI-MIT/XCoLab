@@ -6,37 +6,19 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
-import java.sql.Timestamp;
-
-public class MembershipRequest extends AbstractMembershipRequest {
+public class ProposalTeamMembershipRequest extends AbstractProposalTeamMembershipRequest {
 
     private Member requestUser;
 
-    public MembershipRequest() {
+    public ProposalTeamMembershipRequest() {
     }
 
-    public MembershipRequest(MembershipRequest value) {
+    public ProposalTeamMembershipRequest(ProposalTeamMembershipRequest value) {
         super(value);
     }
 
-    public MembershipRequest(
-            Long membershiprequestid,
-            Long companyid,
-            Long userid,
-            Timestamp createdAt,
-            Long groupid,
-            String comments,
-            String replycomments,
-            Timestamp replydate,
-            Long replieruserid,
-            Integer statusid
-    ) {
-        super(membershiprequestid, companyid, userid, createdAt, groupid, comments, replycomments,
-                replydate, replieruserid, statusid);
-
-    }
-
-    public MembershipRequest(AbstractMembershipRequest abstractMembershipRequest,
+    public ProposalTeamMembershipRequest(
+            AbstractProposalTeamMembershipRequest abstractMembershipRequest,
             ServiceNamespace serviceNamespace) {
         super(abstractMembershipRequest);
 
@@ -50,8 +32,8 @@ public class MembershipRequest extends AbstractMembershipRequest {
                 } catch (MemberNotFoundException e) {
                     throw ReferenceResolutionException
                             .toObject(Member.class, this.getUserId())
-                            .fromObject(MembershipRequest.class,
-                                    this.getMembershipRequestId());
+                            .fromObject(ProposalTeamMembershipRequest.class,
+                                    this.getId());
                 }
             }else{
                 requestUser = null;
@@ -61,7 +43,7 @@ public class MembershipRequest extends AbstractMembershipRequest {
         return requestUser;
     }
 
-    public MembershipRequest getMembershipRequest(){
+    public ProposalTeamMembershipRequest getMembershipRequest(){
         return this;
     }
 }

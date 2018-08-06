@@ -13,21 +13,22 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class PlanTemplateSectionDto extends AbstractPlanTemplateSection
-        implements DataTransferObject<PlanTemplateSection> {
+public class ProposalTemplateDto extends AbstractProposalTemplate
+        implements DataTransferObject<ProposalTemplate> {
 
-    public static final TypeProvider<PlanTemplateSectionDto> TYPES = new TypeProvider<>(PlanTemplateSectionDto.class,
-            new ParameterizedTypeReference<List<PlanTemplateSectionDto>>() {
+    public static final TypeProvider<ProposalTemplateDto> TYPES = new TypeProvider<>(
+            ProposalTemplateDto.class,
+            new ParameterizedTypeReference<List<ProposalTemplateDto>>() {
             });
 
-    public PlanTemplateSectionDto() {}
+    public ProposalTemplateDto() {}
 
-    public PlanTemplateSectionDto(AbstractPlanTemplateSection value) {
+    public ProposalTemplateDto(AbstractProposalTemplate value) {
         super(value);
     }
 
     @Override
-    public PlanTemplateSection toPojo(ServiceNamespace serviceNamespace) {
-        return new PlanTemplateSection(this, serviceNamespace);
+    public ProposalTemplate toPojo(ServiceNamespace serviceNamespace) {
+        return new ProposalTemplate(this, serviceNamespace);
     }
 }

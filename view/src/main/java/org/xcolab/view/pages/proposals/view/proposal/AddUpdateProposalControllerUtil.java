@@ -75,22 +75,22 @@ public final class AddUpdateProposalControllerUtil {
 
             final List<ActivitySubscription> activitySubscriptions = activitiesClient
                     .getActivitySubscriptions(ActivityCategory.CONTEST,
-                            contest.getContestPK(), null);
+                            contest.getId(), null);
             for (ActivitySubscription activitySubscription : activitySubscriptions) {
                 final Long receiverId = activitySubscription.getReceiverUserId();
                 activitiesClient.addSubscription(receiverId, ActivityCategory.PROPOSAL,
-                        proposal.getProposalId(), "");
+                        proposal.getId(), "");
 
             }
 
             activitiesClient.createActivityEntry(ContestActivityType.PROPOSAL_CREATED, userId,
-                    contest.getContestPK(), proposal.getProposalId());
+                    contest.getId(), proposal.getId());
 
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_CREATION);
 
         } else {
             activitiesClient.createActivityEntry(ProposalActivityType.UPDATED, userId,
-                    proposal.getProposalId());
+                    proposal.getId());
         }
 
         return "redirect:" + proposal.getProposalLinkUrl(contest);

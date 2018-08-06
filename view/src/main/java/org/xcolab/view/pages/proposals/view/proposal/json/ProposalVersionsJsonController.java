@@ -73,7 +73,7 @@ public class ProposalVersionsJsonController {
 
         ClientHelper clientHelper = new ClientHelper();
         int index = clientHelper.getProposalClient()
-                .countProposalVersionsGroupedVersionsByContest(proposalId, c.getContestPK());
+                .countProposalVersionsGroupedVersionsByContest(proposalId, c.getId());
 
         final JsonObject json = Json.createObjectBuilder()
                 .add("count", index).build();
@@ -98,7 +98,7 @@ public class ProposalVersionsJsonController {
 
         final JsonArrayBuilder proposalVersionsArray = Json.createArrayBuilder();
         int counter = 0;
-        for(ProposalVersion proposalVersion: clientHelper.getProposalClient().getProposalVersionsGroupedVersionsByContest(proposalId,contest.getContestPK(),start, end)){
+        for(ProposalVersion proposalVersion: clientHelper.getProposalClient().getProposalVersionsGroupedVersionsByContest(proposalId,contest.getId(),start, end)){
 
                 long cphId = proposalVersion.getContestPhaseId();
                 final ContestPhase contestPhase = contestClient.getContestPhase(cphId);
@@ -112,7 +112,7 @@ public class ProposalVersionsJsonController {
                                 .add("fullName", author.getFullName()))
                         .add("updateType", proposalVersion.getUpdateType())
                         .add("contestPhase", Json.createObjectBuilder()
-                                .add("id", contestPhase.getContestPhasePK())
+                                .add("id", contestPhase.getId())
                                 .add("name", contestPhase.getName())));
 
                 counter++;

@@ -38,14 +38,14 @@ public class CollectionCardService {
             collectionCards.add(contestCollectionCardDao.get(collectionCardId).getId());
             List<Long> contestList = new ArrayList<>();
             while(!collectionCards.isEmpty()) {
-                for(Contest contest: serviceNamespace.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load(), getActive, false)) {
-                    if(!contestList.contains(contest.getContestPK())) {
-                        if(     (!onlyFeatured || contest.getFeatured_())                                   &&
-                                (   (viewType.equals(VIEW_TYPE_GRID) && contest.getShow_in_tile_view())     ||
-                                    (viewType.equals(VIEW_TYPE_LIST) && contest.getShow_in_list_view())     ||
-                                    (viewType.equals(VIEW_TYPE_OUTLINE) && contest.getShow_in_outline_view())
+                for(Contest contest: serviceNamespace.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntologyTermToLoad(), getActive, false)) {
+                    if(!contestList.contains(contest.getId())) {
+                        if(     (!onlyFeatured || contest.getFeatured())                                   &&
+                                (   (viewType.equals(VIEW_TYPE_GRID) && contest.getShowInTileView())     ||
+                                    (viewType.equals(VIEW_TYPE_LIST) && contest.getShowInListView())     ||
+                                    (viewType.equals(VIEW_TYPE_OUTLINE) && contest.getShowInOutlineView())
                                 )){
-                            contestList.add(contest.getContestPK());
+                            contestList.add(contest.getId());
                         }
                     }
                 }

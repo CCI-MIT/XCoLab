@@ -107,7 +107,7 @@ public class OntologyClient {
         FocusAreaOntologyTermDto faot = new FocusAreaOntologyTermDto();
         faot.setFocusAreaId(focusAreaId);
         faot.setOntologyTermId(ontologyTermId);
-        faot.setOrder_((int) new Date().getTime());
+        faot.setSortOrder((int) new Date().getTime());
         focusAreaOntologyTermResource.create(faot).execute();
 
     }

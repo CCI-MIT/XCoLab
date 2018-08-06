@@ -12,7 +12,7 @@
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 
-	<c:set var="updateContestOntologyURL" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/ONTOLOGY/update" />
+	<c:set var="updateContestOntologyURL" value="/admin/contest/details/contestId/${contestWrapper.id}/tab/ONTOLOGY/update" />
 
 	<div class="c-ContentBox">
 

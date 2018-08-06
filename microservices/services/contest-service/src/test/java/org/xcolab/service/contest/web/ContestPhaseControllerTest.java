@@ -109,9 +109,9 @@ public class ContestPhaseControllerTest {
     public void shouldUpdateContestPhase() throws Exception {
 
         AbstractContestPhase contestPhase = new AbstractContestPhase(){};
-        contestPhase.setContestPhasePK(123L);
+        contestPhase.setId(123L);
 
-        this.mockMvc.perform(put("/contestPhases/" + contestPhase.getContestPhasePK()).contentType(contentType)
+        this.mockMvc.perform(put("/contestPhases/" + contestPhase.getId()).contentType(contentType)
                 .accept(contentType).content(objectMapper.writeValueAsString(contestPhase)))
                 .andExpect(status().isOk());
 

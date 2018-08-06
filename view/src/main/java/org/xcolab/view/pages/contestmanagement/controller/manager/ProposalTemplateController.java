@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.PlanTemplateClientUtil;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.controller.AbstractProposalTemplateTabController;
@@ -72,7 +72,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     private Long getFirstPlanTemplateId() {
 
-        final List<PlanTemplate> planTemplates = PlanTemplateClientUtil
+        final List<ProposalTemplate> planTemplates = ProposalTemplateClientUtil
                 .getPlanTemplates();
         if (!planTemplates.isEmpty()) {
             return planTemplates.get(0).getId();
@@ -90,7 +90,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        PlanTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
+        ProposalTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
         return "redirect:" + tab.getTabUrl(newTemplate.getId());
     }
 

@@ -14,9 +14,9 @@ public class ProposalContestPhaseAttributeHelper {
     private List<ProposalContestPhaseAttribute> proposalContestPhaseAttributes;
 
     public ProposalContestPhaseAttributeHelper(Proposal proposal, ContestPhase contestPhase) {
-        this.proposalId = proposal.getProposalId();
+        this.proposalId = proposal.getId();
         if (contestPhase != null) {
-            this.contestPhasePK = contestPhase.getContestPhasePK();
+            this.contestPhasePK = contestPhase.getId();
                 proposalContestPhaseAttributes = ProposalPhaseClientUtil
                         .getAllProposalContestPhaseProposalAttributes(contestPhasePK, proposalId);
         }

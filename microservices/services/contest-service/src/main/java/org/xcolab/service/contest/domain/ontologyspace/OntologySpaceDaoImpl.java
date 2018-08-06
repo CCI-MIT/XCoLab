@@ -31,7 +31,7 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
                 .set(ONTOLOGY_SPACE.ID, ontologySpace.getId())
                 .set(ONTOLOGY_SPACE.NAME, ontologySpace.getName())
                 .set(ONTOLOGY_SPACE.DESCRIPTION, ontologySpace.getDescription())
-                .set(ONTOLOGY_SPACE.ORDER_, ontologySpace.getOrder_())
+                .set(ONTOLOGY_SPACE.SORT_ORDER, ontologySpace.getSortOrder())
                 .returning(ONTOLOGY_SPACE.ID)
                 .fetchOne();
         if (ret != null) {
@@ -63,7 +63,7 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
                 .set(ONTOLOGY_SPACE.ID, ontologySpace.getId())
                 .set(ONTOLOGY_SPACE.NAME, ontologySpace.getName())
                 .set(ONTOLOGY_SPACE.DESCRIPTION, ontologySpace.getDescription())
-                .set(ONTOLOGY_SPACE.ORDER_, ontologySpace.getOrder_())
+                .set(ONTOLOGY_SPACE.SORT_ORDER, ontologySpace.getSortOrder())
                 .where(ONTOLOGY_SPACE.ID.eq(ontologySpace.getId()))
                 .execute() > 0;
     }

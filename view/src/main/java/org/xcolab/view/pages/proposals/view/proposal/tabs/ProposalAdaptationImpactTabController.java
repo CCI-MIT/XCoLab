@@ -43,7 +43,7 @@ public class ProposalAdaptationImpactTabController extends BaseProposalTabContro
 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalAttributeClient attributeClient = clients.getProposalAttributeClient();
-        final Long proposalId = proposalContext.getProposal().getProposalId();
+        final Long proposalId = proposalContext.getProposal().getId();
 
         setCommonModelAndPageAttributes(request, model, proposalContext,
                 ProposalTab.ADAPTATION_IMPACT);

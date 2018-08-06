@@ -32,7 +32,7 @@ public class ProposalMoveHistoryDaoImpl implements ProposalMoveHistoryDao {
                 .set(PROPOSAL_MOVE_HISTORY.TARGET_CONTEST_ID, proposalMoveHistory.getTargetContestId())
                 .set(PROPOSAL_MOVE_HISTORY.TARGET_PHASE_ID, proposalMoveHistory.getTargetPhaseId())
                 .set(PROPOSAL_MOVE_HISTORY.MOVING_USER_ID, proposalMoveHistory.getMovingUserId())
-                .set(PROPOSAL_MOVE_HISTORY.MOVE_DATE, proposalMoveHistory.getMoveDate())
+                .set(PROPOSAL_MOVE_HISTORY.MOVED_AT, proposalMoveHistory.getMovedAt())
                 .set(PROPOSAL_MOVE_HISTORY.MOVE_TYPE, proposalMoveHistory.getMoveType())
                 .returning(PROPOSAL_MOVE_HISTORY.ID)
                 .fetchOne();

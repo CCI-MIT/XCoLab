@@ -18,6 +18,6 @@ public final class EntityGroupingUtil {
 
     public static Map<ContestType, Set<Proposal>> groupByContestType(List<Proposal> proposals) {
         return new GroupingHelper<>(proposals).groupWithDuplicateValues(proposal -> ProposalClientUtil
-                .getLatestContestInProposal(proposal.getProposalId()).getContestType());
+                .getLatestContestInProposal(proposal.getId()).getContestType());
     }
 }

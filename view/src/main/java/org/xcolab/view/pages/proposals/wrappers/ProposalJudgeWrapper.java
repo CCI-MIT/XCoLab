@@ -20,14 +20,14 @@ public class ProposalJudgeWrapper extends Proposal {
     public ProposalJudgeWrapper(Proposal proposal, Member currentMember) {
         super(proposal, proposal.getContestPhase());
         this.currentMember = currentMember;
-        setProposalRatings(proposal.getProposalId(), contestPhase);
+        setProposalRatings(proposal.getId(), contestPhase);
     }
 
     public ProposalJudgeWrapper(Proposal proposal, int version, Contest contest,
             ContestPhase contestPhase, Proposal2Phase proposal2Phase, Member currentMember) {
         super(proposal, version, contest, contestPhase, proposal2Phase);
         this.currentMember = currentMember;
-        setProposalRatings(proposal.getProposalId(), contestPhase);
+        setProposalRatings(proposal.getId(), contestPhase);
     }
 
     private void setProposalRatings(long proposalId, ContestPhase contestPhase) {
@@ -37,7 +37,7 @@ public class ProposalJudgeWrapper extends Proposal {
                     .getJudgeRatingsForProposalAndUser(
                             currentMember.getUserId(),
                             proposalId,
-                            contestPhase.getContestPhasePK());
+                            contestPhase.getId());
             this.proposalRatings = new ProposalRatings(currentMember, list);
         }
 

@@ -56,7 +56,7 @@ public class SectionFocusAreaFilter {
                 }
             }
             proposals.removeIf(proposal -> !contests.contains(
-                    ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId())));
+                    ProposalClientUtil.getCurrentContestForProposal(proposal.getId())));
         }
     }
 
@@ -98,7 +98,7 @@ public class SectionFocusAreaFilter {
 
         for (Iterator<Contest> i = contests.iterator(); i.hasNext(); ) {
             Contest contest = i.next();
-            if (filterExceptionContestIds.contains(contest.getContestPK())) {
+            if (filterExceptionContestIds.contains(contest.getId())) {
                 continue;
             }
             if (contest.getHasFocusArea()) {

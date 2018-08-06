@@ -10,16 +10,13 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.UsersGroupsClientUtil;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.Proposal;
@@ -73,14 +70,14 @@ public class ProposalService {
         try {
             Proposal proposal = new Proposal();
             proposal.setVisible(true);
-            proposal.setauthorUserid(authorUserid);
+            proposal.setAuthorId(authorUserid);
 
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-            final Contest contest = ContestClientUtil.getContest(contestPhase.getContestPK());
+            final Contest contest = ContestClientUtil.getContest(contestPhase.getContestId());
             ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
 
             proposal = proposalDao.create(proposal);
-            Long proposalId = proposal.getProposalId();
+            Long proposalId = proposal.getId();
             // create discussions
             final String proposalEntityName = contestType.getProposalName() + " ";
 
@@ -175,7 +172,7 @@ public class ProposalService {
             try {
                 if (onlyWithContestIntegrationRelevance) {
                     ProposalAttribute attribute = proposalAttributeDao.get(proposalReference.getSectionAttributeId());
-                    PlanSectionDefinition psd = PlanTemplateClientUtil.getPlanSectionDefinition(attribute.getAdditionalId());
+                    ProposalTemplateSectionDefinition psd = ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(attribute.getAdditionalId());
                     if (!psd.getContestIntegrationRelevance()) {
                         continue;
                     }
@@ -189,7 +186,7 @@ public class ProposalService {
                             continue;
                         }
                     }
-                    if (p.getProposalId() != proposalId) {
+                    if (p.getId() != proposalId) {
                         proposals.add(p);
                     }
                 }
@@ -224,7 +221,7 @@ public class ProposalService {
         try {
             Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-            return contestPhase.getContestPK();
+            return contestPhase.getContestId();
         } catch (NotFoundException e) {
             return null;
         }
@@ -244,7 +241,7 @@ public class ProposalService {
     public List<Member> getProposalMembers(Long proposalId) throws ProposalNotFoundException {
         final List<Member> members = proposalTeamMemberDao.findByProposalId(proposalId).stream()
                 .map(ProposalTeamMember::getUserId)
-                .map(userId -> MembersClient.getMember(userId))
+                .map(MembersClient::getMemberUnchecked)
                 .collect(Collectors.toList());
         if (members.isEmpty()) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found");
@@ -262,7 +259,7 @@ public class ProposalService {
     public void promoteMemberToProposalOwner(Long proposalId, Long userId) throws ProposalNotFoundException {
         try {
             Proposal proposal = proposalDao.get(proposalId);
-            proposal.setauthorUserid(userId);
+            proposal.setAuthorId(userId);
             proposalDao.update(proposal);
         } catch (NotFoundException ignored) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");

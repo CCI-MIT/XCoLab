@@ -5,18 +5,18 @@ import java.util.Objects;
 
 public abstract class AbstractContest {
 
-    private Long contestpk;
+    private Long id;
     private Long contesttypeid;
-    private String contestname;
-    private String contestshortname;
+    private String title;
+    private String question;
+    private String description;
     private String contesturlname;
     private Long contestyear;
-    private String contestdescription;
     private String contestmodeldescription;
     private String contestpositionsdescription;
     private Timestamp created;
     private Timestamp updated;
-    private Long authorUserid;
+    private Long authorUserId;
     private Boolean contestactive;
     private Long plantemplateid;
     private Long contestscheduleid;
@@ -59,18 +59,18 @@ public abstract class AbstractContest {
     public AbstractContest() {}
 
     public AbstractContest(AbstractContest value) {
-        this.contestpk = value.contestpk;
+        this.id = value.id;
         this.contesttypeid = value.contesttypeid;
-        this.contestname = value.contestname;
-        this.contestshortname = value.contestshortname;
+        this.question = value.question;
+        this.title = value.title;
         this.contesturlname = value.contesturlname;
         this.contestyear = value.contestyear;
-        this.contestdescription = value.contestdescription;
+        this.description = value.description;
         this.contestmodeldescription = value.contestmodeldescription;
         this.contestpositionsdescription = value.contestpositionsdescription;
         this.created = value.created;
         this.updated = value.updated;
-        this.authorUserid = value.authorUserid;
+        this.authorUserId = value.authorUserId;
         this.contestactive = value.contestactive;
         this.plantemplateid = value.plantemplateid;
         this.contestscheduleid = value.contestscheduleid;
@@ -111,10 +111,10 @@ public abstract class AbstractContest {
         this.resourcearticleid = value.resourcearticleid;
     }
 
-    public AbstractContest(Long contestpk, Long contesttypeid, String contestname,
-            String contestshortname, String contesturlname, Long contestyear,
-            String contestdescription, String contestmodeldescription,
-            String contestpositionsdescription, Timestamp created, Timestamp updated, Long authorUserid,
+    public AbstractContest(Long id, Long contesttypeid, String question,
+            String title, String contesturlname, Long contestyear,
+            String description, String contestmodeldescription,
+            String contestpositionsdescription, Timestamp created, Timestamp updated, Long authorUserId,
             Boolean contestactive, Long plantemplateid, Long contestscheduleid,
             String proposalcreationtemplatestring, String votetemplatestring,
             String proposalvotetemplatestring, String proposalvoteconfirmationtemplatestring,
@@ -127,18 +127,18 @@ public abstract class AbstractContest {
             Long defaultparentpointtype, String pointdistributionstrategy, String emailtemplateurl,
             Boolean showInTileView, Boolean showInListView, Boolean showInOutlineView,
             Boolean hideribbons, Long resourcearticleid) {
-        this.contestpk = contestpk;
+        this.id = id;
         this.contesttypeid = contesttypeid;
-        this.contestname = contestname;
-        this.contestshortname = contestshortname;
+        this.question = question;
+        this.title = title;
         this.contesturlname = contesturlname;
         this.contestyear = contestyear;
-        this.contestdescription = contestdescription;
+        this.description = description;
         this.contestmodeldescription = contestmodeldescription;
         this.contestpositionsdescription = contestpositionsdescription;
         this.created = created;
         this.updated = updated;
-        this.authorUserid = authorUserid;
+        this.authorUserId = authorUserId;
         this.contestactive = contestactive;
         this.plantemplateid = plantemplateid;
         this.contestscheduleid = contestscheduleid;
@@ -178,12 +178,12 @@ public abstract class AbstractContest {
         this.resourcearticleid = resourcearticleid;
     }
 
-    public Long getContestPK() {
-        return this.contestpk;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setContestPK(Long contestpk) {
-        this.contestpk = contestpk;
+    public void setId(Long contestpk) {
+        this.id = contestpk;
     }
 
     public Long getContestTypeId() {
@@ -194,20 +194,28 @@ public abstract class AbstractContest {
         this.contesttypeid = contesttypeid;
     }
 
-    public String getContestName() {
-        return this.contestname;
+    public String getContestTitle() {
+        return this.title;
     }
 
-    public void setContestName(String contestname) {
-        this.contestname = contestname;
+    public void setContestTitle(String contestTitle) {
+        this.title = contestTitle;
     }
 
-    public String getContestShortName() {
-        return this.contestshortname;
+    public String getContestQuestion() {
+        return this.question;
     }
 
-    public void setContestShortName(String contestshortname) {
-        this.contestshortname = contestshortname;
+    public void setContestQuestion(String contestname) {
+        this.question = contestname;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getContestUrlName() {
@@ -226,14 +234,6 @@ public abstract class AbstractContest {
         this.contestyear = contestyear;
     }
 
-    public String getContestDescription() {
-        return this.contestdescription;
-    }
-
-    public void setContestDescription(String contestdescription) {
-        this.contestdescription = contestdescription;
-    }
-
     public String getContestModelDescription() {
         return this.contestmodeldescription;
     }
@@ -250,12 +250,12 @@ public abstract class AbstractContest {
         this.contestpositionsdescription = contestpositionsdescription;
     }
 
-    public Long getauthorUserid() {
-        return this.authorUserid;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setauthorUserid(Long authorUserid) {
-        this.authorUserid = authorUserid;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
     public Boolean getContestActive() {
@@ -581,9 +581,9 @@ public abstract class AbstractContest {
 
     @Override
     public int hashCode() {
-        return Objects.hash(contestpk, contesttypeid, contestname, contestshortname, contesturlname,
-                contestyear, contestdescription, contestmodeldescription,
-                contestpositionsdescription, getCreated(), getUpdated(), authorUserid, contestactive,
+        return Objects.hash(id, contesttypeid, question, title, contesturlname,
+                contestyear, description, contestmodeldescription,
+                contestpositionsdescription, getCreated(), getUpdated(), authorUserId, contestactive,
                 plantemplateid, contestscheduleid, proposalcreationtemplatestring,
                 votetemplatestring, proposalvotetemplatestring,
                 proposalvoteconfirmationtemplatestring, votequestiontemplatestring, focusareaid,
@@ -605,17 +605,18 @@ public abstract class AbstractContest {
             return false;
         }
         AbstractContest that = (AbstractContest) o;
-        return Objects.equals(contestpk, that.contestpk) && Objects
+        return Objects.equals(id, that.id) && Objects
                 .equals(contesttypeid, that.contesttypeid) && Objects
-                .equals(contestname, that.contestname) && Objects
-                .equals(contestshortname, that.contestshortname) && Objects
+                .equals(question, that.question) && Objects
+                .equals(title, that.title) && Objects
                 .equals(contesturlname, that.contesturlname) && Objects
                 .equals(contestyear, that.contestyear) && Objects
-                .equals(contestdescription, that.contestdescription) && Objects
+                .equals(description, that.description) && Objects
                 .equals(contestmodeldescription, that.contestmodeldescription) && Objects
                 .equals(contestpositionsdescription, that.contestpositionsdescription) && Objects
                 .equals(getCreated(), that.getCreated()) && Objects
-                .equals(getUpdated(), that.getUpdated()) && Objects.equals(authorUserid, that.authorUserid)
+                .equals(getUpdated(), that.getUpdated()) && Objects.equals(
+                authorUserId, that.authorUserId)
                 && Objects.equals(contestactive, that.contestactive) && Objects
                 .equals(plantemplateid, that.plantemplateid) && Objects
                 .equals(contestscheduleid, that.contestscheduleid) && Objects
@@ -659,10 +660,10 @@ public abstract class AbstractContest {
     @Override
     public String toString() {
 
-        return "Contest (" + contestpk + ", " + contesttypeid + ", " + contestname + ", "
-                + contestshortname + ", " + contesturlname + ", " + contestyear + ", "
-                + contestdescription + ", " + contestmodeldescription + ", "
-                + contestpositionsdescription + ", " + created + ", " + updated + ", " + authorUserid
+        return "Contest (" + id + ", " + contesttypeid + ", " + question + ", "
+                + title + ", " + contesturlname + ", " + contestyear + ", "
+                + description + ", " + contestmodeldescription + ", "
+                + contestpositionsdescription + ", " + created + ", " + updated + ", " + authorUserId
                 + ", " + contestactive + ", " + plantemplateid + ", " + contestscheduleid + ", "
                 + proposalcreationtemplatestring + ", " + votetemplatestring + ", "
                 + proposalvotetemplatestring + ", " + proposalvoteconfirmationtemplatestring + ", "

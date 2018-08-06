@@ -17,7 +17,7 @@ public class InvalidProposalUrlException extends InvalidAccessException {
         String msg = "ProposalId " + proposalId + " not found in contest "
                 + contest.getContestUrlName();
         if (contestPhase != null) {
-            msg += String.format(" in contest phase %d (%s)", contestPhase.getContestPhasePK(),
+            msg += String.format(" in contest phase %d (%s)", contestPhase.getId(),
                     contestPhase.getContestPhaseTypeObject().getName());
         }
         return msg;

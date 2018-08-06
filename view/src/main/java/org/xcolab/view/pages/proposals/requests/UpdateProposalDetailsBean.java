@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.requests;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.proposal.MoveType;
 
@@ -40,7 +40,7 @@ public class UpdateProposalDetailsBean {
 
 
     public UpdateProposalDetailsBean(Proposal proposal) {
-        for (PlanSectionDefinition section : proposal.getSections()) {
+        for (ProposalTemplateSectionDefinition section : proposal.getSections()) {
             sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
         }
         pitch = proposal.getPitch();
@@ -51,7 +51,7 @@ public class UpdateProposalDetailsBean {
     }
     
     public UpdateProposalDetailsBean(Proposal proposal, Proposal baseProposal) {
-        for (PlanSectionDefinition section : baseProposal.getSections()) {
+        for (ProposalTemplateSectionDefinition section : baseProposal.getSections()) {
             sectionsContent.put(section.getSectionDefinitionId(), section.getContent());
         }
         pitch = baseProposal.getPitch();
@@ -59,7 +59,7 @@ public class UpdateProposalDetailsBean {
         team = baseProposal.getTeam();
         imageId = baseProposal.getImageId();
         description = baseProposal.getDescription();
-        baseProposalId = baseProposal.getProposalId();
+        baseProposalId = baseProposal.getId();
         baseProposalContestId = baseProposal.getContestPK();
     }
     

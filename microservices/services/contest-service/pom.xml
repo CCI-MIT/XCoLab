@@ -16,6 +16,7 @@
 
     <dependencies>
 
+        <!-- TODO: this should really not be a (circular) dependency! -->
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>contestproposal-client</artifactId>
@@ -72,29 +73,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>
-                                xcolab_ContestDiscussion | xcolab_PlanSectionDefinition
-                                | xcolab_PlanTemplateSection | xcolab_PlanTemplate
-                                | xcolab_ImpactDefaultSeriesData | xcolab_ImpactTemplateMaxFocusArea
-                                | xcolab_ImpactTemplateFocusAreaList | xcolab_ImpactDefaultSeries
-                                | xcolab_ImpactTemplateSeries | xcolab_ImpactIteration
-                                | xcolab_Contest | xcolab_ContestTranslation
-                                | xcolab_ContestTeamMemberRole | xcolab_ContestPhase
-                                | xcolab_ContestPhaseType | xcolab_ContestPhaseRibbonType
-                                | xcolab_ContestSchedule | xcolab_ContestTeamMember
-                                | xcolab_ContestType | xcolab_OntologyTerm | xcolab_OntologySpace
-                                | xcolab_FocusAreaOntologyTerm | xcolab_FocusArea
-                                | xcolab_ContestCollectionCard | Group_ | xcolab_ProposalMoveHistory
-                                | xcolab_ProposalUnversionedAttribute | xcolab_Proposal
-                                | xcolab_Proposal2Phase | xcolab_ProposalAttribute
-                                | xcolab_ProposalRating | xcolab_ProposalVote
-                                | xcolab_ProposalSupporter | xcolab_ProposalVersion
-                                | xcolab_ProposalContestPhaseAttribute | xcolab_ProposalMoveHistory
-                                | xcolab_OntologySpace | xcolab_Points
-                                | MembershipRequest | xcolab_PointType
-                                | xcolab_ProposalReference | xcolab_ProposalRatingValue
-                                | xcolab_ProposalRatingType | xcolab_PointsDistributionConfiguration
-                            </includes>
+                            <includes>contest__.+</includes>
                         </database>
                     </generator>
                 </configuration>

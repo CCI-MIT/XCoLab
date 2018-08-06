@@ -86,8 +86,8 @@ public class VoteOnProposalActionController {
         }
 
         boolean hasVoted = false;
-        long proposalId = proposal.getProposalId();
-        long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
+        long proposalId = proposal.getId();
+        long contestPhaseId = proposalContext.getContestPhase().getId();
         long userId = member.getUserId();
         ActivityType activitySubType = null;
         if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, userId)) {
@@ -210,7 +210,7 @@ public class VoteOnProposalActionController {
                 clients.getProposalMemberRatingClient();
 
         ProposalVote vote = proposalMemberRatingClient.getProposalVoteByProposalIdUserId(
-                        proposal.getProposalId(), userId);
+                        proposal.getId(), userId);
 
         if (vote != null && isValidToken(confirmationToken, vote)) {
             final Member member = MembersClient.getMemberUnchecked(vote.getUserId());

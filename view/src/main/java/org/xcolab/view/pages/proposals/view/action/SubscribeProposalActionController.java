@@ -30,7 +30,7 @@ public class SubscribeProposalActionController {
 
         if (proposalContext.getPermissions().getCanSubscribeProposal()) {
             final Proposal proposal = proposalContext.getProposal();
-            long proposalId = proposal.getProposalId();
+            long proposalId = proposal.getId();
             long userId = currentMember.getId();
             final ProposalClient proposalClient = proposalContext.getClients().getProposalClient();
             if (proposalClient.isMemberSubscribedToProposal(proposalId, userId)) {

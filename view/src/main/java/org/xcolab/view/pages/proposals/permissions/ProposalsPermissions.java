@@ -47,7 +47,7 @@ public class ProposalsPermissions {
         this.contestClient = clientHelper.getContestClient();
 
         if (contestPhase != null) {
-            final long contestPhaseTypeId = contestPhase.getContestPhaseType();
+            final long contestPhaseTypeId = contestPhase.getContestPhaseTypeId();
 
             final ContestPhaseType contestPhaseType = clientHelper.getContestClient()
                     .getContestPhaseType(contestPhaseTypeId);
@@ -165,7 +165,7 @@ public class ProposalsPermissions {
 
     public boolean getCanVote() {
         return isLoggedIn && !isGuest && isVotingEnabled()
-                && (proposal != null && proposal.getProposalId() > 0);
+                && (proposal != null && proposal.getId() > 0);
     }
 
     public boolean getCanAdminProposal() {
@@ -174,8 +174,8 @@ public class ProposalsPermissions {
 
 
     public boolean getIsTeamMember() {
-        return proposal != null && proposal.getProposalId() > 0
-                && proposalClient.isUserInProposalTeam(proposal.getProposalId(),userId)
+        return proposal != null && proposal.getId() > 0
+                && proposalClient.isUserInProposalTeam(proposal.getId(),userId)
                 && isLoggedIn;
     }
 
@@ -184,7 +184,7 @@ public class ProposalsPermissions {
     }
 
     private boolean isProposalOpen() {
-        return proposal != null && proposal.getProposalId() > 0
+        return proposal != null && proposal.getId() > 0
                 && proposal.isOpen();
     }
 
@@ -196,8 +196,8 @@ public class ProposalsPermissions {
     }
 
     private boolean isProposalMember() {
-        return proposal != null && proposal.getProposalId() > 0 &&
-                proposalClient.isUserInProposalTeam(proposal.getProposalId(),userId);
+        return proposal != null && proposal.getId() > 0 &&
+                proposalClient.isUserInProposalTeam(proposal.getId(),userId);
     }
 
     public boolean getCanFellowActions() {
@@ -205,14 +205,14 @@ public class ProposalsPermissions {
             return getCanAdminAll();
         }
 
-        return PermissionsClient.canFellow(userId, contestPhase.getContestPK()) || getCanAdminAll();
+        return PermissionsClient.canFellow(userId, contestPhase.getContestId()) || getCanAdminAll();
     }
 
     public boolean getCanJudgeActions() {
         if (contestPhase == null) {
             return getCanAdminAll();
         }
-        return PermissionsClient.canJudge(userId, contestPhase.getContestPK())
+        return PermissionsClient.canJudge(userId, contestPhase.getContestId())
                 || getCanAdminAll();
     }
 
@@ -265,8 +265,8 @@ public class ProposalsPermissions {
         }
 
         try {
-            Contest latestProposalContest = proposalClient.getCurrentContestForProposal(proposal.getProposalId());
-            ContestPhase activePhaseForContest = contestClient.getActivePhase(latestProposalContest.getContestPK());
+            Contest latestProposalContest = proposalClient.getCurrentContestForProposal(proposal.getId());
+            ContestPhase activePhaseForContest = contestClient.getActivePhase(latestProposalContest.getId());
             boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
             return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
         }catch (ContestNotFoundException ignored){
@@ -301,8 +301,8 @@ public class ProposalsPermissions {
 
         try {
             final long currentContestId = proposalClient
-                    .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
-            return currentContestId != contestPhase.getContestPK();
+                    .getCurrentContestForProposal(proposal.getId()).getId();
+            return currentContestId != contestPhase.getContestId();
         }catch(ContestNotFoundException ignored){
             return false;
         }

@@ -38,20 +38,20 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
+public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateSectionDefinition {
 
-    private static final Logger log = LoggerFactory.getLogger(PlanSectionDefinition.class);
+    private static final Logger log = LoggerFactory.getLogger(ProposalTemplateSectionDefinition.class);
 
     private final Proposal proposal;
 
     private final ServiceNamespace serviceNamespace;
 
-    public PlanSectionDefinition() {
+    public ProposalTemplateSectionDefinition() {
         proposal = null;
         serviceNamespace = null;
     }
 
-    public PlanSectionDefinition(PlanSectionDefinition value) {
+    public ProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition value) {
         super(value);
         if(value.getServiceNamespace() != null){
             serviceNamespace = value.getServiceNamespace();
@@ -61,7 +61,7 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
         proposal = null;
     }
 
-    public PlanSectionDefinition(PlanSectionDefinition value, Proposal proposal) {
+    public ProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition value, Proposal proposal) {
         super(value);
         if (value.getServiceNamespace() != null) {
             serviceNamespace = value.getServiceNamespace();
@@ -74,7 +74,8 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
         }
         this.proposal = proposal;
     }
-    public PlanSectionDefinition(AbstractPlanSectionDefinition abstractPlanSectionDefinition,
+    public ProposalTemplateSectionDefinition(
+            AbstractProposalTemplateSectionDefinition abstractPlanSectionDefinition,
             ServiceNamespace serviceNamespace) {
         super(abstractPlanSectionDefinition);
         proposal = null;

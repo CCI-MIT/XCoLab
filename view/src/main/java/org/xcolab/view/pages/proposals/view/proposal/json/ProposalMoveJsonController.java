@@ -9,8 +9,8 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -51,7 +51,7 @@ public class ProposalMoveJsonController {
 
         List<ImmutableContest> returnList = new ArrayList<>();
         for (Contest contest: ContestClientUtil.findContestsByActive(true)) {
-            ContestPhase cp = ContestClientUtil.getActivePhase(contest.getContestPK());
+            ContestPhase cp = ContestClientUtil.getActivePhase(contest.getId());
             if (cp.getPhaseActive()) {
                 String statusStr = cp.getContestStatusStr();
                 ContestStatus status = null;
@@ -85,7 +85,7 @@ public class ProposalMoveJsonController {
 
         private ImmutableContest(Contest contest) {
             this.contestShortName = contest.getContestShortNameWithEndYear();
-            this.contestName = contest.getContestName();
+            this.contestName = contest.getContestQuestion();
             this.contestYear = contest.getContestYear();
             this.contestUrlName = contest.getContestUrlName();
         }
@@ -117,11 +117,11 @@ public class ProposalMoveJsonController {
         Contest contest = ContestClientUtil.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
 
-        PlanTemplate planTemplate = clientHelper.getPlanTemplateClient()
+        ProposalTemplate planTemplate = clientHelper.getPlanTemplateClient()
                 .getPlanTemplate(contest.getPlanTemplateId());
 
         if (planTemplate != null) {
-            for (PlanSectionDefinition psd : clientHelper.getPlanTemplateClient()
+            for (ProposalTemplateSectionDefinition psd : clientHelper.getPlanTemplateClient()
                     .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), false)) {
                 ProposalAttribute attribute = clientHelper.getProposalAttributeClient()
                         .getProposalAttribute(proposalId, version,

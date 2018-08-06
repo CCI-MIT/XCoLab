@@ -3,29 +3,25 @@ package org.xcolab.client.proposals.pojo.team;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-class AbstractMembershipRequest implements Serializable {
+class AbstractProposalTeamMembershipRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long membershiprequestid;
-    private Long companyid;
+    private Long id;
     private Long userid;
     private Timestamp createdAt;
-    private Long groupid;
     private String comments;
     private String replycomments;
     private Timestamp replydate;
     private Long replieruserid;
     private Integer statusid;
 
-    public AbstractMembershipRequest() {}
+    public AbstractProposalTeamMembershipRequest() {}
 
-    public AbstractMembershipRequest(AbstractMembershipRequest value) {
-        this.membershiprequestid = value.membershiprequestid;
-        this.companyid = value.companyid;
+    public AbstractProposalTeamMembershipRequest(AbstractProposalTeamMembershipRequest value) {
+        this.id = value.id;
         this.userid = value.userid;
         this.createdAt = value.createdAt;
-        this.groupid = value.groupid;
         this.comments = value.comments;
         this.replycomments = value.replycomments;
         this.replydate = value.replydate;
@@ -33,44 +29,12 @@ class AbstractMembershipRequest implements Serializable {
         this.statusid = value.statusid;
     }
 
-    public AbstractMembershipRequest(
-            Long membershiprequestid,
-            Long companyid,
-            Long userid,
-            Timestamp createdAt,
-            Long groupid,
-            String comments,
-            String replycomments,
-            Timestamp replydate,
-            Long replieruserid,
-            Integer statusid
-    ) {
-        this.membershiprequestid = membershiprequestid;
-        this.companyid = companyid;
-        this.userid = userid;
-        this.createdAt = createdAt;
-        this.groupid = groupid;
-        this.comments = comments;
-        this.replycomments = replycomments;
-        this.replydate = replydate;
-        this.replieruserid = replieruserid;
-        this.statusid = statusid;
+    public Long getId() {
+        return this.id;
     }
 
-    public Long getMembershipRequestId() {
-        return this.membershiprequestid;
-    }
-
-    public void setMembershipRequestId(Long membershiprequestid) {
-        this.membershiprequestid = membershiprequestid;
-    }
-
-    public Long getCompanyId() {
-        return this.companyid;
-    }
-
-    public void setCompanyId(Long companyid) {
-        this.companyid = companyid;
+    public void setId(Long membershiprequestid) {
+        this.id = membershiprequestid;
     }
 
     public Long getUserId() {
@@ -87,14 +51,6 @@ class AbstractMembershipRequest implements Serializable {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getGroupId() {
-        return this.groupid;
-    }
-
-    public void setGroupId(Long groupid) {
-        this.groupid = groupid;
     }
 
     public String getComments() {
@@ -141,12 +97,10 @@ class AbstractMembershipRequest implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((membershiprequestid == null) ? 0
-                : membershiprequestid.hashCode());
-        result = prime * result + ((companyid == null) ? 0 : companyid.hashCode());
+        result = prime * result + ((id == null) ? 0
+                : id.hashCode());
         result = prime * result + ((userid == null) ? 0 : userid.hashCode());
         result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
-        result = prime * result + ((groupid == null) ? 0 : groupid.hashCode());
         result = prime * result + ((comments == null) ? 0 : comments.hashCode());
         result = prime * result + ((replycomments == null) ? 0 : replycomments.hashCode());
         result = prime * result + ((replydate == null) ? 0 : replydate.hashCode());
@@ -166,19 +120,12 @@ class AbstractMembershipRequest implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final AbstractMembershipRequest other = (AbstractMembershipRequest) obj;
-        if (membershiprequestid == null) {
-            if (other.membershiprequestid != null) {
+        final AbstractProposalTeamMembershipRequest other = (AbstractProposalTeamMembershipRequest) obj;
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!membershiprequestid.equals(other.membershiprequestid)) {
-            return false;
-        }
-        if (companyid == null) {
-            if (other.companyid != null) {
-                return false;
-            }
-        } else if (!companyid.equals(other.companyid)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (userid == null) {
@@ -193,13 +140,6 @@ class AbstractMembershipRequest implements Serializable {
                 return false;
             }
         } else if (!createdAt.equals(other.createdAt)) {
-            return false;
-        }
-        if (groupid == null) {
-            if (other.groupid != null) {
-                return false;
-            }
-        } else if (!groupid.equals(other.groupid)) {
             return false;
         }
         if (comments == null) {
@@ -242,8 +182,8 @@ class AbstractMembershipRequest implements Serializable {
 
     @Override
     public String toString() {
-        String sb = "MembershipRequest (" + membershiprequestid + ", " + companyid + ", " + userid
-                + ", " + createdAt + ", " + groupid + ", " + comments + ", " + replycomments + ", "
+        String sb = "MembershipRequest (" + id + ", " + userid
+                + ", " + createdAt + ", " + comments + ", " + replycomments + ", "
                 + replydate + ", " + replieruserid + ", " + statusid + ")";
 
         return sb;

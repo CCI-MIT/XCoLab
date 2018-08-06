@@ -39,7 +39,7 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
 
         FocusAreaRecord ret = this.dslContext.insertInto(FOCUS_AREA)
                 .set(FOCUS_AREA.NAME, focusArea.getName())
-                .set(FOCUS_AREA.ORDER_, focusArea.getOrder_())
+                .set(FOCUS_AREA.SORT_ORDER, focusArea.getSortOrder())
                 .returning(FOCUS_AREA.ID)
                 .fetchOne();
         if (ret != null) {
@@ -55,7 +55,7 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
     public boolean update(FocusArea focusArea) {
         return dslContext.update(FOCUS_AREA)
                 .set(FOCUS_AREA.NAME, focusArea.getName())
-                .set(FOCUS_AREA.ORDER_, focusArea.getOrder_())
+                .set(FOCUS_AREA.SORT_ORDER, focusArea.getSortOrder())
                 .where(FOCUS_AREA.ID.eq(focusArea.getId()))
                 .execute() > 0;
     }

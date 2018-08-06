@@ -24,7 +24,7 @@
                     <xcolab:contestLink contest="${contest}"
                                         cssStyle="${contest.contestShortNameWithEndYear.length() ge 60 ? 'font-size: 90%' : ''}"/>
                 </h3>
-                ${contest.contestName }
+                ${contest.contestQuestion }
             </div>
 
             <c:if test="${showCounts or showFlags}">

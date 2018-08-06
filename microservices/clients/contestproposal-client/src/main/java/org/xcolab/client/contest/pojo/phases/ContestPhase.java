@@ -48,14 +48,14 @@ public class ContestPhase extends AbstractContestPhase {
     public static ContestPhase clone(ContestPhase originalPhase) {
         ContestPhase newPhase = new ContestPhase();
 
-        newPhase.setContestPK(originalPhase.getContestPK());
+        newPhase.setContestId(originalPhase.getContestId());
         newPhase.setPhaseStartDate(originalPhase.getPhaseStartDate());
         newPhase.setPhaseEndDate(originalPhase.getPhaseEndDate());
         newPhase.setContestScheduleId(originalPhase.getContestScheduleId());
-        newPhase.setContestPhaseType(originalPhase.getContestPhaseType());
+        newPhase.setContestPhaseTypeId(originalPhase.getContestPhaseTypeId());
         newPhase.setContestPhaseAutopromote(originalPhase.getContestPhaseAutopromote());
-        newPhase.setCreated(new Timestamp(new Date().getTime()));
-        newPhase.setUpdated(new Timestamp(new Date().getTime()));
+        newPhase.setCreatedAt(new Timestamp(new Date().getTime()));
+        newPhase.setUpdatedAt(new Timestamp(new Date().getTime()));
         return newPhase;
     }
 
@@ -73,12 +73,12 @@ public class ContestPhase extends AbstractContestPhase {
     public String getContestPhaseLinkUrl() {
         try {
             String link = "/";
-            Contest contest = contestClient.getContest(this.getContestPK());
+            Contest contest = contestClient.getContest(this.getContestId());
             link += ContestTypeClient.getContestType(contest.getContestTypeId())
                     .getFriendlyUrlStringContests();
             link += "/%d/%s/phase/%d";
             return String.format(link, contest.getContestYear(), contest.getContestUrlName(),
-                    this.getContestPhasePK());
+                    this.getId());
         } catch (ContestNotFoundException ignored) {
             return "/contests/";
         }
@@ -90,7 +90,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public ContestPhaseType getContestPhaseTypeObject() {
-        return contestClient.getContestPhaseType(this.getContestPhaseType());
+        return contestClient.getContestPhaseType(this.getContestPhaseTypeId());
     }
 
     public Date getPhaseStartDateDt() {
@@ -153,7 +153,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public String getName() {
-        return contestClient.getContestPhaseType(this.getContestPhaseType()).getName();
+        return contestClient.getContestPhaseType(this.getContestPhaseTypeId()).getName();
     }
 
     public String getFlagText() {
@@ -188,7 +188,7 @@ public class ContestPhase extends AbstractContestPhase {
             proposalPhaseClient = ProposalPhaseClientUtil.getClient();
         }
         ProposalContestPhaseAttribute attr = proposalPhaseClient
-                .getProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
+                .getProposalContestPhaseAttribute(proposalId, this.getId(),
                         ProposalContestPhaseAttributeKeys.VISIBLE);
         return attr == null || attr.getNumericValue() == 1;
 
@@ -196,7 +196,7 @@ public class ContestPhase extends AbstractContestPhase {
 
     public boolean setProposalVisibility(long proposalId, boolean visible) {
         ProposalPhaseClient.fromNamespace(serviceNamespace)
-                .setProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
+                .setProposalContestPhaseAttribute(proposalId, this.getId(),
                         ProposalContestPhaseAttributeKeys.VISIBLE, 0L, visible ? 1L : 0L, "");
         return true;
     }
@@ -222,7 +222,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public Contest getContest() {
-        return contestClient.getContest(getContestPK());
+        return contestClient.getContest(getContestId());
     }
 
     public boolean getFellowScreeningActive() {

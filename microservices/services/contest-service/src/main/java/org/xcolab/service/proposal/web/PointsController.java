@@ -80,12 +80,12 @@ public class PointsController {
             return pointsDistributionConfigurationDao.update(pointsDistributionConfiguration);
         }
     }
-    @RequestMapping(value = "/pointsDistributionConfigurations/getByTargetPlanSectionDefinitionId", method = RequestMethod.GET)
-    public PointsDistributionConfiguration getPointsDistributionConfiguration(@RequestParam("targetPlanSectionDefinitionId") Long targetPlanSectionDefinitionId) throws NotFoundException {
-        if (targetPlanSectionDefinitionId == null || targetPlanSectionDefinitionId == 0) {
+    @RequestMapping(value = "/pointsDistributionConfigurations/getByTargetProposalTemplateSectionDefinitionId", method = RequestMethod.GET)
+    public PointsDistributionConfiguration getPointsDistributionConfiguration(@RequestParam("targetProposalTemplateSectionDefinitionId") Long targetProposalTemplateSectionDefinitionId) throws NotFoundException {
+        if (targetProposalTemplateSectionDefinitionId == null || targetProposalTemplateSectionDefinitionId == 0) {
             throw new NotFoundException("No PointsDistributionConfiguration with the id given");
         } else {
-            return pointsDistributionConfigurationDao.getByPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+            return pointsDistributionConfigurationDao.getByProposalTemplateSectionDefinitionId(targetProposalTemplateSectionDefinitionId);
         }
     }
     @RequestMapping(value = "/pointsDistributionConfigurations/{id}", method = RequestMethod.DELETE)
