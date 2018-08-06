@@ -73,7 +73,7 @@ public class CreateProposalController extends BaseProposalsController {
 
         proposal.setProposalId(0L);
         proposal.setVisible(true);
-        proposal.setauthorUserid(userId);
+        proposal.setauthorUserId(userId);
 
         final ContestPhase contestPhase = proposalContext.getContestPhase();
 

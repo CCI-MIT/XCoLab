@@ -68,12 +68,12 @@ public class ContentArticleVersion implements Serializable {
         this.folderId = folderId;
     }
 
-    public Long getauthorUserid() {
+    public Long getauthorUserId() {
         return this.authorUserId;
     }
 
-    public void setauthorUserid(Long authorUserid) {
-        this.authorUserId = authorUserid;
+    public void setauthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
     public Timestamp getCreatedAt() {

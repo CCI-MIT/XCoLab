@@ -24,13 +24,13 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public List<Category> findByGiven(PaginationHelper paginationHelper,
-            Long groupId, Long authorUserid) {
+            Long groupId, Long authorUserId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CATEGORY)
                 .getQuery();
 
-        if (authorUserid != null) {
-            query.addConditions(CATEGORY.AUTHOR_USER_ID.eq(authorUserid));
+        if (authorUserId != null) {
+            query.addConditions(CATEGORY.AUTHOR_USER_ID.eq(authorUserId));
         }
         if (groupId != null) {
             query.addConditions(CATEGORY.GROUP_ID.eq(groupId));

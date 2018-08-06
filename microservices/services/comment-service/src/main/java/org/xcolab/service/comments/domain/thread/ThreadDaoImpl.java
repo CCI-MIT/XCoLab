@@ -37,7 +37,7 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorUserid,
+    public List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorUserId,
             Long categoryId, Long groupId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(THREAD)
@@ -47,8 +47,8 @@ public class ThreadDaoImpl implements ThreadDao {
             query.addJoin(CATEGORY, CATEGORY.ID.eq(THREAD.ID));
             query.addConditions(CATEGORY.GROUP_ID.eq(groupId));
         }
-        if (authorUserid != null) {
-            query.addConditions(THREAD.AUTHOR_USER_ID.eq(authorUserid));
+        if (authorUserId != null) {
+            query.addConditions(THREAD.AUTHOR_USER_ID.eq(authorUserId));
         }
         if (categoryId != null) {
             query.addConditions(THREAD.ID.eq(categoryId));
@@ -63,7 +63,7 @@ public class ThreadDaoImpl implements ThreadDao {
                 case "comments": {
                     final CommentTable comment = COMMENT.as("comment");
                     query.addSelect((SelectField<?>[]) THREAD.fields());
-                    query.addJoin(comment, comment.ID.eq(THREAD.ID)
+                    query.addJoin(comment, comment.THREAD_ID.eq(THREAD.ID)
                             .and(comment.DELETED_AT.isNull()));
                     query.addGroupBy(THREAD.ID);
                     query.addOrderBy(sortColumn.isAscending()
@@ -74,7 +74,7 @@ public class ThreadDaoImpl implements ThreadDao {
                 case "activityDate": {
                     final CommentTable comment = COMMENT.as("comment");
                     query.addSelect((SelectField<?>[]) THREAD.fields());
-                    query.addJoin(comment, comment.ID.eq(THREAD.ID)
+                    query.addJoin(comment, comment.THREAD_ID.eq(THREAD.ID)
                             .and(comment.DELETED_AT.isNull()));
                     query.addGroupBy(THREAD.ID);
                     query.addOrderBy(sortColumn.isAscending()
@@ -156,10 +156,10 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public Optional<Comment> getLastComment(long id) {
+    public Optional<Comment> getLastComment(long threadId) {
         final Record record = dslContext.select()
                 .from(COMMENT)
-                .where(COMMENT.ID.eq(id)
+                .where(COMMENT.THREAD_ID.eq(threadId)
                         .and(COMMENT.DELETED_AT.isNull()))
                 .orderBy(COMMENT.CREATED_AT.desc())
                 .limit(1)
@@ -171,12 +171,12 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean delete(Long threadId) {
         boolean result = dslContext.deleteFrom(COMMENT)
-                .where(COMMENT.ID.eq(id))
+                .where(COMMENT.THREAD_ID.eq(threadId))
                 .execute() > 0;
         result = result || dslContext.deleteFrom(THREAD)
-                .where(THREAD.ID.eq(id))
+                .where(THREAD.ID.eq(threadId))
                 .execute() > 0;
         return result;
     }

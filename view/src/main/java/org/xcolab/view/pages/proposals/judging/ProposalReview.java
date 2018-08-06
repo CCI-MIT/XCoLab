@@ -178,7 +178,7 @@ public class ProposalReview {
         String authorName = getTeamOrNull();
         if (StringUtils.isBlank(authorName)) {
             try {
-                final Member member = MembersClient.getMember(proposal.getauthorUserid());
+                final Member member = MembersClient.getMember(proposal.getauthorUserId());
                 authorName = member.getFirstName() + " " + member.getLastName();
             } catch (MemberNotFoundException e) {
                 authorName = "";

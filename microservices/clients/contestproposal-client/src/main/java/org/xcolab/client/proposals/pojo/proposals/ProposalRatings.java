@@ -25,16 +25,16 @@ public class ProposalRatings {
 
     private String contestPhaseTitle;
 
-    public ProposalRatings(long authorUserid, List<ProposalRating> proposalRatings,
+    public ProposalRatings(long authorUserId, List<ProposalRating> proposalRatings,
             Long roundFactor) throws MemberNotFoundException {
-        this(MembersClient.getMember(authorUserid), proposalRatings, roundFactor);
+        this(MembersClient.getMember(authorUserId), proposalRatings, roundFactor);
     }
 
-    public ProposalRatings(long authorUserid) throws MemberNotFoundException {
-        this(MembersClient.getMember(authorUserid), Collections.emptyList());
+    public ProposalRatings(long authorUserId) throws MemberNotFoundException {
+        this(MembersClient.getMember(authorUserId), Collections.emptyList());
     }
-    public ProposalRatings(long authorUserid, List<ProposalRating> proposalRatings) {
-        this(MembersClient.getMemberUnchecked(authorUserid), proposalRatings);
+    public ProposalRatings(long authorUserId, List<ProposalRating> proposalRatings) {
+        this(MembersClient.getMemberUnchecked(authorUserId), proposalRatings);
     }
 
     public ProposalRatings(Member author, List<ProposalRating> proposalRatings) {

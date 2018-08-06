@@ -6,7 +6,7 @@ public class AdaptationImpactBean {
 
     private Map<String, AdaptationValue> values;
     private Long proposalId;
-    private Long authorUserid;
+    private Long authorUserId;
 
     public Map<String, AdaptationValue> getValues() {
         return values;
@@ -24,11 +24,11 @@ public class AdaptationImpactBean {
         this.proposalId = proposalId;
     }
 
-    public Long getauthorUserid() {
-        return authorUserid;
+    public Long getauthorUserId() {
+        return authorUserId;
     }
 
-    public void setauthorUserid(Long authorUserid) {
-        this.authorUserid = authorUserid;
+    public void setauthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 }

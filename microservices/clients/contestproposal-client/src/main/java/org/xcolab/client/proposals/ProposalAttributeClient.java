@@ -176,7 +176,7 @@ public final class ProposalAttributeClient {
                 .withParameter("version", proposal.getVersion()).asList(), CacheName.PROPOSAL_DETAILS);
     }
     public ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute,
-            Long authorUserid) {
+            Long authorUserId) {
         //TODO COLAB-2589: replace with better cache invalidation mechanism
 
         //.optionalQueryParam("proposalId", proposalId)
@@ -184,7 +184,7 @@ public final class ProposalAttributeClient {
         //        .withCache(CacheName.PROPOSAL_DETAILS)
 
         return proposalAttributeResource.collectionService("setProposalAttribute", ProposalAttributeDto.class)
-                .queryParam("authorUserid", authorUserid)
+                .queryParam("authorUserId", authorUserId)
                 .post(proposalAttribute)
                 .toPojo(serviceNamespace);
     }
@@ -225,30 +225,30 @@ public final class ProposalAttributeClient {
     }
 
     public void createOrUpdateUnversionedStringAttribute(Long proposalId, String attributeName,
-            long authorUserid, String attributeValue) {
-        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorUserid, null,
+            long authorUserId, String attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorUserId, null,
                 attributeValue, null);
     }
 
     public void createOrUpdateUnversionedDoubleAttribute(Long proposalId, String attributeName,
-            long authorUserid, double attributeValue) {
-        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorUserid, null,
+            long authorUserId, double attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorUserId, null,
                 null, attributeValue);
     }
 
     public void createOrUpdateUnversionedLongAttribute(Long proposalId, String attributeName,
-            long authorUserid, long attributeValue) {
-        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorUserid, attributeValue,
+            long authorUserId, long attributeValue) {
+        createOrUpdateUnversionedAttribute(proposalId, attributeName, authorUserId, attributeValue,
                 null, null);
     }
 
     public void createOrUpdateUnversionedAttribute(Long proposalId, String attributeName,
-            long authorUserid, Long longValue, String stringValue, Double doubleValue) {
+            long authorUserId, Long longValue, String stringValue, Double doubleValue) {
         ProposalUnversionedAttribute pua;
         try {
              pua =
                     getProposalUnversionedAttribute(proposalId, attributeName);
-                pua.setCreateauthorUserid(authorUserid);
+                pua.setCreateauthorUserId(authorUserId);
                 pua.setNumericValue(longValue);
                 pua.setStringValue(stringValue);
                 pua.setRealValue(doubleValue);
@@ -256,7 +256,7 @@ public final class ProposalAttributeClient {
 
         } catch (EntityNotFoundException e) {
             pua = new ProposalUnversionedAttribute();
-            pua.setCreateauthorUserid(authorUserid);
+            pua.setCreateauthorUserId(authorUserId);
             pua.setName(attributeName);
             pua.setNumericValue(longValue);
             pua.setStringValue(stringValue);

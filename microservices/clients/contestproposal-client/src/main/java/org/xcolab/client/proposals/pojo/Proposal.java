@@ -307,9 +307,9 @@ public class Proposal extends AbstractProposal {
 
     public Member getAuthor() {
         try {
-            return MembersClient.getMember(this.getauthorUserid());
+            return MembersClient.getMember(this.getauthorUserId());
         } catch (MemberNotFoundException e) {
-            throw new IllegalStateException("Author " + this.getauthorUserid()
+            throw new IllegalStateException("Author " + this.getauthorUserId()
                     + " of proposal " + this.getId() + " does not exist");
         }
     }
@@ -336,7 +336,7 @@ public class Proposal extends AbstractProposal {
     private long createDiscussionThread(String threadTitleSuffix, boolean isQuiet) {
         final ContestType contestType = getContest().getContestType();
         CommentThread thread = new CommentThread();
-        thread.setAuthorUserId(getauthorUserid());
+        thread.setAuthorUserId(getauthorUserId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
         return clients.thread.createThread(thread).getId();
@@ -530,7 +530,7 @@ public class Proposal extends AbstractProposal {
                 }
             }
             if (!hasOwner) {
-                clients.membership.addUserToProposalTeam(getId(), getauthorUserid());
+                clients.membership.addUserToProposalTeam(getId(), getauthorUserId());
             }
         }
         return members;
@@ -880,7 +880,7 @@ public class Proposal extends AbstractProposal {
 
     public Member getUserForSelectedVersion() {
         try {
-            return MembersClient.getMember(getSelectedVersion().getauthorUserid());
+            return MembersClient.getMember(getSelectedVersion().getauthorUserId());
         } catch (MemberNotFoundException e) {
             return null;
         }

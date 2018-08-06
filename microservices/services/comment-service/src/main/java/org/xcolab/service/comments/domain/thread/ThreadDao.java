@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ThreadDao {
 
-    List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorUserid, Long categoryId,
+    List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorUserId, Long categoryId,
             Long groupId);
 
     Thread get(long threadId) throws NotFoundException;

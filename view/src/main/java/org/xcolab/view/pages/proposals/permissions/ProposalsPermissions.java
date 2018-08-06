@@ -180,7 +180,7 @@ public class ProposalsPermissions {
     }
 
     private boolean isOwner() {
-        return isLoggedIn && (proposal == null || userId == proposal.getauthorUserid());
+        return isLoggedIn && (proposal == null || userId == proposal.getauthorUserId());
     }
 
     private boolean isProposalOpen() {

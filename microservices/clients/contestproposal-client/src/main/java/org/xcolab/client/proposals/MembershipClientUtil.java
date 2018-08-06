@@ -16,9 +16,9 @@ public class MembershipClientUtil {
     }
 
     public static void denyMembershipRequest(long proposalId, long userId, long membershipRequestId,
-            String reply, long updateauthorUserid) {
+            String reply, long updateauthorUserId) {
         client.denyMembershipRequest(proposalId, userId, membershipRequestId, reply,
-                updateauthorUserid);
+                updateauthorUserId);
     }
 
     public static boolean updateMembershipRequest(ProposalTeamMembershipRequest membershipRequest) {
@@ -39,8 +39,8 @@ public class MembershipClientUtil {
     }
 
     public static void approveMembershipRequest(long proposalId, Long userId,
-            ProposalTeamMembershipRequest request, String reply, Long updateauthorUserid) {
-        client.approveMembershipRequest(proposalId, userId, request, reply, updateauthorUserid);
+            ProposalTeamMembershipRequest request, String reply, Long updateauthorUserId) {
+        client.approveMembershipRequest(proposalId, userId, request, reply, updateauthorUserId);
     }
 
     public static ProposalTeamMembershipRequest addInvitedMembershipRequest(

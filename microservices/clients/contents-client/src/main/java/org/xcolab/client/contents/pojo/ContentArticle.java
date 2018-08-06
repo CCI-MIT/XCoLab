@@ -64,8 +64,8 @@ public class ContentArticle implements Serializable {
         return this.authorUserId;
     }
 
-    public void setAuthorUserId(Long authorUserid) {
-        this.authorUserId = authorUserid;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
     public Timestamp getCreatedAt() {

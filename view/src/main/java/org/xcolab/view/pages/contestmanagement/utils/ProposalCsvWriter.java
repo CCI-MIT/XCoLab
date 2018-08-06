@@ -66,7 +66,7 @@ public class ProposalCsvWriter extends CsvResponseWriter {
                     .map(ProposalTeamMember::getFullName)
                     .map(String::valueOf)
                     .collect(Collectors.joining(",")));
-            addValue(row, proposal.getauthorUserid());
+            addValue(row, proposal.getauthorUserId());
             addValue(row, proposal.getAuthorName());
             addValue(row, proposal.getCommentsCount());
             addValue(row, proposal.getSupportersCount());

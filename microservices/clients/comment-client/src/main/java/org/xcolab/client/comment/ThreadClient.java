@@ -53,8 +53,8 @@ public class ThreadClient {
         return commentServiceWrapper.getLastActivityDate(threadId, CacheName.MISC_REQUEST);
     }
 
-    public long getLastActivityauthorUserid(long threadId) {
-        return commentServiceWrapper.getLastActivityauthorUserid(threadId, CacheName.MISC_REQUEST);
+    public long getLastActivityauthorUserId(long threadId) {
+        return commentServiceWrapper.getLastActivityauthorUserId(threadId, CacheName.MISC_REQUEST);
     }
 
     public static ThreadClient fromService(ServiceNamespace serviceNamespace) {

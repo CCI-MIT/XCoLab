@@ -35,7 +35,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     public ContestPhase create(ContestPhase contestPhase) {
 
         ContestPhaseRecord record = this.dslContext.insertInto(CONTEST_PHASE)
-                .set(CONTEST_PHASE.ID, contestPhase.getContestId())
+                .set(CONTEST_PHASE.CONTEST_ID, contestPhase.getContestId())
                 .set(CONTEST_PHASE.CONTEST_PHASE_TYPE_ID, contestPhase.getContestPhaseTypeId())
                 .set(CONTEST_PHASE.CONTEST_SCHEDULE_ID, contestPhase.getContestScheduleId())
                 .set(CONTEST_PHASE.CONTEST_PHASE_AUTOPROMOTE, contestPhase.getContestPhaseAutopromote())
@@ -56,7 +56,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     @Override
     public boolean update(ContestPhase contestPhase) {
         return dslContext.update(CONTEST_PHASE)
-                .set(CONTEST_PHASE.ID, contestPhase.getContestId())
+                .set(CONTEST_PHASE.CONTEST_ID, contestPhase.getContestId())
                 .set(CONTEST_PHASE.CONTEST_PHASE_TYPE_ID, contestPhase.getContestPhaseTypeId())
                 .set(CONTEST_PHASE.CONTEST_SCHEDULE_ID, contestPhase.getContestScheduleId())
                 .set(CONTEST_PHASE.CONTEST_PHASE_AUTOPROMOTE, contestPhase.getContestPhaseAutopromote())
@@ -69,12 +69,12 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
 
 
     @Override
-    public boolean delete(Long contestPhasePK) {
+    public boolean delete(Long contestPhaseId) {
         dslContext.deleteFrom(PROPOSAL2_PHASE)
-                .where(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhasePK))
+                .where(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId))
                 .execute();
         return dslContext.deleteFrom(CONTEST_PHASE)
-                .where(CONTEST_PHASE.ID.eq(contestPhasePK))
+                .where(CONTEST_PHASE.ID.eq(contestPhaseId))
                 .execute() > 0;
     }
 
@@ -90,13 +90,13 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     }
 
     @Override
-    public List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId,
+    public List<ContestPhase> findByGiven(Long contestId, Long contestScheduleId,
             Long contestPhaseTypeId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_PHASE).getQuery();
 
-        if (contestPK != null) {
-            query.addConditions(CONTEST_PHASE.ID.eq(contestPK));
+        if (contestId != null) {
+            query.addConditions(CONTEST_PHASE.CONTEST_ID.eq(contestId));
         }
 
         if (contestScheduleId != null) {
@@ -126,10 +126,10 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
 
     //ContestPhaseLocalServiceUtil.getContestPhase
     @Override
-    public Optional<ContestPhase> get(Long contestPhasePK) throws NotFoundException {
+    public Optional<ContestPhase> get(Long contestPhaseId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(CONTEST_PHASE)
-                .where(CONTEST_PHASE.ID.eq(contestPhasePK))
+                .where(CONTEST_PHASE.ID.eq(contestPhaseId))
                 .fetchOne();
 
         if (record == null) {
@@ -139,10 +139,10 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     }
 
     @Override
-    public boolean exists(Long contestPhasePK) {
+    public boolean exists(Long contestPhaseId) {
         return dslContext.selectCount()
                 .from(CONTEST_PHASE)
-                .where(CONTEST_PHASE.ID.eq(contestPhasePK))
+                .where(CONTEST_PHASE.ID.eq(contestPhaseId))
                 .fetchOne().into(Integer.class) > 0;
     }
 

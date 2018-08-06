@@ -22,16 +22,20 @@ import static org.xcolab.model.Tables.COMMENT;
 @Repository
 public class CommentDaoImpl implements CommentDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public CommentDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     @Override
-    public int countByGiven(Long authorUserid, Collection<Long> threadIds) {
+    public int countByGiven(Long authorUserId, Collection<Long> threadIds) {
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(COMMENT)
                 .getQuery();
-        if (authorUserid != null) {
-            query.addConditions(COMMENT.ID.eq(authorUserid));
+        if (authorUserId != null) {
+            query.addConditions(COMMENT.ID.eq(authorUserId));
         }
         if (threadIds != null) {
             query.addConditions(COMMENT.THREAD_ID.in(threadIds));
@@ -42,13 +46,13 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public List<Comment> findByGiven(PaginationHelper paginationHelper,
-            Long authorUserid, Collection<Long> threadIds, boolean includeDeleted) {
+            Long authorUserId, Collection<Long> threadIds, boolean includeDeleted) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(COMMENT)
                 .getQuery();
 
-        if (authorUserid != null) {
-            query.addConditions(COMMENT.ID.eq(authorUserid));
+        if (authorUserId != null) {
+            query.addConditions(COMMENT.AUTHOR_USER_ID.eq(authorUserId));
         }
         if (threadIds != null) {
             query.addConditions(COMMENT.THREAD_ID.in(threadIds));
@@ -95,7 +99,7 @@ public class CommentDaoImpl implements CommentDao {
                 .set(COMMENT.THREAD_ID, comment.getThreadId())
                 .set(COMMENT.CREATED_AT, comment.getCreatedAt())
                 .set(COMMENT.UPDATED_AT, comment.getUpdatedAt())
-                .set(COMMENT.ID, comment.getAuthorUserId())
+                .set(COMMENT.AUTHOR_USER_ID, comment.getAuthorUserId())
                 .set(COMMENT.CONTENT, comment.getContent())
                 .set(COMMENT.DELETED_AT, comment.getDeletedAt())
                 .where(COMMENT.ID.equal(comment.getId()))
@@ -108,7 +112,7 @@ public class CommentDaoImpl implements CommentDao {
                 .set(COMMENT.THREAD_ID, comment.getThreadId())
                 .set(COMMENT.CREATED_AT, comment.getCreatedAt())
                 .set(COMMENT.UPDATED_AT, comment.getUpdatedAt())
-                .set(COMMENT.ID, comment.getAuthorUserId())
+                .set(COMMENT.AUTHOR_USER_ID, comment.getAuthorUserId())
                 .set(COMMENT.CONTENT, comment.getContent())
                 .set(COMMENT.DELETED_AT, comment.getDeletedAt())
                 .returning(COMMENT.ID)

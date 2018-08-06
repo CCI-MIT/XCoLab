@@ -11,7 +11,7 @@ create table activity__activity_entry
   secondary_type    bigint      null,
   class_primary_key bigint      null,
   extra_data        varchar(75) null
-) charset = utf8;
+) ENGINE=InnoDB charset = utf8;
 
 create table activity__activity_subscription
 (

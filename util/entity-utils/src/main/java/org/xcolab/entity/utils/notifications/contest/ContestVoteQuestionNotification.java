@@ -66,10 +66,10 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                     for (Proposal proposal : supportedProposals) {
                         Member member;
                         try {
-                            member = MembersClient.getMember(proposal.getauthorUserid());
+                            member = MembersClient.getMember(proposal.getauthorUserId());
                         } catch (MemberNotFoundException e) {
                             _log.error("Author {} of proposal {} does not exist",
-                                    proposal.getauthorUserid(), proposal.getId());
+                                    proposal.getauthorUserId(), proposal.getId());
                             member = null;
                         }
                         //TODO COLAB-2505: this does not actually generate a link for direct voting

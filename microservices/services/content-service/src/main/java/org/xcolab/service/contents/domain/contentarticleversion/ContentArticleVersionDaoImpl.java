@@ -80,10 +80,10 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     @Override
-    public ContentArticleVersion get(Long contentArticleId) throws NotFoundException {
+    public ContentArticleVersion get(Long id) throws NotFoundException {
         final Record record = this.dslContext.select()
                 .from(CONTENT_ARTICLE_VERSION)
-                .where(CONTENT_ARTICLE_VERSION.ARTICLE_ID.eq(contentArticleId))
+                .where(CONTENT_ARTICLE_VERSION.ID.eq(id))
                 .fetchOne();
         if (record == null) {
             throw new NotFoundException();

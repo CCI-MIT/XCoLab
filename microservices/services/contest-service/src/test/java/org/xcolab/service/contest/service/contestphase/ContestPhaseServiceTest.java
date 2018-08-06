@@ -61,9 +61,8 @@ public class ContestPhaseServiceTest {
         Mockito.when(ProposalClientUtil.getProposal(anyLong()))
                 .thenAnswer(invocation -> {
                     Proposal proposal = Mockito.mock(Proposal.class);
-                    proposal.setProposalId(1333850L);
+                    proposal.setId(1333850L);
                     return proposal;
-
                 });
     }
 

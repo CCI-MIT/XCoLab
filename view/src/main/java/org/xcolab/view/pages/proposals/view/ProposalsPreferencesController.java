@@ -154,17 +154,17 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
 
             for (Proposal p : proposalContext.getClients().getProposalClient().getProposalsInContest(c.getId())) {
                 //author id check
-                Long authorUserid = p.getauthorUserid();
+                Long authorUserId = p.getauthorUserId();
 
                 List<Member> members = proposalContext.getClients().getProposalClient().getProposalMembers(p.getId());
                 boolean foundAuthor = false;
                 for (Member u: members) {
-                    if (u.getId() == authorUserid) {
+                    if (u.getId() == authorUserId) {
                         foundAuthor = true;
                     }
                 }
                 if (!foundAuthor) {
-                    message.append("<br/><br/>\nMISSING AUTHOR ").append(authorUserid).append(" FOR PROPOSAL: ").append(p.getId()).append("<br/><br/>\n");
+                    message.append("<br/><br/>\nMISSING AUTHOR ").append(authorUserId).append(" FOR PROPOSAL: ").append(p.getId()).append("<br/><br/>\n");
                 }
 
                 //proposal version check
@@ -172,16 +172,16 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
                 for (ProposalVersion pv: proposalContext.getClients().getProposalClient().getAllProposalVersions(p.getId())) {
                     boolean foundVersionAuthor = false;
                     for (Member u: members) {
-                        if (u.getId() == pv.getauthorUserid()) {
+                        if (u.getId() == pv.getauthorUserId()) {
                             foundVersionAuthor = true;
                         }
                     }
                     if (!foundVersionAuthor) {
                         if (!warningIssued) {
                             warningIssued = true;
-                            message.append("<br/><br/>\nversion author ").append(pv.getauthorUserid()).append(" missing for proposal: ").append(p.getId()).append(" Version: ").append(pv.getVersion()).append("<br/>\n");
+                            message.append("<br/><br/>\nversion author ").append(pv.getauthorUserId()).append(" missing for proposal: ").append(p.getId()).append(" Version: ").append(pv.getVersion()).append("<br/>\n");
                         } else {
-                            message.append("a:").append(pv.getauthorUserid()).append(",v:").append(pv.getVersion()).append(" - ");
+                            message.append("a:").append(pv.getauthorUserId()).append(",v:").append(pv.getVersion()).append(" - ");
                         }
                     }
                 }

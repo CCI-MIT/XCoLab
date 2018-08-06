@@ -55,7 +55,7 @@ public class AdaptationService {
     public void save(AdaptationImpactBean adaptationImpactBean,
             ProposalAttributeClient attributeClient) {
         AttributeHelper attributeHelper = new AttributeHelper(attributeClient,
-                adaptationImpactBean.getProposalId(), adaptationImpactBean.getauthorUserid());
+                adaptationImpactBean.getProposalId(), adaptationImpactBean.getauthorUserId());
 
         for (Entry<String, AdaptationValue> entry : adaptationImpactBean.getValues().entrySet()) {
             final AdaptationCategory category = AdaptationCategory.valueOf(entry.getKey());
@@ -74,22 +74,22 @@ public class AdaptationService {
 
         private final ProposalAttributeClient attributeClient;
         private final long proposalId;
-        private final long authorUserid;
+        private final long authorUserId;
 
-        AttributeHelper(ProposalAttributeClient attributeClient, long proposalId, long authorUserid) {
+        AttributeHelper(ProposalAttributeClient attributeClient, long proposalId, long authorUserId) {
             this.attributeClient = attributeClient;
             this.proposalId = proposalId;
-            this.authorUserid = authorUserid;
+            this.authorUserId = authorUserId;
         }
 
         void saveFloatValue(AdaptationCategory category, String valueType, float value) {
             attributeClient.createOrUpdateUnversionedDoubleAttribute(proposalId,
-                    attributeName(category, valueType), authorUserid, value);
+                    attributeName(category, valueType), authorUserId, value);
         }
 
         void saveStringValue(AdaptationCategory category, String valueType, String value) {
             attributeClient.createOrUpdateUnversionedStringAttribute(proposalId,
-                    attributeName(category, valueType), authorUserid, value);
+                    attributeName(category, valueType), authorUserId, value);
         }
 
         float getFloatValue(AdaptationCategory category, String valueType) {

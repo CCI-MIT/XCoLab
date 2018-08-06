@@ -54,19 +54,19 @@ class CommentServiceWrapper {
     }
 
     public List<CommentDto> listComments(Integer startRecord, Integer limitRecord, String sort,
-            Long authorUserid, Long threadId, Boolean includeDeleted) {
+            Long authorUserId, Long threadId, Boolean includeDeleted) {
         return commentResource.list()
                 .addRange(startRecord, limitRecord)
                 .optionalQueryParam("sort", sort)
-                .optionalQueryParam("authorUserid", authorUserid)
+                .optionalQueryParam("authorUserId", authorUserId)
                 .optionalQueryParam("threadIds", threadId)
                 .optionalQueryParam("includeDeleted", includeDeleted)
                 .execute();
     }
 
-    public int countComments(Long authorUserid, Collection<Long> threadIds) {
+    public int countComments(Long authorUserId, Collection<Long> threadIds) {
         return commentResource.count()
-                .optionalQueryParam("authorUserid", authorUserid)
+                .optionalQueryParam("authorUserId", authorUserId)
                 .optionalQueryParam("threadIds", threadIds)
                 .execute();
     }
@@ -102,12 +102,12 @@ class CommentServiceWrapper {
 //    Threads
 
     public List<CommentThreadDto> listThreads(Integer startRecord, Integer limitRecord,
-            String sort, Long authorUserid, Long categoryId, Long groupId) {
+            String sort, Long authorUserId, Long categoryId, Long groupId) {
         return threadResource.list()
                 .addRange(startRecord, limitRecord)
                 .optionalQueryParam("categoryId", categoryId)
                 .optionalQueryParam("groupId", groupId)
-                .optionalQueryParam("authorUserid", authorUserid)
+                .optionalQueryParam("authorUserId", authorUserId)
                 .optionalQueryParam("sort", sort)
                 .execute();
     }
@@ -148,9 +148,9 @@ class CommentServiceWrapper {
         }
     }
 
-    public long getLastActivityauthorUserid(long threadId, CacheName cacheName) {
+    public long getLastActivityauthorUserId(long threadId, CacheName cacheName) {
         try {
-            return threadResource.<CommentThread, Long>elementService(threadId, "lastActivityauthorUserid", Long.class)
+            return threadResource.<CommentThread, Long>elementService(threadId, "lastActivityauthorUserId", Long.class)
                     .withCache(CacheKeys.withClass(CommentThread.class)
                             .withParameter("threadId", threadId)
                             .withParameter("author", "lastActivity")
@@ -164,15 +164,15 @@ class CommentServiceWrapper {
     //    Category methods
 
     public List<CategoryDto> listCategories(Integer startRecord, Integer limitRecord,
-            String sort, Long authorUserid, Long groupId, CacheName cacheName) {
+            String sort, Long authorUserId, Long groupId, CacheName cacheName) {
         return categoryResource.list()
                 .addRange(startRecord, limitRecord)
                 .optionalQueryParam("sort", sort)
                 .optionalQueryParam("groupId", groupId)
-                .optionalQueryParam("authorUserid", authorUserid)
+                .optionalQueryParam("authorUserId", authorUserId)
                 .withCache(CacheKeys.withClass(CategoryDto.class)
                         .withParameter("groupId", groupId)
-                        .withParameter("authorUserid", authorUserid)
+                        .withParameter("authorUserId", authorUserId)
                         .withParameter("sort", sort)
                         .asList(), cacheName)
                 .execute();

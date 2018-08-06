@@ -47,10 +47,7 @@ public class UserDaoTest {
     public void testFindByNameGiven_with_roles() {
         final List<User> members =
                 memberDao.findByGiven(PaginationHelper.EVERYTHING, null, null,
-                        "User", null, null, null, null, null, null, null);
+                        "Member", null, null, null, null, null, null, null);
         assertEquals("Wrong number of members with role:User", 2, members.size());
     }
-
 }
-
-

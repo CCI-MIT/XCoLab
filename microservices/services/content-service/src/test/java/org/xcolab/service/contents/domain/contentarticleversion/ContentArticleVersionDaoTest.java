@@ -17,7 +17,6 @@ import org.xcolab.service.contents.exceptions.NotFoundException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
@@ -72,11 +71,12 @@ public class ContentArticleVersionDaoTest {
     @Test
     public void shouldDeleteContentArticleVersionByArticleId() throws Exception {
 
+        final long articleId = 1000L;
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setId(1000L);
+        ae.setArticleId(articleId);
         ae = contentArticleVersionDao.create(ae);
 
-        assertTrue(contentArticleVersionDao.deleteByArticleId(ae.getArticleId())==1);
+        assertEquals(1, contentArticleVersionDao.deleteByArticleId(articleId));
         thrown.expect(NotFoundException.class);
         assertNotNull(contentArticleVersionDao.get(ae.getId()));
 

@@ -21,10 +21,10 @@ public class ContentArticleWrapper extends ContentArticle {
     }
 
     public ContentArticleWrapper(
-            Long contentArticleId, Long authorUserid, Timestamp createdAt, Long maxVersion,
+            Long contentArticleId, Long authorUserId, Timestamp createdAt, Long maxVersion,
             Long editRoleGroupId, Long viewRoleGroupId, Boolean visible,
             String title, Long folderId) {
-        super(contentArticleId, authorUserid, createdAt, maxVersion, folderId,
+        super(contentArticleId, authorUserId, createdAt, maxVersion, folderId,
                 editRoleGroupId, viewRoleGroupId, visible);
         this.title = title;
 

@@ -11,8 +11,8 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
 
     private Long id;
     private Long proposalid;
-    private Long createauthorUserid;
-    private Long lastauthorUserid;
+    private Long createauthorUserId;
+    private Long lastauthorUserId;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
@@ -22,20 +22,20 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         super(value);
         this.id = value.id;
         this.proposalid = value.proposalid;
-        this.createauthorUserid = value.createauthorUserid;
-        this.lastauthorUserid = value.lastauthorUserid;
+        this.createauthorUserId = value.createauthorUserId;
+        this.lastauthorUserId = value.lastauthorUserId;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
     }
 
-    public AbstractProposalUnversionedAttribute(Long id, Long proposalid, Long createauthorUserid,
-            Long lastauthorUserid, Timestamp createdAt, Timestamp updatedAt, String name,
+    public AbstractProposalUnversionedAttribute(Long id, Long proposalid, Long createauthorUserId,
+            Long lastauthorUserId, Timestamp createdAt, Timestamp updatedAt, String name,
             Integer additionalId, Long numericvalue, String stringvalue, Double realvalue) {
         super(name, additionalId, null, numericvalue, stringvalue, realvalue);
         this.id = id;
         this.proposalid = proposalid;
-        this.createauthorUserid = createauthorUserid;
-        this.lastauthorUserid = lastauthorUserid;
+        this.createauthorUserId = createauthorUserId;
+        this.lastauthorUserId = lastauthorUserId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -56,20 +56,20 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         this.proposalid = proposalid;
     }
 
-    public Long getCreateauthorUserid() {
-        return this.createauthorUserid;
+    public Long getCreateauthorUserId() {
+        return this.createauthorUserId;
     }
 
-    public void setCreateauthorUserid(Long createauthorUserid) {
-        this.createauthorUserid = createauthorUserid;
+    public void setCreateauthorUserId(Long createauthorUserId) {
+        this.createauthorUserId = createauthorUserId;
     }
 
-    public Long getLastauthorUserid() {
-        return this.lastauthorUserid;
+    public Long getLastauthorUserId() {
+        return this.lastauthorUserId;
     }
 
-    public void setLastauthorUserid(Long lastauthorUserid) {
-        this.lastauthorUserid = lastauthorUserid;
+    public void setLastauthorUserId(Long lastauthorUserId) {
+        this.lastauthorUserId = lastauthorUserId;
     }
 
     public Timestamp getCreatedAt() {
@@ -102,22 +102,22 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
         AbstractProposalUnversionedAttribute that = (AbstractProposalUnversionedAttribute) o;
         return Objects.equals(getId(), that.getId())
                 && Objects.equals(proposalid, that.proposalid)
-                && Objects.equals(createauthorUserid, that.createauthorUserid)
-                && Objects.equals(lastauthorUserid, that.lastauthorUserid)
+                && Objects.equals(createauthorUserId, that.createauthorUserId)
+                && Objects.equals(lastauthorUserId, that.lastauthorUserId)
                 && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), proposalid, createauthorUserid, lastauthorUserid,
+        return Objects.hash(super.hashCode(), getId(), proposalid, createauthorUserId, lastauthorUserId,
                 createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
-        String sb = super.toString() + "(" + id + ", " + proposalid + ", " + createauthorUserid + ", "
-                + lastauthorUserid + ", " + createdAt + ", " + updatedAt + ")";
+        String sb = super.toString() + "(" + id + ", " + proposalid + ", " + createauthorUserId + ", "
+                + lastauthorUserId + ", " + createdAt + ", " + updatedAt + ")";
 
         return sb;
     }

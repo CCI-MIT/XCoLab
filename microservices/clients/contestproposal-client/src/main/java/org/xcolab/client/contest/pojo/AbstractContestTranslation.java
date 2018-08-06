@@ -15,7 +15,7 @@ public abstract class AbstractContestTranslation implements Serializable {
     private String contestDescription;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Long authorUserid;
+    private Long authorUserId;
 
     public AbstractContestTranslation() {}
 
@@ -27,7 +27,7 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.contestDescription = value.contestDescription;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
-        this.authorUserid = value.authorUserid;
+        this.authorUserId = value.authorUserId;
     }
 
     public Long getContestId() {
@@ -86,12 +86,12 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Long getauthorUserid() {
-        return this.authorUserid;
+    public Long getauthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setauthorUserid(Long authorUserid) {
-        this.authorUserid = authorUserid;
+    public void setauthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
     @Override
@@ -109,13 +109,13 @@ public abstract class AbstractContestTranslation implements Serializable {
                 && Objects.equals(contestDescription, that.contestDescription)
                 && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(updatedAt, that.updatedAt)
-                && Objects.equals(authorUserid, that.authorUserid);
+                && Objects.equals(authorUserId, that.authorUserId);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(contestId, lang, contestName, contestShortName, contestDescription,
-                createdAt, updatedAt, authorUserid);
+                createdAt, updatedAt, authorUserId);
     }
 
     @Override
@@ -123,6 +123,6 @@ public abstract class AbstractContestTranslation implements Serializable {
 
         return "ContestTranslation (" + contestId + ", " + lang + ", " + contestName + ", "
                 + contestShortName + ", " + contestDescription + ", " + createdAt + ", "
-                + updatedAt + ", " + authorUserid + ")";
+                + updatedAt + ", " + authorUserId + ")";
     }
 }

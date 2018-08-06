@@ -45,7 +45,7 @@ public class WikiPageWrapper {
         } else {
             contentArticleVersion = new ContentArticleVersion();
             contentArticleVersion.setFolderId(ContentFolder.RESOURCE_FOLDER_ID);
-            contentArticleVersion.setauthorUserid(loggedInUserId);
+            contentArticleVersion.setauthorUserId(loggedInUserId);
             contentArticleVersion.setTitle(contest.getContestTitle());
             contentArticleVersion.setContent("");
             contentArticleVersion = ContentsClient
@@ -96,7 +96,7 @@ public class WikiPageWrapper {
             contentArticleVersion.setTitle(contest.getContestTitle());
             contentArticleVersion.setContent(updatedResourcesContent);
             contentArticleVersion.setArticleId(contentArticle.getId());
-            contentArticleVersion.setauthorUserid(loggedInUserId);
+            contentArticleVersion.setauthorUserId(loggedInUserId);
             ContentsClient.updateContentArticleVersion(contentArticleVersion);
         }
     }

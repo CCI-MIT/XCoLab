@@ -66,11 +66,11 @@ public class ProposalService {
         this.proposalTeamMemberDao = proposalTeamMemberDao;
     }
 
-    public Proposal create(long authorUserid, long contestPhaseId, boolean publishActivity) {
+    public Proposal create(long authorUserId, long contestPhaseId, boolean publishActivity) {
         try {
             Proposal proposal = new Proposal();
             proposal.setVisible(true);
-            proposal.setAuthorId(authorUserid);
+            proposal.setAuthorId(authorUserId);
 
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             final Contest contest = ContestClientUtil.getContest(contestPhase.getContestId());
@@ -83,19 +83,19 @@ public class ProposalService {
 
 
             final CommentThread mainCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " main discussion",
-                    authorUserid, false);
+                    authorUserId, false);
 
             proposal.setDiscussionId(mainCommentThread.getId());
 
 
             final CommentThread resultsCommentThread = createCommentThreadForProposal(proposalEntityName + proposalId + " results discussion",
-                    authorUserid, true);
+                    authorUserId, true);
 
             proposal.setResultsDiscussionId(resultsCommentThread.getId());
 
             proposalDao.update(proposal);
 
-            proposalTeamMemberDao.addUserToTeam(proposalId, authorUserid);
+            proposalTeamMemberDao.addUserToTeam(proposalId, authorUserId);
 
             if (contestPhaseId > 0) {
                 // associate proposal with phase
@@ -111,7 +111,7 @@ public class ProposalService {
             }
 
             // Automatically subscribe author to own proposal
-            subscribeMemberToProposal(proposalId, authorUserid, true);
+            subscribeMemberToProposal(proposalId, authorUserId, true);
 
             return proposal;
         } catch (ContestNotFoundException ignored) {
@@ -124,9 +124,9 @@ public class ProposalService {
         ActivitiesClientUtil.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
     }
 
-    private CommentThread createCommentThreadForProposal(String title, Long authorUserid, boolean isQuiet) {
+    private CommentThread createCommentThreadForProposal(String title, Long authorUserId, boolean isQuiet) {
         CommentThread commentThread = new CommentThread();
-        commentThread.setAuthorUserId(authorUserid);
+        commentThread.setAuthorUserId(authorUserId);
         commentThread.setCategoryId(null);
         commentThread.setTitle(title);
         commentThread.setIsQuiet(isQuiet);
