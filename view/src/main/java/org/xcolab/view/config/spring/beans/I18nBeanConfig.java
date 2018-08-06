@@ -22,6 +22,7 @@ public class I18nBeanConfig {
         messageSource.setBasenames(
                 "i18n/homepage",
                 "i18n/register",
+                "i18n/login",
                 "i18n/contests",
                 "i18n/contact",
                 "i18n/profile",

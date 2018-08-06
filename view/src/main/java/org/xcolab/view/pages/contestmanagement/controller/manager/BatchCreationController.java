@@ -151,7 +151,7 @@ public class BatchCreationController {
                         contestBatchBean.getPlanTemplateId(),
                         contestBatchBean.getScheduleTemplateId(),
                         contestBatchBean.getContestTier(),
-                        contestBatchBean.getContestType());
+                        contestBatchBean.getContestType(), member.getId_());
 
                 contestLinks.put("" + contest.getContestShortName(),
                         "/admin/contest/details/contestId/"
@@ -233,10 +233,10 @@ public class BatchCreationController {
             Long planTemplateId,
             Long contestScheduleId,
             Long contestTierId,
-            Long contestTypeId) {
+            Long contestTypeId,
+            long authorId) {
 
-
-        Contest contest = ContestCreatorUtil.createNewContest(contestShortName);
+        Contest contest = ContestCreatorUtil.createNewContest(contestShortName, authorId);
         contest.setContestDescription(contestDescription);
         contest.setContestName(contestQuestion);
         contest.setContestLogoId(contestLogoId);

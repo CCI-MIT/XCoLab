@@ -47,6 +47,5 @@ create table comment_Thread
 	title varchar(255) not null,
 	createDate datetime not null,
 	deletedDate datetime null,
-	isQuiet tinyint default '0' null,
-	sharedColabThreadId bigint null
+	isQuiet tinyint default '0' null
 );

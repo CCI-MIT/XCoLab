@@ -36,11 +36,6 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>sharedcolab-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xcolab</groupId>
             <artifactId>emails-client</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -95,13 +90,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

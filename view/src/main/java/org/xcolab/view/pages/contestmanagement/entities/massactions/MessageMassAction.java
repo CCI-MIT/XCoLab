@@ -40,10 +40,6 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
         final StringBuilder contestNames = new StringBuilder();
 
         for (Contest contest : contests) {
-            if (contest.getIsSharedContestInForeignColab()) {
-                continue;
-            }
-
             contestNames.append(contest.getContestShortName()).append("; ");
             List<Proposal> proposals = getProposalsToBeMessaged(contest);
 

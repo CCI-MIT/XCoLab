@@ -27,7 +27,7 @@ public class CreationController {
         }
 
         Contest contest = ContestCreatorUtil.createNewContest("created contest "
-                + DateTime.now().toString("yyyy.MM.dd HH.mm.ss"));
+                + DateTime.now().toString("yyyy.MM.dd HH.mm.ss"), member.getId_());
         String newContestLink = "/admin/contest/details/contestId/"
                 + contest.getContestPK();
 

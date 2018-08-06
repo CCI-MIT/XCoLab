@@ -17,8 +17,6 @@ public interface ThreadDao {
 
     boolean exists(long threadId);
 
-    Optional<Long> getSharedColabThreadId(long threadId);
-
     boolean update(Thread thread);
 
     Thread create(Thread thread);

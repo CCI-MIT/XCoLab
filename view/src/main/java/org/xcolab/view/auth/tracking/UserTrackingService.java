@@ -1,26 +1,25 @@
-package org.xcolab.view.auth.endpoints;
+package org.xcolab.view.auth.tracking;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.stereotype.Service;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.TrackedVisit;
-import org.xcolab.view.config.spring.resolvers.RealMember;
 
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-@RestController
-public class UserTrackingController {
+@Service
+public class UserTrackingService {
 
     private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT, HttpHeaders.REFERER,
             HttpHeaders.HOST, HttpHeaders.ORIGIN, HttpHeaders.CONNECTION,
@@ -28,11 +27,10 @@ public class UserTrackingController {
 
     private static final String[] IGNORED_COOKIES = {"_ga", "_gid", "SESSION"};
 
-    @PostMapping("/trackVisitor")
-    protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
-            @RealMember Member loggedInMember, @RequestParam String url,
-            @RequestParam(required = false) String uuid,
-            @RequestParam(required = false) String referer) {
+
+    @Async
+    public Future<TrackedVisit> trackVisitor(HttpServletRequest request, String uuid, Member loggedInMember,
+            String url, String referer) {
 
         String browser = request.getHeader(HttpHeaders.USER_AGENT);
         String ip = getClientIpAddress(request);
@@ -41,8 +39,7 @@ public class UserTrackingController {
         final Long userId = loggedInMember != null ? loggedInMember.getUserId() : null;
         final TrackedVisit trackedVisit =
                 TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, userId);
-
-        return new ResponseJson(trackedVisit.getUuid_());
+        return new AsyncResult<>(trackedVisit);
     }
 
     private String getClientIpAddress(HttpServletRequest request) {

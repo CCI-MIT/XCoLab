@@ -3,6 +3,7 @@ package org.xcolab.service.tracking.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.model.tables.pojos.TrackedVisit;
 import org.xcolab.model.tables.pojos.TrackedVisitor2User;
 import org.xcolab.service.tracking.domain.trackedvisitor2user.TrackedVisitor2UserDao;
 
@@ -20,14 +21,21 @@ public class TrackedVisitor2UserService {
         this.trackedVisitor2UserDao = trackedVisitor2UserDao;
     }
 
-    public TrackedVisitor2User getOrCreate(Long memberId) {
-        if (memberId == null) {
-            return createUnknownVisitor();
+    public void getOrCreateTrackedVisitor(TrackedVisit trackedVisit, Long userId) {
+        TrackedVisitor2User trackedVisitor;
+        if (userId != null) {
+            trackedVisitor = getOrCreate(userId);
+        } else {
+            trackedVisitor = createUnknownVisitor();
         }
+        trackedVisit.setUuid_(trackedVisitor.getUuid_());
+    }
+
+    public TrackedVisitor2User getOrCreate(long memberId) {
         return trackedVisitor2UserDao.getByMemberId(memberId).orElse(create(memberId));
     }
 
-    private TrackedVisitor2User createUnknownVisitor() {
+    public TrackedVisitor2User createUnknownVisitor() {
         return create(null);
     }
 

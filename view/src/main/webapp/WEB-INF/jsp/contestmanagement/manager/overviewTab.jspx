@@ -152,14 +152,7 @@
                                              <span>${contest.weight}</span>
                             </td>
                             <td>
-                                <c:choose>
-                                    <c:when test="${not contest.isSharedContestInForeignColab}">
-                                        <a href="/admin/contest/details/contestId/${contestId}"> ${contest.contestShortNameWithEndYear}</a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a>${contest.contestShortNameWithEndYear}</a>
-                                    </c:otherwise>
-                                </c:choose>
+                                <a href="/admin/contest/details/contestId/${contestId}"> ${contest.contestShortNameWithEndYear}</a>
                             </td>
                             <td>${contest.activePhase.name}</td>
                             <td><form:checkbox path="contests[${contestId}].contestActive" disabled="false" onclick="processCheckBox()"/></td>

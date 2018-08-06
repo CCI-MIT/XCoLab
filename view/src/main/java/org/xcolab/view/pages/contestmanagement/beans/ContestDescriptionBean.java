@@ -11,7 +11,6 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 
 import java.io.Serializable;
@@ -55,8 +54,6 @@ public class ContestDescriptionBean implements Serializable {
 
     private boolean shouldUpdateContestUrlName;
 
-    private boolean isSharedContest;
-
     @SuppressWarnings("unused")
     public ContestDescriptionBean() {
     }
@@ -75,7 +72,6 @@ public class ContestDescriptionBean implements Serializable {
             sponsorLink = contest.getSponsorLink();
             defaultproposallogoid = contest.getDefaultProposalLogoId();
             shouldUpdateContestUrlName = !contest.getContestActive();
-            isSharedContest = contest.getIsSharedContest();
         }
     }
 
@@ -112,12 +108,7 @@ public class ContestDescriptionBean implements Serializable {
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setSponsorLink(sponsorLink);
         contest.setDefaultProposalLogoId(defaultproposallogoid);
-        contest.setIsSharedContest(isSharedContest);
         ContestClientUtil.updateContest(contest);
-        if (contest.getIsSharedContest()) {
-            SharedColabClient
-                    .updateSharedContestName(contest.getContestPK(), contest.getContestName());
-        }
     }
 
     private static void updateContestSchedule(Contest contest, Long contestScheduleId) {
@@ -214,13 +205,5 @@ public class ContestDescriptionBean implements Serializable {
 
     public void setShouldUpdateContestUrlName(Boolean shouldUpdateContestUrlName) {
         this.shouldUpdateContestUrlName = shouldUpdateContestUrlName;
-    }
-
-    public boolean getIsSharedContest() {
-        return isSharedContest;
-    }
-
-    public void setIsSharedContest(boolean sharedContest) {
-        isSharedContest = sharedContest;
     }
 }

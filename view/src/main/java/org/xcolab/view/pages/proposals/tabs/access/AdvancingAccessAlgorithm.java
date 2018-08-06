@@ -17,8 +17,7 @@ public class AdvancingAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
                 || permissions.getCanContestManagerActions();
 
         final Contest contest = proposalContext.getContest();
-        final boolean isForeignContest = contest.getIsSharedContestInForeignColab();
-        if (!hasCorrectRole || isForeignContest) {
+        if (!hasCorrectRole) {
             return false;
         }
 

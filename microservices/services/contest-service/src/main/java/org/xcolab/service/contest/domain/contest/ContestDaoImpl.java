@@ -113,11 +113,8 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShow_in_outline_view())
                 .set(CONTEST.HIDE_RIBBONS, contest.getHideRibbons())
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
-                .set(CONTEST.IS_SHARED_CONTEST, contest.getIsSharedContest())
-                .set(CONTEST.SHARED_ORIGIN, contest.getSharedOrigin()).execute();
-
+                .execute();
         return contest;
-
     }
 
     @Override
@@ -174,16 +171,8 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShow_in_outline_view())
                 .set(CONTEST.HIDE_RIBBONS, contest.getHideRibbons())
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
-                .set(CONTEST.IS_SHARED_CONTEST, contest.getIsSharedContest())
-                .set(CONTEST.SHARED_ORIGIN, contest.getSharedOrigin())
-                .where(CONTEST.CONTEST_PK.eq(contest.getContestPK())).execute() > 0;
-    }
-
-    @Override
-    public boolean isShared(long contestId) {
-        final Record1<Boolean> record = dslContext.select(CONTEST.IS_SHARED_CONTEST).from(CONTEST)
-                .where(CONTEST.CONTEST_PK.eq(contestId)).fetchOne();
-        return record != null && record.into(Boolean.class);
+                .where(CONTEST.CONTEST_PK.eq(contest.getContestPK()))
+                .execute() > 0;
     }
 
     @Override

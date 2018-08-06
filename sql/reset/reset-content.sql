@@ -3,7 +3,6 @@ delete from xcolab_ActivitySubscription;
 delete from xcolab_ColabEmail;
 
 -- Contests
-delete from sharedcolab_SharedContest;
 delete from xcolab_Contest;
 delete from xcolab_ContestCollectionCard;
 delete from xcolab_ContestDiscussion;

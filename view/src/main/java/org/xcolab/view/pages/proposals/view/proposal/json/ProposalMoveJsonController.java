@@ -51,17 +51,15 @@ public class ProposalMoveJsonController {
 
         List<ImmutableContest> returnList = new ArrayList<>();
         for (Contest contest: ContestClientUtil.findContestsByActive(true)) {
-            if(!contest.getIsSharedContestInForeignColab()) {
-                ContestPhase cp = ContestClientUtil.getActivePhase(contest.getContestPK());
-                if (cp.getPhaseActive()) {
-                    String statusStr = cp.getContestStatusStr();
-                    ContestStatus status = null;
-                    if (statusStr != null) {
-                        status = ContestStatus.valueOf(statusStr);
-                    }
-                    if (admin || (status != null && status.isCanCreate())) {
-                        returnList.add(new ImmutableContest(contest));
-                    }
+            ContestPhase cp = ContestClientUtil.getActivePhase(contest.getContestPK());
+            if (cp.getPhaseActive()) {
+                String statusStr = cp.getContestStatusStr();
+                ContestStatus status = null;
+                if (statusStr != null) {
+                    status = ContestStatus.valueOf(statusStr);
+                }
+                if (admin || (status != null && status.isCanCreate())) {
+                    returnList.add(new ImmutableContest(contest));
                 }
             }
         }
@@ -117,7 +115,7 @@ public class ProposalMoveJsonController {
         List<ImmutableSection> returnList = new ArrayList<>();
 
         Contest contest = ContestClientUtil.getContest(contestId);
-        ClientHelper clientHelper = new ClientHelper(contest);
+        ClientHelper clientHelper = new ClientHelper();
 
         PlanTemplate planTemplate = clientHelper.getPlanTemplateClient()
                 .getPlanTemplate(contest.getPlanTemplateId());

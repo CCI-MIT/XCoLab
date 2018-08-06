@@ -37,9 +37,9 @@ import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.time.DateUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
-import org.xcolab.commons.time.DateUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -131,18 +131,12 @@ public class Contest extends AbstractContest implements Serializable {
     public String getContestLinkUrl() {
         String link = "/";
 
-        if (this.getIsSharedContestInForeignColab()) {
-            link += ContestTypeClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
+        if (this.getContestTypeId() != null) {
+            link += ContestTypeClient.getContestType(this.getContestTypeId())
                     .getFriendlyUrlStringContests();
         } else {
-
-            if(this.getContestTypeId()!=null) {
-                link += ContestTypeClient.getContestType(this.getContestTypeId())
-                        .getFriendlyUrlStringContests();
-            }else{
-                System.out.println(" > ContestID("+this.getContestPK()+")");
-                System.out.println(" > Contest: " + this.toString() + " - ");
-            }
+            System.out.println(" > ContestID(" + this.getContestPK() + ")");
+            System.out.println(" > Contest: " + this.toString() + " - ");
         }
 
         link += "/%d/%s";
@@ -154,21 +148,11 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public String getSponsorLogoPath() {
-        if (this.getIsSharedContestInForeignColab()) {
-
-            Long imgId = this.getSponsorLogoId();
-            if (imgId != null) {
-                return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
-                        + "/image/contest/" + imgId;
-            }
-            return "";
-        } else {
-            Long imgId = this.getSponsorLogoId();
-            if (imgId != null) {
-                return "/image/contest/" + imgId;
-            }
-            return "";
+        Long imgId = this.getSponsorLogoId();
+        if (imgId != null) {
+            return "/image/contest/" + imgId;
         }
+        return "";
     }
 
     public String getCleanContestDescription() {
@@ -177,11 +161,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     public String getLogoPath() {
         long imgId = this.getContestLogoId() != null ? this.getContestLogoId() : 0;
-        final String imagePath = "/image/contest/" + imgId;
-        if (this.getIsSharedContestInForeignColab()) {
-            return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get() + imagePath;
-        }
-        return imagePath;
+        return "/image/contest/" + imgId;
     }
 
     public boolean getShowInTileView(){
@@ -454,13 +434,7 @@ public class Contest extends AbstractContest implements Serializable {
 
 
     public String getResourceArticleUrl() {
-        if(this.getIsSharedContestInForeignColab()) {
-            return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/resources/"
-                    + this.getContestYear() + "/" + this.getContestUrlName();
-        } else {
-            return "/resources/" + this.getContestYear()
-                    + "/" + this.getContestUrlName();
-        }
+        return "/resources/" + this.getContestYear() + "/" + this.getContestUrlName();
     }
 
     @Override
@@ -671,11 +645,6 @@ public class Contest extends AbstractContest implements Serializable {
         ContestClientUtil.updateContest(this);
     }
 
-    public boolean getIsSharedContestInForeignColab() {
-        final String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
-        return getIsSharedContest() != null && getIsSharedContest()
-                && !colabName.equals(getSharedOrigin());
-    }
     /**
      * Determine if judges are done with proposal
      *
@@ -744,17 +713,9 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public String getNewProposalLinkUrl() {
-        if (getIsSharedContestInForeignColab()) {
-            final ContestType contestType = ContestTypeClient
-                    .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-            final String portletUrl = contestType.getContestBaseUrl();
-            return String.format("%s/%s/%s/createProposal",
-                    portletUrl, this.getContestYear(), this.getContestUrlName());
-        } else {
-            final String portletUrl = getContestType().getContestBaseUrl();
-            return String.format("%s/%s/%s/createProposal",
-                    portletUrl, this.getContestYear(), this.getContestUrlName());
-        }
+        final String portletUrl = getContestType().getContestBaseUrl();
+        return String.format("%s/%s/%s/createProposal",
+                portletUrl, this.getContestYear(), this.getContestUrlName());
     }
 
     public List<PlanSectionDefinition> getSections() {

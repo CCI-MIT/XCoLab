@@ -3,7 +3,6 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
@@ -18,7 +17,6 @@ import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.enums.flagging.TargetType;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 
 import java.util.List;
@@ -33,7 +31,6 @@ public class LoadThreadStartTag extends BodyTagSupport {
     private long threadId;
     private long categoryId;
     private long categoryGroupId;
-    private Long sharedColabId;
 
     @Override
     public int doStartTag() {
@@ -41,18 +38,8 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
             HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 
-            ThreadClient threadClient;
-            CategoryClient categoryClient;
-            if (sharedColabId != null && sharedColabId > 0) {
-                ServiceNamespace serviceNamespace = ServiceNamespace.instance(
-                        ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-
-                threadClient = ThreadClient.fromService(serviceNamespace);
-                categoryClient = CategoryClient.fromService(serviceNamespace);
-            } else {
-                threadClient = ThreadClientUtil.getClient();
-                categoryClient = CategoryClientUtil.getClient();
-            }
+            ThreadClient threadClient = ThreadClientUtil.getClient();
+            CategoryClient categoryClient = CategoryClientUtil.getClient();
 
             String shareTitle = null;
 
@@ -128,13 +115,5 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public Long getSharedColabId() {
-        return sharedColabId;
-    }
-
-    public void setSharedColabId(Long sharedColabId) {
-        this.sharedColabId = sharedColabId;
     }
 }

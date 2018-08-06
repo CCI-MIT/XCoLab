@@ -25,13 +25,11 @@ public class SubscribeMassAction extends AbstractContestMassAction {
             throw new IllegalStateException("The mass action has not been setup yet.");
         }
         for (Contest contest : contests) {
-            if (!contest.getIsSharedContestInForeignColab()) {
-                if (isSubscribe) {
-                    ContestClientUtil.subscribeMemberToContest(contest.getContestPK(), memberId);
-                } else {
-                    ContestClientUtil
-                            .unsubscribeMemberFromContest(contest.getContestPK(), memberId);
-                }
+            if (isSubscribe) {
+                ContestClientUtil.subscribeMemberToContest(contest.getContestPK(), memberId);
+            } else {
+                ContestClientUtil
+                        .unsubscribeMemberFromContest(contest.getContestPK(), memberId);
             }
         }
     }

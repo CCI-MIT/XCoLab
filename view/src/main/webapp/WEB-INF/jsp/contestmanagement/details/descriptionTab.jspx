@@ -58,15 +58,6 @@
                             </label>
                         </div>
                     </c:if>
-
-                    <c:if test="${not contestWrapper.contestActive}">
-                        <div class="form-check">
-                            <form:checkbox path="isSharedContest" cssClass="form-check-input" id="isSharedContest"/>
-                            <label class="form-check-label" for="isSharedContest">
-                                shared contest(<strong>Warning:</strong> This will create a SHARED Contest between partner colabs)<br/>
-                            </label>
-                        </div>
-                    </c:if>
                 </div>
             </div>
 

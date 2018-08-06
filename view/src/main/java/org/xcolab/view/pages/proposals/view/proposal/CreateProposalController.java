@@ -18,8 +18,8 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
@@ -28,7 +28,6 @@ import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalUpdateHelper;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,16 +69,7 @@ public class CreateProposalController extends BaseProposalsController {
         final ProposalClient proposalClient = clients.getProposalClient();
 
         final Contest contest = proposalContext.getContest();
-        Proposal proposal;
-
-        if (contest.getIsSharedContestInForeignColab()) {
-            ServiceNamespace proposalService = ServiceNamespace.instance(
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-            );
-            proposal = new Proposal(proposalService);
-        } else {
-            proposal = new Proposal();
-        }
+        Proposal proposal = new Proposal();
 
         proposal.setProposalId(0L);
         proposal.setVisible(true);

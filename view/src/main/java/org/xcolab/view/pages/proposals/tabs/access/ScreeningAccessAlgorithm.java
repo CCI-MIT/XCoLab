@@ -14,10 +14,9 @@ public class ScreeningAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
         final ContestPhase contestPhase = proposalContext.getContestPhase();
         final Contest contest = proposalContext.getContest();
 
-        final boolean isForeignContest = contest.getIsSharedContestInForeignColab();
         final boolean hasCorrectRole = permissions.getCanFellowActions()
                 || permissions.getCanContestManagerActions();
-        if (!hasCorrectRole || isForeignContest) {
+        if (!hasCorrectRole) {
             return false;
         }
 

@@ -21,7 +21,6 @@ public enum CoLabService {
     MEMBER("members-service"),
     MODEL("modeling-service"),
     SEARCH("search-service"),
-    SHARED("sharedcolab-service"),
     TRACKING("tracking-service");
 
     private static final String SCHEME = "http";

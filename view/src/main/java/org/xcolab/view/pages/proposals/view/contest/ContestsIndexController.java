@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
@@ -22,7 +20,6 @@ import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.proposals.utils.ContestsColumn;
-import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
 import org.xcolab.view.pages.proposals.wrappers.CollectionCardFilterBean;
@@ -167,8 +164,8 @@ public class ContestsIndexController extends BaseProposalsController {
 
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
 
-            List<Contest> allContests = wrapContests(ContestClientUtil.getContests(
-                    null, false, contestType.getId())).stream()
+            List<Contest> allContests = ContestClientUtil.getContests(
+                    null, false, contestType.getId()).stream()
                     .filter(Contest::getShowInOutlineView)
                     .collect(Collectors.toList());
 
@@ -225,10 +222,8 @@ public class ContestsIndexController extends BaseProposalsController {
         	model.addAttribute("otherContests", otherContests);
         	model.addAttribute("contestType", contestType);
         } else if (!ConfigurationAttributeKey.COLAB_USES_CARDS.get()) {
-            List<Contest> contestsToWrap = ContestClientUtil.getContests(
+            contests = ContestClientUtil.getContests(
                     showAllContests ? null : true, false, contestType.getId());
-
-            contests = wrapContests(contestsToWrap);
         }
 
         model.addAttribute("showCollectionCards", ConfigurationAttributeKey.COLAB_USES_CARDS.get());
@@ -296,21 +291,7 @@ public class ContestsIndexController extends BaseProposalsController {
     }
 
     private List<Contest> wrapContests(List<Contest> contests){
-        List<Contest> contestsToReturn = new ArrayList<>();
-        for (Contest contest: contests) {
-            if (contest.getIsSharedContestInForeignColab()) {
-                final ContestClient contestClient = new ClientHelper(contest).getContestClient();
-                try {
-                    Contest foreignContest = contestClient.getContest(contest.getContestPK());
-                    foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
-                    contestsToReturn.add(foreignContest);
-                } catch (ContestNotFoundException notFound) {
-
-                }
-            } else {
-                contestsToReturn.add((contest));
-            }
-        }
+        List<Contest> contestsToReturn = new ArrayList<>(contests);
         return contestsToReturn;
     }
 }

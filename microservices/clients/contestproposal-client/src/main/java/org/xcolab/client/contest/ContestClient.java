@@ -110,9 +110,8 @@ public class ContestClient {
         }
     }
 
-    public Contest createContest(Long contestId, Long userId, String name) {
+    public Contest createContest(Long userId, String name) {
         Contest c = new Contest();
-        c.setContestPK(contestId);
         c.setAuthorId(userId);
         c.setContestName(name);
         c.setContestShortName(name);
@@ -246,15 +245,6 @@ public class ContestClient {
                 .resolveParentId(contestResource.id(contestTranslation.getContestId()))
                 .update(new ContestTranslationDto(contestTranslation), contestTranslation.getLang())
                 .execute();
-    }
-
-    public boolean isContestShared(long contestId) {
-        return contestResource.<Contest, Boolean>elementService(contestId, "isShared", Boolean.class)
-                .withCache(CacheKeys.withClass(Contest.class)
-                        .withParameter("contestId", contestId)
-                        .withParameter("service", "isShared")
-                        .build(Boolean.class), CacheName.CONTEST_DETAILS)
-                .get();
     }
 
 

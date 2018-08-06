@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -20,9 +19,8 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
-import org.xcolab.entity.utils.TemplateReplacementUtil;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,21 +54,9 @@ public class MembershipInvitationResponseController {
             @RequestParam long contestId, @RequestParam("do") String action) throws IOException {
 
         Contest contest = ContestClientUtil.getContest(contestId);
-        MembershipClient membershipClient;
-        ProposalClient proposalClient;
-        ProposalAttributeClient proposalAttributeClient;
-        if (contest.getIsSharedContestInForeignColab()) {
-            ServiceNamespace proposalService = ServiceNamespace.instance(
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-
-            proposalClient = ProposalClient.fromNamespace(proposalService);
-            membershipClient = MembershipClient.fromNamespace(proposalService);
-            proposalAttributeClient = ProposalAttributeClient.fromNamespace(proposalService);
-        } else {
-            membershipClient = MembershipClientUtil.getClient();
-            proposalClient = ProposalClientUtil.getClient();
-            proposalAttributeClient = ProposalAttributeClientUtil.getClient();
-        }
+        MembershipClient membershipClient = MembershipClientUtil.getClient();
+        ProposalClient proposalClient = ProposalClientUtil.getClient();
+        ProposalAttributeClient proposalAttributeClient = ProposalAttributeClientUtil.getClient();
 
         MembershipRequest membershipRequest = membershipClient.getMembershipRequest(requestId);
 

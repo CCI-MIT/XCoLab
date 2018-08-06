@@ -251,25 +251,6 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newLocalizedStringAttribute("IMAGE_UPLOAD_HELP_TEXT")
                     .buildLocalizable();
 
-    //Shared CoLab configuration
-    public static final AttributeGetter<Boolean> IS_SHARED_COLAB =
-            ConfigurationAttributes.newBooleanAttribute("IS_SHARED_COLAB")
-                    .defaultValue(false)
-                    .build();
-    public static final AttributeGetter<String> SHARED_COLAB_NAMESPACE =
-            ConfigurationAttributes.newStringAttribute("SHARED_COLAB_NAMESPACE")
-                    .build();
-    public static final AttributeGetter<String> PARTNER_COLAB_NAME =
-            ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_NAME")
-                    .build();
-    public static final AttributeGetter<String> PARTNER_COLAB_NAMESPACE =
-            ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_NAMESPACE")
-                    .build();
-    public static final AttributeGetter<String> PARTNER_COLAB_ADDRESS =
-            ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_ADDRESS")
-                    .map(AttributeTransformers.addDefaultScheme())
-                    .build();
-
 
     //Social media share text
     public static final LocalizableAttributeGetter<String> OPEN_GRAPH_SHARE_TITLE =
@@ -363,6 +344,10 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Boolean> PROPOSALS_COMMENTS_IN_SEPARATE_TAB =
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_COMMENTS_IN_SEPARATE_TAB")
                     .defaultValue(true)
+                    .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_COMMENTS_READ_ONLY =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_COMMENTS_READ_ONLY")
+                    .defaultValue(false)
                     .build();
 
     // Points

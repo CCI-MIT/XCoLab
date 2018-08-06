@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.util.ArrayList;
@@ -77,16 +75,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
                     break;
                 }
                 if (!contest.getContestPrivate()) {
-                    if (contest.getIsSharedContestInForeignColab()) {
-                        ServiceNamespace serviceNamespace = ServiceNamespace.instance(
-                                ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-                        Contest foreignContest = ContestClient.fromNamespace(serviceNamespace)
-                                .getContest(contest.getContestPK());
-                        foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
-                        contestWrappers.add(foreignContest);
-                    } else {
-                        contestWrappers.add(contest);
-                    }
+                    contestWrappers.add(contest);
                 }
             }
         } else {
@@ -97,16 +86,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
                 }
                 try {
                     Contest c = ContestClientUtil.getContest(contestId);
-                    if (c.getIsSharedContestInForeignColab()) {
-                        ServiceNamespace serviceNamespace = ServiceNamespace.instance(
-                                ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
-                        Contest foreignContest =
-                                ContestClient.fromNamespace(serviceNamespace).getContest(contestId);
-                        foreignContest.setUpForeignContestVisualConfigsFromLocal(c);
-                        contestWrappers.add(foreignContest);
-                    } else {
-                        contestWrappers.add(c);
-                    }
+                    contestWrappers.add(c);
                 } catch (ContestNotFoundException e) {
                     _log.error("Could not find contest {}", contestId);
                 }

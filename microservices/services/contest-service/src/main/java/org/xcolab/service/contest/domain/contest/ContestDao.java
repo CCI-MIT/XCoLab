@@ -26,8 +26,6 @@ public interface ContestDao {
             Long planTemplateId, List<Long> contestTypeIds, Boolean contestPrivate,
             String searchTerm);
 
-    boolean isShared(long contestId);
-
     boolean isContestNameYearUnique(String contestShortName, Long year, Long currentContestId);
 
     boolean existsWithScheduleId(long contestScheduleId);

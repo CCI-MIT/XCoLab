@@ -23,9 +23,7 @@ public abstract class SetContestPropertyMassAction extends AbstractContestMassAc
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response) {
         for (Contest contest : contests) {
-            if (contest.getIsSharedContestInForeignColab()) {
-                contest = ContestClientUtil.getContest(contest.getContestPK());
-            }
+            contest = ContestClientUtil.getContest(contest.getContestPK());
             setProperty(contest, setValue);
             contest.persist();
         }

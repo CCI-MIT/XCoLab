@@ -9,7 +9,7 @@ public class XColabGeneratorStrategy extends JooqGeneratorStrategy {
 
     private static final String[] TABLE_PREFIXES = {"xcolab_", "members_", "contest_",
             "content_", "proposal_", "comment_", "files_", "balloon_", "admin_", "activities_",
-            "flagging_", "sharedcolab_"};
+            "flagging_"};
 
     private static String toUpperCase(String string) {
         if (string != null && !string.isEmpty()) {

@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.proposals.judging;
 
 
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
@@ -11,7 +10,6 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 
 import javax.servlet.jsp.JspException;
@@ -64,16 +62,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
         try {
             Member judge = MembersClient.getMember(userId);
             Contest contest = ContestClientUtil.getContest(contestId);
-            ProposalClient proposalClient;
-
-            if (contest.getIsSharedContestInForeignColab()) {
-                ServiceNamespace proposalsService = ServiceNamespace.instance(
-                        ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-                );
-                proposalClient = ProposalClient.fromNamespace(proposalsService);
-            } else {
-                proposalClient = ProposalClientUtil.getClient();
-            }
+            ProposalClient proposalClient = ProposalClientUtil.getClient();
             Proposal proposal = proposalClient.getProposal(proposalId);
             //ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(proposal, judge);

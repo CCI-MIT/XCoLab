@@ -66,7 +66,7 @@ public class ProposalContextHelper {
 
         Contest localContest = fetchContest();
         log.trace("Fetched local contest: {}", localContest);
-        clientHelper = new ClientHelper(localContest);
+        clientHelper = new ClientHelper();
         if (localContest != null) {
             final Long contestPK = localContest.getContestPK();
             if (contestPK != null) {

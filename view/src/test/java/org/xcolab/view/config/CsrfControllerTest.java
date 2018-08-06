@@ -1,8 +1,10 @@
 package org.xcolab.view.config;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.pages.loginregister.ForgotPasswordController;
+import org.xcolab.view.util.clienthelpers.TrackingClientMockerHelper;
 
-import static org.springframework.security.test.web.servlet.request
-        .SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,10 +42,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 "cache.enabled=false"
         }
 )
+@PrepareForTest({
+        org.xcolab.client.tracking.TrackingClient.class
+})
 public class CsrfControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Before
+    public void setup() throws Exception {
+        ServiceRequestUtils.setInitialized(true);
+        TrackingClientMockerHelper.mockTrackingClient();
+    }
 
     @Test
     public void givenNoCsrf_whenPost_thenUnauthorized() throws Exception {

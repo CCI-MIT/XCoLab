@@ -55,8 +55,6 @@ public abstract class AbstractContest {
     private Boolean showInOutlineView;
     private Boolean hideribbons;
     private Long resourcearticleid;
-    private Boolean issharedcontest;
-    private String sharedorigin;
 
     public AbstractContest() {}
 
@@ -111,8 +109,6 @@ public abstract class AbstractContest {
         this.showInOutlineView = value.showInOutlineView;
         this.hideribbons = value.hideribbons;
         this.resourcearticleid = value.resourcearticleid;
-        this.issharedcontest = value.issharedcontest;
-        this.sharedorigin = value.sharedorigin;
     }
 
     public AbstractContest(Long contestpk, Long contesttypeid, String contestname,
@@ -130,8 +126,7 @@ public abstract class AbstractContest {
             Long defaultmodelid, String othermodels, String defaultmodelsettings, Double points,
             Long defaultparentpointtype, String pointdistributionstrategy, String emailtemplateurl,
             Boolean showInTileView, Boolean showInListView, Boolean showInOutlineView,
-            Boolean hideribbons, Long resourcearticleid, Boolean issharedcontest,
-            String sharedorigin) {
+            Boolean hideribbons, Long resourcearticleid) {
         this.contestpk = contestpk;
         this.contesttypeid = contesttypeid;
         this.contestname = contestname;
@@ -181,8 +176,6 @@ public abstract class AbstractContest {
         this.showInOutlineView = showInOutlineView;
         this.hideribbons = hideribbons;
         this.resourcearticleid = resourcearticleid;
-        this.issharedcontest = issharedcontest;
-        this.sharedorigin = sharedorigin;
     }
 
     public Long getContestPK() {
@@ -538,23 +531,6 @@ public abstract class AbstractContest {
         this.resourcearticleid = resourcearticleid;
     }
 
-    public Boolean getIsSharedContest() {
-        return this.issharedcontest;
-    }
-
-    public void setIsSharedContest(Boolean issharedcontest) {
-        this.issharedcontest = issharedcontest;
-    }
-
-    public String getSharedOrigin() {
-        return this.sharedorigin;
-    }
-
-    public void setSharedOrigin(String sharedorigin) {
-        this.sharedorigin = sharedorigin;
-    }
-
-
     public Timestamp getCreated() {
         return this.created;
     }
@@ -617,7 +593,7 @@ public abstract class AbstractContest {
                 usepermissions, contestcreationstatus, defaultmodelid, othermodels,
                 defaultmodelsettings, getPoints(), defaultparentpointtype,
                 pointdistributionstrategy, emailtemplateurl, showInTileView, showInListView,
-                showInOutlineView, hideribbons, resourcearticleid, issharedcontest, sharedorigin);
+                showInOutlineView, hideribbons, resourcearticleid);
     }
 
     @Override
@@ -677,9 +653,7 @@ public abstract class AbstractContest {
                 .equals(showInListView, that.showInListView) && Objects
                 .equals(showInOutlineView, that.showInOutlineView) && Objects
                 .equals(hideribbons, that.hideribbons) && Objects
-                .equals(resourcearticleid, that.resourcearticleid) && Objects
-                .equals(issharedcontest, that.issharedcontest) && Objects
-                .equals(sharedorigin, that.sharedorigin);
+                .equals(resourcearticleid, that.resourcearticleid);
     }
 
     @Override
@@ -700,6 +674,6 @@ public abstract class AbstractContest {
                 + defaultmodelsettings + ", " + points + ", " + defaultparentpointtype + ", "
                 + pointdistributionstrategy + ", " + emailtemplateurl + ", " + showInTileView + ", "
                 + showInListView + ", " + showInOutlineView + ", " + hideribbons + ", "
-                + resourcearticleid + ", " + issharedcontest + ")";
+                + resourcearticleid + ")";
     }
 }

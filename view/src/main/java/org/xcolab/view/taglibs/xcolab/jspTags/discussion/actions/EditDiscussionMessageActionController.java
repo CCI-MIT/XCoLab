@@ -39,12 +39,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
             return;
         }
 
-        final CommentClient commentClient;
-        if (contestId != null) {
-            commentClient = getCommentClient(contestId);
-        } else {
-            commentClient = CommentClientUtil.getClient();
-        }
+        final CommentClient commentClient = CommentClientUtil.getClient();
 
         Comment comment = commentClient.getComment(commentId);
 

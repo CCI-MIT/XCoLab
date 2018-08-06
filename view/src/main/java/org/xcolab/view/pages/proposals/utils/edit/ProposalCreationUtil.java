@@ -41,7 +41,7 @@ public final class ProposalCreationUtil {
     public static Proposal createProposal(long memberId,
             @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
             Contest contest, ContestPhase contestPhase) {
-        final ClientHelper clientHelper = new ClientHelper(contest);
+        final ClientHelper clientHelper = new ClientHelper();
         try {
             Proposal newProposal = clientHelper.getProposalClient()
                     .createProposal(memberId, contestPhase.getContestPhasePK(), true);

@@ -31,14 +31,12 @@ public class ReportPeopleInCurrentPhaseMassAction extends AbstractContestMassAct
 
         for (Contest contest : contests) {
             Long contestId = contest.getContestPK();
-            if (!contest.getIsSharedContestInForeignColab()) {
-                ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
-                List<Proposal> proposalsInActiveContestPhase = ProposalClientUtil
-                        .getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
-                csvExportHelper
-                        .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase,
-                                activeContestPhase);
-            }
+            ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
+            List<Proposal> proposalsInActiveContestPhase = ProposalClientUtil
+                    .getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
+            csvExportHelper
+                    .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase,
+                            activeContestPhase);
         }
 
         String exportFileName = "reportOfPeopleInCurrentPhase";

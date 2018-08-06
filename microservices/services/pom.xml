@@ -24,7 +24,6 @@
         <module>members-service</module>
         <module>modeling-service</module>
         <module>search-service</module>
-        <module>sharedcolab-service</module>
         <module>tracking-service</module>
     </modules>
 
@@ -246,6 +245,17 @@
                             </strategy>
                         </generator>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

@@ -2,13 +2,11 @@ package org.xcolab.entity.utils.notifications.basic;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 public class ProposalNotification extends ContestNotification {
 
@@ -36,13 +34,7 @@ public class ProposalNotification extends ContestNotification {
         final String proposalName =
                 getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-        final EmailTemplateClient emailTemplateClient;
-        if (contest.getIsSharedContestInForeignColab()) {
-            emailTemplateClient = EmailTemplateClient.fromNamespace(
-                    ServiceNamespace.instance(ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE));
-        } else {
-            emailTemplateClient = EmailTemplateClientUtil.getClient();
-        }
+        final EmailTemplateClient emailTemplateClient = EmailTemplateClientUtil.getClient();
 
         final ContestEmailTemplate emailTemplate =
                 emailTemplateClient.getContestEmailTemplateByType(templateName);

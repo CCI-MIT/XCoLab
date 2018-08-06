@@ -30,6 +30,7 @@
         <value />
       </option>
     </inspection_tool>
+    <inspection_tool class="BooleanMethodIsAlwaysInverted" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="CStyleArrayDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ChainedEquality" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ClassWithMultipleLoggers" enabled="true" level="WARNING" enabled_by_default="true">
@@ -49,7 +50,7 @@
     </inspection_tool>
     <inspection_tool class="DuplicateBooleanBranch" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="DuplicateCondition" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="ignoreMethodCalls" value="false" />
+      <option name="ignoreSideEffectConditions" value="true" />
     </inspection_tool>
     <inspection_tool class="ELSpecValidationInJSP" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="EqualsAndHashcode" enabled="true" level="WARNING" enabled_by_default="true" />

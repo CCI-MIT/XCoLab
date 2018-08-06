@@ -34,6 +34,10 @@ public class MessagingPermissions {
     }
 
     public boolean getCanViewThread(String threadId, List<MessageBean> fullConversation) {
+        if (!isLoggedIn) {
+            return false;
+        }
+        
         fullConversation.sort(new MessageBeanDateComparator());
         MessageBean originalMessage = fullConversation.get(fullConversation.size() - 1);
         boolean didSendOriginalMessage = originalMessage.getFrom().getUserId() == loggedInMember.getId_();

@@ -12,21 +12,11 @@
 
 		<jsp:directive.include file="./proposalDetails/header.jspx" />
 
-        <c:choose>
-            <c:when test="${contest.isSharedContestInForeignColab}">
-                <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
-                                           sharedColabId="${contest.contestPK}"
-                                           proposalId="${proposal.proposalId}"
-                                           shareTitle="Discussion for ${proposal.name} in ${contest.contestShortName}"  />
-            </c:when>
-            <c:otherwise>
-                <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
+        <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
                                            proposalId="${proposal.proposalId}"
                                            shareTitle="Discussion for ${proposal.name} in ${contest.contestShortName}" />
-            </c:otherwise>
-        </c:choose>
 
-		<script>
+        <script>
 			jQuery(function() {
 				enableDirtyCheck();
 			});
