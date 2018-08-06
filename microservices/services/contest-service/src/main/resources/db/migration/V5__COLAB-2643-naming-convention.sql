@@ -48,7 +48,7 @@ ALTER TABLE xcolab_Contest CHANGE show_in_list_view                      show_in
 ALTER TABLE xcolab_Contest CHANGE show_in_outline_view                   show_in_outline_view                   tinyint       null;
 ALTER TABLE xcolab_Contest CHANGE hideRibbons                            hide_ribbons                            tinyint       null;
 ALTER TABLE xcolab_Contest CHANGE resourceArticleId                      resource_article_id                      bigint        null;
-rename table xcolab_Contest to contest__contes
+rename table xcolab_Contest to contest__contest;
 
 ALTER TABLE xcolab_ContestCollectionCard CHANGE id_                   id                   bigint auto_increment;
 ALTER TABLE xcolab_ContestCollectionCard CHANGE `order`               sort_order              int default '0'                     null;
