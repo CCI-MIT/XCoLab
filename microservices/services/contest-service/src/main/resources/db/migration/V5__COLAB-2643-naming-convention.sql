@@ -98,7 +98,7 @@ ALTER TABLE xcolab_ContestSchedule CHANGE name           name           varchar(
 ALTER TABLE xcolab_ContestSchedule CHANGE description    description    varchar(75) null;
 ALTER TABLE xcolab_ContestSchedule CHANGE status         status         varchar(75) null;
 ALTER TABLE xcolab_ContestSchedule CHANGE baseScheduleId base_schedule_id bigint      null;
-rename table xcolab_ContestSchedule to contest__contest_schedul
+rename table xcolab_ContestSchedule to contest__contest_schedule;
 
 ALTER TABLE xcolab_ContestTeamMember CHANGE id_       id       bigint auto_increment;
 ALTER TABLE xcolab_ContestTeamMember CHANGE contestId contest_id bigint null;
