@@ -184,13 +184,6 @@ ALTER TABLE xcolab_PlanTemplateSection CHANGE planTemplateId id bigint not null;
 ALTER TABLE xcolab_PlanTemplateSection CHANGE planSectionId  section_definition_id  bigint not null;
 rename table xcolab_PlanTemplateSection to contest__proposal_template_section;
 
-ALTER TABLE xcolab_PointDistributionTarget CHANGE id_               id               bigint not null;
-ALTER TABLE xcolab_PointDistributionTarget CHANGE contestId         contest_id         bigint null;
-ALTER TABLE xcolab_PointDistributionTarget CHANGE proposalId        proposal_id        bigint null;
-ALTER TABLE xcolab_PointDistributionTarget CHANGE numberOfPoints    number_of_points    double null;
-ALTER TABLE xcolab_PointDistributionTarget CHANGE pointTypeOverride point_type_override bigint null;
-rename table xcolab_PointDistributionTarget to contest__points_distribution_target;
-
 ALTER TABLE xcolab_Points CHANGE id_                   id                   bigint not null;
 ALTER TABLE xcolab_Points CHANGE proposalId            proposal_id            bigint null;
 ALTER TABLE xcolab_Points CHANGE userId                user_id                bigint null;
