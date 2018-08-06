@@ -120,19 +120,19 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
     }
 
     @Override
-    public Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
+    public Integer getProposalCountForActiveContestPhase(Long contestPhaseId) {
 
         final SelectQuery<Record1<Long>> query = dslContext.select(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.PROPOSAL_ID)
                 .from(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
                 .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NAME.eq("VISIBLE")
                     .and(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NUMERIC_VALUE.eq(0L))
-                    .and(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.CONTEST_PHASE_ID.eq(contestPhasePK)))
+                    .and(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.CONTEST_PHASE_ID.eq(contestPhaseId)))
                 .getQuery();
 
         SelectQuery<Record1<Integer>> query2 = dslContext.selectCount()
                 .from(PROPOSAL2_PHASE)
                 .join(PROPOSAL).on(PROPOSAL.ID.eq(PROPOSAL2_PHASE.PROPOSAL_ID))
-                .where(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhasePK)
+                .where(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId)
                     .and(PROPOSAL2_PHASE.PROPOSAL_ID.notIn(query))
                     .and(PROPOSAL.VISIBLE.eq(true)))
                 .getQuery();

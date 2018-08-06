@@ -13,15 +13,15 @@ public interface ContestPhaseDao {
 
     boolean update(ContestPhase contestPhase);
 
-    boolean delete(Long contestPhasePK);
+    boolean delete(Long contestPhaseId);
 
     List<ContestPhase> findByGiven(Long contestId, Long contestScheduleId, Long contestPhaseTypeId);
 
     List<ContestPhase> findByPhaseAutopromote(String contestPhaseAutoPromote);
 
-    Optional<ContestPhase> get(Long contestPhasePK) throws NotFoundException;
+    Optional<ContestPhase> get(Long contestPhaseId) throws NotFoundException;
 
-    boolean exists(Long contestPhasePK);
+    boolean exists(Long contestPhaseId);
 
     boolean isPhaseActive(ContestPhase contestPhase);
 

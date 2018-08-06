@@ -131,7 +131,7 @@
         <c:forEach var="contestId" items="${contestPhases.keySet()}">
             ${contestId}: [
                 <c:forEach var="contestPhase" items="${contestPhases.get(contestId)}">
-                    {pk: ${contestPhase.contestPhasePK}, name: "${contestPhaseType.get(contestPhase.contestPhaseType).name}"},
+                    {pk: ${contestPhase.id}, name: "${contestPhaseType.get(contestPhase.contestPhaseTypeId).name}"},
                 </c:forEach>
             ],
         </c:forEach>

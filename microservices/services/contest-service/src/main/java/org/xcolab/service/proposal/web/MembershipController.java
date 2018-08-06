@@ -33,33 +33,33 @@ public class MembershipController {
         this.proposalTeamMemberDao = proposalTeamMemberDao;
     }
 
-    @RequestMapping(value = "/ProposalTeamMembershipRequests", method = RequestMethod.POST)
+    @RequestMapping(value = "/membershipRequests", method = RequestMethod.POST)
     public ProposalTeamMembershipRequest createProposalTeamMembershipRequest(@RequestBody ProposalTeamMembershipRequest ProposalTeamMembershipRequest) {
             ProposalTeamMembershipRequest.setCreatedAt(new Timestamp(new Date().getTime()));
         return this.ProposalTeamMembershipRequestDao.create(ProposalTeamMembershipRequest);
     }
 
-    @RequestMapping(value = "/ProposalTeamMembershipRequests/{ProposalTeamMembershipRequestId}", method = RequestMethod.GET)
-    public ProposalTeamMembershipRequest getProposalTeamMembershipRequest(@PathVariable("ProposalTeamMembershipRequestId") Long ProposalTeamMembershipRequestId) throws NotFoundException {
-        if (ProposalTeamMembershipRequestId == null || ProposalTeamMembershipRequestId == 0) {
-            throw new NotFoundException("No ProposalTeamMembershipRequestId given");
+    @RequestMapping(value = "/membershipRequests/{membershipRequestId}", method = RequestMethod.GET)
+    public ProposalTeamMembershipRequest getProposalTeamMembershipRequest(@PathVariable Long membershipRequestId) throws NotFoundException {
+        if (membershipRequestId == null || membershipRequestId == 0) {
+            throw new NotFoundException("No membershipRequestId given");
         } else {
-            return ProposalTeamMembershipRequestDao.get(ProposalTeamMembershipRequestId);
+            return ProposalTeamMembershipRequestDao.get(membershipRequestId);
         }
     }
 
-    @RequestMapping(value = "/ProposalTeamMembershipRequests/{ProposalTeamMembershipRequestId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/membershipRequests/{membershipRequestId}", method = RequestMethod.PUT)
     public boolean updateProposalTeamMembershipRequest(@RequestBody ProposalTeamMembershipRequest ProposalTeamMembershipRequest,
-                                           @PathVariable("ProposalTeamMembershipRequestId") Long ProposalTeamMembershipRequestId) throws NotFoundException {
+                                           @PathVariable Long membershipRequestId) throws NotFoundException {
 
-        if (ProposalTeamMembershipRequestId == null || ProposalTeamMembershipRequestId == 0 || ProposalTeamMembershipRequestDao.get(ProposalTeamMembershipRequestId) == null) {
-            throw new NotFoundException("No ProposalTeamMembershipRequest with id " + ProposalTeamMembershipRequestId);
+        if (membershipRequestId == null || membershipRequestId == 0 || ProposalTeamMembershipRequestDao.get(membershipRequestId) == null) {
+            throw new NotFoundException("No ProposalTeamMembershipRequest with id " + membershipRequestId);
         } else {
             return ProposalTeamMembershipRequestDao.update(ProposalTeamMembershipRequest);
         }
     }
 
-    @RequestMapping(value = "/ProposalTeamMembershipRequests", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(value = "/membershipRequests", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ProposalTeamMembershipRequest> getProposalTeamMembershipRequests(
             @RequestParam(required = false) Long groupId,
             @RequestParam(required = false) Integer statusId,

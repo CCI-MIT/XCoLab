@@ -46,8 +46,8 @@ public final class ProposalPhaseClientUtil {
         client.deleteProposal2Phase(proposal2Phase);
     }
 
-    public static Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
-        return client.getProposalCountForActiveContestPhase(contestPhasePK);
+    public static Integer getProposalCountForActiveContestPhase(Long contestPhaseId) {
+        return client.getProposalCountForActiveContestPhase(contestPhaseId);
     }
 
     public static void promoteProposal(Long proposalId, Long activePhaseForContest,

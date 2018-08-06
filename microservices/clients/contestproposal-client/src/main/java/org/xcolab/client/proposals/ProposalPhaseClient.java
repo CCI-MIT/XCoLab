@@ -112,10 +112,10 @@ public final class ProposalPhaseClient {
                 .post(proposal2Phase);
     }
 
-    public Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
+    public Integer getProposalCountForActiveContestPhase(Long contestPhaseId) {
 
         try {
-            return proposal2PhaseResource.elementService(contestPhasePK, "getProposalCount", Integer.class)
+            return proposal2PhaseResource.elementService(contestPhaseId, "getProposalCount", Integer.class)
                     .getChecked();
         } catch (EntityNotFoundException ignored) {
             return 0;

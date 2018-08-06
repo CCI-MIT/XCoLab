@@ -599,8 +599,8 @@ public class ContestClient {
                 .execute().toPojo(serviceNamespace);
     }
 
-    public void deleteContestPhase(Long contestPhasePK) {
-        contestPhasesResource.delete(contestPhasePK).execute();
+    public void deleteContestPhase(Long contestPhaseId) {
+        contestPhasesResource.delete(contestPhaseId).execute();
     }
 
     public boolean updateContestPhase(ContestPhase contestPhase) {

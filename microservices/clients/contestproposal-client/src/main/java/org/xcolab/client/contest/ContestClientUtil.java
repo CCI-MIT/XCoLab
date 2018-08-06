@@ -235,8 +235,8 @@ public final class ContestClientUtil {
         return contestClient.getContestPhaseType(contestPhaseTypeId);
     }
 
-    public static void deleteContestPhase(Long contestPhasePK) {
-        contestClient.deleteContestPhase(contestPhasePK);
+    public static void deleteContestPhase(Long contestPhaseId) {
+        contestClient.deleteContestPhase(contestPhaseId);
     }
 
     public static boolean updateContestPhase(ContestPhase contestPhase) {

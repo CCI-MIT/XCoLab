@@ -74,23 +74,23 @@ public class ContestPhaseController {
         return this.contestPhaseDao.create(contestPhase);
     }
 
-    @PutMapping(value = "/contestPhases/{contestPhasePK}")
-    public boolean updateContestPhase(@PathVariable long contestPhasePK,
+    @PutMapping(value = "/contestPhases/{contestPhaseId}")
+    public boolean updateContestPhase(@PathVariable long contestPhaseId,
             @RequestBody ContestPhase contestPhase) throws NotFoundException {
 
-        if (contestPhaseDao.exists(contestPhasePK)) {
+        if (contestPhaseDao.exists(contestPhaseId)) {
             return contestPhaseDao.update(contestPhase);
         } else {
-            throw new NotFoundException("No ContestPhase with id " + contestPhasePK);
+            throw new NotFoundException("No ContestPhase with id " + contestPhaseId);
         }
     }
 
-    @DeleteMapping(value = "/contestPhases/{contestPhasePK}")
-    public Boolean deleteContestPhase(@PathVariable("contestPhasePK") Long contestPhasePK)
+    @DeleteMapping(value = "/contestPhases/{contestPhaseId}")
+    public Boolean deleteContestPhase(@PathVariable("contestPhaseId") Long contestPhaseId)
             throws NotFoundException {
 
-        if (contestPhaseDao.exists(contestPhasePK)) {
-            return contestPhaseDao.delete(contestPhasePK);
+        if (contestPhaseDao.exists(contestPhaseId)) {
+            return contestPhaseDao.delete(contestPhaseId);
         }
         throw new NotFoundException();
     }
@@ -104,15 +104,15 @@ public class ContestPhaseController {
         return contestPhaseDao.getProposalDiscussionThreadsInPhase(phaseId);
     }
 
-    @PutMapping(value = "/contestPhases/{contestPhasePK}/forcePromotionOfProposalInContestPhaseId")
-    public boolean forcePromotionOfProposalInContestPhaseId(@PathVariable long contestPhasePK,
+    @PutMapping(value = "/contestPhases/{contestPhaseId}/forcePromotionOfProposalInContestPhaseId")
+    public boolean forcePromotionOfProposalInContestPhaseId(@PathVariable long contestPhaseId,
                                       @RequestParam Long proposalId) throws NotFoundException {
 
-        if (contestPhaseDao.exists(contestPhasePK)) {
-             contestPhaseService.forcePromotionOfProposalInPhase(proposalId, contestPhasePK);
+        if (contestPhaseDao.exists(contestPhaseId)) {
+             contestPhaseService.forcePromotionOfProposalInPhase(proposalId, contestPhaseId);
             return true;
         } else {
-            throw new NotFoundException("No ContestPhase with id " + contestPhasePK);
+            throw new NotFoundException("No ContestPhase with id " + contestPhaseId);
         }
     }
 

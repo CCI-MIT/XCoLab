@@ -121,8 +121,8 @@
 
                                     <form:hidden path="schedulePhases[${x.index}].contestScheduleId"
                                                  data-form-name="contestScheduleId"/>
-                                    <form:hidden path="schedulePhases[${x.index}].contestPhasePK"
-                                                 data-form-name="contestPhasePK"/>
+                                    <form:hidden path="schedulePhases[${x.index}].id"
+                                                 data-form-name="contestPhaseId"/>
                                     <form:hidden path="schedulePhases[${x.index}].contestId" data-form-name="contestId"/>
                                     <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
                                                  data-form-name="contestPhaseDeleted"/>
@@ -302,7 +302,7 @@
         function deleteContestPhase(event) {
             if (confirm("Do you want to remove this contestPhase ?")) {
                 var contestPhaseRow = getClosest(event.target, "tr");
-                var isNewContestPhase = contestPhaseRow.querySelectorAll("[data-form-name=contestPhasePK]")[0].value == -1;
+                var isNewContestPhase = contestPhaseRow.querySelectorAll("[data-form-name=contestPhaseId]")[0].value == -1;
                 if (isNewContestPhase) {
                     contestPhaseRow.remove();
                 } else {

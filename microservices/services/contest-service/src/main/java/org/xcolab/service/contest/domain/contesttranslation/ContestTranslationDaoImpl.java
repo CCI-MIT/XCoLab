@@ -33,7 +33,7 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
                 .set(CONTEST_TRANSLATION.DESCRIPTION, translation.getDescription())
                 .set(CONTEST_TRANSLATION.CREATED_AT, DSL.currentTimestamp())
                 .set(CONTEST_TRANSLATION.UPDATED_AT, DSL.currentTimestamp())
-                .set(CONTEST_TRANSLATION.AUTHOR_ID, translation.getAuthorId())
+                .set(CONTEST_TRANSLATION.AUTHOR_USER_ID, translation.getAuthorUserId())
                 .execute();
         return translation;
     }
@@ -45,7 +45,7 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
                 .set(CONTEST_TRANSLATION.QUESTION, translation.getQuestion())
                 .set(CONTEST_TRANSLATION.DESCRIPTION, translation.getDescription())
                 .set(CONTEST_TRANSLATION.UPDATED_AT, DSL.currentTimestamp())
-                .set(CONTEST_TRANSLATION.AUTHOR_ID, translation.getAuthorId())
+                .set(CONTEST_TRANSLATION.AUTHOR_USER_ID, translation.getAuthorUserId())
                 .where(CONTEST_TRANSLATION.CONTEST_ID.eq(translation.getContestId())
                         .and(CONTEST_TRANSLATION.LANG.equalIgnoreCase(translation.getLang())))
                 .execute() > 0;

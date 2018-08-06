@@ -39,8 +39,8 @@ public abstract class AbstractContestPhase implements Serializable, Comparable<A
         return this.id;
     }
 
-    public void setId(Long contestphasepk) {
-        this.id = contestphasepk;
+    public void setId(Long contestPhaseId) {
+        this.id = contestPhaseId;
     }
 
     public Long getContestId() {
