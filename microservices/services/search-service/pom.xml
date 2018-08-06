@@ -50,8 +50,11 @@
 					<generator>
 						<database>
 							<includes>
-								comment_.*|xcolab_ProposalAttribute|xcolab_ContentArticleVersion
-								|xcolab_Contest|members_Member|BlogEntry
+								comment__comment
+                                | content__content_article_version
+                                | contest__contest
+                                | contest__proposal_attribute
+                                | user__user
 							</includes>
 						</database>
 					</generator>

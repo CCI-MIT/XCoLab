@@ -30,7 +30,7 @@ public class SearchController {
         final PaginationHelper paginationHelper =
                 new PaginationHelper(startRecord, limitRecord, filter);
         if (filter != null) {
-            if (filter.equals(SearchType.MEMBER.getStringType())) {
+            if (filter.equals(SearchType.USER.getStringType())) {
                 return searchDao.findMember(paginationHelper, query);
             }
             if (filter.equals(SearchType.PROPOSAL.getStringType())) {
@@ -53,7 +53,7 @@ public class SearchController {
     public Integer doSearch(@RequestParam(required = false) String sort,
             @RequestParam String query) {
         if (sort != null) {
-            if (sort.equals(SearchType.MEMBER.getStringType())) {
+            if (sort.equals(SearchType.USER.getStringType())) {
                 return searchDao.findMemberCount(query);
             }
             if (sort.equals(SearchType.PROPOSAL.getStringType())) {
