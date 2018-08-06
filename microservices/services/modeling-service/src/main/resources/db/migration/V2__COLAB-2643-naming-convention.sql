@@ -18,7 +18,7 @@ ALTER TABLE modeling__model_discussion CHANGE categoryId category_id bigint(20);
 
 ALTER TABLE modeling__model_global_preference CHANGE modelGlobalPreferencePK id bigint(20) NOT NULL;
 ALTER TABLE modeling__model_global_preference CHANGE modelId model_id bigint(20);
-ALTER TABLE modeling__model_global_preference CHANGE expertEvaluationageId expert_evaluation_page_id bigint(20);
+ALTER TABLE modeling__model_global_preference CHANGE expertEvaluationPageId expert_evaluation_page_id bigint(20);
 ALTER TABLE modeling__model_global_preference CHANGE modelCategoryId model_category_id bigint(20);
 ALTER TABLE modeling__model_global_preference CHANGE usesCustomInputs uses_custom_inputs tinyint(4);
 ALTER TABLE modeling__model_global_preference CHANGE customInputsDefinition custom_inputs_definition longtext;
