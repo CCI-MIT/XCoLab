@@ -85,7 +85,7 @@
             <c:if test="${proposalsPermissions.canReportProposal}">
                 <xcolab:requireLibrary name="flagging"/>
                 <div>
-                    <button type="button" class="btn btn-link btn-sm" onclick="reportProposal(${proposal.proposalId})">
+                    <button type="button" class="btn btn-link btn-sm" onclick="reportProposal(${proposal.id})">
                         Report
                     </button>
                 </div>

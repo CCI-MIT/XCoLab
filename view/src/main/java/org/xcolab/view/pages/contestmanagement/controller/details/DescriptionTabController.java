@@ -104,7 +104,7 @@ public class DescriptionTabController extends AbstractTabController {
         //check for contest name year uniqueness
         final Contest contest = getContest();
         if (!ContestClientUtil
-                .isContestTitleYearUnique(contestDescriptionBean.getContestShortName(), contest.getContestYear(),
+                .isContestTitleYearUnique(contestDescriptionBean.getTitle(), contest.getContestYear(),
                         contest.getId())) {
             AlertMessage
                     .danger("Contest name and year must be unique, a contest with the given name "

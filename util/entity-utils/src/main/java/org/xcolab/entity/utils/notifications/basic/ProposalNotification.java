@@ -46,7 +46,7 @@ public class ProposalNotification extends ContestNotification {
 
     @Override
     protected Long getReferenceId(){
-        return this.proposal.getContestPK();
+        return this.proposal.getcontestId();
     }
 
     protected class ProposalNotificationTemplate extends ContestNotificationTemplate {

@@ -283,7 +283,7 @@ public class ContestsIndexController extends BaseProposalsController {
 
         return contest -> {
             final String contestNameLc = contest.getQuestion().toLowerCase();
-            final String contestShortNameLc = contest.getContestShortNameWithEndYear()
+            final String contestShortNameLc = contest.getTitleWithEndYear()
                     .toLowerCase();
             return contestNameLc.contains(filterString)
                     || contestShortNameLc.contains(filterString);

@@ -21,8 +21,8 @@ public class MessageAllAuthorsMassAction extends MessageMassAction {
 
     @Override
     protected List<Proposal> getProposalsToBeMessaged(Contest contest) {
-        Long contestPK = contest.getId();
-        List<ContestPhase> allPhases = ContestClientUtil.getAllContestPhases(contestPK);
+        Long contestId = contest.getId();
+        List<ContestPhase> allPhases = ContestClientUtil.getAllContestPhases(contestId);
         Map<Long, Proposal> proposalsMap = new HashMap<>();
         for (ContestPhase cp : allPhases) {
             ContestPhaseType cpt = ContestClientUtil.getContestPhaseType(cp.getContestPhaseTypeId());

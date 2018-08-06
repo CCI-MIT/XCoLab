@@ -52,7 +52,7 @@ public class ContestTranslationBean implements Serializable {
         ContestClient contestClient = ContestClient.fromNamespace(contest.getServiceNamespace());
         translations.stream()
                 .filter(translation -> !StringUtils.isAllEmpty(translation.getContestName(),
-                        translation.getContestShortName(), translation.getContestDescription()))
+                        translation.getTitle(), translation.getContestDescription()))
                 .map(translation -> {
                     translation.setContestId(contest.getId());
                     return translation;

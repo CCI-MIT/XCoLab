@@ -36,8 +36,8 @@ public class ProposalLegacyModelTabController extends BaseProposalTabController 
         return "proposals/proposalModel";
     }
 
-    private Map<Long, String> getModelIdsAndNames(long contestPK) {
-        List<Long> modelIds = getModelIds(contestPK);
+    private Map<Long, String> getModelIdsAndNames(long contestId) {
+        List<Long> modelIds = getModelIds(contestId);
 
         Map<Long, String> ret = new HashMap<>();
         for (Long modelId: modelIds) {
@@ -52,8 +52,8 @@ public class ProposalLegacyModelTabController extends BaseProposalTabController 
         return ret;
     }
 
-    private List<Long> getModelIds(long contestPK) {
-        Contest contest = ContestClientUtil.getContest(contestPK);
+    private List<Long> getModelIds(long contestId) {
+        Contest contest = ContestClientUtil.getContest(contestId);
 
         List<Long> modelIds = new ArrayList<>();
 

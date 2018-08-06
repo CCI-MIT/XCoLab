@@ -25,7 +25,7 @@ public class ContestDescriptionBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:.,;'’0-9äöüÄÖÜ?! ]*$";
 
-    private Long ContestPK;
+    private Long contestId;
     private Long contestLogoId;
     private Long sponsorLogoId;
     @Length(max = 500, message = "The sponsor link URL must not be longer than 500 characters.")
@@ -34,20 +34,20 @@ public class ContestDescriptionBean implements Serializable {
 
     @Length(min = 3, max = 150, message = "The contest question must be at least 3 characters and"
             + " not more than 150 characters.")
-    private String contestName;
+    private String question;
 
     @Length(min = 3, max = 55, message = "The contest title must be at least 3 characters and not"
             + " more than 55 characters.")
     @Pattern(regexp = NO_SPECIAL_CHAR_REGEX, message = "The contest title must not contain "
             + "special characters.")
-    private String contestShortName;
+    private String title;
 
     @Length(max = 3000, message = "The contest description must have not more than 3000 "
             + "characters (including html tags).")
-    private String contestDescription;
+    private String description;
 
     @NotNull(message = "A plan template must be selected.")
-    private Long planTemplateId;
+    private Long proposalTemplateId;
 
     @NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
@@ -61,11 +61,11 @@ public class ContestDescriptionBean implements Serializable {
     public ContestDescriptionBean(Contest contest) {
 
         if (contest != null) {
-            ContestPK = contest.getId();
-            contestName = contest.getQuestion();
-            contestShortName = contest.getTitle();
-            contestDescription = contest.getDescription();
-            planTemplateId = contest.getPlanTemplateId();
+            contestId = contest.getId();
+            title = contest.getTitle();
+            question = contest.getQuestion();
+            description = contest.getDescription();
+            proposalTemplateId = contest.getProposalTemplateId();
             scheduleTemplateId = contest.getContestScheduleId();
             contestLogoId = contest.getContestLogoId();
             sponsorLogoId = contest.getSponsorLogoId();
@@ -100,10 +100,10 @@ public class ContestDescriptionBean implements Serializable {
     }
 
     private void updateContestDescription(Contest contest) {
-        contest.setQuestion(contestName);
-        contest.setTitle(contestShortName);
-        contest.setDescription(contestDescription);
-        contest.setPlanTemplateId(planTemplateId);
+        contest.setQuestion(question);
+        contest.setTitle(title);
+        contest.setDescription(description);
+        contest.setProposalTemplateId(proposalTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setSponsorLink(sponsorLink);
@@ -127,12 +127,12 @@ public class ContestDescriptionBean implements Serializable {
         this.defaultproposallogoid = defaultproposallogoid;
     }
 
-    public Long getContestPK() {
-        return ContestPK;
+    public Long getContestId() {
+        return contestId;
     }
 
-    public void setContestPK(Long contestPK) {
-        ContestPK = contestPK;
+    public void setContestId(Long contestId) {
+        this.contestId = contestId;
     }
 
     public Long getContestLogoId() {
@@ -159,36 +159,36 @@ public class ContestDescriptionBean implements Serializable {
         this.sponsorLink= sponsorLink;
     }
 
-    public String getContestName() {
-        return contestName;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setContestName(String contestName) {
-        this.contestName = contestName;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
-    public String getContestShortName() {
-        return contestShortName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setContestShortName(String contestShortName) {
-        this.contestShortName = contestShortName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getContestDescription() {
-        return contestDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setContestDescription(String contestDescription) {
-        this.contestDescription = contestDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Long getPlanTemplateId() {
-        return planTemplateId;
+    public Long getProposalTemplateId() {
+        return proposalTemplateId;
     }
 
-    public void setPlanTemplateId(Long planTemplateId) {
-        this.planTemplateId = planTemplateId;
+    public void setProposalTemplateId(Long proposalTemplateId) {
+        this.proposalTemplateId = proposalTemplateId;
     }
 
     public Long getScheduleTemplateId() {

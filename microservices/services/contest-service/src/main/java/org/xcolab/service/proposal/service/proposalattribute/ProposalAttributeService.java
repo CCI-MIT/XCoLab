@@ -160,7 +160,7 @@ public class ProposalAttributeService {
         ProposalVersion proposalVersion = new ProposalVersion();
         proposalVersion.setProposalId(proposalId);
         proposalVersion.setVersion(version);
-        proposalVersion.setAuthorId(authorUserId);
+        proposalVersion.setAuthorUserId(authorUserId);
         proposalVersion.setUpdateType(updateType);
         proposalVersion.setUpdateAdditionalId(additionalId);
 

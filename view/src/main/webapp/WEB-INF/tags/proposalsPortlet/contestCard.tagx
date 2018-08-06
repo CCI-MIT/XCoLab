@@ -10,7 +10,7 @@
         <div class="c-ContestCard">
             <div class="c-ContestCard__text">
                 <h3 class="c-ContestCard__text__title">
-                    ${contest.contestShortNameWithEndYear}
+                    ${contest.titleWithEndYear}
                 </h3>
                 ${contest.question }
             </div>
@@ -36,7 +36,7 @@
                 </c:if>
             </div>
             <div class="c-ContestCard__image">
-                <collab:image src="${contest.logoPath}" alt="${contest.contestShortNameWithEndYear}" />
+                <collab:image src="${contest.logoPath}" alt="${contest.titleWithEndYear}" />
             </div>
             <div class="c-ContestCard__meta__count">
                 <div class="prop"><strong>${contest.proposalsCount}</strong>

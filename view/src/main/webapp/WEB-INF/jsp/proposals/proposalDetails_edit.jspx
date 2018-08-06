@@ -25,7 +25,7 @@
     <c:if test="${not empty baseProposal}">
         <script>
             var baseProposal = {
-                proposalId: ${baseProposal.proposalId},
+                proposalId: ${baseProposal.id},
                 version: ${baseProposal.version}
             }
         </script>
@@ -33,7 +33,7 @@
     <c:if test="${not empty baseContest}">
         <script>
             var baseContest = {
-                contestPK: ${baseContest.contestPK}
+                contestId: ${baseContest.id}
             }
         </script>
     </c:if>
@@ -359,7 +359,7 @@
 
         jQuery(function() {
             jQuery("#saveChangesButton").click(function() {
-                if (currentProposal.proposalId > 0) {
+                if (currentProposal.id > 0) {
                     disableButtons(true);
                     saveIfValid();
                 } else {

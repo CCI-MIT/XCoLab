@@ -424,9 +424,9 @@ public class ContestClient {
                 .execute(), serviceNamespace);
     }
 
-    public Map<Long, String> getModelIdsAndNames(long contestPK) {
+    public Map<Long, String> getModelIdsAndNames(long contestId) {
         try {
-            List<Long> modelIds = getModelIds(contestPK);
+            List<Long> modelIds = getModelIds(contestId);
 
             Map<Long, String> ret = new HashMap<>();
             for (Long modelId : modelIds) {
@@ -443,8 +443,8 @@ public class ContestClient {
         }
     }
 
-    public List<Long> getModelIds(long contestPK) throws ContestNotFoundException {
-        Contest contest = getContest(contestPK);
+    public List<Long> getModelIds(long contestId) throws ContestNotFoundException {
+        Contest contest = getContest(contestId);
         List<Long> modelIds = new ArrayList<>();
 
         if (StringUtils.isNotBlank(contest.getOtherModels())) {
@@ -614,9 +614,9 @@ public class ContestClient {
                 .execute().toPojo(serviceNamespace);
     }
 
-    public List<ContestPhase> getAllContestPhases(Long contestPK) {
+    public List<ContestPhase> getAllContestPhases(Long contestId) {
         return DtoUtil.toPojos(contestPhasesResource.list()
-                .queryParam("contestPK", contestPK)
+                .queryParam("contestId", contestId)
                 .execute(), serviceNamespace);
     }
 
@@ -627,16 +627,16 @@ public class ContestClient {
     }
 
     public List<ContestPhase> getPhasesForContestScheduleIdAndContest(Long contestScheduleId,
-            Long contestPK) {
+            Long contestId) {
         return DtoUtil.toPojos(contestPhasesResource.list()
-                .queryParam("contestPK", contestPK)
+                .queryParam("contestId", contestId)
                 .queryParam("contestScheduleId", contestScheduleId)
                 .execute(), serviceNamespace);
     }
 
     public List<ContestPhase> getTemplatePhasesForContestScheduleId(Long contestScheduleId) {
         return DtoUtil.toPojos(contestPhasesResource.list()
-                .queryParam("contestPK", ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID)
+                .queryParam("contestId", ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID)
                 .queryParam("contestScheduleId", contestScheduleId)
                 .execute(), serviceNamespace);
     }
@@ -691,17 +691,17 @@ public class ContestClient {
                 .execute(), serviceNamespace);
     }
 
-    public boolean isMemberSubscribedToContest(long contestPK, long userId) {
+    public boolean isMemberSubscribedToContest(long contestId, long userId) {
         return ActivitiesClientUtil.isSubscribedToActivity(userId,
-                ActivityCategory.CONTEST, contestPK, "");
+                ActivityCategory.CONTEST, contestId, "");
     }
 
-    public void subscribeMemberToContest(long contestPK, long userId) {
-        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestPK, "");
+    public void subscribeMemberToContest(long contestId, long userId) {
+        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
     }
 
-    public void unsubscribeMemberFromContest(long contestPK, long userId) {
-        ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.CONTEST, contestPK);
+    public void unsubscribeMemberFromContest(long contestId, long userId) {
+        ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.CONTEST, contestId);
     }
 
     public List<ContestCollectionCard> getSubContestCollectionCards(long parentCollectionCardId) {

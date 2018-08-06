@@ -486,7 +486,7 @@ public class Proposal extends AbstractProposal {
         return this.getCurrentVersion() != null ? this.getCurrentVersion() : 0;
     }
 
-    public long getContestPK() {
+    public long getcontestId() {
         return contest.getId();
     }
 
@@ -641,7 +641,7 @@ public class Proposal extends AbstractProposal {
         if (sections == null) {
             sections = new ArrayList<>();
             if (contest != null) {
-                ProposalTemplate planTemplate = clients.planTemplate.getPlanTemplate(contest.getPlanTemplateId());
+                ProposalTemplate planTemplate = clients.planTemplate.getPlanTemplate(contest.getProposalTemplateId());
                 if (planTemplate != null) {
                     for (ProposalTemplateSectionDefinition psd : clients.planTemplate
                             .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(),true)) {

@@ -68,11 +68,11 @@ public class ProposalContextHelper {
         log.trace("Fetched local contest: {}", localContest);
         clientHelper = new ClientHelper();
         if (localContest != null) {
-            final Long contestPK = localContest.getId();
-            if (contestPK != null) {
-                contest = setupContestFromTheRightClient(contestPK);
+            final Long contestId = localContest.getId();
+            if (contestId != null) {
+                contest = setupContestFromTheRightClient(contestId);
             } else {
-                throw new IllegalStateException("Contest has contestPK=null: " + localContest);
+                throw new IllegalStateException("Contest has contestId=null: " + localContest);
             }
         } else {
             log.trace("Local contest is null: contestUrlName={}, contestYear={}, contestId={}",

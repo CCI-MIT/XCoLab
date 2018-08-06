@@ -70,7 +70,7 @@ public class ProposalService {
         try {
             Proposal proposal = new Proposal();
             proposal.setVisible(true);
-            proposal.setAuthorId(authorUserId);
+            proposal.setAuthorUserId(authorUserId);
 
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             final Contest contest = ContestClientUtil.getContest(contestPhase.getContestId());
@@ -259,7 +259,7 @@ public class ProposalService {
     public void promoteMemberToProposalOwner(Long proposalId, Long userId) throws ProposalNotFoundException {
         try {
             Proposal proposal = proposalDao.get(proposalId);
-            proposal.setAuthorId(userId);
+            proposal.setAuthorUserId(userId);
             proposalDao.update(proposal);
         } catch (NotFoundException ignored) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");

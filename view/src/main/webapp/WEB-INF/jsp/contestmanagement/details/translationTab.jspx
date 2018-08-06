@@ -44,7 +44,7 @@
                                 <div>
                                     <strong><spring:message code="${lang['lable']}"/> title:</strong>
                                 </div>
-                                <form:input path="translations[${x.index}].contestShortName"
+                                <form:input path="translations[${x.index}].title"
                                             cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                                 <div>
                                     <strong><spring:message code="${lang['lable']}"/> question:</strong>
                                 </div>
-                                <form:input path="translations[${x.index}].contestName"
+                                <form:input path="translations[${x.index}].question"
                                             cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
                             </div>
                         </div>
@@ -70,7 +70,7 @@
                                 <div>
                                     <strong><spring:message code="${lang['lable']}"/> description:</strong>
                                 </div>
-                                <form:textarea path="translations[${x.index}].contestDescription"
+                                <form:textarea path="translations[${x.index}].description"
                                                cssClass="rte-editorPlaceholder form-control" cssErrorClass="form-control cb-form-has-error"/>
                             </div>
                         </div>

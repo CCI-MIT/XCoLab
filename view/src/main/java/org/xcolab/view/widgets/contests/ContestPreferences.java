@@ -133,7 +133,7 @@ public class ContestPreferences extends WidgetPreference {
             }
             contestMap.put(c.getId(),
                     String.format("%d [%s] %s", c.getId(), phaseName,
-                            c.getContestShortNameWithEndYear()));
+                            c.getTitleWithEndYear()));
         }
 
     }

@@ -169,8 +169,8 @@ public final class ProposalClient {
         return listProposals(0, Integer.MAX_VALUE, null, true, null, null);
     }
 
-    public List<Proposal> getProposalsInContest(Long contestPK) {
-        ContestPhase cp = contestClient.getActivePhase(contestPK);
+    public List<Proposal> getProposalsInContest(Long contestId) {
+        ContestPhase cp = contestClient.getActivePhase(contestId);
 
         return listProposals(0, Integer.MAX_VALUE, null, true, cp.getId(), null);
     }

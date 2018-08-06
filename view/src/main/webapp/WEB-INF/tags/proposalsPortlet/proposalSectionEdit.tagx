@@ -96,7 +96,7 @@
                             <table>
                                 <tr>
                                     <td class="proposalLink"><xcolab:proposalLink proposal="${p}" /></td>
-                                    <td>(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</td>
+                                    <td>(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.id}, $(this), false);">remove</a>)</td>
                                 </tr>
                             </table>
                         </c:otherwise>
@@ -114,7 +114,7 @@
                         <c:forEach var="p" items="${pl}">
                             <li>
                                 <xcolab:proposalLink proposal="${p}" />
-                                (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a>)
+                                (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.id}, $(this), true);">remove</a>)
                             </li>
                         </c:forEach>
                     </ul>

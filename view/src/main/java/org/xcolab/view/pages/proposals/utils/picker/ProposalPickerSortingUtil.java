@@ -18,7 +18,7 @@ public class ProposalPickerSortingUtil {
             Comparator<Contest> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "name":
-                    comparator = Comparator.comparing(Contest::getContestShortNameWithEndYear);
+                    comparator = Comparator.comparing(Contest::getTitleWithEndYear);
                     break;
                 case "comments":
                     comparator = Comparator.comparing(Contest::getTotalCommentsCount);

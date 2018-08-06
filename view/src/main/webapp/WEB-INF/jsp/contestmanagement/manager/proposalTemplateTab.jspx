@@ -6,7 +6,7 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-	<!--@elvariable id="planTemplateId" type="java.lang.Long"-->
+	<!--@elvariable id="proposalTemplateId" type="java.lang.Long"-->
     <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper"-->
 	<!--@elvariable id="contestProposalTemplateWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ProposalTemplateWrapper"-->
 
@@ -30,7 +30,7 @@
 
 	<xcolab:requireLibrary name="CKEditor" />
 
-    <xcolab:editButtons elementName="template" baseUrl="/admin/contest/manager/tab/PROPOSAL_TEMPLATES" elementId="${planTemplateId}" />
+    <xcolab:editButtons elementName="template" baseUrl="/admin/contest/manager/tab/PROPOSAL_TEMPLATES" elementId="${proposalTemplateId}" />
 
 	<div class="c-ContentBox">
 
@@ -53,14 +53,14 @@
 			</div>
 		</form:form>
 
-		<c:if test="${planTemplateId >= 0}">
+		<c:if test="${proposalTemplateId >= 0}">
 			<div id="resourcesSections">
 				<form:form action="${updateElementFormURL }" commandName="contestProposalTemplateWrapper"
 				 cssClass="addpropform mt-3" id="editForm" method="post">
 
 					<form:hidden path="createNew" id="createNew"/>
 					<form:hidden path="numberOfSections"/>
-					<form:hidden path="planTemplateId"/>
+					<form:hidden path="proposalTemplateId"/>
 
                     <form:errors cssClass="alert alert-danger" element="div" path="*" />
 
@@ -244,7 +244,7 @@
 			</div>
 		</c:if>
 	</div>
-	<c:if test="${planTemplateId >= 0}">
+	<c:if test="${proposalTemplateId >= 0}">
 		<div class="c-ContentBox">
 			<h3>Contests using this template:</h3>
 			<div class="c-Box c-Box--colorTan" style="margin-top: 20px;">
@@ -265,7 +265,7 @@
                                 <td ><xcolab:contestLink contest="${contestWrapper}" /></td>
                                 <td>Tier ${contestWrapper.contestTier}</td>
                                 <td>
-                                    <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+                                    <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestId}" target="_blank">EDIT</a>
                                 </td>
                             </tr>
                         </c:forEach>

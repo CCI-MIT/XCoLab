@@ -121,7 +121,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Proposal> getFilteredAllProposals(ProposalContext proposalContext,
-            String filterText, String filterKey, long sectionId, Long contestPK) {
+            String filterText, String filterKey, long sectionId, Long contestId) {
 
         ClientHelper clients = proposalContext.getClients();
         ProposalClient proposalClient = clients.getProposalClient();
@@ -137,8 +137,8 @@ public class ProposalPickerFilterUtil {
         }
 
         List<Proposal> proposals;
-        if (contestPK > 0) {
-            proposals = proposalClient.getProposalsInContest(contestPK);
+        if (contestId > 0) {
+            proposals = proposalClient.getProposalsInContest(contestId);
         } else {
             final List<Long> allowedTiers = getAllowedTiers(planSectionDefinition.getTier());
             proposals = proposalClient.getProposalsInPublicContests(contestTypes, allowedTiers,

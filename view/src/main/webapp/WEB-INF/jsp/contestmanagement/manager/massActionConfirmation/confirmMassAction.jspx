@@ -44,9 +44,9 @@
                     <form:hidden path="itemCount"/>
                     <c:forEach var="contestWrapper" items="${massActionConfirmationWrapper.contestWrappers}"
                                varStatus="x">
-                        <tr id="${contestWrapper.contestPK}">
+                        <tr id="${contestWrapper.contestId}">
                             <form:hidden path="contestIds[${x.index}]"
-                                         data-form-name="contestPK"/>
+                                         data-form-name="contestId"/>
                             <td>
                                 <form:checkbox path="selectedContest[${x.index}]" />
                             </td>

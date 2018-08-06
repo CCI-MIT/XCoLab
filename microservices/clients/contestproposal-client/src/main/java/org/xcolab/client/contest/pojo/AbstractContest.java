@@ -18,7 +18,7 @@ public abstract class AbstractContest {
     private Timestamp updatedAt;
     private Long authorUserId;
     private Boolean contestactive;
-    private Long plantemplateid;
+    private Long proposalTemplateId;
     private Long contestscheduleid;
     private String proposalcreationtemplatestring;
     private String votetemplatestring;
@@ -72,7 +72,7 @@ public abstract class AbstractContest {
         this.updatedAt = value.updatedAt;
         this.authorUserId = value.authorUserId;
         this.contestactive = value.contestactive;
-        this.plantemplateid = value.plantemplateid;
+        this.proposalTemplateId = value.proposalTemplateId;
         this.contestscheduleid = value.contestscheduleid;
         this.proposalcreationtemplatestring = value.proposalcreationtemplatestring;
         this.votetemplatestring = value.votetemplatestring;
@@ -115,7 +115,7 @@ public abstract class AbstractContest {
             String title, String contesturlname, Long contestyear,
             String description, String contestmodeldescription,
             String contestpositionsdescription, Timestamp createdAt, Timestamp updatedAt, Long authorUserId,
-            Boolean contestactive, Long plantemplateid, Long contestscheduleid,
+            Boolean contestactive, Long proposalTemplateId, Long contestscheduleid,
             String proposalcreationtemplatestring, String votetemplatestring,
             String proposalvotetemplatestring, String proposalvoteconfirmationtemplatestring,
             String votequestiontemplatestring, Long focusareaid, Long contesttier,
@@ -140,7 +140,7 @@ public abstract class AbstractContest {
         this.updatedAt = updatedAt;
         this.authorUserId = authorUserId;
         this.contestactive = contestactive;
-        this.plantemplateid = plantemplateid;
+        this.proposalTemplateId = proposalTemplateId;
         this.contestscheduleid = contestscheduleid;
         this.proposalcreationtemplatestring = proposalcreationtemplatestring;
         this.votetemplatestring = votetemplatestring;
@@ -266,12 +266,12 @@ public abstract class AbstractContest {
         this.contestactive = contestactive;
     }
 
-    public Long getPlanTemplateId() {
-        return this.plantemplateid;
+    public Long getProposalTemplateId() {
+        return this.proposalTemplateId;
     }
 
-    public void setPlanTemplateId(Long plantemplateid) {
-        this.plantemplateid = plantemplateid;
+    public void setProposalTemplateId(Long proposalTemplateId) {
+        this.proposalTemplateId = proposalTemplateId;
     }
 
     public Long getContestScheduleId() {
@@ -584,7 +584,7 @@ public abstract class AbstractContest {
         return Objects.hash(id, contesttypeid, question, title, contesturlname,
                 contestyear, description, contestmodeldescription,
                 contestpositionsdescription, getCreatedAt(), getUpdatedAt(), authorUserId, contestactive,
-                plantemplateid, contestscheduleid, proposalcreationtemplatestring,
+                proposalTemplateId, contestscheduleid, proposalcreationtemplatestring,
                 votetemplatestring, proposalvotetemplatestring,
                 proposalvoteconfirmationtemplatestring, votequestiontemplatestring, focusareaid,
                 contesttier, contestlogoid, getFeatured(), plansopenbydefault, sponsorlogoid,
@@ -618,7 +618,7 @@ public abstract class AbstractContest {
                 .equals(getUpdatedAt(), that.getUpdatedAt()) && Objects.equals(
                 authorUserId, that.authorUserId)
                 && Objects.equals(contestactive, that.contestactive) && Objects
-                .equals(plantemplateid, that.plantemplateid) && Objects
+                .equals(proposalTemplateId, that.proposalTemplateId) && Objects
                 .equals(contestscheduleid, that.contestscheduleid) && Objects
                 .equals(proposalcreationtemplatestring, that.proposalcreationtemplatestring)
                 && Objects.equals(votetemplatestring, that.votetemplatestring) && Objects
@@ -664,7 +664,7 @@ public abstract class AbstractContest {
                 + title + ", " + contesturlname + ", " + contestyear + ", "
                 + description + ", " + contestmodeldescription + ", "
                 + contestpositionsdescription + ", " + createdAt + ", " + updatedAt + ", " + authorUserId
-                + ", " + contestactive + ", " + plantemplateid + ", " + contestscheduleid + ", "
+                + ", " + contestactive + ", " + proposalTemplateId + ", " + contestscheduleid + ", "
                 + proposalcreationtemplatestring + ", " + votetemplatestring + ", "
                 + proposalvotetemplatestring + ", " + proposalvoteconfirmationtemplatestring + ", "
                 + votequestiontemplatestring + ", " + focusareaid + ", " + contesttier + ", "

@@ -25,7 +25,7 @@
 <xcolab:layout title="${proposal.name}" description="${proposal.pitch}"
                openGraphImage="${proposalOpenGraphImage}"
                openGraphDescription="${proposal.cleanPitch}"
-               openGraphTitle="${proposal.name} - ${contest.contestShortNameWithEndYear} - ${_themeContext.colabName}"
+               openGraphTitle="${proposal.name} - ${contest.titleWithEndYear} - ${_themeContext.colabName}"
 >
     <!--@elvariable id="voted" type="java.lang.Boolean"-->
     <!--@elvariable id="votingDeadline" type="java.lang.String"-->
@@ -57,7 +57,7 @@
                     </button>
                     <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                         <div class="text-center cb-flex-basis-100 cb-flex-sm-basis-auto order-first order-first order-sm-0">
-                            <c:set var="shareMessageBody">Check out the ${contestType.proposalNameLowercase} ${proposal.name} ${contest.contestShortNameWithEndYear} ${contestType.contestNameLowercase}:</c:set>
+                            <c:set var="shareMessageBody">Check out the ${contestType.proposalNameLowercase} ${proposal.name} ${contest.titleWithEndYear} ${contestType.contestNameLowercase}:</c:set>
                             <xcolab-social:socialShareButtons title="${_themeContext.colabName} - ${contest.title} - ${proposal.name}"
                                                               messageTitle="I want to share a ${contestType.proposalNameLowercase} with you!"
                                                               content="${shareMessageBody}"/>
@@ -292,7 +292,7 @@
     </c:set>
 
     <spring:message var="menuItemName" text="${contestType.menuItemName}" javaScriptEscape="true" />
-    <spring:message var="contestShortName" text="${contest.title}" javaScriptEscape="true" />
+    <spring:message var="title" text="${contest.title}" javaScriptEscape="true" />
     <spring:message var="proposalName" text="${proposal.name}" javaScriptEscape="true" />
     <script type="application/ld+json">
         {
@@ -312,7 +312,7 @@
             "position": 2,
             "item": {
               "@id": "${_themeContext.colabUrl}${contest.contestUrl}",
-              "name": "${contestShortName}",
+              "name": "${title}",
               "image": "${contest.logoPath}"
             }
           }

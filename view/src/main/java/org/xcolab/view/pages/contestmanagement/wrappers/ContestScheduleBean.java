@@ -59,10 +59,10 @@ public class ContestScheduleBean {
 
         ContestPhase dummyContestPhase = new ContestPhase();
         ContestPhaseBean dummyContestPhaseBean = new ContestPhaseBean(dummyContestPhase);
-        dummyContestPhaseBean.setContestPK(ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID);
+        dummyContestPhaseBean.setContestId(ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID);
         dummyContestPhaseBean.setContestScheduleId(getScheduleId());
-        dummyContestPhaseBean.setContestPhasePK(CREATE_CONTEST_PHASE_PK);
-        dummyContestPhaseBean.setContestSchedulePK(ContestPhaseBean.DEFAULT_CONTEST_SCHEDULE);
+        dummyContestPhaseBean.setId(CREATE_CONTEST_PHASE_PK);
+        dummyContestPhaseBean.setContestScheduleId(ContestPhaseBean.DEFAULT_CONTEST_SCHEDULE);
         return dummyContestPhaseBean;
     }
 
@@ -174,7 +174,7 @@ public class ContestScheduleBean {
         for (Iterator<ContestPhaseBean> iterator = schedulePhases.iterator();
                 iterator.hasNext(); ) {
             final ContestPhaseBean contestPhaseBean = iterator.next();
-            boolean contestPhaseIsEmpty = (contestPhaseBean.getContestPhasePK() == null);
+            boolean contestPhaseIsEmpty = (contestPhaseBean.getId() == null);
             if (contestPhaseIsEmpty) {
                 iterator.remove();
             }
@@ -191,7 +191,7 @@ public class ContestScheduleBean {
         contestSchedule = newContestSchedule;
 
         for (ContestPhaseBean contestPhaseBean : schedulePhases) {
-            contestPhaseBean.setContestPhasePK(CREATE_CONTEST_PHASE_PK);
+            contestPhaseBean.setId(CREATE_CONTEST_PHASE_PK);
             contestPhaseBean.setContestScheduleId(contestSchedule.getId());
         }
     }

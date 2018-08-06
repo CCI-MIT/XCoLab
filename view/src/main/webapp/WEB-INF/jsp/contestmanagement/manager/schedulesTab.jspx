@@ -123,7 +123,7 @@
                                                  data-form-name="contestScheduleId"/>
                                     <form:hidden path="schedulePhases[${x.index}].contestPhasePK"
                                                  data-form-name="contestPhasePK"/>
-                                    <form:hidden path="schedulePhases[${x.index}].contestPK" data-form-name="contestPK"/>
+                                    <form:hidden path="schedulePhases[${x.index}].contestId" data-form-name="contestId"/>
                                     <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
                                                  data-form-name="contestPhaseDeleted"/>
 

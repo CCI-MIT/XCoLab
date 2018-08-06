@@ -28,9 +28,8 @@ public class ContestsResult {
     private static class SimpleContest {
 
         private final long id;
-        private final String contestShortName;
-        private final String contestName;
-        private final long contestPK;
+        private final String title;
+        private final String question;
         private final String flagText;
         private final int flag;
         private final String flagTooltip;
@@ -43,9 +42,8 @@ public class ContestsResult {
 
         private SimpleContest(Contest contest) {
             this.id = contest.getId();
-            this.contestShortName = contest.getContestShortNameWithEndYear();
-            this.contestName = contest.getQuestion();
-            this.contestPK = contest.getId();
+            this.title = contest.getTitleWithEndYear();
+            this.question = contest.getQuestion();
             this.flagText = contest.getFlagText();
             this.flag = contest.getFlag();
             this.flagTooltip = contest.getFlagTooltip();
@@ -61,16 +59,12 @@ public class ContestsResult {
             return id;
         }
 
-        public String getContestShortName() {
-            return contestShortName;
+        public String getTitle() {
+            return title;
         }
 
-        public String getContestName() {
-            return contestName;
-        }
-
-        public long getContestPK() {
-            return contestPK;
+        public String getQuestion() {
+            return question;
         }
 
         public String getFlagText() {

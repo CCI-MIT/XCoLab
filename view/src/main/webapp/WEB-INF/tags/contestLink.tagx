@@ -12,6 +12,6 @@
 
     <a class="${cssClass}" style="${cssStyle}" target="${target}" id="${linkId}"
             href="${contest.contestUrl}${empty hashString ? '' : '#'}${hashString}">
-        <c:out value="${empty text ? contest.contestShortNameWithEndYear : text}" escapeXml="${escape ? true : false }" />
+        <c:out value="${empty text ? contest.titleWithEndYear : text}" escapeXml="${escape ? true : false }" />
     </a>
 </jsp:root>

@@ -41,7 +41,7 @@ function loadProposalSections() {
 
 	if (proposalsLoaded) return;
 
-	jQuery.getJSON('/api/contests/' + baseContest.contestPK
+	jQuery.getJSON('/api/contests/' + baseContest.contestId
 		+ '/proposals/' + baseProposal.proposalId
 		+ '/versions/' + baseProposal.version + '/sections', {
 	}, function(data) {

@@ -36,7 +36,7 @@ public final class ContestCreatorUtil {
         contest.setShowInListView(true);
         contest.setShowInOutlineView(true);
         final Long templateId = getOrCreateDefaultTemplate().getId();
-        contest.setPlanTemplateId(templateId);
+        contest.setProposalTemplateId(templateId);
         final Long contestScheduleId = getOrCreateDefaultContestSchedule().getId();
         contest.setContestScheduleId(contestScheduleId);
         contest.setContestTypeId(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());

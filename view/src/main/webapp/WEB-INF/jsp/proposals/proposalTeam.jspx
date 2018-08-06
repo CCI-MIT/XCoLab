@@ -9,7 +9,7 @@
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Team"
-                   description="Contributors for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.contestShortNameWithEndYear}'">
+                   description="Contributors for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.titleWithEndYear}'">
         <jsp:directive.include file="./init_proposal_tab.jspx" />
 
         <jsp:directive.include file="./proposalDetails/header.jspx" />

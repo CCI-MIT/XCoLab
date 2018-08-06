@@ -57,7 +57,7 @@ public class ImpactClient {
 
     public ImpactTemplateFocusAreaList getContestImpactFocusAreaList(Contest contest) {
         ProposalTemplate planTemplate =
-                ProposalTemplateClientUtil.getPlanTemplate(contest.getPlanTemplateId());
+                ProposalTemplateClientUtil.getPlanTemplate(contest.getProposalTemplateId());
         return getImpactTemplateFocusAreaList(planTemplate.getFocusAreaListTemplateId());
     }
 
@@ -80,7 +80,7 @@ public class ImpactClient {
     public ImpactTemplateSeries getContestImpactTemplateSeries(Contest contest) {
 
         ProposalTemplate planTemplate =
-                ProposalTemplateClientUtil.getPlanTemplate(contest.getPlanTemplateId());
+                ProposalTemplateClientUtil.getPlanTemplate(contest.getProposalTemplateId());
         return getImpactTemplateSeries(planTemplate.getImpactSeriesTemplateId());
 
     }

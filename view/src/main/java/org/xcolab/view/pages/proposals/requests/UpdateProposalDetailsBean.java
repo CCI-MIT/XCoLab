@@ -60,7 +60,7 @@ public class UpdateProposalDetailsBean {
         imageId = baseProposal.getImageId();
         description = baseProposal.getDescription();
         baseProposalId = baseProposal.getId();
-        baseProposalContestId = baseProposal.getContestPK();
+        baseProposalContestId = baseProposal.getcontestId();
     }
     
     public UpdateProposalDetailsBean(Proposal proposal, Proposal baseProposal,

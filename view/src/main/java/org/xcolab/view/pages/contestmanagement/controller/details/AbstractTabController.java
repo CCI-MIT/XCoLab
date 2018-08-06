@@ -42,7 +42,7 @@ public abstract class AbstractTabController extends BaseTabController {
         contestWrapper = (contest);
     }
 
-    public Long getContestPK() {
+    public Long getcontestId() {
         return contest.getId();
     }
 

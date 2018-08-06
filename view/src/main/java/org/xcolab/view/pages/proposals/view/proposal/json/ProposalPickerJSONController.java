@@ -36,7 +36,7 @@ public class ProposalPickerJSONController {
             @RequestParam(required = false) String sortOrder,
             @RequestParam(required = false) String sortColumn,
             @RequestParam(required = false) Long sectionId,
-            @RequestParam(required = false) long contestPK) throws IOException {
+            @RequestParam(required = false) long contestId) throws IOException {
 
         List<Proposal> proposals;
         final long userId = user.getId();
@@ -61,7 +61,7 @@ public class ProposalPickerJSONController {
             case ALL_CONTESTS:
                 proposals = ProposalPickerFilterUtil
                         .getFilteredAllProposals(proposalContext, filterText, filterType, sectionId,
-                                contestPK);
+                                contestId);
                 break;
             default:
                 throw new InternalException("Unknown tab " + tab);

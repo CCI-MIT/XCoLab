@@ -8,7 +8,7 @@
     <!--@elvariable id="tabs" type="java.util.List<org.xcolab.view.pages.proposals.tabs.ProposalTabWrapper>"-->
 
 	<script>
-        var proposalId = ${ proposal.proposalId }; var contestId = ${contest.contestPK};
+        var proposalId = ${ proposal.id }; var contestId = ${contest.id};
         var proposalUrl = "${proposal.proposalUrl}"; var phaseUrl = "${contestPhase.contestPhaseUrl}";
         var proposalUrlInPhase = "${proposal.getProposalUrl(contestPhase.wrapped)}";
     </script>

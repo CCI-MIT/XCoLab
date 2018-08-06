@@ -84,7 +84,7 @@ public class ProposalMoveJsonController {
         private final String contestUrlName;
 
         private ImmutableContest(Contest contest) {
-            this.contestShortName = contest.getContestShortNameWithEndYear();
+            this.contestShortName = contest.getTitleWithEndYear();
             this.contestName = contest.getQuestion();
             this.contestYear = contest.getContestYear();
             this.contestUrlName = contest.getContestUrlName();
@@ -118,7 +118,7 @@ public class ProposalMoveJsonController {
         ClientHelper clientHelper = new ClientHelper();
 
         ProposalTemplate planTemplate = clientHelper.getPlanTemplateClient()
-                .getPlanTemplate(contest.getPlanTemplateId());
+                .getPlanTemplate(contest.getProposalTemplateId());
 
         if (planTemplate != null) {
             for (ProposalTemplateSectionDefinition psd : clientHelper.getPlanTemplateClient()

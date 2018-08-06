@@ -64,8 +64,8 @@ public final class ProposalClientUtil {
     }
 
     public static List<Proposal> getProposalsInContest(
-            Long contestPK) {
-        return client.getProposalsInContest(contestPK);
+            Long contestId) {
+        return client.getProposalsInContest(contestId);
     }
 
     public static List<Member> getProposalMembers(Long proposalId) {

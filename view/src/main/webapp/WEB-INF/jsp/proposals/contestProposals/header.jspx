@@ -7,7 +7,7 @@
 
 	<div class="c-Headline align-items-center flex-wrap flex-lg-nowrap">
         <collab:image src="${contest.logoPath}" width="50" height="50" alt="Contest Image"/>
-		<h1 class="my-0">${contest.contestShortNameWithEndYear}</h1>
+		<h1 class="my-0">${contest.titleWithEndYear}</h1>
 		<c:if test="${contestPhase.active and not empty contestPhase.phaseEndDate and showCountdown}">
 			<div class="ml-auto">
                 <div class="c-Count c-Count--accent">

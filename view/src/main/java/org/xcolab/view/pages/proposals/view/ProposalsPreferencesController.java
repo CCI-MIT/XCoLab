@@ -206,11 +206,11 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
         for (Contest c : activeContests) {
             ContestPhase activePhase = ContestClientUtil.getActivePhase(c.getId());
             if (activePhase == null || activePhase.getContestPhaseTypeId() != 17L) {
-                message.append("<br/>\nSkipped contest: ").append(c.getContestShortNameWithEndYear()).append("<br/><br/>\n");
+                message.append("<br/>\nSkipped contest: ").append(c.getTitleWithEndYear()).append("<br/><br/>\n");
                 continue;
             }
 
-            message.append("<br/><br/>\nCONTEST: ").append(c.getContestShortNameWithEndYear()).append("<br/><br/>\n");
+            message.append("<br/><br/>\nCONTEST: ").append(c.getTitleWithEndYear()).append("<br/><br/>\n");
 
             //identify the winners selection phase (= contains all finalist) and the finalist selection (= contains all semi-finalist) phase
             List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(c.getId());

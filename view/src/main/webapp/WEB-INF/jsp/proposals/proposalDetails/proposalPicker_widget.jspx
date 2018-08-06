@@ -4,7 +4,7 @@
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
 	<!--  Proposals Picker  -->
-	<c:set var="proposalPickerURL" value="${contest.contestLinkUrl}/proposals/proposalPicker?tab=@@REPLACE-TAB@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;sortColumn=@@REPLACE-SORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@&amp;contestPK=@@REPLACE-CONTESTPK@@" />
+	<c:set var="proposalPickerURL" value="${contest.contestLinkUrl}/proposals/proposalPicker?tab=@@REPLACE-TAB@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;sortColumn=@@REPLACE-SORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@&amp;contestId=@@REPLACE-contestId@@" />
 
 	<c:set var="proposalPickerContestsURL"
 						 value="${contest.contestLinkUrl}/proposals/proposalPickerContests?tab=@@REPLACE-TAB@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;contestSortColumn=@@REPLACE-CONTESTSORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@" />
@@ -211,14 +211,14 @@
     <!-- Contest list template -->
 	<script id="proposalPickerContestEntryTemplate"
 		type="text/x-handlebars-template">
-		<tr data-contestPK="{{contest.contestPK}}">
+		<tr data-contestId="{{contest.id}}">
 			<td>
 				<div class="contestFlag {{#if contest.wasFiltered}} greyed_out {{/if}}">
 					{{#if contest.flagText}}
 						<span class="{{#if contest.flagTooltip}} js-Tooltip {{/if}}" title="{{contest.flagTooltip}}">{{contest.flagText}}:&#160;</span>
                 	{{/if}}
-                		<a href="javascript:;" class="{{#if contest.wasFiltered}} box_tooltip greyed_out {{/if}}" title="{{#if contest.filterReasonFocusArea}} This contest does not fit this section's focus area. {{/if}} {{#if contest.filterReasonTier}} This contest does not fit this section's tier.{{/if}}">{{contest.contestShortName}}</a>
-                			{{contest.contestName}}
+                		<a href="javascript:;" class="{{#if contest.wasFiltered}} box_tooltip greyed_out {{/if}}" title="{{#if contest.filterReasonFocusArea}} This contest does not fit this section's focus area. {{/if}} {{#if contest.filterReasonTier}} This contest does not fit this section's tier.{{/if}}">{{contest.title}}</a>
+                			{{contest.question}}
             		</div>
             	</td>
             	<td>

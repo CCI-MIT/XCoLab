@@ -4,7 +4,7 @@
 		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-	<xcolab:layout title="${contest.contestShortNameWithEndYear} - Discussion">
+	<xcolab:layout title="${contest.titleWithEndYear} - Discussion">
 		<!--@elvariable id="discussionId" type="java.lang.Long"-->
 
 		<jsp:directive.include file="./init_contest.jspx" />
@@ -12,8 +12,8 @@
 		<div class="proposal-head">
             <div class='c-Headline'>
                 <collab:image src="${contest.logoPath}" width="52" height="52"
-                         alt="${contestType.contestName} image" title="${contest.contestShortNameWithEndYear}"/>
-                <h1>Discussion <xcolab:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
+                         alt="${contestType.contestName} image" title="${contest.titleWithEndYear}"/>
+                <h1>Discussion <xcolab:contestLink contest="${contest}" text="${contest.titleWithEndYear} " /></h1>
 			</div>
 		</div>
 		<!-- /proposal-head -->

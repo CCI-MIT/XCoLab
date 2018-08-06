@@ -7,9 +7,9 @@
 
     <script>
         var currentProposal = {
-            proposalId: ${proposal.proposalId},
+            proposalId: ${proposal.id},
             version: ${proposal.version},
-            contestId: ${proposal.contest.contestPK},
+            contestId: ${proposal.contest.id},
             contestPhaseId: ${proposal.contestPhase.contestPhasePK}
         }
     </script>

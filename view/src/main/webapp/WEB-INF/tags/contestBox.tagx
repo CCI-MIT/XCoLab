@@ -16,13 +16,13 @@
     <div class="c-ContestBox">
         <a class="c-ContestBox__image" href="${contest.contestUrl}" aria-hidden="true" tabindex="-1">
             <collab:image src="${contest.logoPath}" width="150" height="150" cssStyle="max-width: 150px"
-                          alt="${contest.contestShortNameWithEndYear}"/>
+                          alt="${contest.titleWithEndYear}"/>
         </a>
         <div class="c-ContestBox__body">
             <div class="c-ContestBox__text">
                 <h3 class="c-ContestBox__title">
                     <xcolab:contestLink contest="${contest}"
-                                        cssStyle="${contest.contestShortNameWithEndYear.length() ge 60 ? 'font-size: 90%' : ''}"/>
+                                        cssStyle="${contest.titleWithEndYear.length() ge 60 ? 'font-size: 90%' : ''}"/>
                 </h3>
                 ${contest.question }
             </div>

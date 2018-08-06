@@ -49,7 +49,7 @@
                         <form:select id="selectContest" path="moveFromContestId">
                             <form:option value="-1" label="Choose a contest" />
                             <c:forEach var="contest" items="${contests}">
-                                <form:option value="${contest.id}" label="${contest.contestShortNameWithEndYear}" />
+                                <form:option value="${contest.id}" label="${contest.titleWithEndYear}" />
                             </c:forEach>
                         </form:select>
                     </label>
@@ -141,7 +141,7 @@
         <c:forEach var="contestPhaseId" items="${proposals.keySet()}">
             ${contestPhaseId}: {
                 <c:forEach var="proposal" items="${proposals.get(contestPhaseId)}">
-                    ${proposal.proposalId}: "${proposal.name.replaceAll("[^a-zA-Z 0-9]", "")}",
+                    ${proposal.id}: "${proposal.name.replaceAll("[^a-zA-Z 0-9]", "")}",
                 </c:forEach>
             },
         </c:forEach>

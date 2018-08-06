@@ -133,7 +133,7 @@ public class RandomProposalsPreferences extends WidgetPreference {
                 }
                 phases.put(cp.getId(),
                         String.format("%d %s %s - %d %s", c.getId(), prefix,
-                                c.getContestShortNameWithEndYear(), cp.getId(),
+                                c.getTitleWithEndYear(), cp.getId(),
                                 cp.getContestStatusStr()));
             }
         }

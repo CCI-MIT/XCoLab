@@ -43,9 +43,9 @@
                         will be identified.
                     </div>
 
-                    <form:input id="contestShortName" path="contestShortName"
+                    <form:input id="title" path="title"
                                 cssClass="form-control" cssErrorClass="form-control is-invalid" />
-                    <form:errors cssClass="invalid-feedback" path="contestShortName" />
+                    <form:errors cssClass="invalid-feedback" path="title" />
 
                     <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">55</span> characters
@@ -75,8 +75,8 @@
                         contest questions are concise and worded with language accessible to the public.
                     </div>
 
-                    <form:textarea path="contestName" id="contestName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
-                    <form:errors cssClass="invalid-feedback" path="contestName"/>
+                    <form:textarea path="name" id="contestName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
+                    <form:errors cssClass="invalid-feedback" path="name"/>
 
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer">
@@ -187,9 +187,9 @@
                     </div>
                     <div class="clearfix"><!-- --></div>
 
-                    <form:textarea path="contestDescription" id="contestDescription"
+                    <form:textarea path="description" id="contestDescription"
                                    cssClass="rte-editorPlaceholder form-control" cssErrorClass="form-control cb-form-has-error"/>
-                    <form:errors cssClass="invalid-feedback" path="contestDescription"/>
+                    <form:errors cssClass="invalid-feedback" path="description"/>
 
                     <div class="inputLimitContainer">
                         <span class="limit_characterCount"><!--  --></span>/&#160;<span
@@ -213,10 +213,10 @@
                         comment below for the Climate CoLab team.
                     </div>
 
-                    <form:select path="planTemplateId" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
+                    <form:select path="proposalTemplateId" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
                         <form:options items="${proposalTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-                    <form:errors cssClass="invalid-feedback" path="planTemplateId"/>
+                    <form:errors cssClass="invalid-feedback" path="proposalTemplateId"/>
                 </div>
             </div>
 

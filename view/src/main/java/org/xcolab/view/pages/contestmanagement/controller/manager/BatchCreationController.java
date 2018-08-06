@@ -247,7 +247,7 @@ public class BatchCreationController {
         contest.setShowInTileView(true);
         contest.setShowInListView(true);
         contest.setShowInOutlineView(true);
-        contest.setPlanTemplateId(planTemplateId);
+        contest.setProposalTemplateId(planTemplateId);
         contest.setContestScheduleId(contestScheduleId);
         contest.setContestTier(contestTierId);
         contest.setContestTypeId(contestTypeId);

@@ -116,7 +116,7 @@ ALTER TABLE xcolab_ContestTranslation CHANGE contestShortName   title   varchar(
 ALTER TABLE xcolab_ContestTranslation CHANGE contestDescription description longtext                                null;
 ALTER TABLE xcolab_ContestTranslation CHANGE createDate         created_at         timestamp default CURRENT_TIMESTAMP     not null;
 ALTER TABLE xcolab_ContestTranslation CHANGE modifiedDate       updated_at       timestamp default CURRENT_TIMESTAMP not null;
-ALTER TABLE xcolab_ContestTranslation CHANGE authorId           author_id           bigint                                  null;
+ALTER TABLE xcolab_ContestTranslation CHANGE authorId           author_user_id           bigint                                  null;
 rename table xcolab_ContestTranslation to contest__contest_translation;
 
 ALTER TABLE xcolab_FocusArea CHANGE id_    id    bigint auto_increment;
@@ -222,7 +222,7 @@ rename table xcolab_PointType to contest__point_type;
 ALTER TABLE xcolab_Proposal CHANGE proposalId          id          bigint auto_increment;
 ALTER TABLE xcolab_Proposal CHANGE createDate          created_at          datetime null;
 ALTER TABLE xcolab_Proposal CHANGE updatedDate         updated_at         datetime null;
-ALTER TABLE xcolab_Proposal CHANGE authorId            author_id            bigint   null;
+ALTER TABLE xcolab_Proposal CHANGE authorId            author_user_id            bigint   null;
 ALTER TABLE xcolab_Proposal CHANGE discussionId        discussion_id        bigint   null;
 ALTER TABLE xcolab_Proposal CHANGE resultsDiscussionId results_discussion_id bigint   null;
 ALTER TABLE xcolab_Proposal CHANGE groupId             group_id             bigint   null;
@@ -298,8 +298,8 @@ rename table xcolab_ProposalSupporter to contest__proposal_supporter;
 
 ALTER TABLE xcolab_ProposalUnversionedAttribute CHANGE id_            id            bigint auto_increment;
 ALTER TABLE xcolab_ProposalUnversionedAttribute CHANGE proposalId     proposal_id     bigint             null;
-ALTER TABLE xcolab_ProposalUnversionedAttribute CHANGE createAuthorId create_author_id bigint             null;
-ALTER TABLE xcolab_ProposalUnversionedAttribute CHANGE lastAuthorId   last_author_id   bigint             null;
+ALTER TABLE xcolab_ProposalUnversionedAttribute CHANGE createAuthorId first_author_user_id bigint             null;
+ALTER TABLE xcolab_ProposalUnversionedAttribute CHANGE lastAuthorId   last_author_user_id   bigint             null;
 ALTER TABLE xcolab_ProposalUnversionedAttribute CHANGE createDate     created_at     datetime           null;
 ALTER TABLE xcolab_ProposalUnversionedAttribute CHANGE lastUpdateDate updated_at datetime           null;
 ALTER TABLE xcolab_ProposalUnversionedAttribute CHANGE additionalId   additional_id   bigint default '0' not null;
@@ -309,7 +309,7 @@ ALTER TABLE xcolab_ProposalUnversionedAttribute CHANGE realValue      real_value
 rename table xcolab_ProposalUnversionedAttribute to contest__proposal_unversioned_attribute;
 
 ALTER TABLE xcolab_ProposalVersion CHANGE proposalId         proposal_id         bigint      not null;
-ALTER TABLE xcolab_ProposalVersion CHANGE authorId           author_id           bigint      null;
+ALTER TABLE xcolab_ProposalVersion CHANGE authorId           author_user_id           bigint      null;
 ALTER TABLE xcolab_ProposalVersion CHANGE createDate         created_at         datetime    null;
 ALTER TABLE xcolab_ProposalVersion CHANGE updateType         update_type         varchar(75) null;
 ALTER TABLE xcolab_ProposalVersion CHANGE updateAdditionalId update_additional_id bigint      null;

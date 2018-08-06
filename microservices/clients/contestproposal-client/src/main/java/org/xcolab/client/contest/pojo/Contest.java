@@ -185,7 +185,7 @@ public class Contest extends AbstractContest implements Serializable {
         contestClient.updateContest(this);
     }
 
-    public String getContestShortNameWithEndYear() {
+    public String getTitleWithEndYear() {
         final String contestShortName = getTitle();
         if (ConfigurationAttributeKey.CONTESTS_SHOW_YEAR_WHEN_COMPLETED.get()) {
             final char lastCharOfName = contestShortName.charAt(contestShortName.length() - 1);
@@ -695,7 +695,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public List<ProposalTemplateSectionDefinition> getSections() {
-        return planTemplateClient.getPlanSectionDefinitionByPlanTemplateId(getPlanTemplateId(),
+        return planTemplateClient.getPlanSectionDefinitionByPlanTemplateId(getProposalTemplateId(),
                         true);
     }
 

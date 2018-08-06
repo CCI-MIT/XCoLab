@@ -45,10 +45,10 @@ public class ContestPhaseController {
     }
 
     @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestPhase> getContestPhases(@RequestParam(required = false) Long contestPK,
+    public List<ContestPhase> getContestPhases(@RequestParam(required = false) Long contestId,
             @RequestParam(required = false) Long contestScheduleId,
             @RequestParam(required = false) Long contestPhaseTypeId) {
-        return contestPhaseDao.findByGiven(contestPK, contestScheduleId, contestPhaseTypeId);
+        return contestPhaseDao.findByGiven(contestId, contestScheduleId, contestPhaseTypeId);
     }
 
     @GetMapping(value = "/contestPhaseRibbonTypes/{contestPhaseRibbonTypeId}")

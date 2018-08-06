@@ -32,7 +32,7 @@ public interface ContestDao {
 
     Contest getByResourceId(Long resourceId) throws NotFoundException;
 
-    boolean delete(long contestPK);
+    boolean delete(long contestId);
 
     List<Long> getContestYears();
 }

@@ -323,63 +323,63 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public boolean delete(long contestPK) {
+    public boolean delete(long contestId) {
         AtomicBoolean result = new AtomicBoolean();
         dslContext.transaction(configuration -> {
             DSLContext ctx = DSL.using(configuration);
 
-            deleteContestData(ctx, contestPK);
-            deleteContestPhases(ctx, contestPK);
+            deleteContestData(ctx, contestId);
+            deleteContestPhases(ctx, contestId);
             deleteOrphanProposals(ctx);
 
-            result.set(deleteContest(ctx, contestPK));
+            result.set(deleteContest(ctx, contestId));
         });
         return result.get();
     }
 
-    private static boolean deleteContest(DSLContext ctx, long contestPK) {
+    private static boolean deleteContest(DSLContext ctx, long contestId) {
         return ctx.deleteFrom(CONTEST)
-                .where(CONTEST.ID.eq(contestPK))
+                .where(CONTEST.ID.eq(contestId))
                 .execute() > 0;
     }
 
-    private static void deleteContestData(DSLContext ctx, long contestPK) {
+    private static void deleteContestData(DSLContext ctx, long contestId) {
         // Delete team members
         ctx.deleteFrom(CONTEST_TEAM_MEMBER)
-                .where(CONTEST_TEAM_MEMBER.CONTEST_ID.eq(contestPK))
+                .where(CONTEST_TEAM_MEMBER.CONTEST_ID.eq(contestId))
                 .execute();
         // Delete contest translations
         ctx.deleteFrom(CONTEST_TRANSLATION)
-                .where(CONTEST_TRANSLATION.CONTEST_ID.eq(contestPK))
+                .where(CONTEST_TRANSLATION.CONTEST_ID.eq(contestId))
                 .execute();
         // Delete contest discussions
         ctx.deleteFrom(CONTEST_DISCUSSION)
-                .where(CONTEST_DISCUSSION.CONTEST_ID.eq(contestPK))
+                .where(CONTEST_DISCUSSION.CONTEST_ID.eq(contestId))
                 .execute();
         // Retrieve contest discussion thread id.
         Long threadId = ctx.select(CONTEST.DISCUSSION_GROUP_ID)
                 .from(CONTEST)
-                .where(CONTEST.ID.eq(contestPK))
+                .where(CONTEST.ID.eq(contestId))
                 .fetchOne()
                 .into(Long.class);
         // Delete contest thread and comments.
         ThreadClientUtil.deleteThread(threadId);
         // Delete contest subscriptions and activity entries.
-        ActivitiesClientUtil.batchDelete(ActivityCategory.CONTEST, Collections.singletonList(contestPK));
+        ActivitiesClientUtil.batchDelete(ActivityCategory.CONTEST, Collections.singletonList(contestId));
     }
 
-    private static void deleteContestPhases(DSLContext ctx, long contestPK) {
+    private static void deleteContestPhases(DSLContext ctx, long contestId) {
         // Select query for contest's phases
         Select<Record1<Long>> contestPhases = ctx.select(CONTEST_PHASE.ID)
                 .from(CONTEST_PHASE)
-                .where(CONTEST_PHASE.ID.eq(contestPK));
+                .where(CONTEST_PHASE.CONTEST_ID.eq(contestId));
         // Delete Proposal2Phase rows associated with this contest.
         ctx.deleteFrom(PROPOSAL2_PHASE)
                 .where(PROPOSAL2_PHASE.CONTEST_PHASE_ID.in(contestPhases))
                 .execute();
         // Delete contest's phases.
         ctx.deleteFrom(CONTEST_PHASE)
-                .where(CONTEST_PHASE.ID.eq(contestPK))
+                .where(CONTEST_PHASE.CONTEST_ID.eq(contestId))
                 .execute();
     }
 
