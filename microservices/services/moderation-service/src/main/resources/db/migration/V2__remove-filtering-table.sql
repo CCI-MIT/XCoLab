@@ -1,1 +1,1 @@
-drop table filtering_FilteredEntry;
+drop table if exists filtering_FilteredEntry;
