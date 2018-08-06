@@ -191,18 +191,18 @@
                             <p>Current proposal review status for each Judge. Click to filter proposals for a specific judge.</p>
                             <div>
                                 <c:forEach var="judge" items="${contest.contestJudges}">
-                                    <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.userId}">
+                                    <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.id}">
                                         <div class="review-status-container">
                                             <xcolab:userPortrait portraitId="${judge.portraitId}"
-                                                                 userId="${judge.userId}"
+                                                                 userId="${judge.id}"
                                                                  width="30" height="30"/>
                                         </div>
                                         <br/>
-                                        <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.id}">
-                                            <a href="${contest.contestUrl}/judgeFilter/${judge.userId}">${judge.fullName}</a>
+                                        <judging:judgeAssignedProposalCount userId="${judge.id}" contestPhaseId="${contestPhase.id}">
+                                            <a href="${contest.contestUrl}/judgeFilter/${judge.id}">${judge.fullName}</a>
                                             <br /><span>(${proposalAlreadyJudgedCount} of ${proposalCount})</span>
                                             <div class="hidden">
-                                                <span id="js-Tooltip__content__judgedata_${judge.userId}">
+                                                <span id="js-Tooltip__content__judgedata_${judge.id}">
                                                     ${judge.fullName} has evaluated ${proposalAlreadyJudgedCount} out of the ${proposalCount} proposals assigned to them.
                                                 </span>
                                             </div>

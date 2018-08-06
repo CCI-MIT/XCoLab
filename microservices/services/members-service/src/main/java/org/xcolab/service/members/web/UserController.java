@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.Member;
-import org.xcolab.model.tables.pojos.Role_;
-import org.xcolab.service.members.domain.member.MemberDao;
+import org.xcolab.model.tables.pojos.Role;
+import org.xcolab.model.tables.pojos.User;
+import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
-import org.xcolab.service.members.service.member.MemberService;
+import org.xcolab.service.members.service.member.UserService;
 import org.xcolab.service.members.service.role.RoleService;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
@@ -27,24 +27,24 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/members")
-public class MembersController {
+public class UserController {
 
-    private final MemberService memberService;
+    private final UserService memberService;
 
-    private final MemberDao memberDao;
+    private final UserDao memberDao;
 
     private final RoleService roleService;
 
     @Autowired
-    public MembersController(MemberDao memberDao, RoleService roleService,
-            MemberService memberService) {
+    public UserController(UserDao memberDao, RoleService roleService,
+            UserService memberService) {
         this.memberDao = memberDao;
         this.roleService = roleService;
         this.memberService = memberService;
     }
 
     @GetMapping
-    public List<Member> listMembers(HttpServletResponse response,
+    public List<User> listUsers(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
@@ -68,17 +68,17 @@ public class MembersController {
     }
 
     @GetMapping("findByIp")
-    public List<Member> getMemberByIp(@RequestParam String ip){
+    public List<User> getUserByIp(@RequestParam String ip){
         return memberDao.findByIp(ip);
     }
 
     @GetMapping("findByScreenNameOrName")
-    public List<Member> getMemberByScreenNameName(@RequestParam String name){
+    public List<User> getUserByScreenNameName(@RequestParam String name){
         return memberDao.findByScreenNameName(name);
     }
 
     @GetMapping("findByScreenName")
-    public Member getMemberByScreenNameNoRole(@RequestParam String screenName) throws NotFoundException {
+    public User getUserByScreenNameNoRole(@RequestParam String screenName) throws NotFoundException {
         if (screenName == null) {
             throw new NotFoundException("No message id given");
         } else {
@@ -86,79 +86,79 @@ public class MembersController {
         }
     }
     @GetMapping("{userId}")
-    public Member getMember(@PathVariable long userId) throws NotFoundException {
+    public User getUser(@PathVariable long userId) throws NotFoundException {
         if (userId == 0) {
             throw new NotFoundException("No member id given");
         } else {
-            return memberDao.getMember(userId).orElseThrow(NotFoundException::new);
+            return memberDao.getUser(userId).orElseThrow(NotFoundException::new);
         }
     }
 
     @PutMapping(value = "{userId}")
-    public boolean updateMember(@RequestBody Member member, @PathVariable Long userId)
+    public boolean updateUser(@RequestBody User member, @PathVariable Long userId)
             throws NotFoundException {
-        if (userId == 0 || memberDao.getMember(userId) == null) {
+        if (userId == 0 || memberDao.getUser(userId) == null) {
             throw new NotFoundException("No member with id " + userId);
         }
-        return memberDao.updateMember(member);
+        return memberDao.updateUser(member);
     }
 
     @DeleteMapping("{userId}")
-    public boolean deleteMember(@PathVariable long userId) throws NotFoundException {
+    public boolean deleteUser(@PathVariable long userId) throws NotFoundException {
         if (userId == 0) {
             throw new NotFoundException("No message id given");
         } else {
-            final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
+            final User member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
             member.setStatus(5);
-            return memberDao.updateMember(member);
+            return memberDao.updateUser(member);
         }
     }
 
     @GetMapping("{userId}/roles")
-    public List<Role_> getMemberRoles(@PathVariable long userId,
+    public List<Role> getUserRoles(@PathVariable long userId,
             @RequestParam(required =  false) Long contestId) {
         if (contestId == null) {
-            return this.roleService.getMemberRoles(userId);
+            return this.roleService.getUserRoles(userId);
         } else {
-            return roleService.getMemberRolesInContest(userId, contestId);
+            return roleService.getUserRolesInContest(userId, contestId);
         }
     }
 
     @PutMapping("{userId}/roles/{roleId}")
-    public boolean assignMemberRole(@PathVariable long userId,
+    public boolean assignUserRole(@PathVariable long userId,
             @PathVariable Long roleId) {
-        return this.roleService.assignMemberRole(userId, roleId);
+        return this.roleService.assignUserRole(userId, roleId);
     }
 
     @DeleteMapping("{userId}/roles/{roleId}")
-    public boolean deleteMemberRole(@PathVariable long userId,
+    public boolean deleteUserRole(@PathVariable long userId,
             @PathVariable Long roleId) {
-        return this.roleService.deleteMemberRole(userId, roleId);
+        return this.roleService.deleteUserRole(userId, roleId);
     }
 
     @GetMapping("count")
-    public Integer countMembers(
+    public Integer countUsers(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String category) {
         return memberDao.countByGiven(screenName, null, category);
     }
 
     @PostMapping
-    public Member register(@RequestBody Member member) {
+    public User register(@RequestBody User member) {
         return memberService.register(member);
     }
 
     @GetMapping("{userId}/points")
-    public int getMemberPoints(@PathVariable Long userId,
+    public int getUserPoints(@PathVariable Long userId,
             @RequestParam (required = false, defaultValue = "false") boolean hypothetical) {
         if (userId == null) {
             return 0;
         } else {
             Integer ret;
             if (hypothetical) {
-                ret = memberDao.getMemberHypotheticalPoints(userId);
+                ret = memberDao.getUserHypotheticalPoints(userId);
             } else {
-                ret = memberDao.getMemberMaterializedPoints(userId);
+                ret = memberDao.getUserMaterializedPoints(userId);
             }
             return ((ret == null) ? (0) : (ret));
         }

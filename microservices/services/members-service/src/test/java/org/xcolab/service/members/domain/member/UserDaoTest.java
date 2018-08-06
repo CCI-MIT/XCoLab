@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.model.tables.pojos.User;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
@@ -22,14 +22,14 @@ import static org.junit.Assert.assertEquals;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ComponentScan("org.xcolab.service.members")
 @ActiveProfiles("test")
-public class MemberDaoTest {
+public class UserDaoTest {
 
     @Autowired
-    private MemberDao memberDao;
+    private UserDao memberDao;
 
     @Test
     public void testFindByGiven__shouldReturnRightCount() {
-        final List<Member> members =
+        final List<User> members =
                 memberDao.findByGiven(PaginationHelper.EVERYTHING, null, null,
                         null, null, null, null, null, null, null, null);
         assertEquals("Wrong number of members", 2, members.size());
@@ -37,7 +37,7 @@ public class MemberDaoTest {
 
     @Test
     public void testFindByNameGiven() {
-        final List<Member> members =
+        final List<User> members =
                 memberDao.findByGiven(PaginationHelper.EVERYTHING, "admin", null,
                         null, null, null, null, null, null, null, null);
         assertEquals("Wrong number of members with name:admin", 1, members.size());
@@ -45,10 +45,10 @@ public class MemberDaoTest {
 
     @Test
     public void testFindByNameGiven_with_roles() {
-        final List<Member> members =
+        final List<User> members =
                 memberDao.findByGiven(PaginationHelper.EVERYTHING, null, null,
-                        "Member", null, null, null, null, null, null, null);
-        assertEquals("Wrong number of members with role:Member", 2, members.size());
+                        "User", null, null, null, null, null, null, null);
+        assertEquals("Wrong number of members with role:User", 2, members.size());
     }
 
 }

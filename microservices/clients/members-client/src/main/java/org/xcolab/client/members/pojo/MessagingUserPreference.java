@@ -9,16 +9,16 @@ import java.io.Serializable;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MessagingUserPreferences implements Serializable {
+public class MessagingUserPreference implements Serializable {
 
     private static final long serialVersionUID = 1819303241;
 
-    public static final TypeProvider<MessagingUserPreferences> TYPES =
-            new TypeProvider<>(MessagingUserPreferences.class,
-                    new ParameterizedTypeReference<List<MessagingUserPreferences>>() {
+    public static final TypeProvider<MessagingUserPreference> TYPES =
+            new TypeProvider<>(MessagingUserPreference.class,
+                    new ParameterizedTypeReference<List<MessagingUserPreference>>() {
                     });
 
-    private Long messagingPreferencesId;
+    private Long id;
     private long userId;
     private boolean emailOnSend;
     private boolean emailOnReceipt;
@@ -26,21 +26,22 @@ public class MessagingUserPreferences implements Serializable {
     private boolean emailActivityDailyDigest;
     private Integer dailyMessageLimit;
 
-    public MessagingUserPreferences() {
+    public MessagingUserPreference() {
     }
 
-    public MessagingUserPreferences(MessagingUserPreferences value) {
-        this.messagingPreferencesId = value.messagingPreferencesId;
+    public MessagingUserPreference(MessagingUserPreference value) {
+        this.id = value.id;
         this.userId = value.userId;
         this.emailOnSend = value.emailOnSend;
         this.emailOnReceipt = value.emailOnReceipt;
         this.emailOnActivity = value.emailOnActivity;
         this.emailActivityDailyDigest = value.emailActivityDailyDigest;
+        this.dailyMessageLimit = value.dailyMessageLimit;
     }
 
-    public MessagingUserPreferences(long messagingPreferencesId, long userId, boolean emailOnSend,
+    public MessagingUserPreference(long id, long userId, boolean emailOnSend,
             boolean emailOnReceipt, boolean emailOnActivity, boolean emailActivityDailyDigest) {
-        this.messagingPreferencesId = messagingPreferencesId;
+        this.id = id;
         this.userId = userId;
         this.emailOnSend = emailOnSend;
         this.emailOnReceipt = emailOnReceipt;
@@ -48,12 +49,12 @@ public class MessagingUserPreferences implements Serializable {
         this.emailActivityDailyDigest = emailActivityDailyDigest;
     }
 
-    public Long getMessagingPreferencesId() {
-        return this.messagingPreferencesId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setMessagingPreferencesId(Long messagingPreferencesId) {
-        this.messagingPreferencesId = messagingPreferencesId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public long getUserId() {
@@ -107,12 +108,12 @@ public class MessagingUserPreferences implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final MessagingUserPreferences other = (MessagingUserPreferences) obj;
-        if (messagingPreferencesId == null) {
-            if (other.messagingPreferencesId != null) {
+        final MessagingUserPreference other = (MessagingUserPreference) obj;
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!messagingPreferencesId.equals(other.messagingPreferencesId)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         return userId == other.userId
@@ -127,8 +128,8 @@ public class MessagingUserPreferences implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((messagingPreferencesId == null) ? 0
-                : messagingPreferencesId.hashCode());
+        result = prime * result + ((id == null) ? 0
+                : id.hashCode());
         result = prime * result + (int) (userId ^ userId >>> 32);
         result = prime * result + (emailOnSend ? 1 : 0);
         result = prime * result + (emailOnReceipt ? 1 : 0);
@@ -140,7 +141,7 @@ public class MessagingUserPreferences implements Serializable {
     @Override
     public String toString() {
 
-        return "MessagingUserPreferences (" + messagingPreferencesId +
+        return "MessagingUserPreferences (" + id +
                 ", " + userId +
                 ", " + emailOnSend +
                 ", " + emailOnReceipt +

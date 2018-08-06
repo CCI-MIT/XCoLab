@@ -40,7 +40,7 @@ public class MessagingPermissions {
         
         fullConversation.sort(new MessageBeanDateComparator());
         MessageBean originalMessage = fullConversation.get(fullConversation.size() - 1);
-        boolean didSendOriginalMessage = originalMessage.getFrom().getUserId() == loggedInMember.getId();
+        boolean didSendOriginalMessage = originalMessage.getFrom().getId() == loggedInMember.getId();
         boolean didReceiveOriginalMessage = originalMessage.getTo().stream()
                 .anyMatch(recipient -> recipient.getId() == loggedInMember.getId());
         boolean isMyThread = false;
@@ -54,7 +54,7 @@ public class MessagingPermissions {
     }
 
     public boolean isSender() {
-        return isLoggedIn && message != null && message.getFrom().getUserId() == loggedInMember
+        return isLoggedIn && message != null && message.getFrom().getId() == loggedInMember
                 .getId();
     }
 

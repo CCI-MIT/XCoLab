@@ -33,7 +33,7 @@ public class MessageBean implements Serializable {
 
     public MessageBean(Message message) {
         this.message = message;
-        this.recipients = MessagingClient.getMessageRecipients(message.getMessageId());
+        this.recipients = MessagingClient.getMessageRecipients(message.getId());
     }
 
     public String getMessageSubject() {
@@ -108,7 +108,7 @@ public class MessageBean implements Serializable {
     }
 
     public Long getMessageId() {
-        return message.getMessageId();
+        return message.getId();
     }
 
 }

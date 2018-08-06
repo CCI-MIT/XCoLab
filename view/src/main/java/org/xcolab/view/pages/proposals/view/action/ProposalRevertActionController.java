@@ -36,7 +36,7 @@ public class ProposalRevertActionController {
         if (proposalContext.getProposal() != null && !proposalContext.getPermissions()
                 .getCanEdit()) {
             throw new ProposalsAuthorizationException(
-                    "User is not allowed to edit proposal, user: " + currentMember.getUserId()
+                    "User is not allowed to edit proposal, user: " + currentMember.getId()
                             + ", proposal: " + proposalContext.getProposal().getId());
         }
 

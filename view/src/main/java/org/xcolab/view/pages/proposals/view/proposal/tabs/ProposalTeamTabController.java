@@ -107,7 +107,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
             throws ProposalsAuthorizationException {
         final Proposal proposal = proposalContext.getProposal();
         final long proposalId = proposal.getId();
-        final long actingUserId = actingMember.getUserId();
+        final long actingUserId = actingMember.getId();
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanManageUsers()) {

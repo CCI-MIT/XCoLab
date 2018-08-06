@@ -11,7 +11,7 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.client.members.pojo.SendMessageBean;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
@@ -33,8 +33,8 @@ public final class MessagingClient {
             new RestResource1<>(UserResource.MESSAGES, Message.TYPES);
 
 
-    private static final RestResource2L<Member, MessagingUserPreferences> messagePreferencesResource
-            = new RestResource2L<>(memberResource, "messagingPreferences", MessagingUserPreferences.TYPES);
+    private static final RestResource2L<Member, MessagingUserPreference> messagePreferencesResource
+            = new RestResource2L<>(memberResource, "messagingPreferences", MessagingUserPreference.TYPES);
 
     private static final RestResource2L<Message, Member> messageRecipientResource =
             new RestResource2L<>(messageResource, "recipients", Member.TYPES);
@@ -209,24 +209,26 @@ public final class MessagingClient {
                 .put();
     }
 
-    public static MessagingUserPreferences getMessagingPreferencesForMember(long userId) {
-        return memberResource.elementService(userId, "messagingPreferences", MessagingUserPreferences.class)
+    public static MessagingUserPreference getMessagingPreferencesForMember(long userId) {
+        return memberResource.elementService(userId, "messagingPreferences", MessagingUserPreference.class)
                 .get();
     }
 
-    public static MessagingUserPreferences createMessagingPreferences(MessagingUserPreferences messagingUserPreferences) {
+    public static MessagingUserPreference createMessagingPreferences(
+            MessagingUserPreference messagingUserPreferences) {
         return messagePreferencesResource.resolveParentId(memberResource.id(messagingUserPreferences.getUserId()))
                 .create(messagingUserPreferences)
                 .execute();
     }
 
-    public static boolean updateMessagingPreferences(MessagingUserPreferences messagingUserPreferences) {
-        if (messagingUserPreferences.getMessagingPreferencesId() == null) {
+    public static boolean updateMessagingPreferences(
+            MessagingUserPreference messagingUserPreferences) {
+        if (messagingUserPreferences.getId() == null) {
             createMessagingPreferences(messagingUserPreferences);
             return true;
         }
         return messagePreferencesResource.resolveParentId(memberResource.id(messagingUserPreferences.getUserId()))
-                .update(messagingUserPreferences, messagingUserPreferences.getMessagingPreferencesId())
+                .update(messagingUserPreferences, messagingUserPreferences.getId())
                 .execute();
     }
 

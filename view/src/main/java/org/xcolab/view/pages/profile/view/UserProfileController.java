@@ -28,7 +28,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.html.HtmlUtil;
@@ -222,9 +222,9 @@ public class UserProfileController {
         boolean validationError = false;
         if (StringUtils.isNotBlank(updatedUserBean.getPassword())) {
             final String currentPassword = updatedUserBean.getCurrentPassword();
-            if (MembersClient.validatePassword(currentPassword.trim(), currentUserProfile.getUser().getUserId())
+            if (MembersClient.validatePassword(currentPassword.trim(), currentUserProfile.getUser().getId())
                     || (permissions.getCanAdmin() && MembersClient.validatePassword(
-                            currentPassword.trim(), permissions.getLoggedInMember().getUserId()))) {
+                            currentPassword.trim(), permissions.getLoggedInMember().getId()))) {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
@@ -372,7 +372,7 @@ public class UserProfileController {
             }
         }
 
-        final MessagingUserPreferences messagingPreferences = MessagingClient
+        final MessagingUserPreference messagingPreferences = MessagingClient
                 .getMessagingPreferencesForMember(currentUserProfile.getUser().getId());
         boolean changedMessagingPreferences = false;
         if (updatedUserBean.getSendEmailOnMessage() != messagingPreferences.getEmailOnReceipt()) {

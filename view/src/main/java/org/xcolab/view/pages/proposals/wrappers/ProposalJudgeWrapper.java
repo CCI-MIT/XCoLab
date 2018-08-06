@@ -35,7 +35,7 @@ public class ProposalJudgeWrapper extends Proposal {
         if(contestPhase!=null) {
             List<ProposalRating> list = ProposalJudgeRatingClientUtil
                     .getJudgeRatingsForProposalAndUser(
-                            currentMember.getUserId(),
+                            currentMember.getId(),
                             proposalId,
                             contestPhase.getId());
             this.proposalRatings = new ProposalRatings(currentMember, list);
@@ -49,7 +49,7 @@ public class ProposalJudgeWrapper extends Proposal {
         }
 
         // If the phase does not require initial fellow screening all judges should do the review
-        if (!getFellowScreeningNecessary() && isUserAmongJudges(currentMember.getUserId())) {
+        if (!getFellowScreeningNecessary() && isUserAmongJudges(currentMember.getId())) {
             if (isJudgeFinishedWritingReview()) {
                 return JudgingSystemActions.JudgeReviewStatus.DONE;
             } else {
@@ -58,7 +58,7 @@ public class ProposalJudgeWrapper extends Proposal {
         }
 
         for (long userId : this.getSelectedJudges()) {
-            if (currentMember.getUserId() == userId) {
+            if (currentMember.getId() == userId) {
                 if (isJudgeFinishedWritingReview()) {
                     return JudgingSystemActions.JudgeReviewStatus.DONE;
                 } else {
@@ -78,6 +78,6 @@ public class ProposalJudgeWrapper extends Proposal {
     }
 
     private boolean isJudgeFinishedWritingReview() {
-        return !isUserAmongJudges(currentMember.getUserId()) || proposalRatings.isReviewComplete();
+        return !isUserAmongJudges(currentMember.getId()) || proposalRatings.isReviewComplete();
     }
 }

@@ -4,7 +4,7 @@ import org.apache.commons.text.WordUtils;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 
 import java.util.Arrays;
 import java.util.List;
@@ -85,10 +85,10 @@ public enum MemberRole {
         throw new NoSuchMemberRoleException("Unknown role name given: " + roleName);
     }
 
-    public static MemberRole getHighestRole(List<Role_> roles) {
+    public static MemberRole getHighestRole(List<Role> roles) {
         MemberRole role = MemberRole.MEMBER;
 
-        for (Role_ r : roles) {
+        for (Role r : roles) {
             final String roleString = r.getName();
             try {
                 MemberRole currentRole = MemberRole.fromRoleName(roleString);

@@ -47,7 +47,7 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
                 List<Member> proposalMember =
                         ProposalClientUtil.getProposalMembers(proposal.getId());
                 for (Member member : proposalMember) {
-                    recipientIds.add(member.getUserId());
+                    recipientIds.add(member.getId());
                 }
             }
         }

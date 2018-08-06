@@ -77,7 +77,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
         // Security handling
         final boolean isContestFellow = permissions.getCanFellowActions()
-                && proposal.isUserAmongFellows(currentMember.getUserId());
+                && proposal.isUserAmongFellows(currentMember.getId());
         if (!isContestFellow && !permissions.getCanAdminAll()) {
             return new AccessDeniedPage(currentMember).toViewName(response);
         }
@@ -130,12 +130,12 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
         //find existing ratings
         List<ProposalRating> existingRatings =
                 ProposalJudgeRatingClientUtil.getFellowRatingForProposalAndUser(
-                        currentMember.getUserId(),
+                        currentMember.getId(),
                         proposalId,
                         contestPhaseId);
 
         JudgingUtil.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId,
-                contestPhaseId, currentMember.getUserId(), false);
+                contestPhaseId, currentMember.getId(), false);
 
         final String proposalLinkUrl = proposal.getProposalLinkUrl(contest, contestPhaseId);
         return "redirect:" + proposalLinkUrl + "/tab/SCREENING";

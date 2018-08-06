@@ -118,7 +118,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
 
         if (permissions.getCanDelete()) {
             final long proposalId = proposalContext.getProposal().getId();
-            final long userId = currentMember.getUserId();
+            final long userId = currentMember.getId();
             proposalContext.getClients().getProposalAttributeClient().setProposalAttribute(userId, proposalId,
                     ProposalAttributeKeys.OPEN, 0L, planOpen ? 1L : 0L, null);
             response.sendRedirect(proposalContext.getProposal().getProposalLinkUrl(proposalContext.getContest()));

@@ -237,7 +237,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         }
 
         // Security handling
-        if (!(permissions.getCanJudgeActions() && proposal.getIsUserAmongSelectedJudges(member.getUserId())
+        if (!(permissions.getCanJudgeActions() && proposal.getIsUserAmongSelectedJudges(member.getId())
                 || isPublicRating)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -253,19 +253,19 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             return "redirect:" + redirectUrl + "#rating";
         }
 
-        if (permissions.getCanJudgeActions() && proposal.getIsUserAmongSelectedJudges(member.getUserId())) {
+        if (permissions.getCanJudgeActions() && proposal.getIsUserAmongSelectedJudges(member.getId())) {
             isPublicRating = false;
         }
 
         //find existing ratings
         List<ProposalRating> existingRatings =
                 ProposalJudgeRatingClientUtil.getJudgeRatingsForProposalAndUser(
-                        member.getUserId(),
+                        member.getId(),
                         proposal.getId(),
                         contestPhase.getId());
 
         JudgingUtil.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getId(),
-                contestPhase.getId(), member.getUserId(), isPublicRating);
+                contestPhase.getId(), member.getId(), isPublicRating);
 
         AlertMessage.success("Rating saved successfully.").flash(request);
         return "redirect:" + redirectUrl;

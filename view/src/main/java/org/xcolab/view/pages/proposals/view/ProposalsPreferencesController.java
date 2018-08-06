@@ -159,7 +159,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
                 List<Member> members = proposalContext.getClients().getProposalClient().getProposalMembers(p.getId());
                 boolean foundAuthor = false;
                 for (Member u: members) {
-                    if (u.getUserId() == authorUserid) {
+                    if (u.getId() == authorUserid) {
                         foundAuthor = true;
                     }
                 }
@@ -172,7 +172,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
                 for (ProposalVersion pv: proposalContext.getClients().getProposalClient().getAllProposalVersions(p.getId())) {
                     boolean foundVersionAuthor = false;
                     for (Member u: members) {
-                        if (u.getUserId() == pv.getauthorUserid()) {
+                        if (u.getId() == pv.getauthorUserid()) {
                             foundVersionAuthor = true;
                         }
                     }

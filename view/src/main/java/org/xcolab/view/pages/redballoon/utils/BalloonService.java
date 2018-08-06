@@ -200,7 +200,7 @@ public class BalloonService {
         }
 
         if (member != null && member.getId() > 0) {
-            but.setUserId(member.getUserId());
+            but.setUserId(member.getId());
         }
 
         // pick random balloon text to be displayed

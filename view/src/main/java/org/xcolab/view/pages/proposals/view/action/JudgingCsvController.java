@@ -57,7 +57,7 @@ public class JudgingCsvController {
         ProposalsPermissions permissions = proposalContext.getPermissions();
         // Security handling
         if (!(permissions.getCanFellowActions() && proposalContext.getProposal()
-                .isUserAmongFellows(currentMember.getUserId())) && !permissions.getCanAdminAll()
+                .isUserAmongFellows(currentMember.getId())) && !permissions.getCanAdminAll()
                 && !permissions.getCanJudgeActions() && !permissions
                 .getCanContestManagerActions()) {
             return;

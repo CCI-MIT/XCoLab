@@ -129,7 +129,7 @@ public class VoteValidator {
     private ProposalVote getVote(Member votingMember) {
         return clients.getProposalMemberRatingClient()
                 .getProposalVoteByProposalIdUserId(proposal.getId(),
-                        votingMember.getUserId());
+                        votingMember.getId());
     }
 
     private boolean isRecentVote(ProposalVote otherVote) {

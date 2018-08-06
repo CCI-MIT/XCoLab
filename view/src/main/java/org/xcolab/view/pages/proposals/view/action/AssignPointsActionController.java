@@ -100,7 +100,7 @@ public class AssignPointsActionController {
                     pointsDistributionConfiguration.setTargetUserId(entry.getKey());
                     pointsDistributionConfiguration.setTargetSubProposalId(null);
                     pointsDistributionConfiguration.setPercentage(percentage);
-                    pointsDistributionConfiguration.setAuthorUserId(currentMember.getUserId());
+                    pointsDistributionConfiguration.setAuthorUserId(currentMember.getId());
 
                     proposalContext.getClients().getPointsClient()
                             .createPointsDistributionConfiguration(pointsDistributionConfiguration);

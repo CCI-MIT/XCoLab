@@ -16,8 +16,12 @@ import static org.xcolab.model.Tables.STAFF_MEMBER;
 @Repository
 public class StaffMemberDaoImpl implements StaffMemberDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public StaffMemberDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     @Override
     public List<StaffMember> findByGiven(PaginationHelper paginationHelper, Long categoryId) {

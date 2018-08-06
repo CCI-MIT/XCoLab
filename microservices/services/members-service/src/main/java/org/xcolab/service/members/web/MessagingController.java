@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.model.tables.pojos.User;
 import org.xcolab.model.tables.pojos.Message;
-import org.xcolab.model.tables.pojos.MessagingUserPreferences;
+import org.xcolab.model.tables.pojos.MessagingUserPreference;
 import org.xcolab.service.members.domain.messaging.MessageDao;
-import org.xcolab.service.members.domain.messaginguserpreferences.MessagingUserPreferencesDao;
+import org.xcolab.service.members.domain.messaginguserpreferences.MessagingUserPreferenceDao;
 import org.xcolab.service.members.exceptions.MessageLimitExceededException;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.messaging.MessageLimitManager;
 import org.xcolab.service.members.service.messaging.MessagingService;
-import org.xcolab.service.members.service.messaging.MessagingUserPreferencesService;
+import org.xcolab.service.members.service.messaging.MessagingUserPreferenceService;
 import org.xcolab.service.members.wrappers.SendMessageBean;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
@@ -40,14 +40,14 @@ public class MessagingController {
 
     private final MessageDao messageDao;
 
-    private final MessagingUserPreferencesDao messagingUserPreferencesDao;
+    private final MessagingUserPreferenceDao messagingUserPreferencesDao;
 
-    private final MessagingUserPreferencesService messagingUserPreferencesService;
+    private final MessagingUserPreferenceService messagingUserPreferencesService;
 
     @Autowired
     public MessagingController(MessageDao messageDao,
-            MessagingUserPreferencesDao messagingUserPreferencesDao,
-            MessagingUserPreferencesService messagingUserPreferencesService,
+            MessagingUserPreferenceDao messagingUserPreferencesDao,
+            MessagingUserPreferenceService messagingUserPreferencesService,
             MessagingService messagingService, MessageLimitManager messageLimitManager) {
         this.messageDao = messageDao;
         this.messagingUserPreferencesDao = messagingUserPreferencesDao;
@@ -57,7 +57,7 @@ public class MessagingController {
     }
 
     @RequestMapping(value = "/messages", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<Message> getMemberMessages(HttpServletResponse response,
+    public List<Message> getUserMessages(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) Long recipientId,
@@ -91,7 +91,7 @@ public class MessagingController {
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients", method = RequestMethod.GET)
-    public List<Member> getMessageRecipients(@PathVariable long messageId) {
+    public List<User> getMessageRecipients(@PathVariable long messageId) {
         return messageDao.getRecipients(messageId);
     }
 
@@ -124,27 +124,27 @@ public class MessagingController {
     }
 
     @GetMapping("/members/{userId}/messagingPreferences")
-    public MessagingUserPreferences getMessagingPreferences(@PathVariable long userId) {
+    public MessagingUserPreference getMessagingPreferences(@PathVariable long userId) {
         return messagingUserPreferencesService.getByuserId(userId);
     }
 
     @PutMapping("/members/{userId}/messagingPreferences/{messagingPreferencesId}")
     public boolean updateMessagingPreferences(@PathVariable long userId,
             @PathVariable long messagingPreferencesId,
-            @RequestBody MessagingUserPreferences messagingUserPreferences) {
+            @RequestBody MessagingUserPreference messagingUserPreferences) {
         return messagingUserPreferencesDao.update(messagingUserPreferences);
     }
 
     @PostMapping("/members/{userId}/messagingPreferences")
-    public MessagingUserPreferences createMessagingPreferences(@PathVariable long userId,
-            @RequestBody MessagingUserPreferences messagingUserPreferences) {
+    public MessagingUserPreference createMessagingPreferences(@PathVariable long userId,
+            @RequestBody MessagingUserPreference messagingUserPreferences) {
         return messagingUserPreferencesDao.create(messagingUserPreferences)
                 .orElseThrow(() -> new InternalException(
                 "Could not retrieve id of created messagingPreferences: " + messagingUserPreferences));
     }
 
     @RequestMapping(value = "/members/{userId}/canSendMessage", method = RequestMethod.GET)
-    public boolean canMemberSendMessage(@PathVariable long userId,
+    public boolean canUserSendMessage(@PathVariable long userId,
             @RequestParam(required = false, defaultValue = "1") int messagesToSend) {
         return messageLimitManager.canSendMessages(messagesToSend, userId);
     }

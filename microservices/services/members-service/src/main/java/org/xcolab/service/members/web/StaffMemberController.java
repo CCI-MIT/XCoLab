@@ -15,16 +15,20 @@ import java.util.List;
 @RestController
 public class StaffMemberController {
 
-    @Autowired
-    private StaffMemberDao staffMemberDao;
+    private final StaffMemberDao staffUserDao;
 
-    @RequestMapping(value = "staffMembers", method = RequestMethod.GET)
+    @Autowired
+    public StaffMemberController(StaffMemberDao staffUserDao) {
+        this.staffUserDao = staffUserDao;
+    }
+
+    @RequestMapping(value = "staffUsers", method = RequestMethod.GET)
     public List<StaffMember> listStaffMembers(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Long categoryId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
-        return staffMemberDao.findByGiven(paginationHelper, categoryId);
+        return staffUserDao.findByGiven(paginationHelper, categoryId);
     }
 }

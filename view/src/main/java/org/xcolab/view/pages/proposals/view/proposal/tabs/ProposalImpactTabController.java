@@ -341,10 +341,10 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         Proposal proposal = proposalContext.getProposal();
         Long consolidatedScenario = isConsolidatedScenario != null && isConsolidatedScenario ? 1L : 0L;
-        proposal.setScenarioId(scenarioId, consolidatedScenario, currentMember.getUserId());
+        proposal.setScenarioId(scenarioId, consolidatedScenario, currentMember.getId());
 
         if (StringUtils.isNotBlank(region)) {
-            proposal.setModelRegion(region, currentMember.getUserId());
+            proposal.setModelRegion(region, currentMember.getId());
         }
 
         ProposalAttributeClient proposalAttributeClient = proposalContext.getClients()
@@ -356,14 +356,14 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 proposalAttributeClient.createOrUpdateUnversionedStringAttribute(
                         proposal.getId(),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
-                        currentMember.getUserId(),
+                        currentMember.getId(),
                         HtmlUtil.cleanAll(impactAuthorComment));
             }
             if (impactIAFComment != null) {
                 proposalAttributeClient.createOrUpdateUnversionedStringAttribute(
                         proposal.getId(),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
-                        currentMember.getUserId(),
+                        currentMember.getId(),
                         HtmlUtil.cleanAll(impactIAFComment));
             }
         }

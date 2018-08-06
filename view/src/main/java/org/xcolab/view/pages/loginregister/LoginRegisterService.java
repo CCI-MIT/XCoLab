@@ -113,8 +113,8 @@ public class LoginRegisterService {
     }
 
     public void recordRegistrationEvent(Member member) {
-        ActivitiesClientUtil.createActivityEntry(MemberActivityType.REGISTERED, member.getUserId(),
-                member.getUserId());
+        ActivitiesClientUtil.createActivityEntry(MemberActivityType.REGISTERED, member.getId(),
+                member.getId());
 
         if (member.getFacebookId() != null) {
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_FACEBOOK);

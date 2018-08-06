@@ -15,7 +15,7 @@ public class LoginLog implements Serializable {
     public static final TypeProvider<LoginLog> TYPES =
             new TypeProvider<>(LoginLog.class, new ParameterizedTypeReference<List<LoginLog>>() {});
 
-    private Long pk;
+    private Long id;
     private Long userId;
     private Timestamp createdAt;
     private String ipAddress;
@@ -27,7 +27,7 @@ public class LoginLog implements Serializable {
     }
 
     public LoginLog(LoginLog value) {
-        this.pk = value.pk;
+        this.id = value.id;
         this.userId = value.userId;
         this.createdAt = value.createdAt;
         this.ipAddress = value.ipAddress;
@@ -36,9 +36,9 @@ public class LoginLog implements Serializable {
         this.entryUrl = value.entryUrl;
     }
 
-    public LoginLog(Long pk, Long userId, Timestamp createdAt, String ipAddress,
+    public LoginLog(Long id, Long userId, Timestamp createdAt, String ipAddress,
             String city, String country, String entryUrl) {
-        this.pk = pk;
+        this.id = id;
         this.userId = userId;
         this.createdAt = createdAt;
         this.ipAddress = ipAddress;
@@ -47,12 +47,12 @@ public class LoginLog implements Serializable {
         this.entryUrl = entryUrl;
     }
 
-    public Long getPk() {
-        return this.pk;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setPk(Long pk) {
-        this.pk = pk;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getUserId() {
@@ -115,11 +115,11 @@ public class LoginLog implements Serializable {
             return false;
         }
         final LoginLog other = (LoginLog) obj;
-        if (pk == null) {
-            if (other.pk != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!pk.equals(other.pk)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (userId == null) {
@@ -171,7 +171,7 @@ public class LoginLog implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((pk == null) ? 0 : pk.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((userId == null) ? 0 : userId.hashCode());
         result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         result = prime * result + ((ipAddress == null) ? 0 : ipAddress.hashCode());
@@ -183,7 +183,7 @@ public class LoginLog implements Serializable {
 
     @Override
     public String toString() {
-        return "LoginLog (" + pk +
+        return "LoginLog (" + id +
                 ", " + userId +
                 ", " + createdAt +
                 ", " + ipAddress +

@@ -22,7 +22,7 @@ public class PointsDistributionUtil {
         try{
             List<Member> members = proposalService.getProposalMembers(proposalId);
             for (Member u : members) {
-                targets.add(PointsTarget.forUser(u.getUserId(), 1.0d / members.size()));
+                targets.add(PointsTarget.forUser(u.getId(), 1.0d / members.size()));
             }
         } catch(ProposalNotFoundException ignored)  {}
         return targets;

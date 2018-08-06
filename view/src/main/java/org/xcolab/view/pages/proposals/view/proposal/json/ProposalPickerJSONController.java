@@ -39,7 +39,7 @@ public class ProposalPickerJSONController {
             @RequestParam(required = false) long contestPK) throws IOException {
 
         List<Proposal> proposals;
-        final long userId = user.getUserId();
+        final long userId = user.getId();
 
         switch (tab) {
             case SUBSCRIBED_SUPPORTED_PROPOSALS:
@@ -115,7 +115,7 @@ public class ProposalPickerJSONController {
             Member user, ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @RequestParam String filterKey,
             @RequestParam long sectionId, @RequestParam Tab tab) throws IOException {
-        long userId = user.getUserId();
+        long userId = user.getId();
 
         switch (tab) {
             case ALL_CONTESTS:

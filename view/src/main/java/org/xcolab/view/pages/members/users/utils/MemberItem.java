@@ -6,7 +6,7 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -32,7 +32,7 @@ public class MemberItem implements Serializable {
         if (StringUtils.isNotEmpty(memberCategoryParam)) {
             memberCategory = MembersClient.getMemberCategory(memberCategoryParam);
         } else {
-            List<Role_> roles = MembersClient.getMemberRoles(userId);
+            List<Role> roles = MembersClient.getMemberRoles(userId);
             memberCategory = MembersClient.getHighestCategory(roles);
         }
     }

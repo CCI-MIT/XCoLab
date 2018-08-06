@@ -43,7 +43,7 @@ public final class EntityIdListUtil {
             new IdListObjectConverter<>(ContestTypeClient::getContestType, ContestType::getId);
 
     public final static IdListObjectConverter<Member> MEMBERS =
-            new IdListObjectConverter<>(MembersClient::getMemberUnchecked, Member::getUserId);
+            new IdListObjectConverter<>(MembersClient::getMemberUnchecked, Member::getId);
 
 
     public static class IdListObjectConverter<T> {

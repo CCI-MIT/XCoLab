@@ -148,10 +148,10 @@
             <table class="contributors">
                 <c:forEach var="supporter" items="${proposal.supporters }" varStatus="status" step="2">
                     <tr class="${(status.index / 2) mod 2 > 0 ? 'even' : 'odd'}">
-                        <td><xcolab:userLinkSimple userId="${supporter.userId}" text="${supporter.displayName}" /></td>
+                        <td><xcolab:userLinkSimple userId="${supporter.id}" text="${supporter.displayName}" /></td>
                         <td>
                             <c:if test="${fn:length(proposal.supporters) > status.index}">
-                                <xcolab:userLinkSimple userId="${proposal.supporters[status.index+1].userId}" text="${proposal.supporters[status.index+1].displayName}" />
+                                <xcolab:userLinkSimple userId="${proposal.supporters[status.index+1].id}" text="${proposal.supporters[status.index+1].displayName}" />
                             </c:if>
                         </td>
                     </tr>

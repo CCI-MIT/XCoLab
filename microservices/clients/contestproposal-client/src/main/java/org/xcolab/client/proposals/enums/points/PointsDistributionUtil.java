@@ -23,7 +23,7 @@ public class PointsDistributionUtil {
         List<PointsTarget> targets = new ArrayList<>();
         List<Member> members = ProposalClientUtil.getProposalMembers(proposalId);
         for (Member u : members) {
-            targets.add(PointsTarget.forUser(u.getUserId(), 1.0d / members.size()));
+            targets.add(PointsTarget.forUser(u.getId(), 1.0d / members.size()));
         }
         return targets;
     }

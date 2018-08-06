@@ -9,9 +9,9 @@ import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.model.tables.pojos.LoginLog;
-import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.model.tables.pojos.User;
 import org.xcolab.service.members.domain.loginlog.LoginLogDao;
-import org.xcolab.service.members.domain.member.MemberDao;
+import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.domain.role.RoleDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.util.PBKDF2PasswordEncryptor;
@@ -25,17 +25,17 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Service
-public class MemberService {
+public class UserService {
 
     private static final int MAX_SCREEN_NAME_LENGTH = 26;
 
-    private final MemberDao memberDao;
+    private final UserDao memberDao;
     private final RoleDao roleDao;
     private final LoginLogDao loginLogDao;
     private final ConnectorEmmaAPI connectorEmmaAPI;
 
     @Autowired
-    public MemberService(MemberDao memberDao, RoleDao roleDao, LoginLogDao loginLogDao,
+    public UserService(UserDao memberDao, RoleDao roleDao, LoginLogDao loginLogDao,
             ConnectorEmmaAPI connectorEmmaAPI) {
         this.memberDao = memberDao;
         this.roleDao = roleDao;
@@ -64,7 +64,7 @@ public class MemberService {
 
     public boolean validatePassword(String password, long userId) throws NotFoundException {
         return validatePassword(password,
-                memberDao.getMember(userId).orElseThrow(NotFoundException::new).getHashedPassword());
+                memberDao.getUser(userId).orElseThrow(NotFoundException::new).getHashedPassword());
     }
 
     public boolean validatePassword(String password, String hash) {
@@ -90,11 +90,11 @@ public class MemberService {
         return memberDao.updatePassword(userId, hashedPassword);
     }
 
-    public Member register(Member pojo) {
+    public User register(User pojo) {
         pojo.setHashedPassword(hashPassword(pojo.getHashedPassword()));
-        final Member member = memberDao.createMember(pojo);
-        //TODO COLAB-2609: centralize this ID in constant (see MemberRole enum)
-        roleDao.assignMemberRole(member.getId(), 10122L);
+        final User member = memberDao.createUser(pojo);
+        //TODO COLAB-2609: centralize this ID in constant (see UserRole enum)
+        roleDao.assignUserRole(member.getId(), 10122L);
         subscribeToNewsletter(member.getEmailAddress());
         return member;
     }
@@ -116,7 +116,7 @@ public class MemberService {
 
     public boolean validateForgotPasswordToken(String passwordToken) throws NotFoundException {
         if(memberDao.findOneByForgotPasswordHash(passwordToken).isPresent()) {
-            Member member = memberDao.findOneByForgotPasswordHash(passwordToken).orElseThrow(NotFoundException::new);
+            User member = memberDao.findOneByForgotPasswordHash(passwordToken).orElseThrow(NotFoundException::new);
             return member.getForgotPasswordTokenExpireTime().getTime() >= Timestamp
                     .valueOf(LocalDateTime.now()).getTime();
         } else {
@@ -125,49 +125,49 @@ public class MemberService {
     }
 
     public String createNewForgotPasswordToken(Long userId) {
-        Member member = memberDao.getMember(userId).orElseThrow(
-                () -> ReferenceResolutionException.toObject(Member.class, userId).build());
+        User member = memberDao.getUser(userId).orElseThrow(
+                () -> ReferenceResolutionException.toObject(User.class, userId).build());
         String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
         member.setForgotPasswordToken(confirmationToken);
         LocalDateTime localDateTime = LocalDateTime.now().plusHours(1L);
         member.setForgotPasswordTokenExpireTime(Timestamp.valueOf(localDateTime));
-        memberDao.updateMember(member);
+        memberDao.updateUser(member);
         return confirmationToken;
     }
 
     public Long updateUserPasswordWithToken(String token, String newPassword) throws NotFoundException {
-        Member member = memberDao.findOneByForgotPasswordHash(token).orElseThrow(NotFoundException::new);
+        User member = memberDao.findOneByForgotPasswordHash(token).orElseThrow(NotFoundException::new);
         updatePassword(member.getId(), newPassword);
         return member.getId();
     }
 
     public boolean isSubscribedToNewsletter(long userId) throws IOException, NotFoundException {
-        final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
+        final User member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
         final String email = member.getEmailAddress();
-        JSONObject memberDetails = connectorEmmaAPI.getMemberJSONfromEmail(email);
-        return ConnectorEmmaAPI.hasMemberActiveSubscription(memberDetails, false);
+        JSONObject memberDetails = connectorEmmaAPI.getUserJSONfromEmail(email);
+        return ConnectorEmmaAPI.hasUserActiveSubscription(memberDetails, false);
     }
 
     public boolean subscribeToNewsletter(long userId) throws NotFoundException {
-        final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
+        final User member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
         final String email = member.getEmailAddress();
         return subscribeToNewsletter(email);
     }
 
     private boolean subscribeToNewsletter(String email) {
         try {
-            JSONObject memberDetails = connectorEmmaAPI.subscribeMemberWithEmail(email);
-            return ConnectorEmmaAPI.hasMemberActiveSubscription(memberDetails, true);
+            JSONObject memberDetails = connectorEmmaAPI.subscribeUserWithEmail(email);
+            return ConnectorEmmaAPI.hasUserActiveSubscription(memberDetails, true);
         } catch (IOException e) {
             return false;
         }
     }
 
     public boolean unsubscribeFromNewsletter(long userId) throws NotFoundException {
-        final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
+        final User member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
         final String email = member.getEmailAddress();
         try {
-            return connectorEmmaAPI.unSubscribeMemberWithEmail(email);
+            return connectorEmmaAPI.unSubscribeUserWithEmail(email);
         } catch (IOException e) {
             return false;
         }

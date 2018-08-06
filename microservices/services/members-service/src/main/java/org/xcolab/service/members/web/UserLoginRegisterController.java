@@ -10,26 +10,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.commons.exceptions.InternalException;
-import org.xcolab.model.tables.pojos.Member;
-import org.xcolab.service.members.domain.member.MemberDao;
+import org.xcolab.model.tables.pojos.User;
+import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
-import org.xcolab.service.members.service.member.MemberService;
+import org.xcolab.service.members.service.member.UserService;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 @RestController
 @RequestMapping("/members")
-public class MembersLoginRegisterController {
+public class UserLoginRegisterController {
 
-    private final MemberService memberService;
+    private final UserService memberService;
 
-    private final MemberDao memberDao;
+    private final UserDao memberDao;
 
     @Autowired
-    public MembersLoginRegisterController(MemberService memberService, MemberDao memberDao) {
-        Assert.notNull(memberService, "MemberService bean is required");
-        Assert.notNull(memberDao, "MemberDao bean is required");
+    public UserLoginRegisterController(UserService memberService, UserDao memberDao) {
+        Assert.notNull(memberService, "UserService bean is required");
+        Assert.notNull(memberDao, "UserDao bean is required");
         this.memberService = memberService;
         this.memberDao = memberDao;
     }
@@ -76,7 +76,7 @@ public class MembersLoginRegisterController {
         }
 
         if (userId != null) {
-            final Member member = memberDao.getMember(userId).orElseThrow(NotFoundException::new);
+            final User member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
             return memberService.validatePassword(password, member.getHashedPassword());
         }
         throw new NotFoundException("The endpoint you requested is not available for the given attributes");

@@ -79,7 +79,7 @@ public class StaffMemberWrapper implements Serializable {
 
     public String getUrl() {
         if (StringUtils.isBlank(staffMember.getUrl()) && colabMember != null) {
-            return "/members/profile/" + colabMember.getUserId();
+            return "/members/profile/" + colabMember.getId();
         } else {
             return staffMember.getUrl();
         }

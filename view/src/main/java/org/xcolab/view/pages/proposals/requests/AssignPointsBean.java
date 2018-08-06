@@ -97,7 +97,7 @@ public class AssignPointsBean {
                 if (foundElement != null) {
                     existingDistributionConfigurations.remove(foundElement);
                 }
-                entityPercentages.put(u.getUserId(), percentage);
+                entityPercentages.put(u.getId(), percentage);
             }
         }
 

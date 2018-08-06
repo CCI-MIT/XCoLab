@@ -114,13 +114,13 @@ public class MessagingController {
             fullConversation.add(MessagingClient.getMessage(messageId));
         }
 
-        boolean isLastMessage = messageId.equals(fullConversation.get(0).getMessageId());
+        boolean isLastMessage = messageId.equals(fullConversation.get(0).getId());
 
         //Transform messages into beans and discard messages newer than this one
         List<MessageBean> messageBeanListNewestFirst = new ArrayList<>();
         boolean reachedRequiredMessage = false;
         for (Message message : fullConversation){
-            if (message.getMessageId().equals(messageId)) {
+            if (message.getId().equals(messageId)) {
                 reachedRequiredMessage = true;
             }
             if (reachedRequiredMessage) {
@@ -173,7 +173,7 @@ public class MessagingController {
                 if (item.isSelected()) {
                     Message message = item.getMessage();
                     MessagingClient
-                            .setArchived(message.getMessageId(), loggedInMember.getId(), true);
+                            .setArchived(message.getId(), loggedInMember.getId(), true);
                 }
             }
         }
@@ -215,7 +215,7 @@ public class MessagingController {
 
                 final String baseUri = PlatformAttributeKey.COLAB_URL.get();
                 MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
-                        HtmlUtil.cleanSome(messageContent, baseUri), loggedInMember.getUserId(),
+                        HtmlUtil.cleanSome(messageContent, baseUri), loggedInMember.getId(),
                         HtmlUtil.cleanAll(threadId), recipientIds);
                 AlertMessage.success("The message has been sent!").flash(request);
             } catch (MessageLimitExceededException e) {

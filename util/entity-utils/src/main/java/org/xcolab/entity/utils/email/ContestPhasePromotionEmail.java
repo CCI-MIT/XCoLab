@@ -33,7 +33,7 @@ public class ContestPhasePromotionEmail {
         List<Long> recipientIds = new ArrayList<>();
 
         for (Member contributor : ProposalClientUtil.getProposalMembers(proposal.getId())) {
-            recipientIds.add(contributor.getUserId());
+            recipientIds.add(contributor.getId());
         }
 
         return recipientIds;

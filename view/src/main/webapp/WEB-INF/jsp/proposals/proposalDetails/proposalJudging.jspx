@@ -28,9 +28,9 @@
                             screenName="${judge.screenName}"
                             fullName="${judge.fullName}"
                             portraitId="${judge.portraitId}"
-                            userId="${judge.userId}"
+                            userId="${judge.id}"
                             width="30" height="30"
-                            judgeRatingSatus="${proposal.getIsReviewFinishedForJudge(judge.userId)}"/>
+                            judgeRatingSatus="${proposal.getIsReviewFinishedForJudge(judge.id)}"/>
                 </c:forEach>
             </select>
         </c:if>

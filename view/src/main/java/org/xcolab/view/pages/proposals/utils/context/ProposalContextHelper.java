@@ -182,7 +182,7 @@ public class ProposalContextHelper {
         Proposal proposalWrapper;
         if (givenVersion > 0) {
             if (member != null && PermissionsClient
-                    .canJudge(member.getUserId(), contest.getId())) {
+                    .canJudge(member.getId(), contest.getId())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal, givenVersion,
                         contest, contestPhase, proposal2Phase, member);
             } else {
@@ -198,7 +198,7 @@ public class ProposalContextHelper {
                             : proposal.getCurrentVersion();
 
             if (member != null && PermissionsClient
-                    .canJudge(member.getUserId(), contest.getId())) {
+                    .canJudge(member.getId(), contest.getId())) {
                 proposalWrapper = new ProposalJudgeWrapper(proposal,
                         localVersion,
                         contest, contestPhase, proposal2Phase, member);

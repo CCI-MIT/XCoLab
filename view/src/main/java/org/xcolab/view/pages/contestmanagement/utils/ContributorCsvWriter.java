@@ -66,7 +66,7 @@ public class ContributorCsvWriter extends CsvResponseWriter {
                 addValue(row, ribbonWrapper.getRibbonTitle());
 
                 final Member member = teamMember.getMember();
-                addValue(row, member.getUserId());
+                addValue(row, member.getId());
                 addValue(row, member.getScreenName());
                 addValue(row, member.getFirstName());
                 addValue(row, member.getLastName());

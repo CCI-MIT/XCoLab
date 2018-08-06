@@ -2,19 +2,18 @@ package org.xcolab.service.members.domain.platformteam;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.PlatformTeam;
+import org.xcolab.model.tables.pojos.User;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.xcolab.model.Tables.MEMBER;
 import static org.xcolab.model.Tables.PLATFORM_TEAM;
 import static org.xcolab.model.Tables.PLATFORM_TEAM_MEMBER;
+import static org.xcolab.model.Tables.USER;
 
 @Repository
 public class PlatformTeamDaoImpl implements PlatformTeamDao {
@@ -80,12 +79,12 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     }
 
     @Override
-    public List<Member> getTeamMembers(long teamId) {
-        return dslContext.select(MEMBER.fields())
-                .from(MEMBER.join(PLATFORM_TEAM_MEMBER)
-                        .on(MEMBER.ID.eq(PLATFORM_TEAM_MEMBER.USER_ID)))
+    public List<User> getTeamUsers(long teamId) {
+        return dslContext.select(USER.fields())
+                .from(USER.join(PLATFORM_TEAM_MEMBER)
+                        .on(USER.ID.eq(PLATFORM_TEAM_MEMBER.USER_ID)))
                 .where(PLATFORM_TEAM_MEMBER.TEAM_ID.eq(teamId))
-                .fetchInto(Member.class);
+                .fetchInto(User.class);
     }
 
     @Override
@@ -96,7 +95,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     }
 
     @Override
-    public int addMember(long teamId, long userId) {
+    public int addUser(long teamId, long userId) {
         return dslContext.insertInto(PLATFORM_TEAM_MEMBER)
                 .set(PLATFORM_TEAM_MEMBER.TEAM_ID, teamId)
                 .set(PLATFORM_TEAM_MEMBER.USER_ID, userId)
@@ -105,7 +104,7 @@ public class PlatformTeamDaoImpl implements PlatformTeamDao {
     }
 
     @Override
-    public int removeMember(long teamId, long userId) {
+    public int removeUser(long teamId, long userId) {
         return dslContext.deleteFrom(PLATFORM_TEAM_MEMBER)
                 .where(PLATFORM_TEAM_MEMBER.TEAM_ID.eq(teamId))
                 .and(PLATFORM_TEAM_MEMBER.USER_ID.eq(userId))

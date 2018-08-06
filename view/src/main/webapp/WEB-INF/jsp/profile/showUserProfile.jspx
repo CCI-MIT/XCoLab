@@ -431,7 +431,7 @@
 
                                         <xcolab:userLinkSimple
                                                 text="${message.from.displayName}"
-                                                userId="${message.from.userId}"/>
+                                                userId="${message.from.id}"/>
                                         <spring:message code="profile.show.sentyouamessage"/>
                                         <a href="/messaging/message/${message.messageId}">${message.subject}</a>
                                     </div>

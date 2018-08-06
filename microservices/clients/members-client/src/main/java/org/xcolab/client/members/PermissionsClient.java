@@ -2,7 +2,7 @@ package org.xcolab.client.members;
 
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
@@ -15,8 +15,8 @@ public final class PermissionsClient {
     private static final RestResource1<Object, Long> roleGroupResource =
             new RestResource1<>(UserResource.ROLE_GROUP, new TypeProvider<>(null, null));
 
-    private static final RestResource2L<Object, Role_> roleGroupRoleResource =
-            new RestResource2L<>(roleGroupResource, "roles", Role_.TYPES);
+    private static final RestResource2L<Object, Role> roleGroupRoleResource =
+            new RestResource2L<>(roleGroupResource, "roles", Role.TYPES);
 
     private PermissionsClient() {
     }
@@ -58,16 +58,16 @@ public final class PermissionsClient {
     }
 
     public static boolean hasRoleGroup(long userId, long roleGroupId) {
-        final List<Role_> roles = getRoleGroupRoles(roleGroupId);
-        for (Role_ role : roles) {
-            if (memberHasRole(userId, role.getRoleId())) {
+        final List<Role> roles = getRoleGroupRoles(roleGroupId);
+        for (Role role : roles) {
+            if (memberHasRole(userId, role.getId())) {
                 return true;
             }
         }
         return canAdminAll(userId);
     }
 
-    private static List<Role_> getRoleGroupRoles(long roleGroupId) {
+    private static List<Role> getRoleGroupRoles(long roleGroupId) {
         //TODO COLAB-2594: think about structure
         return roleGroupRoleResource.resolveParentId(roleGroupResource.id(roleGroupId))
                 .list()
@@ -79,10 +79,10 @@ public final class PermissionsClient {
         if (userId == 0) {
             return false;
         }
-        List<Role_> roles = MembersClient.getMemberRoles(userId);
+        List<Role> roles = MembersClient.getMemberRoles(userId);
         if (roles != null && !roles.isEmpty()) {
-            for (Role_ role : roles) {
-                if (role.getRoleId() == roleIdToTest) {
+            for (Role role : roles) {
+                if (role.getId() == roleIdToTest) {
                     return true;
                 }
             }
@@ -94,10 +94,10 @@ public final class PermissionsClient {
         if (userId == 0) {
             return false;
         }
-        List<Role_> roles = MembersClient.getMemberRolesInContest(userId, contestId);
+        List<Role> roles = MembersClient.getMemberRolesInContest(userId, contestId);
         if (roles != null && !roles.isEmpty()) {
-            for (Role_ role : roles) {
-                if (role.getRoleId() == roleToTest.getRoleId()) {
+            for (Role role : roles) {
+                if (role.getId() == roleToTest.getRoleId()) {
                     return true;
                 }
             }

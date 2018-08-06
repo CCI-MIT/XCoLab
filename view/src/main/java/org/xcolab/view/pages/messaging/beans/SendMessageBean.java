@@ -28,7 +28,7 @@ public class SendMessageBean implements Serializable {
 
     public SendMessageBean(MessageBean replyMessage) {
         this();
-        this.userIdsRecipients = String.valueOf(replyMessage.getFrom().getUserId());
+        this.userIdsRecipients = String.valueOf(replyMessage.getFrom().getId());
         this.recipientList.add(replyMessage.getFrom());
 
         this.subject = "RE: " + replyMessage.getSubject();
@@ -60,7 +60,7 @@ public class SendMessageBean implements Serializable {
         List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
 
         MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(subject),
-                HtmlUtil.cleanSome(messageContent, baseUri), sender.getUserId(), recipientIds);
+                HtmlUtil.cleanSome(messageContent, baseUri), sender.getId(), recipientIds);
     }
 
     public String getUserIdsRecipients() {

@@ -88,7 +88,7 @@ public class VoteOnProposalActionController {
         boolean hasVoted = false;
         long proposalId = proposal.getId();
         long contestPhaseId = proposalContext.getContestPhase().getId();
-        long userId = member.getUserId();
+        long userId = member.getId();
         ActivityType activitySubType = null;
         if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, userId)) {
             // User has voted for this proposal and would like to retract the vote

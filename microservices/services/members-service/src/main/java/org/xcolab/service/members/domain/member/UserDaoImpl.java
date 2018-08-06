@@ -12,10 +12,10 @@ import org.springframework.stereotype.Repository;
 
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.MemberCategoryTable;
-import org.xcolab.model.tables.MemberTable;
-import org.xcolab.model.tables.Users_RolesTable;
-import org.xcolab.model.tables.pojos.Member;
-import org.xcolab.model.tables.records.MemberRecord;
+import org.xcolab.model.tables.UserRoleTable;
+import org.xcolab.model.tables.UserTable;
+import org.xcolab.model.tables.pojos.User;
+import org.xcolab.model.tables.records.UserRecord;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.sql.Timestamp;
@@ -32,27 +32,27 @@ import static org.jooq.impl.DSL.sum;
 import static org.jooq.impl.DSL.val;
 import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
 import static org.xcolab.model.Tables.LOGIN_LOG;
-import static org.xcolab.model.Tables.MEMBER;
+import static org.xcolab.model.Tables.USER;
 import static org.xcolab.model.Tables.MEMBER_CATEGORY;
 import static org.xcolab.model.Tables.POINTS;
-import static org.xcolab.model.Tables.USERS_ROLES;
+import static org.xcolab.model.Tables.USER_ROLE;
 
 @Repository
-public class MemberDaoImpl implements MemberDao {
+public class UserDaoImpl implements UserDao {
 
     private final DSLContext dslContext;
 
     @Autowired
-    public MemberDaoImpl(DSLContext dslContext) {
+    public UserDaoImpl(DSLContext dslContext) {
         this.dslContext = dslContext;
     }
 
     @Override
-    public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
+    public List<User> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
             String googleId, String colabSsoId, String climateXId, List<Long> roleIds) {
-        final MemberTable member = MEMBER.as("member");
-        final Users_RolesTable usersRoles = USERS_ROLES.as("usersRoles");
+        final UserTable member = USER.as("member");
+        final UserRoleTable usersRoles = USER_ROLE.as("userRole");
         final MemberCategoryTable memberCategory = MEMBER_CATEGORY.as("memberCategory");
 
         final SelectQuery<Record> query = dslContext.selectDistinct(member.fields())
@@ -95,14 +95,14 @@ public class MemberDaoImpl implements MemberDao {
             query.addConditions(member.CLIMATE_X_ID.eq(climateXId));
         }
         if (roleName != null) {
-            Users_RolesTable userRolesInner = USERS_ROLES.as("userRolesInner");
+            UserRoleTable userRoleInner = USER_ROLE.as("userRoleInner");
             MemberCategoryTable memberCategoryInner = MEMBER_CATEGORY.as("memberCategoryInner");
 
             query.addConditions(usersRoles.ROLE_ID.eq(
-                    dslContext.select(userRolesInner.ROLE_ID)
-                    .from(userRolesInner)
-                    .innerJoin(memberCategoryInner).on(userRolesInner.ROLE_ID.eq(memberCategoryInner.ROLE_ID))
-                    .where(userRolesInner.USER_ID.eq(member.ID))
+                    dslContext.select(userRoleInner.ROLE_ID)
+                    .from(userRoleInner)
+                    .innerJoin(memberCategoryInner).on(userRoleInner.ROLE_ID.eq(memberCategoryInner.ROLE_ID))
+                    .where(userRoleInner.USER_ID.eq(member.ID))
                     .orderBy(memberCategoryInner.SORT_ORDER.desc())
                     .limit(0,1)
             ));
@@ -112,7 +112,7 @@ public class MemberDaoImpl implements MemberDao {
             switch (sortColumn.getColumnName()) {
                 case "createdAt":
                     query.addOrderBy(sortColumn.isAscending()
-                            ? member.CREATE_DATE.asc() : member.CREATE_DATE.desc());
+                            ? member.CREATED_AT.asc() : member.CREATED_AT.desc());
                     break;
                 case "screenName":
                     query.addOrderBy(sortColumn.isAscending()
@@ -127,7 +127,7 @@ public class MemberDaoImpl implements MemberDao {
                     //TODO COLAB-2608: this property is owned by the activities-service
                     Field<Object> activityCount = this.dslContext.selectCount()
                             .from(ACTIVITY_ENTRY)
-                            .where(ACTIVITY_ENTRY.MEMBER_ID.equal(member.ID))
+                            .where(ACTIVITY_ENTRY.USER_ID.equal(member.ID))
                             .asField("activityCount");
                     query.addSelect(activityCount);
                     query.addSelect(member.fields());
@@ -138,8 +138,8 @@ public class MemberDaoImpl implements MemberDao {
                 case "roleName":
                     Field<Object> roleNameField = dslContext.select(max(MEMBER_CATEGORY.SORT_ORDER))
                             .from(MEMBER_CATEGORY)
-                            .join(USERS_ROLES).on(USERS_ROLES.ROLE_ID.eq(MEMBER_CATEGORY.ROLE_ID))
-                            .where(USERS_ROLES.USER_ID.eq(member.ID))
+                            .join(USER_ROLE).on(USER_ROLE.ROLE_ID.eq(MEMBER_CATEGORY.ROLE_ID))
+                            .where(USER_ROLE.USER_ID.eq(member.ID))
                             .asField("roleName");
                     query.addSelect(roleNameField);
                     query.addOrderBy(sortColumn.isAscending()
@@ -160,10 +160,10 @@ public class MemberDaoImpl implements MemberDao {
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(Member.class);
+        return query.fetchInto(User.class);
     }
 
-    private Field<String> getDisplayName(MemberTable member) {
+    private Field<String> getDisplayName(UserTable member) {
         // Concatenate first name and last name to full name. If the full name is more than just a
         // space, return the full name. Else, return the screen name.
         Field<String> firstName = coalesce(ltrim(member.FIRST_NAME), "");
@@ -175,7 +175,7 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     private void addSearchCondition(String partialName, String partialEmail,
-            SelectQuery<?> query, MemberTable memberTable) {
+            SelectQuery<?> query, UserTable memberTable) {
         Condition searchCondition = DSL.falseCondition();
         if (partialName != null) {
             String[] searchTerms = partialName.split("\\s");
@@ -193,33 +193,33 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public List<Member> findByIp(String ip) {
+    public List<User> findByIp(String ip) {
         final SelectQuery<Record> query = dslContext
-                .selectDistinct(MEMBER.fields())
-                .from(MEMBER)
-                .join(LOGIN_LOG).on(LOGIN_LOG.USER_ID.equal(MEMBER.ID))
+                .selectDistinct(USER.fields())
+                .from(USER)
+                .join(LOGIN_LOG).on(LOGIN_LOG.USER_ID.equal(USER.ID))
                 .where(LOGIN_LOG.IP_ADDRESS.eq(ip))
                 .getQuery();
-        return query.fetchInto(Member.class);
+        return query.fetchInto(User.class);
     }
 
     @Override
-    public List<Member> findByScreenNameName(String name) {
+    public List<User> findByScreenNameName(String name) {
         final SelectQuery<Record> query = dslContext.select()
-                .from(MEMBER)
-                .where(MEMBER.SCREEN_NAME.like("%"+name+"%"))
-                .or(MEMBER.FIRST_NAME.like("%"+name+"%"))
-                .and(MEMBER.STATUS.eq(0))
-                .orderBy(MEMBER.SCREEN_NAME)
+                .from(USER)
+                .where(USER.SCREEN_NAME.like("%"+name+"%"))
+                .or(USER.FIRST_NAME.like("%"+name+"%"))
+                .and(USER.STATUS.eq(0))
+                .orderBy(USER.SCREEN_NAME)
                 .getQuery();
-        return query.fetchInto(Member.class);
+        return query.fetchInto(User.class);
     }
 
     @Override
     public int countByGiven(String partialName, String partialEmail, String roleName) {
 
-        final MemberTable memberTable = MEMBER.as("member");
-        final Users_RolesTable usersRoles = USERS_ROLES.as("usersRoles");
+        final UserTable memberTable = USER.as("member");
+        final UserRoleTable usersRoles = USER_ROLE.as("usersRoles");
         final MemberCategoryTable memberCategory = MEMBER_CATEGORY.as("memberCategory");
         final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(memberTable.ID))
                 .from(memberTable)
@@ -238,26 +238,26 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public Optional<Member> getMember(long userId) {
+    public Optional<User> getUser(long userId) {
         final Record memberRecord = dslContext.select()
-                .from(MEMBER)
-                .where(MEMBER.ID.eq(userId))
+                .from(USER)
+                .where(USER.ID.eq(userId))
                 .fetchOne();
         if (memberRecord == null) {
             return Optional.empty();
         }
-        return Optional.of(memberRecord.into(Member.class));
+        return Optional.of(memberRecord.into(User.class));
     }
 
     @Override
     public boolean updatePassword(long userId, String hashedPassword) {
-        return dslContext.update(MEMBER)
-                .set(MEMBER.HASHED_PASSWORD, hashedPassword)
-                .set(MEMBER.PASSWORD_MODIFIED_DATE, DSL.currentTimestamp())
-                .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
-                .set(MEMBER.FORGOT_PASSWORD_TOKEN, (String) null)
-                .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, (Timestamp) null)
-                .where(MEMBER.ID.eq(userId))
+        return dslContext.update(USER)
+                .set(USER.HASHED_PASSWORD, hashedPassword)
+                .set(USER.PASSWORD_UPDATED_AT, DSL.currentTimestamp())
+                .set(USER.UPDATED_AT, DSL.currentTimestamp())
+                .set(USER.FORGOT_PASSWORD_TOKEN, (String) null)
+                .set(USER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, (Timestamp) null)
+                .where(USER.ID.eq(userId))
                 .execute() > 0;
     }
 
@@ -265,152 +265,152 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public boolean isScreenNameTaken(String screenName) {
         return dslContext.selectCount()
-                .from(MEMBER)
-                .where(MEMBER.SCREEN_NAME.eq(screenName))
+                .from(USER)
+                .where(USER.SCREEN_NAME.eq(screenName))
                 .fetchOne(0, Integer.class) > 0;
     }
 
     @Override
     public boolean isEmailUsed(String email) {
         return dslContext.selectCount()
-                .from(MEMBER)
-                .where(MEMBER.EMAIL_ADDRESS.eq(email))
+                .from(USER)
+                .where(USER.EMAIL_ADDRESS.eq(email))
                 .fetchOne(0, Integer.class) > 0;
     }
 
     @Override
-    public Optional<Member> findOneByScreenName(String screenName) {
+    public Optional<User> findOneByScreenName(String screenName) {
         final Record record = dslContext.select()
-                .from(MEMBER)
-                .where(MEMBER.SCREEN_NAME.eq(screenName))
+                .from(USER)
+                .where(USER.SCREEN_NAME.eq(screenName))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(Member.class));
+        return Optional.of(record.into(User.class));
     }
 
     @Override
-    public Optional<Member> findOneByEmail(String email) {
+    public Optional<User> findOneByEmail(String email) {
         final Record record = dslContext.select()
-                .from(MEMBER)
-                .where(MEMBER.EMAIL_ADDRESS.eq(email))
+                .from(USER)
+                .where(USER.EMAIL_ADDRESS.eq(email))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(Member.class));
+        return Optional.of(record.into(User.class));
     }
 
     @Override
-    public Optional<Member> findOneByLoginTokenId(String loginTokenId) {
+    public Optional<User> findOneByLoginTokenId(String loginTokenId) {
         final Record record = dslContext.select()
-                .from(MEMBER)
-                .where(MEMBER.LOGIN_TOKEN_ID.eq(loginTokenId))
+                .from(USER)
+                .where(USER.LOGIN_TOKEN_ID.eq(loginTokenId))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(Member.class));
+        return Optional.of(record.into(User.class));
     }
 
     @Override
-    public Optional<Member> findOneByForgotPasswordHash(String newPasswordToken) {
+    public Optional<User> findOneByForgotPasswordHash(String newPasswordToken) {
         final Record record = dslContext.select()
-                .from(MEMBER)
-                .where(MEMBER.FORGOT_PASSWORD_TOKEN.eq(newPasswordToken))
+                .from(USER)
+                .where(USER.FORGOT_PASSWORD_TOKEN.eq(newPasswordToken))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(Member.class));
+        return Optional.of(record.into(User.class));
     }
 
     @Override
-    public boolean updateMember(Member member) {
+    public boolean updateUser(User member) {
 
-        return this.dslContext.update(MEMBER)
-                .set(MEMBER.UUID, member.getUuid())
-                .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
-                .set(MEMBER.SCREEN_NAME, member.getScreenName())
-                .set(MEMBER.EMAIL_ADDRESS, member.getEmailAddress())
-                .set(MEMBER.IS_EMAIL_CONFIRMED, member.getIsEmailConfirmed())
-                .set(MEMBER.IS_EMAIL_BOUNCED, member.getIsEmailBounced())
-                .set(MEMBER.OPEN_ID, member.getOpenId())
-                .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
-                .set(MEMBER.FIRST_NAME, member.getFirstName())
-                .set(MEMBER.LAST_NAME, member.getLastName())
-                .set(MEMBER.LOGIN_DATE, member.getLoginDate())
-                .set(MEMBER.LOGIN_IP, member.getLoginIP())
-                .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
-                .set(MEMBER.GOOGLE_ID, member.getGoogleId())
-                .set(MEMBER.COLAB_SSO_ID, member.getColabSsoId())
-                .set(MEMBER.CLIMATE_X_ID, member.getClimateXId())
-                .set(MEMBER.SHORT_BIO, member.getShortBio())
-                .set(MEMBER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
-                .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
-                .set(MEMBER.COUNTRY, member.getCountry())
-                .set(MEMBER.STATUS, member.getStatus())
-                .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, member.getPortraitFileEntryId())
-                .set(MEMBER.FORGOT_PASSWORD_TOKEN, member.getForgotPasswordToken())
-                .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, member.getForgotPasswordTokenExpireTime())
-                .set(MEMBER.LOGIN_TOKEN_ID, member.getLoginTokenId())
-                .set(MEMBER.LOGIN_TOKEN_KEY, member.getLoginTokenKey())
-                .set(MEMBER.LOGIN_TOKEN_EXPIRATION_DATE, member.getLoginTokenExpirationDate())
-                .where(MEMBER.ID.equal(member.getId()))
+        return this.dslContext.update(USER)
+                .set(USER.UUID, member.getUuid())
+                .set(USER.UPDATED_AT, DSL.currentTimestamp())
+                .set(USER.SCREEN_NAME, member.getScreenName())
+                .set(USER.EMAIL_ADDRESS, member.getEmailAddress())
+                .set(USER.IS_EMAIL_CONFIRMED, member.getIsEmailConfirmed())
+                .set(USER.IS_EMAIL_BOUNCED, member.getIsEmailBounced())
+                .set(USER.OPEN_ID, member.getOpenId())
+                .set(USER.DEFAULT_LOCALE, member.getDefaultLocale())
+                .set(USER.FIRST_NAME, member.getFirstName())
+                .set(USER.LAST_NAME, member.getLastName())
+                .set(USER.LOGIN_DATE, member.getLoginDate())
+                .set(USER.LOGIN_IP, member.getLoginIp())
+                .set(USER.FACEBOOK_ID, member.getFacebookId())
+                .set(USER.GOOGLE_ID, member.getGoogleId())
+                .set(USER.COLAB_SSO_ID, member.getColabSsoId())
+                .set(USER.CLIMATE_X_ID, member.getClimateXId())
+                .set(USER.SHORT_BIO, member.getShortBio())
+                .set(USER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
+                .set(USER.DEFAULT_LOCALE, member.getDefaultLocale())
+                .set(USER.COUNTRY, member.getCountry())
+                .set(USER.STATUS, member.getStatus())
+                .set(USER.PORTRAIT_FILE_ENTRY_ID, member.getPortraitFileEntryId())
+                .set(USER.FORGOT_PASSWORD_TOKEN, member.getForgotPasswordToken())
+                .set(USER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, member.getForgotPasswordTokenExpireTime())
+                .set(USER.LOGIN_TOKEN_ID, member.getLoginTokenId())
+                .set(USER.LOGIN_TOKEN_KEY, member.getLoginTokenKey())
+                .set(USER.LOGIN_TOKEN_EXPIRATION_DATE, member.getLoginTokenExpirationDate())
+                .where(USER.ID.equal(member.getId()))
                 .execute() > 0;
     }
 
     @Override
-    public Member createMember(Member member) {
-        final Optional<MemberRecord> memberRecord =
-                dslContext.insertInto(MEMBER)
-                        .set(MEMBER.UUID, member.getUuid())
-                        .set(MEMBER.SCREEN_NAME, member.getScreenName())
-                        .set(MEMBER.EMAIL_ADDRESS, member.getEmailAddress())
-                        .set(MEMBER.IS_EMAIL_CONFIRMED, member.getIsEmailConfirmed())
-                        .set(MEMBER.IS_EMAIL_BOUNCED, member.getIsEmailBounced())
-                        .set(MEMBER.OPEN_ID, member.getOpenId())
-                        .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
-                        .set(MEMBER.FIRST_NAME, member.getFirstName())
-                        .set(MEMBER.LAST_NAME, member.getLastName())
-                        .set(MEMBER.LOGIN_DATE, member.getLoginDate())
-                        .set(MEMBER.LOGIN_IP, member.getLoginIP())
-                        .set(MEMBER.HASHED_PASSWORD, member.getHashedPassword())
-                        .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
-                        .set(MEMBER.GOOGLE_ID, member.getGoogleId())
-                        .set(MEMBER.COLAB_SSO_ID, member.getColabSsoId())
-                        .set(MEMBER.CLIMATE_X_ID, member.getClimateXId())
-                        .set(MEMBER.SHORT_BIO, member.getShortBio())
-                        .set(MEMBER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
-                        .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
-                        .set(MEMBER.COUNTRY, member.getCountry())
-                        .set(MEMBER.STATUS, member.getStatus())
-                        .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, member.getPortraitFileEntryId())
-                        .set(MEMBER.FORGOT_PASSWORD_TOKEN, member.getForgotPasswordToken())
-                        .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, member.getForgotPasswordTokenExpireTime())
-                        .set(MEMBER.LOGIN_TOKEN_ID, member.getLoginTokenId())
-                        .set(MEMBER.LOGIN_TOKEN_KEY, member.getLoginTokenKey())
-                        .set(MEMBER.LOGIN_TOKEN_EXPIRATION_DATE, member.getLoginTokenExpirationDate())
-                        .set(MEMBER.CREATE_DATE, DSL.currentTimestamp())
-                        .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
-                        .returning(MEMBER.ID)
+    public User createUser(User member) {
+        final Optional<UserRecord> memberRecord =
+                dslContext.insertInto(USER)
+                        .set(USER.UUID, member.getUuid())
+                        .set(USER.SCREEN_NAME, member.getScreenName())
+                        .set(USER.EMAIL_ADDRESS, member.getEmailAddress())
+                        .set(USER.IS_EMAIL_CONFIRMED, member.getIsEmailConfirmed())
+                        .set(USER.IS_EMAIL_BOUNCED, member.getIsEmailBounced())
+                        .set(USER.OPEN_ID, member.getOpenId())
+                        .set(USER.DEFAULT_LOCALE, member.getDefaultLocale())
+                        .set(USER.FIRST_NAME, member.getFirstName())
+                        .set(USER.LAST_NAME, member.getLastName())
+                        .set(USER.LOGIN_DATE, member.getLoginDate())
+                        .set(USER.LOGIN_IP, member.getLoginIp())
+                        .set(USER.HASHED_PASSWORD, member.getHashedPassword())
+                        .set(USER.FACEBOOK_ID, member.getFacebookId())
+                        .set(USER.GOOGLE_ID, member.getGoogleId())
+                        .set(USER.COLAB_SSO_ID, member.getColabSsoId())
+                        .set(USER.CLIMATE_X_ID, member.getClimateXId())
+                        .set(USER.SHORT_BIO, member.getShortBio())
+                        .set(USER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
+                        .set(USER.DEFAULT_LOCALE, member.getDefaultLocale())
+                        .set(USER.COUNTRY, member.getCountry())
+                        .set(USER.STATUS, member.getStatus())
+                        .set(USER.PORTRAIT_FILE_ENTRY_ID, member.getPortraitFileEntryId())
+                        .set(USER.FORGOT_PASSWORD_TOKEN, member.getForgotPasswordToken())
+                        .set(USER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, member.getForgotPasswordTokenExpireTime())
+                        .set(USER.LOGIN_TOKEN_ID, member.getLoginTokenId())
+                        .set(USER.LOGIN_TOKEN_KEY, member.getLoginTokenKey())
+                        .set(USER.LOGIN_TOKEN_EXPIRATION_DATE, member.getLoginTokenExpirationDate())
+                        .set(USER.CREATED_AT, DSL.currentTimestamp())
+                        .set(USER.UPDATED_AT, DSL.currentTimestamp())
+                        .returning(USER.ID)
                         .fetchOptional();
         if (!memberRecord.isPresent()) {
             throw new IllegalStateException("Could not fetch generated ID");
         }
-        member.setId(memberRecord.get().getValue(MEMBER.ID));
+        member.setId(memberRecord.get().getValue(USER.ID));
         return member;
     }
 
     @Override
-    public Integer getMemberMaterializedPoints(Long userId) {
+    public Integer getUserMaterializedPoints(Long userId) {
         return this.dslContext.select(sum(POINTS.MATERIALIZED_POINTS))
                 .from(POINTS).where(POINTS.USER_ID.equal(userId)).fetchOne(0, Integer.class);
     }
 
     @Override
-    public Integer getMemberHypotheticalPoints(Long userId) {
+    public Integer getUserHypotheticalPoints(Long userId) {
         return dslContext.select(sum(POINTS.HYPOTHETICAL_POINTS))
                 .from(POINTS).where(POINTS.USER_ID.eq(userId)).fetchOne(0, Integer.class);
     }

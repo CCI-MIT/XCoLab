@@ -49,7 +49,7 @@ public class GetRoleNameStartTag extends BodyTagSupport {
             if (proposalId > 0) {
                 List<Member> contributors = proposalClient.getProposalMembers(proposalId);
                 for (Member contributor : contributors) {
-                    if (contributor.getUserId() == userId) {
+                    if (contributor.getId() == userId) {
                         isContributing = true;
                         break;
                     }

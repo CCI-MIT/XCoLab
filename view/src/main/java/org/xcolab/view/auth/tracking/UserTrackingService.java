@@ -36,7 +36,7 @@ public class UserTrackingService {
         String ip = getClientIpAddress(request);
         String headers = getHeadersAsString(request);
 
-        final Long userId = loggedInMember != null ? loggedInMember.getUserId() : null;
+        final Long userId = loggedInMember != null ? loggedInMember.getId() : null;
         final TrackedVisit trackedVisit =
                 TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, userId);
         return new AsyncResult<>(trackedVisit);

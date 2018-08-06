@@ -211,7 +211,7 @@ public class ProposalUpdateHelper {
                 Long groupId = proposalWrapper.getGroupId();
                 Long proposalId = proposalWrapper.getId();
                 for (Member member : members) {
-                    Long userId = member.getUserId();
+                    Long userId = member.getId();
                     MembershipClient client = proposalContext.getClients().getMembershipClient();
                     client.addUserToProposalTeam(userId, proposalId);
                 }

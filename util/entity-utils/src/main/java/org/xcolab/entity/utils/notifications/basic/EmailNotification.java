@@ -251,7 +251,7 @@ public abstract class EmailNotification {
         if (ConfigurationAttributeKey.MESSAGING_SEND_TRANSACTION_EMAILS.get()
                 || isEssentialTransactionMessage()) {
             List<Long> recipients = new ArrayList<>();
-            recipients.add(getRecipient().getUserId());
+            recipients.add(getRecipient().getId());
             EmailTemplateWrapper template = getTemplateWrapper();
             String content = template.getHeader() + template.getFooter();
             content = content.replace("\n", " ").replace("\r", " ");

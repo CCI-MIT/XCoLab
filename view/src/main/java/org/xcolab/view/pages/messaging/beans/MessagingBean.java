@@ -37,9 +37,9 @@ public class MessagingBean implements Serializable {
 
         dataPage = new MessageDataPage(member, messageType, PAGE_SIZE, pageNumber);
 
-        messagesCount = MessagingClient.countMessages(member.getUserId(), messageType);
+        messagesCount = MessagingClient.countMessages(member.getId(), messageType);
 
-        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(member.getUserId());
+        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(member.getId());
     }
 
     public MessageType getType() {

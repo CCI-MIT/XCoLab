@@ -249,7 +249,7 @@ public class ProposalImpactSeries {
                             .filterValueForImpactSeriesType(
                                     seriesValues.getValueForYear(iteration.getYear()), seriesType.name());
                     version = ProposalAttributeClientUtil
-                            .setProposalAttribute(author.getUserId(), proposal.getId(),
+                            .setProposalAttribute(author.getId(), proposal.getId(),
                                     seriesType.getAttributeName(iteration.getYear()),
                                     focusArea.getId(), "", null,
                                     filteredValue, version).getVersion();
@@ -286,7 +286,7 @@ public class ProposalImpactSeries {
             // Author info
             JSONObject authorObject = new JSONObject();
             returnObject.put("author", authorObject);
-            authorObject.put("userId", getSeriesAuthor().getUserId());
+            authorObject.put("userId", getSeriesAuthor().getId());
             MemberRoleChoiceAlgorithm impactRoleChoiceAlgorithm =
                     MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
             final String authorDescription =

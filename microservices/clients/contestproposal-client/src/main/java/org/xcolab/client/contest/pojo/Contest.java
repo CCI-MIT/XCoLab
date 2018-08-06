@@ -583,7 +583,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     public boolean isUserAmongAdvisors(long userId) {
         for (Member judge : getContestAdvisors()) {
-            if (judge.getUserId() == userId) {
+            if (judge.getId() == userId) {
                 return true;
             }
         }

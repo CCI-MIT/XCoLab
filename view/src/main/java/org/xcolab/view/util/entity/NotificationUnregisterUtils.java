@@ -52,7 +52,7 @@ public class NotificationUnregisterUtils {
             params.put(TOKEN_PARAM, getToken(subscription));
             params.put(TYPE_ID, String.valueOf(type));
         } else {
-            params.put(USER_ID, String.valueOf(user.getUserId()));
+            params.put(USER_ID, String.valueOf(user.getId()));
             params.put(TOKEN_PARAM, getToken(user));
             params.put(TYPE_ID, String.valueOf(type));
         }
@@ -75,7 +75,7 @@ public class NotificationUnregisterUtils {
 
     public static String getToken(Member user) {
         return getToken(
-                Math.floor(1.0 * user.getCreatedAt().getTime() / 1000.f) + "" + user.getUserId());
+                Math.floor(1.0 * user.getCreatedAt().getTime() / 1000.f) + "" + user.getId());
     }
 
     private static String getToken(String baseString) {

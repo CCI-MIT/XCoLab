@@ -37,13 +37,13 @@
                             <div class="judgingForm">
                                 <div>
                                     <c:forEach var="judge" items="${contest.contestJudges}">
-                                        <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.userId}">
+                                        <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.id}">
 
                                             <div class="review-status-container">
                                                 <xcolab:userPortrait portraitId="${judge.portraitId}"
-                                                                     userId="${judge.userId}"
+                                                                     userId="${judge.id}"
                                                                      width="30" height="30"/>
-                                                <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.id}"
+                                                <judging:judgeReviewStatus userId="${judge.id}" contestPhaseId="${contestPhase.id}"
                                                                            proposalId="${proposal.id}" contestId="${contest.id}">
                                                     <c:choose>
                                                         <c:when test="${judgeReviewStatus.statusValue eq 1}">
@@ -56,18 +56,18 @@
                                                 </judging:judgeReviewStatus>
                                             </div>
                                             <br/>
-                                            <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.id}">
-                                                <xcolab:userLinkSimple userId="${judge.userId}"
+                                            <judging:judgeAssignedProposalCount userId="${judge.id}" contestPhaseId="${contestPhase.id}">
+                                                <xcolab:userLinkSimple userId="${judge.id}"
                                                                        text="${judge.fullName} (${proposalCount})"/>
                                                         <div class="hidden">
-                                                            <span id="js-Tooltip__content__judgedata_${judge.userId}">
+                                                            <span id="js-Tooltip__content__judgedata_${judge.id}">
                                                                 ${judge.fullName} has evaluated ${proposalAlreadyJudgedCount} out of the ${proposalCount} proposals assigned to them.
                                                             </span>
                                                         </div>
 
                                             </judging:judgeAssignedProposalCount>
                                             <br/>
-                                            <form:checkbox path="selectedJudges" value="${judge.userId}"/>
+                                            <form:checkbox path="selectedJudges" value="${judge.id}"/>
                                         </div>
                                     </c:forEach>
                                 </div>

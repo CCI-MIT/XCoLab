@@ -230,7 +230,7 @@ public class ProposalImpactJSONController {
                 .getProposalUnversionedAttributesByProposalId(proposal.getId());
 
         if (impactAuthorComment != null || impactIAFComment != null) {
-            final long userId = currentMember.getUserId();
+            final long userId = currentMember.getId();
             final ClientHelper clients = proposalContext.getClients();
             if (impactAuthorComment != null) {
                 clients.getProposalAttributeClient().createOrUpdateUnversionedStringAttribute(

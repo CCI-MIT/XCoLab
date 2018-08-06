@@ -20,7 +20,7 @@ public class Message implements Serializable {
     public static final TypeProvider<Message> TYPES =
             new TypeProvider<>(Message.class, new ParameterizedTypeReference<List<Message>>() {});
 
-    private Long messageId;
+    private Long id;
     private Long fromId;
     private Long repliesTo;
     private Timestamp createdAt;
@@ -34,12 +34,15 @@ public class Message implements Serializable {
     }
 
     public Message(Message value) {
-        this.messageId = value.messageId;
+        this.id = value.id;
         this.fromId = value.fromId;
         this.repliesTo = value.repliesTo;
         this.createdAt = value.createdAt;
         this.subject = value.subject;
         this.content = value.content;
+        this.opened = value.opened;
+        this.archived = value.archived;
+        this.threadId = value.threadId;
     }
 
     public Message(Message value, Boolean opened, Boolean archived, String threadId) {
@@ -49,9 +52,9 @@ public class Message implements Serializable {
         this.threadId = threadId;
     }
 
-    public Message(Long messageId, Long fromId, Long repliesTo, Timestamp createdAt,
+    public Message(Long id, Long fromId, Long repliesTo, Timestamp createdAt,
             String subject, String content, Boolean opened, Boolean archived, String threadId) {
-        this.messageId = messageId;
+        this.id = id;
         this.fromId = fromId;
         this.repliesTo = repliesTo;
         this.createdAt = createdAt;
@@ -62,12 +65,12 @@ public class Message implements Serializable {
         this.threadId = threadId;
     }
 
-    public Long getMessageId() {
-        return this.messageId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setMessageId(Long messageId) {
-        this.messageId = messageId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getFromId() {
@@ -134,7 +137,7 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "Message (" + messageId +
+        return "Message (" + id +
                 ", " + fromId +
                 ", " + repliesTo +
                 ", " + createdAt +

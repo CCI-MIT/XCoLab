@@ -8,7 +8,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.model.tables.pojos.User;
 import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.model.tables.records.MessageRecord;
 import org.xcolab.service.members.exceptions.NotFoundException;
@@ -20,21 +20,25 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-import static org.xcolab.model.Tables.MEMBER;
+import static org.xcolab.model.Tables.USER;
 import static org.xcolab.model.Tables.MESSAGE;
 import static org.xcolab.model.Tables.MESSAGE_RECIPIENT_STATUS;
 
 @Repository
 public class MessageDaoImpl implements MessageDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public MessageDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     @Override
     public Message getMessage(long messageId) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(MESSAGE)
-                .where(MESSAGE.MESSAGE_ID.eq(messageId))
+                .where(MESSAGE.ID.eq(messageId))
                 .fetchOne();
         if (record == null) {
             throw new NotFoundException("Message with id " + messageId + "does not exist");
@@ -50,11 +54,11 @@ public class MessageDaoImpl implements MessageDao {
             messageList = dslContext.select()
                     .from(MESSAGE
                         .join(MESSAGE_RECIPIENT_STATUS)
-                        .on(MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID)))
+                        .on(MESSAGE.ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID)))
                     .where(
                         MESSAGE_RECIPIENT_STATUS.THREAD_ID.eq(threadId)
                     )
-                    .orderBy(MESSAGE.CREATE_DATE.desc())
+                    .orderBy(MESSAGE.CREATED_AT.desc())
                     .fetchInto(Message.class);
 
             if (messageList.isEmpty()) {
@@ -63,7 +67,7 @@ public class MessageDaoImpl implements MessageDao {
         } else {
             messageList = dslContext.select()
                     .from(MESSAGE)
-                    .where(MESSAGE.MESSAGE_ID.eq(messageId))
+                    .where(MESSAGE.ID.eq(messageId))
                     .fetchInto(Message.class);
             if (messageList.isEmpty()) {
                 throw new NotFoundException("Message with id " + messageId + "does not exist");
@@ -80,7 +84,7 @@ public class MessageDaoImpl implements MessageDao {
 
         if (recipientId != null || isArchived != null || isOpened != null) {
             query.addJoin(MESSAGE_RECIPIENT_STATUS,
-                    MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID));
+                    MESSAGE.ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID));
         }
 
         if (senderId != null) {
@@ -96,7 +100,7 @@ public class MessageDaoImpl implements MessageDao {
             query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpened));
         }
         if (sinceDate != null) {
-            query.addConditions(MESSAGE.CREATE_DATE.gt(sinceDate));
+            query.addConditions(MESSAGE.CREATED_AT.gt(sinceDate));
         }
 
         return query.fetchOne(0, Integer.class);
@@ -107,7 +111,7 @@ public class MessageDaoImpl implements MessageDao {
             Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MESSAGE)
-                .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.MESSAGE_ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
+                .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
                 .getQuery();
 
         if (senderId != null) {
@@ -123,7 +127,7 @@ public class MessageDaoImpl implements MessageDao {
             query.addConditions(MESSAGE_RECIPIENT_STATUS.OPENED.eq(isOpened));
         }
         if (sinceDate != null) {
-            query.addConditions(MESSAGE.CREATE_DATE.gt(sinceDate));
+            query.addConditions(MESSAGE.CREATED_AT.gt(sinceDate));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
@@ -135,8 +139,8 @@ public class MessageDaoImpl implements MessageDao {
                     break;
                 case "recipientId":
                     query.addOrderBy(sortColumn.isAscending()
-                            ? MESSAGE_RECIPIENT_STATUS.MESSAGE_RECIPIENT_ID.asc()
-                            : MESSAGE_RECIPIENT_STATUS.MESSAGE_RECIPIENT_ID.desc());
+                            ? MESSAGE_RECIPIENT_STATUS.USER_ID.asc()
+                            : MESSAGE_RECIPIENT_STATUS.USER_ID.desc());
                     break;
                 case "isArchived":
                     query.addOrderBy(sortColumn.isAscending()
@@ -150,26 +154,26 @@ public class MessageDaoImpl implements MessageDao {
                     break;
                 case "createdAt":
                     query.addOrderBy(sortColumn.isAscending()
-                            ? MESSAGE.CREATE_DATE.asc()
-                            : MESSAGE.CREATE_DATE.desc());
+                            ? MESSAGE.CREATED_AT.asc()
+                            : MESSAGE.CREATED_AT.desc());
                     break;
                 default:
 
             }
         }
-        query.addOrderBy(MESSAGE.CREATE_DATE.desc());
+        query.addOrderBy(MESSAGE.CREATED_AT.desc());
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
 
         return query.fetchInto(recipientId != null ? MessageReceived.class : Message.class);
     }
 
     @Override
-    public List<Member> getRecipients(long messageId) {
+    public List<User> getRecipients(long messageId) {
         return dslContext.select()
                 .from(MESSAGE_RECIPIENT_STATUS)
-                .join(MEMBER).on(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(MEMBER.ID))
+                .join(USER).on(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(USER.ID))
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId))
-                .fetchInto(Member.class);
+                .fetchInto(User.class);
     }
 
     @Override
@@ -206,11 +210,11 @@ public class MessageDaoImpl implements MessageDao {
                 .set(MESSAGE.REPLIES_TO, message.getRepliesTo())
                 .set(MESSAGE.SUBJECT, message.getSubject())
                 .set(MESSAGE.CONTENT, message.getContent())
-                .set(MESSAGE.CREATE_DATE, DSL.currentTimestamp())
-                .returning(MESSAGE.MESSAGE_ID)
+                .set(MESSAGE.CREATED_AT, DSL.currentTimestamp())
+                .returning(MESSAGE.ID)
                 .fetchOne();
         if (record != null) {
-            message.setMessageId(record.getValue(MESSAGE.MESSAGE_ID));
+            message.setId(record.getValue(MESSAGE.ID));
             return Optional.of(message);
         } else {
             return Optional.empty();
@@ -233,6 +237,6 @@ public class MessageDaoImpl implements MessageDao {
         dslContext.deleteFrom(MESSAGE_RECIPIENT_STATUS)
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId)).execute();
         return dslContext.deleteFrom(MESSAGE)
-                .where(MESSAGE.MESSAGE_ID.eq(messageId)).execute() > 0;
+                .where(MESSAGE.ID.eq(messageId)).execute() > 0;
     }
 }

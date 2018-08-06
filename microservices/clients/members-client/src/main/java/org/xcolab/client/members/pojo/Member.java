@@ -48,7 +48,7 @@ public class Member implements Serializable {
     private boolean isEmailBounced;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Timestamp passwordupdatedAt;
+    private Timestamp passwordUpdatedAt;
     private String hashedPassword;
     private String firstName;
     private String lastName;
@@ -82,7 +82,7 @@ public class Member implements Serializable {
         this.isEmailBounced = value.isEmailBounced;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
-        this.passwordupdatedAt = value.passwordupdatedAt;
+        this.passwordUpdatedAt = value.passwordUpdatedAt;
         this.hashedPassword = value.hashedPassword;
         this.firstName = value.firstName;
         this.lastName = value.lastName;
@@ -115,12 +115,6 @@ public class Member implements Serializable {
     }
 
     public long getId() {
-        return this.id;
-    }
-
-    //For liferay/jsp compatibility
-    @JsonIgnore
-    public long getUserId() {
         return this.id;
     }
 
@@ -186,12 +180,12 @@ public class Member implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Timestamp getPasswordupdatedAt() {
-        return this.passwordupdatedAt;
+    public Timestamp getPasswordUpdatedAt() {
+        return this.passwordUpdatedAt;
     }
 
-    public void setPasswordupdatedAt(Timestamp passwordupdatedAt) {
-        this.passwordupdatedAt = passwordupdatedAt;
+    public void setPasswordUpdatedAt(Timestamp passwordUpdatedAt) {
+        this.passwordUpdatedAt = passwordUpdatedAt;
     }
 
     public String getFirstName() {
@@ -333,7 +327,7 @@ public class Member implements Serializable {
     }
 
     @JsonIgnore
-    public List<Role_> getRoles() {
+    public List<Role> getRoles() {
         return MembersClient.getMemberRoles(this.getId());
     }
 
@@ -355,7 +349,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public int getUnreadMessageCount() {
-        return MessagingClient.countUnreadMessagesForUser(getUserId());
+        return MessagingClient.countUnreadMessagesForUser(getId());
     }
 
     public String getHashedPassword() {
@@ -469,7 +463,7 @@ public class Member implements Serializable {
         this.setFirstName("Member");
         this.setLastName("Removed");
         if (!this.getEmailAddress().startsWith("removed+userId")) {
-            this.setEmailAddress("removed+userId"+this.getUserId()+"@climatecolab.org");
+            this.setEmailAddress("removed+userId"+this.getId()+"@climatecolab.org");
         }
         this.setFacebookId(null);
         this.setGoogleId(null);
@@ -500,7 +494,7 @@ public class Member implements Serializable {
                 .append("isEmailBounced", isEmailBounced)
                 .append("createdAt", createdAt)
                 .append("updatedAt", updatedAt)
-                .append("passwordupdatedAt", passwordupdatedAt)
+                .append("passwordUpdatedAt", passwordUpdatedAt)
                 .append("hashedPassword", hashedPassword != null ? "REDACTED" : null)
                 .append("firstName", firstName)
                 .append("lastName", lastName)

@@ -9,9 +9,9 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.model.tables.pojos.User;
 import org.xcolab.model.tables.pojos.Message;
-import org.xcolab.service.members.domain.member.MemberDao;
+import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.domain.messaging.MessageDao;
 import org.xcolab.service.members.exceptions.MessageLimitExceededException;
 import org.xcolab.service.members.exceptions.MessageRecipientException;
@@ -29,14 +29,14 @@ public class MessagingService {
     private static final Logger log = LoggerFactory.getLogger(MessagingService.class);
 
     private final MessageDao messageDao;
-    private final MemberDao memberDao;
+    private final UserDao memberDao;
     private final MessageLimitManager messageLimitManager;
-    private final MessagingUserPreferencesService messagingUserPreferencesService;
+    private final MessagingUserPreferenceService messagingUserPreferencesService;
 
     @Autowired
-    public MessagingService(MessageDao messageDao, MemberDao memberDao,
+    public MessagingService(MessageDao messageDao, UserDao memberDao,
             MessageLimitManager messageLimitManager,
-            MessagingUserPreferencesService messagingUserPreferencesService) {
+            MessagingUserPreferenceService messagingUserPreferencesService) {
         this.messageDao = messageDao;
         this.memberDao = memberDao;
         this.messageLimitManager = messageLimitManager;
@@ -56,13 +56,13 @@ public class MessagingService {
                         final List<String> reportRecipients =
                                 ConfigurationAttributeKey.MESSAGING_SPAM_ALERT_EMAILS.get();
                         if (!reportRecipients.isEmpty()) {
-                            Member from = memberDao.getMember(fromId)
+                            User from = memberDao.getUser(fromId)
                                     .orElseThrow(() -> new InternalException(
                                             "Sender does not exist: " + fromId));
-                            final String subject = String.format("[%s] Member %s exceeded message limit",
+                            final String subject = String.format("[%s] User %s exceeded message limit",
                                     ConfigurationAttributeKey.COLAB_NAME.get(), from.getScreenName());
                             final String content = String.format(
-                                    "Member %s tried to send the message \"%s\" to %d members "
+                                    "User %s tried to send the message \"%s\" to %d members "
                                             + "but has exceeded the daily limit of %d messages.",
                                     from.getScreenName(), message.getSubject(), recipientIds.size(),
                                     messageLimitManager.getMessageLimit(fromId));
@@ -89,14 +89,14 @@ public class MessagingService {
         final Message message = messageDao.createMessage(messageBean).orElseThrow(
                 () -> new InternalException("Could not retrieve id of created message"));
 
-        final Long messageId = message.getMessageId();
+        final Long messageId = message.getId();
         if (recipientIds.isEmpty()) {
             messageDao.delete(messageId);
             throw MessageRecipientException.empty(messageId);
         }
         final Set<Long> recipientsFound = new HashSet<>();
         for (long userId : recipientIds) {
-            memberDao.getMember(userId).ifPresent((recipientMember) -> {
+            memberDao.getUser(userId).ifPresent((recipientUser) -> {
                  if (threadId == null) {
                      messageDao.createMessageRecipient(messageId, userId,
                              String.valueOf(messageId) + "-" + String.valueOf(userId));
@@ -104,7 +104,7 @@ public class MessagingService {
                      messageDao.createMessageRecipient(messageId, userId, threadId);
                  }
                 if (messagingUserPreferencesService.getByuserId(userId).getEmailOnReceipt()) {
-                    copyRecipient(recipientMember, message);
+                    copyRecipient(recipientUser, message);
                 }
                 recipientsFound.add(userId);
             });
@@ -120,11 +120,11 @@ public class MessagingService {
         return message;
     }
 
-    private void copyRecipient(Member recipient, Message m) {
-        Member from = memberDao.getMember(m.getFromId())
+    private void copyRecipient(User recipient, Message m) {
+        User from = memberDao.getUser(m.getFromId())
                 .orElseThrow(() -> ReferenceResolutionException
-                        .toObject(Member.class, m.getFromId())
-                        .fromObject(Message.class, m.getMessageId()));
+                        .toObject(User.class, m.getFromId())
+                        .fromObject(Message.class, m.getId()));
 
         String subject = m.getSubject();
         if (subject.length() < 3) {
@@ -144,17 +144,16 @@ public class MessagingService {
 
         String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         EmailClient.sendEmail(fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(), recipient.getEmailAddress(), subject, message, true,
-                fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(),m.getMessageId());
+                fromEmail, ConfigurationAttributeKey.COLAB_NAME.get(), m.getId());
     }
 
     private static String createMessageURL(Message m) {
         String home = PlatformAttributeKey.COLAB_URL.get();
-        return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getMessageId();
+        return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getId();
     }
 
-    private static String createProfileEditUrl(Member member) {
+    private static String createProfileEditUrl(User member) {
         String home = PlatformAttributeKey.COLAB_URL.get();
         return home + "/members/profile/" + member.getId() + "/edit";
     }
-
 }

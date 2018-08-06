@@ -185,7 +185,7 @@
                     <c:forEach items="${proposal.membershipRequests}" var="request">
                         <form:form action="${replyToMembershipRequest }" method="post"
                               style="padding: 10px 0; ${count lt fn:length(proposal.membershipRequests) ? 'border-bottom: 1px solid gray;' :''}">
-                            <xcolab:userLinkSimple userId="${request.requestUser.userId}"
+                            <xcolab:userLinkSimple userId="${request.requestUser.id}"
                                                    text="${request.requestUser.firstName} ${request.requestUser.lastName} (${request.requestUser.screenName})"/>
                             <div>${request.membershipRequest.comments }</div>
                             <input type="hidden" name="requestId"

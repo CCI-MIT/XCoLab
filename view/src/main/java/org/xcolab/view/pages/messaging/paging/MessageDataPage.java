@@ -23,12 +23,12 @@ public class MessageDataPage {
         final int firstMessage = pageSize * (pageNumber - 1);
         final int lastMessage = pageSize * pageNumber;
         List<Message> messagesRaw = MessagingClient
-                .getMessages(member.getUserId(), firstMessage, lastMessage, messageType);
+                .getMessages(member.getId(), firstMessage, lastMessage, messageType);
 
         this.messages = new ArrayList<>();
         Message previous = null;
         for (Message message : messagesRaw) {
-            if (previous == null || !message.getMessageId().equals(previous.getMessageId())) {
+            if (previous == null || !message.getId().equals(previous.getId())) {
                 messages.add(new MessageBean(message));
             }
             previous = message;

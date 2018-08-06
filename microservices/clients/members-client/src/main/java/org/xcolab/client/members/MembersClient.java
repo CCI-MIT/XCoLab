@@ -11,7 +11,7 @@ import org.xcolab.client.members.pojo.LoginLog;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 import org.xcolab.client.members.pojo.TokenValidity;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -33,8 +33,8 @@ public final class MembersClient {
     private static final RestResource1<Member, Long> memberResource =
             new RestResource1<>(UserResource.USER, Member.TYPES);
 
-    private static final RestResource2L<Member, Role_> memberRoleResource =
-            new RestResource2L<>(memberResource, "roles", Role_.TYPES);
+    private static final RestResource2L<Member, Role> memberRoleResource =
+            new RestResource2L<>(memberResource, "roles", Role.TYPES);
 
     private static final RestResource<MemberCategory, Long> memberCategoryResource =
             new RestResource1<>(UserResource.USER_CATEGORY, MemberCategory.TYPES);
@@ -145,19 +145,19 @@ public final class MembersClient {
         }
     }
 
-    public static List<Role_> getMemberRoles(long userId) {
+    public static List<Role> getMemberRoles(long userId) {
         return memberRoleResource.resolveParentId(memberResource.id(userId))
                 .list()
                 .withCache(CacheName.ROLES)
                 .execute();
     }
 
-    public static MemberCategory getHighestCategory(List<Role_> roles) {
+    public static MemberCategory getHighestCategory(List<Role> roles) {
         MemberCategory category = MemberRole.MEMBER.getMemberCategory();
 
-        for (Role_ r: roles) {
+        for (Role r: roles) {
             try {
-                MemberCategory currentCategory = MembersClient.getMemberCategory(r.getRoleId());
+                MemberCategory currentCategory = MembersClient.getMemberCategory(r.getId());
                 if (currentCategory.getSortOrder() > category.getSortOrder()) {
                     category = currentCategory;
                 }
@@ -184,7 +184,7 @@ public final class MembersClient {
     }
 
     //TODO COLAB-2594: this seems to be duplicated in the ContestTeamMemberClient
-    public static List<Role_> getMemberRolesInContest(long userId, long contestId) {
+    public static List<Role> getMemberRolesInContest(long userId, long contestId) {
         return memberRoleResource.resolveParentId(memberResource.id(userId))
                 .list()
                 .queryParam("contestId", contestId)

@@ -134,7 +134,7 @@
 
             <div class="p-Proposal__sidebar__section">
                 <xcolab:userPortrait portraitId="${proposal.author.portraitId }"
-                                     userId="${proposal.author.userId}"
+                                     userId="${proposal.author.id}"
                                      width="42" height="42" />
                 By:&#160;
                 <c:choose>

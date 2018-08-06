@@ -3,8 +3,8 @@ package org.xcolab.service.members.service.role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.model.tables.pojos.Role;
 import org.xcolab.service.members.domain.role.RoleDao;
-import org.xcolab.model.tables.pojos.Role_;
 
 import java.util.List;
 
@@ -18,23 +18,23 @@ public class RoleService {
         this.roleDao = roleDao;
     }
 
-    public List<Role_> getMemberRoles(Long userId) {
-        return this.roleDao.getMemberRoles(userId);
+    public List<Role> getUserRoles(Long userId) {
+        return this.roleDao.getUserRoles(userId);
     }
 
-    public List<Role_> getMemberRolesInContest(Long userId, Long contestId) {
-        return this.roleDao.getMemberRolesInContest(userId, contestId);
+    public List<Role> getUserRolesInContest(Long userId, Long contestId) {
+        return this.roleDao.getUserRolesInContest(userId, contestId);
     }
 
-    public boolean assignMemberRole(long userId, long roleId) {
+    public boolean assignUserRole(long userId, long roleId) {
         if(!memberHasRole(userId,roleId)) {
-            this.roleDao.assignMemberRole(userId, roleId);
+            this.roleDao.assignUserRole(userId, roleId);
         }
         return true;
     }
 
-    public boolean deleteMemberRole(long userId, long roleId) {
-        this.roleDao.deleteMemberRole(userId, roleId);
+    public boolean deleteUserRole(long userId, long roleId) {
+        this.roleDao.deleteUserRole(userId, roleId);
         return true;
     }
 

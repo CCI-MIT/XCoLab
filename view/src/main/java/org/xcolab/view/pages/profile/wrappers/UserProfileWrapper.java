@@ -15,7 +15,7 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
@@ -78,9 +78,9 @@ public class UserProfileWrapper implements Serializable {
 
         if (member.isActive()) {
             if (loggedInMember != null) {
-                Member logUser = MembersClient.getMember(loggedInMember.getUserId());
+                Member logUser = MembersClient.getMember(loggedInMember.getId());
                 messagePermissionChecker = new SendMessagePermissionChecker(logUser);
-                if (loggedInMember.getUserId() == member.getId()) {
+                if (loggedInMember.getId() == member.getId()) {
                     viewingOwnProfile = true;
                 }
             }
@@ -234,7 +234,7 @@ public class UserProfileWrapper implements Serializable {
         return highestRole;
     }
 
-    public List<Role_> getRoles() {
+    public List<Role> getRoles() {
         return member.getRoles();
     }
 

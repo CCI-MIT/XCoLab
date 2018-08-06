@@ -100,7 +100,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 Proposal2Phase p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
                 Proposal proposalWrapper;
 
-                if (loggedInMember != null && PermissionsClient.memberHasRole(loggedInMember.getUserId(), MemberRole.JUDGE.getRoleId())) {
+                if (loggedInMember != null && PermissionsClient.memberHasRole(loggedInMember.getId(), MemberRole.JUDGE.getRoleId())) {
                     proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, loggedInMember);
 
                 } else {
@@ -150,7 +150,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         if (proposalContext.getPermissions().getCanSubscribeContest()) {
             long contestId = proposalContext.getContest().getId();
-            long userId = currentMember.getUserId();
+            long userId = currentMember.getId();
             if (ContestClientUtil.isMemberSubscribedToContest(contestId, userId)) {
                 ContestClientUtil.unsubscribeMemberFromContest(contestId, userId);
             }
@@ -177,7 +177,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
             List<Long> selectedJudges = new ArrayList<>();
             for (Member judge : contest.getContestJudges()) {
-                selectedJudges.add(judge.getUserId());
+                selectedJudges.add(judge.getId());
             }
 
             for (Proposal proposal : proposalClient.getProposalsInContest(contest.getId())) {

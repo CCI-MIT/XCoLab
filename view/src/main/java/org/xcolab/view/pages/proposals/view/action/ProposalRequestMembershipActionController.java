@@ -76,7 +76,7 @@ public class ProposalRequestMembershipActionController {
 
         final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();
-        membershipClient.addRequestedMembershipRequest(proposal.getId(), sender.getUserId(),
+        membershipClient.addRequestedMembershipRequest(proposal.getId(), sender.getId(),
                 comment);
 
         new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor,
@@ -118,7 +118,7 @@ public class ProposalRequestMembershipActionController {
                 comment = "No message specified";
             }
             ProposalTeamMembershipRequest memberRequest = membershipClient
-                    .addInvitedMembershipRequest(proposal.getId(), recipient.getUserId(),
+                    .addInvitedMembershipRequest(proposal.getId(), recipient.getId(),
                             comment);
 
             new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,

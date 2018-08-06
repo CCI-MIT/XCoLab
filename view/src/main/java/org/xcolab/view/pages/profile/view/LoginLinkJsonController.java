@@ -24,7 +24,7 @@ public class LoginLinkJsonController {
         if (loggedInUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        final boolean editingOwnProfile = userId == loggedInUser.getUserId();
+        final boolean editingOwnProfile = userId == loggedInUser.getId();
         if (!editingOwnProfile && !PermissionsClient.canAdminAll(loggedInUser)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -32,7 +32,7 @@ public class LoginLinkJsonController {
         final Member user = editingOwnProfile ? loggedInUser
                 : MembersClient.getMemberUnchecked(userId);
 
-        final LoginToken loginToken = MembersClient.createLoginToken(user.getUserId());
+        final LoginToken loginToken = MembersClient.createLoginToken(user.getId());
         new MemberBatchRegistrationNotification(user, loginToken).sendEmailNotification();
         return ResponseEntity.ok(null);
     }

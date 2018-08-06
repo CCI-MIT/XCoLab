@@ -4,7 +4,7 @@ import org.apache.commons.text.WordUtils;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 
 import java.util.Arrays;
 import java.util.List;
@@ -85,11 +85,11 @@ public enum MemberRole {
         return null;
     }
 
-    public static MemberRole getHighestRole(List<Role_> roles) {
+    public static MemberRole getHighestRole(List<Role> roles) {
         MemberRole role = MemberRole.MEMBER;
 
-        for (Role_ r: roles) {
-            MemberRole currentRole = MemberRole.fromRoleId(r.getRoleId());
+        for (Role r: roles) {
+            MemberRole currentRole = MemberRole.fromRoleId(r.getId());
             if (currentRole != null && currentRole.getMemberCategory().getShowInList()) {
                 if (currentRole.getMemberCategory().getSortOrder() > role.getMemberCategory().getSortOrder()) {
                     role = currentRole;

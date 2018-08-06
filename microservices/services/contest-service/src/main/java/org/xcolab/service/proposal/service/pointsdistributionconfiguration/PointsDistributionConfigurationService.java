@@ -97,8 +97,8 @@ public class PointsDistributionConfigurationService {
             Set<Long> userIds = new HashSet<>();
             Set<Long> missinguserIds = new HashSet<>();
             for (Member user : proposalService.getProposalMembers(proposalId)) {
-                userIds.add(user.getUserId());
-                missinguserIds.add(user.getUserId());
+                userIds.add(user.getId());
+                missinguserIds.add(user.getId());
             }
 
             for (PointsDistributionConfiguration pdc : pdcs) {

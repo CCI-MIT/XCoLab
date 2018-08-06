@@ -20,7 +20,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.commons.html.HtmlUtil;
@@ -261,7 +261,7 @@ public class ActivitySubscriptionEmailHelper {
                     continue;
                 }
 
-                final MessagingUserPreferences messagingPreferences =
+                final MessagingUserPreference messagingPreferences =
                         MessagingClient.getMessagingPreferencesForMember(recipientId);
                 if (messagingPreferences.getEmailOnActivity() && messagingPreferences
                         .getEmailActivityDailyDigest()) {
@@ -306,7 +306,7 @@ public class ActivitySubscriptionEmailHelper {
             try {
                 Member member = MembersClient.getMember(subscription.getReceiverUserId());
                 recipients.add(member);
-                subscriptionsPerUser.put(member.getUserId(), subscription);
+                subscriptionsPerUser.put(member.getId(), subscription);
             } catch (MemberNotFoundException ignored) {
             }
 
@@ -315,8 +315,8 @@ public class ActivitySubscriptionEmailHelper {
 
         }
         for (Member recipient : recipients) {
-            final MessagingUserPreferences messagingPreferences =
-                    MessagingClient.getMessagingPreferencesForMember(recipient.getUserId());
+            final MessagingUserPreference messagingPreferences =
+                    MessagingClient.getMessagingPreferencesForMember(recipient.getId());
             if (messagingPreferences.getEmailOnActivity() && !messagingPreferences
                     .getEmailActivityDailyDigest()) {
                 _log.info("Sending activity notification to member {}.", recipient.getId());
@@ -324,7 +324,7 @@ public class ActivitySubscriptionEmailHelper {
                 String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(
                         PlatformAttributeKey.COLAB_URL.get(), NotificationUnregisterUtils
                                 .getUnregisterLink(
-                                        subscriptionsPerUser.get(recipient.getUserId())));
+                                        subscriptionsPerUser.get(recipient.getId())));
                 sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter,
                         PlatformAttributeKey.COLAB_URL.get(), activity.getId());
             }
@@ -418,7 +418,7 @@ public class ActivitySubscriptionEmailHelper {
 
     private String getUserLink(Member user, String portalBaseUrl) {
         return USER_PROFILE_LINK_TEMPLATE
-                .replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getUserId()))
+                .replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getId()))
                 .replaceAll(DOMAIN_PLACEHOLDER, portalBaseUrl);
     }
 }

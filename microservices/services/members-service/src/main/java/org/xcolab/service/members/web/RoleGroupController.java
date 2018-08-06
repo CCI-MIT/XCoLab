@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.RoleGroup;
-import org.xcolab.model.tables.pojos.Role_;
+import org.xcolab.model.tables.pojos.Role;
 import org.xcolab.service.members.domain.rolegroup.RoleGroupDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.rolegroup.RoleGroupService;
@@ -32,7 +32,7 @@ public class RoleGroupController {
     }
 
     @RequestMapping(value = "/roleGroups/{roleGroupId}/roles", method = RequestMethod.GET)
-    public List<Role_> getRolesInGroup(@PathVariable("roleGroupId") Long roleGroupId)
+    public List<Role> getRolesInGroup(@PathVariable("roleGroupId") Long roleGroupId)
             throws NotFoundException {
         if (roleGroupId != null) {
             return roleGroupService.getAllRolesInGroup(roleGroupId);

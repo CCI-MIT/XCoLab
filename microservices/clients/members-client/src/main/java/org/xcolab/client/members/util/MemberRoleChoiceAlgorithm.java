@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +32,7 @@ public abstract class MemberRoleChoiceAlgorithm {
             }
 
             _log.error("No member role could be found for proposal impact tab member selection "
-                            + "algorithm for user with ID {}! Returning Member...", member.getUserId());
+                            + "algorithm for user with ID {}! Returning Member...", member.getId());
             return MemberRole.GUEST;
         }
 
@@ -79,10 +79,10 @@ public abstract class MemberRoleChoiceAlgorithm {
 
     // Helper methods
     public Map<Long, Boolean> getRoleIdMap(Member member) {
-        List<Role_> userRoles = MembersClient.getMemberRoles(member.getId());
+        List<Role> userRoles = MembersClient.getMemberRoles(member.getId());
         Map<Long, Boolean> roleIdMap = new HashMap<>(userRoles.size());
-        for (Role_ role : userRoles) {
-            roleIdMap.put(role.getRoleId(), true);
+        for (Role role : userRoles) {
+            roleIdMap.put(role.getId(), true);
         }
 
         return roleIdMap;

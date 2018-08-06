@@ -45,7 +45,7 @@ public class SupportProposalActionController {
         if (!proposalContext.getPermissions().getCanSupportProposal()) {
             return new AccessDeniedPage(currentMember).toViewName(response);
         }
-        long userId = currentMember.getUserId();
+        long userId = currentMember.getId();
         long proposalId = proposalContext.getProposal().getId();
         ProposalMemberRatingClient proposalMemberRatingClient =
                 proposalContext.getClients().getProposalMemberRatingClient();
