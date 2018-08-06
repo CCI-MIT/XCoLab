@@ -62,7 +62,7 @@
     <div class="c-Upload ${compactView ? 'c-Upload--compact' : ''}">
        <!--<div class="${!compactView ? 'c-Upload__image__wrapper' : ''}">-->
             <c:if test="${!compactView}">
-                <collab:image id='${uniqueName}_clear' cssClass="c-Upload__icon__clear" src="/images/unsubscribe_small.png" />
+                <collab:image id='${uniqueName}_clear' cssClass="c-Upload__icon__clear" src="/images/clear.png" />
             </c:if>
         <collab:image id="${previewImgId}"
              src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
@@ -91,6 +91,7 @@
         fileUploadVars['${uniqueName}'].imageIdInputId = '#' + '${imageIdInput}';
         fileUploadVars['${uniqueName}'].urlDisplayDiv = '#' + '${urlDisplayDiv}';
         fileUploadVars['${uniqueName}'].shouldBeCropped = !'${preserveAspectRatio}';
+        fileUploadVars['${uniqueName}'].clearButtonId = '#' + '${uniqueName}_clear';
     </script>
 
     <c:if test="${not empty imageIdInput}">
@@ -103,6 +104,9 @@
                         '/image?img_id=' + imageIdInputVal + '&amp;defaultImage=${defaultImage}')
                 } else {
                     checkForDefaultImageOverride();
+                }
+                if (imageIdInputVal == CLEAR_IMAGE_ID) {
+                    jQuery(vars.clearButtonId).hide();
                 }
             });
         </script>
@@ -150,6 +154,7 @@
                     jQuery(vars.imageIdInputId).val(data.result.imageId);
                     jQuery(vars.urlDisplayDiv).attr('href', data.result.imageUrl);
                     jQuery(vars.urlDisplayDiv).text(data.result.imageUrl);
+                    jQuery(vars.clearButtonId).show();
                     noty({text: 'Image upload succeeded.', type: 'success'});
                 } else {
                     noty({text: 'Image upload failed.', type: 'error'});
@@ -171,6 +176,7 @@
             jQuery(vars.imageIdInputId).val(CLEAR_IMAGE_ID);
             jQuery(vars.urlDisplayDiv).attr('href', defaultImageUrl);
             jQuery(vars.urlDisplayDiv).text(defaultImageUrl);
+            jQuery(vars.clearButtonId).hide();
         });
 
     </script>
