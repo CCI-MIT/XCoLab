@@ -62,7 +62,7 @@ public class RoleGroupDaoImpl implements RoleGroupDao {
     public List<Role> getAllRolesInGroup(Long groupId) {
         return this.dslContext.select()
                 .from(ROLE_GROUP_ROLE)
-                .innerJoin(ROLE).on(ROLE.ROLE_ID.eq(ROLE_GROUP_ROLE.ROLE_ID))
+                .innerJoin(ROLE).on(ROLE.ID.eq(ROLE_GROUP_ROLE.ROLE_ID))
                 .where(ROLE_GROUP_ROLE.ROLE_GROUP_ID.eq(groupId))
                 .fetchInto(Role.class);
     }

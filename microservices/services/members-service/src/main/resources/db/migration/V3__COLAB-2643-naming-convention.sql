@@ -35,7 +35,7 @@ alter table members_RoleGroupRoles change roleGroupId role_group_id bigint not n
 alter table members_RoleGroupRoles change roleId      role_id      bigint not null;
 rename table members_RoleGroupRoles to user__role_group_role;
 
-alter table Role_ change roleId       role_id       bigint      not null;
+alter table Role_ change roleId       id       bigint      not null;
 alter table Role_ change createDate   created_at   datetime    null;
 rename table Role_ to user__role;
 
