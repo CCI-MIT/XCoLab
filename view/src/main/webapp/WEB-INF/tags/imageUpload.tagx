@@ -8,7 +8,6 @@
                              rtexprvalue="true" description="Unique name for this upload widget"/>
     <jsp:directive.attribute name="defaultImageId" type="java.lang.Long" required="false"
                              rtexprvalue="true" description="Default image id if the current id is not set , if any"/>
-
     <jsp:directive.attribute name="imageIdInput" type="java.lang.String" required="false"
                              rtexprvalue="true" description="Id of the input field
                              to hold the new image id, if any"/>
@@ -22,6 +21,8 @@
                              rtexprvalue="true" description="If false, the image will be cropped to square"/>
     <jsp:directive.attribute name="buttonText" type="java.lang.String" required="false"
                              rtexprvalue="true" description="Text for the upload button"/>
+    <jsp:directive.attribute name="clearImageId" type="java.lang.Long"
+                             required="false" rtexprvalue="true"  description="Image id to revert to if current image is cleared" />
 
     <spring:message code="colab.default.image.button.upload" var="defaultImageText"/>
     <c:set var="shouldDisplayUrl" value="${(empty shouldDisplayUrl) ? false : shouldDisplayUrl}" />
@@ -29,6 +30,7 @@
     <c:set var="defaultImage" value="${(empty defaultImage) ? 'NONE' : defaultImage}" />
     <c:set var="defaultImageId" value="${(empty defaultImageId) ? '' : defaultImageId}" />
     <c:set var="buttonText" value="${(empty buttonText) ? defaultImageText : buttonText}" />
+    <c:set var="clearImageId" value="${(empty clearImageId) ? '0' : clearImageId}" />
 
     <c:set var="uploadImageInputId" value="${uniqueName}Input"/>
     <c:set var="urlDisplayDiv" value="${uniqueName}ImageUrl"/>
@@ -48,7 +50,7 @@
             var FILE_UPLOAD_MAX_HEIGHT = ${FILE_UPLOAD_MAX_HEIGHT};
             var FILE_UPLOAD_MAX_FILE_SIZE = ${FILE_UPLOAD_MAX_FILE_SIZE};
             var fileUploadVars = {};
-            var CLEAR_IMAGE_ID = '0';
+            var CLEAR_IMAGE_ID = '${clearImageId}';
         </script>
 
         <c:set var="_imageUploadScriptsLoaded" value="true" scope="request"/>
