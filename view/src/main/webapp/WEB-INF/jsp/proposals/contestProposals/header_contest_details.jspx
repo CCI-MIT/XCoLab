@@ -29,7 +29,7 @@
                             </c:otherwise>
                         </c:choose>
                     </c:if>
-                    ${contest.contestQuestion}
+                    ${contest.question}
                 </div>
                 <div class="p-ContestProposals__header__description">
                     <p>
@@ -219,7 +219,7 @@
 
             <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                 <div class="p-ContestProposals__header__shareButtons">
-                    <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestTitle)}"/>
+                    <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.title)}"/>
                 </div>
             </c:if>
 

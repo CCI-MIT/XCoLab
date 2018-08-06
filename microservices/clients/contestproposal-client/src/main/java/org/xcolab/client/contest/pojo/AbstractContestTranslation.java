@@ -86,11 +86,11 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Long getauthorUserId() {
+    public Long getAuthorUserId() {
         return this.authorUserId;
     }
 
-    public void setauthorUserId(Long authorUserId) {
+    public void setAuthorUserId(Long authorUserId) {
         this.authorUserId = authorUserId;
     }
 

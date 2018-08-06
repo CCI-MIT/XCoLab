@@ -39,7 +39,7 @@ public class ProposalNotification extends ContestNotification {
         final EmailTemplate emailTemplate =
                 emailTemplateClient.getContestEmailTemplateByType(templateName);
 
-        templateWrapper = new ProposalNotificationTemplate(emailTemplate, proposalName, contest.getContestTitle());
+        templateWrapper = new ProposalNotificationTemplate(emailTemplate, proposalName, contest.getTitle());
 
         return templateWrapper;
     }

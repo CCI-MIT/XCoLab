@@ -57,7 +57,7 @@ public class ContributorCsvWriter extends CsvResponseWriter {
             for (ProposalTeamMember teamMember : proposal.getMembers()) {
                 List<String> row = new ArrayList<>();
                 addValue(row, contest.getId());
-                addValue(row, contest.getContestTitle());
+                addValue(row, contest.getTitle());
                 addValue(row, proposal.getId());
                 final String proposalUrl = colabUrl + proposal.getProposalLinkUrl(contest);
                 addValue(row, proposalUrl);

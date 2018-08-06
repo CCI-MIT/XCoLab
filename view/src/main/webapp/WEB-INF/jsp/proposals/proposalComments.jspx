@@ -14,7 +14,7 @@
 
         <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
                                            proposalId="${proposal.id}"
-                                           shareTitle="Discussion for ${proposal.name} in ${contest.contestTitle}" />
+                                           shareTitle="Discussion for ${proposal.name} in ${contest.title}" />
 
         <script>
 			jQuery(function() {

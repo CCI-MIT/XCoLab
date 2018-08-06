@@ -40,7 +40,7 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
         final StringBuilder contestNames = new StringBuilder();
 
         for (Contest contest : contests) {
-            contestNames.append(contest.getContestTitle()).append("; ");
+            contestNames.append(contest.getTitle()).append("; ");
             List<Proposal> proposals = getProposalsToBeMessaged(contest);
 
             for (Proposal proposal : proposals) {

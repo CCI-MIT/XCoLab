@@ -50,7 +50,7 @@ public class ProposalCsvWriter extends CsvResponseWriter {
         for (Proposal proposal : proposals) {
             List<String> row = new ArrayList<>();
             addValue(row, contest.getId());
-            addValue(row, contest.getContestTitle());
+            addValue(row, contest.getTitle());
 
             addValue(row, proposal.getId());
             final String proposalUrl = colabUrl + proposal.getProposalLinkUrl(contest);
@@ -66,13 +66,13 @@ public class ProposalCsvWriter extends CsvResponseWriter {
                     .map(ProposalTeamMember::getFullName)
                     .map(String::valueOf)
                     .collect(Collectors.joining(",")));
-            addValue(row, proposal.getauthorUserId());
+            addValue(row, proposal.getAuthorUserId());
             addValue(row, proposal.getAuthorName());
             addValue(row, proposal.getCommentsCount());
             addValue(row, proposal.getSupportersCount());
             addValue(row, proposal.getVotesCount());
             addValue(row, proposal.getCreatedAt());
-            addValue(row, proposal.getUpdatedDate());
+            addValue(row, proposal.getUpdatedAt());
             addValue(row, proposal.getPitch());
 
             List<String> sectionContent = new ArrayList<>();

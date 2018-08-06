@@ -305,7 +305,7 @@ public class ContestResourcesBean implements Serializable {
             }
         }
         overviewSectionValues = new LinkedHashMap<>();
-        overviewSectionValues.put("Question:", contest.getContestQuestion());
+        overviewSectionValues.put("Question:", contest.getQuestion());
 
         final String contestLinkUrl = contest.getContestLinkUrl();
         final String overviewViewProposalsContent = resolvePlaceholders(OVERVIEW_VIEW_PROPOSALS_CONTENT);

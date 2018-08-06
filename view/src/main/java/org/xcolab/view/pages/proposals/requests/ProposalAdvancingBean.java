@@ -40,7 +40,7 @@ public class ProposalAdvancingBean {
         advanceComment = wrapper.getProposalReview();
 
         this.emailTemplateBean = new ContestEmailTemplateBean(EMAIL_TEMPLATES_TO_LOAD,
-                wrapper.getName(), wrapper.getContest().getContestTitle());
+                wrapper.getName(), wrapper.getContest().getTitle());
     }
 
     private List<ProposalRatingTypeWrapper> fetchRatingTypes() {

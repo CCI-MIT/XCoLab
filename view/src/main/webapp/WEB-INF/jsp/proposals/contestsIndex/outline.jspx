@@ -284,8 +284,8 @@
 					return orderArrayA.length - orderArrayB.length;
 				}
 				// contests have the same prefixes, then return 
-				if (a.created != b.created) {
-					return a.created - b.created;
+				if (a.createdAt != b.createdAt) {
+					return a.createdAt - b.createdAt;
 				}
 				return a.id - b.id;
 				

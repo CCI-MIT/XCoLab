@@ -8,7 +8,7 @@
             <collab:image src="/image/contest/${contestWrapper.contestLogoId}" width="52" height="52" alt="${contestWrapper.contestShortNameWithEndYear }" />
             <div>
                 <h1>${contestWrapper.contestShortNameWithEndYear}</h1>
-                <span class="clearLeft"><h3>${contestWrapper.contestQuestion}</h3></span>
+                <span class="clearLeft"><h3>${contestWrapper.question}</h3></span>
             </div>
         </div>
         <ul class="nav nav-tabs">

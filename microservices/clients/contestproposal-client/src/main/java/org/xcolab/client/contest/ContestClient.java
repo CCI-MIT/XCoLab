@@ -113,8 +113,8 @@ public class ContestClient {
     public Contest createContest(Long userId, String name) {
         Contest c = new Contest();
         c.setAuthorUserId(userId);
-        c.setContestQuestion(name);
-        c.setContestTitle(name);
+        c.setQuestion(name);
+        c.setTitle(name);
         c.setContestUrlName(c.generateContestUrlName());
         c.setDescription("");
         c.setContestModelDescription("");
@@ -128,7 +128,7 @@ public class ContestClient {
         c.setFocusAreaId(null);
         c.setContestTier(0L);
         c.setContestLogoId(0L);
-        c.setFeatured_(false);
+        c.setFeatured(false);
         c.setPlansOpenByDefault(false);
         c.setSponsorLogoId(0L);
         c.setSponsorLink("");

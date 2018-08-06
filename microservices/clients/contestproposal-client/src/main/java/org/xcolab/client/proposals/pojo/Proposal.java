@@ -177,7 +177,7 @@ public class Proposal extends AbstractProposal {
         } else {
             this.clients = new Clients();
         }
-        this.setProposalId(0L);
+        this.setId(0L);
 
         ContestAssociation contestAssociation = new ContestAssociation();
         this.contestPhase =  contestAssociation.getContestPhase();
@@ -307,9 +307,9 @@ public class Proposal extends AbstractProposal {
 
     public Member getAuthor() {
         try {
-            return MembersClient.getMember(this.getauthorUserId());
+            return MembersClient.getMember(this.getAuthorUserId());
         } catch (MemberNotFoundException e) {
-            throw new IllegalStateException("Author " + this.getauthorUserId()
+            throw new IllegalStateException("Author " + this.getAuthorUserId()
                     + " of proposal " + this.getId() + " does not exist");
         }
     }
@@ -336,7 +336,7 @@ public class Proposal extends AbstractProposal {
     private long createDiscussionThread(String threadTitleSuffix, boolean isQuiet) {
         final ContestType contestType = getContest().getContestType();
         CommentThread thread = new CommentThread();
-        thread.setAuthorUserId(getauthorUserId());
+        thread.setAuthorUserId(getAuthorUserId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
         return clients.thread.createThread(thread).getId();
@@ -363,7 +363,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public Date getLastupdatedAt() {
-        return this.getUpdatedDate();
+        return this.getUpdatedAt();
     }
 
     public Date getLastupdatedAtForContestPhase() {
@@ -530,7 +530,7 @@ public class Proposal extends AbstractProposal {
                 }
             }
             if (!hasOwner) {
-                clients.membership.addUserToProposalTeam(getId(), getauthorUserId());
+                clients.membership.addUserToProposalTeam(getId(), getAuthorUserId());
             }
         }
         return members;
@@ -880,7 +880,7 @@ public class Proposal extends AbstractProposal {
 
     public Member getUserForSelectedVersion() {
         try {
-            return MembersClient.getMember(getSelectedVersion().getauthorUserId());
+            return MembersClient.getMember(getSelectedVersion().getAuthorUserId());
         } catch (MemberNotFoundException e) {
             return null;
         }

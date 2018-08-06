@@ -45,8 +45,8 @@ public class WikiPageWrapper {
         } else {
             contentArticleVersion = new ContentArticleVersion();
             contentArticleVersion.setFolderId(ContentFolder.RESOURCE_FOLDER_ID);
-            contentArticleVersion.setauthorUserId(loggedInUserId);
-            contentArticleVersion.setTitle(contest.getContestTitle());
+            contentArticleVersion.setAuthorUserId(loggedInUserId);
+            contentArticleVersion.setTitle(contest.getTitle());
             contentArticleVersion.setContent("");
             contentArticleVersion = ContentsClient
                     .createContentArticleVersion(contentArticleVersion);
@@ -72,7 +72,7 @@ public class WikiPageWrapper {
             if (contest.getResourceArticleId() != null) {
                 final ContentArticleVersion resourceArticleVersion = ContentsClient
                         .getLatestContentArticleVersion(contest.getResourceArticleId());
-                resourceArticleVersion.setTitle(contest.getContestTitle());
+                resourceArticleVersion.setTitle(contest.getTitle());
                 ContentsClient.updateContentArticleVersion(resourceArticleVersion);
             }
         } catch (ContentNotFoundException ignored) {
@@ -93,10 +93,10 @@ public class WikiPageWrapper {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
         if (!contentArticleVersion.getContent().equals(updatedResourcesContent)) {
-            contentArticleVersion.setTitle(contest.getContestTitle());
+            contentArticleVersion.setTitle(contest.getTitle());
             contentArticleVersion.setContent(updatedResourcesContent);
             contentArticleVersion.setArticleId(contentArticle.getId());
-            contentArticleVersion.setauthorUserId(loggedInUserId);
+            contentArticleVersion.setAuthorUserId(loggedInUserId);
             ContentsClient.updateContentArticleVersion(contentArticleVersion);
         }
     }

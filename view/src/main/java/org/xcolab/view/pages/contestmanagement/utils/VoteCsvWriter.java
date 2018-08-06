@@ -88,7 +88,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
 
             List<String> row = new ArrayList<>();
             addValue(row, vote.getProposalId());
-            addValue(row, contest.getContestTitle());
+            addValue(row, contest.getTitle());
             if (proposal != null) {
                 final String proposalUrl =
                         colabUrl + proposal.getProposalLinkUrl(contest, vote.getContestPhaseId());

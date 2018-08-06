@@ -34,7 +34,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
                 .set(PROPOSAL_VOTE.CONTEST_PHASE_ID, proposalVote.getContestPhaseId())
                 .set(PROPOSAL_VOTE.USER_ID, proposalVote.getUserId())
                 .set(PROPOSAL_VOTE.VALUE, proposalVote.getValue())
-                .set(PROPOSAL_VOTE.CREATE_DATE, DSL.currentTimestamp())
+                .set(PROPOSAL_VOTE.CREATED_AT, DSL.currentTimestamp())
                 .set(PROPOSAL_VOTE.VOTER_IP, proposalVote.getVoterIp())
                 .set(PROPOSAL_VOTE.VOTER_USER_AGENT, proposalVote.getVoterUserAgent())
                 .set(PROPOSAL_VOTE.IS_VALID, proposalVote.getIsValid())
@@ -45,7 +45,6 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
                 .set(PROPOSAL_VOTE.IS_VALID_OVERRIDE, proposalVote.getIsValidOverride())
                 .set(PROPOSAL_VOTE.MANUAL_VALIDATION_RESULT, proposalVote.getManualValidationResult())
                 .execute();
-
 
         return proposalVote;
     }

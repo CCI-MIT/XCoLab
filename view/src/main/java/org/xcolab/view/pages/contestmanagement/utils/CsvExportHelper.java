@@ -69,7 +69,7 @@ public class CsvExportHelper {
 
             Contest contest = ContestClientUtil.getContest(contestId);
 
-            String contestTitle = normalizeApostrophes(contest.getContestTitle());
+            String contestTitle = normalizeApostrophes(contest.getTitle());
             String proposalTitle = normalizeApostrophes(proposalWrapper.getName());
             String proposalLink = URL_DOMAIN + proposalWrapper.getProposalUrl();
             String lastPhaseTitle = getContestPhaseTitle(contestPhase);

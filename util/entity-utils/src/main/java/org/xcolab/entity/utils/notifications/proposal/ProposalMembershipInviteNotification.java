@@ -48,7 +48,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
                 EmailTemplateClientUtil.getContestEmailTemplateByType(DEFAULT_TEMPLATE_NAME);
 
         templateWrapper = new ProposalMembershipRequestTemplate(emailTemplate,
-                proposalName, contest.getContestTitle());
+                proposalName, contest.getTitle());
 
         return templateWrapper;
     }

@@ -44,7 +44,7 @@ public class ContestsResult {
         private SimpleContest(Contest contest) {
             this.id = contest.getId();
             this.contestShortName = contest.getContestShortNameWithEndYear();
-            this.contestName = contest.getContestQuestion();
+            this.contestName = contest.getQuestion();
             this.contestPK = contest.getId();
             this.flagText = contest.getFlagText();
             this.flag = contest.getFlag();

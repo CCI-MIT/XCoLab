@@ -10,7 +10,7 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
-<xcolab:layout title="${contest.contestShortNameWithEndYear}" description="${contest.contestQuestion}"
+<xcolab:layout title="${contest.contestShortNameWithEndYear}" description="${contest.question}"
                openGraphImage="${contest.logoPath}"
                openGraphDescription="${contest.cleanContestDescription}"
                openGraphTitle="${contest.contestShortNameWithEndYear} - ${_themeContext.colabName}">
@@ -201,7 +201,7 @@
     </c:set>
 
     <spring:message var="menuItemName" text="${contestType.menuItemName}" javaScriptEscape="true" />
-    <spring:message var="contestShortName" text="${contest.contestTitle}" javaScriptEscape="true" />
+    <spring:message var="contestShortName" text="${contest.title}" javaScriptEscape="true" />
     <script type="application/ld+json">
     {
         "@context": "http://schema.org",

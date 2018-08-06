@@ -39,7 +39,7 @@
                         <div class="c-Box c-Box--colorTan">
                             <div class="c-Box__body">
                                 <div>
-                                    <strong>English title:</strong> ${contestWrapper.contestTitle}
+                                    <strong>English title:</strong> ${contestWrapper.title}
                                 </div>
                                 <div>
                                     <strong><spring:message code="${lang['lable']}"/> title:</strong>
@@ -52,7 +52,7 @@
                         <div class="c-Box c-Box--colorTan">
                             <div class="c-Box__body">
                                 <div>
-                                    <strong>English question:</strong> ${contestWrapper.contestQuestion}
+                                    <strong>English question:</strong> ${contestWrapper.question}
                                 </div>
                                 <div>
                                     <strong><spring:message code="${lang['lable']}"/> question:</strong>

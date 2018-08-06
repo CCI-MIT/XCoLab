@@ -68,7 +68,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     }
 
     private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {
-        boolean isAuthor = proposal.getauthorUserId() == userId;
+        boolean isAuthor = proposal.getAuthorUserId() == userId;
         boolean isMember = proposal.getMembers().stream()
                 .map(ProposalTeamMember::getUserId)
                 .anyMatch(id -> id == userId);

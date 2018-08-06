@@ -75,7 +75,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             model.addAttribute("activeContestPhaseOpenForEdit", isActiveContestPhaseOpenForEdit(
                     proposalContext, contest));
             model.addAttribute("showEvaluation", true);
-            model.addAttribute("authorUserId", proposal.getauthorUserId());
+            model.addAttribute("authorUserId", proposal.getAuthorUserId());
             model.addAttribute("proposalId", proposal.getId());
         }
 

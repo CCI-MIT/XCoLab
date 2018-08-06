@@ -379,7 +379,7 @@ public final class ProposalClient {
                 .getList(), serviceNamespace);
 
     }
-    public Integer getMaxVersion(Long proposalId) {
+    public Integer getMaxVersion(long proposalId) {
         return proposalResource.elementService(proposalId, "maxVersion", Integer.class)
                 .get();
     }

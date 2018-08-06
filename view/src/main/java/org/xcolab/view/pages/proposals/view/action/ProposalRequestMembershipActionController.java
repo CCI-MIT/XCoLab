@@ -72,7 +72,7 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getauthorUserId());
+        final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorUserId());
 
         final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();

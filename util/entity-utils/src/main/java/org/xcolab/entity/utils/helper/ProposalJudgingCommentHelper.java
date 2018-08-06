@@ -113,7 +113,7 @@ public class ProposalJudgingCommentHelper {
                     .getProposalAttribute(proposal.getId(), ProposalAttributeKeys.NAME, 0L)
                     .getStringValue();
             String contestName = ContestClientUtil.getContest(contestPhase.getContestId())
-                    .getContestTitle();
+                    .getTitle();
 
             //get fellow decision
 

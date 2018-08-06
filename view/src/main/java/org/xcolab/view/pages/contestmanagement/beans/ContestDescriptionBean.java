@@ -62,8 +62,8 @@ public class ContestDescriptionBean implements Serializable {
 
         if (contest != null) {
             ContestPK = contest.getId();
-            contestName = contest.getContestQuestion();
-            contestShortName = contest.getContestTitle();
+            contestName = contest.getQuestion();
+            contestShortName = contest.getTitle();
             contestDescription = contest.getDescription();
             planTemplateId = contest.getPlanTemplateId();
             scheduleTemplateId = contest.getContestScheduleId();
@@ -76,7 +76,7 @@ public class ContestDescriptionBean implements Serializable {
     }
 
     public void persist(Contest contest) {
-        String oldContestName = contest.getContestTitle();
+        String oldContestName = contest.getTitle();
         updateContestDescription(contest);
 
         try {
@@ -84,14 +84,14 @@ public class ContestDescriptionBean implements Serializable {
             ContestType contestType =
                     ContestTypeClient.getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
-                    contestType.getContestName(), contest.getContestTitle()));
+                    contestType.getContestName(), contest.getTitle()));
             ThreadClientUtil.updateThread(thread);
         } catch (ThreadNotFoundException e) {
             _log.warn("No thread (id = {}) exists for contest {}", contest.getDiscussionGroupId(),
                     contest.getId());
         }
 
-        if (shouldUpdateContestUrlName && !contest.getContestTitle().equals(oldContestName)) {
+        if (shouldUpdateContestUrlName && !contest.getTitle().equals(oldContestName)) {
             contest.setContestUrlName((contest).generateContestUrlName());
             ContestClientUtil.updateContest(contest);
         }
@@ -100,8 +100,8 @@ public class ContestDescriptionBean implements Serializable {
     }
 
     private void updateContestDescription(Contest contest) {
-        contest.setContestQuestion(contestName);
-        contest.setContestTitle(contestShortName);
+        contest.setQuestion(contestName);
+        contest.setTitle(contestShortName);
         contest.setDescription(contestDescription);
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestLogoId(contestLogoId);

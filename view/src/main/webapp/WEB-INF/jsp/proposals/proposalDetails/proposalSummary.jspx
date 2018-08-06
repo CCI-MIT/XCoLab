@@ -150,7 +150,7 @@
             <div class="p-Proposal__sidebar__section p-Proposal__sidebar__section--background">
                 <strong>${contestType.contestName}: </strong>
                 <xcolab:contestLink contest="${contest }" /><br />
-                ${contest.contestQuestion}
+                ${contest.question}
             </div>
             <c:if test="${not empty linkedProposalContestTypeProposalWrappersByContestTypeId}">
                 <c:forEach var="contestTypeProposalWrapper" items="${linkedProposalContestTypeProposalWrappersByContestTypeId}">

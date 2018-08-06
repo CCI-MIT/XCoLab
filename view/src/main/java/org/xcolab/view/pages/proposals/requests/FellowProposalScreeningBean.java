@@ -30,7 +30,7 @@ public class FellowProposalScreeningBean extends RatingBean implements Serializa
 
         //initialize email templates
         this.emailTemplateBean = new ContestEmailTemplateBean(EMAIL_TEMPLATES_TO_LOAD,
-                proposalWrapper.getName(), proposalWrapper.getContest().getContestTitle());
+                proposalWrapper.getName(), proposalWrapper.getContest().getTitle());
 
         fellowScreeningActionCommentBody = proposalWrapper.getFellowActionComment();
     }

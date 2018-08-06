@@ -85,7 +85,7 @@ public class ProposalMoveJsonController {
 
         private ImmutableContest(Contest contest) {
             this.contestShortName = contest.getContestShortNameWithEndYear();
-            this.contestName = contest.getContestQuestion();
+            this.contestName = contest.getQuestion();
             this.contestYear = contest.getContestYear();
             this.contestUrlName = contest.getContestUrlName();
         }

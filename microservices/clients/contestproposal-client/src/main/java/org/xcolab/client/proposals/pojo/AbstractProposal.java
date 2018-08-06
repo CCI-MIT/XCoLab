@@ -7,9 +7,9 @@ class AbstractProposal implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long proposalid;
+    private Long id;
     private Timestamp createdAt;
-    private Timestamp updateddate;
+    private Timestamp updatedAt;
     private Long authorUserId;
     private Boolean visible;
     private Long discussionid;
@@ -19,9 +19,9 @@ class AbstractProposal implements Serializable {
     public AbstractProposal() {}
 
     public AbstractProposal(AbstractProposal value) {
-        this.proposalid = value.proposalid;
+        this.id = value.id;
         this.createdAt = value.createdAt;
-        this.updateddate = value.updateddate;
+        this.updatedAt = value.updatedAt;
         this.authorUserId = value.authorUserId;
         this.visible = value.visible;
         this.discussionid = value.discussionid;
@@ -31,11 +31,11 @@ class AbstractProposal implements Serializable {
 
 
     public Long getId() {
-        return this.proposalid;
+        return this.id;
     }
 
-    public void setProposalId(Long proposalid) {
-        this.proposalid = proposalid;
+    public void setId(Long proposalId) {
+        this.id = proposalId;
     }
 
     public Timestamp getCreatedAt() {
@@ -46,19 +46,19 @@ class AbstractProposal implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedDate() {
-        return this.updateddate;
+    public Timestamp getUpdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setUpdatedDate(Timestamp updateddate) {
-        this.updateddate = updateddate;
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Long getauthorUserId() {
+    public Long getAuthorUserId() {
         return this.authorUserId;
     }
 
-    public void setauthorUserId(Long authorUserId) {
+    public void setAuthorUserId(Long authorUserId) {
         this.authorUserId = authorUserId;
     }
 
@@ -97,7 +97,7 @@ class AbstractProposal implements Serializable {
 
     @Override
     public String toString() {
-        return "Proposal (" + proposalid + ", " + createdAt + ", " + updateddate + ", "
+        return "Proposal (" + id + ", " + createdAt + ", " + updatedAt + ", "
                 + authorUserId + ", " + visible + ", " + discussionid + ", "
                 + resultsdiscussionid + ", " + groupid + ")";
     }

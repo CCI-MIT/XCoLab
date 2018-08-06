@@ -10,6 +10,6 @@ public class ShowInListViewMassAction extends SetContestPropertyMassAction {
 
     @Override
     protected void setProperty(Contest contest, boolean setTrue) {
-        contest.setShow_in_list_view(setTrue);
+        contest.setShowInListView(setTrue);
     }
 }

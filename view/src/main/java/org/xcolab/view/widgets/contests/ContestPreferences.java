@@ -106,8 +106,8 @@ public class ContestPreferences extends WidgetPreference {
         contestMap = new LinkedHashMap<>();
 
         contests.sort((o1, o2) -> {
-            final Date created1 = o1.getCreated();
-            final Date created2 = o2.getCreated();
+            final Date created1 = o1.getCreatedAt();
+            final Date created2 = o2.getCreatedAt();
             if (created1 != null && created2 != null) {
                 if (created1.before(created2)) {
                     return 1;

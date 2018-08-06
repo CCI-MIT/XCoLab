@@ -57,11 +57,11 @@ class AbstractProposalVersion implements Serializable {
         this.version = version;
     }
 
-    public Long getauthorUserId() {
+    public Long getAuthorUserId() {
         return this.authorUserId;
     }
 
-    public void setauthorUserId(Long authorUserId) {
+    public void setAuthorUserId(Long authorUserId) {
         this.authorUserId = authorUserId;
     }
 

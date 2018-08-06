@@ -14,8 +14,8 @@ public abstract class AbstractContest {
     private Long contestyear;
     private String contestmodeldescription;
     private String contestpositionsdescription;
-    private Timestamp created;
-    private Timestamp updated;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
     private Long authorUserId;
     private Boolean contestactive;
     private Long plantemplateid;
@@ -28,7 +28,7 @@ public abstract class AbstractContest {
     private Long focusareaid;
     private Long contesttier;
     private Long contestlogoid;
-    private Boolean featured_;
+    private Boolean featured;
     private Boolean plansopenbydefault;
     private Long sponsorlogoid;
     private Long defaultproposallogoid;
@@ -68,8 +68,8 @@ public abstract class AbstractContest {
         this.description = value.description;
         this.contestmodeldescription = value.contestmodeldescription;
         this.contestpositionsdescription = value.contestpositionsdescription;
-        this.created = value.created;
-        this.updated = value.updated;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
         this.authorUserId = value.authorUserId;
         this.contestactive = value.contestactive;
         this.plantemplateid = value.plantemplateid;
@@ -82,7 +82,7 @@ public abstract class AbstractContest {
         this.focusareaid = value.focusareaid;
         this.contesttier = value.contesttier;
         this.contestlogoid = value.contestlogoid;
-        this.featured_ = value.featured_;
+        this.featured = value.featured;
         this.plansopenbydefault = value.plansopenbydefault;
         this.sponsorlogoid = value.sponsorlogoid;
         this.defaultproposallogoid = value.defaultproposallogoid;
@@ -114,12 +114,12 @@ public abstract class AbstractContest {
     public AbstractContest(Long id, Long contesttypeid, String question,
             String title, String contesturlname, Long contestyear,
             String description, String contestmodeldescription,
-            String contestpositionsdescription, Timestamp created, Timestamp updated, Long authorUserId,
+            String contestpositionsdescription, Timestamp createdAt, Timestamp updatedAt, Long authorUserId,
             Boolean contestactive, Long plantemplateid, Long contestscheduleid,
             String proposalcreationtemplatestring, String votetemplatestring,
             String proposalvotetemplatestring, String proposalvoteconfirmationtemplatestring,
             String votequestiontemplatestring, Long focusareaid, Long contesttier,
-            Long contestlogoid, Boolean featured_, Boolean plansopenbydefault, Long sponsorlogoid,
+            Long contestlogoid, Boolean featured, Boolean plansopenbydefault, Long sponsorlogoid,
             String sponsortext, String sponsorlink, Integer flag, String flagtext,
             String flagtooltip, Long discussiongroupid, Integer weight, String resourcesurl,
             Boolean contestprivate, Boolean usepermissions, String contestcreationstatus,
@@ -136,8 +136,8 @@ public abstract class AbstractContest {
         this.description = description;
         this.contestmodeldescription = contestmodeldescription;
         this.contestpositionsdescription = contestpositionsdescription;
-        this.created = created;
-        this.updated = updated;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.authorUserId = authorUserId;
         this.contestactive = contestactive;
         this.plantemplateid = plantemplateid;
@@ -150,7 +150,7 @@ public abstract class AbstractContest {
         this.focusareaid = focusareaid;
         this.contesttier = contesttier;
         this.contestlogoid = contestlogoid;
-        this.featured_ = featured_;
+        this.featured = featured;
         this.plansopenbydefault = plansopenbydefault;
         this.sponsorlogoid = sponsorlogoid;
         this.sponsortext = sponsortext;
@@ -182,32 +182,32 @@ public abstract class AbstractContest {
         return this.id;
     }
 
-    public void setId(Long contestpk) {
-        this.id = contestpk;
+    public void setId(Long contestId) {
+        this.id = contestId;
     }
 
     public Long getContestTypeId() {
         return this.contesttypeid;
     }
 
-    public void setContestTypeId(Long contesttypeid) {
-        this.contesttypeid = contesttypeid;
+    public void setContestTypeId(Long contestTypeId) {
+        this.contesttypeid = contestTypeId;
     }
 
-    public String getContestTitle() {
+    public String getTitle() {
         return this.title;
     }
 
-    public void setContestTitle(String contestTitle) {
-        this.title = contestTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getContestQuestion() {
+    public String getQuestion() {
         return this.question;
     }
 
-    public void setContestQuestion(String contestname) {
-        this.question = contestname;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public String getDescription() {
@@ -491,27 +491,27 @@ public abstract class AbstractContest {
         this.emailtemplateurl = emailtemplateurl;
     }
 
-    public Boolean getShow_in_tile_view() {
+    public Boolean getShowInTileView() {
         return this.showInTileView;
     }
 
-    public void setShow_in_tile_view(Boolean showInTileView) {
+    public void setShowInTileView(Boolean showInTileView) {
         this.showInTileView = showInTileView;
     }
 
-    public Boolean getShow_in_list_view() {
+    public Boolean getShowInListView() {
         return this.showInListView;
     }
 
-    public void setShow_in_list_view(Boolean showInListView) {
+    public void setShowInListView(Boolean showInListView) {
         this.showInListView = showInListView;
     }
 
-    public Boolean getShow_in_outline_view() {
+    public Boolean getShowInOutlineView() {
         return this.showInOutlineView;
     }
 
-    public void setShow_in_outline_view(Boolean showInOutlineView) {
+    public void setShowInOutlineView(Boolean showInOutlineView) {
         this.showInOutlineView = showInOutlineView;
     }
 
@@ -531,28 +531,28 @@ public abstract class AbstractContest {
         this.resourcearticleid = resourcearticleid;
     }
 
-    public Timestamp getCreated() {
-        return this.created;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreated(Timestamp created) {
-        this.created = created;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdated() {
-        return this.updated;
+    public Timestamp getUpdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setUpdated(Timestamp updated) {
-        this.updated = updated;
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Boolean getFeatured_() {
-        return this.featured_;
+    public Boolean getFeatured() {
+        return this.featured;
     }
 
-    public void setFeatured_(Boolean featured_) {
-        this.featured_ = featured_;
+    public void setFeatured(Boolean featured) {
+        this.featured = featured;
     }
 
     public Integer getFlag() {
@@ -583,11 +583,11 @@ public abstract class AbstractContest {
     public int hashCode() {
         return Objects.hash(id, contesttypeid, question, title, contesturlname,
                 contestyear, description, contestmodeldescription,
-                contestpositionsdescription, getCreated(), getUpdated(), authorUserId, contestactive,
+                contestpositionsdescription, getCreatedAt(), getUpdatedAt(), authorUserId, contestactive,
                 plantemplateid, contestscheduleid, proposalcreationtemplatestring,
                 votetemplatestring, proposalvotetemplatestring,
                 proposalvoteconfirmationtemplatestring, votequestiontemplatestring, focusareaid,
-                contesttier, contestlogoid, getFeatured_(), plansopenbydefault, sponsorlogoid,
+                contesttier, contestlogoid, getFeatured(), plansopenbydefault, sponsorlogoid,
                 defaultproposallogoid, sponsortext, sponsorlink, getFlag(), flagtext, flagtooltip,
                 discussiongroupid, getWeight(), resourcesurl, contestprivate,
                 usepermissions, contestcreationstatus, defaultmodelid, othermodels,
@@ -614,8 +614,8 @@ public abstract class AbstractContest {
                 .equals(description, that.description) && Objects
                 .equals(contestmodeldescription, that.contestmodeldescription) && Objects
                 .equals(contestpositionsdescription, that.contestpositionsdescription) && Objects
-                .equals(getCreated(), that.getCreated()) && Objects
-                .equals(getUpdated(), that.getUpdated()) && Objects.equals(
+                .equals(getCreatedAt(), that.getCreatedAt()) && Objects
+                .equals(getUpdatedAt(), that.getUpdatedAt()) && Objects.equals(
                 authorUserId, that.authorUserId)
                 && Objects.equals(contestactive, that.contestactive) && Objects
                 .equals(plantemplateid, that.plantemplateid) && Objects
@@ -629,7 +629,7 @@ public abstract class AbstractContest {
                 .equals(focusareaid, that.focusareaid) && Objects
                 .equals(contesttier, that.contesttier) && Objects
                 .equals(contestlogoid, that.contestlogoid) && Objects
-                .equals(getFeatured_(), that.getFeatured_()) && Objects
+                .equals(getFeatured(), that.getFeatured()) && Objects
                 .equals(plansopenbydefault, that.plansopenbydefault) && Objects
                 .equals(sponsorlogoid, that.sponsorlogoid) && Objects
                 .equals(defaultproposallogoid, that.defaultproposallogoid) && Objects
@@ -663,12 +663,12 @@ public abstract class AbstractContest {
         return "Contest (" + id + ", " + contesttypeid + ", " + question + ", "
                 + title + ", " + contesturlname + ", " + contestyear + ", "
                 + description + ", " + contestmodeldescription + ", "
-                + contestpositionsdescription + ", " + created + ", " + updated + ", " + authorUserId
+                + contestpositionsdescription + ", " + createdAt + ", " + updatedAt + ", " + authorUserId
                 + ", " + contestactive + ", " + plantemplateid + ", " + contestscheduleid + ", "
                 + proposalcreationtemplatestring + ", " + votetemplatestring + ", "
                 + proposalvotetemplatestring + ", " + proposalvoteconfirmationtemplatestring + ", "
                 + votequestiontemplatestring + ", " + focusareaid + ", " + contesttier + ", "
-                + contestlogoid + ", " + featured_ + ", " + plansopenbydefault + ", "
+                + contestlogoid + ", " + featured + ", " + plansopenbydefault + ", "
                 + sponsorlogoid + ", " + sponsortext + ", " + sponsorlink + ", " + flag + ", "
                 + flagtext + ", " + flagtooltip + ", " + discussiongroupid + ", " + weight + ", " + resourcesurl + ", " + contestprivate + ", " + usepermissions
                 + ", " + contestcreationstatus + ", " + defaultmodelid + ", " + othermodels + ", "

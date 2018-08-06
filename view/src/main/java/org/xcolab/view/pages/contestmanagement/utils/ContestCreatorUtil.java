@@ -32,9 +32,9 @@ public final class ContestCreatorUtil {
         Contest contest = ContestClientUtil.createContest(authorUserId, contestShortName);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
-        contest.setShow_in_tile_view(true);
-        contest.setShow_in_list_view(true);
-        contest.setShow_in_outline_view(true);
+        contest.setShowInTileView(true);
+        contest.setShowInListView(true);
+        contest.setShowInOutlineView(true);
         final Long templateId = getOrCreateDefaultTemplate().getId();
         contest.setPlanTemplateId(templateId);
         final Long contestScheduleId = getOrCreateDefaultContestSchedule().getId();

@@ -61,7 +61,7 @@ public class ContestNotification extends EmailNotification {
         final EmailTemplate emailTemplate =
                 emailTemplateClient.getContestEmailTemplateByType(templateName);
 
-        templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getContestTitle());
+        templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getTitle());
 
         return templateWrapper;
     }
@@ -95,11 +95,11 @@ public class ContestNotification extends EmailNotification {
 
             switch (tag.nodeName()) {
                 case YEAR_PLACEHOLDER:
-                    if (contest.getCreated() == null) {
+                    if (contest.getCreatedAt() == null) {
                         return new TextNode(Long.toString(contest.getContestYear()), "");
                     } else {
                         DateFormat yearFormat = new SimpleDateFormat("yyyy");
-                        return new TextNode(yearFormat.format(contest.getCreated()), "");
+                        return new TextNode(yearFormat.format(contest.getCreatedAt()), "");
                     }
                 case DEADLINE_PLACEHOLDER:
                     final Date phaseDeadline = getActivePhaseDeadline();

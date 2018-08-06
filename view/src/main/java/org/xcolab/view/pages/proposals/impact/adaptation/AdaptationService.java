@@ -55,7 +55,7 @@ public class AdaptationService {
     public void save(AdaptationImpactBean adaptationImpactBean,
             ProposalAttributeClient attributeClient) {
         AttributeHelper attributeHelper = new AttributeHelper(attributeClient,
-                adaptationImpactBean.getProposalId(), adaptationImpactBean.getauthorUserId());
+                adaptationImpactBean.getProposalId(), adaptationImpactBean.getAuthorUserId());
 
         for (Entry<String, AdaptationValue> entry : adaptationImpactBean.getValues().entrySet()) {
             final AdaptationCategory category = AdaptationCategory.valueOf(entry.getKey());

@@ -44,8 +44,8 @@ public class ContestCsvWriter extends CsvResponseWriter {
 
             addValue(row, contest.getId());
             addValue(row, colabUrl + contest.getContestUrl());
-            addValue(row, contest.getContestTitle());
-            addValue(row, contest.getContestQuestion());
+            addValue(row, contest.getTitle());
+            addValue(row, contest.getQuestion());
 
             addValue(row, getIdString(contest.getWhat()));
             addValue(row, getNames(contest.getWhat()));

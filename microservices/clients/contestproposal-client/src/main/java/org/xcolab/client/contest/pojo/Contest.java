@@ -164,44 +164,20 @@ public class Contest extends AbstractContest implements Serializable {
         return "/image/contest/" + imgId;
     }
 
-    public boolean getShowInTileView(){
-        return this.getShow_in_tile_view();
-    }
-
     public boolean isShowInTileView(){
-        return this.getShow_in_tile_view();
-    }
-
-    public void setShowInTileView(boolean showInTileView){
-        this.setShow_in_tile_view(showInTileView);
-    }
-
-    public boolean getShowInListView(){
-        return this.getShow_in_list_view();
+        return this.getShowInTileView();
     }
 
     public boolean isShowInListView(){
-        return this.getShow_in_list_view();
-    }
-
-    public void setShowInListView(boolean showInListView){
-        this.setShow_in_list_view(showInListView);
-    }
-
-    public boolean getShowInOutlineView(){
-        return this.getShow_in_outline_view() && getFocusAreaId() != null;
+        return this.getShowInListView();
     }
 
     public boolean isShowInOutlineView(){
-        return this.getShow_in_outline_view();
-    }
-
-    public void setShowInOutlineView(boolean showInOutlineView){
-        this.setShow_in_outline_view(showInOutlineView);
+        return this.getShowInOutlineView();
     }
 
     public String generateContestUrlName() {
-        String contestUrlName = this.getContestTitle().toLowerCase();
+        String contestUrlName = this.getTitle().toLowerCase();
         return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");
     }
 
@@ -210,7 +186,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public String getContestShortNameWithEndYear() {
-        final String contestShortName = getContestTitle();
+        final String contestShortName = getTitle();
         if (ConfigurationAttributeKey.CONTESTS_SHOW_YEAR_WHEN_COMPLETED.get()) {
             final char lastCharOfName = contestShortName.charAt(contestShortName.length() - 1);
             final boolean nameEndsInNumber = Character.isDigit(lastCharOfName);
@@ -256,7 +232,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public boolean isFeatured() {
-        return this.getFeatured_();
+        return this.getFeatured();
     }
 
     public boolean isPlansOpenByDefault() {
@@ -463,11 +439,11 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public long getCreatedTime(){
-        if (this.getCreated() != null) {
-            return this.getCreated().getTime();
+        if (this.getCreatedAt() != null) {
+            return this.getCreatedAt().getTime();
         }
-        if (this.getUpdated() != null) {
-            return this.getUpdated().getTime();
+        if (this.getUpdatedAt() != null) {
+            return this.getUpdatedAt().getTime();
         }
         return 0;
     }
@@ -699,13 +675,13 @@ public class Contest extends AbstractContest implements Serializable {
         return true;
     }
     public void setUpForeignContestVisualConfigsFromLocal(Contest c) {
-        this.setFeatured_(c.getFeatured_());
+        this.setFeatured(c.getFeatured());
         this.setContestActive(c.getContestActive());
         this.setContestPrivate(c.getContestPrivate());
         this.setFlag(c.getFlag());
         this.setFlagText(c.getFlagText());
         this.setFlagTooltip(c.getFlagText());
-        this.setFeatured_(c.getFeatured_());
+        this.setFeatured(c.getFeatured());
         this.setShowInListView(c.getShowInListView());
         this.setShowInOutlineView(c.getShowInOutlineView());
         this.setShowInTileView(c.getShowInTileView());

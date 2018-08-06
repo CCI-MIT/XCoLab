@@ -319,7 +319,7 @@ ALTER TABLE xcolab_ProposalVote CHANGE proposalId                proposal_id    
 ALTER TABLE xcolab_ProposalVote CHANGE contestPhaseId            contest_phase_id            bigint             not null;
 ALTER TABLE xcolab_ProposalVote CHANGE userId                    user_id                    bigint             not null;
 ALTER TABLE xcolab_ProposalVote CHANGE value                     value                     int default '1'    null;
-ALTER TABLE xcolab_ProposalVote CHANGE createDate                create_date                datetime           null;
+ALTER TABLE xcolab_ProposalVote CHANGE createDate                created_at                datetime           null;
 ALTER TABLE xcolab_ProposalVote CHANGE voterIp                   voter_ip                   varchar(75)        null;
 ALTER TABLE xcolab_ProposalVote CHANGE voterUserAgent            voter_user_agent            varchar(500)       null;
 ALTER TABLE xcolab_ProposalVote CHANGE isValid                   is_valid                   tinyint            null;

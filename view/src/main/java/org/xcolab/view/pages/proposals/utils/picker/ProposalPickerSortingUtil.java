@@ -53,7 +53,7 @@ public class ProposalPickerSortingUtil {
             Comparator<Proposal> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "contest":
-                    comparator = Comparator.comparing(o -> o.getContest().getContestQuestion());
+                    comparator = Comparator.comparing(o -> o.getContest().getQuestion());
                     break;
                 case "proposal":
                     comparator = Comparator.comparing(Proposal::getName);

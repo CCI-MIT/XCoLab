@@ -24,11 +24,11 @@ public class AdaptationImpactBean {
         this.proposalId = proposalId;
     }
 
-    public Long getauthorUserId() {
+    public Long getAuthorUserId() {
         return authorUserId;
     }
 
-    public void setauthorUserId(Long authorUserId) {
+    public void setAuthorUserId(Long authorUserId) {
         this.authorUserId = authorUserId;
     }
 }

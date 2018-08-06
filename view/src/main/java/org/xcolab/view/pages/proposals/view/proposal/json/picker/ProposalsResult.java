@@ -62,7 +62,7 @@ public class ProposalsResult {
             this.contestId = proposal.getContestPK();
             this.team = proposal.getTeam();
             this.authorName = proposal.getAuthorName();
-            this.authorUserId = proposal.getauthorUserId();
+            this.authorUserId = proposal.getAuthorUserId();
             //TODO COLAB-2628: get right date
             this.dateSubscribed = new Date().getTime();
             this.commentsCount = proposal.getCommentsCount();
@@ -103,7 +103,7 @@ public class ProposalsResult {
             return authorName;
         }
 
-        public long getauthorUserId() {
+        public long getAuthorUserId() {
             return authorUserId;
         }
 

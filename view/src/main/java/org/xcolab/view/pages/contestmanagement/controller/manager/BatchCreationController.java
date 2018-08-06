@@ -153,7 +153,7 @@ public class BatchCreationController {
                         contestBatchBean.getContestTier(),
                         contestBatchBean.getContestType(), member.getId());
 
-                contestLinks.put("" + contest.getContestTitle(),
+                contestLinks.put("" + contest.getTitle(),
                         "/admin/contest/details/contestId/"
                                 + contest.getId() + "/tab/DESCRIPTION");
 
@@ -238,15 +238,15 @@ public class BatchCreationController {
 
         Contest contest = ContestCreatorUtil.createNewContest(contestShortName, authorUserId);
         contest.setDescription(contestDescription);
-        contest.setContestQuestion(contestQuestion);
+        contest.setQuestion(contestQuestion);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setSponsorLink(sponsorLink);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
-        contest.setShow_in_tile_view(true);
-        contest.setShow_in_list_view(true);
-        contest.setShow_in_outline_view(true);
+        contest.setShowInTileView(true);
+        contest.setShowInListView(true);
+        contest.setShowInOutlineView(true);
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestScheduleId(contestScheduleId);
         contest.setContestTier(contestTierId);

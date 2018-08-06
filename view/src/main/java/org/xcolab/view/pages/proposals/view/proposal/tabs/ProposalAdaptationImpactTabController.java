@@ -74,7 +74,7 @@ public class ProposalAdaptationImpactTabController extends BaseProposalTabContro
 
         // make sure the proposal and author ids are set correctly
         adaptationImpactBean.setProposalId(proposalId);
-        adaptationImpactBean.setauthorUserId(currentMember.getId());
+        adaptationImpactBean.setAuthorUserId(currentMember.getId());
 
         adaptationService.save(adaptationImpactBean,
                 attributeClient);

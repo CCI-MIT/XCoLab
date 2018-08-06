@@ -68,11 +68,11 @@ public class ContentArticleVersion implements Serializable {
         this.folderId = folderId;
     }
 
-    public Long getauthorUserId() {
+    public Long getAuthorUserId() {
         return this.authorUserId;
     }
 
-    public void setauthorUserId(Long authorUserId) {
+    public void setAuthorUserId(Long authorUserId) {
         this.authorUserId = authorUserId;
     }
 

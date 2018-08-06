@@ -108,7 +108,7 @@ public class AdminTabController extends AbstractTabController {
                 .filter(p -> p.getPhaseStartDateDt().before(now))
                 .sorted(Comparator.comparing(ContestPhase::getPhaseStartDate).reversed())
                 .map(contestPhase -> {
-                    final String contestName = contestPhase.getContest().getContestTitle();
+                    final String contestName = contestPhase.getContest().getTitle();
                     final Long phaseId = contestPhase.getId();
                     return new LabelValue(phaseId, String.format("%d in %s", phaseId, contestName));
                 })
@@ -121,7 +121,7 @@ public class AdminTabController extends AbstractTabController {
                 .stream()
                 .sorted(Comparator.comparing(Contest::getId).reversed())
                 .map(contest -> {
-                    final String contestName = contest.getContestTitle();
+                    final String contestName = contest.getTitle();
                     final Long contestId = contest.getId();
                     return new LabelValue(contestId, String.format("%d - %s", contestId, contestName));
                 })
