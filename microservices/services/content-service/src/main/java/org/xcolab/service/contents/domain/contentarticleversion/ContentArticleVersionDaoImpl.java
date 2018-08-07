@@ -94,7 +94,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     @Override
     public List<ContentArticleVersion> getByFolderId(Long contentFolderId) {
         if (contentFolderId == null) {
-            return this.dslContext.select()
+            return this.dslContext.select(CONTENT_ARTICLE_VERSION.fields())
                     .from(CONTENT_ARTICLE_VERSION)
                     .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.ID.eq(CONTENT_ARTICLE_VERSION.ARTICLE_ID))
                     .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.isNull())
@@ -102,7 +102,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                     .fetch()
                     .into(ContentArticleVersion.class);
         } else {
-            return this.dslContext.select()
+            return this.dslContext.select(CONTENT_ARTICLE_VERSION.fields())
                     .from(CONTENT_ARTICLE_VERSION)
                     .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.ID.eq(CONTENT_ARTICLE_VERSION.ARTICLE_ID))
                     .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(contentFolderId))

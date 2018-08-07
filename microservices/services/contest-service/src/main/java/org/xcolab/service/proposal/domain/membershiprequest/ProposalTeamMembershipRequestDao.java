@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ProposalTeamMembershipRequestDao {
 
-    List<ProposalTeamMembershipRequest> findByGiven(Integer statusId, Long userId);
+    List<ProposalTeamMembershipRequest> findByGiven(Long proposalId, Integer statusId, Long userId);
 
     ProposalTeamMembershipRequest create(ProposalTeamMembershipRequest ProposalTeamMembershipRequest);
 
-    ProposalTeamMembershipRequest get(Long ProposalTeamMembershipRequestId) throws NotFoundException;
+    ProposalTeamMembershipRequest get(Long membershipRequestId) throws NotFoundException;
 
     boolean update(ProposalTeamMembershipRequest ProposalTeamMembershipRequest);
 }

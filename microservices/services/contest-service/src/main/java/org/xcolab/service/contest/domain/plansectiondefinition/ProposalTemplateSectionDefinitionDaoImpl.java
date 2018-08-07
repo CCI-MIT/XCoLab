@@ -29,7 +29,7 @@ public class ProposalTemplateSectionDefinitionDaoImpl implements ProposalTemplat
 
     @Override
     public List<ProposalTemplateSectionDefinition> findByGiven(Long planTemplateId, Boolean weight) {
-        final SelectQuery<Record> query = dslContext.select()
+        final SelectQuery<Record> query = dslContext.select(PROPOSAL_TEMPLATE_SECTION_DEFINITION.fields())
                 .from(PROPOSAL_TEMPLATE_SECTION_DEFINITION)
                 .join(PROPOSAL_TEMPLATE_SECTION).on(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID.eq(PROPOSAL_TEMPLATE_SECTION_DEFINITION.ID))
                 .getQuery();

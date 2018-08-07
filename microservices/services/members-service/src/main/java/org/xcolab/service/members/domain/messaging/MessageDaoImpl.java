@@ -1,6 +1,8 @@
 package org.xcolab.service.members.domain.messaging;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
@@ -51,7 +53,7 @@ public class MessageDaoImpl implements MessageDao {
         List<Message> messageList;
         if (threadId != null) {
             // There is thread info, get all the thread
-            messageList = dslContext.select()
+            messageList = dslContext.select(MESSAGE.fields())
                     .from(MESSAGE
                         .join(MESSAGE_RECIPIENT_STATUS)
                         .on(MESSAGE.ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID)))
@@ -109,7 +111,10 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public List<Message> findByGiven(PaginationHelper paginationHelper,
             Long senderId, Long recipientId, Boolean isArchived, Boolean isOpened, Timestamp sinceDate) {
-        final SelectQuery<Record> query = dslContext.select()
+        final Field<?>[] fields = ArrayUtils.addAll(MESSAGE.fields(),
+                MESSAGE_RECIPIENT_STATUS.OPENED, MESSAGE_RECIPIENT_STATUS.ARCHIVED,
+                MESSAGE_RECIPIENT_STATUS.THREAD_ID);
+        final SelectQuery<Record> query = dslContext.select(fields)
                 .from(MESSAGE)
                 .join(MESSAGE_RECIPIENT_STATUS).on(MESSAGE.ID.eq(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID))
                 .getQuery();
@@ -169,7 +174,7 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public List<User> getRecipients(long messageId) {
-        return dslContext.select()
+        return dslContext.select(USER.fields())
                 .from(MESSAGE_RECIPIENT_STATUS)
                 .join(USER).on(MESSAGE_RECIPIENT_STATUS.USER_ID.eq(USER.ID))
                 .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId))

@@ -24,7 +24,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public List<Role> getUserRoles(Long userId) {
-        return this.dslContext.select()
+        return this.dslContext.select(ROLE.fields())
                 .from(USER_ROLE)
                 .join(ROLE).on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
                 .where(USER_ROLE.USER_ID.equal(userId)).fetchInto(Role.class);
@@ -32,7 +32,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public List<Role> getUserRolesInContest(Long userId, Long contestId) {
-        return this.dslContext.select()
+        return this.dslContext.select(ROLE.fields())
                 .from(ROLE)
                 .join(CONTEST_TEAM_MEMBER).on(CONTEST_TEAM_MEMBER.ROLE_ID.equal(ROLE.ID))
                 .where(CONTEST_TEAM_MEMBER.CONTEST_ID.equal(contestId))

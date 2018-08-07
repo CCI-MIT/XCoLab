@@ -27,58 +27,61 @@ public class ProposalTeamMembershipRequestDaoImpl implements org.xcolab.service.
     }
 
     @Override
-    public ProposalTeamMembershipRequest create(ProposalTeamMembershipRequest ProposalTeamMembershipRequest) {
+    public ProposalTeamMembershipRequest create(ProposalTeamMembershipRequest membershipRequest) {
 
         ProposalTeamMembershipRequestRecord ret = this.dslContext.insertInto(PROPOSAL_TEAM_MEMBERSHIP_REQUEST)
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID, ProposalTeamMembershipRequest.getId())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.USER_ID, ProposalTeamMembershipRequest.getUserId())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.CREATED_AT, ProposalTeamMembershipRequest.getCreatedAt())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.PROPOSAL_ID, ProposalTeamMembershipRequest.getProposalId())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.COMMENTS, ProposalTeamMembershipRequest.getComments())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLY_COMMENTS, ProposalTeamMembershipRequest.getReplyComments())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLY_DATE, ProposalTeamMembershipRequest.getReplyDate())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLIER_USER_ID, ProposalTeamMembershipRequest.getReplierUserId())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.STATUS_ID, ProposalTeamMembershipRequest.getStatusId())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID, membershipRequest.getId())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.USER_ID, membershipRequest.getUserId())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.CREATED_AT, membershipRequest.getCreatedAt())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.PROPOSAL_ID, membershipRequest.getProposalId())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.COMMENTS, membershipRequest.getComments())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLY_COMMENTS, membershipRequest.getReplyComments())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLY_DATE, membershipRequest.getReplyDate())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLIER_USER_ID, membershipRequest.getReplierUserId())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.STATUS_ID, membershipRequest.getStatusId())
                 .returning(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID)
                 .fetchOne();
         if (ret != null) {
-            ProposalTeamMembershipRequest.setId(ret.getValue(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID));
-            return ProposalTeamMembershipRequest;
+            membershipRequest.setId(ret.getValue(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID));
+            return membershipRequest;
         } else {
             return null;
         }
     }
 
     @Override
-    public boolean update(ProposalTeamMembershipRequest ProposalTeamMembershipRequest) {
+    public boolean update(ProposalTeamMembershipRequest membershipRequest) {
         return dslContext.update(PROPOSAL_TEAM_MEMBERSHIP_REQUEST)
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLY_COMMENTS, ProposalTeamMembershipRequest.getReplyComments())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLY_DATE, ProposalTeamMembershipRequest.getReplyDate())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLIER_USER_ID, ProposalTeamMembershipRequest.getReplierUserId())
-                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.STATUS_ID, ProposalTeamMembershipRequest.getStatusId())
-                .where(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID.eq(ProposalTeamMembershipRequest.getId()))
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLY_COMMENTS, membershipRequest.getReplyComments())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLY_DATE, membershipRequest.getReplyDate())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.REPLIER_USER_ID, membershipRequest.getReplierUserId())
+                .set(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.STATUS_ID, membershipRequest.getStatusId())
+                .where(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID.eq(membershipRequest.getId()))
                 .execute() > 0;
     }
 
     @Override
-    public ProposalTeamMembershipRequest get(Long ProposalTeamMembershipRequestId) throws NotFoundException {
+    public ProposalTeamMembershipRequest get(Long membershipRequestId) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(PROPOSAL_TEAM_MEMBERSHIP_REQUEST)
-                .where(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID.eq(ProposalTeamMembershipRequestId))
+                .where(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.ID.eq(membershipRequestId))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ProposalTeamMembershipRequest with id " + ProposalTeamMembershipRequestId + " does not exist");
+            throw new NotFoundException("ProposalTeamMembershipRequest with id " + membershipRequestId + " does not exist");
         }
         return record.into(ProposalTeamMembershipRequest.class);
 
     }
 
     @Override
-    public List<ProposalTeamMembershipRequest> findByGiven(Integer statusId, Long userId) {
+    public List<ProposalTeamMembershipRequest> findByGiven(Long proposalId, Integer statusId, Long userId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_TEAM_MEMBERSHIP_REQUEST).getQuery();
 
+        if (proposalId != null) {
+            query.addConditions(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.PROPOSAL_ID.eq(proposalId));
+        }
         if (statusId != null) {
             query.addConditions(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.STATUS_ID.eq(statusId));
         }

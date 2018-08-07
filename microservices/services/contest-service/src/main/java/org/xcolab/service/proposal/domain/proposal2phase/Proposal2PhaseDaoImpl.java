@@ -100,7 +100,7 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
 
     @Override
     public List<Proposal2Phase> findByContestAndProposal(Long proposalId, Long contestId) {
-        final SelectQuery<Record> query = dslContext.select()
+        final SelectQuery<Record> query = dslContext.select(PROPOSAL2_PHASE.fields())
                 .from(PROPOSAL2_PHASE)
                 .join(CONTEST_PHASE).on(CONTEST_PHASE.ID.eq(PROPOSAL2_PHASE.CONTEST_PHASE_ID))
                 .getQuery();

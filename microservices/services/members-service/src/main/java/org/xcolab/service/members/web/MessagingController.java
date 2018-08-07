@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.User;
+import org.xcolab.commons.exceptions.InternalException;
+import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.model.tables.pojos.MessagingUserPreference;
+import org.xcolab.model.tables.pojos.User;
 import org.xcolab.service.members.domain.messaging.MessageDao;
 import org.xcolab.service.members.domain.messaginguserpreferences.MessagingUserPreferenceDao;
 import org.xcolab.service.members.exceptions.MessageLimitExceededException;
@@ -24,7 +26,6 @@ import org.xcolab.service.members.service.messaging.MessagingUserPreferenceServi
 import org.xcolab.service.members.wrappers.SendMessageBean;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.exceptions.InternalException;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -56,7 +57,7 @@ public class MessagingController {
         this.messageLimitManager = messageLimitManager;
     }
 
-    @RequestMapping(value = "/messages", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @ListMapping("/messages")
     public List<Message> getUserMessages(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,

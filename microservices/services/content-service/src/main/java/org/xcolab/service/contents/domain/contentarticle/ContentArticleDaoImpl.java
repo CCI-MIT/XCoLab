@@ -1,9 +1,12 @@
 package org.xcolab.service.contents.domain.contentarticle;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jooq.DSLContext;
+import org.jooq.Field;
 import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.records.ContentArticleRecord;
 import org.xcolab.service.contents.exceptions.NotFoundException;
@@ -77,7 +80,9 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
 
     @Override
     public List<ContentArticleWrapper> getArticles() {
-        return dslContext.select()
+        final Field<?>[] fields =
+                ArrayUtils.add(CONTENT_ARTICLE.fields(), CONTENT_ARTICLE_VERSION.TITLE);
+        return dslContext.select(fields)
                 .from(CONTENT_ARTICLE)
                 .join(CONTENT_ARTICLE_VERSION).on(CONTENT_ARTICLE_VERSION.ARTICLE_ID
                         .eq(CONTENT_ARTICLE.ID))
