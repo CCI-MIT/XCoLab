@@ -73,7 +73,7 @@
                 <input id="${uploadImageInputId}" type="file" name="file" tabindex="-1" />
             </span>
             <c:if test="${compactView}">
-                <span id='${uniqueName}_clear' class="btn btn-danger c-Upload__button__clear" >
+                <span id='${uniqueName}_clear' class="btn btn-outline-danger c-Upload__button__clear" >
                     Clear
                 </span>
             </c:if>
