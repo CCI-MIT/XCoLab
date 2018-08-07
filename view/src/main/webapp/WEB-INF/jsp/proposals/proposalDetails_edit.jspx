@@ -15,6 +15,9 @@
     <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
     <!--@elvariable id="userTeams" type="java.util.List<org.xcolab.client.members.pojo.PlatformTeam>"-->
 
+
+    <!-- TODO COLAB-2583 Internationalization -->
+
     <jsp:directive.include file="./init_proposal.jspx"/>
 
     <script>
@@ -237,8 +240,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" id="tosAccepted">ACCEPT</button>
-            <button class="btn btn-gray" id="closeAcceptTos">DO NOT Accept</button>
+            <button class="btn btn-primary" id="tosAccepted"><spring:message code="contests.buttons.accept" /></button>
+            <button class="btn btn-gray" id="closeAcceptTos"><spring:message code="contests.buttons.reject" /></button>
         </div>
     </xcolab:modal>
 
@@ -299,10 +302,23 @@
     </div>
     <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
-    <!-- TODO COLAB-2583: replace with i18n message -->
-    <c:set var="acceptTosNotificationText" value="To create a ${contestType.proposalName} on the ${_themeContext.colabName}, you must ACCEPT the terms of use and ${contestType.contestName} rules. Please click Accept to continue and save your ${contestType.proposalName}!" />
+    <c:set var="acceptTosNotificationText">
+        <spring:message code="contests.proposal.termsofservice.notification" arguments="${contestType.proposalName},${_themeContext.colabName},${contestType.contestName},${contestType.proposalName}" />
+    </c:set>
+    <c:set var="proposalPitchNotificationText">
+        <spring:message code="contests.proposal.sections.pitch.notification" />
+    </c:set>
+    <c:set var="proposalTitleNotificationText">
+        <spring:message code="contests.proposal.sections.title.notification" />
+    </c:set>
+    <c:set var="acceptButtonText">
+        <spring:message code="contests.buttons.accept" />
+    </c:set>
     <script>
         var acceptTosNotificationText = '${acceptTosNotificationText}';
+        var proposalPitchNotificationText = '${proposalPitchNotificationText}';
+        var proposalTitleNotificationText = '${proposalTitleNotificationText}';
+        var acceptButtonText = '${acceptButtonText}';
     </script>
 
     <script>
@@ -317,7 +333,7 @@
             noty({text: acceptTosNotificationText,
                 buttons: [
                     {
-                        addClass: 'btn btn-primary', text: 'ACCEPT', onClick: function($noty)
+                        addClass: 'btn btn-primary', text: acceptButtonText, onClick: function($noty)
                     {
                         tosAcceptedSave();
                         $noty.close();
@@ -336,7 +352,7 @@
         function saveIfValid() {
             if(jQuery("#proposalPitchInput").length ==1 ){
                 if(jQuery("#proposalPitchInput").val() == 0) {
-                    noty({text: 'The "pitch" field is required. Please enter a short (up to 140 character) message that conveys the main idea of your proposal.', type: 'error',timeout: 10000,});
+                    noty({text: proposalPitchNotificationText, type: 'error',timeout: 10000,});
                     jQuery("#proposalPitchInput").focus();
                     enableButtons();
                     return;
@@ -344,7 +360,7 @@
             }
             if(jQuery("#proposalName").length ==1 ){
                 if(jQuery("#proposalName").val() == 0) {
-                    noty({text: 'The "title" field is required. It\'s the first thing most people will see, so you\'ll want to make it descriptive and engaging.', type: 'error',timeout: 10000,});
+                    noty({text: proposalTitleNotificationText, type: 'error',timeout: 10000,});
                     jQuery("#proposalName").focus();
                     enableButtons();
                     return;
