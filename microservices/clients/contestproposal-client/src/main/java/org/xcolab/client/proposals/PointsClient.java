@@ -48,12 +48,13 @@ public final class PointsClient {
 
     public PointsDistributionConfiguration
     getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(
-            long targetPlanSectionDefinitionId) {
+            long targetSectionDefinitionId) {
         try {
             return pointsDistributionConfigurationResource
-                    .collectionService("getByTargetPlanSectionDefinitionId",
+                    .collectionService("getByTargetProposalTemplateSectionDefinitionId",
                             PointsDistributionConfigurationDto.class)
-                    .queryParam("targetPlanSectionDefinitionId", targetPlanSectionDefinitionId)
+                    .queryParam("targetProposalTemplateSectionDefinitionId",
+                            targetSectionDefinitionId)
                     .getChecked().toPojo(serviceNamespace);
         } catch (EntityNotFoundException ignored){
             return null;

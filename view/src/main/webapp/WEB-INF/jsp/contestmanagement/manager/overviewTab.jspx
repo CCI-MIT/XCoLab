@@ -140,7 +140,7 @@
                             data-filter-attribute="${contest.contestActive ? 'active' : 'prior'}"
                             class = "${x.index %2==0 ? 'blue' : ''} draggable"
                             data-filter-visible="true">
-                            <form:hidden path="contests[${contestId}].contestId"
+                            <form:hidden path="contests[${contestId}].id"
                                          data-form-name="contestId" />
                             <td>
                                 <form:checkbox path="selectedContests[${contestId}]"

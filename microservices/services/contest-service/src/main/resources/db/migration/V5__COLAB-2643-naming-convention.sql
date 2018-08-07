@@ -180,7 +180,7 @@ ALTER TABLE xcolab_PlanTemplate CHANGE impactSeriesTemplateId  impact_series_tem
 ALTER TABLE xcolab_PlanTemplate CHANGE focusAreaListTemplateId focus_area_list_template_id bigint        null;
 rename table xcolab_PlanTemplate to contest__proposal_template;
 
-ALTER TABLE xcolab_PlanTemplateSection CHANGE planTemplateId id bigint not null;
+ALTER TABLE xcolab_PlanTemplateSection CHANGE planTemplateId proposal_template_id bigint not null;
 ALTER TABLE xcolab_PlanTemplateSection CHANGE planSectionId  section_definition_id  bigint not null;
 rename table xcolab_PlanTemplateSection to contest__proposal_template_section;
 

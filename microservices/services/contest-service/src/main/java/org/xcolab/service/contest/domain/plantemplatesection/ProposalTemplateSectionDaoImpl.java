@@ -15,20 +15,24 @@ import static org.xcolab.model.Tables.PROPOSAL_TEMPLATE_SECTION;
 @Repository
 public class ProposalTemplateSectionDaoImpl implements ProposalTemplateSectionDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public ProposalTemplateSectionDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     @Override
-    public List<ProposalTemplateSection> findByGiven(Long planTemplateId, Long planSectionId) {
+    public List<ProposalTemplateSection> findByGiven(Long proposalTemplateId, Long sectionDefinition) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_TEMPLATE_SECTION).getQuery();
 
-        if (planTemplateId != null) {
-            query.addConditions(PROPOSAL_TEMPLATE_SECTION.ID.eq(planTemplateId));
+        if (proposalTemplateId != null) {
+            query.addConditions(PROPOSAL_TEMPLATE_SECTION.PROPOSAL_TEMPLATE_ID.eq(proposalTemplateId));
         }
 
-        if (planSectionId != null) {
-            query.addConditions(PROPOSAL_TEMPLATE_SECTION.ID.eq(planSectionId));
+        if (sectionDefinition != null) {
+            query.addConditions(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID.eq(sectionDefinition));
         }
 
         return query.fetchInto(ProposalTemplateSection.class);
@@ -38,7 +42,7 @@ public class ProposalTemplateSectionDaoImpl implements ProposalTemplateSectionDa
     public ProposalTemplateSection create(ProposalTemplateSection planTemplateSection) {
 
         this.dslContext.insertInto(PROPOSAL_TEMPLATE_SECTION)
-                .set(PROPOSAL_TEMPLATE_SECTION.ID, planTemplateSection.getId())
+                .set(PROPOSAL_TEMPLATE_SECTION.PROPOSAL_TEMPLATE_ID, planTemplateSection.getProposalTemplateId())
                 .set(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID, planTemplateSection.getSectionDefinitionId())
                 .set(PROPOSAL_TEMPLATE_SECTION.WEIGHT, planTemplateSection.getWeight())
                 .execute();
@@ -47,19 +51,19 @@ public class ProposalTemplateSectionDaoImpl implements ProposalTemplateSectionDa
     }
 
     @Override
-    public int delete(Long planTemplateId, Long planSectionDefinitionId) {
+    public int delete(Long proposalTemplateId, Long sectionDefinitionId) {
         return dslContext.deleteFrom(PROPOSAL_TEMPLATE_SECTION)
-                .where(PROPOSAL_TEMPLATE_SECTION.ID.eq(planTemplateId))
-                .and(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID.eq(planSectionDefinitionId))
+                .where(PROPOSAL_TEMPLATE_SECTION.PROPOSAL_TEMPLATE_ID.eq(proposalTemplateId))
+                .and(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID.eq(sectionDefinitionId))
                 .execute();
     }
 
     @Override
-    public boolean update(ProposalTemplateSection planTemplateSection) {
+    public boolean update(ProposalTemplateSection proposalTemplateSection) {
         return dslContext.update(PROPOSAL_TEMPLATE_SECTION)
-                .set(PROPOSAL_TEMPLATE_SECTION.WEIGHT, planTemplateSection.getWeight())
-                .where(PROPOSAL_TEMPLATE_SECTION.ID.eq(planTemplateSection.getId()))
-                .and(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID.eq(planTemplateSection.getSectionDefinitionId()))
+                .set(PROPOSAL_TEMPLATE_SECTION.WEIGHT, proposalTemplateSection.getWeight())
+                .where(PROPOSAL_TEMPLATE_SECTION.PROPOSAL_TEMPLATE_ID.eq(proposalTemplateSection.getProposalTemplateId()))
+                .and(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID.eq(proposalTemplateSection.getSectionDefinitionId()))
                 .execute() > 0;
     }
 

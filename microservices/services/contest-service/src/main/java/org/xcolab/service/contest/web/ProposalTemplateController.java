@@ -1,15 +1,19 @@
 package org.xcolab.service.contest.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.xcolab.model.tables.pojos.ProposalTemplateSectionDefinition;
+
+import org.xcolab.commons.spring.web.annotation.ListMapping;
 import org.xcolab.model.tables.pojos.ProposalTemplate;
 import org.xcolab.model.tables.pojos.ProposalTemplateSection;
+import org.xcolab.model.tables.pojos.ProposalTemplateSectionDefinition;
 import org.xcolab.service.contest.domain.plansectiondefinition.ProposalTemplateSectionDefinitionDao;
 import org.xcolab.service.contest.domain.plantemplate.ProposalTemplateDao;
 import org.xcolab.service.contest.domain.plantemplatesection.ProposalTemplateSectionDao;
@@ -129,7 +133,7 @@ public class ProposalTemplateController {
         return this.planSectionDefinitionDao.create(planSectionDefinition);
     }
 
-    @RequestMapping(value = "/planSectionDefinitions", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @ListMapping("/planSectionDefinitions")
     public List<ProposalTemplateSectionDefinition> getProposalTemplateSectionDefinitions(
             @RequestParam(required = false) Long planTemplateId,
             @RequestParam(required = false) Boolean weight
@@ -137,21 +141,20 @@ public class ProposalTemplateController {
         return planSectionDefinitionDao.findByGiven(planTemplateId, weight);
     }
 
-    @RequestMapping(value = "/planTemplateSections", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @ListMapping("/planTemplateSections")
     public List<ProposalTemplateSection> getProposalTemplateSections(
             @RequestParam(required = false) Long planTemplateId,
             @RequestParam(required = false) Long planSectionId
     ) {
-        return planTemplateSectionDao.findByGiven(planTemplateId,planSectionId);
+        return planTemplateSectionDao.findByGiven(planTemplateId, planSectionId);
     }
-    @RequestMapping(value = "/planTemplateSections/updateTemplateSection", method = RequestMethod.POST)
+    @PostMapping("/planTemplateSections/updateTemplateSection")
     public boolean updateProposalTemplateSection(@RequestBody ProposalTemplateSection planTemplateSection) throws NotFoundException {
             return planTemplateSectionDao.update(planTemplateSection);
     }
 
-    @RequestMapping(value = "/planTemplateSections/deleteProposalTemplateSection", method = RequestMethod.DELETE)
-    public Boolean deleteProposalTemplateSection(@RequestParam Long planTemplateId, @RequestParam Long planSectionDefinitionId)
-            throws NotFoundException {
-                return this.planTemplateSectionDao.delete(planTemplateId,planSectionDefinitionId)> 0;
+    @DeleteMapping("/planTemplateSections/deletePlanTemplateSection")
+    public Boolean deleteProposalTemplateSection(@RequestParam Long planTemplateId, @RequestParam Long planSectionDefinitionId) {
+        return this.planTemplateSectionDao.delete(planTemplateId,planSectionDefinitionId)> 0;
     }
 }

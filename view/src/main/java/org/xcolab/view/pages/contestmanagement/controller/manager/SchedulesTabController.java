@@ -92,7 +92,6 @@ public class SchedulesTabController extends AbstractTabController {
         }
 
         Long scheduleId = elementId != null ? elementId : getFirstScheduleId();
-        model.addAttribute("scheduleId", scheduleId);
         if (scheduleId >= 0 && !model.containsAttribute(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY)) {
             model.addAttribute(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, new ContestScheduleBean(scheduleId));
         }

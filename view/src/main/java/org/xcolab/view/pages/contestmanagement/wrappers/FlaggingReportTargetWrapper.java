@@ -71,7 +71,7 @@ public class FlaggingReportTargetWrapper {
         reportTarget.setReason(reason);
     }
 
-    public int getScreeningThreshold() {
+    public Integer getScreeningThreshold() {
         return reportTarget.getScreeningThreshold();
     }
 
@@ -79,7 +79,7 @@ public class FlaggingReportTargetWrapper {
         reportTarget.setScreeningThreshold(threshold);
     }
 
-    public int getNotificationThreshold() {
+    public Integer getNotificationThreshold() {
         return reportTarget.getNotificationThreshold();
     }
 

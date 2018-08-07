@@ -6,7 +6,6 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-	<!--@elvariable id="proposalTemplateId" type="java.lang.Long"-->
     <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper"-->
 	<!--@elvariable id="contestProposalTemplateWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ProposalTemplateWrapper"-->
 
@@ -53,7 +52,7 @@
 			</div>
 		</form:form>
 
-		<c:if test="${proposalTemplateId >= 0}">
+		<c:if test="${not empty contestProposalTemplateWrapper}">
 			<div id="resourcesSections">
 				<form:form action="${updateElementFormURL }" commandName="contestProposalTemplateWrapper"
 				 cssClass="addpropform mt-3" id="editForm" method="post">
@@ -125,7 +124,7 @@
                                         <strong>Contest Types allowed:</strong>
                                         <span class="ontology-term-label"><!-- --></span> <br/>
                                         <form:select multiple="true" path="sections[${x.index}].allowedContestTypeIds" data-form-name="allowedContestTypeIds"
-                                                     cssClass="ontology-terms" cssStyle="form-control" size="5">
+                                                     cssClass="ontology-terms form-control" size="5">
                                             <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
                                         </form:select>
                                     </div>
@@ -244,7 +243,7 @@
 			</div>
 		</c:if>
 	</div>
-	<c:if test="${proposalTemplateId >= 0}">
+	<c:if test="${not empty contestProposalTemplateWrapper}">
 		<div class="c-ContentBox">
 			<h3>Contests using this template:</h3>
 			<div class="c-Box c-Box--colorTan" style="margin-top: 20px;">

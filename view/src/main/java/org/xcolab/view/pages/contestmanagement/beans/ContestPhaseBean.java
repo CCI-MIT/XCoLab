@@ -26,7 +26,7 @@ public class ContestPhaseBean implements Serializable {
     private Long id;
     private Long contestId;
     private Long contestPhaseTypeId;
-    private Long contestPhaseTypeOld;
+    private Long contestPhaseTypeIdOld;
     private Long contestScheduleId;
     @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
     @NotNull(message = "Phase start date must not be empty.")
@@ -46,7 +46,7 @@ public class ContestPhaseBean implements Serializable {
         this.contestId = contestPhase.getContestId();
         this.contestPhaseTypeId = contestPhase.getContestPhaseTypeId();
         if (contestPhase.getContestPhaseTypeId() != null) {
-            this.contestPhaseTypeOld = contestPhase.getContestPhaseTypeId();
+            this.contestPhaseTypeIdOld = contestPhase.getContestPhaseTypeId();
         }
         this.contestScheduleId = contestPhase.getContestScheduleId();
         this.phaseStartDate = contestPhase.getPhaseStartDate();
@@ -180,7 +180,7 @@ public class ContestPhaseBean implements Serializable {
         if (contestPhaseTypeId != null) {
             contestPhase.setContestPhaseTypeId(contestPhaseTypeId);
         } else {
-            contestPhase.setContestPhaseTypeId(contestPhaseTypeOld);
+            contestPhase.setContestPhaseTypeId(contestPhaseTypeIdOld);
         }
         contestPhase.setContestScheduleId(contestScheduleId);
         if (phaseStartDate != null) {
@@ -197,8 +197,8 @@ public class ContestPhaseBean implements Serializable {
         if (contestPhaseTypeId != null) {
             ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseTypeId);
             contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
-        } else if (contestPhaseTypeOld != null) {
-            ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseTypeOld);
+        } else if (contestPhaseTypeIdOld != null) {
+            ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseTypeIdOld);
             contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
         } else {
             contestPhase.setContestPhaseAutopromote(null);
@@ -206,11 +206,11 @@ public class ContestPhaseBean implements Serializable {
         return contestPhase;
     }
 
-    public Long getContestPhaseTypeOld() {
-        return contestPhaseTypeOld;
+    public Long getContestPhaseTypeIdOld() {
+        return contestPhaseTypeIdOld;
     }
 
-    public void setContestPhaseTypeOld(Long contestPhaseTypeOld) {
-        this.contestPhaseTypeOld = contestPhaseTypeOld;
+    public void setContestPhaseTypeIdOld(Long contestPhaseTypeIdOld) {
+        this.contestPhaseTypeIdOld = contestPhaseTypeIdOld;
     }
 }

@@ -1,8 +1,8 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSection;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
@@ -35,6 +35,7 @@ public final class ProposalTemplateClientUtil {
     public static  Boolean deletePlanTemplate(Long id) {
         return  client.deletePlanTemplate(id);
     }
+
     public static boolean updatePlanTemplate(ProposalTemplate planTemplate) {
         return client.updatePlanTemplate(planTemplate);
     }
@@ -82,8 +83,15 @@ public final class ProposalTemplateClientUtil {
         return client.updatePlanTemplateSection(planTemplateSection);
     }
 
-    public static List<ProposalTemplateSection> getPlanTemplateSectionByPlanSectionDefinitionId(
-            Long planSectionId) {
-        return client.getPlanTemplateSectionByPlanSectionDefinitionId(planSectionId);
+    public static List<ProposalTemplateSection> getProposalTemplateSectionsByTemplateId(long proposalTemplateId) {
+        return client.getProposalTemplateSectionsByTemplateId(proposalTemplateId);
+    }
+
+    public static List<ProposalTemplateSection> getProposalTemplateSectionsBySectionDefinitionId(long sectionDefinitionId) {
+        return client.getProposalTemplateSectionsBySectionDefinitionId(sectionDefinitionId);
+    }
+
+    public static ProposalTemplateSection getProposalTemplateSection(Long proposalTemplateId, Long sectionDefinitionId) {
+        return client.getProposalTemplateSection(proposalTemplateId, sectionDefinitionId);
     }
 }

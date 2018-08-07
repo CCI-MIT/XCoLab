@@ -620,12 +620,6 @@ public class ContestClient {
                 .execute(), serviceNamespace);
     }
 
-    public List<ContestPhase> getPhasesForContestScheduleId(Long contestScheduleId) {
-        return DtoUtil.toPojos(contestPhasesResource.list()
-                .queryParam("contestScheduleId", contestScheduleId)
-                .execute(), serviceNamespace);
-    }
-
     public List<ContestPhase> getPhasesForContestScheduleIdAndContest(Long contestScheduleId,
             Long contestId) {
         return DtoUtil.toPojos(contestPhasesResource.list()

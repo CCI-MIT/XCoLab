@@ -140,7 +140,7 @@
 
                                         <c:if test="${discussionPermissions.getCanReportMessage(message) }">
                                             <xcolab:requireLibrary name="flagging"/>
-                                            <button type="button" class="btn btn-link" onclick="reportComment(${message.commentId})">
+                                            <button type="button" class="btn btn-link" onclick="reportComment(${message.id})">
                                                 Report
                                             </button>
                                         </c:if>
@@ -148,7 +148,7 @@
 											<c:set var="editCommentURL" value="/discussions/editComment?commentId=${message.id}&amp;proposalId=${proposalId}" />
 
                                             <spring:message code="discussion.commmentstag.caneditmsg" var="canEditMsg"/>
-											<button type="button" class="btn btn-link js-Tooltip ml-2" onclick="editComment(${message.createdAt.time}, ${message.commentId},'${editCommentURL}');"
+											<button type="button" class="btn btn-link js-Tooltip ml-2" onclick="editComment(${message.createdAt.time}, ${message.id},'${editCommentURL}');"
 												 title="${canEditMsg}"><spring:message code="discussion.commmentstag.edit" />
                                             </button>
 

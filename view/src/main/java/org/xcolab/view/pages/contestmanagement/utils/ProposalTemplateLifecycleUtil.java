@@ -39,7 +39,7 @@ public final class ProposalTemplateLifecycleUtil {
                 ProposalTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
         for (ProposalTemplateSection planTemplateSection : planTemplateSections) {
             ProposalTemplateClientUtil
-                    .deletePlanTemplateSection(planTemplateSection.getId(),
+                    .deletePlanTemplateSection(planTemplateSection.getProposalTemplateId(),
                             planTemplateSection.getSectionDefinitionId());
         }
     }
@@ -61,9 +61,9 @@ public final class ProposalTemplateLifecycleUtil {
             Long planTemplateId) {
         List<ProposalTemplateSection> planTemplateSections =
                 ProposalTemplateClientUtil
-                        .getPlanTemplateSectionByPlanSectionDefinitionId(planSectionDefinitionId);
+                        .getProposalTemplateSectionsBySectionDefinitionId(planSectionDefinitionId);
         return !(planTemplateSections.size() == 1
-                && planTemplateSections.get(0).getId() == planTemplateId.longValue())
+                && planTemplateSections.get(0).getProposalTemplateId() == planTemplateId.longValue())
                 && !planTemplateSections.isEmpty();
 
     }

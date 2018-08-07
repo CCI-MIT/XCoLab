@@ -62,7 +62,6 @@ public class ContestScheduleBean {
         dummyContestPhaseBean.setContestId(ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID);
         dummyContestPhaseBean.setContestScheduleId(getScheduleId());
         dummyContestPhaseBean.setId(CREATE_CONTEST_PHASE_PK);
-        dummyContestPhaseBean.setContestScheduleId(ContestPhaseBean.DEFAULT_CONTEST_SCHEDULE);
         return dummyContestPhaseBean;
     }
 

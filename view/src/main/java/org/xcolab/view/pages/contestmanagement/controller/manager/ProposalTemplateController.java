@@ -57,16 +57,15 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        Long planTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
-        model.addAttribute("planTemplateId", planTemplateId);
-        if (planTemplateId >= 0) {
+        Long proposalTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
+        if (proposalTemplateId >= 0) {
             ProposalTemplateWrapper proposalTemplateWrapper =
-                    new ProposalTemplateWrapper(planTemplateId);
+                    new ProposalTemplateWrapper(proposalTemplateId);
             model.addAttribute("contestProposalTemplateWrapper", proposalTemplateWrapper);
         }
-        model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId,
+        model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(proposalTemplateId,
                 ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
-        model.addAttribute("elementId", planTemplateId);
+        model.addAttribute("elementId", proposalTemplateId);
         return TAB_VIEW;
     }
 
@@ -119,15 +118,15 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
         if (result.hasErrors()) {
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(
-                    updatedProposalTemplateWrapper.getPlanTemplateId(),
+                    updatedProposalTemplateWrapper.getProposalTemplateId(),
                     ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
             AlertMessage.danger("Failed to update element").flash(request);
-            return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getPlanTemplateId());
+            return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getProposalTemplateId());
         }
 
         updatedProposalTemplateWrapper.setUpdateExistingTemplate(true);
         updatedProposalTemplateWrapper.persist();
         AlertMessage.CHANGES_SAVED.flash(request);
-        return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getPlanTemplateId());
+        return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getProposalTemplateId());
     }
 }

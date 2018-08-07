@@ -46,9 +46,8 @@ public final class ContestScheduleLifecycleUtil {
     private static void removeContestSchedulePhases(Long scheduleId) {
 
         List<ContestPhase> contestSchedulePhases = ContestClientUtil
-                .getPhasesForContestScheduleId(scheduleId);
+                .getTemplatePhasesForContestScheduleId(scheduleId);
         removeContestPhases(contestSchedulePhases);
-
     }
 
     private static void removeContestPhases(List<ContestPhase> contestPhases) {

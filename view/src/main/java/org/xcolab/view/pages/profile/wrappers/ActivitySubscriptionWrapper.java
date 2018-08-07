@@ -26,7 +26,7 @@ public class ActivitySubscriptionWrapper implements Serializable {
         return ActivitySubscriptionNameGenerator.getName(subscription);
     }
 
-    public Date getUpdated() {
+    public Date getUpdatedAt() {
         return subscription.getUpdatedAt();
     }
 

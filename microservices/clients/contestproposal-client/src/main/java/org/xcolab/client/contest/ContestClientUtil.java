@@ -256,11 +256,6 @@ public final class ContestClientUtil {
         return contestClient.getAllContestPhases(contestId);
     }
 
-    public static List<ContestPhase> getPhasesForContestScheduleId(
-            Long contestScheduleId) {
-        return contestClient.getPhasesForContestScheduleId(contestScheduleId);
-    }
-
     public static List<ContestPhase> getPhasesForContestScheduleIdAndContest(
             Long contestScheduleId, Long contestId) {
         return contestClient.getPhasesForContestScheduleIdAndContest(contestScheduleId, contestId);

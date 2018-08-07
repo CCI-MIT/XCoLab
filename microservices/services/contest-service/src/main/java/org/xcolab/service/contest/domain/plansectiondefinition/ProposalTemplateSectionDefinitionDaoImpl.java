@@ -35,7 +35,7 @@ public class ProposalTemplateSectionDefinitionDaoImpl implements ProposalTemplat
                 .getQuery();
 
         if (planTemplateId != null) {
-            query.addConditions(PROPOSAL_TEMPLATE_SECTION.ID.eq(planTemplateId));
+            query.addConditions(PROPOSAL_TEMPLATE_SECTION.PROPOSAL_TEMPLATE_ID.eq(planTemplateId));
         }
         if (weight != null && weight) {
             query.addOrderBy(PROPOSAL_TEMPLATE_SECTION.WEIGHT);

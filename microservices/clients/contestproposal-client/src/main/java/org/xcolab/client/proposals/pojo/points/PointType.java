@@ -46,8 +46,9 @@ public class PointType extends AbstractPointType {
         initChildren();
 
     }
+
     private void initChildren(){
-        if(this.getId()!= null) {
+        if (this.getId() != null) {
             List<PointType> unwrappedChildren =
                     PointsClientUtil.getClient().getChildrenOfPointType(this.getId());
             this.children = new ArrayList<>();
@@ -59,10 +60,6 @@ public class PointType extends AbstractPointType {
 
     public List<PointType> getChildren() {
         return children;
-    }
-
-    public Long getId() {
-        return this.getId();
     }
 
     //DEAL WITH IT

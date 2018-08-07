@@ -101,7 +101,6 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
 
         if (contestScheduleId != null) {
             query.addConditions(CONTEST_PHASE.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
-            query.addConditions(CONTEST_PHASE.ID.eq(0L));
         }
 
         if (contestPhaseTypeId != null) {

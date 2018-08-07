@@ -18,7 +18,7 @@ public class ContestScheduleChangeHelper {
     private final List<SchedulePhase> newPhases;
 
     public ContestScheduleChangeHelper(long contestId, long newScheduleId) {
-        this(contestId, ContestClientUtil.getPhasesForContestScheduleId(newScheduleId));
+        this(contestId, ContestClientUtil.getTemplatePhasesForContestScheduleId(newScheduleId));
     }
 
     public ContestScheduleChangeHelper(long contestId, List<ContestPhase> newPhases) {

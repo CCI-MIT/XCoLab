@@ -53,7 +53,7 @@
                                 type="checkbox" id="checkboxSelectAll"/></th>
                         <th class="header Hdr"><spring:message code="subscription.activities.table.subject"/> </th>
                         <th class="header Hdr" style="width: 100px;"><spring:message code="subscription.activities.table.category"/> </th>
-                        <th style="width: 160px;" class="Hdr"><spring:message code="subscription.activities.table.updatedAt"/> </th>
+                        <th style="width: 160px;" class="Hdr"><spring:message code="subscription.activities.table.updated"/> </th>
                     </tr>
 
                     <c:forEach var="subscription" items="${userSubscriptions.subscriptions}"

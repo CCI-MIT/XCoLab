@@ -130,9 +130,27 @@ public class ProposalTemplateClient {
                 .post(new ProposalTemplateSectionDto(planTemplateSection));
     }
 
-    public List<ProposalTemplateSection> getPlanTemplateSectionByPlanSectionDefinitionId(Long planSectionId) {
+
+    public List<ProposalTemplateSection> getProposalTemplateSectionsByTemplateId(long proposalTemplateId) {
+        return getProposalTemplateSections(proposalTemplateId, null);
+    }
+
+    public List<ProposalTemplateSection> getProposalTemplateSectionsBySectionDefinitionId(long sectionDefinitionId) {
+        return getProposalTemplateSections(null, sectionDefinitionId);
+    }
+
+    private List<ProposalTemplateSection> getProposalTemplateSections(Long proposalTemplateId, Long sectionDefinitionId) {
         return DtoUtil.toPojos(planTemplateSectionResource.list()
-                .optionalQueryParam("planSectionId", planSectionId)
+                .optionalQueryParam("planTemplateId", proposalTemplateId)
+                .optionalQueryParam("planSectionId", sectionDefinitionId)
                 .execute(), serviceNamespace);
+    }
+
+    public ProposalTemplateSection getProposalTemplateSection(long proposalTemplateId, long sectionDefinitionId) {
+        return DtoUtil.toPojo(planTemplateSectionResource.list()
+                .queryParam("planTemplateId", proposalTemplateId)
+                .queryParam("planSectionId", sectionDefinitionId)
+                .executeWithResult()
+                .getOneIfExists(), serviceNamespace);
     }
 }
