@@ -44,14 +44,14 @@ public class ThreadDaoImpl implements ThreadDao {
                 .getQuery();
 
         if (groupId != null) {
-            query.addJoin(CATEGORY, CATEGORY.ID.eq(THREAD.ID));
+            query.addJoin(CATEGORY, CATEGORY.ID.eq(THREAD.CATEGORY_ID));
             query.addConditions(CATEGORY.GROUP_ID.eq(groupId));
         }
         if (authorUserId != null) {
             query.addConditions(THREAD.AUTHOR_USER_ID.eq(authorUserId));
         }
         if (categoryId != null) {
-            query.addConditions(THREAD.ID.eq(categoryId));
+            query.addConditions(THREAD.CATEGORY_ID.eq(categoryId));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
@@ -132,7 +132,7 @@ public class ThreadDaoImpl implements ThreadDao {
                 .set(THREAD.DELETED_AT, thread.getDeletedAt())
                 .set(THREAD.TITLE, thread.getTitle())
                 .set(THREAD.IS_QUIET, thread.getIsQuiet())
-                .set(THREAD.ID, thread.getCategoryId())
+                .set(THREAD.CATEGORY_ID, thread.getCategoryId())
                 .where(THREAD.ID.equal(thread.getId()))
                 .execute() > 0;
     }
@@ -145,7 +145,7 @@ public class ThreadDaoImpl implements ThreadDao {
                 .set(THREAD.DELETED_AT, thread.getDeletedAt())
                 .set(THREAD.TITLE, thread.getTitle())
                 .set(THREAD.IS_QUIET, thread.getIsQuiet())
-                .set(THREAD.ID, thread.getCategoryId())
+                .set(THREAD.CATEGORY_ID, thread.getCategoryId())
                 .returning(THREAD.ID)
                 .fetchOne();
         if (threadRecord != null) {
