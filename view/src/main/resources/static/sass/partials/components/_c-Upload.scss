@@ -14,6 +14,15 @@
     margin-top: 5px;
   }
 
+  .c-Upload__wrapper {
+    width: 150px;
+    position: relative;
+  }
+
+  .c-Upload__wrapper--compact {
+    display: inline;
+  }
+
   .c-Upload__icon__clear {
     position: absolute;
     top: 5px;

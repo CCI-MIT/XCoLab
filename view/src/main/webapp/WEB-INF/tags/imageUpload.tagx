@@ -60,11 +60,13 @@
     </c:if>
 
     <div class="c-Upload ${compactView ? 'c-Upload--compact' : ''}">
+        <div class="${!compactView ? 'c-Upload__wrapper' : 'c-Upload__wrapper--compact'}">
             <c:if test="${!compactView}">
                 <collab:image id='${uniqueName}_clear' cssClass="c-Upload__icon__clear" src="/images/clear.png" />
             </c:if>
-        <collab:image id="${previewImgId}"
-             src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
+            <collab:image id="${previewImgId}"
+                          src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
+        </div>
         <div class="c-Upload__button">
             <span class="btn btn-primary fileinput-button">
                 ${buttonText}
