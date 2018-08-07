@@ -61,11 +61,11 @@ public class MembershipController {
 
     @RequestMapping(value = "/membershipRequests", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ProposalTeamMembershipRequest> getProposalTeamMembershipRequests(
-            @RequestParam(required = false) Long groupId,
+            @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Integer statusId,
             @RequestParam(required = false) Long userId
     ) {
-        return ProposalTeamMembershipRequestDao.findByGiven(statusId, userId);
+        return ProposalTeamMembershipRequestDao.findByGiven(proposalId, statusId, userId);
     }
 
     @PostMapping("/proposals/{proposalId}/teamMembers")

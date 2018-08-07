@@ -14,7 +14,6 @@ class AbstractProposal implements Serializable {
     private Boolean visible;
     private Long discussionid;
     private Long resultsdiscussionid;
-    private Long groupid;
 
     public AbstractProposal() {}
 
@@ -26,7 +25,6 @@ class AbstractProposal implements Serializable {
         this.visible = value.visible;
         this.discussionid = value.discussionid;
         this.resultsdiscussionid = value.resultsdiscussionid;
-        this.groupid = value.groupid;
     }
 
 
@@ -78,15 +76,6 @@ class AbstractProposal implements Serializable {
         this.resultsdiscussionid = resultsdiscussionid;
     }
 
-    public Long getGroupId() {
-        return this.groupid;
-    }
-
-    public void setGroupId(Long groupid) {
-        this.groupid = groupid;
-    }
-
-
     public Boolean getVisible() {
         return this.visible;
     }
@@ -99,7 +88,6 @@ class AbstractProposal implements Serializable {
     public String toString() {
         return "Proposal (" + id + ", " + createdAt + ", " + updatedAt + ", "
                 + authorUserId + ", " + visible + ", " + discussionid + ", "
-                + resultsdiscussionid + ", " + groupid + ")";
+                + resultsdiscussionid + ")";
     }
-
 }

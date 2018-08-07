@@ -81,8 +81,7 @@ public class MembershipClient {
 
     public Boolean hasUserRequestedMembership(Long proposalId, Long userId) {
         try {
-            Long groupId = proposalClient.getProposal(proposalId).getGroupId();
-            List<ProposalTeamMembershipRequest> userRequests = getMembershipRequestsByUser(groupId, userId);
+            List<ProposalTeamMembershipRequest> userRequests = getMembershipRequestsByUser(proposalId, userId);
             if (userRequests != null && !userRequests.isEmpty()) {
                 return true;
             }
@@ -159,10 +158,9 @@ public class MembershipClient {
     private ProposalTeamMembershipRequest createMembershipRequest(Long proposalId, Long userId, String comment,
             Integer status) {
         try {
-            Long groupId = proposalClient.getProposal(proposalId).getGroupId();
-
             ProposalTeamMembershipRequest membershipRequest = new ProposalTeamMembershipRequest();
             membershipRequest.setComments(comment == null ? "" : comment);
+            membershipRequest.setProposalId(proposalId);
             membershipRequest.setUserId(userId);
             membershipRequest.setStatusId(status);
             membershipRequest = createMembershipRequest(membershipRequest);
@@ -189,12 +187,12 @@ public class MembershipClient {
 
         try {
             Proposal proposal = proposalClient.getProposal(proposalId);
-            List<ProposalTeamMembershipRequest> invited = getMembershipRequestsByStatus(proposal.getGroupId(),
+            List<ProposalTeamMembershipRequest> invited = getMembershipRequestsByStatus(proposal.getId(),
                     MembershipRequestStatus.STATUS_PENDING_INVITED);
-            List<ProposalTeamMembershipRequest> requested = getMembershipRequestsByStatus(proposal.getGroupId(),
+            List<ProposalTeamMembershipRequest> requested = getMembershipRequestsByStatus(proposal.getId(),
                     MembershipRequestStatus.STATUS_PENDING_REQUESTED);
             List<ProposalTeamMembershipRequest> olderRequests =
-                    getMembershipRequestsByStatus(proposal.getGroupId(),
+                    getMembershipRequestsByStatus(proposal.getId(),
                             MembershipRequestStatus.STATUS_PENDING);
             List<ProposalTeamMembershipRequest> combined = new ArrayList<>();
             if (invited != null && !invited.isEmpty()) {
@@ -212,12 +210,12 @@ public class MembershipClient {
         }
     }
 
-    public List<ProposalTeamMembershipRequest> getMembershipRequestsByStatus(Long groupId, Integer statusId) {
+    public List<ProposalTeamMembershipRequest> getMembershipRequestsByStatus(Long proposalId, Integer statusId) {
         return DtoUtil.toPojos(membershipRequestResource.list()
                 .withCache(CacheKeys.withClass(ProposalTeamMembershipRequestDto.class)
-                        .withParameter("groupId", groupId)
+                        .withParameter("proposalId", proposalId)
                         .withParameter("statusId", statusId).asList(), CacheName.MISC_REQUEST)
-                .optionalQueryParam("groupId", groupId)
+                .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("statusId", statusId)
                 .execute(), serviceNamespace);
     }
