@@ -26,6 +26,7 @@ public class OpenIdHelper {
     public static final String EXPIRATION_DATE = "exp";
     public static final String SUBJECT = "sub";
     public static final String EMAIL = "email";
+    public static final String EMAIL_VERIFIED = "email_verified";
     public static final String NAME = "name";
     public static final String GIVEN_NAME = "given_name";
     public static final String FAMILY_NAME = "family_name";
@@ -58,7 +59,7 @@ public class OpenIdHelper {
         map.put("scopes_supported", new String[]{SCOPE_OPENID, SCOPE_EMAIL, SCOPE_PROFILE});
 
         map.put("claims_supported", new String[]{ISSUER, AUDIENCE, ISSUE_DATE, EXPIRATION_DATE,
-                SUBJECT, EMAIL, NAME, GIVEN_NAME, FAMILY_NAME, PREFERRED_USERNAME, PICTURE});
+                SUBJECT, EMAIL, EMAIL_VERIFIED, NAME, GIVEN_NAME, FAMILY_NAME, PREFERRED_USERNAME, PICTURE});
         return map;
     }
 
@@ -107,6 +108,7 @@ public class OpenIdHelper {
 
     public void addEmailScopedFields(Map<String, Object> map, Member member) {
         map.put(EMAIL, member.getEmailAddress());
+        map.put(EMAIL_VERIFIED, member.getIsEmailConfirmed());
     }
 
     public void addProfileScopedFields(Map<String, Object> map, Member member) {
