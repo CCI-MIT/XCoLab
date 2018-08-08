@@ -300,6 +300,10 @@ public class Contest extends AbstractContest implements Serializable {
 
     }
 
+    public long getFocusAreaIdOrZero() {
+        return getFocusAreaId() != null ? getFocusAreaId() : 0;
+    }
+
     public List<ContestPhase> getPhases() {
         if (phases == null) {
             phases = new ArrayList<>();
