@@ -17,7 +17,7 @@ management:
 
 cache:
   enabled: true
-  provider: org.xcolab.util.http.caching.provider.ehcache2.Ehcache2CacheProvider
+  provider: org.xcolab.util.http.caching.provider.ehcache3.CacheProviderEhcache3Impl
   disk-storage:
     enabled: true
     max-megabytes: 1000
