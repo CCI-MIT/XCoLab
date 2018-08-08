@@ -105,9 +105,6 @@
                 } else {
                     checkForDefaultImageOverride();
                 }
-                if (imageIdInputVal == CLEAR_IMAGE_ID) {
-                    jQuery(vars.clearButtonId).hide();
-                }
             });
         </script>
     </c:if>
@@ -179,6 +176,10 @@
             jQuery(vars.clearButtonId).hide();
         });
 
+        if (jQuery(fileUploadVars['${uniqueName}'].imageIdInputId).val() == CLEAR_IMAGE_ID) {
+            jQuery(fileUploadVars['${uniqueName}'].clearButtonId).hide();
+        }
+        
     </script>
 
 </jsp:root>
