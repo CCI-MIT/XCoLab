@@ -41,7 +41,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>comment_.*</includes>
+							<includes>comment__.*</includes>
 						</database>
 					</generator>
 				</configuration>

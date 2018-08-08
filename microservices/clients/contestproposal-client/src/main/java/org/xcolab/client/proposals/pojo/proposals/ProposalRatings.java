@@ -65,7 +65,7 @@ public class ProposalRatings {
         } else {
             for (ProposalRating r : proposalRatings) {
                 if (r.unwrap().getCommentEnabled()) {
-                    return r.unwrap().getComment_();
+                    return r.unwrap().getComment();
                 }
             }
             return "";

@@ -35,13 +35,13 @@ public class JudgingUtil {
                     existingRating.setRatingValueId(newRatingValueId);
                     //convention: save comment and shouldAdvance in first type
                     if (!commentAndAdvanceAdded) {
-                        existingRating.setComment_(HtmlUtil.cleanAll(ratingBean.getComment()));
+                        existingRating.setComment(HtmlUtil.cleanAll(ratingBean.getComment()));
                         existingRating.setCommentEnabled(true);
                         existingRating.setOtherDataString(shouldAdvance != null
                                 ? shouldAdvance.toString() : "");
                         commentAndAdvanceAdded = true;
                     } else {
-                        existingRating.setComment_(null);
+                        existingRating.setComment(null);
                         existingRating.setOtherDataString("");
                         existingRating.setCommentEnabled(false);
                     }
@@ -60,7 +60,7 @@ public class JudgingUtil {
                     proposalRating.setContestPhaseId(contestPhaseId);
                     proposalRating.setUserId(currentUserId);
                     proposalRating.setRatingValueId(newRatingValueId);
-                    proposalRating.setComment_(HtmlUtil.cleanAll(comment));
+                    proposalRating.setComment(HtmlUtil.cleanAll(comment));
                     proposalRating.setOtherDataString(shouldAdvanceString);
                     if (StringUtils.isNotEmpty(comment)) {
                         proposalRating.setCommentEnabled(true);

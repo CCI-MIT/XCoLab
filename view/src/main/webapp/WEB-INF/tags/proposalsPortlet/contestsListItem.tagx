@@ -15,7 +15,7 @@
 							${contest.title}
 						</h3>
 						<div>
-							${contest.contestName}
+							${contest.question}
 						</div>
 					</div>
 					<div class="c-ListItem__meta">

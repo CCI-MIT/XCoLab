@@ -44,7 +44,7 @@ public class ProposalRating extends AbstractProposalRating {
 
     public boolean isRatingComplete() {
         final boolean commentComplete = !getCommentEnabled()
-                || !StringUtils.isEmpty(this.getComment_());
+                || !StringUtils.isEmpty(this.getComment());
         return getRatingValueId() > 0 && commentComplete;
     }
 

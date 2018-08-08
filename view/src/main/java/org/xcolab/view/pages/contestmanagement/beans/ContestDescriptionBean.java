@@ -30,7 +30,7 @@ public class ContestDescriptionBean implements Serializable {
     private Long sponsorLogoId;
     @Length(max = 500, message = "The sponsor link URL must not be longer than 500 characters.")
     private String sponsorLink;
-    private Long defaultproposallogoid;
+    private Long defaultProposalLogoId;
 
     @Length(min = 3, max = 150, message = "The contest question must be at least 3 characters and"
             + " not more than 150 characters.")
@@ -70,7 +70,7 @@ public class ContestDescriptionBean implements Serializable {
             contestLogoId = contest.getContestLogoId();
             sponsorLogoId = contest.getSponsorLogoId();
             sponsorLink = contest.getSponsorLink();
-            defaultproposallogoid = contest.getDefaultProposalLogoId();
+            defaultProposalLogoId = contest.getDefaultProposalLogoId();
             shouldUpdateContestUrlName = !contest.getContestActive();
         }
     }
@@ -107,7 +107,7 @@ public class ContestDescriptionBean implements Serializable {
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setSponsorLink(sponsorLink);
-        contest.setDefaultProposalLogoId(defaultproposallogoid);
+        contest.setDefaultProposalLogoId(defaultProposalLogoId);
         ContestClientUtil.updateContest(contest);
     }
 
@@ -120,11 +120,11 @@ public class ContestDescriptionBean implements Serializable {
         }
     }
     public Long getDefaultProposalLogoId() {
-        return this.defaultproposallogoid;
+        return this.defaultProposalLogoId;
     }
 
     public void setDefaultProposalLogoId(Long defaultproposallogoid) {
-        this.defaultproposallogoid = defaultproposallogoid;
+        this.defaultProposalLogoId = defaultproposallogoid;
     }
 
     public Long getContestId() {

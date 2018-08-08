@@ -10,9 +10,9 @@ public abstract class AbstractContestTranslation implements Serializable {
 
     private Long contestId;
     private String lang;
-    private String contestName;
+    private String question;
     private String title;
-    private String contestDescription;
+    private String description;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Long authorUserId;
@@ -22,9 +22,9 @@ public abstract class AbstractContestTranslation implements Serializable {
     public AbstractContestTranslation(AbstractContestTranslation value) {
         this.contestId = value.contestId;
         this.lang = value.lang;
-        this.contestName = value.contestName;
+        this.question = value.question;
         this.title = value.title;
-        this.contestDescription = value.contestDescription;
+        this.description = value.description;
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
         this.authorUserId = value.authorUserId;
@@ -46,12 +46,12 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.lang = lang;
     }
 
-    public String getContestName() {
-        return this.contestName;
+    public String getQuestion() {
+        return this.question;
     }
 
-    public void setContestName(String contestName) {
-        this.contestName = contestName;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public String getTitle() {
@@ -62,12 +62,12 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.title = title;
     }
 
-    public String getContestDescription() {
-        return this.contestDescription;
+    public String getDescription() {
+        return this.description;
     }
 
-    public void setContestDescription(String contestDescription) {
-        this.contestDescription = contestDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Timestamp getCreatedAt() {
@@ -104,9 +104,9 @@ public abstract class AbstractContestTranslation implements Serializable {
         }
         AbstractContestTranslation that = (AbstractContestTranslation) o;
         return Objects.equals(contestId, that.contestId) && Objects.equals(lang, that.lang)
-                && Objects.equals(contestName, that.contestName)
+                && Objects.equals(question, that.question)
                 && Objects.equals(title, that.title)
-                && Objects.equals(contestDescription, that.contestDescription)
+                && Objects.equals(description, that.description)
                 && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(updatedAt, that.updatedAt)
                 && Objects.equals(authorUserId, that.authorUserId);
@@ -114,15 +114,15 @@ public abstract class AbstractContestTranslation implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(contestId, lang, contestName, title, contestDescription,
+        return Objects.hash(contestId, lang, question, title, description,
                 createdAt, updatedAt, authorUserId);
     }
 
     @Override
     public String toString() {
 
-        return "ContestTranslation (" + contestId + ", " + lang + ", " + contestName + ", "
-                + title + ", " + contestDescription + ", " + createdAt + ", "
+        return "ContestTranslation (" + contestId + ", " + lang + ", " + question + ", "
+                + title + ", " + description + ", " + createdAt + ", "
                 + updatedAt + ", " + authorUserId + ")";
     }
 }

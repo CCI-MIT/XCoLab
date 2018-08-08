@@ -43,7 +43,7 @@
                         will be identified.
                     </div>
 
-                    <form:input id="title" path="title"
+                    <form:input path="title"
                                 cssClass="form-control" cssErrorClass="form-control is-invalid" />
                     <form:errors cssClass="invalid-feedback" path="title" />
 
@@ -75,8 +75,8 @@
                         contest questions are concise and worded with language accessible to the public.
                     </div>
 
-                    <form:textarea path="name" id="contestName" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
-                    <form:errors cssClass="invalid-feedback" path="name"/>
+                    <form:textarea path="question" cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
+                    <form:errors cssClass="invalid-feedback" path="question"/>
 
                     <div class="clearfix"><!-- --></div>
                     <div class="inputLimitContainer">
@@ -187,7 +187,7 @@
                     </div>
                     <div class="clearfix"><!-- --></div>
 
-                    <form:textarea path="description" id="contestDescription"
+                    <form:textarea path="description"
                                    cssClass="rte-editorPlaceholder form-control" cssErrorClass="form-control cb-form-has-error"/>
                     <form:errors cssClass="invalid-feedback" path="description"/>
 

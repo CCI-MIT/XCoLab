@@ -15,6 +15,7 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.pojos.Contest;
+import org.xcolab.model.tables.records.ContestRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -59,7 +60,8 @@ public class ContestDaoImpl implements ContestDao {
     @Override
     public Contest create(Contest contest) {
 
-        this.dslContext.insertInto(CONTEST).set(CONTEST.ID, contest.getId())
+        final ContestRecord contestRecord = this.dslContext
+                .insertInto(CONTEST).set(CONTEST.ID, contest.getId())
                 .set(CONTEST.CONTEST_TYPE_ID, contest.getContestTypeId())
                 .set(CONTEST.QUESTION, contest.getQuestion())
                 .set(CONTEST.TITLE, contest.getTitle())
@@ -91,7 +93,8 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.SPONSOR_LOGO_ID, contest.getSponsorLogoId())
                 .set(CONTEST.SPONSOR_TEXT, contest.getSponsorText())
                 .set(CONTEST.SPONSOR_LINK, contest.getSponsorLink())
-                .set(CONTEST.FLAG, contest.getFlag()).set(CONTEST.FLAG_TEXT, contest.getFlagText())
+                .set(CONTEST.FLAG, contest.getFlag())
+                .set(CONTEST.FLAG_TEXT, contest.getFlagText())
                 .set(CONTEST.FLAG_TOOLTIP, contest.getFlagTooltip())
                 .set(CONTEST.DISCUSSION_GROUP_ID, contest.getDiscussionGroupId())
                 .set(CONTEST.WEIGHT, contest.getWeight())
@@ -111,7 +114,11 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShowInOutlineView())
                 .set(CONTEST.HIDE_RIBBONS, contest.getHideRibbons())
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
-                .execute();
+                .returning(CONTEST.ID).fetchOne();
+        if (contestRecord != null) {
+            contest.setId(contestRecord.getId());
+            return contest;
+        }
         return contest;
     }
 

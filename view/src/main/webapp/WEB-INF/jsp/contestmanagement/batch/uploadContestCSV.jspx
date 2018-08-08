@@ -44,7 +44,7 @@
                         tab) and typically starts by briefly outlining the opportunity and/or challenge the contest seeks to
                         tackle and concludes by stating the contest's focus.
                     </div>
-                    <form:textarea path="description" id="contestDescription"
+                    <form:textarea path="description"
                                    cssClass="rte-editorPlaceholder contestDescription"/>
                     <form:errors cssClass="invalid-feedback" path="description"/>
                     <div class="inputLimitContainer">
