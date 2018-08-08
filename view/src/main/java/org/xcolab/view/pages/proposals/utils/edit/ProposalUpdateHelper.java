@@ -231,8 +231,7 @@ public class ProposalUpdateHelper {
             filledAll = false;
         }
 
-        if (updateProposalSectionsBean.getImageId() > 0
-                && updateProposalSectionsBean.getImageId() != proposalWrapper.getImageId()) {
+        if (updateProposalSectionsBean.getImageId() != proposalWrapper.getImageId()) {
             version = proposalContext.getClients().getProposalAttributeClient()
                     .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                             ProposalAttributeKeys.IMAGE_ID, 0L,

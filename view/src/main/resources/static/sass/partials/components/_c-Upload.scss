@@ -1,6 +1,7 @@
 .c-Upload {
   text-align: center;
   float: left;
+  position: relative;
 
   img {
     display: block;
@@ -13,7 +14,26 @@
     margin-top: 5px;
   }
 
+  .c-Upload__wrapper {
+    width: 150px;
+    position: relative;
+  }
+
+  .c-Upload__wrapper--compact {
+    display: inline;
+  }
+
+  .c-Upload__icon__clear {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+  }
+
   &.c-Upload--compact {
+    position: static;
     img {
       display: inline-block;
       height: 50px;
@@ -25,5 +45,13 @@
       display: inline-block;
       vertical-align: middle;
     }
+
+    .c-Upload__button__clear {
+      margin-left: 10px;
+    }
+
   }
 }
+
+
+

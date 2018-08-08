@@ -8,7 +8,6 @@
                              rtexprvalue="true" description="Unique name for this upload widget"/>
     <jsp:directive.attribute name="defaultImageId" type="java.lang.Long" required="false"
                              rtexprvalue="true" description="Default image id if the current id is not set , if any"/>
-
     <jsp:directive.attribute name="imageIdInput" type="java.lang.String" required="false"
                              rtexprvalue="true" description="Id of the input field
                              to hold the new image id, if any"/>
@@ -22,6 +21,8 @@
                              rtexprvalue="true" description="If false, the image will be cropped to square"/>
     <jsp:directive.attribute name="buttonText" type="java.lang.String" required="false"
                              rtexprvalue="true" description="Text for the upload button"/>
+    <jsp:directive.attribute name="clearImageId" type="java.lang.Long"
+                             required="false" rtexprvalue="true"  description="Image id to revert to if current image is cleared" />
 
     <spring:message code="colab.default.image.button.upload" var="defaultImageText"/>
     <c:set var="shouldDisplayUrl" value="${(empty shouldDisplayUrl) ? false : shouldDisplayUrl}" />
@@ -29,6 +30,7 @@
     <c:set var="defaultImage" value="${(empty defaultImage) ? 'NONE' : defaultImage}" />
     <c:set var="defaultImageId" value="${(empty defaultImageId) ? '' : defaultImageId}" />
     <c:set var="buttonText" value="${(empty buttonText) ? defaultImageText : buttonText}" />
+    <c:set var="clearImageId" value="${(empty clearImageId) ? '0' : clearImageId}" />
 
     <c:set var="uploadImageInputId" value="${uniqueName}Input"/>
     <c:set var="urlDisplayDiv" value="${uniqueName}ImageUrl"/>
@@ -48,6 +50,7 @@
             var FILE_UPLOAD_MAX_HEIGHT = ${FILE_UPLOAD_MAX_HEIGHT};
             var FILE_UPLOAD_MAX_FILE_SIZE = ${FILE_UPLOAD_MAX_FILE_SIZE};
             var fileUploadVars = {};
+            var CLEAR_IMAGE_ID = '${clearImageId}';
         </script>
 
         <c:set var="_imageUploadScriptsLoaded" value="true" scope="request"/>
@@ -57,13 +60,23 @@
     </c:if>
 
     <div class="c-Upload ${compactView ? 'c-Upload--compact' : ''}">
-        <collab:image id="${previewImgId}"
-             src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
+        <div class="${!compactView ? 'c-Upload__wrapper' : 'c-Upload__wrapper--compact'}">
+            <c:if test="${!compactView}">
+                <collab:image id='${uniqueName}_clear' cssClass="c-Upload__icon__clear" src="/images/clear.png" />
+            </c:if>
+            <collab:image id="${previewImgId}"
+                          src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
+        </div>
         <div class="c-Upload__button">
             <span class="btn btn-primary fileinput-button">
                 ${buttonText}
                 <input id="${uploadImageInputId}" type="file" name="file" tabindex="-1" />
             </span>
+            <c:if test="${compactView}">
+                <span id='${uniqueName}_clear' class="btn btn-danger c-Upload__button__clear" >
+                    Clear
+                </span>
+            </c:if>
         </div>
 
         <div style="${shouldDisplayUrl ? '' : 'display: none'}">
@@ -78,6 +91,7 @@
         fileUploadVars['${uniqueName}'].imageIdInputId = '#' + '${imageIdInput}';
         fileUploadVars['${uniqueName}'].urlDisplayDiv = '#' + '${urlDisplayDiv}';
         fileUploadVars['${uniqueName}'].shouldBeCropped = !'${preserveAspectRatio}';
+        fileUploadVars['${uniqueName}'].clearButtonId = '#' + '${uniqueName}_clear';
     </script>
 
     <c:if test="${not empty imageIdInput}">
@@ -90,6 +104,9 @@
                         '/image?img_id=' + imageIdInputVal + '&amp;defaultImage=${defaultImage}')
                 } else {
                     checkForDefaultImageOverride();
+                }
+                if (imageIdInputVal == CLEAR_IMAGE_ID) {
+                    jQuery(vars.clearButtonId).hide();
                 }
             });
         </script>
@@ -137,6 +154,7 @@
                     jQuery(vars.imageIdInputId).val(data.result.imageId);
                     jQuery(vars.urlDisplayDiv).attr('href', data.result.imageUrl);
                     jQuery(vars.urlDisplayDiv).text(data.result.imageUrl);
+                    jQuery(vars.clearButtonId).show();
                     noty({text: 'Image upload succeeded.', type: 'success'});
                 } else {
                     noty({text: 'Image upload failed.', type: 'error'});
@@ -150,6 +168,17 @@
             }).prop('disabled', !jQuery.support.fileInput)
                 .parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
         });
+
+        $('#${uniqueName}_clear').bind('click', function() {
+            var vars = fileUploadVars['${uniqueName}'];
+            var defaultImageUrl = '/image?img_id='+CLEAR_IMAGE_ID+'&amp;defaultImage=${defaultImage}';
+            jQuery(vars.previewImgId).attr('src', defaultImageUrl);
+            jQuery(vars.imageIdInputId).val(CLEAR_IMAGE_ID);
+            jQuery(vars.urlDisplayDiv).attr('href', defaultImageUrl);
+            jQuery(vars.urlDisplayDiv).text(defaultImageUrl);
+            jQuery(vars.clearButtonId).hide();
+        });
+
     </script>
 
 </jsp:root>
