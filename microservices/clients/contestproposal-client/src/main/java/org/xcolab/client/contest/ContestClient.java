@@ -103,7 +103,7 @@ public class ContestClient {
         try {
             return contestResource.get(contestId)
                     .optionalQueryParam("lang", lang)
-                    //.withCache(CacheName.CONTEST_DETAILS)
+                    .withCache(CacheName.CONTEST_DETAILS)
                     .executeChecked().toPojo(serviceNamespace);
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
@@ -223,7 +223,7 @@ public class ContestClient {
                 .queryParam("contestUrlName", contestUrlName)
                 .queryParam("contestYear", contestYear)
                 .optionalQueryParam("lang", lang)
-//                .withCache(CacheName.CONTEST_DETAILS)
+                .withCache(CacheName.CONTEST_DETAILS)
                 .execute();
         if (list != null && !list.isEmpty()) {
             return list.get(0).toPojo(serviceNamespace);
@@ -262,7 +262,7 @@ public class ContestClient {
                 .optionalQueryParam("active", active)
                 .optionalQueryParam("featured", featured)
                 .queryParam("lang", lang)
-//                .withCache(CacheName.CONTEST_LIST)
+                .withCache(CacheName.CONTEST_LIST)
                 .execute(), serviceNamespace);
     }
 
@@ -271,7 +271,7 @@ public class ContestClient {
         return DtoUtil.toPojos(contestResource.list()
                 .queryParam("lang", lang)
                 .optionalQueryParam("active", active)
-//                .withCache(CacheName.CONTEST_LIST)
+                .withCache(CacheName.CONTEST_LIST)
                 .execute(), serviceNamespace);
     }
 
@@ -286,7 +286,7 @@ public class ContestClient {
                 .optionalQueryParam("contestTypeIds",  contestTypeIds)
                 .optionalQueryParam("contestTiers",  contestTiers)
                 .queryParam("contestPrivate", false)
-//                .withCache(CacheName.CONTEST_LIST)
+                .withCache(CacheName.CONTEST_LIST)
                 .execute(), serviceNamespace);
     }
 
@@ -297,7 +297,7 @@ public class ContestClient {
                 .queryParam("lang", lang)
                 .queryParam("contestTiers", contestTier)
                 .queryParam("focusAreaIds", focusAreaOntologyTerms.toArray())
-//                .withCache(CacheName.CONTEST_LIST)
+                .withCache(CacheName.CONTEST_LIST)
                 .execute(), serviceNamespace);
     }
 
@@ -660,7 +660,7 @@ public class ContestClient {
         return DtoUtil.toPojos(contestResource.list()
                 .queryParam("contestTypeIds", contestTypeId)
                 .queryParam("lang", lang)
-//                .withCache(CacheName.CONTEST_LIST)
+                .withCache(CacheName.CONTEST_LIST)
                 .execute(), serviceNamespace);
     }
 
