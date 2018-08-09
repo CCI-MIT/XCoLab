@@ -8,7 +8,7 @@ INSERT INTO user__user (id, screen_name, email_address, is_email_confirmed, firs
 INSERT INTO user__user_role (user_id, role_id) VALUES (10144, 10118), (10144, 10122), (10145, 10122);
 
 INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME', 0, '', null, 'Contest', null);
-INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME', 0, '', null, 'Proposal', null
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME', 0, '', null, 'Proposal', null);
 
 INSERT INTO comment__category (id, group_id, author_user_id, name, description, created_at, deleted_at, sort, is_quiet) VALUES (12501, 701, 10144, 'General Discussion', 'This set of discussions is where Climate CoLab members can engage around any topics that interest them.', '2010-10-02 00:00:00', null, null, 0);
 INSERT INTO comment__category (id, group_id, author_user_id, name, description, created_at, deleted_at, sort, is_quiet) VALUES (12502, 701, 10144, 'Report bugs and request features', 'This group of discussions is where users can report bugs and suggest new features.', '2010-10-02 00:00:00', null, null, 0);
