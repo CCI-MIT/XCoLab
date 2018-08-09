@@ -176,9 +176,15 @@
             jQuery(vars.clearButtonId).hide();
         });
 
-        if (jQuery(fileUploadVars['${uniqueName}'].imageIdInputId).val() == CLEAR_IMAGE_ID) {
-            jQuery(fileUploadVars['${uniqueName}'].clearButtonId).hide();
+        function hideClearButtonIfDefault ( jQuery ) {
+            var vars = fileUploadVars['${uniqueName}'];
+            var currentImageId = jQuery(vars.imageIdInputId).val();
+            if (!currentImageId || currentImageId == CLEAR_IMAGE_ID) {
+                jQuery(vars.clearButtonId).hide();
+            }
         }
+
+        $( document ).ready(hideClearButtonIfDefault);
         
     </script>
 
