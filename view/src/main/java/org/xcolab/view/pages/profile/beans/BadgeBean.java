@@ -50,9 +50,9 @@ public class BadgeBean implements Serializable {
 
     private Optional<ProposalContestPhaseAttribute> getLatestRibbonAttribute(Proposal proposal) {
         List<Long> phasesForProposal = ProposalPhaseClientUtil.getContestPhasesForProposal(
-                proposal.getProposalId());
+                proposal.getId());
         return phasesForProposal.stream()
-                .map(phaseId -> getRibbonAttribute(proposal.getProposalId(), phaseId))
+                .map(phaseId -> getRibbonAttribute(proposal.getId(), phaseId))
                 .filter(Objects::nonNull)
                 .max(Comparator.comparing(ProposalContestPhaseAttribute::getStartDate));
     }

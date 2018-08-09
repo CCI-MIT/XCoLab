@@ -37,13 +37,12 @@ public class ModelGlobalPreferenceDaoImpl implements ModelGlobalPreferenceDao {
                         .set(MODEL_GLOBAL_PREFERENCE.WEIGHT, modelGlobalPreference.getWeight())
                         .set(MODEL_GLOBAL_PREFERENCE.EXPERT_EVALUATION_PAGE_ID,
                                 modelGlobalPreference.getExpertEvaluationPageId())
-                        .returning(MODEL_GLOBAL_PREFERENCE.MODEL_GLOBAL_PREFERENCE_PK)
+                        .returning(MODEL_GLOBAL_PREFERENCE.ID)
                         .fetchOne();
         if (record == null) {
             throw new IllegalStateException("could not retrieve inserted id");
         }
-        modelGlobalPreference.setModelGlobalPreferencePK(
-                record.getValue(MODEL_GLOBAL_PREFERENCE.MODEL_GLOBAL_PREFERENCE_PK));
+        modelGlobalPreference.setId(record.getValue(MODEL_GLOBAL_PREFERENCE.ID));
         return modelGlobalPreference;
     }
 
@@ -51,7 +50,7 @@ public class ModelGlobalPreferenceDaoImpl implements ModelGlobalPreferenceDao {
     public Optional<ModelGlobalPreference> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_GLOBAL_PREFERENCE)
-                .where(MODEL_GLOBAL_PREFERENCE.MODEL_GLOBAL_PREFERENCE_PK.eq(id))
+                .where(MODEL_GLOBAL_PREFERENCE.ID.eq(id))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();

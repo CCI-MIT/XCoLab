@@ -1,17 +1,17 @@
 package org.xcolab.service.members.domain.role;
 
-import org.xcolab.model.tables.pojos.Role_;
+import org.xcolab.model.tables.pojos.Role;
 
 import java.util.List;
 
 public interface RoleDao {
-    List<Role_> getMemberRoles(Long memberId);
+    List<Role> getUserRoles(Long userId);
 
-    List<Role_> getMemberRolesInContest(Long memberId, Long contestId);
+    List<Role> getUserRolesInContest(Long userId, Long contestId);
 
-    void assignMemberRole(Long memberId, Long roleId);
+    void assignUserRole(Long userId, Long roleId);
 
-    boolean memberHasRole(Long memberId, Long roleId);
+    boolean memberHasRole(Long userId, Long roleId);
 
-    boolean deleteMemberRole(long memberId, long roleId);
+    boolean deleteUserRole(long userId, long roleId);
 }

@@ -42,7 +42,7 @@ public class ContestModelController extends BaseProposalsController {
         Long modelId = contest.getDefaultModelId();
 
         Map<Long, String> modelIdsWithNames;
-        final Long contestId = contest.getContestPK();
+        final Long contestId = contest.getId();
         if (modelId != null) {
             modelIdsWithNames = ContestClientUtil.getModelIdsAndNames(contestId);
             model.addAttribute("availableModels", modelIdsWithNames);

@@ -38,7 +38,7 @@ public class ProposalRatingWrapper {
     public Long getRatingTypeId() {
         ProposalRatingType ratingType = this.getRatingType();
         if (ratingType != null) {
-            return ratingType.getId_();
+            return ratingType.getId();
         } else {
             return null;
         }

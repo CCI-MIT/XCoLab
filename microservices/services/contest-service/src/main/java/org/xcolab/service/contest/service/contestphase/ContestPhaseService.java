@@ -56,13 +56,13 @@ public class ContestPhaseService {
 
 
     public ContestStatus getContestStatus(ContestPhase contestPhase) {
-        String status = contestPhaseTypeDao.get(contestPhase.getContestPhaseType()).get().getStatus();
+        String status = contestPhaseTypeDao.get(contestPhase.getContestPhaseTypeId()).get().getStatus();
         return status == null ? null : ContestStatus.valueOf(status);
     }
 
     public ContestPhase getNextContestPhase(ContestPhase contestPhase) throws NotFoundException {
         // First sort by contest phase type (the list has to be initialized as modifiable..)
-        List<ContestPhase> contestPhases = new ArrayList<>(contestService.getAllContestPhases(contestPhase.getContestPK()));
+        List<ContestPhase> contestPhases = new ArrayList<>(contestService.getAllContestPhases(contestPhase.getContestId()));
         contestPhases.sort(Comparator.comparing(ContestPhase::getPhaseStartDate));
 
         boolean currentFound = false;
@@ -70,19 +70,20 @@ public class ContestPhaseService {
             if (currentFound) {
                 return phase;
             }
-            if (phase.getContestPhasePK().longValue() == contestPhase.getContestPhasePK().longValue()) {
+            if (phase.getId().longValue() == contestPhase.getId().longValue()) {
                 currentFound = true;
             }
         }
-        throw new NotFoundException("Can't find next phase for phase with id: " + contestPhase.getContestPhasePK());
+        throw new NotFoundException("Can't find next phase for phase with id: " + contestPhase.getId());
     }
 
     public void transferSupportsToVote(Contest contest, ContestPhase votingPhase) {
 
+//        TODO: this should not be calling the client!
         final List<Proposal> proposalsInPhase = ProposalClientUtil
-                .getProposalsInContestPhase(votingPhase.getContestPhasePK());
+                .getProposalsInContestPhase(votingPhase.getId());
         Set<Long> proposalIdsInPhase = proposalsInPhase.stream()
-                .map(Proposal::getProposalId)
+                .map(Proposal::getId)
                 .collect(Collectors.toSet());
 
         Map<Member, Set<Proposal>> supportedProposalsByMember =
@@ -90,11 +91,11 @@ public class ContestPhaseService {
         for (Member user : supportedProposalsByMember.keySet()) {
 
             List<Proposal> supportedProposalsInPhase = supportedProposalsByMember.get(user).stream()
-                    .filter(p -> proposalIdsInPhase.contains(p.getProposalId()))
+                    .filter(p -> proposalIdsInPhase.contains(p.getId()))
                     .collect(Collectors.toList());
 
             final Boolean hasVoted = ProposalMemberRatingClientUtil
-                    .hasUserVoted(votingPhase.getContestPhasePK(), user.getUserId());
+                    .hasUserVoted(votingPhase.getId(), user.getId());
 
             if (hasVoted || supportedProposalsInPhase.isEmpty()) {
                 continue;
@@ -102,11 +103,11 @@ public class ContestPhaseService {
 
             //TODO COLAB-2501: we shouldn't use client pojos in the service
             org.xcolab.client.contest.pojo.Contest contestPojo = ContestClientUtil
-                    .getContest(contest.getContestPK());
+                    .getContest(contest.getId());
             if (supportedProposalsInPhase.size() == 1) {
                 final Proposal proposal = supportedProposalsInPhase.get(0);
-                ProposalMemberRatingClientUtil.addProposalVote(proposal.getProposalId(),
-                        votingPhase.getContestPhasePK(), user.getUserId(), 1);
+                ProposalMemberRatingClientUtil.addProposalVote(proposal.getId(),
+                        votingPhase.getId(), user.getId(), 1);
 
                 new ContestVoteNotification(user, contestPojo, proposal, COLAB_URL).sendMessage();
             } else {
@@ -118,11 +119,11 @@ public class ContestPhaseService {
 
     private Map<Member, Set<Proposal>> getSupportedProposalsByMember(Contest contest) {
         List<Proposal> proposalsInContest = ProposalClientUtil
-                .getProposalsInContest(contest.getContestPK());
+                .getProposalsInContest(contest.getId());
 
         return new GroupingHelper<>(proposalsInContest).groupWithDuplicateKeysAndValues(
                 proposal -> ProposalMemberRatingClientUtil
-                        .getProposalSupporters(proposal.getProposalId()).stream()
+                        .getProposalSupporters(proposal.getId()).stream()
                         .map(supporter -> MembersClient.getMemberUnchecked(supporter.getUserId()))
                         .collect(Collectors.toSet()));
     }
@@ -140,7 +141,7 @@ public class ContestPhaseService {
 
             // Decide about the promotion
             if (phasePromotionHelper.didJudgeDecideToPromote(p)) {
-                ProposalPhaseClientUtil.promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
+                ProposalPhaseClientUtil.promoteProposal(p.getId(), nextPhase.getId(), phase.getId());
             }
 
             // Enable this line to post promotion comment to Evaluation tab comment section
@@ -153,11 +154,11 @@ public class ContestPhaseService {
             _log.error("Could not send proposal promotion colab messaging notification", e);
         }*/
 
-            _log.info("done forcefully promoting proposal {} from phase {}", p.getProposalId(),
-                    phase.getContestPhasePK());
+            _log.info("done forcefully promoting proposal {} from phase {}", p.getId(),
+                    phase.getId());
         } catch(ProposalNotFoundException pnfe) {
             _log.error("could not find proposal :{} in promotion from phase {}", proposalId,
-                    phase.getContestPhasePK());
+                    phase.getId());
         }
     }
 

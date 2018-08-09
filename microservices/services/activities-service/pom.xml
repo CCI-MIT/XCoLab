@@ -52,7 +52,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>activities_ActivityEntry|xcolab_ActivitySubscription</includes>
+                            <includes>activity__.*</includes>
                         </database>
                     </generator>
                 </configuration>

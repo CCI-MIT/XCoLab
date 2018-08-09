@@ -128,12 +128,12 @@ public class VoteValidator {
 
     private ProposalVote getVote(Member votingMember) {
         return clients.getProposalMemberRatingClient()
-                .getProposalVoteByProposalIdUserId(proposal.getProposalId(),
-                        votingMember.getUserId());
+                .getProposalVoteByProposalIdUserId(proposal.getId(),
+                        votingMember.getId());
     }
 
     private boolean isRecentVote(ProposalVote otherVote) {
-        final DateTime otherVoteTime = new DateTime(otherVote.getCreateDate());
+        final DateTime otherVoteTime = new DateTime(otherVote.getCreatedAt());
         return otherVoteTime.plusHours(VOTE_RECENCY_THRESHOLD_HOURS).isAfterNow();
     }
 

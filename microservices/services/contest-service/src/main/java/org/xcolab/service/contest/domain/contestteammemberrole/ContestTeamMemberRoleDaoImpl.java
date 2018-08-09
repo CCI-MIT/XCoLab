@@ -25,10 +25,10 @@ public class ContestTeamMemberRoleDaoImpl implements ContestTeamMemberRoleDao {
     }
 
     @Override
-    public Optional<ContestTeamMemberRole> get(Long id_) throws NotFoundException {
+    public Optional<ContestTeamMemberRole> get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(CONTEST_TEAM_MEMBER_ROLE)
-                .where(CONTEST_TEAM_MEMBER_ROLE.ID_.eq(id_))
+                .where(CONTEST_TEAM_MEMBER_ROLE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {

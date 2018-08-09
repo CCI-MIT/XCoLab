@@ -50,7 +50,7 @@ public class AssignPointsActionController {
         final ContestPhase contestPhase = proposalContext.getContestPhase();
 
         final String redirectUrl =
-                proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK())
+                proposal.getProposalLinkUrl(contest, contestPhase.getId())
                         + "/tab/POINTS";
         if (result.hasErrors()) {
             response.sendRedirect(redirectUrl);
@@ -65,7 +65,7 @@ public class AssignPointsActionController {
 
         //first, delete the existing configuration
         proposalContext.getClients().getPointsClient()
-                .deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+                .deletePointsDistributionConfigurationByProposalId(proposal.getId());
 
         try {
             PointType contestRootPointType = PointsClientUtil
@@ -95,12 +95,12 @@ public class AssignPointsActionController {
                     percentage = (double) Math.round(percentage * 10000) / 10000;
                     PointsDistributionConfiguration pointsDistributionConfiguration =
                             new PointsDistributionConfiguration();
-                    pointsDistributionConfiguration.setProposalId(proposal.getProposalId());
+                    pointsDistributionConfiguration.setProposalId(proposal.getId());
                     pointsDistributionConfiguration.setPointTypeId(pointTypeId);
                     pointsDistributionConfiguration.setTargetUserId(entry.getKey());
                     pointsDistributionConfiguration.setTargetSubProposalId(null);
                     pointsDistributionConfiguration.setPercentage(percentage);
-                    pointsDistributionConfiguration.setCreator(currentMember.getUserId());
+                    pointsDistributionConfiguration.setAuthorUserId(currentMember.getId());
 
                     proposalContext.getClients().getPointsClient()
                             .createPointsDistributionConfiguration(pointsDistributionConfiguration);
@@ -120,7 +120,7 @@ public class AssignPointsActionController {
             //since we do client-side validations, this state will not be reached by regular uses
             // of the UI.
             proposalContext.getClients().getPointsClient()
-                    .deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+                    .deletePointsDistributionConfigurationByProposalId(proposal.getId());
             throw e;
         }
 

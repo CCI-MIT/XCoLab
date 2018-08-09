@@ -27,8 +27,8 @@ public class AssignRibbonToProposalActionController {
             throws ProposalsAuthorizationException, IOException {
 
         if (proposalContext.getPermissions().getCanAssignRibbon()) {
-            long proposalId = proposalContext.getProposal().getProposalId();
-            long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
+            long proposalId = proposalContext.getProposal().getId();
+            long contestPhaseId = proposalContext.getContestPhase().getId();
 
             ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
                     ProposalContestPhaseAttributeKeys.RIBBON, null, (long) ribbon, null);
@@ -38,7 +38,7 @@ public class AssignRibbonToProposalActionController {
                     .flash(request);
             response.sendRedirect(proposalContext.getProposal()
                     .getProposalLinkUrl(proposalContext.getContest(),
-                            proposalContext.getContestPhase().getContestPhasePK()) + "/tab/ADMIN");
+                            proposalContext.getContestPhase().getId()) + "/tab/ADMIN");
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to assign ribbon");
         }

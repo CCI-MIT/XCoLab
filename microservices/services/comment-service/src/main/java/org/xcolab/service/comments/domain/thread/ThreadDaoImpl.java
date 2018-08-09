@@ -37,18 +37,18 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorId,
+    public List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorUserId,
             Long categoryId, Long groupId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(THREAD)
                 .getQuery();
 
         if (groupId != null) {
-            query.addJoin(CATEGORY, CATEGORY.CATEGORY_ID.eq(THREAD.CATEGORY_ID));
+            query.addJoin(CATEGORY, CATEGORY.ID.eq(THREAD.CATEGORY_ID));
             query.addConditions(CATEGORY.GROUP_ID.eq(groupId));
         }
-        if (authorId != null) {
-            query.addConditions(THREAD.AUTHOR_ID.eq(authorId));
+        if (authorUserId != null) {
+            query.addConditions(THREAD.AUTHOR_USER_ID.eq(authorUserId));
         }
         if (categoryId != null) {
             query.addConditions(THREAD.CATEGORY_ID.eq(categoryId));
@@ -63,23 +63,23 @@ public class ThreadDaoImpl implements ThreadDao {
                 case "comments": {
                     final CommentTable comment = COMMENT.as("comment");
                     query.addSelect((SelectField<?>[]) THREAD.fields());
-                    query.addJoin(comment, comment.THREAD_ID.eq(THREAD.THREAD_ID)
-                            .and(comment.DELETED_DATE.isNull()));
-                    query.addGroupBy(THREAD.THREAD_ID);
+                    query.addJoin(comment, comment.THREAD_ID.eq(THREAD.ID)
+                            .and(comment.DELETED_AT.isNull()));
+                    query.addGroupBy(THREAD.ID);
                     query.addOrderBy(sortColumn.isAscending()
-                            ? DSL.count(comment.COMMENT_ID).asc()
-                            : DSL.count(comment.COMMENT_ID).desc());
+                            ? DSL.count(comment.ID).asc()
+                            : DSL.count(comment.ID).desc());
                     break;
                 }
                 case "activityDate": {
                     final CommentTable comment = COMMENT.as("comment");
                     query.addSelect((SelectField<?>[]) THREAD.fields());
-                    query.addJoin(comment, comment.THREAD_ID.eq(THREAD.THREAD_ID)
-                            .and(comment.DELETED_DATE.isNull()));
-                    query.addGroupBy(THREAD.THREAD_ID);
+                    query.addJoin(comment, comment.THREAD_ID.eq(THREAD.ID)
+                            .and(comment.DELETED_AT.isNull()));
+                    query.addGroupBy(THREAD.ID);
                     query.addOrderBy(sortColumn.isAscending()
-                            ? DSL.max(comment.CREATE_DATE).asc()
-                            : DSL.max(comment.CREATE_DATE).desc());
+                            ? DSL.max(comment.CREATED_AT).asc()
+                            : DSL.max(comment.CREATED_AT).desc());
                     break;
                 }
                 //TODO COLAB-2601: this currently sorts by id, not name
@@ -87,69 +87,69 @@ public class ThreadDaoImpl implements ThreadDao {
                     final CommentTable a1 = COMMENT.as("a");
                     final CommentTable b1 = COMMENT.as("b");
                     query.addSelect((SelectField<?>[]) THREAD.fields());
-                    query.addJoin(a1, a1.THREAD_ID.eq(THREAD.THREAD_ID));
-                    query.addJoin(b1, JoinType.LEFT_OUTER_JOIN, b1.THREAD_ID.eq(THREAD.THREAD_ID)
-                            .and(a1.CREATE_DATE.lt(b1.CREATE_DATE)));
-                    query.addConditions(b1.CREATE_DATE.isNull());
+                    query.addJoin(a1, a1.ID.eq(THREAD.ID));
+                    query.addJoin(b1, JoinType.LEFT_OUTER_JOIN, b1.ID.eq(THREAD.ID)
+                            .and(a1.CREATED_AT.lt(b1.CREATED_AT)));
+                    query.addConditions(b1.CREATED_AT.isNull());
                     query.addOrderBy(sortColumn.isAscending()
-                            ? a1.AUTHOR_ID.asc() : a1.AUTHOR_ID.desc());
+                            ? a1.AUTHOR_USER_ID.asc() : a1.AUTHOR_USER_ID.desc());
                     break;
-                case "createDate":
+                case "createdAt":
                     query.addOrderBy(sortColumn.isAscending()
-                            ? THREAD.CREATE_DATE.asc() : THREAD.CREATE_DATE.desc());
+                            ? THREAD.CREATED_AT.asc() : THREAD.CREATED_AT.desc());
                     break;
             }
         }
-        query.addConditions(THREAD.DELETED_DATE.isNull());
+        query.addConditions(THREAD.DELETED_AT.isNull());
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Thread.class);
     }
 
     @Override
-    public Thread get(long threadId) throws NotFoundException {
+    public Thread get(long id) throws NotFoundException {
         final Record commentRecord = dslContext.select()
                 .from(THREAD)
-                .where(THREAD.THREAD_ID.eq(threadId))
+                .where(THREAD.ID.eq(id))
                 .fetchOne();
         if (commentRecord == null) {
-            throw new NotFoundException("Comment with id " + threadId + " does not exist");
+            throw new NotFoundException("Comment with id " + id + " does not exist");
         }
         return commentRecord.into(Thread.class);
     }
 
     @Override
-    public boolean exists(long threadId) {
+    public boolean exists(long id) {
         return dslContext.fetchExists(DSL.select()
                 .from(THREAD)
-                .where(THREAD.THREAD_ID.eq(threadId)));
+                .where(THREAD.ID.eq(id)));
     }
 
     @Override
     public boolean update(Thread thread) {
         return dslContext.update(THREAD)
-                .set(THREAD.CREATE_DATE, thread.getCreateDate())
-                .set(THREAD.AUTHOR_ID, thread.getAuthorId())
-                .set(THREAD.DELETED_DATE, thread.getDeletedDate())
+                .set(THREAD.CREATED_AT, thread.getCreatedAt())
+                .set(THREAD.AUTHOR_USER_ID, thread.getAuthorUserId())
+                .set(THREAD.DELETED_AT, thread.getDeletedAt())
                 .set(THREAD.TITLE, thread.getTitle())
                 .set(THREAD.IS_QUIET, thread.getIsQuiet())
                 .set(THREAD.CATEGORY_ID, thread.getCategoryId())
-                .where(THREAD.THREAD_ID.equal(thread.getThreadId()))
+                .where(THREAD.ID.equal(thread.getId()))
                 .execute() > 0;
     }
 
     @Override
     public Thread create(Thread thread) {
         final ThreadRecord threadRecord = dslContext.insertInto(THREAD)
-                .set(THREAD.CREATE_DATE, thread.getCreateDate())
-                .set(THREAD.AUTHOR_ID, thread.getAuthorId())
-                .set(THREAD.DELETED_DATE, thread.getDeletedDate())
+                .set(THREAD.CREATED_AT, thread.getCreatedAt())
+                .set(THREAD.AUTHOR_USER_ID, thread.getAuthorUserId())
+                .set(THREAD.DELETED_AT, thread.getDeletedAt())
                 .set(THREAD.TITLE, thread.getTitle())
                 .set(THREAD.IS_QUIET, thread.getIsQuiet())
                 .set(THREAD.CATEGORY_ID, thread.getCategoryId())
-                .returning(THREAD.THREAD_ID)
+                .returning(THREAD.ID)
                 .fetchOne();
         if (threadRecord != null) {
-            thread.setThreadId(threadRecord.getThreadId());
+            thread.setId(threadRecord.getId());
             return thread;
         }
         return null;
@@ -160,8 +160,8 @@ public class ThreadDaoImpl implements ThreadDao {
         final Record record = dslContext.select()
                 .from(COMMENT)
                 .where(COMMENT.THREAD_ID.eq(threadId)
-                        .and(COMMENT.DELETED_DATE.isNull()))
-                .orderBy(COMMENT.CREATE_DATE.desc())
+                        .and(COMMENT.DELETED_AT.isNull()))
+                .orderBy(COMMENT.CREATED_AT.desc())
                 .limit(1)
                 .fetchOne();
         if (record == null) {
@@ -176,7 +176,7 @@ public class ThreadDaoImpl implements ThreadDao {
                 .where(COMMENT.THREAD_ID.eq(threadId))
                 .execute() > 0;
         result = result || dslContext.deleteFrom(THREAD)
-                .where(THREAD.THREAD_ID.eq(threadId))
+                .where(THREAD.ID.eq(threadId))
                 .execute() > 0;
         return result;
     }

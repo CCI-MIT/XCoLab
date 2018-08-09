@@ -7,7 +7,7 @@
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
         <xcolab:layout  title="${proposal.name} - Points"
-                        description="Points distribution for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.contestShortNameWithEndYear}'">
+                        description="Points distribution for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.titleWithEndYear}'">
         <!--@elvariable id="linkingProposals" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalWrapper>"-->
 
         <collab:script src="/js/proposals/proposalPoints.js" />
@@ -53,7 +53,7 @@
                             <a href="${linkingProposal.proposalUrl}">${linkingProposal.name}</a>
                         </td>
                         <td style="text-align: right;">
-                            <xcolab:formatDateTime millis="${linkingProposal.lastModifiedDate.time}" type="date" />
+                            <xcolab:formatDateTime millis="${linkingProposal.lastupdatedAt.time}" type="date" />
                         </td>
                     </tr>
                 </c:forEach>

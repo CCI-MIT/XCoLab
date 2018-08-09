@@ -32,12 +32,12 @@ public class ProposalMoveHistoryDaoImpl implements ProposalMoveHistoryDao {
                 .set(PROPOSAL_MOVE_HISTORY.TARGET_CONTEST_ID, proposalMoveHistory.getTargetContestId())
                 .set(PROPOSAL_MOVE_HISTORY.TARGET_PHASE_ID, proposalMoveHistory.getTargetPhaseId())
                 .set(PROPOSAL_MOVE_HISTORY.MOVING_USER_ID, proposalMoveHistory.getMovingUserId())
-                .set(PROPOSAL_MOVE_HISTORY.MOVE_DATE, proposalMoveHistory.getMoveDate())
+                .set(PROPOSAL_MOVE_HISTORY.MOVED_AT, proposalMoveHistory.getMovedAt())
                 .set(PROPOSAL_MOVE_HISTORY.MOVE_TYPE, proposalMoveHistory.getMoveType())
-                .returning(PROPOSAL_MOVE_HISTORY.ID_)
+                .returning(PROPOSAL_MOVE_HISTORY.ID)
                 .fetchOne();
         if (ret != null) {
-            proposalMoveHistory.setId_(ret.getValue(PROPOSAL_MOVE_HISTORY.ID_));
+            proposalMoveHistory.setId(ret.getValue(PROPOSAL_MOVE_HISTORY.ID));
             return proposalMoveHistory;
         } else {
             return null;
@@ -46,14 +46,14 @@ public class ProposalMoveHistoryDaoImpl implements ProposalMoveHistoryDao {
     }
 
     @Override
-    public ProposalMoveHistory get(Long id_) throws NotFoundException {
+    public ProposalMoveHistory get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_MOVE_HISTORY)
-                .where(PROPOSAL_MOVE_HISTORY.ID_.eq(id_))
+                .where(PROPOSAL_MOVE_HISTORY.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ProposalMoveHistory with id " + id_ + " does not exist");
+            throw new NotFoundException("ProposalMoveHistory with id " + id + " does not exist");
         }
         return record.into(ProposalMoveHistory.class);
 

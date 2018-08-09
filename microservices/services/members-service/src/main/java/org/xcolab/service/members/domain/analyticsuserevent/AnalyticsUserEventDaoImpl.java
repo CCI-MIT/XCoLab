@@ -19,10 +19,10 @@ public class AnalyticsUserEventDaoImpl implements AnalyticsUserEventDao {
     }
 
     @Override
-    public boolean exists(long memberId, String idString) {
+    public boolean exists(long userId, String idString) {
         return dslContext.selectCount()
                 .from(ANALYTICS_USER_EVENT)
-                .where(ANALYTICS_USER_EVENT.USER_ID.eq(memberId)
+                .where(ANALYTICS_USER_EVENT.USER_ID.eq(userId)
                     .and(ANALYTICS_USER_EVENT.ID_STRING.eq(idString)))
                 .execute() > 0;
     }

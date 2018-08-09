@@ -7,43 +7,43 @@ abstract class AbstractComment implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long commentId;
+    private Long id;
     private Long threadId;
-    private Long authorId;
-    private Timestamp createDate;
-    private Timestamp modifiedDate;
-    private Timestamp deletedDate;
+    private Long authorUserId;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private Timestamp deletedAt;
     private String content;
 
     AbstractComment() {}
 
-    AbstractComment(Long commentId, Long threadId, Long authorId, Timestamp createDate,
-            Timestamp modifiedDate, Timestamp deletedDate, String content) {
-        this.commentId = commentId;
+    AbstractComment(Long id, Long threadId, Long authorUserId, Timestamp createdAt,
+            Timestamp updatedAt, Timestamp deletedAt, String content) {
+        this.id = id;
         this.threadId = threadId;
-        this.authorId = authorId;
-        this.createDate = createDate;
-        this.modifiedDate = modifiedDate;
-        this.deletedDate = deletedDate;
+        this.authorUserId = authorUserId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
         this.content = content;
     }
 
     AbstractComment(AbstractComment comment) {
-        this.commentId = comment.commentId;
+        this.id = comment.id;
         this.threadId = comment.threadId;
-        this.authorId = comment.authorId;
-        this.createDate = comment.createDate;
-        this.modifiedDate = comment.modifiedDate;
-        this.deletedDate = comment.deletedDate;
+        this.authorUserId = comment.authorUserId;
+        this.createdAt = comment.createdAt;
+        this.updatedAt = comment.updatedAt;
+        this.deletedAt = comment.deletedAt;
         this.content = comment.content;
     }
 
-    public Long getCommentId() {
-        return this.commentId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setCommentId(Long commentId) {
-        this.commentId = commentId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getThreadId() {
@@ -54,36 +54,36 @@ abstract class AbstractComment implements Serializable {
         this.threadId = threadId;
     }
 
-    public Long getAuthorId() {
-        return this.authorId;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getModifiedDate() {
-        return this.modifiedDate;
+    public Timestamp getUpdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Timestamp getDeletedDate() {
-        return this.deletedDate;
+    public Timestamp getDeletedAt() {
+        return this.deletedAt;
     }
 
-    public void setDeletedDate(Timestamp deletedDate) {
-        this.deletedDate = deletedDate;
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     public String getContent() {
@@ -97,12 +97,12 @@ abstract class AbstractComment implements Serializable {
     @Override
     public String toString() {
         return getClass().getSimpleName() +
-                " (" + commentId +
+                " (" + id +
                 ", " + threadId +
-                ", " + authorId +
-                ", " + createDate +
-                ", " + modifiedDate +
-                ", " + deletedDate +
+                ", " + authorUserId +
+                ", " + createdAt +
+                ", " + updatedAt +
+                ", " + deletedAt +
                 ", " + content +
                 ")";
     }

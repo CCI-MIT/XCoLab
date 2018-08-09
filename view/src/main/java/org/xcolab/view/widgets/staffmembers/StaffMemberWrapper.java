@@ -34,7 +34,7 @@ public class StaffMemberWrapper implements Serializable {
             return MembersClient.getMember(staffMember.getUserId());
         } catch (MemberNotFoundException e) {
             _log.warn("Member account {} linked to staff member {} does not exist ",
-                    staffMember.getUserId(), staffMember.getId_());
+                    staffMember.getUserId(), staffMember.getId());
             return null;
         }
     }
@@ -79,7 +79,7 @@ public class StaffMemberWrapper implements Serializable {
 
     public String getUrl() {
         if (StringUtils.isBlank(staffMember.getUrl()) && colabMember != null) {
-            return "/members/profile/" + colabMember.getUserId();
+            return "/members/profile/" + colabMember.getId();
         } else {
             return staffMember.getUrl();
         }
@@ -102,7 +102,7 @@ public class StaffMemberWrapper implements Serializable {
         return nl2br(staffMember.getOrganization());
     }
 
-    public Long getStaffMemberId() {
-        return staffMember.getId_();
+    public Long getStaffuserId() {
+        return staffMember.getId();
     }
 }

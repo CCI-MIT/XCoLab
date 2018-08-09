@@ -62,7 +62,7 @@ public class CreateProposalController extends BaseProposalsController {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
-        long memberId = loggedInMember.getId_();
+        long userId = loggedInMember.getId();
 
         final ClientHelper clients = proposalContext.getClients();
         final ContestClient contestClient = clients.getContestClient();
@@ -71,9 +71,9 @@ public class CreateProposalController extends BaseProposalsController {
         final Contest contest = proposalContext.getContest();
         Proposal proposal = new Proposal();
 
-        proposal.setProposalId(0L);
+        proposal.setId(0L);
         proposal.setVisible(true);
-        proposal.setAuthorId(memberId);
+        proposal.setAuthorUserId(userId);
 
         final ContestPhase contestPhase = proposalContext.getContestPhase();
 
@@ -83,7 +83,7 @@ public class CreateProposalController extends BaseProposalsController {
                 Contest baseContest = contestClient.getContest(baseContestId);
                 Proposal baseProposalWrapper = new Proposal(
                         proposalClient.getProposal(baseProposalId),
-                        baseProposalVersion, baseContest, contestClient.getActivePhase(baseContest.getContestPK()), null);
+                        baseProposalVersion, baseContest, contestClient.getActivePhase(baseContest.getId()), null);
 
                 model.addAttribute("baseProposal", baseProposalWrapper);
 
@@ -121,7 +121,7 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("saveUrl", contest.getNewProposalLinkUrl());
         model.addAttribute("userTeams", PlatformTeamsClient.getTeams(loggedInMember));
 
-        AnalyticsUtil.publishEvent(request, memberId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
+        AnalyticsUtil.publishEvent(request, userId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_ACTION,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_LABEL,

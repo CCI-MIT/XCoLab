@@ -7,7 +7,7 @@ class AbstractProposalMoveHistory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long sourceproposalid;
     private Long sourcecontestid;
     private Long sourcephaseid;
@@ -15,13 +15,13 @@ class AbstractProposalMoveHistory implements Serializable {
     private Long targetcontestid;
     private Long targetphaseid;
     private Long movinguserid;
-    private Timestamp movedate;
+    private Timestamp movedAt;
     private String movetype;
 
     public AbstractProposalMoveHistory() {}
 
     public AbstractProposalMoveHistory(AbstractProposalMoveHistory value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.sourceproposalid = value.sourceproposalid;
         this.sourcecontestid = value.sourcecontestid;
         this.sourcephaseid = value.sourcephaseid;
@@ -29,12 +29,12 @@ class AbstractProposalMoveHistory implements Serializable {
         this.targetcontestid = value.targetcontestid;
         this.targetphaseid = value.targetphaseid;
         this.movinguserid = value.movinguserid;
-        this.movedate = value.movedate;
+        this.movedAt = value.movedAt;
         this.movetype = value.movetype;
     }
 
     public AbstractProposalMoveHistory(
-            Long id_,
+            Long id,
             Long sourceproposalid,
             Long sourcecontestid,
             Long sourcephaseid,
@@ -42,10 +42,10 @@ class AbstractProposalMoveHistory implements Serializable {
             Long targetcontestid,
             Long targetphaseid,
             Long movinguserid,
-            Timestamp movedate,
+            Timestamp movedAt,
             String movetype
     ) {
-        this.id_ = id_;
+        this.id = id;
         this.sourceproposalid = sourceproposalid;
         this.sourcecontestid = sourcecontestid;
         this.sourcephaseid = sourcephaseid;
@@ -53,16 +53,16 @@ class AbstractProposalMoveHistory implements Serializable {
         this.targetcontestid = targetcontestid;
         this.targetphaseid = targetphaseid;
         this.movinguserid = movinguserid;
-        this.movedate = movedate;
+        this.movedAt = movedAt;
         this.movetype = movetype;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getSourceProposalId() {
@@ -121,12 +121,12 @@ class AbstractProposalMoveHistory implements Serializable {
         this.movinguserid = movinguserid;
     }
 
-    public Timestamp getMoveDate() {
-        return this.movedate;
+    public Timestamp getMovedAt() {
+        return this.movedAt;
     }
 
-    public void setMoveDate(Timestamp movedate) {
-        this.movedate = movedate;
+    public void setMovedAt(Timestamp movedAt) {
+        this.movedAt = movedAt;
     }
 
     public String getMoveType() {
@@ -141,7 +141,7 @@ class AbstractProposalMoveHistory implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((sourceproposalid == null) ? 0 : sourceproposalid.hashCode());
         result = prime * result + ((sourcecontestid == null) ? 0 : sourcecontestid.hashCode());
         result = prime * result + ((sourcephaseid == null) ? 0 : sourcephaseid.hashCode());
@@ -149,7 +149,7 @@ class AbstractProposalMoveHistory implements Serializable {
         result = prime * result + ((targetcontestid == null) ? 0 : targetcontestid.hashCode());
         result = prime * result + ((targetphaseid == null) ? 0 : targetphaseid.hashCode());
         result = prime * result + ((movinguserid == null) ? 0 : movinguserid.hashCode());
-        result = prime * result + ((movedate == null) ? 0 : movedate.hashCode());
+        result = prime * result + ((movedAt == null) ? 0 : movedAt.hashCode());
         result = prime * result + ((movetype == null) ? 0 : movetype.hashCode());
         return result;
     }
@@ -166,11 +166,11 @@ class AbstractProposalMoveHistory implements Serializable {
             return false;
         }
         final AbstractProposalMoveHistory other = (AbstractProposalMoveHistory) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (sourceproposalid == null) {
@@ -222,11 +222,11 @@ class AbstractProposalMoveHistory implements Serializable {
         } else if (!movinguserid.equals(other.movinguserid)) {
             return false;
         }
-        if (movedate == null) {
-            if (other.movedate != null) {
+        if (movedAt == null) {
+            if (other.movedAt != null) {
                 return false;
             }
-        } else if (!movedate.equals(other.movedate)) {
+        } else if (!movedAt.equals(other.movedAt)) {
             return false;
         }
         if (movetype == null) {
@@ -241,9 +241,9 @@ class AbstractProposalMoveHistory implements Serializable {
 
     @Override
     public String toString() {
-        String sb = "ProposalMoveHistory (" + id_ + ", " + sourceproposalid + ", " + sourcecontestid
+        String sb = "ProposalMoveHistory (" + id + ", " + sourceproposalid + ", " + sourcecontestid
                 + ", " + sourcephaseid + ", " + targetproposalid + ", " + targetcontestid + ", "
-                + targetphaseid + ", " + movinguserid + ", " + movedate + ", " + movetype + ")";
+                + targetphaseid + ", " + movinguserid + ", " + movedAt + ", " + movetype + ")";
 
         return sb;
     }

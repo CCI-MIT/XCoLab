@@ -23,7 +23,7 @@ public class PointsDistributionUtil {
         List<PointsTarget> targets = new ArrayList<>();
         List<Member> members = ProposalClientUtil.getProposalMembers(proposalId);
         for (Member u : members) {
-            targets.add(PointsTarget.forUser(u.getUserId(), 1.0d / members.size()));
+            targets.add(PointsTarget.forUser(u.getId(), 1.0d / members.size()));
         }
         return targets;
     }
@@ -41,7 +41,7 @@ public class PointsDistributionUtil {
         List<PointsTarget> targets = new ArrayList<>();
         for (long subProposalId : subProposalIds) {
             try {
-                ProposalReference reference = ProposalClientUtil.getProposalReferenceByProposalIdSubProposalId(proposal.getProposalId(), subProposalId);
+                ProposalReference reference = ProposalClientUtil.getProposalReferenceByProposalIdSubProposalId(proposal.getId(), subProposalId);
                 final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeClientUtil
 
                         .getProposalAttribute(reference.getSectionAttributeId());
@@ -61,8 +61,8 @@ public class PointsDistributionUtil {
     public static List<PointsTarget> distributeUserDefinedAmongProposals(Proposal proposal, PointType pointType, Set<Long> subProposalIds)  {
         List<PointsTarget> targets = new ArrayList<>();
         for (PointsDistributionConfiguration pdc : PointsClientUtil
-                .getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
-            if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getProposalId()) {
+                .getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
+            if (pdc.getTargetSubProposalId() > 0 && subProposalIds.contains(pdc.getTargetSubProposalId()) && pdc.getTargetSubProposalId() != proposal.getId()) {
                 PointsTarget target = new PointsTarget();
                 target.setProposalId(pdc.getTargetSubProposalId());
                 target.setPercentage(pdc.getPercentage());

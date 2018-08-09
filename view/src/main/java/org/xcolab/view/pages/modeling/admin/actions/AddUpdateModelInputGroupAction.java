@@ -62,7 +62,7 @@ public class AddUpdateModelInputGroupAction {
         }
         modelInputGroup.setGroupType(updateModelInputGroup.getGroupType());
         modelInputGroup.setDisplayItemOrder(updateModelInputGroup.getOrder());
-        modelInputGroup.setParentGroupPK(updateModelInputGroup.getParentGroupPK());
+        modelInputGroup.setParentGroupId(updateModelInputGroup.getParentGroupPK());
 
         if (updateModelInputGroup.getId() == 0) {
             ModelingClientUtil.createModelInputGroup(modelInputGroup);

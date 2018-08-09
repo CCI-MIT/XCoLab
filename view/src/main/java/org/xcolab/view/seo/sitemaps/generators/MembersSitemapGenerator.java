@@ -33,7 +33,7 @@ public class MembersSitemapGenerator {
         for (Member member : members) {
             xmlUrlSet.addUrl(XmlUrl.Builder
                     .forLocation(siteUrl + member.getProfileLinkUrl())
-                    .lastModified(DateUtil.toLocalDateTime(member.getModifiedDate()))
+                    .lastModified(DateUtil.toLocalDateTime(member.getupdatedAt()))
                     .changeFrequency(ChangeFrequency.MONTHLY)
                     .priority(Priority.MEDIUM)
                     .build());

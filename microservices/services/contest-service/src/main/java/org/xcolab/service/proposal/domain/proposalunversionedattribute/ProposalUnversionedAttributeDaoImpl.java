@@ -31,21 +31,21 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
         final long additionalId = proposalUnversionedAttribute.getAdditionalId() != null
                 ? proposalUnversionedAttribute.getAdditionalId() : 0;
         ProposalUnversionedAttributeRecord ret = this.dslContext.insertInto(PROPOSAL_UNVERSIONED_ATTRIBUTE)
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID_, proposalUnversionedAttribute.getId_())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID, proposalUnversionedAttribute.getId())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.PROPOSAL_ID, proposalUnversionedAttribute.getProposalId())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.CREATE_AUTHOR_ID, proposalUnversionedAttribute.getCreateAuthorId())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_AUTHOR_ID, proposalUnversionedAttribute.getLastAuthorId())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.CREATE_DATE, DSL.currentTimestamp())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_UPDATE_DATE, DSL.currentTimestamp())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.FIRST_AUTHOR_USER_ID, proposalUnversionedAttribute.getFirstAuthorUserId())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_AUTHOR_USER_ID, proposalUnversionedAttribute.getLastAuthorUserId())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.CREATED_AT, DSL.currentTimestamp())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.UPDATED_AT, DSL.currentTimestamp())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NAME, proposalUnversionedAttribute.getName())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ADDITIONAL_ID, additionalId)
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NUMERIC_VALUE, proposalUnversionedAttribute.getNumericValue())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.STRING_VALUE, proposalUnversionedAttribute.getStringValue())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.REAL_VALUE, proposalUnversionedAttribute.getRealValue())
-                .returning(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID_)
+                .returning(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID)
                 .fetchOne();
         if (ret != null) {
-            proposalUnversionedAttribute.setId_(ret.getValue(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID_));
+            proposalUnversionedAttribute.setId(ret.getValue(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID));
             return proposalUnversionedAttribute;
         } else {
             return null;
@@ -54,14 +54,14 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
     }
 
     @Override
-    public ProposalUnversionedAttribute get(Long id_) throws NotFoundException {
+    public ProposalUnversionedAttribute get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_UNVERSIONED_ATTRIBUTE)
-                .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID_.eq(id_))
+                .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ProposalUnversionedAttribute with id " + id_ + " does not exist");
+            throw new NotFoundException("ProposalUnversionedAttribute with id " + id + " does not exist");
         }
         return record.into(ProposalUnversionedAttribute.class);
 
@@ -70,16 +70,16 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
     @Override
     public boolean update(ProposalUnversionedAttribute proposalUnversionedAttribute) {
         return dslContext.update(PROPOSAL_UNVERSIONED_ATTRIBUTE)
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID_, proposalUnversionedAttribute.getId_())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID, proposalUnversionedAttribute.getId())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.PROPOSAL_ID, proposalUnversionedAttribute.getProposalId())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_AUTHOR_ID, proposalUnversionedAttribute.getLastAuthorId())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_UPDATE_DATE, DSL.currentTimestamp())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_AUTHOR_USER_ID, proposalUnversionedAttribute.getLastAuthorUserId())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.UPDATED_AT, DSL.currentTimestamp())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NAME, proposalUnversionedAttribute.getName())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ADDITIONAL_ID, proposalUnversionedAttribute.getAdditionalId())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NUMERIC_VALUE, proposalUnversionedAttribute.getNumericValue())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.STRING_VALUE, proposalUnversionedAttribute.getStringValue())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.REAL_VALUE, proposalUnversionedAttribute.getRealValue())
-                .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID_.eq(proposalUnversionedAttribute.getId_()))
+                .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID.eq(proposalUnversionedAttribute.getId()))
                 .execute() > 0;
     }
 
@@ -114,9 +114,9 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
     }
 
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(PROPOSAL_UNVERSIONED_ATTRIBUTE)
-                .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID_.eq(id_))
+                .where(PROPOSAL_UNVERSIONED_ATTRIBUTE.ID.eq(id))
                 .execute();
     }
 

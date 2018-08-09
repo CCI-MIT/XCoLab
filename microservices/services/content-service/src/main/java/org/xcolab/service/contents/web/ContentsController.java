@@ -47,7 +47,7 @@ public class ContentsController {
     @RequestMapping(value = "/contentArticles", method = RequestMethod.POST)
     public ContentArticle createContentArticle(@RequestBody ContentArticle contentArticle) {
         java.util.Date date = new java.util.Date();
-        contentArticle.setCreateDate(new Timestamp(date.getTime()));
+        contentArticle.setCreatedAt(new Timestamp(date.getTime()));
         return this.contentArticleDao.create(contentArticle);
     }
 
@@ -117,30 +117,30 @@ public class ContentsController {
     public ContentArticleVersion createContentArticleVersion(
             @RequestBody ContentArticleVersion contentArticleVersion) {
         java.util.Date date = new java.util.Date();
-        contentArticleVersion.setCreateDate(new Timestamp(date.getTime()));
+        contentArticleVersion.setCreatedAt(new Timestamp(date.getTime()));
 
         ContentArticle contentArticle;
-        if (contentArticleVersion.getContentArticleId() == null
-                || contentArticleVersion.getContentArticleId() == 0L) {
+        if (contentArticleVersion.getArticleId() == null
+                || contentArticleVersion.getArticleId() == 0L) {
             contentArticle = new ContentArticle();
-            contentArticle.setAuthorId(contentArticleVersion.getAuthorId());
+            contentArticle.setAuthorUserId(contentArticleVersion.getAuthorUserId());
             contentArticle.setVisible(true);
-            contentArticle.setCreateDate(contentArticleVersion.getCreateDate());
+            contentArticle.setCreatedAt(contentArticleVersion.getCreatedAt());
             contentArticle = this.contentArticleDao.create(contentArticle);
         } else {
             try {
                 contentArticle = this.contentArticleDao
-                        .get(contentArticleVersion.getContentArticleId());
+                        .get(contentArticleVersion.getArticleId());
             } catch (NotFoundException e) {
                 throw new IllegalArgumentException(
-                        "ContentArticle " + contentArticleVersion.getContentArticleId()
+                        "ContentArticle " + contentArticleVersion.getArticleId()
                                 + " does not exist");
             }
         }
-        contentArticleVersion.setContentArticleId(contentArticle.getContentArticleId());
+        contentArticleVersion.setArticleId(contentArticle.getId());
         contentArticleVersion = this.contentArticleVersionDao.create(contentArticleVersion);
 
-        contentArticle.setMaxVersionId(contentArticleVersion.getContentArticleVersionId());
+        contentArticle.setMaxVersionId(contentArticleVersion.getId());
         contentArticle.setFolderId(contentArticleVersion.getFolderId());
         this.contentArticleDao.update(contentArticle);
 
@@ -234,6 +234,6 @@ public class ContentsController {
 
     @PutMapping("/contentPages/{pageId}")
     public boolean updateContentPage(@PathVariable long pageId, @RequestBody ContentPage page) {
-        return pageId == page.getPageId() && contentPageDao.update(page);
+        return pageId == page.getId() && contentPageDao.update(page);
     }
 }

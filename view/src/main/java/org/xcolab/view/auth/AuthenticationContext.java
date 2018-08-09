@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class AuthenticationContext {
 
-    public static final String IMPERSONATE_MEMBER_ID_COOKIE_NAME = "X-Impersonate-memberId";
+    public static final String IMPERSONATE_MEMBER_ID_COOKIE_NAME = "X-Impersonate-userId";
 
     public boolean isLoggedIn() {
         return getRealMemberOrNull() != null;
@@ -32,10 +32,10 @@ public class AuthenticationContext {
     public Member getMemberOrNull(HttpServletRequest request) {
         final Member realMemberOrNull = getRealMemberOrNull();
         if (PermissionsClient.canAdminAll(realMemberOrNull)) {
-            Long impersonatedMemberId = getImpersonatedMemberId(request);
-            if (impersonatedMemberId != null) {
+            Long impersonateduserId = getImpersonateduserId(request);
+            if (impersonateduserId != null) {
                 try {
-                    return MembersClient.getMember(impersonatedMemberId);
+                    return MembersClient.getMember(impersonateduserId);
                 } catch (MemberNotFoundException e) {
                     return realMemberOrNull;
                 }
@@ -44,14 +44,14 @@ public class AuthenticationContext {
         return realMemberOrNull;
     }
 
-    private static Long getImpersonatedMemberId(HttpServletRequest request) {
+    private static Long getImpersonateduserId(HttpServletRequest request) {
         final Cookie cookie = WebUtils.getCookie(request, IMPERSONATE_MEMBER_ID_COOKIE_NAME);
 
-        Long impersonatedMemberId = null;
+        Long impersonateduserId = null;
         if (cookie != null && StringUtils.isNumeric(cookie.getValue())) {
-            impersonatedMemberId = Long.parseLong(cookie.getValue());
+            impersonateduserId = Long.parseLong(cookie.getValue());
         }
-        return impersonatedMemberId;
+        return impersonateduserId;
     }
 
     public Member getRealMemberOrNull() {

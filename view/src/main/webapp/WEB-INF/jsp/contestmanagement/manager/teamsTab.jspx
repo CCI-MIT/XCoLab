@@ -66,13 +66,13 @@
                             <c:forEach var="member" items="${teamBean.members}" varStatus="status">
                                 <tr class="${status.index mod 2 > 0 ? 'even' : 'odd'}">
                                     <td>
-                                        <xcolab:userPortrait portraitId="${member.portraitId}" memberId="${member.userId}"
+                                        <xcolab:userPortrait portraitId="${member.portraitId}" userId="${member.id}"
                                                              width="42" height="42"/>
-                                        <xcolab:userLinkSimple memberId="${member.userId }" text="${member.displayName }" />
+                                        <xcolab:userLinkSimple userId="${member.id }" text="${member.displayName }" />
                                     </td>
                                     <td style="vertical-align: middle">
                                         <button type="button" class="btn btn-link js-EnhancedLink" data-method="post"
-                                                data-url="TEAMS/${teamId}/removeMember/${member.id_}">Remove</button>
+                                                data-url="TEAMS/${teamId}/removeMember/${member.id}">Remove</button>
                                     </td>
                                 </tr>
                             </c:forEach>

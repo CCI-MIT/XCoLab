@@ -38,7 +38,7 @@ public class RatingBean {
 
         //initialize ratingValues and types
         for (ProposalRatingType type : presetRatingTypes) {
-            ratingValues.put(type.getId_(), "");
+            ratingValues.put(type.getId(), "");
             ratingTypes.add(new ProposalRatingTypeWrapper(type));
         }
 

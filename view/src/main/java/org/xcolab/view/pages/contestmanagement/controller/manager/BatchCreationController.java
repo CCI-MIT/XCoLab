@@ -16,11 +16,11 @@ import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.IdListUtil;
@@ -61,10 +61,10 @@ public class BatchCreationController {
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L,
                         1300201L, 1300302L,
                         1300401L, 1300601L, 1300602L);
-        for (PlanTemplate proposalTemplate : PlanTemplateClientUtil.getPlanTemplates()) {
-            if (!excludedList.contains(proposalTemplate.getId_())) {
+        for (ProposalTemplate proposalTemplate : ProposalTemplateClientUtil.getPlanTemplates()) {
+            if (!excludedList.contains(proposalTemplate.getId())) {
                 selectItems
-                        .add(new LabelValue(proposalTemplate.getId_(), proposalTemplate.getName()));
+                        .add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
             }
         }
 
@@ -151,11 +151,11 @@ public class BatchCreationController {
                         contestBatchBean.getPlanTemplateId(),
                         contestBatchBean.getScheduleTemplateId(),
                         contestBatchBean.getContestTier(),
-                        contestBatchBean.getContestType(), member.getId_());
+                        contestBatchBean.getContestType(), member.getId());
 
-                contestLinks.put("" + contest.getContestShortName(),
+                contestLinks.put("" + contest.getTitle(),
                         "/admin/contest/details/contestId/"
-                                + contest.getContestPK() + "/tab/DESCRIPTION");
+                                + contest.getId() + "/tab/DESCRIPTION");
 
                 processOntologyTerms(contestCSVBean, contest);
             }
@@ -182,7 +182,7 @@ public class BatchCreationController {
             if (focusAreaId == 0L) {
                 FocusArea focusArea = new FocusArea();
                 focusArea = OntologyClientUtil.createFocusArea(focusArea);
-                focusAreaId = focusArea.getId_();
+                focusAreaId = focusArea.getId();
 
                 for (Map.Entry<Long, Integer> ontologyTerm : uniqueSelectedOntologyTerms
                         .entrySet()) {
@@ -234,20 +234,20 @@ public class BatchCreationController {
             Long contestScheduleId,
             Long contestTierId,
             Long contestTypeId,
-            long authorId) {
+            long authorUserId) {
 
-        Contest contest = ContestCreatorUtil.createNewContest(contestShortName, authorId);
-        contest.setContestDescription(contestDescription);
-        contest.setContestName(contestQuestion);
+        Contest contest = ContestCreatorUtil.createNewContest(contestShortName, authorUserId);
+        contest.setDescription(contestDescription);
+        contest.setQuestion(contestQuestion);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setSponsorLink(sponsorLink);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
-        contest.setShow_in_tile_view(true);
-        contest.setShow_in_list_view(true);
-        contest.setShow_in_outline_view(true);
-        contest.setPlanTemplateId(planTemplateId);
+        contest.setShowInTileView(true);
+        contest.setShowInListView(true);
+        contest.setShowInOutlineView(true);
+        contest.setProposalTemplateId(planTemplateId);
         contest.setContestScheduleId(contestScheduleId);
         contest.setContestTier(contestTierId);
         contest.setContestTypeId(contestTypeId);

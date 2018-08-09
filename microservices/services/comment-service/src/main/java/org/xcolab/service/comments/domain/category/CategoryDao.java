@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoryDao {
 
-    List<Category> findByGiven(PaginationHelper paginationHelper, Long groupId, Long authorId);
+    List<Category> findByGiven(PaginationHelper paginationHelper, Long groupId, Long authorUserId);
 
     Category get(long categoryId) throws NotFoundException;
     boolean update(Category category);

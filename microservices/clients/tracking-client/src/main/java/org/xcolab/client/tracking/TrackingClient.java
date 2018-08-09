@@ -18,7 +18,7 @@ public final class TrackingClient {
     public static TrackedVisit addTrackedVisit(String uuid, String url, String ip,
             String browser, String referer, String headers, Long userId) {
         TrackedVisit trackedVisit = new TrackedVisit();
-        trackedVisit.setUuid_(uuid);
+        trackedVisit.setVisitorUuid(uuid);
         trackedVisit.setUrl(url);
         trackedVisit.setIp(ip);
         trackedVisit.setBrowser(browser);

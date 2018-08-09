@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.PROPOSAL;
-import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
+import static org.xcolab.model.Tables.PROPOSAL2_PHASE;
 
 @Repository
 public class ContestPhaseDaoImpl implements ContestPhaseDao {
@@ -35,20 +35,20 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     public ContestPhase create(ContestPhase contestPhase) {
 
         ContestPhaseRecord record = this.dslContext.insertInto(CONTEST_PHASE)
-                .set(CONTEST_PHASE.CONTEST_PK, contestPhase.getContestPK())
-                .set(CONTEST_PHASE.CONTEST_PHASE_TYPE, contestPhase.getContestPhaseType())
+                .set(CONTEST_PHASE.CONTEST_ID, contestPhase.getContestId())
+                .set(CONTEST_PHASE.CONTEST_PHASE_TYPE_ID, contestPhase.getContestPhaseTypeId())
                 .set(CONTEST_PHASE.CONTEST_SCHEDULE_ID, contestPhase.getContestScheduleId())
                 .set(CONTEST_PHASE.CONTEST_PHASE_AUTOPROMOTE, contestPhase.getContestPhaseAutopromote())
                 .set(CONTEST_PHASE.PHASE_START_DATE, contestPhase.getPhaseStartDate())
                 .set(CONTEST_PHASE.PHASE_END_DATE, contestPhase.getPhaseEndDate())
-                .set(CONTEST_PHASE.CREATED, DSL.currentTimestamp())
-                .set(CONTEST_PHASE.UPDATED, DSL.currentTimestamp())
-                .returning(CONTEST_PHASE.CONTEST_PHASE_PK)
+                .set(CONTEST_PHASE.CREATED_AT, DSL.currentTimestamp())
+                .set(CONTEST_PHASE.UPDATED_AT, DSL.currentTimestamp())
+                .returning(CONTEST_PHASE.ID)
                 .fetchOne();
         if (record == null) {
             throw new IllegalStateException("Could not retrieve inserted id");
         } else {
-            contestPhase.setContestPhasePK(record.getValue(CONTEST_PHASE.CONTEST_PHASE_PK));
+            contestPhase.setId(record.getValue(CONTEST_PHASE.ID));
             return contestPhase;
         }
     }
@@ -56,25 +56,25 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     @Override
     public boolean update(ContestPhase contestPhase) {
         return dslContext.update(CONTEST_PHASE)
-                .set(CONTEST_PHASE.CONTEST_PK, contestPhase.getContestPK())
-                .set(CONTEST_PHASE.CONTEST_PHASE_TYPE, contestPhase.getContestPhaseType())
+                .set(CONTEST_PHASE.CONTEST_ID, contestPhase.getContestId())
+                .set(CONTEST_PHASE.CONTEST_PHASE_TYPE_ID, contestPhase.getContestPhaseTypeId())
                 .set(CONTEST_PHASE.CONTEST_SCHEDULE_ID, contestPhase.getContestScheduleId())
                 .set(CONTEST_PHASE.CONTEST_PHASE_AUTOPROMOTE, contestPhase.getContestPhaseAutopromote())
                 .set(CONTEST_PHASE.PHASE_START_DATE, contestPhase.getPhaseStartDate())
                 .set(CONTEST_PHASE.PHASE_END_DATE, contestPhase.getPhaseEndDate())
-                .set(CONTEST_PHASE.UPDATED, DSL.currentTimestamp())
-                .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhase.getContestPhasePK()))
+                .set(CONTEST_PHASE.UPDATED_AT, DSL.currentTimestamp())
+                .where(CONTEST_PHASE.ID.eq(contestPhase.getId()))
                 .execute() > 0;
     }
 
 
     @Override
-    public boolean delete(Long contestPhasePK) {
-        dslContext.deleteFrom(PROPOSAL_2_PHASE)
-                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhasePK))
+    public boolean delete(Long contestPhaseId) {
+        dslContext.deleteFrom(PROPOSAL2_PHASE)
+                .where(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId))
                 .execute();
         return dslContext.deleteFrom(CONTEST_PHASE)
-                .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
+                .where(CONTEST_PHASE.ID.eq(contestPhaseId))
                 .execute() > 0;
     }
 
@@ -90,22 +90,21 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     }
 
     @Override
-    public List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId,
+    public List<ContestPhase> findByGiven(Long contestId, Long contestScheduleId,
             Long contestPhaseTypeId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_PHASE).getQuery();
 
-        if (contestPK != null) {
-            query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestPK));
+        if (contestId != null) {
+            query.addConditions(CONTEST_PHASE.CONTEST_ID.eq(contestId));
         }
 
         if (contestScheduleId != null) {
             query.addConditions(CONTEST_PHASE.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
-            query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(0L));
         }
 
         if (contestPhaseTypeId != null) {
-            query.addConditions(CONTEST_PHASE.CONTEST_PHASE_TYPE.eq(contestPhaseTypeId));
+            query.addConditions(CONTEST_PHASE.CONTEST_PHASE_TYPE_ID.eq(contestPhaseTypeId));
         }
 
         query.addOrderBy(CONTEST_PHASE.PHASE_START_DATE.asc());
@@ -126,10 +125,10 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
 
     //ContestPhaseLocalServiceUtil.getContestPhase
     @Override
-    public Optional<ContestPhase> get(Long contestPhasePK) throws NotFoundException {
+    public Optional<ContestPhase> get(Long contestPhaseId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(CONTEST_PHASE)
-                .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
+                .where(CONTEST_PHASE.ID.eq(contestPhaseId))
                 .fetchOne();
 
         if (record == null) {
@@ -139,19 +138,19 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
     }
 
     @Override
-    public boolean exists(Long contestPhasePK) {
+    public boolean exists(Long contestPhaseId) {
         return dslContext.selectCount()
                 .from(CONTEST_PHASE)
-                .where(CONTEST_PHASE.CONTEST_PHASE_PK.eq(contestPhasePK))
+                .where(CONTEST_PHASE.ID.eq(contestPhaseId))
                 .fetchOne().into(Integer.class) > 0;
     }
 
     @Override
     public List<Long> getProposalDiscussionThreadsInPhase(long phaseId) {
         return dslContext.select(PROPOSAL.DISCUSSION_ID)
-                .from(PROPOSAL_2_PHASE)
-                .join(PROPOSAL).on(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID))
-                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(phaseId)
+                .from(PROPOSAL2_PHASE)
+                .join(PROPOSAL).on(PROPOSAL2_PHASE.PROPOSAL_ID.eq(PROPOSAL.ID))
+                .where(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(phaseId)
                         .and(PROPOSAL.VISIBLE.eq(true)))
                 .fetch().into(Long.class);
     }

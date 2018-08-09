@@ -61,7 +61,7 @@ public class DiscussionSearchItem extends AbstractSearchItem {
             ret = getContestDiscussionUrl();
         }
         if (ret == null) {
-            _log.error("URL for thread {} not resolvable", thread.getThreadId());
+            _log.error("URL for thread {} not resolvable", thread.getId());
             return "";
         }
         return ret;
@@ -69,7 +69,7 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private String getProposalDiscussionUrl() {
         try {
-            return ProposalClientUtil.getProposalByThreadId(thread.getThreadId())
+            return ProposalClientUtil.getProposalByThreadId(thread.getId())
                     .getProposalDiscussionUrl();
         } catch (ProposalNotFoundException e) {
             return null;
@@ -78,7 +78,7 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private String getContestDiscussionUrl() {
         try {
-            Contest contest = ContestClientUtil.getContestByThreadId(thread.getThreadId());
+            Contest contest = ContestClientUtil.getContestByThreadId(thread.getId());
             return contest.getContestDiscussionLinkUrl();
         } catch (ContestNotFoundException e1) {
             return null;

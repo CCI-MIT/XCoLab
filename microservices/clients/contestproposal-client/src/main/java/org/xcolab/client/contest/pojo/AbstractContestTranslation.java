@@ -10,24 +10,24 @@ public abstract class AbstractContestTranslation implements Serializable {
 
     private Long contestId;
     private String lang;
-    private String contestName;
-    private String contestShortName;
-    private String contestDescription;
-    private Timestamp createDate;
-    private Timestamp modifiedDate;
-    private Long authorId;
+    private String question;
+    private String title;
+    private String description;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private Long authorUserId;
 
     public AbstractContestTranslation() {}
 
     public AbstractContestTranslation(AbstractContestTranslation value) {
         this.contestId = value.contestId;
         this.lang = value.lang;
-        this.contestName = value.contestName;
-        this.contestShortName = value.contestShortName;
-        this.contestDescription = value.contestDescription;
-        this.createDate = value.createDate;
-        this.modifiedDate = value.modifiedDate;
-        this.authorId = value.authorId;
+        this.question = value.question;
+        this.title = value.title;
+        this.description = value.description;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
+        this.authorUserId = value.authorUserId;
     }
 
     public Long getContestId() {
@@ -46,52 +46,52 @@ public abstract class AbstractContestTranslation implements Serializable {
         this.lang = lang;
     }
 
-    public String getContestName() {
-        return this.contestName;
+    public String getQuestion() {
+        return this.question;
     }
 
-    public void setContestName(String contestName) {
-        this.contestName = contestName;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
-    public String getContestShortName() {
-        return this.contestShortName;
+    public String getTitle() {
+        return this.title;
     }
 
-    public void setContestShortName(String contestShortName) {
-        this.contestShortName = contestShortName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getContestDescription() {
-        return this.contestDescription;
+    public String getDescription() {
+        return this.description;
     }
 
-    public void setContestDescription(String contestDescription) {
-        this.contestDescription = contestDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getModifiedDate() {
-        return this.modifiedDate;
+    public Timestamp getupdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setupdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Long getAuthorId() {
-        return this.authorId;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
     @Override
@@ -104,25 +104,25 @@ public abstract class AbstractContestTranslation implements Serializable {
         }
         AbstractContestTranslation that = (AbstractContestTranslation) o;
         return Objects.equals(contestId, that.contestId) && Objects.equals(lang, that.lang)
-                && Objects.equals(contestName, that.contestName)
-                && Objects.equals(contestShortName, that.contestShortName)
-                && Objects.equals(contestDescription, that.contestDescription)
-                && Objects.equals(createDate, that.createDate)
-                && Objects.equals(modifiedDate, that.modifiedDate)
-                && Objects.equals(authorId, that.authorId);
+                && Objects.equals(question, that.question)
+                && Objects.equals(title, that.title)
+                && Objects.equals(description, that.description)
+                && Objects.equals(createdAt, that.createdAt)
+                && Objects.equals(updatedAt, that.updatedAt)
+                && Objects.equals(authorUserId, that.authorUserId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contestId, lang, contestName, contestShortName, contestDescription,
-                createDate, modifiedDate, authorId);
+        return Objects.hash(contestId, lang, question, title, description,
+                createdAt, updatedAt, authorUserId);
     }
 
     @Override
     public String toString() {
 
-        return "ContestTranslation (" + contestId + ", " + lang + ", " + contestName + ", "
-                + contestShortName + ", " + contestDescription + ", " + createDate + ", "
-                + modifiedDate + ", " + authorId + ")";
+        return "ContestTranslation (" + contestId + ", " + lang + ", " + question + ", "
+                + title + ", " + description + ", " + createdAt + ", "
+                + updatedAt + ", " + authorUserId + ")";
     }
 }

@@ -23,11 +23,10 @@ public class ContestPhaseBean implements Serializable {
     public static final Long CREATE_CONTEST_PHASE_PK = -1L;
     public static final Long DEFAULT_CONTEST_SCHEDULE = -1L;
 
-    private Long contestSchedulePK;
-    private Long contestPhasePK;
-    private Long contestPK;
-    private Long contestPhaseType;
-    private Long contestPhaseTypeOld;
+    private Long id;
+    private Long contestId;
+    private Long contestPhaseTypeId;
+    private Long contestPhaseTypeIdOld;
     private Long contestScheduleId;
     @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
     @NotNull(message = "Phase start date must not be empty.")
@@ -43,11 +42,11 @@ public class ContestPhaseBean implements Serializable {
     }
 
     public ContestPhaseBean(ContestPhase contestPhase) {
-        this.contestPhasePK = contestPhase.getContestPhasePK();
-        this.contestPK = contestPhase.getContestPK();
-        this.contestPhaseType = contestPhase.getContestPhaseType();
-        if (contestPhase.getContestPhaseType() != null) {
-            this.contestPhaseTypeOld = contestPhase.getContestPhaseType();
+        this.id = contestPhase.getId();
+        this.contestId = contestPhase.getContestId();
+        this.contestPhaseTypeId = contestPhase.getContestPhaseTypeId();
+        if (contestPhase.getContestPhaseTypeId() != null) {
+            this.contestPhaseTypeIdOld = contestPhase.getContestPhaseTypeId();
         }
         this.contestScheduleId = contestPhase.getContestScheduleId();
         this.phaseStartDate = contestPhase.getPhaseStartDate();
@@ -59,12 +58,12 @@ public class ContestPhaseBean implements Serializable {
         for (Contest contest : contestsUsingThisContestPhase) {
             List<ContestPhase> contestPhases = ContestClientUtil
                     .getPhasesForContestScheduleIdAndContest(this.contestScheduleId,
-                            contest.getContestPK());
+                            contest.getId());
             for (ContestPhase contestPhase1 : contestPhases) {
                 if (Objects
-                        .equals(contestPhase1.getContestPhaseType(), this.contestPhaseType)) {
+                        .equals(contestPhase1.getContestPhaseTypeId(), this.contestPhaseTypeId)) {
                     List<Proposal2Phase> proposal2PhaseList = ProposalPhaseClientUtil.
-                            getProposal2PhaseByContestPhaseId(contestPhase1.getContestPhasePK());
+                            getProposal2PhaseByContestPhaseId(contestPhase1.getId());
                     if (!proposal2PhaseList.isEmpty()) {
                         this.contestPhaseHasProposalAssociations = true;
                         break;
@@ -74,48 +73,40 @@ public class ContestPhaseBean implements Serializable {
         }
     }
 
-    public ContestPhaseBean(ContestPhaseTypeValue contestPhaseType, Date phaseStartDate,
+    public ContestPhaseBean(ContestPhaseTypeValue contestPhaseTypeId, Date phaseStartDate,
             Date phaseEndDate) {
         this.phaseStartDate = phaseStartDate;
         this.phaseEndDate = phaseEndDate;
-        this.contestPhaseType = contestPhaseType.getTypeId();
+        this.contestPhaseTypeId = contestPhaseTypeId.getTypeId();
     }
 
-    public ContestPhaseBean(Long contestPhaseType, Date phaseStartDate) {
-        this.contestPhaseType = contestPhaseType;
+    public ContestPhaseBean(Long contestPhaseTypeId, Date phaseStartDate) {
+        this.contestPhaseTypeId = contestPhaseTypeId;
         this.phaseStartDate = phaseStartDate;
     }
 
-    public Long getContestSchedulePK() {
-        return contestSchedulePK;
+    public Long getId() {
+        return id;
     }
 
-    public void setContestSchedulePK(Long contestSchedulePK) {
-        this.contestSchedulePK = contestSchedulePK;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getContestPhasePK() {
-        return contestPhasePK;
+    public Long getContestId() {
+        return contestId;
     }
 
-    public void setContestPhasePK(Long contestPhasePK) {
-        this.contestPhasePK = contestPhasePK;
+    public void setContestId(Long contestId) {
+        this.contestId = contestId;
     }
 
-    public Long getContestPK() {
-        return contestPK;
+    public Long getContestPhaseTypeId() {
+        return contestPhaseTypeId;
     }
 
-    public void setContestPK(Long contestPK) {
-        this.contestPK = contestPK;
-    }
-
-    public Long getContestPhaseType() {
-        return contestPhaseType;
-    }
-
-    public void setContestPhaseType(Long contestPhaseType) {
-        this.contestPhaseType = contestPhaseType;
+    public void setContestPhaseTypeId(Long contestPhaseTypeId) {
+        this.contestPhaseTypeId = contestPhaseTypeId;
     }
 
     public Date getPhaseStartDate() {
@@ -159,12 +150,12 @@ public class ContestPhaseBean implements Serializable {
     }
 
     public void persist() {
-        if (contestPhasePK.equals(CREATE_CONTEST_PHASE_PK)) {
+        if (id.equals(CREATE_CONTEST_PHASE_PK)) {
             createNewContestPhase();
         }
 
         if (contestPhaseDeleted) {
-            ContestClientUtil.deleteContestPhase(contestPhasePK);
+            ContestClientUtil.deleteContestPhase(id);
         } else {
             ContestClientUtil.updateContestPhase(getContestPhase());
         }
@@ -174,22 +165,22 @@ public class ContestPhaseBean implements Serializable {
     private void createNewContestPhase() {
         ContestPhase contestPhase = new ContestPhase();
         contestPhase = ContestClientUtil.createContestPhase(contestPhase);
-        contestPhasePK = contestPhase.getContestPhasePK();
+        id = contestPhase.getId();
     }
 
     //TODO COLAB-2595: improve naming?
     public ContestPhase getContestPhase() {
         ContestPhase contestPhase;
-        if (contestPhasePK != null && contestPhasePK > 0) {
-            contestPhase = ContestClientUtil.getContestPhase(contestPhasePK);
+        if (id != null && id > 0) {
+            contestPhase = ContestClientUtil.getContestPhase(id);
         } else {
             contestPhase = new ContestPhase();
         }
-        contestPhase.setContestPK(contestPK);
-        if (contestPhaseType != null) {
-            contestPhase.setContestPhaseType(contestPhaseType);
+        contestPhase.setContestId(contestId);
+        if (contestPhaseTypeId != null) {
+            contestPhase.setContestPhaseTypeId(contestPhaseTypeId);
         } else {
-            contestPhase.setContestPhaseType(contestPhaseTypeOld);
+            contestPhase.setContestPhaseTypeId(contestPhaseTypeIdOld);
         }
         contestPhase.setContestScheduleId(contestScheduleId);
         if (phaseStartDate != null) {
@@ -203,11 +194,11 @@ public class ContestPhaseBean implements Serializable {
             contestPhase.setPhaseEndDate(null);
         }
 
-        if (contestPhaseType != null) {
-            ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseType);
+        if (contestPhaseTypeId != null) {
+            ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseTypeId);
             contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
-        } else if (contestPhaseTypeOld != null) {
-            ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseTypeOld);
+        } else if (contestPhaseTypeIdOld != null) {
+            ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseTypeIdOld);
             contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
         } else {
             contestPhase.setContestPhaseAutopromote(null);
@@ -215,11 +206,11 @@ public class ContestPhaseBean implements Serializable {
         return contestPhase;
     }
 
-    public Long getContestPhaseTypeOld() {
-        return contestPhaseTypeOld;
+    public Long getContestPhaseTypeIdOld() {
+        return contestPhaseTypeIdOld;
     }
 
-    public void setContestPhaseTypeOld(Long contestPhaseTypeOld) {
-        this.contestPhaseTypeOld = contestPhaseTypeOld;
+    public void setContestPhaseTypeIdOld(Long contestPhaseTypeIdOld) {
+        this.contestPhaseTypeIdOld = contestPhaseTypeIdOld;
     }
 }

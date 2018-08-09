@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ProposalRatingTypeDao {
 
-    ProposalRatingType get(Long id_) throws NotFoundException;
+    ProposalRatingType get(Long id) throws NotFoundException;
+
     List<ProposalRatingType> findByGiven(Integer judgeType, Boolean active);
 }

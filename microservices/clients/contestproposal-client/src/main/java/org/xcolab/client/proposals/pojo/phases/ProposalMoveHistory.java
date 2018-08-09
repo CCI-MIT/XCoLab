@@ -23,7 +23,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory {
     }
 
     public ProposalMoveHistory(
-            Long id_,
+            Long id,
             Long sourceproposalid,
             Long sourcecontestid,
             Long sourcephaseid,
@@ -34,7 +34,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory {
             Timestamp movedate,
             String movetype
     ) {
-        super(id_, sourceproposalid, sourcecontestid, sourcephaseid, targetproposalid,
+        super(id, sourceproposalid, sourcecontestid, sourcephaseid, targetproposalid,
                 targetcontestid, targetphaseid, movinguserid, movedate, movetype);
     }
 
@@ -93,7 +93,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory {
         return MoveType.valueOf(this.getMoveType());
     }
 
-//    public DateTime getMoveDate() {
-//        return new DateTime(this.getMoveDate());
+//    public DateTime getMovedAt() {
+//        return new DateTime(this.getMovedAt());
 //    }
 }

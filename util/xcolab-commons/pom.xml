@@ -47,14 +47,6 @@
         </dependency>
 
 
-        <!-- Testing dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-
         <!-- JSON dependencies -->
         <dependency>
             <groupId>javax.json</groupId>

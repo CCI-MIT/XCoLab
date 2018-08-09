@@ -112,11 +112,11 @@ public class ContestClient {
 
     public Contest createContest(Long userId, String name) {
         Contest c = new Contest();
-        c.setAuthorId(userId);
-        c.setContestName(name);
-        c.setContestShortName(name);
+        c.setAuthorUserId(userId);
+        c.setQuestion(name);
+        c.setTitle(name);
         c.setContestUrlName(c.generateContestUrlName());
-        c.setContestDescription("");
+        c.setDescription("");
         c.setContestModelDescription("");
         c.setContestPositionsDescription("");
         c.setContestActive(false);
@@ -128,7 +128,7 @@ public class ContestClient {
         c.setFocusAreaId(null);
         c.setContestTier(0L);
         c.setContestLogoId(0L);
-        c.setFeatured_(false);
+        c.setFeatured(false);
         c.setPlansOpenByDefault(false);
         c.setSponsorLogoId(0L);
         c.setSponsorLink("");
@@ -177,7 +177,7 @@ public class ContestClient {
 
     public boolean updateContest(Contest contest) {
         final Boolean result =
-                contestResource.update(new ContestDto(contest), contest.getContestPK())
+                contestResource.update(new ContestDto(contest), contest.getId())
                         .execute();
         //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
@@ -248,9 +248,9 @@ public class ContestClient {
     }
 
 
-    public boolean isContestNameYearUnique(String contestShortName, Long year,Long currentContestId) {
+    public boolean isContestTitleYearUnique(String contestShortName, Long year,Long currentContestId) {
 
-        return contestResource.collectionService("isContestNameYearUnique", Boolean.class)
+        return contestResource.collectionService("isContestTitleYearUnique", Boolean.class)
                 .queryParam("contestShortName", contestShortName)
                 .queryParam("year",year)
                 .queryParam("currentContestId",currentContestId)
@@ -356,7 +356,7 @@ public class ContestClient {
     }
 
     public boolean updateContestCollectionCard(ContestCollectionCard contestCollectionCard) {
-        return contestCollectionCardRestResource.update(new ContestCollectionCardDto(contestCollectionCard),contestCollectionCard.getId_())
+        return contestCollectionCardRestResource.update(new ContestCollectionCardDto(contestCollectionCard),contestCollectionCard.getId())
                 .execute();
     }
 
@@ -424,9 +424,9 @@ public class ContestClient {
                 .execute(), serviceNamespace);
     }
 
-    public Map<Long, String> getModelIdsAndNames(long contestPK) {
+    public Map<Long, String> getModelIdsAndNames(long contestId) {
         try {
-            List<Long> modelIds = getModelIds(contestPK);
+            List<Long> modelIds = getModelIds(contestId);
 
             Map<Long, String> ret = new HashMap<>();
             for (Long modelId : modelIds) {
@@ -443,8 +443,8 @@ public class ContestClient {
         }
     }
 
-    public List<Long> getModelIds(long contestPK) throws ContestNotFoundException {
-        Contest contest = getContest(contestPK);
+    public List<Long> getModelIds(long contestId) throws ContestNotFoundException {
+        Contest contest = getContest(contestId);
         List<Long> modelIds = new ArrayList<>();
 
         if (StringUtils.isNotBlank(contest.getOtherModels())) {
@@ -525,7 +525,7 @@ public class ContestClient {
 
     public boolean updateContestSchedule(ContestSchedule contestSchedule) {
         return contestScheduleResource
-                .update(new ContestScheduleDto(contestSchedule), contestSchedule.getId_())
+                .update(new ContestScheduleDto(contestSchedule), contestSchedule.getId())
                 .cacheName(CacheName.MISC_REQUEST)
                 .execute();
     }
@@ -573,9 +573,9 @@ public class ContestClient {
     }
 
     public int getPointsAccessibleForActivePhaseOfContest(Contest contest) {
-        ContestPhase activePhase = getActivePhase(contest.getContestPK());
+        ContestPhase activePhase = getActivePhase(contest.getId());
         if (activePhase != null) {
-            ContestPhaseType cpType = getContestPhaseType(activePhase.getContestPhaseType());
+            ContestPhaseType cpType = getContestPhaseType(activePhase.getContestPhaseTypeId());
             if (cpType != null) {
                 return cpType.getPointsAccessible();
             }
@@ -599,13 +599,13 @@ public class ContestClient {
                 .execute().toPojo(serviceNamespace);
     }
 
-    public void deleteContestPhase(Long contestPhasePK) {
-        contestPhasesResource.delete(contestPhasePK).execute();
+    public void deleteContestPhase(Long contestPhaseId) {
+        contestPhasesResource.delete(contestPhaseId).execute();
     }
 
     public boolean updateContestPhase(ContestPhase contestPhase) {
         return contestPhasesResource
-                .update(new ContestPhaseDto(contestPhase), contestPhase.getContestPhasePK())
+                .update(new ContestPhaseDto(contestPhase), contestPhase.getId())
                 .execute();
     }
 
@@ -614,29 +614,23 @@ public class ContestClient {
                 .execute().toPojo(serviceNamespace);
     }
 
-    public List<ContestPhase> getAllContestPhases(Long contestPK) {
+    public List<ContestPhase> getAllContestPhases(Long contestId) {
         return DtoUtil.toPojos(contestPhasesResource.list()
-                .queryParam("contestPK", contestPK)
-                .execute(), serviceNamespace);
-    }
-
-    public List<ContestPhase> getPhasesForContestScheduleId(Long contestScheduleId) {
-        return DtoUtil.toPojos(contestPhasesResource.list()
-                .queryParam("contestScheduleId", contestScheduleId)
+                .queryParam("contestId", contestId)
                 .execute(), serviceNamespace);
     }
 
     public List<ContestPhase> getPhasesForContestScheduleIdAndContest(Long contestScheduleId,
-            Long contestPK) {
+            Long contestId) {
         return DtoUtil.toPojos(contestPhasesResource.list()
-                .queryParam("contestPK", contestPK)
+                .queryParam("contestId", contestId)
                 .queryParam("contestScheduleId", contestScheduleId)
                 .execute(), serviceNamespace);
     }
 
     public List<ContestPhase> getTemplatePhasesForContestScheduleId(Long contestScheduleId) {
         return DtoUtil.toPojos(contestPhasesResource.list()
-                .queryParam("contestPK", ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID)
+                .queryParam("contestId", ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID)
                 .queryParam("contestScheduleId", contestScheduleId)
                 .execute(), serviceNamespace);
     }
@@ -678,11 +672,11 @@ public class ContestClient {
     }
 
     public String getContestPhaseName(ContestPhase ck) {
-        return getContestPhaseType(ck.getContestPhaseType()).getName();
+        return getContestPhaseType(ck.getContestPhaseTypeId()).getName();
     }
 
-    public ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
-        return contestPhaseRibbonTypeResource.get(id_)
+    public ContestPhaseRibbonType getContestPhaseRibbonType(long id) {
+        return contestPhaseRibbonTypeResource.get(id)
                 .execute().toPojo(serviceNamespace);
     }
 
@@ -691,17 +685,17 @@ public class ContestClient {
                 .execute(), serviceNamespace);
     }
 
-    public boolean isMemberSubscribedToContest(long contestPK, long userId) {
+    public boolean isMemberSubscribedToContest(long contestId, long userId) {
         return ActivitiesClientUtil.isSubscribedToActivity(userId,
-                ActivityCategory.CONTEST, contestPK, "");
+                ActivityCategory.CONTEST, contestId, "");
     }
 
-    public void subscribeMemberToContest(long contestPK, long userId) {
-        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestPK, "");
+    public void subscribeMemberToContest(long contestId, long userId) {
+        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
     }
 
-    public void unsubscribeMemberFromContest(long contestPK, long userId) {
-        ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.CONTEST, contestPK);
+    public void unsubscribeMemberFromContest(long contestId, long userId) {
+        ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.CONTEST, contestId);
     }
 
     public List<ContestCollectionCard> getSubContestCollectionCards(long parentCollectionCardId) {

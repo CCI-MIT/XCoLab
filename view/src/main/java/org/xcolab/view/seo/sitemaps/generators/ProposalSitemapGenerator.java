@@ -50,7 +50,7 @@ public class ProposalSitemapGenerator {
         for (Proposal proposal : proposals) {
             xmlUrlSet.addUrl(XmlUrl.Builder
                     .forLocation(siteUrl + proposal.getProposalUrl())
-                    .lastModified(toLocalDateTime(proposal.getLastModifiedDate()))
+                    .lastModified(toLocalDateTime(proposal.getLastupdatedAt()))
                     .changeFrequency(changeFrequency)
                     .priority(priority)
                     .build());

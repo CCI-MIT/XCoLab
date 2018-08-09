@@ -2,7 +2,7 @@ package org.xcolab.view.pages.unsubscribe;
 
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.client.members.pojo.MessagingUserPreference;
 
 class ActivityDailyDigestNotificationUnregisterHandler implements NotificationUnregisterHandler {
 
@@ -16,8 +16,8 @@ class ActivityDailyDigestNotificationUnregisterHandler implements NotificationUn
 
     @Override
     public void unregister(Member member) {
-        final MessagingUserPreferences preferences =
-                MessagingClient.getMessagingPreferencesForMember(member.getUserId());
+        final MessagingUserPreference preferences =
+                MessagingClient.getMessagingPreferencesForMember(member.getId());
         preferences.setEmailActivityDailyDigest(false);
         preferences.setEmailOnActivity(false);
         MessagingClient.updateMessagingPreferences(preferences);

@@ -20,14 +20,14 @@ public class ActivitiesClientUtil {
         return activitiesClient;
     }
 
-    public static ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+    public static ActivityEntry createActivityEntry(ActivityType activityType, long userId,
             long categoryId) {
-        return activitiesClient.createActivityEntry(activityType, memberId, categoryId);
+        return activitiesClient.createActivityEntry(activityType, userId, categoryId);
     }
 
-    public static ActivityEntry createActivityEntry(ActivityType activityType, long memberId,
+    public static ActivityEntry createActivityEntry(ActivityType activityType, long userId,
             long categoryId, Long additionalId) {
-        return activitiesClient.createActivityEntry(activityType, memberId, categoryId,
+        return activitiesClient.createActivityEntry(activityType, userId, categoryId,
                 additionalId);
     }
 
@@ -37,17 +37,17 @@ public class ActivitiesClientUtil {
     }
 
     public static List<ActivityEntry> getActivityEntries(Integer startRecord,
-            Integer limitRecord, Long memberId, List<Long> memberIdsToExclude) {
+            Integer limitRecord, Long userId, List<Long> userIdsToExclude) {
         return activitiesClient.getActivityEntries(startRecord,
-                limitRecord, memberId, memberIdsToExclude);
+                limitRecord, userId, userIdsToExclude);
     }
 
     public static List<ActivityEntry> getActivityEntriesAfter(Date afterDate) {
         return activitiesClient.getActivityEntriesAfter(afterDate);
     }
 
-    public static int countActivities(Long memberId, List<Long> memberIdsToExclude) {
-        return activitiesClient.countActivities(memberId, memberIdsToExclude);
+    public static int countActivities(Long userId, List<Long> userIdsToExclude) {
+        return activitiesClient.countActivities(userId, userIdsToExclude);
     }
 
     public static ActivitySubscription getActivitySubscription(long activitySubscriptionId)
@@ -65,9 +65,9 @@ public class ActivitiesClientUtil {
         return activitiesClient.deleteSubscription(pk);
     }
 
-    public static ActivitySubscription addSubscription(long memberId,
+    public static ActivitySubscription addSubscription(long userId,
             ActivityCategory activityCategory, long categoryId, String extraInfo) {
-        return activitiesClient.addSubscription(memberId, activityCategory, categoryId, extraInfo);
+        return activitiesClient.addSubscription(userId, activityCategory, categoryId, extraInfo);
     }
 
     public static boolean deleteSubscription(Long receiverId, ActivityCategory activityCategory,
@@ -100,7 +100,7 @@ public class ActivitiesClientUtil {
                 receiverId);
     }
 
-    public static List<ActivitySubscription> getActivitySubscriptionsForMember(Long memberId) {
-        return activitiesClient.getActivitySubscriptionsForMember( memberId);
+    public static List<ActivitySubscription> getActivitySubscriptionsForMember(Long userId) {
+        return activitiesClient.getActivitySubscriptionsForMember( userId);
     }
 }

@@ -19,42 +19,42 @@ public class BalloonLink implements Serializable {
                     new ParameterizedTypeReference<List<BalloonLink>>() {
                     });
 
-    private String    uuid_;
+    private String uuid;
     private String    targeturl;
     private Integer   visits;
     private String    balloonuseruuid;
-    private Timestamp createdate;
+    private Timestamp createdAt;
 
     public BalloonLink() {}
 
     public BalloonLink(BalloonLink value) {
-        this.uuid_ = value.uuid_;
+        this.uuid = value.uuid;
         this.targeturl = value.targeturl;
         this.visits = value.visits;
         this.balloonuseruuid = value.balloonuseruuid;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
     }
 
     public BalloonLink(
-        String    uuid_,
+        String uuid,
         String    targeturl,
         Integer   visits,
         String    balloonuseruuid,
-        Timestamp createdate
+        Timestamp createdAt
     ) {
-        this.uuid_ = uuid_;
+        this.uuid = uuid;
         this.targeturl = targeturl;
         this.visits = visits;
         this.balloonuseruuid = balloonuseruuid;
-        this.createdate = createdate;
+        this.createdAt = createdAt;
     }
 
-    public String getUuid_() {
-        return this.uuid_;
+    public String getUuid() {
+        return this.uuid;
     }
 
-    public void setUuid_(String uuid_) {
-        this.uuid_ = uuid_;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getTargetUrl() {
@@ -81,19 +81,19 @@ public class BalloonLink implements Serializable {
         this.balloonuseruuid = balloonuseruuid;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
     public String toString() {
         String sb =
-                "BalloonLink (" + uuid_ + ", " + targeturl + ", " + visits + ", " + balloonuseruuid
-                        + ", " + createdate + ")";
+                "BalloonLink (" + uuid + ", " + targeturl + ", " + visits + ", " + balloonuseruuid
+                        + ", " + createdAt + ")";
 
         return sb;
     }

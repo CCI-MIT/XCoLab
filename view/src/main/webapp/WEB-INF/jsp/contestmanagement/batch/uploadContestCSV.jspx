@@ -44,9 +44,9 @@
                         tab) and typically starts by briefly outlining the opportunity and/or challenge the contest seeks to
                         tackle and concludes by stating the contest's focus.
                     </div>
-                    <form:textarea path="contestDescription" id="contestDescription"
+                    <form:textarea path="description"
                                    cssClass="rte-editorPlaceholder contestDescription"/>
-                    <form:errors cssClass="invalid-feedback" path="contestDescription"/>
+                    <form:errors cssClass="invalid-feedback" path="description"/>
                     <div class="inputLimitContainer">
                         <span class="limit_characterCount"><!--  --></span>/&#160;<span
                             class="limit_charactersMax">1500</span> characters
@@ -128,10 +128,10 @@
                         changes to your template or need help selecting the most appropriate template, please submit a
                         comment below for the Climate CoLab team.
                     </div>
-                    <form:select path="planTemplateId" cssClass="form-control">
+                    <form:select path="proposalTemplateId" cssClass="form-control">
                         <form:options items="${proposalTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
-                    <form:errors cssClass="invalid-feedback" path="planTemplateId"/>
+                    <form:errors cssClass="invalid-feedback" path="proposalTemplateId"/>
                 </div>
             </div>
 
@@ -215,7 +215,7 @@
                     var fieldCounter =0;
                     var validCSV = false;
                     var fieldSizes = {
-                        "contestShortName": 60,
+                        "title": 60,
                         "contestQuestion": 140,
                         "ontologyTerms" : 60
                     };
@@ -282,7 +282,7 @@
                         return true;
                     }
                     function validCSVFields() {
-                        if(!validateField(".contestShortName","Please input a value for the Contest Short Name!")) return false;
+                        if(!validateField(".title","Please input a value for the Contest Short Name!")) return false;
                         if(!validateField(".contestQuestion","Please input a value for the Contest Question!")) return false;
 
                         return true;
@@ -291,7 +291,7 @@
                         if(data.length >= 3) {
                             var tableRow = $('<tr>');
 
-                            tableRow.append(addTableCellInput(data[0],"contestShortName"));
+                            tableRow.append(addTableCellInput(data[0],"title"));
                             tableRow.append(addTableCellInput(data[1],"contestQuestion"));
                             var ontField = "";
 

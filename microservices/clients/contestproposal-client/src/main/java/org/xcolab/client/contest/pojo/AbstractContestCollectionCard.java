@@ -7,7 +7,7 @@ public abstract class AbstractContestCollectionCard implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long    id_;
+    private Long    id;
     private Long    parent;
     private Long    bigOntologyTerm;
     private Long    smallOntologyTerm;
@@ -21,7 +21,7 @@ public abstract class AbstractContestCollectionCard implements Serializable {
     public AbstractContestCollectionCard() {}
 
     public AbstractContestCollectionCard(AbstractContestCollectionCard value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.parent = value.parent;
         this.bigOntologyTerm = value.bigOntologyTerm;
         this.smallOntologyTerm = value.smallOntologyTerm;
@@ -34,7 +34,7 @@ public abstract class AbstractContestCollectionCard implements Serializable {
     }
 
     public AbstractContestCollectionCard(
-            Long    id_,
+            Long    id,
             Long    parent,
             Long    bigOntologyTerm,
             Long    smallOntologyTerm,
@@ -45,7 +45,7 @@ public abstract class AbstractContestCollectionCard implements Serializable {
             Long    ontologyTermToLoad,
             Boolean onlyFeatured
     ) {
-        this.id_ = id_;
+        this.id = id;
         this.parent = parent;
         this.bigOntologyTerm = bigOntologyTerm;
         this.smallOntologyTerm = smallOntologyTerm;
@@ -57,12 +57,12 @@ public abstract class AbstractContestCollectionCard implements Serializable {
         this.onlyFeatured = onlyFeatured;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getParent() {
@@ -146,7 +146,7 @@ public abstract class AbstractContestCollectionCard implements Serializable {
             return false;
         }
         AbstractContestCollectionCard that = (AbstractContestCollectionCard) o;
-        return Objects.equals(getId_(), that.getId_())
+        return Objects.equals(getId(), that.getId())
                 && Objects.equals(getParent(), that.getParent())
                 && Objects.equals(bigOntologyTerm, that.bigOntologyTerm)
                 && Objects.equals(smallOntologyTerm, that.smallOntologyTerm)
@@ -161,14 +161,14 @@ public abstract class AbstractContestCollectionCard implements Serializable {
     @Override
     public int hashCode() {
         return Objects
-                .hash(getId_(), getParent(), bigOntologyTerm, smallOntologyTerm, getDescription(),
+                .hash(getId(), getParent(), bigOntologyTerm, smallOntologyTerm, getDescription(),
                         shortName, getVisible(), getOrder(), ontologyTermToLoad, onlyFeatured);
     }
 
     @Override
     public String toString() {
 
-        return "ContestCollectionCard (" + id_ + ", " + parent + ", " + bigOntologyTerm + ", "
+        return "ContestCollectionCard (" + id + ", " + parent + ", " + bigOntologyTerm + ", "
                 + smallOntologyTerm + ", " + description + ", " + shortName + ", " + visible + ", "
                 + order + ", " + ontologyTermToLoad + ", " + onlyFeatured + ")";
     }

@@ -30,7 +30,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
     private final ContestModelSettingsBean contestModelSettingsBean = new ContestModelSettingsBean();
 
     private ContestMassActions selectedMassAction;
-    private Long memberId;
+    private Long userId;
 
     @SuppressWarnings("unused")
     public ContestOverviewWrapper() {
@@ -47,8 +47,8 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         // LinkedHashMap will maintain insertion order
         allContests.sort(Comparator.comparing(AbstractContest::getWeight));
         for (Contest contest : allContests) {
-            contests.put(contest.getContestPK(), contest);
-            selectedContests.put(contest.getContestPK(), false);
+            contests.put(contest.getId(), contest);
+            selectedContests.put(contest.getId(), false);
         }
     }
 
@@ -56,7 +56,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         for (Entry<Long, Contest> contestEntry : contests.entrySet()) {
             final Long contestId = contestEntry.getKey();
             Boolean isUserSubscribedToContest = ContestClientUtil
-                    .isMemberSubscribedToContest(contestId, member.getId_());
+                    .isMemberSubscribedToContest(contestId, member.getId());
             subscribedToContest.put(contestId, isUserSubscribedToContest);
         }
     }
@@ -85,12 +85,12 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
     }
 
     @Override
-    public Long getMemberId() {
-        return memberId;
+    public Long getuserId() {
+        return userId;
     }
 
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
+    public void setuserId(Long userId) {
+        this.userId = userId;
     }
 
     public void setSelectedMassAction(ContestMassActions selectedMassAction) {

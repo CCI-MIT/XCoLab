@@ -27,7 +27,7 @@ public abstract class ContestBaseActivityEntry extends AbstractActivityEntryCont
                         .getContest();
             } else {
                 throw new ActivityInitializationException(
-                        getActivityEntry().getActivityEntryId(), e);
+                        getActivityEntry().getId(), e);
             }
         }
 
@@ -45,6 +45,6 @@ public abstract class ContestBaseActivityEntry extends AbstractActivityEntryCont
 
     protected String getContestLink() {
         return String.format(HYPERLINK_FORMAT, getContest().getContestUrl() + "/discussion",
-                getContest().getContestShortNameWithEndYear());
+                getContest().getTitleWithEndYear());
     }
 }

@@ -85,7 +85,7 @@ public final class ProposalMoveClient {
         proposalMoveHistory.setTargetPhaseId(targetPhaseId);
 
         proposalMoveHistory.setMovingUserId(userId);
-        proposalMoveHistory.setMoveDate(new Timestamp(new Date().getTime()));
+        proposalMoveHistory.setMovedAt(new Timestamp(new Date().getTime()));
         proposalMoveHistory.setMoveType(moveType.name());
 
         proposalMoveHistory = createProposalMoveHistory(proposalMoveHistory);

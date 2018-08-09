@@ -42,7 +42,7 @@ public class SectionFocusAreaFilter {
         if (!terms.isEmpty()) {
             List<Long> otIds = new ArrayList<>();
             for (OntologyTerm ot : terms) {
-                otIds.add(ot.getId_());
+                otIds.add(ot.getId());
             }
             Set<Contest> contests =
                     new HashSet<>(ContestClientUtil.getContestMatchingOntologyTerms(otIds));
@@ -56,7 +56,7 @@ public class SectionFocusAreaFilter {
                 }
             }
             proposals.removeIf(proposal -> !contests.contains(
-                    ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId())));
+                    ProposalClientUtil.getCurrentContestForProposal(proposal.getId())));
         }
     }
 
@@ -98,7 +98,7 @@ public class SectionFocusAreaFilter {
 
         for (Iterator<Contest> i = contests.iterator(); i.hasNext(); ) {
             Contest contest = i.next();
-            if (filterExceptionContestIds.contains(contest.getContestPK())) {
+            if (filterExceptionContestIds.contains(contest.getId())) {
                 continue;
             }
             if (contest.getHasFocusArea()) {
@@ -107,7 +107,7 @@ public class SectionFocusAreaFilter {
                         OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
                 for (OntologyTerm requiredTerm : requiredTerms) {
                     List<OntologyTerm> requiredDescendantTerms =
-                            OntologyClientUtil.getAllOntologyTermDescendant(requiredTerm.getId_());
+                            OntologyClientUtil.getAllOntologyTermDescendant(requiredTerm.getId());
                     requiredDescendantTerms.add(requiredTerm);
                     if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
                         i.remove();
@@ -131,6 +131,6 @@ public class SectionFocusAreaFilter {
     }
 
     private void removeRootTerms(List<OntologyTerm> terms) {
-        terms.removeIf(o -> o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId_()));
+        terms.removeIf(o -> o.getParentId() == 0 && ANY_TERM_IDS.contains(o.getId()));
     }
 }

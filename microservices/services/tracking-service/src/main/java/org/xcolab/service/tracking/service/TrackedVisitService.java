@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.model.tables.pojos.TrackedVisit;
-import org.xcolab.model.tables.pojos.TrackedVisitor2User;
+import org.xcolab.model.tables.pojos.TrackedVisitor;
 import org.xcolab.service.tracking.domain.trackedvisit.TrackedVisitDao;
-import org.xcolab.service.tracking.domain.trackedvisitor2user.TrackedVisitor2UserDao;
+import org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao;
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService;
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService.IpFormatException;
 
@@ -20,17 +20,17 @@ public class TrackedVisitService {
 
     private final TrackedVisitDao trackedVisitDao;
     private final IpTranslationService ipTranslationService;
-    private final TrackedVisitor2UserService trackedVisitor2UserService;
-    private final TrackedVisitor2UserDao trackedVisitor2UserDao;
+    private final TrackedVisitorService trackedVisitorService;
+    private final TrackedVisitorDao trackedVisitorDao;
 
     @Autowired
     public TrackedVisitService(IpTranslationService ipTranslationService,
-            TrackedVisitDao trackedVisitDao, TrackedVisitor2UserService trackedVisitor2UserService,
-            TrackedVisitor2UserDao trackedVisitor2UserDao) {
+            TrackedVisitDao trackedVisitDao, TrackedVisitorService trackedVisitorService,
+            TrackedVisitorDao trackedVisitorDao) {
         this.ipTranslationService = ipTranslationService;
         this.trackedVisitDao = trackedVisitDao;
-        this.trackedVisitor2UserService = trackedVisitor2UserService;
-        this.trackedVisitor2UserDao = trackedVisitor2UserDao;
+        this.trackedVisitorService = trackedVisitorService;
+        this.trackedVisitorDao = trackedVisitorDao;
     }
 
     public TrackedVisit createTrackedVisit(TrackedVisit trackedVisit, Long userId) {
@@ -46,17 +46,17 @@ public class TrackedVisitService {
             }
         }
 
-        TrackedVisitor2User trackedVisitor = null;
-        if (StringUtils.isNotBlank(trackedVisit.getUuid_())) {
-            trackedVisitor = trackedVisitor2UserDao.getByUUID(trackedVisit.getUuid_())
+        TrackedVisitor trackedVisitor = null;
+        if (StringUtils.isNotBlank(trackedVisit.getVisitorUuid())) {
+            trackedVisitor = trackedVisitorDao.getByUuid(trackedVisit.getVisitorUuid())
                     .orElse(null);
         }
 
         if (trackedVisitor == null) {
-            trackedVisitor2UserService.getOrCreateTrackedVisitor(trackedVisit, userId);
+            trackedVisitorService.getOrCreateTrackedVisitor(trackedVisit, userId);
         } else if (trackedVisitor.getUserId() == null && userId != null) {
             trackedVisitor.setUserId(userId);
-            trackedVisitor2UserDao.update(trackedVisitor);
+            trackedVisitorDao.update(trackedVisitor);
         }
         return trackedVisitDao.create(trackedVisit);
     }

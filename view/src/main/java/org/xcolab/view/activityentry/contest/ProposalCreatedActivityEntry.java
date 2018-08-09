@@ -32,7 +32,7 @@ public class ProposalCreatedActivityEntry extends ContestBaseActivityEntry {
         try {
             proposal = ProposalClientUtil.getProposal(getActivityEntry().getAdditionalId(), true);
         } catch (ProposalNotFoundException e) {
-            throw new ActivityInitializationException(getActivityEntry().getActivityEntryId(), e);
+            throw new ActivityInitializationException(getActivityEntry().getId(), e);
         }
     }
 
@@ -51,7 +51,7 @@ public class ProposalCreatedActivityEntry extends ContestBaseActivityEntry {
     @Override
     public String getTitle() {
         return String.format("New %s in %s", getContestType().getProposalNameLowercase(),
-                getContest().getContestShortName());
+                getContest().getTitle());
     }
 
     private String getProposalLink() {

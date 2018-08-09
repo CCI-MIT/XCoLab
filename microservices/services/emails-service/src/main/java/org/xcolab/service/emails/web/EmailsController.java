@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.ColabEmail;
-import org.xcolab.service.emails.domain.ColabEmailDao;
+import org.xcolab.model.tables.pojos.OutgoingEmail;
+import org.xcolab.service.emails.domain.OutgoingEmailDao;
 import org.xcolab.service.emails.pojo.Email;
 import org.xcolab.service.emails.util.EmailService;
 
@@ -20,10 +20,10 @@ public class EmailsController {
 
     private final EmailService emailService;
 
-    private final ColabEmailDao colabEmailDao;
+    private final OutgoingEmailDao colabEmailDao;
 
     @Autowired
-    public EmailsController(ColabEmailDao colabEmailDao, EmailService emailService) {
+    public EmailsController(OutgoingEmailDao colabEmailDao, EmailService emailService) {
         this.colabEmailDao = colabEmailDao;
         this.emailService = emailService;
     }
@@ -33,7 +33,7 @@ public class EmailsController {
 
         boolean shouldSendEmail = true;
         if (email.getTo().size() == 1) {
-            List<ColabEmail> colabEmails = colabEmailDao
+            List<OutgoingEmail> colabEmails = colabEmailDao
                     .findByGiven(email.getSubject(), email.getTo().get(0), email.getReferenceId(),
                             hashEmail(email.getEmailBody()));
             shouldSendEmail = colabEmails.isEmpty();
@@ -47,15 +47,15 @@ public class EmailsController {
     }
     private void createColabEmailFromEmail(Email email, boolean sentStatus){
         for(String recipient: email.getTo()) {
-            ColabEmail ce = new ColabEmail();
-            ce.setDateSent(new Timestamp(new Date().getTime()));
+            OutgoingEmail ce = new OutgoingEmail();
+            ce.setSentAt(new Timestamp(new Date().getTime()));
             ce.setEmailBody(email.getEmailBody());
             ce.setEmailBodyHash(hashEmail(email.getEmailBody()));
             ce.setReferenceId(email.getReferenceId());
             ce.setEmailTo(recipient);
             ce.setEmailFrom(email.getFrom());
             ce.setEmailSubject(email.getSubject());
-            ce.setSent(sentStatus);
+            ce.setWasSent(sentStatus);
             colabEmailDao.create(ce);
         }
     }

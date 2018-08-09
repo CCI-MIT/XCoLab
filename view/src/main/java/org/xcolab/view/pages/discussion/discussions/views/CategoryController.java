@@ -35,7 +35,7 @@ public class CategoryController extends BaseDiscussionController {
             Model model, @RequestParam(required = false) String sortColumn,
             @RequestParam(defaultValue = "false") boolean sortAscending) {
         model.addAttribute("_activePageLink", "community");
-        long memberId = MemberAuthUtil.getMemberId(request);
+        long userId = MemberAuthUtil.getuserId(request);
 
         ThreadSortColumn threadSortColumn;
         try {
@@ -55,7 +55,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortAscending", sortAscending);
 
         model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(
-                memberId, ActivityCategory.DISCUSSION, categoryGroup.getGroupId(), ""));
+                userId, ActivityCategory.DISCUSSION, categoryGroup.getId(), ""));
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         model.addAttribute("discussionPermissions", discussionPermissions);
@@ -71,7 +71,7 @@ public class CategoryController extends BaseDiscussionController {
             @RequestParam(defaultValue = "false") boolean sortAscending)
             throws DiscussionAuthorizationException, CategoryNotFoundException {
 
-        long memberId = MemberAuthUtil.getMemberId(request);
+        long userId = MemberAuthUtil.getuserId(request);
 
         ThreadSortColumn threadSortColumn;
         try {
@@ -92,8 +92,8 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortColumn", threadSortColumn.name());
         model.addAttribute("sortAscending", sortAscending);
 
-        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(memberId,
-                ActivityCategory.DISCUSSION, currentCategory.getCategoryId()));
+        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(userId,
+                ActivityCategory.DISCUSSION, currentCategory.getId()));
 
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
@@ -161,7 +161,7 @@ public class CategoryController extends BaseDiscussionController {
             Member member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
-        long memberId = MemberAuthUtil.getMemberId(request);
+        long userId = MemberAuthUtil.getuserId(request);
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
@@ -169,14 +169,14 @@ public class CategoryController extends BaseDiscussionController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        if (memberId > 0) {
+        if (userId > 0) {
             if (categoryId > 0) {
-                ActivitiesClientUtil.addSubscription(memberId,
+                ActivitiesClientUtil.addSubscription(userId,
                         ActivityCategory.DISCUSSION, categoryId, Long.toString(categoryId));
                 return "redirect:/discussion/category/"+categoryId;
             } else {
-                ActivitiesClientUtil.addSubscription(memberId,
-                        ActivityCategory.DISCUSSION, categoryGroup.getGroupId(), "");
+                ActivitiesClientUtil.addSubscription(userId,
+                        ActivityCategory.DISCUSSION, categoryGroup.getId(), "");
                 return "redirect:/discussion";
             }
         }
@@ -189,7 +189,7 @@ public class CategoryController extends BaseDiscussionController {
             Member member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
-        long memberId = MemberAuthUtil.getMemberId(request);
+        long userId = MemberAuthUtil.getuserId(request);
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
@@ -197,15 +197,15 @@ public class CategoryController extends BaseDiscussionController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        if (memberId > 0) {
+        if (userId > 0) {
             if (categoryId > 0) {
-                ActivitiesClientUtil.deleteSubscription(memberId,
+                ActivitiesClientUtil.deleteSubscription(userId,
                         ActivityCategory.DISCUSSION,categoryId);
                 return "redirect:/discussion/category/"+categoryId;
 
             } else {
-                ActivitiesClientUtil.deleteSubscription(memberId,
-                        ActivityCategory.DISCUSSION, categoryGroup.getGroupId());
+                ActivitiesClientUtil.deleteSubscription(userId,
+                        ActivityCategory.DISCUSSION, categoryGroup.getId());
                 return "redirect:/discussion";
             }
         }

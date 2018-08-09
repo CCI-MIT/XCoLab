@@ -29,7 +29,7 @@ public abstract class ProposalBaseActivityEntry extends AbstractActivityEntryCon
         try {
             proposal = ProposalClientUtil.getProposal(getActivityEntry().getCategoryId());
         } catch (ProposalNotFoundException e) {
-            throw new ActivityInitializationException(getActivityEntry().getActivityEntryId(), e);
+            throw new ActivityInitializationException(getActivityEntry().getId(), e);
         }
 
         contestType = proposal.getContest().getContestType()

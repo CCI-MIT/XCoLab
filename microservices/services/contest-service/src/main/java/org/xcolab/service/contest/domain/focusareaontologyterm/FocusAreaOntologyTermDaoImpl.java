@@ -38,7 +38,7 @@ public class FocusAreaOntologyTermDaoImpl implements FocusAreaOntologyTermDao {
         this.dslContext.insertInto(FOCUS_AREA_ONTOLOGY_TERM)
                 .set(FOCUS_AREA_ONTOLOGY_TERM.FOCUS_AREA_ID, focusAreaOntologyTerm.getFocusAreaId())
                 .set(FOCUS_AREA_ONTOLOGY_TERM.ONTOLOGY_TERM_ID, focusAreaOntologyTerm.getOntologyTermId())
-                .set(FOCUS_AREA_ONTOLOGY_TERM.ORDER_, focusAreaOntologyTerm.getOrder_())
+                .set(FOCUS_AREA_ONTOLOGY_TERM.SORT_ORDER, focusAreaOntologyTerm.getSortOrder())
                 .execute();
 
             return focusAreaOntologyTerm;

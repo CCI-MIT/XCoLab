@@ -23,7 +23,7 @@ public class TrackedVisitDaoImpl implements TrackedVisitDao {
     @Override
     public TrackedVisit create(TrackedVisit trackedVisit) {
         final TrackedVisitRecord record = dslContext.insertInto(TRACKED_VISIT)
-                .set(TRACKED_VISIT.UUID_, trackedVisit.getUuid_())
+                .set(TRACKED_VISIT.VISITOR_UUID, trackedVisit.getVisitorUuid())
                 .set(TRACKED_VISIT.URL, trackedVisit.getUrl())
                 .set(TRACKED_VISIT.IP, trackedVisit.getIp())
                 .set(TRACKED_VISIT.BROWSER, trackedVisit.getBrowser())
@@ -31,14 +31,14 @@ public class TrackedVisitDaoImpl implements TrackedVisitDao {
                 .set(TRACKED_VISIT.HEADERS, trackedVisit.getHeaders())
                 .set(TRACKED_VISIT.CITY, trackedVisit.getCity())
                 .set(TRACKED_VISIT.COUNTRY, trackedVisit.getCountry())
-                .set(TRACKED_VISIT.CREATE_DATE, DSL.currentTimestamp())
-                .returning(TRACKED_VISIT.ID_)
+                .set(TRACKED_VISIT.CREATED_AT, DSL.currentTimestamp())
+                .returning(TRACKED_VISIT.ID)
                 .fetchOne();
 
         if (record == null) {
             throw new IllegalStateException("Could not get inserted id");
         }
-        trackedVisit.setId_(record.getValue(TRACKED_VISIT.ID_));
+        trackedVisit.setId(record.getValue(TRACKED_VISIT.ID));
         return trackedVisit;
     }
 }

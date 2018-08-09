@@ -29,12 +29,12 @@ public class ProposalUnversionedAttributeController {
         return this.proposalUnversionedAttributeDao.create(proposalUnversionedAttribute);
     }
 
-    @RequestMapping(value = "/proposalUnversionedAttributes/{id_}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/proposalUnversionedAttributes/{id}", method = RequestMethod.PUT)
     public boolean updateProposalUnversionedAttribute(@RequestBody ProposalUnversionedAttribute proposalUnversionedAttribute,
-                                                      @PathVariable("id_") Long id_) throws NotFoundException {
+                                                      @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || proposalUnversionedAttributeDao.get(id_) == null) {
-            throw new NotFoundException("No ProposalUnversionedAttribute with id " + id_);
+        if (id == null || id == 0 || proposalUnversionedAttributeDao.get(id) == null) {
+            throw new NotFoundException("No ProposalUnversionedAttribute with id " + id);
         } else {
             return proposalUnversionedAttributeDao.update(proposalUnversionedAttribute);
         }
@@ -60,16 +60,16 @@ public class ProposalUnversionedAttributeController {
         return proposalUnversionedAttributeDao.findByGiven(proposalId);
     }
 
-    @RequestMapping(value = "/proposalUnversionedAttributes/{id_}", method = RequestMethod.DELETE)
-    public String deleteProposalUnversionedAttribute(@PathVariable("id_") Long id_)
+    @RequestMapping(value = "/proposalUnversionedAttributes/{id}", method = RequestMethod.DELETE)
+    public String deleteProposalUnversionedAttribute(@PathVariable("id") Long id)
             throws NotFoundException {
 
-        if (id_ == null || id_ == 0) {
+        if (id == null || id == 0) {
             throw new NotFoundException("No ProposalUnversionedAttribute with id given");
         } else {
-            ProposalUnversionedAttribute proposalUnversionedAttribute = this.proposalUnversionedAttributeDao.get(id_);
+            ProposalUnversionedAttribute proposalUnversionedAttribute = this.proposalUnversionedAttributeDao.get(id);
             if (proposalUnversionedAttribute != null) {
-                this.proposalUnversionedAttributeDao.delete(proposalUnversionedAttribute.getId_());
+                this.proposalUnversionedAttributeDao.delete(proposalUnversionedAttribute.getId());
                 return "ProposalUnversionedAttribute deleted successfully";
             } else {
                 throw new NotFoundException("No ProposalUnversionedAttribute with id given");

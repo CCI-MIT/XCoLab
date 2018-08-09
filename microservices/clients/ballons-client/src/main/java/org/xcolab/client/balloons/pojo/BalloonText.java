@@ -17,7 +17,7 @@ public class BalloonText implements Serializable {
 
     private static final long serialVersionUID = 669206607;
 
-    private Long id_;
+    private Long id;
     private String name;
     private String textbeforeform;
     private String textbeforesharebuttons;
@@ -30,7 +30,7 @@ public class BalloonText implements Serializable {
     public BalloonText() {}
 
     public BalloonText(BalloonText value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.name = value.name;
         this.textbeforeform = value.textbeforeform;
         this.textbeforesharebuttons = value.textbeforesharebuttons;
@@ -41,12 +41,12 @@ public class BalloonText implements Serializable {
         this.enabled = value.enabled;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -122,7 +122,7 @@ public class BalloonText implements Serializable {
             return false;
         }
         BalloonText that = (BalloonText) o;
-        return Objects.equals(getId_(), that.getId_())
+        return Objects.equals(getId(), that.getId())
                 && Objects.equals(getName(), that.getName())
                 && Objects.equals(textbeforeform, that.textbeforeform)
                 && Objects.equals(textbeforesharebuttons, that.textbeforesharebuttons)
@@ -136,13 +136,13 @@ public class BalloonText implements Serializable {
     @Override
     public int hashCode() {
         return Objects
-                .hash(getId_(), getName(), textbeforeform, textbeforesharebuttons, emailtemplate,
+                .hash(getId(), getName(), textbeforeform, textbeforesharebuttons, emailtemplate,
                         emailsubjecttemplate, getShareTitle(), getShareDescription(), getEnabled());
     }
 
     @Override
     public String toString() {
-        return "BalloonText{" + "id_=" + id_ + ", name='" + name + '\'' + ", textbeforeform='"
+        return "BalloonText{" + "id=" + id + ", name='" + name + '\'' + ", textbeforeform='"
                 + textbeforeform + '\'' + ", textbeforesharebuttons='" + textbeforesharebuttons
                 + '\'' + ", emailtemplate='" + emailtemplate + '\'' + ", emailsubjecttemplate='"
                 + emailsubjecttemplate + '\'' + ", shareTitle='" + shareTitle + '\''

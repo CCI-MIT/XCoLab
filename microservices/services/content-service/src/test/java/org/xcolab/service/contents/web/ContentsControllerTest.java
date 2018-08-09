@@ -91,7 +91,7 @@ public class ContentsControllerTest {
     @Test
     public void shouldCreateNewContentArticlesPost() throws Exception {
         ContentArticle contentArticle = new ContentArticle();
-        contentArticle.setAuthorId(1L);
+        contentArticle.setAuthorUserId(1L);
         this.mockMvc.perform(
                 post("/contentArticles")
                         .contentType(contentType).accept(contentType)
@@ -183,8 +183,8 @@ public class ContentsControllerTest {
     public void shouldUpdateContentArticle() throws Exception {
 
         ContentArticle contentArticle = new ContentArticle();
-        contentArticle.setAuthorId(1L);
-        contentArticle.setContentArticleId(12L);
+        contentArticle.setAuthorUserId(1L);
+        contentArticle.setId(12L);
         contentArticle.setFolderId(12L);
         this.mockMvc.perform(
                 put("/contentArticles/1")
@@ -198,10 +198,9 @@ public class ContentsControllerTest {
     @Test
     public void shouldreateContentFolder() throws Exception {
         ContentFolder contentFolder = new ContentFolder();
-        contentFolder.setContentFolderDescription("");
-        contentFolder.setContentFolderId(1L);
-        contentFolder.setContentFolderName("");
-        contentFolder.setContentFolderDescription("");
+        contentFolder.setId(1L);
+        contentFolder.setName("");
+        contentFolder.setDescription("");
 
         this.mockMvc.perform(
                 post("/contentFolders")
@@ -236,10 +235,9 @@ public class ContentsControllerTest {
     public void shouldUpdateContentFolderArticleVersion() throws Exception {
 
         ContentFolder contentFolder = new ContentFolder();
-        contentFolder.setContentFolderDescription("");
-        contentFolder.setContentFolderId(1L);
-        contentFolder.setContentFolderName("");
-        contentFolder.setContentFolderDescription("");
+        contentFolder.setId(1L);
+        contentFolder.setName("");
+        contentFolder.setDescription("");
 
         this.mockMvc.perform(
                 put("/contentFolders/123")
@@ -284,7 +282,7 @@ public class ContentsControllerTest {
     @Test
     public void shouldCreateContentPage() throws Exception {
         ContentPage cp = new ContentPage();
-        cp.setPageId(1L);
+        cp.setId(1L);
         this.mockMvc.perform(
                 post("/contentPages")
                         .content(objectMapper.writeValueAsString(cp))
@@ -298,7 +296,7 @@ public class ContentsControllerTest {
     @Test
     public void shouldUpdateContentPage() throws Exception {
         ContentPage cp = new ContentPage();
-        cp.setPageId(1L);
+        cp.setId(1L);
         this.mockMvc.perform(
                 put("/contentPages/1")
                         .content(objectMapper.writeValueAsString(cp))

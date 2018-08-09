@@ -22,69 +22,69 @@ public class FileEntry implements Serializable {
                     new ParameterizedTypeReference<List<FileEntry>>() {
                     });
 
-    private Long fileentryid;
-    private Timestamp createdate;
-    private String fileentryextension;
-    private String fileentryname;
-    private Integer fileentrysize;
+    private Long id;
+    private Timestamp createdAt;
+    private String fileExtension;
+    private String fileName;
+    private Integer fileSize;
 
     public FileEntry() {}
 
     public FileEntry(FileEntry value) {
-        this.fileentryid = value.fileentryid;
-        this.createdate = value.createdate;
-        this.fileentryextension = value.fileentryextension;
-        this.fileentryname = value.fileentryname;
-        this.fileentrysize = value.fileentrysize;
+        this.id = value.id;
+        this.createdAt = value.createdAt;
+        this.fileExtension = value.fileExtension;
+        this.fileName = value.fileName;
+        this.fileSize = value.fileSize;
     }
 
-    public FileEntry(Long fileentryid, Timestamp createdate, String fileentryextension,
-            String fileentryname, Integer fileentrysize) {
-        this.fileentryid = fileentryid;
-        this.createdate = createdate;
-        this.fileentryextension = fileentryextension;
-        this.fileentryname = fileentryname;
-        this.fileentrysize = fileentrysize;
+    public FileEntry(Long id, Timestamp createdAt, String fileExtension,
+            String fileName, Integer fileSize) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.fileExtension = fileExtension;
+        this.fileName = fileName;
+        this.fileSize = fileSize;
     }
 
-    public Long getFileEntryId() {
-        return this.fileentryid;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setFileEntryId(Long fileentryid) {
-        this.fileentryid = fileentryid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getFileEntryExtension() {
-        return this.fileentryextension;
+    public String getFileExtension() {
+        return this.fileExtension;
     }
 
-    public void setFileEntryExtension(String fileentryextension) {
-        this.fileentryextension = fileentryextension;
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
     }
 
-    public String getFileEntryName() {
-        return this.fileentryname;
+    public String getFileName() {
+        return this.fileName;
     }
 
-    public void setFileEntryName(String fileentryname) {
-        this.fileentryname = fileentryname;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public Integer getFileEntrySize() {
-        return this.fileentrysize;
+    public Integer getFileSize() {
+        return this.fileSize;
     }
 
-    public void setFileEntrySize(Integer fileentrysize) {
-        this.fileentrysize = fileentrysize;
+    public void setFileSize(Integer fileSize) {
+        this.fileSize = fileSize;
     }
 
     @JsonIgnore
@@ -100,16 +100,16 @@ public class FileEntry implements Serializable {
     @Override
     public String toString() {
 
-        return "FileEntry (" + fileentryid +
-                ", " + createdate +
-                ", " + fileentryextension +
-                ", " + fileentryname +
-                ", " + fileentrysize +
+        return "FileEntry (" + id +
+                ", " + createdAt +
+                ", " + fileExtension +
+                ", " + fileName +
+                ", " + fileSize +
                 ")";
     }
 
     @JsonIgnore
     public String getLinkUrl() {
-        return "/image?img_id=" + getFileEntryId();
+        return "/image?img_id=" + getId();
     }
 }

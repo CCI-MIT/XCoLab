@@ -40,18 +40,18 @@ public class ContestTeamMembersController {
 
     }
 
-    @GetMapping(value = "/contestTeamMembers/{contestTeamMemberId}")
-    public ContestTeamMember getContestTeamMember(@PathVariable("contestTeamMemberId") Long contestTeamMemberId) throws NotFoundException {
-        return contestTeamMemberDao.get(contestTeamMemberId)
+    @GetMapping(value = "/contestTeamMembers/{contestTeamuserId}")
+    public ContestTeamMember getContestTeamMember(@PathVariable("contestTeamuserId") Long contestTeamuserId) throws NotFoundException {
+        return contestTeamMemberDao.get(contestTeamuserId)
                 .orElseThrow(NotFoundException::new);
     }
 
-    @PutMapping(value = "/contestTeamMembers/{id_}")
+    @PutMapping(value = "/contestTeamMembers/{id}")
     public boolean updateContestTeamMember(@RequestBody ContestTeamMember contestTeamMember,
-                                           @PathVariable("id_") Long id_) throws NotFoundException {
+                                           @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || contestTeamMemberDao.get(id_) == null) {
-            throw new NotFoundException("No ContestTeamMember with id " + id_);
+        if (id == null || id == 0 || contestTeamMemberDao.get(id) == null) {
+            throw new NotFoundException("No ContestTeamMember with id " + id);
         } else {
             return contestTeamMemberDao.update(contestTeamMember);
         }
@@ -59,11 +59,11 @@ public class ContestTeamMembersController {
 
     @RequestMapping(value = "/contestTeamMembers", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestTeamMember> getContestTeamMembers(
-            @RequestParam(required = false) Long memberId,
+            @RequestParam(required = false) Long userId,
             @RequestParam(required = false) Long contestId,
             @RequestParam(required = false) Long roleId
     ) {
-        return contestTeamMemberDao.findByGiven(memberId, contestId, roleId);
+        return contestTeamMemberDao.findByGiven(userId, contestId, roleId);
     }
 
     @RequestMapping(value = "/contestTeamMembers/getByContestYear", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -74,11 +74,11 @@ public class ContestTeamMembersController {
         return contestTeamMemberDao.findByContestYear(categoryId,contestYear);
     }
 
-    @DeleteMapping(value = "/contestTeamMembers/{id_}")
-    public boolean deleteContestTeamMember(@PathVariable long id_)
+    @DeleteMapping(value = "/contestTeamMembers/{id}")
+    public boolean deleteContestTeamMember(@PathVariable long id)
             throws NotFoundException {
-        if (contestTeamMemberDao.exists(id_)) {
-            return contestTeamMemberDao.delete(id_);
+        if (contestTeamMemberDao.exists(id)) {
+            return contestTeamMemberDao.delete(id);
         } else {
             throw new NotFoundException("No ContestTeamMember with id given");
         }

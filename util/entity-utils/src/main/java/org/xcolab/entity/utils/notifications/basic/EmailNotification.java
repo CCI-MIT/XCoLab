@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
@@ -112,7 +112,7 @@ public abstract class EmailNotification {
      */
     private String getContestLink(Contest contest) {
         final String contestLinkUrl = baseUrl + contest.getContestLinkUrl();
-        return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getContestShortName());
+        return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getTitle());
     }
 
     protected Contest getContest() {
@@ -251,7 +251,7 @@ public abstract class EmailNotification {
         if (ConfigurationAttributeKey.MESSAGING_SEND_TRANSACTION_EMAILS.get()
                 || isEssentialTransactionMessage()) {
             List<Long> recipients = new ArrayList<>();
-            recipients.add(getRecipient().getUserId());
+            recipients.add(getRecipient().getId());
             EmailTemplateWrapper template = getTemplateWrapper();
             String content = template.getHeader() + template.getFooter();
             content = content.replace("\n", " ").replace("\r", " ");
@@ -262,7 +262,7 @@ public abstract class EmailNotification {
     }
 
     protected class EmailNotificationTemplate extends EmailTemplateWrapper {
-        public EmailNotificationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
+        public EmailNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 

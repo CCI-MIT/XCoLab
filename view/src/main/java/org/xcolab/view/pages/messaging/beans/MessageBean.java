@@ -30,9 +30,9 @@ public class MessageBean implements Serializable {
 
     public MessageBean(Message message) {
         this.message = message;
-        this.messageId = message.getMessageId();
-        this.recipients = MessagingClient.getMessageRecipients(message.getMessageId());
-        this.threads = MessagingClient.getMessageThreads(message.getMessageId());
+        this.messageId = message.getId();
+        this.recipients = MessagingClient.getMessageRecipients(message.getId());
+        this.threads = MessagingClient.getMessageThreads(message.getId());
     }
 
     public String getSubject() {
@@ -46,12 +46,12 @@ public class MessageBean implements Serializable {
         return message.getContent();
     }
 
-    public String getCreateDateFormatted() {
-        return DurationFormatter.forRequestLocale().format(getCreateDate());
+    public String getCreatedAtFormatted() {
+        return DurationFormatter.forRequestLocale().format(getCreatedAt());
     }
 
-    public Date getCreateDate() {
-        return message.getCreateDate();
+    public Date getCreatedAt() {
+        return message.getCreatedAt();
     }
 
     public String getLinkUrl() {
@@ -71,7 +71,7 @@ public class MessageBean implements Serializable {
             return MembersClient.getMember(message.getFromId());
         } catch (MemberNotFoundException e) {
             throw ReferenceResolutionException.toObject(Member.class, message.getFromId())
-                    .fromObject(Message.class, message.getMessageId());
+                    .fromObject(Message.class, message.getId());
         }
     }
 

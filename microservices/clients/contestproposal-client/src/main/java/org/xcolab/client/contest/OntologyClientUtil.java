@@ -56,8 +56,8 @@ public final class OntologyClientUtil {
         return client.getOntologyTermParent(ontologyTerm);
     }
 
-    public static OntologyTerm getOntologyTerm(long Id_) {
-        return client.getOntologyTerm(Id_);
+    public static OntologyTerm getOntologyTerm(long Id) {
+        return client.getOntologyTerm(Id);
     }
 
     public static  OntologyTerm createOntologyTerm(OntologyTerm ontologyTerm) {
@@ -68,8 +68,8 @@ public final class OntologyClientUtil {
         return client.updateOntologyTerm(ontologyTerm);
     }
 
-    public static boolean deleteOntologyTerm(Long id_) {
-        return  client.deleteOntologyTerm(id_);
+    public static boolean deleteOntologyTerm(Long id) {
+        return  client.deleteOntologyTerm(id);
     }
 
 
@@ -106,12 +106,12 @@ public final class OntologyClientUtil {
         return client.getChildOntologyTerms(ontologyTermId);
     }
 
-    public static FocusArea getFocusArea(long Id_) {
-        return client.getFocusArea(Id_);
+    public static FocusArea getFocusArea(long Id) {
+        return client.getFocusArea(Id);
     }
 
-    public static  Boolean deleteFocusArea(Long id_) {
-        return  client.deleteFocusArea(id_);
+    public static  Boolean deleteFocusArea(Long id) {
+        return  client.deleteFocusArea(id);
     }
 
     public static  Boolean deleteFocusAreaOntologyTerm(Long focusAreaId, Long ontologyTermId) {
@@ -122,8 +122,8 @@ public final class OntologyClientUtil {
     }
 
 
-    public static OntologySpace getOntologySpace(long id_) {
-        return client.getOntologySpace(id_);
+    public static OntologySpace getOntologySpace(long id) {
+        return client.getOntologySpace(id);
     }
 
     public static List<OntologyTerm> getAllOntologyTermsFromFocusAreaWithOntologySpace(

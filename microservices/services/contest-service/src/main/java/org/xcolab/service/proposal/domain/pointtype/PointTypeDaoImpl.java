@@ -27,17 +27,17 @@ public class PointTypeDaoImpl implements PointTypeDao {
     public PointType create(PointType pointType) {
 
         PointTypeRecord ret = this.dslContext.insertInto(POINT_TYPE)
-                .set(POINT_TYPE.ID_, pointType.getId_())
+                .set(POINT_TYPE.ID, pointType.getId())
                 .set(POINT_TYPE.PARENT_POINT_TYPE_ID, pointType.getParentPointTypeId())
                 .set(POINT_TYPE.PERCENTAGE_OF_PARENT, pointType.getPercentageOfParent())
                 .set(POINT_TYPE.DISTRIBUTION_STRATEGY, pointType.getDistributionStrategy())
                 .set(POINT_TYPE.RECEIVER_LIMITATION_STRATEGY, pointType.getReceiverLimitationStrategy())
                 .set(POINT_TYPE.NAME, pointType.getName())
-                .set(POINT_TYPE.SORT, pointType.getSort())
-                .returning(POINT_TYPE.ID_)
+                .set(POINT_TYPE.SORT_ORDER, pointType.getSortOrder())
+                .returning(POINT_TYPE.ID)
                 .fetchOne();
         if (ret != null) {
-            pointType.setId_(ret.getValue(POINT_TYPE.ID_));
+            pointType.setId(ret.getValue(POINT_TYPE.ID));
             return pointType;
         } else {
             return null;
@@ -46,14 +46,14 @@ public class PointTypeDaoImpl implements PointTypeDao {
     }
 
     @Override
-    public PointType get(Long id_) throws NotFoundException {
+    public PointType get(Long id) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(POINT_TYPE)
-                .where(POINT_TYPE.ID_.eq(id_))
+                .where(POINT_TYPE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("PointType with id " + id_ + " does not exist");
+            throw new NotFoundException("PointType with id " + id + " does not exist");
         }
         return record.into(PointType.class);
 
@@ -62,14 +62,14 @@ public class PointTypeDaoImpl implements PointTypeDao {
     @Override
     public boolean update(PointType pointType) {
         return dslContext.update(POINT_TYPE)
-                .set(POINT_TYPE.ID_, pointType.getId_())
+                .set(POINT_TYPE.ID, pointType.getId())
                 .set(POINT_TYPE.PARENT_POINT_TYPE_ID, pointType.getParentPointTypeId())
                 .set(POINT_TYPE.PERCENTAGE_OF_PARENT, pointType.getPercentageOfParent())
                 .set(POINT_TYPE.DISTRIBUTION_STRATEGY, pointType.getDistributionStrategy())
                 .set(POINT_TYPE.RECEIVER_LIMITATION_STRATEGY, pointType.getReceiverLimitationStrategy())
                 .set(POINT_TYPE.NAME, pointType.getName())
-                .set(POINT_TYPE.SORT, pointType.getSort())
-                .where(POINT_TYPE.ID_.eq(pointType.getId_()))
+                .set(POINT_TYPE.SORT_ORDER, pointType.getSortOrder())
+                .where(POINT_TYPE.ID.eq(pointType.getId()))
                 .execute() > 0;
     }
 
@@ -81,7 +81,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
         if (parentPointTypeId != null) {
             query.addConditions(POINT_TYPE.PARENT_POINT_TYPE_ID.eq(parentPointTypeId));
         }
-        query.addOrderBy(POINT_TYPE.SORT.asc());
+        query.addOrderBy(POINT_TYPE.SORT_ORDER.asc());
 
         return query.fetchInto(PointType.class);
     }

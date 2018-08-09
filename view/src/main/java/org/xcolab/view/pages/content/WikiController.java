@@ -53,7 +53,7 @@ public class WikiController {
                 final ContentArticleVersion contentArticleVersion = ContentsClient
                         .getLatestContentArticleVersion(folderId, pageTitle.replace('+', ' '));
                 final ContentArticle contentArticle = ContentsClient
-                        .getContentArticle(contentArticleVersion.getContentArticleId());
+                        .getContentArticle(contentArticleVersion.getArticleId());
 
                 if (!contentArticle.canView(member)) {
                     return new AccessDeniedPage(member).toViewName(response);

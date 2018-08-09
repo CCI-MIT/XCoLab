@@ -18,7 +18,7 @@ public class StaffMember implements Serializable {
                     new ParameterizedTypeReference<List<StaffMember>>() {
                     });
 
-    private Long id_;
+    private Long id;
     private Long userId;
     private Long categoryId;
     private String firstNames;
@@ -33,7 +33,7 @@ public class StaffMember implements Serializable {
     }
 
     public StaffMember(StaffMember value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.userId = value.userId;
         this.categoryId = value.categoryId;
         this.firstNames = value.firstNames;
@@ -45,10 +45,10 @@ public class StaffMember implements Serializable {
         this.sort = value.sort;
     }
 
-    public StaffMember(Long id_, Long userId, Long categoryId, String firstNames,
+    public StaffMember(Long id, Long userId, Long categoryId, String firstNames,
             String lastName, String url, String photoUrl, String role, String organization,
             Integer sort) {
-        this.id_ = id_;
+        this.id = id;
         this.userId = userId;
         this.categoryId = categoryId;
         this.firstNames = firstNames;
@@ -60,12 +60,12 @@ public class StaffMember implements Serializable {
         this.sort = sort;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getUserId() {
@@ -152,11 +152,11 @@ public class StaffMember implements Serializable {
             return false;
         }
         final StaffMember other = (StaffMember) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (userId == null) {
@@ -229,7 +229,7 @@ public class StaffMember implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((userId == null) ? 0 : userId.hashCode());
         result = prime * result + ((categoryId == null) ? 0 : categoryId.hashCode());
         result = prime * result + ((firstNames == null) ? 0 : firstNames.hashCode());
@@ -245,7 +245,7 @@ public class StaffMember implements Serializable {
     @Override
     public String toString() {
 
-        return "StaffMember (" + id_ +
+        return "StaffMember (" + id +
                 ", " + userId +
                 ", " + categoryId +
                 ", " + firstNames +

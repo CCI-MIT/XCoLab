@@ -27,12 +27,12 @@ public class SocialActivityWrapper implements Serializable {
         return body;
     }
 
-    public Date getCreateDate() {
-        return new Date(activity.getCreateDate().getTime());
+    public Date getCreatedAt() {
+        return new Date(activity.getCreatedAt().getTime());
     }
 
     public String getRelativeDate() {
-        return DurationFormatter.forRequestLocale().format(activity.getCreateDate());
+        return DurationFormatter.forRequestLocale().format(activity.getCreatedAt());
     }
 
     public boolean getIsHiddenActivityType() {

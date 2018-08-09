@@ -1,7 +1,7 @@
 package org.xcolab.client.members.legacy.utils;
 
 import org.xcolab.client.members.legacy.enums.MemberRole;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 import org.xcolab.client.members.pojo.Member;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class SendMessagePermissionChecker {
         }
         MemberRole destinationRole = MemberRole.getHighestRole(user.getRoles());
 
-        for (Role_ role : originator.getRoles()) {
+        for (Role role : originator.getRoles()) {
             MemberRole currentRole = MemberRole.fromRoleName(role.getName());
             List<MemberRole> blacklist = blacklistedRolesMap.get(currentRole);
             if (blacklist == null || !blacklist.contains(destinationRole)) {
@@ -75,7 +75,7 @@ public class SendMessagePermissionChecker {
 
         // Count the number of blacklist entries for each of the users roles
         Map<MemberRole, Integer> blacklistCountMap = new EnumMap<>(MemberRole.class);
-        for (Role_ role : originator.getRoles()) {
+        for (Role role : originator.getRoles()) {
             MemberRole currentRole = MemberRole.fromRoleName(role.getName());
             List<MemberRole> blacklist = blacklistedRolesMap.get(currentRole);
             if (blacklist != null) {

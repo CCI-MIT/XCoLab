@@ -61,7 +61,7 @@ public class ForgotPasswordController {
                 member = MembersClient.findMemberByScreenName(screenNameOrEmail);
             }
 
-            String token = MembersClient.createForgotPasswordToken(member.getUserId());
+            String token = MembersClient.createForgotPasswordToken(member.getId());
             String colabUrl = PlatformAttributeKey.COLAB_URL.get();
             String passwordLink = colabUrl + String.format(FORGOT_PASSWORD_URL, token,
                     member.getScreenName());

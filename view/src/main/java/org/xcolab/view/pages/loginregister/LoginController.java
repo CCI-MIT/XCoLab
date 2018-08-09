@@ -112,7 +112,7 @@ public class LoginController {
             }
             case EXPIRED: {
                 final Member member = MembersClient.getMemberForLoginToken(tokenId);
-                final LoginToken loginToken = MembersClient.createLoginToken(member.getId_());
+                final LoginToken loginToken = MembersClient.createLoginToken(member.getId());
                 new MemberBatchRegistrationNotification(member, loginToken).sendEmailNotification();
                 AlertMessage.success("Your token is expired. A new login link has been sent.")
                         .flash(request);

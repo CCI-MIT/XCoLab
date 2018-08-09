@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.ContestEmailTemplate;
+import org.xcolab.model.tables.pojos.EmailTemplate;
 import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
 import org.xcolab.service.admin.exceptions.NotFoundException;
 import org.xcolab.service.admin.service.EmailTemplateService;
@@ -24,15 +24,15 @@ public class EmailTemplateController {
     private EmailTemplateDao emailTemplateDao;
 
     @RequestMapping(value = "/emailTemplates", method = RequestMethod.GET)
-    public List<ContestEmailTemplate> listEmailTemplates() {
+    public List<EmailTemplate> listEmailTemplates() {
 
         return this.emailTemplateDao.listAllEmailTemplates();
     }
 
     @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.GET)
-    public ContestEmailTemplate getEmailTemplates(@PathVariable String emailTemplateType)
+    public EmailTemplate getEmailTemplates(@PathVariable String emailTemplateType)
             throws NotFoundException {
-        final ContestEmailTemplate emailTemplate = emailTemplateDao
+        final EmailTemplate emailTemplate = emailTemplateDao
                 .getEmailTemplate(emailTemplateType);
         if (emailTemplate == null) {
             throw new NotFoundException();
@@ -41,16 +41,16 @@ public class EmailTemplateController {
     }
 
     @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.PUT)
-    public boolean updateEmailTemplates(@RequestBody ContestEmailTemplate contestEmailTemplate,
+    public boolean updateEmailTemplates(@RequestBody EmailTemplate contestEmailTemplate,
                                        @PathVariable String emailTemplateType) {
         return this.emailTemplateDao.getEmailTemplate(emailTemplateType) != null
                 && emailTemplateDao.updateEmailTemplate(contestEmailTemplate);
     }
 
     @RequestMapping(value = "/emailTemplates", method = RequestMethod.POST)
-    public ContestEmailTemplate createEmailTemplates(@RequestBody ContestEmailTemplate contestEmailTemplate) {
+    public EmailTemplate createEmailTemplates(@RequestBody EmailTemplate contestEmailTemplate) {
         emailTemplateDao.createEmailTemplate(contestEmailTemplate);
-        return emailTemplateDao.getEmailTemplate(contestEmailTemplate.getType_());
+        return emailTemplateDao.getEmailTemplate(contestEmailTemplate.getName());
     }
 
     @RequestMapping(value = "/emailTemplates/{emailTemplateType}", method = RequestMethod.DELETE)

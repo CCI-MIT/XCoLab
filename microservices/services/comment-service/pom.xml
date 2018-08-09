@@ -15,16 +15,6 @@
     <packaging>jar</packaging>
 
 	<dependencies>
-        <dependency>
-            <groupId>org.xcolab</groupId>
-            <artifactId>admin-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-		<dependency>
-			<groupId>org.xcolab</groupId>
-			<artifactId>contestproposal-client</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 	</dependencies>
 	
 	<build>
@@ -51,7 +41,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>comment_.*</includes>
+							<includes>comment__.*</includes>
 						</database>
 					</generator>
 				</configuration>

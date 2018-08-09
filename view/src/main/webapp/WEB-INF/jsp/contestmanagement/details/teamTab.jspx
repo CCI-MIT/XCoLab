@@ -11,7 +11,7 @@
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 
-	<c:set var="updateContestTeamURL" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/TEAM/update" />
+	<c:set var="updateContestTeamURL" value="/admin/contest/details/contestId/${contestWrapper.id}/tab/TEAM/update" />
 
 	<script>
 		var users = [];

@@ -51,9 +51,9 @@ public class ProposalVersionsJsonController {
                 break;
             }
 
-            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
+            if (Math.abs(oldDate.getTime() - proposalVersion.getCreatedAt().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
                 index++;
-                oldDate = proposalVersion.getCreateDate();
+                oldDate = proposalVersion.getCreatedAt();
             }
         }
 
@@ -73,7 +73,7 @@ public class ProposalVersionsJsonController {
 
         ClientHelper clientHelper = new ClientHelper();
         int index = clientHelper.getProposalClient()
-                .countProposalVersionsGroupedVersionsByContest(proposalId, c.getContestPK());
+                .countProposalVersionsGroupedVersionsByContest(proposalId, c.getId());
 
         final JsonObject json = Json.createObjectBuilder()
                 .add("count", index).build();
@@ -98,21 +98,21 @@ public class ProposalVersionsJsonController {
 
         final JsonArrayBuilder proposalVersionsArray = Json.createArrayBuilder();
         int counter = 0;
-        for(ProposalVersion proposalVersion: clientHelper.getProposalClient().getProposalVersionsGroupedVersionsByContest(proposalId,contest.getContestPK(),start, end)){
+        for(ProposalVersion proposalVersion: clientHelper.getProposalClient().getProposalVersionsGroupedVersionsByContest(proposalId,contest.getId(),start, end)){
 
                 long cphId = proposalVersion.getContestPhaseId();
                 final ContestPhase contestPhase = contestClient.getContestPhase(cphId);
-                Member author = Member.fromId(proposalVersion.getAuthorId());
+                Member author = Member.fromId(proposalVersion.getAuthorUserId());
                 proposalVersionsArray.add(Json.createObjectBuilder()
                         .add("version", proposalVersion.getVersion())
-                        .add("date", proposalVersion.getCreateDate().getTime())
+                        .add("date", proposalVersion.getCreatedAt().getTime())
                         .add("author", Json.createObjectBuilder()
-                                .add("userId", author.getId_())
+                                .add("userId", author.getId())
                                 .add("screenName", author.getScreenName())
                                 .add("fullName", author.getFullName()))
                         .add("updateType", proposalVersion.getUpdateType())
                         .add("contestPhase", Json.createObjectBuilder()
-                                .add("id", contestPhase.getContestPhasePK())
+                                .add("id", contestPhase.getId())
                                 .add("name", contestPhase.getName())));
 
                 counter++;

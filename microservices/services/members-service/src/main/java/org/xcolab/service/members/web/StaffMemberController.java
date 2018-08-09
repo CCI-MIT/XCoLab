@@ -1,8 +1,7 @@
 package org.xcolab.service.members.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,10 +14,14 @@ import java.util.List;
 @RestController
 public class StaffMemberController {
 
-    @Autowired
-    private StaffMemberDao staffMemberDao;
+    private final StaffMemberDao staffMemberDao;
 
-    @RequestMapping(value = "staffMembers", method = RequestMethod.GET)
+    @Autowired
+    public StaffMemberController(StaffMemberDao staffMemberDao) {
+        this.staffMemberDao = staffMemberDao;
+    }
+
+    @GetMapping("staffMembers")
     public List<StaffMember> listStaffMembers(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,

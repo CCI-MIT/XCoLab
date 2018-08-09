@@ -5,17 +5,17 @@
 
 	<div class="proposal-head">
         <div class="c-Headline">
-            <collab:image src="/image/contest/${contestWrapper.contestLogoId}" width="52" height="52" alt="${contestWrapper.contestShortNameWithEndYear }" />
+            <collab:image src="/image/contest/${contestWrapper.contestLogoId}" width="52" height="52" alt="${contestWrapper.titleWithEndYear }" />
             <div>
-                <h1>${contestWrapper.contestShortNameWithEndYear}</h1>
-                <span class="clearLeft"><h3>${contestWrapper.contestName}</h3></span>
+                <h1>${contestWrapper.titleWithEndYear}</h1>
+                <span class="clearLeft"><h3>${contestWrapper.question}</h3></span>
             </div>
         </div>
         <ul class="nav nav-tabs">
             <c:forEach var="singleTab" items="${tabs}" varStatus="loopStatus">
                 <li class="nav-item">
                     <xcolab:tabLink defaultTab="${singleTab.isDefault}" tabName="${singleTab.name}"
-                                    tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.contestPK}"
+                                    tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.id}"
                                     activityCount="${singleTab.activityCount}"
                                     cssClass="nav-link ${currentTabWrapped.name == singleTab.tab ? 'active' : ''}"/>
                 </li>

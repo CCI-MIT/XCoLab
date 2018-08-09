@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface ProposalUnversionedAttributeDao {
-    int delete(Long id_);
+    int delete(Long id);
 
     ProposalUnversionedAttribute getByProposalIdName(Long proposalId, String name);
 
@@ -15,7 +15,7 @@ public interface ProposalUnversionedAttributeDao {
 
     ProposalUnversionedAttribute create(ProposalUnversionedAttribute proposalUnversionedAttribute);
 
-    ProposalUnversionedAttribute get(Long id_) throws NotFoundException;
+    ProposalUnversionedAttribute get(Long id) throws NotFoundException;
 
     List<ProposalUnversionedAttribute> findByGiven(Long proposalId);
 }

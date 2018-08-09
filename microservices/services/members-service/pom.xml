@@ -71,17 +71,35 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
+                            <!-- 16 tables owned by this service -->
+
 							<includes>
+                                user__.+
+
+                                <!-- TODO: This service does not own these tables and shouldn't be using them -->
+                                | contest__points
+                                | activity__activity_entry
+                                | contest__contest_team_member
+
+
+                                <!-- User/Role/Team entities (8) -->
                                 | members_Member
                                 | Users_Roles | Role_ | xcolab_MemberCategory
-                                | xcolab_ContestTeamMember | members_RoleGroupRoles | members_RoleGroup
-                                | Users_Groups | xcolab_StaffMember
-                                | xcolab_LoginLog | xcolab_AnalyticsUserEvent
+                                | members_RoleGroupRoles | members_RoleGroup
+                                | xcolab_PlatformTeam | xcolab_PlatformTeamMember
+
+                                <!-- Messaging entities (3)-->
                                 | xcolab_Message | xcolab_MessageRecipientStatus
                                 | xcolab_MessagingUserPreferences
-                                | xcolab_Points
-                                | activities_ActivityEntry
-                                | xcolab_PlatformTeam | xcolab_PlatformTeamMember
+
+
+                                <!-- TODO: This could be moved to the content service -->
+                                | xcolab_StaffMember
+
+                                <!-- TODO: loginLog should be in tracking-service -->
+                                | xcolab_LoginLog
+                                <!-- TODO: is analyticsUserEvent used? If yes -> tracking service -->
+                                | xcolab_AnalyticsUserEvent
                             </includes>
 						</database>
 					</generator>

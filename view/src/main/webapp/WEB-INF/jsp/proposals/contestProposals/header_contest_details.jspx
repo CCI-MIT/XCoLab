@@ -29,11 +29,11 @@
                             </c:otherwise>
                         </c:choose>
                     </c:if>
-                    ${contest.contestName}
+                    ${contest.question}
                 </div>
                 <div class="p-ContestProposals__header__description">
                     <p>
-                        ${contest.contestDescription}
+                        ${contest.description}
                         <c:if test="${contest.resourceArticleId > 0 and contestType.showResourceLinks}">
                             <a href="${contest.resourceArticleUrl}" id="readMoreLink" style="display: none"> Read more ...</a>
                         </c:if>
@@ -127,6 +127,8 @@
                     <c:forEach var="teamRoleEntry" items="${contest.contestTeamMembersByRole.entrySet() }">
                         <c:set var="teamRole" value="${teamRoleEntry.key}" />
                         <c:set var="teamRoleMembers" value="${teamRoleEntry.value}" />
+                        <!--@elvariable id="teamRole" type="org.xcolab.client.contest.pojo.team.ContestTeamMemberRole"-->
+                        <!--@elvariable id="teamRoleMembers" type="java.util.List<org.xcolab.client.members.pojo.Member>"-->
                         <div class="my-2">
                             <c:choose>
                                 <c:when test="${fn:length(teamRoleMembers) eq 1}">
@@ -143,9 +145,9 @@
                             <c:forEach var="teamRoleMember" items="${teamRoleMembers}" varStatus="status">
                                 <div class="p-ContestProposals__header__team__member">
                                     <xcolab:userPortrait portraitId="${teamRoleMember.portraitId}"
-                                                         memberId="${teamRoleMember.userId}"
+                                                         userId="${teamRoleMember.id}"
                                                          width="30" height="30"/>
-                                    <xcolab:userLinkSimple memberId="${teamRoleMember.userId}"
+                                    <xcolab:userLinkSimple userId="${teamRoleMember.id}"
                                                            text="${teamRoleMember.fullName}"/>
                                 </div>
                             </c:forEach>
@@ -161,7 +163,7 @@
                     </c:if>
 
                     <c:if test="${showEditLink}">
-                        <a href="/admin/contest/details/contestId/${contest.contestPK}" class="btn cb-btn-outline-admin ">
+                        <a href="/admin/contest/details/contestId/${contest.id}" class="btn cb-btn-outline-admin ">
                             Edit Contest
                         </a>
                     </c:if>
@@ -191,18 +193,18 @@
                             <p>Current proposal review status for each Judge. Click to filter proposals for a specific judge.</p>
                             <div>
                                 <c:forEach var="judge" items="${contest.contestJudges}">
-                                    <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.userId}">
+                                    <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.id}">
                                         <div class="review-status-container">
                                             <xcolab:userPortrait portraitId="${judge.portraitId}"
-                                                                 memberId="${judge.userId}"
+                                                                 userId="${judge.id}"
                                                                  width="30" height="30"/>
                                         </div>
                                         <br/>
-                                        <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
-                                            <a href="${contest.contestUrl}/judgeFilter/${judge.userId}">${judge.fullName}</a>
+                                        <judging:judgeAssignedProposalCount userId="${judge.id}" contestPhaseId="${contestPhase.id}">
+                                            <a href="${contest.contestUrl}/judgeFilter/${judge.id}">${judge.fullName}</a>
                                             <br /><span>(${proposalAlreadyJudgedCount} of ${proposalCount})</span>
                                             <div class="hidden">
-                                                <span id="js-Tooltip__content__judgedata_${judge.userId}">
+                                                <span id="js-Tooltip__content__judgedata_${judge.id}">
                                                     ${judge.fullName} has evaluated ${proposalAlreadyJudgedCount} out of the ${proposalCount} proposals assigned to them.
                                                 </span>
                                             </div>
@@ -219,7 +221,7 @@
 
             <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                 <div class="p-ContestProposals__header__shareButtons">
-                    <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName)}"/>
+                    <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.title)}"/>
                 </div>
             </c:if>
 

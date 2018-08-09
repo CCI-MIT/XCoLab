@@ -57,7 +57,7 @@ public class JudgingCsvController {
         ProposalsPermissions permissions = proposalContext.getPermissions();
         // Security handling
         if (!(permissions.getCanFellowActions() && proposalContext.getProposal()
-                .isUserAmongFellows(currentMember.getUserId())) && !permissions.getCanAdminAll()
+                .isUserAmongFellows(currentMember.getId())) && !permissions.getCanAdminAll()
                 && !permissions.getCanJudgeActions() && !permissions
                 .getCanContestManagerActions()) {
             return;
@@ -92,7 +92,7 @@ public class JudgingCsvController {
         Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
 
         List<Proposal> stillActiveProposals = proposalContext.getClients().getProposalClient()
-                .getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
+                .getActiveProposalsInContestPhase(currentPhase.getId());
         Set<ProposalRatingType> occurringRatingTypes = new HashSet<>();
 
         for (ContestPhase judgingPhase : contest.getPhases()) {
@@ -102,8 +102,8 @@ public class JudgingCsvController {
 
             for (Proposal proposal : stillActiveProposals) {
                 ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil
-                        .getProposalContestPhaseAttribute(proposal.getProposalId(),
-                                judgingPhase.getContestPhasePK(),
+                        .getProposalContestPhaseAttribute(proposal.getId(),
+                                judgingPhase.getId(),
                                 ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
 
                 if (fellowActionAttribute != null) {
@@ -117,15 +117,15 @@ public class JudgingCsvController {
                     }
 
                     final String proposalUrl = PlatformAttributeKey.COLAB_URL.get() + proposal
-                            .getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
+                            .getProposalLinkUrl(contest, judgingPhase.getId());
                     final ProposalReview proposalReview =
                             new ProposalReview(proposal, judgingPhase, proposalUrl);
                     proposalReview.setReviewers(ImmutableSet
                             .copyOf(getProposalReviewingJudges(proposal, judgingPhase,
                                     proposalContext)));
                     List<ProposalRating> ratings = ProposalJudgeRatingClientUtil
-                            .getJudgeRatingsForProposal(proposal.getProposalId(),
-                                    judgingPhase.getContestPhasePK());
+                            .getJudgeRatingsForProposal(proposal.getId(),
+                                    judgingPhase.getId());
                     Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
 
                     for (ProposalRating rating : ratings) {
@@ -141,7 +141,7 @@ public class JudgingCsvController {
 
                         occurringRatingTypes.add(ratingWrapper.getRatingType());
                         if (rating.getCommentEnabled()) {
-                            proposalReview.addReview(ratingWrapper.getUser(), rating.getComment_());
+                            proposalReview.addReview(ratingWrapper.getUser(), rating.getComment());
                         }
                         if (StringUtils.isNotBlank(rating.getOtherDataString())) {
                             proposalReview.addShouldAdvanceDecision(ratingWrapper.getUser(),
@@ -184,8 +184,8 @@ public class JudgingCsvController {
 
         if (judgingPhase.getFellowScreeningActive()) {
             final ProposalContestPhaseAttribute selectedJudgesAttribute = proposalPhaseClient
-                    .getProposalContestPhaseAttribute(proposal.getProposalId(),
-                            judgingPhase.getContestPhasePK(),
+                    .getProposalContestPhaseAttribute(proposal.getId(),
+                            judgingPhase.getId(),
                             ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
             if (selectedJudgesAttribute == null) {
                 throw new IllegalStateException("Fellow screening active,"
@@ -198,7 +198,7 @@ public class JudgingCsvController {
         } else {
             // Choose all judges
             List<Long> judgeIds = ContestTeamMemberClientUtil
-                        .getJudgesForContest(judgingPhase.getContestPK());
+                        .getJudgesForContest(judgingPhase.getContestId());
             return MEMBERS.fromIdList(judgeIds);
         }
     }

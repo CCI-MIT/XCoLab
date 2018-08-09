@@ -128,15 +128,15 @@
                         <tr>
                             <td><a href="${thread.linkUrl}">${thread.title}</a></td>
                             <td>${thread.commentsCount}</td>
-                            <td><xcolab:userLinkSimple memberId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.displayName}"/></td>
+                            <td><xcolab:userLinkSimple userId="${thread.lastActivityAuthor.id}" text="${thread.lastActivityAuthor.displayName}"/></td>
                             <td>${thread.lastActivityDateFormatted}</td>
                         </tr>
                     </c:forEach>
                 </table>
             </div>
             <div class="l-Content__sidebar l-Content__sidebar--right l-Content__sidebar--small">
-                <c:set var="subscribeUrl" value="/discussion/subscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
-                <c:set var="unsubscribeUrl" value="/discussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
+                <c:set var="subscribeUrl" value="/discussion/subscribeCategory?categoryId=${not empty currentCategory ? currentCategory.id : '0'}"/>
+                <c:set var="unsubscribeUrl" value="/discussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.id : '0'}"/>
                 <a class="btn btn-link js-EnhancedLink" data-require-login="true"
                    href="${isSubscribed ? unsubscribeUrl : subscribeUrl}" rel="nofollow">
                     <collab:image src="/images/subscribe_small_2.png" cssClass="cb-btn-image" />

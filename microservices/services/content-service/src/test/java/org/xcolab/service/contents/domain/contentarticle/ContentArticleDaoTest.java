@@ -53,7 +53,7 @@ public class ContentArticleDaoTest {
 
         ContentArticle ae = new ContentArticle();
         ae = contentArticleDao.create(ae);
-        assertNotNull(contentArticleDao.get(ae.getContentArticleId()));
+        assertNotNull(contentArticleDao.get(ae.getId()));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class ContentArticleDaoTest {
 
         ContentArticle ae = contentArticleDao.get(2L);
 
-        assertNotNull(contentArticleDao.get(ae.getContentArticleId()));
+        assertNotNull(contentArticleDao.get(ae.getId()));
     }
 
     @Test
@@ -69,23 +69,19 @@ public class ContentArticleDaoTest {
 
         ContentArticle ae = new ContentArticle();
         ae = contentArticleDao.create(ae);
-        assertTrue(contentArticleDao.delete(ae.getContentArticleId())==1);
+        assertTrue(contentArticleDao.delete(ae.getId()) == 1);
         thrown.expect(NotFoundException.class);
-        assertNotNull(contentArticleDao.get(ae.getContentArticleId()));
+        assertNotNull(contentArticleDao.get(ae.getId()));
     }
 
     @Test
     public void shouldUpdateContentArticle() throws Exception {
         ContentArticle ae = new ContentArticle();
-        ae.setAuthorId(3L);
+        ae.setAuthorUserId(3L);
         ae = contentArticleDao.create(ae);
-        ae.setAuthorId(1L);
+        ae.setAuthorUserId(1L);
         contentArticleDao.update(ae);
-        ContentArticle az = contentArticleDao.get(ae.getContentArticleId());
-        assertEquals(az.getAuthorId(),ae.getAuthorId());
-
+        ContentArticle az = contentArticleDao.get(ae.getId());
+        assertEquals(az.getAuthorUserId(), ae.getAuthorUserId());
     }
-
-
-
 }

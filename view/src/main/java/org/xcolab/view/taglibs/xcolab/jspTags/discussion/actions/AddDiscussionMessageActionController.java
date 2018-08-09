@@ -70,7 +70,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             return "redirect:" + redirectUri + "#addCommentForm";
         }
 
-        long memberId = MemberAuthUtil.getMemberId(request);
+        long userId = MemberAuthUtil.getuserId(request);
 
         try {
             final ThreadClient threadClient = ThreadClientUtil.getClient();
@@ -87,31 +87,31 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
             Comment comment = new Comment();
             comment.setContent(body);
-            comment.setAuthorId(memberId);
+            comment.setAuthorUserId(userId);
             comment.setThreadId(threadId);
             comment = commentClient.createComment(comment);
             CommentThread commentThread = threadClient.getThread(threadId);
 
-            updateAnalyticsAndActivities(commentThread, comment, memberId, request);
+            updateAnalyticsAndActivities(commentThread, comment, userId, request);
 
             if (commentThread.getIsQuiet() != null && !commentThread.getIsQuiet()) {
 
                 if (commentThread.getCategory() != null) {
                     activityClient.createActivityEntry(DiscussionThreadActivityType.COMMENT_ADDED,
-                            memberId, commentThread.getThreadId(), comment.getCommentId());
+                            userId, commentThread.getId(), comment.getId());
                 } else {
                     final Proposal proposal = getProposal(proposalClient, commentThread);
                     if (proposal != null) {
                         //proposal
                         activityClient
-                                .createActivityEntry(ProposalActivityType.COMMENT_ADDED, memberId,
-                                        proposal.getProposalId(), comment.getCommentId());
+                                .createActivityEntry(ProposalActivityType.COMMENT_ADDED, userId,
+                                        proposal.getId(), comment.getId());
                     } else {
                         final Contest contest = getContest(commentThread);
                         if (contest != null) {
                             //contest
                             activityClient.createActivityEntry(ContestActivityType.COMMENT_ADDED,
-                                    memberId, contest.getContestPK(), comment.getCommentId());
+                                    userId, contest.getId(), comment.getId());
 
                             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.COMMENT_CONTEST);
                         }
@@ -152,7 +152,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
     private Contest getContest(CommentThread commentThread) {
         try {
-            return ContestClientUtil.getContestByThreadId(commentThread.getThreadId());
+            return ContestClientUtil.getContestByThreadId(commentThread.getId());
         } catch (ContestNotFoundException e) {
             return null;
         }
@@ -160,7 +160,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
     private Proposal getProposal(ProposalClient proposalClient, CommentThread commentThread) {
         try {
-            return proposalClient.getProposalByThreadId(commentThread.getThreadId());
+            return proposalClient.getProposalByThreadId(commentThread.getId());
         } catch (ProposalNotFoundException e) {
             return null;
         }

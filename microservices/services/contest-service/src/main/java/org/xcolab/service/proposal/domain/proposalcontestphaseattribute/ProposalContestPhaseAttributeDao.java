@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ProposalContestPhaseAttributeDao {
 
-    int delete(Long id_);
+    int delete(Long id);
 
     List<ProposalContestPhaseAttribute> findByGiven(Long proposalId, Long contestPhaseId, String name);
 
-    ProposalContestPhaseAttribute get(Long id_) throws NotFoundException;
+    ProposalContestPhaseAttribute get(Long id) throws NotFoundException;
 
     ProposalContestPhaseAttribute create(ProposalContestPhaseAttribute proposalContestPhaseAttribute);
 

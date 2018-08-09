@@ -36,7 +36,7 @@ public class PointsController {
 
     @RequestMapping(value = "/pointsDistributionConfigurations", method = RequestMethod.POST)
     public PointsDistributionConfiguration createPointsDistributionConfiguration(@RequestBody PointsDistributionConfiguration pointsDistributionConfiguration) {
-        pointsDistributionConfiguration.setCreateDate(new Timestamp(new Date().getTime()));
+        pointsDistributionConfiguration.setCreatedAt(new Timestamp(new Date().getTime()));
         return this.pointsDistributionConfigurationDao.create(pointsDistributionConfiguration);
     }
 
@@ -70,34 +70,34 @@ public class PointsController {
 
         }
     }
-    @RequestMapping(value = "/pointsDistributionConfigurations/{id_}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/pointsDistributionConfigurations/{id}", method = RequestMethod.PUT)
     public boolean updatePointsDistributionConfiguration(@RequestBody PointsDistributionConfiguration pointsDistributionConfiguration,
-                                                         @PathVariable("id_") Long id_) throws NotFoundException {
+                                                         @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || pointsDistributionConfigurationDao.get(id_) == null) {
-            throw new NotFoundException("No PointsDistributionConfiguration with id " + id_);
+        if (id == null || id == 0 || pointsDistributionConfigurationDao.get(id) == null) {
+            throw new NotFoundException("No PointsDistributionConfiguration with id " + id);
         } else {
             return pointsDistributionConfigurationDao.update(pointsDistributionConfiguration);
         }
     }
-    @RequestMapping(value = "/pointsDistributionConfigurations/getByTargetPlanSectionDefinitionId", method = RequestMethod.GET)
-    public PointsDistributionConfiguration getPointsDistributionConfiguration(@RequestParam("targetPlanSectionDefinitionId") Long targetPlanSectionDefinitionId) throws NotFoundException {
-        if (targetPlanSectionDefinitionId == null || targetPlanSectionDefinitionId == 0) {
+    @RequestMapping(value = "/pointsDistributionConfigurations/getByTargetProposalTemplateSectionDefinitionId", method = RequestMethod.GET)
+    public PointsDistributionConfiguration getPointsDistributionConfiguration(@RequestParam("targetProposalTemplateSectionDefinitionId") Long targetProposalTemplateSectionDefinitionId) throws NotFoundException {
+        if (targetProposalTemplateSectionDefinitionId == null || targetProposalTemplateSectionDefinitionId == 0) {
             throw new NotFoundException("No PointsDistributionConfiguration with the id given");
         } else {
-            return pointsDistributionConfigurationDao.getByPlanSectionDefinitionId(targetPlanSectionDefinitionId);
+            return pointsDistributionConfigurationDao.getByProposalTemplateSectionDefinitionId(targetProposalTemplateSectionDefinitionId);
         }
     }
-    @RequestMapping(value = "/pointsDistributionConfigurations/{id_}", method = RequestMethod.DELETE)
-    public String deletePointsDistributionConfiguration(@PathVariable("id_") Long id_)
+    @RequestMapping(value = "/pointsDistributionConfigurations/{id}", method = RequestMethod.DELETE)
+    public String deletePointsDistributionConfiguration(@PathVariable("id") Long id)
             throws NotFoundException {
 
-        if (id_ == null || id_ == 0) {
+        if (id == null || id == 0) {
             throw new NotFoundException("No PointsDistributionConfiguration with id given");
         } else {
-            PointsDistributionConfiguration pointsDistributionConfiguration = this.pointsDistributionConfigurationDao.get(id_);
+            PointsDistributionConfiguration pointsDistributionConfiguration = this.pointsDistributionConfigurationDao.get(id);
             if (pointsDistributionConfiguration != null) {
-                this.pointsDistributionConfigurationDao.delete(pointsDistributionConfiguration.getId_());
+                this.pointsDistributionConfigurationDao.delete(pointsDistributionConfiguration.getId());
                 return "PointsDistributionConfiguration deleted successfully";
             } else {
                 throw new NotFoundException("No PointsDistributionConfiguration with id given");

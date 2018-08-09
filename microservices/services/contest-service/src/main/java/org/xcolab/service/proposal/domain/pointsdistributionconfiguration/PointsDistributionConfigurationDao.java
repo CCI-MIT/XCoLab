@@ -9,8 +9,8 @@ public interface PointsDistributionConfigurationDao {
     int deleteByProposalId(Long proposalId);
     List<PointsDistributionConfiguration> findByGiven(Long proposalId, Long pointTypeId);
     PointsDistributionConfiguration create(PointsDistributionConfiguration pointsDistributionConfiguration);
-    PointsDistributionConfiguration get(Long id_) throws NotFoundException;
-    PointsDistributionConfiguration getByPlanSectionDefinitionId(Long targetPlanSectionDefinitionId) throws NotFoundException;
+    PointsDistributionConfiguration get(Long id) throws NotFoundException;
+    PointsDistributionConfiguration getByProposalTemplateSectionDefinitionId(Long targetProposalTemplateSectionDefinitionId) throws NotFoundException;
     boolean update(PointsDistributionConfiguration pointsDistributionConfiguration);
-    int delete(Long id_);
+    int delete(Long id);
 }

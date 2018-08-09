@@ -2,8 +2,9 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags">
-    <!--@elvariable id="messageBean" type="org.xcolab.view.pages.messaging.beans.MessageBean"-->
+    <!--@elvariable id="currentMessageBean" type="org.xcolab.view.pages.messaging.beans.MessageBean"-->
     <!--@elvariable id="user" type="org.xcolab.client.members.pojo.Member"-->
+
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="${currentMessageBean.subject} - Messages">
@@ -18,7 +19,7 @@
                     <a href="/members"><spring:message code="colab.breadcrumbs.members"/></a>
                 </li>
                 <li class="breadcrumb-item">
-                    <xcolab:userLinkSimple memberId="${user.userId}" text="${user.displayName}" />
+                    <xcolab:userLinkSimple userId="${user.id}" text="${user.displayName}" />
                 </li>
                 <li class="breadcrumb-item">
                     <a href="/messaging"><spring:message code="colab.breadcrumbs.messages"/></a>
@@ -29,7 +30,7 @@
 
         <div class="c-Message__titleWrap">
         <h1 class="c-Message__subject">${currentMessageBean.subject}</h1>
-        <c:if test="${(user.userId != currentMessageBean.from.userId) &amp;&amp; isLastMessage}">
+        <c:if test="${(user.id != currentMessageBean.from.id) and isLastMessage}">
             <button type="button" class="btn btn-primary float-right" id="reply-button">
                 <spring:message code="message.reply.button"/>
             </button>

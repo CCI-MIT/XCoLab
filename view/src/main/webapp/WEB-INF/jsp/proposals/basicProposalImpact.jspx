@@ -621,7 +621,7 @@
                             // Set header fields
                             var authorNameHtml = jQuery(impactSeriesAuthorTemplate({author: data.author}));
                             $('div#impact-series-detail div#c-Header span#author-name').html(authorNameHtml);
-                            $('div#impact-series-detail div#c-Header span#save-date').text(data.updateDate);
+                            $('div#impact-series-detail div#c-Header span#save-date').text(data.updatedAt);
 
                         } else {
                             $('div#author-info').hide();

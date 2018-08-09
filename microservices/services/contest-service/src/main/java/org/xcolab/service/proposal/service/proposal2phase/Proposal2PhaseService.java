@@ -61,7 +61,7 @@ public class Proposal2PhaseService {
 
         for (Long phId : phases) {
             ContestPhase ph = ContestClientUtil.getContestPhase(phId);
-            if (ph.getContestPK() == nextPhase.getContestPK().longValue()) { //this contestphase is in our target contest
+            if (ph.getContestId() == nextPhase.getContestId().longValue()) { //this contestphase is in our target contest
                 candidatePhase.add(ph);
             }
         }
@@ -79,7 +79,7 @@ public class Proposal2PhaseService {
             }
 
             try {
-                Proposal2Phase o = proposal2PhaseDao.getByProposalIdContestPhaseId(proposalId, closestPhase.getContestPhasePK());
+                Proposal2Phase o = proposal2PhaseDao.getByProposalIdContestPhaseId(proposalId, closestPhase.getId());
                 if (o.getVersionTo() < 0) {
                     o.setVersionTo(currentProposalVersion);
                     proposal2PhaseDao.update(o);

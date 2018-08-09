@@ -17,7 +17,6 @@ import org.xcolab.service.contents.exceptions.NotFoundException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
@@ -38,7 +37,7 @@ public class ContentArticleVersionDaoTest {
 
         ContentArticleVersion ae = new ContentArticleVersion();
         ae = contentArticleVersionDao.create(ae);
-        assertNotNull(contentArticleVersionDao.get(ae.getContentArticleVersionId()));
+        assertNotNull(contentArticleVersionDao.get(ae.getId()));
 
     }
 
@@ -52,7 +51,7 @@ public class ContentArticleVersionDaoTest {
     public void shouldGetByFolderId() throws Exception {
 
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setContentArticleId(1000L);
+        ae.setId(1000L);
         ae.setFolderId(200L);
         ae = contentArticleVersionDao.create(ae);
 
@@ -72,25 +71,26 @@ public class ContentArticleVersionDaoTest {
     @Test
     public void shouldDeleteContentArticleVersionByArticleId() throws Exception {
 
+        final long articleId = 1000L;
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setContentArticleId(1000L);
+        ae.setArticleId(articleId);
         ae = contentArticleVersionDao.create(ae);
 
-        assertTrue(contentArticleVersionDao.deleteByArticleId(ae.getContentArticleId())==1);
+        assertEquals(1, contentArticleVersionDao.deleteByArticleId(articleId));
         thrown.expect(NotFoundException.class);
-        assertNotNull(contentArticleVersionDao.get(ae.getContentArticleVersionId()));
+        assertNotNull(contentArticleVersionDao.get(ae.getId()));
 
     }
 
     @Test
     public void shouldUpdateContentArticle() throws Exception {
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setAuthorId(3L);
+        ae.setAuthorUserId(3L);
         ae = contentArticleVersionDao.create(ae);
-        ae.setAuthorId(1L);
+        ae.setAuthorUserId(1L);
         contentArticleVersionDao.update(ae);
-        ContentArticleVersion az = contentArticleVersionDao.get(ae.getContentArticleVersionId());
-        assertEquals(az.getAuthorId(),ae.getAuthorId());
+        ContentArticleVersion az = contentArticleVersionDao.get(ae.getId());
+        assertEquals(az.getAuthorUserId(), ae.getAuthorUserId());
 
     }
 }

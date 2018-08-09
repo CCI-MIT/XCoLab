@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.model.tables.pojos.Member;
-import org.xcolab.service.members.domain.member.MemberDao;
+import org.xcolab.model.tables.pojos.User;
+import org.xcolab.service.members.domain.member.UserDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
-import org.xcolab.service.members.service.member.MemberService;
+import org.xcolab.service.members.service.member.UserService;
 import org.xcolab.service.members.util.SecureRandomUtil;
 
 import java.sql.Timestamp;
@@ -22,11 +22,11 @@ import java.util.Optional;
 @RestController
 public class LoginTokenController {
 
-    private final MemberDao memberDao;
-    private final MemberService memberService;
+    private final UserDao memberDao;
+    private final UserService memberService;
 
     @Autowired
-    public LoginTokenController(MemberDao memberDao, MemberService memberService) {
+    public LoginTokenController(UserDao memberDao, UserService memberService) {
         this.memberDao = memberDao;
         this.memberService = memberService;
     }
@@ -34,7 +34,7 @@ public class LoginTokenController {
     @GetMapping("/loginTokens/{tokenId}/validate")
     public TokenValidity validateToken(@PathVariable String tokenId, @RequestParam String tokenKey)
             throws NotFoundException {
-        Member member = memberDao.findOneByLoginTokenId(tokenId)
+        User member = memberDao.findOneByLoginTokenId(tokenId)
                 .orElseThrow(NotFoundException::new);
         final boolean isValid = memberService.validatePassword(tokenKey, member.getLoginTokenKey());
         if (!isValid) {
@@ -48,32 +48,32 @@ public class LoginTokenController {
 
     @PostMapping("/loginTokens/{tokenId}/invalidate")
     public void invalidateToken(@PathVariable String tokenId) {
-        final Optional<Member> optionalMember = memberDao.findOneByLoginTokenId(tokenId);
-        if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
+        final Optional<User> optionalUser = memberDao.findOneByLoginTokenId(tokenId);
+        if (optionalUser.isPresent()) {
+            User member = optionalUser.get();
             member.setLoginTokenExpirationDate(Timestamp.from(Instant.now()));
-            memberDao.updateMember(member);
+            memberDao.updateUser(member);
         }
     }
 
     @GetMapping("/loginTokens/{tokenId}/member")
-    public Member getMemberForToken(@PathVariable String tokenId)
+    public User getUserForToken(@PathVariable String tokenId)
             throws NotFoundException {
         return memberDao.findOneByLoginTokenId(tokenId).orElseThrow(NotFoundException::new);
     }
 
-    @PostMapping("/members/{memberId}/loginToken")
-    public LoginToken generateToken(@PathVariable long memberId) throws NotFoundException {
+    @PostMapping("/members/{userId}/loginToken")
+    public LoginToken generateToken(@PathVariable long userId) throws NotFoundException {
         String tokenId = Long.toHexString(SecureRandomUtil.nextLong());
         String tokenKey = Long.toHexString(SecureRandomUtil.nextLong());
         final long expirationInDays = ConfigurationAttributeKey.LOGIN_LINK_EXPIRATION_IN_DAYS.get();
         Instant tokenExpirationDate = Instant.now().plus(expirationInDays, ChronoUnit.DAYS);
 
-        final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
+        final User member = memberDao.getUser(userId).orElseThrow(NotFoundException::new);
         member.setLoginTokenId(tokenId);
         member.setLoginTokenKey(memberService.hashPassword(tokenKey));
         member.setLoginTokenExpirationDate(Timestamp.from(tokenExpirationDate));
-        memberDao.updateMember(member);
+        memberDao.updateUser(member);
 
         return new LoginToken(tokenId, tokenKey, tokenExpirationDate);
     }

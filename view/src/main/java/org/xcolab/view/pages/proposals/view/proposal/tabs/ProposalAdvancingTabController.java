@@ -89,12 +89,12 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
         List<ProposalRating> fellowRatingsUnWrapped =
                 ProposalJudgeRatingClientUtil.getFellowRatingsForProposal(
-                        proposal.getProposalId(), contestPhase.getContestPhasePK());
+                        proposal.getId(), contestPhase.getId());
         List<ProposalRatings> fellowRatings = wrapProposalRatings(fellowRatingsUnWrapped);
 
         List<ProposalRating> judgesRatingsUnWrapped =
                 ProposalJudgeRatingClientUtil.getJudgeRatingsForProposal(
-                        proposal.getProposalId(), contestPhase.getContestPhasePK());
+                        proposal.getId(), contestPhase.getId());
 
         for (Iterator i = judgesRatingsUnWrapped.iterator(); i.hasNext(); ) {
             ProposalRating judgesRatingUnWrapped = (ProposalRating) i.next();
@@ -105,14 +105,14 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
         List<ProposalRatings> judgeRatings = wrapProposalRatings(judgesRatingsUnWrapped);
         boolean isFrozen = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
-                proposal.getProposalId(),
-                contestPhase.getContestPhasePK(),
+                proposal.getId(),
+                contestPhase.getId(),
                 ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN
         );
         boolean hasAlreadyBeenPromoted =
                 ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
-                        proposal.getProposalId(),
-                        contestPhase.getContestPhasePK(),
+                        proposal.getId(),
+                        contestPhase.getId(),
                         ProposalContestPhaseAttributeKeys.PROMOTE_DONE
                 );
 
@@ -152,14 +152,14 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
         Proposal proposal = proposalContext.getProposal();
         final Contest contest = proposalContext.getContest();
-        long proposalId = proposal.getProposalId();
+        long proposalId = proposal.getId();
         ContestPhase contestPhase = proposalContext.getContestPhase();
         ProposalsPermissions permissions = proposalContext.getPermissions();
 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
 
-        final Long phaseId = contestPhase.getContestPhasePK();
+        final Long phaseId = contestPhase.getId();
         boolean isFrozen = proposalPhaseClient.isProposalContestPhaseAttributeSetAndTrue(proposalId,
                 phaseId, ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN);
 
@@ -199,7 +199,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
         final String proposalUrl = proposal.getProposalLinkUrl(contest, phaseId);
         if (permissions.getCanAdminAll() && !isUndecided && isForcePromotion) {
-            ContestClientUtil.forcePromotionOfProposalInPhase(proposal.getProposalId(),
+            ContestClientUtil.forcePromotionOfProposalInPhase(proposal.getId(),
                     phaseId);
             return "redirect:" + proposalUrl;
         } else {
@@ -211,7 +211,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
     private ProposalContestPhaseAttribute setIsFrozen(long proposalId, ContestPhase contestPhase,
             boolean isFrozen) {
         return ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposalId,
-                contestPhase.getContestPhasePK(),
+                contestPhase.getId(),
                 ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN, 0L, null,
                 String.valueOf(isFrozen));
     }
@@ -237,13 +237,13 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         }
 
         // Security handling
-        if (!(permissions.getCanJudgeActions() && proposal.getIsUserAmongSelectedJudges(member.getUserId())
+        if (!(permissions.getCanJudgeActions() && proposal.getIsUserAmongSelectedJudges(member.getId())
                 || isPublicRating)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
         final String redirectUrl = proposal.getWrapped().getProposalLinkUrl(contest,
-                contestPhase.getContestPhasePK());
+                contestPhase.getId());
 
         if (result.hasErrors()) {
             AlertMessage.danger("Your rating was NOT saved! Please check the form for errors.")
@@ -253,19 +253,19 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             return "redirect:" + redirectUrl + "#rating";
         }
 
-        if (permissions.getCanJudgeActions() && proposal.getIsUserAmongSelectedJudges(member.getUserId())) {
+        if (permissions.getCanJudgeActions() && proposal.getIsUserAmongSelectedJudges(member.getId())) {
             isPublicRating = false;
         }
 
         //find existing ratings
         List<ProposalRating> existingRatings =
                 ProposalJudgeRatingClientUtil.getJudgeRatingsForProposalAndUser(
-                        member.getUserId(),
-                        proposal.getProposalId(),
-                        contestPhase.getContestPhasePK());
+                        member.getId(),
+                        proposal.getId(),
+                        contestPhase.getId());
 
-        JudgingUtil.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(),
-                contestPhase.getContestPhasePK(), member.getUserId(), isPublicRating);
+        JudgingUtil.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getId(),
+                contestPhase.getId(), member.getId(), isPublicRating);
 
         AlertMessage.success("Rating saved successfully.").flash(request);
         return "redirect:" + redirectUrl;

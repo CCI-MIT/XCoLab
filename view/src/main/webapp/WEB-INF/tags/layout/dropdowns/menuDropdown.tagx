@@ -7,7 +7,7 @@
 
     <ul class="dropdown-menu dropdown-menu-right text-nowrap">
         <li class="dropdown-item">
-            <a href="/members/profile/${member.userId}">
+            <a href="/members/profile/${member.id}">
                 <spring:message code="homepage.menu.user.myprofile" />
             </a>
         </li>
@@ -22,7 +22,7 @@
             </a>
         </li>
         <li class="dropdown-item">
-            <a href="/members/profile/${member.userId}/subscriptions">
+            <a href="/members/profile/${member.id}/subscriptions">
                 <spring:message code="homepage.menu.user.mysubscriptions" />
             </a>
         </li>

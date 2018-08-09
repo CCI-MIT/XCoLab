@@ -19,15 +19,15 @@ public class ActivitySubscriptionWrapper implements Serializable {
 
     public ActivitySubscriptionWrapper(ActivitySubscription subscription) {
         this.subscription = subscription;
-        this.subscriptionPk = subscription.getPk();
+        this.subscriptionPk = subscription.getId();
     }
 
     public String getName() {
         return ActivitySubscriptionNameGenerator.getName(subscription);
     }
 
-    public Date getUpdated() {
-        return subscription.getModifiedDate();
+    public Date getUpdatedAt() {
+        return subscription.getUpdatedAt();
     }
 
     public SubscriptionType getType() {

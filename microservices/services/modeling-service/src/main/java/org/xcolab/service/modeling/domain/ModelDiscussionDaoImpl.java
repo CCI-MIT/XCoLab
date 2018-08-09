@@ -27,7 +27,7 @@ public class ModelDiscussionDaoImpl implements ModelDiscussionDao {
     public Optional<ModelDiscussion> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_DISCUSSION)
-                .where(MODEL_DISCUSSION.MODEL_DISCUSSION_ID.eq(id))
+                .where(MODEL_DISCUSSION.ID.eq(id))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
@@ -52,7 +52,7 @@ public class ModelDiscussionDaoImpl implements ModelDiscussionDao {
         if (record == null) {
             throw new IllegalStateException("Could not retrieve id of inserted object");
         }
-        pojo.setModelDiscussionId(record.getValue(MODEL_DISCUSSION.MODEL_DISCUSSION_ID));
+        pojo.setId(record.getValue(MODEL_DISCUSSION.ID));
         return pojo;
     }
 
@@ -61,14 +61,14 @@ public class ModelDiscussionDaoImpl implements ModelDiscussionDao {
         return dslContext.update(MODEL_DISCUSSION)
                 .set(MODEL_DISCUSSION.MODEL_ID, pojo.getModelId())
                 .set(MODEL_DISCUSSION.CATEGORY_ID, pojo.getCategoryId())
-                .where(MODEL_DISCUSSION.MODEL_DISCUSSION_ID.eq(pojo.getModelDiscussionId()))
+                .where(MODEL_DISCUSSION.ID.eq(pojo.getId()))
                 .execute() > 0;
     }
 
     @Override
     public boolean delete(long id) {
         return dslContext.deleteFrom(MODEL_DISCUSSION)
-                .where(MODEL_DISCUSSION.MODEL_DISCUSSION_ID.eq(id))
+                .where(MODEL_DISCUSSION.ID.eq(id))
                 .execute() > 0;
     }
 }

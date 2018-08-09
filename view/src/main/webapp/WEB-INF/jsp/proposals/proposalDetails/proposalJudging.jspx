@@ -9,7 +9,7 @@
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="judgeProposalFeedbackBean" type="org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean"-->
 
-    <c:set var="saveJudgingFeedbackURL" value="${proposal.proposalUrl}/tab/ADVANCING/saveJudgingFeedback?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId}"/>
+    <c:set var="saveJudgingFeedbackURL" value="${proposal.proposalUrl}/tab/ADVANCING/saveJudgingFeedback?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id}"/>
 
 
     <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalFeedbackBean">
@@ -28,9 +28,9 @@
                             screenName="${judge.screenName}"
                             fullName="${judge.fullName}"
                             portraitId="${judge.portraitId}"
-                            userId="${judge.userId}"
+                            userId="${judge.id}"
                             width="30" height="30"
-                            judgeRatingSatus="${proposal.getIsReviewFinishedForJudge(judge.userId)}"/>
+                            judgeRatingSatus="${proposal.getIsReviewFinishedForJudge(judge.id)}"/>
                 </c:forEach>
             </select>
         </c:if>

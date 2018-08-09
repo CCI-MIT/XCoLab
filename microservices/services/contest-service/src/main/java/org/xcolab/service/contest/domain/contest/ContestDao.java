@@ -26,13 +26,13 @@ public interface ContestDao {
             Long planTemplateId, List<Long> contestTypeIds, Boolean contestPrivate,
             String searchTerm);
 
-    boolean isContestNameYearUnique(String contestShortName, Long year, Long currentContestId);
+    boolean isContestTitleYearUnique(String contestShortName, Long year, Long currentContestId);
 
     boolean existsWithScheduleId(long contestScheduleId);
 
     Contest getByResourceId(Long resourceId) throws NotFoundException;
 
-    boolean delete(long contestPK);
+    boolean delete(long contestId);
 
     List<Long> getContestYears();
 }

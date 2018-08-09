@@ -25,14 +25,14 @@ public class ProposalRatingTypeDaoImpl implements ProposalRatingTypeDao {
     }
 
     @Override
-    public ProposalRatingType get(Long id_) throws NotFoundException {
+    public ProposalRatingType get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_RATING_TYPE)
-                .where(PROPOSAL_RATING_TYPE.ID_.eq(id_))
+                .where(PROPOSAL_RATING_TYPE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ProposalRatingType with id " + id_ + " does not exist");
+            throw new NotFoundException("ProposalRatingType with id " + id + " does not exist");
         }
         return record.into(ProposalRatingType.class);
 

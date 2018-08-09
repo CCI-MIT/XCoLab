@@ -15,7 +15,7 @@ public class ActivitySubscriptionWhitelistProposalContributorHandler
 
         List<Member> contributors = ProposalClientUtil.getProposalMembers(categoryId);
         for (Member contributor : contributors) {
-            contributorIds.add(contributor.getUserId());
+            contributorIds.add(contributor.getId());
         }
 
         return contributorIds;

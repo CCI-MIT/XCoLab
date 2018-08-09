@@ -44,13 +44,13 @@ public class ActivityEntryDaoTest {
     @Test
     public void shouldCreateNewActivityEntry() throws Exception {
         ActivityEntry ae = new ActivityEntry();
-        ae.setMemberId(2057710L);
+        ae.setUserId(2057710L);
         ae.setActivityType(ActivityCategory.MEMBER.name());
         ae.setActivityType(MemberActivityType.REGISTERED.name());
         ae.setCategoryId(2057710L);
         ae = activityEntryDao.create(ae);
 
-        assertNotNull(activityEntryDao.get(ae.getActivityEntryId()));
+        assertNotNull(activityEntryDao.get(ae.getId()));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ActivityEntryDaoTest {
     }
 
     @Test
-    public void shouldFindByGivenMemberId() throws Exception {
+    public void shouldFindByGivenuserId() throws Exception {
 
         List<ActivityEntry> list = activityEntryDao.findByGiven(PaginationHelper.EVERYTHING,
                 2666739L,null);

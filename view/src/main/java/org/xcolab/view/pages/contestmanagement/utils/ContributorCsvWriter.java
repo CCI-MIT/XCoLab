@@ -47,7 +47,7 @@ public class ContributorCsvWriter extends CsvResponseWriter {
     public void writeProposalsInContest(Contest contest) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
-        List<Proposal> proposals = ProposalClientUtil.listProposals(contest.getContestPK());
+        List<Proposal> proposals = ProposalClientUtil.listProposals(contest.getId());
 
         for (Proposal proposal : proposals) {
             if (!filterPredicate.test(proposal)) {
@@ -56,9 +56,9 @@ public class ContributorCsvWriter extends CsvResponseWriter {
             final ProposalRibbon ribbonWrapper = proposal.getRibbonWrapper();
             for (ProposalTeamMember teamMember : proposal.getMembers()) {
                 List<String> row = new ArrayList<>();
-                addValue(row, contest.getContestPK());
-                addValue(row, contest.getContestShortName());
-                addValue(row, proposal.getProposalId());
+                addValue(row, contest.getId());
+                addValue(row, contest.getTitle());
+                addValue(row, proposal.getId());
                 final String proposalUrl = colabUrl + proposal.getProposalLinkUrl(contest);
                 addValue(row, proposalUrl);
                 addValue(row, proposal.getName());
@@ -66,7 +66,7 @@ public class ContributorCsvWriter extends CsvResponseWriter {
                 addValue(row, ribbonWrapper.getRibbonTitle());
 
                 final Member member = teamMember.getMember();
-                addValue(row, member.getUserId());
+                addValue(row, member.getId());
                 addValue(row, member.getScreenName());
                 addValue(row, member.getFirstName());
                 addValue(row, member.getLastName());

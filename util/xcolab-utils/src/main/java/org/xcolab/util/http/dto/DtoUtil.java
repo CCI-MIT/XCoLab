@@ -18,4 +18,12 @@ public final class DtoUtil {
         }
         return pojos;
     }
+
+    public static <PojoT, DtoT extends DataTransferObject<PojoT>> PojoT toPojo(
+            DtoT dto, ServiceNamespace serviceNamespace) {
+        if (dto == null) {
+            return null;
+        }
+        return dto.toPojo(serviceNamespace);
+    }
 }

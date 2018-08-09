@@ -28,19 +28,19 @@ public final class ProposalMoveUtil {
 
     public static void moveProposal(ProposalContext proposalContext,
             UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
-            ContestPhase contestPhase, Contest targetContest, long memberId) {
+            ContestPhase contestPhase, Contest targetContest, long userId) {
         try {
             final ClientHelper clients = proposalContext.getClients();
             final ProposalClient proposalClient = clients.getProposalClient();
             final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
             final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
 
-            final Contest fromContest = proposalClient.getCurrentContestForProposal(proposal.getProposalId());
-            ContestPhase targetPhase = ContestClientUtil.getActivePhase(targetContest.getContestPK());
+            final Contest fromContest = proposalClient.getCurrentContestForProposal(proposal.getId());
+            ContestPhase targetPhase = ContestClientUtil.getActivePhase(targetContest.getId());
 
             try {
-                if (proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(),
-                        targetPhase.getContestPhasePK()) != null) {
+                if (proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(),
+                        targetPhase.getId()) != null) {
                     throw new InternalException("The proposal is already associated with the target contest.");
                 }
             } catch (Proposal2PhaseNotFoundException ignored) {
@@ -49,12 +49,12 @@ public final class ProposalMoveUtil {
 
             switch (updateProposalSectionsBean.getMoveType()) {
                 case MOVE_PERMANENTLY:
-                    proposalMoveClient.createProposalMoveHistory(proposal.getProposalId(),
-                            fromContest.getContestPK(), targetContest.getContestPK(), targetPhase.getContestPhasePK(),
-                            memberId);
+                    proposalMoveClient.createProposalMoveHistory(proposal.getId(),
+                            fromContest.getId(), targetContest.getId(), targetPhase.getId(),
+                            userId);
                     for (Proposal2Phase p2p : ProposalPhaseClientUtil
-                            .getProposal2PhaseByProposalId(proposal.getProposalId())) {
-                        if (ContestClientUtil.getContestPhase(p2p.getContestPhaseId()).getContestPK()
+                            .getProposal2PhaseByProposalId(proposal.getId())) {
+                        if (ContestClientUtil.getContestPhase(p2p.getContestPhaseId()).getContestId()
                                 != updateProposalSectionsBean.getBaseProposalContestId()) {
                             continue;
                         }
@@ -78,11 +78,11 @@ public final class ProposalMoveUtil {
                     }
                     break;
                 case COPY:
-                    proposalMoveClient.createCopyProposalMoveHistory(proposal.getProposalId(),
-                            fromContest.getContestPK(), targetContest.getContestPK(), targetPhase.getContestPhasePK(),
-                            memberId);
+                    proposalMoveClient.createCopyProposalMoveHistory(proposal.getId(),
+                            fromContest.getId(), targetContest.getId(), targetPhase.getId(),
+                            userId);
                     for (Proposal2Phase p2p : ProposalPhaseClientUtil
-                            .getProposal2PhaseByProposalId(proposal.getProposalId())) {
+                            .getProposal2PhaseByProposalId(proposal.getId())) {
                         if (p2p.getVersionTo() < 0) {
                             p2p.setVersionTo(proposal.getCurrentVersion());
                             proposalPhaseClient.updateProposal2Phase(p2p);
@@ -90,7 +90,7 @@ public final class ProposalMoveUtil {
                     }
                     break;
                 case FORK:
-//                ProposalCreationUtil.createProposal(proposal.getAuthorId(), updateProposalSectionsBean,
+//                ProposalCreationUtil.createProposal(proposal.getAuthorUserId(), updateProposalSectionsBean,
 //                        contest, themeDisplay, contestPhase);
 //                break;
                     //TODO COLAB-2625: verify if old implementation works
@@ -98,16 +98,16 @@ public final class ProposalMoveUtil {
                 default:
             }
             Proposal2Phase p2p = new Proposal2Phase();
-            p2p.setContestPhaseId(targetPhase.getContestPhasePK());
-            p2p.setProposalId(proposal.getProposalId());
+            p2p.setContestPhaseId(targetPhase.getId());
+            p2p.setProposalId(proposal.getId());
 
             p2p.setVersionFrom( proposal.getCurrentVersion());
             p2p.setVersionTo(-1);
 
             proposalPhaseClient.createProposal2Phase(p2p);
             ProposalPhaseClientUtil
-                    .setProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase
-                                    .getContestPhasePK(),
+                    .setProposalContestPhaseAttribute(proposal.getId(), contestPhase
+                                    .getId(),
                             ProposalContestPhaseAttributeKeys.VISIBLE, 0L, 1L, "");
             ServiceRequestUtils.clearCache(CacheName.PROPOSAL_LIST_CLOSED);
             ServiceRequestUtils.clearCache(CacheName.PROPOSAL_PHASE);

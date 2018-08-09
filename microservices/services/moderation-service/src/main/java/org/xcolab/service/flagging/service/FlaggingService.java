@@ -34,7 +34,7 @@ public class FlaggingService {
     }
 
     public Report createReport(Report report) {
-        report.setCreateDate(new Timestamp(new Date().getTime()));
+        report.setCreatedAt(new Timestamp(new Date().getTime()));
         report = reportDao.create(report);
         int totalWeight = reportDao.getTotalWeight(report.getTargetType(), report.getTargetId(),
                 report.getTargetAdditionalId());
@@ -53,7 +53,7 @@ public class FlaggingService {
         return report;
     }
 
-    public boolean handleReport(long reportId, long managerMemberId, ManagerAction managerAction) {
+    public boolean handleReport(long reportId, long manageruserId, ManagerAction managerAction) {
         Report report = reportDao.get(reportId);
         final TargetType targetType = TargetType.valueOf(report.getTargetType());
 
@@ -94,7 +94,7 @@ public class FlaggingService {
 
         for (Report singleReport : equivalentReports) {
             singleReport.setManagerAction(managerAction.name());
-            singleReport.setManagerMemberId(managerMemberId);
+            singleReport.setManagerUserId(manageruserId);
             singleReport.setManagerActionDate(actionDate);
             reportDao.update(singleReport);
         }
@@ -121,8 +121,8 @@ public class FlaggingService {
 
     private void approveComment(long commentId) throws CommentNotFoundException {
         final Comment comment = CommentClientUtil.getComment(commentId, true);
-        if (comment.getDeletedDate() != null) {
-            comment.setDeletedDate(null);
+        if (comment.getDeletedAt() != null) {
+            comment.setDeletedAt(null);
             CommentClientUtil.updateComment(comment);
         }
     }

@@ -1,17 +1,17 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 
 import java.util.List;
 
 public class EmailTemplateWrapper {
 
-    private ContestEmailTemplate emailTemplate;
+    private EmailTemplate emailTemplate;
     private Boolean createNew = false;
 
     public EmailTemplateWrapper() {
-        emailTemplate = new ContestEmailTemplate();
+        emailTemplate = new EmailTemplate();
     }
 
     public EmailTemplateWrapper(String templateType) {
@@ -22,7 +22,7 @@ public class EmailTemplateWrapper {
         if (templateType != null) {
             emailTemplate = EmailTemplateClientUtil.getContestEmailTemplateByType(templateType);
         } else {
-            List<ContestEmailTemplate> contestScheduleList =
+            List<EmailTemplate> contestScheduleList =
                     EmailTemplateClientUtil.listAllContestEmailTemplates();
             emailTemplate = contestScheduleList.get(0);
         }
@@ -53,11 +53,11 @@ public class EmailTemplateWrapper {
     }
 
     public String getType() {
-        return emailTemplate.getType_();
+        return emailTemplate.getName();
     }
 
     public void setType(String type) {
-        emailTemplate.setType_(type);
+        emailTemplate.setName(type);
     }
 
     public String getSubject() {

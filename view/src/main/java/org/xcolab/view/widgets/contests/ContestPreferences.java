@@ -106,8 +106,8 @@ public class ContestPreferences extends WidgetPreference {
         contestMap = new LinkedHashMap<>();
 
         contests.sort((o1, o2) -> {
-            final Date created1 = o1.getCreated();
-            final Date created2 = o2.getCreated();
+            final Date created1 = o1.getCreatedAt();
+            final Date created2 = o2.getCreatedAt();
             if (created1 != null && created2 != null) {
                 if (created1.before(created2)) {
                     return 1;
@@ -115,25 +115,25 @@ public class ContestPreferences extends WidgetPreference {
                     return -1;
                 }
             }
-            return (int) (o2.getContestPK() - o1.getContestPK());
+            return (int) (o2.getId() - o1.getId());
         });
 
         for (Contest c : contests) {
 
             ContestClient contestClient = ContestClientUtil.getClient();
-            ContestPhase activeOrLastPhase = contestClient.getActivePhase(c.getContestPK());
+            ContestPhase activeOrLastPhase = contestClient.getActivePhase(c.getId());
             final String phaseName;
             if (activeOrLastPhase != null) {
-                final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseType();
+                final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseTypeId();
                 final ContestPhaseType contestPhaseType =
                         contestClient.getContestPhaseType(contestPhaseTypeId);
                 phaseName = contestPhaseType.getName();
             } else {
                 phaseName = " ";
             }
-            contestMap.put(c.getContestPK(),
-                    String.format("%d [%s] %s", c.getContestPK(), phaseName,
-                            c.getContestShortNameWithEndYear()));
+            contestMap.put(c.getId(),
+                    String.format("%d [%s] %s", c.getId(), phaseName,
+                            c.getTitleWithEndYear()));
         }
 
     }

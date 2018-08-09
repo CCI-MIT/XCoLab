@@ -7,17 +7,17 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Parser;
 
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 
 public class EmailTemplateWrapper {
     private static final String PROPOSAL_TITLE_PLACEHOLDER = "proposal-title";
     private static final String CONTEST_TITLE_PLACEHOLDER = "contest-title";
 
-    private final ContestEmailTemplate template;
+    private final EmailTemplate template;
     private final String proposalName;
     private final String contestName;
 
-    public EmailTemplateWrapper(ContestEmailTemplate template, String proposalName, String contestName) {
+    public EmailTemplateWrapper(EmailTemplate template, String proposalName, String contestName) {
         this.template = template;
         this.proposalName = proposalName;
         this.contestName = contestName;

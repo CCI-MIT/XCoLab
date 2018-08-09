@@ -77,7 +77,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         } else {
             refererHeader = request.getHeader(HttpHeaders.REFERER);
         }
-        MembersClient.createLoginLog(member.getId_(), request.getRemoteAddr(), refererHeader);
+        MembersClient.createLoginLog(member.getId(), request.getRemoteAddr(), refererHeader);
 
         if (redirectOnSuccess) {
             try {

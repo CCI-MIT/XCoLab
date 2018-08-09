@@ -5,7 +5,7 @@ import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -50,23 +50,23 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
         }
         final EmailTemplateClient emailTemplateClient = EmailTemplateClientUtil.getClient();
 
-        final ContestEmailTemplate emailTemplate =
+        final EmailTemplate emailTemplate =
                 emailTemplateClient.getContestEmailTemplateByType(proposalVoteConfirmationTemplateString);
         templateWrapper =
-                new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getContestShortName());
+                new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getTitle());
 
         return templateWrapper;
     }
 
     private String getConfirmationLink(String linkText) {
         final String confirmationUrl = String.format("%s" + this.proposal.getProposalUrl() + "/confirmVote/%d/%s",
-                baseUrl, recipient.getUserId(), confirmationToken);
+                baseUrl, recipient.getId(), confirmationToken);
         return String.format(LINK_FORMAT_STRING, confirmationUrl, linkText);
     }
 
     private class ProposalVoteConfirmationTemplate extends ProposalNotificationTemplate {
 
-        public ProposalVoteConfirmationTemplate(ContestEmailTemplate template, String proposalName,
+        public ProposalVoteConfirmationTemplate(EmailTemplate template, String proposalName,
                 String contestName) {
             super(template, proposalName, contestName);
         }

@@ -6,7 +6,7 @@ public abstract class AbstractModelDiscussion implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long modeldiscussionid;
+    private Long id;
     private Long modelid;
     private Long categoryid;
 
@@ -15,17 +15,17 @@ public abstract class AbstractModelDiscussion implements Serializable {
     }
 
     public AbstractModelDiscussion(AbstractModelDiscussion value) {
-        this.modeldiscussionid = value.modeldiscussionid;
+        this.id = value.id;
         this.modelid = value.modelid;
         this.categoryid = value.categoryid;
     }
 
-    public Long getModelDiscussionId() {
-        return this.modeldiscussionid;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setModelDiscussionId(Long modeldiscussionid) {
-        this.modeldiscussionid = modeldiscussionid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getModelId() {
@@ -48,7 +48,7 @@ public abstract class AbstractModelDiscussion implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((modeldiscussionid == null) ? 0 : modeldiscussionid.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((modelid == null) ? 0 : modelid.hashCode());
         result = prime * result + ((categoryid == null) ? 0 : categoryid.hashCode());
         return result;
@@ -66,11 +66,11 @@ public abstract class AbstractModelDiscussion implements Serializable {
             return false;
         }
         final AbstractModelDiscussion other = (AbstractModelDiscussion) obj;
-        if (modeldiscussionid == null) {
-            if (other.modeldiscussionid != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!modeldiscussionid.equals(other.modeldiscussionid)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (modelid == null) {
@@ -93,7 +93,7 @@ public abstract class AbstractModelDiscussion implements Serializable {
     @Override
     public String toString() {
         String sb =
-                "ModelDiscussion (" + modeldiscussionid + ", " + modelid + ", " + categoryid + ")";
+                "ModelDiscussion (" + id + ", " + modelid + ", " + categoryid + ")";
 
         return sb;
     }

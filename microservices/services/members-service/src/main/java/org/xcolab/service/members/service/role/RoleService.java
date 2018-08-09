@@ -3,8 +3,8 @@ package org.xcolab.service.members.service.role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.model.tables.pojos.Role;
 import org.xcolab.service.members.domain.role.RoleDao;
-import org.xcolab.model.tables.pojos.Role_;
 
 import java.util.List;
 
@@ -18,31 +18,31 @@ public class RoleService {
         this.roleDao = roleDao;
     }
 
-    public List<Role_> getMemberRoles(Long memberId) {
-        return this.roleDao.getMemberRoles(memberId);
+    public List<Role> getUserRoles(Long userId) {
+        return this.roleDao.getUserRoles(userId);
     }
 
-    public List<Role_> getMemberRolesInContest(Long memberId, Long contestId) {
-        return this.roleDao.getMemberRolesInContest(memberId, contestId);
+    public List<Role> getUserRolesInContest(Long userId, Long contestId) {
+        return this.roleDao.getUserRolesInContest(userId, contestId);
     }
 
-    public boolean assignMemberRole(long memberId, long roleId) {
-        if(!memberHasRole(memberId,roleId)) {
-            this.roleDao.assignMemberRole(memberId, roleId);
+    public boolean assignUserRole(long userId, long roleId) {
+        if(!memberHasRole(userId,roleId)) {
+            this.roleDao.assignUserRole(userId, roleId);
         }
         return true;
     }
 
-    public boolean deleteMemberRole(long memberId, long roleId) {
-        this.roleDao.deleteMemberRole(memberId, roleId);
+    public boolean deleteUserRole(long userId, long roleId) {
+        this.roleDao.deleteUserRole(userId, roleId);
         return true;
     }
 
-    public boolean memberHasRole(Long memberId, Long roleId){
-        return this.roleDao.memberHasRole(memberId,roleId);
+    public boolean memberHasRole(Long userId, Long roleId){
+        return this.roleDao.memberHasRole(userId,roleId);
     }
 
-    public boolean isAdmin(long memberId) {
-        return roleDao.memberHasRole(memberId, 10118L);
+    public boolean isAdmin(long userId) {
+        return roleDao.memberHasRole(userId, 10118L);
     }
 }

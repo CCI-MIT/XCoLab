@@ -72,13 +72,13 @@ public class ProposalContextImpl implements ProposalContext {
                     if (proposal2Phase == null && !isMove) {
                         if (contextHelper.getGivenPhaseId() > 0) {
                             throw new InvalidProposalUrlException(contest, contestPhase,
-                                    proposal.getProposalId());
+                                    proposal.getId());
                         }
                         throw new InternalException(String.format(
                                 "Proposal %d has no phase association with phase %d in contest %d",
                                 contextHelper.getGivenProposalId(),
-                                contestPhase.getContestPhasePK(),
-                                contest.getContestPK()));
+                                contestPhase.getId(),
+                                contest.getId()));
                     }
                 }
             }
@@ -86,7 +86,7 @@ public class ProposalContextImpl implements ProposalContext {
                     contestPhase);
             displayPermissions =
                     new ProposalsDisplayPermissions(permissions, proposal, contestPhase,
-                            clientHelper, MemberAuthUtil.getMemberId(request));
+                            clientHelper, MemberAuthUtil.getuserId(request));
 
             preferences = new ProposalsPreferencesWrapper(request.getParameter("preferenceId"),localeResolver.resolveLocale(request).getLanguage());
 

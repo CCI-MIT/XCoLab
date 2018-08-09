@@ -13,18 +13,18 @@ public class PointsDistributionConfiguration extends AbstractPointsDistributionC
     }
 
     public PointsDistributionConfiguration(
-            Long id_,
+            Long id,
             Long proposalid,
             Long pointtypeid,
             Long targetuserid,
             Long targetsubproposalid,
             Long targetplansectiondefinitionid,
             Double percentage,
-            Long creator,
-            Timestamp createdate
+            Long authorUserId,
+            Timestamp createdAt
     ) {
-        super(id_, proposalid, pointtypeid, targetuserid, targetsubproposalid,
-                targetplansectiondefinitionid, percentage, creator, createdate);
+        super(id, proposalid, pointtypeid, targetuserid, targetsubproposalid,
+                targetplansectiondefinitionid, percentage, authorUserId, createdAt);
     }
 
     public PointsDistributionConfiguration(

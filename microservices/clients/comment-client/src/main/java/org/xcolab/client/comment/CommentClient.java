@@ -32,7 +32,7 @@ public class CommentClient {
 
     public List<Comment> listComments(int start, int last, Long threadId) {
         return DtoUtil.toPojos(
-                commentServiceWrapper.listComments(start, last, "createDate", null, threadId, null),
+                commentServiceWrapper.listComments(start, last, "createdAt", null, threadId, null),
                 serviceNamespace);
     }
 
@@ -50,8 +50,8 @@ public class CommentClient {
         return commentServiceWrapper.countComments(null, threadIds);
     }
 
-    public int countCommentsByAuthor(long authorId) {
-        return commentServiceWrapper.countComments(authorId, null);
+    public int countCommentsByAuthor(long authorUserId) {
+        return commentServiceWrapper.countComments(authorUserId, null);
     }
 
     public Comment getComment(long commentId) throws CommentNotFoundException {

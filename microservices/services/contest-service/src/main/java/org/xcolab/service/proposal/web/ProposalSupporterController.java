@@ -64,9 +64,9 @@ public class ProposalSupporterController {
     @RequestMapping(value = "/proposalSupporters/isMemberProposalSupporter", method = {RequestMethod.GET, RequestMethod.HEAD})
     public Boolean getProposalSupportersCount(
             @RequestParam Long proposalId,
-            @RequestParam Long memberId
+            @RequestParam Long userId
     ) {
-        List<ProposalSupporter> ret = proposalSupporterDao.findByGiven(proposalId, memberId);
+        List<ProposalSupporter> ret = proposalSupporterDao.findByGiven(proposalId, userId);
 
         if (ret != null && ret.size() == 1) {
             return true;
@@ -77,10 +77,10 @@ public class ProposalSupporterController {
 
     @RequestMapping(value = "/proposalSupporters/deleteProposalSupporter", method = RequestMethod.DELETE)
     public Boolean deleteProposalSupporter(@RequestParam("proposalId") Long proposalId,
-                                           @RequestParam("memberId") Long memberId) {
-        this.proposalSupporterDao.delete(proposalId, memberId);
+                                           @RequestParam("userId") Long userId) {
+        this.proposalSupporterDao.delete(proposalId, userId);
         final ActivitiesClient activitiesClient = ActivitiesClientUtil.getClient();
-        activitiesClient.createActivityEntry(ProposalActivityType.SUPPORT_REMOVED, memberId,
+        activitiesClient.createActivityEntry(ProposalActivityType.SUPPORT_REMOVED, userId,
                 proposalId);
         return true;
     }

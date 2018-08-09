@@ -6,7 +6,7 @@ public abstract class AbstractModelGlobalPreference implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    protected Long modelglobalpreferencepk;
+    protected Long id;
     protected Long modelid;
     protected Boolean visible;
     protected Integer weight;
@@ -19,7 +19,7 @@ public abstract class AbstractModelGlobalPreference implements Serializable {
     }
 
     public AbstractModelGlobalPreference(AbstractModelGlobalPreference value) {
-        this.modelglobalpreferencepk = value.modelglobalpreferencepk;
+        this.id = value.id;
         this.modelid = value.modelid;
         this.visible = value.visible;
         this.weight = value.weight;
@@ -29,12 +29,12 @@ public abstract class AbstractModelGlobalPreference implements Serializable {
         this.custominputsdefinition = value.custominputsdefinition;
     }
 
-    public Long getModelGlobalPreferencePK() {
-        return this.modelglobalpreferencepk;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setModelGlobalPreferencePK(Long modelglobalpreferencepk) {
-        this.modelglobalpreferencepk = modelglobalpreferencepk;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getModelId() {
@@ -97,8 +97,8 @@ public abstract class AbstractModelGlobalPreference implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((modelglobalpreferencepk == null) ? 0
-                : modelglobalpreferencepk.hashCode());
+        result = prime * result + ((id == null) ? 0
+                : id.hashCode());
         result = prime * result + ((modelid == null) ? 0 : modelid.hashCode());
         result = prime * result + ((visible == null) ? 0 : visible.hashCode());
         result = prime * result + ((weight == null) ? 0 : weight.hashCode());
@@ -123,11 +123,11 @@ public abstract class AbstractModelGlobalPreference implements Serializable {
             return false;
         }
         final ModelGlobalPreference other = (ModelGlobalPreference) obj;
-        if (modelglobalpreferencepk == null) {
-            if (other.modelglobalpreferencepk != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!modelglobalpreferencepk.equals(other.modelglobalpreferencepk)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (modelid == null) {
@@ -185,7 +185,7 @@ public abstract class AbstractModelGlobalPreference implements Serializable {
     @Override
     public String toString() {
 
-        return "ModelGlobalPreference (" + modelglobalpreferencepk +
+        return "ModelGlobalPreference (" + id +
                 ", " + modelid +
                 ", " + visible +
                 ", " + weight +

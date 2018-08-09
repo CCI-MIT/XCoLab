@@ -135,7 +135,7 @@ public class MembersController {
                 .findMembersMatching(partialName, AUTOCOMPLETE_MAX_USERS);
         for (Member member : members) {
             final JSONObject jsonMember = new JSONObject();
-            jsonMember.put("userId", member.getId_());
+            jsonMember.put("userId", member.getId());
             jsonMember.put("screenName", member.getScreenName());
             jsonMember.put("firstName", member.getFirstName());
             jsonMember.put("lastName", member.getLastName());
@@ -154,12 +154,12 @@ public class MembersController {
         for(Member member: members) {
             final JSONObject jsonMember = new JSONObject();
             if (member != null) {
-                /*jsonMember.put("userId", member.getId_());
+                /*jsonMember.put("userId", member.getId());
                 jsonMember.put("screenName", member.getScreenName());
 
                 jsonMember.put("firstName", member.getFirstName());
                 jsonMember.put("lastName", member.getLastName());*/
-                jsonMember.put("id", member.getId_());
+                jsonMember.put("id", member.getId());
                 jsonMember.put("value", member.getScreenName() + " " + member.getFirstName() + " " + member.getLastName());
                 jsonArray.put(jsonMember);
             }

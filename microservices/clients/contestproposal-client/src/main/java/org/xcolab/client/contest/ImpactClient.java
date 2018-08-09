@@ -9,7 +9,7 @@ import org.xcolab.client.contest.pojo.impact.ImpactTemplateMaxFocusArea;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateMaxFocusAreaDto;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateSeries;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateSeriesDto;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.contest.resources.ImpactResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
@@ -52,12 +52,12 @@ public class ImpactClient {
 
     public List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) {
         ImpactTemplateFocusAreaList focusAreaList = getContestImpactFocusAreaList(contest);
-        return getImpactTemplateMaxFocusArea(focusAreaList.getFocusAreaListId());
+        return getImpactTemplateMaxFocusArea(focusAreaList.getId());
     }
 
     public ImpactTemplateFocusAreaList getContestImpactFocusAreaList(Contest contest) {
-        PlanTemplate planTemplate =
-                PlanTemplateClientUtil.getPlanTemplate(contest.getPlanTemplateId());
+        ProposalTemplate planTemplate =
+                ProposalTemplateClientUtil.getPlanTemplate(contest.getProposalTemplateId());
         return getImpactTemplateFocusAreaList(planTemplate.getFocusAreaListTemplateId());
     }
 
@@ -79,8 +79,8 @@ public class ImpactClient {
 
     public ImpactTemplateSeries getContestImpactTemplateSeries(Contest contest) {
 
-        PlanTemplate planTemplate =
-                PlanTemplateClientUtil.getPlanTemplate(contest.getPlanTemplateId());
+        ProposalTemplate planTemplate =
+                ProposalTemplateClientUtil.getPlanTemplate(contest.getProposalTemplateId());
         return getImpactTemplateSeries(planTemplate.getImpactSeriesTemplateId());
 
     }

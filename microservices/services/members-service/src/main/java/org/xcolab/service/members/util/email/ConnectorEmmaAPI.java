@@ -23,7 +23,7 @@ import java.io.IOException;
 @Service
 public class ConnectorEmmaAPI {
 
-    private static final String EMMA_MEMBER_ACCOUNT_ACTIVE_STATUS = "a";
+    private static final String EMMA_USER_ACCOUNT_ACTIVE_STATUS = "a";
     private static final String CONTENT_TYPE = "application/json";
     private static final String CHARSET = java.nio.charset.StandardCharsets.UTF_8.name();
     private String myEmmaApiBaseUrl;
@@ -42,17 +42,17 @@ public class ConnectorEmmaAPI {
         return myEmmaApiBaseUrl;
     }
 
-    public boolean unSubscribeMemberWithEmail(String email) throws IOException {
-        JSONObject memberDetails = getMemberJSONfromEmail(email);
-        return !memberDetails.has("member_id") || unSubscribeMemberWithMemberId(memberDetails.getLong("member_id"));
+    public boolean unSubscribeUserWithEmail(String email) throws IOException {
+        JSONObject memberDetails = getUserJSONfromEmail(email);
+        return !memberDetails.has("member_id") || unSubscribeUserWithuserId(memberDetails.getLong("member_id"));
     }
 
-    private boolean unSubscribeMemberWithMemberId(long emmaMemberId) throws IOException {
+    private boolean unSubscribeUserWithuserId(long emmauserId) throws IOException {
         boolean unsubscribeSuccessful = false;
 
         if (accountDetailsEmmaAPI.isEnabled()) {
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-                HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(getMyEmmaApiBaseUrl() + "/members/" + emmaMemberId,
+                HttpUriRequest newsletterSubscribeRequest = createDeleteWithAuthorization(getMyEmmaApiBaseUrl() + "/members/" + emmauserId,
                         CONTENT_TYPE, CHARSET, accountDetailsEmmaAPI.getEncodedAuthorization());
 
                 try (CloseableHttpResponse newsletterSubscribeResponse = httpclient.execute(newsletterSubscribeRequest)) {
@@ -67,7 +67,7 @@ public class ConnectorEmmaAPI {
         return unsubscribeSuccessful;
     }
 
-    public JSONObject subscribeMemberWithEmail(String email) throws IOException {
+    public JSONObject subscribeUserWithEmail(String email) throws IOException {
 
         JSONObject jsonSubscribeInformation = new JSONObject();
         JSONObject memberDetails = new JSONObject();
@@ -94,16 +94,16 @@ public class ConnectorEmmaAPI {
         return memberDetails;
     }
 
-    public JSONObject getMemberJSONfromEmail(String email) throws IOException {
+    public JSONObject getUserJSONfromEmail(String email) throws IOException {
         JSONObject memberDetails = new JSONObject();
         if (accountDetailsEmmaAPI.isEnabled()) {
             try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-                HttpGet getMemberDetails = createGetWithAuthorization(getMyEmmaApiBaseUrl() + "/members/email/" + email,
+                HttpGet getUserDetails = createGetWithAuthorization(getMyEmmaApiBaseUrl() + "/members/email/" + email,
                         CONTENT_TYPE, CHARSET, accountDetailsEmmaAPI.getEncodedAuthorization());
 
-                try (CloseableHttpResponse getMemberDetailsResponse = httpclient.execute(getMemberDetails)) {
-                    if (getMemberDetailsResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                        HttpEntity entity = getMemberDetailsResponse.getEntity();
+                try (CloseableHttpResponse getUserDetailsResponse = httpclient.execute(getUserDetails)) {
+                    if (getUserDetailsResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                        HttpEntity entity = getUserDetailsResponse.getEntity();
                         memberDetails = new JSONObject(EntityUtils.toString(entity));
                         EntityUtils.consume(entity);
                     }
@@ -114,13 +114,13 @@ public class ConnectorEmmaAPI {
         return memberDetails;
     }
 
-    public static boolean hasMemberActiveSubscription(JSONObject memberDetails, boolean isNewMember) {
-        if (isNewMember) {
+    public static boolean hasUserActiveSubscription(JSONObject memberDetails, boolean isNewUser) {
+        if (isNewUser) {
             return memberDetails.has("status") && memberDetails.getString("status")
-                    .equals(EMMA_MEMBER_ACCOUNT_ACTIVE_STATUS);
+                    .equals(EMMA_USER_ACCOUNT_ACTIVE_STATUS);
         }
         return memberDetails.has("member_status_id") && memberDetails.getString("member_status_id")
-                .equals(EMMA_MEMBER_ACCOUNT_ACTIVE_STATUS);
+                .equals(EMMA_USER_ACCOUNT_ACTIVE_STATUS);
     }
 
     private static HttpGet createGetWithAuthorization(

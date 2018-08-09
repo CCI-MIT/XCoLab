@@ -11,7 +11,7 @@ public interface PointTypeDao {
 
     PointType create(PointType pointType);
 
-    PointType get(Long id_) throws NotFoundException;
+    PointType get(Long id) throws NotFoundException;
 
     boolean update(PointType pointType);
 }

@@ -6,12 +6,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.OntologyTermToFocusAreaMapper;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSection;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.commons.IdListUtil;
@@ -55,12 +55,12 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     public SectionDefinitionWrapper() {
     }
 
-    public SectionDefinitionWrapper(PlanSectionDefinition planSectionDefinition) {
+    public SectionDefinitionWrapper(ProposalTemplateSectionDefinition planSectionDefinition) {
         initPlanSectionDefinition(planSectionDefinition);
     }
 
-    private void initPlanSectionDefinition(PlanSectionDefinition planSectionDefinition) {
-        this.id = planSectionDefinition.getId_();
+    private void initPlanSectionDefinition(ProposalTemplateSectionDefinition planSectionDefinition) {
+        this.id = planSectionDefinition.getId();
         this.type = planSectionDefinition.getType_();
         this.title = planSectionDefinition.getTitle();
         this.defaultText = planSectionDefinition.getDefaultText();
@@ -137,23 +137,23 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     private List<Long> getIdsFromOntologyTerms(List<OntologyTerm> ontologyTerms) {
         List<Long> ids = new ArrayList<>(ontologyTerms.size());
         for (OntologyTerm term : ontologyTerms) {
-            ids.add(term.getId_());
+            ids.add(term.getId());
         }
 
         return ids;
     }
 
-    public SectionDefinitionWrapper(PlanSectionDefinition planSectionDefinition,
+    public SectionDefinitionWrapper(ProposalTemplateSectionDefinition planSectionDefinition,
             Long planTemplateId) {
 
         initPlanSectionDefinition(planSectionDefinition);
 
-        List<PlanTemplateSection> planTemplateSections =
-                PlanTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
+        List<ProposalTemplateSection> planTemplateSections =
+                ProposalTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
 
-        for (PlanTemplateSection planTemplateSection : planTemplateSections) {
+        for (ProposalTemplateSection planTemplateSection : planTemplateSections) {
             if (Objects.equals(
-                    planTemplateSection.getPlanSectionId(), planSectionDefinition.getId_())) {
+                    planTemplateSection.getSectionDefinitionId(), planSectionDefinition.getId())) {
                 initPlanTemplateSection(planTemplateSection);
                 break;
             }
@@ -163,7 +163,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
     }
 
-    private void initPlanTemplateSection(PlanTemplateSection planTemplateSection) {
+    private void initPlanTemplateSection(ProposalTemplateSection planTemplateSection) {
         this.weight = planTemplateSection.getWeight();
     }
 
@@ -251,18 +251,18 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     }
 
     public void persist(boolean createNew) {
-        PlanSectionDefinition psd;
+        ProposalTemplateSectionDefinition psd;
         PointsDistributionConfiguration pdc = null;
         if (id == null || createNew) {
-            psd = new PlanSectionDefinition();
+            psd = new ProposalTemplateSectionDefinition();
 
             populatePlanSectionDefinition(psd);
 
-            psd = PlanTemplateClientUtil.createPlanSectionDefinition(psd);
-            id = psd.getId_();
+            psd = ProposalTemplateClientUtil.createPlanSectionDefinition(psd);
+            id = psd.getId();
         } else {
 
-            psd = PlanTemplateClientUtil.getPlanSectionDefinition(id);
+            psd = ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(id);
             pdc = PointsClientUtil
                     .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
 
@@ -271,7 +271,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
             if (pdc != null) {
                 if (pointType == 0L) {
                     PointsClientUtil
-                            .deletePointsDistributionConfiguration(pdc.getId_());
+                            .deletePointsDistributionConfiguration(pdc.getId());
                 } else {
                     pdc.setPercentage(Double.valueOf(pointPercentage));
                     pdc.setPointTypeId(pointType);
@@ -280,7 +280,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
             /*
                 if (pdc != null) {
                     PointsDistributionConfigurationClient
-                            .deletePointsDistributionConfiguration(pdc.getId_());
+                            .deletePointsDistributionConfiguration(pdc.getId());
                 }
             } else {
                 if (pdc != null) {
@@ -306,11 +306,11 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
             }
         }
 
-        PlanTemplateClientUtil.updatePlanSectionDefinition(psd);
+        ProposalTemplateClientUtil.updatePlanSectionDefinition(psd);
 
     }
 
-    private void populatePlanSectionDefinition(PlanSectionDefinition psd) {
+    private void populatePlanSectionDefinition(ProposalTemplateSectionDefinition psd) {
         psd.setType_(this.getType());
         psd.setTitle(this.getTitle());
         psd.setDefaultText(this.getDefaultText());
@@ -393,7 +393,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
     public Long getFocusAreaId() {
         if (ontologyTermsSet() && getFocusAreaViaOntologyTerms() != null) {
-            focusAreaId = getFocusAreaViaOntologyTerms().getId_();
+            focusAreaId = getFocusAreaViaOntologyTerms().getId();
         }
         return focusAreaId;
     }
@@ -464,8 +464,8 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
         for (OntologyTerm ontologyTerm : focusAreaOntologyTerms) {
             OntologyClientUtil
-                    .addOntologyTermsToFocusAreaByOntologyTermId(newFocusArea.getId_(),
-                            ontologyTerm.getId_());
+                    .addOntologyTermsToFocusAreaByOntologyTermId(newFocusArea.getId(),
+                            ontologyTerm.getId());
         }
 
         return newFocusArea;
@@ -524,8 +524,8 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     }
 
     public boolean hasUpdates() {
-        PlanSectionDefinition psd = PlanTemplateClientUtil
-                .getPlanSectionDefinition(id);
+        ProposalTemplateSectionDefinition psd = ProposalTemplateClientUtil
+                .getProposalTemplateSectionDefinition(id);
         return !this.equals(new SectionDefinitionWrapper(psd));
     }
 

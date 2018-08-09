@@ -40,8 +40,8 @@ public final class ThreadClientUtil {
         return threadClient.getLastActivityDate(threadId);
     }
 
-    public static long getLastActivityAuthorId(long threadId) {
-        return threadClient.getLastActivityAuthorId(threadId);
+    public static long getLastActivityauthorUserId(long threadId) {
+        return threadClient.getLastActivityauthorUserId(threadId);
     }
 
     public static ThreadClient getClient() {

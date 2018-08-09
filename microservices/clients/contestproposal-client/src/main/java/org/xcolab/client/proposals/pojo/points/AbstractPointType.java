@@ -6,50 +6,50 @@ class AbstractPointType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long parentpointtypeid;
     private Double percentageofparent;
     private String distributionstrategy;
     private String receiverlimitationstrategy;
     private String name;
-    private Long sort;
+    private Long sortOrder;
 
     public AbstractPointType() {}
 
     public AbstractPointType(AbstractPointType value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.parentpointtypeid = value.parentpointtypeid;
         this.percentageofparent = value.percentageofparent;
         this.distributionstrategy = value.distributionstrategy;
         this.receiverlimitationstrategy = value.receiverlimitationstrategy;
         this.name = value.name;
-        this.sort = value.sort;
+        this.sortOrder = value.sortOrder;
     }
 
     public AbstractPointType(
-            Long id_,
+            Long id,
             Long parentpointtypeid,
             Double percentageofparent,
             String distributionstrategy,
             String receiverlimitationstrategy,
             String name,
-            Long sort
+            Long sortOrder
     ) {
-        this.id_ = id_;
+        this.id = id;
         this.parentpointtypeid = parentpointtypeid;
         this.percentageofparent = percentageofparent;
         this.distributionstrategy = distributionstrategy;
         this.receiverlimitationstrategy = receiverlimitationstrategy;
         this.name = name;
-        this.sort = sort;
+        this.sortOrder = sortOrder;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getParentPointTypeId() {
@@ -92,19 +92,19 @@ class AbstractPointType implements Serializable {
         this.name = name;
     }
 
-    public Long getSort() {
-        return this.sort;
+    public Long getSortOrder() {
+        return this.sortOrder;
     }
 
-    public void setSort(Long sort) {
-        this.sort = sort;
+    public void setSortOrder(Long sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((parentpointtypeid == null) ? 0 : parentpointtypeid.hashCode());
         result =
                 prime * result + ((percentageofparent == null) ? 0 : percentageofparent.hashCode());
@@ -113,7 +113,7 @@ class AbstractPointType implements Serializable {
         result = prime * result + ((receiverlimitationstrategy == null) ? 0
                 : receiverlimitationstrategy.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((sort == null) ? 0 : sort.hashCode());
+        result = prime * result + ((sortOrder == null) ? 0 : sortOrder.hashCode());
         return result;
     }
 
@@ -129,11 +129,11 @@ class AbstractPointType implements Serializable {
             return false;
         }
         final AbstractPointType other = (AbstractPointType) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (parentpointtypeid == null) {
@@ -171,11 +171,11 @@ class AbstractPointType implements Serializable {
         } else if (!name.equals(other.name)) {
             return false;
         }
-        if (sort == null) {
-            if (other.sort != null) {
+        if (sortOrder == null) {
+            if (other.sortOrder != null) {
                 return false;
             }
-        } else if (!sort.equals(other.sort)) {
+        } else if (!sortOrder.equals(other.sortOrder)) {
             return false;
         }
         return true;
@@ -184,9 +184,9 @@ class AbstractPointType implements Serializable {
     @Override
     public String toString() {
         String sb =
-                "PointType (" + id_ + ", " + parentpointtypeid + ", " + percentageofparent + ", "
+                "PointType (" + id + ", " + parentpointtypeid + ", " + percentageofparent + ", "
                         + distributionstrategy + ", " + receiverlimitationstrategy + ", " + name
-                        + ", " + sort + ")";
+                        + ", " + sortOrder + ")";
 
         return sb;
     }

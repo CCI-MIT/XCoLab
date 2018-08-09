@@ -20,16 +20,16 @@ public class SubscribeMassAction extends AbstractContestMassAction {
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws IllegalStateException {
-        Long memberId = dataWrapper.getMemberId();
-        if (memberId == null) {
+        Long userId = dataWrapper.getuserId();
+        if (userId == null) {
             throw new IllegalStateException("The mass action has not been setup yet.");
         }
         for (Contest contest : contests) {
             if (isSubscribe) {
-                ContestClientUtil.subscribeMemberToContest(contest.getContestPK(), memberId);
+                ContestClientUtil.subscribeMemberToContest(contest.getId(), userId);
             } else {
                 ContestClientUtil
-                        .unsubscribeMemberFromContest(contest.getContestPK(), memberId);
+                        .unsubscribeMemberFromContest(contest.getId(), userId);
             }
         }
     }

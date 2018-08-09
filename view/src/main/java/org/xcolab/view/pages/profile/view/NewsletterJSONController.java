@@ -14,17 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/members/profile/{memberId}/api/settings/newsletter")
+@RequestMapping("/members/profile/{userId}/api/settings/newsletter")
 public class NewsletterJSONController extends JSONHelper {
 
     public NewsletterJSONController() { }
 
     @PostMapping("subscribe")
     public @ResponseBody void handleNewsletterSubscribeAJAXRequest(HttpServletRequest request,
-            HttpServletResponse response, @PathVariable long memberId) {
+            HttpServletResponse response, @PathVariable long userId) {
 
         try {
-            boolean memberHasActiveSubscription = MembersClient.subscribeToNewsletter(memberId);
+            boolean memberHasActiveSubscription = MembersClient.subscribeToNewsletter(userId);
             this.writeSuccessResultResponseJSON(memberHasActiveSubscription, response);
         } catch (HttpClientErrorException e) {
             this.writeSuccessResultResponseJSON(false, response);
@@ -34,10 +34,10 @@ public class NewsletterJSONController extends JSONHelper {
 
     @PostMapping("unsubscribe")
     public @ResponseBody void handleNewsletterUnSubscribeAJAXRequest(HttpServletRequest request,
-            HttpServletResponse response, @PathVariable long memberId) {
+            HttpServletResponse response, @PathVariable long userId) {
 
         try {
-            boolean isMemberUnsubscribed = MembersClient.unsubscribeFromNewsletter(memberId);
+            boolean isMemberUnsubscribed = MembersClient.unsubscribeFromNewsletter(userId);
             this.writeSuccessResultResponseJSON(isMemberUnsubscribed, response);
         } catch (HttpClientErrorException e) {
             this.writeSuccessResultResponseJSON(false, response);

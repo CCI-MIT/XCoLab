@@ -21,10 +21,10 @@ public class ContentArticleWrapper extends ContentArticle {
     }
 
     public ContentArticleWrapper(
-            Long contentArticleId, Long authorId, Timestamp createDate, Long maxVersion,
+            Long contentArticleId, Long authorUserId, Timestamp createdAt, Long maxVersion,
             Long editRoleGroupId, Long viewRoleGroupId, Boolean visible,
             String title, Long folderId) {
-        super(contentArticleId, authorId, createDate, maxVersion, folderId,
+        super(contentArticleId, authorUserId, createdAt, maxVersion, folderId,
                 editRoleGroupId, viewRoleGroupId, visible);
         this.title = title;
 
@@ -44,9 +44,9 @@ public class ContentArticleWrapper extends ContentArticle {
 
     @Override
     public String toString() {
-        return "ContentArticleWrapper (" + getContentArticleId() +
-                ", " + getAuthorId() +
-                ", " + getCreateDate() +
+        return "ContentArticleWrapper (" + getId() +
+                ", " + getAuthorUserId() +
+                ", " + getCreatedAt() +
                 ", " + getMaxVersionId() +
                 ", " + getEditRoleGroupId() +
                 ", " + getViewRoleGroupId() +

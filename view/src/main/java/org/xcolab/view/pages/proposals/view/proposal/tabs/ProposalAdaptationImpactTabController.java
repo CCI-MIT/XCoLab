@@ -43,7 +43,7 @@ public class ProposalAdaptationImpactTabController extends BaseProposalTabContro
 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalAttributeClient attributeClient = clients.getProposalAttributeClient();
-        final Long proposalId = proposalContext.getProposal().getProposalId();
+        final Long proposalId = proposalContext.getProposal().getId();
 
         setCommonModelAndPageAttributes(request, model, proposalContext,
                 ProposalTab.ADAPTATION_IMPACT);
@@ -74,7 +74,7 @@ public class ProposalAdaptationImpactTabController extends BaseProposalTabContro
 
         // make sure the proposal and author ids are set correctly
         adaptationImpactBean.setProposalId(proposalId);
-        adaptationImpactBean.setAuthorId(currentMember.getUserId());
+        adaptationImpactBean.setAuthorUserId(currentMember.getId());
 
         adaptationService.save(adaptationImpactBean,
                 attributeClient);

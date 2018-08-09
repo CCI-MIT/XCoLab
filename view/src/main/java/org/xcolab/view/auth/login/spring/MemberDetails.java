@@ -24,19 +24,19 @@ public class MemberDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-    private final long memberId;
+    private final long userId;
     transient private Set<GrantedAuthority> authorities;
 
     public MemberDetails(Member member) {
         Assert.notNull(member, "Member cannot be null");
-        memberId = member.getId_();
+        userId = member.getId();
     }
 
     public Member getMember() {
         try {
-            return MembersClient.getMember(memberId);
+            return MembersClient.getMember(userId);
         } catch (MemberNotFoundException e) {
-            throw new IllegalStateException("Member with id " + memberId + " does not exist");
+            throw new IllegalStateException("Member with id " + userId + " does not exist");
         }
     }
 
@@ -73,23 +73,23 @@ public class MemberDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (authorities == null) {
-            authorities = Collections.unmodifiableSet(getAuthoritiesForMember(memberId));
+            authorities = Collections.unmodifiableSet(getAuthoritiesForMember(userId));
         }
         return authorities;
     }
 
-    private static SortedSet<GrantedAuthority> getAuthoritiesForMember(long memberId) {
+    private static SortedSet<GrantedAuthority> getAuthoritiesForMember(long userId) {
         // Ensure array iteration order is predictable (as per
         // UserDetails.getAuthorities() contract and SEC-717)
         SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<>(new AuthorityComparator());
 
-        if (PermissionsClient.isMember(memberId)) {
+        if (PermissionsClient.isMember(userId)) {
             sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
-        } else if (PermissionsClient.isGuest(memberId)) {
+        } else if (PermissionsClient.isGuest(userId)) {
             sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_GUEST"));
         }
 
-        if (PermissionsClient.canAdminAll(memberId)) {
+        if (PermissionsClient.canAdminAll(userId)) {
             sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
@@ -129,18 +129,18 @@ public class MemberDetails implements UserDetails {
 
         MemberDetails that = (MemberDetails) o;
 
-        return memberId == that.memberId;
+        return userId == that.userId;
     }
 
     @Override
     public int hashCode() {
-        return (int) (memberId ^ memberId >>> 32);
+        return (int) (userId ^ userId >>> 32);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("memberId", memberId)
+                .append("userId", userId)
                 .append("screenName", getMember().getScreenName())
                 .append("authorities", authorities)
                 .toString();

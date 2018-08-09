@@ -80,7 +80,7 @@ public class CommentControllerTest {
     public void testListComments__shouldFilterByAuthor() throws Exception {
 
         mockMvc.perform(get("/comments")
-                    .param("authorId", "12345")
+                    .param("authorUserId", "12345")
                     .contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -93,7 +93,7 @@ public class CommentControllerTest {
         mockMvc.perform(get("/comments/301").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.commentId", is(301)));
+                .andExpect(jsonPath("$.id", is(301)));
     }
 
     @Test
@@ -104,7 +104,7 @@ public class CommentControllerTest {
                 .contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.commentId", is(351)));
+                .andExpect(jsonPath("$.id", is(351)));
     }
 
     @Test
@@ -142,9 +142,9 @@ public class CommentControllerTest {
     }
 
     @Test
-    public void testGetLastActivityAuthorId__shouldReturnCorrectId() throws Exception {
+    public void testGetLastActivityauthorUserId__shouldReturnCorrectId() throws Exception {
 
-        mockMvc.perform(get("/threads/201/lastActivityAuthorId").contentType(contentType).accept(contentType))
+        mockMvc.perform(get("/threads/201/lastActivityauthorUserId").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().string("12345"));
     }
@@ -164,7 +164,7 @@ public class CommentControllerTest {
         mockMvc.perform(get("/categories/101").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.categoryId", is(101)));
+                .andExpect(jsonPath("$.id", is(101)));
     }
 
     @Test
@@ -189,7 +189,7 @@ public class CommentControllerTest {
         mockMvc.perform(get("/groups/701").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.groupId", is(701)));
+                .andExpect(jsonPath("$.id", is(701)));
     }
 
     @Test

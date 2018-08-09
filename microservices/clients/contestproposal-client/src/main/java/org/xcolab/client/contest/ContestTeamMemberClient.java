@@ -51,8 +51,8 @@ public class ContestTeamMemberClient {
         return result;
     }
 
-    public void deleteContestTeamMember(Long contestTeamMemberId) {
-        contestTeamMemberResource.delete(contestTeamMemberId).execute();
+    public void deleteContestTeamMember(Long contestTeamuserId) {
+        contestTeamMemberResource.delete(contestTeamuserId).execute();
         //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
     }
@@ -104,9 +104,9 @@ public class ContestTeamMemberClient {
         return teamRoleToUsersMap;
     }
 
-    public List<ContestTeamMember> getTeamMembers(Long memberId, Long contestId, Long roleId) {
+    public List<ContestTeamMember> getTeamMembers(Long userId, Long contestId, Long roleId) {
         return DtoUtil.toPojos(contestTeamMemberResource.list()
-                .optionalQueryParam("memberId", memberId)
+                .optionalQueryParam("userId", userId)
                 .optionalQueryParam("contestId", contestId)
                 .optionalQueryParam("roleId", roleId)
                 .withCache(CacheName.CONTEST_DETAILS)

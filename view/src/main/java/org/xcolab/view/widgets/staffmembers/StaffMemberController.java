@@ -112,7 +112,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                         boolean alreadyInStaffMembers = false;
                         for (StaffMemberWrapper smw : staffMembersOverrides) {
                             if (smw.getMember() != null) {
-                                if (ctm.getUserId() == smw.getMember().getId_()) {
+                                if (ctm.getUserId() == smw.getMember().getId()) {
                                     alreadyInStaffMembers = true;
                                     if (!usersInYear.contains(ctm.getUserId())) {
                                         usersInYear.add(ctm.getUserId());
@@ -150,7 +150,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                     boolean alreadyInStaffMembers = false;
                     for (StaffMemberWrapper smw : staffMembersOverrides) {
                         if (smw.getMember() != null) {
-                            if (member.getId_() == smw.getMember().getId_()) {
+                            if (member.getId() == smw.getMember().getId()) {
                                 alreadyInStaffMembers = true;
                                 break;
                             }
@@ -171,7 +171,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
 
     private StaffMemberWrapper getNewStaffMember(Member member, CategoryRole categoryRole) {
         StaffMember sm = new StaffMember();
-        sm.setUserId(member.getId_());
+        sm.setUserId(member.getId());
         sm.setCategoryId(categoryRole.getCategoryId());
         final String userImageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
         sm.setPhotoUrl(userImageDomain + "/image/member/" + member.getPortraitId());

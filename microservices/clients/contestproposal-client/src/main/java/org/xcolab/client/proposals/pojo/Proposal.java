@@ -17,19 +17,16 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
-import org.xcolab.client.contest.PlanTemplateClient;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClient;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.UsersGroupsClient;
-import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.UsersGroups;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
@@ -57,7 +54,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
-import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
@@ -96,12 +93,12 @@ public class Proposal extends AbstractProposal {
     private final ProposalUnversionedAttributeHelper unversionedAttributeHelper;
 
     protected List<ProposalTeamMember> members;
-    private List<PlanSectionDefinition> sections;
+    private List<ProposalTemplateSectionDefinition> sections;
 
 
     protected ProposalRatings proposalRatings;
     private ProposalRibbon ribbonWrapper;
-    private List<MembershipRequest> membershipRequests;
+    private List<ProposalTeamMembershipRequest> membershipRequests;
     private List<Member> supporters;
 
     public Proposal(Proposal proposal, ContestPhase contestPhase) {
@@ -180,7 +177,7 @@ public class Proposal extends AbstractProposal {
         } else {
             this.clients = new Clients();
         }
-        this.setProposalId(0L);
+        this.setId(0L);
 
         ContestAssociation contestAssociation = new ContestAssociation();
         this.contestPhase =  contestAssociation.getContestPhase();
@@ -219,7 +216,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
-        Long proposalId = this.getProposalId();
+        Long proposalId = this.getId();
         ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
         String link = "/";
         link += contestType.getFriendlyUrlStringContests();
@@ -228,7 +225,7 @@ public class Proposal extends AbstractProposal {
 
         if (contestPhaseId > 0) {
             long activePhaseId =
-                    clients.contest.getActivePhase(contest.getContestPK()).getContestPhasePK();
+                    clients.contest.getActivePhase(contest.getId()).getId();
             if (activePhaseId == contestPhaseId) {
                 link += "/%d/%s/c/" + friendlyUrlStringProposal + "/%d";
                 return String.format(link, contest.getContestYear(), contest.getContestUrlName(),
@@ -246,16 +243,16 @@ public class Proposal extends AbstractProposal {
     }
 
     public boolean isDeleted() {
-        if (this.getProposalId() == 0) {
+        if (this.getId() == 0) {
             return false;
         }
         final ContestPhase contestPhase = clients.contest.getContestPhase(
-                clients.proposal.getLatestContestPhaseIdInProposal(this.getProposalId()));
+                clients.proposal.getLatestContestPhaseIdInProposal(this.getId()));
         long visibleAttributeValue = 1;
         if (contestPhase != null) {
             ProposalContestPhaseAttribute pcpa = clients.proposalPhase
-                    .getProposalContestPhaseAttribute(this.getProposalId(),
-                            contestPhase.getContestPhasePK(),
+                    .getProposalContestPhaseAttribute(this.getId(),
+                            contestPhase.getId(),
                             ProposalContestPhaseAttributeKeys.VISIBLE);
             if (pcpa != null) {
                 visibleAttributeValue = pcpa.getNumericValue();
@@ -281,18 +278,18 @@ public class Proposal extends AbstractProposal {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
     }
 
-    public boolean isUserAmongFellows(long memberId) {
-        for (Long fellowId : clients.contestTeamMember.getFellowsForContest(contest.getContestPK())) {
-            if (fellowId == memberId) {
+    public boolean isUserAmongFellows(long userId) {
+        for (Long fellowId : clients.contestTeamMember.getFellowsForContest(contest.getId())) {
+            if (fellowId == userId) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isUserAmongJudges(long memberId) {
-        for (Long judge : clients.contestTeamMember.getJudgesForContest(contest.getContestPK())) {
-            if (judge == memberId) {
+    public boolean isUserAmongJudges(long userId) {
+        for (Long judge : clients.contestTeamMember.getJudgesForContest(contest.getId())) {
+            if (judge == userId) {
                 return true;
             }
         }
@@ -310,23 +307,23 @@ public class Proposal extends AbstractProposal {
 
     public Member getAuthor() {
         try {
-            return MembersClient.getMember(this.getAuthorId());
+            return MembersClient.getMember(this.getAuthorUserId());
         } catch (MemberNotFoundException e) {
-            throw new IllegalStateException("Author " + this.getAuthorId()
-                    + " of proposal " + this.getProposalId() + " does not exist");
+            throw new IllegalStateException("Author " + this.getAuthorUserId()
+                    + " of proposal " + this.getId() + " does not exist");
         }
     }
 
     public long getSupportersCount() {
-        return clients.proposalMemberRating.getProposalSupportersCount(this.getProposalId());
+        return clients.proposalMemberRating.getProposalSupportersCount(this.getId());
     }
 
     public long getSupportersCountCached() {
-        return clients.proposalMemberRating.getProposalSupportersCountCached(this.getProposalId());
+        return clients.proposalMemberRating.getProposalSupportersCountCached(this.getId());
     }
 
     public long getCommentsCount() {
-        if (this.getProposalId() > 0) {
+        if (this.getId() > 0) {
             return clients.comment.countComments(this.getDiscussionId());
         }
         return 0;
@@ -339,10 +336,10 @@ public class Proposal extends AbstractProposal {
     private long createDiscussionThread(String threadTitleSuffix, boolean isQuiet) {
         final ContestType contestType = getContest().getContestType();
         CommentThread thread = new CommentThread();
-        thread.setAuthorId(getAuthorId());
+        thread.setAuthorUserId(getAuthorUserId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return clients.thread.createThread(thread).getThreadId();
+        return clients.thread.createThread(thread).getId();
     }
 
     public long getDiscussionIdOrCreate() {
@@ -365,24 +362,24 @@ public class Proposal extends AbstractProposal {
         return discussionId;
     }
 
-    public Date getLastModifiedDate() {
-        return this.getUpdatedDate();
+    public Date getLastupdatedAt() {
+        return this.getUpdatedAt();
     }
 
-    public Date getLastModifiedDateForContestPhase() {
+    public Date getLastupdatedAtForContestPhase() {
         if (proposal2Phase.getVersionTo() == -1) {
-            return getLastModifiedDate();
+            return getLastupdatedAt();
         }
         return clients.proposal
-                .getProposalVersionByProposalIdVersion(this.getProposalId(), this.getVersion()).getCreateDate();
+                .getProposalVersionByProposalIdVersion(this.getId(), this.getVersion()).getCreatedAt();
 
     }
 
 
     public boolean isOpen() {
-        if (this.getProposalId() > 0) {
+        if (this.getId() > 0) {
             ProposalAttribute attribute = clients.proposalAttribute
-                    .getProposalAttribute(this.getProposalId(), ProposalAttributeKeys.OPEN, 0L);
+                    .getProposalAttribute(this.getId(), ProposalAttributeKeys.OPEN, 0L);
             return attribute != null && attribute.getNumericValue() > 0;
         } else {
             return false;
@@ -415,12 +412,12 @@ public class Proposal extends AbstractProposal {
     }
 
     public String getProposalUrl(ContestPhase inPhase) {
-        return this.getProposalLinkUrl(contest, inPhase.getContestPhasePK());
+        return this.getProposalLinkUrl(contest, inPhase.getId());
     }
 
     public List<Member> getSupporters() {
         if (supporters == null) {
-            supporters = clients.proposalMemberRating.getProposalSupporters(getProposalId()).stream()
+            supporters = clients.proposalMemberRating.getProposalSupporters(getId()).stream()
                     .map(supporter -> MembersClient.getMemberOrNull(supporter.getUserId()))
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
@@ -442,10 +439,10 @@ public class Proposal extends AbstractProposal {
     }
 
     public boolean isContestMatchesLatestContest() {
-        final long contestId = getContest().getContestPK();
+        final long contestId = getContest().getId();
         final Contest currentContestForProposal =
-                clients.proposal.getCurrentContestForProposal(getProposalId());
-        return contestId == currentContestForProposal.getContestPK();
+                clients.proposal.getCurrentContestForProposal(getId());
+        return contestId == currentContestForProposal.getId();
     }
 
     public boolean getIsLatestVersion() {
@@ -454,10 +451,10 @@ public class Proposal extends AbstractProposal {
 
     public Contest getWasMovedToContest() {
         try {
-            Contest c = clients.proposal.getCurrentContestForProposal(this.getProposalId());
-            if (c.getContestPK() != contest.getContestPK().longValue()) {
+            Contest c = clients.proposal.getCurrentContestForProposal(this.getId());
+            if (c.getId() != contest.getId().longValue()) {
                 try {
-                    return clients.contest.getContest(c.getContestPK());
+                    return clients.contest.getContest(c.getId());
                 } catch (ContestNotFoundException ignored) {
                 }
 
@@ -469,7 +466,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public ProposalVersion getSelectedVersion() {
-        for (ProposalVersion pv : clients.proposal.getAllProposalVersions(this.getProposalId())) {
+        for (ProposalVersion pv : clients.proposal.getAllProposalVersions(this.getId())) {
             if (pv.getVersion() == this.getVersion()) {
                 return pv;
             }
@@ -482,15 +479,15 @@ public class Proposal extends AbstractProposal {
     }
 
     public Integer getCurrentVersion() {
-        return clients.proposal.getMaxVersion(getProposalId());
+        return clients.proposal.getMaxVersion(getId());
     }
 
     public int getVersion() {
         return this.getCurrentVersion() != null ? this.getCurrentVersion() : 0;
     }
 
-    public long getContestPK() {
-        return contest.getContestPK();
+    public long getcontestId() {
+        return contest.getId();
     }
 
     public Proposal getWrapped() {
@@ -503,12 +500,12 @@ public class Proposal extends AbstractProposal {
 
     public boolean isVisibleInContest(long contestId) {
         try {
-            if (this.getProposalId() == 0) {
+            if (this.getId() == 0) {
                 return true;
             }
             final Contest currentContest =
-                    clients.proposal.getCurrentContestForProposal(this.getProposalId());
-            return !isDeleted() && currentContest.getContestPK() == contestId;
+                    clients.proposal.getCurrentContestForProposal(this.getId());
+            return !isDeleted() && currentContest.getId() == contestId;
         } catch (ContestNotFoundException ignored) {
             return false;
         }
@@ -519,32 +516,23 @@ public class Proposal extends AbstractProposal {
     }
 
     public List<ProposalTeamMember> getMembers() {
+
         if (members == null) {
             members = new ArrayList<>();
             boolean hasOwner = false;
 
-            for (UsersGroups user : clients.usersGroup.getUserGroupsByGroupId(getGroupId())) {
-                try {
-                    Member member = MembersClient.getMember(user.getUserId());
-
-                    final ProposalTeamMember teamMemberWrapper = new ProposalTeamMember(
-                            this, member);
-                    members.add(teamMemberWrapper);
-                    if (teamMemberWrapper.getMemberType() == ProposalMemberType.OWNER) {
-                        hasOwner = true;
-                    }
-                } catch (MemberNotFoundException ignored) {
-
+            for (Member member : clients.proposal.getProposalMembers(getId())) {
+                final ProposalTeamMember teamMemberWrapper = new ProposalTeamMember(
+                        this, member);
+                members.add(teamMemberWrapper);
+                if (teamMemberWrapper.getMemberType() == ProposalMemberType.OWNER) {
+                    hasOwner = true;
                 }
             }
             if (!hasOwner) {
-                UsersGroups usersGroups = new UsersGroups();
-                usersGroups.setGroupId(this.getGroupId());
-                usersGroups.setUserId(this.getAuthorId());
+                clients.membership.addUserToProposalTeam(getId(), getAuthorUserId());
             }
-
         }
-
         return members;
     }
 
@@ -577,7 +565,7 @@ public class Proposal extends AbstractProposal {
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
             selectedJudges
-                    .addAll(clients.contestTeamMember.getJudgesForContest(contest.getContestPK()));
+                    .addAll(clients.contestTeamMember.getJudgesForContest(contest.getId()));
         } else {
             String s = proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
             if (s.isEmpty()) {
@@ -596,7 +584,7 @@ public class Proposal extends AbstractProposal {
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            for (Long judgeId : clients.contestTeamMember.getJudgesForContest(contest.getContestPK())) {
+            for (Long judgeId : clients.contestTeamMember.getJudgesForContest(contest.getId())) {
 
                 try {
                     Member judge = MembersClient.getMember(judgeId);
@@ -640,25 +628,25 @@ public class Proposal extends AbstractProposal {
     }
 
     private long getVotesCountInternal(CacheName cacheName) {
-        if (this.getProposalId() > 0) {
+        if (this.getId() > 0) {
 
             long votingPhasePK = contest.getVotingPhasePK();
             return clients.proposalMemberRating.countProposalVotesInContestPhaseProposalId(
-                    votingPhasePK, this.getProposalId(), cacheName);
+                    votingPhasePK, this.getId(), cacheName);
         }
         return 0;
     }
 
-    public List<PlanSectionDefinition> getSections() {
+    public List<ProposalTemplateSectionDefinition> getSections() {
         if (sections == null) {
             sections = new ArrayList<>();
             if (contest != null) {
-                PlanTemplate planTemplate = clients.planTemplate.getPlanTemplate(contest.getPlanTemplateId());
+                ProposalTemplate planTemplate = clients.planTemplate.getPlanTemplate(contest.getProposalTemplateId());
                 if (planTemplate != null) {
-                    for (PlanSectionDefinition psd : clients.planTemplate
-                            .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(),true)) {
+                    for (ProposalTemplateSectionDefinition psd : clients.planTemplate
+                            .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(),true)) {
 
-                        sections.add(new PlanSectionDefinition(psd, this));
+                        sections.add(new ProposalTemplateSectionDefinition(psd, this));
                     }
                 }
             }
@@ -670,10 +658,10 @@ public class Proposal extends AbstractProposal {
         return contestPhase.getFellowScreeningActive();
     }
 
-    public List<MembershipRequest> getMembershipRequests() {
+    public List<ProposalTeamMembershipRequest> getMembershipRequests() {
         if (this.membershipRequests == null) {
             membershipRequests = new ArrayList<>();
-            for (MembershipRequest m : clients.membership.getMembershipRequests(this.getProposalId())) {
+            for (ProposalTeamMembershipRequest m : clients.membership.getMembershipRequests(this.getId())) {
                 if (m.getStatusId() == MembershipRequestStatus.STATUS_PENDING_REQUESTED) {
                     membershipRequests.add((m));
                 }
@@ -699,7 +687,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public void setModelRegion(String region, Long userId) {
-        ProposalAttributeClientUtil.setProposalAttribute(createProposalAttribute(this.getProposalId(), ProposalAttributeKeys.REGION, region),userId);
+        ProposalAttributeClientUtil.setProposalAttribute(createProposalAttribute(this.getId(), ProposalAttributeKeys.REGION, region),userId);
     }
     private static ProposalAttribute createProposalAttribute(Long proposalId, String name, String stringValue){
         ProposalAttribute proposalAttribute = new ProposalAttribute();
@@ -715,7 +703,7 @@ public class Proposal extends AbstractProposal {
 
     public void setScenarioId(Long scenarioId, Long isConsolidatedScenario, Long userId) {
         ProposalAttribute proposalAttribute = new ProposalAttribute();
-        proposalAttribute.setProposalId(this.getProposalId());
+        proposalAttribute.setProposalId(this.getId());
         proposalAttribute.setName(ProposalAttributeKeys.SCENARIO_ID);
         proposalAttribute.setNumericValue(isConsolidatedScenario);
         proposalAttribute.setAdditionalId(scenarioId);
@@ -737,7 +725,7 @@ public class Proposal extends AbstractProposal {
 
     public Map<Long, List<Proposal>> getSubProposalPerModel() {
         Map<Long, List<Proposal>> subProposalPerModel = new HashMap<>();
-        List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getProposalId());
+        List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getId());
 
         for (Proposal subProposal : subProposals) {
             Long modelId = subProposal.getModelIdForStoredScenario();
@@ -751,7 +739,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public Scenario getScenario() throws IOException {
-        return getScenarioByProposalId(this.getProposalId());
+        return getScenarioByProposalId(this.getId());
     }
 
     public Scenario getScenarioByProposalId(Long proposalId) throws IOException {
@@ -774,16 +762,16 @@ public class Proposal extends AbstractProposal {
 
     public List<Scenario> getSubProposalScenarios() throws IOException {
         List<Scenario> subProposalScenarios = new ArrayList<>();
-        List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getProposalId());
+        List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getId());
         for (Proposal subProposal : subProposals) {
-            Scenario scenarioForSubProposal = getScenarioByProposalId(subProposal.getProposalId());
+            Scenario scenarioForSubProposal = getScenarioByProposalId(subProposal.getId());
             subProposalScenarios.add(scenarioForSubProposal);
         }
         return subProposalScenarios;
     }
 
     private Long getModelIdForStoredScenario() {
-        return getModelIdForScenarioId(this.getProposalId());
+        return getModelIdForScenarioId(this.getId());
     }
 
     public List<Long> getSubProposalScenarioIds() {
@@ -892,7 +880,7 @@ public class Proposal extends AbstractProposal {
 
     public Member getUserForSelectedVersion() {
         try {
-            return MembersClient.getMember(getSelectedVersion().getAuthorId());
+            return MembersClient.getMember(getSelectedVersion().getAuthorUserId());
         } catch (MemberNotFoundException e) {
             return null;
         }
@@ -903,8 +891,8 @@ public class Proposal extends AbstractProposal {
         if (!getSelectedJudges().isEmpty()) {
             for (long userId : getSelectedJudges()) {
                 List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
-                        .getProposalRatingsByProposalUserContestPhase(this.getProposalId(),
-                                contestPhase.getContestPhasePK(),userId);
+                        .getProposalRatingsByProposalUserContestPhase(this.getId(),
+                                contestPhase.getId(),userId);
                 ProposalRatings wrapper = new ProposalRatings(userId, proposalRatings);
                 if (!wrapper.isReviewComplete()) {
                     return false;
@@ -917,7 +905,7 @@ public class Proposal extends AbstractProposal {
     public boolean getIsReviewFinishedForJudge(long judgeId) {
         List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                 .getProposalRatingsByProposalUserContestPhase(
-                        getProposalId(), contestPhase.getContestPhasePK(), judgeId);
+                        getId(), contestPhase.getId(), judgeId);
         ProposalRatings wrapper = new ProposalRatings(judgeId, proposalRatings);
         return wrapper.isReviewComplete();
     }
@@ -990,9 +978,7 @@ public class Proposal extends AbstractProposal {
         final ProposalAttributeClient proposalAttribute;
         final ProposalPhaseClient proposalPhase;
         final ContestTeamMemberClient contestTeamMember;
-        final PlanTemplateClient planTemplate;
-
-        final UsersGroupsClient usersGroup;
+        final ProposalTemplateClient planTemplate;
 
         Clients() {
             this(null);
@@ -1001,7 +987,7 @@ public class Proposal extends AbstractProposal {
         Clients(ServiceNamespace serviceNamespace) {
             if (serviceNamespace != null) {
                 contest = ContestClient.fromNamespace(serviceNamespace);
-                planTemplate = PlanTemplateClient.fromNamespace(serviceNamespace);
+                planTemplate = ProposalTemplateClient.fromNamespace(serviceNamespace);
                 proposal = ProposalClient.fromNamespace(serviceNamespace);
                 proposalAttribute = ProposalAttributeClient.fromNamespace(serviceNamespace);
                 proposalPhase = ProposalPhaseClient.fromNamespace(serviceNamespace);
@@ -1011,7 +997,6 @@ public class Proposal extends AbstractProposal {
                 proposalMemberRating = ProposalMemberRatingClient.fromNamespace(serviceNamespace);
                 proposalJudgeRating = ProposalJudgeRatingClient.fromNamespace(serviceNamespace);
                 membership = MembershipClient.fromNamespace(serviceNamespace);
-                usersGroup = UsersGroupsClient.fromNamespace(serviceNamespace);
             } else {
                 contest = ContestClientUtil.getClient();
                 proposal = ProposalClientUtil.getClient();
@@ -1022,9 +1007,8 @@ public class Proposal extends AbstractProposal {
                 thread = ThreadClientUtil.getClient();
                 proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
                 membership = MembershipClientUtil.getClient();
-                planTemplate = PlanTemplateClientUtil.getClient();
+                planTemplate = ProposalTemplateClientUtil.getClient();
                 proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
-                usersGroup = UsersGroupsClientUtil.getClient();
             }
         }
     }
@@ -1040,7 +1024,7 @@ public class Proposal extends AbstractProposal {
 
         ContestAssociation(Contest contest, ContestPhase contestPhase,
                 Proposal2Phase proposal2Phase) {
-            boolean proposalExists = getProposalId() != null && getProposalId() != 0L;
+            boolean proposalExists = getId() != null && getId() != 0L;
             if (contest == null && proposalExists) {
                 contest = fetchContestFromProposal();
             }
@@ -1066,24 +1050,24 @@ public class Proposal extends AbstractProposal {
         }
 
         private Contest fetchContestFromPhase(ContestPhase contestPhase) {
-            return clients.contest.getContest(contestPhase.getContestPK());
+            return clients.contest.getContest(contestPhase.getContestId());
         }
 
         private Proposal2Phase fetchProposal2Phase(ContestPhase contestPhase) {
             try {
                 return clients.proposalPhase.getProposal2PhaseByProposalIdContestPhaseId(
-                        getProposalId(), contestPhase.getContestPhasePK());
+                        getId(), contestPhase.getId());
             } catch (Proposal2PhaseNotFoundException e) {
                 return null;
             }
         }
 
         private ContestPhase fetchPhaseFromContest(Contest contest) {
-            return clients.contest.getActivePhase(contest.getContestPK());
+            return clients.contest.getActivePhase(contest.getId());
         }
 
         private Contest fetchContestFromProposal() {
-            return clients.proposal.getCurrentContestForProposal(getProposalId());
+            return clients.proposal.getCurrentContestForProposal(getId());
         }
 
         public Contest getContest() {

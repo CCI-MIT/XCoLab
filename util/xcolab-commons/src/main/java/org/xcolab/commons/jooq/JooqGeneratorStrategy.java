@@ -18,7 +18,7 @@ public class JooqGeneratorStrategy extends DefaultGeneratorStrategy {
      * @param originalName The name of the table.
      * @return The name to be used as identifier.
      */
-    protected String customizeJavaClassNameIdentifier(String originalName) {
+    protected String customizeJavaClassName(String originalName) {
         return StringUtils.toCamelCase(originalName
                 .replace(' ', '_')
                 .replace('-', '_')
@@ -48,7 +48,16 @@ public class JooqGeneratorStrategy extends DefaultGeneratorStrategy {
 
     @Override
     public String getJavaClassName(Definition definition, Mode mode) {
-        String result = customizeJavaClassNameIdentifier(definition.getOutputName());
+        String result = customizeJavaClassName(definition.getOutputName());
         return customizeJavaClassNameForMode(result, mode);
+    }
+
+    protected String customizeJavaIdentifier(String originalName) {
+        return originalName.toUpperCase();
+    }
+
+    @Override
+    public String getJavaIdentifier(Definition definition) {
+        return customizeJavaIdentifier(definition.getOutputName());
     }
 }

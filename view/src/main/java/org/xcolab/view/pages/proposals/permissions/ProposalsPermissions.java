@@ -25,7 +25,7 @@ public class ProposalsPermissions {
 
     private final boolean planIsEditable;
 
-    private final long memberId;
+    private final long userId;
     private final Member member;
     private final boolean isLoggedIn;
     private final boolean isGuest;
@@ -47,7 +47,7 @@ public class ProposalsPermissions {
         this.contestClient = clientHelper.getContestClient();
 
         if (contestPhase != null) {
-            final long contestPhaseTypeId = contestPhase.getContestPhaseType();
+            final long contestPhaseTypeId = contestPhase.getContestPhaseTypeId();
 
             final ContestPhaseType contestPhaseType = clientHelper.getContestClient()
                     .getContestPhaseType(contestPhaseTypeId);
@@ -66,9 +66,9 @@ public class ProposalsPermissions {
                     && contestPhase.getPhaseActive();
 
         }
-        this.memberId = member != null ? member.getId_() : 0;
-        this.isLoggedIn = this.memberId > 0;
-        this.isGuest = PermissionsClient.isGuest(memberId);
+        this.userId = member != null ? member.getId() : 0;
+        this.isLoggedIn = this.userId > 0;
+        this.isGuest = PermissionsClient.isGuest(userId);
         this.proposal = proposal;
         this.contest = contest;
         this.contestPhase = contestPhase;
@@ -165,7 +165,7 @@ public class ProposalsPermissions {
 
     public boolean getCanVote() {
         return isLoggedIn && !isGuest && isVotingEnabled()
-                && (proposal != null && proposal.getProposalId() > 0);
+                && (proposal != null && proposal.getId() > 0);
     }
 
     public boolean getCanAdminProposal() {
@@ -174,17 +174,17 @@ public class ProposalsPermissions {
 
 
     public boolean getIsTeamMember() {
-        return proposal != null && proposal.getProposalId() > 0
-                && proposalClient.isUserInProposalTeam(proposal.getProposalId(),memberId)
+        return proposal != null && proposal.getId() > 0
+                && proposalClient.isUserInProposalTeam(proposal.getId(),userId)
                 && isLoggedIn;
     }
 
     private boolean isOwner() {
-        return isLoggedIn && (proposal == null || memberId == proposal.getAuthorId());
+        return isLoggedIn && (proposal == null || userId == proposal.getAuthorUserId());
     }
 
     private boolean isProposalOpen() {
-        return proposal != null && proposal.getProposalId() > 0
+        return proposal != null && proposal.getId() > 0
                 && proposal.isOpen();
     }
 
@@ -192,12 +192,12 @@ public class ProposalsPermissions {
      * Returns true if user is admin (not only proposal contributor)
      */
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(memberId);
+        return PermissionsClient.canAdminAll(userId);
     }
 
     private boolean isProposalMember() {
-        return proposal != null && proposal.getProposalId() > 0 &&
-                proposalClient.isUserInProposalTeam(proposal.getProposalId(),memberId);
+        return proposal != null && proposal.getId() > 0 &&
+                proposalClient.isUserInProposalTeam(proposal.getId(),userId);
     }
 
     public boolean getCanFellowActions() {
@@ -205,14 +205,14 @@ public class ProposalsPermissions {
             return getCanAdminAll();
         }
 
-        return PermissionsClient.canFellow(memberId, contestPhase.getContestPK()) || getCanAdminAll();
+        return PermissionsClient.canFellow(userId, contestPhase.getContestId()) || getCanAdminAll();
     }
 
     public boolean getCanJudgeActions() {
         if (contestPhase == null) {
             return getCanAdminAll();
         }
-        return PermissionsClient.canJudge(memberId, contestPhase.getContestPK())
+        return PermissionsClient.canJudge(userId, contestPhase.getContestId())
                 || getCanAdminAll();
     }
 
@@ -223,7 +223,7 @@ public class ProposalsPermissions {
         final MemberRoleChoiceAlgorithm roleChoiceAlgorithm =
                 MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
         MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
-                MembersClient.getMemberUnchecked(memberId));
+                MembersClient.getMemberUnchecked(userId));
         return memberRole == MemberRole.CONTEST_MANAGER || memberRole == MemberRole.STAFF;
     }
 
@@ -234,7 +234,7 @@ public class ProposalsPermissions {
         final MemberRoleChoiceAlgorithm roleChoiceAlgorithm =
                 MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
         MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
-                MembersClient.getMemberUnchecked(memberId));
+                MembersClient.getMemberUnchecked(userId));
         return memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW;
     }
 
@@ -265,8 +265,8 @@ public class ProposalsPermissions {
         }
 
         try {
-            Contest latestProposalContest = proposalClient.getCurrentContestForProposal(proposal.getProposalId());
-            ContestPhase activePhaseForContest = contestClient.getActivePhase(latestProposalContest.getContestPK());
+            Contest latestProposalContest = proposalClient.getCurrentContestForProposal(proposal.getId());
+            ContestPhase activePhaseForContest = contestClient.getActivePhase(latestProposalContest.getId());
             boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
             return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
         }catch (ContestNotFoundException ignored){
@@ -301,8 +301,8 @@ public class ProposalsPermissions {
 
         try {
             final long currentContestId = proposalClient
-                    .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
-            return currentContestId != contestPhase.getContestPK();
+                    .getCurrentContestForProposal(proposal.getId()).getId();
+            return currentContestId != contestPhase.getContestId();
         }catch(ContestNotFoundException ignored){
             return false;
         }

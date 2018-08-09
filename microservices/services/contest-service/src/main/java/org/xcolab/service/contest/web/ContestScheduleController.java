@@ -42,14 +42,14 @@ public class ContestScheduleController {
         return contestDao.existsWithScheduleId(contestScheduleId);
     }
 
-    @PutMapping(value = "/contestSchedules/{id_}")
+    @PutMapping(value = "/contestSchedules/{id}")
     public boolean updateContestSchedule(@RequestBody ContestSchedule contestSchedule,
-                                         @PathVariable long id_) throws NotFoundException {
+                                         @PathVariable long id) throws NotFoundException {
 
-        if (contestScheduleDao.exists(id_)) {
+        if (contestScheduleDao.exists(id)) {
             return contestScheduleDao.update(contestSchedule);
         } else {
-            throw new NotFoundException("No ContestSchedule with id " + id_);
+            throw new NotFoundException("No ContestSchedule with id " + id);
         }
     }
 
@@ -58,11 +58,11 @@ public class ContestScheduleController {
         return contestScheduleDao.findByGiven();
     }
 
-    @DeleteMapping(value = "/contestSchedules/{id_}")
-    public boolean deleteContestSchedule(@PathVariable long id_)
+    @DeleteMapping(value = "/contestSchedules/{id}")
+    public boolean deleteContestSchedule(@PathVariable long id)
             throws NotFoundException {
-        if (contestScheduleDao.exists(id_)) {
-            return contestScheduleDao.delete(id_);
+        if (contestScheduleDao.exists(id)) {
+            return contestScheduleDao.delete(id);
 
         }
         throw new NotFoundException();

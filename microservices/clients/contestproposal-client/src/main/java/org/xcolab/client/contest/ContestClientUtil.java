@@ -212,8 +212,8 @@ public final class ContestClientUtil {
         return contestClient.deleteContestSchedule(contestScheduleId);
     }
 
-    public static List<Long> getModelIds(long contestPK) throws ContestNotFoundException {
-        return contestClient.getModelIds(contestPK);
+    public static List<Long> getModelIds(long contestId) throws ContestNotFoundException {
+        return contestClient.getModelIds(contestId);
     }
 
     public static List<ContestPhase> getVisibleContestPhases(
@@ -235,8 +235,8 @@ public final class ContestClientUtil {
         return contestClient.getContestPhaseType(contestPhaseTypeId);
     }
 
-    public static void deleteContestPhase(Long contestPhasePK) {
-        contestClient.deleteContestPhase(contestPhasePK);
+    public static void deleteContestPhase(Long contestPhaseId) {
+        contestClient.deleteContestPhase(contestPhaseId);
     }
 
     public static boolean updateContestPhase(ContestPhase contestPhase) {
@@ -252,18 +252,13 @@ public final class ContestClientUtil {
     }
 
     public static List<ContestPhase> getAllContestPhases(
-            Long contestPK) {
-        return contestClient.getAllContestPhases(contestPK);
-    }
-
-    public static List<ContestPhase> getPhasesForContestScheduleId(
-            Long contestScheduleId) {
-        return contestClient.getPhasesForContestScheduleId(contestScheduleId);
+            Long contestId) {
+        return contestClient.getAllContestPhases(contestId);
     }
 
     public static List<ContestPhase> getPhasesForContestScheduleIdAndContest(
-            Long contestScheduleId, Long contestPK) {
-        return contestClient.getPhasesForContestScheduleIdAndContest(contestScheduleId, contestPK);
+            Long contestScheduleId, Long contestId) {
+        return contestClient.getPhasesForContestScheduleIdAndContest(contestScheduleId, contestId);
     }
 
     public static List<ContestPhase> getTemplatePhasesForContestScheduleId(
@@ -291,37 +286,38 @@ public final class ContestClientUtil {
             Long contestTypeId) {
         return contestClient.getContestsByContestType(contestTypeId);
     }
-    public static Map<Long, String> getModelIdsAndNames(long contestPK){
-        return contestClient.getModelIdsAndNames(contestPK);
+    public static Map<Long, String> getModelIdsAndNames(long contestId){
+        return contestClient.getModelIdsAndNames(contestId);
     }
 
     public static String getContestPhaseName(ContestPhase ck) {
         return contestClient.getContestPhaseName(ck);
     }
 
-    public static ContestPhaseRibbonType getContestPhaseRibbonType(long id_) {
-        return contestClient.getContestPhaseRibbonType(id_);
+    public static ContestPhaseRibbonType getContestPhaseRibbonType(long id) {
+        return contestClient.getContestPhaseRibbonType(id);
     }
 
     public static List<ContestPhaseRibbonType> getAllContestPhaseRibbonType() {
         return contestClient.getAllContestPhaseRibbonType();
     }
 
-    public static boolean isMemberSubscribedToContest(long contestPK, long userId) {
-        return contestClient.isMemberSubscribedToContest(contestPK, userId);
+    public static boolean isMemberSubscribedToContest(long contestId, long userId) {
+        return contestClient.isMemberSubscribedToContest(contestId, userId);
     }
 
-    public static void subscribeMemberToContest(long contestPK, long userId) {
-        contestClient.subscribeMemberToContest(contestPK, userId);
+    public static void subscribeMemberToContest(long contestId, long userId) {
+        contestClient.subscribeMemberToContest(contestId, userId);
     }
 
-    public static void unsubscribeMemberFromContest(long contestPK, long userId) {
-        contestClient.unsubscribeMemberFromContest(contestPK, userId);
+    public static void unsubscribeMemberFromContest(long contestId, long userId) {
+        contestClient.unsubscribeMemberFromContest(contestId, userId);
     }
 
-    public static boolean isContestNameYearUnique(String contestShortName, Long year,Long currentContestId) {
-        return contestClient.isContestNameYearUnique(contestShortName, year, currentContestId);
+    public static boolean isContestTitleYearUnique(String contestShortName, Long year,Long currentContestId) {
+        return contestClient.isContestTitleYearUnique(contestShortName, year, currentContestId);
     }
+
     public static ContestClient fromService(ServiceNamespace serviceNamespace) {
         return ContestClient.fromNamespace(serviceNamespace);
     }

@@ -17,7 +17,7 @@ public abstract class AbstractActivityEntryContentProvider implements ActivityEn
     public void initialize(ActivityEntry activityEntry) throws ActivityInitializationException {
         this.activityEntry = activityEntry;
         try {
-            user = MembersClient.getMember(activityEntry.getMemberId());
+            user = MembersClient.getMember(activityEntry.getUserId());
         } catch (MemberNotFoundException e) {
             user = null;
         }

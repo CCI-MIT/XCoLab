@@ -34,10 +34,10 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
                 .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NUMERIC_VALUE, proposalContestPhaseAttribute.getNumericValue())
                 .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.STRING_VALUE, proposalContestPhaseAttribute.getStringValue())
                 .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.REAL_VALUE, proposalContestPhaseAttribute.getRealValue())
-                .returning(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID_)
+                .returning(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID)
                 .fetchOne();
         if (ret != null) {
-            proposalContestPhaseAttribute.setId_(ret.getValue(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID_));
+            proposalContestPhaseAttribute.setId(ret.getValue(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID));
             return proposalContestPhaseAttribute;
         } else {
             return null;
@@ -46,14 +46,14 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
     }
 
     @Override
-    public ProposalContestPhaseAttribute get(Long id_) throws NotFoundException {
+    public ProposalContestPhaseAttribute get(Long id) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
-                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID_.eq(id_))
+                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ProposalContestPhaseAttribute with id " + id_ + " does not exist");
+            throw new NotFoundException("ProposalContestPhaseAttribute with id " + id + " does not exist");
         }
         return record.into(ProposalContestPhaseAttribute.class);
 
@@ -97,9 +97,9 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
     }
 
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
-                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID_.eq(id_))
+                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID.eq(id))
                 .execute();
     }
     @Override
@@ -109,7 +109,7 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
                 .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NUMERIC_VALUE, proposalContestPhaseAttribute.getNumericValue())
                 .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.STRING_VALUE, proposalContestPhaseAttribute.getStringValue())
                 .set(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.REAL_VALUE, proposalContestPhaseAttribute.getRealValue())
-                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID_.eq(proposalContestPhaseAttribute.getId_()))
+                .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.ID.eq(proposalContestPhaseAttribute.getId()))
                 .execute() > 0;
     }
 

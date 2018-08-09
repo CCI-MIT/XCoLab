@@ -13,14 +13,14 @@ function proposalCopy_loadContests(moveType) {
 
 			if (moveType == "FORK") {
 				html.push('/createProposal/basedOn/');
-				html.push(currentProposal.proposalId);
+				html.push(currentProposal.id);
 				html.push('/');
 				html.push(currentProposal.version);
 				html.push('/');
 				html.push(currentProposal.contestId);
 			} else {
 				html.push('/c/proposal/');
-				html.push(currentProposal.proposalId);
+				html.push(currentProposal.id);
 				html.push('/moveFromContestPhaseId/' + currentProposal.contestPhaseId);
 				html.push("/move/" + moveType);
 			}
@@ -41,7 +41,7 @@ function loadProposalSections() {
 
 	if (proposalsLoaded) return;
 
-	jQuery.getJSON('/api/contests/' + baseContest.contestPK
+	jQuery.getJSON('/api/contests/' + baseContest.contestId
 		+ '/proposals/' + baseProposal.proposalId
 		+ '/versions/' + baseProposal.version + '/sections', {
 	}, function(data) {

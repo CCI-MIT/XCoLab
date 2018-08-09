@@ -18,7 +18,7 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 
@@ -58,13 +58,13 @@ public class MembershipInvitationResponseController {
         ProposalClient proposalClient = ProposalClientUtil.getClient();
         ProposalAttributeClient proposalAttributeClient = ProposalAttributeClientUtil.getClient();
 
-        MembershipRequest membershipRequest = membershipClient.getMembershipRequest(requestId);
+        ProposalTeamMembershipRequest membershipRequest = membershipClient.getMembershipRequest(requestId);
 
         List<Long> recipients = new ArrayList<>();
         List<Member> contributors = proposalClient.getProposalMembers(proposalId);
 
         for (Member user : contributors) {
-            recipients.add(user.getUserId());
+            recipients.add(user.getId());
         }
 
         Proposal proposal = proposalClient.getProposal(proposalId);
@@ -80,11 +80,11 @@ public class MembershipInvitationResponseController {
 
             if (action.equalsIgnoreCase("ACCEPT")) {
                 membershipClient.approveMembershipRequest(proposalId, membershipRequest.getUserId(),
-                        membershipRequest, "The invitation was accepted.", invitee.getUserId());
+                        membershipRequest, "The invitation was accepted.", invitee.getId());
                 final String membershipAcceptedMessage = TemplateReplacementUtil
                         .replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED,
                                 contestType);
-                sendMessage(invitee.getUserId(), recipients, MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,
+                sendMessage(invitee.getId(), recipients, MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,
                         String.format(membershipAcceptedMessage, invitee.getFullName(),
                                 proposalLink));
                 AlertMessage.success(
@@ -94,11 +94,11 @@ public class MembershipInvitationResponseController {
             } else if (action.equalsIgnoreCase("DECLINE")) {
                 membershipClient
                         .denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId,
-                                "The invitation was rejected.", invitee.getUserId());
+                                "The invitation was rejected.", invitee.getId());
                 final String membershipRejectedMessage = TemplateReplacementUtil
                         .replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED,
                                 contestType);
-                sendMessage(invitee.getUserId(), recipients, MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,
+                sendMessage(invitee.getId(), recipients, MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,
                         String.format(membershipRejectedMessage, invitee.getFullName(),
                                 proposalLink));
                 AlertMessage.warning("Membership request DECLINED!").flash(request);

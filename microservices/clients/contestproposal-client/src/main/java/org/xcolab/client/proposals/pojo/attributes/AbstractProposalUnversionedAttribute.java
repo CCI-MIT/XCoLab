@@ -9,83 +9,83 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
-    private Long proposalid;
-    private Long createauthorid;
-    private Long lastauthorid;
-    private Timestamp createdate;
-    private Timestamp lastupdatedate;
+    private Long id;
+    private Long proposalId;
+    private Long firstAuthorUserId;
+    private Long lastAuthorUserId;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public AbstractProposalUnversionedAttribute() {}
 
     public AbstractProposalUnversionedAttribute(AbstractProposalUnversionedAttribute value) {
         super(value);
-        this.id_ = value.id_;
-        this.proposalid = value.proposalid;
-        this.createauthorid = value.createauthorid;
-        this.lastauthorid = value.lastauthorid;
-        this.createdate = value.createdate;
-        this.lastupdatedate = value.lastupdatedate;
+        this.id = value.id;
+        this.proposalId = value.proposalId;
+        this.firstAuthorUserId = value.firstAuthorUserId;
+        this.lastAuthorUserId = value.lastAuthorUserId;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
     }
 
-    public AbstractProposalUnversionedAttribute(Long id_, Long proposalid, Long createauthorid,
-            Long lastauthorid, Timestamp createdate, Timestamp lastupdatedate, String name,
+    public AbstractProposalUnversionedAttribute(Long id, Long proposalId, Long firstAuthorUserId,
+            Long lastAuthorUserId, Timestamp createdAt, Timestamp updatedAt, String name,
             Integer additionalId, Long numericvalue, String stringvalue, Double realvalue) {
         super(name, additionalId, null, numericvalue, stringvalue, realvalue);
-        this.id_ = id_;
-        this.proposalid = proposalid;
-        this.createauthorid = createauthorid;
-        this.lastauthorid = lastauthorid;
-        this.createdate = createdate;
-        this.lastupdatedate = lastupdatedate;
+        this.id = id;
+        this.proposalId = proposalId;
+        this.firstAuthorUserId = firstAuthorUserId;
+        this.lastAuthorUserId = lastAuthorUserId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getProposalId() {
-        return this.proposalid;
+        return this.proposalId;
     }
 
     public void setProposalId(Long proposalid) {
-        this.proposalid = proposalid;
+        this.proposalId = proposalid;
     }
 
-    public Long getCreateAuthorId() {
-        return this.createauthorid;
+    public Long getFirstAuthorUserId() {
+        return this.firstAuthorUserId;
     }
 
-    public void setCreateAuthorId(Long createauthorid) {
-        this.createauthorid = createauthorid;
+    public void setFirstAuthorUserId(Long firstAuthorUserId) {
+        this.firstAuthorUserId = firstAuthorUserId;
     }
 
-    public Long getLastAuthorId() {
-        return this.lastauthorid;
+    public Long getLastAuthorUserId() {
+        return this.lastAuthorUserId;
     }
 
-    public void setLastAuthorId(Long lastauthorid) {
-        this.lastauthorid = lastauthorid;
+    public void setLastAuthorUserId(Long lastAuthorUserId) {
+        this.lastAuthorUserId = lastAuthorUserId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getLastUpdateDate() {
-        return this.lastupdatedate;
+    public Timestamp getupdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setLastUpdateDate(Timestamp lastupdatedate) {
-        this.lastupdatedate = lastupdatedate;
+    public void setupdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -100,24 +100,25 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
             return false;
         }
         AbstractProposalUnversionedAttribute that = (AbstractProposalUnversionedAttribute) o;
-        return Objects.equals(getId_(), that.getId_())
-                && Objects.equals(proposalid, that.proposalid)
-                && Objects.equals(createauthorid, that.createauthorid)
-                && Objects.equals(lastauthorid, that.lastauthorid)
-                && Objects.equals(createdate, that.createdate)
-                && Objects.equals(lastupdatedate, that.lastupdatedate);
+        return Objects.equals(getId(), that.getId())
+                && Objects.equals(proposalId, that.proposalId)
+                && Objects.equals(firstAuthorUserId, that.firstAuthorUserId)
+                && Objects.equals(lastAuthorUserId, that.lastAuthorUserId)
+                && Objects.equals(createdAt, that.createdAt)
+                && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId_(), proposalid, createauthorid, lastauthorid,
-                createdate, lastupdatedate);
+        return Objects.hash(super.hashCode(), getId(), proposalId, firstAuthorUserId,
+                lastAuthorUserId,
+                createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
-        String sb = super.toString() + "(" + id_ + ", " + proposalid + ", " + createauthorid + ", "
-                + lastauthorid + ", " + createdate + ", " + lastupdatedate + ")";
+        String sb = super.toString() + "(" + id + ", " + proposalId + ", " + firstAuthorUserId + ", "
+                + lastAuthorUserId + ", " + createdAt + ", " + updatedAt + ")";
 
         return sb;
     }

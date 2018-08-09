@@ -31,16 +31,11 @@ public class OntologySpace extends AbstractOntologySpace {
         return terms;
     }
 
-
-    public long getId() {
-        return this.getId_();
-    }
-
     public List<OntologyTerm> getRootTerms() {
         return rootTerms;
     }
 
     public int getOrder() {
-        return this.getOrder_();
+        return this.getSortOrder();
     }
 }

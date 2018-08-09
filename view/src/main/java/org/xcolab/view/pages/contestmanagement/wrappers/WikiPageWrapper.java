@@ -40,22 +40,22 @@ public class WikiPageWrapper {
             } catch (ContentNotFoundException e) {
                 throw ReferenceResolutionException
                         .toObject(ContentArticle.class, contest.getResourceArticleId())
-                        .fromObject(Contest.class, contest.getContestPK());
+                        .fromObject(Contest.class, contest.getId());
             }
         } else {
             contentArticleVersion = new ContentArticleVersion();
             contentArticleVersion.setFolderId(ContentFolder.RESOURCE_FOLDER_ID);
-            contentArticleVersion.setAuthorId(loggedInUserId);
-            contentArticleVersion.setTitle(contest.getContestShortName());
+            contentArticleVersion.setAuthorUserId(loggedInUserId);
+            contentArticleVersion.setTitle(contest.getTitle());
             contentArticleVersion.setContent("");
             contentArticleVersion = ContentsClient
                     .createContentArticleVersion(contentArticleVersion);
 
             try {
                 contentArticle = ContentsClient.getContentArticle(
-                        contentArticleVersion.getContentArticleId());
+                        contentArticleVersion.getArticleId());
 
-                final long resourceArticleId = contentArticle.getContentArticleId();
+                final long resourceArticleId = contentArticle.getId();
                 contest.setResourceArticleId(resourceArticleId);
                 ContestClientUtil.updateContest(contest);
 
@@ -72,7 +72,7 @@ public class WikiPageWrapper {
             if (contest.getResourceArticleId() != null) {
                 final ContentArticleVersion resourceArticleVersion = ContentsClient
                         .getLatestContentArticleVersion(contest.getResourceArticleId());
-                resourceArticleVersion.setTitle(contest.getContestShortName());
+                resourceArticleVersion.setTitle(contest.getTitle());
                 ContentsClient.updateContentArticleVersion(resourceArticleVersion);
             }
         } catch (ContentNotFoundException ignored) {
@@ -93,10 +93,10 @@ public class WikiPageWrapper {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
         if (!contentArticleVersion.getContent().equals(updatedResourcesContent)) {
-            contentArticleVersion.setTitle(contest.getContestShortName());
+            contentArticleVersion.setTitle(contest.getTitle());
             contentArticleVersion.setContent(updatedResourcesContent);
-            contentArticleVersion.setContentArticleId(contentArticle.getContentArticleId());
-            contentArticleVersion.setAuthorId(loggedInUserId);
+            contentArticleVersion.setArticleId(contentArticle.getId());
+            contentArticleVersion.setAuthorUserId(loggedInUserId);
             ContentsClient.updateContentArticleVersion(contentArticleVersion);
         }
     }

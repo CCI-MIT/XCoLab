@@ -27,7 +27,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
     public BalloonText getBalloonText(Long id) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(BALLOON_TEXT)
-                .where(BALLOON_TEXT.ID_.eq(id)).fetchOne();
+                .where(BALLOON_TEXT.ID.eq(id)).fetchOne();
         if (record == null) {
             throw new NotFoundException();
         }
@@ -46,7 +46,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
     @Override
     public boolean update(BalloonText balloonText) {
         return dslContext.update(BALLOON_TEXT)
-                .set(BALLOON_TEXT.ID_, balloonText.getId_())
+                .set(BALLOON_TEXT.ID, balloonText.getId())
                 .set(BALLOON_TEXT.NAME, balloonText.getName())
                 .set(BALLOON_TEXT.TEXT_BEFORE_FORM, balloonText.getTextBeforeForm())
                 .set(BALLOON_TEXT.TEXT_BEFORE_SHARE_BUTTONS, balloonText.getTextBeforeShareButtons())
@@ -55,7 +55,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
                 .set(BALLOON_TEXT.SHARE_TITLE, balloonText.getShareTitle())
                 .set(BALLOON_TEXT.SHARE_DESCRIPTION, balloonText.getShareDescription())
                 .set(BALLOON_TEXT.ENABLED, balloonText.getEnabled())
-                .where(BALLOON_TEXT.ID_.eq(balloonText.getId_()))
+                .where(BALLOON_TEXT.ID.eq(balloonText.getId()))
                 .execute() > 0;
     }
 
@@ -71,7 +71,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
                 .set(BALLOON_TEXT.SHARE_DESCRIPTION, balloonText.getShareDescription())
                 .set(BALLOON_TEXT.ENABLED, balloonText.getEnabled())
 
-                .returning(BALLOON_TEXT.ID_)
+                .returning(BALLOON_TEXT.ID)
                 .fetchOne();
 
         if (ret != null) {
@@ -83,7 +83,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
     @Override
     public boolean delete(Long id) {
         return this.dslContext.delete(BALLOON_TEXT)
-                .where(BALLOON_TEXT.ID_.eq(id))
+                .where(BALLOON_TEXT.ID.eq(id))
                 .execute() > 0;
 
     }

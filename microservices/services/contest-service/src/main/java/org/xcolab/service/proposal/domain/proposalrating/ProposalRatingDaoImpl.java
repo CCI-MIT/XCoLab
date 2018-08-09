@@ -29,14 +29,14 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
                 .set(PROPOSAL_RATING.CONTEST_PHASE_ID, proposalRating.getContestPhaseId())
                 .set(PROPOSAL_RATING.USER_ID, proposalRating.getUserId())
                 .set(PROPOSAL_RATING.RATING_VALUE_ID, proposalRating.getRatingValueId())
-                .set(PROPOSAL_RATING.COMMENT_, proposalRating.getComment_())
+                .set(PROPOSAL_RATING.COMMENT, proposalRating.getComment())
                 .set(PROPOSAL_RATING.COMMENT_ENABLED, proposalRating.getCommentEnabled())
                 .set(PROPOSAL_RATING.OTHER_DATA_STRING, proposalRating.getOtherDataString())
                 .set(PROPOSAL_RATING.ONLY_FOR_INTERNAL_USAGE, proposalRating.getOnlyForInternalUsage())
-                .returning(PROPOSAL_RATING.ID_)
+                .returning(PROPOSAL_RATING.ID)
                 .fetchOne();
         if (ret != null) {
-            proposalRating.setId_(ret.getValue(PROPOSAL_RATING.ID_));
+            proposalRating.setId(ret.getValue(PROPOSAL_RATING.ID));
             return proposalRating;
         } else {
             return null;
@@ -51,23 +51,23 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
                 .set(PROPOSAL_RATING.CONTEST_PHASE_ID, proposalRating.getContestPhaseId())
                 .set(PROPOSAL_RATING.USER_ID, proposalRating.getUserId())
                 .set(PROPOSAL_RATING.RATING_VALUE_ID, proposalRating.getRatingValueId())
-                .set(PROPOSAL_RATING.COMMENT_, proposalRating.getComment_())
+                .set(PROPOSAL_RATING.COMMENT, proposalRating.getComment())
                 .set(PROPOSAL_RATING.COMMENT_ENABLED, proposalRating.getCommentEnabled())
                 .set(PROPOSAL_RATING.OTHER_DATA_STRING, proposalRating.getOtherDataString())
                 .set(PROPOSAL_RATING.ONLY_FOR_INTERNAL_USAGE, proposalRating.getOnlyForInternalUsage())
-                .where(PROPOSAL_RATING.ID_.eq(proposalRating.getId_()))
+                .where(PROPOSAL_RATING.ID.eq(proposalRating.getId()))
                 .execute() > 0;
     }
 
     @Override
-    public ProposalRating get(Long id_) throws NotFoundException {
+    public ProposalRating get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_RATING)
-                .where(PROPOSAL_RATING.ID_.eq(id_))
+                .where(PROPOSAL_RATING.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ProposalRating with id " + id_ + " does not exist");
+            throw new NotFoundException("ProposalRating with id " + id + " does not exist");
         }
         return record.into(ProposalRating.class);
 
@@ -82,8 +82,8 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
         query.addJoin(PROPOSAL_RATING_VALUE);
         query.addJoin(PROPOSAL_RATING_TYPE);
         query.addConditions(PROPOSAL_RATING.PROPOSAL_ID.eq(proposalId));
-        query.addConditions(PROPOSAL_RATING.RATING_VALUE_ID.eq(PROPOSAL_RATING_VALUE.ID_));
-        query.addConditions(PROPOSAL_RATING_VALUE.RATING_TYPE_ID.eq(PROPOSAL_RATING_TYPE.ID_));
+        query.addConditions(PROPOSAL_RATING.RATING_VALUE_ID.eq(PROPOSAL_RATING_VALUE.ID));
+        query.addConditions(PROPOSAL_RATING_VALUE.RATING_TYPE_ID.eq(PROPOSAL_RATING_TYPE.ID));
 
         if(judgeType!=null) {
             query.addConditions(PROPOSAL_RATING_TYPE.JUDGE_TYPE.eq(judgeType));
@@ -115,9 +115,9 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
     }
 
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(PROPOSAL_RATING)
-                .where(PROPOSAL_RATING.ID_.eq(id_))
+                .where(PROPOSAL_RATING.ID.eq(id))
                 .execute();
     }
 }

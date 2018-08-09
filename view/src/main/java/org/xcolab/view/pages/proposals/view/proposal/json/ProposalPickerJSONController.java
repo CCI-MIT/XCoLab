@@ -36,10 +36,10 @@ public class ProposalPickerJSONController {
             @RequestParam(required = false) String sortOrder,
             @RequestParam(required = false) String sortColumn,
             @RequestParam(required = false) Long sectionId,
-            @RequestParam(required = false) long contestPK) throws IOException {
+            @RequestParam(required = false) long contestId) throws IOException {
 
         List<Proposal> proposals;
-        final long userId = user.getUserId();
+        final long userId = user.getId();
 
         switch (tab) {
             case SUBSCRIBED_SUPPORTED_PROPOSALS:
@@ -61,7 +61,7 @@ public class ProposalPickerJSONController {
             case ALL_CONTESTS:
                 proposals = ProposalPickerFilterUtil
                         .getFilteredAllProposals(proposalContext, filterText, filterType, sectionId,
-                                contestPK);
+                                contestId);
                 break;
             default:
                 throw new InternalException("Unknown tab " + tab);
@@ -115,7 +115,7 @@ public class ProposalPickerJSONController {
             Member user, ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @RequestParam String filterKey,
             @RequestParam long sectionId, @RequestParam Tab tab) throws IOException {
-        long memberId = user.getUserId();
+        long userId = user.getId();
 
         switch (tab) {
             case ALL_CONTESTS:
@@ -126,15 +126,15 @@ public class ProposalPickerJSONController {
                         .size();
             case SUBSCRIBED_PROPOSALS:
                 return ProposalPickerFilterUtil
-                        .getFilteredSubscribedProposalsForUser(proposalContext, memberId, filterKey,
+                        .getFilteredSubscribedProposalsForUser(proposalContext, userId, filterKey,
                                 sectionId).size();
             case SUPPORTED_PROPOSALS:
                 return ProposalPickerFilterUtil
-                        .getFilteredSupportingProposalsForUser(proposalContext, memberId, filterKey,
+                        .getFilteredSupportingProposalsForUser(proposalContext, userId, filterKey,
                                 sectionId).size();
             case SUBSCRIBED_SUPPORTED_PROPOSALS:
                 return ProposalPickerFilterUtil
-                        .getFilteredSubscribedSupportingProposalsForUser(proposalContext, memberId,
+                        .getFilteredSubscribedSupportingProposalsForUser(proposalContext, userId,
                                 filterKey, sectionId).size();
             default:
                 throw new IllegalArgumentException("Unknown tab: " + tab);

@@ -109,7 +109,7 @@ public class ContestControllerTest {
 
     private static AbstractContest getContest() {
         AbstractContest contest = new AbstractContest() {};
-        contest.setAuthorId(1L);
+        contest.setAuthorUserId(1L);
         return contest;
     }
 
@@ -164,8 +164,8 @@ public class ContestControllerTest {
     public void shouldUpdateContestPost() throws Exception {
 
         AbstractContest contest = getContest();
-        contest.setContestPK(10L);
-        this.mockMvc.perform(put("/contests/" + contest.getContestPK()).contentType(contentType)
+        contest.setId(10L);
+        this.mockMvc.perform(put("/contests/" + contest.getId()).contentType(contentType)
                 .accept(contentType).content(objectMapper.writeValueAsString(contest)))
                 .andExpect(status().isOk());
 

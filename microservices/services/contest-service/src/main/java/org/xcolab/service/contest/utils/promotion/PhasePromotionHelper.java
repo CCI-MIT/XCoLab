@@ -32,19 +32,19 @@ public class PhasePromotionHelper {
         }
 
         ProposalContestPhaseAttribute attr = ProposalPhaseClientUtil
-                .getProposalContestPhaseAttribute(p.getProposalId(),
-                        phase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.VISIBLE);
+                .getProposalContestPhaseAttribute(p.getId(),
+                        phase.getId(), ProposalContestPhaseAttributeKeys.VISIBLE);
 
         return attr == null || attr.getNumericValue() != 0;
     }
 
     private ProposalContestPhaseAttribute getAttribute(long proposalId, String key) {
-        return ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposalId, phase.getContestPhasePK(), key);
+        return ProposalPhaseClientUtil.getProposalContestPhaseAttribute(proposalId, phase.getId(), key);
     }
 
     public boolean isAllProposalsReviewed() {
         boolean allProposalsReviewed = true;
-        for (Proposal p : ProposalClientUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
+        for (Proposal p : ProposalClientUtil.getProposalsInContestPhase(phase.getId())) {
             if (!isProposalReviewed(p)) {
                 allProposalsReviewed = false;
                 break;
@@ -56,13 +56,13 @@ public class PhasePromotionHelper {
 
     public boolean isProposalPromoted(Proposal p) {
         boolean hasProposalAlreadyBeenPromoted = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
-                p.getProposalId(),
-                phase.getContestPhasePK(),
+                p.getId(),
+                phase.getId(),
                 ProposalContestPhaseAttributeKeys.PROMOTE_DONE);
 
         if (hasProposalAlreadyBeenPromoted) {
-            _log.info("proposal {} in phase {} has already been promoted.", p.getProposalId(),
-                    phase.getContestPhasePK());
+            _log.info("proposal {} in phase {} has already been promoted.", p.getId(),
+                    phase.getId());
             return true;
         } else {
             return false;
@@ -78,7 +78,7 @@ public class PhasePromotionHelper {
     }
 
     private FellowAction getFellowAdvancingDecision(Proposal p) {
-        ProposalContestPhaseAttribute fellowAction = getAttribute(p.getProposalId(),
+        ProposalContestPhaseAttribute fellowAction = getAttribute(p.getId(),
                 ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
         final FellowAction fellowAdvanceDecision;
         if (fellowAction == null) {
@@ -91,7 +91,7 @@ public class PhasePromotionHelper {
     }
 
     private AdvanceDecision getJudgeAdvancingDecision(Proposal p) {
-        ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getProposalId(),
+        ProposalContestPhaseAttribute judgeDecision = getAttribute(p.getId(),
                 ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
         final AdvanceDecision judgesAdvanceDecision;
         if (judgeDecision == null) {
@@ -110,7 +110,7 @@ public class PhasePromotionHelper {
 
     public boolean isPhaseContestScheduleTemplatePhase() {
         // template contest phases have no contest assigned
-        return phase.getContestPK() == 0;
+        return phase.getContestId() == 0;
     }
 
     public static void createProposalContestPhasePromotionDoneAttribute(long proposalId, long currentPhaseId) {

@@ -12,13 +12,13 @@ public class ProposalRatingValue extends AbstractProposalRatingValue {
     }
 
     public ProposalRatingValue(
-        Long   id_,
+        Long   id,
         Long   ratingtypeid,
         Long   value,
         String name,
         String description
     ) {
-        super(id_, ratingtypeid, value, name, description);
+        super(id, ratingtypeid, value, name, description);
     }
 
     public ProposalRatingValue(AbstractProposalRatingValue abstractProposalRatingValue,

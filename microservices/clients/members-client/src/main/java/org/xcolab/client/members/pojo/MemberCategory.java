@@ -36,6 +36,7 @@ public class MemberCategory implements Serializable, Comparable<MemberCategory> 
         this.sortorder = value.sortorder;
         this.showinlist = value.showinlist;
         this.imagename = value.imagename;
+        this.description = value.description;
     }
 
     public MemberCategory(

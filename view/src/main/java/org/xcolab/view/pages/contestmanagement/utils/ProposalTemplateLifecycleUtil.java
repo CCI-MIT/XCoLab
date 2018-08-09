@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
-import org.xcolab.client.contest.PlanTemplateClientUtil;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
-import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSection;
 
 import java.util.List;
 
@@ -13,45 +13,45 @@ public final class ProposalTemplateLifecycleUtil {
 
     private ProposalTemplateLifecycleUtil() { }
 
-    public static PlanTemplate create() {
+    public static ProposalTemplate create() {
         return create(DEFAULT_TEMPLATE_NAME);
     }
 
-    public static PlanTemplate create(String name) {
-        PlanTemplate newPlanTemplate = new PlanTemplate();
+    public static ProposalTemplate create(String name) {
+        ProposalTemplate newPlanTemplate = new ProposalTemplate();
         newPlanTemplate.setName(name);
         newPlanTemplate.setImpactSeriesTemplateId(1L);
         newPlanTemplate.setBaseTemplateId(0L);
-        newPlanTemplate = PlanTemplateClientUtil.createPlanTemplate(newPlanTemplate);
+        newPlanTemplate = ProposalTemplateClientUtil.createPlanTemplate(newPlanTemplate);
         return newPlanTemplate;
     }
 
     public static void delete(Long templateId) {
-        PlanTemplate planTemplate = PlanTemplateClientUtil.getPlanTemplate(templateId);
+        ProposalTemplate planTemplate = ProposalTemplateClientUtil.getPlanTemplate(templateId);
         deletePlanTemplateSections(templateId);
         deleteUnusedPlanSectionDefinitions(planTemplate);
-        PlanTemplateClientUtil.deletePlanTemplate(templateId);
+        ProposalTemplateClientUtil.deletePlanTemplate(templateId);
 
     }
 
     private static void deletePlanTemplateSections(Long planTemplateId) {
-        List<PlanTemplateSection> planTemplateSections =
-                PlanTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
-        for (PlanTemplateSection planTemplateSection : planTemplateSections) {
-            PlanTemplateClientUtil
-                    .deletePlanTemplateSection(planTemplateSection.getPlanTemplateId(),
-                            planTemplateSection.getPlanSectionId());
+        List<ProposalTemplateSection> planTemplateSections =
+                ProposalTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
+        for (ProposalTemplateSection planTemplateSection : planTemplateSections) {
+            ProposalTemplateClientUtil
+                    .deletePlanTemplateSection(planTemplateSection.getProposalTemplateId(),
+                            planTemplateSection.getSectionDefinitionId());
         }
     }
 
-    private static void deleteUnusedPlanSectionDefinitions(PlanTemplate planTemplate) {
-        List<PlanSectionDefinition> planSectionDefinitions = PlanTemplateClientUtil
-                .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(), true);
-        for (PlanSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId_(),
-                    planTemplate.getId_())) {
-                PlanTemplateClientUtil
-                        .deletePlanSectionDefinition(planSectionDefinition.getId_());
+    private static void deleteUnusedPlanSectionDefinitions(ProposalTemplate planTemplate) {
+        List<ProposalTemplateSectionDefinition> planSectionDefinitions = ProposalTemplateClientUtil
+                .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), true);
+        for (ProposalTemplateSectionDefinition planSectionDefinition : planSectionDefinitions) {
+            if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(),
+                    planTemplate.getId())) {
+                ProposalTemplateClientUtil
+                        .deletePlanSectionDefinition(planSectionDefinition.getId());
             }
         }
 
@@ -59,11 +59,11 @@ public final class ProposalTemplateLifecycleUtil {
 
     public static boolean isPlanSectionDefinitionUsedInOtherTemplate(Long planSectionDefinitionId,
             Long planTemplateId) {
-        List<PlanTemplateSection> planTemplateSections =
-                PlanTemplateClientUtil
-                        .getPlanTemplateSectionByPlanSectionDefinitionId(planSectionDefinitionId);
+        List<ProposalTemplateSection> planTemplateSections =
+                ProposalTemplateClientUtil
+                        .getProposalTemplateSectionsBySectionDefinitionId(planSectionDefinitionId);
         return !(planTemplateSections.size() == 1
-                && planTemplateSections.get(0).getPlanTemplateId() == planTemplateId.longValue())
+                && planTemplateSections.get(0).getProposalTemplateId() == planTemplateId.longValue())
                 && !planTemplateSections.isEmpty();
 
     }

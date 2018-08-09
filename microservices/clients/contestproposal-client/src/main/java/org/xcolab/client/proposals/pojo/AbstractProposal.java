@@ -7,59 +7,57 @@ class AbstractProposal implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long proposalid;
-    private Timestamp createdate;
-    private Timestamp updateddate;
-    private Long authorid;
+    private Long id;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private Long authorUserId;
     private Boolean visible;
     private Long discussionid;
     private Long resultsdiscussionid;
-    private Long groupid;
 
     public AbstractProposal() {}
 
     public AbstractProposal(AbstractProposal value) {
-        this.proposalid = value.proposalid;
-        this.createdate = value.createdate;
-        this.updateddate = value.updateddate;
-        this.authorid = value.authorid;
+        this.id = value.id;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
+        this.authorUserId = value.authorUserId;
         this.visible = value.visible;
         this.discussionid = value.discussionid;
         this.resultsdiscussionid = value.resultsdiscussionid;
-        this.groupid = value.groupid;
     }
 
 
-    public Long getProposalId() {
-        return this.proposalid;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setProposalId(Long proposalid) {
-        this.proposalid = proposalid;
+    public void setId(Long proposalId) {
+        this.id = proposalId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedDate() {
-        return this.updateddate;
+    public Timestamp getUpdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setUpdatedDate(Timestamp updateddate) {
-        this.updateddate = updateddate;
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Long getAuthorId() {
-        return this.authorid;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setAuthorId(Long authorid) {
-        this.authorid = authorid;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
     public Long getDiscussionId() {
@@ -78,15 +76,6 @@ class AbstractProposal implements Serializable {
         this.resultsdiscussionid = resultsdiscussionid;
     }
 
-    public Long getGroupId() {
-        return this.groupid;
-    }
-
-    public void setGroupId(Long groupid) {
-        this.groupid = groupid;
-    }
-
-
     public Boolean getVisible() {
         return this.visible;
     }
@@ -97,9 +86,8 @@ class AbstractProposal implements Serializable {
 
     @Override
     public String toString() {
-        return "Proposal (" + proposalid + ", " + createdate + ", " + updateddate + ", "
-                + authorid + ", " + visible + ", " + discussionid + ", "
-                + resultsdiscussionid + ", " + groupid + ")";
+        return "Proposal (" + id + ", " + createdAt + ", " + updatedAt + ", "
+                + authorUserId + ", " + visible + ", " + discussionid + ", "
+                + resultsdiscussionid + ")";
     }
-
 }

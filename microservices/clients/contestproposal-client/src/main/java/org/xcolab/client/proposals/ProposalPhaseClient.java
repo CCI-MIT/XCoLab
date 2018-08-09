@@ -112,10 +112,10 @@ public final class ProposalPhaseClient {
                 .post(proposal2Phase);
     }
 
-    public Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
+    public Integer getProposalCountForActiveContestPhase(Long contestPhaseId) {
 
         try {
-            return proposal2PhaseResource.elementService(contestPhasePK, "getProposalCount", Integer.class)
+            return proposal2PhaseResource.elementService(contestPhaseId, "getProposalCount", Integer.class)
                     .getChecked();
         } catch (EntityNotFoundException ignored) {
             return 0;
@@ -221,7 +221,7 @@ public final class ProposalPhaseClient {
             ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return proposalContestPhaseAttributeResource
                 .update(new ProposalContestPhaseAttributeDto(proposalContestPhaseAttribute),
-                        proposalContestPhaseAttribute.getId_())
+                        proposalContestPhaseAttribute.getId())
                 .execute();
     }
 
@@ -261,7 +261,7 @@ public final class ProposalPhaseClient {
             String name) {
         ProposalContestPhaseAttribute pcpa =
                 getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
-        return proposalContestPhaseAttributeResource.delete(pcpa.getId_()).execute();
+        return proposalContestPhaseAttributeResource.delete(pcpa.getId()).execute();
     }
 
     public List<Long> getContestPhasesForProposal(long proposalId) {

@@ -6,7 +6,7 @@
 	<!--@elvariable id="isRegionalContest" type="java.lang.Boolean"-->
 	
 	<jsp:directive.attribute name="availableModels" type="java.util.Map" required="true" rtexprvalue="true" description="Models to be shown" />
-	<jsp:directive.attribute name="contestPK" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest PK" />
+	<jsp:directive.attribute name="contestId" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest PK" />
 	<jsp:directive.attribute name="modelId" type="java.lang.Long" required="false" rtexprvalue="true" description="Selected modelId" />
 
 	<div class="c-Box c-Box--colorTan">
@@ -65,9 +65,9 @@
 		// try to parse preferred models
 		try {
 			preferredModelsMap = JSON.parse(preferredModelsStr);
-			if ("${contestPK}" in preferredModelsMap) {
+			if ("${contestId}" in preferredModelsMap) {
 				// there is a preferred model, select it in models select box
-				$(".modelsSelectBox").val(preferredModelsMap["${contestPK}"]);
+				$(".modelsSelectBox").val(preferredModelsMap["${contestId}"]);
 			}
 		} catch (e) {
 			// ignore
@@ -77,7 +77,7 @@
 			modeling.loadModel(element.target.value);
 			jQuery(".act-edit_left").html("");
 			jQuery(".act-edit_right").html("");
-			preferredModelsMap["${contestPK}"] = $(this).val();
+			preferredModelsMap["${contestId}"] = $(this).val();
 			
 			Cookies.set("cc_contests_preferredModels", JSON.stringify(preferredModelsMap), { expires : 365 });
 		});

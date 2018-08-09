@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.pojo.points.PointType;
@@ -91,8 +91,8 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
         for (PointType pointType : PointsClientUtil.getAllPointTypes()) {
             if (pointType.getDistributionStrategy()
                     .equalsIgnoreCase(DistributionStrategy.SECTION_DEFINED.name())) {
-                selectItems.add(new LabelValue(pointType.getId_(),
-                        String.format("%d - %s : %s", pointType.getId_(),
+                selectItems.add(new LabelValue(pointType.getId(),
+                        String.format("%d - %s : %s", pointType.getId(),
                                 pointType.getDistributionStrategy(),
                                 pointType.getReceiverLimitationStrategy())));
             }
@@ -126,8 +126,8 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
             @PathVariable long sectionDefinitionId)
             throws IOException {
 
-        PlanSectionDefinition planSectionDefinition =
-                PlanTemplateClientUtil.getPlanSectionDefinition(sectionDefinitionId);
+        ProposalTemplateSectionDefinition planSectionDefinition =
+                ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionDefinitionId);
         SectionDefinitionWrapper sectionDefinitionWrapper =
                 new SectionDefinitionWrapper(planSectionDefinition);
         ObjectMapper mapper = new ObjectMapper();
@@ -212,7 +212,7 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
         for (Stack<OntologyTerm> ontologyTermParentsPath : allParentsPaths) {
             OntologyTerm childTerm = ontologyTermParentsPath.firstElement();
             String ontologyTermPathString = buildOntologyTermPathString(ontologyTermParentsPath);
-            termSelectItems.add(new LabelValue(childTerm.getId_(), ontologyTermPathString));
+            termSelectItems.add(new LabelValue(childTerm.getId(), ontologyTermPathString));
         }
 
         return termSelectItems;

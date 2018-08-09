@@ -14,12 +14,12 @@ public final class MemberAuthUtil {
     private MemberAuthUtil() {
     }
 
-    public static long getMemberId(HttpServletRequest request) {
+    public static long getuserId(HttpServletRequest request) {
         final Member memberOrNull = authenticationContext.getMemberOrNull(request);
         if (memberOrNull == null) {
             return 0L;
         }
-        return memberOrNull.getId_();
+        return memberOrNull.getId();
     }
 
     public static Member getMemberOrThrow(HttpServletRequest request)
@@ -29,7 +29,7 @@ public final class MemberAuthUtil {
 
     public static Member getMemberOrNull(HttpServletRequest request) {
         try {
-            return MembersClient.getMember(getMemberId(request));
+            return MembersClient.getMember(getuserId(request));
         } catch (MemberNotFoundException e) {
             return null;
         }

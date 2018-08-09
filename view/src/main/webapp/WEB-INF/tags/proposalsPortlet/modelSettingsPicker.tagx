@@ -8,7 +8,7 @@
 
     <jsp:directive.attribute name="consolidateOptions" type="java.util.Map" required="true" rtexprvalue="true"
                              description="Models to be shown"/>
-    <jsp:directive.attribute name="contestPK" type="java.lang.Long" required="true" rtexprvalue="true"
+    <jsp:directive.attribute name="contestId" type="java.lang.Long" required="true" rtexprvalue="true"
                              description="Contest PK"/>
     <jsp:directive.attribute name="modelId" type="java.lang.Long" required="false" rtexprvalue="true"
                              description="Selected modelId"/>

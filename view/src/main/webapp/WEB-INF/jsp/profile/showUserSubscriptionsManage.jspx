@@ -27,7 +27,7 @@
                 <a href="/members"><spring:message code="colab.breadcrumbs.members"/></a>
             </li>
             <li class="breadcrumb-item">
-                <xcolab:userLinkSimple memberId="${currentUserProfile.userId}" text="${userBean.displayName}" />
+                <xcolab:userLinkSimple userId="${currentUserProfile.userId}" text="${userBean.displayName}" />
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 <spring:message code="colab.breadcrumbs.managesubscriptions"/>
@@ -67,7 +67,7 @@
                             <td>${subscription.name}</td>
                             <td>${subscription.type.printName}</td>
                             <td>
-                                <xcolab:formatDateTime millis="${subscription.updated.time}" />
+                                <xcolab:formatDateTime millis="${subscription.updatedAt.time}" />
                             </td>
                         </tr>
                     </c:forEach>

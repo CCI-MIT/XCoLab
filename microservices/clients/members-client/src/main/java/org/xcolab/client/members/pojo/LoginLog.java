@@ -15,9 +15,9 @@ public class LoginLog implements Serializable {
     public static final TypeProvider<LoginLog> TYPES =
             new TypeProvider<>(LoginLog.class, new ParameterizedTypeReference<List<LoginLog>>() {});
 
-    private Long pk;
+    private Long id;
     private Long userId;
-    private Timestamp createDate;
+    private Timestamp createdAt;
     private String ipAddress;
     private String city;
     private String country;
@@ -27,32 +27,32 @@ public class LoginLog implements Serializable {
     }
 
     public LoginLog(LoginLog value) {
-        this.pk = value.pk;
+        this.id = value.id;
         this.userId = value.userId;
-        this.createDate = value.createDate;
+        this.createdAt = value.createdAt;
         this.ipAddress = value.ipAddress;
         this.city = value.city;
         this.country = value.country;
         this.entryUrl = value.entryUrl;
     }
 
-    public LoginLog(Long pk, Long userId, Timestamp createDate, String ipAddress,
+    public LoginLog(Long id, Long userId, Timestamp createdAt, String ipAddress,
             String city, String country, String entryUrl) {
-        this.pk = pk;
+        this.id = id;
         this.userId = userId;
-        this.createDate = createDate;
+        this.createdAt = createdAt;
         this.ipAddress = ipAddress;
         this.city = city;
         this.country = country;
         this.entryUrl = entryUrl;
     }
 
-    public Long getPk() {
-        return this.pk;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setPk(Long pk) {
-        this.pk = pk;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getUserId() {
@@ -63,12 +63,12 @@ public class LoginLog implements Serializable {
         this.userId = userId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getIpAddress() {
@@ -115,11 +115,11 @@ public class LoginLog implements Serializable {
             return false;
         }
         final LoginLog other = (LoginLog) obj;
-        if (pk == null) {
-            if (other.pk != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!pk.equals(other.pk)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (userId == null) {
@@ -129,11 +129,11 @@ public class LoginLog implements Serializable {
         } else if (!userId.equals(other.userId)) {
             return false;
         }
-        if (createDate == null) {
-            if (other.createDate != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!createDate.equals(other.createDate)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         if (ipAddress == null) {
@@ -171,9 +171,9 @@ public class LoginLog implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((pk == null) ? 0 : pk.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-        result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         result = prime * result + ((ipAddress == null) ? 0 : ipAddress.hashCode());
         result = prime * result + ((city == null) ? 0 : city.hashCode());
         result = prime * result + ((country == null) ? 0 : country.hashCode());
@@ -183,9 +183,9 @@ public class LoginLog implements Serializable {
 
     @Override
     public String toString() {
-        return "LoginLog (" + pk +
+        return "LoginLog (" + id +
                 ", " + userId +
-                ", " + createDate +
+                ", " + createdAt +
                 ", " + ipAddress +
                 ", " + city +
                 ", " + country +

@@ -9,7 +9,7 @@
         <h1>${contentArticleVersion.title}</h1>
         <br />
         <c:if test="${_themeContext.authenticationVariables.isAdmin}">
-            <a href="/content-editor/?articleId=${contentArticleVersion.contentArticleId}"
+            <a href="/content-editor/?articleId=${contentArticleVersion.articleId}"
                class="btn cb-btn-admin btn-sm float-right">
                 Edit wiki article
             </a>

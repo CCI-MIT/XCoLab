@@ -30,7 +30,7 @@ public class ContestSearchItem extends AbstractSearchItem {
 
     @Override
     public String getTitle() {
-        return highlight(contest.getContestShortNameWithEndYear(), searchQuery);
+        return highlight(contest.getTitleWithEndYear(), searchQuery);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ContestSearchItem extends AbstractSearchItem {
 
     @Override
     public String getContent() {
-        return super.getContent(contest.getContestDescription(), searchQuery);
+        return super.getContent(contest.getDescription(), searchQuery);
     }
 
 }

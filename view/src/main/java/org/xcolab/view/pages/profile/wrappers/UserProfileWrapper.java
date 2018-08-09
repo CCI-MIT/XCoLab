@@ -15,7 +15,7 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
@@ -78,9 +78,9 @@ public class UserProfileWrapper implements Serializable {
 
         if (member.isActive()) {
             if (loggedInMember != null) {
-                Member logUser = MembersClient.getMember(loggedInMember.getUserId());
+                Member logUser = MembersClient.getMember(loggedInMember.getId());
                 messagePermissionChecker = new SendMessagePermissionChecker(logUser);
-                if (loggedInMember.getUserId() == member.getId_()) {
+                if (loggedInMember.getId() == member.getId()) {
                     viewingOwnProfile = true;
                 }
             }
@@ -100,16 +100,16 @@ public class UserProfileWrapper implements Serializable {
             realName = member.getFirstName();
         }
 
-        badges = new BadgeBean(member.getId_());
+        badges = new BadgeBean(member.getId());
 
         highestRole = MemberRole.getHighestRole(member.getRoles());
 
         userSubscriptions = new UserSubscriptionsWrapper(member);
         userActivities.clear();
-        supportedProposals.addAll(ProposalMemberRatingClientUtil.getSupportedProposals(member.getId_()));
+        supportedProposals.addAll(ProposalMemberRatingClientUtil.getSupportedProposals(member.getId()));
 
         for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
-                .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId_(), null))) {
+                .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId(), null))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
             if (StringUtils.isNotBlank(a.getBody())) {
@@ -117,7 +117,7 @@ public class UserProfileWrapper implements Serializable {
             }
         }
 
-        List<Proposal> proposals = ProposalClientUtil.getMemberProposals(member.getId_());
+        List<Proposal> proposals = ProposalClientUtil.getMemberProposals(member.getId());
         Map<ContestType, Set<Proposal>> proposalsByContestType = EntityGroupingUtil
                 .groupByContestType(proposals);
         for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
@@ -167,7 +167,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public Date getJoinDate() {
-        return member.getCreateDate();
+        return member.getCreatedAt();
     }
 
     public String getRealName() {
@@ -234,12 +234,12 @@ public class UserProfileWrapper implements Serializable {
         return highestRole;
     }
 
-    public List<Role_> getRoles() {
+    public List<Role> getRoles() {
         return member.getRoles();
     }
 
     public boolean hasRole(long roleId) {
-        return PermissionsClient.memberHasRole(member.getId_(), roleId);
+        return PermissionsClient.memberHasRole(member.getId(), roleId);
     }
 
     public boolean isDisplayEMailErrorMessage() {
@@ -255,7 +255,7 @@ public class UserProfileWrapper implements Serializable {
     public List<MessageBean> getMessages() {
         if (messages == null) {
             messages = new ArrayList<>();
-            for (Message msg : MessagingClient.getMessages(this.member.getId_(), 0, 2, MessageType.INBOX)) {
+            for (Message msg : MessagingClient.getMessages(this.member.getId(), 0, 2, MessageType.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }
@@ -266,7 +266,7 @@ public class UserProfileWrapper implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
             for (ActivityEntry activity : ActivityUtil.groupActivities(
-                    ActivitiesClientUtil.getActivityEntries(0, 100, this.member.getId_(), null))) {
+                    ActivitiesClientUtil.getActivityEntries(0, 100, this.member.getId(), null))) {
 
                 subscribedActivities.add(new UserActivityWrapper(activity, activityEntryHelper));
             }
@@ -299,7 +299,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public Long getUserId() {
-        return member.getId_();
+        return member.getId();
     }
 
     public String getActualPointsFormatted() {

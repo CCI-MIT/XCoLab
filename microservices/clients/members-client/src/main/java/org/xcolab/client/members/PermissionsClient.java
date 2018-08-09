@@ -2,7 +2,7 @@ package org.xcolab.client.members;
 
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
@@ -15,59 +15,59 @@ public final class PermissionsClient {
     private static final RestResource1<Object, Long> roleGroupResource =
             new RestResource1<>(UserResource.ROLE_GROUP, new TypeProvider<>(null, null));
 
-    private static final RestResource2L<Object, Role_> roleGroupRoleResource =
-            new RestResource2L<>(roleGroupResource, "roles", Role_.TYPES);
+    private static final RestResource2L<Object, Role> roleGroupRoleResource =
+            new RestResource2L<>(roleGroupResource, "roles", Role.TYPES);
 
     private PermissionsClient() {
     }
 
     public static boolean isGuest(Member member) {
-        return member != null && isGuest(member.getId_());
+        return member != null && isGuest(member.getId());
     }
 
-    public static boolean isGuest(long memberId) {
-        return memberHasRole(memberId, MemberRole.GUEST.getRoleId());
+    public static boolean isGuest(long userId) {
+        return memberHasRole(userId, MemberRole.GUEST.getRoleId());
     }
 
-    public static boolean isMember(long memberId) {
-        return memberHasRole(memberId, MemberRole.MEMBER.getRoleId());
+    public static boolean isMember(long userId) {
+        return memberHasRole(userId, MemberRole.MEMBER.getRoleId());
     }
 
-    public static boolean canAdminAll(Long memberId) {
-        return memberHasRole(memberId, MemberRole.ADMINISTRATOR.getRoleId());
+    public static boolean canAdminAll(Long userId) {
+        return memberHasRole(userId, MemberRole.ADMINISTRATOR.getRoleId());
     }
 
     public static boolean canAdminAll(Member member) {
-        return member != null && canAdminAll(member.getId_());
+        return member != null && canAdminAll(member.getId());
     }
 
-    public static boolean canJudge(Long memberId, Long contestId) {
-        return memberHasRoleInContest(memberId, contestId, MemberRole.JUDGE);
+    public static boolean canJudge(Long userId, Long contestId) {
+        return memberHasRoleInContest(userId, contestId, MemberRole.JUDGE);
     }
 
-    public static boolean canFellow(Long memberId, Long contestId) {
-        return memberHasRoleInContest(memberId, contestId, MemberRole.FELLOW);
+    public static boolean canFellow(Long userId, Long contestId) {
+        return memberHasRoleInContest(userId, contestId, MemberRole.FELLOW);
     }
 
-    public static boolean canIAF(Long memberId) {
-        return memberHasRole(memberId, MemberRole.IMPACT_ASSESSMENT_FELLOW.getRoleId());
+    public static boolean canIAF(Long userId) {
+        return memberHasRole(userId, MemberRole.IMPACT_ASSESSMENT_FELLOW.getRoleId());
     }
 
-    public static boolean canStaff(Long memberId) {
-        return memberHasRole(memberId, MemberRole.STAFF.getRoleId());
+    public static boolean canStaff(Long userId) {
+        return memberHasRole(userId, MemberRole.STAFF.getRoleId());
     }
 
-    public static boolean hasRoleGroup(long memberId, long roleGroupId) {
-        final List<Role_> roles = getRoleGroupRoles(roleGroupId);
-        for (Role_ role : roles) {
-            if (memberHasRole(memberId, role.getRoleId())) {
+    public static boolean hasRoleGroup(long userId, long roleGroupId) {
+        final List<Role> roles = getRoleGroupRoles(roleGroupId);
+        for (Role role : roles) {
+            if (memberHasRole(userId, role.getId())) {
                 return true;
             }
         }
-        return canAdminAll(memberId);
+        return canAdminAll(userId);
     }
 
-    private static List<Role_> getRoleGroupRoles(long roleGroupId) {
+    private static List<Role> getRoleGroupRoles(long roleGroupId) {
         //TODO COLAB-2594: think about structure
         return roleGroupRoleResource.resolveParentId(roleGroupResource.id(roleGroupId))
                 .list()
@@ -75,14 +75,14 @@ public final class PermissionsClient {
                 .execute();
     }
 
-    public static boolean memberHasRole(Long memberId, long roleIdToTest) {
-        if (memberId == 0) {
+    public static boolean memberHasRole(Long userId, long roleIdToTest) {
+        if (userId == 0) {
             return false;
         }
-        List<Role_> roles = MembersClient.getMemberRoles(memberId);
+        List<Role> roles = MembersClient.getMemberRoles(userId);
         if (roles != null && !roles.isEmpty()) {
-            for (Role_ role : roles) {
-                if (role.getRoleId() == roleIdToTest) {
+            for (Role role : roles) {
+                if (role.getId() == roleIdToTest) {
                     return true;
                 }
             }
@@ -90,14 +90,14 @@ public final class PermissionsClient {
         return false;
     }
 
-    private static boolean memberHasRoleInContest(Long memberId, Long contestId, MemberRole roleToTest) {
-        if (memberId == 0) {
+    private static boolean memberHasRoleInContest(Long userId, Long contestId, MemberRole roleToTest) {
+        if (userId == 0) {
             return false;
         }
-        List<Role_> roles = MembersClient.getMemberRolesInContest(memberId, contestId);
+        List<Role> roles = MembersClient.getMemberRolesInContest(userId, contestId);
         if (roles != null && !roles.isEmpty()) {
-            for (Role_ role : roles) {
-                if (role.getRoleId() == roleToTest.getRoleId()) {
+            for (Role role : roles) {
+                if (role.getId() == roleToTest.getRoleId()) {
                     return true;
                 }
             }

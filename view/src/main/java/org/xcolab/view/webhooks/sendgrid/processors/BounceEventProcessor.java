@@ -36,7 +36,7 @@ public class BounceEventProcessor implements SendGridEventProcessor {
             if (isHardBounce && !member.getIsEmailBounced()) {
                 member.setIsEmailBounced(true);
                 MembersClient.updateMember(member);
-                ProposalMemberRatingClientUtil.invalidateVotesForMember(member.getId_(),
+                ProposalMemberRatingClientUtil.invalidateVotesForMember(member.getId(),
                         ValidationResult.INVALID_BOUNCED_EMAIL.name());
                 log.debug("Marked {}'s email {} as bounced ({}).", member.getScreenName(), email,
                         event.getReason());

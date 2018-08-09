@@ -1,6 +1,6 @@
 package org.xcolab.service.members.domain.messaging;
 
-import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.model.tables.pojos.User;
 import org.xcolab.model.tables.pojos.Message;
 
 import org.xcolab.service.members.exceptions.NotFoundException;
@@ -21,13 +21,13 @@ public interface MessageDao {
     List<Message> findByGiven(PaginationHelper paginationHelper, Long senderId, Long recipientId,
             Boolean isArchived, Boolean isOpened, Timestamp sinceDate);
 
-    List<Member> getRecipients(long messageId);
+    List<User> getRecipients(long messageId);
 
     List<String> getThreads(long messageId);
 
-    boolean setArchived(long messageId, long memberId, boolean isArchived);
+    boolean setArchived(long messageId, long userId, boolean isArchived);
 
-    boolean setOpened(long messageId, long memberId, boolean isOpened);
+    boolean setOpened(long messageId, long userId, boolean isOpened);
 
     Optional<Message> createMessage(Message message);
     

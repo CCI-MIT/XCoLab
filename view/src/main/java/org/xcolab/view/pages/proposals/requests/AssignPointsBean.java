@@ -88,7 +88,7 @@ public class AssignPointsBean {
                 double percentage = (1.0/users.size()) * percentMultiplicationFactor;
                 PointsDistributionConfiguration foundElement = null;
                 for (PointsDistributionConfiguration distribution : existingDistributionConfigurations) {
-                    if (distribution.getTargetUserId() == u.getId_()) {
+                    if (distribution.getTargetUserId() == u.getId()) {
                         percentage = distribution.getPercentage() * percentMultiplicationFactor;
                         foundElement = distribution;
                         break;
@@ -97,7 +97,7 @@ public class AssignPointsBean {
                 if (foundElement != null) {
                     existingDistributionConfigurations.remove(foundElement);
                 }
-                entityPercentages.put(u.getUserId(), percentage);
+                entityPercentages.put(u.getId(), percentage);
             }
         }
 

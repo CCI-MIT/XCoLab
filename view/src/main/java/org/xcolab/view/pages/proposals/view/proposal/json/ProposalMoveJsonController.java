@@ -9,10 +9,10 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.Role;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -39,9 +39,9 @@ public class ProposalMoveJsonController {
         boolean admin = false;
         Member member = MemberAuthUtil.getMemberOrNull(request);
         if (member != null) {
-            List<Role_> roles = member.getRoles();
+            List<Role> roles = member.getRoles();
 
-            for (Role_ role : roles) {
+            for (Role role : roles) {
                 if (role.getName().equals("Administrator")) {
                     admin = true;
                     break;
@@ -51,7 +51,7 @@ public class ProposalMoveJsonController {
 
         List<ImmutableContest> returnList = new ArrayList<>();
         for (Contest contest: ContestClientUtil.findContestsByActive(true)) {
-            ContestPhase cp = ContestClientUtil.getActivePhase(contest.getContestPK());
+            ContestPhase cp = ContestClientUtil.getActivePhase(contest.getId());
             if (cp.getPhaseActive()) {
                 String statusStr = cp.getContestStatusStr();
                 ContestStatus status = null;
@@ -84,8 +84,8 @@ public class ProposalMoveJsonController {
         private final String contestUrlName;
 
         private ImmutableContest(Contest contest) {
-            this.contestShortName = contest.getContestShortNameWithEndYear();
-            this.contestName = contest.getContestName();
+            this.contestShortName = contest.getTitleWithEndYear();
+            this.contestName = contest.getQuestion();
             this.contestYear = contest.getContestYear();
             this.contestUrlName = contest.getContestUrlName();
         }
@@ -117,18 +117,18 @@ public class ProposalMoveJsonController {
         Contest contest = ContestClientUtil.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
 
-        PlanTemplate planTemplate = clientHelper.getPlanTemplateClient()
-                .getPlanTemplate(contest.getPlanTemplateId());
+        ProposalTemplate planTemplate = clientHelper.getPlanTemplateClient()
+                .getPlanTemplate(contest.getProposalTemplateId());
 
         if (planTemplate != null) {
-            for (PlanSectionDefinition psd : clientHelper.getPlanTemplateClient()
-                    .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId_(), false)) {
+            for (ProposalTemplateSectionDefinition psd : clientHelper.getPlanTemplateClient()
+                    .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), false)) {
                 ProposalAttribute attribute = clientHelper.getProposalAttributeClient()
                         .getProposalAttribute(proposalId, version,
-                                ProposalAttributeKeys.SECTION, psd.getId_());
+                                ProposalAttributeKeys.SECTION, psd.getId());
                 if (attribute != null && !attribute.getStringValue().trim().isEmpty()) {
                     returnList.add(new ImmutableSection(psd.getTitle(),
-                            psd.getId_(), attribute.getStringValue()));
+                            psd.getId(), attribute.getStringValue()));
                 }
             }
         }

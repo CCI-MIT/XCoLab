@@ -27,7 +27,7 @@ public class ProposalRibbon {
 
     private ContestPhaseRibbonType fetchRibbonType(Proposal proposal,
             ServiceNamespace serviceNamespace) {
-        final Long proposalId = proposal.getProposalId();
+        final Long proposalId = proposal.getId();
         if (proposalId == null || proposalId == 0) {
             return null;
         }
@@ -40,7 +40,7 @@ public class ProposalRibbon {
 
         ProposalContestPhaseAttribute ribbonAttribute =
                 proposalPhaseClient.getProposalContestPhaseAttribute(
-                        proposalId, contestPhase.getContestPhasePK(),
+                        proposalId, contestPhase.getId(),
                         ProposalContestPhaseAttributeKeys.RIBBON);
         if (ribbonAttribute != null) {
             long typeId = ribbonAttribute.getNumericValue();
@@ -60,7 +60,7 @@ public class ProposalRibbon {
 
     public long getRibbonId() {
         if (contestPhaseRibbonType != null) {
-            return contestPhaseRibbonType.getId_();
+            return contestPhaseRibbonType.getId();
         }
         return 0L;
     }

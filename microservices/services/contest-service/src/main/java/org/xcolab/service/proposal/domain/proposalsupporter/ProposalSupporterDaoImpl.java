@@ -31,7 +31,7 @@ public class ProposalSupporterDaoImpl implements ProposalSupporterDao {
         this.dslContext.insertInto(PROPOSAL_SUPPORTER)
                 .set(PROPOSAL_SUPPORTER.PROPOSAL_ID, proposalSupporter.getProposalId())
                 .set(PROPOSAL_SUPPORTER.USER_ID, proposalSupporter.getUserId())
-                .set(PROPOSAL_SUPPORTER.CREATE_DATE, proposalSupporter.getCreateDate())
+                .set(PROPOSAL_SUPPORTER.CREATED_AT, proposalSupporter.getCreatedAt())
 
                 .execute();
 

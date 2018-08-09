@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -54,22 +54,22 @@ public class EmailTemplateTabController extends AbstractTabController {
             model.addAttribute("emailTemplateWrapper",
                     new EmailTemplateWrapper(templateType));
         }
-        final List<ContestEmailTemplate> emailTemplates = EmailTemplateClientUtil
+        final List<EmailTemplate> emailTemplates = EmailTemplateClientUtil
                 .listAllContestEmailTemplates();
         List<LabelStringValue> templateSelectionItems = new ArrayList<>();
-        for (ContestEmailTemplate emailTemplate : emailTemplates) {
-            templateSelectionItems.add(new LabelStringValue(emailTemplate.getType_(),
-                    emailTemplate.getType_()));
+        for (EmailTemplate emailTemplate : emailTemplates) {
+            templateSelectionItems.add(new LabelStringValue(emailTemplate.getName(),
+                    emailTemplate.getName()));
         }
         model.addAttribute("templateSelectionItems", templateSelectionItems);
         return TAB_VIEW;
     }
 
     private String getFirstTemplateName() {
-        final List<ContestEmailTemplate> emailTemplates =
+        final List<EmailTemplate> emailTemplates =
                 EmailTemplateClientUtil.listAllContestEmailTemplates();
         if (!emailTemplates.isEmpty()) {
-            return emailTemplates.get(0).getType_();
+            return emailTemplates.get(0).getName();
         }
         return "";
     }

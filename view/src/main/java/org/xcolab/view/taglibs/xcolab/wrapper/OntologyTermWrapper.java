@@ -51,6 +51,6 @@ public class OntologyTermWrapper {
     }
 
     public int getOrder() {
-        return wrapped.getOrder_();
+        return wrapped.getSortOrder();
     }
 }

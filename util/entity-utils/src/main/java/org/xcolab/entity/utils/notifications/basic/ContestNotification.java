@@ -11,7 +11,7 @@ import org.jsoup.nodes.TextNode;
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -58,21 +58,21 @@ public class ContestNotification extends EmailNotification {
         }
 
         final EmailTemplateClient emailTemplateClient = EmailTemplateClientUtil.getClient();
-        final ContestEmailTemplate emailTemplate =
+        final EmailTemplate emailTemplate =
                 emailTemplateClient.getContestEmailTemplateByType(templateName);
 
-        templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getContestShortName());
+        templateWrapper = new ContestNotificationTemplate(emailTemplate, "", contest.getTitle());
 
         return templateWrapper;
     }
 
     @Override
     protected Long getReferenceId(){
-        return this.contest.getContestPK();
+        return this.contest.getId();
     }
     private Date getActivePhaseDeadline() {
         ContestClient contestClient = ContestClientUtil.getClient();
-        return contestClient.getActivePhase(contest.getContestPK()).getPhaseEndDate();
+        return contestClient.getActivePhase(contest.getId()).getPhaseEndDate();
     }
 
     private String getOtherContestLink(String linkText) {
@@ -82,7 +82,7 @@ public class ContestNotification extends EmailNotification {
 
     protected class ContestNotificationTemplate extends EmailNotificationTemplate {
 
-        public ContestNotificationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
+        public ContestNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 
@@ -95,11 +95,11 @@ public class ContestNotification extends EmailNotification {
 
             switch (tag.nodeName()) {
                 case YEAR_PLACEHOLDER:
-                    if (contest.getCreated() == null) {
+                    if (contest.getCreatedAt() == null) {
                         return new TextNode(Long.toString(contest.getContestYear()), "");
                     } else {
                         DateFormat yearFormat = new SimpleDateFormat("yyyy");
-                        return new TextNode(yearFormat.format(contest.getCreated()), "");
+                        return new TextNode(yearFormat.format(contest.getCreatedAt()), "");
                     }
                 case DEADLINE_PLACEHOLDER:
                     final Date phaseDeadline = getActivePhaseDeadline();

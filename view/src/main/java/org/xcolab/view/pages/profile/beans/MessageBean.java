@@ -33,7 +33,7 @@ public class MessageBean implements Serializable {
 
     public MessageBean(Message message) {
         this.message = message;
-        this.recipients = MessagingClient.getMessageRecipients(message.getMessageId());
+        this.recipients = MessagingClient.getMessageRecipients(message.getId());
     }
 
     public String getMessageSubject() {
@@ -72,13 +72,13 @@ public class MessageBean implements Serializable {
         return message.getContent();
     }
 
-    public Date getCreateDate() {
-        return message.getCreateDate();
+    public Date getCreatedAt() {
+        return message.getCreatedAt();
     }
 
     public long getDaysAgo() {
         final int millisecondsInDay = 1000 * 60 * 60 * 24;
-        long createDay = message.getCreateDate().getTime() / millisecondsInDay;
+        long createDay = message.getCreatedAt().getTime() / millisecondsInDay;
         long daysNow = new Date().getTime() / millisecondsInDay;
         return daysNow - createDay;
     }
@@ -108,7 +108,7 @@ public class MessageBean implements Serializable {
     }
 
     public Long getMessageId() {
-        return message.getMessageId();
+        return message.getId();
     }
 
 }

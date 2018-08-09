@@ -34,22 +34,22 @@ public class ActivitiesService {
         this.activitySubscriptionDao = activitySubscriptionDao;
     }
 
-    public ActivitySubscription subscribe(long memberId,
+    public ActivitySubscription subscribe(long userId,
             ActivityCategory activityCategory, long categoryId) {
-        if (activitySubscriptionDao.isSubscribed(activityCategory, memberId, categoryId)) {
+        if (activitySubscriptionDao.isSubscribed(activityCategory, userId, categoryId)) {
             return activitySubscriptionDao
-                    .get(activityCategory, memberId, categoryId)
+                    .get(activityCategory, userId, categoryId)
                     .orElseThrow(IllegalStateException::new);
         }
         switch (activityCategory) {
             case CONTEST:
-                return subscribeContest(memberId, categoryId);
+                return subscribeContest(userId, categoryId);
             case PROPOSAL:
-                return subscribeProposal(memberId, categoryId, false);
+                return subscribeProposal(userId, categoryId, false);
             case DISCUSSION:
-                return subscribeDiscussion(memberId, categoryId, false);
+                return subscribeDiscussion(userId, categoryId, false);
             case MEMBER:
-                return createSubscription(memberId, activityCategory, categoryId, 0);
+                return createSubscription(userId, activityCategory, categoryId, 0);
             default:
                 throw new IllegalArgumentException(
                         "ActivityCategory " + activityCategory.name() + " not supported");
@@ -60,122 +60,122 @@ public class ActivitiesService {
             ActivityCategory activityCategory, long categoryId,
             int automaticSubscriptionCounter) {
         ActivitySubscription activitySubscription = new ActivitySubscription();
-        activitySubscription.setReceiverId(receiverId);
+        activitySubscription.setReceiverUserId(receiverId);
         activitySubscription.setActivityCategory(activityCategory.name());
         activitySubscription.setCategoryId(categoryId);
         activitySubscription.setAutomaticSubscriptionCounter(automaticSubscriptionCounter);
         return activitySubscriptionDao.create(activitySubscription);
     }
 
-    private ActivitySubscription subscribeContest(long memberId, long contestId) {
-        final ActivitySubscription contestSubscription = createSubscription(memberId,
+    private ActivitySubscription subscribeContest(long userId, long contestId) {
+        final ActivitySubscription contestSubscription = createSubscription(userId,
                 ActivityCategory.CONTEST, contestId, 0);
 
         Contest contest = ContestClientUtil.getContest(contestId);
 
-        subscribeDiscussion(memberId,contest.getDiscussionGroupId(), true);
+        subscribeDiscussion(userId,contest.getDiscussionGroupId(), true);
 
         final List<Proposal> proposals = ProposalClientUtil
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
-            if (!processedProposals.contains(proposal.getProposalId())) {
-                subscribeProposal(memberId, proposal.getProposalId(), true);
-                processedProposals.add(proposal.getProposalId());
+            if (!processedProposals.contains(proposal.getId())) {
+                subscribeProposal(userId, proposal.getId(), true);
+                processedProposals.add(proposal.getId());
             }
         }
         return contestSubscription;
     }
 
-    private ActivitySubscription subscribeProposal(long memberId, long proposalId,
+    private ActivitySubscription subscribeProposal(long userId, long proposalId,
             boolean automatic) {
         ActivitySubscription proposalSubscription;
         if (automatic) {
             final Optional<ActivitySubscription> automaticSubscription = activitySubscriptionDao
-                    .get(ActivityCategory.PROPOSAL, memberId, proposalId);
+                    .get(ActivityCategory.PROPOSAL, userId, proposalId);
             automaticSubscription.ifPresent(activitySubscription -> {
                         final Integer counter = activitySubscription.getAutomaticSubscriptionCounter();
                         activitySubscription.setAutomaticSubscriptionCounter(counter - 1);
                         activitySubscriptionDao.update(activitySubscription);
                     });
             proposalSubscription = automaticSubscription.orElseGet(() -> createSubscription(
-                    memberId, ActivityCategory.PROPOSAL, proposalId, 0));
+                    userId, ActivityCategory.PROPOSAL, proposalId, 0));
 
         } else {
-            activitySubscriptionDao.delete(ActivityCategory.PROPOSAL, memberId,
+            activitySubscriptionDao.delete(ActivityCategory.PROPOSAL, userId,
                     proposalId);
-            proposalSubscription = createSubscription(memberId, ActivityCategory.PROPOSAL,
+            proposalSubscription = createSubscription(userId, ActivityCategory.PROPOSAL,
                     proposalId, 0);
         }
         try {
             Proposal proposal = ProposalClientUtil.getProposal(proposalId);
-            subscribeDiscussion(memberId, proposal.getDiscussionId(), true);
+            subscribeDiscussion(userId, proposal.getDiscussionId(), true);
         } catch (ProposalNotFoundException e) {
             log.warn("Proposal {} not found", proposalId, e);
         }
         return proposalSubscription;
     }
 
-    private ActivitySubscription subscribeDiscussion(long memberId,
+    private ActivitySubscription subscribeDiscussion(long userId,
             long threadId, boolean automatic) {
         ActivitySubscription discussionSubscription;
         if (automatic) {
             Optional<ActivitySubscription> automaticSubscription = activitySubscriptionDao.get(
-                    ActivityCategory.DISCUSSION, memberId, threadId);
+                    ActivityCategory.DISCUSSION, userId, threadId);
             automaticSubscription.ifPresent(activitySubscription -> {
                 final Integer counter = activitySubscription.getAutomaticSubscriptionCounter();
                 activitySubscription.setAutomaticSubscriptionCounter(counter - 1);
                 activitySubscriptionDao.update(activitySubscription);
             });
             discussionSubscription = automaticSubscription.orElseGet(() -> createSubscription(
-                    memberId, ActivityCategory.DISCUSSION, threadId, 0));
+                    userId, ActivityCategory.DISCUSSION, threadId, 0));
         } else {
             activitySubscriptionDao
-                    .delete(ActivityCategory.DISCUSSION, memberId, threadId);
-            discussionSubscription = createSubscription(memberId, ActivityCategory.DISCUSSION,
+                    .delete(ActivityCategory.DISCUSSION, userId, threadId);
+            discussionSubscription = createSubscription(userId, ActivityCategory.DISCUSSION,
                     threadId, 0);
         }
         return discussionSubscription;
     }
 
-    public boolean unsubscribe(long memberId, ActivityCategory activityCategory, long categoryId) {
+    public boolean unsubscribe(long userId, ActivityCategory activityCategory, long categoryId) {
         switch (activityCategory) {
             case CONTEST:
-                return unsubscribeContest(memberId, categoryId);
+                return unsubscribeContest(userId, categoryId);
             case PROPOSAL:
                 activitySubscriptionDao.batch(
-                        getProposalDeleteQueries(memberId, categoryId));
+                        getProposalDeleteQueries(userId, categoryId));
                 return true;
             case DISCUSSION:
                 activitySubscriptionDao.batch(
-                        getDiscussionDeleteQueries(memberId, categoryId, false));
+                        getDiscussionDeleteQueries(userId, categoryId, false));
                 return true;
             case MEMBER:
                 return activitySubscriptionDao
-                        .delete(activityCategory, memberId, categoryId);
+                        .delete(activityCategory, userId, categoryId);
             default:
                 throw new IllegalArgumentException("ActivityCategory " + activityCategory.name()
                         + " not supported");
         }
     }
 
-    private boolean unsubscribeContest(long memberId, long contestId) {
+    private boolean unsubscribeContest(long userId, long contestId) {
         final List<DeleteFinalStep<ActivitySubscriptionRecord>> queries = new ArrayList<>();
         queries.add(activitySubscriptionDao
-                .getDeleteQuery(ActivityCategory.CONTEST, memberId, contestId));
+                .getDeleteQuery(ActivityCategory.CONTEST, userId, contestId));
 
         final List<Proposal> proposals = ProposalClientUtil
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
         for (Proposal proposal : proposals) {
-            if (!processedProposals.contains(proposal.getProposalId())) {
+            if (!processedProposals.contains(proposal.getId())) {
                 queries.addAll(
-                        getProposalDeleteQueries(memberId, proposal.getProposalId(), true));
-                processedProposals.add(proposal.getProposalId());
+                        getProposalDeleteQueries(userId, proposal.getId(), true));
+                processedProposals.add(proposal.getId());
             }
         }
         Contest contest = ContestClientUtil.getContest(contestId);
-        queries.addAll(getDiscussionDeleteQueries(memberId,
+        queries.addAll(getDiscussionDeleteQueries(userId,
                 contest.getDiscussionGroupId(), true));
 
         activitySubscriptionDao.batch(queries);
@@ -183,18 +183,18 @@ public class ActivitiesService {
     }
 
     private List<DeleteFinalStep<ActivitySubscriptionRecord>> getDiscussionDeleteQueries(
-            long memberId, long threadId, boolean automatic) {
+            long userId, long threadId, boolean automatic) {
         final List<DeleteFinalStep<ActivitySubscriptionRecord>> queries = new ArrayList<>();
 
         if (automatic) {
-            activitySubscriptionDao.get(ActivityCategory.PROPOSAL, memberId,
+            activitySubscriptionDao.get(ActivityCategory.PROPOSAL, userId,
                     threadId)
                     .ifPresent(activitySubscription ->  {
                         final Integer counter = activitySubscription.getAutomaticSubscriptionCounter();
 
                         if (counter == 1) {
                             queries.add(activitySubscriptionDao.getDeleteQuery(
-                                    ActivityCategory.DISCUSSION, memberId, threadId));
+                                    ActivityCategory.DISCUSSION, userId, threadId));
                         } else if (counter > 1) {
                             activitySubscription.setAutomaticSubscriptionCounter(counter - 1);
                             activitySubscriptionDao.update(activitySubscription);
@@ -202,44 +202,44 @@ public class ActivitiesService {
                     });
         } else {
             queries.add(activitySubscriptionDao.getDeleteQuery(ActivityCategory.DISCUSSION,
-                    memberId, threadId));
+                    userId, threadId));
         }
 
         return queries;
     }
 
     private List<DeleteFinalStep<ActivitySubscriptionRecord>> getProposalDeleteQueries(
-            long memberId, long proposalId, boolean automatic) {
+            long userId, long proposalId, boolean automatic) {
         final List<DeleteFinalStep<ActivitySubscriptionRecord>> queries = new ArrayList<>();
 
         if (automatic) {
             activitySubscriptionDao
-                    .get(ActivityCategory.PROPOSAL, memberId, proposalId)
+                    .get(ActivityCategory.PROPOSAL, userId, proposalId)
                     .ifPresent(activitySubscription ->  {
                         final Integer counter = activitySubscription.getAutomaticSubscriptionCounter();
 
                         if (counter == 1) {
-                            queries.addAll(getProposalDeleteQueries(memberId, proposalId));
+                            queries.addAll(getProposalDeleteQueries(userId, proposalId));
                         } else if (counter > 1) {
                             activitySubscription.setAutomaticSubscriptionCounter(counter - 1);
                             activitySubscriptionDao.update(activitySubscription);
                         }
                     });
         } else {
-            queries.addAll(getProposalDeleteQueries(memberId, proposalId));
+            queries.addAll(getProposalDeleteQueries(userId, proposalId));
         }
 
         return queries;
     }
 
     private List<DeleteFinalStep<ActivitySubscriptionRecord>> getProposalDeleteQueries(
-            long memberId, long proposalId)  {
+            long userId, long proposalId)  {
         final List<DeleteFinalStep<ActivitySubscriptionRecord>> queries = new ArrayList<>();
         queries.add(activitySubscriptionDao
-                .getDeleteQuery(ActivityCategory.PROPOSAL, memberId, proposalId));
+                .getDeleteQuery(ActivityCategory.PROPOSAL, userId, proposalId));
         try {
             final Proposal proposal = ProposalClientUtil.getProposal(proposalId);
-            queries.addAll(getDiscussionDeleteQueries(memberId,
+            queries.addAll(getDiscussionDeleteQueries(userId,
                     proposal.getDiscussionId(), true));
         } catch (ProposalNotFoundException ignored) {
             //orphaned activity - ignore

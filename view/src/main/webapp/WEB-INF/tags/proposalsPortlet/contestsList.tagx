@@ -18,8 +18,8 @@
                         <c:if test="${not empty contest.flagText }">
                             <span class="${not empty contest.flagTooltip ? 'js-Tooltip' : ''}" title="${contest.flagTooltip}">${contest.flagText}:&#160;</span>
                         </c:if>
-                        <xcolab:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear}:" />
-                        ${contest.contestName}
+                        <xcolab:contestLink contest="${contest}" text="${contest.titleWithEndYear}:" />
+                        ${contest.question}
                     </div>
                 </td>
                 <td class="text-center">

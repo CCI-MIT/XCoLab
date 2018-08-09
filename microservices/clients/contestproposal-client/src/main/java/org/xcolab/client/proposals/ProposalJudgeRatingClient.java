@@ -124,7 +124,7 @@ public final class ProposalJudgeRatingClient {
 
     public boolean updateProposalRating(ProposalRating proposalRating) {
         return proposalRatingResource
-                .update(new ProposalRatingDto(proposalRating), proposalRating.getId_())
+                .update(new ProposalRatingDto(proposalRating), proposalRating.getId())
                 .execute();
     }
 

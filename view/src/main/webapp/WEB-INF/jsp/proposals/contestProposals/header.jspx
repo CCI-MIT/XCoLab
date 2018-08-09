@@ -7,7 +7,7 @@
 
 	<div class="c-Headline align-items-center flex-wrap flex-lg-nowrap">
         <collab:image src="${contest.logoPath}" width="50" height="50" alt="Contest Image"/>
-		<h1 class="my-0">${contest.contestShortNameWithEndYear}</h1>
+		<h1 class="my-0">${contest.titleWithEndYear}</h1>
 		<c:if test="${contestPhase.active and not empty contestPhase.phaseEndDate and showCountdown}">
 			<div class="ml-auto">
                 <div class="c-Count c-Count--accent">
@@ -40,7 +40,7 @@
 	<div class="c-TitleBar c-TitleBar__content flex-column flex-md-row contestSummary m-Shadebar">
 		<jsp:directive.include file="./header_contestPhases.jspx" />
 		<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">
-			<c:set var="subscribeContestURL" value="/contests/subscribeContest?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }"/>
+			<c:set var="subscribeContestURL" value="/contests/subscribeContest?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }"/>
 
             <collab:message code="contests.details.subscribe.tooltip" var="tooltipSubscribe" contestType="${contestType}" />
             <button type="button" class="c-TitleBar__actionButton js-EnhancedLink js-Tooltip"

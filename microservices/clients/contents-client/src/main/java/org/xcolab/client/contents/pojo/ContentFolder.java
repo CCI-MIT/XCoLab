@@ -19,44 +19,44 @@ public class ContentFolder implements Serializable {
                     });
     public static final long RESOURCE_FOLDER_ID = 4L;
 
-    private Long contentFolderId;
-    private String contentFolderName;
-    private String contentFolderDescription;
+    private Long id;
+    private String name;
+    private String description;
     private Long parentFolderId;
 
     public ContentFolder() {
     }
 
-    public ContentFolder(Long contentFolderId, String contentFolderName,
-            String contentFolderDescription, Long parentFolderId) {
-        this.contentFolderId = contentFolderId;
-        this.contentFolderName = contentFolderName;
-        this.contentFolderDescription = contentFolderDescription;
+    public ContentFolder(Long id, String name,
+            String description, Long parentFolderId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
         this.parentFolderId = parentFolderId;
     }
 
-    public Long getContentFolderId() {
-        return this.contentFolderId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setContentFolderId(Long contentFolderId) {
-        this.contentFolderId = contentFolderId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getContentFolderName() {
-        return this.contentFolderName;
+    public String getName() {
+        return this.name;
     }
 
-    public void setContentFolderName(String contentFolderName) {
-        this.contentFolderName = contentFolderName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getContentFolderDescription() {
-        return this.contentFolderDescription;
+    public String getDescription() {
+        return this.description;
     }
 
-    public void setContentFolderDescription(String contentFolderDescription) {
-        this.contentFolderDescription = contentFolderDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getParentFolderId() {
@@ -69,9 +69,9 @@ public class ContentFolder implements Serializable {
 
     @Override
     public String toString() {
-        return "ContentFolder (" + contentFolderId +
-                ", " + contentFolderName +
-                ", " + contentFolderDescription +
+        return "ContentFolder (" + id +
+                ", " + name +
+                ", " + description +
                 ", " + parentFolderId +
                 ")";
     }

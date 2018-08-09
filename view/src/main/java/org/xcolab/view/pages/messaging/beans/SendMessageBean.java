@@ -28,7 +28,7 @@ public class SendMessageBean implements Serializable {
 
     public SendMessageBean(MessageBean replyMessage) {
         this();
-        this.userIdsRecipients = String.valueOf(replyMessage.getFrom().getUserId());
+        this.userIdsRecipients = String.valueOf(replyMessage.getFrom().getId());
         this.recipientList.add(replyMessage.getFrom());
 
         this.subject = "RE: " + replyMessage.getSubject();
@@ -37,9 +37,9 @@ public class SendMessageBean implements Serializable {
         this.replyMessage = replyMessage;
     }
 
-    public SendMessageBean(long memberId) {
+    public SendMessageBean(long userId) {
         this();
-        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(memberId);
+        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(userId);
     }
 
     public SendMessageBean() {
@@ -60,7 +60,7 @@ public class SendMessageBean implements Serializable {
         List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
 
         MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(subject),
-                HtmlUtil.cleanSome(messageContent, baseUri), sender.getUserId(), recipientIds);
+                HtmlUtil.cleanSome(messageContent, baseUri), sender.getId(), recipientIds);
     }
 
     public String getUserIdsRecipients() {
@@ -123,7 +123,7 @@ public class SendMessageBean implements Serializable {
     public List<Long> getRecipientIdList() {
         List<Long> recipientIds = new ArrayList<>();
         for (Member recipient : recipientList) {
-            recipientIds.add(recipient.getId_());
+            recipientIds.add(recipient.getId());
         }
         return recipientIds;
     }

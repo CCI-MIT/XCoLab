@@ -62,7 +62,7 @@ public class ProposalAdminTabController extends BaseProposalTabController {
 
             AlertMessage.success("Proposal was deleted successfully!").flash(request);
             response.sendRedirect(
-                    proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK())
+                    proposal.getProposalLinkUrl(contest, contestPhase.getId())
                             + "/tab/ADMIN");
         } else {
             throw new ProposalsAuthorizationException("User isn't allowed to delete proposal ");
@@ -92,20 +92,20 @@ public class ProposalAdminTabController extends BaseProposalTabController {
                 ContestPhase currentProposalContestPhase =
                         contestClient.getContestPhase(contestPhaseId);
                 ContestPhase activePhaseForContest =
-                        contestClient.getActivePhase(latestProposalContest.getContestPK());
+                        contestClient.getActivePhase(latestProposalContest.getId());
 
                 proposalPhaseClient.promoteProposal(proposalId,
-                        activePhaseForContest.getContestPhasePK(),
-                        currentProposalContestPhase.getContestPhasePK());
+                        activePhaseForContest.getId(),
+                        currentProposalContestPhase.getId());
 
                 response.sendRedirect(proposal.getProposalLinkUrl(contest,
-                        contestPhase.getContestPhasePK()));
+                        contestPhase.getId()));
             } catch (ContestNotFoundException ignored) {
 
             }
         } else {
             response.sendRedirect(proposal.getProposalLinkUrl(contest,
-                    contestPhase.getContestPhasePK()) + "/tab/ADMIN");
+                    contestPhase.getId()) + "/tab/ADMIN");
         }
     }
 
@@ -117,8 +117,8 @@ public class ProposalAdminTabController extends BaseProposalTabController {
         final ProposalsPermissions permissions = proposalContext.getPermissions();
 
         if (permissions.getCanDelete()) {
-            final long proposalId = proposalContext.getProposal().getProposalId();
-            final long userId = currentMember.getUserId();
+            final long proposalId = proposalContext.getProposal().getId();
+            final long userId = currentMember.getId();
             proposalContext.getClients().getProposalAttributeClient().setProposalAttribute(userId, proposalId,
                     ProposalAttributeKeys.OPEN, 0L, planOpen ? 1L : 0L, null);
             response.sendRedirect(proposalContext.getProposal().getProposalLinkUrl(proposalContext.getContest()));

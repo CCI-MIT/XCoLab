@@ -47,8 +47,8 @@ public class ActivitiesController {
     @GetMapping("/activityEntries")
     public List<ActivityEntry> getActivities(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
-            @RequestParam(required = false) Long memberId,
-            @RequestParam(required = false) List<Long> memberIdsToExclude,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) List<Long> userIdsToExclude,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String activitiesAfter) {
 
@@ -57,14 +57,14 @@ public class ActivitiesController {
         } else {
             final PaginationHelper paginationHelper =
                     new PaginationHelper(startRecord, limitRecord, sort);
-            return activityEntryDao.findByGiven(paginationHelper, memberId, memberIdsToExclude);
+            return activityEntryDao.findByGiven(paginationHelper, userId, userIdsToExclude);
         }
     }
 
     @GetMapping("/activityEntries/count")
-    public Integer getActivitiesCount(@RequestParam(required = false) Long memberId,
-            @RequestParam(required = false) List<Long> memberIdsToExclude) {
-        return this.activityEntryDao.countByGiven(memberId, memberIdsToExclude);
+    public Integer getActivitiesCount(@RequestParam(required = false) Long userId,
+            @RequestParam(required = false) List<Long> userIdsToExclude) {
+        return this.activityEntryDao.countByGiven(userId, userIdsToExclude);
     }
 
     @PostMapping("/activitySubscriptions")

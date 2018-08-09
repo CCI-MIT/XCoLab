@@ -18,14 +18,14 @@ public class DiscussionPermissions {
 
     public static final String REQUEST_ATTRIBUTE_NAME = "DISCUSSION_PERMISSIONS";
 
-    protected final long memberId;
+    protected final long userId;
     private final boolean isGuest;
     protected boolean isLoggedIn;
 
     public DiscussionPermissions(HttpServletRequest request) {
-        memberId = MemberAuthUtil.getMemberId(request);
-        isLoggedIn = memberId > 0;
-        this.isGuest = PermissionsClient.isGuest(memberId);
+        userId = MemberAuthUtil.getuserId(request);
+        isLoggedIn = userId > 0;
+        this.isGuest = PermissionsClient.isGuest(userId);
     }
 
     public boolean getCanReport() {
@@ -38,8 +38,8 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanReportMessage(Comment comment) {
-        return getCanReport() && comment.getAuthorId() != memberId && FlaggingClient
-                .countReports(memberId, TargetType.COMMENT, comment.getCommentId(), null, null)
+        return getCanReport() && comment.getAuthorUserId() != userId && FlaggingClient
+                .countReports(userId, TargetType.COMMENT, comment.getId(), null, null)
                 == 0;
     }
 
@@ -72,12 +72,12 @@ public class DiscussionPermissions {
     }
 
     private boolean isAuthor(Comment comment) {
-        return comment.getAuthorId() == memberId;
+        return comment.getAuthorUserId() == userId;
     }
 
     private boolean isRecent(Comment comment, int recencyInMinutes) {
         Instant now = Instant.now();
-        return comment.getCreateDate().toInstant().plus(recencyInMinutes, ChronoUnit.MINUTES)
+        return comment.getCreatedAt().toInstant().plus(recencyInMinutes, ChronoUnit.MINUTES)
                 .isAfter(now);
     }
 
@@ -86,6 +86,6 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(memberId);
+        return PermissionsClient.canAdminAll(userId);
     }
 }

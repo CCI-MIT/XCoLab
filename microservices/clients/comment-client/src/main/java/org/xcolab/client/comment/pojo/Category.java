@@ -29,10 +29,10 @@ public class Category extends AbstractCategory {
         threadClient = ThreadClientUtil.getClient();
     }
 
-    public Category(Long categoryId, Long groupId, Long authorId, String name, String description,
-            Timestamp createDate, Timestamp deletedDate, Integer sort, Boolean isQuiet) {
-        super(categoryId, groupId, authorId, name, description,
-                createDate, deletedDate, sort, isQuiet);
+    public Category(Long categoryId, Long groupId, Long authorUserId, String name, String description,
+            Timestamp createdAt, Timestamp deletedAt, Integer sort, Boolean isQuiet) {
+        super(categoryId, groupId, authorUserId, name, description,
+                createdAt, deletedAt, sort, isQuiet);
         categoryClient = CategoryClientUtil.getClient();
         threadClient = ThreadClientUtil.getClient();
     }
@@ -46,7 +46,7 @@ public class Category extends AbstractCategory {
     @JsonIgnore
     public List<CommentThread> getThreads(ThreadSortColumn sortColumn, boolean ascending) {
         return threadClient.listThreads(0, Integer.MAX_VALUE,
-                getCategoryId(), null, sortColumn, ascending);
+                getId(), null, sortColumn, ascending);
     }
 
     @JsonIgnore
@@ -66,7 +66,7 @@ public class Category extends AbstractCategory {
     public String getLinkUrl() {
         final CategoryGroup categoryGroup = getCategoryGroup();
         if (categoryGroup != null) {
-            return categoryGroup.getLinkUrl() + "/category/" + getCategoryId();
+            return categoryGroup.getLinkUrl() + "/category/" + getId();
         }
         return "";
     }

@@ -26,14 +26,14 @@ public final class EntityIdListUtil {
      * strings
      */
     public final static IdListObjectConverter<Contest> CONTESTS =
-            new IdListObjectConverter<>(ContestClientUtil::getContest, Contest::getContestPK);
+            new IdListObjectConverter<>(ContestClientUtil::getContest, Contest::getId);
 
     /**
      * Utility class to convert between lists of Proposals, their ids, and comma separated id
      * strings
      */
     public final static IdListObjectConverter<Proposal> PROPOSALS =
-            new IdListObjectConverter<>(ProposalClientUtil::getProposal, Proposal::getProposalId);
+            new IdListObjectConverter<>(ProposalClientUtil::getProposal, Proposal::getId);
 
     /**
      * Utility class to convert between lists of ContestTypes, their ids, and comma separated id
@@ -43,7 +43,7 @@ public final class EntityIdListUtil {
             new IdListObjectConverter<>(ContestTypeClient::getContestType, ContestType::getId);
 
     public final static IdListObjectConverter<Member> MEMBERS =
-            new IdListObjectConverter<>(MembersClient::getMemberUnchecked, Member::getUserId);
+            new IdListObjectConverter<>(MembersClient::getMemberUnchecked, Member::getId);
 
 
     public static class IdListObjectConverter<T> {

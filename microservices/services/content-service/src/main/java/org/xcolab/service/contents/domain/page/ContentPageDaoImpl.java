@@ -29,7 +29,7 @@ public class ContentPageDaoImpl implements ContentPageDao {
     public Optional<ContentPage> get(long pageId) {
         final Record record = dslContext.select()
                 .from(CONTENT_PAGE)
-                .where(CONTENT_PAGE.PAGE_ID.eq(pageId))
+                .where(CONTENT_PAGE.ID.eq(pageId))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
@@ -70,8 +70,8 @@ public class ContentPageDaoImpl implements ContentPageDao {
                 .set(CONTENT_PAGE.META_DESCRIPTION, page.getMetaDescription())
                 .set(CONTENT_PAGE.MENU_ARTICLE_ID, page.getMenuArticleId())
                 .set(CONTENT_PAGE.CONTENT_ARTICLE_ID, page.getContentArticleId())
-                .set(CONTENT_PAGE.MODIFIED_DATE, DSL.currentTimestamp())
-                .where(CONTENT_PAGE.PAGE_ID.eq(page.getPageId()))
+                .set(CONTENT_PAGE.UPDATED_AT, DSL.currentTimestamp())
+                .where(CONTENT_PAGE.ID.eq(page.getId()))
                 .execute() > 0;
     }
 
@@ -82,16 +82,15 @@ public class ContentPageDaoImpl implements ContentPageDao {
                 .set(CONTENT_PAGE.META_DESCRIPTION, page.getMetaDescription())
                 .set(CONTENT_PAGE.MENU_ARTICLE_ID, page.getMenuArticleId())
                 .set(CONTENT_PAGE.CONTENT_ARTICLE_ID, page.getContentArticleId())
-                .set(CONTENT_PAGE.CREATED_DATE, DSL.currentTimestamp())
-                .set(CONTENT_PAGE.MODIFIED_DATE, DSL.currentTimestamp())
-                .returning(CONTENT_PAGE.PAGE_ID)
+                .set(CONTENT_PAGE.CREATED_AT, DSL.currentTimestamp())
+                .set(CONTENT_PAGE.UPDATED_AT, DSL.currentTimestamp())
+                .returning(CONTENT_PAGE.ID)
                 .fetchOne();
         if (ret != null) {
-            page.setPageId(ret.getValue(CONTENT_PAGE.PAGE_ID));
+            page.setId(ret.getValue(CONTENT_PAGE.ID));
             return page;
         } else {
             throw new IllegalStateException("failed to retrieve inserted id");
         }
     }
-
 }

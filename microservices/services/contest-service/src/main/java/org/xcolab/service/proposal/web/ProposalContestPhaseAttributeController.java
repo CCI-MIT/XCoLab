@@ -58,27 +58,27 @@ public class ProposalContestPhaseAttributeController {
         return this.proposalContestPhaseAttributeDao.create(proposalContestPhaseAttribute);
     }
 
-    @RequestMapping(value = "/proposalContestPhaseAttributes/{id_}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/proposalContestPhaseAttributes/{id}", method = RequestMethod.PUT)
     public boolean updateProposalContestPhaseAttribute(@RequestBody ProposalContestPhaseAttribute proposalContestPhaseAttribute,
-                                                       @PathVariable("id_") Long id_) throws NotFoundException {
+                                                       @PathVariable("id") Long id) throws NotFoundException {
 
-        if (id_ == null || id_ == 0 || proposalContestPhaseAttributeDao.get(id_) == null) {
-            throw new NotFoundException("No ProposalContestPhaseAttribute with id " + id_);
+        if (id == null || id == 0 || proposalContestPhaseAttributeDao.get(id) == null) {
+            throw new NotFoundException("No ProposalContestPhaseAttribute with id " + id);
         } else {
             return proposalContestPhaseAttributeDao.update(proposalContestPhaseAttribute);
         }
     }
 
-    @RequestMapping(value = "/proposalContestPhaseAttributes/{id_}", method = RequestMethod.DELETE)
-    public String deleteProposalContestPhaseAttribute(@PathVariable("id_") Long id_)
+    @RequestMapping(value = "/proposalContestPhaseAttributes/{id}", method = RequestMethod.DELETE)
+    public String deleteProposalContestPhaseAttribute(@PathVariable("id") Long id)
             throws NotFoundException {
 
-        if (id_ == null || id_ == 0) {
+        if (id == null || id == 0) {
             throw new NotFoundException("No ProposalContestPhaseAttribute with id given");
         } else {
-            ProposalContestPhaseAttribute proposalContestPhaseAttribute = this.proposalContestPhaseAttributeDao.get(id_);
+            ProposalContestPhaseAttribute proposalContestPhaseAttribute = this.proposalContestPhaseAttributeDao.get(id);
             if (proposalContestPhaseAttribute != null) {
-                this.proposalContestPhaseAttributeDao.delete(proposalContestPhaseAttribute.getId_());
+                this.proposalContestPhaseAttributeDao.delete(proposalContestPhaseAttribute.getId());
                 return "ProposalContestPhaseAttribute deleted successfully";
             } else {
                 throw new NotFoundException("No ProposalContestPhaseAttribute with id given");

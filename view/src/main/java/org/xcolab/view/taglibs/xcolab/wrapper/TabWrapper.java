@@ -74,7 +74,7 @@ public class TabWrapper implements Serializable {
 
     public long getDiscussionId() {
         Contest contest = context.getContest(request);
-        return ContestClientUtil.getContestDiscussion(contest.getContestPK(), getName())
+        return ContestClientUtil.getContestDiscussion(contest.getId(), getName())
                 .getDiscussionId();
     }
 }

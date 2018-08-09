@@ -6,27 +6,27 @@ abstract class AbstractImpactTemplateFocusAreaList implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long focusarealistid;
+    private Long id;
     private String name;
 
     public AbstractImpactTemplateFocusAreaList() {}
 
     public AbstractImpactTemplateFocusAreaList(AbstractImpactTemplateFocusAreaList value) {
-        this.focusarealistid = value.focusarealistid;
+        this.id = value.id;
         this.name = value.name;
     }
 
-    public AbstractImpactTemplateFocusAreaList(Long focusarealistid, String name) {
-        this.focusarealistid = focusarealistid;
+    public AbstractImpactTemplateFocusAreaList(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public Long getFocusAreaListId() {
-        return this.focusarealistid;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setFocusAreaListId(Long focusarealistid) {
-        this.focusarealistid = focusarealistid;
+    public void setId(Long focusarealistid) {
+        this.id = focusarealistid;
     }
 
     public String getName() {
@@ -41,7 +41,7 @@ abstract class AbstractImpactTemplateFocusAreaList implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((focusarealistid == null) ? 0 : focusarealistid.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
@@ -58,11 +58,11 @@ abstract class AbstractImpactTemplateFocusAreaList implements Serializable {
             return false;
         }
         final AbstractImpactTemplateFocusAreaList other = (AbstractImpactTemplateFocusAreaList) obj;
-        if (focusarealistid == null) {
-            if (other.focusarealistid != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!focusarealistid.equals(other.focusarealistid)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (name == null) {
@@ -78,7 +78,7 @@ abstract class AbstractImpactTemplateFocusAreaList implements Serializable {
     @Override
     public String toString() {
 
-        return "ImpactTemplateFocusAreaList (" + focusarealistid +
+        return "ImpactTemplateFocusAreaList (" + id +
                 ", " + name +
                 ")";
     }

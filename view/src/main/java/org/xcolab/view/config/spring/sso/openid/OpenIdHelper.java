@@ -103,7 +103,7 @@ public class OpenIdHelper {
     }
 
     public void addSubjectField(Map<String, Object> map, Member member) {
-        map.put(SUBJECT, member.getId_());
+        map.put(SUBJECT, member.getId());
     }
 
     public void addEmailScopedFields(Map<String, Object> map, Member member) {

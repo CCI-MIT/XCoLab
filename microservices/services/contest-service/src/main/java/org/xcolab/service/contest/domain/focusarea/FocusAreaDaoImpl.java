@@ -22,14 +22,14 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
     public FocusAreaDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
 
     @Override
-    public FocusArea get(Long id_) throws NotFoundException {
+    public FocusArea get(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(FOCUS_AREA)
-                .where(FOCUS_AREA.ID_.eq(id_))
+                .where(FOCUS_AREA.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("FocusArea with id " + id_ + " does not exist");
+            throw new NotFoundException("FocusArea with id " + id + " does not exist");
         }
         return record.into(FocusArea.class);
     }
@@ -39,11 +39,11 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
 
         FocusAreaRecord ret = this.dslContext.insertInto(FOCUS_AREA)
                 .set(FOCUS_AREA.NAME, focusArea.getName())
-                .set(FOCUS_AREA.ORDER_, focusArea.getOrder_())
-                .returning(FOCUS_AREA.ID_)
+                .set(FOCUS_AREA.SORT_ORDER, focusArea.getSortOrder())
+                .returning(FOCUS_AREA.ID)
                 .fetchOne();
         if (ret != null) {
-            focusArea.setId_(ret.getValue(FOCUS_AREA.ID_));
+            focusArea.setId(ret.getValue(FOCUS_AREA.ID));
             return focusArea;
         } else {
             return null;
@@ -55,8 +55,8 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
     public boolean update(FocusArea focusArea) {
         return dslContext.update(FOCUS_AREA)
                 .set(FOCUS_AREA.NAME, focusArea.getName())
-                .set(FOCUS_AREA.ORDER_, focusArea.getOrder_())
-                .where(FOCUS_AREA.ID_.eq(focusArea.getId_()))
+                .set(FOCUS_AREA.SORT_ORDER, focusArea.getSortOrder())
+                .where(FOCUS_AREA.ID.eq(focusArea.getId()))
                 .execute() > 0;
     }
 
@@ -70,9 +70,9 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
     }
 
     @Override
-    public int delete(Long id_) {
+    public int delete(Long id) {
         return dslContext.deleteFrom(FOCUS_AREA)
-                .where(FOCUS_AREA.ID_.eq(id_))
+                .where(FOCUS_AREA.ID.eq(id))
                 .execute();
     }
 

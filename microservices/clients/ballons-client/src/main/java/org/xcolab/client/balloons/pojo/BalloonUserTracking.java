@@ -24,11 +24,11 @@ public class BalloonUserTracking implements Serializable {
             new TypeProvider<>(BalloonUserTracking.class,
                     new ParameterizedTypeReference<List<BalloonUserTracking>>() {});
 
-    private String uuid_;
+    private String uuid;
     private String email;
     private String parent;
     private String ip;
-    private Timestamp createdate;
+    private Timestamp createdAt;
     private Timestamp registrationdate;
     private Timestamp formfileddate;
     private Long userid;
@@ -46,11 +46,11 @@ public class BalloonUserTracking implements Serializable {
     public BalloonUserTracking() {}
 
     public BalloonUserTracking(BalloonUserTracking value) {
-        this.uuid_ = value.uuid_;
+        this.uuid = value.uuid;
         this.email = value.email;
         this.parent = value.parent;
         this.ip = value.ip;
-        this.createdate = value.createdate;
+        this.createdAt = value.createdAt;
         this.registrationdate = value.registrationdate;
         this.formfileddate = value.formfileddate;
         this.userid = value.userid;
@@ -66,12 +66,12 @@ public class BalloonUserTracking implements Serializable {
         this.useragent = value.useragent;
     }
 
-    public String getUuid_() {
-        return this.uuid_;
+    public String getUuid() {
+        return this.uuid;
     }
 
-    public void setUuid_(String uuid_) {
-        this.uuid_ = uuid_;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getEmail() {
@@ -98,12 +98,12 @@ public class BalloonUserTracking implements Serializable {
         this.ip = ip;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Timestamp getRegistrationDate() {
@@ -214,10 +214,10 @@ public class BalloonUserTracking implements Serializable {
         this.useragent = useragent;
     }
 
-    public void updateUserIdAndEmailIfEmpty(long memberId, String email) {
+    public void updateUserIdAndEmailIfEmpty(long userId, String email) {
         final boolean isUserIdEmpty = getUserId() == null;
         if (isUserIdEmpty) {
-            setUserId(memberId);
+            setUserId(userId);
         }
 
         final boolean isEmailBlank = StringUtils.isBlank(getEmail());
@@ -232,7 +232,7 @@ public class BalloonUserTracking implements Serializable {
 
     @JsonIgnore
     public BalloonLink getBalloonLink() {
-        return getOrNull(() -> BalloonsClient.getLinkByBalloonUserTrackingUuid(getUuid_()));
+        return getOrNull(() -> BalloonsClient.getLinkByBalloonUserTrackingUuid(getUuid()));
     }
 
     @JsonIgnore
@@ -249,11 +249,11 @@ public class BalloonUserTracking implements Serializable {
             return false;
         }
         BalloonUserTracking that = (BalloonUserTracking) o;
-        return Objects.equals(getUuid_(), that.getUuid_())
+        return Objects.equals(getUuid(), that.getUuid())
                 && Objects.equals(getEmail(), that.getEmail())
                 && Objects.equals(getParent(), that.getParent())
                 && Objects.equals(getIp(), that.getIp())
-                && Objects.equals(createdate, that.createdate)
+                && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(registrationdate, that.registrationdate)
                 && Objects.equals(formfileddate, that.formfileddate)
                 && Objects.equals(userid, that.userid)
@@ -271,7 +271,7 @@ public class BalloonUserTracking implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUuid_(), getEmail(), getParent(), getIp(), createdate,
+        return Objects.hash(getUuid(), getEmail(), getParent(), getIp(), createdAt,
                 registrationdate, formfileddate, userid, balloontextid, getReferrer(),
                 getLatitude(), getLongitude(), getCity(), getCountry(), extradata,
                 balloonlinkuuid, balloonlinkcontext, useragent);
@@ -279,8 +279,8 @@ public class BalloonUserTracking implements Serializable {
 
     @Override
     public String toString() {
-        return "BalloonUserTracking (" + uuid_ + ", " + email + ", " + parent + ", " + ip + ", "
-                + createdate + ", " + registrationdate + ", " + formfileddate + ", " + userid + ", "
+        return "BalloonUserTracking (" + uuid + ", " + email + ", " + parent + ", " + ip + ", "
+                + createdAt + ", " + registrationdate + ", " + formfileddate + ", " + userid + ", "
                 + balloontextid + ", " + referrer + ", " + latitude + ", " + longitude + ", " + city
                 + ", " + country + ", " + extradata + ", " + balloonlinkuuid + ", "
                 + balloonlinkcontext + ", " + useragent + ")";

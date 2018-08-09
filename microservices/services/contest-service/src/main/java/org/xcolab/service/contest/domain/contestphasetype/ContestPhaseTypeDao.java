@@ -6,9 +6,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ContestPhaseTypeDao {
+
     ContestPhaseType create(ContestPhaseType contestPhaseType);
-    Optional<ContestPhaseType> get(Long id_);
+
+    Optional<ContestPhaseType> get(Long id);
+
     boolean update(ContestPhaseType contestPhaseType);
-    int delete(Long id_);
+
+    int delete(Long id);
+
     List<ContestPhaseType> findByGiven();
 }

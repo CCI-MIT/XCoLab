@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -51,7 +51,7 @@ public class ProposalReviewCsvExporter {
         for (Map.Entry<Proposal, List<ProposalReview>> entry : proposalToProposalReviewsMap.entrySet()) {
             final Proposal proposal = entry.getKey();
             final List<ProposalReview> proposalReviews = entry.getValue();
-            String proposalName = ProposalAttributeClientUtil.getProposalAttribute(proposal.getProposalId(),
+            String proposalName = ProposalAttributeClientUtil.getProposalAttribute(proposal.getId(),
                     ProposalAttributeKeys.NAME, 0L).getStringValue();
 
             for (ProposalReview proposalReview : proposalReviews) {
@@ -128,7 +128,7 @@ public class ProposalReviewCsvExporter {
 
     private String getRowHeader(String proposalName, ProposalReview proposalReview) {
         String contestPhaseName = ContestClientUtil
-                .getContestPhaseType(proposalReview.getContestPhase().getContestPhaseType())
+                .getContestPhaseType(proposalReview.getContestPhase().getContestPhaseTypeId())
                 .getName();
 
         Proposal proposal = proposalReview.getProposal();
@@ -145,7 +145,7 @@ public class ProposalReviewCsvExporter {
 
     private String getDataFields(Proposal proposal) {
         StringBuilder dataFields = new StringBuilder(TQF);
-        for (PlanSectionDefinition sectionDefinition : proposal.getSections()) {
+        for (ProposalTemplateSectionDefinition sectionDefinition : proposal.getSections()) {
             if (sectionDefinition.getIncludeInJudgingReport()) {
                 dataFields.append("\"")
                         .append(escapeQuote(HtmlUtil.cleanAll(sectionDefinition.getContent())))
@@ -185,7 +185,7 @@ public class ProposalReviewCsvExporter {
 
     private String getDataFieldHeaders() {
         StringBuilder dataFieldHeaders = new StringBuilder(TQF);
-        for (PlanSectionDefinition sectionDefinition : contest.getSections()) {
+        for (ProposalTemplateSectionDefinition sectionDefinition : contest.getSections()) {
             if (sectionDefinition.getIncludeInJudgingReport()) {
                 dataFieldHeaders.append(
                         String.format("\"%s\"%s", sectionDefinition.getTitle(), delimiter));

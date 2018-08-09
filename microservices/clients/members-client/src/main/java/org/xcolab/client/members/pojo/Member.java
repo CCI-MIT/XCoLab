@@ -41,14 +41,14 @@ public class Member implements Serializable {
                     new ParameterizedTypeReference<List<Member>>() {
                     });
 
-    private long id_;
+    private long id;
     private String screenName;
     private String emailAddress;
     private boolean isEmailConfirmed;
     private boolean isEmailBounced;
-    private Timestamp createDate;
-    private Timestamp modifiedDate;
-    private Timestamp passwordModifiedDate;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private Timestamp passwordUpdatedAt;
     private String hashedPassword;
     private String firstName;
     private String lastName;
@@ -75,14 +75,14 @@ public class Member implements Serializable {
     }
 
     public Member(Member value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.screenName = value.screenName;
         this.emailAddress = value.emailAddress;
         this.isEmailConfirmed = value.isEmailConfirmed;
         this.isEmailBounced = value.isEmailBounced;
-        this.createDate = value.createDate;
-        this.modifiedDate = value.modifiedDate;
-        this.passwordModifiedDate = value.passwordModifiedDate;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
+        this.passwordUpdatedAt = value.passwordUpdatedAt;
         this.hashedPassword = value.hashedPassword;
         this.firstName = value.firstName;
         this.lastName = value.lastName;
@@ -106,26 +106,20 @@ public class Member implements Serializable {
         this.loginTokenExpirationDate = value.loginTokenExpirationDate;
     }
 
-    public static Member fromId(String memberIdString) {
-        return fromId(Long.parseLong(memberIdString));
+    public static Member fromId(String userIdString) {
+        return fromId(Long.parseLong(userIdString));
     }
 
-    public static Member fromId(long memberId) {
-        return MembersClient.getMemberUnchecked(memberId);
+    public static Member fromId(long userId) {
+        return MembersClient.getMemberUnchecked(userId);
     }
 
-    public long getId_() {
-        return this.id_;
+    public long getId() {
+        return this.id;
     }
 
-    //For liferay/jsp compatibility
-    @JsonIgnore
-    public long getUserId() {
-        return this.id_;
-    }
-
-    public void setId_(long id_) {
-        this.id_ = id_;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getScreenName() {
@@ -170,28 +164,28 @@ public class Member implements Serializable {
         isEmailBounced = emailBounced;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getModifiedDate() {
-        return this.modifiedDate;
+    public Timestamp getupdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setupdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Timestamp getPasswordModifiedDate() {
-        return this.passwordModifiedDate;
+    public Timestamp getPasswordUpdatedAt() {
+        return this.passwordUpdatedAt;
     }
 
-    public void setPasswordModifiedDate(Timestamp passwordModifiedDate) {
-        this.passwordModifiedDate = passwordModifiedDate;
+    public void setPasswordUpdatedAt(Timestamp passwordUpdatedAt) {
+        this.passwordUpdatedAt = passwordUpdatedAt;
     }
 
     public String getFirstName() {
@@ -333,8 +327,8 @@ public class Member implements Serializable {
     }
 
     @JsonIgnore
-    public List<Role_> getRoles() {
-        return MembersClient.getMemberRoles(this.getId_());
+    public List<Role> getRoles() {
+        return MembersClient.getMemberRoles(this.getId());
     }
 
     @JsonIgnore
@@ -355,7 +349,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public int getUnreadMessageCount() {
-        return MessagingClient.countUnreadMessagesForUser(getUserId());
+        return MessagingClient.countUnreadMessagesForUser(getId());
     }
 
     public String getHashedPassword() {
@@ -425,12 +419,12 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public String getProfileLinkUrl()  {
-        return String.format(USER_PROFILE_PATH, getId_());
+        return String.format(USER_PROFILE_PATH, getId());
     }
 
     @JsonIgnore
     public String getProfileEditUrl()  {
-        return String.format(USER_PROFILE_EDIT_PATH, getId_());
+        return String.format(USER_PROFILE_EDIT_PATH, getId());
     }
 
     @JsonIgnore
@@ -458,7 +452,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public int getNumberOfMessagesLeft() {
-        return MessagingClient.getNumberOfMessagesLeft(getId_());
+        return MessagingClient.getNumberOfMessagesLeft(getId());
     }
 
     public boolean getIsProfileComplete() {
@@ -469,7 +463,7 @@ public class Member implements Serializable {
         this.setFirstName("Member");
         this.setLastName("Removed");
         if (!this.getEmailAddress().startsWith("removed+userId")) {
-            this.setEmailAddress("removed+userId"+this.getUserId()+"@climatecolab.org");
+            this.setEmailAddress("removed+userId"+this.getId()+"@climatecolab.org");
         }
         this.setFacebookId(null);
         this.setGoogleId(null);
@@ -483,24 +477,24 @@ public class Member implements Serializable {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Member
-                && ((Member) obj).getId_() == this.getId_();
+                && ((Member) obj).getId() == this.getId();
     }
 
     @Override
     public int hashCode() {
-        return (int) (this.getId_() ^ this.getId_() >>> 32);
+        return (int) (this.getId() ^ this.getId() >>> 32);
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id_", id_)
+        return new ToStringBuilder(this).append("id", id)
                 .append("screenName", screenName)
                 .append("emailAddress", emailAddress)
                 .append("isEmailConfirmed", isEmailConfirmed)
                 .append("isEmailBounced", isEmailBounced)
-                .append("createDate", createDate)
-                .append("modifiedDate", modifiedDate)
-                .append("passwordModifiedDate", passwordModifiedDate)
+                .append("createdAt", createdAt)
+                .append("updatedAt", updatedAt)
+                .append("passwordUpdatedAt", passwordUpdatedAt)
                 .append("hashedPassword", hashedPassword != null ? "REDACTED" : null)
                 .append("firstName", firstName)
                 .append("lastName", lastName)

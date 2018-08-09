@@ -20,9 +20,9 @@ public class ActivityEntry implements Serializable {
 
     private static final long serialVersionUID = 489920719;
 
-    private Long activityentryid;
-    private Long memberid;
-    private Timestamp createdate;
+    private Long id;
+    private Long userId;
+    private Timestamp createdAt;
     private String activityCategory;
     private String activityType;
     private long categoryId;
@@ -31,37 +31,37 @@ public class ActivityEntry implements Serializable {
     public ActivityEntry() {}
 
     public ActivityEntry(ActivityEntry value) {
-        this.activityentryid = value.activityentryid;
-        this.memberid = value.memberid;
-        this.createdate = value.createdate;
+        this.id = value.id;
+        this.userId = value.userId;
+        this.createdAt = value.createdAt;
         this.activityCategory = value.activityCategory;
         this.activityType = value.activityType;
         this.categoryId = value.categoryId;
         this.additionalId = value.additionalId;
     }
 
-    public Long getActivityEntryId() {
-        return this.activityentryid;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setActivityEntryId(Long activityentryid) {
-        this.activityentryid = activityentryid;
+    public void setId(Long activityentryid) {
+        this.id = activityentryid;
     }
 
-    public Long getMemberId() {
-        return this.memberid;
+    public Long getUserId() {
+        return this.userId;
     }
 
-    public void setMemberId(Long memberid) {
-        this.memberid = memberid;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getActivityCategory() {
@@ -121,8 +121,8 @@ public class ActivityEntry implements Serializable {
             return false;
         }
         ActivityEntry that = (ActivityEntry) o;
-        return Objects.equals(activityentryid, that.activityentryid)
-                && Objects.equals(memberid, that.memberid) && Objects.equals(createdate, that.createdate)
+        return Objects.equals(id, that.id)
+                && Objects.equals(userId, that.userId) && Objects.equals(createdAt, that.createdAt)
                 && Objects.equals(getActivityCategory(), that.getActivityCategory())
                 && Objects.equals(getActivityType(), that.getActivityType())
                 && Objects.equals(categoryId, that.categoryId)
@@ -131,15 +131,15 @@ public class ActivityEntry implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(activityentryid, memberid, createdate, getActivityCategory(),
+        return Objects.hash(id, userId, createdAt, getActivityCategory(),
                 getActivityType(), categoryId, additionalId);
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("activityentryid", activityentryid)
-                .append("memberid", memberid)
-                .append("createdate", createdate)
+        return new ToStringBuilder(this).append("id", id)
+                .append("userId", userId)
+                .append("createdAt", createdAt)
                 .append("activityCategory", activityCategory)
                 .append("activityType", activityType)
                 .append("categoryId", categoryId)

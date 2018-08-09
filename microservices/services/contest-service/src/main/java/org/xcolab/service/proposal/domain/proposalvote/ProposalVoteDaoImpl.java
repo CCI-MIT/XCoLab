@@ -34,7 +34,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
                 .set(PROPOSAL_VOTE.CONTEST_PHASE_ID, proposalVote.getContestPhaseId())
                 .set(PROPOSAL_VOTE.USER_ID, proposalVote.getUserId())
                 .set(PROPOSAL_VOTE.VALUE, proposalVote.getValue())
-                .set(PROPOSAL_VOTE.CREATE_DATE, DSL.currentTimestamp())
+                .set(PROPOSAL_VOTE.CREATED_AT, DSL.currentTimestamp())
                 .set(PROPOSAL_VOTE.VOTER_IP, proposalVote.getVoterIp())
                 .set(PROPOSAL_VOTE.VOTER_USER_AGENT, proposalVote.getVoterUserAgent())
                 .set(PROPOSAL_VOTE.IS_VALID, proposalVote.getIsValid())
@@ -45,7 +45,6 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
                 .set(PROPOSAL_VOTE.IS_VALID_OVERRIDE, proposalVote.getIsValidOverride())
                 .set(PROPOSAL_VOTE.MANUAL_VALIDATION_RESULT, proposalVote.getManualValidationResult())
                 .execute();
-
 
         return proposalVote;
     }
@@ -122,10 +121,10 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
     }
 
     @Override
-    public int delete(long proposalId, long memberId, long contestPhaseId) {
+    public int delete(long proposalId, long userId, long contestPhaseId) {
         return dslContext.deleteFrom(PROPOSAL_VOTE)
                 .where(PROPOSAL_VOTE.PROPOSAL_ID.eq(proposalId)
-                        .and(PROPOSAL_VOTE.USER_ID.eq(memberId))
+                        .and(PROPOSAL_VOTE.USER_ID.eq(userId))
                         .and(PROPOSAL_VOTE.CONTEST_PHASE_ID.eq(contestPhaseId)))
                 .execute();
     }

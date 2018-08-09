@@ -60,7 +60,7 @@ public class ProposalAttributeService {
         return new ProposalUnversionedAttributeHelperData(attributes);
     }
 
-    public ProposalAttribute setAttribute(ProposalAttribute proposalAttribute, Long authorId) {
+    public ProposalAttribute setAttribute(ProposalAttribute proposalAttribute, Long authorUserId) {
 
         try {
             Proposal proposal = proposalDao.get(proposalAttribute.getProposalId());
@@ -74,7 +74,7 @@ public class ProposalAttributeService {
             }
 
             List<ProposalAttribute> currentProposalAttributes =
-                    proposalAttributeDao.findByGiven(proposal.getProposalId(),
+                    proposalAttributeDao.findByGiven(proposal.getId(),
                             null, null, currentVersion);
 
             // for each attribute, if it isn't the one that we are changing, simply
@@ -104,7 +104,7 @@ public class ProposalAttributeService {
 
             // create newly created version descriptor
             if (isNewVersion) {
-                createProposalVersionDescription(authorId, proposalAttribute.getProposalId(),
+                createProposalVersionDescription(authorUserId, proposalAttribute.getProposalId(),
                         version, proposalAttribute.getName(), proposalAttribute.getAdditionalId());
             }
             proposalDao.update(proposal);
@@ -154,13 +154,13 @@ public class ProposalAttributeService {
         }
     }
 
-    private void createProposalVersionDescription(long authorId, long proposalId, int version,
+    private void createProposalVersionDescription(long authorUserId, long proposalId, int version,
             String updateType, long additionalId) {
 
         ProposalVersion proposalVersion = new ProposalVersion();
         proposalVersion.setProposalId(proposalId);
         proposalVersion.setVersion(version);
-        proposalVersion.setAuthorId(authorId);
+        proposalVersion.setAuthorUserId(authorUserId);
         proposalVersion.setUpdateType(updateType);
         proposalVersion.setUpdateAdditionalId(additionalId);
 

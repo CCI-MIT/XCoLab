@@ -25,7 +25,7 @@
 <xcolab:layout title="${proposal.name}" description="${proposal.pitch}"
                openGraphImage="${proposalOpenGraphImage}"
                openGraphDescription="${proposal.cleanPitch}"
-               openGraphTitle="${proposal.name} - ${contest.contestShortNameWithEndYear} - ${_themeContext.colabName}"
+               openGraphTitle="${proposal.name} - ${contest.titleWithEndYear} - ${_themeContext.colabName}"
 >
     <!--@elvariable id="voted" type="java.lang.Boolean"-->
     <!--@elvariable id="votingDeadline" type="java.lang.String"-->
@@ -57,14 +57,14 @@
                     </button>
                     <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                         <div class="text-center cb-flex-basis-100 cb-flex-sm-basis-auto order-first order-first order-sm-0">
-                            <c:set var="shareMessageBody">Check out the ${contestType.proposalNameLowercase} ${proposal.name} ${contest.contestShortNameWithEndYear} ${contestType.contestNameLowercase}:</c:set>
-                            <xcolab-social:socialShareButtons title="${_themeContext.colabName} - ${contest.contestShortName} - ${proposal.name}"
+                            <c:set var="shareMessageBody">Check out the ${contestType.proposalNameLowercase} ${proposal.name} ${contest.titleWithEndYear} ${contestType.contestNameLowercase}:</c:set>
+                            <xcolab-social:socialShareButtons title="${_themeContext.colabName} - ${contest.title} - ${proposal.name}"
                                                               messageTitle="I want to share a ${contestType.proposalNameLowercase} with you!"
                                                               content="${shareMessageBody}"/>
                         </div>
                     </c:if>
                     <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
-                        <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+                        <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }" />
                         <button type="button" class="btn btn-link btn-sm js-EnhancedLink" data-method="post"
                                 data-require-login="true" data-url="${subscribeProposalURL}">
                             <c:choose>
@@ -117,7 +117,7 @@
                             </c:when>
                         </c:choose>
                         <c:if test="${proposalsPermissions.canAdminAll}">
-                            by <xcolab:userLinkSimple memberId="${targetMoveHistory.movingUser.userId}" text="${targetMoveHistory.movingUser.screenName}"/>
+                            by <xcolab:userLinkSimple userId="${targetMoveHistory.movingUser.id}" text="${targetMoveHistory.movingUser.screenName}"/>
                         </c:if>
                     </div>
                 </c:if>
@@ -126,7 +126,7 @@
                     <c:choose>
                         <c:when test="${sourceMoveHistory.moveTypeEnum.name() == 'COPY'
                                     and (sourceMoveHistory.sourcePhaseId == null
-                                            or sourceMoveHistory.sourcePhaseId == contestPhase.contestPhasePK)}">
+                                            or sourceMoveHistory.sourcePhaseId == contestPhase.id)}">
                             <div>
                                 <collab:message code="contests.proposal.moving.reopenedin" contestType="${contestType}">
                                     <spring:argument>
@@ -134,7 +134,7 @@
                                     </spring:argument>
                                 </collab:message>
                                 <c:if test="${proposalsPermissions.canAdminAll}">
-                                    by <xcolab:userLinkSimple memberId="${sourceMoveHistory.movingUser.userId}" text="${sourceMoveHistory.movingUser.screenName}"/>
+                                    by <xcolab:userLinkSimple userId="${sourceMoveHistory.movingUser.id}" text="${sourceMoveHistory.movingUser.screenName}"/>
                                 </c:if>
                             </div>
                         </c:when>
@@ -145,12 +145,12 @@
                     <div class="lastedited">
                         <spring:message code="contests.proposal.versions.currentlyviewing" />
                         <script>
-                            document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format("MM/DD/YYYY hh:mm A"));
+                            document.write(moment.unix(${proposal.selectedVersion.createdAt.time} / 1000).format("MM/DD/YYYY hh:mm A"));
                             var version = ${proposal.selectedVersion.version};
                             triggerHistoryVisibility();
                         </script>
                         by
-                        <xcolab:userLinkSimple memberId="${proposal.selectedVersion.authorId}"
+                        <xcolab:userLinkSimple userId="${proposal.selectedVersion.authorUserId}"
                                                text="${proposal.userForSelectedVersion.screenName}"/>
                     </div>
                 </c:if>
@@ -217,8 +217,8 @@
     <c:if test="${not _themeContext.themeVariables.isCommentsInOwnTab}">
         <hr class="cb-hr-tan cb-hr-xl" id="Comments"/>
         <xcolab:discussionComments threadId="${proposal.discussionIdOrCreate}"
-                                   proposalId="${proposal.proposalId}"
-                                   shareTitle="Discussion for ${proposal.name} in ${contest.contestShortName}" />
+                                   proposalId="${proposal.id}"
+                                   shareTitle="Discussion for ${proposal.name} in ${contest.title}" />
 
         <script>
             jQuery(function() {
@@ -235,7 +235,7 @@
                 <p style="color: #545454; margin-top: 5px;">
                     <collab:message code="contests.proposal.voting.youjustvoted" contestType="${contestType}">
                         <spring:argument>${proposal.name}</spring:argument>
-                        <spring:argument>${proposal.contest.contestName}</spring:argument>
+                        <spring:argument>${proposal.contest.question}</spring:argument>
                     </collab:message>
                     <br/><br/>
                     <c:if test="${not empty votingDeadline}">
@@ -248,7 +248,7 @@
                 <h4 style="color: #30a3fb;">
                     <spring:message code="contests.proposal.voting.share" />
                 </h4>
-                <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
+                <xcolab-social:socialShareButtons title="${_themeContext.colabName.concat(' - ').concat(contest.title).concat(' - ').concat(proposal.name)}"/>
             </div>
         </xcolab:modal>
         <script>
@@ -292,7 +292,7 @@
     </c:set>
 
     <spring:message var="menuItemName" text="${contestType.menuItemName}" javaScriptEscape="true" />
-    <spring:message var="contestShortName" text="${contest.contestShortName}" javaScriptEscape="true" />
+    <spring:message var="title" text="${contest.title}" javaScriptEscape="true" />
     <spring:message var="proposalName" text="${proposal.name}" javaScriptEscape="true" />
     <script type="application/ld+json">
         {
@@ -312,7 +312,7 @@
             "position": 2,
             "item": {
               "@id": "${_themeContext.colabUrl}${contest.contestUrl}",
-              "name": "${contestShortName}",
+              "name": "${title}",
               "image": "${contest.logoPath}"
             }
           }

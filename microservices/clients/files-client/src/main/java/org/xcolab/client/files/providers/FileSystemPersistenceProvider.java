@@ -18,14 +18,14 @@ public class FileSystemPersistenceProvider implements PersistenceProvider {
     @Override
     public boolean saveFileToFinalDestination(byte[] imgBArr, FileEntry fileEntry, String path) {
 
-        int shardingFolder = (fileEntry.getFileEntryId()).intValue() / LOCAL_FOLDER_MAX_AMOUNT_OF_FILES;
+        int shardingFolder = (fileEntry.getId()).intValue() / LOCAL_FOLDER_MAX_AMOUNT_OF_FILES;
         String finalPath = path + "data/" + LOCAL_FOLDER_NAME + File.separator + shardingFolder + File.separator;
         File folder = new File(finalPath);
         if (!folder.exists()) {
             folder.mkdirs();
         }
         try {
-            FileUtils.writeByteArrayToFile(new File(finalPath + fileEntry.getFileEntryId() + "." + fileEntry.getFileEntryExtension()), imgBArr);
+            FileUtils.writeByteArrayToFile(new File(finalPath + fileEntry.getId() + "." + fileEntry.getFileExtension()), imgBArr);
             return true;
         } catch (IOException e) {
             throw new InternalException(e);
@@ -35,8 +35,8 @@ public class FileSystemPersistenceProvider implements PersistenceProvider {
     @Override
     public String getFilePathFromFinalDestination(FileEntry fileEntry, String path) {
 
-        int shardingFolder = (fileEntry.getFileEntryId()).intValue() / LOCAL_FOLDER_MAX_AMOUNT_OF_FILES;
+        int shardingFolder = (fileEntry.getId()).intValue() / LOCAL_FOLDER_MAX_AMOUNT_OF_FILES;
         String finalPath = path + "data/" + LOCAL_FOLDER_NAME + File.separator + shardingFolder + File.separator;
-        return finalPath + fileEntry.getFileEntryId() + "." + fileEntry.getFileEntryExtension();
+        return finalPath + fileEntry.getId() + "." + fileEntry.getFileExtension();
     }
 }

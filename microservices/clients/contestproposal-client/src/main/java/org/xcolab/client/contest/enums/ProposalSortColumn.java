@@ -19,7 +19,7 @@ public enum ProposalSortColumn {
             (o1, o2) -> (o1.getScreeningStatus().getStatusValue() - o2.getScreeningStatus().getStatusValue())),
     IAFSTATUS(
             (o1, o2) -> (o1.getImpactAssessmentStatus().getStatusValue() - o2.getImpactAssessmentStatus().getStatusValue())),
-    MODIFIED(Comparator.comparing(Proposal::getLastModifiedDate)),
+    MODIFIED(Comparator.comparing(Proposal::getLastupdatedAt)),
     CONTRIBUTORS((o1, o2) -> {
         if (o1.isOpen()) {
             return o2.isOpen() ? 0 : -1;

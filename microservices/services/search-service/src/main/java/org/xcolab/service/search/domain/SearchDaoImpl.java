@@ -11,7 +11,7 @@ import org.jooq.impl.TableImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.MemberTable;
+import org.xcolab.model.tables.UserTable;
 import org.xcolab.service.search.enums.SearchType;
 import org.xcolab.service.search.pojo.SearchPojo;
 import org.xcolab.service.utils.PaginationHelper;
@@ -22,7 +22,7 @@ import java.util.List;
 
 import static org.xcolab.model.Tables.COMMENT;
 import static org.xcolab.model.Tables.CONTEST;
-import static org.xcolab.model.Tables.MEMBER;
+import static org.xcolab.model.Tables.USER;
 import static org.xcolab.model.Tables.PROPOSAL_ATTRIBUTE;
 import static org.xcolab.service.utils.db.jooq.CustomDsl.match;
 
@@ -46,7 +46,7 @@ public class SearchDaoImpl implements SearchDao {
         final Field<Double> relevance = match(PROPOSAL_ATTRIBUTE.STRING_VALUE).against(query)
                 .as("relevance");
         Field<Long> searchTypeId = DSL.val(SearchType.PROPOSAL.getId()).as("searchTypeId");
-        return dslContext.select(PROPOSAL_ATTRIBUTE.ID_.as("classPrimaryKey"), relevance, searchTypeId)
+        return dslContext.select(PROPOSAL_ATTRIBUTE.ID.as("classPrimaryKey"), relevance, searchTypeId)
                 .from(PROPOSAL_ATTRIBUTE)
                 .where(match(PROPOSAL_ATTRIBUTE.STRING_VALUE).against(query))
                 .groupBy(PROPOSAL_ATTRIBUTE.PROPOSAL_ID)
@@ -72,22 +72,22 @@ public class SearchDaoImpl implements SearchDao {
 
     @Override
     public List<SearchPojo> findMember(PaginationHelper paginationHelper, String query) {
-        return getQueryForSearch(paginationHelper, query, SearchType.MEMBER.getId(), MEMBER,
-                MEMBER.ID_, MemberTable.MEMBER.SHORT_BIO, MEMBER.FIRST_NAME, MEMBER.LAST_NAME,
-                MEMBER.SCREEN_NAME)
+        return getQueryForSearch(paginationHelper, query, SearchType.USER.getId(), USER,
+                USER.ID, UserTable.USER.SHORT_BIO, USER.FIRST_NAME, USER.LAST_NAME,
+                USER.SCREEN_NAME)
                 .fetchInto(SearchPojo.class);
     }
 
     @Override
     public Integer findMemberCount(String query) {
-        return getTotalForCount(query, MEMBER, MemberTable.MEMBER.SHORT_BIO, MEMBER.FIRST_NAME,
-                MEMBER.LAST_NAME, MEMBER.SCREEN_NAME);
+        return getTotalForCount(query, USER, UserTable.USER.SHORT_BIO, USER.FIRST_NAME,
+                USER.LAST_NAME, USER.SCREEN_NAME);
     }
 
     @Override
     public List<SearchPojo> findComment(PaginationHelper paginationHelper, String query) {
         return getQueryForSearch(paginationHelper, query, SearchType.DISCUSSION.getId(), COMMENT,
-                COMMENT.COMMENT_ID, COMMENT.CONTENT)
+                COMMENT.ID, COMMENT.CONTENT)
                 .fetchInto(SearchPojo.class);
 
     }
@@ -100,13 +100,13 @@ public class SearchDaoImpl implements SearchDao {
     @Override
     public List<SearchPojo> findContest(PaginationHelper paginationHelper, String query) {
         return getQueryForSearch(paginationHelper, query, SearchType.CONTEST.getId(), CONTEST,
-                CONTEST.CONTEST_PK, getContestConditions(),CONTEST.CONTEST_DESCRIPTION)
+                CONTEST.ID, getContestConditions(),CONTEST.DESCRIPTION)
                 .fetchInto(SearchPojo.class);
     }
 
     @Override
     public Integer findContestCount(String query) {
-        return getTotalForCount(query, CONTEST, getContestConditions(), CONTEST.CONTEST_DESCRIPTION);
+        return getTotalForCount(query, CONTEST, getContestConditions(), CONTEST.DESCRIPTION);
     }
 
     @Override
@@ -115,15 +115,15 @@ public class SearchDaoImpl implements SearchDao {
         return dslContext.select()
                 .from(getProposalQueryForSearch(unlimitedPagination, query)
                         .unionAll(getQueryForSearch(unlimitedPagination, query,
-                                SearchType.MEMBER.getId(), MEMBER, MEMBER.ID_,
-                                MemberTable.MEMBER.SHORT_BIO, MEMBER.FIRST_NAME, MEMBER.LAST_NAME,
-                                MEMBER.SCREEN_NAME))
+                                SearchType.USER.getId(), USER, USER.ID,
+                                UserTable.USER.SHORT_BIO, USER.FIRST_NAME, USER.LAST_NAME,
+                                USER.SCREEN_NAME))
                         .union(getQueryForSearch(unlimitedPagination, query,
-                                SearchType.DISCUSSION.getId(), COMMENT, COMMENT.COMMENT_ID,
+                                SearchType.DISCUSSION.getId(), COMMENT, COMMENT.ID,
                                 COMMENT.CONTENT))
                         .union(getQueryForSearch(unlimitedPagination, query,
-                                SearchType.CONTEST.getId(), CONTEST, CONTEST.CONTEST_PK,
-                                getContestConditions(), CONTEST.CONTEST_DESCRIPTION))
+                                SearchType.CONTEST.getId(), CONTEST, CONTEST.ID,
+                                getContestConditions(), CONTEST.DESCRIPTION))
                 )
                 .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
                 .fetchInto(SearchPojo.class);

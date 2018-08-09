@@ -20,8 +20,8 @@ public class FocusArea extends AbstractFocusArea implements Serializable {
         super(value);
     }
 
-    public FocusArea(Long id_, String name, Integer order_) {
-        super(id_, name, order_);
+    public FocusArea(Long id, String name, Integer order_) {
+        super(id, name, order_);
     }
 
     public FocusArea(AbstractFocusArea abstractFocusArea, ServiceNamespace serviceNamespace) {
@@ -32,9 +32,11 @@ public class FocusArea extends AbstractFocusArea implements Serializable {
     public FocusArea getWrapped() {
         return this;
     }
+
     public List<OntologyTerm> getOntologyTerms() {
         return ontologyTerms;
     }
+
     public void addOntologyTerm(OntologyTerm term) {
         if (term != null) {
             ontologyTerms.add(term);
@@ -42,12 +44,7 @@ public class FocusArea extends AbstractFocusArea implements Serializable {
         }
     }
 
-
     public String getTermsIdsStr() {
         return ontologyTermsIds.toString();
-    }
-
-    public Long getId(){
-        return this.getId_();
     }
 }

@@ -7,58 +7,58 @@ class AbstractPointsDistributionConfiguration implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long proposalid;
     private Long pointtypeid;
     private Long targetuserid;
     private Long targetsubproposalid;
     private Long targetplansectiondefinitionid;
     private Double percentage;
-    private Long creator;
-    private Timestamp createdate;
+    private Long authorUserId;
+    private Timestamp createdAt;
 
     public AbstractPointsDistributionConfiguration() {}
 
     public AbstractPointsDistributionConfiguration(AbstractPointsDistributionConfiguration value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.proposalid = value.proposalid;
         this.pointtypeid = value.pointtypeid;
         this.targetuserid = value.targetuserid;
         this.targetsubproposalid = value.targetsubproposalid;
         this.targetplansectiondefinitionid = value.targetplansectiondefinitionid;
         this.percentage = value.percentage;
-        this.creator = value.creator;
-        this.createdate = value.createdate;
+        this.authorUserId = value.authorUserId;
+        this.createdAt = value.createdAt;
     }
 
     public AbstractPointsDistributionConfiguration(
-            Long id_,
+            Long id,
             Long proposalid,
             Long pointtypeid,
             Long targetuserid,
             Long targetsubproposalid,
             Long targetplansectiondefinitionid,
             Double percentage,
-            Long creator,
-            Timestamp createdate
+            Long authorUserId,
+            Timestamp createdAt
     ) {
-        this.id_ = id_;
+        this.id = id;
         this.proposalid = proposalid;
         this.pointtypeid = pointtypeid;
         this.targetuserid = targetuserid;
         this.targetsubproposalid = targetsubproposalid;
         this.targetplansectiondefinitionid = targetplansectiondefinitionid;
         this.percentage = percentage;
-        this.creator = creator;
-        this.createdate = createdate;
+        this.authorUserId = authorUserId;
+        this.createdAt = createdAt;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getProposalId() {
@@ -109,27 +109,27 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         this.percentage = percentage;
     }
 
-    public Long getCreator() {
-        return this.creator;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setCreator(Long creator) {
-        this.creator = creator;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((proposalid == null) ? 0 : proposalid.hashCode());
         result = prime * result + ((pointtypeid == null) ? 0 : pointtypeid.hashCode());
         result = prime * result + ((targetuserid == null) ? 0 : targetuserid.hashCode());
@@ -138,8 +138,8 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         result = prime * result + ((targetplansectiondefinitionid == null) ? 0
                 : targetplansectiondefinitionid.hashCode());
         result = prime * result + ((percentage == null) ? 0 : percentage.hashCode());
-        result = prime * result + ((creator == null) ? 0 : creator.hashCode());
-        result = prime * result + ((createdate == null) ? 0 : createdate.hashCode());
+        result = prime * result + ((authorUserId == null) ? 0 : authorUserId.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         return result;
     }
 
@@ -156,11 +156,11 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         }
         final AbstractPointsDistributionConfiguration
                 other = (AbstractPointsDistributionConfiguration) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (proposalid == null) {
@@ -205,18 +205,18 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         } else if (!percentage.equals(other.percentage)) {
             return false;
         }
-        if (creator == null) {
-            if (other.creator != null) {
+        if (authorUserId == null) {
+            if (other.authorUserId != null) {
                 return false;
             }
-        } else if (!creator.equals(other.creator)) {
+        } else if (!authorUserId.equals(other.authorUserId)) {
             return false;
         }
-        if (createdate == null) {
-            if (other.createdate != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!createdate.equals(other.createdate)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         return true;
@@ -225,10 +225,10 @@ class AbstractPointsDistributionConfiguration implements Serializable {
     @Override
     public String toString() {
         String sb =
-                "PointsDistributionConfiguration (" + id_ + ", " + proposalid + ", " + pointtypeid
+                "PointsDistributionConfiguration (" + id + ", " + proposalid + ", " + pointtypeid
                         + ", " + targetuserid + ", " + targetsubproposalid + ", "
-                        + targetplansectiondefinitionid + ", " + percentage + ", " + creator + ", "
-                        + createdate + ")";
+                        + targetplansectiondefinitionid + ", " + percentage + ", " + authorUserId + ", "
+                        + createdAt + ")";
 
         return sb;
     }

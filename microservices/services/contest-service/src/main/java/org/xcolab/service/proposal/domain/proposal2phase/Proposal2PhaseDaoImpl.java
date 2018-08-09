@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.PROPOSAL;
-import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
+import static org.xcolab.model.Tables.PROPOSAL2_PHASE;
 import static org.xcolab.model.Tables.PROPOSAL_CONTEST_PHASE_ATTRIBUTE;
 
 @Repository
@@ -31,13 +31,13 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
     @Override
     public Proposal2Phase create(Proposal2Phase proposal2Phase) {
 
-        this.dslContext.insertInto(PROPOSAL_2_PHASE)
-                .set(PROPOSAL_2_PHASE.PROPOSAL_ID, proposal2Phase.getProposalId())
-                .set(PROPOSAL_2_PHASE.CONTEST_PHASE_ID, proposal2Phase.getContestPhaseId())
-                .set(PROPOSAL_2_PHASE.VERSION_FROM, proposal2Phase.getVersionFrom())
-                .set(PROPOSAL_2_PHASE.VERSION_TO, proposal2Phase.getVersionTo())
-                .set(PROPOSAL_2_PHASE.SORT_WEIGHT, proposal2Phase.getSortWeight())
-                .set(PROPOSAL_2_PHASE.AUTOPROMOTE_CANDIDATE, proposal2Phase.getAutopromoteCandidate())
+        this.dslContext.insertInto(PROPOSAL2_PHASE)
+                .set(PROPOSAL2_PHASE.PROPOSAL_ID, proposal2Phase.getProposalId())
+                .set(PROPOSAL2_PHASE.CONTEST_PHASE_ID, proposal2Phase.getContestPhaseId())
+                .set(PROPOSAL2_PHASE.VERSION_FROM, proposal2Phase.getVersionFrom())
+                .set(PROPOSAL2_PHASE.VERSION_TO, proposal2Phase.getVersionTo())
+                .set(PROPOSAL2_PHASE.SORT_WEIGHT, proposal2Phase.getSortWeight())
+                .set(PROPOSAL2_PHASE.AUTOPROMOTE_CANDIDATE, proposal2Phase.getAutopromoteCandidate())
                 .execute();
         return proposal2Phase;
 
@@ -47,9 +47,9 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
     @Override
     public Proposal2Phase getByProposalIdContestPhaseId(Long proposalId, Long contestPhaseId) throws NotFoundException {
 
-        final Record record = this.dslContext.selectFrom(PROPOSAL_2_PHASE)
-                .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(proposalId))
-                .and(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId))
+        final Record record = this.dslContext.selectFrom(PROPOSAL2_PHASE)
+                .where(PROPOSAL2_PHASE.PROPOSAL_ID.eq(proposalId))
+                .and(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId))
                 .fetchOne();
 
         if (record == null) {
@@ -61,15 +61,15 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
 
     @Override
     public boolean update(Proposal2Phase proposal2Phase) {
-        return dslContext.update(PROPOSAL_2_PHASE)
-                .set(PROPOSAL_2_PHASE.PROPOSAL_ID, proposal2Phase.getProposalId())
-                .set(PROPOSAL_2_PHASE.CONTEST_PHASE_ID, proposal2Phase.getContestPhaseId())
-                .set(PROPOSAL_2_PHASE.VERSION_FROM, proposal2Phase.getVersionFrom())
-                .set(PROPOSAL_2_PHASE.VERSION_TO, proposal2Phase.getVersionTo())
-                .set(PROPOSAL_2_PHASE.SORT_WEIGHT, proposal2Phase.getSortWeight())
-                .set(PROPOSAL_2_PHASE.AUTOPROMOTE_CANDIDATE, proposal2Phase.getAutopromoteCandidate())
-                .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(proposal2Phase.getProposalId()))
-                .and(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(proposal2Phase.getContestPhaseId()))
+        return dslContext.update(PROPOSAL2_PHASE)
+                .set(PROPOSAL2_PHASE.PROPOSAL_ID, proposal2Phase.getProposalId())
+                .set(PROPOSAL2_PHASE.CONTEST_PHASE_ID, proposal2Phase.getContestPhaseId())
+                .set(PROPOSAL2_PHASE.VERSION_FROM, proposal2Phase.getVersionFrom())
+                .set(PROPOSAL2_PHASE.VERSION_TO, proposal2Phase.getVersionTo())
+                .set(PROPOSAL2_PHASE.SORT_WEIGHT, proposal2Phase.getSortWeight())
+                .set(PROPOSAL2_PHASE.AUTOPROMOTE_CANDIDATE, proposal2Phase.getAutopromoteCandidate())
+                .where(PROPOSAL2_PHASE.PROPOSAL_ID.eq(proposal2Phase.getProposalId()))
+                .and(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(proposal2Phase.getContestPhaseId()))
                 .execute() > 0;
     }
 
@@ -77,17 +77,17 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
     @Override
     public List<Proposal2Phase> findByGiven(Long proposalId, Long contestPhaseId, Integer version) {
         final SelectQuery<Record> query = dslContext.select()
-                .from(PROPOSAL_2_PHASE).getQuery();
+                .from(PROPOSAL2_PHASE).getQuery();
 
         if (proposalId != null) {
-            query.addConditions(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(proposalId));
+            query.addConditions(PROPOSAL2_PHASE.PROPOSAL_ID.eq(proposalId));
         }
         if (contestPhaseId != null) {
-            query.addConditions(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId));
+            query.addConditions(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId));
         }
         if (version != null) {
-            query.addConditions(PROPOSAL_2_PHASE.VERSION_FROM.le(version).and(
-                    PROPOSAL_2_PHASE.VERSION_TO.ge(version).or(PROPOSAL_2_PHASE.VERSION_TO.eq(-1))));
+            query.addConditions(PROPOSAL2_PHASE.VERSION_FROM.le(version).and(
+                    PROPOSAL2_PHASE.VERSION_TO.ge(version).or(PROPOSAL2_PHASE.VERSION_TO.eq(-1))));
         }
 
         Result<Record> records = query.fetch();
@@ -100,16 +100,16 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
 
     @Override
     public List<Proposal2Phase> findByContestAndProposal(Long proposalId, Long contestId) {
-        final SelectQuery<Record> query = dslContext.select()
-                .from(PROPOSAL_2_PHASE)
-                .join(CONTEST_PHASE).on(CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID))
+        final SelectQuery<Record> query = dslContext.select(PROPOSAL2_PHASE.fields())
+                .from(PROPOSAL2_PHASE)
+                .join(CONTEST_PHASE).on(CONTEST_PHASE.ID.eq(PROPOSAL2_PHASE.CONTEST_PHASE_ID))
                 .getQuery();
 
 
-        query.addConditions(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(proposalId));
+        query.addConditions(PROPOSAL2_PHASE.PROPOSAL_ID.eq(proposalId));
 
 
-        query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));
+        query.addConditions(CONTEST_PHASE.ID.eq(contestId));
 
         Result<Record> records = query.fetch();
         if (records != null && !records.isEmpty()) {
@@ -120,20 +120,20 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
     }
 
     @Override
-    public Integer getProposalCountForActiveContestPhase(Long contestPhasePK) {
+    public Integer getProposalCountForActiveContestPhase(Long contestPhaseId) {
 
         final SelectQuery<Record1<Long>> query = dslContext.select(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.PROPOSAL_ID)
                 .from(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
                 .where(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NAME.eq("VISIBLE")
                     .and(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.NUMERIC_VALUE.eq(0L))
-                    .and(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.CONTEST_PHASE_ID.eq(contestPhasePK)))
+                    .and(PROPOSAL_CONTEST_PHASE_ATTRIBUTE.CONTEST_PHASE_ID.eq(contestPhaseId)))
                 .getQuery();
 
         SelectQuery<Record1<Integer>> query2 = dslContext.selectCount()
-                .from(PROPOSAL_2_PHASE)
-                .join(PROPOSAL).on(PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID))
-                .where(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhasePK)
-                    .and(PROPOSAL_2_PHASE.PROPOSAL_ID.notIn(query))
+                .from(PROPOSAL2_PHASE)
+                .join(PROPOSAL).on(PROPOSAL.ID.eq(PROPOSAL2_PHASE.PROPOSAL_ID))
+                .where(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId)
+                    .and(PROPOSAL2_PHASE.PROPOSAL_ID.notIn(query))
                     .and(PROPOSAL.VISIBLE.eq(true)))
                 .getQuery();
 
@@ -147,9 +147,9 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
 
     @Override
     public int delete(Long proposalId, Long contestPhaseId) {
-        return dslContext.deleteFrom(PROPOSAL_2_PHASE)
-                .where(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(proposalId))
-                .and(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId))
+        return dslContext.deleteFrom(PROPOSAL2_PHASE)
+                .where(PROPOSAL2_PHASE.PROPOSAL_ID.eq(proposalId))
+                .and(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId))
                 .execute();
     }
 

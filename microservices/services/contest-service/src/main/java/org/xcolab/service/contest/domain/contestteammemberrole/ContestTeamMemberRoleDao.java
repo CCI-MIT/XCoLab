@@ -6,5 +6,5 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import java.util.Optional;
 
 public interface ContestTeamMemberRoleDao {
-    Optional<ContestTeamMemberRole> get(Long id_) throws NotFoundException;
+    Optional<ContestTeamMemberRole> get(Long id) throws NotFoundException;
 }

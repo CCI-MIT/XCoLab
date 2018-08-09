@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface CommentDao {
 
-    int countByGiven(Long authorId, Collection<Long> threadIds);
+    int countByGiven(Long authorUserId, Collection<Long> threadIds);
 
-    List<Comment> findByGiven(PaginationHelper paginationHelper, Long authorId, Collection<Long> threadIds,boolean includeDeleted);
+    List<Comment> findByGiven(PaginationHelper paginationHelper, Long authorUserId, Collection<Long> threadIds,boolean includeDeleted);
 
     Comment get(long commentId) throws NotFoundException;
 

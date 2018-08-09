@@ -6,7 +6,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import java.util.Comparator;
 
 public enum ContestsColumn {
-    CONTEST_NAME (Comparator.comparing(o -> o.getContestShortNameWithEndYear().toLowerCase())),
+    CONTEST_NAME (Comparator.comparing(o -> o.getTitleWithEndYear().toLowerCase())),
     PROPOSALS_COUNT((o1, o2) -> (int) (o1.getProposalsCount() - o2.getProposalsCount())),
     COMMENTS_COUNT((o1, o2) -> (int) (o1.getTotalCommentsCount() - o2.getTotalCommentsCount())),
     VOTES_COUNT((o1, o2) -> (int) (o1.getVotesCount() - o2.getVotesCount())),
@@ -56,7 +56,7 @@ public enum ContestsColumn {
     private static int compareContestsByStringValues(Contest c1, String s1, Contest c2, String s2) {
         if (s1.isEmpty()) {
             if (s2.isEmpty()) {
-                return (int) (c1.getContestPK() - c2.getContestPK());
+                return (int) (c1.getId() - c2.getId());
             }
             return -1;
         }

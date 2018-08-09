@@ -16,8 +16,8 @@ import org.xcolab.client.contest.ImpactClient;
 import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.PlanTemplateClient;
-import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.ProposalTemplateClient;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.PointsClient;
@@ -51,7 +51,7 @@ public class ClientHelper {
     private final ContestTeamMemberClient contestTeamMemberClient;
     private final ImpactClient impactClient;
     private final OntologyClient ontologyClient;
-    private final PlanTemplateClient planTemplateClient;
+    private final ProposalTemplateClient planTemplateClient;
 
     // Comment
     private final CommentClient commentClient;
@@ -75,7 +75,7 @@ public class ClientHelper {
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         impactClient = ImpactClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
-        planTemplateClient = PlanTemplateClientUtil.getClient();
+        planTemplateClient = ProposalTemplateClientUtil.getClient();
 
         commentClient = CommentClientUtil.getClient();
         threadClient = ThreadClientUtil.getClient();
@@ -136,7 +136,7 @@ public class ClientHelper {
         return ontologyClient;
     }
 
-    public PlanTemplateClient getPlanTemplateClient() {
+    public ProposalTemplateClient getPlanTemplateClient() {
         return planTemplateClient;
     }
 

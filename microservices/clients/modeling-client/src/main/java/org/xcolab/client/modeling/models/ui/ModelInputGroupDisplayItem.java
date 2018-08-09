@@ -79,7 +79,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
         group.setGroupType(type.name());
 
         if (parentGroupPK != null && parentGroupPK > 0) {
-            group.setParentGroupPK(parentGroupPK);
+            group.setParentGroupId(parentGroupPK);
         }
 
         ModelingClientUtil.createModelInputGroup(group);
@@ -98,7 +98,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
         group.setNameAndDescriptionMetaDataId(md.getId());
         group.setGroupType(type.name());
         if (parentGroupPK != null && parentGroupPK > 0) {
-            group.setParentGroupPK(parentGroupPK);
+            group.setParentGroupId(parentGroupPK);
         }
         ModelingClientUtil.createModelInputGroup(group);
 
@@ -149,7 +149,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
             ModelInputIndividualDisplayItem item =
                     ModelInputIndividualDisplayItem
                             .create(getSimulation(), d, type);
-            item.item.setModelGroupId(group.getModelInputGroupPK());
+            item.item.setModelGroupId(group.getId());
             ModelingClientUtil.updateModelInputItem(item.item);
             items.add(item);
             return item;
@@ -179,7 +179,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
 
     public void setParent(ModelInputGroupDisplayItem parent) throws IOException {
         ModelInputGroupDisplayItem old = this.parent;
-        group.setParentGroupPK(parent == null ? null : parent.group.getModelInputGroupPK());
+        group.setParentGroupId(parent == null ? null : parent.group.getId());
         ModelingClientUtil.updateModelInputGroup(group);
         this.parent = parent;
         if (old != null) {
@@ -231,7 +231,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
             ((ModelInputIndividualDisplayItem) item).setGroupId(null);
         }
         populateChildren();
-        ModelingClientUtil.deleteModelInputGroup(group.getModelInputGroupPK());
+        ModelingClientUtil.deleteModelInputGroup(group.getId());
     }
 
     public List<ModelInputGroupDisplayItem> getChildGroups() {
@@ -347,11 +347,11 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      * Returns group ID.
      */
     public Long getGroupId() {
-        return group.getModelInputGroupPK();
+        return group.getId();
     }
 
     public Long getParentGroupId() {
-        return group.getParentGroupPK();
+        return group.getParentGroupId();
     }
 
 }

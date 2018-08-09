@@ -10,53 +10,53 @@ public abstract class AbstractContestPhase implements Serializable, Comparable<A
 
     private static final long serialVersionUID = 1L;
 
-    private Long contestphasepk;
-    private Long contestpk;
-    private Long contestphasetype;
+    private Long id;
+    private Long contestId;
+    private Long contestPhaseTypeId;
     private Long contestscheduleid;
     private String contestphaseautopromote;
     private Timestamp phasestartdate;
     private Timestamp phaseenddate;
-    private Timestamp created;
-    private Timestamp updated;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public AbstractContestPhase() {
     }
 
     public AbstractContestPhase(AbstractContestPhase value) {
-        this.contestphasepk = value.contestphasepk;
-        this.contestpk = value.contestpk;
-        this.contestphasetype = value.contestphasetype;
+        this.id = value.id;
+        this.contestId = value.contestId;
+        this.contestPhaseTypeId = value.contestPhaseTypeId;
         this.contestscheduleid = value.contestscheduleid;
         this.contestphaseautopromote = value.contestphaseautopromote;
         this.phasestartdate = value.phasestartdate;
         this.phaseenddate = value.phaseenddate;
-        this.created = value.created;
-        this.updated = value.updated;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
     }
 
-    public Long getContestPhasePK() {
-        return this.contestphasepk;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setContestPhasePK(Long contestphasepk) {
-        this.contestphasepk = contestphasepk;
+    public void setId(Long contestPhaseId) {
+        this.id = contestPhaseId;
     }
 
-    public Long getContestPK() {
-        return this.contestpk;
+    public Long getContestId() {
+        return this.contestId;
     }
 
-    public void setContestPK(Long contestpk) {
-        this.contestpk = contestpk;
+    public void setContestId(Long contestId) {
+        this.contestId = contestId;
     }
 
-    public Long getContestPhaseType() {
-        return this.contestphasetype;
+    public Long getContestPhaseTypeId() {
+        return this.contestPhaseTypeId;
     }
 
-    public void setContestPhaseType(Long contestphasetype) {
-        this.contestphasetype = contestphasetype;
+    public void setContestPhaseTypeId(Long contestphasetype) {
+        this.contestPhaseTypeId = contestphasetype;
     }
 
     public Long getContestScheduleId() {
@@ -91,20 +91,20 @@ public abstract class AbstractContestPhase implements Serializable, Comparable<A
         this.phaseenddate = phaseenddate;
     }
 
-    public Timestamp getCreated() {
-        return this.created;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreated(Timestamp created) {
-        this.created = created;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdated() {
-        return this.updated;
+    public Timestamp getUpdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setUpdated(Timestamp updated) {
-        this.updated = updated;
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -122,33 +122,33 @@ public abstract class AbstractContestPhase implements Serializable, Comparable<A
             return false;
         }
         AbstractContestPhase that = (AbstractContestPhase) o;
-        return Objects.equals(contestphasepk, that.contestphasepk)
-                && Objects.equals(contestpk, that.contestpk)
-                && Objects.equals(contestphasetype, that.contestphasetype)
+        return Objects.equals(id, that.id)
+                && Objects.equals(contestId, that.contestId)
+                && Objects.equals(contestPhaseTypeId, that.contestPhaseTypeId)
                 && Objects.equals(contestscheduleid, that.contestscheduleid)
                 && Objects.equals(contestphaseautopromote, that.contestphaseautopromote)
                 && Objects.equals(phasestartdate, that.phasestartdate)
                 && Objects.equals(phaseenddate, that.phaseenddate)
-                && Objects.equals(getCreated(), that.getCreated())
-                && Objects.equals(getUpdated(), that.getUpdated());
+                && Objects.equals(getCreatedAt(), that.getCreatedAt())
+                && Objects.equals(getUpdatedAt(), that.getUpdatedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contestphasepk, contestpk, contestphasetype, contestscheduleid,
-                contestphaseautopromote, phasestartdate, phaseenddate, getCreated(), getUpdated());
+        return Objects.hash(id, contestId, contestPhaseTypeId, contestscheduleid,
+                contestphaseautopromote, phasestartdate, phaseenddate, getCreatedAt(), getUpdatedAt());
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("contestphasepk", contestphasepk)
-                .append("contestpk", contestpk)
-                .append("contestphasetype", contestphasetype)
+                .append("id", id)
+                .append("contestId", contestId)
+                .append("contestPhaseTypeId", contestPhaseTypeId)
                 .append("contestscheduleid", contestscheduleid)
                 .append("contestphaseautopromote", contestphaseautopromote)
                 .append("phasestartdate", phasestartdate)
                 .append("phaseenddate", phaseenddate)
-                .append("created", created).append("updated", updated).toString();
+                .append("created", createdAt).append("updated", updatedAt).toString();
     }
 }

@@ -36,12 +36,12 @@ public class ProposalVersionService {
         int counter = 0;
         for (ProposalVersion proposalVersion: proposalVersionDao.findByProposal2Phase(proposal2Phases,proposalId)) {
 
-            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
+            if (Math.abs(oldDate.getTime() - proposalVersion.getCreatedAt().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
 
                 if(counter >= start && counter <= end) {
                     groupedProposalVersions.add(proposalVersion);
                 }
-                oldDate = proposalVersion.getCreateDate();
+                oldDate = proposalVersion.getCreatedAt();
                 counter++;
             }
         }

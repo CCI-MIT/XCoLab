@@ -1,51 +1,46 @@
-drop table comment_Category if exists;
-drop table comment_Comment if exists;
-drop table comment_Thread if exists;
-drop table comment_CategoryGroup if exists;
-
-create table comment_Category
+create table comment__category
 (
-	categoryId bigint not null auto_increment
+  id             bigint auto_increment
     primary key,
-	groupId bigint null,
-	authorId bigint null,
-	name varchar(75) null,
-	description text null,
-	createDate datetime not null,
-	deletedDate datetime null,
-	sort int null,
-	isQuiet tinyint default '0' null
-);
+  group_id       bigint              null,
+  author_user_id bigint              null,
+  name           varchar(75)         null,
+  description    text                null,
+  created_at     datetime            not null,
+  deleted_at     datetime            null,
+  sort           int                 null,
+  is_quiet       tinyint default '0' null
+) ENGINE=InnoDB  CHARSET=utf8mb4;
 
-create table comment_CategoryGroup
+create table comment__category_group
 (
-	groupId bigint not null auto_increment
-		primary key,
-	description text null,
-	url varchar(200) null,
-	isQuiet tinyint default '0' null
-);
+  id          bigint auto_increment
+    primary key,
+  description text                null,
+  url         varchar(200)        null,
+  is_quiet    tinyint default '0' null
+) ENGINE=InnoDB  CHARSET=utf8mb4;
 
-create table comment_Comment
+create table comment__comment
 (
-	commentId bigint not null auto_increment
-		primary key,
-	threadId bigint not null,
-	authorId bigint null,
-	createDate datetime null,
-	modifiedDate datetime null,
-	deletedDate datetime null,
-	content text null
-);
+  id             bigint auto_increment
+    primary key,
+  thread_id      bigint   not null,
+  author_user_id bigint   null,
+  created_at     datetime null,
+  updated_at     datetime null,
+  deleted_at     datetime null,
+  content        text     null
+) ENGINE=InnoDB  CHARSET=utf8mb4;
 
-create table comment_Thread
+create table comment__thread
 (
-	threadId bigint not null auto_increment
-		primary key,
-	categoryId bigint null,
-	authorId bigint not null,
-	title varchar(255) not null,
-	createDate datetime not null,
-	deletedDate datetime null,
-	isQuiet tinyint default '0' null
-);
+  id             bigint auto_increment
+    primary key,
+  category_id    bigint              null,
+  author_user_id bigint              not null,
+  title          varchar(255)        not null,
+  created_at     datetime            not null,
+  deleted_at     datetime            null,
+  is_quiet       tinyint default '0' null
+) ENGINE=InnoDB  CHARSET=utf8mb4;

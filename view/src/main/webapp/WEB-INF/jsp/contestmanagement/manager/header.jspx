@@ -18,7 +18,7 @@
             <c:forEach var="singleTab" items="${tabs}" varStatus="loopStatus">
                 <li class="nav-item">
                     <xcolab:tabLink defaultTab="${singleTab.isDefault}" tabName="${singleTab.name}"
-                                 tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.contestPK}"
+                                 tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.id}"
                                  activityCount="${singleTab.activityCount}" managerTab="true"
                                  cssClass="nav-link ${currentTabWrapped.name == singleTab.tab ? 'active' : ''}"/>
                 </li>

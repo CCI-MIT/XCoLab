@@ -23,13 +23,13 @@ public class MessageReceived extends Message {
 			Long messageid,
 			Long fromid,
 			Long repliesto,
-			Timestamp createdate,
+			Timestamp createdAt,
 			String subject,
 			String content,
 			Boolean opened,
             Boolean archived,
             String threadId) {
-		super(messageid, fromid, repliesto, createdate, subject, content);
+		super(messageid, fromid, repliesto, createdAt, subject, content);
 		this.opened = opened;
 		this.archived = archived;
 		this.threadId = threadId;

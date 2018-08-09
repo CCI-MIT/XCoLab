@@ -19,7 +19,7 @@ public enum ReceiverLimitationStrategy {
         // check if there is any configuration, if there is create appropriate targets
         List<PointsTarget> targets = new ArrayList<>();
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
                 if (pdc.getTargetUserId() > 0) {
                     PointsTarget target = new PointsTarget();
                     target.setUserId(pdc.getTargetUserId());
@@ -35,9 +35,9 @@ public enum ReceiverLimitationStrategy {
         List<PointsTarget> targets = new ArrayList<>();
 
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
                 if (pdc.getTargetUserId() > 0 && !ProposalClientUtil
-                        .isUserInProposalTeam(proposal.getProposalId(), pdc.getTargetUserId())) {
+                        .isUserInProposalTeam(proposal.getId(), pdc.getTargetUserId())) {
                     PointsTarget target = new PointsTarget();
                     target.setUserId(pdc.getTargetUserId());
                     target.setPercentage(pdc.getPercentage());
@@ -51,9 +51,9 @@ public enum ReceiverLimitationStrategy {
         List<PointsTarget> targets = new ArrayList<>();
 
         if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getId(), pointType.getId())) {
                 if (pdc.getTargetUserId() > 0 && ProposalClientUtil
-                        .isUserInProposalTeam(proposal.getProposalId(), pdc.getTargetUserId())) {
+                        .isUserInProposalTeam(proposal.getId(), pdc.getTargetUserId())) {
                     PointsTarget target = new PointsTarget();
                     target.setUserId(pdc.getTargetUserId());
                     target.setPercentage(pdc.getPercentage());
@@ -61,35 +61,35 @@ public enum ReceiverLimitationStrategy {
                 }
             }
             if (targets.isEmpty()) {
-                return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
+                return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getId());
             }
         } else if (distributionStrategy == DistributionStrategy.EQUAL_DIVISION) {
-            return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
+            return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getId());
         }
         return targets;
     }),
     SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
         List<Proposal> subProposals = ProposalClientUtil
-                .getSubproposals(proposal.getProposalId(), false);
+                .getSubproposals(proposal.getId(), false);
         Set<Long> subProposalIds = new HashSet<>();
         for (Proposal subProposal : subProposals) {
-            subProposalIds.add(subProposal.getProposalId());
+            subProposalIds.add(subProposal.getId());
         }
         return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
     }),
     REGIONAL_SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
         try {
             List<Proposal> subProposals = ProposalClientUtil
-                    .getSubproposals(proposal.getProposalId(), false);
+                    .getSubproposals(proposal.getId(), false);
             Set<Long> subProposalIds = new HashSet<>();
             for (Proposal subProposal : subProposals) {
-                final Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getProposalId());
+                final Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.REGION_AGGREGATE) {
-                    subProposalIds.add(subProposal.getProposalId());
+                    subProposalIds.add(subProposal.getId());
                 }
             }
-            subProposalIds.remove(proposal.getProposalId());
+            subProposalIds.remove(proposal.getId());
             return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
         } catch (ContestNotFoundException ignored) {
 
@@ -98,20 +98,20 @@ public enum ReceiverLimitationStrategy {
     }),
     BASIC_SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
         List<Proposal> subProposals = ProposalClientUtil
-                .getSubproposals(proposal.getProposalId(), false);
+                .getSubproposals(proposal.getId(), false);
         Set<Long> subProposalIds = new HashSet<>();
         for (Proposal subProposal : subProposals) {
             try {
-                final Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getProposalId());
+                final Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getId());
                 final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
                 if (contestTier == ContestTier.BASIC || contestTier == ContestTier.NONE) {
-                    subProposalIds.add(subProposal.getProposalId());
+                    subProposalIds.add(subProposal.getId());
                 }
             }catch (ContestNotFoundException ignored){
 
             }
         }
-        subProposalIds.remove(proposal.getProposalId());
+        subProposalIds.remove(proposal.getId());
         return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
     }),
     NONE(Type.OTHER, (proposal, pointType, distributionStrategy) -> null);

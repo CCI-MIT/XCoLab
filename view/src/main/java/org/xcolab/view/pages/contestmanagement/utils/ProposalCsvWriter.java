@@ -2,7 +2,7 @@ package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalTeamMember;
@@ -45,14 +45,14 @@ public class ProposalCsvWriter extends CsvResponseWriter {
     public void writeProposalsInContest(Contest contest) {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
-        List<Proposal> proposals = ProposalClientUtil.listProposals(contest.getContestPK());
+        List<Proposal> proposals = ProposalClientUtil.listProposals(contest.getId());
 
         for (Proposal proposal : proposals) {
             List<String> row = new ArrayList<>();
-            addValue(row, contest.getContestPK());
-            addValue(row, contest.getContestShortName());
+            addValue(row, contest.getId());
+            addValue(row, contest.getTitle());
 
-            addValue(row, proposal.getProposalId());
+            addValue(row, proposal.getId());
             final String proposalUrl = colabUrl + proposal.getProposalLinkUrl(contest);
             addValue(row, proposalUrl);
             addValue(row, proposal.getName());
@@ -66,17 +66,17 @@ public class ProposalCsvWriter extends CsvResponseWriter {
                     .map(ProposalTeamMember::getFullName)
                     .map(String::valueOf)
                     .collect(Collectors.joining(",")));
-            addValue(row, proposal.getAuthorId());
+            addValue(row, proposal.getAuthorUserId());
             addValue(row, proposal.getAuthorName());
             addValue(row, proposal.getCommentsCount());
             addValue(row, proposal.getSupportersCount());
             addValue(row, proposal.getVotesCount());
-            addValue(row, proposal.getCreateDate());
-            addValue(row, proposal.getUpdatedDate());
+            addValue(row, proposal.getCreatedAt());
+            addValue(row, proposal.getUpdatedAt());
             addValue(row, proposal.getPitch());
 
             List<String> sectionContent = new ArrayList<>();
-            for (PlanSectionDefinition section:  proposal.getSections()) {
+            for (ProposalTemplateSectionDefinition section:  proposal.getSections()) {
                 addValue(sectionContent, "<h1>" + section.getTitle() + "</h1>" + section.getContent());
             }
 

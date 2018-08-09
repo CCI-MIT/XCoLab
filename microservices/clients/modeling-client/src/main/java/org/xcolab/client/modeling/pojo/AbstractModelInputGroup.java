@@ -6,35 +6,35 @@ public abstract class AbstractModelInputGroup implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long modelinputgrouppk;
+    private Long id;
     private Long modelid;
     private Long nameanddescriptionmetadataid;
     private String name;
     private String description;
     private Integer displayitemorder;
     private String grouptype;
-    private Long parentgrouppk;
+    private Long parentGroupId;
 
     public AbstractModelInputGroup() {
     }
 
     public AbstractModelInputGroup(AbstractModelInputGroup value) {
-        this.modelinputgrouppk = value.modelinputgrouppk;
+        this.id = value.id;
         this.modelid = value.modelid;
         this.nameanddescriptionmetadataid = value.nameanddescriptionmetadataid;
         this.name = value.name;
         this.description = value.description;
         this.displayitemorder = value.displayitemorder;
         this.grouptype = value.grouptype;
-        this.parentgrouppk = value.parentgrouppk;
+        this.parentGroupId = value.parentGroupId;
     }
 
-    public Long getModelInputGroupPK() {
-        return this.modelinputgrouppk;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setModelInputGroupPK(Long modelinputgrouppk) {
-        this.modelinputgrouppk = modelinputgrouppk;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getModelId() {
@@ -85,19 +85,19 @@ public abstract class AbstractModelInputGroup implements Serializable {
         this.grouptype = grouptype;
     }
 
-    public Long getParentGroupPK() {
-        return this.parentgrouppk;
+    public Long getParentGroupId() {
+        return this.parentGroupId;
     }
 
-    public void setParentGroupPK(Long parentgrouppk) {
-        this.parentgrouppk = parentgrouppk;
+    public void setParentGroupId(Long parentGroupId) {
+        this.parentGroupId = parentGroupId;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((modelinputgrouppk == null) ? 0 : modelinputgrouppk.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((modelid == null) ? 0 : modelid.hashCode());
         result = prime * result + ((nameanddescriptionmetadataid == null) ? 0
                 : nameanddescriptionmetadataid.hashCode());
@@ -105,7 +105,7 @@ public abstract class AbstractModelInputGroup implements Serializable {
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((displayitemorder == null) ? 0 : displayitemorder.hashCode());
         result = prime * result + ((grouptype == null) ? 0 : grouptype.hashCode());
-        result = prime * result + ((parentgrouppk == null) ? 0 : parentgrouppk.hashCode());
+        result = prime * result + ((parentGroupId == null) ? 0 : parentGroupId.hashCode());
         return result;
     }
 
@@ -121,11 +121,11 @@ public abstract class AbstractModelInputGroup implements Serializable {
             return false;
         }
         final AbstractModelInputGroup other = (AbstractModelInputGroup) obj;
-        if (modelinputgrouppk == null) {
-            if (other.modelinputgrouppk != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!modelinputgrouppk.equals(other.modelinputgrouppk)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (modelid == null) {
@@ -170,11 +170,11 @@ public abstract class AbstractModelInputGroup implements Serializable {
         } else if (!grouptype.equals(other.grouptype)) {
             return false;
         }
-        if (parentgrouppk == null) {
-            if (other.parentgrouppk != null) {
+        if (parentGroupId == null) {
+            if (other.parentGroupId != null) {
                 return false;
             }
-        } else if (!parentgrouppk.equals(other.parentgrouppk)) {
+        } else if (!parentGroupId.equals(other.parentGroupId)) {
             return false;
         }
         return true;
@@ -183,14 +183,14 @@ public abstract class AbstractModelInputGroup implements Serializable {
     @Override
     public String toString() {
 
-        return "ModelInputGroup (" + modelinputgrouppk +
+        return "ModelInputGroup (" + id +
                 ", " + modelid +
                 ", " + nameanddescriptionmetadataid +
                 ", " + name +
                 ", " + description +
                 ", " + displayitemorder +
                 ", " + grouptype +
-                ", " + parentgrouppk +
+                ", " + parentGroupId +
                 ")";
     }
 }

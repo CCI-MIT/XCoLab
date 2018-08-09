@@ -28,7 +28,7 @@ public class ModelInputGroupDaoImpl implements ModelInputGroupDao {
     public Optional<ModelInputGroup> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_INPUT_GROUP)
-                .where(MODEL_INPUT_GROUP.MODEL_INPUT_GROUP_PK.eq(id))
+                .where(MODEL_INPUT_GROUP.ID.eq(id))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
@@ -49,7 +49,7 @@ public class ModelInputGroupDaoImpl implements ModelInputGroupDao {
                 .getQuery();
 
         if (parentGroupPk != null) {
-            query.addConditions(MODEL_INPUT_GROUP.PARENT_GROUP_PK.eq(parentGroupPk));
+            query.addConditions(MODEL_INPUT_GROUP.PARENT_GROUP_ID.eq(parentGroupPk));
         }
 
         if (modelId != null) {
@@ -64,7 +64,7 @@ public class ModelInputGroupDaoImpl implements ModelInputGroupDao {
         final ModelInputGroupRecord record = dslContext.insertInto(MODEL_INPUT_GROUP)
                 .set(MODEL_INPUT_GROUP.MODEL_ID, pojo.getModelId())
                 .set(MODEL_INPUT_GROUP.NAME, pojo.getName())
-                .set(MODEL_INPUT_GROUP.PARENT_GROUP_PK, pojo.getParentGroupPK())
+                .set(MODEL_INPUT_GROUP.PARENT_GROUP_ID, pojo.getParentGroupId())
                 .set(MODEL_INPUT_GROUP.NAME_AND_DESCRIPTION_META_DATA_ID, pojo.getNameAndDescriptionMetaDataId())
                 .set(MODEL_INPUT_GROUP.DESCRIPTION, pojo.getDescription())
                 .set(MODEL_INPUT_GROUP.DISPLAY_ITEM_ORDER, pojo.getDisplayItemOrder())
@@ -74,7 +74,7 @@ public class ModelInputGroupDaoImpl implements ModelInputGroupDao {
         if (record == null) {
             throw new IllegalStateException("Could not retrieve id of inserted object");
         }
-        pojo.setModelInputGroupPK(record.getValue(MODEL_INPUT_GROUP.MODEL_INPUT_GROUP_PK));
+        pojo.setId(record.getValue(MODEL_INPUT_GROUP.ID));
         return pojo;
     }
 
@@ -83,19 +83,19 @@ public class ModelInputGroupDaoImpl implements ModelInputGroupDao {
         return dslContext.update(MODEL_INPUT_GROUP)
                 .set(MODEL_INPUT_GROUP.MODEL_ID, pojo.getModelId())
                 .set(MODEL_INPUT_GROUP.NAME, pojo.getName())
-                .set(MODEL_INPUT_GROUP.PARENT_GROUP_PK, pojo.getParentGroupPK())
+                .set(MODEL_INPUT_GROUP.PARENT_GROUP_ID, pojo.getParentGroupId())
                 .set(MODEL_INPUT_GROUP.NAME_AND_DESCRIPTION_META_DATA_ID, pojo.getNameAndDescriptionMetaDataId())
                 .set(MODEL_INPUT_GROUP.DESCRIPTION, pojo.getDescription())
                 .set(MODEL_INPUT_GROUP.DISPLAY_ITEM_ORDER, pojo.getDisplayItemOrder())
                 .set(MODEL_INPUT_GROUP.GROUP_TYPE, pojo.getGroupType())
-                .where(MODEL_INPUT_GROUP.MODEL_INPUT_GROUP_PK.eq(pojo.getModelInputGroupPK()))
+                .where(MODEL_INPUT_GROUP.ID.eq(pojo.getId()))
                 .execute() > 0;
     }
 
     @Override
     public boolean delete(long id) {
         return dslContext.deleteFrom(MODEL_INPUT_GROUP)
-                .where(MODEL_INPUT_GROUP.MODEL_INPUT_GROUP_PK.eq(id))
+                .where(MODEL_INPUT_GROUP.ID.eq(id))
                 .execute() > 0;
     }
 }

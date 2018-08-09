@@ -20,10 +20,10 @@ public class Message implements Serializable {
     public static final TypeProvider<Message> TYPES =
             new TypeProvider<>(Message.class, new ParameterizedTypeReference<List<Message>>() {});
 
-    private Long messageId;
+    private Long id;
     private Long fromId;
     private Long repliesTo;
-    private Timestamp createDate;
+    private Timestamp createdAt;
     private String subject;
     private String content;
     private Boolean opened;
@@ -34,12 +34,15 @@ public class Message implements Serializable {
     }
 
     public Message(Message value) {
-        this.messageId = value.messageId;
+        this.id = value.id;
         this.fromId = value.fromId;
         this.repliesTo = value.repliesTo;
-        this.createDate = value.createDate;
+        this.createdAt = value.createdAt;
         this.subject = value.subject;
         this.content = value.content;
+        this.opened = value.opened;
+        this.archived = value.archived;
+        this.threadId = value.threadId;
     }
 
     public Message(Message value, Boolean opened, Boolean archived, String threadId) {
@@ -49,12 +52,12 @@ public class Message implements Serializable {
         this.threadId = threadId;
     }
 
-    public Message(Long messageId, Long fromId, Long repliesTo, Timestamp createDate,
+    public Message(Long id, Long fromId, Long repliesTo, Timestamp createdAt,
             String subject, String content, Boolean opened, Boolean archived, String threadId) {
-        this.messageId = messageId;
+        this.id = id;
         this.fromId = fromId;
         this.repliesTo = repliesTo;
-        this.createDate = createDate;
+        this.createdAt = createdAt;
         this.subject = subject;
         this.content = content;
         this.opened = opened;
@@ -62,12 +65,12 @@ public class Message implements Serializable {
         this.threadId = threadId;
     }
 
-    public Long getMessageId() {
-        return this.messageId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setMessageId(Long messageId) {
-        this.messageId = messageId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getFromId() {
@@ -86,12 +89,12 @@ public class Message implements Serializable {
         this.repliesTo = repliesTo;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getSubject() {
@@ -134,10 +137,10 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "Message (" + messageId +
+        return "Message (" + id +
                 ", " + fromId +
                 ", " + repliesTo +
-                ", " + createDate +
+                ", " + createdAt +
                 ", " + subject +
                 ", " + content +
                 ", " + opened +

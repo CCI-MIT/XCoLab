@@ -16,12 +16,6 @@
 
 	<dependencies>
 
-        <dependency>
-            <groupId>org.xcolab</groupId>
-            <artifactId>admin-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
     </dependencies>
 	
 	<build>
@@ -48,7 +42,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>xcolab_Model.*</includes>
+							<includes>modeling__.+</includes>
 						</database>
 					</generator>
 				</configuration>

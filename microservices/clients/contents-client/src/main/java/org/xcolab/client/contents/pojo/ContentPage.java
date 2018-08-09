@@ -24,36 +24,37 @@ public class ContentPage implements Serializable {
     public static final TypeProvider<ContentPage> TYPES = new TypeProvider<>(ContentPage.class,
                     new ParameterizedTypeReference<List<ContentPage>>() {});
 
-    private Long pageId;
+    private Long id;
     private String title;
     private String metaDescription;
     private Long menuArticleId;
     private Long contentArticleId;
-    private Timestamp createDate;
-    private Timestamp modifiedDate;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     public ContentPage() {
     }
 
     public ContentPage(ContentPage value) {
-        this.pageId = value.pageId;
+        this.id = value.id;
         this.title = value.title;
+        this.metaDescription = value.metaDescription;
         this.menuArticleId = value.menuArticleId;
         this.contentArticleId = value.contentArticleId;
-        this.createDate = value.createDate;
-        this.modifiedDate = value.modifiedDate;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
     }
 
     public static ContentPage forId(long pageId) {
         return ContentsClient.getContentPage(pageId);
     }
 
-    public Long getPageId() {
-        return this.pageId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setPageId(Long pageId) {
-        this.pageId = pageId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -88,20 +89,20 @@ public class ContentPage implements Serializable {
         this.contentArticleId = contentArticleId;
     }
 
-    public Timestamp getCreatedDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreatedDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getModifiedDate() {
-        return this.modifiedDate;
+    public Timestamp getupdatedAt() {
+        return this.updatedAt;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setupdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @JsonIgnore
@@ -118,30 +119,30 @@ public class ContentPage implements Serializable {
             return false;
         }
         ContentPage that = (ContentPage) o;
-        return Objects.equals(getPageId(), that.getPageId())
+        return Objects.equals(getId(), that.getId())
                 && Objects.equals(getTitle(), that.getTitle())
                 && Objects.equals(getMetaDescription(), that.getMetaDescription())
                 && Objects.equals(getMenuArticleId(), that.getMenuArticleId())
                 && Objects.equals(getContentArticleId(), that.getContentArticleId())
-                && Objects.equals(getCreatedDate(), that.getCreatedDate())
-                && Objects.equals(getModifiedDate(), that.getModifiedDate());
+                && Objects.equals(getCreatedAt(), that.getCreatedAt())
+                && Objects.equals(getupdatedAt(), that.getupdatedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPageId(), getTitle(), getMetaDescription(), getMenuArticleId(),
-                getContentArticleId(), createDate, getModifiedDate());
+        return Objects.hash(getId(), getTitle(), getMetaDescription(), getMenuArticleId(),
+                getContentArticleId(), createdAt, getupdatedAt());
     }
 
     @Override
     public String toString() {
 
-        return "ContentPage (" + pageId +
+        return "ContentPage (" + id +
                 ", " + title +
                 ", " + menuArticleId +
                 ", " + contentArticleId +
-                ", " + createDate +
-                ", " + modifiedDate +
+                ", " + createdAt +
+                ", " + updatedAt +
                 ")";
     }
 }

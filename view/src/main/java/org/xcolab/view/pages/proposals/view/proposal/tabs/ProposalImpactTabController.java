@@ -99,7 +99,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         boolean tabUsesModeling = (isRegionalContest(contest) || isGlobalContest(contest));
         if (tabUsesModeling){
-            model.addAttribute("availableModels", ContestClientUtil.getModelIdsAndNames(contest.getContestPK()));
+            model.addAttribute("availableModels", ContestClientUtil.getModelIdsAndNames(contest.getId()));
             model.addAttribute("modelId", getModelIdIfProposalHasScenarioIdOrContestDefaultModelId(
                     proposalWrapper));
             model.addAttribute("scenarioId", proposalWrapper.getScenarioId());
@@ -144,7 +144,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             }
         }
         _log.warn("Using default impact tab view since contest tier is not set for contest: {}",
-                contest.getContestPK());
+                contest.getId());
         return "/proposals/proposalImpactError";
     }
 
@@ -193,7 +193,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             throws IOException, ScenarioNotFoundException, ModelNotFoundException {
 
         List<Proposal> subProposals =
-                proposalContext.getClients().getProposalClient().getContestIntegrationRelevantSubproposals(proposal.getProposalId());
+                proposalContext.getClients().getProposalClient().getContestIntegrationRelevantSubproposals(proposal.getId());
         ProposalImpactScenarioCombinationWrapper proposalImpactScenarioCombinationWrapper =
                 new ProposalImpactScenarioCombinationWrapper(subProposals);
         boolean isConsolidationPossible =
@@ -341,10 +341,10 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         Proposal proposal = proposalContext.getProposal();
         Long consolidatedScenario = isConsolidatedScenario != null && isConsolidatedScenario ? 1L : 0L;
-        proposal.setScenarioId(scenarioId, consolidatedScenario, currentMember.getUserId());
+        proposal.setScenarioId(scenarioId, consolidatedScenario, currentMember.getId());
 
         if (StringUtils.isNotBlank(region)) {
-            proposal.setModelRegion(region, currentMember.getUserId());
+            proposal.setModelRegion(region, currentMember.getId());
         }
 
         ProposalAttributeClient proposalAttributeClient = proposalContext.getClients()
@@ -354,16 +354,16 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             if (impactAuthorComment != null) {
 
                 proposalAttributeClient.createOrUpdateUnversionedStringAttribute(
-                        proposal.getProposalId(),
+                        proposal.getId(),
                         ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
-                        currentMember.getUserId(),
+                        currentMember.getId(),
                         HtmlUtil.cleanAll(impactAuthorComment));
             }
             if (impactIAFComment != null) {
                 proposalAttributeClient.createOrUpdateUnversionedStringAttribute(
-                        proposal.getProposalId(),
+                        proposal.getId(),
                         ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
-                        currentMember.getUserId(),
+                        currentMember.getId(),
                         HtmlUtil.cleanAll(impactIAFComment));
             }
         }

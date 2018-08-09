@@ -60,7 +60,7 @@
                     <c:when test="${edit and (modelId > 0 or scenarioId > 0)}">
                         <c:if test="${not empty consolidateOptions }">
                             <proposalsPortlet:modelSettingsPicker consolidateOptions="${consolidateOptions }"
-                                                                  contestPK="${contest.contestPK }"
+                                                                  contestId="${contest.id }"
                                                                   modelId="${modelId}"
                                                                   scenarioId="${scenarioId}"
                                                                   consolidatedScenarioId="${consolidatedScenarioId }"
@@ -118,7 +118,7 @@
                         <c:if test="${not empty availableModels }">
                             <div id="modelPickerDiv">
                                 <proposalsPortlet:modelPicker availableModels="${availableModels }"
-                                                              contestPK="${contest.contestPK }" modelId="${modelToLoadId}"/>
+                                                              contestId="${contest.id }" modelId="${modelToLoadId}"/>
                             </div>
                         </c:if>
 

@@ -12,5 +12,5 @@ public interface MassActionDataWrapper {
 
     ContestFlagTextToolTipBean getContestFlagTextToolTipBean();
 
-    Long getMemberId();
+    Long getuserId();
 }

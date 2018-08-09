@@ -49,7 +49,7 @@
                         <form:select id="selectContest" path="moveFromContestId">
                             <form:option value="-1" label="Choose a contest" />
                             <c:forEach var="contest" items="${contests}">
-                                <form:option value="${contest.contestPK}" label="${contest.contestShortNameWithEndYear}" />
+                                <form:option value="${contest.id}" label="${contest.titleWithEndYear}" />
                             </c:forEach>
                         </form:select>
                     </label>
@@ -87,10 +87,10 @@
                                 <c:forEach var="ribbon" items="${availableRibbons }">
                                     <c:choose>
                                         <c:when test="${proposal.ribbonWrapper.ribbon == ribbon.ribbon }">
-                                            <form:option value="${ribbon.id_}" selected="selected" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
+                                            <form:option value="${ribbon.id}" selected="selected" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
                                         </c:when>
                                         <c:otherwise>
-                                            <form:option value="${ribbon.id_}" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
+                                            <form:option value="${ribbon.id}" label="${ribbon.ribbon} - ${fn:substring(ribbon.hoverText, 0, 50)}" />
                                         </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
@@ -131,7 +131,7 @@
         <c:forEach var="contestId" items="${contestPhases.keySet()}">
             ${contestId}: [
                 <c:forEach var="contestPhase" items="${contestPhases.get(contestId)}">
-                    {pk: ${contestPhase.contestPhasePK}, name: "${contestPhaseType.get(contestPhase.contestPhaseType).name}"},
+                    {pk: ${contestPhase.id}, name: "${contestPhaseType.get(contestPhase.contestPhaseTypeId).name}"},
                 </c:forEach>
             ],
         </c:forEach>
@@ -141,7 +141,7 @@
         <c:forEach var="contestPhaseId" items="${proposals.keySet()}">
             ${contestPhaseId}: {
                 <c:forEach var="proposal" items="${proposals.get(contestPhaseId)}">
-                    ${proposal.proposalId}: "${proposal.name.replaceAll("[^a-zA-Z 0-9]", "")}",
+                    ${proposal.id}: "${proposal.name.replaceAll("[^a-zA-Z 0-9]", "")}",
                 </c:forEach>
             },
         </c:forEach>

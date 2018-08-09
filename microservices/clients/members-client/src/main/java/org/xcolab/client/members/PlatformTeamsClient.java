@@ -38,7 +38,7 @@ public class PlatformTeamsClient {
     }
 
     public static boolean deletePlatformTeam(PlatformTeam team) {
-        boolean result = platformTeamResource.delete(team.getId_())
+        boolean result = platformTeamResource.delete(team.getId())
                 .execute();
         ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
         return result;
@@ -46,20 +46,20 @@ public class PlatformTeamsClient {
 
     public static boolean updatePlatformTeam(PlatformTeam team) {
         ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
-        return platformTeamResource.update(team, team.getId_())
+        return platformTeamResource.update(team, team.getId())
                 .cacheName(CacheName.PLATFORM_TEAM)
                 .execute();
     }
 
     public static List<Member> getTeamMembers(PlatformTeam team) {
         return platformTeamResource
-                .elementService(team.getId_(), "members", Member.TYPES.getTypeReference())
+                .elementService(team.getId(), "members", Member.TYPES.getTypeReference())
                 .getList();
     }
 
     public static List<PlatformTeam> getTeams(Member member) {
         return platformTeamResource.list()
-                .queryParam("userId", member.getId_())
+                .queryParam("userId", member.getId())
                 .withCache(CacheName.PLATFORM_TEAM)
                 .execute();
     }
@@ -67,14 +67,14 @@ public class PlatformTeamsClient {
     public static boolean addMember(PlatformTeam team, Member member) {
         ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
         return platformTeamResource
-                .elementService(team.getId_(), "members/" + member.getId_(), Boolean.class)
+                .elementService(team.getId(), "members/" + member.getId(), Boolean.class)
                 .put();
     }
 
     public static boolean removeMember(PlatformTeam team, Member member) {
         ServiceRequestUtils.clearCache(CacheName.PLATFORM_TEAM);
         return platformTeamResource
-                .elementService(team.getId_(), "members/" + member.getId_(), Boolean.class)
+                .elementService(team.getId(), "members/" + member.getId(), Boolean.class)
                 .delete();
     }
 

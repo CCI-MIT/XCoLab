@@ -75,8 +75,8 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             model.addAttribute("activeContestPhaseOpenForEdit", isActiveContestPhaseOpenForEdit(
                     proposalContext, contest));
             model.addAttribute("showEvaluation", true);
-            model.addAttribute("authorId", proposal.getAuthorId());
-            model.addAttribute("proposalId", proposal.getProposalId());
+            model.addAttribute("authorUserId", proposal.getAuthorUserId());
+            model.addAttribute("proposalId", proposal.getId());
         }
 
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.EVALUATION);
@@ -92,7 +92,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         JudgeProposalFeedbackBean proposalRatingBean =
                 new JudgeProposalFeedbackBean(proposalJudgeWrapper);
 
-        Long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
+        Long contestPhaseId = proposalContext.getContestPhase().getId();
         proposalRatingBean.setContestPhaseId(contestPhaseId);
 
         return proposalRatingBean;
@@ -103,8 +103,8 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
         Contest contest = proposalContext.getContest();
         ServiceNamespace contestServiceNamespace = contest.getServiceNamespace();
-        ContestPhase activeContestPhase = ContestClient.fromNamespace(contestServiceNamespace).getActivePhase(contest.getContestPK());
-        List<ContestPhase> allContestPhasesForCurrentContest = ContestClient.fromNamespace(contestServiceNamespace).getAllContestPhases(contest.getContestPK());
+        ContestPhase activeContestPhase = ContestClient.fromNamespace(contestServiceNamespace).getActivePhase(contest.getId());
+        List<ContestPhase> allContestPhasesForCurrentContest = ContestClient.fromNamespace(contestServiceNamespace).getAllContestPhases(contest.getId());
 
         for (ContestPhase contestPhase : allContestPhasesForCurrentContest) {
             boolean isLastContestPhase = activeContestPhase.getPhaseEndDate() == null;
@@ -122,8 +122,8 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
     private boolean isActiveContestPhaseOpenForEdit(ProposalContext proposalContext, Contest contest) {
 
-        ContestPhase activeContestPhase = proposalContext.getClients().getContestClient().getActivePhase(contest.getContestPK());
-        Long contestPhaseTypeId = activeContestPhase.getContestPhaseType();
+        ContestPhase activeContestPhase = proposalContext.getClients().getContestClient().getActivePhase(contest.getId());
+        Long contestPhaseTypeId = activeContestPhase.getContestPhaseTypeId();
         return proposalContext.getClients().getContestClient().getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
     }
 
@@ -132,7 +132,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
 
         List<ProposalRatings> proposalRatings = new ArrayList<>();
-        List<ContestPhase> contestPhases = proposalContext.getClients().getContestClient().getAllContestPhases(contest.getContestPK());
+        List<ContestPhase> contestPhases = proposalContext.getClients().getContestClient().getAllContestPhases(contest.getId());
 
         for (ContestPhase contestPhase : contestPhases) {
             boolean isPhasePastScreeningPhase =
@@ -141,7 +141,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                 String contestPhaseName = proposalContext.getClients().getContestClient().getContestPhaseName(contestPhase);
                 List<ProposalRating> judgeRatingsForProposal =
                         proposalContext.getClients().getProposalJudgeRatingClient()
-                        .getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
+                        .getJudgeRatingsForProposal(proposal.getId(), contestPhase.getId());
 
                 if (!judgeRatingsForProposal.isEmpty()) {
                     try {
@@ -177,7 +177,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                 proposalContext.getClients().getProposalPhaseClient();
         ProposalContestPhaseAttribute judgingDecisionAttr =
                 proposalPhaseClient.getProposalContestPhaseAttribute(
-                        proposal.getProposalId(), contestPhase.getContestPhasePK(),
+                        proposal.getId(), contestPhase.getId(),
                         ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
         if (judgingDecisionAttr != null) {
             Long judgingDecision = judgingDecisionAttr.getNumericValue();
@@ -200,8 +200,8 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                 proposalRating.setContestPhaseTitle(contestPhaseName);
                 return proposalRating;
             } else {
-                //throw new IllegalStateException("No comment set for this proposal: " + proposal.getProposalId()
-                //        + " in this rating phase: " + contestPhase.getContestPhasePK());
+                //throw new IllegalStateException("No comment set for this proposal: " + proposal.getId()
+                //        + " in this rating phase: " + contestPhase.getId());
                 return null;
             }
         } catch (MemberNotFoundException e) {

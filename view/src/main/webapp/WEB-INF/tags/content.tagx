@@ -24,7 +24,7 @@
                 </c:if>
                 <c:if test="${_themeContext.authenticationVariables.isAdmin}">
                     <div class="text-right">
-                        <a href="/content-editor/?articleId=${contentArticleVersion.contentArticleId}"
+                        <a href="/content-editor/?articleId=${contentArticleVersion.articleId}"
                            class="btn cb-btn-admin btn-sm">
                             Edit article
                         </a>

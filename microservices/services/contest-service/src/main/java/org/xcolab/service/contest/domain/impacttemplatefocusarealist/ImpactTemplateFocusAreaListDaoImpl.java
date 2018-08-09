@@ -22,7 +22,7 @@ public class ImpactTemplateFocusAreaListDaoImpl implements ImpactTemplateFocusAr
     public ImpactTemplateFocusAreaList get(Long focusAreaListId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(IMPACT_TEMPLATE_FOCUS_AREA_LIST)
-                .where(IMPACT_TEMPLATE_FOCUS_AREA_LIST.FOCUS_AREA_LIST_ID.eq(focusAreaListId))
+                .where(IMPACT_TEMPLATE_FOCUS_AREA_LIST.ID.eq(focusAreaListId))
                 .fetchOne();
 
         if (record == null) {

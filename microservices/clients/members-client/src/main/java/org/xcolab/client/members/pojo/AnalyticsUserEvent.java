@@ -21,7 +21,7 @@ public class AnalyticsUserEvent implements Serializable {
     private String action;
     private String label;
     private Integer value;
-    private Timestamp created;
+    private Timestamp createdAt;
 
     public AnalyticsUserEvent() {
     }
@@ -33,18 +33,18 @@ public class AnalyticsUserEvent implements Serializable {
         this.action = value.action;
         this.label = value.label;
         this.value = value.value;
-        this.created = value.created;
+        this.createdAt = value.createdAt;
     }
 
     public AnalyticsUserEvent(Long userId, String idString, String category, String action,
-            String label, Integer value, Timestamp created) {
+            String label, Integer value, Timestamp createdAt) {
         this.userId = userId;
         this.idString = idString;
         this.category = category;
         this.action = action;
         this.label = label;
         this.value = value;
-        this.created = created;
+        this.createdAt = createdAt;
     }
 
     public Long getUserId() {
@@ -95,12 +95,12 @@ public class AnalyticsUserEvent implements Serializable {
         this.value = value;
     }
 
-    public Timestamp getCreated() {
-        return this.created;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreated(Timestamp created) {
-        this.created = created;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -157,11 +157,11 @@ public class AnalyticsUserEvent implements Serializable {
         } else if (!value.equals(other.value)) {
             return false;
         }
-        if (created == null) {
-            if (other.created != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!created.equals(other.created)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         return true;
@@ -177,7 +177,7 @@ public class AnalyticsUserEvent implements Serializable {
         result = prime * result + ((action == null) ? 0 : action.hashCode());
         result = prime * result + ((label == null) ? 0 : label.hashCode());
         result = prime * result + ((value == null) ? 0 : value.hashCode());
-        result = prime * result + ((created == null) ? 0 : created.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         return result;
     }
 
@@ -189,7 +189,7 @@ public class AnalyticsUserEvent implements Serializable {
                 ", " + action +
                 ", " + label +
                 ", " + value +
-                ", " + created +
+                ", " + createdAt +
                 ")";
     }
 }

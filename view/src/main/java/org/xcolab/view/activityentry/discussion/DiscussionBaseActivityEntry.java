@@ -26,7 +26,7 @@ public abstract class DiscussionBaseActivityEntry extends AbstractActivityEntryC
         try {
             thread = ThreadClientUtil.getThread(getActivityEntry().getCategoryId());
         } catch (ThreadNotFoundException e) {
-            throw new ActivityInitializationException(activityEntry.getActivityEntryId(), e);
+            throw new ActivityInitializationException(activityEntry.getId(), e);
         }
     }
 

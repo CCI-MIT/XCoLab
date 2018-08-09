@@ -85,19 +85,19 @@
 				<table class="c-Comment__list" id="commentsTable" >
 					<c:forEach var="message" items="${thread.comments }" varStatus="status">
                         <!-- TODO COLAB-1387: replace client calls -->
-						<discussions:getRoleName userId="${message.author.userId}" proposalId="${proposalId}">
+						<discussions:getRoleName userId="${message.author.id}" proposalId="${proposalId}">
                             <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
-									<a id="_message_${message.commentId}"><!-- empty --></a>
+									<a id="_message_${message.id}"><!-- empty --></a>
 									<xcolab:userPortrait portraitId="${message.author.portraitId}"
-                                                         memberId="${message.author.userId}"
+                                                         userId="${message.author.id}"
                                                          width="59" height="59" />
 									<br />
-									<xcolab:userLinkSimple text="${message.author.displayName}" memberId="${message.author.userId}" /> <br />
+									<xcolab:userLinkSimple text="${message.author.displayName}" userId="${message.author.id}" /> <br />
 									<br />
-									<xcolab:formatDateTime millis="${message.createDate.time}" type="date" zoneDisplay="none" /><br />
-									<xcolab:formatDateTime millis="${message.createDate.time}" type="time" /><br />
+									<xcolab:formatDateTime millis="${message.createdAt.time}" type="date" zoneDisplay="none" /><br />
+									<xcolab:formatDateTime millis="${message.createdAt.time}" type="time" /><br />
 
 									<br />
 									<div class="role-indicator">
@@ -111,48 +111,48 @@
 									<br /><br />
                                     <div style="display: inline">
                                         <div style="float: left;padding-top:4px;padding-right: 4px;">
-                                            <a href="#_message_${message.commentId}">
-                                                <span class="com_num messageLink" rel="${message.commentId}">${status.index + 1} </span>
+                                            <a href="#_message_${message.id}">
+                                                <span class="com_num messageLink" rel="${message.id}">${status.index + 1} </span>
                                             </a>
                                             |
                                         </div>
 
                                         <c:if test="${_themeContext.socialMediaVariables.showShareButtons}">
                                             <div style="float: left">
-                                                <xcolab-social:socialShareButtons title="${shareTitlePageScope}" hashString="#_message_${message.commentId}" size="xs"/>
+                                                <xcolab-social:socialShareButtons title="${shareTitlePageScope}" hashString="#_message_${message.id}" size="xs"/>
                                             </div>
                                         </c:if>
                                     </div>
 								</td>
 								<td class="c-Comment ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
 									<c:choose>
-										<c:when test="${authorId == message.author.userId}">
+										<c:when test="${authorUserId == message.author.id}">
 											<div class="thread-ribbon-container"><div>${contestType.proposalName} <br /> <spring:message code="discussion.commmentstag.proposal.creator"/></div></div>
 										</c:when>
 										<c:when test="${isContributing}">
 											<div class="thread-ribbon-container"><div>${contestType.proposalName} <br /> <spring:message code="discussion.commmentstag.proposal.contributor"/> </div></div>
 										</c:when>
 									</c:choose>
-									<div id="message_${message.commentId}" class="content c-UserContent">
+									<div id="message_${message.id}" class="content c-UserContent">
 										${message.content }
 									</div>
 									<div class="c-Comment__actions">
 
                                         <c:if test="${discussionPermissions.getCanReportMessage(message) }">
                                             <xcolab:requireLibrary name="flagging"/>
-                                            <button type="button" class="btn btn-link" onclick="reportComment(${message.commentId})">
+                                            <button type="button" class="btn btn-link" onclick="reportComment(${message.id})">
                                                 Report
                                             </button>
                                         </c:if>
 										<c:if test="${discussionPermissions.getCanViewAdminMessage(message) }">
-											<c:set var="editCommentURL" value="/discussions/editComment?commentId=${message.commentId}&amp;proposalId=${proposalId}" />
+											<c:set var="editCommentURL" value="/discussions/editComment?commentId=${message.id}&amp;proposalId=${proposalId}" />
 
                                             <spring:message code="discussion.commmentstag.caneditmsg" var="canEditMsg"/>
-											<button type="button" class="btn btn-link js-Tooltip ml-2" onclick="editComment(${message.createDate.time}, ${message.commentId},'${editCommentURL}');"
+											<button type="button" class="btn btn-link js-Tooltip ml-2" onclick="editComment(${message.createdAt.time}, ${message.id},'${editCommentURL}');"
 												 title="${canEditMsg}"><spring:message code="discussion.commmentstag.edit" />
                                             </button>
 
-											<c:set var="deleteMessageURL" value="/discussions/deleteDiscussionMessageFlag?commentId=${message.commentId }&amp;proposalId=${proposalId}" />
+											<c:set var="deleteMessageURL" value="/discussions/deleteDiscussionMessageFlag?commentId=${message.id }&amp;proposalId=${proposalId}" />
 
                                             <spring:message code="discussion.commmentstag.candeletemsg" var="canDeleteMsg"/>
                                             <spring:message code="discussion.commmentstag.confirmdelete" var="confirmDelete"/>
@@ -192,7 +192,7 @@
 				<div class="col-12 col-md-9">
 					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}" />
 					<form:form id="addCommentForm" action="${addCommentURL}" method="post">
-                        <input type="hidden" name="threadId" value="${thread.threadId}" />
+                        <input type="hidden" name="threadId" value="${thread.id}" />
 						<textarea id="js-Comment__content" name="description" required="required"
                                   class="rte-editorPlaceholder c-Comment__box"><!-- --></textarea>
                         <button type="submit" class="btn btn-primary mt-2 js-EnhancedLink"

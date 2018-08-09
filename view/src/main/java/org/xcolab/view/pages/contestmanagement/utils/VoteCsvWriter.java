@@ -80,7 +80,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
         for (ProposalVote vote : proposalVotes) {
             ContestPhase contestPhase = phases.computeIfAbsent(vote.getContestPhaseId(),
                     ContestClientUtil::getContestPhase);
-            Contest contest = contests.computeIfAbsent(contestPhase.getContestPK(),
+            Contest contest = contests.computeIfAbsent(contestPhase.getContestId(),
                     ContestClientUtil::getContest);
 
             Member member = getMemberOrNull(vote);
@@ -88,7 +88,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
 
             List<String> row = new ArrayList<>();
             addValue(row, vote.getProposalId());
-            addValue(row, contest.getContestShortName());
+            addValue(row, contest.getTitle());
             if (proposal != null) {
                 final String proposalUrl =
                         colabUrl + proposal.getProposalLinkUrl(contest, vote.getContestPhaseId());
@@ -103,16 +103,16 @@ public class VoteCsvWriter extends CsvResponseWriter {
             addValue(row, member != null ? member.getFirstName() : "Member not found");
             addValue(row, member != null ? member.getLastName() : "Member not found");
             addValue(row, member != null ? ActivitiesClientUtil.countActivities(
-                    member.getId_(),null) : "Member not found");
+                    member.getId(),null) : "Member not found");
             addValue(row, member != null ? member.getLoginIP() : "Member not found");
             addLocationForIp(row, member != null ? member.getLoginIP() : null);
 
-            addValue(row, member != null ? member.getCreateDate() : "Member not found");
+            addValue(row, member != null ? member.getCreatedAt() : "Member not found");
             addValue(row, member != null ? member.hasLinkedSocialAccount() : "Member not found");
             addValue(row, member != null ? member.getEmailAddress() : "Member not found");
             addValue(row, member != null ? member.getIsEmailConfirmed() : "Member not found");
             addValue(row, member != null ? member.getIsEmailBounced() : "Member not found");
-            addValue(row, vote.getCreateDate());
+            addValue(row, vote.getCreatedAt());
             addValue(row, vote.getVoterIp());
             addLocationForIp(row, vote.getVoterIp());
             addValue(row, vote.getVoterUserAgent());

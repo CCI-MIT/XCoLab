@@ -50,8 +50,8 @@ public final class PointsClientUtil {
          client.verifyDistributionConfigurationsForProposalId(proposalId);
     }
 
-    public static PointType getPointType(long Id_) {
-        return client.getPointType(Id_);
+    public static PointType getPointType(long Id) {
+        return client.getPointType(Id);
     }
 
     public static List<PointType> getAllPointTypes() {

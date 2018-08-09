@@ -1,7 +1,7 @@
 package org.xcolab.service.admin;
 
 import org.xcolab.model.tables.pojos.ConfigurationAttribute;
-import org.xcolab.model.tables.pojos.ContestEmailTemplate;
+import org.xcolab.model.tables.pojos.EmailTemplate;
 
 public class AdminTestUtils {
     public static ConfigurationAttribute getConfigurationAttribute(String nameComplement){
@@ -15,9 +15,9 @@ public class AdminTestUtils {
         return ca;
     }
 
-    public static ContestEmailTemplate getContestEmailTemplate(){
-        ContestEmailTemplate contestEmailTemplate  = new ContestEmailTemplate();
-        contestEmailTemplate.setType_("TYPE");
+    public static EmailTemplate getContestEmailTemplate(){
+        EmailTemplate contestEmailTemplate  = new EmailTemplate();
+        contestEmailTemplate.setName("TYPE");
         contestEmailTemplate.setFooter(" ");
         contestEmailTemplate.setHeader(" ");
         contestEmailTemplate.setSubject(" ");

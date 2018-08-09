@@ -67,7 +67,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
                     null, null, null, true,
                     0, Integer.MAX_VALUE);
             for (Member m : adminList) {
-                idsToExclude.put(m.getId_(), m.getUserId());
+                idsToExclude.put(m.getId(), m.getId());
             }
         }
 
@@ -79,7 +79,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
                         0, Integer.MAX_VALUE);
         if (staffList != null && !staffList.isEmpty()) {
             for (Member m : staffList) {
-                idsToExclude.put(m.getId_(), m.getUserId());
+                idsToExclude.put(m.getId(), m.getId());
             }
         }
 

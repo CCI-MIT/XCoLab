@@ -11,6 +11,6 @@ public class ContestCacheValidator extends AbstractCacheValidator<ContestDto> {
 
     @Override
     public boolean isValid(ContestDto entity) {
-        return entity.getContestPK() != null;
+        return entity.getId() != null;
     }
 }

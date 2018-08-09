@@ -98,7 +98,7 @@ public class OntologyEditorController {
         List<OntologyTerm> children = ot.getChildren();
         if (children != null) {
             for (OntologyTerm child : children) {
-                deleteOntologyTermAndChildren(child.getId_());
+                deleteOntologyTermAndChildren(child.getId());
             }
         }
         OntologyClientUtil.deleteOntologyTerm(id);
@@ -129,7 +129,7 @@ public class OntologyEditorController {
         if (id != null && id != 0L) {
             OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(id);
             ontologyTerm.setDescriptionUrl(descriptionUrl);
-            ontologyTerm.setOrder_(order);
+            ontologyTerm.setSortOrder(order);
             ontologyTerm.setName(name);
 
             OntologyClientUtil.updateOntologyTerm(ontologyTerm);
@@ -138,7 +138,7 @@ public class OntologyEditorController {
             ontologyTerm.setOntologySpaceId(ontologySpaceId);
             ontologyTerm.setParentId(parentId);
             ontologyTerm.setDescriptionUrl(descriptionUrl);
-            ontologyTerm.setOrder_(order);
+            ontologyTerm.setSortOrder(order);
             ontologyTerm.setName(name);
             OntologyClientUtil.createOntologyTerm(ontologyTerm);
         }
@@ -193,9 +193,9 @@ public class OntologyEditorController {
     private void printOntologyHierarchy() {
         for (OntologyTerm oTerm : OntologyClientUtil.getAllOntologyTerms()) {
             if (oTerm.getParent() == null) {
-                printOntologies(OntologyClientUtil.getOntologyTerm(oTerm.getId_()), 0);
+                printOntologies(OntologyClientUtil.getOntologyTerm(oTerm.getId()), 0);
             } else if (oTerm.getParent().getId() == 0) {
-                printOntologies(OntologyClientUtil.getOntologyTerm(oTerm.getId_()), 0);
+                printOntologies(OntologyClientUtil.getOntologyTerm(oTerm.getId()), 0);
             }
         }
     }

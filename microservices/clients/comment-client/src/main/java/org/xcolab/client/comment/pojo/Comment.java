@@ -28,9 +28,9 @@ public class Comment extends AbstractComment {
         threadClient = ThreadClientUtil.getClient();
     }
 
-    public Comment(Long commentId, Long threadId, Long authorId, Timestamp createDate,
-            Timestamp modifiedDate, Timestamp deletedDate, String content) {
-        super(commentId, threadId, authorId, createDate, modifiedDate, deletedDate, content);
+    public Comment(Long commentId, Long threadId, Long authorUserId, Timestamp createdAt,
+            Timestamp updatedAt, Timestamp deletedAt, String content) {
+        super(commentId, threadId, authorUserId, createdAt, updatedAt, deletedAt, content);
         threadClient = ThreadClientUtil.getClient();
     }
 
@@ -55,7 +55,7 @@ public class Comment extends AbstractComment {
 
     public Member getAuthor() {
         try {
-            return MembersClient.getMember(getAuthorId());
+            return MembersClient.getMember(getAuthorUserId());
         } catch (MemberNotFoundException e) {
             throw new KeyReferenceException(e);
         }
@@ -74,6 +74,6 @@ public class Comment extends AbstractComment {
     }
 
     public String getLinkUrl() {
-        return getThread().getLinkUrl() + "#message_" + getCommentId();
+        return getThread().getLinkUrl() + "#message_" + getId();
     }
 }

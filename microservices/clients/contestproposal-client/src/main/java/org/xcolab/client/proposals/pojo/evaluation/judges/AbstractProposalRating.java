@@ -6,58 +6,58 @@ class AbstractProposalRating implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long proposalid;
     private Long contestphaseid;
     private Long userid;
     private Long ratingvalueid;
-    private String comment_;
-    private Boolean commentenabled;
+    private String comment;
+    private Boolean commentEnabled;
     private String otherdatastring;
     private Boolean onlyforinternalusage;
 
     public AbstractProposalRating() {}
 
     public AbstractProposalRating(AbstractProposalRating value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.proposalid = value.proposalid;
         this.contestphaseid = value.contestphaseid;
         this.userid = value.userid;
         this.ratingvalueid = value.ratingvalueid;
-        this.comment_ = value.comment_;
-        this.commentenabled = value.commentenabled;
+        this.comment = value.comment;
+        this.commentEnabled = value.commentEnabled;
         this.otherdatastring = value.otherdatastring;
         this.onlyforinternalusage = value.onlyforinternalusage;
     }
 
     public AbstractProposalRating(
-            Long id_,
+            Long id,
             Long proposalid,
             Long contestphaseid,
             Long userid,
             Long ratingvalueid,
-            String comment_,
-            Boolean commentenabled,
+            String comment,
+            Boolean commentEnabled,
             String otherdatastring,
             Boolean onlyforinternalusage
     ) {
-        this.id_ = id_;
+        this.id = id;
         this.proposalid = proposalid;
         this.contestphaseid = contestphaseid;
         this.userid = userid;
         this.ratingvalueid = ratingvalueid;
-        this.comment_ = comment_;
-        this.commentenabled = commentenabled;
+        this.comment = comment;
+        this.commentEnabled = commentEnabled;
         this.otherdatastring = otherdatastring;
         this.onlyforinternalusage = onlyforinternalusage;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getProposalId() {
@@ -108,33 +108,33 @@ class AbstractProposalRating implements Serializable {
         this.ratingvalueid = ratingvalueid;
     }
 
-    public String getComment_() {
-        return this.comment_;
+    public String getComment() {
+        return this.comment;
     }
 
-    public void setComment_(String comment_) {
-        this.comment_ = comment_;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Boolean getCommentEnabled() {
-        return this.commentenabled;
+        return this.commentEnabled;
     }
 
-    public void setCommentEnabled(Boolean commentenabled) {
-        this.commentenabled = commentenabled;
+    public void setCommentEnabled(Boolean commentEnabled) {
+        this.commentEnabled = commentEnabled;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((proposalid == null) ? 0 : proposalid.hashCode());
         result = prime * result + ((contestphaseid == null) ? 0 : contestphaseid.hashCode());
         result = prime * result + ((userid == null) ? 0 : userid.hashCode());
         result = prime * result + ((ratingvalueid == null) ? 0 : ratingvalueid.hashCode());
-        result = prime * result + ((comment_ == null) ? 0 : comment_.hashCode());
-        result = prime * result + ((commentenabled == null) ? 0 : commentenabled.hashCode());
+        result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+        result = prime * result + ((commentEnabled == null) ? 0 : commentEnabled.hashCode());
         result = prime * result + ((otherdatastring == null) ? 0 : otherdatastring.hashCode());
         result = prime * result + ((onlyforinternalusage == null) ? 0
                 : onlyforinternalusage.hashCode());
@@ -153,11 +153,11 @@ class AbstractProposalRating implements Serializable {
             return false;
         }
         final AbstractProposalRating other = (AbstractProposalRating) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (proposalid == null) {
@@ -188,18 +188,18 @@ class AbstractProposalRating implements Serializable {
         } else if (!ratingvalueid.equals(other.ratingvalueid)) {
             return false;
         }
-        if (comment_ == null) {
-            if (other.comment_ != null) {
+        if (comment == null) {
+            if (other.comment != null) {
                 return false;
             }
-        } else if (!comment_.equals(other.comment_)) {
+        } else if (!comment.equals(other.comment)) {
             return false;
         }
-        if (commentenabled == null) {
-            if (other.commentenabled != null) {
+        if (commentEnabled == null) {
+            if (other.commentEnabled != null) {
                 return false;
             }
-        } else if (!commentenabled.equals(other.commentenabled)) {
+        } else if (!commentEnabled.equals(other.commentEnabled)) {
             return false;
         }
         if (otherdatastring == null) {
@@ -222,8 +222,8 @@ class AbstractProposalRating implements Serializable {
     @Override
     public String toString() {
         String sb =
-                "ProposalRating (" + id_ + ", " + proposalid + ", " + contestphaseid + ", " + userid
-                        + ", " + ratingvalueid + ", " + comment_ + ", " + commentenabled + ", "
+                "ProposalRating (" + id + ", " + proposalid + ", " + contestphaseid + ", " + userid
+                        + ", " + ratingvalueid + ", " + comment + ", " + commentEnabled + ", "
                         + otherdatastring + ", " + onlyforinternalusage + ")";
 
         return sb;

@@ -28,7 +28,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.html.HtmlUtil;
@@ -86,14 +86,14 @@ public class UserProfileController {
     public String showProfile(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member) throws IOException {
         if (member != null) {
-            return "redirect:/members/profile/" + member.getId_();
+            return "redirect:/members/profile/" + member.getId();
         }
         return new AccessDeniedPage(null).toViewName(response);
     }
 
-    @GetMapping("{memberId}")
+    @GetMapping("{userId}")
     public String showUserProfileView(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember, @PathVariable long memberId,
+            Model model, Member loggedInMember, @PathVariable long userId,
             @RequestParam(defaultValue = "false") boolean generateReferralLink) {
         try {
             UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
@@ -101,7 +101,7 @@ public class UserProfileController {
             model.addAttribute("_activePageLink", "community");
 
             final UserProfileWrapper currentUserProfile =
-                    new UserProfileWrapper(memberId, loggedInMember, activityEntryHelper);
+                    new UserProfileWrapper(userId, loggedInMember, activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
 
             final Boolean isSnpActive = ConfigurationAttributeKey.SNP_IS_ACTIVE.get();
@@ -129,19 +129,19 @@ public class UserProfileController {
         model.addAttribute("messageBean", new MessageBean());
     }
 
-    @GetMapping("{memberId}/edit")
+    @GetMapping("{userId}/edit")
     public String showUserProfileEdit(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember, @PathVariable long memberId) {
+            Model model, Member loggedInMember, @PathVariable long userId) {
 
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
-        if (!permissions.getCanEditMemberProfile(memberId)) {
+        if (!permissions.getCanEditMemberProfile(userId)) {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
         model.addAttribute("permissions", permissions);
         model.addAttribute("_activePageLink", "community");
 
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId,
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId,
                     loggedInMember, activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
 
@@ -166,7 +166,7 @@ public class UserProfileController {
             Model model, Member loggedInMember,
             @RequestParam(required = false) boolean emailError,
             @RequestParam(required = false) boolean passwordError,
-            @RequestParam Long memberId) {
+            @RequestParam Long userId) {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         model.addAttribute("permissions", permissions);
         model.addAttribute("updateError", true);
@@ -177,9 +177,9 @@ public class UserProfileController {
             model.addAttribute("passwordError", true);
         }
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId,
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId,
                     loggedInMember, activityEntryHelper);
-            if (permissions.getCanEditMemberProfile(memberId)) {
+            if (permissions.getCanEditMemberProfile(userId)) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
@@ -188,16 +188,16 @@ public class UserProfileController {
                 return EDIT_PROFILE_VIEW;
             }
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for {}", memberId);
+            _log.warn("Could not create user profile for {}", userId);
             return "showProfileNotInitialized";
         }
 
         return SHOW_PROFILE_VIEW;
     }
 
-    @PostMapping("{memberId}/edit")
+    @PostMapping("{userId}/edit")
     public String updateUserProfile(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long memberId, @ModelAttribute UserBean updatedUserBean,
+            Model model, @PathVariable long userId, @ModelAttribute UserBean updatedUserBean,
             BindingResult result, Member loggedInMember)
             throws IOException, MemberNotFoundException {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
@@ -208,7 +208,7 @@ public class UserProfileController {
         model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
 
         if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())
-                || memberId != updatedUserBean.getUserId()) {
+                || userId != updatedUserBean.getUserId()) {
             return ErrorText.NOT_FOUND.flashAndReturnView(request);
         }
         UserProfileWrapper currentUserProfile = new UserProfileWrapper(updatedUserBean.getUserId(),
@@ -222,14 +222,14 @@ public class UserProfileController {
         boolean validationError = false;
         if (StringUtils.isNotBlank(updatedUserBean.getPassword())) {
             final String currentPassword = updatedUserBean.getCurrentPassword();
-            if (MembersClient.validatePassword(currentPassword.trim(), currentUserProfile.getUser().getUserId())
+            if (MembersClient.validatePassword(currentPassword.trim(), currentUserProfile.getUser().getId())
                     || (permissions.getCanAdmin() && MembersClient.validatePassword(
-                            currentPassword.trim(), permissions.getLoggedInMember().getUserId()))) {
+                            currentPassword.trim(), permissions.getLoggedInMember().getId()))) {
                 validator.validate(updatedUserBean, result, UserBean.PasswordChanged.class);
 
                 if (!result.hasErrors()) {
                     final String newPassword = updatedUserBean.getPassword().trim();
-                    MembersClient.updatePassword(memberId, newPassword);
+                    MembersClient.updatePassword(userId, newPassword);
                     changedUserPart = true;
                 } else {
                     validationError = true;
@@ -266,7 +266,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("First name change failed for userId: {}", currentUserProfile.getUser().getId_());
+                _log.warn("First name change failed for userId: {}", currentUserProfile.getUser().getId());
             }
         }
         if (updatedUserBean.getLastName() != null
@@ -277,7 +277,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Last name change failed for userId: {}", currentUserProfile.getUser().getId_());
+                _log.warn("Last name change failed for userId: {}", currentUserProfile.getUser().getId());
             }
         }
 
@@ -288,7 +288,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Country name change failed for userId: {}", currentUserProfile.getUser().getId_());
+                _log.warn("Country name change failed for userId: {}", currentUserProfile.getUser().getId());
             }
         }
 
@@ -299,7 +299,7 @@ public class UserProfileController {
                 changedUserPart = true;
             } else {
                 validationError = true;
-                _log.warn("Default language locale change failed for userId: {}", currentUserProfile.getUser().getId_());
+                _log.warn("Default language locale change failed for userId: {}", currentUserProfile.getUser().getId());
             }
         }
 
@@ -320,7 +320,7 @@ public class UserProfileController {
             AlertMessage.CHANGES_SAVED.flash(request);
             return SHOW_PROFILE_VIEW;
         } else {
-            return "redirect:/members/profile/" + memberId;
+            return "redirect:/members/profile/" + userId;
         }
     }
 
@@ -364,7 +364,7 @@ public class UserProfileController {
                         () -> new IllegalStateException(
                                 "No file entry found for imageId " + newImageId + " for member " +
                                         updatedUserBean.getUserId()));
-                currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
+                currentUserProfile.getUser().setPortraitFileEntryId(fe.getId());
                 changedMember = true;
             } else {
                 currentUserProfile.getUser().setPortraitFileEntryId(0L);
@@ -372,8 +372,8 @@ public class UserProfileController {
             }
         }
 
-        final MessagingUserPreferences messagingPreferences = MessagingClient
-                .getMessagingPreferencesForMember(currentUserProfile.getUser().getId_());
+        final MessagingUserPreference messagingPreferences = MessagingClient
+                .getMessagingPreferencesForMember(currentUserProfile.getUser().getId());
         boolean changedMessagingPreferences = false;
         if (updatedUserBean.getSendEmailOnMessage() != messagingPreferences.getEmailOnReceipt()) {
             messagingPreferences.setEmailOnReceipt(updatedUserBean.getSendEmailOnMessage());
@@ -419,27 +419,27 @@ public class UserProfileController {
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
 
         EmailClient.sendEmail(addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(), user.getEmailAddress(), messageSubject,
-                messageBody, false, addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),user.getId_());
+                messageBody, false, addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),user.getId());
     }
 
-    @PostMapping("{memberId}/delete")
+    @PostMapping("{userId}/delete")
     public void deleteUserProfile(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long memberId, Member loggedInMember,
+            Model model, @PathVariable long userId, Member loggedInMember,
             @RequestParam(required=false, defaultValue = "false") boolean anonymize)
             throws IOException, MemberNotFoundException {
         UserProfilePermissions permission = new UserProfilePermissions(loggedInMember);
 
         if (anonymize && permission.getCanAdmin()) {
-            Member memberToAnonymize = new Member(MembersClient.getMember(memberId));
+            Member memberToAnonymize = new Member(MembersClient.getMember(userId));
             memberToAnonymize.anonymize();
             MembersClient.updateMember(memberToAnonymize);
         }
 
-        if (permission.getCanEditMemberProfile(memberId)) {
-            MembersClient.deleteMember(memberId);
+        if (permission.getCanEditMemberProfile(userId)) {
+            MembersClient.deleteMember(userId);
         }
 
-        if (memberId == loggedInMember.getId_()) {
+        if (userId == loggedInMember.getId()) {
             authenticationService.logout(request, response);
             response.sendRedirect("/");
         } else {

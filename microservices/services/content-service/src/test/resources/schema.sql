@@ -1,57 +1,56 @@
-DROP TABLE `xcolab_ContentArticle` IF EXISTS ;
-CREATE TABLE `xcolab_ContentArticle` (
-  `contentArticleId` bigint(20) NOT NULL AUTO_INCREMENT,
-  `authorId` bigint(20) DEFAULT NULL,
-  `createDate` datetime DEFAULT NULL,
-  `maxVersionId` bigint(20) DEFAULT NULL,
-  `folderId` bigint(20) DEFAULT NULL,
-  `editRoleGroupId` bigint(20) DEFAULT NULL,
-  `viewRoleGroupId` bigint(20) DEFAULT NULL,
-  `visible` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`contentArticleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1758 DEFAULT CHARSET=utf8;
-DROP TABLE `xcolab_ContentArticleVersion` IF EXISTS ;
-CREATE TABLE `xcolab_ContentArticleVersion` (
-  `contentArticleVersionId` bigint(20) NOT NULL AUTO_INCREMENT,
-  `contentArticleId` bigint(20) DEFAULT NULL,
-  `folderId` bigint(20) DEFAULT NULL,
-  `authorId` bigint(20) DEFAULT NULL,
-  `createDate` datetime DEFAULT NULL,
-  `title` varchar(555) DEFAULT NULL,
-  `lang` varchar(2) DEFAULT 'en',
-  `content` longtext,
-  PRIMARY KEY (`contentArticleVersionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4059 DEFAULT CHARSET=utf8;
+create table content__content_article
+(
+  id                 bigint auto_increment
+    primary key,
+  author_user_id     bigint     null,
+  created_at         datetime   null,
+  max_version_id     bigint     null,
+  folder_id          bigint     null,
+  edit_role_group_id bigint     null,
+  view_role_group_id bigint     null,
+  visible            tinyint(1) null
+) ENGINE=InnoDB  CHARSET=utf8mb4;
 
-DROP TABLE `xcolab_ContentFolder` IF EXISTS ;
+create table content__content_article_version
+(
+  id             bigint auto_increment
+    primary key,
+  article_id     bigint                  null,
+  folder_id      bigint                  null,
+  author_user_id bigint                  null,
+  created_at     datetime                null,
+  title          varchar(555)            null,
+  content        longtext                null,
+  lang           varchar(4) default 'en' null
+) ENGINE=InnoDB  CHARSET=utf8mb4;
 
-CREATE TABLE `xcolab_ContentFolder` (
-  `contentFolderId` bigint(20) NOT NULL AUTO_INCREMENT,
-  `contentFolderName` varchar(255) DEFAULT NULL,
-  `contentFolderDescription` text,
-  `parentFolderId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`contentFolderId`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
-DROP TABLE `files_FileEntry` IF EXISTS ;
-CREATE TABLE `files_FileEntry` (
-  `fileEntryId` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createDate` datetime DEFAULT NULL,
-  `fileEntryExtension` varchar(10) DEFAULT NULL,
-  `fileEntryName` varchar(255) DEFAULT NULL,
-  `fileEntrySize` int(11) DEFAULT NULL,
-  PRIMARY KEY (`fileEntryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2513729 DEFAULT CHARSET=utf8;
+create table content__content_folder
+(
+  id               bigint auto_increment
+    primary key,
+  name             varchar(255) null,
+  description      text         null,
+  parent_folder_id bigint       null
+) ENGINE=InnoDB  CHARSET=utf8mb4;
 
-DROP TABLE `xcolab_ContentPage` IF EXISTS ;
+create table content__content_page
+(
+  id                 bigint(11) auto_increment
+    primary key,
+  title              varchar(100) null,
+  meta_description   varchar(255)                            null,
+  menu_article_id    bigint(11)                              null,
+  content_article_id bigint(11)                              not null,
+  created_at         timestamp null,
+  updated_at         timestamp null
+) ENGINE=InnoDB  CHARSET=utf8mb4;
 
-CREATE TABLE `xcolab_ContentPage` (
-  `pageId` bigint(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(100)  DEFAULT NULL,
-  `metaDescription` varchar(255),
-  `menuArticleId` bigint(11) DEFAULT NULL,
-  `contentArticleId` bigint(11) NOT NULL,
-  `createdDate` timestamp NULL DEFAULT NULL,
-  `modifiedDate` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`pageId`),
-  UNIQUE KEY `xcolab_ContentPage_title_uindex` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+create table content__file_entry
+(
+  id             bigint auto_increment
+    primary key,
+  created_at     datetime     null,
+  file_extension varchar(10)  null,
+  file_name      varchar(255) null,
+  file_size      int          null
+) ENGINE=InnoDB  CHARSET=utf8mb4;

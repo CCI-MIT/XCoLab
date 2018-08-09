@@ -5,7 +5,7 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.members.pojo.Member;
 
 public class MemberNotification extends EmailNotification {
@@ -34,7 +34,7 @@ public class MemberNotification extends EmailNotification {
             return templateWrapper;
         }
 
-        final ContestEmailTemplate emailTemplate =
+        final EmailTemplate emailTemplate =
                 EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
         templateWrapper = new MemberNotificationTemplate(emailTemplate, "", "");
 
@@ -43,12 +43,12 @@ public class MemberNotification extends EmailNotification {
 
     @Override
     protected Long getReferenceId(){
-        return this.recipient.getId_();
+        return this.recipient.getId();
     }
 
     protected class MemberNotificationTemplate extends EmailNotificationTemplate {
 
-        public MemberNotificationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {
+        public MemberNotificationTemplate(EmailTemplate template, String proposalName, String contestName) {
             super(template, proposalName, contestName);
         }
 

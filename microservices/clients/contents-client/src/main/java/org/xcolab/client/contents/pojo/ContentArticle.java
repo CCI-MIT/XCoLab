@@ -25,9 +25,9 @@ public class ContentArticle implements Serializable {
                     new ParameterizedTypeReference<List<ContentArticle>>() {
                     });
 
-    private Long contentArticleId;
-    private Long authorId;
-    private Timestamp createDate;
+    private Long id;
+    private Long authorUserId;
+    private Timestamp createdAt;
     private Long maxVersionId;
     private Long editRoleGroupId;
     private Long viewRoleGroupId;
@@ -38,12 +38,12 @@ public class ContentArticle implements Serializable {
     public ContentArticle() {
     }
 
-    public ContentArticle(Long contentArticleId, Long authorId, Timestamp createDate,
+    public ContentArticle(Long id, Long authorUserId, Timestamp createdAt,
             Long maxVersionId, Long editRoleGroupId, Long viewRoleGroupId, Boolean visible,
             String title, Long folderId) {
-        this.contentArticleId = contentArticleId;
-        this.authorId = authorId;
-        this.createDate = createDate;
+        this.id = id;
+        this.authorUserId = authorUserId;
+        this.createdAt = createdAt;
         this.maxVersionId = maxVersionId;
         this.editRoleGroupId = editRoleGroupId;
         this.viewRoleGroupId = viewRoleGroupId;
@@ -52,28 +52,28 @@ public class ContentArticle implements Serializable {
         this.folderId = folderId;
     }
 
-    public Long getContentArticleId() {
-        return this.contentArticleId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setContentArticleId(Long contentArticleId) {
-        this.contentArticleId = contentArticleId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getAuthorId() {
-        return this.authorId;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getMaxVersionId() {
@@ -132,20 +132,20 @@ public class ContentArticle implements Serializable {
     @JsonIgnore
     public boolean canView(Member member) {
         return viewRoleGroupId == null
-                || (member != null && PermissionsClient.hasRoleGroup(member.getId_(), viewRoleGroupId));
+                || (member != null && PermissionsClient.hasRoleGroup(member.getId(), viewRoleGroupId));
     }
 
     @JsonIgnore
-    public boolean canEdit(Long memberId) {
+    public boolean canEdit(Long userId) {
         return editRoleGroupId == null
-                || (memberId != null && PermissionsClient.hasRoleGroup(memberId, editRoleGroupId));
+                || (userId != null && PermissionsClient.hasRoleGroup(userId, editRoleGroupId));
     }
 
     @Override
     public String toString() {
-        return "ContentArticle (" + contentArticleId +
-                ", " + authorId +
-                ", " + createDate +
+        return "ContentArticle (" + id +
+                ", " + authorUserId +
+                ", " + createdAt +
                 ", " + maxVersionId +
                 ", " + editRoleGroupId +
                 ", " + viewRoleGroupId +

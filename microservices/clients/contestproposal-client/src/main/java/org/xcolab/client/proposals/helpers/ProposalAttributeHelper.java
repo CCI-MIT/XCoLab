@@ -27,7 +27,7 @@ public class ProposalAttributeHelper extends AttributeHelper<ProposalAttribute> 
     @Override
     protected Map<String, Map<Long, ProposalAttribute>> loadAttributeData() {
         final ProposalAttributeHelperDataDto data = proposalAttributeClient
-                .getProposalAttributeHelperData(proposal.getProposalId(), version);
+                .getProposalAttributeHelperData(proposal.getId(), version);
         return data.getAttributesByNameAndAdditionalId();
     }
 

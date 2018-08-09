@@ -24,13 +24,13 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public List<Category> findByGiven(PaginationHelper paginationHelper,
-            Long groupId, Long authorId) {
+            Long groupId, Long authorUserId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CATEGORY)
                 .getQuery();
 
-        if (authorId != null) {
-            query.addConditions(CATEGORY.AUTHOR_ID.eq(authorId));
+        if (authorUserId != null) {
+            query.addConditions(CATEGORY.AUTHOR_USER_ID.eq(authorUserId));
         }
         if (groupId != null) {
             query.addConditions(CATEGORY.GROUP_ID.eq(groupId));
@@ -38,13 +38,13 @@ public class CategoryDaoImpl implements CategoryDao {
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
-                case "createDate":
+                case "createdAt":
                     query.addOrderBy(sortColumn.isAscending()
-                            ? CATEGORY.CREATE_DATE.asc() : CATEGORY.CREATE_DATE.desc());
+                            ? CATEGORY.CREATED_AT.asc() : CATEGORY.CREATED_AT.desc());
                     break;
             }
         }
-        query.addConditions(CATEGORY.DELETED_DATE.isNull());
+        query.addConditions(CATEGORY.DELETED_AT.isNull());
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(Category.class);
     }
@@ -53,7 +53,7 @@ public class CategoryDaoImpl implements CategoryDao {
     public Category get(long categoryId) throws NotFoundException {
         final Record categoryRecord = dslContext.select()
                 .from(CATEGORY)
-                .where(CATEGORY.CATEGORY_ID.eq(categoryId))
+                .where(CATEGORY.ID.eq(categoryId))
                 .fetchOne();
         if (categoryRecord == null) {
             throw new NotFoundException("Category with id " + categoryId + " does not exist");
@@ -64,33 +64,33 @@ public class CategoryDaoImpl implements CategoryDao {
     @Override
     public boolean update(Category category) {
         return dslContext.update(CATEGORY)
-                .set(CATEGORY.GROUP_ID, category.getGroupId())
-                .set(CATEGORY.CREATE_DATE, category.getCreateDate())
+                .set(CATEGORY.GROUP_ID, category.getId())
+                .set(CATEGORY.CREATED_AT, category.getCreatedAt())
                 .set(CATEGORY.DESCRIPTION, category.getDescription())
-                .set(CATEGORY.AUTHOR_ID, category.getAuthorId())
+                .set(CATEGORY.AUTHOR_USER_ID, category.getAuthorUserId())
                 .set(CATEGORY.NAME, category.getName())
                 .set(CATEGORY.IS_QUIET, category.getIsQuiet())
                 .set(CATEGORY.SORT, category.getSort())
-                .set(CATEGORY.DELETED_DATE, category.getDeletedDate())
-                .where(CATEGORY.CATEGORY_ID.equal(category.getCategoryId()))
+                .set(CATEGORY.DELETED_AT, category.getDeletedAt())
+                .where(CATEGORY.ID.equal(category.getId()))
                 .execute() > 0;
     }
 
     @Override
     public Category create(Category category) {
         final CategoryRecord categoryRecord = dslContext.insertInto(CATEGORY)
-                .set(CATEGORY.GROUP_ID, category.getGroupId())
-                .set(CATEGORY.CREATE_DATE, category.getCreateDate())
+                .set(CATEGORY.ID, category.getId())
+                .set(CATEGORY.CREATED_AT, category.getCreatedAt())
                 .set(CATEGORY.DESCRIPTION, category.getDescription())
-                .set(CATEGORY.AUTHOR_ID, category.getAuthorId())
+                .set(CATEGORY.AUTHOR_USER_ID, category.getAuthorUserId())
                 .set(CATEGORY.NAME, category.getName())
                 .set(CATEGORY.IS_QUIET, category.getIsQuiet())
                 .set(CATEGORY.SORT, category.getSort())
-                .set(CATEGORY.DELETED_DATE, category.getDeletedDate())
-                .returning(CATEGORY.CATEGORY_ID)
+                .set(CATEGORY.DELETED_AT, category.getDeletedAt())
+                .returning(CATEGORY.ID)
                 .fetchOne();
         if (categoryRecord != null) {
-            category.setCategoryId(categoryRecord.getCategoryId());
+            category.setId(categoryRecord.getId());
             return category;
         }
         return null;

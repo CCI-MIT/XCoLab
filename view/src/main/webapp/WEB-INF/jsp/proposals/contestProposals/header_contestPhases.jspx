@@ -12,7 +12,7 @@
 							<c:when test="${not phase.alreadyStarted}">
 								<span>${phase.name}</span>
 							</c:when>
-							<c:when test="${phase.contestPhasePK == contestPhase.contestPhasePK}">
+							<c:when test="${phase.id == contestPhase.id}">
 								<span>${phase.name}</span>
 							</c:when>
 							<c:otherwise>

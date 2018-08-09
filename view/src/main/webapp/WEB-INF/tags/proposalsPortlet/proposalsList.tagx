@@ -92,7 +92,7 @@
             </div>
             <c:if test="${not contestPhase.completed}">
                 <div class="col c-TableGrid__cell text-center">
-                    <xcolab:formatDateTime millis="${proposal.lastModifiedDateForContestPhase.time}" type="date" />
+                    <xcolab:formatDateTime millis="${proposal.lastupdatedAtForContestPhase.time}" type="date" />
                 </div>
                 <c:if test="${showContributorsColumn}">
                     <div class="col c-TableGrid__cell text-center">

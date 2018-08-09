@@ -32,28 +32,28 @@ public final class FlaggingClient {
         return listReports(start, last, null, null, null, null, null);
     }
 
-    public static List<Report> listReports(int start, int last, Long reporterMemberId,
-            TargetType targetType, Long targetId, Long targetAdditionalId, Long managerMemberId) {
+    public static List<Report> listReports(int start, int last, Long reporteruserId,
+            TargetType targetType, Long targetId, Long targetAdditionalId, Long manageruserId) {
 
         return reportResource.list()
                 .addRange(start, last)
-                .queryParam("sort", "createDate")
-                .optionalQueryParam("reporterMemberId", reporterMemberId)
+                .queryParam("sort", "createdAt")
+                .optionalQueryParam("reporteruserId", reporteruserId)
                 .optionalQueryParam("targetType", targetType)
                 .optionalQueryParam("targetId", targetId)
                 .optionalQueryParam("targetAdditionalId", targetAdditionalId)
-                .optionalQueryParam("managerMemberId", managerMemberId)
+                .optionalQueryParam("manageruserId", manageruserId)
                 .execute();
     }
 
-    public static int countReports(Long reporterMemberId, TargetType targetType, Long targetId,
-            Long targetAdditionalId, Long managerMemberId) {
+    public static int countReports(Long reporteruserId, TargetType targetType, Long targetId,
+            Long targetAdditionalId, Long manageruserId) {
         return reportResource.count()
-                .optionalQueryParam("reporterMemberId", reporterMemberId)
+                .optionalQueryParam("reporteruserId", reporteruserId)
                 .optionalQueryParam("targetType", targetType)
                 .optionalQueryParam("targetId", targetId)
                 .optionalQueryParam("targetAdditionalId", targetAdditionalId)
-                .optionalQueryParam("managerMemberId", managerMemberId)
+                .optionalQueryParam("manageruserId", manageruserId)
                 .execute();
     }
 
@@ -153,7 +153,7 @@ public final class FlaggingClient {
     public static Report report(Member reporter, long targetId, Long targetAdditionalId,
             TargetType targetType, String reason, String comment) {
         Report report = new Report();
-        report.setReporterMemberId(reporter.getId_());
+        report.setReporteruserId(reporter.getId());
         report.setTargetType(targetType.name());
         report.setTargetId(targetId);
         report.setTargetAdditionalId(targetAdditionalId);
@@ -166,7 +166,7 @@ public final class FlaggingClient {
 
     public static boolean handleReport(long managerId, ManagerAction managerAction, long reportId) {
         return reportResource.elementService(reportId, "handle", Boolean.class)
-                .queryParam("managerMemberId", managerId)
+                .queryParam("manageruserId", managerId)
                 .queryParam("managerAction", managerAction)
                 .post();
     }

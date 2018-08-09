@@ -178,7 +178,7 @@ public class ProposalReview {
         String authorName = getTeamOrNull();
         if (StringUtils.isBlank(authorName)) {
             try {
-                final Member member = MembersClient.getMember(proposal.getAuthorId());
+                final Member member = MembersClient.getMember(proposal.getAuthorUserId());
                 authorName = member.getFirstName() + " " + member.getLastName();
             } catch (MemberNotFoundException e) {
                 authorName = "";
@@ -189,7 +189,7 @@ public class ProposalReview {
 
     private String getTeamOrNull(){
             for (ProposalAttribute attr: ProposalAttributeClientUtil
-                    .getAllProposalAttributes(proposal.getProposalId(), proposal.getCurrentVersion())) {
+                    .getAllProposalAttributes(proposal.getId(), proposal.getCurrentVersion())) {
                 if (attr.getName().equals(ProposalAttributeKeys.TEAM) && attr.getAdditionalId() == 0) {
                     return attr.getStringValue();
                 }

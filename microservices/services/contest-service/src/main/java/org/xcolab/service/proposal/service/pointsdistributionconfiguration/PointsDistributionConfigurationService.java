@@ -42,7 +42,7 @@ public class PointsDistributionConfigurationService {
     public PointsDistributionConfiguration getPointsDistributionConfiguration(long planSectionDefinitionId){
         PointsDistributionConfiguration config = null;
         try{
-            config = pointsDistributionConfigurationDao.getByPlanSectionDefinitionId(planSectionDefinitionId);
+            config = pointsDistributionConfigurationDao.getByProposalTemplateSectionDefinitionId(planSectionDefinitionId);
         } catch(NotFoundException ignored) {}
         return config;
     }
@@ -94,25 +94,25 @@ public class PointsDistributionConfigurationService {
     private void verifyTeamMemberships(long proposalId, long pointTypeId, List<PointsDistributionConfiguration> pdcs) {
 
         try {
-            Set<Long> memberIds = new HashSet<>();
-            Set<Long> missingMemberIds = new HashSet<>();
+            Set<Long> userIds = new HashSet<>();
+            Set<Long> missinguserIds = new HashSet<>();
             for (Member user : proposalService.getProposalMembers(proposalId)) {
-                memberIds.add(user.getUserId());
-                missingMemberIds.add(user.getUserId());
+                userIds.add(user.getId());
+                missinguserIds.add(user.getId());
             }
 
             for (PointsDistributionConfiguration pdc : pdcs) {
-                if (memberIds.contains(pdc.getTargetUserId())) {
-                    missingMemberIds.remove(pdc.getTargetUserId());
+                if (userIds.contains(pdc.getTargetUserId())) {
+                    missinguserIds.remove(pdc.getTargetUserId());
                 } else {
-                    pointsDistributionConfigurationDao.delete(pdc.getId_());
+                    pointsDistributionConfigurationDao.delete(pdc.getId());
                     //_log.info(String.format("Removing PointsDistributionConfiguration non-team member %d for proposal %d pointType %d.",
                     //       pdc.getTargetUserId(), proposalId, pointTypeId));
                 }
             }
 
-            for (long userId : missingMemberIds) {
-                addDistributionConfiguration(proposalId, pointTypeId, userId, 0L, 1.0 / memberIds.size(), 0L);
+            for (long userId : missinguserIds) {
+                addDistributionConfiguration(proposalId, pointTypeId, userId, 0L, 1.0 / userIds.size(), 0L);
                 // _log.info(String.format("Adding missing PointsDistributionConfiguration for team member %d for proposal %d pointType %d.",
                 //        userId, proposalId, pointTypeId));
             }
@@ -137,8 +137,8 @@ public class PointsDistributionConfigurationService {
             model.setTargetSubProposalId(targetSubProposalId);
         }
         model.setPercentage(percentage);
-        model.setCreator(creator);
-        model.setCreateDate(new Timestamp((new Date()).getTime()));
+        model.setAuthorUserId(creator);
+        model.setCreatedAt(new Timestamp((new Date()).getTime()));
 
         model = pointsDistributionConfigurationDao.create(model);
 

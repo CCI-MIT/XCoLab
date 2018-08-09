@@ -46,9 +46,8 @@ public final class ContestScheduleLifecycleUtil {
     private static void removeContestSchedulePhases(Long scheduleId) {
 
         List<ContestPhase> contestSchedulePhases = ContestClientUtil
-                .getPhasesForContestScheduleId(scheduleId);
+                .getTemplatePhasesForContestScheduleId(scheduleId);
         removeContestPhases(contestSchedulePhases);
-
     }
 
     private static void removeContestPhases(List<ContestPhase> contestPhases) {
@@ -58,7 +57,7 @@ public final class ContestScheduleLifecycleUtil {
     }
 
     private static void removeContestPhase(ContestPhase contestPhase) {
-        Long contestPhaseId = contestPhase.getContestPhasePK();
+        Long contestPhaseId = contestPhase.getId();
         List<Proposal2Phase> proposal2Phases = ProposalPhaseClientUtil
                 .getProposal2PhaseByContestPhaseId(contestPhaseId);
         if (!proposal2Phases.isEmpty()) {
@@ -66,7 +65,7 @@ public final class ContestScheduleLifecycleUtil {
             _log.warn("There are remaining proposal2phase entries for contestPhaseId: {}",
                     contestPhaseId);
         }
-        ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
+        ContestClientUtil.deleteContestPhase(contestPhase.getId());
     }
 
     private static void removeContestPhasesOfContestsThatAreUsingSchedule(Long scheduleId) {
@@ -77,7 +76,7 @@ public final class ContestScheduleLifecycleUtil {
             List<ContestPhase> contestSchedulePhases =
                     ContestClientUtil
                             .getPhasesForContestScheduleIdAndContest(scheduleId,
-                                    contestUsingSchedule.getContestPK());
+                                    contestUsingSchedule.getId());
             removeContestPhases(contestSchedulePhases);
         }
 
@@ -93,7 +92,7 @@ public final class ContestScheduleLifecycleUtil {
         List<LabelValue> selectItems = new ArrayList<>();
         for (ContestSchedule candidateSchedule : ContestClientUtil.getAllContestSchedules()) {
             final List<ContestPhase> newSchedulePhases =
-                    getCurrentPhasesForSchedule(candidateSchedule.getId_());
+                    getCurrentPhasesForSchedule(candidateSchedule.getId());
             if (ContestScheduleChangeHelper
                     .isValidChange(currentSchedulePhases, newSchedulePhases)) {
                 selectItems.add(new ScheduleLabel(candidateSchedule));
@@ -128,9 +127,9 @@ public final class ContestScheduleLifecycleUtil {
         newContestSchedule = ContestClientUtil.createContestSchedule(newContestSchedule);
 
         ContestPhase contestPhase = new ContestPhase();
-        contestPhase.setContestPK(0L);
-        contestPhase.setContestScheduleId(newContestSchedule.getId_());
-        contestPhase.setContestPhaseType(ContestPhaseTypeValue.PROPOSAL_CREATION.getTypeId());
+        contestPhase.setContestId(0L);
+        contestPhase.setContestScheduleId(newContestSchedule.getId());
+        contestPhase.setContestPhaseTypeId(ContestPhaseTypeValue.PROPOSAL_CREATION.getTypeId());
         contestPhase.setPhaseStartDate(new Timestamp(DateTime.now().getMillis()));
         contestPhase.setContestPhaseAutopromote(ContestPhasePromoteType.DEFAULT.getValue());
         ContestClientUtil.createContestPhase(contestPhase);
@@ -141,7 +140,7 @@ public final class ContestScheduleLifecycleUtil {
     private static class ScheduleLabel extends LabelValue {
 
         public ScheduleLabel(ContestSchedule schedule) {
-            super(schedule.getId_(), schedule.getName());
+            super(schedule.getId(), schedule.getName());
         }
     }
 }

@@ -66,13 +66,13 @@ public class IntegratedProposalImpactSeries {
             for (Proposal proposal : proposals) {
                 try {
                     Contest contestOfProposal =
-                            proposalContext.getClients().getProposalClient().getLatestContestInProposal(proposal.getProposalId());
+                            proposalContext.getClients().getProposalClient().getLatestContestInProposal(proposal.getId());
                     if (Objects.equals(contestTierId, contestOfProposal.getContestTier())) {
                         subProposalsOnContestTier.addAll(proposals);
                     } else {
                         List<Proposal> subProposals = ProposalClientUtil
                                 .getContestIntegrationRelevantSubproposals(
-                                        proposal.getProposalId());
+                                        proposal.getId());
                         getSubProposalsOnContestTier(proposalContext, subProposals, subProposalsOnContestTier,
                                 contestTierId);
                     }
@@ -148,7 +148,7 @@ public class IntegratedProposalImpactSeries {
                                                 sectorOntologyTermIds) :
                                 impactSeriesList
                                         .getAggregatedSeriesValuesByRegionAndSectorOntologyTermIds(
-                                                regionOntologyTerm.getId_(), sectorOntologyTermIds);
+                                                regionOntologyTerm.getId(), sectorOntologyTermIds);
 
                 addUpProposalImpactSectorSeriesValues(sectorsProposalAggregatedSeriesValues);
             } catch (ContestNotFoundException cnf) {

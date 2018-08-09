@@ -18,7 +18,7 @@ public class ProposalPickerSortingUtil {
             Comparator<Contest> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "name":
-                    comparator = Comparator.comparing(Contest::getContestShortNameWithEndYear);
+                    comparator = Comparator.comparing(Contest::getTitleWithEndYear);
                     break;
                 case "comments":
                     comparator = Comparator.comparing(Contest::getTotalCommentsCount);
@@ -53,7 +53,7 @@ public class ProposalPickerSortingUtil {
             Comparator<Proposal> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "contest":
-                    comparator = Comparator.comparing(o -> o.getContest().getContestName());
+                    comparator = Comparator.comparing(o -> o.getContest().getQuestion());
                     break;
                 case "proposal":
                     comparator = Comparator.comparing(Proposal::getName);
@@ -62,7 +62,7 @@ public class ProposalPickerSortingUtil {
                     comparator = Comparator.comparing(Proposal::getAuthorName);
                     break;
                 case "date":
-                    comparator = Comparator.comparing(Proposal::getCreateDate);
+                    comparator = Comparator.comparing(Proposal::getCreatedAt);
                     break;
                 case "supporters":
                     comparator = Comparator.comparing(Proposal::getSupportersCountCached);

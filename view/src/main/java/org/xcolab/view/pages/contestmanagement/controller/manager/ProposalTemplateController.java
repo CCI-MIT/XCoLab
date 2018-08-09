@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.PlanTemplateClientUtil;
-import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.ProposalTemplateClientUtil;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.controller.AbstractProposalTemplateTabController;
@@ -57,25 +57,24 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        Long planTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
-        model.addAttribute("planTemplateId", planTemplateId);
-        if (planTemplateId >= 0) {
+        Long proposalTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
+        if (proposalTemplateId >= 0) {
             ProposalTemplateWrapper proposalTemplateWrapper =
-                    new ProposalTemplateWrapper(planTemplateId);
+                    new ProposalTemplateWrapper(proposalTemplateId);
             model.addAttribute("contestProposalTemplateWrapper", proposalTemplateWrapper);
         }
-        model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId,
+        model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(proposalTemplateId,
                 ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
-        model.addAttribute("elementId", planTemplateId);
+        model.addAttribute("elementId", proposalTemplateId);
         return TAB_VIEW;
     }
 
     private Long getFirstPlanTemplateId() {
 
-        final List<PlanTemplate> planTemplates = PlanTemplateClientUtil
+        final List<ProposalTemplate> planTemplates = ProposalTemplateClientUtil
                 .getPlanTemplates();
         if (!planTemplates.isEmpty()) {
-            return planTemplates.get(0).getId_();
+            return planTemplates.get(0).getId();
         }
         return -1L;
 
@@ -90,8 +89,8 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        PlanTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
-        return "redirect:" + tab.getTabUrl(newTemplate.getId_());
+        ProposalTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
+        return "redirect:" + tab.getTabUrl(newTemplate.getId());
     }
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/delete/{elementId}")
@@ -119,15 +118,15 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
         if (result.hasErrors()) {
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(
-                    updatedProposalTemplateWrapper.getPlanTemplateId(),
+                    updatedProposalTemplateWrapper.getProposalTemplateId(),
                     ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
             AlertMessage.danger("Failed to update element").flash(request);
-            return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getPlanTemplateId());
+            return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getProposalTemplateId());
         }
 
         updatedProposalTemplateWrapper.setUpdateExistingTemplate(true);
         updatedProposalTemplateWrapper.persist();
         AlertMessage.CHANGES_SAVED.flash(request);
-        return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getPlanTemplateId());
+        return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getProposalTemplateId());
     }
 }

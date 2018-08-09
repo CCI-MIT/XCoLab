@@ -11,13 +11,13 @@ public class ProposalRatingType extends AbstractProposalRatingType {
     }
 
     public ProposalRatingType(
-            Long id_,
+            Long id,
             String label,
             String description,
             Integer judgetype,
             Boolean isactive
     ) {
-        super(id_, label, description, judgetype, isactive);
+        super(id, label, description, judgetype, isactive);
     }
 
     public ProposalRatingType(AbstractProposalRatingType abstractProposalRatingType,

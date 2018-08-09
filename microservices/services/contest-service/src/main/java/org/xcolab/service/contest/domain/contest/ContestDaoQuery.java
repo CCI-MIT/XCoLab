@@ -41,7 +41,7 @@ public class ContestDaoQuery {
         return this;
     }
 
-    public ContestDaoQuery withPlanTemplateId(Long planTemplateId) {
+    public ContestDaoQuery withProposalTemplateId(Long planTemplateId) {
         this.planTemplateId = planTemplateId;
         return this;
     }

@@ -186,7 +186,7 @@ public class ModelUIFactory {
         Set<MetaData> inputs = new HashSet<>(s.getInputs());
 
         for (ModelInputGroup group : ModelingClientUtil.getInputGroups(s)) {
-            if (group.getParentGroupPK() <= 0) {
+            if (group.getParentGroupId() <= 0) {
                 result.add(processGroup(group, inputs, s));
             }
         }

@@ -3,9 +3,9 @@ package org.xcolab.view.pages.proposals.discussion;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalTeamMember;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -82,16 +82,18 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
         Contest contestWrapper =  proposalWrapper.getContest();
 
-        boolean isJudge = proposalWrapper.getIsUserAmongSelectedJudges(memberId);
-        boolean isFellow = proposalWrapper.isUserAmongFellows(memberId);
-        boolean isAdvisor = contestWrapper.isUserAmongAdvisors(memberId);
+        boolean isJudge = proposalWrapper.getIsUserAmongSelectedJudges(userId);
+        boolean isFellow = proposalWrapper.isUserAmongFellows(userId);
+        boolean isAdvisor = contestWrapper.isUserAmongAdvisors(userId);
 
         return isFellow || isJudge || isAdvisor;
     }
 
     private boolean isUserProposalAuthorOrTeamMember() {
-        boolean isAuthor = proposal.getAuthorId() == memberId;
-        boolean isMember = UsersGroupsClientUtil.isMemberInGroup(memberId, proposal.getProposalId());
+        boolean isAuthor = proposal.getAuthorUserId() == userId;
+        boolean isMember = proposal.getMembers().stream()
+                .map(ProposalTeamMember::getUserId)
+                .anyMatch(id -> id == userId);
 
         return isAuthor || isMember;
     }

@@ -9,7 +9,6 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
-    <!--@elvariable id="scheduleId" type="java.lang.Long"-->
     <!--@elvariable id="contestScheduleBean" type="org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleBean"-->
     <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
     <!--@elvariable id="contestPhaseTypesSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
@@ -61,7 +60,7 @@
                 </div>
             </div>
         </form:form>
-        <c:if test="${scheduleId >= 0}">
+        <c:if test="${not empty contestScheduleBean}">
             <form:form action="${updateContestScheduleUrl}?elementId=${contestScheduleBean.scheduleId}"
                        commandName="contestScheduleBean" id="editForm" method="post" class="mt-3">
                 <input type="hidden" name="action" value="UPDATE" />
@@ -121,9 +120,9 @@
 
                                     <form:hidden path="schedulePhases[${x.index}].contestScheduleId"
                                                  data-form-name="contestScheduleId"/>
-                                    <form:hidden path="schedulePhases[${x.index}].contestPhasePK"
-                                                 data-form-name="contestPhasePK"/>
-                                    <form:hidden path="schedulePhases[${x.index}].contestPK" data-form-name="contestPK"/>
+                                    <form:hidden path="schedulePhases[${x.index}].id"
+                                                 data-form-name="contestPhaseId"/>
+                                    <form:hidden path="schedulePhases[${x.index}].contestId" data-form-name="contestId"/>
                                     <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
                                                  data-form-name="contestPhaseDeleted"/>
 
@@ -132,8 +131,8 @@
 
                                     <td data-form-attribute="indexLable">${x.index + 1}</td>
                                     <td>
-                                        <form:hidden path="schedulePhases[${x.index}].contestPhaseTypeOld" data-form-name="contestPhaseTypeOld"/>
-                                        <form:select path="schedulePhases[${x.index}].contestPhaseType" class="form-control" data-form-name="contestPhaseType"
+                                        <form:hidden path="schedulePhases[${x.index}].contestPhaseTypeIdOld" data-form-name="contestPhaseTypeIdOld"/>
+                                        <form:select path="schedulePhases[${x.index}].contestPhaseTypeId" class="form-control" data-form-name="contestPhaseTypeId"
                                                      disabled="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted}">
                                             <form:options items="${contestPhaseTypesSelectionItems}" itemValue="value"
                                                           itemLabel="lable"/>
@@ -225,7 +224,7 @@
                                 </c:otherwise>
                             </c:choose>
                             <td>
-                                <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestPK}"
+                                <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.id}"
                                        target="_blank">EDIT</a>
                             </td>
                         </tr>
@@ -302,7 +301,7 @@
         function deleteContestPhase(event) {
             if (confirm("Do you want to remove this contestPhase ?")) {
                 var contestPhaseRow = getClosest(event.target, "tr");
-                var isNewContestPhase = contestPhaseRow.querySelectorAll("[data-form-name=contestPhasePK]")[0].value == -1;
+                var isNewContestPhase = contestPhaseRow.querySelectorAll("[data-form-name=contestPhaseId]")[0].value == -1;
                 if (isNewContestPhase) {
                     contestPhaseRow.remove();
                 } else {

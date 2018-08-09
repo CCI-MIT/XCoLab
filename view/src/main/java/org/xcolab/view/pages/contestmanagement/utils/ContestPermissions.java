@@ -14,25 +14,25 @@ public class ContestPermissions implements TabPermissions, Serializable {
 
     private final Contest contestWrapper;
 
-    private final long memberId;
+    private final long userId;
     private final boolean isLoggedIn;
 
     public ContestPermissions(HttpServletRequest request, Contest contest) {
 
-        memberId = MemberAuthUtil.getMemberId(request);
-        isLoggedIn = memberId > 0;
+        userId = MemberAuthUtil.getuserId(request);
+        isLoggedIn = userId > 0;
         contestWrapper = (contest);
     }
 
     @Override
     public boolean getCanAdmin() {
-        return PermissionsClient.canAdminAll(memberId);
+        return PermissionsClient.canAdminAll(userId);
     }
 
     @Override
     public boolean getCanRole(MemberRole role) {
         return isLoggedIn && contestWrapper
-                .getHasUserRoleInContest(memberId, role.getRoleId());
+                .getHasUserRoleInContest(userId, role.getRoleId());
     }
 
     @Override
@@ -50,6 +50,6 @@ public class ContestPermissions implements TabPermissions, Serializable {
     }
 
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(memberId);
+        return PermissionsClient.canAdminAll(userId);
     }
 }

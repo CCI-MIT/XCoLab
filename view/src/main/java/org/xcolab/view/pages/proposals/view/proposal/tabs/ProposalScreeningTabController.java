@@ -48,13 +48,13 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
         boolean hasAlreadyBeenPromoted =
                 ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
-                        proposal.getProposalId(),
-                        contestPhase.getContestPhasePK(),
+                        proposal.getId(),
+                        contestPhase.getId(),
                         ProposalContestPhaseAttributeKeys.PROMOTE_DONE
                 );
 
         FellowProposalScreeningBean bean = new FellowProposalScreeningBean(proposalFellowWrapper);
-        bean.setContestPhaseId(contestPhase.getContestPhasePK());
+        bean.setContestPhaseId(contestPhase.getId());
 
         model.addAttribute("hasAlreadyBeenPromoted", hasAlreadyBeenPromoted);
         model.addAttribute("fellowProposalScreeningBean", bean);
@@ -71,13 +71,13 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
         final Contest contest = proposalContext.getContest();
         final Proposal proposal = proposalContext.getProposal();
-        long proposalId = proposal.getProposalId();
+        long proposalId = proposal.getId();
         long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();
         ProposalsPermissions permissions = proposalContext.getPermissions();
 
         // Security handling
         final boolean isContestFellow = permissions.getCanFellowActions()
-                && proposal.isUserAmongFellows(currentMember.getUserId());
+                && proposal.isUserAmongFellows(currentMember.getId());
         if (!isContestFellow && !permissions.getCanAdminAll()) {
             return new AccessDeniedPage(currentMember).toViewName(response);
         }
@@ -130,12 +130,12 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
         //find existing ratings
         List<ProposalRating> existingRatings =
                 ProposalJudgeRatingClientUtil.getFellowRatingForProposalAndUser(
-                        currentMember.getUserId(),
+                        currentMember.getId(),
                         proposalId,
                         contestPhaseId);
 
         JudgingUtil.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId,
-                contestPhaseId, currentMember.getUserId(), false);
+                contestPhaseId, currentMember.getId(), false);
 
         final String proposalLinkUrl = proposal.getProposalLinkUrl(contest, contestPhaseId);
         return "redirect:" + proposalLinkUrl + "/tab/SCREENING";

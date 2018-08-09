@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.LoginLog;
-import org.xcolab.service.members.service.member.MemberService;
+import org.xcolab.service.members.service.member.UserService;
 
 @RestController
 @RequestMapping("/loginLogs")
 public class LoginLogsController {
 
-    private final MemberService memberService;
+    private final UserService memberService;
 
     @Autowired
-    public LoginLogsController(MemberService memberService) {
-        Assert.notNull(memberService, "MemberService bean is required");
+    public LoginLogsController(UserService memberService) {
+        Assert.notNull(memberService, "UserService bean is required");
         this.memberService = memberService;
     }
 

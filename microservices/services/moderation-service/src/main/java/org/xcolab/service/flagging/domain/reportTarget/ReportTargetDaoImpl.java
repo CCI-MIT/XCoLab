@@ -38,7 +38,7 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
     public ReportTarget get(long reportTargetId) {
         final Record record = dslContext.select()
                 .from(REPORT_TARGET)
-                .where(REPORT_TARGET.REPORT_TARGET_ID.eq(reportTargetId))
+                .where(REPORT_TARGET.ID.eq(reportTargetId))
                 .fetchOne();
         if (record == null) {
             return null;
@@ -66,7 +66,7 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
                 .set(REPORT_TARGET.REASON, reportTarget.getReason())
                 .set(REPORT_TARGET.NOTIFICATION_THRESHOLD, reportTarget.getNotificationThreshold())
                 .set(REPORT_TARGET.SCREENING_THRESHOLD, reportTarget.getScreeningThreshold())
-                .where(REPORT_TARGET.REPORT_TARGET_ID.eq(reportTarget.getReportTargetId()))
+                .where(REPORT_TARGET.ID.eq(reportTarget.getId()))
                 .execute() > 0;
     }
 
@@ -77,10 +77,10 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
                 .set(REPORT_TARGET.REASON, reportTarget.getReason())
                 .set(REPORT_TARGET.NOTIFICATION_THRESHOLD, reportTarget.getNotificationThreshold())
                 .set(REPORT_TARGET.SCREENING_THRESHOLD, reportTarget.getScreeningThreshold())
-                .returning(REPORT_TARGET.REPORT_TARGET_ID)
+                .returning(REPORT_TARGET.ID)
                 .fetchOne();
         if (record != null) {
-            reportTarget.setReportTargetId(record.getReportTargetId());
+            reportTarget.setId(record.getId());
             return reportTarget;
         }
         return null;
@@ -89,7 +89,7 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
     @Override
     public boolean delete(long reportTargetId) {
         return dslContext.deleteFrom(REPORT_TARGET)
-                .where(REPORT_TARGET.REPORT_TARGET_ID.eq(reportTargetId))
+                .where(REPORT_TARGET.ID.eq(reportTargetId))
                 .execute() > 0;
     }
 }

@@ -31,16 +31,13 @@ public class FileEntryDaoTest {
 
     @Test
     public void shouldCreateNewFileEntry() throws Exception {
-
         FileEntry ae = new FileEntry();
         ae = fileEntryDao.create(ae);
-        assertNotNull(fileEntryDao.get(ae.getFileEntryId()));
-
+        assertNotNull(fileEntryDao.get(ae.getId()));
     }
+
     @Test
     public void shouldGetFileEntry() throws Exception {
-
         assertNotNull(fileEntryDao.get(901L));
-
     }
 }

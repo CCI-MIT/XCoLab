@@ -23,7 +23,7 @@ public class ProposalTeamMember {
     }
     
     public long getUserId() {
-        return member.getUserId();
+        return member.getId();
     }
 
     public Member getMember() {
@@ -36,7 +36,7 @@ public class ProposalTeamMember {
     
     public ProposalMemberType getMemberType() {
         if (memberType == null) {
-            if (proposal.getAuthorId() == member.getUserId()) {
+            if (proposal.getAuthorUserId() == member.getId()) {
                 memberType = ProposalMemberType.OWNER;
             } else {
                 memberType = ProposalMemberType.MEMBER;

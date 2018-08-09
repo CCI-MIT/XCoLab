@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.model.tables.pojos.User;
 import org.xcolab.model.tables.pojos.PlatformTeam;
 import org.xcolab.service.members.domain.platformteam.PlatformTeamDao;
 
@@ -60,22 +60,22 @@ public class PlatformTeamsController {
     @PutMapping("{teamId}")
     public PlatformTeam updatePlatformTeam(@RequestBody PlatformTeam platformTeam, @PathVariable
             Long teamId) {
-        assert (platformTeam.getId_().equals(teamId));
+        assert (platformTeam.getId().equals(teamId));
         return platformTeamDao.updateOrInsertPlatformTeam(platformTeam);
     }
 
     @GetMapping("{teamId}/members")
-    public List<Member> listTeamMembers(@PathVariable Long teamId) {
-        return platformTeamDao.getTeamMembers(teamId);
+    public List<User> listTeamUsers(@PathVariable Long teamId) {
+        return platformTeamDao.getTeamUsers(teamId);
     }
 
     @PutMapping("{teamId}/members/{userId}")
-    public boolean addMember(@PathVariable Long teamId, @PathVariable Long userId) {
-        return platformTeamDao.addMember(teamId, userId) > 0;
+    public boolean addUser(@PathVariable Long teamId, @PathVariable Long userId) {
+        return platformTeamDao.addUser(teamId, userId) > 0;
     }
 
     @DeleteMapping("{teamId}/members/{userId}")
-    public boolean removeMember(@PathVariable Long teamId, @PathVariable Long userId) {
-        return platformTeamDao.removeMember(teamId, userId) > 0;
+    public boolean removeUser(@PathVariable Long teamId, @PathVariable Long userId) {
+        return platformTeamDao.removeUser(teamId, userId) > 0;
     }
 }

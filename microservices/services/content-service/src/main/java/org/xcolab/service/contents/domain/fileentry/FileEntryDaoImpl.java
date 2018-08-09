@@ -27,14 +27,14 @@ public class FileEntryDaoImpl implements FileEntryDao {
     public FileEntry create(FileEntry fileEntry) {
 
         FileEntryRecord ret = this.dslContext.insertInto(FILE_ENTRY)
-                .set(FILE_ENTRY.FILE_ENTRY_EXTENSION, fileEntry.getFileEntryExtension())
-                .set(FILE_ENTRY.CREATE_DATE, fileEntry.getCreateDate())
-                .set(FILE_ENTRY.FILE_ENTRY_SIZE, fileEntry.getFileEntrySize())
-                .set(FILE_ENTRY.FILE_ENTRY_NAME, fileEntry.getFileEntryName())
-                .returning(FILE_ENTRY.FILE_ENTRY_ID)
+                .set(FILE_ENTRY.FILE_EXTENSION, fileEntry.getFileExtension())
+                .set(FILE_ENTRY.CREATED_AT, fileEntry.getCreatedAt())
+                .set(FILE_ENTRY.FILE_SIZE, fileEntry.getFileSize())
+                .set(FILE_ENTRY.FILE_NAME, fileEntry.getFileName())
+                .returning(FILE_ENTRY.ID)
                 .fetchOne();
         if (ret != null) {
-            fileEntry.setFileEntryId(ret.getValue(FILE_ENTRY.FILE_ENTRY_ID));
+            fileEntry.setId(ret.getValue(FILE_ENTRY.ID));
             return fileEntry;
         } else {
             return null;
@@ -46,7 +46,7 @@ public class FileEntryDaoImpl implements FileEntryDao {
     public FileEntry get(Long fileEntryid) throws NotFoundException {
         final Record record = this.dslContext.select()
                 .from(FILE_ENTRY)
-                .where(FILE_ENTRY.FILE_ENTRY_ID.eq(fileEntryid))
+                .where(FILE_ENTRY.ID.eq(fileEntryid))
                 .fetchOne();
         if (record == null) {
             throw new NotFoundException();

@@ -7,44 +7,44 @@ abstract class AbstractCommentThread implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long threadId;
+    private Long id;
     private Long categoryId;
-    private Long authorId;
+    private Long authorUserId;
     private String title;
-    private Timestamp createDate;
-    private Timestamp deletedDate;
+    private Timestamp createdAt;
+    private Timestamp deletedAt;
     private Boolean isQuiet;
 
     AbstractCommentThread() {
     }
 
-    AbstractCommentThread(Long threadId, Long categoryId, Long authorId, String title,
-            Timestamp createDate, Timestamp deletedDate, Boolean isQuiet) {
-        this.threadId = threadId;
+    AbstractCommentThread(Long id, Long categoryId, Long authorUserId, String title,
+            Timestamp createdAt, Timestamp deletedAt, Boolean isQuiet) {
+        this.id = id;
         this.categoryId = categoryId;
-        this.authorId = authorId;
+        this.authorUserId = authorUserId;
         this.title = title;
-        this.createDate = createDate;
-        this.deletedDate = deletedDate;
+        this.createdAt = createdAt;
+        this.deletedAt = deletedAt;
         this.isQuiet = isQuiet;
     }
 
     AbstractCommentThread(AbstractCommentThread commentThread) {
-        this.threadId = commentThread.threadId;
+        this.id = commentThread.id;
         this.categoryId = commentThread.categoryId;
-        this.authorId = commentThread.authorId;
+        this.authorUserId = commentThread.authorUserId;
         this.title = commentThread.title;
-        this.createDate = commentThread.createDate;
-        this.deletedDate = commentThread.deletedDate;
+        this.createdAt = commentThread.createdAt;
+        this.deletedAt = commentThread.deletedAt;
         this.isQuiet = commentThread.isQuiet;
     }
 
-    public Long getThreadId() {
-        return this.threadId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setThreadId(Long threadId) {
-        this.threadId = threadId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getCategoryId() {
@@ -55,12 +55,12 @@ abstract class AbstractCommentThread implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public Long getAuthorId() {
-        return this.authorId;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
     public String getTitle() {
@@ -71,20 +71,20 @@ abstract class AbstractCommentThread implements Serializable {
         this.title = title;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getDeletedDate() {
-        return this.deletedDate;
+    public Timestamp getDeletedAt() {
+        return this.deletedAt;
     }
 
-    public void setDeletedDate(Timestamp deletedDate) {
-        this.deletedDate = deletedDate;
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     public Boolean getIsQuiet() {
@@ -98,12 +98,12 @@ abstract class AbstractCommentThread implements Serializable {
     @Override
     public String toString() {
 
-        return "Thread (" + threadId +
+        return "Thread (" + id +
                 ", " + categoryId +
-                ", " + authorId +
+                ", " + authorUserId +
                 ", " + title +
-                ", " + createDate +
-                ", " + deletedDate +
+                ", " + createdAt +
+                ", " + deletedAt +
                 ", " + isQuiet +
                 ")";
     }

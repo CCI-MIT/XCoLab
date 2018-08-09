@@ -5,7 +5,7 @@ var sortColumn = 'Supporters';
 var contestSortColumn = 'Proposals';
 var currentSectionId;
 var pickMultipleProposals = false;
-var contestPK = 0;
+var contestId = 0;
 var contests = [];
 var pickedProposals = [];
 var pickerTab;
@@ -106,7 +106,7 @@ function replaceURLPlaceholders(rawUrl){
     URL = URL.replace('@@REPLACE-CONTESTSORTCOLOMN@@', contestSortColumn);
     URL = URL.replace('@@REPLACE-SORTORDER@@', sortOrder);
     URL = URL.replace('@@REPLACE-SECTIONID@@', currentSectionId);
-    URL = URL.replace('@@REPLACE-CONTESTPK@@', contestPK);
+    URL = URL.replace('@@REPLACE-contestId@@', contestId);
     return URL;
 }
 
@@ -129,7 +129,7 @@ function proposalPickerTabSelected(tab){
         proposalsPickerProposalsContainer.find(".breadcrumb").show();
     	loadContests();
     } else {
-    	contestPK = 0;
+    	contestId = 0;
         proposalsPickerProposalsContainer.show();
     	$("#proposalPickerTableContests").hide();
         proposalsPickerProposalsContainer.find(".breadcrumb").hide();
@@ -351,13 +351,13 @@ if (input) {
 
 $("#proposalPicker_contestsContainer").on("click", " tr", function(event) {
 	event.preventDefault();
-	contestPK = $(this).attr('data-contestPK');
+	contestId = $(this).attr('data-contestId');
 	var contest = null;
 	for (var i = 0; i < contests.length; i++) {
-		if (contests[i].contestPK == contestPK) contest = contests[i]; 
+		if (contests[i].contestId == contestId) contest = contests[i];
 	}
 	
-	$("#breadContestName").text(contest.contestShortName);
+	$("#breadContestName").text(contest.title);
 	$("#proposalPickerTableContests").hide();
 	$("#proposalsPicker_proposalsContainer").show();
 	

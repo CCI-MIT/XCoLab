@@ -48,11 +48,11 @@ public class NotificationUnregisterUtils {
         params.put(USER_ID, "0");
         params.put(SUBSCRIPTION_ID, "0");
         if (subscription != null) {
-            params.put(SUBSCRIPTION_ID, String.valueOf(subscription.getPk()));
+            params.put(SUBSCRIPTION_ID, String.valueOf(subscription.getId()));
             params.put(TOKEN_PARAM, getToken(subscription));
             params.put(TYPE_ID, String.valueOf(type));
         } else {
-            params.put(USER_ID, String.valueOf(user.getUserId()));
+            params.put(USER_ID, String.valueOf(user.getId()));
             params.put(TOKEN_PARAM, getToken(user));
             params.put(TYPE_ID, String.valueOf(type));
         }
@@ -69,13 +69,13 @@ public class NotificationUnregisterUtils {
     }
 
     public static String getToken(ActivitySubscription subscription) {
-        return getToken(Math.floor(1.0 * subscription.getCreateDate().getTime() / 1000.f) + ""
-                + subscription.getPk());
+        return getToken(Math.floor(1.0 * subscription.getCreatedAt().getTime() / 1000.f) + ""
+                + subscription.getId());
     }
 
     public static String getToken(Member user) {
         return getToken(
-                Math.floor(1.0 * user.getCreateDate().getTime() / 1000.f) + "" + user.getUserId());
+                Math.floor(1.0 * user.getCreatedAt().getTime() / 1000.f) + "" + user.getId());
     }
 
     private static String getToken(String baseString) {

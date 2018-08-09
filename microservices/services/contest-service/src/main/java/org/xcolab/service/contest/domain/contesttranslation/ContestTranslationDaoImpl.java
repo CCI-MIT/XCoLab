@@ -28,12 +28,12 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
         dslContext.insertInto(CONTEST_TRANSLATION)
                 .set(CONTEST_TRANSLATION.CONTEST_ID, translation.getContestId())
                 .set(CONTEST_TRANSLATION.LANG, translation.getLang())
-                .set(CONTEST_TRANSLATION.CONTEST_NAME, translation.getContestName())
-                .set(CONTEST_TRANSLATION.CONTEST_SHORT_NAME, translation.getContestShortName())
-                .set(CONTEST_TRANSLATION.CONTEST_DESCRIPTION, translation.getContestDescription())
-                .set(CONTEST_TRANSLATION.CREATE_DATE, DSL.currentTimestamp())
-                .set(CONTEST_TRANSLATION.MODIFIED_DATE, DSL.currentTimestamp())
-                .set(CONTEST_TRANSLATION.AUTHOR_ID, translation.getAuthorId())
+                .set(CONTEST_TRANSLATION.TITLE, translation.getTitle())
+                .set(CONTEST_TRANSLATION.QUESTION, translation.getQuestion())
+                .set(CONTEST_TRANSLATION.DESCRIPTION, translation.getDescription())
+                .set(CONTEST_TRANSLATION.CREATED_AT, DSL.currentTimestamp())
+                .set(CONTEST_TRANSLATION.UPDATED_AT, DSL.currentTimestamp())
+                .set(CONTEST_TRANSLATION.AUTHOR_USER_ID, translation.getAuthorUserId())
                 .execute();
         return translation;
     }
@@ -41,11 +41,11 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
     @Override
     public boolean update(ContestTranslation translation) {
         return dslContext.update(CONTEST_TRANSLATION)
-                .set(CONTEST_TRANSLATION.CONTEST_NAME, translation.getContestName())
-                .set(CONTEST_TRANSLATION.CONTEST_SHORT_NAME, translation.getContestShortName())
-                .set(CONTEST_TRANSLATION.CONTEST_DESCRIPTION, translation.getContestDescription())
-                .set(CONTEST_TRANSLATION.MODIFIED_DATE, DSL.currentTimestamp())
-                .set(CONTEST_TRANSLATION.AUTHOR_ID, translation.getAuthorId())
+                .set(CONTEST_TRANSLATION.TITLE, translation.getTitle())
+                .set(CONTEST_TRANSLATION.QUESTION, translation.getQuestion())
+                .set(CONTEST_TRANSLATION.DESCRIPTION, translation.getDescription())
+                .set(CONTEST_TRANSLATION.UPDATED_AT, DSL.currentTimestamp())
+                .set(CONTEST_TRANSLATION.AUTHOR_USER_ID, translation.getAuthorUserId())
                 .where(CONTEST_TRANSLATION.CONTEST_ID.eq(translation.getContestId())
                         .and(CONTEST_TRANSLATION.LANG.equalIgnoreCase(translation.getLang())))
                 .execute() > 0;

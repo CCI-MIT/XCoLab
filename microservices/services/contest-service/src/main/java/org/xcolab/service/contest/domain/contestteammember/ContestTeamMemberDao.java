@@ -7,19 +7,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ContestTeamMemberDao {
-    boolean delete(Long id_);
+    boolean delete(Long id);
 
     ContestTeamMember create(ContestTeamMember contestTeamMember);
 
-    Optional<ContestTeamMember> get(Long id_) throws NotFoundException;
+    Optional<ContestTeamMember> get(Long id) throws NotFoundException;
 
-    boolean exists(Long id_);
+    boolean exists(Long id);
 
     boolean update(ContestTeamMember contestTeamMember);
 
-    List<ContestTeamMember> findByGiven(Long memberId, Long contestId, Long roleId);
+    List<ContestTeamMember> findByGiven(Long userId, Long contestId, Long roleId);
 
-    ContestTeamMember findOneBy(Long memberId, Long contestId, Long roleId);
+    ContestTeamMember findOneBy(Long userId, Long contestId, Long roleId);
 
     List<ContestTeamMember> findByContestYear(Long categoryId, Long contestYear);
 }

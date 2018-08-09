@@ -15,8 +15,8 @@ public class TrackedVisit implements Serializable {
 
     private static final long serialVersionUID = 1556490672;
 
-    private Long id_;
-    private String uuid_;
+    private Long id;
+    private String visitorUuid;
     private String ip;
     private String city;
     private String country;
@@ -24,14 +24,14 @@ public class TrackedVisit implements Serializable {
     private String browser;
     private String headers;
     private String referer;
-    private Timestamp createDate;
+    private Timestamp createdAt;
 
     public TrackedVisit() {
     }
 
     public TrackedVisit(TrackedVisit value) {
-        this.id_ = value.id_;
-        this.uuid_ = value.uuid_;
+        this.id = value.id;
+        this.visitorUuid = value.visitorUuid;
         this.ip = value.ip;
         this.city = value.city;
         this.country = value.country;
@@ -39,13 +39,13 @@ public class TrackedVisit implements Serializable {
         this.browser = value.browser;
         this.headers = value.headers;
         this.referer = value.referer;
-        this.createDate = value.createDate;
+        this.createdAt = value.createdAt;
     }
 
-    public TrackedVisit(Long id_, String uuid_, String ip, String city, String country,
-            String url, String browser, String headers, String referer, Timestamp createDate) {
-        this.id_ = id_;
-        this.uuid_ = uuid_;
+    public TrackedVisit(Long id, String visitorUuid, String ip, String city, String country,
+            String url, String browser, String headers, String referer, Timestamp createdAt) {
+        this.id = id;
+        this.visitorUuid = visitorUuid;
         this.ip = ip;
         this.city = city;
         this.country = country;
@@ -53,23 +53,23 @@ public class TrackedVisit implements Serializable {
         this.browser = browser;
         this.headers = headers;
         this.referer = referer;
-        this.createDate = createDate;
+        this.createdAt = createdAt;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getUuid_() {
-        return this.uuid_;
+    public String getVisitorUuid() {
+        return this.visitorUuid;
     }
 
-    public void setUuid_(String uuid_) {
-        this.uuid_ = uuid_;
+    public void setVisitorUuid(String visitorUuid) {
+        this.visitorUuid = visitorUuid;
     }
 
     public String getIp() {
@@ -128,12 +128,12 @@ public class TrackedVisit implements Serializable {
         this.referer = referer;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createDate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createDate) {
-        this.createDate = createDate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -148,18 +148,18 @@ public class TrackedVisit implements Serializable {
             return false;
         }
         final TrackedVisit other = (TrackedVisit) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
-        if (uuid_ == null) {
-            if (other.uuid_ != null) {
+        if (visitorUuid == null) {
+            if (other.visitorUuid != null) {
                 return false;
             }
-        } else if (!uuid_.equals(other.uuid_)) {
+        } else if (!visitorUuid.equals(other.visitorUuid)) {
             return false;
         }
         if (ip == null) {
@@ -211,11 +211,11 @@ public class TrackedVisit implements Serializable {
         } else if (!referer.equals(other.referer)) {
             return false;
         }
-        if (createDate == null) {
-            if (other.createDate != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!createDate.equals(other.createDate)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         return true;
@@ -225,8 +225,8 @@ public class TrackedVisit implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
-        result = prime * result + ((uuid_ == null) ? 0 : uuid_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((visitorUuid == null) ? 0 : visitorUuid.hashCode());
         result = prime * result + ((ip == null) ? 0 : ip.hashCode());
         result = prime * result + ((city == null) ? 0 : city.hashCode());
         result = prime * result + ((country == null) ? 0 : country.hashCode());
@@ -234,15 +234,15 @@ public class TrackedVisit implements Serializable {
         result = prime * result + ((browser == null) ? 0 : browser.hashCode());
         result = prime * result + ((headers == null) ? 0 : headers.hashCode());
         result = prime * result + ((referer == null) ? 0 : referer.hashCode());
-        result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         return result;
     }
 
     @Override
     public String toString() {
 
-        return "TrackedVisit (" + id_ +
-                ", " + uuid_ +
+        return "TrackedVisit (" + id +
+                ", " + visitorUuid +
                 ", " + ip +
                 ", " + city +
                 ", " + country +
@@ -250,7 +250,7 @@ public class TrackedVisit implements Serializable {
                 ", " + browser +
                 ", " + headers +
                 ", " + referer +
-                ", " + createDate +
+                ", " + createdAt +
                 ")";
     }
 }

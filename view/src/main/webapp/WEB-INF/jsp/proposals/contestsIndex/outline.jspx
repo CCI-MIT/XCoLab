@@ -132,7 +132,7 @@
 		</c:forEach>
 		
 		<c:forEach var="term" items="${ontologyTerms}" varStatus='termStatus'>
-			ontologyTerms[${term.id_}] = {id: ${term.id_}, parentId: ${term.parentId}, name: "${term.name}", contests: [], otherContests: [], space: ontologySpaces[${term.ontologySpaceId}], order: ${term.order != 0 ? term.order * 1000000 : termStatus.index}  };
+			ontologyTerms[${term.id}] = {id: ${term.id}, parentId: ${term.parentId}, name: "${term.name}", contests: [], otherContests: [], space: ontologySpaces[${term.ontologySpaceId}], order: ${term.order != 0 ? term.order * 1000000 : termStatus.index}  };
 		</c:forEach>
 		
 		for (var termId in ontologyTerms) {
@@ -143,8 +143,9 @@
 				ontologyTerms[termId].parent = null;
 			}
 		}
+		focusAreas[0] = null;
 		<c:forEach var="focusArea" items="${focusAreas}">
-			focusAreas[${focusArea.id_}] = {id: ${focusArea.id_}, terms: ${focusArea.termsIdsStr}};
+			focusAreas[${focusArea.id}] = {id: ${focusArea.id}, terms: ${focusArea.termsIdsStr}};
 		</c:forEach>
 		var focusArea = null;
 		var contest = null;
@@ -200,16 +201,14 @@
 		var contestsCount = 0;
 
 		<c:forEach var="contest" items="${contestsSorted.inOutlineView.list}">
-            contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
+            contest = {id: ${contest.id}, name: "${contest.title}", description: "${contest.question}", focusAreaId: ${contest.focusAreaIdOrZero},
                     proposalsCount: ${contest.proposalsCount}, contestLink: '<xcolab:contestLink contest="${contest}" text="visit" />',
                     contestUrl: '${contest.contestUrl}', created: ${contest.createdTime}, active: ${contest.contestActive}};
-            contests[${contest.contestPK}] = contest;
+            contests[${contest.id}] = contest;
             contestsCount++;
 
-            focusArea = focusAreas[${contest.focusAreaId}];
-            if(focusAreas[${contest.focusAreaId}] != null) {
-                //console.log("undefined: " + ${contest.focusAreaId})
-
+            focusArea = focusAreas[${contest.focusAreaIdOrZero}];
+            if (focusArea != null) {
                 for (var idx in focusArea.terms) {
                     addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
                     ontologyTerms[focusArea.terms[idx]].space.contests.push(contest);
@@ -219,12 +218,11 @@
 
 		<c:forEach var="contest" items="${otherContests}">
             <c:if test="${contest.showInOutlineView}">
-                otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
+                otherContest = {id: ${contest.id}, name: "${contest.title}", description: "${contest.question }", focusAreaId: ${contest.focusAreaIdOrZero},
                         proposalsCount: ${contest.proposalsCount}, contestLink: '<xcolab:contestLink contest="${contest}" text="visit" />'};
-                otherContests[${contest.contestPK}] = otherContest;
-                focusArea = focusAreas[${contest.focusAreaId}];
-                if(focusAreas[${contest.focusAreaId}] != null) {
-                    //console.log("undefined: " + ${contest.focusAreaId})
+                otherContests[${contest.id}] = otherContest;
+                focusArea = focusAreas[${contest.focusAreaIdOrZero}];
+                if (focusArea != null) {
                     for (var idx in focusArea.terms) {
 
                         addContestToTermAndParents(0, otherContest, ontologyTerms[focusArea.terms[idx]],
@@ -238,16 +236,17 @@
 
 		<c:forEach var="contest" items="${otherContests}">
             <c:if test="${contest.showInOutlineView}">
-                otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
+                otherContest = {id: ${contest.id}, name: "${contest.title}", description: "${contest.question }", focusAreaId: ${contest.focusAreaIdOrZero},
                         proposalsCount: ${contest.proposalsCount}, contestLink: '<xcolab:contestLink contest="${contest}" text="visit" />'};
-                otherContests[${contest.contestPK}] = otherContest;
-                focusArea = focusAreas[${contest.focusAreaId}];
+                otherContests[${contest.id}] = otherContest;
+                focusArea = focusAreas[${contest.focusAreaIdOrZero}];
 
-                for (var idx in focusArea.terms) {
-                    addContestToTermAndParents(otherContest, ontologyTerms[focusArea.terms[idx]], true);
-                    addOtherContestsToSpace(ontologyTerms[focusArea.terms[idx]].space,otherContest);
+                if (focusArea != null) {
+                    for (var idx in focusArea.terms) {
+                        addContestToTermAndParents(otherContest, ontologyTerms[focusArea.terms[idx]], true);
+                        addOtherContestsToSpace(ontologyTerms[focusArea.terms[idx]].space, otherContest);
+                    }
                 }
-
             </c:if>
 		</c:forEach>
 		</script>
@@ -284,8 +283,8 @@
 					return orderArrayA.length - orderArrayB.length;
 				}
 				// contests have the same prefixes, then return 
-				if (a.created != b.created) {
-					return a.created - b.created;
+				if (a.createdAt != b.createdAt) {
+					return a.createdAt - b.createdAt;
 				}
 				return a.id - b.id;
 				
@@ -338,9 +337,11 @@
 				
 				var focusArea = focusAreas[contest.focusAreaId];
 				var terms =[];
-				for (var j = 0; j < focusArea.terms.length; j++) {
-					terms.push(ontologyTerms[focusArea.terms[j]]);
-				}
+				if (focusArea != null) {
+                    for (var j = 0; j < focusArea.terms.length; j++) {
+                        terms.push(ontologyTerms[focusArea.terms[j]]);
+                    }
+                }
 				terms.sort(function(t1, t2) {
 					return t1.space.order - t2.space.order;
 				});

@@ -46,7 +46,7 @@ public class UpdateModelDisplayFromJSONAction {
         final JSONObject conf = new JSONObject(bean.getJson());
 
         for (ModelInputGroup group : ModelingClientUtil.getInputGroups(simulation)) {
-            ModelingClientUtil.deleteModelInputGroup(group.getModelInputGroupPK());
+            ModelingClientUtil.deleteModelInputGroup(group.getId());
         }
         for (ModelInputItem item : ModelingClientUtil.getItemsForModel(simulation)) {
             item.setModelGroupId(0L);
@@ -103,13 +103,13 @@ public class UpdateModelDisplayFromJSONAction {
                 }
             }
             group.setDisplayItemOrder(order);
-            group.setParentGroupPK(parentGroup);
+            group.setParentGroupId(parentGroup);
             group = ModelingClientUtil.createModelInputGroup(group);
 
             if (inputConf.has("children")) {
                 JSONArray children = (JSONArray) inputConf.get("children");
                 count += configureInputArray(modelId, modelDisplay, children, order + count + 1,
-                        group.getModelInputGroupPK());
+                        group.getId());
             }
         } else {
             String name = (String) inputConf.get("name");

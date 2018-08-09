@@ -35,8 +35,8 @@ public final class ProposalMemberRatingClientUtil {
         return client.getProposalSupportersCount(proposalId);
     }
 
-    public static Boolean isMemberProposalSupporter(Long proposalId, Long memberId) {
-        return client.isMemberProposalSupporter(proposalId, memberId);
+    public static Boolean isMemberProposalSupporter(Long proposalId, Long userId) {
+        return client.isMemberProposalSupporter(proposalId, userId);
     }
 
     public static void addProposalSupporter(long proposalId, long userId) {
@@ -52,8 +52,8 @@ public final class ProposalMemberRatingClientUtil {
         return client.createProposalSupporter(proposalSupporter);
     }
 
-    public static Boolean deleteProposalSupporter(Long proposalId, Long memberId) {
-        return client.deleteProposalSupporter(proposalId, memberId);
+    public static Boolean deleteProposalSupporter(Long proposalId, Long userId) {
+        return client.deleteProposalSupporter(proposalId, userId);
     }
 
     public static Integer countProposalVotesInContestPhase(Long contestPhaseId) {
@@ -67,21 +67,21 @@ public final class ProposalMemberRatingClientUtil {
                 proposalId, cacheName);
     }
 
-    public static Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long memberId) {
-        return client.hasUserVoted(proposalId, contestPhaseId, memberId);
+    public static Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long userId) {
+        return client.hasUserVoted(proposalId, contestPhaseId, userId);
     }
 
-    public static Boolean hasUserVoted(Long contestPhaseId, Long memberId) {
-        return client.hasUserVoted(contestPhaseId, memberId);
+    public static Boolean hasUserVoted(Long contestPhaseId, Long userId) {
+        return client.hasUserVoted(contestPhaseId, userId);
     }
 
-    public static boolean deleteProposalVote(long proposalId, long contestPhaseId, long memberId) {
-        return client.deleteProposalVote(proposalId, contestPhaseId, memberId);
+    public static boolean deleteProposalVote(long proposalId, long contestPhaseId, long userId) {
+        return client.deleteProposalVote(proposalId, contestPhaseId, userId);
     }
 
-    public static ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long memberId,
+    public static ProposalVote addProposalVote(Long proposalId, Long contestPhaseId, Long userId,
             int value) {
-        return client.addProposalVote(proposalId,contestPhaseId, memberId, value);
+        return client.addProposalVote(proposalId,contestPhaseId, userId, value);
     }
 
     public static List<ProposalVote> getProposalVotesInPhase(
@@ -94,12 +94,12 @@ public final class ProposalMemberRatingClientUtil {
         return client.getProposalVotes(contestPhaseId, proposalId, userId);
     }
 
-    public static List<ProposalVote> getVotesByMember(long memberId) {
-        return client.getVotesByMember(memberId);
+    public static List<ProposalVote> getVotesByMember(long userId) {
+        return client.getVotesByMember(userId);
     }
 
-    public static void invalidateVotesForMember(long memberId, String reason) {
-        client.invalidateVotesForMember(memberId, reason);
+    public static void invalidateVotesForMember(long userId, String reason) {
+        client.invalidateVotesForMember(userId, reason);
     }
 
     public static boolean updateProposalVote(ProposalVote proposalVote) {

@@ -10,8 +10,8 @@ public class ContestTeamMember extends AbstractContestTeamMember {
         super(value);
     }
 
-    public ContestTeamMember(Long id_, Long contestid, Long userid, Long roleid) {
-        super(id_, contestid, userid, roleid);
+    public ContestTeamMember(Long id, Long contestid, Long userid, Long roleid) {
+        super(id, contestid, userid, roleid);
     }
 
     public ContestTeamMember(AbstractContestTeamMember abstractContestTeamMember, ServiceNamespace serviceNamespace) {

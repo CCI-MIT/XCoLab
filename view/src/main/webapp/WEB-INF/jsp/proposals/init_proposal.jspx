@@ -7,10 +7,10 @@
 
     <script>
         var currentProposal = {
-            proposalId: ${proposal.proposalId},
+            id: ${proposal.id},
             version: ${proposal.version},
-            contestId: ${proposal.contest.contestPK},
-            contestPhaseId: ${proposal.contestPhase.contestPhasePK}
+            contestId: ${proposal.contest.id},
+            contestPhaseId: ${proposal.contestPhase.id}
         }
     </script>
 

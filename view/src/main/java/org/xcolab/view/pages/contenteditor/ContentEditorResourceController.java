@@ -66,17 +66,17 @@ public class ContentEditorResourceController extends BaseContentEditor {
         JSONObject articleVersion;
         for (ContentArticleVersion cav : cavs) {
             articleVersion = new JSONObject();
-            articleVersion.put("createdDate", cav.getCreateDate());
-            articleVersion.put("contentArticleVersionId", cav.getContentArticleVersionId());
+            articleVersion.put("createdAt", cav.getCreatedAt());
+            articleVersion.put("contentArticleVersionId", cav.getId());
             versions.put(articleVersion);
         }
         articleVersion = new JSONObject();
         if (contentArticleVersion != null) {
             articleVersion.put("title", contentArticleVersion.getTitle());
             articleVersion.put("folderId", contentArticleVersion.getFolderId());
-            articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
+            articleVersion.put("articleId", contentArticleVersion.getArticleId());
             articleVersion.put("content", contentArticleVersion.getContent());
-            articleVersion.put("createdDate", contentArticleVersion.getCreateDate());
+            articleVersion.put("createdAt", contentArticleVersion.getCreatedAt());
             articleVersion.put("versions", versions);
             articleVersion.put("contestURL", contestURL);
             articleVersion.put("contestArticleURL", contestArticleUrl);
@@ -111,7 +111,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
             for (Contest c : contestsInYear) {
                 if (c.getResourceArticleId() != null && c.getResourceArticleId() != 0L) {
                     responseArray
-                            .put(articleNode(c.getContestShortName(), c.getResourceArticleId()));
+                            .put(articleNode(c.getTitle(), c.getResourceArticleId()));
                 }
             }
         }

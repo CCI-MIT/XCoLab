@@ -13,9 +13,9 @@ public interface ActivityEntryDao {
     ActivityEntry create(ActivityEntry activityEntry);
 
     List<ActivityEntry> findByGiven(PaginationHelper paginationHelper,
-            Long memberId, List<Long> memberIdsToExclude);
+            Long userId, List<Long> userIdsToExclude);
 
-    Integer countByGiven(Long memberId, List<Long> memberIdsToExclude);
+    Integer countByGiven(Long userId, List<Long> userIdsToExclude);
 
     ActivityEntry get(Long activityEntryId) throws NotFoundException;
     List<ActivityEntry> getActivitiesAfter(Date date);

@@ -21,14 +21,14 @@ public class ImpactTemplateMaxFocusAreaDaoImpl implements ImpactTemplateMaxFocus
     public ImpactTemplateMaxFocusAreaDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
 
     @Override
-    public ImpactTemplateMaxFocusArea getByFocusAreaListId(Long id_) throws NotFoundException {
+    public ImpactTemplateMaxFocusArea getByFocusAreaListId(Long id) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(IMPACT_TEMPLATE_MAX_FOCUS_AREA)
-                .where(IMPACT_TEMPLATE_MAX_FOCUS_AREA.FOCUS_AREA_LIST_ID.eq(id_))
+                .where(IMPACT_TEMPLATE_MAX_FOCUS_AREA.FOCUS_AREA_LIST_ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
-            throw new NotFoundException("ImpactTemplateMaxFocusArea with id " + id_ + " does not exist");
+            throw new NotFoundException("ImpactTemplateMaxFocusArea with id " + id + " does not exist");
         }
         return record.into(ImpactTemplateMaxFocusArea.class);
     }

@@ -25,7 +25,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
 
         final Record record = dslContext.select()
                 .from(BALLOON_LINK)
-                .where(BALLOON_LINK.UUID_.eq(uuid)).fetchOne();
+                .where(BALLOON_LINK.UUID.eq(uuid)).fetchOne();
         if (record == null) {
             throw new NotFoundException();
         }
@@ -49,23 +49,23 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
     @Override
     public boolean update(BalloonLink balloonLink) {
         return dslContext.update(BALLOON_LINK)
-                .set(BALLOON_LINK.UUID_, balloonLink.getUuid_())
+                .set(BALLOON_LINK.UUID, balloonLink.getUuid())
                 .set(BALLOON_LINK.TARGET_URL, balloonLink.getTargetUrl())
                 .set(BALLOON_LINK.BALLOON_USER_UUID, balloonLink.getBalloonUserUuid())
-                .set(BALLOON_LINK.CREATE_DATE, balloonLink.getCreateDate())
+                .set(BALLOON_LINK.CREATED_AT, balloonLink.getCreatedAt())
                 .set(BALLOON_LINK.VISITS, balloonLink.getVisits())
-                .where(BALLOON_LINK.UUID_.eq(balloonLink.getUuid_()))
+                .where(BALLOON_LINK.UUID.eq(balloonLink.getUuid()))
                 .execute() > 0;
     }
 
     @Override
     public BalloonLink create(BalloonLink balloonLink) {
         this.dslContext.insertInto(BALLOON_LINK)
-                .set(BALLOON_LINK.UUID_, balloonLink.getUuid_())
+                .set(BALLOON_LINK.UUID, balloonLink.getUuid())
                 .set(BALLOON_LINK.TARGET_URL, balloonLink.getTargetUrl())
                 .set(BALLOON_LINK.VISITS, ((balloonLink.getVisits() == null) ? (0) : (balloonLink.getVisits())))
                 .set(BALLOON_LINK.BALLOON_USER_UUID, balloonLink.getBalloonUserUuid())
-                .set(BALLOON_LINK.CREATE_DATE, balloonLink.getCreateDate())
+                .set(BALLOON_LINK.CREATED_AT, balloonLink.getCreatedAt())
                 .execute();
         return balloonLink;
     }

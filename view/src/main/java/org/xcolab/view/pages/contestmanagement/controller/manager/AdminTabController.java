@@ -104,12 +104,12 @@ public class AdminTabController extends AbstractTabController {
         final Date now = new Date();
         return contestPhasesByType
                 .stream()
-                .filter(p -> p.getContestPK() != 0L)
+                .filter(p -> p.getContestId() != 0L)
                 .filter(p -> p.getPhaseStartDateDt().before(now))
                 .sorted(Comparator.comparing(ContestPhase::getPhaseStartDate).reversed())
                 .map(contestPhase -> {
-                    final String contestName = contestPhase.getContest().getContestShortName();
-                    final Long phaseId = contestPhase.getContestPhasePK();
+                    final String contestName = contestPhase.getContest().getTitle();
+                    final Long phaseId = contestPhase.getId();
                     return new LabelValue(phaseId, String.format("%d in %s", phaseId, contestName));
                 })
                 .collect(Collectors.toList());
@@ -119,10 +119,10 @@ public class AdminTabController extends AbstractTabController {
     public List<LabelValue> contestSelectionItems() {
         return ContestClientUtil.getAllContests()
                 .stream()
-                .sorted(Comparator.comparing(Contest::getContestPK).reversed())
+                .sorted(Comparator.comparing(Contest::getId).reversed())
                 .map(contest -> {
-                    final String contestName = contest.getContestShortName();
-                    final Long contestId = contest.getContestPK();
+                    final String contestName = contest.getTitle();
+                    final Long contestId = contest.getId();
                     return new LabelValue(contestId, String.format("%d - %s", contestId, contestName));
                 })
                 .collect(Collectors.toList());
@@ -277,8 +277,8 @@ public class AdminTabController extends AbstractTabController {
             Member member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
                     registerLineBean.getFirstName(), registerLineBean.getLastName());
             if (batchRegisterBean.getAsGuests()) {
-                MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
-                MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
+                MembersClient.assignMemberRole(member.getId(), MemberRole.GUEST.getRoleId());
+                MembersClient.removeMemberRole(member.getId(), MemberRole.MEMBER.getRoleId());
             }
         }
 

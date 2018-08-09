@@ -12,10 +12,10 @@
 				<div class="c-ListItem">
 					<div class="c-ListItem__description">
 						<h3>
-							${contest.contestShortName}
+							${contest.title}
 						</h3>
 						<div>
-							${contest.contestName}
+							${contest.question}
 						</div>
 					</div>
 					<div class="c-ListItem__meta">

@@ -3,8 +3,8 @@
 
 	<jsp:directive.attribute name="member" type="org.xcolab.client.proposals.pojo.ProposalTeamMember" required="true" rtexprvalue="true" description="Member to be shown" />
 
-	<xcolab:userPortrait portraitId="${member.portraitId}" memberId="${member.userId}"
+	<xcolab:userPortrait portraitId="${member.portraitId}" userId="${member.userId}"
                          width="42" height="42"/>
-	<xcolab:userLinkSimple memberId="${member.userId }" text="${member.screenName }" />
+	<xcolab:userLinkSimple userId="${member.userId }" text="${member.screenName }" />
 
 </jsp:root>

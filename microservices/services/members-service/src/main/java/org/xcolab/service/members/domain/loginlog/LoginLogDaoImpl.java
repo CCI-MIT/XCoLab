@@ -26,7 +26,7 @@ public class LoginLogDaoImpl implements LoginLogDao {
     public Optional<LoginLog> get(long loginLogId) {
         final Record record = dslContext.select()
                 .from(LOGIN_LOG)
-                .where(LOGIN_LOG.PK.eq(loginLogId))
+                .where(LOGIN_LOG.ID.eq(loginLogId))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
@@ -42,8 +42,8 @@ public class LoginLogDaoImpl implements LoginLogDao {
                 .set(LOGIN_LOG.COUNTRY, loginLog.getCountry())
                 .set(LOGIN_LOG.CITY, loginLog.getCity())
                 .set(LOGIN_LOG.ENTRY_URL, loginLog.getEntryUrl())
-                .set(LOGIN_LOG.CREATE_DATE, DSL.currentTimestamp())
-                .returning(LOGIN_LOG.PK)
+                .set(LOGIN_LOG.CREATED_AT, DSL.currentTimestamp())
+                .returning(LOGIN_LOG.ID)
                 .fetchOne();
         if (record == null) {
             throw new IllegalStateException("Failed to retrieve id after creating LoginLog");

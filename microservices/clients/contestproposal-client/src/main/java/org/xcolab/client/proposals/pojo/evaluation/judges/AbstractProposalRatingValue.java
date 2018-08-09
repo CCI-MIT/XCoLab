@@ -6,7 +6,7 @@ class AbstractProposalRatingValue implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id_;
+    private Long id;
     private Long ratingtypeid;
     private Long value;
     private String name;
@@ -15,7 +15,7 @@ class AbstractProposalRatingValue implements Serializable {
     public AbstractProposalRatingValue() {}
 
     public AbstractProposalRatingValue(AbstractProposalRatingValue value) {
-        this.id_ = value.id_;
+        this.id = value.id;
         this.ratingtypeid = value.ratingtypeid;
         this.value = value.value;
         this.name = value.name;
@@ -23,25 +23,25 @@ class AbstractProposalRatingValue implements Serializable {
     }
 
     public AbstractProposalRatingValue(
-            Long id_,
+            Long id,
             Long ratingtypeid,
             Long value,
             String name,
             String description
     ) {
-        this.id_ = id_;
+        this.id = id;
         this.ratingtypeid = ratingtypeid;
         this.value = value;
         this.name = name;
         this.description = description;
     }
 
-    public Long getId_() {
-        return this.id_;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId_(Long id_) {
-        this.id_ = id_;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getRatingTypeId() {
@@ -80,7 +80,7 @@ class AbstractProposalRatingValue implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((ratingtypeid == null) ? 0 : ratingtypeid.hashCode());
         result = prime * result + ((value == null) ? 0 : value.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -100,11 +100,11 @@ class AbstractProposalRatingValue implements Serializable {
             return false;
         }
         final AbstractProposalRatingValue other = (AbstractProposalRatingValue) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
+        if (id == null) {
+            if (other.id != null) {
                 return false;
             }
-        } else if (!id_.equals(other.id_)) {
+        } else if (!id.equals(other.id)) {
             return false;
         }
         if (ratingtypeid == null) {
@@ -140,7 +140,7 @@ class AbstractProposalRatingValue implements Serializable {
 
     @Override
     public String toString() {
-        String sb = "ProposalRatingValue (" + id_ + ", " + ratingtypeid + ", " + value + ", " + name
+        String sb = "ProposalRatingValue (" + id + ", " + ratingtypeid + ", " + value + ", " + name
                 + ", " + description + ")";
 
         return sb;

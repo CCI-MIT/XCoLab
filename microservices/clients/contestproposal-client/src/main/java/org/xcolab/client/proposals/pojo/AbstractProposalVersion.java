@@ -9,8 +9,8 @@ class AbstractProposalVersion implements Serializable {
 
     private Long proposalid;
     private Integer version;
-    private Long authorid;
-    private Timestamp createdate;
+    private Long authorUserId;
+    private Timestamp createdAt;
     private String updatetype;
     private Long updateadditionalid;
 
@@ -19,8 +19,8 @@ class AbstractProposalVersion implements Serializable {
     public AbstractProposalVersion(AbstractProposalVersion value) {
         this.proposalid = value.proposalid;
         this.version = value.version;
-        this.authorid = value.authorid;
-        this.createdate = value.createdate;
+        this.authorUserId = value.authorUserId;
+        this.createdAt = value.createdAt;
         this.updatetype = value.updatetype;
         this.updateadditionalid = value.updateadditionalid;
     }
@@ -28,15 +28,15 @@ class AbstractProposalVersion implements Serializable {
     public AbstractProposalVersion(
             Long proposalid,
             Integer version,
-            Long authorid,
-            Timestamp createdate,
+            Long authorUserId,
+            Timestamp createdAt,
             String updatetype,
             Long updateadditionalid
     ) {
         this.proposalid = proposalid;
         this.version = version;
-        this.authorid = authorid;
-        this.createdate = createdate;
+        this.authorUserId = authorUserId;
+        this.createdAt = createdAt;
         this.updatetype = updatetype;
         this.updateadditionalid = updateadditionalid;
     }
@@ -57,20 +57,20 @@ class AbstractProposalVersion implements Serializable {
         this.version = version;
     }
 
-    public Long getAuthorId() {
-        return this.authorid;
+    public Long getAuthorUserId() {
+        return this.authorUserId;
     }
 
-    public void setAuthorId(Long authorid) {
-        this.authorid = authorid;
+    public void setAuthorUserId(Long authorUserId) {
+        this.authorUserId = authorUserId;
     }
 
-    public Timestamp getCreateDate() {
-        return this.createdate;
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreateDate(Timestamp createdate) {
-        this.createdate = createdate;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getUpdateType() {
@@ -95,8 +95,8 @@ class AbstractProposalVersion implements Serializable {
         int result = 1;
         result = prime * result + ((proposalid == null) ? 0 : proposalid.hashCode());
         result = prime * result + ((version == null) ? 0 : version.hashCode());
-        result = prime * result + ((authorid == null) ? 0 : authorid.hashCode());
-        result = prime * result + ((createdate == null) ? 0 : createdate.hashCode());
+        result = prime * result + ((authorUserId == null) ? 0 : authorUserId.hashCode());
+        result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         result = prime * result + ((updatetype == null) ? 0 : updatetype.hashCode());
         result =
                 prime * result + ((updateadditionalid == null) ? 0 : updateadditionalid.hashCode());
@@ -129,18 +129,18 @@ class AbstractProposalVersion implements Serializable {
         } else if (!version.equals(other.version)) {
             return false;
         }
-        if (authorid == null) {
-            if (other.authorid != null) {
+        if (authorUserId == null) {
+            if (other.authorUserId != null) {
                 return false;
             }
-        } else if (!authorid.equals(other.authorid)) {
+        } else if (!authorUserId.equals(other.authorUserId)) {
             return false;
         }
-        if (createdate == null) {
-            if (other.createdate != null) {
+        if (createdAt == null) {
+            if (other.createdAt != null) {
                 return false;
             }
-        } else if (!createdate.equals(other.createdate)) {
+        } else if (!createdAt.equals(other.createdAt)) {
             return false;
         }
         if (updatetype == null) {
@@ -162,8 +162,8 @@ class AbstractProposalVersion implements Serializable {
 
     @Override
     public String toString() {
-        String sb = "ProposalVersion (" + proposalid + ", " + version + ", " + authorid + ", "
-                + createdate + ", " + updatetype + ", " + updateadditionalid + ")";
+        String sb = "ProposalVersion (" + proposalid + ", " + version + ", " + authorUserId + ", "
+                + createdAt + ", " + updatetype + ", " + updateadditionalid + ")";
 
         return sb;
     }

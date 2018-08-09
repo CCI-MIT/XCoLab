@@ -54,7 +54,7 @@ public class ActivitySubscriptionNameGenerator {
     private static String getNameForContestSubscription(ActivitySubscription subscription){
         Contest contest = ContestClientUtil.getContest(subscription.getCategoryId());
         final String contestNameString = contest.getContestType().getContestName();
-        return contest.getContestShortNameWithEndYear() + " " + StringUtils.uncapitalize(contestNameString);
+        return contest.getTitleWithEndYear() + " " + StringUtils.uncapitalize(contestNameString);
     }
 
     private static String getNameForDiscussionSubscription(ActivitySubscription subscription) {
@@ -68,7 +68,7 @@ public class ActivitySubscriptionNameGenerator {
             return String.format(HYPERLINK, thread.getLinkUrl(), thread.getTitle());
         } catch (ThreadNotFoundException e) {
             _log.warn("Could not resolve discussion subscription name for subscription {}",
-                    subscription.getPk() , e);
+                    subscription.getId() , e);
         }
 
         return "[No title]";

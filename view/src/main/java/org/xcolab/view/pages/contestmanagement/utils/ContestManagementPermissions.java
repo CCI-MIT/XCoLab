@@ -12,21 +12,21 @@ import javax.servlet.http.HttpServletRequest;
 public class ContestManagementPermissions implements TabPermissions, Serializable {
 
     private final boolean isLoggedIn;
-    private final long memberId;
+    private final long userId;
 
     public ContestManagementPermissions(HttpServletRequest request) {
-        memberId = MemberAuthUtil.getMemberId(request);
-        isLoggedIn = memberId > 0;
+        userId = MemberAuthUtil.getuserId(request);
+        isLoggedIn = userId > 0;
     }
 
     @Override
     public boolean getCanAdmin() {
-        return PermissionsClient.canAdminAll(memberId);
+        return PermissionsClient.canAdminAll(userId);
     }
 
     @Override
     public boolean getCanRole(MemberRole role) {
-        return isLoggedIn && PermissionsClient.memberHasRole(memberId, role.getRoleId());
+        return isLoggedIn && PermissionsClient.memberHasRole(userId, role.getRoleId());
     }
 
     @Override

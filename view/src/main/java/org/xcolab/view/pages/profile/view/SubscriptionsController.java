@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/members/profile/{memberId}/subscriptions")
+@RequestMapping("/members/profile/{userId}/subscriptions")
 public class SubscriptionsController {
 
     private final ActivityEntryHelper activityEntryHelper;
@@ -45,19 +45,19 @@ public class SubscriptionsController {
     @GetMapping
     public String showUserProfileSubscriptions(HttpServletRequest request,
             HttpServletResponse response, Model model, Member loggedInMember,
-            @PathVariable long memberId, @RequestParam(defaultValue = "1") int page) {
+            @PathVariable long userId, @RequestParam(defaultValue = "1") int page) {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
-        if (!permissions.getCanEditMemberProfile(memberId)) {
+        if (!permissions.getCanEditMemberProfile(userId)) {
             return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId,
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId,
                     loggedInMember, activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
             currentUserProfile.setSubscriptionsPaginationPageId(page);
             model.addAttribute("pageNavigation", new PageNavigation(
-                    "/members/profile/" + memberId + "/subscriptions",
+                    "/members/profile/" + userId + "/subscriptions",
                     page, currentUserProfile.getSubscriptionsPaginationPageMax()));
             return "profile/showUserSubscriptions";
         } catch (MemberNotFoundException e) {
@@ -68,9 +68,9 @@ public class SubscriptionsController {
     @GetMapping("manage")
     public String showUserSubscriptionsManage(HttpServletRequest request,
             HttpServletResponse response, Model model, Member loggedInMember,
-            @PathVariable long memberId, @RequestParam(required = false) String typeFilter) {
+            @PathVariable long userId, @RequestParam(required = false) String typeFilter) {
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId,
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId,
                     loggedInMember, activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
             if (typeFilter != null) {
@@ -96,14 +96,14 @@ public class SubscriptionsController {
     @PostMapping("remove")
     public void handleRemoveSubscriptionAction(HttpServletRequest request, Model model, HttpServletResponse response,
             @ModelAttribute("userSubscriptions") UserSubscriptionsWrapper userSubscriptions,
-            @PathVariable long memberId) throws IOException {
+            @PathVariable long userId) throws IOException {
 
         for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
             if (subscription.getSelected()) {
                 ActivitiesClientUtil.deleteSubscription(subscription.getSubscriptionPk());
             }
         }
-        response.sendRedirect("/members/profile/" + memberId + "/subscriptions/manage");
+        response.sendRedirect("/members/profile/" + userId + "/subscriptions/manage");
     }
 
     private void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {

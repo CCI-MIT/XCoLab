@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/members/profile/{memberId}/api/sso")
+@RequestMapping("/members/profile/{userId}/api/sso")
 public class SsoUnlinkJsonController extends JSONHelper {
 
     public SsoUnlinkJsonController() { }

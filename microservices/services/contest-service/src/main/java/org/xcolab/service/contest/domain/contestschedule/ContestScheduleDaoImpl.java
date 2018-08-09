@@ -34,20 +34,20 @@ public class ContestScheduleDaoImpl implements ContestScheduleDao{
                 .set(CONTEST_SCHEDULE.DESCRIPTION, contestSchedule.getDescription())
                 .set(CONTEST_SCHEDULE.STATUS, contestSchedule.getStatus())
                 .set(CONTEST_SCHEDULE.BASE_SCHEDULE_ID, contestSchedule.getBaseScheduleId())
-                .returning(CONTEST_SCHEDULE.ID_)
+                .returning(CONTEST_SCHEDULE.ID)
                 .fetchOne();
         if (ret == null) {
             throw new IllegalStateException("Could not retrieve inserted id");
         } else {
-            contestSchedule.setId_(ret.getValue(CONTEST_SCHEDULE.ID_));
+            contestSchedule.setId(ret.getValue(CONTEST_SCHEDULE.ID));
             return contestSchedule;
         }
     }
 
     @Override
-    public Optional<ContestSchedule> get(Long id_){
+    public Optional<ContestSchedule> get(Long id){
         final Record record =  dslContext.selectFrom(CONTEST_SCHEDULE)
-                .where(CONTEST_SCHEDULE.ID_.eq(id_))
+                .where(CONTEST_SCHEDULE.ID.eq(id))
                 .fetchOne();
 
         if (record == null) {
@@ -57,10 +57,10 @@ public class ContestScheduleDaoImpl implements ContestScheduleDao{
     }
 
     @Override
-    public boolean exists(Long id_) {
+    public boolean exists(Long id) {
         return dslContext.selectCount()
                 .from(CONTEST_SCHEDULE)
-                .where(CONTEST_SCHEDULE.ID_.eq(id_))
+                .where(CONTEST_SCHEDULE.ID.eq(id))
                 .fetchOne().into(Integer.class) > 0;
     }
 
@@ -71,7 +71,7 @@ public class ContestScheduleDaoImpl implements ContestScheduleDao{
                 .set(CONTEST_SCHEDULE.DESCRIPTION, contestSchedule.getDescription())
                 .set(CONTEST_SCHEDULE.STATUS, contestSchedule.getStatus())
                 .set(CONTEST_SCHEDULE.BASE_SCHEDULE_ID, contestSchedule.getBaseScheduleId())
-                .where(CONTEST_SCHEDULE.ID_.eq(contestSchedule.getId_()))
+                .where(CONTEST_SCHEDULE.ID.eq(contestSchedule.getId()))
                 .execute() > 0;
     }
 
@@ -85,9 +85,9 @@ public class ContestScheduleDaoImpl implements ContestScheduleDao{
     }
 
     @Override
-    public boolean delete(Long id_) {
+    public boolean delete(Long id) {
         return dslContext.deleteFrom(CONTEST_SCHEDULE)
-                .where(CONTEST_SCHEDULE.ID_.eq(id_))
+                .where(CONTEST_SCHEDULE.ID.eq(id))
                 .execute() > 0;
     }
 }

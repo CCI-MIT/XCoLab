@@ -20,7 +20,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.commons.html.HtmlUtil;
@@ -177,7 +177,7 @@ public class ActivitySubscriptionEmailHelper {
                 sendEmailMessage(recipient, subject, body, unsubscribeFooter,
                         PlatformAttributeKey.COLAB_URL
 
-                                .get(), recipient.getId_());
+                                .get(), recipient.getId());
             } catch (MemberNotFoundException ignored) {
                 _log.error("sendDailyDigestNotifications: MemberNotFound : {}",
                         ignored.getMessage());
@@ -193,12 +193,12 @@ public class ActivitySubscriptionEmailHelper {
     private String getDigestMessageBody(List<ActivityEntry> userDigestActivities) {
         Comparator<ActivityEntry> activityCategoryComparator =
                 Comparator.comparing(ActivityEntry::getActivityCategory);
-        Comparator<ActivityEntry> socialActivityCreateDateComparator =
-                (o1, o2) -> (int) (o1.getCreateDate().getTime() - o2.getCreateDate().getTime());
+        Comparator<ActivityEntry> socialActivityCreatedAtComparator =
+                (o1, o2) -> (int) (o1.getCreatedAt().getTime() - o2.getCreatedAt().getTime());
 
         ComparatorChain comparatorChain = new ComparatorChain();
         comparatorChain.addComparator(activityCategoryComparator);
-        comparatorChain.addComparator(socialActivityCreateDateComparator);
+        comparatorChain.addComparator(socialActivityCreatedAtComparator);
         StringBuilder body = new StringBuilder();
         try {
             userDigestActivities.sort(comparatorChain);
@@ -221,7 +221,7 @@ public class ActivitySubscriptionEmailHelper {
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
                         Long commentId = activityEntry.getAdditionalId();
                         Comment comment = CommentClientUtil.getComment(commentId, true);
-                        if (comment.getDeletedDate() != null) {
+                        if (comment.getDeletedAt() != null) {
                             bodyWithComment.append("<b>COMMENT ALREADY DELETED</b>");
                         }
                         bodyWithComment.append(comment.getContent());
@@ -255,13 +255,13 @@ public class ActivitySubscriptionEmailHelper {
             // Aggregate all activities for all users
             for (ActivitySubscription subscriptionObj : getActivitySubscribers(activity)) {
 
-                Long recipientId = subscriptionObj.getReceiverId();
+                Long recipientId = subscriptionObj.getReceiverUserId();
 
-                if (subscriptionObj.getReceiverId() == activity.getMemberId().longValue()) {
+                if (subscriptionObj.getReceiverUserId() == activity.getUserId().longValue()) {
                     continue;
                 }
 
-                final MessagingUserPreferences messagingPreferences =
+                final MessagingUserPreference messagingPreferences =
                         MessagingClient.getMessagingPreferencesForMember(recipientId);
                 if (messagingPreferences.getEmailOnActivity() && messagingPreferences
                         .getEmailActivityDailyDigest()) {
@@ -300,13 +300,13 @@ public class ActivitySubscriptionEmailHelper {
         for (Object subscriptionObj : getActivitySubscribers(activity)) {
             ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
 
-            if (subscription.getReceiverId() == activity.getMemberId().longValue()) {
+            if (subscription.getReceiverUserId() == activity.getUserId().longValue()) {
                 continue;
             }
             try {
-                Member member = MembersClient.getMember(subscription.getReceiverId());
+                Member member = MembersClient.getMember(subscription.getReceiverUserId());
                 recipients.add(member);
-                subscriptionsPerUser.put(member.getUserId(), subscription);
+                subscriptionsPerUser.put(member.getId(), subscription);
             } catch (MemberNotFoundException ignored) {
             }
 
@@ -315,18 +315,18 @@ public class ActivitySubscriptionEmailHelper {
 
         }
         for (Member recipient : recipients) {
-            final MessagingUserPreferences messagingPreferences =
-                    MessagingClient.getMessagingPreferencesForMember(recipient.getUserId());
+            final MessagingUserPreference messagingPreferences =
+                    MessagingClient.getMessagingPreferencesForMember(recipient.getId());
             if (messagingPreferences.getEmailOnActivity() && !messagingPreferences
                     .getEmailActivityDailyDigest()) {
-                _log.info("Sending activity notification to member {}.", recipient.getId_());
+                _log.info("Sending activity notification to member {}.", recipient.getId());
 
                 String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(
                         PlatformAttributeKey.COLAB_URL.get(), NotificationUnregisterUtils
                                 .getUnregisterLink(
-                                        subscriptionsPerUser.get(recipient.getUserId())));
+                                        subscriptionsPerUser.get(recipient.getId())));
                 sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter,
-                        PlatformAttributeKey.COLAB_URL.get(), activity.getActivityEntryId());
+                        PlatformAttributeKey.COLAB_URL.get(), activity.getId());
             }
         }
     }
@@ -387,7 +387,7 @@ public class ActivitySubscriptionEmailHelper {
         if (subscriptionConstraint.areSubscribersConstrained()) {
             for (Long userId : subscriptionConstraint.getWhitelist(activity.getCategoryId())) {
                 for (ActivitySubscription as : ret) {
-                    if (as.getReceiverId() == userId.longValue()) {
+                    if (as.getReceiverUserId() == userId.longValue()) {
                         filteredResults.add(as);
                     }
                 }
@@ -418,7 +418,7 @@ public class ActivitySubscriptionEmailHelper {
 
     private String getUserLink(Member user, String portalBaseUrl) {
         return USER_PROFILE_LINK_TEMPLATE
-                .replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getUserId()))
+                .replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getId()))
                 .replaceAll(DOMAIN_PLACEHOLDER, portalBaseUrl);
     }
 }
