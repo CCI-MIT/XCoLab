@@ -12,6 +12,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.http.servlet.RequestUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.login.spring.MemberDetails;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
@@ -21,6 +22,8 @@ import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtractor {
 
@@ -74,6 +77,14 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
     }
 
     /**
+     * This method determines whether ownership of the account implies ownership of the email.
+     *
+     * This is important to avoid someone taking over your xCoLab account by creating a fake
+     * social media account with your email.
+     */
+    protected abstract boolean isExtractedEmailVerified(Map<String, Object> userInfoMap);
+
+    /**
      * This method extracts the locale from the user info map.
      */
     protected String extractLocaleString(Map<String, Object> userInfoMap) {
@@ -103,9 +114,10 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
             throw new InternalException("Could not extract ssoId from User Info map.");
         }
         final String emailAddress = extractEmailAddress(userInfoMap);
+        final HttpServletRequest request = RequestUtil.getRequest();
         if (emailAddress == null) {
             // Invalidate session, otherwise the exception messes up the OAuthClientContext
-            RequestUtil.getRequest().getSession().invalidate();
+            request.getSession().invalidate();
             throw new NoEmailReceivedOauthException();
         }
         MemberDetails memberDetails;
@@ -114,9 +126,18 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
         } catch (UsernameNotFoundException e) {
             try {
                 memberDetails = memberDetailsService.loadByEmail(emailAddress);
-                final Member member = memberDetails.getMember();
-                setSsoId(member, ssoId);
-                MembersClient.updateMember(member);
+                if (isExtractedEmailVerified(userInfoMap)) {
+                    final Member member = memberDetails.getMember();
+                    setSsoId(member, ssoId);
+                    MembersClient.updateMember(member);
+                } else {
+                    AlertMessage.danger("An account with the email address " + emailAddress
+                            + " already exists, but cannot be linked because it is not verified.")
+                            .flash(request);
+                    // Invalidate session, otherwise the exception messes up the OAuthClientContext
+                    request.getSession().invalidate();
+                    throw new UnverifiedEmailAddressException();
+                }
             } catch (UsernameNotFoundException e2) {
                 log.debug("No user found for sssId={} or email={}. Generating profile...",
                         ssoId, emailAddress);
@@ -125,7 +146,7 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
                     // Email is already used (e.g. by a deleted member)
 
                     // Invalidate session, otherwise the exception messes up the OAuthClientContext
-                    RequestUtil.getRequest().getSession().invalidate();
+                    request.getSession().invalidate();
                     throw new EmailUsedByDeletedMemberException(emailAddress);
                 }
 
@@ -196,6 +217,13 @@ public abstract class CustomPrincipalExtractor<IdT> implements PrincipalExtracto
     public static class NoEmailReceivedOauthException extends AuthenticationException {
         public NoEmailReceivedOauthException() {
             super("No email was received in user info map.");
+        }
+    }
+
+    public static class UnverifiedEmailAddressException extends AuthenticationException {
+        public UnverifiedEmailAddressException() {
+            super("An account with this email address already exists, "
+                    + "but cannot be linked because it is not verified.");
         }
     }
 }
