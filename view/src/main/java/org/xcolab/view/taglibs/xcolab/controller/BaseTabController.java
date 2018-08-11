@@ -3,7 +3,6 @@ package org.xcolab.view.taglibs.xcolab.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
@@ -15,7 +14,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-@SessionAttributes("tabContext")
 public abstract class BaseTabController {
 
     @Autowired

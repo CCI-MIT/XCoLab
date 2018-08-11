@@ -79,7 +79,6 @@ public class ContestAdminTabController extends AbstractTabController {
     @Override
     public TabWrapper populateCurrentTabWrapped(HttpServletRequest request) {
         tabWrapper = new TabWrapper(tab, request, tabContext);
-        request.getSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
     }
 
