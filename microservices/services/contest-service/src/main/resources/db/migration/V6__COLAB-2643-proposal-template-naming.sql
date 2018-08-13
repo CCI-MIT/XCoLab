@@ -1,0 +1,1 @@
+ALTER TABLE contest__points_distribution_configuration CHANGE target_plan_section_definition_id target_proposal_template_section_definition_id bigint(20);

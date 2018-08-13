@@ -28,7 +28,8 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.POINT_TYPE_ID, pointsDistributionConfiguration.getPointTypeId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_USER_ID, pointsDistributionConfiguration.getTargetUserId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_SUB_PROPOSAL_ID, pointsDistributionConfiguration.getTargetSubProposalId())
-                .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_PLAN_SECTION_DEFINITION_ID, pointsDistributionConfiguration.getTargetProposalTemplateSectionDefinitionId())
+                .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_PROPOSAL_TEMPLATE_SECTION_DEFINITION_ID,
+                        pointsDistributionConfiguration.getTargetProposalTemplateSectionDefinitionId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.PERCENTAGE, pointsDistributionConfiguration.getPercentage())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.AUTHOR_USER_ID, pointsDistributionConfiguration.getAuthorUserId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATED_AT, pointsDistributionConfiguration.getCreatedAt())
@@ -51,7 +52,8 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.POINT_TYPE_ID, pointsDistributionConfiguration.getPointTypeId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_USER_ID, pointsDistributionConfiguration.getTargetUserId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_SUB_PROPOSAL_ID, pointsDistributionConfiguration.getTargetSubProposalId())
-                .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_PLAN_SECTION_DEFINITION_ID, pointsDistributionConfiguration.getTargetProposalTemplateSectionDefinitionId())
+                .set(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_PROPOSAL_TEMPLATE_SECTION_DEFINITION_ID,
+                        pointsDistributionConfiguration.getTargetProposalTemplateSectionDefinitionId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.PERCENTAGE, pointsDistributionConfiguration.getPercentage())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.AUTHOR_USER_ID, pointsDistributionConfiguration.getAuthorUserId())
                 .set(POINTS_DISTRIBUTION_CONFIGURATION.CREATED_AT, pointsDistributionConfiguration.getCreatedAt())
@@ -104,7 +106,8 @@ public class PointsDistributionConfigurationDaoImpl implements PointsDistributio
     public PointsDistributionConfiguration getByProposalTemplateSectionDefinitionId(Long targetProposalTemplateSectionDefinitionId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(POINTS_DISTRIBUTION_CONFIGURATION)
-                .where(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_PLAN_SECTION_DEFINITION_ID.eq(targetProposalTemplateSectionDefinitionId))
+                .where(POINTS_DISTRIBUTION_CONFIGURATION.TARGET_PROPOSAL_TEMPLATE_SECTION_DEFINITION_ID
+                        .eq(targetProposalTemplateSectionDefinitionId))
                 .fetchOne();
 
         if (record == null) {
