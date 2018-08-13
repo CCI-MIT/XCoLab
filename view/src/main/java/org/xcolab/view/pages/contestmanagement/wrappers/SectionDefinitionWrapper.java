@@ -55,30 +55,30 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     public SectionDefinitionWrapper() {
     }
 
-    public SectionDefinitionWrapper(ProposalTemplateSectionDefinition planSectionDefinition) {
-        initPlanSectionDefinition(planSectionDefinition);
+    public SectionDefinitionWrapper(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+        initProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
     }
 
-    private void initPlanSectionDefinition(ProposalTemplateSectionDefinition planSectionDefinition) {
-        this.id = planSectionDefinition.getId();
-        this.type = planSectionDefinition.getType_();
-        this.title = planSectionDefinition.getTitle();
-        this.defaultText = planSectionDefinition.getDefaultText();
-        this.helpText = planSectionDefinition.getHelpText();
-        this.characterLimit = planSectionDefinition.getCharacterLimit();
-        this.focusAreaId = planSectionDefinition.getFocusAreaId();
-        this.additionalIds = planSectionDefinition.getAdditionalIds();
-        this.allowedValues = planSectionDefinition.getAllowedValues();
-        this.locked = planSectionDefinition.getLocked();
-        this.level = planSectionDefinition.getTier();
-        this.contestIntegrationRelevance = planSectionDefinition.getContestIntegrationRelevance();
+    private void initProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+        this.id = proposalTemplateSectionDefinition.getId();
+        this.type = proposalTemplateSectionDefinition.getType();
+        this.title = proposalTemplateSectionDefinition.getTitle();
+        this.defaultText = proposalTemplateSectionDefinition.getDefaultText();
+        this.helpText = proposalTemplateSectionDefinition.getHelpText();
+        this.characterLimit = proposalTemplateSectionDefinition.getCharacterLimit();
+        this.focusAreaId = proposalTemplateSectionDefinition.getFocusAreaId();
+        this.additionalIds = proposalTemplateSectionDefinition.getAdditionalIds();
+        this.allowedValues = proposalTemplateSectionDefinition.getAllowedValues();
+        this.locked = proposalTemplateSectionDefinition.getLocked();
+        this.level = proposalTemplateSectionDefinition.getTier();
+        this.contestIntegrationRelevance = proposalTemplateSectionDefinition.getContestIntegrationRelevance();
         this.allowedContestTypeIds =
-                IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds());
+                IdListUtil.getIdsFromString(proposalTemplateSectionDefinition.getAllowedContestTypeIds());
 
 
         PointsDistributionConfiguration pdc =
                 PointsClientUtil
-                        .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+                        .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
         if (pdc != null) {
             this.pointPercentage = Double.toString(pdc.getPercentage());
             this.pointType = pdc.getPointTypeId();
@@ -88,7 +88,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         }
         /*
                 PointsDistributionConfigurationClient
-                .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+                .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
         if (pdc != null) {
             this.pointPercentage = Double.toString(pdc.getPercentage());
             this.pointType = pdc.getPointTypeId();
@@ -143,23 +143,23 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         return ids;
     }
 
-    public SectionDefinitionWrapper(ProposalTemplateSectionDefinition planSectionDefinition,
+    public SectionDefinitionWrapper(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition,
             Long proposalTemplateId) {
 
-        initPlanSectionDefinition(planSectionDefinition);
+        initProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
 
         List<ProposalTemplateSection> proposalTemplateSections =
                 ProposalTemplateClientUtil.getProposalTemplateSectionByProposalTemplateId(proposalTemplateId);
 
         for (ProposalTemplateSection proposalTemplateSection : proposalTemplateSections) {
             if (Objects.equals(
-                    proposalTemplateSection.getSectionDefinitionId(), planSectionDefinition.getId())) {
+                    proposalTemplateSection.getSectionDefinitionId(), proposalTemplateSectionDefinition.getId())) {
                 initProposalTemplateSection(proposalTemplateSection);
                 break;
             }
         }
 
-        initPlanSectionDefinition(planSectionDefinition);
+        initProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
 
     }
 
@@ -256,17 +256,17 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
         if (id == null || createNew) {
             psd = new ProposalTemplateSectionDefinition();
 
-            populatePlanSectionDefinition(psd);
+            populateProposalTemplateSectionDefinition(psd);
 
-            psd = ProposalTemplateClientUtil.createPlanSectionDefinition(psd);
+            psd = ProposalTemplateClientUtil.createProposalTemplateSectionDefinition(psd);
             id = psd.getId();
         } else {
 
             psd = ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(id);
             pdc = PointsClientUtil
-                    .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+                    .getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(id);
 
-            populatePlanSectionDefinition(psd);
+            populateProposalTemplateSectionDefinition(psd);
 
             if (pdc != null) {
                 if (pointType == 0L) {
@@ -275,7 +275,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
                 } else {
                     pdc.setPercentage(Double.valueOf(pointPercentage));
                     pdc.setPointTypeId(pointType);
-                    pdc.setTargetPlanSectionDefinitionId(id);
+                    pdc.setTargetProposalTemplateSectionDefinitionId(id);
                     PointsClientUtil.updatePointsDistributionConfiguration(pdc);
             /*
                 if (pdc != null) {
@@ -286,7 +286,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
                 if (pdc != null) {
                     pdc.setPercentage(Double.valueOf(pointPercentage));
                     pdc.setPointTypeId(pointType);
-                    pdc.setTargetPlanSectionDefinitionId(id);
+                    pdc.setTargetProposalTemplateSectionDefinitionId(id);
 
                     PointsDistributionConfigurationClient.updatePointsDistributionConfiguration
                     (pdc);
@@ -301,17 +301,17 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
                 pdc = new PointsDistributionConfiguration();
                 pdc.setPercentage(Double.valueOf(pointPercentage));
                 pdc.setPointTypeId(pointType);
-                pdc.setTargetPlanSectionDefinitionId(id);
+                pdc.setTargetProposalTemplateSectionDefinitionId(id);
                 pdc = PointsClientUtil.createPointsDistributionConfiguration(pdc);
             }
         }
 
-        ProposalTemplateClientUtil.updatePlanSectionDefinition(psd);
+        ProposalTemplateClientUtil.updateProposalTemplateSectionDefinition(psd);
 
     }
 
-    private void populatePlanSectionDefinition(ProposalTemplateSectionDefinition psd) {
-        psd.setType_(this.getType());
+    private void populateProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition psd) {
+        psd.setType(this.getType());
         psd.setTitle(this.getTitle());
         psd.setDefaultText(this.getDefaultText());
         psd.setCharacterLimit(this.getCharacterLimit());
@@ -458,7 +458,7 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     private FocusArea createNewFocusAreaWithTerms(List<OntologyTerm> focusAreaOntologyTerms) {
         FocusArea newFocusArea = new FocusArea();
 
-        newFocusArea.setName("created for planSectionDefinition '" + this.title + "'");
+        newFocusArea.setName("created for proposalTemplateSectionDefinition '" + this.title + "'");
 
         newFocusArea = OntologyClientUtil.createFocusArea(newFocusArea);
 

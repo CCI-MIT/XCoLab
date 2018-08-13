@@ -5,9 +5,10 @@ import org.xcolab.model.tables.pojos.ProposalTemplateSection;
 import java.util.List;
 
 public interface ProposalTemplateSectionDao {
+
     List<ProposalTemplateSection> findByGiven(Long proposalTemplateId, Long planSectionId);
 
-    int delete(Long proposalTemplateId, Long planSectionDefinitionId);
+    int delete(Long proposalTemplateId, Long proposalTemplateSectionDefinitionId);
 
     boolean update(ProposalTemplateSection proposalTemplateSection);
 

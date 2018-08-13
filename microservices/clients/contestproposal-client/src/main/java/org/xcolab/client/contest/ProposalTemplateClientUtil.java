@@ -41,17 +41,17 @@ public final class ProposalTemplateClientUtil {
     }
 
     public static ProposalTemplateSectionDefinition getProposalTemplateSectionDefinition(long id) {
-        return client.getPlanSectionDefinition(id);
+        return client.getProposalTemplateSectionDefinition(id);
     }
 
-    public static boolean updatePlanSectionDefinition(
-            ProposalTemplateSectionDefinition planSectionDefinition) {
-        return client.updatePlanSectionDefinition(planSectionDefinition);
+    public static boolean updateProposalTemplateSectionDefinition(
+            ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+        return client.updateProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
     }
 
-    public static ProposalTemplateSectionDefinition createPlanSectionDefinition(
-            ProposalTemplateSectionDefinition planSectionDefinition) {
-        return client.createPlanSectionDefinition(planSectionDefinition);
+    public static ProposalTemplateSectionDefinition createProposalTemplateSectionDefinition(
+            ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+        return client.createProposalTemplateSectionDefinition(proposalTemplateSectionDefinition);
     }
 
     public static ProposalTemplateSection createProposalTemplateSection(
@@ -59,18 +59,18 @@ public final class ProposalTemplateClientUtil {
         return client.createProposalTemplateSection(proposalTemplateSection);
     }
 
-    public static List<ProposalTemplateSectionDefinition> getPlanSectionDefinitionByProposalTemplateId(
+    public static List<ProposalTemplateSectionDefinition> getProposalTemplateSectionDefinitionByProposalTemplateId(
             Long proposalTemplateId, Boolean weight) {
-        return client.getPlanSectionDefinitionByProposalTemplateId(proposalTemplateId, weight);
+        return client.getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplateId, weight);
     }
 
-    public static Boolean deletePlanSectionDefinition(Long id) {
-        return client.deletePlanSectionDefinition(id);
+    public static Boolean deleteProposalTemplateSectionDefinition(Long id) {
+        return client.deleteProposalTemplateSectionDefinition(id);
     }
 
     public static Boolean deleteProposalTemplateSection(Long proposalTemplateId,
-            Long planSectionDefinitionId) {
-        return client.deleteProposalTemplateSection(proposalTemplateId, planSectionDefinitionId);
+            Long proposalTemplateSectionDefinitionId) {
+        return client.deleteProposalTemplateSection(proposalTemplateId, proposalTemplateSectionDefinitionId);
     }
 
     public static List<ProposalTemplateSection> getProposalTemplateSectionByProposalTemplateId(

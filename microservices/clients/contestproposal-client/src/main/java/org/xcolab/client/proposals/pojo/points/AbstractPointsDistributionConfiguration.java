@@ -93,11 +93,11 @@ class AbstractPointsDistributionConfiguration implements Serializable {
         this.targetsubproposalid = targetsubproposalid;
     }
 
-    public Long getTargetPlanSectionDefinitionId() {
+    public Long getTargetProposalTemplateSectionDefinitionId() {
         return this.targetplansectiondefinitionid;
     }
 
-    public void setTargetPlanSectionDefinitionId(Long targetplansectiondefinitionid) {
+    public void setTargetProposalTemplateSectionDefinitionId(Long targetplansectiondefinitionid) {
         this.targetplansectiondefinitionid = targetplansectiondefinitionid;
     }
 

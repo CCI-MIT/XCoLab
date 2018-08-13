@@ -43,9 +43,9 @@ public class PointsDistributionUtil {
             //ProposalReference reference = ProposalReferenceLocalServiceUtil.getByProposalIdSubProposalId(proposal.getId(), subProposalId);
             final ProposalAttribute referenceSectionProposalAttribute = proposalService.getProposalAttribute(reference.getSectionAttributeId());
             //final ProposalAttribute referenceSectionProposalAttribute = ProposalAttributeLocalServiceUtil.getProposalAttribute(reference.getSectionAttributeId());
-            final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
-            PointsDistributionConfiguration pdc = pointsDistributionConfigurationService.getPointsDistributionConfiguration(planSectionDefinitionId);
-                //PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByProposalTemplateSectionDefinitionId(planSectionDefinitionId);
+            final long proposalTemplateSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
+            PointsDistributionConfiguration pdc = pointsDistributionConfigurationService.getPointsDistributionConfiguration(proposalTemplateSectionDefinitionId);
+                //PointsDistributionConfiguration pdc = PointsDistributionConfigurationLocalServiceUtil.getByProposalTemplateSectionDefinitionId(proposalTemplateSectionDefinitionId);
             targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
 
         }

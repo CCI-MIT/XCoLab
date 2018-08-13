@@ -122,7 +122,7 @@ public class ProposalMoveJsonController {
 
         if (proposalTemplate != null) {
             for (ProposalTemplateSectionDefinition psd : clientHelper.getProposalTemplateClient()
-                    .getPlanSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), false)) {
+                    .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), false)) {
                 ProposalAttribute attribute = clientHelper.getProposalAttributeClient()
                         .getProposalAttribute(proposalId, version,
                                 ProposalAttributeKeys.SECTION, psd.getId());

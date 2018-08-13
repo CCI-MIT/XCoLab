@@ -21,10 +21,10 @@ public final class PointsClientUtil {
     }
 
     public static PointsDistributionConfiguration
-    getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(
-            long targetPlanSectionDefinitionId) {
-        return client.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(
-                targetPlanSectionDefinitionId);
+    getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(
+            long targetProposalTemplateSectionDefinitionId) {
+        return client.getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(
+                targetProposalTemplateSectionDefinitionId);
     }
 
     public static boolean updatePointsDistributionConfiguration(

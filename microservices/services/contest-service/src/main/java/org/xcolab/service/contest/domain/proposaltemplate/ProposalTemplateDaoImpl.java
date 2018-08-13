@@ -17,7 +17,6 @@ import static org.xcolab.model.Tables.PROPOSAL_TEMPLATE;
 @Repository
 public class ProposalTemplateDaoImpl implements ProposalTemplateDao {
 
-
     @Autowired
     private DSLContext dslContext;
 

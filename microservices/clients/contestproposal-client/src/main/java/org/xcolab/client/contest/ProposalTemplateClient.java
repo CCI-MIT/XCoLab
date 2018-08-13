@@ -25,7 +25,7 @@ public class ProposalTemplateClient {
     private final ServiceNamespace serviceNamespace;
 
     private final RestResource1<ProposalTemplateDto, Long> proposalTemplateResource;
-    private final RestResource1<ProposalTemplateSectionDefinitionDto, Long> planSectionDefinitionResource;
+    private final RestResource1<ProposalTemplateSectionDefinitionDto, Long> proposalTemplateSectionDefinitionResource;
     private final RestResource1<ProposalTemplateSectionDto, Long> proposalTemplateSectionResource;
 
     private ProposalTemplateClient(ServiceNamespace serviceNamespace) {
@@ -33,7 +33,7 @@ public class ProposalTemplateClient {
         proposalTemplateResource =
                 new RestResource1<>(ContestResource.PLAN_TEMPLATE, ProposalTemplateDto.TYPES,
                         serviceNamespace);
-        planSectionDefinitionResource = new RestResource1<>(
+        proposalTemplateSectionDefinitionResource = new RestResource1<>(
                 ContestResource.PLAN_SECTION_DEFINITION, ProposalTemplateSectionDefinitionDto.TYPES,
                 serviceNamespace);
         proposalTemplateSectionResource = new RestResource1<>(
@@ -74,43 +74,43 @@ public class ProposalTemplateClient {
                 .execute();
     }
 
-    public ProposalTemplateSectionDefinition getPlanSectionDefinition(long id) {
-        return planSectionDefinitionResource.get(id)
+    public ProposalTemplateSectionDefinition getProposalTemplateSectionDefinition(long id) {
+        return proposalTemplateSectionDefinitionResource.get(id)
                 .withCache(CacheName.MISC_REQUEST)
                 .execute().toPojo(serviceNamespace);
     }
 
-    public boolean updatePlanSectionDefinition(
-            ProposalTemplateSectionDefinition planSectionDefinition) {
-        return planSectionDefinitionResource.update(
-                new ProposalTemplateSectionDefinitionDto(planSectionDefinition), planSectionDefinition.getId())
+    public boolean updateProposalTemplateSectionDefinition(
+            ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+        return proposalTemplateSectionDefinitionResource.update(
+                new ProposalTemplateSectionDefinitionDto(proposalTemplateSectionDefinition), proposalTemplateSectionDefinition.getId())
                 .execute();
     }
 
-    public ProposalTemplateSectionDefinition createPlanSectionDefinition(
-            ProposalTemplateSectionDefinition planSectionDefinition) {
-        return planSectionDefinitionResource
-                .create(new ProposalTemplateSectionDefinitionDto(planSectionDefinition))
+    public ProposalTemplateSectionDefinition createProposalTemplateSectionDefinition(
+            ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
+        return proposalTemplateSectionDefinitionResource
+                .create(new ProposalTemplateSectionDefinitionDto(proposalTemplateSectionDefinition))
                 .execute().toPojo(serviceNamespace);
     }
 
-    public List<ProposalTemplateSectionDefinition> getPlanSectionDefinitionByProposalTemplateId(Long proposalTemplateId,
+    public List<ProposalTemplateSectionDefinition> getProposalTemplateSectionDefinitionByProposalTemplateId(Long proposalTemplateId,
             Boolean weight) {
 
-        return DtoUtil.toPojos(planSectionDefinitionResource.list()
+        return DtoUtil.toPojos(proposalTemplateSectionDefinitionResource.list()
                 .optionalQueryParam("proposalTemplateId", proposalTemplateId)
                 .optionalQueryParam("weight", ((weight == null) ? (false) : weight))
                 .execute(), serviceNamespace);
     }
 
-    public Boolean deletePlanSectionDefinition(Long id) {
-        return planSectionDefinitionResource.delete(id).execute();
+    public Boolean deleteProposalTemplateSectionDefinition(Long id) {
+        return proposalTemplateSectionDefinitionResource.delete(id).execute();
     }
 
-    public Boolean deleteProposalTemplateSection(Long proposalTemplateId, Long planSectionDefinitionId) {
+    public Boolean deleteProposalTemplateSection(Long proposalTemplateId, Long proposalTemplateSectionDefinitionId) {
         return proposalTemplateSectionResource.collectionService("deleteProposalTemplateSection", Boolean.class)
                 .queryParam("proposalTemplateId", proposalTemplateId)
-                .queryParam("planSectionDefinitionId", planSectionDefinitionId)
+                .queryParam("proposalTemplateSectionDefinitionId", proposalTemplateSectionDefinitionId)
                 .delete();
     }
 

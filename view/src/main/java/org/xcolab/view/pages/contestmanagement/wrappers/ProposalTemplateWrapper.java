@@ -38,10 +38,10 @@ public class ProposalTemplateWrapper {
     private void populateExistingProposalTemplateSections() {
         sections = new ArrayList<>();
         if (proposalTemplate != null) {
-            for (ProposalTemplateSectionDefinition planSectionDefinition : ProposalTemplateClientUtil
-                    .getPlanSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null)) {
-                if (!planSectionDefinition.getLocked()) {
-                    sections.add(new SectionDefinitionWrapper(planSectionDefinition,
+            for (ProposalTemplateSectionDefinition proposalTemplateSectionDefinition : ProposalTemplateClientUtil
+                    .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null)) {
+                if (!proposalTemplateSectionDefinition.getLocked()) {
+                    sections.add(new SectionDefinitionWrapper(proposalTemplateSectionDefinition,
                             proposalTemplate.getId()));
                 }
             }
@@ -159,32 +159,32 @@ public class ProposalTemplateWrapper {
     }
 
     public void removeDeletedSections() {
-        Set<Long> remainingPlanSectionDefinitionIds = new HashSet<>();
+        Set<Long> remainingProposalTemplateSectionDefinitionIds = new HashSet<>();
         List<SectionDefinitionWrapper> removedSectionDefinitions = new ArrayList<>();
         for (SectionDefinitionWrapper sectionBaseDefinition : sections) {
             if (StringUtils.isEmpty(sectionBaseDefinition.getTitle())
                     && !sectionBaseDefinition.isTemplateSection()) {
                 removedSectionDefinitions.add(sectionBaseDefinition);
             } else {
-                remainingPlanSectionDefinitionIds.add(sectionBaseDefinition.getId());
+                remainingProposalTemplateSectionDefinitionIds.add(sectionBaseDefinition.getId());
             }
         }
 
 
-        List<ProposalTemplateSectionDefinition> planSectionDefinitions = ProposalTemplateClientUtil
-                .getPlanSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null);
-        for (ProposalTemplateSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if (!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())) {
+        List<ProposalTemplateSectionDefinition> proposalTemplateSectionDefinitions = ProposalTemplateClientUtil
+                .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null);
+        for (ProposalTemplateSectionDefinition proposalTemplateSectionDefinition : proposalTemplateSectionDefinitions) {
+            if (!remainingProposalTemplateSectionDefinitionIds.contains(proposalTemplateSectionDefinition.getId())) {
                 if (!ProposalTemplateLifecycleUtil
-                        .isPlanSectionDefinitionUsedInOtherTemplate(
-                                planSectionDefinition.getId(),
+                        .isProposalTemplateSectionDefinitionUsedInOtherTemplate(
+                                proposalTemplateSectionDefinition.getId(),
                                 proposalTemplate.getId())) {
                     ProposalTemplateClientUtil
-                            .deletePlanSectionDefinition(planSectionDefinition.getId());
+                            .deleteProposalTemplateSectionDefinition(proposalTemplateSectionDefinition.getId());
                 }
                 ProposalTemplateClientUtil
                         .deleteProposalTemplateSection(proposalTemplate.getId(),
-                                planSectionDefinition.getId());
+                                proposalTemplateSectionDefinition.getId());
             }
         }
 

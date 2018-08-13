@@ -47,7 +47,7 @@ public final class PointsClient {
     }
 
     public PointsDistributionConfiguration
-    getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(
+    getPointsDistributionConfigurationByTargetProposalTemplateSectionDefinitionId(
             long targetSectionDefinitionId) {
         try {
             return pointsDistributionConfigurationResource

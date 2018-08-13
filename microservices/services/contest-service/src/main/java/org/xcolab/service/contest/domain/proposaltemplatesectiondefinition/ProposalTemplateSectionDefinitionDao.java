@@ -1,4 +1,4 @@
-package org.xcolab.service.contest.domain.plansectiondefinition;
+package org.xcolab.service.contest.domain.proposaltemplatesectiondefinition;
 
 import org.xcolab.model.tables.pojos.ProposalTemplateSectionDefinition;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -11,9 +11,9 @@ public interface ProposalTemplateSectionDefinitionDao {
 
     ProposalTemplateSectionDefinition get(Long id) throws NotFoundException;
 
-    ProposalTemplateSectionDefinition create(ProposalTemplateSectionDefinition planSectionDefinition);
+    ProposalTemplateSectionDefinition create(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition);
 
-    boolean update(ProposalTemplateSectionDefinition planSectionDefinition);
+    boolean update(ProposalTemplateSectionDefinition proposalTemplateSectionDefinition);
 
     int delete(Long id);
 }

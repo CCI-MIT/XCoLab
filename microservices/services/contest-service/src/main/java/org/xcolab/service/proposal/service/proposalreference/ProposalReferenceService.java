@@ -16,7 +16,7 @@ import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeHelper;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeKeys;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeService;
-import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
+import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,11 +70,11 @@ public class ProposalReferenceService {
 
                 ProposalTemplateSectionDefinition psd = ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(attribute.getAdditionalId());
 
-                if (StringUtils.isBlank(psd.getType_())) {
+                if (StringUtils.isBlank(psd.getType())) {
                     continue;
                 }
 
-                PlanSectionTypeKeys type = PlanSectionTypeKeys.valueOf(psd.getType_());
+                ProposalTemplateSectionType type = ProposalTemplateSectionType.valueOf(psd.getType());
                 Set<Long> subProposalIds = new HashSet<>();
                 switch (type) {
                     case PROPOSAL_REFERENCE: {

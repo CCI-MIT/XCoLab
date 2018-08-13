@@ -8,7 +8,7 @@ abstract class AbstractProposalTemplateSectionDefinition implements Serializable
     private static final long serialVersionUID = 1L;
 
     private Long    id;
-    private String  type_;
+    private String type;
     private String  admintitle;
     private String  title;
     private String  defaulttext;
@@ -27,7 +27,7 @@ abstract class AbstractProposalTemplateSectionDefinition implements Serializable
 
     public AbstractProposalTemplateSectionDefinition(AbstractProposalTemplateSectionDefinition value) {
         this.id = value.id;
-        this.type_ = value.type_;
+        this.type = value.type;
         this.admintitle = value.admintitle;
         this.title = value.title;
         this.defaulttext = value.defaulttext;
@@ -51,12 +51,12 @@ abstract class AbstractProposalTemplateSectionDefinition implements Serializable
         this.id = id;
     }
 
-    public String getType_() {
-        return this.type_;
+    public String getType() {
+        return this.type;
     }
 
-    public void setType_(String type_) {
-        this.type_ = type_;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getAdminTitle() {
@@ -173,7 +173,7 @@ abstract class AbstractProposalTemplateSectionDefinition implements Serializable
         }
         AbstractProposalTemplateSectionDefinition that = (AbstractProposalTemplateSectionDefinition) o;
         return Objects.equals(getId(), that.getId())
-                && Objects.equals(getType_(), that.getType_())
+                && Objects.equals(getType(), that.getType())
                 && Objects.equals(admintitle, that.admintitle)
                 && Objects.equals(getTitle(), that.getTitle())
                 && Objects.equals(defaulttext, that.defaulttext)
@@ -191,7 +191,7 @@ abstract class AbstractProposalTemplateSectionDefinition implements Serializable
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getType_(), admintitle, getTitle(), defaulttext, helptext,
+        return Objects.hash(getId(), getType(), admintitle, getTitle(), defaulttext, helptext,
                 characterlimit, focusareaid, getTier(), allowedcontesttypeids, allowedvalues,
                 additionalids, getLocked(), contestintegrationrelevance,
                 getIncludeInJudgingReport());
@@ -200,8 +200,8 @@ abstract class AbstractProposalTemplateSectionDefinition implements Serializable
     @Override
     public String toString() {
 
-        return "PlanSectionDefinition (" + id +
-                ", " + type_ +
+        return "ProposalTemplateSectionDefinition (" + id +
+                ", " + type +
                 ", " + admintitle +
                 ", " + title +
                 ", " + defaulttext +

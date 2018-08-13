@@ -686,7 +686,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public List<ProposalTemplateSectionDefinition> getSections() {
-        return proposalTemplateClient.getPlanSectionDefinitionByProposalTemplateId(getProposalTemplateId(),
+        return proposalTemplateClient.getProposalTemplateSectionDefinitionByProposalTemplateId(getProposalTemplateId(),
                         true);
     }
 

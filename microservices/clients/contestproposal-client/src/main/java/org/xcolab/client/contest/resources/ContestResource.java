@@ -17,7 +17,7 @@ public enum ContestResource implements ResourceEnum {
 
     PLAN_TEMPLATE("proposalTemplates"),
     PLAN_TEMPLATE_SECTION("proposalTemplateSections"),
-    PLAN_SECTION_DEFINITION("planSectionDefinitions"),
+    PLAN_SECTION_DEFINITION("proposalTemplateSectionDefinitions"),
 
     POINT_TYPE("pointTypes"),
     POINTS_DISTRIBUTION_CONFIGURATION("pointsDistributionConfigurations"),

@@ -29,7 +29,7 @@ public final class ProposalTemplateLifecycleUtil {
     public static void delete(Long templateId) {
         ProposalTemplate proposalTemplate = ProposalTemplateClientUtil.getProposalTemplate(templateId);
         deleteProposalTemplateSections(templateId);
-        deleteUnusedPlanSectionDefinitions(proposalTemplate);
+        deleteUnusedProposalTemplateSectionDefinitions(proposalTemplate);
         ProposalTemplateClientUtil.deleteProposalTemplate(templateId);
 
     }
@@ -44,24 +44,24 @@ public final class ProposalTemplateLifecycleUtil {
         }
     }
 
-    private static void deleteUnusedPlanSectionDefinitions(ProposalTemplate proposalTemplate) {
-        List<ProposalTemplateSectionDefinition> planSectionDefinitions = ProposalTemplateClientUtil
-                .getPlanSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), true);
-        for (ProposalTemplateSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(),
+    private static void deleteUnusedProposalTemplateSectionDefinitions(ProposalTemplate proposalTemplate) {
+        List<ProposalTemplateSectionDefinition> proposalTemplateSectionDefinitions = ProposalTemplateClientUtil
+                .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), true);
+        for (ProposalTemplateSectionDefinition proposalTemplateSectionDefinition : proposalTemplateSectionDefinitions) {
+            if (!isProposalTemplateSectionDefinitionUsedInOtherTemplate(proposalTemplateSectionDefinition.getId(),
                     proposalTemplate.getId())) {
                 ProposalTemplateClientUtil
-                        .deletePlanSectionDefinition(planSectionDefinition.getId());
+                        .deleteProposalTemplateSectionDefinition(proposalTemplateSectionDefinition.getId());
             }
         }
 
     }
 
-    public static boolean isPlanSectionDefinitionUsedInOtherTemplate(Long planSectionDefinitionId,
+    public static boolean isProposalTemplateSectionDefinitionUsedInOtherTemplate(Long proposalTemplateSectionDefinitionId,
             Long proposalTemplateId) {
         List<ProposalTemplateSection> proposalTemplateSections =
                 ProposalTemplateClientUtil
-                        .getProposalTemplateSectionsBySectionDefinitionId(planSectionDefinitionId);
+                        .getProposalTemplateSectionsBySectionDefinitionId(proposalTemplateSectionDefinitionId);
         return !(proposalTemplateSections.size() == 1
                 && proposalTemplateSections.get(0).getProposalTemplateId() == proposalTemplateId.longValue())
                 && !proposalTemplateSections.isEmpty();

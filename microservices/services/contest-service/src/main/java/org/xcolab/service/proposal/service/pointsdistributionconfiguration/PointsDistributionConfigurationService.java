@@ -39,10 +39,10 @@ public class PointsDistributionConfigurationService {
         this.proposalService = proposalService;
     }
 
-    public PointsDistributionConfiguration getPointsDistributionConfiguration(long planSectionDefinitionId){
+    public PointsDistributionConfiguration getPointsDistributionConfiguration(long proposalTemplateSectionDefinitionId){
         PointsDistributionConfiguration config = null;
         try{
-            config = pointsDistributionConfigurationDao.getByProposalTemplateSectionDefinitionId(planSectionDefinitionId);
+            config = pointsDistributionConfigurationDao.getByProposalTemplateSectionDefinitionId(proposalTemplateSectionDefinitionId);
         } catch(NotFoundException ignored) {}
         return config;
     }

@@ -209,11 +209,11 @@
             <c:forEach var="section" items="${proposal.sections }">
                 <c:if test="${not section.locked }">
                     <c:choose>
-                        <c:when test="${section.type == 'SECTION_HEADER' }">
+                        <c:when test="${section.typeEnum == 'SECTION_HEADER' }">
                             <h4>${section.title}</h4>
                         </c:when>
                         <c:otherwise>
-                            <div class="c-Box ${section.type.name().startsWith('PROPOSAL_') ? 'c-Box--colorPrimaryGrayLight' : 'c-Box--colorTan'} ${section.type}" data-section-id="${section.sectionDefinitionId }">
+                            <div class="c-Box ${section.typeEnum.name().startsWith('PROPOSAL_') ? 'c-Box--colorPrimaryGrayLight' : 'c-Box--colorTan'} ${section.type}" data-section-id="${section.sectionDefinitionId }">
                                 <div class="c-Box__bodyRow">
                                     <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasUnmappedSections and not empty baseProposal }"/>
                                 </div>
