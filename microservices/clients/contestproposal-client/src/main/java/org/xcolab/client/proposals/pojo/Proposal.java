@@ -641,10 +641,10 @@ public class Proposal extends AbstractProposal {
         if (sections == null) {
             sections = new ArrayList<>();
             if (contest != null) {
-                ProposalTemplate planTemplate = clients.planTemplate.getPlanTemplate(contest.getProposalTemplateId());
-                if (planTemplate != null) {
-                    for (ProposalTemplateSectionDefinition psd : clients.planTemplate
-                            .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(),true)) {
+                ProposalTemplate proposalTemplate = clients.proposalTemplate.getProposalTemplate(contest.getProposalTemplateId());
+                if (proposalTemplate != null) {
+                    for (ProposalTemplateSectionDefinition psd : clients.proposalTemplate
+                            .getPlanSectionDefinitionByProposalTemplateId(proposalTemplate.getId(),true)) {
 
                         sections.add(new ProposalTemplateSectionDefinition(psd, this));
                     }
@@ -978,7 +978,7 @@ public class Proposal extends AbstractProposal {
         final ProposalAttributeClient proposalAttribute;
         final ProposalPhaseClient proposalPhase;
         final ContestTeamMemberClient contestTeamMember;
-        final ProposalTemplateClient planTemplate;
+        final ProposalTemplateClient proposalTemplate;
 
         Clients() {
             this(null);
@@ -987,7 +987,7 @@ public class Proposal extends AbstractProposal {
         Clients(ServiceNamespace serviceNamespace) {
             if (serviceNamespace != null) {
                 contest = ContestClient.fromNamespace(serviceNamespace);
-                planTemplate = ProposalTemplateClient.fromNamespace(serviceNamespace);
+                proposalTemplate = ProposalTemplateClient.fromNamespace(serviceNamespace);
                 proposal = ProposalClient.fromNamespace(serviceNamespace);
                 proposalAttribute = ProposalAttributeClient.fromNamespace(serviceNamespace);
                 proposalPhase = ProposalPhaseClient.fromNamespace(serviceNamespace);
@@ -1007,7 +1007,7 @@ public class Proposal extends AbstractProposal {
                 thread = ThreadClientUtil.getClient();
                 proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
                 membership = MembershipClientUtil.getClient();
-                planTemplate = ProposalTemplateClientUtil.getClient();
+                proposalTemplate = ProposalTemplateClientUtil.getClient();
                 proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
             }
         }

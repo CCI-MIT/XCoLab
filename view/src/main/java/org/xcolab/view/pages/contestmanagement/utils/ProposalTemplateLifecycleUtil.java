@@ -18,38 +18,38 @@ public final class ProposalTemplateLifecycleUtil {
     }
 
     public static ProposalTemplate create(String name) {
-        ProposalTemplate newPlanTemplate = new ProposalTemplate();
-        newPlanTemplate.setName(name);
-        newPlanTemplate.setImpactSeriesTemplateId(1L);
-        newPlanTemplate.setBaseTemplateId(0L);
-        newPlanTemplate = ProposalTemplateClientUtil.createPlanTemplate(newPlanTemplate);
-        return newPlanTemplate;
+        ProposalTemplate newProposalTemplate = new ProposalTemplate();
+        newProposalTemplate.setName(name);
+        newProposalTemplate.setImpactSeriesTemplateId(1L);
+        newProposalTemplate.setBaseTemplateId(0L);
+        newProposalTemplate = ProposalTemplateClientUtil.createProposalTemplate(newProposalTemplate);
+        return newProposalTemplate;
     }
 
     public static void delete(Long templateId) {
-        ProposalTemplate planTemplate = ProposalTemplateClientUtil.getPlanTemplate(templateId);
-        deletePlanTemplateSections(templateId);
-        deleteUnusedPlanSectionDefinitions(planTemplate);
-        ProposalTemplateClientUtil.deletePlanTemplate(templateId);
+        ProposalTemplate proposalTemplate = ProposalTemplateClientUtil.getProposalTemplate(templateId);
+        deleteProposalTemplateSections(templateId);
+        deleteUnusedPlanSectionDefinitions(proposalTemplate);
+        ProposalTemplateClientUtil.deleteProposalTemplate(templateId);
 
     }
 
-    private static void deletePlanTemplateSections(Long planTemplateId) {
-        List<ProposalTemplateSection> planTemplateSections =
-                ProposalTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
-        for (ProposalTemplateSection planTemplateSection : planTemplateSections) {
+    private static void deleteProposalTemplateSections(Long proposalTemplateId) {
+        List<ProposalTemplateSection> proposalTemplateSections =
+                ProposalTemplateClientUtil.getProposalTemplateSectionByProposalTemplateId(proposalTemplateId);
+        for (ProposalTemplateSection proposalTemplateSection : proposalTemplateSections) {
             ProposalTemplateClientUtil
-                    .deletePlanTemplateSection(planTemplateSection.getProposalTemplateId(),
-                            planTemplateSection.getSectionDefinitionId());
+                    .deleteProposalTemplateSection(proposalTemplateSection.getProposalTemplateId(),
+                            proposalTemplateSection.getSectionDefinitionId());
         }
     }
 
-    private static void deleteUnusedPlanSectionDefinitions(ProposalTemplate planTemplate) {
+    private static void deleteUnusedPlanSectionDefinitions(ProposalTemplate proposalTemplate) {
         List<ProposalTemplateSectionDefinition> planSectionDefinitions = ProposalTemplateClientUtil
-                .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), true);
+                .getPlanSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), true);
         for (ProposalTemplateSectionDefinition planSectionDefinition : planSectionDefinitions) {
             if (!isPlanSectionDefinitionUsedInOtherTemplate(planSectionDefinition.getId(),
-                    planTemplate.getId())) {
+                    proposalTemplate.getId())) {
                 ProposalTemplateClientUtil
                         .deletePlanSectionDefinition(planSectionDefinition.getId());
             }
@@ -58,13 +58,13 @@ public final class ProposalTemplateLifecycleUtil {
     }
 
     public static boolean isPlanSectionDefinitionUsedInOtherTemplate(Long planSectionDefinitionId,
-            Long planTemplateId) {
-        List<ProposalTemplateSection> planTemplateSections =
+            Long proposalTemplateId) {
+        List<ProposalTemplateSection> proposalTemplateSections =
                 ProposalTemplateClientUtil
                         .getProposalTemplateSectionsBySectionDefinitionId(planSectionDefinitionId);
-        return !(planTemplateSections.size() == 1
-                && planTemplateSections.get(0).getProposalTemplateId() == planTemplateId.longValue())
-                && !planTemplateSections.isEmpty();
+        return !(proposalTemplateSections.size() == 1
+                && proposalTemplateSections.get(0).getProposalTemplateId() == proposalTemplateId.longValue())
+                && !proposalTemplateSections.isEmpty();
 
     }
 }

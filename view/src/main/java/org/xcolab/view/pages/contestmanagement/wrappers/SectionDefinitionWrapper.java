@@ -144,17 +144,17 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
     }
 
     public SectionDefinitionWrapper(ProposalTemplateSectionDefinition planSectionDefinition,
-            Long planTemplateId) {
+            Long proposalTemplateId) {
 
         initPlanSectionDefinition(planSectionDefinition);
 
-        List<ProposalTemplateSection> planTemplateSections =
-                ProposalTemplateClientUtil.getPlanTemplateSectionByPlanTemplateId(planTemplateId);
+        List<ProposalTemplateSection> proposalTemplateSections =
+                ProposalTemplateClientUtil.getProposalTemplateSectionByProposalTemplateId(proposalTemplateId);
 
-        for (ProposalTemplateSection planTemplateSection : planTemplateSections) {
+        for (ProposalTemplateSection proposalTemplateSection : proposalTemplateSections) {
             if (Objects.equals(
-                    planTemplateSection.getSectionDefinitionId(), planSectionDefinition.getId())) {
-                initPlanTemplateSection(planTemplateSection);
+                    proposalTemplateSection.getSectionDefinitionId(), planSectionDefinition.getId())) {
+                initProposalTemplateSection(proposalTemplateSection);
                 break;
             }
         }
@@ -163,8 +163,8 @@ public class SectionDefinitionWrapper implements Serializable, Comparable {
 
     }
 
-    private void initPlanTemplateSection(ProposalTemplateSection planTemplateSection) {
-        this.weight = planTemplateSection.getWeight();
+    private void initProposalTemplateSection(ProposalTemplateSection proposalTemplateSection) {
+        this.weight = proposalTemplateSection.getWeight();
     }
 
     public SectionDefinitionWrapper(String title) {

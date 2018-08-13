@@ -7,7 +7,7 @@ import org.xcolab.client.contest.pojo.templates.ProposalTemplateDto;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSection;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDto;
 import org.xcolab.client.contest.resources.ContestResource;
-import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
+import org.xcolab.client.proposals.exceptions.ProposalTemplateNotFoundException;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
@@ -24,19 +24,19 @@ public class ProposalTemplateClient {
 
     private final ServiceNamespace serviceNamespace;
 
-    private final RestResource1<ProposalTemplateDto, Long> planTemplateResource;
+    private final RestResource1<ProposalTemplateDto, Long> proposalTemplateResource;
     private final RestResource1<ProposalTemplateSectionDefinitionDto, Long> planSectionDefinitionResource;
-    private final RestResource1<ProposalTemplateSectionDto, Long> planTemplateSectionResource;
+    private final RestResource1<ProposalTemplateSectionDto, Long> proposalTemplateSectionResource;
 
     private ProposalTemplateClient(ServiceNamespace serviceNamespace) {
         this.serviceNamespace = serviceNamespace;
-        planTemplateResource =
+        proposalTemplateResource =
                 new RestResource1<>(ContestResource.PLAN_TEMPLATE, ProposalTemplateDto.TYPES,
                         serviceNamespace);
         planSectionDefinitionResource = new RestResource1<>(
                 ContestResource.PLAN_SECTION_DEFINITION, ProposalTemplateSectionDefinitionDto.TYPES,
                 serviceNamespace);
-        planTemplateSectionResource = new RestResource1<>(
+        proposalTemplateSectionResource = new RestResource1<>(
                 ContestResource.PLAN_TEMPLATE_SECTION, ProposalTemplateSectionDto.TYPES,
                 serviceNamespace);
     }
@@ -45,32 +45,32 @@ public class ProposalTemplateClient {
         return instances.computeIfAbsent(serviceNamespace, ProposalTemplateClient::new);
     }
 
-    public ProposalTemplate getPlanTemplate(long id) {
+    public ProposalTemplate getProposalTemplate(long id) {
         try {
-            return planTemplateResource.get(id)
+            return proposalTemplateResource.get(id)
                     .executeChecked().toPojo(serviceNamespace);
         } catch (EntityNotFoundException e) {
-            throw new PlanTemplateNotFoundException(id);
+            throw new ProposalTemplateNotFoundException(id);
         }
     }
 
-    public List<ProposalTemplate> getPlanTemplates() {
-        return DtoUtil.toPojos(planTemplateResource.list()
+    public List<ProposalTemplate> getProposalTemplates() {
+        return DtoUtil.toPojos(proposalTemplateResource.list()
                 .execute(), serviceNamespace);
     }
 
-    public  Boolean deletePlanTemplate(Long id) {
-        return  planTemplateResource.delete(id).execute();
+    public  Boolean deleteProposalTemplate(Long id) {
+        return  proposalTemplateResource.delete(id).execute();
     }
 
 
-    public ProposalTemplate createPlanTemplate(ProposalTemplate planTemplate) {
-        return planTemplateResource.create(new ProposalTemplateDto(planTemplate))
+    public ProposalTemplate createProposalTemplate(ProposalTemplate proposalTemplate) {
+        return proposalTemplateResource.create(new ProposalTemplateDto(proposalTemplate))
                 .execute().toPojo(serviceNamespace);
     }
 
-    public boolean updatePlanTemplate(ProposalTemplate planTemplate) {
-        return planTemplateResource.update(new ProposalTemplateDto(planTemplate), planTemplate.getId())
+    public boolean updateProposalTemplate(ProposalTemplate proposalTemplate) {
+        return proposalTemplateResource.update(new ProposalTemplateDto(proposalTemplate), proposalTemplate.getId())
                 .execute();
     }
 
@@ -94,11 +94,11 @@ public class ProposalTemplateClient {
                 .execute().toPojo(serviceNamespace);
     }
 
-    public List<ProposalTemplateSectionDefinition> getPlanSectionDefinitionByPlanTemplateId(Long planTemplateId,
+    public List<ProposalTemplateSectionDefinition> getPlanSectionDefinitionByProposalTemplateId(Long proposalTemplateId,
             Boolean weight) {
 
         return DtoUtil.toPojos(planSectionDefinitionResource.list()
-                .optionalQueryParam("planTemplateId", planTemplateId)
+                .optionalQueryParam("proposalTemplateId", proposalTemplateId)
                 .optionalQueryParam("weight", ((weight == null) ? (false) : weight))
                 .execute(), serviceNamespace);
     }
@@ -107,27 +107,27 @@ public class ProposalTemplateClient {
         return planSectionDefinitionResource.delete(id).execute();
     }
 
-    public Boolean deletePlanTemplateSection(Long planTemplateId, Long planSectionDefinitionId) {
-        return planTemplateSectionResource.collectionService("deletePlanTemplateSection", Boolean.class)
-                .queryParam("planTemplateId", planTemplateId)
+    public Boolean deleteProposalTemplateSection(Long proposalTemplateId, Long planSectionDefinitionId) {
+        return proposalTemplateSectionResource.collectionService("deleteProposalTemplateSection", Boolean.class)
+                .queryParam("proposalTemplateId", proposalTemplateId)
                 .queryParam("planSectionDefinitionId", planSectionDefinitionId)
                 .delete();
     }
 
-    public List<ProposalTemplateSection> getPlanTemplateSectionByPlanTemplateId(Long planTemplateId) {
-        return DtoUtil.toPojos(planTemplateSectionResource.list()
-                .optionalQueryParam("planTemplateId", planTemplateId)
+    public List<ProposalTemplateSection> getProposalTemplateSectionByProposalTemplateId(Long proposalTemplateId) {
+        return DtoUtil.toPojos(proposalTemplateSectionResource.list()
+                .optionalQueryParam("proposalTemplateId", proposalTemplateId)
                 .execute(), serviceNamespace);
     }
-    public ProposalTemplateSection createPlanTemplateSection(
-            ProposalTemplateSection planTemplateSection) {
-        return planTemplateSectionResource.create(new ProposalTemplateSectionDto(planTemplateSection))
+    public ProposalTemplateSection createProposalTemplateSection(
+            ProposalTemplateSection proposalTemplateSection) {
+        return proposalTemplateSectionResource.create(new ProposalTemplateSectionDto(proposalTemplateSection))
                 .execute().toPojo(serviceNamespace);
     }
 
-    public boolean updatePlanTemplateSection(ProposalTemplateSection planTemplateSection) {
-        return planTemplateSectionResource.collectionService("updateTemplateSection",Boolean.class)
-                .post(new ProposalTemplateSectionDto(planTemplateSection));
+    public boolean updateProposalTemplateSection(ProposalTemplateSection proposalTemplateSection) {
+        return proposalTemplateSectionResource.collectionService("updateTemplateSection",Boolean.class)
+                .post(new ProposalTemplateSectionDto(proposalTemplateSection));
     }
 
 
@@ -140,15 +140,15 @@ public class ProposalTemplateClient {
     }
 
     private List<ProposalTemplateSection> getProposalTemplateSections(Long proposalTemplateId, Long sectionDefinitionId) {
-        return DtoUtil.toPojos(planTemplateSectionResource.list()
-                .optionalQueryParam("planTemplateId", proposalTemplateId)
+        return DtoUtil.toPojos(proposalTemplateSectionResource.list()
+                .optionalQueryParam("proposalTemplateId", proposalTemplateId)
                 .optionalQueryParam("planSectionId", sectionDefinitionId)
                 .execute(), serviceNamespace);
     }
 
     public ProposalTemplateSection getProposalTemplateSection(long proposalTemplateId, long sectionDefinitionId) {
-        return DtoUtil.toPojo(planTemplateSectionResource.list()
-                .queryParam("planTemplateId", proposalTemplateId)
+        return DtoUtil.toPojo(proposalTemplateSectionResource.list()
+                .queryParam("proposalTemplateId", proposalTemplateId)
                 .queryParam("planSectionId", sectionDefinitionId)
                 .executeWithResult()
                 .getOneIfExists(), serviceNamespace);

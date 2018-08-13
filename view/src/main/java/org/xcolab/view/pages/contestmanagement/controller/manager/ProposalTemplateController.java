@@ -56,24 +56,24 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        Long proposalTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
+        Long proposalTemplateId = elementId != null ? elementId : getFirstProposalTemplateId();
         if (proposalTemplateId >= 0) {
             ProposalTemplateWrapper proposalTemplateWrapper =
                     new ProposalTemplateWrapper(proposalTemplateId);
             model.addAttribute("contestProposalTemplateWrapper", proposalTemplateWrapper);
         }
         model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(proposalTemplateId,
-                ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
+                ProposalTemplateWrapper.getAllProposalTemplateSelectionItems()));
         model.addAttribute("elementId", proposalTemplateId);
         return TAB_VIEW;
     }
 
-    private Long getFirstPlanTemplateId() {
+    private Long getFirstProposalTemplateId() {
 
-        final List<ProposalTemplate> planTemplates = ProposalTemplateClientUtil
-                .getPlanTemplates();
-        if (!planTemplates.isEmpty()) {
-            return planTemplates.get(0).getId();
+        final List<ProposalTemplate> proposalTemplates = ProposalTemplateClientUtil
+                .getProposalTemplates();
+        if (!proposalTemplates.isEmpty()) {
+            return proposalTemplates.get(0).getId();
         }
         return -1L;
 
@@ -118,7 +118,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
         if (result.hasErrors()) {
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(
                     updatedProposalTemplateWrapper.getProposalTemplateId(),
-                    ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
+                    ProposalTemplateWrapper.getAllProposalTemplateSelectionItems()));
             AlertMessage.danger("Failed to update element").flash(request);
             return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getProposalTemplateId());
         }

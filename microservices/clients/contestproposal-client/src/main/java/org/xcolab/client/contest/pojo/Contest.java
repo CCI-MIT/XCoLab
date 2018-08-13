@@ -62,7 +62,7 @@ public class Contest extends AbstractContest implements Serializable {
     private final OntologyClient ontologyClient;
     private final CommentClient commentClient;
     private final ThreadClient threadClient;
-    private final ProposalTemplateClient planTemplateClient;
+    private final ProposalTemplateClient proposalTemplateClient;
 
 
     private static final Map<Long, FocusArea> faCache = new HashMap<>();
@@ -95,7 +95,7 @@ public class Contest extends AbstractContest implements Serializable {
         contestClient = ContestClientUtil.getClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
-        planTemplateClient = ProposalTemplateClientUtil.getClient();
+        proposalTemplateClient = ProposalTemplateClientUtil.getClient();
         commentClient = CommentClientUtil.getClient();
         threadClient = ThreadClientUtil.getClient();
     }
@@ -110,14 +110,14 @@ public class Contest extends AbstractContest implements Serializable {
             contestClient = ContestClient.fromNamespace(serviceNamespace);
             contestTeamMemberClient = ContestTeamMemberClient.fromService(serviceNamespace);
             ontologyClient = OntologyClient.fromService(serviceNamespace);
-            planTemplateClient = ProposalTemplateClient.fromNamespace(serviceNamespace);
+            proposalTemplateClient = ProposalTemplateClient.fromNamespace(serviceNamespace);
             commentClient = CommentClient.fromService(serviceNamespace);
             threadClient = ThreadClient.fromService(serviceNamespace);
         } else {
             contestClient = ContestClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
             ontologyClient = OntologyClientUtil.getClient();
-            planTemplateClient = ProposalTemplateClientUtil.getClient();
+            proposalTemplateClient = ProposalTemplateClientUtil.getClient();
             commentClient = CommentClientUtil.getClient();
             threadClient = ThreadClientUtil.getClient();
         }
@@ -686,7 +686,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public List<ProposalTemplateSectionDefinition> getSections() {
-        return planTemplateClient.getPlanSectionDefinitionByPlanTemplateId(getProposalTemplateId(),
+        return proposalTemplateClient.getPlanSectionDefinitionByProposalTemplateId(getProposalTemplateId(),
                         true);
     }
 

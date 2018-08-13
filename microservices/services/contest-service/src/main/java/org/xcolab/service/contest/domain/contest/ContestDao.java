@@ -18,12 +18,12 @@ public interface ContestDao {
 
     List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
         Long contestYear, Boolean active, Boolean featured, List<Long> contestTiers,
-        List<Long> focusAreaIds, Long contestScheduleId, Long planTemplateId,
+        List<Long> focusAreaIds, Long contestScheduleId, Long proposalTemplateId,
         List<Long> contestTypeIds, Boolean contestPrivate, String searchTerm);
 
     int countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured,
             List<Long> contestTiers, List<Long> focusAreaOntologyTerms, Long contestScheduleId,
-            Long planTemplateId, List<Long> contestTypeIds, Boolean contestPrivate,
+            Long proposalTemplateId, List<Long> contestTypeIds, Boolean contestPrivate,
             String searchTerm);
 
     boolean isContestTitleYearUnique(String contestShortName, Long year, Long currentContestId);

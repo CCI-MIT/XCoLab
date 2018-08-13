@@ -457,12 +457,12 @@ public class ContestClient {
         return modelIds;
     }
 
-    public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) {
+    public List<Contest> getContestsByProposalTemplateId(Long proposalTemplateId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource
                 .list()
                 .queryParam("lang", lang)
-                .queryParam("planTemplateId", planTemplateId)
+                .queryParam("proposalTemplateId", proposalTemplateId)
                 .execute(), serviceNamespace);
     }
 

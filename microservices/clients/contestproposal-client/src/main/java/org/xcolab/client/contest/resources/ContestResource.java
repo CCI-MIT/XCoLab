@@ -15,8 +15,8 @@ public enum ContestResource implements ResourceEnum {
     CONTEST_TEAM_MEMBER("contestTeamMembers"),
     CONTEST_TEAM_MEMBER_ROLE("contestTeamMemberRoles"),
 
-    PLAN_TEMPLATE("planTemplates"),
-    PLAN_TEMPLATE_SECTION("planTemplateSections"),
+    PLAN_TEMPLATE("proposalTemplates"),
+    PLAN_TEMPLATE_SECTION("proposalTemplateSections"),
     PLAN_SECTION_DEFINITION("planSectionDefinitions"),
 
     POINT_TYPE("pointTypes"),

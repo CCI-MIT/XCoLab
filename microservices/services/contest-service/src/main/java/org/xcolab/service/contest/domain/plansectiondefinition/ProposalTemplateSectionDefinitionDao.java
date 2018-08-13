@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProposalTemplateSectionDefinitionDao {
 
-    List<ProposalTemplateSectionDefinition> findByGiven(Long planTemplateId, Boolean weight);
+    List<ProposalTemplateSectionDefinition> findByGiven(Long proposalTemplateId, Boolean weight);
 
     ProposalTemplateSectionDefinition get(Long id) throws NotFoundException;
 

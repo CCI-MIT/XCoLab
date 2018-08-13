@@ -117,12 +117,12 @@ public class ProposalMoveJsonController {
         Contest contest = ContestClientUtil.getContest(contestId);
         ClientHelper clientHelper = new ClientHelper();
 
-        ProposalTemplate planTemplate = clientHelper.getPlanTemplateClient()
-                .getPlanTemplate(contest.getProposalTemplateId());
+        ProposalTemplate proposalTemplate = clientHelper.getProposalTemplateClient()
+                .getProposalTemplate(contest.getProposalTemplateId());
 
-        if (planTemplate != null) {
-            for (ProposalTemplateSectionDefinition psd : clientHelper.getPlanTemplateClient()
-                    .getPlanSectionDefinitionByPlanTemplateId(planTemplate.getId(), false)) {
+        if (proposalTemplate != null) {
+            for (ProposalTemplateSectionDefinition psd : clientHelper.getProposalTemplateClient()
+                    .getPlanSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), false)) {
                 ProposalAttribute attribute = clientHelper.getProposalAttributeClient()
                         .getProposalAttribute(proposalId, version,
                                 ProposalAttributeKeys.SECTION, psd.getId());

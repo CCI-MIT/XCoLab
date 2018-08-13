@@ -18,7 +18,7 @@ public class ContestDaoQuery {
     private List<Long> contestTiers;
     private List<Long> focusAreaIds;
     private Long contestScheduleId;
-    private Long planTemplateId;
+    private Long proposalTemplateId;
     private List<Long> contestTypeIds;
     private Boolean contestPrivate;
     private String searchTerm;
@@ -41,8 +41,8 @@ public class ContestDaoQuery {
         return this;
     }
 
-    public ContestDaoQuery withProposalTemplateId(Long planTemplateId) {
-        this.planTemplateId = planTemplateId;
+    public ContestDaoQuery withProposalTemplateId(Long proposalTemplateId) {
+        this.proposalTemplateId = proposalTemplateId;
         return this;
     }
 
@@ -101,7 +101,7 @@ public class ContestDaoQuery {
 
     public List<Contest> execute() {
         return contestDao.findByGiven(paginationHelper, contestUrlName, contestYear, active,
-            featured, contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
+            featured, contestTiers, focusAreaIds, contestScheduleId, proposalTemplateId,
             contestTypeIds, contestPrivate, searchTerm);
     }
 }
