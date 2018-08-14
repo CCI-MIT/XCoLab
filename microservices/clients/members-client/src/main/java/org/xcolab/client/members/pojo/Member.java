@@ -462,9 +462,8 @@ public class Member implements Serializable {
     public void anonymize() {
         this.setFirstName("Member");
         this.setLastName("Removed");
-        if (!this.getEmailAddress().startsWith("removed+userId")) {
-            this.setEmailAddress("removed+userId"+this.getId()+"@climatecolab.org");
-        }
+        this.setEmailAddress("removed+userId" + this.getId() + "@climatecolab.org");
+        this.setScreenName("MemberRemoved" + this.getId());
         this.setFacebookId(null);
         this.setGoogleId(null);
         this.setOpenId(null);

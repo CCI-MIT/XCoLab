@@ -51,7 +51,7 @@ public class ClientHelper {
     private final ContestTeamMemberClient contestTeamMemberClient;
     private final ImpactClient impactClient;
     private final OntologyClient ontologyClient;
-    private final ProposalTemplateClient planTemplateClient;
+    private final ProposalTemplateClient proposalTemplateClient;
 
     // Comment
     private final CommentClient commentClient;
@@ -75,7 +75,7 @@ public class ClientHelper {
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         impactClient = ImpactClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
-        planTemplateClient = ProposalTemplateClientUtil.getClient();
+        proposalTemplateClient = ProposalTemplateClientUtil.getClient();
 
         commentClient = CommentClientUtil.getClient();
         threadClient = ThreadClientUtil.getClient();
@@ -136,8 +136,8 @@ public class ClientHelper {
         return ontologyClient;
     }
 
-    public ProposalTemplateClient getPlanTemplateClient() {
-        return planTemplateClient;
+    public ProposalTemplateClient getProposalTemplateClient() {
+        return proposalTemplateClient;
     }
 
     public CommentClient getCommentClient() {

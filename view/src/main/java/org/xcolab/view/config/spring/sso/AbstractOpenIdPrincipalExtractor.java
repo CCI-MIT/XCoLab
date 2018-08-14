@@ -19,6 +19,11 @@ public abstract class AbstractOpenIdPrincipalExtractor extends CustomPrincipalEx
     }
 
     @Override
+    public boolean isExtractedEmailVerified(Map<String, Object> map) {
+        return map.containsKey("email_verified") && (Boolean) map.get("email_verified");
+    }
+
+    @Override
     protected String extractFirstName(Map<String, Object> map) {
         return (String) map.get("given_name");
     }

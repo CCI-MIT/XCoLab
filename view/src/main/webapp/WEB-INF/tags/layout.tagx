@@ -372,7 +372,7 @@
     <!-- jquery.scrolltable -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['jquery.scrolltable']}" src="/js/proposals/jquery.scrolltable.js"/>
 
-    <!-- numberal.js -->
+    <!-- numeral.js -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['numeral.js']}" src="/js/proposals/numeral.min.js"/>
 
     <!-- Handlebars.js-->

@@ -126,10 +126,10 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
             @PathVariable long sectionDefinitionId)
             throws IOException {
 
-        ProposalTemplateSectionDefinition planSectionDefinition =
+        ProposalTemplateSectionDefinition proposalTemplateSectionDefinition =
                 ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionDefinitionId);
         SectionDefinitionWrapper sectionDefinitionWrapper =
-                new SectionDefinitionWrapper(planSectionDefinition);
+                new SectionDefinitionWrapper(proposalTemplateSectionDefinition);
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
         response.getWriter().write(mapper.writeValueAsString(sectionDefinitionWrapper));

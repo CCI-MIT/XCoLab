@@ -28,7 +28,6 @@ import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationExceptio
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator;
-import org.xcolab.view.pages.proposals.utils.voting.VoteValidator.ValidationResult;
 import org.xcolab.view.pages.proposals.view.proposal.tabs.ProposalDescriptionTabController;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
@@ -131,35 +130,18 @@ public class VoteOnProposalActionController {
                 VoteValidator voteValidator =
                         new VoteValidator(member, proposal, contest, request.getRemoteAddr(),
                                 clients);
-                final ValidationResult validationResult = voteValidator.validate();
-                if (validationResult == ValidationResult.INVALID_BLACKLISTED
-                        || validationResult == ValidationResult.INVALID_BOUNCED_EMAIL) {
-                    //TODO COLAB-2494: decide if we want to inform users of this
-                    //                    AlertMessage.danger("Your vote was NOT counted because
-                    // it violates our email policy. "
-                    //                            + "Please refer to the Voting Rules for
-                    // additional information.")
-                    //                            .flash(request);
-                } else {
-                    hasVoted = true;
-                }
-            } else {
-                hasVoted = true;
+                voteValidator.validate();
+                // regardless of the validation result, we will treat the vote as valid in the UI
             }
 
-            if (hasVoted) {
-                new ProposalVoteNotification(proposal, contest, member).sendMessage();
-                //publish event per contestPhaseId to allow voting on exactly one proposal per
-                // contest(phase)
-                AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY + contestPhaseId,
-                        VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
-				GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
-                if (isSwitchingVote) {
-                    activitySubType = ProposalActivityType.VOTE_SWITCHED;
-                } else {
-                    activitySubType = ProposalActivityType.VOTE_ADDED;
-                }
-                hasVoted = true;
+            new ProposalVoteNotification(proposal, contest, member).sendMessage();
+            AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY + contestPhaseId,
+                    VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
+            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
+            if (isSwitchingVote) {
+                activitySubType = ProposalActivityType.VOTE_SWITCHED;
+            } else {
+                activitySubType = ProposalActivityType.VOTE_ADDED;
             }
         }
 
@@ -169,8 +151,7 @@ public class VoteOnProposalActionController {
         }
 
         // Redirect to prevent page-refreshing from influencing the vote
-        if (ConfigurationAttributeKey.PROPOSALS_VOTING_SUCCESS_MESSAGE_IS_ACTIVE.get()
-                && hasVoted) {
+        if (ConfigurationAttributeKey.PROPOSALS_VOTING_SUCCESS_MESSAGE_IS_ACTIVE.get()) {
             return "redirect:" + proposalLinkUrl + "/voted";
         }
         return "redirect:" + proposalLinkUrl;

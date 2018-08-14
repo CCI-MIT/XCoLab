@@ -61,7 +61,7 @@ public class BatchCreationController {
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L,
                         1300201L, 1300302L,
                         1300401L, 1300601L, 1300602L);
-        for (ProposalTemplate proposalTemplate : ProposalTemplateClientUtil.getPlanTemplates()) {
+        for (ProposalTemplate proposalTemplate : ProposalTemplateClientUtil.getProposalTemplates()) {
             if (!excludedList.contains(proposalTemplate.getId())) {
                 selectItems
                         .add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
@@ -148,7 +148,7 @@ public class BatchCreationController {
                                 : (contestBatchBean.getSponsorLogoId())),
                         ((contestBatchBean.getSponsorLink() == null) ? ("")
                                 : (contestBatchBean.getSponsorLink())),
-                        contestBatchBean.getPlanTemplateId(),
+                        contestBatchBean.getProposalTemplateId(),
                         contestBatchBean.getScheduleTemplateId(),
                         contestBatchBean.getContestTier(),
                         contestBatchBean.getContestType(), member.getId());
@@ -230,7 +230,7 @@ public class BatchCreationController {
             Long contestLogoId,
             Long sponsorLogoId,
             String sponsorLink,
-            Long planTemplateId,
+            Long proposalTemplateId,
             Long contestScheduleId,
             Long contestTierId,
             Long contestTypeId,
@@ -247,7 +247,7 @@ public class BatchCreationController {
         contest.setShowInTileView(true);
         contest.setShowInListView(true);
         contest.setShowInOutlineView(true);
-        contest.setProposalTemplateId(planTemplateId);
+        contest.setProposalTemplateId(proposalTemplateId);
         contest.setContestScheduleId(contestScheduleId);
         contest.setContestTier(contestTierId);
         contest.setContestTypeId(contestTypeId);

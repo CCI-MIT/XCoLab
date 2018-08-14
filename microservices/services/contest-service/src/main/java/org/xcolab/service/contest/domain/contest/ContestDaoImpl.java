@@ -229,12 +229,12 @@ public class ContestDaoImpl implements ContestDao {
     @Override
     public List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
             Long contestYear, Boolean active, Boolean featured, List<Long> contestTiers,
-            List<Long> focusAreaIds, Long contestScheduleId, Long planTemplateId,
+            List<Long> focusAreaIds, Long contestScheduleId, Long proposalTemplateId,
             List<Long> contestTypeIds, Boolean contestPrivate, String searchTerm) {
         final SelectQuery<Record> query = dslContext.select().from(CONTEST).getQuery();
 
         addConditions(contestUrlName, contestYear, active, featured, contestTiers, focusAreaIds,
-                contestScheduleId, planTemplateId, contestTypeIds, contestPrivate, searchTerm,
+                contestScheduleId, proposalTemplateId, contestTypeIds, contestPrivate, searchTerm,
                 query);
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
@@ -262,20 +262,20 @@ public class ContestDaoImpl implements ContestDao {
     @Override
     public int countByGiven(String contestUrlName, Long contestYear, Boolean active,
             Boolean featured, List<Long> contestTiers, List<Long> focusAreaIds,
-            Long contestScheduleId, Long planTemplateId, List<Long> contestTypeIds,
+            Long contestScheduleId, Long proposalTemplateId, List<Long> contestTypeIds,
             Boolean contestPrivate, String searchTerm) {
         final SelectQuery<Record1<Integer>> query =
                 dslContext.selectCount().from(CONTEST).getQuery();
 
         addConditions(contestUrlName, contestYear, active, featured, contestTiers, focusAreaIds,
-                contestScheduleId, planTemplateId, contestTypeIds, contestPrivate, searchTerm,
+                contestScheduleId, proposalTemplateId, contestTypeIds, contestPrivate, searchTerm,
                 query);
         return query.fetchOne().into(Integer.class);
     }
 
     private void addConditions(String contestUrlName, Long contestYear, Boolean active,
             Boolean featured, List<Long> contestTiers, List<Long> focusAreaIds,
-            Long contestScheduleId, Long planTemplateId, List<Long> contestTypeIds,
+            Long contestScheduleId, Long proposalTemplateId, List<Long> contestTypeIds,
             Boolean contestPrivate, String searchTerm, SelectQuery query) {
         if (contestPrivate != null) {
             query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
@@ -286,8 +286,8 @@ public class ContestDaoImpl implements ContestDao {
         if (contestScheduleId != null) {
             query.addConditions(CONTEST.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
         }
-        if (planTemplateId != null) {
-            query.addConditions(CONTEST.PROPOSAL_TEMPLATE_ID.eq(planTemplateId));
+        if (proposalTemplateId != null) {
+            query.addConditions(CONTEST.PROPOSAL_TEMPLATE_ID.eq(proposalTemplateId));
         }
         if (searchTerm != null && !searchTerm.isEmpty()) {
             query.addConditions(CONTEST.TITLE.like("%" + searchTerm + "%")

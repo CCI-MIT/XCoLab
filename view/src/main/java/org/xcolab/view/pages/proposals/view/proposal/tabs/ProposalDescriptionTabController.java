@@ -29,7 +29,7 @@ import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
-import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
+import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -188,7 +188,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
 
     private boolean hasProposalPicker(Proposal proposal) {
         return proposal.getSections().stream()
-                .anyMatch(p -> PlanSectionTypeKeys.PROPOSAL_PICKER_SECTION_TYPES.contains(p.getType()));
+                .map(ProposalTemplateSectionDefinition::getTypeEnum)
+                .anyMatch(ProposalTemplateSectionType.PROPOSAL_PICKER_SECTION_TYPES::contains);
     }
 
     private void populateMoveHistory(Model model, ProposalContext proposalContext,

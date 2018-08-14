@@ -109,7 +109,7 @@ public class ContestController {
             @RequestParam(required = false) Boolean featured,
             @RequestParam(required = false) List<Long> contestTiers,
             @RequestParam(required = false) Long contestScheduleId,
-            @RequestParam(required = false) Long planTemplateId,
+            @RequestParam(required = false) Long proposalTemplateId,
             @RequestParam(required = false) List<Long> focusAreaIds,
             @RequestParam(required = false) List<Long> ontologyTermIds,
             @RequestParam(required = false) List<Long> contestTypeIds,
@@ -128,11 +128,11 @@ public class ContestController {
         }
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
                 Integer.toString(contestDao.countByGiven(contestUrlName, contestYear, active, featured,
-                        contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
+                        contestTiers, focusAreaIds, contestScheduleId, proposalTemplateId,
                         contestTypeIds, contestPrivate, searchTerm)));
         final List<Contest> contests = contestDao
                 .findByGiven(paginationHelper, contestUrlName, contestYear, active, featured,
-                        contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
+                        contestTiers, focusAreaIds, contestScheduleId, proposalTemplateId,
                         contestTypeIds, contestPrivate, searchTerm);
         if (StringUtils.isNotEmpty(lang) && !"en".equalsIgnoreCase(lang)) {
             return contestService.resolveTranslations(contests, lang);

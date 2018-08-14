@@ -13,7 +13,7 @@ public class ContestBatchBean {
     private String contestDescription;
 
     @NotNull(message = "A plan template must be selected.")
-    private Long planTemplateId;
+    private Long proposalTemplateId;
 
     @NotNull(message = "A schedule template must be selected.")
     private Long scheduleTemplateId;
@@ -73,12 +73,12 @@ public class ContestBatchBean {
         this.contestDescription = contestDescription;
     }
 
-    public Long getPlanTemplateId() {
-        return planTemplateId;
+    public Long getProposalTemplateId() {
+        return proposalTemplateId;
     }
 
-    public void setPlanTemplateId(Long planTemplateId) {
-        this.planTemplateId = planTemplateId;
+    public void setProposalTemplateId(Long proposalTemplateId) {
+        this.proposalTemplateId = proposalTemplateId;
     }
 
     public Long getScheduleTemplateId() {

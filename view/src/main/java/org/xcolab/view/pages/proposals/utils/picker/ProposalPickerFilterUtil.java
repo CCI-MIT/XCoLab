@@ -32,10 +32,10 @@ public class ProposalPickerFilterUtil {
 
     public static List<Contest> getTextFilteredContests(long sectionId, String contestName) {
 
-        ProposalTemplateSectionDefinition planSectionDefinition =
+        ProposalTemplateSectionDefinition proposalTemplateSectionDefinition =
                 ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
 
-        final Long focusAreaId = planSectionDefinition.getFocusAreaId();
+        final Long focusAreaId = proposalTemplateSectionDefinition.getFocusAreaId();
         List<Long> ontologyTermIds = null;
         if (focusAreaId != null) {
             ontologyTermIds = OntologyClientUtil
@@ -43,10 +43,10 @@ public class ProposalPickerFilterUtil {
                     .stream().map(OntologyTerm::getId).collect(Collectors.toList());
         }
 
-        List<Long> allowedTiers = getAllowedTiers(planSectionDefinition.getTier());
+        List<Long> allowedTiers = getAllowedTiers(proposalTemplateSectionDefinition.getTier());
 
         final List<Long> allowedContestTypeIds =
-                IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds());
+                IdListUtil.getIdsFromString(proposalTemplateSectionDefinition.getAllowedContestTypeIds());
         return ContestClientUtil
                 .findPublicContests(contestName, ontologyTermIds, allowedContestTypeIds,
                         allowedTiers);
@@ -126,10 +126,10 @@ public class ProposalPickerFilterUtil {
         ClientHelper clients = proposalContext.getClients();
         ProposalClient proposalClient = clients.getProposalClient();
 
-        ProposalTemplateSectionDefinition planSectionDefinition =
+        ProposalTemplateSectionDefinition proposalTemplateSectionDefinition =
                 ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
         List<Long> contestTypes = new ArrayList<>(
-                IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()));
+                IdListUtil.getIdsFromString(proposalTemplateSectionDefinition.getAllowedContestTypeIds()));
 
         if (contestTypes.isEmpty()) {
             long defaultTypeId = ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
@@ -140,7 +140,7 @@ public class ProposalPickerFilterUtil {
         if (contestId > 0) {
             proposals = proposalClient.getProposalsInContest(contestId);
         } else {
-            final List<Long> allowedTiers = getAllowedTiers(planSectionDefinition.getTier());
+            final List<Long> allowedTiers = getAllowedTiers(proposalTemplateSectionDefinition.getTier());
             proposals = proposalClient.getProposalsInPublicContests(contestTypes, allowedTiers,
                     filterText.isEmpty() ? null : filterText);
         }
@@ -178,12 +178,12 @@ public class ProposalPickerFilterUtil {
             proposals.removeIf(proposal -> !proposal.hasRibbon());
         }
 
-        ProposalTemplateSectionDefinition planSectionDefinition =
+        ProposalTemplateSectionDefinition proposalTemplateSectionDefinition =
                 ProposalTemplateClientUtil.getProposalTemplateSectionDefinition(sectionId);
 
-        List<Long> filterExceptionContestIds = planSectionDefinition.getAdditionalIdsAsList();
+        List<Long> filterExceptionContestIds = proposalTemplateSectionDefinition.getAdditionalIdsAsList();
 
-        final Long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
+        final Long sectionFocusAreaId = proposalTemplateSectionDefinition.getFocusAreaId();
         Contest contest = proposalContext.getContest();
         final Long contestFocusAreaId = contest.getFocusAreaId();
 

@@ -14,7 +14,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.IdListUtil;
-import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
+import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
@@ -76,7 +76,8 @@ public class ProposalUpdateHelper {
         for (ProposalTemplateSectionDefinition section : proposalWrapper.getSections()) {
             String newSectionValue =
                     updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId());
-            switch (section.getType()) {
+            final ProposalTemplateSectionType sectionType = section.getTypeEnum();
+            switch (sectionType) {
                 case TEXT:
                 case PROPOSAL_LIST_TEXT_REFERENCE:
                 case DROPDOWN_MENU:
@@ -86,7 +87,7 @@ public class ProposalUpdateHelper {
                         version = updateAttribute(HtmlUtil.cleanSome(newSectionValue, baseUri),
                                 section, version).getVersion();
                         evictCache = true;
-                        if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
+                        if (sectionType == ProposalTemplateSectionType.PROPOSAL_LIST_TEXT_REFERENCE) {
                             updateProposalReferences = true;
                         }
                     } else {
@@ -98,9 +99,6 @@ public class ProposalUpdateHelper {
                         String optionValues = newSectionValue.replace(",",";");
 
                         version = updateAttribute(optionValues, section, version).getVersion();
-                        if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
-                            updateProposalReferences = true;
-                        }
                         evictCache = true;
                     } else {
                         filledAll = false;

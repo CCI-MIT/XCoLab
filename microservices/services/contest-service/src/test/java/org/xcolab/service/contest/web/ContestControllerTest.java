@@ -131,7 +131,7 @@ public class ContestControllerTest {
                 .param("sort", "").param("contestUrlName", "").param("contestYear", "2016")
                 .param("active", "").param("featured", "")
                 //.param("contestTiers","")
-                .param("contestScheduleId", "").param("planTemplateId", "")
+                .param("contestScheduleId", "").param("proposalTemplateId", "")
                 //.param("focusAreaIds","")
                 //.param("ontologyTermIds","")
                 .param("contestPrivate", "").param("searchTerm", "")).andExpect(status().isOk());
@@ -147,7 +147,7 @@ public class ContestControllerTest {
         this.mockMvc.perform(get("/contests").param("startRecord", "1").param("limitRecord", "100")
                 .param("sort", "").param("contestUrlName", "").param("contestYear", "2016")
                 .param("active", "").param("featured", "").param("contestTiers", "")
-                .param("contestScheduleId", "").param("planTemplateId", "")
+                .param("contestScheduleId", "").param("proposalTemplateId", "")
 
                 .param("ontologyTermIds", "123,1230,938,933").param("contestPrivate", "")
                 .param("searchTerm", "")).andExpect(status().isOk());

@@ -31,17 +31,17 @@ public class ProposalTemplateWrapper {
     }
 
     public ProposalTemplateWrapper(Long proposalTemplateId) {
-        this.proposalTemplate = ProposalTemplateClientUtil.getPlanTemplate(proposalTemplateId);
+        this.proposalTemplate = ProposalTemplateClientUtil.getProposalTemplate(proposalTemplateId);
         populateExistingProposalTemplateSections();
     }
 
     private void populateExistingProposalTemplateSections() {
         sections = new ArrayList<>();
         if (proposalTemplate != null) {
-            for (ProposalTemplateSectionDefinition planSectionDefinition : ProposalTemplateClientUtil
-                    .getPlanSectionDefinitionByPlanTemplateId(proposalTemplate.getId(), null)) {
-                if (!planSectionDefinition.getLocked()) {
-                    sections.add(new SectionDefinitionWrapper(planSectionDefinition,
+            for (ProposalTemplateSectionDefinition proposalTemplateSectionDefinition : ProposalTemplateClientUtil
+                    .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null)) {
+                if (!proposalTemplateSectionDefinition.getLocked()) {
+                    sections.add(new SectionDefinitionWrapper(proposalTemplateSectionDefinition,
                             proposalTemplate.getId()));
                 }
             }
@@ -61,11 +61,11 @@ public class ProposalTemplateWrapper {
         sections.add(sectionDefinitionWrapper);
     }
 
-    public static List<LabelValue> getAllPlanTemplateSelectionItems() {
+    public static List<LabelValue> getAllProposalTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
 
-        for (ProposalTemplate planTemplateItem : ProposalTemplateClientUtil.getPlanTemplates()) {
-            selectItems.add(new LabelValue(planTemplateItem.getId(), planTemplateItem.getName()));
+        for (ProposalTemplate proposalTemplateItem : ProposalTemplateClientUtil.getProposalTemplates()) {
+            selectItems.add(new LabelValue(proposalTemplateItem.getId(), proposalTemplateItem.getName()));
         }
 
         return selectItems;
@@ -83,8 +83,8 @@ public class ProposalTemplateWrapper {
         initProposalTemplate(proposalTemplateId);
     }
 
-    private void initProposalTemplate(Long planTemplateId) {
-        this.proposalTemplate = ProposalTemplateClientUtil.getPlanTemplate(planTemplateId);
+    private void initProposalTemplate(Long proposalTemplateId) {
+        this.proposalTemplate = ProposalTemplateClientUtil.getProposalTemplate(proposalTemplateId);
     }
 
     public Boolean getUpdateExistingSections() {
@@ -146,7 +146,7 @@ public class ProposalTemplateWrapper {
         removeTemplateSection();
 
         if (createNew) {
-            duplicateExistingPlanTemplate();
+            duplicateExistingProposalTemplate();
             updateExistingSections = false;
         }
 
@@ -155,36 +155,36 @@ public class ProposalTemplateWrapper {
         }
 
         addSectionsToProposalTemplate();
-        updatePlanTemplateTitle();
+        updateProposalTemplateTitle();
     }
 
     public void removeDeletedSections() {
-        Set<Long> remainingPlanSectionDefinitionIds = new HashSet<>();
+        Set<Long> remainingProposalTemplateSectionDefinitionIds = new HashSet<>();
         List<SectionDefinitionWrapper> removedSectionDefinitions = new ArrayList<>();
         for (SectionDefinitionWrapper sectionBaseDefinition : sections) {
             if (StringUtils.isEmpty(sectionBaseDefinition.getTitle())
                     && !sectionBaseDefinition.isTemplateSection()) {
                 removedSectionDefinitions.add(sectionBaseDefinition);
             } else {
-                remainingPlanSectionDefinitionIds.add(sectionBaseDefinition.getId());
+                remainingProposalTemplateSectionDefinitionIds.add(sectionBaseDefinition.getId());
             }
         }
 
 
-        List<ProposalTemplateSectionDefinition> planSectionDefinitions = ProposalTemplateClientUtil
-                .getPlanSectionDefinitionByPlanTemplateId(proposalTemplate.getId(), null);
-        for (ProposalTemplateSectionDefinition planSectionDefinition : planSectionDefinitions) {
-            if (!remainingPlanSectionDefinitionIds.contains(planSectionDefinition.getId())) {
+        List<ProposalTemplateSectionDefinition> proposalTemplateSectionDefinitions = ProposalTemplateClientUtil
+                .getProposalTemplateSectionDefinitionByProposalTemplateId(proposalTemplate.getId(), null);
+        for (ProposalTemplateSectionDefinition proposalTemplateSectionDefinition : proposalTemplateSectionDefinitions) {
+            if (!remainingProposalTemplateSectionDefinitionIds.contains(proposalTemplateSectionDefinition.getId())) {
                 if (!ProposalTemplateLifecycleUtil
-                        .isPlanSectionDefinitionUsedInOtherTemplate(
-                                planSectionDefinition.getId(),
+                        .isProposalTemplateSectionDefinitionUsedInOtherTemplate(
+                                proposalTemplateSectionDefinition.getId(),
                                 proposalTemplate.getId())) {
                     ProposalTemplateClientUtil
-                            .deletePlanSectionDefinition(planSectionDefinition.getId());
+                            .deleteProposalTemplateSectionDefinition(proposalTemplateSectionDefinition.getId());
                 }
                 ProposalTemplateClientUtil
-                        .deletePlanTemplateSection(proposalTemplate.getId(),
-                                planSectionDefinition.getId());
+                        .deleteProposalTemplateSection(proposalTemplate.getId(),
+                                proposalTemplateSectionDefinition.getId());
             }
         }
 
@@ -203,13 +203,13 @@ public class ProposalTemplateWrapper {
         sections.remove(templateSectionDefinitionWrapper);
     }
 
-    private void duplicateExistingPlanTemplate() {
+    private void duplicateExistingProposalTemplate() {
 
         proposalTemplate.setId(null);
-        ProposalTemplate newPlanTemplate = ProposalTemplateClientUtil.createPlanTemplate(
+        ProposalTemplate newProposalTemplate = ProposalTemplateClientUtil.createProposalTemplate(
                 proposalTemplate);
-        proposalTemplateId = newPlanTemplate.getId();
-        proposalTemplate = newPlanTemplate;
+        proposalTemplateId = newProposalTemplate.getId();
+        proposalTemplate = newProposalTemplate;
 
         for (SectionDefinitionWrapper section : sections) {
             section.setId(null);
@@ -234,7 +234,7 @@ public class ProposalTemplateWrapper {
 
         if (templateSection != null) {
             templateSection.setWeight(weight);
-            ProposalTemplateClientUtil.updatePlanTemplateSection(templateSection);
+            ProposalTemplateClientUtil.updateProposalTemplateSection(templateSection);
 
         } else {
             ProposalTemplateSection pts = new ProposalTemplateSection();
@@ -242,23 +242,23 @@ public class ProposalTemplateWrapper {
             pts.setSectionDefinitionId(sectionDefinitionId);
             pts.setWeight(weight);
 
-            ProposalTemplateClientUtil.createPlanTemplateSection(pts);
+            ProposalTemplateClientUtil.createProposalTemplateSection(pts);
         }
     }
 
-    private void updatePlanTemplateTitle() {
+    private void updateProposalTemplateTitle() {
         if (proposalTemplate != null && templateName != null) {
             proposalTemplate.setName(templateName);
 
-            ProposalTemplateClientUtil.updatePlanTemplate(proposalTemplate);
+            ProposalTemplateClientUtil.updateProposalTemplate(proposalTemplate);
         }
     }
 
     public List<Contest> getContestsUsingTemplate() {
 
-        Long planTemplateId = proposalTemplate.getId();
+        Long proposalTemplateId = proposalTemplate.getId();
         List<Contest> contestsUsingSelectedTemplateList =
-                ContestClientUtil.getContestsByPlanTemplateId(planTemplateId);
+                ContestClientUtil.getContestsByProposalTemplateId(proposalTemplateId);
 
         List<Contest> contestsUsingSelectedTemplate = new ArrayList<>();
         contestsUsingSelectedTemplate.addAll(contestsUsingSelectedTemplateList);
