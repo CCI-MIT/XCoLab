@@ -226,9 +226,9 @@
     </form:form>
 
     <c:set var="acceptTosModalTitle">
-        By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${_themeContext.colabName} ${contestType.contestName} and agree to the
-        <a href="/wiki/Terms+of+use" target="_blank">Terms of Use</a>
-        and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.
+        <spring:message code="contests.proposal.modal.tos"
+        arguments="${fn:toLowerCase(contestType.proposalName)}, ${_themeContext.colabName}, ${contestType.contestName}, ${contestType.rulesPageUrl}, ${contestType.rulesPageName}"
+        />
     </c:set>
     <xcolab:modal modalId="acceptTosModal" title="${acceptTosModalTitle}">
         <div class="modal-body">
@@ -249,14 +249,14 @@
             <ul id="invalidFieldsList"><!--  --></ul>
         </div>
         <div class="modal-footer">
-            <button type="close" data-dismiss="modal" class="btn btn-gray">CLOSE</button>
+            <button type="close" data-dismiss="modal" class="btn btn-gray"><spring:message code="contests.buttons.close"/></button>
         </div>
     </xcolab:modal>
 
     <div class="c-ControlsOverlay">
         <div class="container cb-d-flex-between-center">
             <div class="d-none d-lg-block">
-                Don't forget to save your work!
+                <spring:message code="contests.proposal.help.savereminder"/>
                 <c:if test="${not empty saveHelpText}">
                     ${saveHelpText}
                 </c:if>
@@ -284,19 +284,10 @@
         ${requestScope.imageUploadHelpText}
     </div>
     <div id="ckAnchorTooltip" style="display: none">
-        <h4>Anchor:</h4>
-        <h5>How to use anchors:</h5>
+        <h4><spring:message code="contests.proposal.anchortooltip.title" /></h4>
+        <h5><spring:message code="contests.proposal.anchortooltip.subtitle" /></h5>
         <br/>
-        <ol>
-            <li>You would like to link to another section of your proposal.</li>
-            <li>Highlight the text you would like to link to, and click the anchor icon <span style="background-image:url('https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/plugins/icons_hidpi.png?t=GB8B');background-position:0 -1296px;background-size:16px;background-color: white;width: 16px;height: 16px;float: left;display: inline-block;margin-left: 4px;margin-right: 4px;">&#160;</span>(flag) to insert an anchor. Select a name for the anchor and click o.k. The anchor icon will now appear in that location.</li>
-
-            <li> Next, select and highlight the text you would like to have link to this newly created anchor.</li>
-
-            <li>Click on the hyperlink icon <span style="background-image:url('https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/plugins/icons_hidpi.png?t=GB8B');background-position:0 -1320px;background-size:16px;background-color: white;width: 16px;height: 16px;float: left;display: inline-block;margin-left: 4px;margin-right: 4px;">&#160;</span>(chains) , and use the "link type" selection menu to select "link to anchor in text."</li>
-            <li>Using the "select an anchor" menu, use the "select by anchor name" to select the correct anchor from the list to link to. Click o.k.</li>
-            <li>Now clicking in on the hyperlink will bring the user to the anchored section.</li>
-        </ol>
+        <spring:message code="contests.proposal.anchortooltip.description" />
     </div>
     <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
