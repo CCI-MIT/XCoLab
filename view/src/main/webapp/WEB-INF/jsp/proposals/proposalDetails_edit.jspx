@@ -109,10 +109,10 @@
                         </div>
                     </label>
                     <div class="p-Proposal__formBox__main">
-                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__title">Give the ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
+                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__title"><spring:message code="contests.proposal.sections.title.help" arguments="${fn:toLowerCase(contestType.proposalName)}"/></div>
                         <form:input path="name" id="proposalName" cssClass="form-control" />
                         <form:errors path="name" cssClass="alert alert-danger" />
-                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> characters</div>
+                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> <spring:message code="contests.characterlimit" /></div>
                     </div>
                 </div>
             </div>
@@ -131,11 +131,11 @@
                         </div>
                     </label>
                     <div class="p-Proposal__formBox__main">
-                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__pitch">Add a very short (140 character) description that conveys the key idea behind the ${fn:toLowerCase(contestType.proposalName)}.</div>
+                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__pitch"><spring:message code="contests.proposal.sections.pitch.help" arguments="${fn:toLowerCase(contestType.proposalName)}"/></div>
                         <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="form-control" />
                         <form:errors path="pitch" />
                         <div class="inputLimitContainer">
-                            <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> characters
+                            <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> <spring:message code="contests.characterlimit" />
                         </div>
                     </div>
                 </div>
@@ -156,15 +156,15 @@
                         </div>
                     </label>
                     <div class="p-Proposal__formBox__main">
-                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__team">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the name of its owner.</div>
+                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__team"><spring:message code="contests.proposal.sections.team.help" arguments="${fn:toLowerCase(contestType.proposalName)}"/></div>
                         <form:input path="team" id="proposalTeam" cssClass="form-control" />
                         <form:errors path="team" />
 
-                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">35</span> characters</div>
-                        <div class="text-muted">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
+                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">35</span> <spring:message code="contests.characterlimit" /></div>
+                        <div class="text-muted"><spring:message code="contests.proposal.sections.team.footnote" arguments="${fn:toLowerCase(contestType.proposalName)}"/></div>
 
                         <c:if test="${userTeams.size() > 0}">
-                            <div class="p-Proposal__formBox__helpText">Alternatively, you can select your team here.</div>
+                            <div class="p-Proposal__formBox__helpText"><spring:message code="contests.proposal.sections.team.selector" /></div>
 
                             <form:select path="selectedTeam" items="${userTeams}" itemLabel="name" itemValue="id" />
                             <form:errors path="selectedTeam" />
@@ -178,7 +178,7 @@
                     <div class="c-Box__bodyRow">
                         <label class="p-Proposal__formBox__label">
                             <span>
-                                <strong>${contestType.proposalName} image</strong><br />
+                                <strong><spring:message code="contests.proposal.sections.image.title" arguments="${contestType.proposalName}" /></strong><br />
                             </span>
                         </label>
                         <div class="p-Proposal__formBox__main">
@@ -196,7 +196,7 @@
                 <div class="c-Box c-Box--colorTan">
                     <div class="c-Box__bodyRow">
                         <label class="p-Proposal__formBox__label">
-                            <strong>Description</strong>
+                            <strong><spring:message code="contests.proposal.sections.legacy.description" /></strong>
                         </label>
 
                         <div class="p-Proposal__formBox__main">
