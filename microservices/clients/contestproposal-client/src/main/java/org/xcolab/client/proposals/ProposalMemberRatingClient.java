@@ -131,6 +131,7 @@ public final class ProposalMemberRatingClient {
         try {
             return proposalVoteResource.<Proposal, Integer>collectionService("count", Integer.class)
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
+                    .queryParam("isValidOverride", true)
                     .withCache(CacheKeys.withClass(Proposal.class)
                             .withParameter("contestPhaseId", contestPhaseId)
                             .asCount(), CacheName.MEMBER_RATING)
@@ -152,6 +153,7 @@ public final class ProposalMemberRatingClient {
         return proposalVoteResource.<ProposalVoteDto, Integer>collectionService("count", Integer.class)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .queryParam("proposalId", proposalId)
+                .queryParam("isValidOverride", true)
                 .withCache(CacheKeys.withClass(ProposalVoteDto.class)
                         .withParameter("contestPhaseId", contestPhaseId)
                         .withParameter("proposalId", proposalId)

@@ -10,7 +10,8 @@ public interface ProposalVoteDao {
 
     List<ProposalVote> findByGiven(Long proposalId, Long contestPhaseId, Long userId);
 
-    Integer countByGiven(Long proposalId, Long contestPhaseId, Long userId);
+    Integer countByGiven(Long proposalId, Long contestPhaseId, Long userId,
+            Boolean isValidOverride);
 
     boolean update(ProposalVote proposalVote);
 

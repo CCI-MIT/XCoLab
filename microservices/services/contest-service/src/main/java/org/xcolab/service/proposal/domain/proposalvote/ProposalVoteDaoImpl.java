@@ -102,7 +102,8 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
     }
 
     @Override
-    public Integer countByGiven(Long proposalId, Long contestPhaseId, Long userId) {
+    public Integer countByGiven(Long proposalId, Long contestPhaseId, Long userId,
+            Boolean isValidOverride) {
         final SelectQuery<Record1<Serializable>> query = dslContext
                 .select(DSL.coalesce(DSL.sum(PROPOSAL_VOTE.VALUE), 0))
                 .from(PROPOSAL_VOTE).getQuery();
@@ -116,7 +117,10 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
         if (userId != null) {
             query.addConditions(PROPOSAL_VOTE.USER_ID.eq(userId));
         }
-        //query.addConditions(PROPOSAL_VOTE.IS_VALID.eq(true));
+        if (isValidOverride != null && isValidOverride) {
+            query.addConditions(PROPOSAL_VOTE.IS_VALID_OVERRIDE.isNull()
+                    .or(PROPOSAL_VOTE.IS_VALID_OVERRIDE.eq(true)));
+        }
         return query.fetchOne().into(Integer.class);
     }
 

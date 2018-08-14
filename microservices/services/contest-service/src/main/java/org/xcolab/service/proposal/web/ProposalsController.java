@@ -317,15 +317,16 @@ public class ProposalsController {
     @GetMapping("/proposalVotes/count")
     public Integer countProposalVotes(@RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId,
-            @RequestParam(required = false) Long userId) {
-        return proposalVoteDao.countByGiven(proposalId, contestPhaseId, userId);
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Boolean isValidOverride) {
+        return proposalVoteDao.countByGiven(proposalId, contestPhaseId, userId, isValidOverride);
     }
 
     @GetMapping("/proposalVotes/hasUserVoted")
     public Boolean hasUserVoted(@RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long userId) {
-        return proposalVoteDao.countByGiven(proposalId, contestPhaseId, userId) != 0;
+        return proposalVoteDao.countByGiven(proposalId, contestPhaseId, userId, null) != 0;
     }
 
     @PostMapping("/proposalVotes")
