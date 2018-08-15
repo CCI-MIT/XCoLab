@@ -1,0 +1,42 @@
+//main colors:
+
+$t-Color__primary: #ff7f28;
+$t-Color__secondary: #57ad92;
+$t-Color__auxiliary: #f9e500;
+$t-Color__accent: #47f167; // 4th color when needed (e.g. ontology)
+
+//t-Color__primary: #478d77;
+//$t-Color__primary: #1F82C0;
+//$t-Color__primary: rgba(43, 162, 238, 0.92);
+//$t-Color__secondary: #ff7f28;
+//$t-Color__secondary: #478d77;
+//$t-Color__accent: #f8cd18;
+//$t-Color__accent: #be14fa;
+//$t-Color__accent: #9621b2;
+
+
+//lightness variations
+$t-Color__primary--light: lighten($t-Color__primary, 24);
+$t-Color__secondary--light: lighten($t-Color__secondary, 24);
+
+$t-Color__primary--dark: darken($t-Color__primary, 8);
+$t-Color__secondary--dark: darken($t-Color__secondary, 13);
+
+$t-Color__primary--darkest: darken($t-Color__primary, 15);
+$t-Color__secondary--darkest: darken($t-Color__secondary, 30);
+
+//grey variations of the primary color
+$t-Color__primary__gray--dark: desaturate($t-Color__primary, 61);
+$t-Color__primary__gray: lighten($t-Color__primary__gray--dark, 11);
+$t-Color__primary__gray--light: lighten($t-Color__primary__gray--dark, 35);
+
+//alert and message colors:
+$t-Color__success: $t-Color__accent;
+$t-Color__warning: $t-Color__auxiliary;
+$t-Color__info: $t-Color__primary__gray;
+
+//standard text colors
+$t-Color__text--light: white;
+$t-Color__text--dark: $t-Color__gray--dark-800;
+
+$t-Border__rounded: false;
