@@ -26,6 +26,7 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
 
     &:hover {
       color: $c-Footer__menu__li__a--hover__color;
+      cursor: pointer;
     }
   }
 }
