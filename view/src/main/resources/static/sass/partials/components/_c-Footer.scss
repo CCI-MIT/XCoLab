@@ -88,3 +88,10 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
     }
   }
 }
+
+.c-Footer__icon {
+  height:16px;
+  width: 16px;
+  display: inline-block;
+  vertical-align: middle;
+}
