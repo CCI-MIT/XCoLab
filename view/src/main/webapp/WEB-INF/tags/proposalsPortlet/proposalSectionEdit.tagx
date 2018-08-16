@@ -33,7 +33,7 @@
         <div id="proposalSection_${section.sectionDefinitionId }"  >
             <c:choose>
 
-                <c:when test="${section.type == 'ONTOLOGY_REFERENCE' }">
+                <c:when test="${section.typeEnum == 'ONTOLOGY_REFERENCE' }">
                     <c:set var="term" value="${section.numericValueAsOntologyTerm }" />
                     <select name='sectionsContent[${section.sectionDefinitionId }]' class="form-control">
                         <c:forEach var="term" items="${section.focusAreaTerms }">
@@ -48,7 +48,7 @@
                         </c:forEach>
                     </select>
                 </c:when>
-                <c:when test="${section.type == 'DROPDOWN_MENU'}">
+                <c:when test="${section.typeEnum == 'DROPDOWN_MENU'}">
                     <select name='sectionsContent[${section.sectionDefinitionId }]' class="form-control">
                         <c:forEach var="value" items="${section.optionsForDropdownMenu}">
                             <c:choose>
@@ -63,7 +63,7 @@
                         </c:forEach>
                     </select>
                 </c:when>
-                <c:when test="${section.type == 'CHECKBOX_OPTION'}">
+                <c:when test="${section.typeEnum == 'CHECKBOX_OPTION'}">
 
                     <c:forEach var="value" items="${section.optionsForCheckbox}">
                         <c:choose>
@@ -85,7 +85,7 @@
 
                 </c:when>
 
-                <c:when test="${section.type == 'PROPOSAL_REFERENCE' }">
+                <c:when test="${section.typeEnum == 'PROPOSAL_REFERENCE' }">
                     <c:set var="p" value="${section.numericValueAsProposal }" />
                     <c:choose>
                         <c:when test="${empty p  }">
@@ -107,7 +107,7 @@
                         Select ${section.proposalNames}
                     </a>
                 </c:when>
-                <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
+                <c:when test="${section.typeEnum == 'PROPOSAL_LIST_REFERENCE' }">
                     <c:set var="pl" value="${section.stringValueAsProposalArray }"/>
                     <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${empty pl ? '' : section.stringValue}"/>
                     <ul>
@@ -126,11 +126,11 @@
                 </c:when>
 
                 <c:otherwise>
-                    <form:textarea cssClass="rte-editorPlaceholder" data-section-type="${section.type }" data-section-id="${section.sectionDefinitionId }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]"
+                    <form:textarea cssClass="rte-editorPlaceholder" data-section-type="${section.typeEnum.name()}" data-section-id="${section.sectionDefinitionId }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]"
                                    data-section-placeholder="${section.defaultText}"/>
 
 
-                    <c:if test="${section.type == 'PROPOSAL_LIST_TEXT_REFERENCE'}">
+                    <c:if test="${section.typeEnum == 'PROPOSAL_LIST_TEXT_REFERENCE'}">
                         <script>
                             if (!sectionContestTypeNames) { var sectionContestTypeNames = {}; }
                             sectionContestTypeNames[${section.sectionDefinitionId}] = ['${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}']

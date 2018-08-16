@@ -14,7 +14,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
+import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -59,21 +59,22 @@ public class ProposalRevertActionController {
         boolean updateProposalReferences = false;
         for (ProposalTemplateSectionDefinition section : oldProposalVersionToBeBecomeCurrent.getSections()) {
             String newSectionValue = section.getStringValue();
-            if (section.getType() == PlanSectionTypeKeys.TEXT
-                    || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE
-                    || section.getType() == PlanSectionTypeKeys.DROPDOWN_MENU
-                    || section.getType() == PlanSectionTypeKeys.CHECKBOX_OPTION) {
+            final ProposalTemplateSectionType sectionType = section.getTypeEnum();
+            if (sectionType == ProposalTemplateSectionType.TEXT
+                    || sectionType == ProposalTemplateSectionType.PROPOSAL_LIST_TEXT_REFERENCE
+                    || sectionType == ProposalTemplateSectionType.DROPDOWN_MENU
+                    || sectionType == ProposalTemplateSectionType.CHECKBOX_OPTION) {
 
                 version = ProposalAttributeClientUtil.setProposalAttribute(userId,
                         oldProposalVersionToBeBecomeCurrent.getId(),
                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                         newSectionValue, version).getVersion();
 
-                if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
+                if (sectionType == ProposalTemplateSectionType.PROPOSAL_LIST_TEXT_REFERENCE) {
                     updateProposalReferences = true;
                 }
             }
-            if (section.getType() == PlanSectionTypeKeys.ONTOLOGY_REFERENCE) {
+            if (sectionType == ProposalTemplateSectionType.ONTOLOGY_REFERENCE) {
                 if (StringUtils.isNumeric(newSectionValue)) {
                     long newNumericVal = Long.parseLong(newSectionValue);
                     if (newNumericVal != section.getNumericValue()) {
@@ -84,7 +85,7 @@ public class ProposalRevertActionController {
                     }
                 }
             }
-            if (section.getType() == PlanSectionTypeKeys.PROPOSAL_REFERENCE) {
+            if (sectionType == ProposalTemplateSectionType.PROPOSAL_REFERENCE) {
                 if (StringUtils.isNumeric(newSectionValue) && StringUtils
                         .isNotBlank(newSectionValue)) {
                     final long newNumericValue = Long.parseLong(newSectionValue);
@@ -102,7 +103,7 @@ public class ProposalRevertActionController {
                             version).getVersion();
                 }
             }
-            if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_REFERENCE) {
+            if (sectionType == ProposalTemplateSectionType.PROPOSAL_LIST_REFERENCE) {
                 StringBuilder cleanedReferences = new StringBuilder();
                 if (StringUtils.isNotBlank(newSectionValue)) {
                     String[] referencedProposals = newSectionValue.split(",");

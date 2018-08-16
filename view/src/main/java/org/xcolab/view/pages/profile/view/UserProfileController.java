@@ -29,9 +29,11 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreference;
-import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.commons.servlet.flash.ErrorPage;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.auth.AuthenticationService;
@@ -43,8 +45,6 @@ import org.xcolab.view.pages.profile.beans.UserBean;
 import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
 import org.xcolab.view.pages.profile.wrappers.UserProfileWrapper;
 import org.xcolab.view.pages.redballoon.utils.BalloonService;
-import org.xcolab.commons.servlet.flash.AlertMessage;
-import org.xcolab.commons.servlet.flash.ErrorPage;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -433,6 +433,7 @@ public class UserProfileController {
             Member memberToAnonymize = new Member(MembersClient.getMember(userId));
             memberToAnonymize.anonymize();
             MembersClient.updateMember(memberToAnonymize);
+            MembersClient.unsubscribeFromNewsletter(userId);
         }
 
         if (permission.getCanEditMemberProfile(userId)) {

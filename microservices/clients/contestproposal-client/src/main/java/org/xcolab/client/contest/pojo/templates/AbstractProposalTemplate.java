@@ -138,7 +138,7 @@ abstract class AbstractProposalTemplate implements Serializable {
     @Override
     public String toString() {
 
-        return "PlanTemplate (" + id +
+        return "ProposalTemplate (" + id +
                 ", " + name +
                 ", " + basetemplateid +
                 ", " + impactseriestemplateid +

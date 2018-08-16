@@ -14,7 +14,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
-import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
+import org.xcolab.client.proposals.exceptions.ProposalTemplateNotFoundException;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 
@@ -52,7 +52,7 @@ public final class ContestCreatorUtil {
         final long defaultTemplateId = ConfigurationAttributeKey.DEFAULT_CONTEST_TEMPLATE_ID.get();
         try {
             if (defaultTemplateId > 0) {
-                return ProposalTemplateClientUtil.getPlanTemplate(defaultTemplateId);
+                return ProposalTemplateClientUtil.getProposalTemplate(defaultTemplateId);
             }
             final ProposalTemplate newDefaultTemplate = ProposalTemplateLifecycleUtil
                     .create(DEFAULT_TEMPLATE_NAME);
@@ -67,7 +67,7 @@ public final class ContestCreatorUtil {
                     + "and corresponding ConfigurationAttribute.", newDefaultTemplate.getId());
 
             return newDefaultTemplate;
-        } catch (PlanTemplateNotFoundException e) {
+        } catch (ProposalTemplateNotFoundException e) {
             //fail early if it doesn't exist
             throw ReferenceResolutionException
                     .toObject(ProposalTemplate.class, defaultTemplateId)

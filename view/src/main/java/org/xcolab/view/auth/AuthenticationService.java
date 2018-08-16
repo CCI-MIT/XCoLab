@@ -65,7 +65,7 @@ public class AuthenticationService {
     public Authentication authenticate(HttpServletRequest request, HttpServletResponse response,
             Member member) {
         //initialize session if it doesn't exist
-        request.getSession();
+        request.getSession(true);
 
         final MemberDetails memberDetails = new MemberDetails(member);
         Authentication authentication = new UsernamePasswordAuthenticationToken(

@@ -7,7 +7,7 @@
 		required="true" rtexprvalue="true" description="Section which content should be displayed" />
 	
 	<c:choose>
-		<c:when test="${section.type == 'ONTOLOGY_REFERENCE' }">
+		<c:when test="${section.typeEnum == 'ONTOLOGY_REFERENCE' }">
 			<c:set var="term" value="${section.numericValueAsOntologyTerm }" />
 			<c:choose>
 				<c:when test="${empty term  }">
@@ -21,7 +21,7 @@
 				</c:otherwise>
 			</c:choose>
 		</c:when>
-        <c:when test="${section.type == 'PROPOSAL_REFERENCE' }">
+        <c:when test="${section.typeEnum == 'PROPOSAL_REFERENCE' }">
             <c:set var="proposal" value="${section.numericValueAsProposal}" />
             <c:choose>
                 <c:when test="${empty proposal  }">
@@ -32,7 +32,7 @@
                 </c:otherwise>
             </c:choose>
         </c:when>
-        <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
+        <c:when test="${section.typeEnum == 'PROPOSAL_LIST_REFERENCE' }">
             <c:set var="proposalList" value="${section.stringValueAsProposalArray}" />
             <c:choose>
                 <c:when test="${empty proposalList}">
@@ -55,7 +55,7 @@
                 </c:otherwise>
             </c:choose>
         </c:when>
-        <c:when test="${section.type == 'CHECKBOX_OPTION' }">
+        <c:when test="${section.typeEnum == 'CHECKBOX_OPTION' }">
             <ul>
             <c:forEach var="value" items="${section.optionsForCheckbox}">
                 <c:choose>

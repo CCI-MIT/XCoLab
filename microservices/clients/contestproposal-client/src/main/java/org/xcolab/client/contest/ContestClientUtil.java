@@ -156,9 +156,9 @@ public final class ContestClientUtil {
     public static List<Contest> getAllContestsInYear(Integer contestYear) {
         return contestClient.getAllContestsInYear(contestYear);
     }
-    public static List<Contest> getContestsByPlanTemplateId(
-            Long planTemplateId) {
-        return contestClient.getContestsByPlanTemplateId(planTemplateId);
+    public static List<Contest> getContestsByProposalTemplateId(
+            Long proposalTemplateId) {
+        return contestClient.getContestsByProposalTemplateId(proposalTemplateId);
     }
 
     public static List<Contest> getContestsByContestScheduleId(

@@ -92,7 +92,8 @@
                             <div class="alert alert-info">
                                 You are editing a schedule that is used in at least one non-empty contest.
                                 You can only add, delete, or edit phases that have not started yet.
-                                You can also change the end date (and promote type) of the current phase, as long as the new end date is also in the future.<br />
+                                By changing the start date of the next phase, you can also change
+                                the end date of the current phase as the new date is also in the future.<br />
                                 If you wish to create a derivative of this schedule, click "Save as new schedule" above to freely modify a copy.
                             </div>
                         </c:if>

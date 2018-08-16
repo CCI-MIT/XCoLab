@@ -24,7 +24,7 @@ import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.Plurality;
-import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
+import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.net.URISyntaxException;
@@ -75,9 +75,9 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         this.proposal = proposal;
     }
     public ProposalTemplateSectionDefinition(
-            AbstractProposalTemplateSectionDefinition abstractPlanSectionDefinition,
+            AbstractProposalTemplateSectionDefinition abstractProposalTemplateSectionDefinition,
             ServiceNamespace serviceNamespace) {
-        super(abstractPlanSectionDefinition);
+        super(abstractProposalTemplateSectionDefinition);
         proposal = null;
         this.serviceNamespace = serviceNamespace;
     }
@@ -211,11 +211,11 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
         return contentDocument.select("body").html();
     }
 
-    public PlanSectionTypeKeys getType() {
-        if (StringUtils.isBlank(this.getType_())) {
-            return PlanSectionTypeKeys.TEXT;
+    public ProposalTemplateSectionType getTypeEnum() {
+        if (StringUtils.isBlank(this.getType())) {
+            return ProposalTemplateSectionType.TEXT;
         }
-        return PlanSectionTypeKeys.valueOf(this.getType_());
+        return ProposalTemplateSectionType.valueOf(this.getType());
     }
 
     public Long getSectionDefinitionId() {

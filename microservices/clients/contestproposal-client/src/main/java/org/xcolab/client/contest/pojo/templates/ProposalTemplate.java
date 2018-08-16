@@ -10,8 +10,8 @@ public class ProposalTemplate extends AbstractProposalTemplate {
         super(value);
     }
 
-    public ProposalTemplate(AbstractProposalTemplate abstractPlanTemplate,
+    public ProposalTemplate(AbstractProposalTemplate abstractProposalTemplate,
             ServiceNamespace serviceNamespace) {
-        super(abstractPlanTemplate);
+        super(abstractProposalTemplate);
     }
 }

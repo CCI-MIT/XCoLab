@@ -1,14 +1,14 @@
-package org.xcolab.service.contest.domain.plantemplatesection;
+package org.xcolab.service.contest.domain.proposaltemplatesection;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.ProposalTemplateSection;
 
 import java.util.List;
-
 
 import static org.xcolab.model.Tables.PROPOSAL_TEMPLATE_SECTION;
 
@@ -39,14 +39,14 @@ public class ProposalTemplateSectionDaoImpl implements ProposalTemplateSectionDa
     }
 
     @Override
-    public ProposalTemplateSection create(ProposalTemplateSection planTemplateSection) {
+    public ProposalTemplateSection create(ProposalTemplateSection proposalTemplateSection) {
 
         this.dslContext.insertInto(PROPOSAL_TEMPLATE_SECTION)
-                .set(PROPOSAL_TEMPLATE_SECTION.PROPOSAL_TEMPLATE_ID, planTemplateSection.getProposalTemplateId())
-                .set(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID, planTemplateSection.getSectionDefinitionId())
-                .set(PROPOSAL_TEMPLATE_SECTION.WEIGHT, planTemplateSection.getWeight())
+                .set(PROPOSAL_TEMPLATE_SECTION.PROPOSAL_TEMPLATE_ID, proposalTemplateSection.getProposalTemplateId())
+                .set(PROPOSAL_TEMPLATE_SECTION.SECTION_DEFINITION_ID, proposalTemplateSection.getSectionDefinitionId())
+                .set(PROPOSAL_TEMPLATE_SECTION.WEIGHT, proposalTemplateSection.getWeight())
                 .execute();
-        return planTemplateSection;
+        return proposalTemplateSection;
 
     }
 

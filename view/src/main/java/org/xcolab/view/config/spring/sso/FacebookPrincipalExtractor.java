@@ -28,6 +28,12 @@ public class FacebookPrincipalExtractor extends CustomPrincipalExtractor<Long> {
     }
 
     @Override
+    protected boolean isExtractedEmailVerified(Map<String, Object> userInfoMap) {
+        // Facebook does not return emails that were not verified
+        return true;
+    }
+
+    @Override
     protected Long extractId(Map map) {
         return Long.parseLong((String) map.get("id"));
     }
