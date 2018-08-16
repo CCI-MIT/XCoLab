@@ -9,7 +9,7 @@ public enum ColabTheme {
     RESILIENCE_DIALOGUES("30a3fb", 136),
     CLIMATE_RISKS_COLAB("aa2029", 145, true),
     FUTURES_COLAB("30a3fb", 145, true),
-    MADRID_COLAB("30a3fb", 205, true);
+    MADRID_COLAB("ff7f28", 38, true);
 
     private final String themeName;
     private final int logoWidth;
