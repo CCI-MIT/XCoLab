@@ -284,7 +284,8 @@
         <h4><spring:message code="contests.proposal.anchortooltip.title" /></h4>
         <h5><spring:message code="contests.proposal.anchortooltip.subtitle" /></h5>
         <br/>
-        <spring:message code="contests.proposal.anchortooltip.description" />
+        <spring:message code="contests.proposal.anchortooltip.description"
+            arguments="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/plugins/icons_hidpi.png?t=GB8B"/>
     </div>
     <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
