@@ -9,6 +9,18 @@ INSERT INTO user__user_role (user_id, role_id) VALUES (10144, 10118), (10144, 10
 
 INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME', 0, '', null, 'Contest', null);
 INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME', 0, '', null, 'Proposal', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME', 0, 'es', null, 'Concurso', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME', 0, 'es', null, 'Propuesta', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME_PLURAL', 0, 'es', null, 'Concursos', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSALS_CREATION_PROMPT', 0, 'es', null, 'CREAR propuesta', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME_PLURAL', 0, 'es', null, 'Propuestas', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('RULES_NAME', 0, 'es', null, 'Reglas del concurso', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME', 0, 'de', null, 'Wettbewerb', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME', 0, 'de', null, 'Vorschlag', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME_PLURAL', 0, 'de', null, 'Wettbewerbe', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSALS_CREATION_PROMPT', 0, 'de', null, 'Vorschlag ERSTELLEN', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME_PLURAL', 0, 'de', null, 'Vorschläge', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('RULES_NAME', 0, 'de', null, 'Wettbewerbregeln', null);
 
 INSERT INTO comment__category (id, group_id, author_user_id, name, description, created_at, deleted_at, sort, is_quiet) VALUES (12501, 701, 10144, 'General Discussion', 'This set of discussions is where Climate CoLab members can engage around any topics that interest them.', '2010-10-02 00:00:00', null, null, 0);
 INSERT INTO comment__category (id, group_id, author_user_id, name, description, created_at, deleted_at, sort, is_quiet) VALUES (12502, 701, 10144, 'Report bugs and request features', 'This group of discussions is where users can report bugs and suggest new features.', '2010-10-02 00:00:00', null, null, 0);
