@@ -15,9 +15,6 @@
     <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
     <!--@elvariable id="userTeams" type="java.util.List<org.xcolab.client.members.pojo.PlatformTeam>"-->
 
-
-    <!-- TODO COLAB-2583 Internationalization -->
-
     <jsp:directive.include file="./init_proposal.jspx"/>
 
     <script>
