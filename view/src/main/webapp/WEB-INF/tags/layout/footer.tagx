@@ -24,7 +24,12 @@
                             <a class="nav-link" href="/feedback"><spring:message code="homepage.bottom.menu.contact" /></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/wiki/Help"><spring:message code="homepage.bottom.menu.help"/></a>
+                            <c:if test="${_themeContext.colabName.equals('Madrid CoLab')}">
+                                <a class="nav-link" href="/page/Help"><spring:message code="homepage.bottom.menu.help"/></a>
+                            </c:if>
+                            <c:if test="${!_themeContext.colabName.equals('Madrid CoLab')}">
+                                 <a class="nav-link" href="/wiki/Help"><spring:message code="homepage.bottom.menu.help"/></a>
+                            </c:if>
                         </li>
                         <c:choose>
                             <c:when test="${showProfileLink}">
