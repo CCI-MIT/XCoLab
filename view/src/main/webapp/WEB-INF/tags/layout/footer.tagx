@@ -4,7 +4,8 @@
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
-          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
+          xmlns:xcolab-icon="urn:jsptagdir:/WEB-INF/tags/icons">
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
@@ -60,7 +61,7 @@
                         <c:if test="${showLanguageDropdown}">
                             <li class="nav-item dropup cb-dropdown-inverse">
                                 <a data-toggle="dropdown" class="nav-link dropdown-trigger">
-                                    <collab:image src="${themeImageFolder}/footer-language-button.png"/>&#160;
+                                    <xcolab-icon:language cssClass="c-Footer__icon"/>&#160;
                                     <spring:message code="homepage.menu.visitor.language" />
                                     <span class="caret"><!-- --></span>
                                 </a>

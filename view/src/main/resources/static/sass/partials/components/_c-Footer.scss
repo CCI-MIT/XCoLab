@@ -26,6 +26,7 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
 
     &:hover {
       color: $c-Footer__menu__li__a--hover__color;
+      cursor: pointer;
     }
   }
 }
@@ -86,4 +87,11 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
       text-decoration: none;
     }
   }
+}
+
+.c-Footer__icon {
+  height:16px;
+  width: 16px;
+  display: inline-block;
+  vertical-align: middle;
 }
