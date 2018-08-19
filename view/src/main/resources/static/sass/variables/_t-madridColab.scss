@@ -30,9 +30,23 @@ $t-Color__primary__gray--dark: desaturate($t-Color__primary, 61);
 $t-Color__primary__gray: lighten($t-Color__primary__gray--dark, 11);
 $t-Color__primary__gray--light: lighten($t-Color__primary__gray--dark, 35);
 
+//grays
+$t-Color__gray--light-100: #f9f9f9 !default;
+$t-Color__gray--light-200: #eee !default;
+$t-Color__gray--light-300: #e0e0e0 !default;
+$t-Color__gray--light-400: #d0d0d0 !default;
+
+$t-Color__gray--medium-500: #bababa !default;
+
+$t-Color__gray--dark-600: #888 !default;
+$t-Color__gray--dark-700: #575757 !default;
+$t-Color__gray--dark-800: #404040 !default;
+$t-Color__gray--dark-900: #252525 !default;
+
+
 //alert and message colors:
-$t-Color__success: $t-Color__accent;
-$t-Color__warning: $t-Color__auxiliary;
+$t-Color__success: $t-Color__auxiliary;
+$t-Color__warning: $t-Color__accent;
 $t-Color__info: $t-Color__primary__gray;
 
 //standard text colors
