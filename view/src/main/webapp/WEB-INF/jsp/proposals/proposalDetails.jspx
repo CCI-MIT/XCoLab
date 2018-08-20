@@ -235,7 +235,7 @@
                 <p style="color: #545454; margin-top: 5px;">
                     <collab:message code="contests.proposal.voting.youjustvoted" contestType="${contestType}">
                         <spring:argument>${proposal.name}</spring:argument>
-                        <spring:argument>${proposal.contest.question}</spring:argument>
+                        <spring:argument>${proposal.contest.title}</spring:argument>
                     </collab:message>
                     <br/><br/>
                     <c:if test="${not empty votingDeadline}">
