@@ -296,4 +296,8 @@ DROP TABLE IF EXISTS xcolab_SpamReport;
 
 DROP TABLE IF EXISTS filtering_FilteredEntry;
 
+DROP TABLE IF EXISTS xcolab_RolesCategory;
+DROP TABLE IF EXISTS xcolab_PointDistributionTarget;
+DROP TABLE IF EXISTS xcolab_ContestType;
+
 SET FOREIGN_KEY_CHECKS = 1
