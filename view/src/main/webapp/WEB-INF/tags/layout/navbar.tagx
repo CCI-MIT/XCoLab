@@ -146,7 +146,13 @@
                             </c:otherwise>
                         </c:choose>
                         <li class="nav-item cb-nav-item-gray cb-nav-item-sm cb-nav-item-separator-left ${navItemRightIconClass}">
-                            <a href="/wiki/Help" class="nav-link">
+                            <c:if test="${_themeContext.colabName.equals('Madrid CoLab')}">
+                                <c:set var="help_page_location" value="/page/Help"/>
+                            </c:if>
+                            <c:if test="${!_themeContext.colabName.equals('Madrid CoLab')}">
+                                <c:set var="help_page_location" value="/wiki/Help"/>
+                            </c:if>
+                            <a href="${help_page_location}" class="nav-link">
                                 <c:if test="${isShowIcons}">
                                     <xcolab-icon:help cssClass="nav-icon" />
                                 </c:if>
