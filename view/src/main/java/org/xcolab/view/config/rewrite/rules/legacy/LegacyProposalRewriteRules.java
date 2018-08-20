@@ -73,6 +73,9 @@ public class LegacyProposalRewriteRules implements RewriteRuleProvider {
                                 .or(Path.matches("/plans/-/plans/contests{path}"))
                     ))
                     .perform(Redirect.permanent("/contests{path}"))
-                    .where("path").matches(".*");
+                    .where("path").matches(".*")
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/proposals")))
+                    .perform(Redirect.permanent("/contests"));
     }
 }
