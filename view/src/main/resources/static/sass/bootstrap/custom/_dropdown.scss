@@ -42,9 +42,11 @@ $dropdownBackground--open: rgba(51, 51, 51, .9);
         border-bottom: 1px dashed #fff;
         cursor: pointer;
       }
-      input {
-        margin-right: 5px;
-      }
+
+    }
+
+    input[type=checkbox], input[type=radio] {
+      margin-right: 5px;
     }
 
     .dropdown-item {
