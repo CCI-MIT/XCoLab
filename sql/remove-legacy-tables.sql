@@ -290,6 +290,33 @@ DROP TABLE IF EXISTS xcolab_DiscussionMessage;
 DROP TABLE IF EXISTS xcolab_DiscussionCategoryGroup;
 DROP TABLE IF EXISTS xcolab_DiscussionCategory;
 
+DROP TABLE IF EXISTS xcolab_Plan2Proposal;
+DROP TABLE IF EXISTS xcolab_PlanAttribute;
+DROP TABLE IF EXISTS xcolab_PlanAttributeFilter;
+DROP TABLE IF EXISTS xcolab_PlanColumnSettings;
+DROP TABLE IF EXISTS xcolab_PlanDescription;
+DROP TABLE IF EXISTS xcolab_PlanFan;
+DROP TABLE IF EXISTS xcolab_PlanItem;
+DROP TABLE IF EXISTS xcolab_PlanItemGroup;
+DROP TABLE IF EXISTS xcolab_PlanItemPhaseMap;
+DROP TABLE IF EXISTS xcolab_PlanMeta;
+DROP TABLE IF EXISTS xcolab_PlanModelRun;
+DROP TABLE IF EXISTS xcolab_PlanPosition;
+DROP TABLE IF EXISTS xcolab_PlanPositionItem;
+DROP TABLE IF EXISTS xcolab_PlanPositions;
+DROP TABLE IF EXISTS xcolab_PlanPropertyFilter;
+DROP TABLE IF EXISTS xcolab_PlanRelated;
+DROP TABLE IF EXISTS xcolab_PlanSection;
+DROP TABLE IF EXISTS xcolab_PlanSectionPlanMap;
+DROP TABLE IF EXISTS xcolab_PlanTeamHistory;
+DROP TABLE IF EXISTS xcolab_PlanType;
+DROP TABLE IF EXISTS xcolab_PlanTypeAttribute;
+DROP TABLE IF EXISTS xcolab_PlanTypeColumn;
+DROP TABLE IF EXISTS xcolab_PlanVote;
+DROP TABLE IF EXISTS xcolab_PlansFilter;
+DROP TABLE IF EXISTS xcolab_PlansFilterPosition;
+DROP TABLE IF EXISTS xcolab_PlansUserSettings;
+
 DROP TABLE IF EXISTS User_;
 
 DROP TABLE IF EXISTS xcolab_SpamReport;
