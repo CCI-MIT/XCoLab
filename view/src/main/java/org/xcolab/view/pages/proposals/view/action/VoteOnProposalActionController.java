@@ -22,7 +22,6 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.notifications.proposal.ProposalVoteNotification;
-import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -76,7 +75,7 @@ public class VoteOnProposalActionController {
 
         if (!proposalContext.getPermissions().getCanVote()) {
             if (member == null) {
-                /* User is not logged in - don't count vote and let user log in*/
+                // User is not logged in - don't count vote and let user log in
                 AlertMessage.danger("You must be logged in to vote.").flash(request);
                 return "redirect:" + proposalLinkUrl;
             } else {
@@ -84,11 +83,11 @@ public class VoteOnProposalActionController {
             }
         }
 
-        boolean hasVoted = false;
         long proposalId = proposal.getId();
         long contestPhaseId = proposalContext.getContestPhase().getId();
         long userId = member.getId();
-        ActivityType activitySubType = null;
+
+        ProposalActivityType activitySubType;
         if (proposalMemberRatingClient.hasUserVoted(proposalId, contestPhaseId, userId)) {
             // User has voted for this proposal and would like to retract the vote
             proposalMemberRatingClient.deleteProposalVote(proposalId, contestPhaseId, userId);
@@ -96,24 +95,38 @@ public class VoteOnProposalActionController {
         } else {
             final int votesInContest = proposalMemberRatingClient
                     .countVotesByUserInPhase(userId, contestPhaseId);
-            final boolean isSwitchingVote = votesInContest > 0 && maxContestVotes == 1
-                    && voteValue == 1;
-            if (isSwitchingVote) {
-                final List<ProposalVote> userVotesInPhase = proposalMemberRatingClient
-                        .getProposalVotesByUserInPhase(userId, contestPhaseId);
-                final ProposalVote oldVote = userVotesInPhase.get(0);
-                proposalMemberRatingClient.deleteProposalVote(oldVote.getProposalId(),
-                        contestPhaseId, userId);
-            } else if (voteValue > maxProposalVotes) {
-                AlertMessage.danger(String.format("You cannot assign more than %d votes per %s.",
-                        maxProposalVotes, contestType.getProposalNameLowercase()))
-                        .flash(request);
-                return "redirect:" + proposalLinkUrl;
-            } else if (votesInContest + voteValue > maxContestVotes) {
-                AlertMessage.danger(String.format("You cannot assign more than %d votes per %s.",
-                        maxContestVotes, contestType.getContestNameLowercase()))
-                        .flash(request);
-                return "redirect:" + proposalLinkUrl;
+
+            final boolean isSingleVoteContest = maxContestVotes == 1;
+            if (isSingleVoteContest) {
+                if (voteValue > 1) {
+                    // The UI should not allow this to happen
+                    throw new IllegalArgumentException("This contest only allows a single vote.");
+                }
+                final boolean isSwitchingVote = votesInContest > 0;
+                if (isSwitchingVote) {
+                    final List<ProposalVote> userVotesInPhase = proposalMemberRatingClient
+                            .getProposalVotesByUserInPhase(userId, contestPhaseId);
+                    final ProposalVote oldVote = userVotesInPhase.get(0);
+                    proposalMemberRatingClient.deleteProposalVote(oldVote.getProposalId(),
+                            contestPhaseId, userId);
+                    activitySubType = ProposalActivityType.VOTE_SWITCHED;
+                } else {
+                    activitySubType = ProposalActivityType.VOTE_ADDED;
+                }
+            } else {
+                if (voteValue > maxProposalVotes) {
+                    AlertMessage.danger(String.format("You cannot assign more than %d votes per %s.",
+                            maxProposalVotes, contestType.getProposalNameLowercase()))
+                            .flash(request);
+                    return "redirect:" + proposalLinkUrl;
+                } else if (votesInContest + voteValue > maxContestVotes) {
+                    AlertMessage.danger(String.format("You cannot assign more than %d votes per %s.",
+                            maxContestVotes, contestType.getContestNameLowercase()))
+                            .flash(request);
+                    return "redirect:" + proposalLinkUrl;
+                } else {
+                    activitySubType = ProposalActivityType.VOTE_ADDED;
+                }
             }
 
             ProposalVote vote = proposalMemberRatingClient.addProposalVote(proposalId,
@@ -138,20 +151,15 @@ public class VoteOnProposalActionController {
             AnalyticsUtil.publishEvent(request, userId, VOTE_ANALYTICS_KEY + contestPhaseId,
                     VOTE_ANALYTICS_CATEGORY, VOTE_ANALYTICS_ACTION, VOTE_ANALYTICS_LABEL, 1);
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
-            if (isSwitchingVote) {
-                activitySubType = ProposalActivityType.VOTE_SWITCHED;
-            } else {
-                activitySubType = ProposalActivityType.VOTE_ADDED;
-            }
         }
 
-        if (activitySubType != null) {
-            final ActivitiesClient activityClient = clients.getActivitiesClient();
-            activityClient.createActivityEntry(activitySubType, userId, proposalId);
-        }
+        final ActivitiesClient activityClient = clients.getActivitiesClient();
+        activityClient.createActivityEntry(activitySubType, userId, proposalId);
 
         // Redirect to prevent page-refreshing from influencing the vote
-        if (ConfigurationAttributeKey.PROPOSALS_VOTING_SUCCESS_MESSAGE_IS_ACTIVE.get()) {
+        boolean hasVoted = activitySubType != ProposalActivityType.VOTE_RETRACTED;
+        if (ConfigurationAttributeKey.PROPOSALS_VOTING_SUCCESS_MESSAGE_IS_ACTIVE.get()
+                && hasVoted) {
             return "redirect:" + proposalLinkUrl + "/voted";
         }
         return "redirect:" + proposalLinkUrl;
