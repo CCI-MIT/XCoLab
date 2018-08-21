@@ -27,6 +27,7 @@ public class MessageBean implements Serializable {
     private Message message;
     private boolean selected;
 
+
     public MessageBean() {
         messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
     }
@@ -109,6 +110,14 @@ public class MessageBean implements Serializable {
 
     public Long getMessageId() {
         return message.getId();
+    }
+
+    public String getLinkUrl() {
+        return "/messaging/fullConversation/" + getMessageId() + "?threadId=";
+    }
+
+    public String getThreadId() {
+        return getMessage().getThreadId();
     }
 
 }
