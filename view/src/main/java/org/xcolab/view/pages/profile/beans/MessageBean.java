@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 
@@ -26,6 +27,8 @@ public class MessageBean implements Serializable {
     private int messageHoneypotPosition;
     private Message message;
     private boolean selected;
+    private List<String> threads = new ArrayList<>();
+
 
     public MessageBean() {
         messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
@@ -34,6 +37,7 @@ public class MessageBean implements Serializable {
     public MessageBean(Message message) {
         this.message = message;
         this.recipients = MessagingClient.getMessageRecipients(message.getId());
+        this.threads = MessagingClient.getMessageThreads(message.getId());
     }
 
     public String getMessageSubject() {
@@ -109,6 +113,14 @@ public class MessageBean implements Serializable {
 
     public Long getMessageId() {
         return message.getId();
+    }
+
+    public String getLinkUrl() {
+        return "/messaging/fullConversation/" + getMessageId() + "?threadId=";
+    }
+
+    public String getThreadId() {
+        return getMessage().getThreadId();
     }
 
 }

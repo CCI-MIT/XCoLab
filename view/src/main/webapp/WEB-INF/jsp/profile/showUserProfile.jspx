@@ -433,7 +433,7 @@
                                                 text="${message.from.displayName}"
                                                 userId="${message.from.id}"/>
                                         <spring:message code="profile.show.sentyouamessage"/>
-                                        <a href="/messaging/message/${message.messageId}">${message.subject}</a>
+                                        <a href="${message.linkUrl}${message.threadId}">${message.subject}</a>
                                     </div>
                                 </c:forEach>
 
