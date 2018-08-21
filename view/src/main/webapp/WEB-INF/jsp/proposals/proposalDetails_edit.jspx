@@ -67,17 +67,14 @@
         </c:choose>
         <p>
             <c:if test="${showProposalEditHelpText}">
-                Please complete your ${fn:toLowerCase(contestType.proposalName)} based on the template below.
-                If you have input on the template, please send it in a <a href="/feedback" target="_blank">feedback message</a>.
-                To save your ${fn:toLowerCase(contestType.proposalName)}, you must agree to the <a href="${contestType.rulesPageUrl}" target="_blank">${contestType.rulesPageName}</a>
-                and <a href="/wiki/Terms+of+use" target="_blank">Terms of use</a>.
+                <spring:message code="contests.proposal.help"
+            arguments="${fn:toLowerCase(contestType.proposalName)},${contestType.rulesPageUrl},${contestType.rulesPageName}" />
             </c:if>
 
             <br/>
-            In the past, users have occasionally lost work while inputting text into this form.
-            To prevent this, we recommend that you either (a) prepare your text offline before copying and pasting it into the form or (b) use the SAVE button right after you begin and save frequently.
-            The system will log you out automatically after 2 hours, causing loss of any inputs not previously saved.
+                <spring:message code="contests.proposal.help.lostworkwarning" />
         </p>
+
     </div>
 
 
@@ -109,10 +106,10 @@
                         </div>
                     </label>
                     <div class="p-Proposal__formBox__main">
-                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__title">Give the ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
+                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__title"><spring:message code="contests.proposal.sections.title.help" arguments="${fn:toLowerCase(contestType.proposalName)}"/></div>
                         <form:input path="name" id="proposalName" cssClass="form-control" />
                         <form:errors path="name" cssClass="alert alert-danger" />
-                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> characters</div>
+                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> <spring:message code="contests.characterlimit" /></div>
                     </div>
                 </div>
             </div>
@@ -131,11 +128,11 @@
                         </div>
                     </label>
                     <div class="p-Proposal__formBox__main">
-                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__pitch">Add a very short (140 character) description that conveys the key idea behind the ${fn:toLowerCase(contestType.proposalName)}.</div>
+                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__pitch"><spring:message code="contests.proposal.sections.pitch.help" arguments="${fn:toLowerCase(contestType.proposalName)}"/></div>
                         <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="form-control" />
                         <form:errors path="pitch" />
                         <div class="inputLimitContainer">
-                            <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> characters
+                            <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> <spring:message code="contests.characterlimit" />
                         </div>
                     </div>
                 </div>
@@ -156,15 +153,15 @@
                         </div>
                     </label>
                     <div class="p-Proposal__formBox__main">
-                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__team">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the name of its owner.</div>
+                        <div class="p-Proposal__formBox__helpText collapse show" id="js-Help__team"><spring:message code="contests.proposal.sections.team.help" arguments="${fn:toLowerCase(contestType.proposalName)}"/></div>
                         <form:input path="team" id="proposalTeam" cssClass="form-control" />
                         <form:errors path="team" />
 
-                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">35</span> characters</div>
-                        <div class="text-muted">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
+                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">35</span> <spring:message code="contests.characterlimit" /></div>
+                        <div class="text-muted"><spring:message code="contests.proposal.sections.team.footnote" arguments="${fn:toLowerCase(contestType.proposalName)}"/></div>
 
                         <c:if test="${userTeams.size() > 0}">
-                            <div class="p-Proposal__formBox__helpText">Alternatively, you can select your team here.</div>
+                            <div class="p-Proposal__formBox__helpText"><spring:message code="contests.proposal.sections.team.selector" /></div>
 
                             <form:select path="selectedTeam" items="${userTeams}" itemLabel="name" itemValue="id" />
                             <form:errors path="selectedTeam" />
@@ -178,7 +175,7 @@
                     <div class="c-Box__bodyRow">
                         <label class="p-Proposal__formBox__label">
                             <span>
-                                <strong>${contestType.proposalName} image</strong><br />
+                                <strong><spring:message code="contests.proposal.sections.image.title" arguments="${contestType.proposalName}" /></strong><br />
                             </span>
                         </label>
                         <div class="p-Proposal__formBox__main">
@@ -196,7 +193,7 @@
                 <div class="c-Box c-Box--colorTan">
                     <div class="c-Box__bodyRow">
                         <label class="p-Proposal__formBox__label">
-                            <strong>Description</strong>
+                            <strong><spring:message code="contests.proposal.sections.legacy.description" /></strong>
                         </label>
 
                         <div class="p-Proposal__formBox__main">
@@ -226,9 +223,9 @@
     </form:form>
 
     <c:set var="acceptTosModalTitle">
-        By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${_themeContext.colabName} ${contestType.contestName} and agree to the
-        <a href="/wiki/Terms+of+use" target="_blank">Terms of Use</a>
-        and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.
+        <spring:message code="contests.proposal.modal.tos"
+        arguments="${fn:toLowerCase(contestType.proposalName)}, ${_themeContext.colabName}, ${contestType.contestName}, ${contestType.rulesPageUrl}, ${contestType.rulesPageName}"
+        />
     </c:set>
     <xcolab:modal modalId="acceptTosModal" title="${acceptTosModalTitle}">
         <div class="modal-body">
@@ -238,8 +235,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" id="tosAccepted">ACCEPT</button>
-            <button class="btn btn-gray" id="closeAcceptTos">DO NOT Accept</button>
+            <button class="btn btn-primary" id="tosAccepted"><spring:message code="contests.buttons.accept" /></button>
+            <button class="btn btn-gray" id="closeAcceptTos"><spring:message code="contests.buttons.reject" /></button>
         </div>
     </xcolab:modal>
 
@@ -249,14 +246,14 @@
             <ul id="invalidFieldsList"><!--  --></ul>
         </div>
         <div class="modal-footer">
-            <button type="close" data-dismiss="modal" class="btn btn-gray">CLOSE</button>
+            <button type="close" data-dismiss="modal" class="btn btn-gray"><spring:message code="contests.buttons.close"/></button>
         </div>
     </xcolab:modal>
 
     <div class="c-ControlsOverlay">
         <div class="container cb-d-flex-between-center">
             <div class="d-none d-lg-block">
-                Don't forget to save your work!
+                <spring:message code="contests.proposal.help.savereminder"/>
                 <c:if test="${not empty saveHelpText}">
                     ${saveHelpText}
                 </c:if>
@@ -284,26 +281,31 @@
         ${requestScope.imageUploadHelpText}
     </div>
     <div id="ckAnchorTooltip" style="display: none">
-        <h4>Anchor:</h4>
-        <h5>How to use anchors:</h5>
+        <h4><spring:message code="contests.proposal.anchortooltip.title" /></h4>
+        <h5><spring:message code="contests.proposal.anchortooltip.subtitle" /></h5>
         <br/>
-        <ol>
-            <li>You would like to link to another section of your proposal.</li>
-            <li>Highlight the text you would like to link to, and click the anchor icon <span style="background-image:url('https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/plugins/icons_hidpi.png?t=GB8B');background-position:0 -1296px;background-size:16px;background-color: white;width: 16px;height: 16px;float: left;display: inline-block;margin-left: 4px;margin-right: 4px;">&#160;</span>(flag) to insert an anchor. Select a name for the anchor and click o.k. The anchor icon will now appear in that location.</li>
-
-            <li> Next, select and highlight the text you would like to have link to this newly created anchor.</li>
-
-            <li>Click on the hyperlink icon <span style="background-image:url('https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/plugins/icons_hidpi.png?t=GB8B');background-position:0 -1320px;background-size:16px;background-color: white;width: 16px;height: 16px;float: left;display: inline-block;margin-left: 4px;margin-right: 4px;">&#160;</span>(chains) , and use the "link type" selection menu to select "link to anchor in text."</li>
-            <li>Using the "select an anchor" menu, use the "select by anchor name" to select the correct anchor from the list to link to. Click o.k.</li>
-            <li>Now clicking in on the hyperlink will bring the user to the anchored section.</li>
-        </ol>
+        <spring:message code="contests.proposal.anchortooltip.description"
+            arguments="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/plugins/icons_hidpi.png?t=GB8B"/>
     </div>
     <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
-    <!-- TODO COLAB-2583: replace with i18n message -->
-    <c:set var="acceptTosNotificationText" value="To create a ${contestType.proposalName} on the ${_themeContext.colabName}, you must ACCEPT the terms of use and ${contestType.contestName} rules. Please click Accept to continue and save your ${contestType.proposalName}!" />
+    <c:set var="acceptTosNotificationText">
+        <spring:message code="contests.proposal.termsofservice.notification" arguments="${contestType.proposalName},${_themeContext.colabName},${contestType.contestName},${contestType.proposalName}" />
+    </c:set>
+    <c:set var="proposalPitchNotificationText">
+        <spring:message code="contests.proposal.sections.pitch.notification" />
+    </c:set>
+    <c:set var="proposalTitleNotificationText">
+        <spring:message code="contests.proposal.sections.title.notification" />
+    </c:set>
+    <c:set var="acceptButtonText">
+        <spring:message code="contests.buttons.accept" />
+    </c:set>
     <script>
         var acceptTosNotificationText = '${acceptTosNotificationText}';
+        var proposalPitchNotificationText = '${proposalPitchNotificationText}';
+        var proposalTitleNotificationText = '${proposalTitleNotificationText}';
+        var acceptButtonText = '${acceptButtonText}';
     </script>
 
     <script>
@@ -318,7 +320,7 @@
             noty({text: acceptTosNotificationText,
                 buttons: [
                     {
-                        addClass: 'btn btn-primary', text: 'ACCEPT', onClick: function($noty)
+                        addClass: 'btn btn-primary', text: acceptButtonText, onClick: function($noty)
                     {
                         tosAcceptedSave();
                         $noty.close();
@@ -337,7 +339,7 @@
         function saveIfValid() {
             if(jQuery("#proposalPitchInput").length ==1 ){
                 if(jQuery("#proposalPitchInput").val() == 0) {
-                    noty({text: 'The "pitch" field is required. Please enter a short (up to 140 character) message that conveys the main idea of your proposal.', type: 'error',timeout: 10000,});
+                    noty({text: proposalPitchNotificationText, type: 'error',timeout: 10000,});
                     jQuery("#proposalPitchInput").focus();
                     enableButtons();
                     return;
@@ -345,7 +347,7 @@
             }
             if(jQuery("#proposalName").length ==1 ){
                 if(jQuery("#proposalName").val() == 0) {
-                    noty({text: 'The "title" field is required. It\'s the first thing most people will see, so you\'ll want to make it descriptive and engaging.', type: 'error',timeout: 10000,});
+                    noty({text: proposalTitleNotificationText, type: 'error',timeout: 10000,});
                     jQuery("#proposalName").focus();
                     enableButtons();
                     return;
