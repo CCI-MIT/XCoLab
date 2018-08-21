@@ -44,7 +44,7 @@
                     <form:hidden path="itemCount"/>
                     <c:forEach var="contestWrapper" items="${massActionConfirmationWrapper.contestWrappers}"
                                varStatus="x">
-                        <tr id="${contestWrapper.contestId}">
+                        <tr id="${contestWrapper.id}">
                             <form:hidden path="contestIds[${x.index}]"
                                          data-form-name="contestId"/>
                             <td>

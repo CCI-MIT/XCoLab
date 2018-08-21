@@ -264,7 +264,7 @@
                                 <td ><xcolab:contestLink contest="${contestWrapper}" /></td>
                                 <td>Tier ${contestWrapper.contestTier}</td>
                                 <td>
-                                    <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestId}" target="_blank">EDIT</a>
+                                    <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.id}" target="_blank">EDIT</a>
                                 </td>
                             </tr>
                         </c:forEach>
