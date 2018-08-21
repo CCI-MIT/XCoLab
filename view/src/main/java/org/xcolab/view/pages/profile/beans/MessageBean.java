@@ -26,7 +26,6 @@ public class MessageBean implements Serializable {
     private int messageHoneypotPosition;
     private Message message;
     private boolean selected;
-    private List<String> threads = new ArrayList<>();
 
 
     public MessageBean() {
@@ -36,7 +35,6 @@ public class MessageBean implements Serializable {
     public MessageBean(Message message) {
         this.message = message;
         this.recipients = MessagingClient.getMessageRecipients(message.getId());
-        this.threads = MessagingClient.getMessageThreads(message.getId());
     }
 
     public String getMessageSubject() {
