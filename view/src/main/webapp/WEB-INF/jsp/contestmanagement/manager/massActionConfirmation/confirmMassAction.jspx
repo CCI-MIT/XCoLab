@@ -4,7 +4,7 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
-        <!--@elvariable id="massActionConfirmationWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.MassActionConfirmationWrapper"-->
+        <!--@elvariable id="massActionConfirmationWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper"-->
 
         <jsp:directive.include file="../../init.jspx"/>
 

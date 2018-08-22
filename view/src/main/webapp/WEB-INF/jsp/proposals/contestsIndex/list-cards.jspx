@@ -8,10 +8,10 @@
     <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
     <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
-    <!--@elvariable id="collectionCard" type="org.xcolab.portlets.proposals.wrappers.CollectionCardWrapper"-->
-    <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
+    <!--@elvariable id="collectionCard" type="org.xcolab.view.pages.proposals.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contestsSorted" type="org.xcolab.view.pages.proposals.wrappers.ContestList"-->
-    <!--@elvariable id="collectionCards" type="org.xcolab.portlets.proposals.wrappers.CollectionCardFilterBean"-->
+    <!--@elvariable id="collectionCards" type="org.xcolab.view.pages.proposals.wrappers.CollectionCardFilterBean"-->
 
 
     <div class="c-ListView tooltips">

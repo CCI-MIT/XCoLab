@@ -5,8 +5,8 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
     <!--@elvariable id="templateType" type="java.lang.String"-->
-    <!--@elvariable id="emailTemplateWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.EmailTemplateWrapper"-->
-    <!--@elvariable id="templateSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelStringValue>"-->
+    <!--@elvariable id="emailTemplateWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.EmailTemplateWrapper"-->
+    <!--@elvariable id="templateSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelStringValue>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>

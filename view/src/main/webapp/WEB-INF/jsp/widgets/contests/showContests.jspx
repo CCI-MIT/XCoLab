@@ -5,7 +5,7 @@
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
-    <!--@elvariable id="contestPreferences" type="org.xcolab.portlets.contests.ContestPreferences"-->
+    <!--@elvariable id="contestPreferences" type="org.xcolab.view.widgets.contests.ContestPreferences"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
 
     <div>

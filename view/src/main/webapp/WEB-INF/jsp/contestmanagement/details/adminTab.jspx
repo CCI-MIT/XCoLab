@@ -8,10 +8,10 @@
 <xcolab:layout>
 
 	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
-	<!--@elvariable id="contestLevelSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
-	<!--@elvariable id="modelIdsSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
-	<!--@elvariable id="contestTypeSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
-	<!--@elvariable id="modelRegionsSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+	<!--@elvariable id="contestLevelSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+	<!--@elvariable id="modelIdsSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+	<!--@elvariable id="contestTypeSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+	<!--@elvariable id="modelRegionsSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>

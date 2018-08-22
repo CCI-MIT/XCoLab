@@ -9,7 +9,7 @@
 <xcolab:layout>
 
 	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
-	<!--@elvariable id="contestResourcesBean" type="org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean"-->
+    <!--@elvariable id="contestResourcesBean" type="org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean"-->
 
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>

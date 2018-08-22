@@ -5,7 +5,7 @@
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
-    <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
+    <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
 
     <jsp:directive.attribute name="proposalRatingsWrappers" type="java.util.Collection" required="true" rtexprvalue="true" description="ProposalRatings" />
     <!--@elvariable id="proposalRatingsWrappers" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.ProposalRatings>"-->
