@@ -20,6 +20,8 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class ContestPhase extends AbstractContestPhase {
 
@@ -211,6 +213,19 @@ public class ContestPhase extends AbstractContestPhase {
 
     public boolean getIsJudged() {
         return getContestPhaseTypeObject().getDefaultPromotionTypeEnum() == ContestPhasePromoteType.PROMOTE_JUDGED;
+    }
+
+    public boolean isFinalistPhase() {
+        List<ContestPhase> contestPhases = this.getContest().getVisiblePhases();
+        final Predicate<ContestPhase> isAfterCurrentPhase =
+                phase -> phase.getPhaseStartDateInstant()
+                        .isAfter(this.getPhaseStartDateInstant());
+        final Predicate<ContestPhase> isJudgedPhase =
+                phase -> phase.getContestPhaseTypeObject().getDefaultPromotionTypeEnum()
+                        == ContestPhasePromoteType.PROMOTE_JUDGED;
+        return contestPhases.stream()
+                .filter(isAfterCurrentPhase)
+                .noneMatch(isJudgedPhase);
     }
 
     public ContestPhase getWrapped() {
