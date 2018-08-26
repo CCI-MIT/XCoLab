@@ -18,8 +18,6 @@ public class ContestPhasePromotionEmail {
 
     public static void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase) {
 
-
-
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String messageBody = reviewContentHelper.getPromotionComment(true);
         String subject =  reviewContentHelper.getSubject();
