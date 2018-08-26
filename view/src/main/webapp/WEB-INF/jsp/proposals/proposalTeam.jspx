@@ -183,8 +183,8 @@
                         <td>
                             <table class="contributors2">
 
-                                <c:forEach var="contributingMember" items="${contributingProposals.value}" varStatus="statusMember">
-                                    <xcolab:userLinkSimple userId="${contributingMember.userId}" text="${contributingMember.screenName}" />
+                                <c:forEach var="contributingUser" items="${contributingProposals.value}" varStatus="statusMember">
+                                    <xcolab:userLinkSimple userId="${contributingUser.id}" text="${contributingUser.screenName}" />
                                     <c:if test="${fn:length(contributingProposals.value) != 1 and statusMember.index+1 != fn:length(contributingProposals.value)}">, </c:if>
                                 </c:forEach>
 

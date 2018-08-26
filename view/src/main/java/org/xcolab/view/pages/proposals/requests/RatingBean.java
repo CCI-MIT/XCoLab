@@ -8,6 +8,7 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.view.pages.proposals.wrappers.ProposalRatingTypeWrapper;
 import org.xcolab.view.util.validation.NoBlankValues;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
-public class RatingBean {
+public class RatingBean implements Serializable {
 
     private List<ProposalRatingTypeWrapper> ratingTypes;
 

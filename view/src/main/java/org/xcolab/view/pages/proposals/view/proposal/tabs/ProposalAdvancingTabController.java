@@ -21,9 +21,9 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.judging.JudgingUtil;
@@ -33,7 +33,6 @@ import org.xcolab.view.pages.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +40,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,16 +66,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
         ProposalAdvancingBean advancingBean = new ProposalAdvancingBean(proposalWrapper);
 
-        List<ContestPhase> contestPhases = contest.getVisiblePhases();
-        final Predicate<ContestPhase> isAfterCurrentPhase =
-                phase -> phase.getPhaseStartDateInstant()
-                        .isAfter(contestPhase.getPhaseStartDateInstant());
-        final Predicate<ContestPhase> isJudgedPhase =
-                phase -> phase.getContestPhaseTypeObject().getDefaultPromotionTypeEnum()
-                        == ContestPhasePromoteType.PROMOTE_JUDGED;
-        final boolean isFinalistPhase = contestPhases.stream()
-                        .filter(isAfterCurrentPhase)
-                        .noneMatch(isJudgedPhase);
+        final boolean isFinalistPhase = contestPhase.isFinalistPhase();
 
         if (!model.containsAttribute("proposalAdvancingBean")) {
             model.addAttribute("proposalAdvancingBean", advancingBean);
