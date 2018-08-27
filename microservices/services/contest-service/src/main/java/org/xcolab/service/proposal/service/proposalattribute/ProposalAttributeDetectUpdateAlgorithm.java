@@ -1,8 +1,5 @@
 package org.xcolab.service.proposal.service.proposalattribute;
 
-//import com.ext.portlet.ProposalImpactAttributeKeys;
-
-
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 
 import java.util.HashMap;
