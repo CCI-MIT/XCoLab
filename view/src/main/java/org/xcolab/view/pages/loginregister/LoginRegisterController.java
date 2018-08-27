@@ -27,6 +27,7 @@ import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.commons.servlet.RequestParamUtil;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 
@@ -66,6 +67,10 @@ public class LoginRegisterController {
     
     @GetMapping("/register")
     public String register(HttpServletRequest request, HttpServletResponse response, Model model) {
+
+        if(!ConfigurationAttributeKey.ALLOW_SELF_REGISTRATION.get()) {
+            return new AccessDeniedPage(null).toViewName(response);
+        }
 
         String redirect = RequestParamUtil.getString(request, "redirect");
 
