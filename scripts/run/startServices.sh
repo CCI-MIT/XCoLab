@@ -27,7 +27,7 @@ function startService {
         rm ${OUT_FILE} > /dev/null 2>&1
         exec java -Xmx1G -Xms256M -XX:-OmitStackTraceInFastThrow \
          -jar ${service}-1.0-SNAPSHOT.jar > ${OUT_FILE} & echo $! > ${PID_FILE}
-        cd ${SAVED_DIR}
+        cd "${SAVED_DIR}"
     fi
 }
 
@@ -44,7 +44,7 @@ else
     done
 fi
 
-cd ${PREVIOUS_DIR}
+cd "${PREVIOUS_DIR}"
 
 echo "[INFO] Done."
 echo "#####################################################################################"

@@ -147,12 +147,18 @@ public class ProposalJudgingCommentHelper {
                         : AdvanceDecision.NO_DECISION;
 
                 if (advanceDecision != AdvanceDecision.NO_DECISION) {
-                        String templateToLoad =
-                                (advanceDecision == AdvanceDecision.MOVE_ON)
-                                        ? "ADVANCING_ADVANCE_TO_SEMIFINALIST"
-                                        : "ADVANCING_DO_NOT_ADVANCE";
+                    String templateToLoad;
+                    if (advanceDecision == AdvanceDecision.MOVE_ON) {
+                        if (contestPhase.isFinalistPhase()) {
+                            templateToLoad = "ADVANCING_ADVANCE_TO_FINALIST";
+                        } else {
+                            templateToLoad = "ADVANCING_ADVANCE_TO_SEMIFINALIST";
+                        }
+                    } else {
+                        templateToLoad = "ADVANCING_DO_NOT_ADVANCE";
+                    }
 
-                        EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
+                    EmailTemplateWrapper wrapper = new EmailTemplateWrapper(
                                 EmailTemplateClientUtil.getContestEmailTemplateByType(templateToLoad),
                                 proposalName,
                                 contestName

@@ -30,7 +30,7 @@ else
     done
 fi
 
-cd ${PREVIOUS_DIR}
+cd "${PREVIOUS_DIR}"
 
 echo "[INFO] Done."
 echo "#####################################################################################"

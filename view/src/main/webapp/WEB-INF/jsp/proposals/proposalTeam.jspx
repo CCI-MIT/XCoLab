@@ -7,6 +7,9 @@
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:spring="http://www.springframework.org/tags">
 
+    <!--@elvariable id="listOfSubProposals" type="java.util.List<org.xcolab.client.proposals.pojo.Proposal>"-->
+    <!--@elvariable id="mapOfSubProposalContributors" type="java.util.Map<org.xcolab.client.proposals.pojo.Proposal, java.util.List<org.xcolab.client.members.pojo.Member>>"-->
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Team"
                    description="Contributors for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.titleWithEndYear}'">
@@ -163,10 +166,10 @@
         <div class="c-Count mt-4">
             <collab:message var="linkedProposalText" code="contests.proposal.team.linkedproposal" contestType="${contestType}"/>
             <collab:message var="linkedProposalsText" code="contests.proposal.team.linkedproposals" contestType="${contestType}"/>
-            <span class="c-Count__number">${fn:length(listOfLinkedProposals)}</span>
-            ${fn:length(listOfLinkedProposals) == 1 ? linkedProposalText : linkedProposalsText}
+            <span class="c-Count__number">${fn:length(listOfSubProposals)}</span>
+            ${fn:length(listOfSubProposals) == 1 ? linkedProposalText : linkedProposalsText}
         </div>
-        <c:if test="${not empty listOfLinkedProposals }">
+        <c:if test="${not empty listOfSubProposals}">
 
             <table class="contributors">
                 <tr class="${(status.index) mod 2 > 0 ? 'even' : 'odd'}">
@@ -177,14 +180,14 @@
                         <h4><spring:message code="contests.details.authors" /></h4>
                     </td>
                 </tr>
-                <c:forEach var="contributingProposals" items="${mapOfContributingProposals}" varStatus="status">
+                <c:forEach var="contributingProposals" items="${mapOfSubProposalContributors}" varStatus="status">
                     <tr class="${(status.index) mod 2 > 0 ? 'odd' : 'even'}">
                         <td><h5><a href="${contributingProposals.key.proposalUrl}">${contributingProposals.key.name}</a></h5></td>
                         <td>
                             <table class="contributors2">
 
-                                <c:forEach var="contributingMember" items="${contributingProposals.value}" varStatus="statusMember">
-                                    <xcolab:userLinkSimple userId="${contributingMember.userId}" text="${contributingMember.screenName}" />
+                                <c:forEach var="contributingUser" items="${contributingProposals.value}" varStatus="statusMember">
+                                    <xcolab:userLinkSimple userId="${contributingUser.id}" text="${contributingUser.screenName}" />
                                     <c:if test="${fn:length(contributingProposals.value) != 1 and statusMember.index+1 != fn:length(contributingProposals.value)}">, </c:if>
                                 </c:forEach>
 
@@ -195,7 +198,7 @@
                 </c:forEach>
             </table>
         </c:if>
-        <c:if test="${empty listOfLinkedProposals}">
+        <c:if test="${empty listOfSubProposals}">
             <table class="contributors">
                 <tr class="${(status.index / 2) mod 2 > 0 ? 'even' : 'odd'}">
                     <td><collab:message code="contests.proposal.team.nolinkedproposals" contestType="${contestType}"/></td>

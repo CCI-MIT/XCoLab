@@ -8,42 +8,57 @@
 <jsp:directive.attribute name="articleId" type="java.lang.Long" required="true" rtexprvalue="true" description="Content article id" />
 <jsp:directive.attribute name="withTitle" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the title should be included" />
 <jsp:directive.attribute name="loadWidgetLibrary" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the widget script is loaded. Default is true." />
+<jsp:directive.attribute name="useBodyAsDefault" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If the articleId is null, use the body of the tag instead" />
+
+<c:set var="useBodyAsDefault" value="${empty useBodyAsDefault ? useBodyAsDefault : false}"/>
 
 <c:if test="${empty loadWidgetLibrary or loadWidgetLibrary}">
     <!-- Load code to resovle widgets inside content articles -->
     <xcolab:requireLibrary name="widgets"/>
 </c:if>
 <div>
-    <collab:loadContent articleId="${articleId}">
-        <!--@elvariable id="contentArticle" type="org.xcolab.client.contents.pojo.ContentArticle"-->
-        <!--@elvariable id="contentArticleVersion" type="org.xcolab.client.contents.pojo.ContentArticleVersion"-->
-        <c:choose>
-            <c:when test="${not empty contentArticleVersion}">
-                <c:if test="${withTitle}">
-                    <h1>${contentArticleVersion.title}</h1>
-                </c:if>
-                <c:if test="${_themeContext.authenticationVariables.isAdmin}">
-                    <div class="text-right">
-                        <a href="/content-editor/?articleId=${contentArticleVersion.articleId}"
-                           class="btn cb-btn-admin btn-sm">
-                            Edit article
-                        </a>
-                    </div>
-                </c:if>
-                <c:if test="${not empty contentArticleVersion}">
-                    ${contentArticleVersion.content}
-                </c:if>
-            </c:when>
-            <c:otherwise>
-                <c:if test="${_themeContext.authenticationVariables.isAdmin}">
-                    <a href="/content-editor" class="btn cb-btn-admin btn-sm float-right">Go to content editor</a>
-                    <br/>
-                    <div class="alert alert-danger">
-                        Error while loading content article ${articleId}, it might not exist.
-                    </div>
-                </c:if>
-            </c:otherwise>
-        </c:choose>
-    </collab:loadContent>
+    <c:choose>
+        <c:when test="${not empty articleId}">
+            <collab:loadContent articleId="${articleId}">
+                <!--@elvariable id="contentArticle" type="org.xcolab.client.contents.pojo.ContentArticle"-->
+                <!--@elvariable id="contentArticleVersion" type="org.xcolab.client.contents.pojo.ContentArticleVersion"-->
+                <c:choose>
+                    <c:when test="${not empty contentArticleVersion}">
+                        <c:if test="${withTitle}">
+                            <h1>${contentArticleVersion.title}</h1>
+                        </c:if>
+                        <c:if test="${_themeContext.authenticationVariables.isAdmin}">
+                            <div class="text-right">
+                                <a href="/content-editor/?articleId=${contentArticleVersion.articleId}"
+                                   class="btn cb-btn-admin btn-sm">
+                                    Edit article
+                                </a>
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty contentArticleVersion}">
+                            ${contentArticleVersion.content}
+                        </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        <c:if test="${_themeContext.authenticationVariables.isAdmin}">
+                            <a href="/content-editor" class="btn cb-btn-admin btn-sm float-right">Go to content editor</a>
+                            <br/>
+                            <div class="alert alert-danger">
+                                Error while loading content article ${articleId}, it might not exist.
+                            </div>
+                        </c:if>
+                    </c:otherwise>
+                </c:choose>
+            </collab:loadContent>
+        </c:when>
+        <c:when test="${useBodyAsDefault}">
+            <jsp:doBody/>
+        </c:when>
+        <c:otherwise>
+            <div class="alert alert-danger">
+                No content article found.
+            </div>
+        </c:otherwise>
+    </c:choose>
 </div>
 </jsp:root>

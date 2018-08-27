@@ -42,7 +42,8 @@ public class ThemeVariables {
         this.betaRibbonShow = ConfigurationAttributeKey.BETA_RIBBON_SHOW.get();
         this.showSearchMenuItem = ConfigurationAttributeKey.SHOW_SEARCH_MENU_ITEM.get();
 
-        this.footerArticleId = ConfigurationAttributeKey.FOOTER_CONTENT_ARTICLE_ID.get();
+        this.footerArticleId = ConfigurationAttributeKey.FOOTER_CONTENT_ARTICLE_ID.getOpt()
+                .orElse(null);
 
         this.isHomePage = request.getRequestURI().equals("/");
 
