@@ -18,6 +18,7 @@
     <jsp:directive.attribute name="showSearch" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, a search bar is shown" />
     <jsp:directive.attribute name="contestPages" type="java.util.List" required="true" rtexprvalue="true" description="A list of all contest types that should show a menu item" />
     <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="Redirect URL for registration link" />
+    <jsp:directive.attribute name="allowSelfRegistration" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Whether self-registration is allowed or not"/>
     <!--@elvariable id="contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.commons.html.LabelStringValue>"-->
 
@@ -106,16 +107,20 @@
                                 </li>
                             </c:when>
                             <c:otherwise>
-                                <li class="nav-item cb-nav-item-gray cb-nav-item-sm ${navItemRightIconClass}">
-                                    <a href="/register?redirect=${redirect}" class="nav-link">
-                                        <c:if test="${isShowIcons}">
-                                            <xcolab-icon:register cssClass="nav-icon"/>
-                                        </c:if>
-                                        <div class="cb-nav-text">
-                                            <spring:message code="homepage.menu.visitor.register" />
-                                        </div>
-                                    </a>
-                                </li>
+                                <c:choose>
+                                    <c:when test="${allowSelfRegistration}">
+                                        <li class="nav-item cb-nav-item-gray cb-nav-item-sm ${navItemRightIconClass}">
+                                            <a href="/register?redirect=${redirect}" class="nav-link">
+                                                <c:if test="${isShowIcons}">
+                                                    <xcolab-icon:register cssClass="nav-icon"/>
+                                                </c:if>
+                                                <div class="cb-nav-text">
+                                                    <spring:message code="homepage.menu.visitor.register" />
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </c:when>
+                                </c:choose>
                                 <li class="nav-item cb-nav-item-gray cb-nav-item-sm dropdown cb-dropdown-inverse ${navItemRightIconClass}">
                                     <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" href="#">
                                         <c:if test="${isShowIcons}">

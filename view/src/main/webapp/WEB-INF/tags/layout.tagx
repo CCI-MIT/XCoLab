@@ -243,7 +243,8 @@
                           showLanguage="${_themeContext.i18NVariables.isI18NActive}"
                           showSearch="${_themeContext.themeVariables.showSearchMenuItem}"
                           languageSelectItems="${_themeContext.i18NVariables.languageSelectItems}"
-                          currentLocale="${_themeContext.i18NVariables.language}"/>
+                          currentLocale="${_themeContext.i18NVariables.language}"
+                          allowSelfRegistration="${_themeContext.metaVariables.metaAllowSelfRegistration}"/>
 
 
     <!-- ============ Load jQuery ============ -->
@@ -275,7 +276,8 @@
                           languageSelectItems="${_themeContext.i18NVariables.languageSelectItems}"
                           themeImageFolder="/images"
                           showLanguageDropdown="${_themeContext.i18NVariables.isI18NActive}"
-                          footerArticleId="${_themeContext.themeVariables.footerArticleId}" />
+                          footerArticleId="${_themeContext.themeVariables.footerArticleId}"
+                          allowSelfRegistration="${_themeContext.metaVariables.metaAllowSelfRegistration}" />
 
 
     <!-- ============ Modals ============ -->

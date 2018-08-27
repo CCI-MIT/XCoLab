@@ -15,6 +15,7 @@
     <jsp:directive.attribute name="showLanguageDropdown" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, the language dropdown will appear in the footer" />
     <jsp:directive.attribute name="themeImageFolder" type="java.lang.String" required="true" rtexprvalue="true" description="Folder for theme images" />
     <jsp:directive.attribute name="footerArticleId" type="java.lang.Long" required="true" rtexprvalue="true" description="ID of the footer's content article" />
+    <jsp:directive.attribute name="allowSelfRegistration" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Whether self-registration is allowed or not"/>
 
     <div id="c-Footer">
         <div id="c-Footer__menu">
@@ -41,11 +42,15 @@
                                 </li>
                             </c:when>
                             <c:otherwise>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/register">
-                                        <spring:message code="homepage.bottom.menu.register"/>
-                                    </a>
-                                </li>
+                                <c:choose>
+                                    <c:when test="${allowSelfRegistration}">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/register">
+                                                <spring:message code="homepage.bottom.menu.register"/>
+                                            </a>
+                                        </li>
+                                    </c:when>
+                                </c:choose>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
                                         <spring:message code="homepage.bottom.menu.signin"/>
