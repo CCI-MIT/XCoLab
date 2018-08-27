@@ -79,7 +79,28 @@
         
         <footer class="container py-4">
             <!-- footer content -->
-            <xcolab:content articleId="${footerArticleId}" loadWidgetLibrary="false"/>
+            <xcolab:content articleId="${footerArticleId}" loadWidgetLibrary="false" useBodyAsDefault="true">
+                <div class="row py-3">
+                    <div class="col-md-6 my-2">
+                        <a href="https://cci.mit.edu/" target="_blank">
+                            <img alt="MIT CCI" height="54" src="/images/logos/mit-cci.png" />
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 my-2">
+                        <div class="media">
+                            <div class="media-body c-Footer__text">
+                                Your use of the ${_themeContext.colabName} is subject to our
+                                <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons License</a>,
+                                <a href="/wiki/Privacy+policy">Privacy Statement</a>,
+                                and other <a href="/wiki/Terms+of+use">Terms of Use</a>.
+                            </div>
+                            <img alt="CC BY NC SA" class="align-self-center ml-2" height="31"
+                                 src="/images/logos/cc-by-nc-sa.svg" width="88" />
+                        </div>
+                    </div>
+                </div>
+            </xcolab:content>
         </footer>
     </div>
 </jsp:root>

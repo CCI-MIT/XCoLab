@@ -92,7 +92,6 @@ INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, 
 INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('OPEN_GRAPH_SHARE_DESCRIPTION', 0, 0, 'The xCoLab is a generic version of the Climate CoLab, a platform to crowdsource solutions to climate change.', 0);
 INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (1, 10144, '2016-05-11 09:21:08', 1, 2, null, null, 1);
 INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (2, 10144, '2016-05-11 09:21:08', 2, 2, null, null, 1);
-INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (3, 10144, '2016-05-11 09:21:08', 3, 2, null, null, 1);
 INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (4, 10144, '2016-05-11 09:21:08', 4, 2, null, null, 1);
 INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (5, 10144, '2016-05-11 09:21:08', 5, 2, null, null, 1);
 INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (6, 10144, '2016-05-11 09:21:08', 6, 2, null, null, 1);
@@ -100,7 +99,6 @@ INSERT INTO content__content_article (id, author_user_id, created_at, max_versio
 
 INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (1, 1, 2, 10144, '2016-07-19 12:38:47', 'Navigation', '<ul><li id="about"><a href="/web/guest/about">About the project</a></li></ul><script>var siteForNav=window.location.href.substring(window.location.href.lastIndexOf("/")+1);$("#"+siteForNav).addClass("c");</script>');
 INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (2, 2, 2, 10144, '2016-07-19 12:38:47', 'About', 'About this CoLab.');
-INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (3, 3, 2, 10144, '2016-07-19 12:38:47', 'Footer', 'The footer.');
 INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (4, 4, 2, 10144, '2016-07-19 12:38:47', 'Landing page top', 'Content.');
 INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (5, 5, 2, 10144, '2016-07-19 12:38:47', 'Landing page bottom', 'Content.');
 INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (6, 6, 2, 10144, '2016-07-19 12:38:47', 'Members menu', 'Content.');
