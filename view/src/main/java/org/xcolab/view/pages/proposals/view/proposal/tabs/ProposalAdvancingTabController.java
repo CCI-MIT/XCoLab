@@ -205,6 +205,19 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
                 String.valueOf(isFrozen));
     }
 
+    @GetMapping("c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveJudgingFeedback")
+    public String saveJudgingFeedback(HttpServletRequest request, HttpServletResponse response,
+            ProposalContext proposalContext) {
+        final Contest contest = proposalContext.getContest();
+        final Proposal proposal = proposalContext.getProposal();
+        final String redirectUrl = proposal.getProposalLinkUrl(contest,
+                proposalContext.getContestPhase().getId());
+        AlertMessage.danger(
+                "Your rating was NOT saved! Page was reloaded before rating could be saved.")
+                .flash(request);
+        return "redirect:" + redirectUrl + "#rating";
+    }
+
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveJudgingFeedback")
     public String saveJudgingFeedback(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, ProposalContext proposalContext,
@@ -217,7 +230,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         ContestPhase contestPhase =
                 ContestClientUtil.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         ProposalsPermissions permissions = proposalContext.getPermissions();
-        Boolean isPublicRating = permissions.getCanPublicRating();
+        boolean isPublicRating = permissions.getCanPublicRating();
 
         if (judgeProposalFeedbackBean.getScreeningUserId() != null && permissions
                 .getCanAdminAll()) {
@@ -231,8 +244,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        final String redirectUrl = proposal.getWrapped().getProposalLinkUrl(contest,
-                contestPhase.getId());
+        final String redirectUrl = proposal.getProposalLinkUrl(contest, contestPhase.getId());
 
         if (result.hasErrors()) {
             AlertMessage.danger("Your rating was NOT saved! Please check the form for errors.")
