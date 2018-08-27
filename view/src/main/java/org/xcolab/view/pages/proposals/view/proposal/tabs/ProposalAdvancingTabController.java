@@ -213,7 +213,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         final String redirectUrl = proposal.getProposalLinkUrl(contest,
                 proposalContext.getContestPhase().getId());
         AlertMessage.danger(
-                "Your rating was NOT saved! Page was reloaded before rating could be saved.")
+                "Your rating was NOT saved! The page was reloaded before rating could be saved.")
                 .flash(request);
         return "redirect:" + redirectUrl + "#rating";
     }
