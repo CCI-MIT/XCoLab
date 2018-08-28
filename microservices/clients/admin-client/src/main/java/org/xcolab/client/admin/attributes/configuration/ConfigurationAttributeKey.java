@@ -25,10 +25,12 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> ADMIN_EMAIL =
             ConfigurationAttributes.newStringAttribute("ADMIN_EMAIL")
                     .withCache()
+                    .defaultValue("admin@my-xcolab.org")
                     .build();
     public static final AttributeGetter<String> COLAB_NAME =
             ConfigurationAttributes.newStringAttribute("COLAB_NAME")
                     .withCache()
+                    .defaultValue("xCoLab")
                     .build();
     public static final AttributeGetter<String> ADMIN_FROM_EMAIL =
             ConfigurationAttributes.newStringAttribute("ADMIN_FROM_EMAIL")
@@ -64,6 +66,7 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<ColabTheme> ACTIVE_THEME =
             ConfigurationAttributes.newEnumAttribute("ACTIVE_THEME", ColabTheme.class)
                     .withCache()
+                    .defaultValue(ColabTheme.CLIMATE_COLAB)
                     .build();
     public static final AttributeGetter<Long> WIKI_CONTENT_FOLDER_ID =
             ConfigurationAttributes.newLongAttribute("WIKI_CONTENT_FOLDER_ID")
