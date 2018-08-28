@@ -64,6 +64,9 @@
                                                                    languageSelectItems="${languageSelectItems}"/>
                             </li>
                         </c:if>
+                        <li class="nav-item">
+                            <a class="nav-link" id="toggleAdminButtons" title="Shortcut: Ctrl + t">Toggle Admin Buttons</a>
+                        </li>
                     </ul>
                 </nav>
 
@@ -101,6 +104,30 @@
                     </div>
                 </div>
             </xcolab:content>
+            <script>
+                jQuery('#toggleAdminButtons').click(function(e) {
+                    e.preventDefault();
+                    toggleAdminButtons();
+                });
+
+                jQuery(document).keydown(function(e) {
+                    e.preventDefault();
+                    // shortcut: ctrl + t
+                    if (e.ctrlKey) {
+                        if(e.keyCode == 84) { // 84 = t
+                            toggleAdminButtons();
+                        }
+                    }
+                });
+
+                function toggleAdminButtons() {
+                    if(jQuery('.cb-btn-admin').css("display") == "none") {
+                        jQuery('.cb-btn-admin').show();
+                    } else {
+                        jQuery('.cb-btn-admin').hide();
+                    }
+                }
+            </script>
         </footer>
     </div>
 </jsp:root>
