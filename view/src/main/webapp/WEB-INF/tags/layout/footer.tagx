@@ -42,15 +42,13 @@
                                 </li>
                             </c:when>
                             <c:otherwise>
-                                <c:choose>
-                                    <c:when test="${allowSelfRegistration}">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/register">
-                                                <spring:message code="homepage.bottom.menu.register"/>
-                                            </a>
-                                        </li>
-                                    </c:when>
-                                </c:choose>
+                                <c:if test="${allowSelfRegistration}">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/register">
+                                            <spring:message code="homepage.bottom.menu.register"/>
+                                        </a>
+                                    </li>
+                                </c:if>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
                                         <spring:message code="homepage.bottom.menu.signin"/>

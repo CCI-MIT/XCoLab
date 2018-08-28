@@ -13,7 +13,6 @@ public class MetaVariables {
     private final String openGraphShareDescription;
     private final String metaPageDescription;
     private final String metaPageKeywords;
-    private final boolean metaAllowSelfRegistration;
 
     public MetaVariables(HttpServletRequest request, I18nVariables i18NVariables) {
         this.openGraphShareTitle = ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get();
@@ -27,7 +26,6 @@ public class MetaVariables {
                     i18NVariables.getLanguage());
         }
         this.metaPageKeywords = ConfigurationAttributeKey.META_PAGE_KEYWORDS.get();
-        this.metaAllowSelfRegistration = ConfigurationAttributeKey.ALLOW_SELF_REGISTRATION.get();
     }
 
     public String getOpenGraphShareTitle() {
@@ -45,6 +43,4 @@ public class MetaVariables {
     public String getMetaPageKeywords() {
         return metaPageKeywords;
     }
-
-    public boolean getMetaAllowSelfRegistration() { return metaAllowSelfRegistration; }
 }

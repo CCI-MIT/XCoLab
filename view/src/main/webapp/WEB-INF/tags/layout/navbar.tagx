@@ -107,20 +107,18 @@
                                 </li>
                             </c:when>
                             <c:otherwise>
-                                <c:choose>
-                                    <c:when test="${allowSelfRegistration}">
-                                        <li class="nav-item cb-nav-item-gray cb-nav-item-sm ${navItemRightIconClass}">
-                                            <a href="/register?redirect=${redirect}" class="nav-link">
-                                                <c:if test="${isShowIcons}">
-                                                    <xcolab-icon:register cssClass="nav-icon"/>
-                                                </c:if>
-                                                <div class="cb-nav-text">
-                                                    <spring:message code="homepage.menu.visitor.register" />
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </c:when>
-                                </c:choose>
+                                <c:if test="${allowSelfRegistration}">
+                                    <li class="nav-item cb-nav-item-gray cb-nav-item-sm ${navItemRightIconClass}">
+                                        <a href="/register?redirect=${redirect}" class="nav-link">
+                                            <c:if test="${isShowIcons}">
+                                                <xcolab-icon:register cssClass="nav-icon"/>
+                                            </c:if>
+                                            <div class="cb-nav-text">
+                                                <spring:message code="homepage.menu.visitor.register" />
+                                            </div>
+                                        </a>
+                                    </li>
+                                </c:if>
                                 <li class="nav-item cb-nav-item-gray cb-nav-item-sm dropdown cb-dropdown-inverse ${navItemRightIconClass}">
                                     <a class="nav-link dropdown-toggle cb-dropdown-toggle-no-caret" data-toggle="dropdown" href="#">
                                         <c:if test="${isShowIcons}">

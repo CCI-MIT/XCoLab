@@ -29,6 +29,8 @@ public class ThemeVariables {
 
     private final ColabTheme activeTheme;
 
+    private final boolean allowSelfRegistration;
+
     public ThemeVariables(HttpServletRequest request, I18nVariables i18NVariables) {
         this.mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
         if (getMitHeaderBarShow()) {
@@ -55,6 +57,8 @@ public class ThemeVariables {
 
         this.isCommentsInOwnTab = ConfigurationAttributeKey.PROPOSALS_COMMENTS_IN_SEPARATE_TAB.get();
         this.activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
+
+        this.allowSelfRegistration = ConfigurationAttributeKey.ALLOW_SELF_REGISTRATION.get();
     }
 
     public boolean getMitHeaderBarShow() {
@@ -108,4 +112,6 @@ public class ThemeVariables {
     public ColabTheme getActiveTheme() {
         return activeTheme;
     }
+
+    public boolean getAllowSelfRegistration() { return allowSelfRegistration; }
 }

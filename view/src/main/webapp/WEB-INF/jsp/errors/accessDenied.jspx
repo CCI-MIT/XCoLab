@@ -18,7 +18,7 @@
                 The page you are trying to access requires you to be logged in.
                 If you already have an account, you can <a rel="nofollow" href="#" class="js-EnhancedLink" data-require-login="true">log in here</a>.
                 <c:choose>
-                    <c:when test="${not _themeContext.metaVariables.metaAllowSelfRegistration}">
+                    <c:when test="${not _themeContext.themeVariables.allowSelfRegistration}">
                         If you don't have an account, you have to be invited by the ${_themeContext.colabName} staff.
                     </c:when>
                     <c:otherwise>
