@@ -64,7 +64,7 @@
                                                                    languageSelectItems="${languageSelectItems}"/>
                             </li>
                         </c:if>
-                            <c:if test="${_themeContext.authenticationVariables.isAdmin}">
+                        <c:if test="${_themeContext.authenticationVariables.isAdmin}">
                             <li class="nav-item">
                                 <a class="nav-link" id="toggleAdminButtons" title="Toggle Admin Buttons | Shortcut: Ctrl-t">
                                     <xcolab-icon:hide cssClass="c-Footer__icon"/>
@@ -115,10 +115,10 @@
                 });
 
                 jQuery(document).keydown(function (e) {
-                    e.preventDefault();
                     // shortcut: ctrl + t
                     if (e.ctrlKey) {
                         if (e.keyCode == 84) { // 84 = t
+                            e.preventDefault();
                             toggleAdminButtons();
                         }
                     }
