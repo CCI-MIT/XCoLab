@@ -118,11 +118,12 @@ public class ProposalRequestMembershipActionController {
                 comment = "No message specified";
             }
             ProposalTeamMembershipRequest memberRequest = membershipClient
-                    .addInvitedMembershipRequest(proposal.getId(), recipient.getId(),
-                            comment);
+                    .addInvitedMembershipRequest(proposal.getId(), recipient.getId(), comment);
 
-            new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
-                    memberRequest, comment).sendMessage();
+            if (!requestMembershipInviteBean.isSkipInvitation()) {
+                new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
+                        memberRequest, comment).sendMessage();
+            }
         } catch (MemberNotFoundException e) {
             AlertMessage.danger("Member " + screenName + " could not be found.").flash(request);
             response.sendRedirect(tabUrl);

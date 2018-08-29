@@ -6,6 +6,8 @@ public class RequestMembershipInviteBean {
 
     private String inviteRecipient;
 
+    private boolean skipInvitation;
+
     public String getInviteComment() {
         return inviteComment;
     }
@@ -22,4 +24,7 @@ public class RequestMembershipInviteBean {
         this.inviteRecipient = inviteRecipient;
     }
 
+    public boolean isSkipInvitation() { return skipInvitation; }
+
+    public void setSkipInvitation(boolean skipInvitation) { this.skipInvitation = skipInvitation; }
 }
