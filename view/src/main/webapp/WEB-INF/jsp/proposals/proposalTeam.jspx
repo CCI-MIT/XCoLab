@@ -69,8 +69,10 @@
                                         <form:textarea id="invite-comment" cssClass="form-control form-control-sm mt-2"
                                                        path="inviteComment" placeholder="Optional comment"/>
                                         <form:errors cssClass="invalid-feedback" path="inviteComment"/>
-                                        <form:checkbox id="skip-invitation" path="skipInvitation"/>
-                                        <form:label path="skipInvitation" for="skip-invitation">Skip invitation</form:label>
+                                        <c:if test="${_themeContext.authenticationVariables.isAdmin}">
+                                            <form:checkbox id="skip-invitation" path="skipInvitation"/>
+                                            <form:label path="skipInvitation" for="skip-invitation">Skip invitation</form:label>
+                                        </c:if>
                                         <button type="submit" class="btn btn-primary btn-block mt-2">Send</button>
                                     </form:form>
                                 </c:when>

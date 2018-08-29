@@ -110,8 +110,20 @@ public class ProposalRequestMembershipActionController {
 
         String[] inputParts = input.split(" ");
         String screenName = inputParts[0];
+        Member recipient = null;
         try {
-            Member recipient = MembersClient.findMemberByScreenName(screenName);
+            recipient = MembersClient.findMemberByScreenName(screenName);
+        } catch (MemberNotFoundException e) {
+            AlertMessage.danger("Member " + screenName + " could not be found.").flash(request);
+            response.sendRedirect(tabUrl);
+            return;
+        }
+
+        if (requestMembershipInviteBean.isSkipInvitation()) {
+            membershipClient.addUserToProposalTeam(proposal.getId(), recipient.getId());
+            AlertMessage.success("The member has been added to this proposal's team!")
+                    .flash(request);
+        } else {
             String comment = HtmlUtil.cleanAll(requestMembershipInviteBean.getInviteComment());
 
             if (StringUtils.isBlank(comment)) {
@@ -120,18 +132,12 @@ public class ProposalRequestMembershipActionController {
             ProposalTeamMembershipRequest memberRequest = membershipClient
                     .addInvitedMembershipRequest(proposal.getId(), recipient.getId(), comment);
 
-            if (!requestMembershipInviteBean.isSkipInvitation()) {
-                new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
-                        memberRequest, comment).sendMessage();
-            }
-        } catch (MemberNotFoundException e) {
-            AlertMessage.danger("Member " + screenName + " could not be found.").flash(request);
-            response.sendRedirect(tabUrl);
-            return;
-        }
+            new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
+                    memberRequest, comment).sendMessage();
 
-        AlertMessage.success("The member has been invited to join this proposal's team!")
-                .flash(request);
+            AlertMessage.success("The member has been invited to join this proposal's team!")
+                    .flash(request);
+        }
         response.sendRedirect(tabUrl);
     }
 
