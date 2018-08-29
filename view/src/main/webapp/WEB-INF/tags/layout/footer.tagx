@@ -64,9 +64,11 @@
                                                                    languageSelectItems="${languageSelectItems}"/>
                             </li>
                         </c:if>
-                        <li class="nav-item">
-                            <a class="nav-link" id="toggleAdminButtons" title="Shortcut: Ctrl + t">Toggle Admin Buttons</a>
-                        </li>
+                            <c:if test="${_themeContext.authenticationVariables.isAdmin}">
+                            <li class="nav-item">
+                                <a class="nav-link" id="toggleAdminButtons" title="Toggle Admin Buttons\nShortcut: Ctrl + t">Toggle Admin Buttons</a>
+                            </li>
+                        </c:if>
                     </ul>
                 </nav>
 
