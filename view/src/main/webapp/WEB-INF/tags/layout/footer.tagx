@@ -66,7 +66,9 @@
                         </c:if>
                             <c:if test="${_themeContext.authenticationVariables.isAdmin}">
                             <li class="nav-item">
-                                <a class="nav-link" id="toggleAdminButtons" title="Toggle Admin Buttons\nShortcut: Ctrl + t">Toggle Admin Buttons</a>
+                                <a class="nav-link" id="toggleAdminButtons" title="Toggle Admin Buttons\nShortcut: Ctrl + t">
+                                    <xcolab-icon:hide cssClass="c-Footer__icon"/>
+                                </a>
                             </li>
                         </c:if>
                     </ul>
@@ -81,7 +83,7 @@
 
         </div> <!-- #c-Footer__menu -->
 
-        
+
         <footer class="container py-4">
             <!-- footer content -->
             <xcolab:content articleId="${footerArticleId}" loadWidgetLibrary="false" useBodyAsDefault="true">
@@ -107,23 +109,23 @@
                 </div>
             </xcolab:content>
             <script>
-                jQuery('#toggleAdminButtons').click(function(e) {
+                jQuery('#toggleAdminButtons').click(function (e) {
                     e.preventDefault();
                     toggleAdminButtons();
                 });
 
-                jQuery(document).keydown(function(e) {
+                jQuery(document).keydown(function (e) {
                     e.preventDefault();
                     // shortcut: ctrl + t
                     if (e.ctrlKey) {
-                        if(e.keyCode == 84) { // 84 = t
+                        if (e.keyCode == 84) { // 84 = t
                             toggleAdminButtons();
                         }
                     }
                 });
 
                 function toggleAdminButtons() {
-                    if(jQuery('.cb-btn-admin').css("display") == "none") {
+                    if (jQuery('.cb-btn-admin').css("display") == "none") {
                         jQuery('.cb-btn-admin').show();
                     } else {
                         jQuery('.cb-btn-admin').hide();
