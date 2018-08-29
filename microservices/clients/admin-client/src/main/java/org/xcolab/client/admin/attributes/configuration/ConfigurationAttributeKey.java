@@ -525,4 +525,9 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("NAVBAR_DONATE_LINK")
                     .defaultValue("")
                     .build();
+
+    public static final AttributeGetter<Boolean> ALLOW_SELF_REGISTRATION =
+            ConfigurationAttributes.newBooleanAttribute("ALLOW_SELF_REGISTRATION")
+                    .defaultValue(true)
+                    .build();
 }
