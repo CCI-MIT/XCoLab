@@ -319,7 +319,7 @@ public class UserProfileController {
             }
             AlertMessage.CHANGES_SAVED.flash(request);
         }
-        return "redirect" + currentUserProfile.getUser().getProfileLinkUrl();
+        return "redirect:" + currentUserProfile.getUser().getProfileLinkUrl();
     }
 
     private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean) {
