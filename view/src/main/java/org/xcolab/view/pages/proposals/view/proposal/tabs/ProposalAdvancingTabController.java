@@ -231,8 +231,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        final String redirectUrl = proposal.getWrapped().getProposalLinkUrl(contest,
-                contestPhase.getId());
+        final String redirectUrl = proposal.getProposalLinkUrl(contest, contestPhase.getId());
 
         if (result.hasErrors()) {
             AlertMessage.danger("Your rating was NOT saved! Please check the form for errors.")

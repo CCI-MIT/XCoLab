@@ -222,10 +222,6 @@ public class UserProfileWrapper implements Serializable {
         return (member.getOpenId() != null && !member.getOpenId().isEmpty());
     }
 
-    public Member getWrapped() {
-        return member;
-    }
-
     public boolean isFireGoogleEvent() {
         return FIRE_GOOGLE_EVENT;
     }

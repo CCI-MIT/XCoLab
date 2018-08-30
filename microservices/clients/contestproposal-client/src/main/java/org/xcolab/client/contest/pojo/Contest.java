@@ -404,10 +404,6 @@ public class Contest extends AbstractContest implements Serializable {
         return contestType;
     }
 
-    public Contest getWrapped() {
-        return this;
-    }
-
     public String getContestUrl() {
         return this.getContestLinkUrl();
     }

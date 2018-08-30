@@ -65,7 +65,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
 
         Contest contest = proposalContext.getContest();
-        Proposal proposalWrapper = proposalContext.getProposal();
+        Proposal proposal = proposalContext.getProposal();
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.IMPACT);
 
         boolean userAllowedToEdit = false;
@@ -80,14 +80,14 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         final ClientHelper clients = proposalContext.getClients();
         ProposalUnversionedAttributeHelper unversionedAttributeHelper =
-                new ProposalUnversionedAttributeHelper(proposalWrapper,
+                new ProposalUnversionedAttributeHelper(proposal,
                         clients.getProposalAttributeClient());
 
-        final String authorComment = proposalWrapper.getImpactCommentAuthor();
+        final String authorComment = proposal.getImpactCommentAuthor();
         if (StringUtils.isNotBlank(authorComment)) {
             model.addAttribute("authorComment", authorComment);
         }
-        final String iafComment = proposalWrapper.getImpactCommentIaf();
+        final String iafComment = proposal.getImpactCommentIaf();
         if (StringUtils.isNotBlank(iafComment)) {
             model.addAttribute("iafComment", iafComment);
         }
@@ -101,15 +101,15 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if (tabUsesModeling){
             model.addAttribute("availableModels", ContestClientUtil.getModelIdsAndNames(contest.getId()));
             model.addAttribute("modelId", getModelIdIfProposalHasScenarioIdOrContestDefaultModelId(
-                    proposalWrapper));
-            model.addAttribute("scenarioId", proposalWrapper.getScenarioId());
+                    proposal));
+            model.addAttribute("scenarioId", proposal.getScenarioId());
         }
 
         boolean showSubProposalListing = (isRegionalContest(contest));
         boolean showDataTable = (isRegionalContest(contest));
         if (showDataTable) {
             IntegratedProposalImpactSeries integratedProposalImpactSeries =
-                    new IntegratedProposalImpactSeries(proposalContext, proposalWrapper.getWrapped(), contest);
+                    new IntegratedProposalImpactSeries(proposalContext, proposal, contest);
             model.addAttribute("impactSeries", integratedProposalImpactSeries);
             List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
             model.addAttribute("impactIterations", impactIterations);
@@ -117,9 +117,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         if (showSubProposalListing) {
             model.addAttribute("impactSerieses", getImpactTabBasicProposal(proposalContext,
-                    proposalWrapper.getWrapped(),
-
-                    contest));
+                    proposal, contest));
         }
         model.addAttribute("showSubProposalListing", showSubProposalListing);
         model.addAttribute("showDataTable", showDataTable);
@@ -128,7 +126,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if (contestTier != null) {
             switch (contestTier) {
                 case BASIC:
-                    return showImpactTabBasic(model, proposalContext, contest, proposalWrapper);
+                    return showImpactTabBasic(model, proposalContext, contest, proposal);
                 case REGION_SECTOR:
                     //return showImpactTabRegionSector();
                     return "proposalImpactError";
@@ -136,7 +134,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                     return showImpactTabRegionAggregate();
                 case GLOBAL:
                     if(userAllowedToEdit) {
-                        return showImpactTabEditGlobal(model, proposalContext, proposalWrapper);
+                        return showImpactTabEditGlobal(model, proposalContext, proposal);
                     } else {
                         return showImpactTabGlobal();
                     }
@@ -252,13 +250,13 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private String showImpactTabBasic(Model model, ProposalContext proposalContext,
-            Contest contest, Proposal proposalWrapper) {
+            Contest contest, Proposal proposal) {
 
         List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
         model.addAttribute("impactIterations", impactIterations);
 
         ProposalImpactSeriesList proposalImpactSeriesList =
-                new ProposalImpactSeriesList(contest, proposalWrapper.getWrapped());
+                new ProposalImpactSeriesList(contest, proposal);
         model.addAttribute("impactSerieses", proposalImpactSeriesList.getImpactSerieses());
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyMap =

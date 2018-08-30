@@ -16,10 +16,6 @@ public class OntologySpaceWrapper {
         this.wrapped = wrapped;
     }
 
-    public OntologySpace getWrapped() {
-        return wrapped;
-    }
-
     public void addTerm(OntologyTermWrapper term) {
         terms.add(term);
         if (!term.hasParent()) {

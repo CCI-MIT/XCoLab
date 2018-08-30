@@ -29,10 +29,6 @@ public class FocusArea extends AbstractFocusArea implements Serializable {
     }
 
 
-    public FocusArea getWrapped() {
-        return this;
-    }
-
     public List<OntologyTerm> getOntologyTerms() {
         return ontologyTerms;
     }

@@ -82,17 +82,16 @@ public class CreateProposalController extends BaseProposalsController {
         if (baseProposalId != null && baseProposalId > 0) {
             try {
                 Contest baseContest = contestClient.getContest(baseContestId);
-                Proposal baseProposalWrapper = new Proposal(
-                        proposalClient.getProposal(baseProposalId),
+                Proposal baseProposal = new Proposal(proposalClient.getProposal(baseProposalId),
                         baseProposalVersion, baseContest, contestClient.getActivePhase(baseContest.getId()), null);
 
-                model.addAttribute("baseProposal", baseProposalWrapper);
+                model.addAttribute("baseProposal", baseProposal);
 
                 model.addAttribute("baseContest", baseContest);
 
                 if (!model.containsAttribute("updateProposalDetailsBean")) {
                     UpdateProposalDetailsBean updateProposalDetailsBean =
-                            new UpdateProposalDetailsBean(proposal, baseProposalWrapper);
+                            new UpdateProposalDetailsBean(proposal, baseProposal);
                     model.addAttribute("updateProposalDetailsBean", updateProposalDetailsBean);
                 }
             } catch (ContestNotFoundException | ProposalNotFoundException ignored) {

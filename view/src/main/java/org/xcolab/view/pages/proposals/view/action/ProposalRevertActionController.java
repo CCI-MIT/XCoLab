@@ -139,7 +139,7 @@ public class ProposalRevertActionController {
             // extra check to reset dependencies from the old versions
             if (updateProposalReferences) {
                 ProposalClientUtil.populateTableWithProposal(
-                        oldProposalVersionToBeBecomeCurrent.getWrapped().getId());
+                        oldProposalVersionToBeBecomeCurrent.getId());
             }
         } catch (ProposalNotFoundException ignored) {
 

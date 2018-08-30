@@ -22,8 +22,8 @@ import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -46,7 +46,6 @@ import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.helpers.ProposalContestPhaseAttributeHelper;
 import org.xcolab.client.proposals.helpers.ProposalUnversionedAttributeHelper;
-import org.xcolab.client.proposals.pojo.ProposalTeamMember.ProposalMemberType;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
@@ -490,10 +489,6 @@ public class Proposal extends AbstractProposal {
         return contest.getId();
     }
 
-    public Proposal getWrapped() {
-        return this;
-    }
-
     public boolean isVisible() {
         return !this.isDeleted();
     }
@@ -772,9 +767,9 @@ public class Proposal extends AbstractProposal {
 
         if (!subProposalPerModel.isEmpty()) {
             for (Map.Entry<Long, List<Proposal>> entry : subProposalPerModel.entrySet()) {
-                List<Proposal> proposalWrappers = entry.getValue();
-                for (Proposal proposalWrapper : proposalWrappers) {
-                    subProposalScenarioIds.add(proposalWrapper.getScenarioId());
+                List<Proposal> proposals = entry.getValue();
+                for (Proposal proposal : proposals) {
+                    subProposalScenarioIds.add(proposal.getScenarioId());
                 }
             }
         }

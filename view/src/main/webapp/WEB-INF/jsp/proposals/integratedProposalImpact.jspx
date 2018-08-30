@@ -323,7 +323,7 @@
                             <c:forEach var="impactSeries" items="${impactSerieses}" varStatus="index">
                                 <tr class="impact-series-clickable" id="impact-row-${index.index}">
                                     <td class="region">
-                                        ${impactSeries.proposalWrapper.name}
+                                        ${impactSeries.proposal.name}
                                 <span
                                         id="${impactSeries.whereTerm.id}">(region: ${impactSeries.whereTerm.name}, </span>
                                 <span

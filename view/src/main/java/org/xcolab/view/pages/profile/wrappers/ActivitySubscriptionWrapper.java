@@ -42,10 +42,6 @@ public class ActivitySubscriptionWrapper implements Serializable {
         this.selected = selected;
     }
 
-    public ActivitySubscription getWrapped() {
-        return subscription;
-    }
-
     public ActivitySubscription getSubscription() {
         return subscription;
     }

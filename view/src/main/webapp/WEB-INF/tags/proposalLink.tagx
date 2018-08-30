@@ -27,7 +27,7 @@
 		</c:when>
 		<c:otherwise>
 			<a class="${cssClass}" data-proposal-id="${proposal.id}" data-contest-id="${proposal.contestId}"
-               href="${proposal.getProposalUrl(phase.wrapped)}${not empty tab ? '/tab/' : '' }${tab }${empty hashString ? '' : '#'}${hashString}"
+               href="${proposal.getProposalUrl(phase)}${not empty tab ? '/tab/' : '' }${tab }${empty hashString ? '' : '#'}${hashString}"
                id="${linkId}">
                 <c:out value="${empty text ? proposal.name : text}" escapeXml="${escape ? true : false }" />
             </a>

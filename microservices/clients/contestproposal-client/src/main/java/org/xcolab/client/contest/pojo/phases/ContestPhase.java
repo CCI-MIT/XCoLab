@@ -228,10 +228,6 @@ public class ContestPhase extends AbstractContestPhase {
                 .noneMatch(isJudgedPhase);
     }
 
-    public ContestPhase getWrapped() {
-        return this;
-    }
-
     public String getContestPhaseUrl() {
         return this.getContestPhaseLinkUrl();
     }

@@ -78,12 +78,12 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private boolean isUserFellowOrJudgeOrAdvisor() {
         ContestPhase contestPhase = proposalContext.getContestPhase();
-        Proposal proposalWrapper = new Proposal(proposal, contestPhase);
+        Proposal proposal = new Proposal(this.proposal, contestPhase);
 
-        Contest contestWrapper =  proposalWrapper.getContest();
+        Contest contestWrapper =  proposal.getContest();
 
-        boolean isJudge = proposalWrapper.getIsUserAmongSelectedJudges(userId);
-        boolean isFellow = proposalWrapper.isUserAmongFellows(userId);
+        boolean isJudge = proposal.getIsUserAmongSelectedJudges(userId);
+        boolean isFellow = proposal.isUserAmongFellows(userId);
         boolean isAdvisor = contestWrapper.isUserAmongAdvisors(userId);
 
         return isFellow || isJudge || isAdvisor;

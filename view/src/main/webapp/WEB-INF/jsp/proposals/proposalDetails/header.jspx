@@ -10,7 +10,7 @@
 	<script>
         var proposalId = ${ proposal.id }; var contestId = ${contest.id};
         var proposalUrl = "${proposal.proposalUrl}"; var phaseUrl = "${contestPhase.contestPhaseUrl}";
-        var proposalUrlInPhase = "${proposal.getProposalUrl(contestPhase.wrapped)}";
+        var proposalUrlInPhase = "${proposal.getProposalUrl(contestPhase)}";
     </script>
 	<div class="proposal-head">
         <div class="cb-text-lg">
@@ -56,13 +56,13 @@
                                 <c:set var="proposalUrl" value="${proposal.proposalUrl}" />
                             </c:when>
                             <c:when test="${singleTab.defaultTab and not empty contestPhase }">
-                                <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }" />
+                                <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase) }" />
                             </c:when>
                             <c:when test="${not singleTab.defaultTab and empty contestPhase }">
                                 <c:set var="proposalUrl" value="${proposal.proposalUrl}/tab/${singleTab.name}" />
                             </c:when>
                             <c:otherwise>
-                                <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase.wrapped) }/tab/${singleTab.name}" />
+                                <c:set var="proposalUrl" value="${proposal.getProposalUrl(contestPhase) }/tab/${singleTab.name}" />
                             </c:otherwise>
                         </c:choose>
                         <a class="nav-link ${currentTab == singleTab.tab ? 'active' : singleTab.tab.tabType.cssModifier}" href="${proposalUrl }">

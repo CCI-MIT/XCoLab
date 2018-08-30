@@ -50,7 +50,6 @@ public class ProposalImpactSeries {
     private final Map<ImpactSeriesType, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
     private final Map<ImpactSeriesType, Boolean> seriesTypeToEditableMap;
     private final ImpactDefaultSeries bauSeries;
-    private Proposal proposalWrapper;
     private ProposalVersion lastModifiedVersion;
     //    private ImpactDefaultSeries ddppSeries;
     private ProposalImpactSeriesValues resultValues;
@@ -65,7 +64,6 @@ public class ProposalImpactSeries {
         this.seriesTypeToEditableMap = new HashMap<>();
         this.focusArea = focusArea;
         this.proposal = proposal;
-        this.proposalWrapper = proposal;
         this.whatTerm = ProposalImpactUtil.getWhatTerm(focusArea);
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
         this.impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
@@ -342,12 +340,8 @@ public class ProposalImpactSeries {
         return lastModifiedVersion.getCreatedAt();
     }
 
-    public Proposal getProposalWrapper() {
-        return proposalWrapper;
-    }
-
-    public void setProposalWrapper(Proposal proposalWrapper) {
-        this.proposalWrapper = proposalWrapper;
+    public Proposal getProposal() {
+        return proposal;
     }
 
     public OntologyTerm getWhatTerm() {

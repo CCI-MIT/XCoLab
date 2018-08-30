@@ -291,6 +291,6 @@ public class ProposalImpactJSONController {
         Contest contest = proposalContext.getContest();
         Proposal proposal = proposalContext.getProposal();
 
-        return new ProposalImpactSeriesList(contest, proposal.getWrapped());
+        return new ProposalImpactSeriesList(contest, proposal);
     }
 }
