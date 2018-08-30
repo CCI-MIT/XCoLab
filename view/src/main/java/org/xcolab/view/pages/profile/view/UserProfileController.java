@@ -111,7 +111,8 @@ public class UserProfileController {
             final UserProfileWrapper currentUserProfile =
                     new UserProfileWrapper(userId, loggedInMember, activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
-            model.addAttribute("allowSearchEngineIndexing", shouldAllowIndexingForUser(userId));
+            model.addAttribute("allowSearchEngineIndexing",
+                    shouldAllowIndexingForUser(currentUserProfile));
 
             final Boolean isSnpActive = ConfigurationAttributeKey.SNP_IS_ACTIVE.get();
             model.addAttribute("isSnpActive", isSnpActive);
@@ -132,8 +133,9 @@ public class UserProfileController {
         }
     }
 
-    private boolean shouldAllowIndexingForUser(long userId) {
-        return PermissionsClient.memberHasAnyRole(userId, SEO_INDEXABLE_MEMBER_ROLES);
+    private boolean shouldAllowIndexingForUser(UserProfileWrapper userProfileWrapper) {
+        return PermissionsClient.memberHasAnyRole(userProfileWrapper.getUserId(),
+                SEO_INDEXABLE_MEMBER_ROLES) || !userProfileWrapper.getBadges().isEmpty();
     }
 
     private void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
