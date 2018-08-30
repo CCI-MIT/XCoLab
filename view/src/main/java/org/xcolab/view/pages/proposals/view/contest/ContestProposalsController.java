@@ -26,7 +26,6 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.view.pages.proposals.wrappers.SortedProposalList;
-import org.xcolab.view.util.entity.enums.MemberRole;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.io.IOException;
@@ -100,9 +99,8 @@ public class ContestProposalsController extends BaseProposalsController {
                 Proposal2Phase p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getId(), contestPhase.getId());
                 Proposal proposalWrapper;
 
-                if (loggedInMember != null && PermissionsClient.memberHasRole(loggedInMember.getId(), MemberRole.JUDGE.getRoleId())) {
+                if (loggedInMember != null && PermissionsClient.canJudge(loggedInMember.getId(), contest.getId())) {
                     proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, loggedInMember);
-
                 } else {
                     proposalWrapper = new Proposal(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
                 }

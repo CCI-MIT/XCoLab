@@ -26,7 +26,9 @@ import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.commons.CountryUtil;
@@ -47,7 +49,9 @@ import org.xcolab.view.pages.profile.wrappers.UserProfileWrapper;
 import org.xcolab.view.pages.redballoon.utils.BalloonService;
 
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
@@ -60,6 +64,10 @@ public class UserProfileController {
     private static final Logger _log = LoggerFactory.getLogger(UserProfileController.class);
     private static final String SHOW_PROFILE_VIEW = "profile/showUserProfile";
     private static final String EDIT_PROFILE_VIEW = "profile/editUserProfile";
+
+    private static final Set<MemberRole> SEO_INDEXABLE_MEMBER_ROLES = EnumSet.of(
+            MemberRole.STAFF, MemberRole.JUDGE, MemberRole.ADVISOR, MemberRole.FELLOW,
+            MemberRole.IMPACT_ASSESSMENT_FELLOW, MemberRole.EXPERT);
 
     private final ActivityEntryHelper activityEntryHelper;
     private final AuthenticationService authenticationService;
@@ -103,6 +111,7 @@ public class UserProfileController {
             final UserProfileWrapper currentUserProfile =
                     new UserProfileWrapper(userId, loggedInMember, activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
+            model.addAttribute("allowSearchEngineIndexing", shouldAllowIndexingForUser(userId));
 
             final Boolean isSnpActive = ConfigurationAttributeKey.SNP_IS_ACTIVE.get();
             model.addAttribute("isSnpActive", isSnpActive);
@@ -121,6 +130,10 @@ public class UserProfileController {
         } catch (MemberNotFoundException e) {
             return ErrorPage.error("User profile not found").flashAndReturnView(request);
         }
+    }
+
+    private boolean shouldAllowIndexingForUser(long userId) {
+        return PermissionsClient.memberHasAnyRole(userId, SEO_INDEXABLE_MEMBER_ROLES);
     }
 
     private void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {

@@ -19,7 +19,8 @@
 <!--@elvariable id="balloonLink" type="org.xcolab.client.balloons.pojo.BalloonLink"-->
 <!--@elvariable id="balloonText" type="org.xcolab.client.balloons.pojo.BalloonText"-->
 
-<xcolab:layout title="${currentUserProfile.realName}'s Profile">
+<xcolab:layout title="${currentUserProfile.realName}'s Profile"
+               isIndexable="${allowSearchEngineIndexing}">
 
     <jsp:directive.include file="./init.jspx"/>
 

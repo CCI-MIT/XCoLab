@@ -8,7 +8,10 @@ import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class PermissionsClient {
 
@@ -26,15 +29,15 @@ public final class PermissionsClient {
     }
 
     public static boolean isGuest(long userId) {
-        return memberHasRole(userId, MemberRole.GUEST.getRoleId());
+        return memberHasRole(userId, MemberRole.GUEST);
     }
 
     public static boolean isMember(long userId) {
-        return memberHasRole(userId, MemberRole.MEMBER.getRoleId());
+        return memberHasRole(userId, MemberRole.MEMBER);
     }
 
     public static boolean canAdminAll(Long userId) {
-        return memberHasRole(userId, MemberRole.ADMINISTRATOR.getRoleId());
+        return memberHasRole(userId, MemberRole.ADMINISTRATOR);
     }
 
     public static boolean canAdminAll(Member member) {
@@ -50,11 +53,11 @@ public final class PermissionsClient {
     }
 
     public static boolean canIAF(Long userId) {
-        return memberHasRole(userId, MemberRole.IMPACT_ASSESSMENT_FELLOW.getRoleId());
+        return memberHasRole(userId, MemberRole.IMPACT_ASSESSMENT_FELLOW);
     }
 
     public static boolean canStaff(Long userId) {
-        return memberHasRole(userId, MemberRole.STAFF.getRoleId());
+        return memberHasRole(userId, MemberRole.STAFF);
     }
 
     public static boolean hasRoleGroup(long userId, long roleGroupId) {
@@ -76,18 +79,22 @@ public final class PermissionsClient {
     }
 
     public static boolean memberHasRole(Long userId, long roleIdToTest) {
+        return memberHasRole(userId, MemberRole.fromRoleId(roleIdToTest));
+    }
+
+    public static boolean memberHasRole(Long userId, MemberRole roleToTest) {
+        return memberHasAnyRole(userId, EnumSet.of(roleToTest));
+    }
+
+    public static boolean memberHasAnyRole(Long userId, Set<MemberRole> rolesToTest ) {
         if (userId == 0) {
             return false;
         }
-        List<Role> roles = MembersClient.getMemberRoles(userId);
-        if (roles != null && !roles.isEmpty()) {
-            for (Role role : roles) {
-                if (role.getId() == roleIdToTest) {
-                    return true;
-                }
-            }
-        }
-        return false;
+
+        final List<Role> roles = MembersClient.getMemberRoles(userId);
+        final Set<Long> collect = rolesToTest.stream().map(MemberRole::getRoleId)
+                .collect(Collectors.toSet());
+        return roles.stream().map(Role::getId).anyMatch(collect::contains);
     }
 
     private static boolean memberHasRoleInContest(Long userId, Long contestId, MemberRole roleToTest) {
