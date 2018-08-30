@@ -120,7 +120,7 @@ public class ProposalRequestMembershipActionController {
         }
 
         if (requestMembershipInviteBean.isSkipInvitation()) {
-            membershipClient.addUserToProposalTeam(proposal.getId(), recipient.getId());
+            membershipClient.addUserToProposalTeam(recipient.getId(), proposal.getId());
             AlertMessage.success("The member has been added to this proposal's team!")
                     .flash(request);
         } else {
