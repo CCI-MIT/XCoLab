@@ -119,7 +119,8 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        if (requestMembershipInviteBean.isSkipInvitation()) {
+        if (requestMembershipInviteBean.isSkipInvitation()
+                && proposalContext.getPermissions().getCanAdminAll()) {
             membershipClient.addUserToProposalTeam(recipient.getId(), proposal.getId());
             AlertMessage.success("The member has been added to this proposal's team!")
                     .flash(request);
