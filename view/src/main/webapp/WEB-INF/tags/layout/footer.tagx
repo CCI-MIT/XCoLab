@@ -67,6 +67,13 @@
                                                                    languageSelectItems="${languageSelectItems}"/>
                             </li>
                         </c:if>
+                        <c:if test="${_themeContext.authenticationVariables.isAdmin}">
+                            <li class="nav-item">
+                                <a class="nav-link js-Tooltip" id="toggleAdminButtons" title="Toggle Admin Buttons | Shortcut: Ctrl-t">
+                                    <xcolab-icon:hide cssClass="c-Footer__icon"/>
+                                </a>
+                            </li>
+                        </c:if>
                     </ul>
                 </nav>
 
@@ -79,7 +86,7 @@
 
         </div> <!-- #c-Footer__menu -->
 
-        
+
         <footer class="container py-4">
             <!-- footer content -->
             <xcolab:content articleId="${footerArticleId}" loadWidgetLibrary="false" useBodyAsDefault="true">
@@ -104,6 +111,47 @@
                     </div>
                 </div>
             </xcolab:content>
+            <script>
+                jQuery('#toggleAdminButtons').click(function (e) {
+                    e.preventDefault();
+                    toggleAdminButtons();
+                });
+
+                jQuery(document).keydown(function (e) {
+                    // shortcut: ctrl + t
+                    if (e.ctrlKey) {
+                        if (e.keyCode == 84) { // 84 = t
+                            e.preventDefault();
+                            toggleAdminButtons();
+                        }
+                    }
+                });
+
+                function toggleAdminButtons() {
+                    if (jQuery('.cb-btn-admin').css("display") == "none") {
+                        jQuery('.cb-btn-admin').show();
+                        saveSetting("visible");
+                    } else {
+                        jQuery('.cb-btn-admin').hide();
+                        saveSetting("hidden");
+                    }
+                }
+
+                function saveSetting(status) {
+                    if (typeof(Storage) !== "undefined") {
+                        localStorage.setItem("toggleAdminButton", status);
+                    }
+                }
+
+                if (typeof(Storage) !== "undefined") {
+                    status = localStorage.getItem("toggleAdminButton");
+                    if (status == "hidden") {
+                        jQuery('.cb-btn-admin').hide();
+                    } else {
+                        jQuery('.cb-btn-admin').show();
+                    }
+                }
+            </script>
         </footer>
     </div>
 </jsp:root>
