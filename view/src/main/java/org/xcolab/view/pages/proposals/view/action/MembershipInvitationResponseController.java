@@ -79,7 +79,7 @@ public class MembershipInvitationResponseController {
             Member invitee = MembersClient.getMemberUnchecked(membershipRequest.getUserId());
 
             if (action.equalsIgnoreCase("ACCEPT")) {
-                membershipClient.approveMembershipRequest(proposalId, membershipRequest.getUserId(),
+                membershipClient.approveMembershipRequest(proposal, membershipRequest.getUserId(),
                         membershipRequest, "The invitation was accepted.", invitee.getId());
                 final String membershipAcceptedMessage = TemplateReplacementUtil
                         .replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED,
@@ -93,7 +93,7 @@ public class MembershipInvitationResponseController {
 
             } else if (action.equalsIgnoreCase("DECLINE")) {
                 membershipClient
-                        .denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId,
+                        .denyMembershipRequest(proposal, membershipRequest.getUserId(), requestId,
                                 "The invitation was rejected.", invitee.getId());
                 final String membershipRejectedMessage = TemplateReplacementUtil
                         .replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED,

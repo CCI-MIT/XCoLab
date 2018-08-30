@@ -1,6 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 
@@ -15,9 +16,9 @@ public class MembershipClientUtil {
         return client;
     }
 
-    public static void denyMembershipRequest(long proposalId, long userId, long membershipRequestId,
+    public static void denyMembershipRequest(Proposal proposal, long userId, long membershipRequestId,
             String reply, long updateauthorUserId) {
-        client.denyMembershipRequest(proposalId, userId, membershipRequestId, reply,
+        client.denyMembershipRequest(proposal, userId, membershipRequestId, reply,
                 updateauthorUserId);
     }
 
@@ -25,12 +26,12 @@ public class MembershipClientUtil {
         return client.updateMembershipRequest(membershipRequest);
     }
 
-    public static Boolean hasUserRequestedMembership(Long proposalId, Long userId) {
-        return client.hasUserRequestedMembership(proposalId, userId);
+    public static Boolean hasUserRequestedMembership(Proposal proposal, Long userId) {
+        return client.hasUserRequestedMembership(proposal, userId);
     }
 
-    public static List<ProposalTeamMembershipRequest> getMembershipRequestsByUser(Long groupId, Long userId) {
-        return client.getMembershipRequestsByUser(groupId, userId);
+    public static List<ProposalTeamMembershipRequest> getMembershipRequestsByUser(Proposal proposal, Long userId) {
+        return client.getMembershipRequestsByUser(proposal, userId);
     }
 
     public static ProposalTeamMembershipRequest getMembershipRequest(long MembershipRequestId)
@@ -38,9 +39,9 @@ public class MembershipClientUtil {
         return client.getMembershipRequest(MembershipRequestId);
     }
 
-    public static void approveMembershipRequest(long proposalId, Long userId,
+    public static void approveMembershipRequest(Proposal proposal, Long userId,
             ProposalTeamMembershipRequest request, String reply, Long updateauthorUserId) {
-        client.approveMembershipRequest(proposalId, userId, request, reply, updateauthorUserId);
+        client.approveMembershipRequest(proposal, userId, request, reply, updateauthorUserId);
     }
 
     public static ProposalTeamMembershipRequest addInvitedMembershipRequest(

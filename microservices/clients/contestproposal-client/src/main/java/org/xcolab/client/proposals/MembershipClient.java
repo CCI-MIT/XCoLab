@@ -56,9 +56,9 @@ public class MembershipClient {
                 .computeIfAbsent(proposalService, MembershipClient::new);
     }
 
-    public void denyMembershipRequest(long proposalId, long userId, long membershipRequestId,
+    public void denyMembershipRequest(Proposal proposal, long userId, long membershipRequestId,
             String reply, long updateauthorUserId) {
-        if (hasUserRequestedMembership(proposalId, userId)) {
+        if (hasUserRequestedMembership(proposal, userId)) {
             try {
                 ProposalTeamMembershipRequest membershipRequest = getMembershipRequest(membershipRequestId);
                 membershipRequest.setStatusId(MembershipRequestStatus.STATUS_DENIED);
@@ -79,9 +79,9 @@ public class MembershipClient {
                 .execute();
     }
 
-    public Boolean hasUserRequestedMembership(Long proposalId, Long userId) {
+    public Boolean hasUserRequestedMembership(Proposal proposal, Long userId) {
         try {
-            List<ProposalTeamMembershipRequest> userRequests = getMembershipRequestsByUser(proposalId, userId);
+            List<ProposalTeamMembershipRequest> userRequests = getMembershipRequestsByUser(proposal, userId);
             if (userRequests != null && !userRequests.isEmpty()) {
                 return true;
             }
@@ -91,12 +91,12 @@ public class MembershipClient {
         return false;
     }
 
-    public List<ProposalTeamMembershipRequest> getMembershipRequestsByUser(Long groupId, Long userId) {
+    public List<ProposalTeamMembershipRequest> getMembershipRequestsByUser(Proposal proposal, Long userId) {
         return DtoUtil.toPojos(membershipRequestResource.list()
                 .withCache(CacheKeys.withClass(ProposalTeamMembershipRequestDto.class)
-                        .withParameter("groupId", groupId)
+                        .withParameter("groupId", proposal.getId())
                         .withParameter("userId", userId).asList(), CacheName.MISC_MEDIUM)
-                .optionalQueryParam("groupId", groupId)
+                .optionalQueryParam("groupId", proposal.getId())
                 .optionalQueryParam("userId", userId)
                 .execute(), serviceNamespace);
     }
@@ -107,10 +107,10 @@ public class MembershipClient {
                 .execute().toPojo(serviceNamespace);
     }
 
-    public void approveMembershipRequest(long proposalId, Long userId, ProposalTeamMembershipRequest request,
+    public void approveMembershipRequest(Proposal proposal, Long userId, ProposalTeamMembershipRequest request,
             String reply, Long updateauthorUserId) {
 
-        if (hasUserRequestedMembership(proposalId, userId)) {
+        if (hasUserRequestedMembership(proposal, userId)) {
             try {
                 ProposalTeamMembershipRequest membershipRequest =
                         getMembershipRequest(request.getId());
@@ -119,15 +119,15 @@ public class MembershipClient {
                 membershipRequest.setReplyComments(reply);
                 membershipRequest.setReplyDate(new Timestamp((new Date()).getTime()));
                 updateMembershipRequest(membershipRequest);
-                addUserToProposalTeam(userId, proposalId);
+                addUserToProposalTeam(userId, proposal);
             } catch (MembershipRequestNotFoundException e) {
                 throw new InternalException(e);
             }
         }
     }
 
-    public void addUserToProposalTeam(Long userId, Long proposalId) {
-
+    public void addUserToProposalTeam(Long userId, Proposal proposal) {
+        long proposalId = proposal.getId();
         try {
             proposalTeamMemberResource.resolveParentId(proposalResource.id(proposalId))
                     .create(userId)

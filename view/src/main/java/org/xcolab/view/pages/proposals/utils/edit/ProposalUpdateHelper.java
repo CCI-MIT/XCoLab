@@ -206,11 +206,11 @@ public class ProposalUpdateHelper {
                 // Setup team stuff
                 PlatformTeam team = PlatformTeamsClient.getPlatformTeam(updateProposalSectionsBean.getSelectedTeam());
                 List<Member> members = PlatformTeamsClient.getTeamMembers(team);
-                Long proposalId = proposalWrapper.getId();
+                Proposal proposal = proposalWrapper.getWrapped();
                 for (Member member : members) {
                     Long userId = member.getId();
                     MembershipClient client = proposalContext.getClients().getMembershipClient();
-                    client.addUserToProposalTeam(userId, proposalId);
+                    client.addUserToProposalTeam(userId, proposal);
                 }
 
                 // Set team name

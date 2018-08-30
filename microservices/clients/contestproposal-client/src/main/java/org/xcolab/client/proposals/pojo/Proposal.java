@@ -516,21 +516,13 @@ public class Proposal extends AbstractProposal {
     }
 
     public List<ProposalTeamMember> getMembers() {
-
         if (members == null) {
             members = new ArrayList<>();
-            boolean hasOwner = false;
 
             for (Member member : clients.proposal.getProposalMembers(getId())) {
                 final ProposalTeamMember teamMemberWrapper = new ProposalTeamMember(
                         this, member);
                 members.add(teamMemberWrapper);
-                if (teamMemberWrapper.getMemberType() == ProposalMemberType.OWNER) {
-                    hasOwner = true;
-                }
-            }
-            if (!hasOwner) {
-                clients.membership.addUserToProposalTeam(getId(), getAuthorUserId());
             }
         }
         return members;
