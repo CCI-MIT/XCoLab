@@ -121,7 +121,7 @@ public class ProposalRequestMembershipActionController {
 
         if (requestMembershipInviteBean.isSkipInvitation()
                 && proposalContext.getPermissions().getCanAdminAll()) {
-            membershipClient.addUserToProposalTeam(recipient.getId(), proposal.getId());
+            membershipClient.addUserToProposalTeam(recipient.getId(), proposal);
             AlertMessage.success("The member has been added to this proposal's team!")
                     .flash(request);
         } else {
@@ -183,7 +183,7 @@ public class ProposalRequestMembershipActionController {
         final long recipientId = membershipRequest.getUserId();
         if (approve.equalsIgnoreCase("APPROVE")) {
             membershipClient
-                    .approveMembershipRequest(proposalId, recipientId, membershipRequest, comment,
+                    .approveMembershipRequest(proposal, recipientId, membershipRequest, comment,
                             senderId);
             sendMessage(senderId, recipientId, MSG_MEMBERSHIP_RESPONSE_SUBJECT,
                     MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
@@ -191,7 +191,7 @@ public class ProposalRequestMembershipActionController {
 
         } else if (approve.equalsIgnoreCase("DENY")) {
             membershipClient
-                    .denyMembershipRequest(proposalId, recipientId, requestId, comment, senderId);
+                    .denyMembershipRequest(proposal, recipientId, requestId, comment, senderId);
             sendMessage(senderId, recipientId, MSG_MEMBERSHIP_RESPONSE_SUBJECT,
                     MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
             AlertMessage.warning("The membership request has been DENIED!").flash(request);

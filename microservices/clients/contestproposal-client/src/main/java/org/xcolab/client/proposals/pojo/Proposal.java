@@ -530,7 +530,7 @@ public class Proposal extends AbstractProposal {
                 }
             }
             if (!hasOwner) {
-                clients.membership.addUserToProposalTeam(getId(), getAuthorUserId());
+                clients.membership.addUserToProposalTeam(getAuthorUserId(), this);
             }
         }
         return members;
