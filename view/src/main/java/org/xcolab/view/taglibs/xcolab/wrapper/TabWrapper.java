@@ -1,9 +1,8 @@
 package org.xcolab.view.taglibs.xcolab.wrapper;
 
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
@@ -45,7 +44,7 @@ public class TabWrapper implements Serializable {
     }
 
     public String getTabUrl() {
-        return ServletUriComponentsBuilder.fromRequest(request).build().toUriString();
+        return RequestUtil.getOriginalUri(request);
     }
 
     public String getElementType() {
