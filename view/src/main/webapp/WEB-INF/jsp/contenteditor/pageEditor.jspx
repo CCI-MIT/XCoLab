@@ -257,7 +257,7 @@
                 }
 
                 function loadPageContentResponse(data) {
-                    var id = data.pageId;
+                    var id = data.id;
                     var mainContentArticleId = data.contentArticleId;
                     var menuArticleId = data.menuArticleId;
                     var pageTitle = data.title;
