@@ -13,7 +13,8 @@
     <jsp:directive.include file="./init.jspx"/>
 
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
-    <!--@elvariable id="userSubscriptions" type="org.xcolab.portlets.userprofile.wrappers.UserSubscriptionsWrapper"-->
+    <!--@elvariable id="userBean" type="UserBean"-->
+    <!--@elvariable id="userSubscriptions" type="org.xcolab.view.pages.profile.wrappers.UserSubscriptionsWrapper"-->
 
     <c:set var="removeSubscriptionURL"
            value="/members/profile/${currentUserProfile.userId}/subscriptions/remove"/>

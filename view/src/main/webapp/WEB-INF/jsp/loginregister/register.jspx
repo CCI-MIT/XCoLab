@@ -15,7 +15,7 @@
     <!--@elvariable id="colabName" type="java.lang.String"-->
     <!--@elvariable id="colabShortName" type="java.lang.String"-->
 
-    <!--@elvariable id="createUserBean" type="org.xcolab.portlets.loginregister.CreateUserBean"-->
+    <!--@elvariable id="createUserBean" type="org.xcolab.view.pages.loginregister.CreateUserBean"-->
 
     <script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
 

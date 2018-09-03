@@ -318,10 +318,8 @@ public class UserProfileController {
                 sendUpdatedEmail(currentUserProfile.getUser());
             }
             AlertMessage.CHANGES_SAVED.flash(request);
-            return SHOW_PROFILE_VIEW;
-        } else {
-            return "redirect:/members/profile/" + userId;
         }
+        return "redirect:" + currentUserProfile.getUser().getProfileLinkUrl();
     }
 
     private boolean updateUserProfile(UserProfileWrapper currentUserProfile, UserBean updatedUserBean) {

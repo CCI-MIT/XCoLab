@@ -5,10 +5,10 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 
-    <!--@elvariable id="collectionCardWrapperWhat" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
-    <!--@elvariable id="collectionCardWrapperWhere" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
-    <!--@elvariable id="ontologyTermsWhat" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
-    <!--@elvariable id="ontologyTermsWhere" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
+    <!--@elvariable id="collectionCardWrapperWhat" type="org.xcolab.view.pages.contestmanagement.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="collectionCardWrapperWhere" type="org.xcolab.view.pages.contestmanagement.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="ontologyTermsWhat" type="java.util.List<org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper>"-->
+    <!--@elvariable id="ontologyTermsWhere" type="java.util.List<org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper>"-->
     <!--@elvariable id="section" type="java.lang.Integer"-->
     <!--@elvariable id="level" type="java.lang.Integer"-->
 

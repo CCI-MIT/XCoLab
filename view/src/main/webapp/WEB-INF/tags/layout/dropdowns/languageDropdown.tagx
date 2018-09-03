@@ -17,7 +17,7 @@
             <c:if test="${currentLanguage == lang['value'] }">
                 <li class="dropdown-item">
                     <div class="radio-inline">
-                        <label class="active">
+                        <label class="active" id="current-language">
                             <input name="lang_top" type="radio" value="${lang['value']}" checked="checked"/>
                             <spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}
                         </label>

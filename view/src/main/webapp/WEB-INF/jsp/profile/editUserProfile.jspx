@@ -9,8 +9,8 @@
 <xcolab:layout title="Edit Profile">
     <jsp:directive.include file="./init.jspx" />
 
-	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
-	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
+    <!--@elvariable id="userBean" type="org.xcolab.view.pages.profile.beans.UserBean"-->
+    <!--@elvariable id="permissions" type="org.xcolab.view.pages.profile.utils.UserProfilePermissions"-->
     <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
     <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.members.pojo.MemberCategory>"-->
 
@@ -50,8 +50,6 @@
             <span class="required-field"><!-- --></span> <spring:message code="profile.validation.mandatory" />.
         </em>
 	</div>
-
-    <!-- TODO: [COLAB-2563] use this form as a demonstration -->
 
 	<form:form autocomplete="off" id="updateUserProfileForm" cssClass="l-Content"
 			   action="${updateUserProfileForm}" commandName="userBean" method="post">

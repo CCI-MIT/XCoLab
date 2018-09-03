@@ -200,7 +200,14 @@ public class ContestsIndexController extends BaseProposalsController {
             Map<Long, OntologyTerm> ontologyTerms = new TreeMap<>();
             for (OntologyTerm term: ontologyTermsRaw) {
         		OntologyTerm termWrapped = new OntologyTerm(term);
-        		ontologySpaces.get(term.getOntologySpaceId()).addTerm(termWrapped);
+                final long ontologySpaceId = term.getOntologySpaceId();
+                final OntologySpace ontologySpace = ontologySpaces.get(ontologySpaceId);
+                if (ontologySpace == null) {
+                    throw new IllegalStateException(String.format(
+                            "Ontology space %d referenced by ontology term %d doesn't exist.",
+                            ontologySpaceId, term.getId()));
+                }
+                ontologySpace.addTerm(termWrapped);
         		ontologyTerms.put(term.getId(), termWrapped);
         	}
 

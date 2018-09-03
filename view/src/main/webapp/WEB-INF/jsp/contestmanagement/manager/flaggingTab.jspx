@@ -8,10 +8,10 @@
 <xcolab:layout>
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
     <!--@elvariable id="reportTargetId" type="java.lang.Long"-->
-    <!--@elvariable id="reportTargetWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.FlaggingReportTargetWrapper"-->
-    <!--@elvariable id="selectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="reportTargetWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportTargetWrapper"-->
+    <!--@elvariable id="selectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 
-    <!--@elvariable id="reports" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.FlaggingReportWrapper>"-->
+    <!--@elvariable id="reports" type="java.util.List<org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>

@@ -7,7 +7,7 @@
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
-    <!--@elvariable id="preferences" type="org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper"-->
+    <!--@elvariable id="preferences" type="org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper"-->
     <!--@elvariable id="viewType" type="java.lang.String"-->
 
     <c:if test="${showContestManagementLink}">

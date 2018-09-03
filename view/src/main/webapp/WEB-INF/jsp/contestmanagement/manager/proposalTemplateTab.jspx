@@ -6,18 +6,18 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-    <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper"-->
-	<!--@elvariable id="contestProposalTemplateWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ProposalTemplateWrapper"-->
+    <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
+    <!--@elvariable id="contestProposalTemplateWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ProposalTemplateWrapper"-->
 
-    <!--@elvariable id="contestTypeSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
-    <!--@elvariable id="sectionTypeSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
-    <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
-    <!--@elvariable id="levelSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="contestTypeSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+    <!--@elvariable id="sectionTypeSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+    <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+    <!--@elvariable id="levelSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 
-    <!--@elvariable id="whatTerms" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
-    <!--@elvariable id="whereTerms" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
-    <!--@elvariable id="whoTerms" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
-    <!--@elvariable id="howTerms" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="whatTerms" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+    <!--@elvariable id="whereTerms" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+    <!--@elvariable id="whoTerms" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+    <!--@elvariable id="howTerms" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 
     <jsp:directive.include file="../init.jspx" />
 
@@ -264,7 +264,7 @@
                                 <td ><xcolab:contestLink contest="${contestWrapper}" /></td>
                                 <td>Tier ${contestWrapper.contestTier}</td>
                                 <td>
-                                    <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.contestId}" target="_blank">EDIT</a>
+                                    <a class="btn btn-primary" href="/admin/contest/details/contestId/${contestWrapper.id}" target="_blank">EDIT</a>
                                 </td>
                             </tr>
                         </c:forEach>

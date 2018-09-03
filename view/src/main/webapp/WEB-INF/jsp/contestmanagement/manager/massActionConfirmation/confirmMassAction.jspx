@@ -4,7 +4,7 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
-        <!--@elvariable id="massActionConfirmationWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.MassActionConfirmationWrapper"-->
+        <!--@elvariable id="massActionConfirmationWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper"-->
 
         <jsp:directive.include file="../../init.jspx"/>
 
@@ -44,7 +44,7 @@
                     <form:hidden path="itemCount"/>
                     <c:forEach var="contestWrapper" items="${massActionConfirmationWrapper.contestWrappers}"
                                varStatus="x">
-                        <tr id="${contestWrapper.contestId}">
+                        <tr id="${contestWrapper.id}">
                             <form:hidden path="contestIds[${x.index}]"
                                          data-form-name="contestId"/>
                             <td>

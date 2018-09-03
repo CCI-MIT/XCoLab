@@ -4,7 +4,8 @@
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
-          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social">
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
+          xmlns:xcolab-icon="urn:jsptagdir:/WEB-INF/tags/icons">
 
     <!--@elvariable id="_themeContext" type="org.xcolab.view.theme.ThemeContext"-->
 
@@ -55,7 +56,7 @@
                         <c:if test="${showLanguageDropdown}">
                             <li class="nav-item dropup cb-dropdown-inverse">
                                 <a data-toggle="dropdown" class="nav-link dropdown-trigger">
-                                    <collab:image src="${themeImageFolder}/footer-language-button.png"/>&#160;
+                                    <xcolab-icon:language cssClass="c-Footer__icon"/>&#160;
                                     <spring:message code="homepage.menu.visitor.language" />
                                     <span class="caret"><!-- --></span>
                                 </a>
@@ -78,7 +79,28 @@
         
         <footer class="container py-4">
             <!-- footer content -->
-            <xcolab:content articleId="${footerArticleId}" loadWidgetLibrary="false"/>
+            <xcolab:content articleId="${footerArticleId}" loadWidgetLibrary="false" useBodyAsDefault="true">
+                <div class="row py-3">
+                    <div class="col-md-6 my-2">
+                        <a href="https://cci.mit.edu/" target="_blank">
+                            <img alt="MIT CCI" height="54" src="/images/logos/mit-cci.png" />
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 my-2">
+                        <div class="media">
+                            <div class="media-body c-Footer__text">
+                                Your use of the ${_themeContext.colabName} is subject to our
+                                <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons License</a>,
+                                <a href="/wiki/Privacy+policy">Privacy Statement</a>,
+                                and other <a href="/wiki/Terms+of+use">Terms of Use</a>.
+                            </div>
+                            <img alt="CC BY NC SA" class="align-self-center ml-2" height="31"
+                                 src="/images/logos/cc-by-nc-sa.svg" width="88" />
+                        </div>
+                    </div>
+                </div>
+            </xcolab:content>
         </footer>
     </div>
 </jsp:root>

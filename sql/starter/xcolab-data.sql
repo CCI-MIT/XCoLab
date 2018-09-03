@@ -9,6 +9,18 @@ INSERT INTO user__user_role (user_id, role_id) VALUES (10144, 10118), (10144, 10
 
 INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME', 0, '', null, 'Contest', null);
 INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME', 0, '', null, 'Proposal', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME', 0, 'es', null, 'Concurso', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME', 0, 'es', null, 'Propuesta', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME_PLURAL', 0, 'es', null, 'Concursos', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSALS_CREATION_PROMPT', 0, 'es', null, 'CREAR propuesta', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME_PLURAL', 0, 'es', null, 'Propuestas', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('RULES_NAME', 0, 'es', null, 'Reglas del concurso', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME', 0, 'de', null, 'Wettbewerb', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME', 0, 'de', null, 'Vorschlag', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('CONTEST_NAME_PLURAL', 0, 'de', null, 'Wettbewerbe', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSALS_CREATION_PROMPT', 0, 'de', null, 'Vorschlag ERSTELLEN', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('PROPOSAL_NAME_PLURAL', 0, 'de', null, 'Vorschläge', null);
+INSERT INTO admin__contest_type_attribute (name, additional_id, locale, numeric_value, string_value, real_value) VALUES ('RULES_NAME', 0, 'de', null, 'Wettbewerbregeln', null);
 
 INSERT INTO comment__category (id, group_id, author_user_id, name, description, created_at, deleted_at, sort, is_quiet) VALUES (12501, 701, 10144, 'General Discussion', 'This set of discussions is where Climate CoLab members can engage around any topics that interest them.', '2010-10-02 00:00:00', null, null, 0);
 INSERT INTO comment__category (id, group_id, author_user_id, name, description, created_at, deleted_at, sort, is_quiet) VALUES (12502, 701, 10144, 'Report bugs and request features', 'This group of discussions is where users can report bugs and suggest new features.', '2010-10-02 00:00:00', null, null, 0);
@@ -64,12 +76,7 @@ INSERT INTO user__role (id, name, title, description) VALUES (1430078, 'Catalyst
 INSERT INTO user__role (id, name, title, description) VALUES (1958405, 'Contest Manager', '<?xml version=''1.0'' encoding=''UTF-8''?><root available-locales="en_US" default-locale="en_US"><Title language-id="en_US">Contest Manager</Title></root>', '<?xml version=''1.0'' encoding=''UTF-8''?><root available-locales="en_US" default-locale="en_US"><Description language-id="en_US">Contest Manager</Description></root>');
 INSERT INTO user__role (id, name, title, description) VALUES (1975251, 'Impact Assessment Fellow', '<?xml version=''1.0'' encoding=''UTF-8''?><root available-locales="en_US" default-locale="en_US"><Title language-id="en_US">Impact Assessment Fellow</Title></root>', '');
 
-INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('ACTIVE_THEME', 0, 0, 'CLIMATE_COLAB', 0);
-INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('ADMIN_EMAIL', 0, 0, 'admin@my-xcolab.org', 0);
-INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('ADMIN_FROM_EMAIL', 0, 0, 'no-reply@my-xcolab.org', 0);
-INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('COLAB_NAME', 0, 0, 'xCoLab', 0);
 INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('DISCUSSION_CONTENT_ARTICLE_ID', 0, 7, ' ', 0);
-INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('FOOTER_CONTENT_ARTICLE_ID', 0, 3, ' ', 0);
 INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('IMAGE_UPLOAD_EXTERNAL_SERVICE_URL', 0, 0, 'http://imgur.com/MRfmcOs', 0);
 INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('IMAGE_UPLOAD_HELP_TEXT', 0, 0, '<h4>Image upload in IMGUR:</h4><h5>This process works best on Google Chrome or Safari:</h5><br /><ol><li>Click on Upload - This will take you to Imgur, an image hosting platform where you can host your image.</li><li>On Imgur, click "New Post" and "Upload images."</li><li>Drag and drop or browse to the image you would like to use.</li> <li>After the image is uploaded to Imgur, right click on it, and select "Copy image address."</li><li>Return to the Climate CoLab page and paste it into the URL field.</li><li>Verify the image in the preview.</li><li>Click OK to insert the image to the Climate CoLab.</li></ol>', 0);
 INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID', 0, 4, ' ', 0);
@@ -78,9 +85,9 @@ INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, 
 INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('META_PAGE_DESCRIPTION', 0, null, 'The xCoLab is a generic version of the Climate CoLab, a platform to crowdsource solutions to climate change.', null);
 INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('META_PAGE_KEYWORDS', 0, null, 'xCoLab, CoLab, open source, open innovation', null);
 INSERT INTO admin__configuration_attribute (name, additional_id, numeric_value, string_value, real_value) VALUES ('OPEN_GRAPH_SHARE_DESCRIPTION', 0, 0, 'The xCoLab is a generic version of the Climate CoLab, a platform to crowdsource solutions to climate change.', 0);
+
 INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (1, 10144, '2016-05-11 09:21:08', 1, 2, null, null, 1);
 INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (2, 10144, '2016-05-11 09:21:08', 2, 2, null, null, 1);
-INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (3, 10144, '2016-05-11 09:21:08', 3, 2, null, null, 1);
 INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (4, 10144, '2016-05-11 09:21:08', 4, 2, null, null, 1);
 INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (5, 10144, '2016-05-11 09:21:08', 5, 2, null, null, 1);
 INSERT INTO content__content_article (id, author_user_id, created_at, max_version_id, folder_id, edit_role_group_id, view_role_group_id, visible) VALUES (6, 10144, '2016-05-11 09:21:08', 6, 2, null, null, 1);
@@ -88,7 +95,6 @@ INSERT INTO content__content_article (id, author_user_id, created_at, max_versio
 
 INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (1, 1, 2, 10144, '2016-07-19 12:38:47', 'Navigation', '<ul><li id="about"><a href="/web/guest/about">About the project</a></li></ul><script>var siteForNav=window.location.href.substring(window.location.href.lastIndexOf("/")+1);$("#"+siteForNav).addClass("c");</script>');
 INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (2, 2, 2, 10144, '2016-07-19 12:38:47', 'About', 'About this CoLab.');
-INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (3, 3, 2, 10144, '2016-07-19 12:38:47', 'Footer', 'The footer.');
 INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (4, 4, 2, 10144, '2016-07-19 12:38:47', 'Landing page top', 'Content.');
 INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (5, 5, 2, 10144, '2016-07-19 12:38:47', 'Landing page bottom', 'Content.');
 INSERT INTO content__content_article_version (id, article_id, folder_id, author_user_id, created_at, title, content) VALUES (6, 6, 2, 10144, '2016-07-19 12:38:47', 'Members menu', 'Content.');

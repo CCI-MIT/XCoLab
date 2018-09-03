@@ -4,6 +4,6 @@
     <jsp:directive.attribute name="cssClass" type="java.lang.String" required="false" rtexprvalue="true" description="Extra CSS classes" />
 
     <xcolab-icon:svg cssClass="c-Icon__outlineView ${cssClass}">
-        <path d="m46 70h420v96h-420zm96 138h324v96h-324zm132 141h192v96h-192z" fill-rule="evenodd"/>
+        <path  fill-rule="evenodd" d="m46 70h420v96h-420zm96 138h324v96h-324zm132 141h192v96h-192z"/>
     </xcolab-icon:svg>
 </jsp:root>
