@@ -1,1 +1,0 @@
-ALTER TABLE xcolab_ContestPhaseType ADD defaultFlagText VARCHAR(60) DEFAULT NULL;
