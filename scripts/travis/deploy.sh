@@ -7,6 +7,7 @@ if [ ${BUILD_TYPE} == 'deploy' ]; then
 
     eval "$(ssh-agent -s)"
     ssh-add deploy_rsa
+    cat scripts/travis/cognosis2.known_host >> $HOME/.ssh/known_hosts
 
     WORKER_IP="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 
