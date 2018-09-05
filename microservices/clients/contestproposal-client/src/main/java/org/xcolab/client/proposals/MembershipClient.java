@@ -94,9 +94,9 @@ public class MembershipClient {
     public List<ProposalTeamMembershipRequest> getMembershipRequestsByUser(Proposal proposal, Long userId) {
         return DtoUtil.toPojos(membershipRequestResource.list()
                 .withCache(CacheKeys.withClass(ProposalTeamMembershipRequestDto.class)
-                        .withParameter("groupId", proposal.getId())
+                        .withParameter("proposalId", proposal.getId())
                         .withParameter("userId", userId).asList(), CacheName.MISC_MEDIUM)
-                .optionalQueryParam("groupId", proposal.getId())
+                .optionalQueryParam("proposalId", proposal.getId())
                 .optionalQueryParam("userId", userId)
                 .execute(), serviceNamespace);
     }
