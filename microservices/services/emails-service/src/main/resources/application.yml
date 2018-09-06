@@ -21,3 +21,4 @@ flyway:
   table: flyway_email_schema_version
   baselineOnMigrate: true
   baselineVersion: 0
+  outOfOrder: true

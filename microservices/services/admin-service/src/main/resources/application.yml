@@ -20,3 +20,4 @@ flyway:
   table: flyway_admin_schema_version
   baselineOnMigrate: true
   baselineVersion: 0
+  outOfOrder: true
