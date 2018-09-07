@@ -120,6 +120,7 @@ public class CreateProposalController extends BaseProposalsController {
                 ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
         model.addAttribute("saveUrl", contest.getNewProposalLinkUrl());
         model.addAttribute("userTeams", PlatformTeamsClient.getTeams(loggedInMember));
+        model.addAttribute("contestTosAccepted", contest.getMemberAgreedToToS(loggedInMember));
 
         AnalyticsUtil.publishEvent(request, userId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,
@@ -158,6 +159,12 @@ public class CreateProposalController extends BaseProposalsController {
                     .flash(request);
             final Member memberOrNull = MemberAuthUtil.getMemberOrNull(request);
             return showCreateProposal(request, response, model, proposalContext, memberOrNull);
+        }
+
+        // if no error occurred it can be assumed that the user agreed to the ToS
+        final Member member = MemberAuthUtil.getMemberOrNull(request);
+        if (member != null && !proposalContext.getContest().getMemberAgreedToToS(member)) {
+            proposalContext.getContest().setMemberAgreedToToS(member);
         }
 
         return AddUpdateProposalControllerUtil

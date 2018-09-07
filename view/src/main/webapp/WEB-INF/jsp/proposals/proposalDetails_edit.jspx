@@ -14,6 +14,7 @@
     <!--@elvariable id="isMove" type="java.lang.Boolean"-->
     <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
     <!--@elvariable id="userTeams" type="java.util.List<org.xcolab.client.members.pojo.PlatformTeam>"-->
+    <!--@elvariable id="contestTosAccepted" type="java.lang.Boolean"-->
 
     <jsp:directive.include file="./init_proposal.jspx"/>
 
@@ -37,6 +38,10 @@
             }
         </script>
     </c:if>
+
+    <script>
+        var contestTosAccepted = '${contestTosAccepted}' == 'true';
+    </script>
 
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
@@ -367,13 +372,16 @@
                     saveIfValid();
                 } else {
                     disableButtons(false);
-                    showAcceptTosPopup();
+                    if(!contestTosAccepted) {
+                        showAcceptTosPopup();
+                    } else {
+                        saveIfValid();
+                    }
                 }
             });
 
             jQuery("#closeAcceptTos").click(closeAcceptTosPopup);
             jQuery("#tosAccepted").click(tosAcceptedSave);
-
             enableDirtyCheck();
         });
 
