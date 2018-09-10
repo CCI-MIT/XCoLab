@@ -10,7 +10,7 @@
 <jsp:directive.attribute name="loadWidgetLibrary" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the widget script is loaded. Default is true." />
 <jsp:directive.attribute name="useBodyAsDefault" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If the articleId is null, use the body of the tag instead" />
 
-<c:set var="useBodyAsDefault" value="${empty useBodyAsDefault ? useBodyAsDefault : false}"/>
+<c:set var="useBodyAsDefault" value="${not empty useBodyAsDefault ? useBodyAsDefault : false}"/>
 
 <c:if test="${empty loadWidgetLibrary or loadWidgetLibrary}">
     <!-- Load code to resovle widgets inside content articles -->
@@ -56,7 +56,7 @@
         </c:when>
         <c:otherwise>
             <div class="alert alert-danger">
-                No content article found.
+                No content article configured.
             </div>
         </c:otherwise>
     </c:choose>
