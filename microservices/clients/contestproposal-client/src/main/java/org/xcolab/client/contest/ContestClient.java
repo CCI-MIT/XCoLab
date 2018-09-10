@@ -726,7 +726,7 @@ public class ContestClient {
 
     public void setMemberAgreedToToS(long contestId, Member member) {
         tosAgreementResource.resolveParentId(contestResource.id(contestId))
-                .create(1L)
+                .create(member.getId())
                 .queryParam("memberId", member.getId())
                 .execute();
     }

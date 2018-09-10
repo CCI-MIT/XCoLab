@@ -314,90 +314,92 @@
     </script>
 
     <script>
-        var submitTimer;
+        var submitted = false;
 
-        function showAcceptTosPopup() {
+        function showTosPopup() {
             jQuery('#acceptTosModal').modal('show');
+            jQuery("#closeAcceptTos").click(closeTosPopup);
+            jQuery("#tosAccepted").click(tosAcceptedSave);
+
+            jQuery('#acceptTosModal').on('hidden.bs.modal', function (event) {
+                if (!submitted) {
+                    enableButtons();
+                }
+            });
         }
 
-        function closeAcceptTosPopup() {
+        function closeTosPopup() {
             jQuery('#acceptTosModal').modal('hide');
-            noty({text: acceptTosNotificationText,
+            noty({
+                text: acceptTosNotificationText,
                 buttons: [
                     {
-                        addClass: 'btn btn-primary', text: acceptButtonText, onClick: function($noty)
-                    {
-                        tosAcceptedSave();
-                        $noty.close();
-                    }
+                        addClass: 'btn btn-primary',
+                        text: acceptButtonText,
+                        onClick: function ($noty) {
+                            tosAcceptedSave();
+                            $noty.close();
+                        }
                     }],
-                    type: 'error'});
+                type: 'error'
+            });
             enableButtons();
         }
 
         function tosAcceptedSave() {
             jQuery('#acceptTosModal').modal('hide');
-            disableButtons(true);
+            disableButtons();
             saveIfValid();
         }
 
         function saveIfValid() {
-            if(jQuery("#proposalPitchInput").length ==1 ){
-                if(jQuery("#proposalPitchInput").val() == 0) {
-                    noty({text: proposalPitchNotificationText, type: 'error',timeout: 10000,});
+            if (jQuery("#proposalPitchInput").length == 1) {
+                if (jQuery("#proposalPitchInput").val() == 0) {
+                    noty({text: proposalPitchNotificationText, type: 'error', timeout: 10000,});
                     jQuery("#proposalPitchInput").focus();
                     enableButtons();
                     return;
                 }
             }
-            if(jQuery("#proposalName").length ==1 ){
-                if(jQuery("#proposalName").val() == 0) {
-                    noty({text: proposalTitleNotificationText, type: 'error',timeout: 10000,});
+            if (jQuery("#proposalName").length == 1) {
+                if (jQuery("#proposalName").val() == 0) {
+                    noty({text: proposalTitleNotificationText, type: 'error', timeout: 10000,});
                     jQuery("#proposalName").focus();
                     enableButtons();
                     return;
                 }
             }
-            disableButtons();
             if (validatePlanEditForm()) {
                 disableDirtyCheck();
+                submitted = true;
                 jQuery("#editForm").submit();
             }
         }
 
-        jQuery(function() {
-            jQuery("#saveChangesButton").click(function() {
-                if (currentProposal.id > 0) {
-                    disableButtons(true);
-                    saveIfValid();
-                } else {
-                    disableButtons(false);
-                    if(!contestTosAccepted) {
-                        showAcceptTosPopup();
-                    } else {
-                        saveIfValid();
-                    }
-                }
-            });
-
-            jQuery("#closeAcceptTos").click(closeAcceptTosPopup);
-            jQuery("#tosAccepted").click(tosAcceptedSave);
+        jQuery(function () {
+            enableButtons();
             enableDirtyCheck();
         });
 
         function enableButtons() {
             jQuery("#saveChangesButton,#discardChangesButton").removeClass("disabled");
+            jQuery("#saveChangesButton").click(function () {
+                disableButtons();
+                if (currentProposal.id > 0) {
+                    saveIfValid();
+                } else {
+                    if (!contestTosAccepted) {
+                        showTosPopup();
+                    } else {
+                        saveIfValid();
+                    }
+                }
+            });
         }
 
-        function disableButtons(withTimeout) {
-            var buttons = jQuery("#saveChangesButton,#discardChangesButton");
-            buttons.addClass("disabled");
-
-            if (withTimeout) {
-                setTimeout(function () {
-                    buttons.removeClass("disabled");
-                }, 5000);
-            }
+        function disableButtons() {
+            jQuery("#saveChangesButton,#discardChangesButton").addClass("disabled");
+            jQuery("#saveChangesButton").off('click');
         }
     </script>
 
