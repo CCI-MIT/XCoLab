@@ -13,6 +13,8 @@
 
     <jsp:directive.attribute name="proposals" type="java.util.Collection" required="true" rtexprvalue="true" description="proposals" />
 
+    <c:set var="shouldHideRibbons" value="${contest.hideRibbons and not proposalsPermissions.canAdminAll}"/>
+
     <c:forEach var="proposal" items="${proposals}" varStatus="status">
         <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
 
@@ -43,11 +45,11 @@
             </c:when>
         </c:choose>
 
-        <div class="c-TableGrid__row c-TableGrid__row--continued ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'c-TableGrid__row--active' : ''}
+        <div class="c-TableGrid__row c-TableGrid__row--continued ${proposal.featured and not shouldHideRibbons ? 'c-TableGrid__row--active' : ''}
                     ${contestPhase.completed ? 'completed' : ''}
                     ${additionalCSSClasses}">
             <div class="col-12 col-lg-5 col-xl-6 c-TableGrid__cell propname-authors">
-                <c:if test="${proposal.ribbonWrapper.ribbon > 0}">
+                <c:if test="${proposal.ribbonWrapper.ribbon > 0 && not shouldHideRibbons}">
                     <collab:image src="/images/icon-prize${proposal.ribbonWrapper.ribbon}.png"
                                   cssClass="float-left js-Tooltip mr-2" title="${proposal.ribbonWrapper.ribbonText}" />
                 </c:if>
@@ -65,7 +67,7 @@
                     </c:otherwise>
                 </c:choose>
             </div>
-            <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
+            <c:if test="${contestPhase.canVote or (contestPhase.completed and not shouldHideRibbons)}">
                 <div class="col c-TableGrid__cell text-center votes">
                     <div class="highlight">
                         <collab:image src="/images/icon-proposal-vote-small.png" cssClass="c-Icon" />
@@ -177,7 +179,7 @@
                 </div>
             </c:if>
         </div>
-        <div class="c-TableGrid__row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'c-TableGrid__row--active' : ''}
+        <div class="c-TableGrid__row ${proposal.featured and not shouldHideRibbons ? 'c-TableGrid__row--active' : ''}
                     ${contestPhase.completed ? 'completed' : ''}
                     ${additionalCSSClasses}">
             <div class="col-12 c-TableGrid__cell">
