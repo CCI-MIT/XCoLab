@@ -64,8 +64,8 @@ public class MembershipClientUtil {
     }
 
     public static List<ProposalTeamMembershipRequest> getMembershipRequestsByStatus(
-            Long groupId, Integer statusId) {
-        return client.getMembershipRequestsByStatus(groupId, statusId);
+            Long proposalId, Integer statusId) {
+        return client.getMembershipRequestsByStatus(proposalId, statusId);
     }
 
 }
