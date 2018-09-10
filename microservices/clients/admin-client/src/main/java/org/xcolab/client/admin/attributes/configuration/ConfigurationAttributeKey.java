@@ -416,21 +416,6 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(false)
                     .build();
 
-
-    //Configuration of Solve's header bar
-    public static final AttributeGetter<Boolean> MIT_HEADER_BAR_SHOW =
-            ConfigurationAttributes.newBooleanAttribute("MIT_HEADER_BAR_SHOW")
-                    .defaultValue(false)
-                    .build();
-    public static final LocalizableAttributeGetter<String> MIT_HEADER_BAR_LINK_TEXT =
-            ConfigurationAttributes.newLocalizedStringAttribute("MIT_HEADER_BAR_LINK_TEXT")
-                    .defaultValue("")
-                    .buildLocalizable();
-    public static final AttributeGetter<String> MIT_HEADER_BAR_LINK_URL =
-            ConfigurationAttributes.newStringAttribute("MIT_HEADER_BAR_LINK_URL")
-                    .defaultValue("")
-                    .build();
-
     //Configuration of Collection Cards
     public static final AttributeGetter<Boolean> COLAB_USES_CARDS =
             ConfigurationAttributes.newBooleanAttribute("COLAB_USES_CARDS")

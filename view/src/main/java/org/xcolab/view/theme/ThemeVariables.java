@@ -10,9 +10,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 public class ThemeVariables {
-    private final boolean mitHeaderBarShow;
-    private String mitHeaderBarLinkText;
-    private String mitHeaderBarLinkUrl;
     private final boolean navbarShowIcons;
 
     private final boolean betaRibbonShow;
@@ -32,14 +29,6 @@ public class ThemeVariables {
     private final boolean allowSelfRegistration;
 
     public ThemeVariables(HttpServletRequest request, I18nVariables i18NVariables) {
-        this.mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
-        if (getMitHeaderBarShow()) {
-            this.mitHeaderBarLinkText =
-                    ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_TEXT.get();
-            this.mitHeaderBarLinkUrl =
-                    ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_URL.get();
-        }
-
         this.navbarShowIcons = ConfigurationAttributeKey.NAVBAR_SHOW_ICONS.get();
         this.betaRibbonShow = ConfigurationAttributeKey.BETA_RIBBON_SHOW.get();
         this.showSearchMenuItem = ConfigurationAttributeKey.SHOW_SEARCH_MENU_ITEM.get();
@@ -60,18 +49,6 @@ public class ThemeVariables {
         this.activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
 
         this.allowSelfRegistration = ConfigurationAttributeKey.ALLOW_SELF_REGISTRATION.get();
-    }
-
-    public boolean getMitHeaderBarShow() {
-        return mitHeaderBarShow;
-    }
-
-    public String getMitHeaderBarLinkText() {
-        return mitHeaderBarLinkText;
-    }
-
-    public String getMitHeaderBarLinkUrl() {
-        return mitHeaderBarLinkUrl;
     }
 
     public boolean getNavbarShowIcons() {

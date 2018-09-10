@@ -198,21 +198,6 @@
         </div>
     </c:if>
 
-    <c:if test="${_themeContext.themeVariables.mitHeaderBarShow}">
-        <div class="c-TitleBar c-TitleBar--light">
-            <div class="container c-TitleBar__content">
-                <div class="c-TitleBar__element pl-0">
-                    <collab:image src="/images/logos/mit-themed.png" alt="MIT" />
-                    <span style="display: inline-block"><!-- Reference for image alignment --></span>
-                </div>
-
-                <a class="c-TitleBar__actionButton" href="${_themeContext.themeVariables.mitHeaderBarLinkUrl}">
-                    ${_themeContext.themeVariables.mitHeaderBarLinkText}
-                </a>
-            </div>
-        </div>
-    </c:if>
-
     <c:if test="${_themeContext.authenticationVariables.isLoggedIn and !_themeContext.authenticationVariables.member.isProfileComplete}">
         <c:if test="${not cookie.containsKey('xc-TitleBar__completeProfile--hidden')}">
             <div class="c-TitleBar c-TitleBar--light" style="position: relative;">
