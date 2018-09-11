@@ -25,6 +25,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonTypeDto;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseTypeDto;
 import org.xcolab.client.contest.resources.ContestResource;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.IdListUtil;
@@ -56,6 +57,7 @@ public class ContestClient {
     private final ServiceNamespace serviceNamespace;
 
     private final RestResource1<ContestDto, Long> contestResource;
+    private final RestResource2<ContestDto, Long, Boolean, Long> tosAgreementResource;
     private final RestResource2<ContestDto, Long, ContestTranslationDto, String> contestTranslationResource;
     private final RestResource<ContestDiscussionDto, Long> contestDiscussionResource;
 
@@ -76,6 +78,7 @@ public class ContestClient {
         contestPhaseTypesResource = new RestResource1<>(ContestResource.CONTEST_PHASE_TYPE, ContestPhaseTypeDto.TYPES, serviceNamespace);
         contestPhasesResource = new RestResource1<>(ContestResource.CONTEST_PHASE, ContestPhaseDto.TYPES, serviceNamespace);
         contestResource = new RestResource1<>(ContestResource.CONTEST, ContestDto.TYPES, serviceNamespace);
+        tosAgreementResource = contestResource.nestedResource("memberAgreedToTos", TypeProvider.BOOLEAN);
         visiblePhasesResource = new RestResource2L<>(
                 contestResource, "visiblePhases", ContestPhaseDto.TYPES);
         contestCollectionCardRestResource =
@@ -712,6 +715,20 @@ public class ContestClient {
     public ContestCollectionCard getContestCollectionCard(long id) {
         return contestCollectionCardRestResource.get(id)
                 .execute().toPojo(serviceNamespace);
+    }
+
+    public boolean getMemberAgreedToTos(long contestId, Member member) {
+        return tosAgreementResource.resolveParentId(contestResource.id(contestId))
+                .get(member.getId())
+                .execute()
+                .booleanValue();
+    }
+
+    public void setMemberAgreedToTos(long contestId, Member member, boolean agreed) {
+        tosAgreementResource.resolveParentId(contestResource.id(contestId))
+                .create(agreed)
+                .queryParam("memberId", member.getId())
+                .execute();
     }
 
     @Override

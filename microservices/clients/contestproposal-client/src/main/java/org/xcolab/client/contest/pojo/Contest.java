@@ -693,4 +693,12 @@ public class Contest extends AbstractContest implements Serializable {
     public int getMaxVotesPerProposal() {
         return ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_PROPOSAL.get().intValue();
     }
+
+    public boolean getMemberAgreedToTos(Member member) {
+        return contestClient.getMemberAgreedToTos(getId(), member);
+    }
+
+    public void setMemberAgreedToTos(Member member, boolean agreed) {
+        contestClient.setMemberAgreedToTos(getId(), member, agreed);
+    }
 }
