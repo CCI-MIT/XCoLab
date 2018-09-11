@@ -8,6 +8,8 @@ public class TypeProvider<T> {
 
     public static final TypeProvider<Long> LONG = new TypeProvider<>(Long.class,
             new ParameterizedTypeReference<List<Long>>() {});
+    public static final TypeProvider<Boolean> BOOLEAN = new TypeProvider<>(Boolean.class,
+            new ParameterizedTypeReference<List<Boolean>>() {});
 
     private final Class<T> entityType;
     private final ParameterizedTypeReference<List<T>> typeReference;

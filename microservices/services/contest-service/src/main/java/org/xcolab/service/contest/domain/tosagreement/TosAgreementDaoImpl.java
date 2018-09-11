@@ -1,6 +1,8 @@
 package org.xcolab.service.contest.domain.tosagreement;
 
 import org.jooq.DSLContext;
+import org.jooq.Record1;
+import org.jooq.SelectConditionStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,21 +17,22 @@ public class TosAgreementDaoImpl implements TosAgreementDao {
     private DSLContext dslContext;
 
     @Override
-    public long hasMemberAgreedToConestToS(long contestId, long memberId) {
-        return dslContext.select(TOS_AGREEMENT.AGREED)
+    public boolean hasMemberAgreedToContestTos(long contestId, long memberId) {
+        Record1<Boolean> record = dslContext.select(TOS_AGREEMENT.AGREED)
                 .from(TOS_AGREEMENT)
                 .where(TOS_AGREEMENT.CONTEST_ID.eq(contestId)
                         .and(TOS_AGREEMENT.USER_ID.eq(memberId)))
-                .execute();
+                .fetchOne();
+        return record == null ? false : record.value1();
     }
 
     @Override
-    public void setMemberAgreedToContestToS(long contestId, long memberId) {
+    public void setMemberAgreedToContestTos(long contestId, long memberId, boolean agreed) {
         dslContext.insertInto(TOS_AGREEMENT, TOS_AGREEMENT.CONTEST_ID, TOS_AGREEMENT.USER_ID,
                 TOS_AGREEMENT.AGREED)
-                .values(contestId, memberId, true)
+                .values(contestId, memberId, agreed)
                 .onDuplicateKeyUpdate()
-                .set(TOS_AGREEMENT.AGREED, true)
+                .set(TOS_AGREEMENT.AGREED, agreed)
                 .execute();
     }
 }
