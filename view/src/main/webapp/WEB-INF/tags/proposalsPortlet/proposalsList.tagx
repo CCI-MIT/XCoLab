@@ -49,7 +49,7 @@
                     ${contestPhase.completed ? 'completed' : ''}
                     ${additionalCSSClasses}">
             <div class="col-12 col-lg-5 col-xl-6 c-TableGrid__cell propname-authors">
-                <c:if test="${proposal.ribbonWrapper.ribbon > 0 && not shouldHideRibbons}">
+                <c:if test="${proposal.ribbonWrapper.ribbon > 0 and not shouldHideRibbons}">
                     <collab:image src="/images/icon-prize${proposal.ribbonWrapper.ribbon}.png"
                                   cssClass="float-left js-Tooltip mr-2" title="${proposal.ribbonWrapper.ribbonText}" />
                 </c:if>
