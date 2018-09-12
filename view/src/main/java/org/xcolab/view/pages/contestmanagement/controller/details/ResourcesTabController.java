@@ -43,15 +43,16 @@ public class ResourcesTabController extends AbstractTabController {
     @GetMapping
     public String showResourcesTabController(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member) {
+        boolean resourcePageEnabled = getContest().getResourceArticleId() != 0;
 
-        if (!tabWrapper.getCanView()) {
-            return new AccessDeniedPage(member).toViewName(response);
-        }
+        return getView(request, response, model, member, resourcePageEnabled);
+    }
 
-        long userId = MemberAuthUtil.getuserId(request);
-        wikiPageWrapper = new WikiPageWrapper(getContest(), userId);
-        model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
-        return TAB_VIEW;
+    @GetMapping("create")
+    public String createResourcesTabController(HttpServletRequest request,
+            HttpServletResponse response, Model model, Member member) {
+
+        return getView(request, response, model, member, true);
     }
 
     @PostMapping("update")
@@ -73,5 +74,21 @@ public class ResourcesTabController extends AbstractTabController {
         wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
         AlertMessage.CHANGES_SAVED.flash(request);
         return "redirect:" + tab.getTabUrl(contestId);
+    }
+
+    private String getView(HttpServletRequest request, HttpServletResponse response, Model model,
+            Member member, boolean resourcePageEnabled) {
+        if (!tabWrapper.getCanView()) {
+            return new AccessDeniedPage(member).toViewName(response);
+        }
+
+        if (resourcePageEnabled) {
+            long userId = MemberAuthUtil.getuserId(request);
+            wikiPageWrapper = new WikiPageWrapper(getContest(), userId);
+            model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
+        }
+
+        model.addAttribute("resourcePageEnabled", resourcePageEnabled);
+        return TAB_VIEW;
     }
 }
