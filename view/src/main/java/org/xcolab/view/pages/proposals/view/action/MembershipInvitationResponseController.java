@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.pojo.ContestType;
@@ -47,11 +47,10 @@ public class MembershipInvitationResponseController {
     private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED =
             "Your invitation of %s to join the <proposal/> %s has been rejected.";
 
-
-    @GetMapping("/membershipRequests/reply")
+    @PostMapping("/membershipRequests/reply")
     private void execute(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long requestId, @RequestParam long proposalId,
-            @RequestParam long contestId, @RequestParam("do") String action) throws IOException {
+            @RequestParam long contestId, @RequestParam("action") String action) throws IOException {
 
         Contest contest = ContestClientUtil.getContest(contestId);
         MembershipClient membershipClient = MembershipClientUtil.getClient();

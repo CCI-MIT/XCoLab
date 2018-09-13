@@ -130,11 +130,9 @@ public class ProposalRequestMembershipActionController {
             if (StringUtils.isBlank(comment)) {
                 comment = "No message specified";
             }
-            ProposalTeamMembershipRequest memberRequest = membershipClient
-                    .addInvitedMembershipRequest(proposal.getId(), recipient.getId(), comment);
+            membershipClient.addInvitedMembershipRequest(proposal.getId(), recipient.getId(), comment);
 
-            new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
-                    memberRequest, comment).sendMessage();
+            new ProposalMembershipInviteNotification(proposal, contest, sender, recipient, comment).sendMessage();
 
             AlertMessage.success("The member has been invited to join this proposal's team!")
                     .flash(request);

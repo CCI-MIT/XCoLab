@@ -21,6 +21,21 @@
         <jsp:useBean id="requestMembershipBean" scope="request" type="org.xcolab.view.pages.proposals.requests.RequestMembershipBean"/>
         <jsp:useBean id="requestMembershipInviteBean" scope="request" type="org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean"/>
 
+        <c:if test="${membershipRequestId ne -1}">
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <p>You have a pending membership request, by accepting to participate as a contributor to this proposal, you agree to Climate CoLab's Terms of Use, Contest Rules, and Community Policies.</p>
+                    <form:form id="invitationPending" action="/membershipRequests/reply" method="post">
+                        <input type="hidden" value="${membershipRequestId}" name="requestId"/>
+                        <input type="hidden" value="${proposal.id}" name="proposalId"/>
+                        <input type="hidden" value="${contest.id}" name="contestId"/>
+                        <button type="submit" class="btn btn-primary js-EnhancedLink" name="action" value="accept">Accept</button>
+                        <button type="submit" class="btn btn-primary js-EnhancedLink" name="action" value="decline">Decline</button>
+                    </form:form>
+                </div>
+            </div>
+        </c:if>
+
 
         <div class="cb-d-flex-between-center flex-column flex-sm-row">
             <div class="c-Count">
