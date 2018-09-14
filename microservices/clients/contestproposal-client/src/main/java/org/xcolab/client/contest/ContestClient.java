@@ -731,12 +731,6 @@ public class ContestClient {
                 .execute();
     }
 
-    public void deleteResourceArticle(long id) {
-        Contest currentContest = getContest(id);
-        currentContest.setResourceArticleId(0L);
-        contestResource.update(new ContestDto(currentContest), id).execute();
-    }
-
     @Override
     public String toString() {
         return "ContestClient[" + serviceNamespace + "]";

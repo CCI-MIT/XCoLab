@@ -10,14 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -44,16 +45,23 @@ public class ResourcesTabController extends AbstractTabController {
     @GetMapping
     public String showResourcesTabController(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member) {
-        boolean resourcePageEnabled = getContest().getResourceArticleId() != 0;
+        if (!tabWrapper.getCanView()) {
+            return new AccessDeniedPage(member).toViewName(response);
+        }
 
-        return getView(request, response, model, member, resourcePageEnabled);
+        prepareView(request, response, model, member, getContest().getResourceArticleId() != 0);
+        return TAB_VIEW;
     }
 
     @PostMapping("enable")
     public String createResourcesTabController(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member, @RequestParam boolean enable) {
+        if (!tabWrapper.getCanView()) {
+            return new AccessDeniedPage(member).toViewName(response);
+        }
 
-        return getView(request, response, model, member, enable);
+        prepareView(request, response, model, member, enable);
+        return "redirect:" + tab.getTabUrl(getContestId());
     }
 
     @PostMapping("update")
@@ -77,22 +85,18 @@ public class ResourcesTabController extends AbstractTabController {
         return "redirect:" + tab.getTabUrl(contestId);
     }
 
-    private String getView(HttpServletRequest request, HttpServletResponse response, Model model,
+    private void prepareView(HttpServletRequest request, HttpServletResponse response, Model model,
             Member member, boolean resourcePageEnabled) {
-        if (!tabWrapper.getCanView()) {
-            return new AccessDeniedPage(member).toViewName(response);
-        }
-
         if (resourcePageEnabled) {
             long userId = MemberAuthUtil.getuserId(request);
             wikiPageWrapper = new WikiPageWrapper(getContest(), userId);
             model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
         } else {
+            ContentsClient.deleteContentArticle(getContest().getResourceArticleId());
             getContest().deleteResourceArticle();
             wikiPageWrapper = null;
         }
 
         model.addAttribute("resourcePageEnabled", resourcePageEnabled);
-        return TAB_VIEW;
     }
 }
