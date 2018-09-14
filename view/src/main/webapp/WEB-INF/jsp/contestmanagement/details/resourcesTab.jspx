@@ -14,7 +14,7 @@
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 
-    <c:set var="createContestResourcesURL" value="/admin/contest/details/contestId/${contestWrapper.id}/tab/RESOURCES/create" />
+    <c:set var="enableContestResourcesURL" value="/admin/contest/details/contestId/${contestWrapper.id}/tab/RESOURCES/enable" />
     <c:set var="updateContestResourcesURL" value="/admin/contest/details/contestId/${contestWrapper.id}/tab/RESOURCES/update" />
 
     <xcolab:requireLibrary name="CKEditor" />
@@ -25,10 +25,17 @@
         <p>Sample resources pages can be found here: <a href="http://climatecolab.org/resources/-/wiki/Main/Youth+action+on+climate+change">Sample 1. </a><a href="http://climatecolab.org/web/guest/resources/-/wiki/Main/Energy+Supply">Sample 2</a>.</p>
 
         <c:if test="${not resourcePageEnabled}">
-            <a class="btn btn-primary" id="enableResourcePageFormButton" href="${createContestResourcesURL}">Enable resource page</a>
+            <form:form action="${enableContestResourcesURL}" method="post">
+                <button type="submit" class="btn btn-primary" name="enable" value="true">Create resource page</button>
+            </form:form>
         </c:if>
         <c:if test="${resourcePageEnabled}">
             <h2>Resource page content</h2>
+            <form:form action="${enableContestResourcesURL}" method="post">
+                <button type="submit" class="btn btn-primary btn-outline-danger js-EnhancedLink"
+                        data-confirm="Are you sure you want to permanently delete this contest's resource page?"
+                        name="enable" value="false">Destroy resource page</button>
+            </form:form>
             <form:form action="${updateContestResourcesURL}" commandName="contestResourcesBean"
              modelAttribute="contestResourcesBean" cssClass="addpropform" id="editForm" method="post">
                 <form:hidden path="numberOfSections"/>

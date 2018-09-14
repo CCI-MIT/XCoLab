@@ -8,15 +8,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -48,11 +49,11 @@ public class ResourcesTabController extends AbstractTabController {
         return getView(request, response, model, member, resourcePageEnabled);
     }
 
-    @GetMapping("create")
+    @PostMapping("enable")
     public String createResourcesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member) {
+            HttpServletResponse response, Model model, Member member, @RequestParam boolean enable) {
 
-        return getView(request, response, model, member, true);
+        return getView(request, response, model, member, enable);
     }
 
     @PostMapping("update")
@@ -86,6 +87,9 @@ public class ResourcesTabController extends AbstractTabController {
             long userId = MemberAuthUtil.getuserId(request);
             wikiPageWrapper = new WikiPageWrapper(getContest(), userId);
             model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
+        } else {
+            getContest().deleteResourceArticle();
+            wikiPageWrapper = null;
         }
 
         model.addAttribute("resourcePageEnabled", resourcePageEnabled);

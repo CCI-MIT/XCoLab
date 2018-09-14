@@ -701,4 +701,9 @@ public class Contest extends AbstractContest implements Serializable {
     public void setMemberAgreedToTos(Member member, boolean agreed) {
         contestClient.setMemberAgreedToTos(getId(), member, agreed);
     }
+
+    public void deleteResourceArticle() {
+        setResourceArticleId(0L);
+        contestClient.deleteResourceArticle(getId());
+    }
 }
