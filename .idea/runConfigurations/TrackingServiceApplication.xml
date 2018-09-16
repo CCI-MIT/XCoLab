@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="TrackingServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Services">
-    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <module name="tracking-service" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.tracking.TrackingServiceApplication" />
     <option name="VM_PARAMETERS" value="-Xms256M -Xmx512M" />
     <option name="ALTERNATIVE_JRE_PATH" />
@@ -13,11 +13,11 @@
       <param>
         <option name="enabled" value="true" />
         <option name="name" value="server.port" />
-        <option name="value" value="18095" />
+        <option name="value" value="18094" />
       </param>
     </additionalParameters>
-    <module name="tracking-service" />
-    <envs />
-    <method />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
   </configuration>
 </component>
