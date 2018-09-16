@@ -94,7 +94,7 @@ public class ProposalDaoImpl implements ProposalDao {
         }
 
         if (contestIds != null) {
-            query.addConditions(CONTEST_PHASE.ID.in(contestIds));
+            query.addConditions(CONTEST_PHASE.CONTEST_ID.in(contestIds));
         }
         if (contestTypeIds != null) {
             query.addConditions(CONTEST.CONTEST_TYPE_ID.in(contestTypeIds));
