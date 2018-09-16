@@ -151,7 +151,8 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .from(PROPOSAL2_PHASE)
                 .join(PROPOSAL).on(PROPOSAL2_PHASE.PROPOSAL_ID.eq(PROPOSAL.ID))
                 .where(PROPOSAL2_PHASE.CONTEST_PHASE_ID.eq(phaseId)
-                        .and(PROPOSAL.VISIBLE.eq(true)))
+                        .and(PROPOSAL.VISIBLE.eq(true))
+                        .and(PROPOSAL.DISCUSSION_ID.isNotNull()))
                 .fetch().into(Long.class);
     }
 
