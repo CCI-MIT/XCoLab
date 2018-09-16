@@ -45,22 +45,22 @@ else
         # This is to allow changing port numbers, max memory, or which services are run
         ~/.xcolab.run-services.sh
     else
-        startService activities
-        startService admin
+        startService activities 18084
+        startService admin 18085
         sleep 2
-        startService comment
-        startService content
+        startService comment 18086
+        startService content 18087
         sleep 2
-        startService contest
-        startService emails
+        startService contest 18088
+        startService emails 18089
         sleep 2
-        startService members
-        startService modeling
+        startService members 18090
+        startService modeling 18091
         sleep 2
-        startService moderation
-        startService search
+        startService moderation 18092
+        startService search 18093
         sleep 1
-        startService tracking
+        startService tracking 18094
     fi
 fi
 
