@@ -43,7 +43,7 @@ else
     if [ -f ~/.xcolab.run-services.sh ]; then
         # Allow starting service with a custom script
         # This is to allow changing port numbers, max memory, or which services are run
-        ~/.xcolab.run-services.sh
+        source ~/.xcolab.run-services.sh
     else
         startService activities 18084
         startService admin 18085

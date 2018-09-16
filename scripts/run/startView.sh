@@ -38,7 +38,7 @@ else
     if [ -f ~/.xcolab.run-view.sh ]; then
         # Allow starting the view with a custom script
         # This is to allow changing the max memory configuration
-        ~/.xcolab.run-view.sh
+        source ~/.xcolab.run-view.sh
     else
         startView
     fi
