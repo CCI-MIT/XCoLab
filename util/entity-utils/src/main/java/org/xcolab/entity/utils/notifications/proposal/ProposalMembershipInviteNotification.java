@@ -12,26 +12,20 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 
 public class ProposalMembershipInviteNotification extends ProposalUserActionNotification {
 
     private static final String DEFAULT_TEMPLATE_NAME = "PROPOSAL_MEMBERSHIP_INVITE_DEFAULT";
 
-    private static final String MEMBERSHIP_INVITE_RESPONSE_URL = "/membershipRequests/reply";
-
     private static final String MESSAGE_PLACEHOLDER = "message";
-    private static final String ACCEPT_LINK_PLACEHOLDER = "accept-link";
-    private static final String DECLINE_LINK_PLACEHOLDER = "decline-link";
-    private final ProposalTeamMembershipRequest membershipRequest;
+    private static final String PROPOSAL_TEAM_LINK_PLACEHOLDER = "proposal-team-link";
     private final String message;
     private ProposalMembershipRequestTemplate templateWrapper;
 
     public ProposalMembershipInviteNotification(Proposal proposal, Contest contest, Member sender,
-            Member invitee, ProposalTeamMembershipRequest membershipRequest, String message) {
+            Member invitee, String message) {
         super(proposal, contest, sender, invitee, null,
                 PlatformAttributeKey.COLAB_URL.get());
-        this.membershipRequest = membershipRequest;
         this.message = message;
     }
 
@@ -53,28 +47,6 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
         return templateWrapper;
     }
 
-    private String getAcceptLink(String text) {
-        final String acceptUrl = UriComponentsBuilder.fromHttpUrl(getMembershipResponseUrl())
-                .queryParam( "do", "accept")
-                .toUriString();
-        return String.format(LINK_FORMAT_STRING, acceptUrl, text);
-    }
-
-    private String getMembershipResponseUrl() {
-        return UriComponentsBuilder.fromHttpUrl(this.baseUrl + MEMBERSHIP_INVITE_RESPONSE_URL)
-                .queryParam("contestId", contest.getId())
-                .queryParam("requestId", membershipRequest.getId())
-                .queryParam("proposalId", proposal.getId())
-                .toUriString();
-    }
-
-    private String getDeclineLink(String text) {
-        final String declineUrl = UriComponentsBuilder.fromHttpUrl(getMembershipResponseUrl())
-                .queryParam("do", "decline")
-                .toUriString();
-        return String.format(LINK_FORMAT_STRING, declineUrl, text);
-    }
-
     private class ProposalMembershipRequestTemplate extends ProposalUserActionNotificationTemplate {
 
         public ProposalMembershipRequestTemplate(EmailTemplate template,
@@ -92,14 +64,12 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
             switch (tag.nodeName()) {
                 case MESSAGE_PLACEHOLDER:
                     return new TextNode(message, "");
-                case ACCEPT_LINK_PLACEHOLDER:
-                    return parseXmlNode(getAcceptLink(tag.ownText()));
-                case DECLINE_LINK_PLACEHOLDER:
-                    return parseXmlNode(getDeclineLink(tag.ownText()));
+                case PROPOSAL_TEAM_LINK_PLACEHOLDER:
+                    String url = ProposalMembershipInviteNotification.this.baseUrl + getProposal().getProposalUrl() + "/tab/TEAM";
+                    return parseXmlNode(String.format(LINK_FORMAT_STRING, url, "Proposal"));
                 default:
             }
             return null;
         }
     }
 }
-

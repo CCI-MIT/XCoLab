@@ -76,6 +76,14 @@ public class ProposalRequestMembershipActionController {
 
         final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();
+
+        if (membershipClient.hasUserRequestedMembership(proposal, sender.getId())) {
+            AlertMessage.danger("You have already sent a membership request")
+                    .flash(request);
+            response.sendRedirect(tabUrl);
+            return;
+        }
+
         membershipClient.addRequestedMembershipRequest(proposal.getId(), sender.getId(),
                 comment);
 
@@ -86,7 +94,6 @@ public class ProposalRequestMembershipActionController {
         AlertMessage.success("A membership request has been sent!").flash(request);
         response.sendRedirect(tabUrl);
     }
-
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMember")
     public void invite(HttpServletRequest request, HttpServletResponse response, Model model,
@@ -119,6 +126,20 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
+        if (clients.getProposalClient().isUserInProposalTeam(proposal.getId(), recipient.getId())) {
+            AlertMessage.danger("The member is already part of this proposal's team!")
+                    .flash(request);
+            response.sendRedirect(tabUrl);
+            return;
+        }
+
+        if (membershipClient.hasUserRequestedMembership(proposal, recipient.getId())) {
+            AlertMessage.danger("The member has already been invited to this proposal's team!")
+                    .flash(request);
+            response.sendRedirect(tabUrl);
+            return;
+        }
+
         if (requestMembershipInviteBean.isSkipInvitation()
                 && proposalContext.getPermissions().getCanAdminAll()) {
             membershipClient.addUserToProposalTeam(recipient.getId(), proposal);
@@ -130,11 +151,9 @@ public class ProposalRequestMembershipActionController {
             if (StringUtils.isBlank(comment)) {
                 comment = "No message specified";
             }
-            ProposalTeamMembershipRequest memberRequest = membershipClient
-                    .addInvitedMembershipRequest(proposal.getId(), recipient.getId(), comment);
+            membershipClient.addInvitedMembershipRequest(proposal.getId(), recipient.getId(), comment);
 
-            new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
-                    memberRequest, comment).sendMessage();
+            new ProposalMembershipInviteNotification(proposal, contest, sender, recipient, comment).sendMessage();
 
             AlertMessage.success("The member has been invited to join this proposal's team!")
                     .flash(request);
@@ -204,5 +223,4 @@ public class ProposalRequestMembershipActionController {
         recipients.add(recipient);
         MessagingClient.sendMessage(subject, content, sender, null, recipients);
     }
-
 }

@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.MembershipClient;
+import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
+import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipBean;
@@ -35,7 +40,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
     private static final Logger _log = LoggerFactory.getLogger(ProposalTeamTabController.class);
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=TEAM")
-    public String show(HttpServletRequest request, Model model, ProposalContext proposalContext) {
+    public String show(HttpServletRequest request, Model model, ProposalContext proposalContext, Member loggedInMember) {
         final ProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
 
@@ -53,8 +58,18 @@ public class ProposalTeamTabController extends BaseProposalTabController {
             List<Member> contributors = proposalClient.getProposalMembers(temp.getId());
             mapOfSubProposalContributors.put(temp, contributors);
         }
-        model.addAttribute("mapOfSubProposalContributors",
-                mapOfSubProposalContributors);
+        model.addAttribute("mapOfSubProposalContributors", mapOfSubProposalContributors);
+
+        long membershipRequestId = -1;
+        if (loggedInMember != null) {
+            MembershipClient membershipClient = MembershipClientUtil.getClient();
+            ProposalTeamMembershipRequest membershipRequest = membershipClient
+                    .getActiveMembershipRequestByUser(proposalContext.getProposal(), loggedInMember.getId());
+            if (membershipRequest != null && membershipRequest.getStatusId() == MembershipRequestStatus.STATUS_PENDING_INVITED) {
+                membershipRequestId = membershipRequest.getId();
+            }
+        }
+        model.addAttribute("membershipRequestId", membershipRequestId);
 
         return "/proposals/proposalTeam";
     }

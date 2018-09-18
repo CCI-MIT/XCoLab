@@ -81,8 +81,8 @@ public class MembershipClient {
 
     public Boolean hasUserRequestedMembership(Proposal proposal, Long userId) {
         try {
-            List<ProposalTeamMembershipRequest> userRequests = getMembershipRequestsByUser(proposal, userId);
-            if (userRequests != null && !userRequests.isEmpty()) {
+            ProposalTeamMembershipRequest userRequest = getActiveMembershipRequestByUser(proposal, userId);
+            if (userRequest != null) {
                 return true;
             }
         } catch (ProposalNotFoundException ignored) {
@@ -91,14 +91,11 @@ public class MembershipClient {
         return false;
     }
 
-    public List<ProposalTeamMembershipRequest> getMembershipRequestsByUser(Proposal proposal, Long userId) {
-        return DtoUtil.toPojos(membershipRequestResource.list()
-                .withCache(CacheKeys.withClass(ProposalTeamMembershipRequestDto.class)
-                        .withParameter("proposalId", proposal.getId())
-                        .withParameter("userId", userId).asList(), CacheName.MISC_MEDIUM)
+    public ProposalTeamMembershipRequest getActiveMembershipRequestByUser(Proposal proposal, Long userId) {
+        return DtoUtil.toPojo(membershipRequestResource.list()
                 .optionalQueryParam("proposalId", proposal.getId())
                 .optionalQueryParam("userId", userId)
-                .execute(), serviceNamespace);
+                .executeWithResult().getOneIfExists(), serviceNamespace);
     }
 
     public ProposalTeamMembershipRequest getMembershipRequest(long MembershipRequestId)

@@ -30,8 +30,8 @@ public class MembershipClientUtil {
         return client.hasUserRequestedMembership(proposal, userId);
     }
 
-    public static List<ProposalTeamMembershipRequest> getMembershipRequestsByUser(Proposal proposal, Long userId) {
-        return client.getMembershipRequestsByUser(proposal, userId);
+    public static ProposalTeamMembershipRequest getActiveMembershipRequestByUser(Proposal proposal, Long userId) {
+        return client.getActiveMembershipRequestByUser(proposal, userId);
     }
 
     public static ProposalTeamMembershipRequest getMembershipRequest(long MembershipRequestId)
