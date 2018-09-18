@@ -61,7 +61,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         model.addAttribute("mapOfSubProposalContributors", mapOfSubProposalContributors);
 
         long membershipRequestId = -1;
-        if(loggedInMember != null) {
+        if (loggedInMember != null) {
             MembershipClient membershipClient = MembershipClientUtil.getClient();
             ProposalTeamMembershipRequest membershipRequest = membershipClient
                     .getActiveMembershipRequestByUser(proposalContext.getProposal(), loggedInMember.getId());

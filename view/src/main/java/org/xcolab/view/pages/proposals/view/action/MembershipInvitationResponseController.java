@@ -50,7 +50,7 @@ public class MembershipInvitationResponseController {
     @PostMapping("/membershipRequests/reply")
     private void execute(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long requestId, @RequestParam long proposalId,
-            @RequestParam long contestId, @RequestParam("action") String action) throws IOException {
+            @RequestParam long contestId, @RequestParam String action) throws IOException {
 
         Contest contest = ContestClientUtil.getContest(contestId);
         MembershipClient membershipClient = MembershipClientUtil.getClient();

@@ -29,8 +29,8 @@
                         <input type="hidden" value="${membershipRequestId}" name="requestId"/>
                         <input type="hidden" value="${proposal.id}" name="proposalId"/>
                         <input type="hidden" value="${contest.id}" name="contestId"/>
-                        <button type="submit" class="btn btn-primary js-EnhancedLink" name="action" value="accept">Accept</button>
-                        <button type="submit" class="btn btn-primary js-EnhancedLink" name="action" value="decline">Decline</button>
+                        <button type="submit" class="btn btn-primary" name="action" value="accept">Accept</button>
+                        <button type="submit" class="btn btn-primary" name="action" value="decline">Decline</button>
                     </form:form>
                 </div>
             </div>
