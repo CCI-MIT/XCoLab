@@ -19,52 +19,26 @@ public class WikiPageWrapper {
 
     private final Contest contest;
     private final Long loggedInUserId;
-    private ContentArticle contentArticle;
-    private ContentArticleVersion contentArticleVersion;
+    private final ContentArticle contentArticle;
+    private final ContentArticleVersion contentArticleVersion;
 
     public WikiPageWrapper(Contest contest, Long loggedInUserId) {
         this.contest = contest;
         this.loggedInUserId = loggedInUserId;
-        initWikiPage();
-    }
 
-    private void initWikiPage() {
-
-        if (contest.getResourceArticleId() != null && contest.getResourceArticleId() > 0) {
-            try {
-                contentArticle = ContentsClient
-                        .getContentArticle(contest.getResourceArticleId());
-                contentArticleVersion =
-                        ContentsClient
-                                .getContentArticleVersion(contentArticle.getMaxVersionId());
-            } catch (ContentNotFoundException e) {
-                throw ReferenceResolutionException
-                        .toObject(ContentArticle.class, contest.getResourceArticleId())
-                        .fromObject(Contest.class, contest.getId());
-            }
-        } else {
-            contentArticleVersion = new ContentArticleVersion();
-            contentArticleVersion.setFolderId(ContentFolder.RESOURCE_FOLDER_ID);
-            contentArticleVersion.setAuthorUserId(loggedInUserId);
-            contentArticleVersion.setTitle(contest.getTitle());
-            contentArticleVersion.setContent("");
-            contentArticleVersion = ContentsClient
-                    .createContentArticleVersion(contentArticleVersion);
-
-            try {
-                contentArticle = ContentsClient.getContentArticle(
-                        contentArticleVersion.getArticleId());
-
-                final long resourceArticleId = contentArticle.getId();
-                contest.setResourceArticleId(resourceArticleId);
-                ContestClientUtil.updateContest(contest);
-
-            } catch (ContentNotFoundException e) {
-                throw new IllegalStateException(
-                        "Could not retrieve ContentArticle after creation: " + contentArticle);
-            }
+        if (contest.getResourceArticleId() == null || contest.getResourceArticleId() <= 0) {
+            throw ReferenceResolutionException
+                    .toObject(ContentArticle.class, contest.getResourceArticleId())
+                    .fromObject(Contest.class, contest.getId());
         }
-
+        try {
+            contentArticle = ContentsClient.getContentArticle(contest.getResourceArticleId());
+            contentArticleVersion = ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
+        } catch (ContentNotFoundException e) {
+            throw ReferenceResolutionException
+                    .toObject(ContentArticle.class, contest.getResourceArticleId())
+                    .fromObject(Contest.class, contest.getId());
+        }
     }
 
     public static void updateContestWiki(Contest contest) {
@@ -80,8 +54,7 @@ public class WikiPageWrapper {
     }
 
     public ContestResourcesBean getContestResourcesBean() {
-        final ContestType contestType =
-                ContestTypeClient.getContestType(contest.getContestTypeId());
+        final ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
         ContestResourcesBean contestResourcesBean = new ContestResourcesBean(contestType);
         String resourcesContent = contentArticleVersion.getContent();
         contestResourcesBean.fillSectionsWithContent(resourcesContent);
