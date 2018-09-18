@@ -81,7 +81,7 @@ public class MembershipClient {
 
     public Boolean hasUserRequestedMembership(Proposal proposal, Long userId) {
         try {
-            ProposalTeamMembershipRequest userRequest = getMembershipRequestByUser(proposal, userId);
+            ProposalTeamMembershipRequest userRequest = getActiveMembershipRequestByUser(proposal, userId);
             if (userRequest != null) {
                 return true;
             }
@@ -91,14 +91,11 @@ public class MembershipClient {
         return false;
     }
 
-    public ProposalTeamMembershipRequest getMembershipRequestByUser(Proposal proposal, Long userId) {
+    public ProposalTeamMembershipRequest getActiveMembershipRequestByUser(Proposal proposal, Long userId) {
         return DtoUtil.toPojo(membershipRequestResource.list()
-                .withCache(CacheKeys.withClass(ProposalTeamMembershipRequestDto.class)
-                        .withParameter("proposalId", proposal.getId())
-                        .withParameter("userId", userId).asList(), CacheName.MISC_MEDIUM)
                 .optionalQueryParam("proposalId", proposal.getId())
                 .optionalQueryParam("userId", userId)
-                .executeWithResult().getFirstIfExists(), serviceNamespace);
+                .executeWithResult().getOneIfExists(), serviceNamespace);
     }
 
     public ProposalTeamMembershipRequest getMembershipRequest(long MembershipRequestId)

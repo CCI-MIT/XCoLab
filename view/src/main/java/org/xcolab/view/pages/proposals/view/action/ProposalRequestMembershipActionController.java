@@ -76,6 +76,14 @@ public class ProposalRequestMembershipActionController {
 
         final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();
+
+        if (membershipClient.hasUserRequestedMembership(proposal, sender.getId())) {
+            AlertMessage.danger("You have already sent a membership request")
+                    .flash(request);
+            response.sendRedirect(tabUrl);
+            return;
+        }
+
         membershipClient.addRequestedMembershipRequest(proposal.getId(), sender.getId(),
                 comment);
 
@@ -86,7 +94,6 @@ public class ProposalRequestMembershipActionController {
         AlertMessage.success("A membership request has been sent!").flash(request);
         response.sendRedirect(tabUrl);
     }
-
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMember")
     public void invite(HttpServletRequest request, HttpServletResponse response, Model model,
@@ -115,6 +122,20 @@ public class ProposalRequestMembershipActionController {
             recipient = MembersClient.findMemberByScreenName(screenName);
         } catch (MemberNotFoundException e) {
             AlertMessage.danger("Member " + screenName + " could not be found.").flash(request);
+            response.sendRedirect(tabUrl);
+            return;
+        }
+
+        if (clients.getProposalClient().isUserInProposalTeam(proposal.getId(), recipient.getId())) {
+            AlertMessage.danger("The member is already part of this proposal's team!")
+                    .flash(request);
+            response.sendRedirect(tabUrl);
+            return;
+        }
+
+        if (membershipClient.hasUserRequestedMembership(proposal, recipient.getId())) {
+            AlertMessage.danger("The member has already been invited to this proposal's team!")
+                    .flash(request);
             response.sendRedirect(tabUrl);
             return;
         }
@@ -202,5 +223,4 @@ public class ProposalRequestMembershipActionController {
         recipients.add(recipient);
         MessagingClient.sendMessage(subject, content, sender, null, recipients);
     }
-
 }

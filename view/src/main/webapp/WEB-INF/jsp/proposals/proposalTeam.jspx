@@ -45,7 +45,7 @@
                 ${fn:length(proposal.members) == 1 ? memberText : membersText}
             </div>
 
-            <c:if test="${proposalsDisplayPermissions.canSeeRequestMembershipButton or proposalsPermissions.isTeamMember}">
+            <c:if test="${(proposalsDisplayPermissions.canSeeRequestMembershipButton and membershipRequestId eq -1) or proposalsPermissions.isTeamMember}">
                 <div>
                     <collab:image src="/images/icon-request-membership.png" width="24" height="22"
                                   alt="request membership" cssClass="mr-2"/>

@@ -18,25 +18,25 @@ import org.xcolab.service.proposal.domain.proposalteammember.ProposalTeamMemberD
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class MembershipController {
 
-    private final ProposalTeamMembershipRequestDao ProposalTeamMembershipRequestDao;
+    private final ProposalTeamMembershipRequestDao proposalTeamMembershipRequestDao;
     private final ProposalTeamMemberDao proposalTeamMemberDao;
 
     @Autowired
-    public MembershipController(
-            org.xcolab.service.proposal.domain.membershiprequest.ProposalTeamMembershipRequestDao ProposalTeamMembershipRequestDao,
+    public MembershipController(ProposalTeamMembershipRequestDao proposalTeamMembershipRequestDao,
             ProposalTeamMemberDao proposalTeamMemberDao) {
-        this.ProposalTeamMembershipRequestDao = ProposalTeamMembershipRequestDao;
+        this.proposalTeamMembershipRequestDao = proposalTeamMembershipRequestDao;
         this.proposalTeamMemberDao = proposalTeamMemberDao;
     }
 
     @RequestMapping(value = "/membershipRequests", method = RequestMethod.POST)
-    public ProposalTeamMembershipRequest createProposalTeamMembershipRequest(@RequestBody ProposalTeamMembershipRequest ProposalTeamMembershipRequest) {
-            ProposalTeamMembershipRequest.setCreatedAt(new Timestamp(new Date().getTime()));
-        return this.ProposalTeamMembershipRequestDao.create(ProposalTeamMembershipRequest);
+    public ProposalTeamMembershipRequest createProposalTeamMembershipRequest(@RequestBody ProposalTeamMembershipRequest proposalTeamMembershipRequest) {
+            proposalTeamMembershipRequest.setCreatedAt(new Timestamp(new Date().getTime()));
+        return this.proposalTeamMembershipRequestDao.create(proposalTeamMembershipRequest);
     }
 
     @RequestMapping(value = "/membershipRequests/{membershipRequestId}", method = RequestMethod.GET)
@@ -44,28 +44,33 @@ public class MembershipController {
         if (membershipRequestId == null || membershipRequestId == 0) {
             throw new NotFoundException("No membershipRequestId given");
         } else {
-            return ProposalTeamMembershipRequestDao.get(membershipRequestId);
+            return proposalTeamMembershipRequestDao.get(membershipRequestId);
         }
     }
 
     @RequestMapping(value = "/membershipRequests/{membershipRequestId}", method = RequestMethod.PUT)
-    public boolean updateProposalTeamMembershipRequest(@RequestBody ProposalTeamMembershipRequest ProposalTeamMembershipRequest,
+    public boolean updateProposalTeamMembershipRequest(@RequestBody ProposalTeamMembershipRequest proposalTeamMembershipRequest,
                                            @PathVariable Long membershipRequestId) throws NotFoundException {
 
-        if (membershipRequestId == null || membershipRequestId == 0 || ProposalTeamMembershipRequestDao.get(membershipRequestId) == null) {
+        if (membershipRequestId == null || membershipRequestId == 0 || proposalTeamMembershipRequestDao
+
+                .get(membershipRequestId) == null) {
             throw new NotFoundException("No ProposalTeamMembershipRequest with id " + membershipRequestId);
         } else {
-            return ProposalTeamMembershipRequestDao.update(ProposalTeamMembershipRequest);
+            return proposalTeamMembershipRequestDao.update(proposalTeamMembershipRequest);
         }
     }
 
     @RequestMapping(value = "/membershipRequests", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ProposalTeamMembershipRequest> getProposalTeamMembershipRequests(
+    public List<ProposalTeamMembershipRequest> getActiveProposalTeamMembershipRequests(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Integer statusId,
             @RequestParam(required = false) Long userId
     ) {
-        return ProposalTeamMembershipRequestDao.findByGiven(proposalId, statusId, userId);
+        return proposalTeamMembershipRequestDao.findByGiven(proposalId, statusId, userId)
+                .stream()
+                .filter(request -> request.getReplierUserId() == null)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/proposals/{proposalId}/teamMembers")

@@ -64,10 +64,8 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         if(loggedInMember != null) {
             MembershipClient membershipClient = MembershipClientUtil.getClient();
             ProposalTeamMembershipRequest membershipRequest = membershipClient
-                    .getMembershipRequestByUser(proposalContext.getProposal(), loggedInMember.getId());
-            if (membershipRequest != null &&
-                    !(membershipRequest.getStatusId() == MembershipRequestStatus.STATUS_APPROVED ||
-                            membershipRequest.getStatusId() == MembershipRequestStatus.STATUS_DENIED)) {
+                    .getActiveMembershipRequestByUser(proposalContext.getProposal(), loggedInMember.getId());
+            if (membershipRequest != null && membershipRequest.getStatusId() == MembershipRequestStatus.STATUS_PENDING_INVITED) {
                 membershipRequestId = membershipRequest.getId();
             }
         }
