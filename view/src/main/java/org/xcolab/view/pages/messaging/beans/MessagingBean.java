@@ -4,18 +4,15 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.messaging.paging.MessageDataPage;
-import org.xcolab.view.pages.messaging.paging.PageLinkWrapper;
+import org.xcolab.view.util.pagination.PageNavigation;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MessagingBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private static final int PAGE_SIZE = 10;
-    private static final int PAGER_RANGE = 3;
 
     private Member member;
     private MessageType messageType = MessageType.INBOX;
@@ -78,23 +75,6 @@ public class MessagingBean implements Serializable {
         this.dataPage = dataPage;
     }
 
-    public List<PageLinkWrapper> getPageLinks() {
-        List<PageLinkWrapper> pageLinks = new ArrayList<>();
-        pageLinks.add(new PageLinkWrapper("<< First", 1, messageType));
-        if (pageNumber > 1) {
-            pageLinks.add(new PageLinkWrapper("< Previous", pageNumber - 1, messageType));
-        }
-        for (int i = Math.max(1, pageNumber - PAGER_RANGE), stop =
-                Math.min(getNumberOfPages(), pageNumber + PAGER_RANGE); i <= stop; i++) {
-            pageLinks.add(new PageLinkWrapper("", i, messageType));
-        }
-        if (pageNumber < getNumberOfPages()) {
-            pageLinks.add(new PageLinkWrapper("Next >", pageNumber + 1, messageType));
-        }
-        pageLinks.add(new PageLinkWrapper("Last >>", getNumberOfPages(), messageType));
-        return pageLinks;
-    }
-
     public int getNumberOfPages() {
         int numPages = messagesCount / PAGE_SIZE;
         if (messagesCount % PAGE_SIZE != 0) {
@@ -105,5 +85,14 @@ public class MessagingBean implements Serializable {
 
     public int getNumberOfMessagesLeft() {
         return numberOfMessagesLeft;
+    }
+
+    public PageNavigation getPageNavigation() {
+        String url = "/messaging";
+        if (messageType != MessageType.INBOX) {
+            url += "/mailbox/" + messageType.name();
+        }
+        final PageNavigation pageNavigation = new PageNavigation(url, pageNumber, getNumberOfPages(),"pageNumber");
+        return pageNavigation;
     }
 }

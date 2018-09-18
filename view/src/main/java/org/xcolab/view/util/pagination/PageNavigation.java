@@ -24,6 +24,10 @@ public class PageNavigation {
         this(UriComponentsBuilder.fromUriString(basePath), currentPage, numPages);
     }
 
+    public PageNavigation(String basePath, int currentPage, int numPages, String pageParamName) {
+        this(UriComponentsBuilder.fromUriString(basePath), currentPage, numPages, pageParamName);
+    }
+
     public PageNavigation(UriComponentsBuilder baseUrl, int currentPage, int numPages) {
         this(baseUrl, currentPage, numPages, "page");
     }

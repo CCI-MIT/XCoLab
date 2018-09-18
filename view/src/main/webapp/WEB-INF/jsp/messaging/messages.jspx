@@ -109,11 +109,12 @@
                 </table>
 
                 <c:if test="${messagingBean.numberOfPages > 1}">
-                    <div class="pagination">
-                        <c:forEach var="pageLink" items="${messagingBean.pageLinks}">
-                            <a class="${pageLink.isCurrent(messagingBean) ? 'c' : ''}" href="${pageLink.linkUrl}">${pageLink.linkText}</a>
-                        </c:forEach>
-                    </div>
+                    <xcolab:pagination pageNavigation="${messagingBean.pageNavigation}"/>
+                    <!--<div class="pagination">-->
+                        <!--<c:forEach var="pageLink" items="${messagingBean.pageLinks}">-->
+                            <!--<a class="${pageLink.isCurrent(messagingBean) ? 'c' : ''}" href="${pageLink.linkUrl}">${pageLink.linkText}</a>-->
+                        <!--</c:forEach>-->
+                    <!--</div>-->
                 </c:if>
             </form:form>
         </div>
