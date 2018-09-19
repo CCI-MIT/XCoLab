@@ -114,6 +114,7 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShowInOutlineView())
                 .set(CONTEST.HIDE_RIBBONS, contest.getHideRibbons())
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
+                .set(CONTEST.READ_ONLY_COMMENTS, contest.getReadOnlyComments())
                 .returning(CONTEST.ID).fetchOne();
         if (contestRecord != null) {
             contest.setId(contestRecord.getId());
@@ -176,6 +177,7 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.SHOW_IN_OUTLINE_VIEW, contest.getShowInOutlineView())
                 .set(CONTEST.HIDE_RIBBONS, contest.getHideRibbons())
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
+                .set(CONTEST.READ_ONLY_COMMENTS, contest.getReadOnlyComments())
                 .where(CONTEST.ID.eq(contest.getId()))
                 .execute() > 0;
     }

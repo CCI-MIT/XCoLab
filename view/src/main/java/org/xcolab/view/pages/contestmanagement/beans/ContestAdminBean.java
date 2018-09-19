@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.beans;
 
+import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
@@ -16,6 +18,7 @@ public class ContestAdminBean implements Serializable {
     private ContestModelSettingsBean contestModelSettings;
 
     private boolean hideRibbons;
+    private boolean readOnlyComments;
 
     @NotNull(message = "A contest URL name must be specified")
     private String contestUrlName;
@@ -29,6 +32,7 @@ public class ContestAdminBean implements Serializable {
     @NotNull(message = "A contest type must be selected.")
     private Long contestType;
 
+
     public ContestAdminBean() { }
 
     public ContestAdminBean(Contest contest) {
@@ -37,6 +41,7 @@ public class ContestAdminBean implements Serializable {
             contestYear = contest.getContestYear();
             contestTier = contest.getContestTier();
             contestType = contest.getContestTypeId();
+            readOnlyComments = contest.getReadOnlyComments();
             hideRibbons = contest.getHideRibbons();
             emailTemplateUrl = contest.getEmailTemplateUrl();
             contestModelSettings = new ContestModelSettingsBean(contest);
@@ -56,6 +61,7 @@ public class ContestAdminBean implements Serializable {
         contest.setContestTier(contestTier);
         contest.setContestTypeId(contestType);
         contest.setHideRibbons(hideRibbons);
+        contest.setReadOnlyComments(readOnlyComments);
 
         ContestClientUtil.updateContest(contest);
 
@@ -122,4 +128,9 @@ public class ContestAdminBean implements Serializable {
         this.hideRibbons = hideRibbons;
     }
 
+    public boolean isReadOnlyComments() { return readOnlyComments; }
+
+    public void setReadOnlyComments(boolean readOnlyComments) {
+        this.readOnlyComments = readOnlyComments;
+    }
 }
