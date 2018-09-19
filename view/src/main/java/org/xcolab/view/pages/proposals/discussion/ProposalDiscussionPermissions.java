@@ -1,8 +1,10 @@
 package org.xcolab.view.pages.proposals.discussion;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalTeamMember;
@@ -39,9 +41,8 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     @Override
     public boolean getCanSeeAddCommentButton() {
-        final Boolean isReadyOnly = ConfigurationAttributeKey.PROPOSALS_COMMENTS_READ_ONLY.get();
-        if (isReadyOnly) {
-            return getCanAdminAll();
+        if (isReadOnly()) {
+            return false;
         }
 
         boolean isEvaluationTab = ProposalTab.EVALUATION.name().equals(discussionTabName);
@@ -53,8 +54,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     @Override
     public boolean getCanAddComment() {
-        final Boolean isReadyOnly = ConfigurationAttributeKey.PROPOSALS_COMMENTS_READ_ONLY.get();
-        if (isReadyOnly && !getCanAdminAll()) {
+        if (isReadOnly()) {
             return false;
         }
 
@@ -96,5 +96,20 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
                 .anyMatch(id -> id == userId);
 
         return isAuthor || isMember;
+    }
+
+    private boolean isReadOnly() {
+        boolean isReadOnly = ConfigurationAttributeKey.PROPOSALS_COMMENTS_READ_ONLY.get();
+        if (isReadOnly) {
+            return getCanAdminAll();
+        }
+
+        isReadOnly = proposal.getContest().getReadOnlyComments();
+        if (isReadOnly) {
+            if (isUserFellowOrJudgeOrAdvisor()) {
+                return false;
+            }
+        }
+        return isReadOnly;
     }
 }
