@@ -16,14 +16,15 @@ import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -49,16 +50,17 @@ public class ResourcesTabController extends AbstractTabController {
 
     @GetMapping
     public String showResourcesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member) {
+            HttpServletResponse response, Model model, Member member, @PathVariable long contestId) {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        boolean enabled = getContest().getResourceArticleId() != 0;
+        Contest contest = ContestClientUtil.getContest(contestId);
+        boolean enabled = contest.getResourceArticleId() != 0;
 
         if (enabled) {
             long userId = MemberAuthUtil.getuserId(request);
-            wikiPageWrapper = new WikiPageWrapper(getContest(), userId);
+            wikiPageWrapper = new WikiPageWrapper(contest, userId);
             model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
         }
 
@@ -68,34 +70,37 @@ public class ResourcesTabController extends AbstractTabController {
 
     @PostMapping("toggle")
     public String createResourcesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member, @RequestParam boolean enable) {
+            HttpServletResponse response, Model model, Member member, @RequestParam boolean enable,
+            @PathVariable long contestId) {
+
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
+        Contest contest = ContestClientUtil.getContest(contestId);
         if (enable) {
             ContentArticleVersion contentArticleVersion = new ContentArticleVersion();
             contentArticleVersion.setFolderId(ContentFolder.RESOURCE_FOLDER_ID);
             contentArticleVersion.setAuthorUserId(member.getId());
-            contentArticleVersion.setTitle(getContest().getTitle());
+            contentArticleVersion.setTitle(contest.getTitle());
             contentArticleVersion.setContent("");
             contentArticleVersion = ContentsClient.createContentArticleVersion(contentArticleVersion);
 
             try {
                 ContentArticle contentArticle = ContentsClient.getContentArticle(contentArticleVersion.getArticleId());
-                getContest().setResourceArticleId(contentArticle.getId());
-                ContestClientUtil.updateContest(getContest());
+                contest.setResourceArticleId(contentArticle.getId());
+                ContestClientUtil.updateContest(contest);
             } catch (ContentNotFoundException e) {
                 throw new IllegalStateException("Could not retrieve ContentArticle after creation");
             }
         } else {
-            ContentsClient.deleteContentArticle(getContest().getResourceArticleId());
-            getContest().deleteResourceArticle();
+            ContentsClient.deleteContentArticle(contest.getResourceArticleId());
+            contest.deleteResourceArticle();
         }
 
         model.addAttribute("resourcePageEnabled", enable);
 
-        return "redirect:" + tab.getTabUrl(getContestId());
+        return "redirect:" + tab.getTabUrl(contestId);
     }
 
     @PostMapping("update")

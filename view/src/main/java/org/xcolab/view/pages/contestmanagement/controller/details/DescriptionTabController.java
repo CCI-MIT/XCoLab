@@ -15,12 +15,12 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelValue;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,11 +60,7 @@ public class DescriptionTabController extends AbstractTabController {
     @ModelAttribute("scheduleTemplateSelectionItems")
     public List<LabelValue> populateScheduleSelectionItems(HttpServletRequest request,
             @PathVariable long contestId) {
-        return getContestScheduleSelectionItems(contestId);
-    }
-
-    private List<LabelValue> getContestScheduleSelectionItems(long contestId) {
-        Contest contest = getContest(contestId);
+        Contest contest = ContestClientUtil.getContest(contestId);
         Long existingContestScheduleId = contest.getContestScheduleId();
         boolean contestHasProposals = contest.getProposalsCount() > 0;
         return ContestScheduleLifecycleUtil
@@ -80,13 +76,13 @@ public class DescriptionTabController extends AbstractTabController {
 
     @GetMapping(value = {"", "tab/DESCRIPTION"})
     public String showDescriptionTab(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
+            Model model, Member member, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
         if (!model.containsAttribute("contestDescriptionBean")) {
-            Contest contest = getContest();
+            Contest contest = ContestClientUtil.getContest(contestId);
             model.addAttribute("contestDescriptionBean", new ContestDescriptionBean(contest));
         }
         return TAB_VIEW;
@@ -101,7 +97,7 @@ public class DescriptionTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
         //check for contest name year uniqueness
-        final Contest contest = getContest();
+        final Contest contest = ContestClientUtil.getContest(contestId);
         if (!ContestClientUtil
                 .isContestTitleYearUnique(contestDescriptionBean.getTitle(), contest.getContestYear(),
                         contest.getId())) {
@@ -109,16 +105,16 @@ public class DescriptionTabController extends AbstractTabController {
                     .danger("Contest name and year must be unique, a contest with the given name "
                             + "already exists for this year.")
                     .flash(request);
-            return showDescriptionTab(request, response, model, member);
+            return showDescriptionTab(request, response, model, member, contestId);
         }
 
         if (result.hasErrors()) {
             AlertMessage.danger("Error while updating.").flash(request);
-            return showDescriptionTab(request, response, model, member);
+            return showDescriptionTab(request, response, model, member, contestId);
         }
 
 
         contestDescriptionBean.persist(contest);
-        return showDescriptionTab(request, response, model, member);
+        return showDescriptionTab(request, response, model, member, contestId);
     }
 }
