@@ -166,7 +166,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
 
         ProposalDiscussionPermissions pdp = new ProposalDiscussionPermissions(request,
-                proposalContext);
+                proposalContext.getProposal());
         request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, pdp);
 
         setLinkedProposals(model, proposalContext, proposal);

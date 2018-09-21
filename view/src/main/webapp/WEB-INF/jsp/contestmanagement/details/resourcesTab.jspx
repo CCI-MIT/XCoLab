@@ -14,87 +14,100 @@
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 
+    <c:set var="toggleContestResourcesURL" value="/admin/contest/details/contestId/${contestWrapper.id}/tab/RESOURCES/toggle" />
     <c:set var="updateContestResourcesURL" value="/admin/contest/details/contestId/${contestWrapper.id}/tab/RESOURCES/update" />
 
     <xcolab:requireLibrary name="CKEditor" />
 
-	<div class="c-ContentBox l-BoxLayout__stacked">
+    <div class="c-ContentBox l-BoxLayout__stacked">
 
-		<p>The resources page is what visitors see when they click either "Read more" or the Resources button on the contest homepage. It provides a thorough overview of the sector or topic, key issues currently being faced, guidance on how members can focus proposals, and resources for further reading.</p>
-		<p>Sample resources pages can be found here: <a href="http://climatecolab.org/resources/-/wiki/Main/Youth+action+on+climate+change">Sample 1. </a><a href="http://climatecolab.org/web/guest/resources/-/wiki/Main/Energy+Supply">Sample 2</a>.</p>
+        <p>The resources page is what visitors see when they click either "Read more" or the Resources button on the contest homepage. It provides a thorough overview of the sector or topic, key issues currently being faced, guidance on how members can focus proposals, and resources for further reading.</p>
+        <p>Sample resources pages can be found here: <a href="http://climatecolab.org/resources/-/wiki/Main/Youth+action+on+climate+change">Sample 1. </a><a href="http://climatecolab.org/web/guest/resources/-/wiki/Main/Energy+Supply">Sample 2</a>.</p>
 
-        <h2>Resource page content</h2>
-        <form:form action="${updateContestResourcesURL }" commandName="contestResourcesBean"
-         modelAttribute="contestResourcesBean" cssClass="addpropform" id="editForm" method="post">
-            <form:hidden path="numberOfSections"/>
-            <form:errors cssClass="alert alert-danger" element="div" path="*" />
+        <c:if test="${not resourcePageEnabled}">
+            <form:form action="${toggleContestResourcesURL}" method="post">
+                <button type="submit" class="btn btn-primary" name="enable" value="true">Create resource page</button>
+            </form:form>
+        </c:if>
+        <c:if test="${resourcePageEnabled}">
+            <h2>Resource page content</h2>
+            <form:form action="${toggleContestResourcesURL}" method="post">
+                <button type="submit" class="btn btn-outline-danger js-EnhancedLink"
+                        data-confirm="Are you sure you want to permanently delete this contest's resource page?"
+                        name="enable" value="false">Destroy resource page</button>
+            </form:form>
+            <form:form action="${updateContestResourcesURL}" commandName="contestResourcesBean"
+             modelAttribute="contestResourcesBean" cssClass="addpropform" id="editForm" method="post">
+                <form:hidden path="numberOfSections"/>
+                <form:errors cssClass="alert alert-danger" element="div" path="*" />
 
-            <c:forEach var="section" items="${contestResourcesBean.sections}" varStatus="x" >
-                <form:hidden path="sections[${x.index}].templateSection" data-form-name="templateSection"/>
+                <c:forEach var="section" items="${contestResourcesBean.sections}" varStatus="x" >
+                    <form:hidden path="sections[${x.index}].templateSection" data-form-name="templateSection"/>
 
-                <c:if test="${fn:length(contestResourcesBean.sections)-2 eq x.index}">
-                    <div class="addSection" id="addSection" name="addSection">
-                        <a class="btn btn-primary" id="addSectionButton" href="#addSection">ADD section</a>
+                    <c:if test="${fn:length(contestResourcesBean.sections)-2 eq x.index}">
+                        <div class="addSection" id="addSection" name="addSection">
+                            <a class="btn btn-primary" id="addSectionButton" href="#addSection">ADD section</a>
+                        </div>
+                    </c:if>
+
+                    <div class="c-Box ${section.deletable ? 'c-Box--colorPrimaryGrayLight' : 'c-Box--colorTan'}"
+                        style="${fn:length(contestResourcesBean.sections)-1 eq x.index ? 'display: none' : ''}"
+                        id="section${x.index}">
+                        <div class="c-Box__body">
+                            <form:hidden path="sections[${x.index}].sectionNew" data-form-name="sectionNew"/>
+                            <form:hidden path="sections[${x.index}].weight" cssClass="weightInput" data-form-name="weight"/>
+
+                            <c:if test="${section.deletable}">
+                                <div class="deleteIcon"><!-- --></div>
+                            </c:if>
+
+                            <c:choose>
+                                <c:when test="${section.deletable}">
+                                    <label for="sections[${x.index}].title">
+                                        <strong>Title:</strong>
+                                    </label>
+                                    <form:input path="sections[${x.index}].title" data-form-name="title" id="sections[${x.index}].title"
+                                                cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <form:hidden path="sections[${x.index}].title"/>
+                                    <strong>${section.title}</strong>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <c:if test="${not empty section.helpText}">
+                                <a class="ml-1" data-toggle="collapse" href="#js-Help__section${x.index}">
+                                    <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                                </a>
+                            </c:if>
+                            <br />
+                            <c:if test="${section.characterLimit  > 0}">
+                                ${section.characterLimit} characters
+                            </c:if>
+
+                            <c:if test="${not empty section.helpText}">
+                                <div class="p-Proposal__formBox__helpText collapse" id="js-Help__section${x.index}">
+                                    ${section.helpText}
+                                </div>
+                            </c:if>
+
+                            <c:if test="${section.deletable}">
+                                <strong>Content:</strong>
+                            </c:if>
+                            <form:textarea path="sections[${x.index}].content" cssClass="${fn:length(contestResourcesBean.sections)-1 eq x.index ? '': 'rte-editorPlaceholder'}" data-form-name="content" />
+                            <form:errors cssClass="invalid-feedback" path="sections[${x.index}].content" />
+                            <c:if test="${section.characterLimit  > 0}">
+                                <div class="inputLimitContainer">
+                                    <span class="limit_characterCount"><!--  --></span>
+                                    /&#160;<span class="limit_charactersMax">
+                                    ${section.characterLimit} characters</span> characters
+                                </div>
+                            </c:if>
+                        </div>
                     </div>
-                </c:if>
-
-                <div class="c-Box ${section.deletable ? 'c-Box--colorPrimaryGrayLight' : 'c-Box--colorTan'}"
-                    style="${fn:length(contestResourcesBean.sections)-1 eq x.index ? 'display: none' : ''}"
-                    id="section${x.index}">
-                    <div class="c-Box__body">
-                        <form:hidden path="sections[${x.index}].sectionNew" data-form-name="sectionNew"/>
-                        <form:hidden path="sections[${x.index}].weight" cssClass="weightInput" data-form-name="weight"/>
-
-                        <c:if test="${section.deletable}">
-                            <div class="deleteIcon"><!-- --></div>
-                        </c:if>
-
-                        <c:choose>
-                            <c:when test="${section.deletable}">
-                                <label for="sections[${x.index}].title">
-                                    <strong>Title:</strong>
-                                </label>
-                                <form:input path="sections[${x.index}].title" data-form-name="title" id="sections[${x.index}].title"
-                                            cssClass="form-control" cssErrorClass="form-control cb-form-has-error"/>
-                            </c:when>
-                            <c:otherwise>
-                                <form:hidden path="sections[${x.index}].title"/>
-                                <strong>${section.title}</strong>
-                            </c:otherwise>
-                        </c:choose>
-
-                        <c:if test="${not empty section.helpText}">
-                            <a class="ml-1" data-toggle="collapse" href="#js-Help__section${x.index}">
-                                <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
-                            </a>
-                        </c:if>
-                        <br />
-                        <c:if test="${section.characterLimit  > 0}">
-                            ${section.characterLimit} characters
-                        </c:if>
-
-                        <c:if test="${not empty section.helpText}">
-                            <div class="p-Proposal__formBox__helpText collapse" id="js-Help__section${x.index}">
-                                ${section.helpText}
-                            </div>
-                        </c:if>
-
-                        <c:if test="${section.deletable}">
-                            <strong>Content:</strong>
-                        </c:if>
-                        <form:textarea path="sections[${x.index}].content" cssClass="${fn:length(contestResourcesBean.sections)-1 eq x.index ? '': 'rte-editorPlaceholder'}" data-form-name="content" />
-                        <form:errors cssClass="invalid-feedback" path="sections[${x.index}].content" />
-                        <c:if test="${section.characterLimit  > 0}">
-                            <div class="inputLimitContainer">
-                                <span class="limit_characterCount"><!--  --></span>
-                                /&#160;<span class="limit_charactersMax">
-                                ${section.characterLimit} characters</span> characters
-                            </div>
-                        </c:if>
-                    </div>
-                </div>
-            </c:forEach>
-        </form:form>
+                </c:forEach>
+            </form:form>
+        </c:if>
 	</div>
 
 
@@ -201,6 +214,8 @@
 	</script>
 
 
-	<jsp:directive.include file="./footer.jspx"/>
+    <c:if test="${resourcePageEnabled}">
+        <jsp:directive.include file="./footer.jspx"/>
+    </c:if>
 </xcolab:layout>
 </jsp:root>

@@ -7,7 +7,7 @@
 		<a class="btn btn-primary" href="#" id="saveChangesButton">
 		SAVE ${currentTabWrapped.elementType}</a>
 		<xcolab:contestLink contest="${contestWrapper}" text="VIEW contest" cssClass="btn btn-primary" linkId="previewContestButton" target="_blank"/>
-		<a class="btn btn-gray" href="${currentTabWrapped.tabUrl}" id="saveChangesButton">DISCARD changes</a>
+		<a class="btn btn-gray" href="${currentTabWrapped.tabUrl}">DISCARD changes</a>
 	</div>
 
 	<script>

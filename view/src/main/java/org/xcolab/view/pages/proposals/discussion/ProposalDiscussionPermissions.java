@@ -1,15 +1,11 @@
 package org.xcolab.view.pages.proposals.discussion;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalTeamMember;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
-import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,15 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private final String discussionTabName;
-    private final ProposalContext proposalContext;
     private final Proposal proposal;
 
-    public ProposalDiscussionPermissions(HttpServletRequest request,
-            ProposalContext proposalContext) {
+    public ProposalDiscussionPermissions(HttpServletRequest request, Proposal proposal) {
         super(request);
-        this.proposalContext = proposalContext;
         this.discussionTabName = getTabName(request);
-        proposal = proposalContext.getProposal();
+        this.proposal = proposal;
     }
 
     private String getTabName(HttpServletRequest request) {
@@ -77,14 +70,11 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     }
 
     private boolean isUserFellowOrJudgeOrAdvisor() {
-        ContestPhase contestPhase = proposalContext.getContestPhase();
-        Proposal proposal = new Proposal(this.proposal, contestPhase);
-
-        Contest contestWrapper =  proposal.getContest();
+        Contest contest =  proposal.getContest();
 
         boolean isJudge = proposal.getIsUserAmongSelectedJudges(userId);
         boolean isFellow = proposal.isUserAmongFellows(userId);
-        boolean isAdvisor = contestWrapper.isUserAmongAdvisors(userId);
+        boolean isAdvisor = contest.isUserAmongAdvisors(userId);
 
         return isFellow || isJudge || isAdvisor;
     }

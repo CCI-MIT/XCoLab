@@ -38,6 +38,8 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.time.DateUtil;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
@@ -700,5 +702,11 @@ public class Contest extends AbstractContest implements Serializable {
 
     public void setMemberAgreedToTos(Member member, boolean agreed) {
         contestClient.setMemberAgreedToTos(getId(), member, agreed);
+    }
+
+    public void deleteResourceArticle() {
+        setResourceArticleId(0L);
+        contestClient.updateContest(this);
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
     }
 }

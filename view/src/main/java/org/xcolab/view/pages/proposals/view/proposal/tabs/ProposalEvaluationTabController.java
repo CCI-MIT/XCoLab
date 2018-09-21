@@ -66,7 +66,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             long discussionId = proposal.getResultsDiscussionIdOrCreate();
 
             ProposalDiscussionPermissions pdp = new ProposalDiscussionPermissions(request,
-                    proposalContext);
+                    proposalContext.getProposal());
             request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, pdp);
 
             model.addAttribute("evaluationDiscussionId", discussionId);

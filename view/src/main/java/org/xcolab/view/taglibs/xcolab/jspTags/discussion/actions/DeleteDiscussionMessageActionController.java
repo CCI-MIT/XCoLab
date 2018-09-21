@@ -9,10 +9,8 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
-        .DiscussionAuthorizationException;
 import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 
 import java.io.IOException;
 
@@ -26,28 +24,23 @@ public class DeleteDiscussionMessageActionController extends BaseDiscussionsActi
     public void deleteMessage(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long commentId,
             @RequestParam(value = "contestId", required = false) Long contestId)
-            throws IOException, DiscussionAuthorizationException {
+            throws IOException, CommentNotFoundException {
 
-        try {
-            checkPermissions(request, "User isn't allowed to delete message", commentId);
-        } catch (DiscussionAuthorizationException e) {
+        final CommentClient commentClient = CommentClientUtil.getClient();
+        Comment comment = commentClient.getComment(commentId);
+
+        DiscussionPermissions discussionPermissions = getDiscussionPermissions(request,
+                comment.getThread());
+
+        if (!discussionPermissions.getCanAdminMessage(comment)) {
             AlertMessage.danger("You are not allowed to delete this message.").flash(request);
             String redirectUrl = request.getHeader(HttpHeaders.REFERER);
             response.sendRedirect(redirectUrl);
             return;
         }
 
-        final CommentClient commentClient = CommentClientUtil.getClient();
-
         commentClient.deleteComment(commentId);
         String redirectUrl = request.getHeader(HttpHeaders.REFERER);
         response.sendRedirect(redirectUrl);
-    }
-
-    @Override
-    public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId)
-            throws CommentNotFoundException {
-        final Comment comment = CommentClientUtil.getComment(additionalId);
-        return permissions.getCanAdminMessage(comment);
     }
 }

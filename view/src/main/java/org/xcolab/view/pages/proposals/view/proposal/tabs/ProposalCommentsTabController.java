@@ -21,7 +21,7 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
             ProposalContext proposalContext) {
 
         ProposalDiscussionPermissions pdp = new ProposalDiscussionPermissions(request,
-                proposalContext);
+                proposalContext.getProposal());
         request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME, pdp);
 
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.COMMENTS);

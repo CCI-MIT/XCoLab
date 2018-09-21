@@ -114,6 +114,10 @@ public final class ContentsClient {
         return result;
     }
 
+    public static void deleteContentArticle(long contentArticleId) {
+        contentArticleResource.delete(contentArticleId).execute();
+    }
+
     public static boolean updateContentArticle(ContentArticle contentArticle) {
         final Boolean result =
                 contentArticleResource.update(contentArticle, contentArticle.getId())
