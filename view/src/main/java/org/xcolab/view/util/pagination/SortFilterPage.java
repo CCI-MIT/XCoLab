@@ -6,7 +6,7 @@ public class SortFilterPage {
     private int pageSize;
     private String filter;
     private String sortColumn;
-    private boolean sortAscending = true;
+    private boolean sortAscending = false;
 
     public int getPage() {
         return page;
