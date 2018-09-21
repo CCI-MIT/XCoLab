@@ -1,1 +1,1 @@
-ALTER TABLE contest__contest ADD COLUMN read_only_comments TINYINT(4) DEFAULT 0;
+ALTER TABLE contest__contest ADD COLUMN read_only_comments TINYINT(4) NOT NULL DEFAULT 0;
