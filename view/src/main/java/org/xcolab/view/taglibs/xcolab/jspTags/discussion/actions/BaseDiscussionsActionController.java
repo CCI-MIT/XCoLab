@@ -1,27 +1,35 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
-import org.xcolab.client.comment.exceptions.CommentNotFoundException;
+import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.proposals.ProposalClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
 import javax.servlet.http.HttpServletRequest;
 
 public abstract class BaseDiscussionsActionController {
 
-    public void checkPermissions(HttpServletRequest request, String accessDeniedMessage,
-            long additionalId) throws DiscussionAuthorizationException {
+    protected DiscussionPermissions getDiscussionPermissions(HttpServletRequest request,
+            CommentThread commentThread) {
+        final ProposalClient proposalClient = ProposalClientUtil.getClient();
 
-        DiscussionPermissions permissions = new DiscussionPermissions(request);
-
-        try {
-            if (!isUserAllowed(permissions, additionalId)) {
-                throw new DiscussionAuthorizationException(accessDeniedMessage);
+        if (commentThread.getCategory() == null) {
+            final Proposal proposal = getProposal(proposalClient, commentThread);
+            if (proposal != null) {
+                return new ProposalDiscussionPermissions(request, proposal);
             }
-        } catch (CommentNotFoundException e) {
-            throw new DiscussionAuthorizationException(accessDeniedMessage);
         }
+        return new DiscussionPermissions(request);
     }
 
-    public abstract boolean isUserAllowed(DiscussionPermissions permissions, long additionalId)
-            throws CommentNotFoundException;
+    protected Proposal getProposal(ProposalClient proposalClient, CommentThread commentThread) {
+        try {
+            return proposalClient.getProposalByThreadId(commentThread.getId());
+        } catch (ProposalNotFoundException e) {
+            return null;
+        }
+    }
 }

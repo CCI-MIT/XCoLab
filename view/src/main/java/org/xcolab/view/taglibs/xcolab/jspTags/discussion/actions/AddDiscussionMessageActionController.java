@@ -24,7 +24,6 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -76,11 +75,15 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             final ThreadClient threadClient = ThreadClientUtil.getClient();
             final CommentClient commentClient = CommentClientUtil.getClient();
             final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
-            final ProposalClient proposalClient = ProposalClientUtil.getClient();
 
             long threadId = Long.parseLong(newMessage.getThreadId());
+            CommentThread commentThread = threadClient.getThread(threadId);
 
-            checkPermissions(request, "User isn't allowed to add comment", 0L);
+            DiscussionPermissions discussionPermissions = getDiscussionPermissions(request, commentThread);
+
+            if (!discussionPermissions.getCanAddComment()) {
+                throw new DiscussionAuthorizationException("User isn't allowed to add comment");
+            }
 
             final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             final String body = HtmlUtil.cleanSome(newMessage.getDescription(), baseUri);
@@ -90,7 +93,6 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             comment.setAuthorUserId(userId);
             comment.setThreadId(threadId);
             comment = commentClient.createComment(comment);
-            CommentThread commentThread = threadClient.getThread(threadId);
 
             updateAnalyticsAndActivities(commentThread, comment, userId, request);
 
@@ -100,6 +102,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     activityClient.createActivityEntry(DiscussionThreadActivityType.COMMENT_ADDED,
                             userId, commentThread.getId(), comment.getId());
                 } else {
+                    final ProposalClient proposalClient = ProposalClientUtil.getClient();
                     final Proposal proposal = getProposal(proposalClient, commentThread);
                     if (proposal != null) {
                         //proposal
@@ -158,14 +161,6 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         }
     }
 
-    private Proposal getProposal(ProposalClient proposalClient, CommentThread commentThread) {
-        try {
-            return proposalClient.getProposalByThreadId(commentThread.getId());
-        } catch (ProposalNotFoundException e) {
-            return null;
-        }
-    }
-
     public void updateAnalyticsAndActivities(CommentThread thread, Comment comment, long userId,
             HttpServletRequest request) {
         int commentCount = CommentClientUtil.countCommentsByAuthor(userId);
@@ -175,10 +170,5 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     COMMENT_ANALYTICS_CATEGORY, COMMENT_ANALYTICS_ACTION, COMMENT_ANALYTICS_LABEL,
                     analyticsValue);
         }
-    }
-
-    @Override
-    public boolean isUserAllowed(DiscussionPermissions permissions, long additionalId) {
-        return permissions.getCanAddComment();
     }
 }
