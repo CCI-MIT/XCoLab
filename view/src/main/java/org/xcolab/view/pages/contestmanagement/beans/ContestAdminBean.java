@@ -1,7 +1,5 @@
 package org.xcolab.view.pages.contestmanagement.beans;
 
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;

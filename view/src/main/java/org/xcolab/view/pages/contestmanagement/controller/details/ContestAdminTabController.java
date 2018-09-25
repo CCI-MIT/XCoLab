@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelStringValue;
