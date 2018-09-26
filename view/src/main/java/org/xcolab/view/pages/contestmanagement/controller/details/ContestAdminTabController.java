@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
@@ -75,8 +75,8 @@ public class ContestAdminTabController extends AbstractTabController {
         return ContestModelSettingsBean.getAllModelRegions();
     }
 
-    @ModelAttribute("currentTabWrapped")
     @Override
+    @ModelAttribute("currentTabWrapped")
     public TabWrapper populateCurrentTabWrapped(HttpServletRequest request) {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         return tabWrapper;
@@ -84,13 +84,13 @@ public class ContestAdminTabController extends AbstractTabController {
 
     @GetMapping
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @RequestParam(required = false) Long contestId) {
+            Model model, Member member, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        model.addAttribute("contestAdminBean", new ContestAdminBean(getContest()));
+        model.addAttribute("contestAdminBean", new ContestAdminBean(ContestClientUtil.getContest(contestId)));
         return TAB_VIEW;
     }
 
@@ -103,8 +103,7 @@ public class ContestAdminTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        Contest c = getContest();
-        updateContestAdminBean.persist(c);
+        updateContestAdminBean.persist(ContestClientUtil.getContest(contestId));
         return "redirect:" + tab.getTabUrl(contestId);
     }
 }

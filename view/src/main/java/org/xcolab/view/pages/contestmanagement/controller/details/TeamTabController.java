@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTeamBean;
@@ -38,7 +39,7 @@ public class TeamTabController extends AbstractTabController {
 
     @GetMapping
     public String showTeamTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @RequestParam(required = false) Long contestId) {
+            Model model, Member member, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -46,7 +47,7 @@ public class TeamTabController extends AbstractTabController {
 
 
 
-        model.addAttribute("contestTeamBean", new ContestTeamBean(getContest()));
+        model.addAttribute("contestTeamBean", new ContestTeamBean(ContestClientUtil.getContest(contestId)));
         return TAB_VIEW;
     }
 
@@ -59,7 +60,7 @@ public class TeamTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        ContestTeamBean contestTeamBeam = new ContestTeamBean(request, getContest());
+        ContestTeamBean contestTeamBeam = new ContestTeamBean(request, ContestClientUtil.getContest(contestId));
         ContestTeamWrapper contestTeamWrapper = new ContestTeamWrapper(contestTeamBeam);
         contestTeamWrapper.updateContestTeamMembers();
         return "redirect:" + tab.getTabUrl(contestId);

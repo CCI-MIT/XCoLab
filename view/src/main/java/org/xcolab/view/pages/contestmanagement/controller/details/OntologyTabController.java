@@ -52,7 +52,7 @@ public class OntologyTabController extends AbstractTabController {
 
     @GetMapping
     public String showOntologyTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member) {
+            HttpServletResponse response, Model model, Member member, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -62,7 +62,7 @@ public class OntologyTabController extends AbstractTabController {
         model.addAttribute("ontologyTerms", ontologyWrapper.getOntologyTerms());
         model.addAttribute("ontologySpaces", ontologyWrapper.getSortedOntologySpaces());
         model.addAttribute("contestOntologyTerms",
-                ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(getContest()));
+                ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(ContestClientUtil.getContest(contestId)));
         return TAB_VIEW;
     }
 
@@ -78,7 +78,7 @@ public class OntologyTabController extends AbstractTabController {
         List<Long> selectedOntologyTerms =
                 IdListUtil.getIdsFromString(request.getParameter("selectedOntologyTerms"));
 
-        Contest contest = getContest();
+        Contest contest = ContestClientUtil.getContest(contestId);
         Long focusAreaId = contest.getFocusAreaId();
         if (focusAreaId == null) {
             FocusArea focusArea = new FocusArea();

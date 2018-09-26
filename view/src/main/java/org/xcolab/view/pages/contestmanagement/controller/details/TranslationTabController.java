@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.i18n.I18nUtils;
@@ -38,13 +39,13 @@ public class TranslationTabController extends AbstractTabController {
 
     @GetMapping("tab/TRANSLATIONS")
     public String showTranslationTab(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member) {
+            Model model, Member member, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
         if (!model.containsAttribute("contestTranslationBean")) {
-            Contest contest = getContest();
+            Contest contest = ContestClientUtil.getContest(contestId);
             model.addAttribute("contestTranslationBean", new ContestTranslationBean(contest));
         }
         model.addAttribute("i18nOptions", I18nUtils.getSelectList());
@@ -62,12 +63,12 @@ public class TranslationTabController extends AbstractTabController {
 
         if (result.hasErrors()) {
             AlertMessage.danger("Error while updating.").flash(request);
-            return showTranslationTab(request, response, model, member);
+            return showTranslationTab(request, response, model, member, contestId);
         }
 
-        final Contest contest = getContest();
+        final Contest contest = ContestClientUtil.getContest(contestId);
 
         contestTranslationBean.persist(contest);
-        return showTranslationTab(request, response, model, member);
+        return showTranslationTab(request, response, model, member, contestId);
     }
 }
