@@ -54,14 +54,7 @@ public class MessageLimitManager {
      */
     public boolean canSendMessages(int messagesToSend, long userId) {
         synchronized (getMutex(userId)) {
-
-            int messageLimit = getMessageLimit(userId);
-
-            final Timestamp yesterday = Timestamp.from(Instant.now().minus(Duration.ofDays(1)));
-
-            long count = messageDao.countByGiven(userId, null, null, null, yesterday);
-
-            return messageLimit >= count + messagesToSend;
+            return getNumberOfMessagesLeft(userId) >= messagesToSend;
         }
     }
 
@@ -72,7 +65,7 @@ public class MessageLimitManager {
 
         int count = messageDao.countByGiven(userId, null, null, null, yesterday);
 
-        return  messageLimit - count;
+        return messageLimit - count;
     }
 
     public int getMessageLimit(long userId) {
@@ -93,10 +86,16 @@ public class MessageLimitManager {
             if (isMoreThan2DaysOld(member)) {
                 messagesLimit = MESSAGES_DAILY_LIMIT;
             } else {
-                messagesLimit = MESSAGES_DAILY_LIMIT_FIRST_DAYS;;
+                messagesLimit = MESSAGES_DAILY_LIMIT_FIRST_DAYS;
             }
         }
-        return messagesLimit;
+        return messagesLimit + messagesReceivedInLast24Hours(userId);
+    }
+
+    private int messagesReceivedInLast24Hours(long userId) {
+        final Timestamp yesterday = Timestamp.from(Instant.now().minus(Duration.ofDays(1)));
+
+        return messageDao.countByGiven(null, userId, null, null, yesterday);
     }
 
     private boolean isMoreThan2DaysOld(User member) {
