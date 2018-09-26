@@ -87,7 +87,7 @@
                         <c:set value="${not empty currentCategory ? currentCategory.linkUrl : '/discussion'}"
                                var="baseUrl"/>
                         <th>
-                            <c:set var="sortURL" value="${baseUrl}?sortColumn=TITLE&amp;sortAscending=${!sortAscending}" />
+                            <c:set var="sortURL" value="${baseUrl}?sortColumn=TITLE&amp;sortAscending=${sortColumn == 'TITLE' ? not sortAscending : false }" />
 
                             <a class="js-Tooltip" title="click to sort by title" href="${sortURL }">
                                 <spring:message code="discussion.categorypage.table.title"/>
@@ -97,7 +97,7 @@
                         </th>
 
                         <th>
-                            <c:set var="sortURL" value="${baseUrl}?sortColumn=REPLIES&amp;sortAscending=${!sortAscending}" />
+                            <c:set var="sortURL" value="${baseUrl}?sortColumn=REPLIES&amp;sortAscending=${sortColumn == 'REPLIES' ? not sortAscending : false }" />
 
                             <a class="js-Tooltip" title="click to sort by replies" href="${sortURL }">
                                 <spring:message code="discussion.categorypage.table.replies"/>
@@ -106,7 +106,7 @@
                         </th>
 
                         <th>
-                            <c:set var="sortURL" value="${baseUrl}?sortColumn=LAST_COMMENTER&amp;sortAscending=${!sortAscending}" />
+                            <c:set var="sortURL" value="${baseUrl}?sortColumn=LAST_COMMENTER&amp;sortAscending=${sortColumn == 'LAST_COMMENTER' ? not sortAscending : false }" />
 
                             <a class="js-Tooltip" title="click to sort by last commenter" href="${sortURL }">
                                 <spring:message code="discussion.categorypage.table.lastcommenter"/>
@@ -115,7 +115,7 @@
                         </th>
 
                         <th>
-                            <c:set var="sortURL" value="${baseUrl}?sortColumn=DATE&amp;sortAscending=${!sortAscending}" />
+                            <c:set var="sortURL" value="${baseUrl}?sortColumn=DATE&amp;sortAscending=${sortColumn == 'DATE' ? not sortAscending : false }" />
 
                             <a class="js-Tooltip" title="click to sort by date" href="${sortURL }">
                                 <spring:message code="discussion.categorypage.table.date" />
