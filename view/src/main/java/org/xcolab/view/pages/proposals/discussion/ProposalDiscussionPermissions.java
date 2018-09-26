@@ -34,9 +34,8 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     @Override
     public boolean getCanSeeAddCommentButton() {
-        final Boolean isReadyOnly = ConfigurationAttributeKey.PROPOSALS_COMMENTS_READ_ONLY.get();
-        if (isReadyOnly) {
-            return getCanAdminAll();
+        if (isReadOnly()) {
+            return false;
         }
 
         boolean isEvaluationTab = ProposalTab.EVALUATION.name().equals(discussionTabName);
@@ -48,8 +47,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     @Override
     public boolean getCanAddComment() {
-        final Boolean isReadyOnly = ConfigurationAttributeKey.PROPOSALS_COMMENTS_READ_ONLY.get();
-        if (isReadyOnly && !getCanAdminAll()) {
+        if (isReadOnly()) {
             return false;
         }
 
@@ -88,5 +86,18 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
                 .anyMatch(id -> id == userId);
 
         return isAuthor || isMember;
+    }
+
+    private boolean isReadOnly() {
+        boolean isReadOnly = ConfigurationAttributeKey.PROPOSALS_COMMENTS_READ_ONLY.get();
+        if (isReadOnly) {
+            return getCanAdminAll();
+        }
+
+        isReadOnly = proposal.getContest().getReadOnlyComments();
+        if (isReadOnly && isUserFellowOrJudgeOrAdvisor()) {
+            return false;
+        }
+        return isReadOnly;
     }
 }

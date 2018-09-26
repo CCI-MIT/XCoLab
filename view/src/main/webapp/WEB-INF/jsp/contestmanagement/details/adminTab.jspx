@@ -11,6 +11,7 @@
 	<!--@elvariable id="contestLevelSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 	<!--@elvariable id="modelIdsSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 	<!--@elvariable id="contestTypeSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
+	<!--@elvariable id="readOnlyCommentsSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 	<!--@elvariable id="modelRegionsSelectionItems" type="java.util.List<org.xcolab.commons.html.LabelValue>"-->
 
 	<jsp:directive.include file="../init.jspx" />
@@ -233,6 +234,25 @@
                         <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
                     <form:errors cssClass="invalid-feedback" path="contestType" />
+                </div>
+            </div>
+
+            <div class="c-Box c-Box--colorTan">
+                <div class="c-Box__body">
+                    <label>
+                        <strong>Read-only comments</strong>
+                        <a class="ml-1" data-toggle="collapse" href="#js-Help__readOnlyComments">
+                            <collab:image src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
+                    </label>
+                    <div class="p-Proposal__formBox__helpText collapse" id="js-Help__readOnlyComments">
+                        Select if comments of proposals are read-only or not. In case of read-only, only admins, fellows, judges, or advisors are allowed to add comments.
+                    </div>
+                    <form:select path="readOnlyComments" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
+                        <form:option value="true" label="Read only" />
+                        <form:option value="false" label="Read and write" />
+                    </form:select>
+                    <form:errors cssClass="invalid-feedback" path="readOnlyComments" />
                 </div>
             </div>
         </form:form>

@@ -54,6 +54,7 @@ public abstract class AbstractContest {
     private Boolean showInListView;
     private Boolean showInOutlineView;
     private Boolean hideribbons;
+    private Boolean readOnlyComments;
     private Long resourcearticleid;
 
     public AbstractContest() {}
@@ -108,6 +109,7 @@ public abstract class AbstractContest {
         this.showInListView = value.showInListView;
         this.showInOutlineView = value.showInOutlineView;
         this.hideribbons = value.hideribbons;
+        this.readOnlyComments = value.readOnlyComments;
         this.resourcearticleid = value.resourcearticleid;
     }
 
@@ -126,7 +128,7 @@ public abstract class AbstractContest {
             Long defaultmodelid, String othermodels, String defaultmodelsettings, Double points,
             Long defaultparentpointtype, String pointdistributionstrategy, String emailtemplateurl,
             Boolean showInTileView, Boolean showInListView, Boolean showInOutlineView,
-            Boolean hideribbons, Long resourcearticleid) {
+            Boolean hideribbons, Boolean readOnlyComments, Long resourcearticleid) {
         this.id = id;
         this.contesttypeid = contesttypeid;
         this.question = question;
@@ -175,6 +177,7 @@ public abstract class AbstractContest {
         this.showInListView = showInListView;
         this.showInOutlineView = showInOutlineView;
         this.hideribbons = hideribbons;
+        this.readOnlyComments = readOnlyComments;
         this.resourcearticleid = resourcearticleid;
     }
 
@@ -523,6 +526,14 @@ public abstract class AbstractContest {
         this.hideribbons = hideribbons;
     }
 
+    public Boolean getReadOnlyComments() {
+        return readOnlyComments;
+    }
+
+    public void setReadOnlyComments(Boolean readOnlyComments) {
+        this.readOnlyComments = readOnlyComments;
+    }
+
     public Long getResourceArticleId() {
         return this.resourcearticleid;
     }
@@ -593,7 +604,7 @@ public abstract class AbstractContest {
                 usepermissions, contestcreationstatus, defaultmodelid, othermodels,
                 defaultmodelsettings, getPoints(), defaultparentpointtype,
                 pointdistributionstrategy, emailtemplateurl, showInTileView, showInListView,
-                showInOutlineView, hideribbons, resourcearticleid);
+                showInOutlineView, hideribbons, readOnlyComments, resourcearticleid);
     }
 
     @Override
@@ -654,6 +665,7 @@ public abstract class AbstractContest {
                 .equals(showInListView, that.showInListView) && Objects
                 .equals(showInOutlineView, that.showInOutlineView) && Objects
                 .equals(hideribbons, that.hideribbons) && Objects
+                .equals(readOnlyComments, that.readOnlyComments) && Objects
                 .equals(resourcearticleid, that.resourcearticleid);
     }
 
@@ -674,7 +686,7 @@ public abstract class AbstractContest {
                 + ", " + contestcreationstatus + ", " + defaultmodelid + ", " + othermodels + ", "
                 + defaultmodelsettings + ", " + points + ", " + defaultparentpointtype + ", "
                 + pointdistributionstrategy + ", " + emailtemplateurl + ", " + showInTileView + ", "
-                + showInListView + ", " + showInOutlineView + ", " + hideribbons + ", "
+                + showInListView + ", " + showInOutlineView + ", " + hideribbons + ", " + readOnlyComments + ", "
                 + resourcearticleid + ")";
     }
 }
