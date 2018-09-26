@@ -526,7 +526,9 @@ public abstract class AbstractContest {
         this.hideribbons = hideribbons;
     }
 
-    public Boolean getReadOnlyComments() { return readOnlyComments; }
+    public Boolean getReadOnlyComments() {
+        return readOnlyComments;
+    }
 
     public void setReadOnlyComments(Boolean readOnlyComments) {
         this.readOnlyComments = readOnlyComments;

@@ -246,7 +246,7 @@
                         </a>
                     </label>
                     <div class="p-Proposal__formBox__helpText collapse" id="js-Help__readOnlyComments">
-                        Select if comments of proposals are read-only or not. In case of read-only, only admin fellows are allowed to add comments.
+                        Select if comments of proposals are read-only or not. In case of read-only, only admins, fellows, judges, or advisors are allowed to add comments.
                     </div>
                     <form:select path="readOnlyComments" cssClass="form-control" cssErrorClass="form-control cb-form-has-error">
                         <form:option value="true" label="Read only" />
