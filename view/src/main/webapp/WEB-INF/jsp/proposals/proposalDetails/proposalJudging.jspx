@@ -44,7 +44,7 @@
             </c:when>
         </c:choose>
 
-        <div style="font-size:10pt; font-style: italic; margin-top: 10px;">
+        <div style="font-size:10pt; font-style: italic; margin-top: 11px;">
             Please
             <ol>
                 <li>Review the proposal above;</li>
@@ -87,6 +87,9 @@
         </c:if>
 
         <h3 style="margin-top: 10px;">${proposalsPermissions.canJudgeActions ? 'Judge' : ''} Feedback</h3>
+        <div style="font-size:10pt; font-style: italic; margin-top: 11px;">
+            The comments you include below will be sent directly to the proposal author and publicly posted, along with comments from the other judges.
+        </div>
 
         <form:textarea path="comment" cssClass="c-Comment__box form-control" style="width:100%; height: 178px;"
                        placeholder="Write your review here..." />
