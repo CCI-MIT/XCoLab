@@ -3,7 +3,6 @@ package org.xcolab.entity.utils.notifications.proposal;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -18,7 +17,6 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     private static final String DEFAULT_TEMPLATE_NAME = "PROPOSAL_MEMBERSHIP_INVITE_DEFAULT";
 
     private static final String MESSAGE_PLACEHOLDER = "message";
-    private static final String PROPOSAL_TEAM_LINK_PLACEHOLDER = "proposal-team-link";
     private final String message;
     private ProposalMembershipRequestTemplate templateWrapper;
 
@@ -64,9 +62,6 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
             switch (tag.nodeName()) {
                 case MESSAGE_PLACEHOLDER:
                     return new TextNode(message, "");
-                case PROPOSAL_TEAM_LINK_PLACEHOLDER:
-                    String url = ProposalMembershipInviteNotification.this.baseUrl + getProposal().getProposalUrl() + "/tab/TEAM";
-                    return parseXmlNode(String.format(LINK_FORMAT_STRING, url, "Proposal"));
                 default:
             }
             return null;
