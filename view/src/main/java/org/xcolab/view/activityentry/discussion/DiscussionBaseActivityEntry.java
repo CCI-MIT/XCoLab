@@ -10,8 +10,6 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 
 public abstract class DiscussionBaseActivityEntry extends AbstractActivityEntryContentProvider {
 
-    protected ActivityEntry activityEntry;
-
     private CommentThread thread;
 
     protected final ResourceMessageResolver resourceMessageResolver;
@@ -26,7 +24,7 @@ public abstract class DiscussionBaseActivityEntry extends AbstractActivityEntryC
         try {
             thread = ThreadClientUtil.getThread(getActivityEntry().getCategoryId());
         } catch (ThreadNotFoundException e) {
-            throw new ActivityInitializationException(activityEntry.getId(), e);
+            throw new ActivityInitializationException(getActivityEntry().getId(), e);
         }
     }
 
