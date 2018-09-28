@@ -27,6 +27,9 @@ import java.time.LocalDateTime;
 @Service
 public class UserService {
 
+    @Autowired
+    private TrackingClient trackingClient;
+
     private static final int MAX_SCREEN_NAME_LENGTH = 26;
 
     private final UserDao memberDao;
@@ -105,7 +108,7 @@ public class UserService {
         loginLog.setIpAddress(ipAddress);
         loginLog.setEntryUrl(StringUtils.left(redirectUrl, 250));
 
-        final Location location = TrackingClient.getLocationForIp(ipAddress);
+        final Location location = trackingClient.getLocationForIp(ipAddress);
         if (location != null) {
             loginLog.setCountry(location.getCountry());
             loginLog.setCity(location.getCity());

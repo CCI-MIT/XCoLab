@@ -205,7 +205,7 @@
                          The configuration format is the same as for the standalone code generator -->
                     <configuration>
 
-                        <logging>WARN</logging>
+                        <logging>DEBUG</logging>
 
                         <!-- JDBC connection parameters -->
                         <jdbc>

@@ -2,6 +2,7 @@ package org.xcolab.view.auth.tracking;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -21,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class UserTrackingService {
 
+    @Autowired
+    private TrackingClient trackingClient;
+
     private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT, HttpHeaders.REFERER,
             HttpHeaders.HOST, HttpHeaders.ORIGIN, HttpHeaders.CONNECTION,
             HttpHeaders.CONTENT_LENGTH, "X-CSRF-TOKEN"};
@@ -38,7 +42,7 @@ public class UserTrackingService {
 
         final Long userId = loggedInMember != null ? loggedInMember.getId() : null;
         final TrackedVisit trackedVisit =
-                TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, userId);
+                trackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, userId);
         return new AsyncResult<>(trackedVisit);
     }
 

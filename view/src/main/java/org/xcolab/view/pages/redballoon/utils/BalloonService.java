@@ -50,6 +50,9 @@ public class BalloonService {
     private final AuthenticationService authenticationService;
 
     @Autowired
+    private TrackingClient trackingClient;
+
+    @Autowired
     public BalloonService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
@@ -191,7 +194,7 @@ public class BalloonService {
         but.setUserAgent(userAgent);
 
         // populate GeoLocation data
-        Location location = TrackingClient.getLocationForIp(remoteIp);
+        Location location = trackingClient.getLocationForIp(remoteIp);
         if (location != null) {
             but.setCity(location.getCity());
             but.setCountry(location.getCountry());

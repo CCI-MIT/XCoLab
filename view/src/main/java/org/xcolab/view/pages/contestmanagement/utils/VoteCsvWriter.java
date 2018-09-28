@@ -65,8 +65,11 @@ public class VoteCsvWriter extends CsvResponseWriter {
             "Vote is valid (manual override)",
             "manualValidationResult");
 
-    public VoteCsvWriter(HttpServletResponse response) throws IOException {
+    private TrackingClient trackingClient;
+
+    public VoteCsvWriter(HttpServletResponse response, TrackingClient trackingClient) throws IOException {
         super("votingReport", COLUMN_NAMES, response);
+        this.trackingClient = trackingClient;
     }
 
     public void writeVotes(List<ProposalVote> proposalVotes) {
@@ -129,7 +132,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
     private void addLocationForIp(List<String> row, String ipAddress) {
         Location loginLocation = null;
         if (StringUtils.isNotEmpty(ipAddress)) {
-            loginLocation = TrackingClient.getLocationForIp(ipAddress);
+            loginLocation = trackingClient.getLocationForIp(ipAddress);
         }
         if (loginLocation != null) {
             addValue(row, loginLocation.getCountryNameInEnglish());

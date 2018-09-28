@@ -18,8 +18,8 @@ public class TrackingClientMockerHelper {
     }
 
     public static void mockTrackingClient() throws Exception {
-        PowerMockito.mockStatic(TrackingClient.class);
-        Mockito.when(TrackingClient.addTrackedVisit(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyLong()))
+        TrackingClient trackingClient = PowerMockito.mock(TrackingClient.class);
+        Mockito.when(trackingClient.addTrackedVisit(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyLong()))
                 .thenAnswer(invocation -> getDefaultTrackedVisit());
     }
 }

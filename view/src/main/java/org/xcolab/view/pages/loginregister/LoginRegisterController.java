@@ -49,6 +49,9 @@ public class LoginRegisterController {
     private final RecaptchaValidator recaptchaValidator;
 
     @Autowired
+    private TrackingClient trackingClient;
+
+    @Autowired
     public LoginRegisterController(LoginRegisterService loginRegisterService,
             ResourceMessageResolver resourceMessageResolver) {
         this.loginRegisterService = loginRegisterService;
@@ -113,7 +116,7 @@ public class LoginRegisterController {
 
     private String getCountryCodeFromRemoteAddress(String ipAddr) throws UserLocationNotResolvableException {
         try {
-            Location location = TrackingClient.getLocationForIp(ipAddr);
+            Location location = trackingClient.getLocationForIp(ipAddr);
             if (location != null) {
                 return location.getCountry();
             }
