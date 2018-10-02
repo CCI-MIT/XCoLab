@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.model.tables.pojos.LoginLog;
 import org.xcolab.model.tables.pojos.User;
@@ -108,7 +108,7 @@ public class UserService {
         loginLog.setIpAddress(ipAddress);
         loginLog.setEntryUrl(StringUtils.left(redirectUrl, 250));
 
-        final Location location = trackingClient.getLocationForIp(ipAddress);
+        final ILocation location = trackingClient.getLocationForIp(ipAddress);
         if (location != null) {
             loginLog.setCountry(location.getCountry());
             loginLog.setCity(location.getCity());

@@ -7,7 +7,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.BalloonUserTracking;
+import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
 import org.xcolab.service.tracking.exceptions.NotFoundException;
 
 import java.util.List;
@@ -25,19 +25,19 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
     }
 
     @Override
-    public BalloonUserTracking getBalloonUserTrackingByUuid(String uuid) throws NotFoundException {
+    public IBalloonUserTracking getBalloonUserTrackingByUuid(String uuid) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(BALLOON_USER_TRACKING)
                 .where(BALLOON_USER_TRACKING.UUID.eq(uuid)).fetchOne();
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(BalloonUserTracking.class);
+        return record.into(IBalloonUserTracking.class);
 
     }
 
     @Override
-    public List<BalloonUserTracking> list(String email, String context) {
+    public List<IBalloonUserTracking> list(String email, String context) {
         final SelectQuery<Record> query =
                 dslContext.select().from(BALLOON_USER_TRACKING).getQuery();
 
@@ -49,12 +49,12 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
             query.addConditions(BALLOON_USER_TRACKING.BALLOON_LINK_CONTEXT.eq(context));
         }
 
-        return query.fetchInto(BalloonUserTracking.class);
+        return query.fetchInto(IBalloonUserTracking.class);
 
     }
 
     @Override
-    public boolean update(BalloonUserTracking balloonUserTracking) {
+    public boolean update(IBalloonUserTracking balloonUserTracking) {
         return dslContext.update(BALLOON_USER_TRACKING)
                 .set(BALLOON_USER_TRACKING.UUID, balloonUserTracking.getUuid())
                 .set(BALLOON_USER_TRACKING.EMAIL, balloonUserTracking.getEmail())
@@ -77,7 +77,7 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
     }
 
     @Override
-    public BalloonUserTracking create(BalloonUserTracking balloonUserTracking) {
+    public IBalloonUserTracking create(IBalloonUserTracking balloonUserTracking) {
         this.dslContext.insertInto(BALLOON_USER_TRACKING)
                 .set(BALLOON_USER_TRACKING.UUID, balloonUserTracking.getUuid())
                 .set(BALLOON_USER_TRACKING.EMAIL, balloonUserTracking.getEmail())
@@ -109,5 +109,4 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
                 .where(BALLOON_USER_TRACKING.UUID.eq(uuid))
                 .execute() > 0;
     }
-
 }

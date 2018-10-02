@@ -21,7 +21,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.commons.servlet.RequestParamUtil;
@@ -116,7 +116,7 @@ public class LoginRegisterController {
 
     private String getCountryCodeFromRemoteAddress(String ipAddr) throws UserLocationNotResolvableException {
         try {
-            Location location = trackingClient.getLocationForIp(ipAddr);
+            ILocation location = trackingClient.getLocationForIp(ipAddr);
             if (location != null) {
                 return location.getCountry();
             }

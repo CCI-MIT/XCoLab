@@ -7,7 +7,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.tracking.pojo.TrackedVisit;
+import org.xcolab.client.tracking.pojo.ITrackedVisit;
 import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.view.auth.AuthenticationContext;
 
@@ -56,7 +56,7 @@ public class UserTrackingFilter extends OncePerRequestFilter {
         Cookie userTrackingCookie = WebUtils.getCookie(request, COOKIE_NAME);
         String uuid = userTrackingCookie != null ? userTrackingCookie.getValue() : null;
 
-        final Future<TrackedVisit> trackedVisitFuture = userTrackingService
+        final Future<ITrackedVisit> trackedVisitFuture = userTrackingService
                 .trackVisitor(request, uuid, realMemberOrNull, originalUri,
                         request.getHeader(HttpHeaders.REFERER));
 
@@ -67,7 +67,7 @@ public class UserTrackingFilter extends OncePerRequestFilter {
             //If no tracking cookie is set yet, we need to wait for the TrackedVisit
             // that is being generated
             try {
-                final TrackedVisit trackedVisit = trackedVisitFuture.get();
+                final ITrackedVisit trackedVisit = trackedVisitFuture.get();
                 userTrackingCookie =  new Cookie(COOKIE_NAME, trackedVisit.getVisitorUuid());
                 userTrackingCookie.setHttpOnly(true);
                 userTrackingCookie.setMaxAge((int) COOKIE_MAX_AGE);

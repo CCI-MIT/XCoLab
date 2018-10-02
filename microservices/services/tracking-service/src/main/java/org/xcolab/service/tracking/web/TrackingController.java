@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.tracking.pojo.ITrackedVisit;
 import org.xcolab.model.tables.pojos.TrackedVisit;
 import org.xcolab.service.tracking.service.TrackedVisitService;
 
@@ -21,7 +22,7 @@ public class TrackingController {
     }
 
     @RequestMapping(value = "/trackedVisits", method = RequestMethod.POST)
-    public TrackedVisit createTrackedVisit(@RequestBody TrackedVisit trackedVisit,
+    public ITrackedVisit createTrackedVisit(@RequestBody TrackedVisit trackedVisit,
             @RequestParam(required = false) Long userId) {
         return trackedVisitService.createTrackedVisit(trackedVisit, userId);
     }

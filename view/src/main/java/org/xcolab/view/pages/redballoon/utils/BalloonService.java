@@ -18,7 +18,7 @@ import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.auth.AuthenticationService;
@@ -194,7 +194,7 @@ public class BalloonService {
         but.setUserAgent(userAgent);
 
         // populate GeoLocation data
-        Location location = trackingClient.getLocationForIp(remoteIp);
+        ILocation location = trackingClient.getLocationForIp(remoteIp);
         if (location != null) {
             but.setCity(location.getCity());
             but.setCountry(location.getCountry());

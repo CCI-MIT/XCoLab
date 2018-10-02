@@ -109,7 +109,7 @@
 
                         <!-- Generator parameters -->
                         <generator>
-                            <name>org.jooq.util.JavaGenerator</name>
+                            <name>org.xcolab.service.utils.db.jooq.generator.XColabGenerator</name>
                             <database>
                                 <name>org.jooq.util.mysql.MySQLDatabase</name>
                                 <includes>empty</includes>
@@ -126,9 +126,11 @@
                             </database>
                             <generate>
                                 <pojos>false</pojos>
+                                <daos>false</daos>
                                 <tables>false</tables>
-                                <interfaces>true</interfaces>
                                 <records>false</records>
+                                <relations>false</relations>
+                                <interfaces>true</interfaces>
                             </generate>
                             <target>
                                 <packageName>org.xcolab.model</packageName>

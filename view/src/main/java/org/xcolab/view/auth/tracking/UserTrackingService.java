@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.client.tracking.pojo.TrackedVisit;
+import org.xcolab.client.tracking.pojo.ITrackedVisit;
 
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -33,7 +33,7 @@ public class UserTrackingService {
 
 
     @Async
-    public Future<TrackedVisit> trackVisitor(HttpServletRequest request, String uuid, Member loggedInMember,
+    public Future<ITrackedVisit> trackVisitor(HttpServletRequest request, String uuid, Member loggedInMember,
             String url, String referer) {
 
         String browser = request.getHeader(HttpHeaders.USER_AGENT);
@@ -41,7 +41,7 @@ public class UserTrackingService {
         String headers = getHeadersAsString(request);
 
         final Long userId = loggedInMember != null ? loggedInMember.getId() : null;
-        final TrackedVisit trackedVisit =
+        final ITrackedVisit trackedVisit =
                 trackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, userId);
         return new AsyncResult<>(trackedVisit);
     }
@@ -118,5 +118,4 @@ public class UserTrackingService {
             return uuid;
         }
     }
-
 }

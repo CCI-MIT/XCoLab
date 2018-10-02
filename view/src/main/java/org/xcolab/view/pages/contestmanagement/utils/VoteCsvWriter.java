@@ -17,7 +17,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
@@ -130,7 +130,7 @@ public class VoteCsvWriter extends CsvResponseWriter {
     }
 
     private void addLocationForIp(List<String> row, String ipAddress) {
-        Location loginLocation = null;
+        ILocation loginLocation = null;
         if (StringUtils.isNotEmpty(ipAddress)) {
             loginLocation = trackingClient.getLocationForIp(ipAddress);
         }

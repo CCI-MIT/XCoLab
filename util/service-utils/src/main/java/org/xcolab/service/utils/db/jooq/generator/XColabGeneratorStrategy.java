@@ -34,11 +34,23 @@ public class XColabGeneratorStrategy extends JooqGeneratorStrategy {
     public List<String> getJavaClassImplements(Definition definition, Mode mode) {
         List<String> list = super.getJavaClassImplements(definition, mode);
 
-        if(mode == Mode.POJO) {
+        if (mode == Mode.POJO) {
             String clientName = definition.getOutputName().substring(0, definition.getOutputName().indexOf(PREFIX_SEPARATOR));
-            list.add("org.xcolab.client." + clientName + ".pojo." + getJavaClassName(definition, Mode.INTERFACE));
+            if (clientName.contains("tracking")) { //TODO: COLAB-2918: remove when new client/server architecture is used for all services
+                list.add("org.xcolab.client." + clientName + ".pojo." + getJavaClassName(definition, Mode.INTERFACE));
+            }
         }
 
         return list;
+    }
+
+    @Override
+    public String getJavaPackageName(Definition definition, Mode mode) {
+        String packageName = super.getJavaPackageName(definition, mode);
+
+        if(mode == Mode.INTERFACE) {
+            packageName = packageName.replace(".tables.interfaces", "");
+        }
+        return packageName;
     }
 }

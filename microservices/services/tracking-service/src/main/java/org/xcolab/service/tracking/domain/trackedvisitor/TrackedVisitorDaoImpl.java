@@ -6,7 +6,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.TrackedVisitor;
+import org.xcolab.client.tracking.pojo.ITrackedVisitor;
 
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ public class TrackedVisitorDaoImpl implements org.xcolab.service.tracking.domain
     }
 
     @Override
-    public Optional<TrackedVisitor> getByUuid(String uuid) {
+    public Optional<ITrackedVisitor> getByUuid(String uuid) {
         final Record record = dslContext.select()
                 .from(TRACKED_VISITOR)
                 .where(TRACKED_VISITOR.UUID.eq(uuid))
@@ -31,11 +31,11 @@ public class TrackedVisitorDaoImpl implements org.xcolab.service.tracking.domain
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(TrackedVisitor.class));
+        return Optional.of(record.into(ITrackedVisitor.class));
     }
 
     @Override
-    public Optional<TrackedVisitor> getByUserId(long userId) {
+    public Optional<ITrackedVisitor> getByUserId(long userId) {
         final Record record = dslContext.select()
                 .from(TRACKED_VISITOR)
                 .where(TRACKED_VISITOR.USER_ID.eq(userId))
@@ -43,11 +43,11 @@ public class TrackedVisitorDaoImpl implements org.xcolab.service.tracking.domain
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(TrackedVisitor.class));
+        return Optional.of(record.into(ITrackedVisitor.class));
     }
 
     @Override
-    public TrackedVisitor create(TrackedVisitor trackedVisitor) {
+    public ITrackedVisitor create(ITrackedVisitor trackedVisitor) {
         dslContext.insertInto(TRACKED_VISITOR)
                 .set(TRACKED_VISITOR.UUID, trackedVisitor.getUuid())
                 .set(TRACKED_VISITOR.USER_ID, trackedVisitor.getUserId())
@@ -58,7 +58,7 @@ public class TrackedVisitorDaoImpl implements org.xcolab.service.tracking.domain
     }
 
     @Override
-    public boolean update(TrackedVisitor pojo) {
+    public boolean update(ITrackedVisitor pojo) {
         return dslContext.update(TRACKED_VISITOR)
                 .set(TRACKED_VISITOR.USER_ID, pojo.getUserId())
                 .where(TRACKED_VISITOR.UUID.eq(pojo.getUuid()))

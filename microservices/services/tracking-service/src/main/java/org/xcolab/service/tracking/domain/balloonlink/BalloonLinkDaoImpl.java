@@ -6,7 +6,7 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.BalloonLink;
+import org.xcolab.client.tracking.pojo.IBalloonLink;
 import org.xcolab.service.tracking.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -21,7 +21,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
     private DSLContext dslContext;
 
     @Override
-    public BalloonLink getBalloonLink(String uuid) throws NotFoundException {
+    public IBalloonLink getBalloonLink(String uuid) throws NotFoundException {
 
         final Record record = dslContext.select()
                 .from(BALLOON_LINK)
@@ -29,11 +29,11 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(BalloonLink.class);
+        return record.into(IBalloonLink.class);
     }
 
     @Override
-    public List<BalloonLink> findByGiven(PaginationHelper paginationHelper, String uuid) {
+    public List<IBalloonLink> findByGiven(PaginationHelper paginationHelper, String uuid) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(BALLOON_LINK)
                 .getQuery();
@@ -43,11 +43,11 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
         }
 
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(BalloonLink.class);
+        return query.fetchInto(IBalloonLink.class);
     }
 
     @Override
-    public boolean update(BalloonLink balloonLink) {
+    public boolean update(IBalloonLink balloonLink) {
         return dslContext.update(BALLOON_LINK)
                 .set(BALLOON_LINK.UUID, balloonLink.getUuid())
                 .set(BALLOON_LINK.TARGET_URL, balloonLink.getTargetUrl())
@@ -59,7 +59,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
     }
 
     @Override
-    public BalloonLink create(BalloonLink balloonLink) {
+    public IBalloonLink create(IBalloonLink balloonLink) {
         this.dslContext.insertInto(BALLOON_LINK)
                 .set(BALLOON_LINK.UUID, balloonLink.getUuid())
                 .set(BALLOON_LINK.TARGET_URL, balloonLink.getTargetUrl())

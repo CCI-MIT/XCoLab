@@ -8,7 +8,10 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class TrackedVisit implements Serializable {
+/*
+ * TODO: COLAB-2918: remove duplicate class
+ */
+public class TrackedVisit implements ITrackedVisit {
 
     public static final TypeProvider<TrackedVisit> TYPES = new TypeProvider<>(TrackedVisit.class,
             new ParameterizedTypeReference<List<TrackedVisit>>() {});

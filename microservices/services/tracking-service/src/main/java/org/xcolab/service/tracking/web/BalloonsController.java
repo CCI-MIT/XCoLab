@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.BalloonLink;
-import org.xcolab.model.tables.pojos.BalloonText;
-import org.xcolab.model.tables.pojos.BalloonUserTracking;
+import org.xcolab.client.tracking.pojo.IBalloonLink;
+import org.xcolab.client.tracking.pojo.IBalloonText;
+import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
 import org.xcolab.service.tracking.domain.balloonlink.BalloonLinkDao;
 import org.xcolab.service.tracking.domain.balloontext.BalloonTextDao;
 import org.xcolab.service.tracking.domain.balloonusertracking.BalloonUserTrackingDao;
@@ -37,13 +37,13 @@ public class BalloonsController {
     }
 
     @PostMapping("/balloonLinks")
-    public BalloonLink createBalloonLink(@RequestBody BalloonLink balloonLink) {
+    public IBalloonLink createBalloonLink(@RequestBody IBalloonLink balloonLink) {
         return this.balloonLinkDao.create(balloonLink);
     }
 
 
     @PutMapping("/balloonLinks/{uuid}")
-    public boolean updateBalloonLink(@RequestBody BalloonLink balloonLink,
+    public boolean updateBalloonLink(@RequestBody IBalloonLink balloonLink,
                                      @PathVariable("uuid") String uuid) throws NotFoundException {
 
         if (balloonLinkDao.getBalloonLink(uuid) == null) {
@@ -54,7 +54,7 @@ public class BalloonsController {
     }
 
     @GetMapping("/balloonLinks/{uuid}")
-    public BalloonLink getBalloonLink(@PathVariable("uuid") String uuid) throws NotFoundException {
+    public IBalloonLink getBalloonLink(@PathVariable("uuid") String uuid) throws NotFoundException {
         if (uuid == null) {
             throw new NotFoundException();
         } else {
@@ -63,32 +63,32 @@ public class BalloonsController {
     }
 
     @GetMapping("/balloonLinks")
-    public List<BalloonLink> listBalloonLinks(@RequestParam(required = false) String memberUuid) {
+    public List<IBalloonLink> listBalloonLinks(@RequestParam(required = false) String memberUuid) {
         return this.balloonLinkDao.findByGiven(PaginationHelper.EVERYTHING, memberUuid);
     }
 
     @PostMapping("/balloonUserTrackings")
-    public BalloonUserTracking createBalloonUserTracking(
-            @RequestBody BalloonUserTracking balloonUserTracking) {
+    public IBalloonUserTracking createBalloonUserTracking(
+            @RequestBody IBalloonUserTracking balloonUserTracking) {
 
         return this.balloonUserTrackingDao.create(balloonUserTracking);
     }
 
     @GetMapping("/balloonUserTrackings/{uuid}")
-    public BalloonUserTracking getBalloonUserTracking(@PathVariable String uuid)
+    public IBalloonUserTracking getBalloonUserTracking(@PathVariable String uuid)
             throws NotFoundException {
         return this.balloonUserTrackingDao.getBalloonUserTrackingByUuid(uuid);
     }
 
     @GetMapping("/balloonUserTrackings")
-    public List<BalloonUserTracking> listBalloonUserTrackings(
+    public List<IBalloonUserTracking> listBalloonUserTrackings(
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String context) {
         return this.balloonUserTrackingDao.list(email,context );
     }
 
     @PutMapping("/balloonUserTrackings/{uuid}")
-    public boolean updateBalloonUserTracking(@RequestBody BalloonUserTracking balloonUserTracking,
+    public boolean updateBalloonUserTracking(@RequestBody IBalloonUserTracking balloonUserTracking,
             @PathVariable String uuid) {
         return balloonUserTrackingDao.update(balloonUserTracking);
     }
@@ -99,7 +99,7 @@ public class BalloonsController {
     }
 
     @GetMapping("/balloonTexts/{id}")
-    public BalloonText getBalloonText(@PathVariable("id") Long id) throws NotFoundException {
+    public IBalloonText getBalloonText(@PathVariable("id") Long id) throws NotFoundException {
         if (id == null) {
             throw new NotFoundException();
         } else {
@@ -108,17 +108,17 @@ public class BalloonsController {
     }
 
     @PutMapping("/balloonTexts/{id}")
-    public boolean updateBalloonText(@RequestBody BalloonText balloonText, @PathVariable Long id) {
+    public boolean updateBalloonText(@RequestBody IBalloonText balloonText, @PathVariable Long id) {
         return balloonTextDao.update(balloonText);
     }
 
     @GetMapping("/balloonTexts")
-    public List<BalloonText> getAllEnabledBalloonLinks() {
+    public List<IBalloonText> getAllEnabledBalloonLinks() {
         return this.balloonTextDao.getEnabledBalloonTexts();
     }
 
     @PostMapping("/balloonTexts")
-    public BalloonText createBalloonText(@RequestBody BalloonText balloonText) {
+    public IBalloonText createBalloonText(@RequestBody IBalloonText balloonText) {
         return this.balloonTextDao.create(balloonText);
     }
 
@@ -131,5 +131,4 @@ public class BalloonsController {
             return balloonTextDao.delete(id);
         }
     }
-
 }

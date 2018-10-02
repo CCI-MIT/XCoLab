@@ -40,7 +40,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>tracking__tracked_visit</includes>
+                            <includes>tracking__.+</includes>
                         </database>
                         <target>
                             <packageName>org.xcolab.client.tracking.pojo</packageName>

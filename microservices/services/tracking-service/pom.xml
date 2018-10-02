@@ -17,7 +17,7 @@
 	<dependencies>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>microservice-clients</artifactId>
+            <artifactId>tracking-client</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
