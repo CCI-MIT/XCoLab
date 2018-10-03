@@ -101,4 +101,14 @@ public final class PlatformAttributeKey {
                     .defaultValue(TransformedAttribute.of(GOOGLE_RECAPTCHA_SITE_KEY,
                             StringUtils::isNotEmpty))
                     .build();
+
+    public static final AttributeGetter<String> SENTRY_BACKEND_DSN =
+            PlatformAttributes.newStringAttribute("sentry.backend.dsn")
+                    .defaultValue("")
+                    .build();
+
+    public static final AttributeGetter<String> SENTRY_FRONTEND_DSN_PUBLIC =
+            PlatformAttributes.newStringAttribute("sentry.frontend.dsn-public")
+                    .defaultValue("")
+                    .build();
 }
