@@ -109,7 +109,7 @@
 
                         <!-- Generator parameters -->
                         <generator>
-                            <name>org.xcolab.service.utils.db.jooq.generator.XColabGenerator</name>
+                            <name>org.xcolab.service.utils.db.jooq.generator.XColabClientGenerator</name>
                             <database>
                                 <name>org.jooq.util.mysql.MySQLDatabase</name>
                                 <includes>empty</includes>
@@ -125,7 +125,7 @@
                                 <outputSchemaToDefault>true</outputSchemaToDefault>
                             </database>
                             <generate>
-                                <pojos>false</pojos>
+                                <pojos>true</pojos>
                                 <daos>false</daos>
                                 <tables>false</tables>
                                 <records>false</records>
@@ -137,7 +137,7 @@
                                 <directory>target/generated-sources/jooq</directory>
                             </target>
                             <strategy>
-                                <name>org.xcolab.service.utils.db.jooq.generator.XColabGeneratorStrategy</name>
+                                <name>org.xcolab.service.utils.db.jooq.generator.XColabClientGeneratorStrategy</name>
                             </strategy>
                         </generator>
                     </configuration>

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.tracking.pojo.tables.pojos.Location;
 import org.xcolab.service.tracking.exceptions.GeoLiteCityConfigurationException;
 
 import java.io.BufferedReader;

@@ -17,7 +17,7 @@ import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
@@ -50,7 +50,7 @@ public class BalloonService {
     private final AuthenticationService authenticationService;
 
     @Autowired
-    private TrackingClient trackingClient;
+    private ITrackingClient trackingClient;
 
     @Autowired
     public BalloonService(AuthenticationService authenticationService) {

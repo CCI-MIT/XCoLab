@@ -1,4 +1,4 @@
-package org.xcolab.service.tracking.service.iptranslation;
+package org.xcolab.client.tracking.pojo.tables.pojos;
 
 import org.xcolab.client.tracking.pojo.ILocation;
 

@@ -5,16 +5,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.tracking.ITrackingClient;
+import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.client.tracking.pojo.ITrackedVisit;
 import org.xcolab.client.tracking.pojo.ITrackedVisitor;
-import org.xcolab.service.tracking.domain.trackedvisit.TrackedVisitDao;
 import org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao;
+import org.xcolab.service.tracking.domain.trackedvisit.TrackedVisitDao;
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService;
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService.IpFormatException;
 
 @Service
-public class TrackedVisitService {
+@RestController
+public class TrackedVisitService implements ITrackingClient {
 
     private static final Logger log = LoggerFactory.getLogger(TrackedVisitService.class);
 
@@ -33,7 +41,10 @@ public class TrackedVisitService {
         this.trackedVisitorDao = trackedVisitorDao;
     }
 
-    public ITrackedVisit createTrackedVisit(ITrackedVisit trackedVisit, Long userId) {
+    @Override
+    @RequestMapping(value = "/trackedVisits", method = RequestMethod.POST)
+    public ITrackedVisit addTrackedVisit(@RequestBody ITrackedVisit trackedVisit,
+            @RequestParam(required = false) Long userId) {
         final String remoteIp = trackedVisit.getIp();
         try {
             ipTranslationService.getLocationForIp(remoteIp).ifPresent(location -> {
@@ -59,6 +70,18 @@ public class TrackedVisitService {
             trackedVisitorDao.update(trackedVisitor);
         }
         return trackedVisitDao.create(trackedVisit);
+    }
+
+    @Override
+    @RequestMapping(value = "/locations", method = RequestMethod.GET)
+    public ILocation getLocationForIp(@RequestParam String ipAddress) {
+        try {
+            return ipTranslationService.getLocationForIp(ipAddress)
+                    .orElse(null);
+        } catch (IpTranslationService.IpFormatException e) {
+            log.warn("Could not process ip address {}: {}", ipAddress, e.toString());
+            return null;
+        }
     }
 
     private boolean isLocalhost(String remoteIp) {

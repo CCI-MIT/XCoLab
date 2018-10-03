@@ -20,7 +20,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.recaptcha.RecaptchaValidator;
@@ -49,7 +49,7 @@ public class LoginRegisterController {
     private final RecaptchaValidator recaptchaValidator;
 
     @Autowired
-    private TrackingClient trackingClient;
+    private ITrackingClient trackingClient;
 
     @Autowired
     public LoginRegisterController(LoginRegisterService loginRegisterService,

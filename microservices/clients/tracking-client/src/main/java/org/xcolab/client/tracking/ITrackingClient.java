@@ -3,18 +3,18 @@ package org.xcolab.client.tracking;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.client.tracking.pojo.ITrackedVisit;
-import org.xcolab.client.tracking.pojo.TrackedVisit;
+import org.xcolab.client.tracking.pojo.tables.pojos.TrackedVisit;
 
 @FeignClient("xcolab-tracking-service")
-public interface TrackingClient {
+public interface ITrackingClient {
 
     @PostMapping("/trackedVisits")
-    ITrackedVisit addTrackedVisit(ITrackedVisit trackedVisit,
-            @RequestParam(required = false, value = "userId") Long userId);
+    ITrackedVisit addTrackedVisit(@RequestBody ITrackedVisit trackedVisit, @RequestParam(required = false, value = "userId") Long userId);
 
     default ITrackedVisit addTrackedVisit(String uuid, String url, String ip,
             String browser, String referer, String headers, Long userId) {

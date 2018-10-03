@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.pages.loginregister.ForgotPasswordController;
 import org.xcolab.view.util.clienthelpers.TrackingClientMockerHelper;
@@ -43,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
 )
 @PrepareForTest({
-        org.xcolab.client.tracking.TrackingClient.class
+        ITrackingClient.class
 })
 public class CsrfControllerTest {
 

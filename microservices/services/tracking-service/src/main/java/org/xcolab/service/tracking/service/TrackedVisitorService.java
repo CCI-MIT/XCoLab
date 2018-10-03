@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.tracking.pojo.ITrackedVisit;
 import org.xcolab.client.tracking.pojo.ITrackedVisitor;
-import org.xcolab.model.tables.pojos.TrackedVisitor;
+import org.xcolab.model.tables.pojos.TrackedVisitorImpl;
 import org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao;
 
 import java.util.UUID;
@@ -41,7 +41,7 @@ public class TrackedVisitorService {
     }
 
     private ITrackedVisitor create(Long userId) {
-        ITrackedVisitor trackedVisitor = new TrackedVisitor();
+        ITrackedVisitor trackedVisitor = new TrackedVisitorImpl();
         trackedVisitor.setUserId(userId);
         trackedVisitor.setUuid(generateUniqueUUID());
         return trackedVisitorDao.create(trackedVisitor);

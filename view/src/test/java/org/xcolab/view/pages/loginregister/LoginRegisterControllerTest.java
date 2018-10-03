@@ -24,6 +24,7 @@ import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
@@ -69,7 +70,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.emails.EmailClient.class,
         org.xcolab.client.members.MessagingClient.class,
         org.xcolab.client.balloons.BalloonsClient.class,
-        org.xcolab.client.tracking.TrackingClient.class
+        ITrackingClient.class
 })
 
 public class LoginRegisterControllerTest {

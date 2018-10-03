@@ -20,6 +20,7 @@ import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
@@ -59,7 +60,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.emails.EmailClient.class,
         AlertMessage.class,
         org.xcolab.client.members.MessagingClient.class,
-        org.xcolab.client.tracking.TrackingClient.class
+        ITrackingClient.class
 
 })
 

@@ -8,7 +8,8 @@ import java.util.List;
 
 public class XColabGeneratorStrategy extends JooqGeneratorStrategy {
 
-    private static final String PREFIX_SEPARATOR = "__";
+    static final String PREFIX_SEPARATOR = "__";
+    static final String INTERFACE_PATH_FORMAT = "org.xcolab.client.%s.pojo.%s";
 
     @Override
     protected String customizeJavaClassName(String originalName) {
@@ -24,33 +25,9 @@ public class XColabGeneratorStrategy extends JooqGeneratorStrategy {
 
     private String cleanUpSchemeAndPrefix(String val) {
         final int prefixIndex = val.indexOf(PREFIX_SEPARATOR);
-        if (prefixIndex != -1 ) {
+        if (prefixIndex != -1) {
             return val.substring(prefixIndex + PREFIX_SEPARATOR.length());
         }
         return val;
-    }
-
-    @Override
-    public List<String> getJavaClassImplements(Definition definition, Mode mode) {
-        List<String> list = super.getJavaClassImplements(definition, mode);
-
-        if (mode == Mode.POJO) {
-            String clientName = definition.getOutputName().substring(0, definition.getOutputName().indexOf(PREFIX_SEPARATOR));
-            if (clientName.contains("tracking")) { //TODO: COLAB-2918: remove when new client/server architecture is used for all services
-                list.add("org.xcolab.client." + clientName + ".pojo." + getJavaClassName(definition, Mode.INTERFACE));
-            }
-        }
-
-        return list;
-    }
-
-    @Override
-    public String getJavaPackageName(Definition definition, Mode mode) {
-        String packageName = super.getJavaPackageName(definition, mode);
-
-        if(mode == Mode.INTERFACE) {
-            packageName = packageName.replace(".tables.interfaces", "");
-        }
-        return packageName;
     }
 }

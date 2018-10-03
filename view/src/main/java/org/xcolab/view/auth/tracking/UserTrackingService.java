@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ITrackedVisit;
 
 import java.util.Arrays;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserTrackingService {
 
     @Autowired
-    private TrackingClient trackingClient;
+    private ITrackingClient trackingClient;
 
     private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT, HttpHeaders.REFERER,
             HttpHeaders.HOST, HttpHeaders.ORIGIN, HttpHeaders.CONNECTION,

@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.model.tables.pojos.LoginLog;
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 public class UserService {
 
     @Autowired
-    private TrackingClient trackingClient;
+    private ITrackingClient trackingClient;
 
     private static final int MAX_SCREEN_NAME_LENGTH = 26;
 

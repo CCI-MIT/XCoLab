@@ -16,7 +16,7 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
-import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.commons.CsvResponseWriter;
 
@@ -65,9 +65,9 @@ public class VoteCsvWriter extends CsvResponseWriter {
             "Vote is valid (manual override)",
             "manualValidationResult");
 
-    private TrackingClient trackingClient;
+    private ITrackingClient trackingClient;
 
-    public VoteCsvWriter(HttpServletResponse response, TrackingClient trackingClient) throws IOException {
+    public VoteCsvWriter(HttpServletResponse response, ITrackingClient trackingClient) throws IOException {
         super("votingReport", COLUMN_NAMES, response);
         this.trackingClient = trackingClient;
     }
