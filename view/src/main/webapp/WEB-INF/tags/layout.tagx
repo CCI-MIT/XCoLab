@@ -157,6 +157,10 @@
                                          analyticsAttribute="${_themeContext.messageVariables.analyticsAttribute}"
                                          httpSession="${request.session}" member="${_themeContext.authenticationVariables.member}" />
     </c:if>
+
+    <c:if test="${not empty _themeContext.credentialVariables.sentryDsn}">
+        <script src="https://js.sentry-cdn.com/${_themeContext.credentialVariables.sentryDsn}.min.js" crossorigin="anonymous"><!-- --></script>
+    </c:if>
 </head>
 
 <body class="${_themeContext.themeVariables.isHomePage ? 'p-Homepage' : ''}">
@@ -407,6 +411,25 @@
 
     <!-- Show update notification to outdated browsers -->
     <xcolab-scripts:browserUpdate />
+
+    <c:if test="${not empty _themeContext.credentialVariables.sentryDsn}">
+        <script>
+            Sentry.onLoad(function() {
+                Sentry.init({
+                    environment: '${_themeContext.serverEnvironment.name().toLowerCase()}',
+                    // release: ''
+                });
+
+                Sentry.configureScope(function(scope) {
+                    scope.setTag("language", "${_themeContext.i18NVariables.language}");
+                    if (_isLoggedIn) {
+                        scope.setUser({"id": "${_themeContext.authenticationVariables.member.id}"});
+                    }
+                });
+            });
+        </script>
+    </c:if>
+
 
     <!-- ============ Structured data (schema.org) ============ -->
 

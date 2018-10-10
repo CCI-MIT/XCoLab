@@ -1,5 +1,8 @@
 package org.xcolab.view.auth.tracking;
 
+import io.sentry.Sentry;
+import io.sentry.event.User;
+import io.sentry.event.UserBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -68,6 +71,7 @@ public class UserTrackingFilter extends OncePerRequestFilter {
             // that is being generated
             try {
                 final ITrackedVisit trackedVisit = trackedVisitFuture.get();
+                setSentryUser(trackedVisit.getVisitorUuid());
                 userTrackingCookie =  new Cookie(COOKIE_NAME, trackedVisit.getVisitorUuid());
                 userTrackingCookie.setHttpOnly(true);
                 userTrackingCookie.setMaxAge((int) COOKIE_MAX_AGE);
@@ -75,9 +79,21 @@ public class UserTrackingFilter extends OncePerRequestFilter {
             } catch (InterruptedException | ExecutionException e) {
                 log.error("Error while retrieving new TrackedVisit: ", e);
             }
-        } else if (userTrackingCookie.getMaxAge() < COOKIE_MIN_AGE) {
-            userTrackingCookie.setMaxAge((int) COOKIE_MAX_AGE);
-            response.addCookie(userTrackingCookie);
+        } else {
+            setSentryUser(userTrackingCookie.getValue());
+            if (userTrackingCookie.getMaxAge() < COOKIE_MIN_AGE) {
+                userTrackingCookie.setMaxAge((int) COOKIE_MAX_AGE);
+                response.addCookie(userTrackingCookie);
+            }
+        }
+    }
+
+    private void setSentryUser(String userTrackingId) {
+        final User sentryUser = Sentry.getContext().getUser();
+        if (sentryUser == null) {
+            Sentry.getContext().setUser(new UserBuilder()
+                    .setId(userTrackingId)
+                    .build());
         }
     }
 }

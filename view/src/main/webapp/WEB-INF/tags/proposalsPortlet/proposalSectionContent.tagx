@@ -22,13 +22,13 @@
 			</c:choose>
 		</c:when>
         <c:when test="${section.typeEnum == 'PROPOSAL_REFERENCE' }">
-            <c:set var="proposal" value="${section.numericValueAsProposal}" />
+            <c:set var="referencedProposal" value="${section.numericValueAsProposal}" />
             <c:choose>
-                <c:when test="${empty proposal  }">
+                <c:when test="${empty referencedProposal  }">
                     Value not set.
                 </c:when>
                 <c:otherwise>
-                    <xcolab:proposalLink proposal="${proposal}" />
+                    <xcolab:proposalLink proposal="${referencedProposal}" />
                 </c:otherwise>
             </c:choose>
         </c:when>
@@ -39,15 +39,15 @@
                     Value not set.
                 </c:when>
                 <c:otherwise>
-                    <c:forEach var="proposal" items="${proposalList}">
+                    <c:forEach var="referencedProposal" items="${proposalList}">
                         <li>
-                            <xcolab:proposalLink proposal="${proposal}"/>
+                            <xcolab:proposalLink proposal="${referencedProposal}"/>
                             <c:choose>
-                                <c:when test="${proposal.votesCountFromCache eq 1}">
+                                <c:when test="${referencedProposal.votesCountFromCache eq 1}">
                                     (1 <spring:message code="contests.vote"/>)
                                 </c:when>
-                                <c:when test="${proposal.votesCountFromCache gt 1}">
-                                    (${proposal.votesCountFromCache} <spring:message code="contests.votes"/>)
+                                <c:when test="${referencedProposal.votesCountFromCache gt 1}">
+                                    (${referencedProposal.votesCountFromCache} <spring:message code="contests.votes"/>)
                                 </c:when>
                             </c:choose>
                         </li>

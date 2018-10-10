@@ -97,7 +97,7 @@
                          The configuration format is the same as for the standalone code generator -->
                     <configuration>
 
-                        <logging>DEBUG</logging>
+                        <logging>WARN</logging>
 
                         <!-- JDBC connection parameters -->
                         <jdbc>

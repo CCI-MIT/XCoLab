@@ -1,0 +1,18 @@
+<configuration>
+
+    <!-- Include basic configuration from Spring Boot-->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+
+    <!-- Report errors directly to sentry -->
+    <appender name="Sentry" class="io.sentry.logback.SentryAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="Sentry" />
+    </root>
+</configuration>

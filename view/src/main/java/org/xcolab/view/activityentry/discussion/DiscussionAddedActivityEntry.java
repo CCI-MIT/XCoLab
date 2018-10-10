@@ -27,7 +27,7 @@ public class DiscussionAddedActivityEntry extends DiscussionBaseActivityEntry {
 
         category = getThread().getCategory();
         if (category == null) {
-            throw new ActivityInitializationException(activityEntry.getId());
+            throw new ActivityInitializationException(getActivityEntry().getId());
         }
     }
 

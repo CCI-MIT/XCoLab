@@ -69,6 +69,9 @@
         <!-- Test dependencies -->
         <powermock.version>1.7.3</powermock.version>
         <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
+
+        <!-- Error monitoring -->
+        <sentry.version>1.7.10</sentry.version>
     </properties>
 
 	<repositories>
@@ -262,6 +265,22 @@
                 <groupId>org.nibor.autolink</groupId>
                 <artifactId>autolink</artifactId>
                 <version>${autolink.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.sentry</groupId>
+                <artifactId>sentry</artifactId>
+                <version>${sentry.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.sentry</groupId>
+                <artifactId>sentry-logback</artifactId>
+                <version>${sentry.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.sentry</groupId>
+                <artifactId>sentry-spring</artifactId>
+                <version>${sentry.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
