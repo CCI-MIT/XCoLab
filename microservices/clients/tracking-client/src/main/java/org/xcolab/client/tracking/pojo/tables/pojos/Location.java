@@ -9,7 +9,9 @@ import java.util.Locale;
  * Represents a location on the globe (longitude, latitude and all other information that can be
  * discovered by ip).
  */
-public class Location implements ILocation {
+public class Location implements ILocation, Serializable {
+
+    private static final long serialVersionUID = -1158131870;
 
     private int locId;
     private String country;
