@@ -150,6 +150,7 @@ public class ContestClient {
         c.setPointDistributionStrategy("");
         c.setEmailTemplateUrl("");
         c.setHideRibbons(false);
+        c.setReadOnlyComments(false);
         c.setResourceArticleId(0L);
         return createContest(c);
     }
