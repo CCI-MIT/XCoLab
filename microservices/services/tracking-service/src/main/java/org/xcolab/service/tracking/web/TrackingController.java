@@ -37,8 +37,7 @@ public class TrackingController implements ITrackingClient {
     @RequestMapping(value = "/locations", method = RequestMethod.GET)
     public ILocation getLocationForIp(@RequestParam String ipAddress) {
         try {
-            return ipTranslationService.getLocationForIp(ipAddress)
-                    .orElse(null);
+            return ipTranslationService.getLocationForIp(ipAddress).orElse(null);
         } catch (IpTranslationService.IpFormatException e) {
             log.warn("Could not process ip address {}: {}", ipAddress, e.toString());
             return null;

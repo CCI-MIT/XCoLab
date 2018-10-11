@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.client.tracking.pojo.tables.pojos.BalloonUserTracking;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @JsonDeserialize(as = BalloonUserTracking.class)
-public interface IBalloonUserTracking {
+public interface IBalloonUserTracking extends Serializable {
 
     String getUuid();
 

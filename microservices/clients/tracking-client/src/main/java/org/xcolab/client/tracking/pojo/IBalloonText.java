@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.client.tracking.pojo.tables.pojos.BalloonText;
 
+import java.io.Serializable;
+
 @JsonDeserialize(as = BalloonText.class)
-public interface IBalloonText {
+public interface IBalloonText extends Serializable {
 
     Long getId();
 

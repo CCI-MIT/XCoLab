@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.client.tracking.pojo.tables.pojos.TrackedVisitor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @JsonDeserialize(as = TrackedVisitor.class)
-public interface ITrackedVisitor {
+public interface ITrackedVisitor extends Serializable {
 
     String getUuid();
 

@@ -25,29 +25,4 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-codegen-maven</artifactId>
-                <version>${jooq.version}</version>
-
-                <configuration combine.self="append">
-                    <generator>
-                        <database>
-                            <includes>tracking__.+</includes>
-                        </database>
-                        <target>
-                            <packageName>org.xcolab.client.tracking.pojo</packageName>
-                        </target>
-                    </generator>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>
