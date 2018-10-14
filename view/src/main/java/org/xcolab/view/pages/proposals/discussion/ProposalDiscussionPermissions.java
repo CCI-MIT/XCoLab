@@ -95,7 +95,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         }
 
         isReadOnly = proposal.getContest().getReadOnlyComments();
-        if (isReadOnly && isUserFellowOrJudgeOrAdvisor()) {
+        if (isReadOnly && (isUserFellowOrJudgeOrAdvisor() || getCanAdminAll())) {
             return false;
         }
         return isReadOnly;
