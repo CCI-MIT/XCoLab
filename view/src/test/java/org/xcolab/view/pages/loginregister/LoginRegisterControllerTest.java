@@ -10,12 +10,10 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
-import org.springframework.cloud.netflix.feign.ribbon.FeignRibbonClientAutoConfiguration;
-import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,7 +31,7 @@ import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
-import org.xcolab.view.util.clienthelpers.TrackingClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.TrackingClientMock;
 
 import java.util.ArrayList;
 
@@ -61,7 +59,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.config")
 @ComponentScan("org.xcolab.view.i18n")
 
-@TestPropertySource(properties = {"cache.enabled=false"})
+@TestPropertySource(
+        properties = {
+                "cache.enabled=false"
+        }
+)
 
 @PrepareForTest({
         org.xcolab.client.admin.AdminClient.class,
@@ -73,11 +75,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.emails.EmailClient.class,
         org.xcolab.client.members.MessagingClient.class,
-        org.xcolab.client.balloons.BalloonsClient.class,
-        ITrackingClient.class
+        org.xcolab.client.balloons.BalloonsClient.class
 })
 
-@ImportAutoConfiguration({RibbonAutoConfiguration.class, FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 public class LoginRegisterControllerTest {
 
     @Autowired
@@ -100,7 +100,6 @@ public class LoginRegisterControllerTest {
         MembersClientMockerHelper.mockMembersClient();
         AdminClientMockerHelper.mockAdminClient();
         EmailTemplateClientMockerHelper.mockEmailTemplateClient();
-        TrackingClientMockerHelper.mockTrackingClient();
 
         Mockito.when(ContestTypeClient.getAllContestTypes())
                 .thenReturn(new ArrayList<>());
@@ -134,7 +133,6 @@ public class LoginRegisterControllerTest {
                 .param("shortBio", ""))
                 .andExpect(forwardedUrl("/WEB-INF/jsp/loginregister/register.jspx"))
                 .andExpect(model().hasErrors());
-
     }
 
     @Test
@@ -154,5 +152,14 @@ public class LoginRegisterControllerTest {
                 .param("country", "BR")
                 .param("shortBio", "shortbio"))
                 .andExpect(redirectedUrl("/"));
+    }
+
+    @Configuration
+    public static class TrackingClientConfig {
+
+        @Bean
+        public ITrackingClient trackingClient() {
+            return new TrackingClientMock();
+        }
     }
 }

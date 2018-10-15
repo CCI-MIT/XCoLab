@@ -3,27 +3,28 @@ package org.xcolab.view.config;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
-import org.springframework.cloud.netflix.feign.ribbon.FeignRibbonClientAutoConfiguration;
-import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.tracking.ITrackingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.pages.loginregister.ForgotPasswordController;
-import org.xcolab.view.util.clienthelpers.TrackingClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.TrackingClientMock;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 @PowerMockIgnore("javax.management.*")
 @WebMvcTest(ForgotPasswordController.class)
+
 @ComponentScan("org.xcolab.view.theme")
 @ComponentScan("org.xcolab.view.auth")
 @ComponentScan("org.xcolab.view.pages.proposals.interceptors")
@@ -42,15 +44,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.config")
 @ComponentScan("org.xcolab.view.i18n")
 @ComponentScan("org.xcolab.view.webhooks.sendgrid")
+
 @TestPropertySource(
         properties = {
                 "cache.enabled=false"
         }
 )
+
 @PrepareForTest({
-        ITrackingClient.class
+        org.xcolab.client.admin.AdminClient.class,
+        org.xcolab.client.admin.ContestTypeClient.class
 })
-@ImportAutoConfiguration({RibbonAutoConfiguration.class, FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
+
 public class CsrfControllerTest {
 
     @Autowired
@@ -59,7 +64,10 @@ public class CsrfControllerTest {
     @Before
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
-        TrackingClientMockerHelper.mockTrackingClient();
+
+        PowerMockito.mockStatic(ContestTypeClient.class);
+
+        AdminClientMockerHelper.mockAdminClient();
     }
 
     @Test
@@ -87,6 +95,15 @@ public class CsrfControllerTest {
         @RequestMapping({"/csrftest/ping", "/webhooks/csrftest/ping"})
         public String ping() {
             return "pong";
+        }
+    }
+
+    @Configuration
+    public static class TrackingClientConfig {
+
+        @Bean
+        public ITrackingClient trackingClient() {
+            return new TrackingClientMock();
         }
     }
 }
