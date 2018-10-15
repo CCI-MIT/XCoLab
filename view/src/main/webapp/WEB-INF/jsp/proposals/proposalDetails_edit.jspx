@@ -306,14 +306,13 @@
     <c:set var="acceptButtonText">
         <spring:message code="contests.buttons.accept" />
     </c:set>
+
     <script>
         var acceptTosNotificationText = '${acceptTosNotificationText}';
         var proposalPitchNotificationText = '${proposalPitchNotificationText}';
         var proposalTitleNotificationText = '${proposalTitleNotificationText}';
         var acceptButtonText = '${acceptButtonText}';
-    </script>
 
-    <script>
         var submitted = false;
 
         function showTosPopup() {
