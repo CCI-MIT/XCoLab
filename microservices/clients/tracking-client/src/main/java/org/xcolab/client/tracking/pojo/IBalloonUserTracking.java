@@ -81,13 +81,4 @@ public interface IBalloonUserTracking extends Serializable {
     String getUserAgent();
 
     void setUserAgent(String userAgent);
-
-    @Override
-    boolean equals(Object obj);
-
-    @Override
-    int hashCode();
-
-    @Override
-    String toString();
 }

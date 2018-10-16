@@ -5,10 +5,6 @@ import org.xcolab.client.tracking.pojo.ILocation;
 import java.io.Serializable;
 import java.util.Locale;
 
-/**
- * Represents a location on the globe (longitude, latitude and all other information that can be
- * discovered by ip).
- */
 public class Location implements ILocation, Serializable {
 
     private static final long serialVersionUID = -1158131870;
@@ -25,6 +21,20 @@ public class Location implements ILocation, Serializable {
     private String metroCode;
     private String areaCode;
 
+    public Location() {}
+
+    public Location(Location value) {
+        this.locId = value.locId;
+        this.country = value.country;
+        this.region = value.region;
+        this.city = value.city;
+        this.postalCode = value.postalCode;
+        this.latitude = value.latitude;
+        this.longitude = value.longitude;
+        this.metroCode = value.metroCode;
+        this.areaCode = value.areaCode;
+    }
+
     public Location(int locId, String country, String region, String city, String postalCode,
             double latitude, double longitude, String metroCode, String areaCode) {
         this.locId = locId;
@@ -39,19 +49,6 @@ public class Location implements ILocation, Serializable {
 
         Locale l = new Locale("", country);
         countryName = l.getDisplayCountry();
-    }
-
-    public Location() {
-    }
-
-    @Override
-    public String toString() {
-        return "Location [locId=" + locId + ", country=" + country
-                + ", countryName=" + countryName + ", region=" + region
-                + ", city=" + city + ", postalCode=" + postalCode
-                + ", latitude=" + latitude + ", longitude=" + longitude
-                + ", metroCode=" + metroCode + ", areaCode=" + areaCode
-                + "]";
     }
 
     public int getLocId() {
@@ -137,5 +134,15 @@ public class Location implements ILocation, Serializable {
 
     public void setAreaCode(String areaCode) {
         this.areaCode = areaCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Location [locId=" + locId + ", country=" + country
+                + ", countryName=" + countryName + ", region=" + region
+                + ", city=" + city + ", postalCode=" + postalCode
+                + ", latitude=" + latitude + ", longitude=" + longitude
+                + ", metroCode=" + metroCode + ", areaCode=" + areaCode
+                + "]";
     }
 }

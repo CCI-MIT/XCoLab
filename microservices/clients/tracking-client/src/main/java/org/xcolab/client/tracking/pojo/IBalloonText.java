@@ -44,13 +44,4 @@ public interface IBalloonText extends Serializable {
     Boolean getEnabled();
 
     void setEnabled(Boolean enabled);
-
-    @Override
-    boolean equals(Object obj);
-
-    @Override
-    int hashCode();
-
-    @Override
-    String toString();
 }
