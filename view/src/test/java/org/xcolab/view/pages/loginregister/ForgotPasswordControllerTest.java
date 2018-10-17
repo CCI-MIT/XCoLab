@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,7 +21,6 @@ import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.tracking.TrackingClientConfig;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
@@ -65,7 +63,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.balloons.BalloonsClient.class
 })
 
-@ContextConfiguration(classes = TrackingClientConfig.class)
 @ActiveProfiles("test")
 public class ForgotPasswordControllerTest {
 

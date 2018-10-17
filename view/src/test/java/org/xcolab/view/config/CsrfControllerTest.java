@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.tracking.TrackingClientConfig;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.pages.loginregister.ForgotPasswordController;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
@@ -57,7 +55,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 
 @ActiveProfiles("test")
-@ContextConfiguration(classes = TrackingClientConfig.class)
 public class CsrfControllerTest {
 
     @Autowired
