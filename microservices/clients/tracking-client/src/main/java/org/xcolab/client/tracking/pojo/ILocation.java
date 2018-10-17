@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.client.tracking.pojo.tables.pojos.Location;
 
+import java.io.Serializable;
+
 @JsonDeserialize(as = Location.class)
-public interface ILocation {
+public interface ILocation extends Serializable {
 
     int getLocId();
 
