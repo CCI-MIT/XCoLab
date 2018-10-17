@@ -10,9 +10,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,11 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.tracking.ITrackingClient;
+import org.xcolab.client.tracking.TrackingClientConfig;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.pages.loginregister.ForgotPasswordController;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
-import org.xcolab.view.util.clienthelpers.TrackingClientMock;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.config")
 @ComponentScan("org.xcolab.view.i18n")
 @ComponentScan("org.xcolab.view.webhooks.sendgrid")
+@ComponentScan("org.xcolab.client.tracking")
 
 @TestPropertySource(
         properties = {
@@ -56,6 +56,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.admin.ContestTypeClient.class
 })
 
+@ActiveProfiles("test")
+@ContextConfiguration(classes = TrackingClientConfig.class)
 public class CsrfControllerTest {
 
     @Autowired
@@ -95,15 +97,6 @@ public class CsrfControllerTest {
         @RequestMapping({"/csrftest/ping", "/webhooks/csrftest/ping"})
         public String ping() {
             return "pong";
-        }
-    }
-
-    @Configuration
-    public static class TrackingClientConfig {
-
-        @Bean
-        public ITrackingClient trackingClient() {
-            return new TrackingClientMock();
         }
     }
 }

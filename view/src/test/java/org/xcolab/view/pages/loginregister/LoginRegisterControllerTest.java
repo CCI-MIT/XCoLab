@@ -11,9 +11,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,12 +26,11 @@ import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.tracking.ITrackingClient;
+import org.xcolab.client.tracking.TrackingClientConfig;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
-import org.xcolab.view.util.clienthelpers.TrackingClientMock;
 
 import java.util.ArrayList;
 
@@ -58,6 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.pages.redballoon")
 @ComponentScan("org.xcolab.view.config")
 @ComponentScan("org.xcolab.view.i18n")
+@ComponentScan("org.xcolab.client.tracking")
 
 @TestPropertySource(
         properties = {
@@ -78,6 +78,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.balloons.BalloonsClient.class
 })
 
+@ContextConfiguration(classes = TrackingClientConfig.class)
+@ActiveProfiles("test")
 public class LoginRegisterControllerTest {
 
     @Autowired
@@ -152,14 +154,5 @@ public class LoginRegisterControllerTest {
                 .param("country", "BR")
                 .param("shortBio", "shortbio"))
                 .andExpect(redirectedUrl("/"));
-    }
-
-    @Configuration
-    public static class TrackingClientConfig {
-
-        @Bean
-        public ITrackingClient trackingClient() {
-            return new TrackingClientMock();
-        }
     }
 }
