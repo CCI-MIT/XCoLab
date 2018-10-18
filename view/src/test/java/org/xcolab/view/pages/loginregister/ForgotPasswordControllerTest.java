@@ -59,8 +59,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.emails.EmailClient.class,
         org.xcolab.commons.servlet.flash.AlertMessage.class,
-        org.xcolab.client.members.MessagingClient.class,
-        org.xcolab.client.balloons.BalloonsClient.class
+        org.xcolab.client.members.MessagingClient.class
 })
 
 @ActiveProfiles("test")
