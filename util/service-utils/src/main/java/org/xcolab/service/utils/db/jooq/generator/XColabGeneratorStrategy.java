@@ -1,14 +1,10 @@
 package org.xcolab.service.utils.db.jooq.generator;
 
-import org.jooq.util.Definition;
-
 import org.xcolab.commons.jooq.JooqGeneratorStrategy;
-
-import java.util.List;
 
 public class XColabGeneratorStrategy extends JooqGeneratorStrategy {
 
-    static final String PREFIX_SEPARATOR = "__";
+    private static final String PREFIX_SEPARATOR = "__";
 
     @Override
     protected String customizeJavaClassName(String originalName) {

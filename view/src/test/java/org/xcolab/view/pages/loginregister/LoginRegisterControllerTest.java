@@ -19,11 +19,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.MockContestType;
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
@@ -64,15 +67,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @PrepareForTest({
-        org.xcolab.client.admin.AdminClient.class,
-        org.xcolab.client.activities.ActivitiesClient.class,
-        org.xcolab.client.activities.ActivitiesClientUtil.class,
-        org.xcolab.client.admin.ContestTypeClient.class,
-        org.xcolab.client.contest.ContestClientUtil.class,
-        org.xcolab.client.members.MembersClient.class,
-        org.xcolab.client.admin.EmailTemplateClientUtil.class,
-        org.xcolab.client.emails.EmailClient.class,
-        org.xcolab.client.members.MessagingClient.class,
+        AdminClient.class,
+        ActivitiesClient.class,
+        ActivitiesClientUtil.class,
+        ContestTypeClient.class,
+        ContestClientUtil.class,
+        MembersClient.class,
+        EmailTemplateClientUtil.class,
+        EmailClient.class,
+        MessagingClient.class,
         BalloonsClient.class
 })
 

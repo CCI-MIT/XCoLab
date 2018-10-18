@@ -16,11 +16,14 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
@@ -52,14 +55,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @PrepareForTest({
-        org.xcolab.client.admin.AdminClient.class,
-        org.xcolab.client.admin.ContestTypeClient.class,
-        org.xcolab.client.contest.ContestClientUtil.class,
-        org.xcolab.client.members.MembersClient.class,
-        org.xcolab.client.admin.EmailTemplateClientUtil.class,
-        org.xcolab.client.emails.EmailClient.class,
-        org.xcolab.commons.servlet.flash.AlertMessage.class,
-        org.xcolab.client.members.MessagingClient.class
+        AdminClient.class,
+        ContestTypeClient.class,
+        ContestClientUtil.class,
+        MembersClient.class,
+        EmailTemplateClientUtil.class,
+        EmailClient.class,
+        AlertMessage.class,
+        MessagingClient.class
 })
 
 @ActiveProfiles("test")

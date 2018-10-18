@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.pages.loginregister.ForgotPasswordController;
@@ -50,8 +51,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @PrepareForTest({
-        org.xcolab.client.admin.AdminClient.class,
-        org.xcolab.client.admin.ContestTypeClient.class
+        AdminClient.class,
+        ContestTypeClient.class
 })
 
 @ActiveProfiles("test")
