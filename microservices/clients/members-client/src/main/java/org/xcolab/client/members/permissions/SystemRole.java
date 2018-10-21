@@ -1,4 +1,4 @@
-package org.xcolab.client.members.legacy.enums;
+package org.xcolab.client.members.permissions;
 
 /**
  * Represents a role anchored in the system.

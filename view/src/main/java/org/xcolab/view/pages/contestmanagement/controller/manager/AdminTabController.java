@@ -20,7 +20,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.legacy.enums.SystemRole;
+import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.commons.html.LabelStringValue;

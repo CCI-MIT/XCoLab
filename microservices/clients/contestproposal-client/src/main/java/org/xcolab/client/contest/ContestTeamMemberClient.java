@@ -5,7 +5,7 @@ import org.xcolab.client.contest.pojo.team.ContestTeamMemberDto;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRoleDto;
 import org.xcolab.client.contest.resources.ContestResource;
-import org.xcolab.client.members.legacy.enums.SystemRole;
+import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;

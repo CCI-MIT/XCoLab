@@ -30,7 +30,7 @@ import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinitio
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.legacy.enums.SystemRole;
+import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;

@@ -28,7 +28,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.legacy.enums.SystemRole;
+import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.commons.CountryUtil;

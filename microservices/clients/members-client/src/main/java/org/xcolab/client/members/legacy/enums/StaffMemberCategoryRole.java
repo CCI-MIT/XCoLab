@@ -1,5 +1,7 @@
 package org.xcolab.client.members.legacy.enums;
 
+import org.xcolab.client.members.permissions.SystemRole;
+
 public enum StaffMemberCategoryRole {
 
     ADVISOR(9L, SystemRole.ADVISOR, true),

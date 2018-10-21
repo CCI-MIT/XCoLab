@@ -1,6 +1,6 @@
 package org.xcolab.client.members;
 
-import org.xcolab.client.members.legacy.enums.SystemRole;
+import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Role;
 import org.xcolab.util.http.caching.CacheName;

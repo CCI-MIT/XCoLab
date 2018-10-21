@@ -1,7 +1,7 @@
 package org.xcolab.view.taglibs.xcolab.interfaces;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.legacy.enums.SystemRole;
+import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.view.auth.MemberAuthUtil;
 
 import javax.servlet.http.HttpServletRequest;
