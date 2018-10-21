@@ -1,12 +1,8 @@
 package org.xcolab.view.config.sentry;
 
 import io.sentry.event.EventBuilder;
-import io.sentry.event.helper.BasicRemoteAddressResolver;
 import io.sentry.event.helper.EventBuilderHelper;
-import io.sentry.event.helper.RemoteAddressResolver;
 import io.sentry.servlet.SentryServletRequestListener;
-
-import org.xcolab.view.auth.AuthenticationContext;
 
 import javax.servlet.http.HttpServletRequest;
 
