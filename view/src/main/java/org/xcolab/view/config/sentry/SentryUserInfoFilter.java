@@ -1,4 +1,4 @@
-package org.xcolab.view.config.spring.filters;
+package org.xcolab.view.config.sentry;
 
 import io.sentry.Sentry;
 import io.sentry.event.UserBuilder;
@@ -32,6 +32,8 @@ public class SentryUserInfoFilter extends GenericFilterBean {
             final Member member = realMemberOrNull;
             Sentry.getContext().setUser(new UserBuilder()
                     .setId(Long.toString(member.getId()))
+                    .setUsername(member.getScreenName())
+                    .setIpAddress(request.getRemoteAddr())
                     .build());
         }
 
