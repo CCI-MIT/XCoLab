@@ -28,7 +28,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.legacy.enums.SystemRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.commons.CountryUtil;
@@ -65,9 +65,9 @@ public class UserProfileController {
     private static final String SHOW_PROFILE_VIEW = "profile/showUserProfile";
     private static final String EDIT_PROFILE_VIEW = "profile/editUserProfile";
 
-    private static final Set<MemberRole> SEO_INDEXABLE_MEMBER_ROLES = EnumSet.of(
-            MemberRole.STAFF, MemberRole.JUDGE, MemberRole.ADVISOR, MemberRole.FELLOW,
-            MemberRole.IMPACT_ASSESSMENT_FELLOW, MemberRole.EXPERT);
+    private static final Set<SystemRole> SEO_INDEXABLE_MEMBER_ROLES = EnumSet.of(
+            SystemRole.STAFF, SystemRole.JUDGE, SystemRole.ADVISOR, SystemRole.FELLOW,
+            SystemRole.IMPACT_ASSESSMENT_FELLOW, SystemRole.EXPERT);
 
     private final ActivityEntryHelper activityEntryHelper;
     private final AuthenticationService authenticationService;

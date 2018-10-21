@@ -8,11 +8,8 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.tabs.access.AdaptationImpactAccessAlgorithm;
@@ -220,22 +217,14 @@ public class ProposalsPermissions {
         if (!isLoggedIn) {
             return false;
         }
-        final MemberRoleChoiceAlgorithm roleChoiceAlgorithm =
-                MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
-        MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
-                MembersClient.getMemberUnchecked(userId));
-        return memberRole == MemberRole.CONTEST_MANAGER || memberRole == MemberRole.STAFF;
+        return PermissionsClient.canContestManager(member) || PermissionsClient.canAdminAll(member);
     }
 
     public boolean getCanIAFActions() {
         if (!isLoggedIn) {
             return false;
         }
-        final MemberRoleChoiceAlgorithm roleChoiceAlgorithm =
-                MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
-        MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
-                MembersClient.getMemberUnchecked(userId));
-        return memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW;
+        return PermissionsClient.canIAF(member);
     }
 
     public boolean getCanViewMitigationImpactTab() {

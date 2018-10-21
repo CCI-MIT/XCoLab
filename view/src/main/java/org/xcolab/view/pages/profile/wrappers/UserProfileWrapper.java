@@ -10,10 +10,9 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.legacy.enums.MessageType;
-import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.Role;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -49,13 +48,12 @@ public class UserProfileWrapper implements Serializable {
     private Member member;
     private UserBean userBean;
     private String realName;
-    private MemberRole highestRole;
+    private MemberCategory highestRoleCategory;
     private int subscriptionsPageSize = 20;
     private int subscriptionsPaginationPageId;
     private String proposalsString;
     private String proposalString;
 
-    private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
     private final List<SupportedProposal> supportedProposals = new ArrayList<>();
     private final Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
@@ -79,7 +77,6 @@ public class UserProfileWrapper implements Serializable {
         if (member.isActive()) {
             if (loggedInMember != null) {
                 Member logUser = MembersClient.getMember(loggedInMember.getId());
-                messagePermissionChecker = new SendMessagePermissionChecker(logUser);
                 if (loggedInMember.getId() == member.getId()) {
                     viewingOwnProfile = true;
                 }
@@ -102,7 +99,7 @@ public class UserProfileWrapper implements Serializable {
 
         badges = new BadgeBean(member.getId());
 
-        highestRole = MemberRole.getHighestRole(member.getRoles());
+        highestRoleCategory = MembersClient.getHighestCategory(member.getRoles());
 
         userSubscriptions = new UserSubscriptionsWrapper(member);
         userActivities.clear();
@@ -135,7 +132,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public boolean isStaffMemberProfile() {
-        return this.highestRole == MemberRole.STAFF;
+        return PermissionsClient.canStaff(member.getId());
     }
 
     public boolean isInitialized() {
@@ -226,8 +223,8 @@ public class UserProfileWrapper implements Serializable {
         return FIRE_GOOGLE_EVENT;
     }
 
-    public MemberRole getHighestRole() {
-        return highestRole;
+    public MemberCategory getHighestRoleCategory() {
+        return highestRoleCategory;
     }
 
     public List<Role> getRoles() {
@@ -242,11 +239,6 @@ public class UserProfileWrapper implements Serializable {
         return DISPLAY_EMAIL_ERROR_MESSAGE;
     }
 
-
-    public boolean getCanSeeSendMessageButton() throws MemberRole.NoSuchMemberRoleException {
-        return messagePermissionChecker == null || messagePermissionChecker
-                .canSendToUser(this.member);
-    }
 
     public List<MessageBean> getMessages() {
         if (messages == null) {

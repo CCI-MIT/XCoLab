@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.legacy.enums.SystemRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
@@ -61,7 +61,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         HashMap<Long, Long> idsToExclude = new HashMap<>();
         if (feedsPreferences.getRemoveAdmin()) {//STAFF
             final MemberCategory memberCategory =
-                    MembersClient.getMemberCategory(MemberRole.ADMINISTRATOR.getRoleId());
+                    MembersClient.getMemberCategory(SystemRole.ADMINISTRATOR.getRoleId());
 
             List<Member> adminList = MembersClient.listMembers(memberCategory.getCategoryName(),
                     null, null, null, true,
@@ -72,7 +72,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         }
 
         final MemberCategory memberCategory =
-                MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
+                MembersClient.getMemberCategory(SystemRole.STAFF.getRoleId());
 
         List<Member> staffList = MembersClient
                 .listMembers(memberCategory.getCategoryName(), null, null, null, true,

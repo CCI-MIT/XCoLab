@@ -1,12 +1,12 @@
 package org.xcolab.client.members.legacy.enums;
 
-public enum CategoryRole {
+public enum StaffMemberCategoryRole {
 
-    ADVISOR(9L, MemberRole.ADVISOR, true),
-    JUDGE(10L, MemberRole.JUDGE, true),
-    FELLOW(14L, MemberRole.FELLOW, true),
-    IMPACT_FELLOW(15L, MemberRole.IMPACT_ASSESSMENT_FELLOW, true),
-    CATALYST(16L, MemberRole.CATALYST, false),
+    ADVISOR(9L, SystemRole.ADVISOR, true),
+    JUDGE(10L, SystemRole.JUDGE, true),
+    FELLOW(14L, SystemRole.FELLOW, true),
+    IMPACT_FELLOW(15L, SystemRole.IMPACT_ASSESSMENT_FELLOW, true),
+    CATALYST(16L, SystemRole.CATALYST, false),
     EXPERT_ADVISORY(3L, null, false),
     EXPERT_COUNCIL(4L, null, false),
     TEAM(5L, null, false),
@@ -17,17 +17,17 @@ public enum CategoryRole {
     RESEARCH_COLAB(17L, null, false);
 
     private final Long categoryId;
-    private final MemberRole memberRole;
+    private final SystemRole memberRole;
     private final Boolean groupByYear;
 
-    CategoryRole(Long categoryId, MemberRole memberRole, Boolean groupByYear) {
+    StaffMemberCategoryRole(Long categoryId, SystemRole memberRole, Boolean groupByYear) {
         this.categoryId = categoryId;
         this.memberRole = memberRole;
         this.groupByYear = groupByYear;
     }
 
-    public static CategoryRole fromCategoryId(long categoryId) throws NoSuchCategoryRoleException {
-        for (CategoryRole categoryRole : CategoryRole.values()) {
+    public static StaffMemberCategoryRole fromCategoryId(long categoryId) throws NoSuchCategoryRoleException {
+        for (StaffMemberCategoryRole categoryRole : StaffMemberCategoryRole.values()) {
             if (categoryId == categoryRole.getCategoryId()) {
                 return categoryRole;
             }
@@ -43,7 +43,7 @@ public enum CategoryRole {
         return groupByYear;
     }
 
-    public MemberRole getRole() {
+    public SystemRole getRole() {
         return this.memberRole;
     }
 

@@ -5,7 +5,7 @@ import org.xcolab.client.contest.pojo.team.ContestTeamMemberDto;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRoleDto;
 import org.xcolab.client.contest.resources.ContestResource;
-import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.legacy.enums.SystemRole;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
@@ -64,23 +64,23 @@ public class ContestTeamMemberClient {
     }
 
     public List<Long> getAdvisorsForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.ADVISOR.getRoleId());
+        return getRoleForContestTeam(contestId, SystemRole.ADVISOR.getRoleId());
     }
 
     public List<Long> getJudgesForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.JUDGE.getRoleId());
+        return getRoleForContestTeam(contestId, SystemRole.JUDGE.getRoleId());
     }
 
     public List<Long> getFellowsForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.FELLOW.getRoleId());
+        return getRoleForContestTeam(contestId, SystemRole.FELLOW.getRoleId());
     }
 
     public List<Long> getContestManagersForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.CONTEST_MANAGER.getRoleId());
+        return getRoleForContestTeam(contestId, SystemRole.CONTEST_MANAGER.getRoleId());
     }
 
     public List<Long> getIAFellowsForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.IMPACT_ASSESSMENT_FELLOW.getRoleId());
+        return getRoleForContestTeam(contestId, SystemRole.IMPACT_ASSESSMENT_FELLOW.getRoleId());
     }
 
     public List<Long> getRoleForContestTeam(Long contestId, Long roleId) {

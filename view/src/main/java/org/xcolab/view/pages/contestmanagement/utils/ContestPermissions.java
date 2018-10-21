@@ -2,9 +2,9 @@ package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.legacy.enums.SystemRole;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
-import org.xcolab.view.util.entity.enums.MemberRole;
 
 import java.io.Serializable;
 
@@ -30,7 +30,7 @@ public class ContestPermissions implements TabPermissions, Serializable {
     }
 
     @Override
-    public boolean getCanRole(MemberRole role) {
+    public boolean getCanRole(SystemRole role) {
         return isLoggedIn && contestWrapper
                 .getHasUserRoleInContest(userId, role.getRoleId());
     }

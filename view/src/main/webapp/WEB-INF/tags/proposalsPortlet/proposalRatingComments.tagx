@@ -15,8 +15,8 @@
 
     <div class="c-Comment__list">
         <c:forEach var="wrapper" items="${proposalRatingsWrappers}" varStatus="status">
-            <discussions:getRoleName userId="${wrapper.author.id}" proposalId="${proposalId}">
-                <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
+            <discussions:getRoleCategory userId="${wrapper.author.id}" proposalId="${proposalId}">
+                <!--@elvariable id="roleCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
                 <div class="comment">
                     <div class="c-Comment__commentor">
                         <xcolab:userPortrait portraitId="${wrapper.author.portraitId}"
@@ -27,14 +27,14 @@
 
                         <div class="role-indicator">
                             <div style="width: 16px">
-                                <collab:image src="/images/${role.imageUrl}.png" width="16" height="16" />
+                                <collab:image src="/images/${roleCategory.imageName}.png" width="16" height="16" />
                             </div>
-                            ${role.printName}
+                            ${roleCategory.displayName}
                         </div>
                     </div>
                     <proposalsPortlet:proposalRatingEvaluation showShouldAdvance="true" showRating="true" showPhase="false" wrapper="${wrapper}" showRatingDescription="true"/>
                 </div>
-            </discussions:getRoleName>
+            </discussions:getRoleCategory>
         </c:forEach>
         <c:if test="${!proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
         <br class="clear"/>

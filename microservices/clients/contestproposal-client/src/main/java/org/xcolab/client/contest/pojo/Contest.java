@@ -30,7 +30,7 @@ import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinitio
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.legacy.enums.SystemRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
@@ -348,7 +348,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public boolean getCanFellow(long userId) {
-        return getHasUserRoleInContest(userId, MemberRole.FELLOW.getRoleId());
+        return getHasUserRoleInContest(userId, SystemRole.FELLOW.getRoleId());
     }
 
     public ContestPhase getActivePhase() {

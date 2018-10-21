@@ -20,6 +20,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.legacy.enums.SystemRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.commons.html.LabelStringValue;
@@ -44,7 +45,6 @@ import org.xcolab.view.pages.contestmanagement.utils.VoteCsvWriter;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
-import org.xcolab.view.util.entity.enums.MemberRole;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -276,8 +276,8 @@ public class AdminTabController extends AbstractTabController {
             Member member = loginRegisterService.autoRegister(registerLineBean.getEmail(),
                     registerLineBean.getFirstName(), registerLineBean.getLastName());
             if (batchRegisterBean.getAsGuests()) {
-                MembersClient.assignMemberRole(member.getId(), MemberRole.GUEST.getRoleId());
-                MembersClient.removeMemberRole(member.getId(), MemberRole.MEMBER.getRoleId());
+                MembersClient.assignMemberRole(member.getId(), SystemRole.GUEST.getRoleId());
+                MembersClient.removeMemberRole(member.getId(), SystemRole.MEMBER.getRoleId());
             }
         }
 

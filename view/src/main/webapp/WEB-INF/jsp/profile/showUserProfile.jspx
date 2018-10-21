@@ -65,10 +65,10 @@
                                                      style="margin-top: 5px;">
                                                     <div style="width: 16px">
                                                         <collab:image
-                                                                src="/images/${currentUserProfile.highestRole.imageUrl}.png"
+                                                                src="/images/${currentUserProfile.highestRoleCategory.imageName}.png"
                                                                 width="16" height="16"/>
                                                     </div>
-                                                    ${currentUserProfile.highestRole.printName}
+                                                    ${currentUserProfile.highestRoleCategory.displayName}
                                                 </div>
                                             </div>
                                             <div class="flex-fill">
@@ -203,7 +203,7 @@
                                     </div>
                                 </c:if>
 
-                                <c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
+                                <c:if test="${not currentUserProfile.viewingOwnProfile }">
 
                                     <div>
                                         <a class="btn btn-primary js-EnhancedLink"

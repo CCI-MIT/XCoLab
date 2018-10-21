@@ -3,17 +3,17 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
-import org.xcolab.view.util.entity.enums.MemberRole;
 
 import java.util.List;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-public class GetRoleNameStartTag extends BodyTagSupport {
+public class GetRoleCategoryStartTag extends BodyTagSupport {
 
     private long userId;
 
@@ -41,8 +41,8 @@ public class GetRoleNameStartTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
         try {
             Member member = MembersClient.getMember(userId);
-            MemberRole role = MemberRole.getHighestRole(member.getRoles());
-            pageContext.setAttribute("role", role);
+            MemberCategory roleCategory = MembersClient.getHighestCategory(member.getRoles());
+            pageContext.setAttribute("roleCategory", roleCategory);
 
             // Is the user contributing to the proposal?
             boolean isContributing = false;
@@ -59,7 +59,7 @@ public class GetRoleNameStartTag extends BodyTagSupport {
 
         } catch (MemberNotFoundException e) {
             throw ReferenceResolutionException.toObject(Member.class, userId)
-                    .fromObject(GetRoleNameStartTag.class,
+                    .fromObject(GetRoleCategoryStartTag.class,
                             "user id " + userId + " proposalId " + proposalId);
         }
         return EVAL_BODY_INCLUDE;
