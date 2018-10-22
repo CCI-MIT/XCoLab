@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.servlet.LocaleResolver;
 
 import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -88,10 +89,11 @@ public class ProposalContextImpl implements ProposalContext {
                     new ProposalsDisplayPermissions(permissions, proposal, contestPhase,
                             clientHelper, MemberAuthUtil.getuserId(request));
 
-            preferences = new ProposalsPreferencesWrapper(request.getParameter("preferenceId"),localeResolver.resolveLocale(request).getLanguage());
+            preferences = new ProposalsPreferencesWrapper(request.getParameter("preferenceId"),
+                    localeResolver.resolveLocale(request).getLanguage());
 
             if (contestType == null) {
-                contestType = preferences.getContestType(language);
+                contestType = new ContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get(), language);
             }
         } catch (InvalidProposalUrlException | InvalidContestUrlException e) {
             reportAccessOfInvalidUrl(member, currentUrl, referrerUrl, userAgent, e);

@@ -282,7 +282,7 @@ public class ContestsIndexController extends BaseProposalsController {
                 + ConfigurationAttributeKey.META_PAGE_DESCRIPTION_CONTESTS.get();
         model.addAttribute("pageDescription", description);
 
-        setBasePageAttributes(proposalContext, model);
+        setActivePageLink(model, contestType);
         return "/proposals/contestsIndex";
     }
 
