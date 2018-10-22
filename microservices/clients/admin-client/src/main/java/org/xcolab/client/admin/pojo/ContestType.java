@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.xcolab.commons.attributes.i18n.LocalizableAttributeGetter.localizable;
 
@@ -51,12 +52,16 @@ public class ContestType implements Serializable {
     }
 
     private <T> T getAttribute(AttributeGetter<T> getter) {
+        return getOptionalAttribute(getter).orElse(null);
+    }
+
+    private <T> Optional<T> getOptionalAttribute(AttributeGetter<T> getter) {
         //noinspection unchecked
-        return (T) attributeCache.computeIfAbsent(getter, key -> {
+        return (Optional<T>) attributeCache.computeIfAbsent(getter, key -> {
             if (getter instanceof LocalizableAttributeGetter) {
-                return localizable(getter).get(language, id);
+                return localizable(getter).getOpt(language, id);
             }
-            return getter.get(id);
+            return getter.getOpt(id);
         });
     }
 
@@ -110,10 +115,6 @@ public class ContestType implements Serializable {
 
     public String getContestBaseUrl() {
         return getAttribute(ContestTypeAttributeKey.CONTEST_BASE_URL);
-    }
-
-    public String getFriendlyUrlStringContests() {
-        return getAttribute(ContestTypeAttributeKey.FRIENDLY_URL_STRING_CONTESTS);
     }
 
     public String getFriendlyUrlStringProposal() {
@@ -175,6 +176,15 @@ public class ContestType implements Serializable {
 
     public boolean isActive() {
         return getAttribute(ContestTypeAttributeKey.IS_ACTIVE);
+    }
+
+    public boolean isRestrictedAccess() {
+        return getOptionalAttribute(ContestTypeAttributeKey.PERMISSIONS_ACCESSIBLE_BY_ROLE_GROUP)
+                .isPresent();
+    }
+
+    public Long getRoleGroup() {
+        return getAttribute(ContestTypeAttributeKey.PERMISSIONS_ACCESSIBLE_BY_ROLE_GROUP);
     }
 
     /**

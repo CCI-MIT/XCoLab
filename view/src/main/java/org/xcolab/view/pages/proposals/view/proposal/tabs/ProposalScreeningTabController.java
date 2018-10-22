@@ -38,6 +38,9 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=SCREENING")
     public String showFellowsPanel(HttpServletRequest request, Model model,
             ProposalContext proposalContext, Member currentMember) {
+
+        //TODO: permission check missing?
+
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.SCREENING);
 
         Proposal proposal = proposalContext.getProposal();

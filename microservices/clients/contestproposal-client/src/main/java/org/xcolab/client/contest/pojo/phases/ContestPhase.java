@@ -2,7 +2,6 @@ package org.xcolab.client.contest.pojo.phases;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
@@ -11,10 +10,10 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.commons.time.DurationFormatter;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.commons.time.DurationFormatter;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -74,17 +73,14 @@ public class ContestPhase extends AbstractContestPhase {
 
     public String getContestPhaseLinkUrl() {
         try {
-            String link = "/";
             Contest contest = contestClient.getContest(this.getContestId());
-            link += ContestTypeClient.getContestType(contest.getContestTypeId())
-                    .getFriendlyUrlStringContests();
+            String link = contest.getContestType().getContestBaseUrl();
             link += "/%d/%s/phase/%d";
             return String.format(link, contest.getContestYear(), contest.getContestUrlName(),
                     this.getId());
         } catch (ContestNotFoundException ignored) {
             return "/contests/";
         }
-
     }
 
     public String getContestStatusStr() {

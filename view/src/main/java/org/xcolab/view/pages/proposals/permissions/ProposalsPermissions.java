@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.permissions;
 
-
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.enums.ContestStatus;
@@ -31,6 +30,8 @@ public class ProposalsPermissions {
     private final Contest contest;
     private final ContestPhase contestPhase;
     private final ContestStatus contestStatus;
+
+    private final ContestPermissions contestPermissions;
 
     private final ProposalClient proposalClient;
     private final ContestClient contestClient;
@@ -69,6 +70,7 @@ public class ProposalsPermissions {
         this.proposal = proposal;
         this.contest = contest;
         this.contestPhase = contestPhase;
+        this.contestPermissions = new ContestPermissions(member);
     }
 
     public Member getMember() {
@@ -79,9 +81,14 @@ public class ProposalsPermissions {
         return planIsEditable;
     }
 
+    public boolean getCanView() {
+        return contestPermissions.getCanAccessContest(contest);
+    }
+
     public boolean getCanReport() {
-        return (ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.get() && isLoggedIn && !isGuest)
-                || getCanAdminAll();
+        return (ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.get() && isLoggedIn && !isGuest
+                && getCanView())
+                    || getCanAdminAll();
     }
 
     public boolean getCanReportProposal() {
@@ -94,7 +101,7 @@ public class ProposalsPermissions {
      * @return true if user is allowed to edit a proposal, false otherwise
      */
     public boolean getCanEdit() {
-        return isLoggedIn && !isGuest
+        return isLoggedIn && !isGuest && getCanView()
                 && (getCanAdminAll() || planIsEditable
                 && (isProposalOpen() || isProposalMember())
         );
@@ -114,7 +121,8 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanCreate() {
-        return isLoggedIn && !isGuest && getIsCreationAllowedByPhase()
+        return (isLoggedIn && !isGuest && getIsCreationAllowedByPhase()
+                && getCanView())
                 || getCanAdminAll();
     }
 
@@ -131,7 +139,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanPublicRating() {
-        return isLoggedIn && !isGuest; // && !getCanJudgeActions() && !getIsTeamMember();
+        return isLoggedIn && !isGuest && getCanView(); // && !getCanJudgeActions() && !getIsTeamMember();
     }
 
     public boolean getCanManageUsers() {
@@ -144,15 +152,16 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanSupportProposal() {
-        return isLoggedIn && !isGuest && !isVotingEnabled();
+        return isLoggedIn && !isGuest && getCanView()
+                && !isVotingEnabled();
     }
 
     public boolean getCanSubscribeContest() {
-        return isLoggedIn;
+        return isLoggedIn && getCanView();
     }
 
     public boolean getCanSubscribeProposal() {
-        return isLoggedIn;
+        return isLoggedIn && getCanView();
     }
 
     public boolean isVotingEnabled() {
@@ -161,8 +170,8 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanVote() {
-        return isLoggedIn && !isGuest && isVotingEnabled()
-                && (proposal != null && proposal.getId() > 0);
+        return isLoggedIn && !isGuest && getCanView()
+                && isVotingEnabled() && (proposal != null && proposal.getId() > 0);
     }
 
     public boolean getCanAdminProposal() {

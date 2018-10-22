@@ -17,12 +17,13 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 
@@ -34,8 +35,13 @@ import javax.servlet.http.HttpServletResponse;
 public class ProposalAdminTabController extends BaseProposalTabController {
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADMIN")
-    public String showProposalDetails(HttpServletRequest request, Model model,
-            ProposalContext proposalContext) {
+    public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member currentMember) {
+
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
+        if (!permissions.getCanAdminProposal()) {
+            return new AccessDeniedPage(currentMember).toViewName(response);
+        }
 
         ContestClient contestClient = proposalContext.getClients().getContestClient();
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.ADMIN);

@@ -217,8 +217,7 @@ public class Proposal extends AbstractProposal {
     public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
         Long proposalId = this.getId();
         ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
-        String link = "/";
-        link += contestType.getFriendlyUrlStringContests();
+        String link = contestType.getContestBaseUrl();
 
         String friendlyUrlStringProposal = contestType.getFriendlyUrlStringProposal();
 

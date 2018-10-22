@@ -56,11 +56,6 @@ public class MockContestType extends ContestType {
     }
 
     @Override
-    public String getFriendlyUrlStringContests() {
-        return "contests";
-    }
-
-    @Override
     public String getFriendlyUrlStringProposal() {
         return "proposal";
     }

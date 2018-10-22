@@ -61,7 +61,6 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         }
 
         Proposal proposal = proposalContext.getProposal();
-        Contest contest = proposalContext.getContest();
         ContestPhase contestPhase = proposalContext.getContestPhase();
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
         ProposalAdvancingBean advancingBean = new ProposalAdvancingBean(proposalWrapper);

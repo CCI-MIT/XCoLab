@@ -20,7 +20,9 @@ import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
+import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -35,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
@@ -44,8 +47,13 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     private static final String EVALUATION_TAB_VIEW_NAME = "/proposals/proposalEvaluation";
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=EVALUATION")
-    public String showEvaluation(HttpServletRequest request, Model model,
-            Member currentMember, ProposalContext proposalContext) {
+    public String showEvaluation(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member currentMember, ProposalContext proposalContext) {
+
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
+        if (!permissions.getCanView()) {
+            return new AccessDeniedPage(currentMember).toViewName(response);
+        }
 
         boolean isFellowScreeningActive = proposalContext.getContestPhase().getFellowScreeningActive();
         boolean showEvaluationRatings = hasContestPassedAnyScreeningPhaseAlready(proposalContext);

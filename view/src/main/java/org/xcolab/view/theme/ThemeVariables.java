@@ -2,7 +2,10 @@ package org.xcolab.view.theme;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.theme.ColabTheme;
+import org.xcolab.view.auth.AuthenticationContext;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +41,18 @@ public class ThemeVariables {
 
         this.isHomePage = request.getRequestURI().equals("/");
 
+        final Member loggedInMember = new AuthenticationContext().getMemberOrNull(request);
         this.contestPages = ContestTypeClient.getActiveContestTypes().stream()
+                .filter(contestType -> {
+                    if (!contestType.isRestrictedAccess()) {
+                        return true;
+                    }
+                    if (loggedInMember == null) {
+                        return false;
+                    }
+                    final long userId = loggedInMember.getId();
+                    return PermissionsClient.hasRoleGroup(userId, contestType.getRoleGroup());
+                })
                 .map(contestType -> contestType.withLocale(i18NVariables.getLanguage()))
                 .collect(Collectors.toList());
 
