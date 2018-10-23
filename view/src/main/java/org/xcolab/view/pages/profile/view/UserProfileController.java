@@ -134,7 +134,7 @@ public class UserProfileController {
     }
 
     private boolean shouldAllowIndexingForUser(UserProfileWrapper userProfileWrapper) {
-        return PermissionsClient.memberHasAnyRole(userProfileWrapper.getUserId(),
+        return PermissionsClient.memberHasAnySystemRole(userProfileWrapper.getUserId(),
                 SEO_INDEXABLE_MEMBER_ROLES) || !userProfileWrapper.getBadges().isEmpty();
     }
 

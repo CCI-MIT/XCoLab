@@ -8,7 +8,7 @@ import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.types.TypeProvider;
 
-import java.util.EnumSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -91,22 +91,25 @@ public final class PermissionsClient {
     }
 
     public static boolean memberHasRole(Long userId, long roleIdToTest) {
-        return memberHasRole(userId, SystemRole.fromRoleId(roleIdToTest));
+        return memberHasAnyRole(userId, Collections.singleton(roleIdToTest));
     }
 
     public static boolean memberHasRole(Long userId, SystemRole roleToTest) {
-        return memberHasAnyRole(userId, EnumSet.of(roleToTest));
+        return memberHasAnyRole(userId, Collections.singleton(roleToTest.getRoleId()));
     }
 
-    public static boolean memberHasAnyRole(Long userId, Set<SystemRole> rolesToTest ) {
+    public static boolean memberHasAnySystemRole(Long userId, Set<SystemRole> rolesToTest) {
+        return memberHasAnyRole(userId, rolesToTest.stream().map(SystemRole::getRoleId)
+                .collect(Collectors.toSet()));
+    }
+
+    public static boolean memberHasAnyRole(Long userId, Set<Long> rolesToTest ) {
         if (userId == 0) {
             return false;
         }
 
         final List<Role> roles = MembersClient.getMemberRoles(userId);
-        final Set<Long> collect = rolesToTest.stream().map(SystemRole::getRoleId)
-                .collect(Collectors.toSet());
-        return roles.stream().map(Role::getId).anyMatch(collect::contains);
+        return roles.stream().map(Role::getId).anyMatch(rolesToTest::contains);
     }
 
     private static boolean memberHasRoleInContest(Long userId, Long contestId, SystemRole roleToTest) {
