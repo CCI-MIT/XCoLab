@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -46,8 +45,6 @@ public class ProposalAdminTabController extends BaseProposalTabController {
         ContestClient contestClient = proposalContext.getClients().getContestClient();
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.ADMIN);
         model.addAttribute("availableRibbons", contestClient.getAllContestPhaseRibbonType());
-        model.addAttribute("allowOpenProposals",
-            ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
         return "proposals/proposalAdmin";
     }
@@ -116,20 +113,21 @@ public class ProposalAdminTabController extends BaseProposalTabController {
     }
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADMIN/toggleProposalOpen")
-    public void toogleOpen(HttpServletRequest request, Model model, HttpServletResponse response,
+    public void toggleOpen(HttpServletRequest request, HttpServletResponse response, Model model,
             Member currentMember, ProposalContext proposalContext, @RequestParam boolean planOpen)
-            throws ProposalsAuthorizationException, IOException {
+            throws IOException {
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
 
-        if (permissions.getCanDelete()) {
+        if (permissions.getCanToggleOpen()) {
             final long proposalId = proposalContext.getProposal().getId();
             final long userId = currentMember.getId();
             proposalContext.getClients().getProposalAttributeClient().setProposalAttribute(userId, proposalId,
                     ProposalAttributeKeys.OPEN, 0L, planOpen ? 1L : 0L, null);
             response.sendRedirect(proposalContext.getProposal().getProposalLinkUrl(proposalContext.getContest()));
         } else {
-            throw new ProposalsAuthorizationException("User isn't allowed to change proposal open attribute");
+            AlertMessage.danger("You are not allowed to perform this action.").flash(request);
+            response.sendRedirect(proposalContext.getProposal().getProposalUrl());
         }
     }
 }

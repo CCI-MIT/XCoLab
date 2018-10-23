@@ -174,6 +174,10 @@ public class ProposalsPermissions {
                 && isVotingEnabled() && (proposal != null && proposal.getId() > 0);
     }
 
+    public boolean getCanToggleOpen() {
+        return getCanAdminProposal() && ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get();
+    }
+
     public boolean getCanAdminProposal() {
         return getCanAdminAll() || isOwner();
     }

@@ -16,48 +16,46 @@
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
         <div class="l-BoxLayout__columns l-BoxLayout--striped">
-            <c:if test="${proposalsPermissions.canAdminProposal }">
-                <c:if test="${allowOpenProposals}">
-                    <div class="c-Box c-Box--colorTan">
-                        <div class="c-Box__body">
-                            <strong>This ${contestType.proposalName} can be edited by:</strong>
-                            <div>
-                                <c:set var="toggleProposalOpenURL"
-                                       value="${proposal.proposalUrl}/tab/ADMIN/toggleProposalOpen?&amp;contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }"/>
+            <c:if test="${proposalsPermissions.canToggleOpen }">
+                <div class="c-Box c-Box--colorTan">
+                    <div class="c-Box__body">
+                        <strong>This ${contestType.proposalName} can be edited by:</strong>
+                        <div>
+                            <c:set var="toggleProposalOpenURL"
+                                   value="${proposal.proposalUrl}/tab/ADMIN/toggleProposalOpen?&amp;contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id }"/>
 
-                                <form:form action="${toggleProposalOpenURL }" method="post">
-                                    <div class="radio">
-                                        <label>
-                                            <c:choose>
-                                                <c:when test="${not proposal.open}">
-                                                    <input type="radio" value="false" name="planOpen" checked="checked" />
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <input type="radio" value="false" name="planOpen" />
-                                                </c:otherwise>
-                                            </c:choose>
-                                            Team members only
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <c:choose>
-                                                <c:when test="${proposal.open}">
-                                                    <input type="radio" value="true" name="planOpen" checked="checked" />
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <input type="radio" value="true" name="planOpen"  />
-                                                </c:otherwise>
-                                            </c:choose>
-                                            Anyone
-                                        </label>
-                                    </div>
-                                    <button class="btn btn-primary" type="submit">Save</button>
-                                </form:form>
-                            </div>
+                            <form:form action="${toggleProposalOpenURL }" method="post">
+                                <div class="radio">
+                                    <label>
+                                        <c:choose>
+                                            <c:when test="${not proposal.open}">
+                                                <input type="radio" value="false" name="planOpen" checked="checked" />
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="radio" value="false" name="planOpen" />
+                                            </c:otherwise>
+                                        </c:choose>
+                                        Team members only
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <c:choose>
+                                            <c:when test="${proposal.open}">
+                                                <input type="radio" value="true" name="planOpen" checked="checked" />
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type="radio" value="true" name="planOpen"  />
+                                            </c:otherwise>
+                                        </c:choose>
+                                        Anyone
+                                    </label>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Save</button>
+                            </form:form>
                         </div>
                     </div>
-                </c:if>
+                </div>
             </c:if>
 
             <c:if test="${proposalsPermissions.canAssignRibbon }">
