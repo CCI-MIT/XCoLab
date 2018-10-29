@@ -24,5 +24,31 @@
             <artifactId>xcolab-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>pojo-generator-maven-plugin</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.xcolab</groupId>
+                <artifactId>pojo-generator-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>touch</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDirectory>target/dir</outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
