@@ -24,8 +24,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- Specify the MyMojo parameter -->
-                    <interfaceDirectory>interfaces/</interfaceDirectory>
+                    <interfaceDirectory>org/xcolab/pojo/generator</interfaceDirectory>
                     <packageName>org.xcolab.pojo.generator.tables.pojos</packageName>
                     <outputDirectory>target/test-harness/project-to-test</outputDirectory>
                 </configuration>

@@ -2,11 +2,13 @@ package org.xcolab.pojo.generator;
 
 import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.plugin.testing.WithoutMojo;
+import org.jboss.forge.roaster.model.util.Strings;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -38,15 +40,25 @@ public class PojoGeneratorTest {
         File interfaceDirectory = (File) rule.getVariableValueFromObject(pojoGenerator, "interfaceDirectory");
         assertNotNull(interfaceDirectory);
 
+        File[] files = interfaceDirectory.listFiles();
+        assertEquals(1, files.length);
+
         pojoGenerator.execute();
 
-        File touch = new File(outputDirectory, "touch.txt");
-        assertTrue(touch.exists());
+        for (File file : files) {
+            File javaFile = new File(outputDirectory, getClassName(file.getName()));
+            assertTrue(javaFile.exists());
+        }
     }
 
     @Test
     @WithoutMojo
     public void test() {
 
+    }
+
+    private static String getClassName(String name) {
+        name = name.substring(1);
+        return Strings.capitalize(name);
     }
 }

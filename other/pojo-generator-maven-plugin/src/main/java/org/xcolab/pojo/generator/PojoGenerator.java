@@ -30,7 +30,7 @@ public class PojoGenerator extends AbstractMojo {
     @Parameter(property = "packageName", required = true)
     private String packageName;
 
-    @Parameter(defaultValue = "${project.build.directory}", property = "outputDirectory", required = true)
+    @Parameter(defaultValue = "target/generated-sources/roaster", property = "outputDirectory", required = true)
     private File outputDirectory;
 
     @Override
@@ -39,32 +39,17 @@ public class PojoGenerator extends AbstractMojo {
 
         List<JavaClassSource> pojos = createPojos(interfaces);
 
+        if (!outputDirectory.exists()) {
+            outputDirectory.mkdirs();
+        }
+
         for (JavaClassSource pojo : pojos) {
-            System.out.println(pojo.toString());
-        }
+            File javaFile = new File(outputDirectory, pojo.getName() + ".java");
 
-        File f = outputDirectory;
-
-        if (!f.exists()) {
-            f.mkdirs();
-        }
-
-        File touch = new File(f, "touch.txt");
-
-        FileWriter w = null;
-        try {
-            w = new FileWriter(touch);
-
-            w.write("touch.txt");
-        } catch (IOException e) {
-            throw new MojoExecutionException("Error creating file " + touch, e);
-        } finally {
-            if (w != null) {
-                try {
-                    w.close();
-                } catch (IOException e) {
-                    // ignore
-                }
+            try (FileWriter w = new FileWriter(javaFile)) {
+                w.write(pojo.toString());
+            } catch (IOException e) {
+                throw new MojoExecutionException("Error creating file " + javaFile, e);
             }
         }
     }
@@ -117,7 +102,7 @@ public class PojoGenerator extends AbstractMojo {
 
             PojoGenerator.createEmptyConstructor(pojo);
             PojoGenerator.createFullConstructor(pojo, fields);
-            PojoGenerator.createCopyConstructor(pojo, src.getName(), fields);
+            PojoGenerator.createCopyConstructor(pojo, fields);
 
             PojoGenerator.createGettersAndSetters(pojo, fields);
 
@@ -160,8 +145,8 @@ public class PojoGenerator extends AbstractMojo {
                 .setBody(body);
     }
 
-    private static void createCopyConstructor(JavaClassSource pojo, String interfaceType, List<FieldSource<JavaClassSource>> fields) {
-        String parameter = interfaceType + " value";
+    private static void createCopyConstructor(JavaClassSource pojo, List<FieldSource<JavaClassSource>> fields) {
+        String parameter = pojo.getName() + " value";
 
         String body = fields.stream().map(field -> {
             return String.format("this.%s = value.%s;", field.getName(), field.getName());
@@ -184,7 +169,7 @@ public class PojoGenerator extends AbstractMojo {
             pojo.addMethod()
                     .setPublic()
                     .setReturnTypeVoid()
-                    .setName("get" + capitalizedName)
+                    .setName("set" + capitalizedName)
                     .setParameters(parameterString)
                     .setBody(bodySetter)
                     .addAnnotation(Override.class);

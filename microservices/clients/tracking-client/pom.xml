@@ -46,7 +46,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <outputDirectory>target/dir</outputDirectory>
+                    <interfaceDirectory>src/main/java/org/xcolab/client/tracking/pojo</interfaceDirectory>
+                    <packageName>org.xcolab.tracking.pojo.tables.pojos</packageName>
                 </configuration>
             </plugin>
         </plugins>
