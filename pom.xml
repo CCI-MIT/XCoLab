@@ -19,7 +19,7 @@
         <module>util</module>
 		<module>view</module>
         <module>other</module>
-  </modules>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -72,6 +72,9 @@
 
         <!-- Error monitoring -->
         <sentry.version>1.7.10</sentry.version>
+
+        <!-- Code generation -->
+        <version.roaster>2.20.1.Final</version.roaster>
     </properties>
 
 	<repositories>

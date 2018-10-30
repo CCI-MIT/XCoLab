@@ -2,7 +2,7 @@ package org.xcolab.pojo.generator;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.tracking.pojo.tables.pojos.Location;
+import org.xcolab.pojo.generator.tables.pojos.Location;
 
 @JsonDeserialize(as = Location.class)
 public interface ILocation {
