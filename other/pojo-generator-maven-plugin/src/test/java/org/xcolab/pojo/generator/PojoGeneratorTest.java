@@ -34,10 +34,12 @@ public class PojoGeneratorTest {
         PojoGenerator pojoGenerator = (PojoGenerator) rule.lookupConfiguredMojo(pom, "generate");
         assertNotNull(pojoGenerator);
 
-        File outputDirectory = (File) rule.getVariableValueFromObject(pojoGenerator, "outputDirectory");
+        File outputDirectory =
+                (File) rule.getVariableValueFromObject(pojoGenerator, "outputDirectory");
         assertNotNull(outputDirectory);
 
-        File interfaceDirectory = (File) rule.getVariableValueFromObject(pojoGenerator, "interfaceDirectory");
+        File interfaceDirectory =
+                (File) rule.getVariableValueFromObject(pojoGenerator, "interfaceDirectory");
         assertNotNull(interfaceDirectory);
 
         String packageName = (String) rule.getVariableValueFromObject(pojoGenerator, "packageName");

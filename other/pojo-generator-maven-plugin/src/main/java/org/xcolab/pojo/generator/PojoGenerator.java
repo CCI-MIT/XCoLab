@@ -14,9 +14,9 @@ import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.jboss.forge.roaster.model.util.Refactory;
 import org.jboss.forge.roaster.model.util.Strings;
+import org.jboss.forge.roaster.model.util.Types;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,7 +33,8 @@ public class PojoGenerator extends AbstractMojo {
     @Parameter(property = "packageName", required = true)
     private String packageName;
 
-    @Parameter(defaultValue = "target/generated-sources/roaster", property = "outputDirectory", required = true)
+    @Parameter(defaultValue = "target/generated-sources/roaster", property = "outputDirectory",
+            required = true)
     private File outputDirectory;
 
     @Parameter(defaultValue = "${project}")
@@ -65,17 +66,21 @@ public class PojoGenerator extends AbstractMojo {
 
     private List<JavaInterfaceSource> getInterfaces() {
         if (!interfaceDirectory.exists()) {
-            throw new IllegalArgumentException("interfaceDirectory " + interfaceDirectory + " does not exist!");
+            throw new IllegalArgumentException(
+                    "interfaceDirectory " + interfaceDirectory + " does not exist!");
         }
         if (!interfaceDirectory.isDirectory()) {
-            throw new IllegalArgumentException("interfaceDirectory " + interfaceDirectory + " is not a directory!");
+            throw new IllegalArgumentException(
+                    "interfaceDirectory " + interfaceDirectory + " is not a directory!");
         }
 
         List<JavaInterfaceSource> interfaces = new ArrayList<>();
-        File[] interfaceFiles = interfaceDirectory.listFiles(pathname -> pathname.getName().endsWith(".java"));
+        File[] interfaceFiles =
+                interfaceDirectory.listFiles(pathname -> pathname.getName().endsWith(".java"));
         for (File interfaceFile : interfaceFiles) {
             try {
-                JavaInterfaceSource interfaceSrc = Roaster.parse(JavaInterfaceSource.class, interfaceFile);
+                JavaInterfaceSource interfaceSrc =
+                        Roaster.parse(JavaInterfaceSource.class, interfaceFile);
                 interfaces.add(interfaceSrc);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -101,13 +106,19 @@ public class PojoGenerator extends AbstractMojo {
                         && method.getParameters().size() == 1
                         && !method.isDefault()) {
 
-                    org.jboss.forge.roaster.model.Parameter parameter = method.getParameters().get(0);
+                    org.jboss.forge.roaster.model.Parameter parameter =
+                            method.getParameters().get(0);
 
                     FieldSource<JavaClassSource> field = pojo.addField()
                             .setName(parameter.getName())
-                            .setType(parameter.getType().getQualifiedName())
+                            .setType(parameter.getType().getName())
                             .setPrivate();
+
                     fields.add(field);
+                    if (!Types.isJavaLang(parameter.getType().getQualifiedName())
+                            && !Types.isBasicType(parameter.getType().getQualifiedName())) {
+                        pojo.addImport(parameter.getType().getQualifiedName());
+                    }
                 }
             }
 
@@ -140,9 +151,10 @@ public class PojoGenerator extends AbstractMojo {
                 .setBody("");
     }
 
-    private static void createFullConstructor(JavaClassSource pojo, List<FieldSource<JavaClassSource>> fields) {
+    private static void createFullConstructor(JavaClassSource pojo,
+            List<FieldSource<JavaClassSource>> fields) {
         String parameters = fields.stream().map(field -> {
-            return field.getType().getQualifiedName() + " " + field.getName();
+            return field.getType() + " " + field.getName();
         }).collect(Collectors.joining(", "));
 
         String body = fields.stream().map(field -> {
@@ -156,7 +168,8 @@ public class PojoGenerator extends AbstractMojo {
                 .setBody(body);
     }
 
-    private static void createCopyConstructor(JavaClassSource pojo, List<FieldSource<JavaClassSource>> fields) {
+    private static void createCopyConstructor(JavaClassSource pojo,
+            List<FieldSource<JavaClassSource>> fields) {
         String parameter = pojo.getName() + " value";
 
         String body = fields.stream().map(field -> {
@@ -170,10 +183,11 @@ public class PojoGenerator extends AbstractMojo {
                 .setBody(body);
     }
 
-    private static void createGettersAndSetters(JavaClassSource pojo, List<FieldSource<JavaClassSource>> fields) {
+    private static void createGettersAndSetters(JavaClassSource pojo,
+            List<FieldSource<JavaClassSource>> fields) {
         for (FieldSource<JavaClassSource> field : fields) {
             String capitalizedName = Strings.capitalize(field.getName());
-            String parameterString = field.getType().getQualifiedName() + " " + field.getName();
+            String parameterString = field.getType().getName() + " " + field.getName();
             String bodySetter = String.format("this.%s = %s;", field.getName(), field.getName());
             String bodyGetter = String.format("return %s;", field.getName());
 
