@@ -40,13 +40,18 @@ public class PojoGeneratorTest {
         File interfaceDirectory = (File) rule.getVariableValueFromObject(pojoGenerator, "interfaceDirectory");
         assertNotNull(interfaceDirectory);
 
+        String packageName = (String) rule.getVariableValueFromObject(pojoGenerator, "packageName");
+        assertNotNull(packageName);
+
         File[] files = interfaceDirectory.listFiles();
         assertEquals(1, files.length);
 
         pojoGenerator.execute();
 
+        File outputPackage = new File(outputDirectory, packageName.replaceAll("\\.", "/"));
+
         for (File file : files) {
-            File javaFile = new File(outputDirectory, getClassName(file.getName()));
+            File javaFile = new File(outputPackage, getClassName(file.getName()));
             assertTrue(javaFile.exists());
         }
     }

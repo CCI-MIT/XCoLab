@@ -39,7 +39,7 @@
                 <version>${project.version}</version>
                 <executions>
                     <execution>
-                        <phase>compile</phase>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -47,7 +47,7 @@
                 </executions>
                 <configuration>
                     <interfaceDirectory>src/main/java/org/xcolab/client/tracking/pojo</interfaceDirectory>
-                    <packageName>org.xcolab.tracking.pojo.tables.pojos</packageName>
+                    <packageName>org.xcolab.client.tracking.pojo.tables.pojos</packageName>
                 </configuration>
             </plugin>
         </plugins>
