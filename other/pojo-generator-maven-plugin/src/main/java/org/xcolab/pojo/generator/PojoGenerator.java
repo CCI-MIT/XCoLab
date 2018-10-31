@@ -5,6 +5,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 import org.jboss.forge.roaster.ParserException;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.FieldSource;
@@ -35,8 +36,13 @@ public class PojoGenerator extends AbstractMojo {
     @Parameter(defaultValue = "target/generated-sources/roaster", property = "outputDirectory", required = true)
     private File outputDirectory;
 
+    @Parameter(defaultValue = "${project}")
+    private MavenProject project;
+
     @Override
     public void execute() throws MojoExecutionException {
+        project.addCompileSourceRoot(outputDirectory.getPath());
+
         List<JavaInterfaceSource> interfaces = getInterfaces();
 
         List<JavaClassSource> pojos = createPojos(interfaces);

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.client.tracking.pojo.tables.pojos.Location;
 
+import java.util.Locale;
+
 @JsonDeserialize(as = Location.class)
 public interface ILocation {
 
@@ -14,8 +16,6 @@ public interface ILocation {
     String getCountry();
 
     void setCountry(String country);
-
-    String getCountryNameInEnglish();
 
     String getCountryName();
 
@@ -48,4 +48,9 @@ public interface ILocation {
     String getAreaCode();
 
     void setAreaCode(String areaCode);
+
+    default String getCountryNameInEnglish() {
+        Locale l = new Locale("en", getCountry());
+        return l.getDisplayCountry();
+    }
 }

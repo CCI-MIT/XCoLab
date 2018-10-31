@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Component
@@ -96,9 +97,9 @@ public class GeoLiteCityConfiguration {
             Map<Integer, ILocation> locations = new HashMap<>(510000);
             while ((line = csvLocationsReader.readNext()) != null) {
                 int locId = Integer.parseInt(line[0]);
-                locations.put(locId, new Location(locId, line[1], line[2], line[3], line[4],
-                        Double.parseDouble(line[5]), Double.parseDouble(line[6]), line[7],
-                        line[8]));
+                String countryName = new Locale("", line[1]).getDisplayCountry();
+                locations.put(locId, new Location(locId, line[1], countryName, line[2], line[3], line[4],
+                        Double.parseDouble(line[5]), Double.parseDouble(line[6]), line[7], line[8]));
             }
 
             Collections.sort(blocks);
