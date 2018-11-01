@@ -13,13 +13,7 @@ public interface ILocation {
 
     void setCity(String city);
 
-    @Override
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
+    Timestamp getCreatedAt();
 
-    @Override
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
+    void setCreatedAt(Timestamp createdAt);
 }
