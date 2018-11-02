@@ -5,6 +5,15 @@
 
 	<!--@elvariable id="showCountdown" type="java.lang.Boolean"-->
 
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/contests">${contestType.contestNamePlural}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">${contest.titleWithEndYear}</li>
+        </ol>
+    </nav>
+
 	<div class="c-Headline align-items-center flex-wrap flex-lg-nowrap">
         <collab:image src="${contest.logoPath}" width="50" height="50" alt="Contest Image"/>
 		<h1 class="my-0">${contest.titleWithEndYear}</h1>
