@@ -20,8 +20,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -34,8 +40,8 @@ public class PojoGenerator extends AbstractMojo {
     @Parameter(property = "interfaceDirectory", required = true)
     private File interfaceDirectory;
 
-    @Parameter(property = "packageName", required = true)
-    private String packageName;
+    @Parameter(property = "packageSuffix", required = true)
+    private String packageSuffix;
 
     @Parameter(defaultValue = "target/generated-sources/roaster", property = "outputDirectory",
             required = true)
@@ -50,20 +56,27 @@ public class PojoGenerator extends AbstractMojo {
 
         project.addCompileSourceRoot(outputDirectory.getPath());
 
-        List<JavaInterfaceSource> interfaces = getInterfaces();
+        Map<JavaInterfaceSource, String> interfaces = getInterfaces();
 
-        List<JavaClassSource> pojos = createPojos(interfaces);
+        Map<JavaClassSource, String> pojos = createPojos(interfaces);
 
-        File outputPackage = new File(outputDirectory, packageName.replaceAll("\\.", "/"));
+        final File outputPackage = new File(outputDirectory, packageSuffix.replaceAll("\\.", "/"));
 
         if (!outputPackage.exists()) {
             outputPackage.mkdirs();
         }
 
-        for (JavaClassSource pojo : pojos) {
-            File javaFile = new File(outputPackage, pojo.getName() + ".java");
+        for (Entry<JavaClassSource, String> pojoEntry : pojos.entrySet()) {
+            File fileDir = outputPackage;
+            if (pojoEntry.getValue() != "") {
+                fileDir = new File(outputPackage, pojoEntry.getValue());
+                if (!fileDir.exists()) {
+                    fileDir.mkdirs();
+                }
+            }
+            File javaFile = new File(fileDir, pojoEntry.getKey().getName() + ".java");
             try (FileWriter w = new FileWriter(javaFile)) {
-                w.write(pojo.toString());
+                w.write(pojoEntry.getKey().toString());
             } catch (IOException e) {
                 throw new MojoExecutionException("Error creating file " + javaFile, e);
             }
@@ -80,42 +93,59 @@ public class PojoGenerator extends AbstractMojo {
                     "interfaceDirectory " + interfaceDirectory + " is not a directory!");
         }
 
-        if (!PACKAGE_PATTERN.matcher(packageName).matches()) {
+        if (!PACKAGE_PATTERN.matcher(packageSuffix).matches()) {
             throw new IllegalArgumentException(
-                    "packageName " + packageName + " does not comply to the naming conventions.");
+                    "packageSuffix " + packageSuffix + " does not comply to the naming conventions.");
         }
     }
 
-    private List<JavaInterfaceSource> getInterfaces() {
-        List<JavaInterfaceSource> interfaces = new ArrayList<>();
-        File[] interfaceFiles =
-                interfaceDirectory.listFiles(pathname -> pathname.getName().endsWith(".java"));
-        for (File interfaceFile : interfaceFiles) {
-            try {
-                JavaInterfaceSource interfaceSrc =
-                        Roaster.parse(JavaInterfaceSource.class, interfaceFile);
-                interfaces.add(interfaceSrc);
-            } catch (FileNotFoundException e) {
-                throw new IllegalArgumentException(
-                        "File " + interfaceFile.getAbsolutePath() + " does not exist.", e);
-            } catch (ParserException e) {
-                throw new IllegalArgumentException(
-                        "File " + interfaceFile.getAbsolutePath() + " cannot be parsed", e);
+    private Map<JavaInterfaceSource, String> getInterfaces() {
+        Map<JavaInterfaceSource, String> interfaces = new HashMap<>();
+        try {
+            List<File> interfaceFiles = interfaceFiles = Files.walk(interfaceDirectory.toPath())
+                    .filter(Files::isRegularFile)
+                    .map(path -> path.toFile())
+                    .filter(path -> path.getAbsolutePath().endsWith(".java"))
+                    .collect(Collectors.toList());
+
+            for (File interfaceFile : interfaceFiles) {
+                try {
+                    JavaInterfaceSource interfaceSrc =
+                            Roaster.parse(JavaInterfaceSource.class, interfaceFile);
+                    Path path = Paths.get(interfaceFile.toURI());
+                    path = Paths.get(interfaceDirectory.toURI()).relativize(path);
+                    String subdir = path.toString().replace(path.getFileName().toString(), "");
+                    interfaces.put(interfaceSrc, subdir);
+                } catch (FileNotFoundException e) {
+                    throw new IllegalArgumentException(
+                            "File " + interfaceFile.getAbsolutePath() + " does not exist.", e);
+                } catch (ParserException e) {
+                    throw new IllegalArgumentException(
+                            "File " + interfaceFile.getAbsolutePath() + " cannot be parsed", e);
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return interfaces;
     }
 
-    private List<JavaClassSource> createPojos(List<JavaInterfaceSource> interfaces) {
-        List<JavaClassSource> pojos = new ArrayList<>();
-        for (JavaInterfaceSource src : interfaces) {
+    private Map<JavaClassSource, String> createPojos(Map<JavaInterfaceSource, String> interfaces) {
+        Map<JavaClassSource, String> pojos = new HashMap<>();
+        for (Entry<JavaInterfaceSource, String> srcEntry : interfaces.entrySet()) {
             JavaClassSource pojo = Roaster.create(JavaClassSource.class);
 
-            pojo.setPackage(packageName).setName(PojoGenerator.getClassName(src.getName()));
-            pojo.addInterface(src);
+            String suffix = packageSuffix;
+            if(!srcEntry.getValue().isEmpty()) {
+                suffix += "." + srcEntry.getValue().replaceAll("/", "");
+            }
+
+            pojo.setPackage(srcEntry.getKey().getPackage() + "." + suffix)
+                    .setName(PojoGenerator.getClassName(srcEntry.getKey().getName()));
+            pojo.addInterface(srcEntry.getKey());
 
             List<FieldSource<JavaClassSource>> fields = new ArrayList<>();
-            for (MethodSource<JavaInterfaceSource> method : src.getMethods()) {
+            for (MethodSource<JavaInterfaceSource> method : srcEntry.getKey().getMethods()) {
                 if (isSetter(method) && !method.isDefault()) {
                     org.jboss.forge.roaster.model.Parameter parameter = verifyParameterName(method);
 
@@ -141,7 +171,7 @@ public class PojoGenerator extends AbstractMojo {
             Refactory.createHashCodeAndEquals(pojo, fields.toArray(new FieldSource[0]));
             Refactory.createToStringFromFields(pojo, fields);
 
-            pojos.add(pojo);
+            pojos.put(pojo, srcEntry.getValue());
         }
         return pojos;
     }
@@ -169,7 +199,7 @@ public class PojoGenerator extends AbstractMojo {
         if (className.length() >= 2
                 && className.charAt(0) == 'I'
                 && Character.isUpperCase(className.charAt(1))) {
-            
+
             return className.substring(1);
         }
         return className;

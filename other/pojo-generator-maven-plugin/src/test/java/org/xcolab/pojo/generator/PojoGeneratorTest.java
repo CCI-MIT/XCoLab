@@ -5,6 +5,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -32,19 +35,28 @@ public class PojoGeneratorTest {
                 (File) rule.getVariableValueFromObject(pojoGenerator, "interfaceDirectory");
         assertNotNull(interfaceDirectory);
 
-        String packageName = (String) rule.getVariableValueFromObject(pojoGenerator, "packageName");
-        assertNotNull(packageName);
+        String packageSuffix = (String) rule.getVariableValueFromObject(pojoGenerator, "packageSuffix");
+        assertNotNull(packageSuffix);
 
-        File[] files = interfaceDirectory.listFiles();
-        assertEquals(1, files.length);
+        List<File> interfaceFiles = Files.walk(interfaceDirectory.toPath())
+                .filter(Files::isRegularFile)
+                .map(path -> path.toFile())
+                .filter(file -> file.getAbsolutePath().endsWith(".java"))
+                .collect(Collectors.toList());
+
+        assertEquals(2, interfaceFiles.size());
 
         pojoGenerator.execute();
 
-        File outputPackage = new File(outputDirectory, packageName.replaceAll("\\.", "/"));
+        File outputPackage = new File(outputDirectory, packageSuffix.replaceAll("\\.", "/"));
+        List<File> classFiles = Files.walk(outputPackage.toPath())
+                .filter(Files::isRegularFile)
+                .map(path -> path.toFile())
+                .filter(file -> file.getAbsolutePath().endsWith(".java"))
+                .collect(Collectors.toList());
 
-        for (File file : files) {
-            File javaFile = new File(outputPackage, getClassName(file.getName()));
-            assertTrue(javaFile.exists());
+        for (File file : classFiles) {
+            assertTrue(file.exists());
         }
     }
 

@@ -47,7 +47,7 @@
                 </executions>
                 <configuration>
                     <interfaceDirectory>src/main/java/org/xcolab/client/tracking/pojo</interfaceDirectory>
-                    <packageName>org.xcolab.client.tracking.pojo.tables.pojos</packageName>
+                    <packageSuffix>tables.pojos</packageSuffix>
                 </configuration>
             </plugin>
         </plugins>
