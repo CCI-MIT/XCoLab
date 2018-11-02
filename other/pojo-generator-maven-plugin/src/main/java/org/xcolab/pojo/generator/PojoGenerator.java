@@ -22,10 +22,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class PojoGenerator extends AbstractMojo {
+
+    private static final Pattern PACKAGE_PATTERN =
+            Pattern.compile("^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+[0-9a-z_]");
 
     @Parameter(property = "interfaceDirectory", required = true)
     private File interfaceDirectory;
@@ -42,6 +46,8 @@ public class PojoGenerator extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
+        validateParameters();
+
         project.addCompileSourceRoot(outputDirectory.getPath());
 
         List<JavaInterfaceSource> interfaces = getInterfaces();
@@ -64,7 +70,7 @@ public class PojoGenerator extends AbstractMojo {
         }
     }
 
-    private List<JavaInterfaceSource> getInterfaces() {
+    private void validateParameters() {
         if (!interfaceDirectory.exists()) {
             throw new IllegalArgumentException(
                     "interfaceDirectory " + interfaceDirectory + " does not exist!");
@@ -74,6 +80,13 @@ public class PojoGenerator extends AbstractMojo {
                     "interfaceDirectory " + interfaceDirectory + " is not a directory!");
         }
 
+        if (!PACKAGE_PATTERN.matcher(packageName).matches()) {
+            throw new IllegalArgumentException(
+                    "packageName " + packageName + " does not comply to the naming conventions.");
+        }
+    }
+
+    private List<JavaInterfaceSource> getInterfaces() {
         List<JavaInterfaceSource> interfaces = new ArrayList<>();
         File[] interfaceFiles =
                 interfaceDirectory.listFiles(pathname -> pathname.getName().endsWith(".java"));
@@ -83,9 +96,11 @@ public class PojoGenerator extends AbstractMojo {
                         Roaster.parse(JavaInterfaceSource.class, interfaceFile);
                 interfaces.add(interfaceSrc);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                throw new IllegalArgumentException(
+                        "File " + interfaceFile.getAbsolutePath() + " does not exist.", e);
             } catch (ParserException e) {
-                e.printStackTrace();
+                throw new IllegalArgumentException(
+                        "File " + interfaceFile.getAbsolutePath() + " cannot be parsed", e);
             }
         }
         return interfaces;
@@ -101,13 +116,8 @@ public class PojoGenerator extends AbstractMojo {
 
             List<FieldSource<JavaClassSource>> fields = new ArrayList<>();
             for (MethodSource<JavaInterfaceSource> method : src.getMethods()) {
-                if (method.getReturnType().isType("void")
-                        && method.getName().startsWith("set")
-                        && method.getParameters().size() == 1
-                        && !method.isDefault()) {
-
-                    org.jboss.forge.roaster.model.Parameter parameter =
-                            method.getParameters().get(0);
+                if (isSetter(method) && !method.isDefault()) {
+                    org.jboss.forge.roaster.model.Parameter parameter = verifyParameterName(method);
 
                     FieldSource<JavaClassSource> field = pojo.addField()
                             .setName(parameter.getName())
@@ -136,12 +146,33 @@ public class PojoGenerator extends AbstractMojo {
         return pojos;
     }
 
-    private static String getClassName(String name) {
-        if (!name.startsWith("I")) {
-            throw new IllegalArgumentException("Interface " + name + " does not start with 'I'");
+    private org.jboss.forge.roaster.model.Parameter verifyParameterName(
+            MethodSource<JavaInterfaceSource> method) {
+        org.jboss.forge.roaster.model.Parameter parameter = method.getParameters().get(0);
+        String parameterName = parameter.getName();
+        String methodName = method.getName();
+        if (methodName.endsWith(Strings.capitalize(parameterName))) {
+            return parameter;
         }
-        name = name.substring(1);
-        return Strings.capitalize(name);
+        throw new IllegalArgumentException(
+                "Setter name '" + methodName + "' with parameter '" + parameterName
+                        + "' does not match required format (setSomeValue(int value)).");
+    }
+
+    private boolean isSetter(MethodSource<JavaInterfaceSource> method) {
+        return method.getReturnType().isType("void")
+                && method.getName().startsWith("set")
+                && method.getParameters().size() == 1;
+    }
+
+    private static String getClassName(String className) {
+        if (className.length() >= 2
+                && className.charAt(0) == 'I'
+                && Character.isUpperCase(className.charAt(1))) {
+            
+            return className.substring(1);
+        }
+        return className;
     }
 
     private static void createEmptyConstructor(JavaClassSource pojo) {

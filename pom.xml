@@ -74,7 +74,7 @@
         <sentry.version>1.7.10</sentry.version>
 
         <!-- Code generation -->
-        <version.roaster>2.20.1.Final</version.roaster>
+        <roaster.version>2.20.1.Final</roaster.version>
     </properties>
 
 	<repositories>

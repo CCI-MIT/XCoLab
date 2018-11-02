@@ -1,8 +1,6 @@
 package org.xcolab.pojo.generator;
 
 import org.apache.maven.plugin.testing.MojoRule;
-import org.apache.maven.plugin.testing.WithoutMojo;
-import org.jboss.forge.roaster.model.util.Strings;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -15,15 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class PojoGeneratorTest {
 
     @Rule
-    public MojoRule rule = new MojoRule() {
-        @Override
-        protected void before() throws Throwable {
-        }
-
-        @Override
-        protected void after() {
-        }
-    };
+    public MojoRule rule = new MojoRule();
 
     @Test
     public void testSomething() throws Exception {
@@ -58,14 +48,13 @@ public class PojoGeneratorTest {
         }
     }
 
-    @Test
-    @WithoutMojo
-    public void test() {
+    private static String getClassName(String className) {
+        if (className.length() >= 2
+                && className.charAt(0) == 'I'
+                && Character.isUpperCase(className.charAt(1))) {
 
-    }
-
-    private static String getClassName(String name) {
-        name = name.substring(1);
-        return Strings.capitalize(name);
+            return className.substring(1);
+        }
+        return className;
     }
 }
