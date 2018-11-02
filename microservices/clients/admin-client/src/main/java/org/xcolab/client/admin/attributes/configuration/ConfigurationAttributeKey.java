@@ -106,11 +106,6 @@ public final class ConfigurationAttributeKey {
                     .defaultValue("")
                     .build();
 
-    public static final AttributeGetter<String> TYPEKIT_KIT_ID_LOCALHOST =
-            ConfigurationAttributes.newStringAttribute("TYPEKIT_KIT_ID_LOCALHOST")
-                    .defaultValue(TYPEKIT_KIT_ID)
-                    .build();
-
     public static final AttributeGetter<String> PINGDOM_RUM_ID =
             ConfigurationAttributes.newStringAttribute("PINGDOM_RUM_ID")
                     .defaultValue("")
