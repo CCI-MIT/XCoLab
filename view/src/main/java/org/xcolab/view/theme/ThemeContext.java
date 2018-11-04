@@ -3,7 +3,6 @@ package org.xcolab.view.theme;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.commons.http.servlet.RequestUtil;
 import org.xcolab.view.auth.AuthenticationService;
@@ -20,10 +19,7 @@ public class ThemeContext {
     private final MetaVariables metaVariables;
     private final MessageVariables messageVariables;
     private final SocialMediaVariables socialMediaVariables;
-
-    private final ServerEnvironment serverEnvironment;
-    // public boolean isProductionEnvironment;
-    // Now use: serverEnvironment.isProduction()
+    private final ServerVariables serverVariables;
 
     private final String colabName;
     private final String colabLongName;
@@ -38,6 +34,7 @@ public class ThemeContext {
 
     public ThemeContext(AuthenticationService authenticationService, SsoServices ssoServices,
                         HttpServletRequest request) {
+
         this.i18NVariables = new I18nVariables();
         this.authenticationVariables = new AuthenticationVariables(authenticationService,
                 ssoServices, request);
@@ -46,8 +43,7 @@ public class ThemeContext {
         this.metaVariables = new MetaVariables(request, this.getI18NVariables());
         this.messageVariables = new MessageVariables(request);
         this.socialMediaVariables = new SocialMediaVariables(request);
-
-        this.serverEnvironment = PlatformAttributeKey.SERVER_ENVIRONMENT.get();
+        this.serverVariables = new ServerVariables(request.getServletContext());
 
         this.colabName = ConfigurationAttributeKey.COLAB_NAME.get();
         this.colabLongName = ConfigurationAttributeKey.COLAB_LONG_NAME.get();
@@ -95,10 +91,6 @@ public class ThemeContext {
         return socialMediaVariables;
     }
 
-    public ServerEnvironment getServerEnvironment() {
-        return serverEnvironment;
-    }
-
     public String getColabName() {
         return colabName;
     }
@@ -133,5 +125,9 @@ public class ThemeContext {
 
     public String getRequestUri() {
         return requestUri;
+    }
+
+    public ServerVariables getServerVariables() {
+        return serverVariables;
     }
 }

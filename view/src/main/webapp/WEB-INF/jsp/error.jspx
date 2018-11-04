@@ -67,7 +67,7 @@
                 </c:otherwise>
             </c:choose>
 
-            <c:if test="${_themeContext.authenticationVariables.isAdmin or !_themeContext.serverEnvironment.isProduction}">
+            <c:if test="${_themeContext.authenticationVariables.isAdmin or !_themeContext.serverVariables.environment.isProduction}">
                 <div class="alert alert-info mt-3" role="alert">
                     <h2>Admin Error Details:</h2>
                     <div>Status: ${status}</div>
