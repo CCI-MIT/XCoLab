@@ -24,7 +24,7 @@ public class PojoGeneratorTest {
         assertNotNull(pom);
         assertTrue(pom.exists());
 
-        PojoGenerator pojoGenerator = (PojoGenerator) rule.lookupConfiguredMojo(pom, "generate");
+        PojoGenerator pojoGenerator = (PojoGenerator) rule.lookupConfiguredMojo(pom, "generatePojos");
         assertNotNull(pojoGenerator);
 
         File outputDirectory =
@@ -35,8 +35,8 @@ public class PojoGeneratorTest {
                 (File) rule.getVariableValueFromObject(pojoGenerator, "interfaceDirectory");
         assertNotNull(interfaceDirectory);
 
-        String packageSuffix = (String) rule.getVariableValueFromObject(pojoGenerator, "packageSuffix");
-        assertNotNull(packageSuffix);
+        String implementationPackageSuffix = (String) rule.getVariableValueFromObject(pojoGenerator, "implementationPackageSuffix");
+        assertNotNull(implementationPackageSuffix);
 
         List<File> interfaceFiles = Files.walk(interfaceDirectory.toPath())
                 .filter(Files::isRegularFile)
@@ -48,7 +48,7 @@ public class PojoGeneratorTest {
 
         pojoGenerator.execute();
 
-        File outputPackage = new File(outputDirectory, packageSuffix.replaceAll("\\.", "/"));
+        File outputPackage = new File(outputDirectory, implementationPackageSuffix.replaceAll("\\.", "/"));
         List<File> classFiles = Files.walk(outputPackage.toPath())
                 .filter(Files::isRegularFile)
                 .map(path -> path.toFile())
@@ -58,15 +58,5 @@ public class PojoGeneratorTest {
         for (File file : classFiles) {
             assertTrue(file.exists());
         }
-    }
-
-    private static String getClassName(String className) {
-        if (className.length() >= 2
-                && className.charAt(0) == 'I'
-                && Character.isUpperCase(className.charAt(1))) {
-
-            return className.substring(1);
-        }
-        return className;
     }
 }

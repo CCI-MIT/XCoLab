@@ -41,13 +41,13 @@
                     <execution>
                         <phase>generate-sources</phase>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>generatePojos</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
                     <interfaceDirectory>src/main/java/org/xcolab/client/tracking/pojo</interfaceDirectory>
-                    <packageSuffix>tables.pojos</packageSuffix>
+                    <implementationPackageSuffix>tables.pojos</implementationPackageSuffix>
                 </configuration>
             </plugin>
         </plugins>

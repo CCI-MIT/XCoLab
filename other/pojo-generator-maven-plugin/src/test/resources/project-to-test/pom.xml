@@ -18,13 +18,13 @@
                     <execution>
                         <phase>generate-sources</phase>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>generatePojos</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
                     <interfaceDirectory>org/xcolab/pojo/generator</interfaceDirectory>
-                    <packageSuffix>tables.pojos</packageSuffix>
+                    <implementationPackageSuffix>tables.pojos</implementationPackageSuffix>
                     <outputDirectory>target/test-harness/project-to-test</outputDirectory>
                 </configuration>
             </plugin>

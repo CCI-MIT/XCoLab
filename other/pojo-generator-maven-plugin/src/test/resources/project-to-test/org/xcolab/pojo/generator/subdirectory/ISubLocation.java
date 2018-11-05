@@ -1,17 +1,19 @@
-package org.xcolab.pojo.generator;
+package org.xcolab.pojo.generator.subdirectory;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import org.xcolab.pojo.generator.ILocation;
 import org.xcolab.pojo.generator.tables.pojos.SubLocation;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @JsonDeserialize(as = SubLocation.class)
-public interface ISubLocation {
+public interface ISubLocation extends Serializable {
 
-    String getCity();
+    ILocation getLocation();
 
-    void setCity(String city);
+    void setLocation(ILocation location);
 
     Timestamp getCreatedAt();
 

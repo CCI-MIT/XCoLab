@@ -31,7 +31,7 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+@Mojo(name = "generatePojos", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class PojoGenerator extends AbstractMojo {
 
     private static final Pattern PACKAGE_PATTERN =
@@ -40,8 +40,8 @@ public class PojoGenerator extends AbstractMojo {
     @Parameter(property = "interfaceDirectory", required = true)
     private File interfaceDirectory;
 
-    @Parameter(property = "packageSuffix", required = true)
-    private String packageSuffix;
+    @Parameter(property = "implementationPackageSuffix", required = true)
+    private String implementationPackageSuffix;
 
     @Parameter(defaultValue = "target/generated-sources/roaster", property = "outputDirectory",
             required = true)
@@ -60,7 +60,8 @@ public class PojoGenerator extends AbstractMojo {
 
         Map<JavaClassSource, String> pojos = createPojos(interfaces);
 
-        final File outputPackage = new File(outputDirectory, packageSuffix.replaceAll("\\.", "/"));
+        final File outputPackage =
+                new File(outputDirectory, implementationPackageSuffix.replaceAll("\\.", "/"));
 
         if (!outputPackage.exists()) {
             outputPackage.mkdirs();
@@ -68,7 +69,7 @@ public class PojoGenerator extends AbstractMojo {
 
         for (Entry<JavaClassSource, String> pojoEntry : pojos.entrySet()) {
             File fileDir = outputPackage;
-            if (pojoEntry.getValue() != "") {
+            if ("".equals(pojoEntry.getValue())) {
                 fileDir = new File(outputPackage, pojoEntry.getValue());
                 if (!fileDir.exists()) {
                     fileDir.mkdirs();
@@ -93,9 +94,10 @@ public class PojoGenerator extends AbstractMojo {
                     "interfaceDirectory " + interfaceDirectory + " is not a directory!");
         }
 
-        if (!PACKAGE_PATTERN.matcher(packageSuffix).matches()) {
+        if (!PACKAGE_PATTERN.matcher(implementationPackageSuffix).matches()) {
             throw new IllegalArgumentException(
-                    "packageSuffix " + packageSuffix + " does not comply to the naming conventions.");
+                    "implementationPackageSuffix " + implementationPackageSuffix
+                            + " does not comply to the naming conventions.");
         }
     }
 
@@ -135,8 +137,8 @@ public class PojoGenerator extends AbstractMojo {
         for (Entry<JavaInterfaceSource, String> srcEntry : interfaces.entrySet()) {
             JavaClassSource pojo = Roaster.create(JavaClassSource.class);
 
-            String suffix = packageSuffix;
-            if(!srcEntry.getValue().isEmpty()) {
+            String suffix = implementationPackageSuffix;
+            if (!srcEntry.getValue().isEmpty()) {
                 suffix += "." + srcEntry.getValue().replaceAll("/", "");
             }
 
