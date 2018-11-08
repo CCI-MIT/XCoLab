@@ -2,7 +2,6 @@ package org.xcolab.view.config.rewrite.rules.legacy;
 
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
-import org.ocpsoft.rewrite.servlet.config.Forward;
 import org.ocpsoft.rewrite.servlet.config.Path;
 import org.ocpsoft.rewrite.servlet.config.Redirect;
 
@@ -16,16 +15,16 @@ public class LegacyProposalRewriteRules implements RewriteRuleProvider {
                 .addRule()
                     .when(Direction.isInbound()
                             .and(Path.matches("/web/guest/{portletName}")))
-                    .perform(Forward.to("/contests"))
+                    .perform(Redirect.permanent("/contests"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                 .addRule()
                     .when(Direction.isInbound()
                             .and(Path.matches("/web/guest/plans/-/plans/contestsType/prior")))
-                    .perform(Forward.to("/contests?viewType=GRID&showAllContests=true"))
+                    .perform(Redirect.permanent("/contests?viewType=GRID&showAllContests=true"))
                 .addRule()
                     .when(Direction.isInbound()
                             .and(Path.matches("/web/guest/plans/-/plans/contestsType/all")))
-                    .perform(Forward.to("/contests?viewType=GRID&showAllContests=true"))
+                    .perform(Redirect.permanent("/contests?viewType=GRID&showAllContests=true"))
                 .addRule()
                     .when(Direction.isInbound()
                             .and(Path.matches("/plans")))
@@ -39,13 +38,13 @@ public class LegacyProposalRewriteRules implements RewriteRuleProvider {
                                     .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}"))
                                     .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/page/{pageName}"))
                                     .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}/page/{pageName}"))))
-                    .perform(Forward.to("/contests/legacy/contest/{contestId}"))
+                    .perform(Redirect.temporary("/contests/legacy/contest/{contestId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                 .addRule()
                     .when(Direction.isInbound().and(
                             Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phase/{phaseId}")
                                 .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}/phase/{phaseId}"))))
-                    .perform(Forward.to("/contests/legacy/contest/{contestId}"))
+                    .perform(Redirect.temporary("/contests/legacy/contest/{contestId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                 .addRule()
                     .when(Direction.isInbound().and(
@@ -54,7 +53,7 @@ public class LegacyProposalRewriteRules implements RewriteRuleProvider {
                                     .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}/{path}"))
                                     .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}/{path}"))
                     ))
-                    .perform(Forward.to("/contests/legacy/contest/{contestId}/proposal/{proposalId}"))
+                    .perform(Redirect.temporary("/contests/legacy/contest/{contestId}/proposal/{proposalId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                     .where("path").matches(".*")
                 .addRule()
@@ -64,7 +63,7 @@ public class LegacyProposalRewriteRules implements RewriteRuleProvider {
                                     .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}/{path}"))
                                     .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}/{path}"))
                     ))
-                    .perform(Forward.to("/contests/legacy/contest/{contestId}/proposal/{proposalId}?phaseId={phaseId}"))
+                    .perform(Redirect.temporary("/contests/legacy/contest/{contestId}/proposal/{proposalId}?phaseId={phaseId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                     .where("path").matches(".*")
                 .addRule()
