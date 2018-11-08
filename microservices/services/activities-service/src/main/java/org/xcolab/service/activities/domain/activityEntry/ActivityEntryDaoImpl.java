@@ -85,10 +85,19 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
 
     @Override
     public List<ActivityEntry> findByGiven(PaginationHelper paginationHelper,
-            Long userId, List<Long> userIdsToExclude) {
+            String activityCategory, Long categoryId, Long userId,
+            List<Long> userIdsToExclude) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(ACTIVITY_ENTRY)
                 .getQuery();
+
+        if (activityCategory != null) {
+            query.addConditions(ACTIVITY_ENTRY.ACTIVITY_CATEGORY.eq(activityCategory));
+        }
+
+        if (categoryId != null) {
+            query.addConditions(ACTIVITY_ENTRY.CATEGORY_ID.eq(categoryId));
+        }
 
         if (userId != null) {
             query.addConditions(ACTIVITY_ENTRY.USER_ID.eq(userId));

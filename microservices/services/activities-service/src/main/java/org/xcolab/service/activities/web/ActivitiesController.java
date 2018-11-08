@@ -47,17 +47,21 @@ public class ActivitiesController {
     @GetMapping("/activityEntries")
     public List<ActivityEntry> getActivities(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) String activityCategory,
+            @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) List<Long> userIdsToExclude,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String activitiesAfter) {
 
+        //TODO: this should not be an either or!
         if (activitiesAfter != null) {
             return activityEntryDao.getActivitiesAfter(Utils.parseDate(activitiesAfter));
         } else {
             final PaginationHelper paginationHelper =
                     new PaginationHelper(startRecord, limitRecord, sort);
-            return activityEntryDao.findByGiven(paginationHelper, userId, userIdsToExclude);
+            return activityEntryDao.findByGiven(paginationHelper, activityCategory, categoryId,
+                    userId, userIdsToExclude);
         }
     }
 

@@ -13,7 +13,8 @@ public interface ActivityEntryDao {
     ActivityEntry create(ActivityEntry activityEntry);
 
     List<ActivityEntry> findByGiven(PaginationHelper paginationHelper,
-            Long userId, List<Long> userIdsToExclude);
+            String activityCategory, Long categoryId, Long userId,
+            List<Long> userIdsToExclude);
 
     Integer countByGiven(Long userId, List<Long> userIdsToExclude);
 
