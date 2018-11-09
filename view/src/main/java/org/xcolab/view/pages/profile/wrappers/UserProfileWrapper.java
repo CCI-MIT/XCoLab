@@ -258,6 +258,16 @@ public class UserProfileWrapper implements Serializable {
 
                 subscribedActivities.add(new UserActivityWrapper(activity, activityEntryHelper));
             }
+
+            for (ActivitySubscriptionWrapper subscription: userSubscriptions.getSubscriptions()) {
+                List<ActivityEntry> activities = ActivitiesClientUtil.getActivitiesByCategoryId(subscription.getSubscription().getCategoryId());
+                for (ActivityEntry activity: activities) {
+                    UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
+                    if (StringUtils.isNotBlank(a.getBody())) {
+                        subscribedActivities.add(a);
+                    }
+                }
+            }
         }
         return subscribedActivities;
     }

@@ -180,6 +180,12 @@ public final class ActivitiesClient {
         return getActivitySubscriptions(null, null, userId);
     }
 
+    public List<ActivityEntry> getActivitiesByCategoryId(Long categoryId) {
+        return activityEntryResource.list()
+                .queryParam("categoryId", categoryId)
+                .execute();
+    }
+
     public static ActivitiesClient fromNamespace(ServiceNamespace serviceNamespace) {
         return instances.computeIfAbsent(serviceNamespace, ActivitiesClient::new);
     }
