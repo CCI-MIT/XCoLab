@@ -4,39 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.xcolab</groupId>
-        <artifactId>microservice-clients</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-
-    <artifactId>tracking-client</artifactId>
+    <groupId>org.xcolab</groupId>
+    <artifactId>pojo-generator-maven-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-feign</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.xcolab</groupId>
-            <artifactId>xcolab-utils</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xcolab</groupId>
-            <artifactId>pojo-generator-maven-plugin</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.xcolab</groupId>
                 <artifactId>pojo-generator-maven-plugin</artifactId>
-                <version>${project.version}</version>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -46,8 +23,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <interfaceDirectory>src/main/java/org/xcolab/client/tracking/pojo</interfaceDirectory>
+                    <interfaceDirectory>org/xcolab/pojo/generator</interfaceDirectory>
                     <implementationPackageSuffix>tables.pojos</implementationPackageSuffix>
+                    <outputDirectory>target/test-harness/project-to-test</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
