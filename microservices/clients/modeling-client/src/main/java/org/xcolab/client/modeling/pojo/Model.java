@@ -7,6 +7,7 @@ import org.xcolab.util.http.client.types.TypeProvider;
 import java.util.List;
 
 public class Model {
+
     public static final TypeProvider<Model> TYPES = new TypeProvider<>(Model.class,
             new ParameterizedTypeReference<List<Model>>() {});
 

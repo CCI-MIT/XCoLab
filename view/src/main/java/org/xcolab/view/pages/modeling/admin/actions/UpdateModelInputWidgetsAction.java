@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.modeling.ModelingClientUtil;
+import org.xcolab.client.modeling.ModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -31,11 +31,11 @@ public class UpdateModelInputWidgetsAction {
             UpdateModelInputWidgetsBean updateModelWidgetsBean, @PathVariable long modelId)
             throws IllegalUIConfigurationException, IOException {
 
-        ModelGlobalPreference modelPreferences = ModelingClientUtil.getModelPreference(modelId);
+        ModelGlobalPreference modelPreferences = ModelingClient.instance().getModelPreference(modelId);
         if (modelPreferences.getUsesCustomInputs()) {
             modelPreferences
                     .setCustomInputsDefinition(updateModelWidgetsBean.getCustomInputWidgets());
-            ModelingClientUtil.updateModelPreference(modelPreferences);
+            ModelingClient.instance().updateModelPreference(modelPreferences);
         } else {
             Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
             ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);

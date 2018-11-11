@@ -4,7 +4,7 @@ import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
 
-import org.xcolab.client.modeling.ModelingClientUtil;
+import org.xcolab.client.modeling.ModelingClient;
 import org.xcolab.client.modeling.pojo.ModelInputItem;
 
 import java.io.IOException;
@@ -22,8 +22,8 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
 
 
     public ModelInputIndividualDisplayItem(ModelInputItem item) throws IOException {
-        super(ModelingClientUtil.getModel(item),
-                ModelingClientUtil.getMetaData(item));
+        super(ModelingClient.instance().getModel(item),
+                ModelingClient.instance().getMetaData(item));
         this.item = item;
     }
 
@@ -38,7 +38,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
         item.setModelId(sim.getId());
         item.setModelInputItemID(md.getId());
         item.setType(type.name());
-        ModelingClientUtil.createModelInputItem(item);
+        ModelingClient.instance().createModelInputItem(item);
         return new ModelInputIndividualDisplayItem(item);
     }
 
@@ -57,7 +57,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     @Override
     public void setOrder(int order) {
         item.setDisplayItemOrder(order);
-        ModelingClientUtil.updateModelInputItem(item);
+        ModelingClient.instance().updateModelInputItem(item);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     @Override
     public void setType(ModelInputWidgetType type) {
         item.setType(type.name());
-        ModelingClientUtil.updateModelInputItem(item);
+        ModelingClient.instance().updateModelInputItem(item);
     }
 
     /**
@@ -138,11 +138,11 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
             modelGroupId = 0L;
         }
         item.setModelGroupId(modelGroupId);
-        ModelingClientUtil.updateModelInputItem(item);
+        ModelingClient.instance().updateModelInputItem(item);
     }
 
     public String getProperty(ModelWidgetProperty prop) {
-        return ModelingClientUtil.getPropertyMap(item).get(prop.toString());
+        return ModelingClient.instance().getPropertyMap(item).get(prop.toString());
     }
 
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.modeling.ModelingClientUtil;
+import org.xcolab.client.modeling.ModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -45,12 +45,12 @@ public class UpdateModelIndividualInputGroupAction {
         }
 
         ModelInputItem inputItem =
-                ModelingClientUtil.getItemForMetaData(modelId, displayItem.getMetaData());
+                ModelingClient.instance().getItemForMetaData(modelId, displayItem.getMetaData());
         inputItem.setDisplayItemOrder(updateModelInputGroup.getOrder());
         inputItem.setModelGroupId(updateModelInputGroup.getGroupId());
 
 
-        ModelingClientUtil.updateModelInputItem(inputItem);
+        ModelingClient.instance().updateModelInputItem(inputItem);
         response.sendRedirect(ModelsAdminController.getTabMapping(modelId, "inputTabs"));
     }
 
