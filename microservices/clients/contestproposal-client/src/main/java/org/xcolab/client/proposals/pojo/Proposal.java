@@ -11,8 +11,6 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -322,7 +320,7 @@ public class Proposal extends AbstractProposal {
 
     public long getCommentsCount() {
         if (this.getId() > 0) {
-            return clients.comment.countComments(this.getDiscussionId());
+            return CommentClient.instance().countComments(this.getDiscussionId());
         }
         return 0;
     }
@@ -337,7 +335,7 @@ public class Proposal extends AbstractProposal {
         thread.setAuthorUserId(getAuthorUserId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return clients.thread.createThread(thread).getId();
+        return ThreadClient.instance().createThread(thread).getId();
     }
 
     public long getDiscussionIdOrCreate() {
@@ -953,8 +951,6 @@ public class Proposal extends AbstractProposal {
 
         final ContestClient contest;
         final ProposalClient proposal;
-        final CommentClient comment;
-        final ThreadClient thread;
 
         final ProposalMemberRatingClient proposalMemberRating;
         final ProposalJudgeRatingClient proposalJudgeRating;
@@ -978,8 +974,6 @@ public class Proposal extends AbstractProposal {
                 proposalAttribute = ProposalAttributeClient.fromNamespace(serviceNamespace);
                 proposalPhase = ProposalPhaseClient.fromNamespace(serviceNamespace);
                 contestTeamMember =  ContestTeamMemberClient.fromService(serviceNamespace);
-                comment = CommentClient.fromService(serviceNamespace);
-                thread = ThreadClient.fromService(serviceNamespace);
                 proposalMemberRating = ProposalMemberRatingClient.fromNamespace(serviceNamespace);
                 proposalJudgeRating = ProposalJudgeRatingClient.fromNamespace(serviceNamespace);
                 membership = MembershipClient.fromNamespace(serviceNamespace);
@@ -989,8 +983,6 @@ public class Proposal extends AbstractProposal {
                 proposalAttribute = ProposalAttributeClientUtil.getClient();
                 proposalPhase = ProposalPhaseClientUtil.getClient();
                 contestTeamMember = ContestTeamMemberClientUtil.getClient();
-                comment = CommentClientUtil.getClient();
-                thread = ThreadClientUtil.getClient();
                 proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
                 membership = MembershipClientUtil.getClient();
                 proposalTemplate = ProposalTemplateClientUtil.getClient();

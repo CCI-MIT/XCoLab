@@ -111,8 +111,9 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
         Contest contest = proposalContext.getContest();
         ServiceNamespace contestServiceNamespace = contest.getServiceNamespace();
-        ContestPhase activeContestPhase = ContestClient.fromNamespace(contestServiceNamespace).getActivePhase(contest.getId());
-        List<ContestPhase> allContestPhasesForCurrentContest = ContestClient.fromNamespace(contestServiceNamespace).getAllContestPhases(contest.getId());
+        final ContestClient contestClient = ContestClient.fromNamespace(contestServiceNamespace);
+        ContestPhase activeContestPhase = contestClient.getActivePhase(contest.getId());
+        List<ContestPhase> allContestPhasesForCurrentContest = contestClient.getAllContestPhases(contest.getId());
 
         for (ContestPhase contestPhase : allContestPhasesForCurrentContest) {
             boolean isLastContestPhase = activeContestPhase.getPhaseEndDate() == null;

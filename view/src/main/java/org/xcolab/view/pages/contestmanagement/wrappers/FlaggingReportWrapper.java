@@ -4,10 +4,10 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -61,7 +61,7 @@ public class FlaggingReportWrapper {
 
     private Comment getTargetComment() {
         try {
-            return CommentClientUtil.getComment(report.getTargetId(), true);
+            return CommentClient.instance().getComment(report.getTargetId(), true);
         } catch (CommentNotFoundException e) {
             return null;
         }

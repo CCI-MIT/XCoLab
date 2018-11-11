@@ -1,59 +1,40 @@
 package org.xcolab.client.comment;
 
-import org.springframework.util.Assert;
-
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.LastActivityNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
-import org.xcolab.client.comment.pojo.CategoryDto;
 import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.client.comment.pojo.CategoryGroupDto;
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.pojo.CommentDto;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.pojo.CommentThreadDto;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 class CommentServiceWrapper {
 
-    private static final Map<ServiceNamespace, CommentServiceWrapper> instances = new HashMap<>();
+    private final RestResource<Comment, Long> commentResource;
+    private final RestResource<CommentThread, Long> threadResource;
+    private final RestResource<Category, Long> categoryResource;
+    private final RestResource<CategoryGroup, Long> categoryGroupResource;
 
-    private final RestResource<CommentDto, Long> commentResource;
-    private final RestResource<CommentThreadDto, Long> threadResource;
-    private final RestResource<CategoryDto, Long> categoryResource;
-    private final RestResource<CategoryGroupDto, Long> categoryGroupResource;
-
-    private CommentServiceWrapper(ServiceNamespace serviceNamespace) {
-        Assert.notNull(serviceNamespace, "Service namespace is required");
-        commentResource = new RestResource1<>(CommentResource.COMMENT, Comment.TYPES,
-                serviceNamespace);
-        threadResource = new RestResource1<>(CommentResource.THREAD, CommentThread.TYPES,
-                serviceNamespace);
-        categoryResource = new RestResource1<>(CommentResource.CATEGORY, Category.TYPES,
-                serviceNamespace);
+    CommentServiceWrapper() {
+        commentResource = new RestResource1<>(CommentResource.COMMENT, Comment.TYPES);
+        threadResource = new RestResource1<>(CommentResource.THREAD, CommentThread.TYPES);
+        categoryResource = new RestResource1<>(CommentResource.CATEGORY, Category.TYPES);
         categoryGroupResource = new RestResource1<>(CommentResource.CATEGORY_GROUP,
-                CategoryGroup.TYPES, serviceNamespace);
+                CategoryGroup.TYPES);
     }
 
-    static CommentServiceWrapper fromService(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, CommentServiceWrapper::new);
-    }
-
-    public List<CommentDto> listComments(Integer startRecord, Integer limitRecord, String sort,
+    public List<Comment> listComments(Integer startRecord, Integer limitRecord, String sort,
             Long authorUserId, Long threadId, Boolean includeDeleted) {
         return commentResource.list()
                 .addRange(startRecord, limitRecord)
@@ -71,13 +52,13 @@ class CommentServiceWrapper {
                 .execute();
     }
 
-    public CommentDto getComment(long commentId, boolean includeDeleted,
+    public Comment getComment(long commentId, boolean includeDeleted,
             CacheName cacheName)
             throws CommentNotFoundException {
         try {
             return commentResource.get(commentId)
                     .queryParam("includeDeleted", includeDeleted)
-                    .withCache(CacheKeys.withClass(CommentDto.class)
+                    .withCache(CacheKeys.withClass(Comment.class)
                             .withParameter("id", commentId)
                             .withParameter("includeDeleted", includeDeleted).build(),
                             cacheName)
@@ -87,11 +68,11 @@ class CommentServiceWrapper {
         }
     }
 
-    public boolean updateComment(CommentDto comment) {
+    public boolean updateComment(Comment comment) {
         return commentResource.update(comment, comment.getId()).execute();
     }
 
-    public CommentDto createComment(CommentDto comment) {
+    public Comment createComment(Comment comment) {
         return commentResource.create(comment).execute();
     }
 
@@ -101,7 +82,7 @@ class CommentServiceWrapper {
 
 //    Threads
 
-    public List<CommentThreadDto> listThreads(Integer startRecord, Integer limitRecord,
+    public List<CommentThread> listThreads(Integer startRecord, Integer limitRecord,
             String sort, Long authorUserId, Long categoryId, Long groupId) {
         return threadResource.list()
                 .addRange(startRecord, limitRecord)
@@ -112,22 +93,22 @@ class CommentServiceWrapper {
                 .execute();
     }
 
-    public CommentThreadDto getThread(long threadId, CacheName cacheName)
+    public CommentThread getThread(long threadId, CacheName cacheName)
             throws ThreadNotFoundException {
         try {
             return threadResource.get(threadId)
-                    .withCache(CacheKeys.of(CommentThreadDto.class, threadId), cacheName)
+                    .withCache(CacheKeys.of(CommentThread.class, threadId), cacheName)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ThreadNotFoundException(threadId);
         }
     }
 
-    public boolean updateThread(CommentThreadDto thread) {
+    public boolean updateThread(CommentThread thread) {
         return threadResource.update(thread, thread.getId()).execute();
     }
 
-    public CommentThreadDto createThread(CommentThreadDto thread) {
+    public CommentThread createThread(CommentThread thread) {
         return threadResource.create(thread).execute();
     }
 
@@ -163,14 +144,14 @@ class CommentServiceWrapper {
 
     //    Category methods
 
-    public List<CategoryDto> listCategories(Integer startRecord, Integer limitRecord,
+    public List<Category> listCategories(Integer startRecord, Integer limitRecord,
             String sort, Long authorUserId, Long groupId, CacheName cacheName) {
         return categoryResource.list()
                 .addRange(startRecord, limitRecord)
                 .optionalQueryParam("sort", sort)
                 .optionalQueryParam("groupId", groupId)
                 .optionalQueryParam("authorUserId", authorUserId)
-                .withCache(CacheKeys.withClass(CategoryDto.class)
+                .withCache(CacheKeys.withClass(Category.class)
                         .withParameter("groupId", groupId)
                         .withParameter("authorUserId", authorUserId)
                         .withParameter("sort", sort)
@@ -178,47 +159,35 @@ class CommentServiceWrapper {
                 .execute();
     }
 
-    public CategoryDto getCategory(long categoryId, CacheName cacheName)
+    public Category getCategory(long categoryId, CacheName cacheName)
             throws CategoryNotFoundException {
         try {
             return categoryResource.get(categoryId)
-                    .withCache(CacheKeys.of(CategoryDto.class, categoryId), cacheName)
+                    .withCache(CacheKeys.of(Category.class, categoryId), cacheName)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CategoryNotFoundException(categoryId);
         }
     }
 
-    public boolean updateCategory(CategoryDto category) {
+    public boolean updateCategory(Category category) {
         return categoryResource.update(category, category.getId()).execute();
     }
 
-    public CategoryDto createCategory(CategoryDto category) {
+    public Category createCategory(Category category) {
         return categoryResource.create(category).execute();
     }
 
 //    Category Group
 
-    public CategoryGroupDto getCategoryGroup(long groupId, CacheName cacheName)
+    public CategoryGroup getCategoryGroup(long groupId, CacheName cacheName)
             throws CategoryGroupNotFoundException {
         try {
             return categoryGroupResource.get(groupId)
-                    .withCache(CacheKeys.of(CategoryGroupDto.class, groupId), cacheName)
+                    .withCache(CacheKeys.of(CategoryGroup.class, groupId), cacheName)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CategoryGroupNotFoundException(groupId);
         }
-    }
-
-    private static String convertListToGetParameter(List<Long> list, String parameterName) {
-        if(list.isEmpty()){
-            return "";
-        }
-        String parameterList = "";
-        for(int i=0; i<list.size()-2; i++) {
-            parameterList += list.get(i) + "&" + parameterName + "=";
-        }
-        parameterList += list.get(list.size()-1);
-        return parameterList;
     }
 }

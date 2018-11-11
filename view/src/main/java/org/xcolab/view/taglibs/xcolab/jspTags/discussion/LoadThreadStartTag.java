@@ -11,8 +11,6 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CategoryClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
@@ -38,14 +36,11 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
             HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 
-            ThreadClient threadClient = ThreadClientUtil.getClient();
-            CategoryClient categoryClient = CategoryClientUtil.getClient();
-
             String shareTitle = null;
 
             if (categoryId > 0) {
                 try {
-                    Category category = categoryClient.getCategory(categoryId);
+                    Category category = CategoryClient.instance().getCategory(categoryId);
                     shareTitle = category.getName();
                 } catch (CategoryNotFoundException e) {
                     throw ReferenceResolutionException.toObject(Category.class, categoryId)
@@ -55,7 +50,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
             if (categoryGroupId > 0) {
                 try {
-                    CategoryGroup categoryGroup = categoryClient.getCategoryGroup(categoryGroupId);
+                    CategoryGroup categoryGroup = CategoryClient.instance().getCategoryGroup(categoryGroupId);
                     if (shareTitle == null) {
                         shareTitle = categoryGroup.getDescription();
                     }
@@ -66,7 +61,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
                 }
             }
 
-            CommentThread thread = threadClient.getThread(threadId);
+            CommentThread thread = ThreadClient.instance().getThread(threadId);
 
             DiscussionPermissions discussionPermissions = (DiscussionPermissions) request
                     .getAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);

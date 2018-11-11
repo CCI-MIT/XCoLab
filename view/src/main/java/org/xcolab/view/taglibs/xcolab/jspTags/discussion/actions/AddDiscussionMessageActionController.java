@@ -17,8 +17,6 @@ import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -72,12 +70,10 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         long userId = MemberAuthUtil.getuserId(request);
 
         try {
-            final ThreadClient threadClient = ThreadClientUtil.getClient();
-            final CommentClient commentClient = CommentClientUtil.getClient();
             final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
 
             long threadId = Long.parseLong(newMessage.getThreadId());
-            CommentThread commentThread = threadClient.getThread(threadId);
+            CommentThread commentThread = ThreadClient.instance().getThread(threadId);
 
             DiscussionPermissions discussionPermissions = getDiscussionPermissions(request, commentThread);
 
@@ -92,7 +88,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             comment.setContent(body);
             comment.setAuthorUserId(userId);
             comment.setThreadId(threadId);
-            comment = commentClient.createComment(comment);
+            comment = CommentClient.instance().createComment(comment);
 
             updateAnalyticsAndActivities(commentThread, comment, userId, request);
 
@@ -163,7 +159,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
     public void updateAnalyticsAndActivities(CommentThread thread, Comment comment, long userId,
             HttpServletRequest request) {
-        int commentCount = CommentClientUtil.countCommentsByAuthor(userId);
+        int commentCount = CommentClient.instance().countCommentsByAuthor(userId);
         if (commentCount > 0) {
             int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(commentCount);
             AnalyticsUtil.publishEvent(request, userId, COMMENT_ANALYTICS_KEY + analyticsValue,

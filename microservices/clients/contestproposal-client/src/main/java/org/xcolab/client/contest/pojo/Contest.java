@@ -8,8 +8,6 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -62,8 +60,6 @@ public class Contest extends AbstractContest implements Serializable {
     private final ContestClient contestClient;
     private final ContestTeamMemberClient contestTeamMemberClient;
     private final OntologyClient ontologyClient;
-    private final CommentClient commentClient;
-    private final ThreadClient threadClient;
     private final ProposalTemplateClient proposalTemplateClient;
 
 
@@ -98,8 +94,6 @@ public class Contest extends AbstractContest implements Serializable {
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
         proposalTemplateClient = ProposalTemplateClientUtil.getClient();
-        commentClient = CommentClientUtil.getClient();
-        threadClient = ThreadClientUtil.getClient();
     }
 
     public Contest(Contest value) {
@@ -113,15 +107,11 @@ public class Contest extends AbstractContest implements Serializable {
             contestTeamMemberClient = ContestTeamMemberClient.fromService(serviceNamespace);
             ontologyClient = OntologyClient.fromService(serviceNamespace);
             proposalTemplateClient = ProposalTemplateClient.fromNamespace(serviceNamespace);
-            commentClient = CommentClient.fromService(serviceNamespace);
-            threadClient = ThreadClient.fromService(serviceNamespace);
         } else {
             contestClient = ContestClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
             ontologyClient = OntologyClientUtil.getClient();
             proposalTemplateClient = ProposalTemplateClientUtil.getClient();
-            commentClient = CommentClientUtil.getClient();
-            threadClient = ThreadClientUtil.getClient();
         }
         this.serviceNamespace = serviceNamespace;
     }
@@ -252,8 +242,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public long getCommentsCount() {
-
-        return commentClient.countComments(this.getDiscussionGroupId());
+        return CommentClient.instance().countComments(this.getDiscussionGroupId());
     }
 
     public List<OntologyTerm> getWho() {
@@ -415,11 +404,11 @@ public class Contest extends AbstractContest implements Serializable {
         }
     }
     public long getTotalCommentsCount() {
-        int contestComments = commentClient.countComments(this.getDiscussionGroupId());
+        int contestComments = CommentClient.instance().countComments(this.getDiscussionGroupId());
         ContestPhase phase = contestClient.getActivePhase(this.getId());
         final List<Long> proposalDiscussionThreads =
                 contestClient.getProposalDiscussionThreads(phase.getId());
-        contestComments += commentClient.countComments(proposalDiscussionThreads);
+        contestComments += CommentClient.instance().countComments(proposalDiscussionThreads);
 
         return contestComments;
     }
@@ -568,7 +557,7 @@ public class Contest extends AbstractContest implements Serializable {
             thread.setAuthorUserId(getAuthorUserId());
             thread.setTitle(contestType.getContestName() + " discussion");
             thread.setIsQuiet(false);
-            thread = threadClient.createThread(thread);
+            thread = ThreadClient.instance().createThread(thread);
             discussionGroupId = thread.getId();
             setDiscussionGroupId(discussionGroupId);
         }

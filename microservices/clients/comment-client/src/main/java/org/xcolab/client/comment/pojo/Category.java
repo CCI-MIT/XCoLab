@@ -7,10 +7,7 @@ import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.KeyReferenceException;
-import org.xcolab.client.comment.util.CategoryClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.comment.util.ThreadSortColumn;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
@@ -18,34 +15,25 @@ import java.util.List;
 
 public class Category extends AbstractCategory {
 
-    public static final TypeProvider<CategoryDto> TYPES =
-            new TypeProvider<>(CategoryDto.class, new ParameterizedTypeReference<List<CategoryDto>>() {});
-
-    private final CategoryClient categoryClient;
-    private final ThreadClient threadClient;
+    public static final TypeProvider<Category> TYPES =
+            new TypeProvider<>(Category.class, new ParameterizedTypeReference<List<Category>>() {});
 
     public Category() {
-        categoryClient = CategoryClientUtil.getClient();
-        threadClient = ThreadClientUtil.getClient();
     }
 
     public Category(Long categoryId, Long groupId, Long authorUserId, String name, String description,
             Timestamp createdAt, Timestamp deletedAt, Integer sort, Boolean isQuiet) {
         super(categoryId, groupId, authorUserId, name, description,
                 createdAt, deletedAt, sort, isQuiet);
-        categoryClient = CategoryClientUtil.getClient();
-        threadClient = ThreadClientUtil.getClient();
     }
 
-    public Category(AbstractCategory abstractCategory, ServiceNamespace serviceNamespace) {
+    public Category(AbstractCategory abstractCategory) {
         super(abstractCategory);
-        categoryClient = new CategoryClient(serviceNamespace);
-        threadClient = new ThreadClient(serviceNamespace);
     }
 
     @JsonIgnore
     public List<CommentThread> getThreads(ThreadSortColumn sortColumn, boolean ascending) {
-        return threadClient.listThreads(0, Integer.MAX_VALUE,
+        return ThreadClient.instance().listThreads(0, Integer.MAX_VALUE,
                 getId(), null, sortColumn, ascending);
     }
 
@@ -54,7 +42,7 @@ public class Category extends AbstractCategory {
         final Long groupId = getGroupId();
         if (groupId != null && groupId > 0) {
             try {
-                return categoryClient.getCategoryGroup(groupId);
+                return CategoryClient.instance().getCategoryGroup(groupId);
             } catch (CategoryGroupNotFoundException e) {
                 throw new KeyReferenceException(e);
             }

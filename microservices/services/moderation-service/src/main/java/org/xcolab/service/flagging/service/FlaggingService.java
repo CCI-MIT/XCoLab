@@ -3,9 +3,9 @@ package org.xcolab.service.flagging.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -120,14 +120,14 @@ public class FlaggingService {
     }
 
     private void approveComment(long commentId) throws CommentNotFoundException {
-        final Comment comment = CommentClientUtil.getComment(commentId, true);
+        final Comment comment = CommentClient.instance().getComment(commentId, true);
         if (comment.getDeletedAt() != null) {
             comment.setDeletedAt(null);
-            CommentClientUtil.updateComment(comment);
+            CommentClient.instance().updateComment(comment);
         }
     }
 
     private void removeComment(long commentId) {
-        CommentClientUtil.deleteComment(commentId);
+        CommentClient.instance().deleteComment(commentId);
     }
 }
