@@ -47,13 +47,12 @@ public class FulltextCondition extends CustomCondition {
                         sql.append(", ").append(field.getName());
                     }
                 }
-                sql.append(") AGAINST ('");
-                sql.append(query);
+                sql.append(") AGAINST (?");
                 if (searchModifier != FulltextSearchModifier.NONE) {
                     sql.append(" ").append(searchModifier.name());
                 }
-                sql.append("')");
-                return DSL.condition(sql.toString());
+                sql.append(")");
+                return DSL.condition(sql.toString(), query);
             default:
                 throw new UnsupportedOperationException("Dialect not supported: "
                         + configuration.dialect());
