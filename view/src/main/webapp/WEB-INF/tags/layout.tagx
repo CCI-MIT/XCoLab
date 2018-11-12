@@ -321,7 +321,10 @@
 
     <!-- ============ Scripts ============ -->
 
+    <xcolab-scripts:loadTooltips />
+
     <c:if test="${_librariesToLoad['widgets']}">
+        <!-- Note: requires loadTooltips -->
         <xcolab-scripts:loadWidgets />
     </c:if>
 
@@ -335,8 +338,6 @@
 
     <!-- Needs to be included before other scripts that bind on 'click' (e.g. bootstrap.js) -->
     <collab:script src="/js/enhancedLinkHandler.js"/>
-
-    <xcolab-scripts:loadTooltips />
 
     <c:if test="${_librariesToLoad['moment.js']}">
         <xcolab-scripts:loadMoment locale="${_themeContext.i18NVariables.language}"/>
