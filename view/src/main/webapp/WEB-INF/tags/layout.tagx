@@ -75,6 +75,15 @@
                 parser.href = el.src;
                 el.src = parser.pathname;
             }
+            if (Sentry) {
+                Sentry.addBreadcrumb({
+                    category: 'retry',
+                    message: parser.href,
+                    level: 'info'
+                });
+            } else {
+                console.log('Retrying resource' + parser.href)
+            }
         }
     </script>
 
