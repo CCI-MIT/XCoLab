@@ -161,6 +161,16 @@
     <c:if test="${not empty _themeContext.credentialVariables.sentryDsn}">
         <script src="https://js.sentry-cdn.com/${_themeContext.credentialVariables.sentryDsn}.min.js" crossorigin="anonymous"><!-- --></script>
         <script>
+            document.addEventListener('readystatechange', function() {
+                Sentry.addBreadcrumb({
+                    category: 'readystatechange',
+                    message: document.readyState,
+                    level: 'info'
+                });
+                Sentry.configureScope(function(scope) {
+                    scope.setTag("readystate", document.readyState);
+                });
+            });
             Sentry.onLoad(function() {
                 var options = {
                     environment: '${_themeContext.serverVariables.environment.name().toLowerCase()}'
