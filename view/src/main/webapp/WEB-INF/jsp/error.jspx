@@ -42,7 +42,7 @@
                 </c:when>
                 <c:otherwise>
                     <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0;">
-                        <form:form id="signInForm_form" method="post" action="/reportError">
+                        <form:form method="post" action="/reportError">
                             <input name="url" type="hidden" value="${_themeContext.requestUri}" />
                             <input name="status" type="hidden" value="${status}"/>
                             <input name="error" type="hidden" value="${error}"/>
