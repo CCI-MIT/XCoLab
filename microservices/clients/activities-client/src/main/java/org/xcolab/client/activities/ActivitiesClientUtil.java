@@ -100,6 +100,10 @@ public class ActivitiesClientUtil {
                 receiverId);
     }
 
+    public static List<ActivityEntry> getActivitiesByCategoryId(String activityCategory, Long categoryId) {
+        return activitiesClient.getActivitiesByCategoryId(activityCategory, categoryId);
+    }
+
     public static List<ActivitySubscription> getActivitySubscriptionsForMember(Long userId) {
         return activitiesClient.getActivitySubscriptionsForMember( userId);
     }
