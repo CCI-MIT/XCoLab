@@ -180,10 +180,10 @@ public final class ActivitiesClient {
         return getActivitySubscriptions(null, null, userId);
     }
 
-    public List<ActivityEntry> getActivitiesByCategoryId(Long categoryId, String activityCategory) {
+    public List<ActivityEntry> getActivitiesByCategoryId(String activityCategory, Long categoryId) {
         return activityEntryResource.list()
-                .queryParam("categoryId", categoryId)
                 .queryParam("activityCategory", activityCategory)
+                .queryParam("categoryId", categoryId)
                 .execute();
     }
 
