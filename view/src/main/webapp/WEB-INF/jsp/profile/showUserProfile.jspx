@@ -46,8 +46,7 @@
         </ol>
     </nav>
     <c:choose>
-        <c:when test="${currentUserProfile.active}">
-
+        <c:when test="${isUserProfileActive}">
             <div class="l-Content">
                 <div class="l-Content__main">
                     <div class="card bg-tan">
