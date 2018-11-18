@@ -79,21 +79,22 @@ public class ProposalJudgingCommentHelper {
     }
 
     public String getAdvancingComment() {
-            ProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient.
-                    getProposalContestPhaseAttribute(proposal.getId(),
-                            contestPhase.getId(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION );
-            AdvanceDecision advanceDecision =
-                    AdvanceDecision.fromInt(
-                            advanceDecisionAttribute.getNumericValue().intValue());
+        ProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient.
+                getProposalContestPhaseAttribute(proposal.getId(), contestPhase.getId(),
+                        ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
+
+        if (advanceDecisionAttribute != null) {
+            AdvanceDecision advanceDecision = AdvanceDecision.fromInt(
+                    advanceDecisionAttribute.getNumericValue().intValue());
 
             if (advanceDecision != AdvanceDecision.NO_DECISION) {
-
-                return proposalPhaseClient.
-                        getProposalContestPhaseAttribute(proposal.getId(),
-                                contestPhase.getId(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW).getStringValue();
+                return proposalPhaseClient.getProposalContestPhaseAttribute(proposal.getId(),
+                        contestPhase.getId(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW)
+                        .getStringValue();
             }
+        }
 
-        return null;
+        return "";
     }
 
     public void setAdvancingComment(String comment) {
