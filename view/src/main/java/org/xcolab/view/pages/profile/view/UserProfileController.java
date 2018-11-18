@@ -104,33 +104,38 @@ public class UserProfileController {
             Model model, Member loggedInMember, @PathVariable long userId,
             @RequestParam(defaultValue = "false") boolean generateReferralLink) {
         try {
-            UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
-            model.addAttribute("permissions", permissions);
-            model.addAttribute("_activePageLink", "community");
+            Member member = MembersClient.getMember(userId);
+            model.addAttribute("isUserProfileActive", member.isActive());
+            if (member.isActive()) {
+                UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
+                model.addAttribute("permissions", permissions);
+                model.addAttribute("_activePageLink", "community");
 
-            final UserProfileWrapper currentUserProfile =
-                    new UserProfileWrapper(userId, loggedInMember, activityEntryHelper);
-            populateUserWrapper(currentUserProfile, model);
-            model.addAttribute("allowSearchEngineIndexing",
-                    shouldAllowIndexingForUser(currentUserProfile));
+                final UserProfileWrapper currentUserProfile =
+                        new UserProfileWrapper(userId, loggedInMember, activityEntryHelper);
+                populateUserWrapper(currentUserProfile, model);
+                model.addAttribute("allowSearchEngineIndexing",
+                        shouldAllowIndexingForUser(currentUserProfile));
 
-            final Boolean isSnpActive = ConfigurationAttributeKey.SNP_IS_ACTIVE.get();
-            model.addAttribute("isSnpActive", isSnpActive);
-            if (isSnpActive && currentUserProfile.isViewingOwnProfile()) {
-                String consentFormText = ConfigurationAttributeKey.SNP_CONSENT_FORM_TEXT.get();
-                model.addAttribute("consentFormText", consentFormText);
-                final Optional<BalloonUserTracking> butOpt = balloonService
-                        .getBalloonUserTracking(request, response);
-                if (butOpt.isPresent()) {
-                    model.addAttribute("balloonLink", butOpt.get().getBalloonLink());
-                    model.addAttribute("balloonText", butOpt.get().getBalloonText());
+                final Boolean isSnpActive = ConfigurationAttributeKey.SNP_IS_ACTIVE.get();
+                model.addAttribute("isSnpActive", isSnpActive);
+                if (isSnpActive && currentUserProfile.isViewingOwnProfile()) {
+                    String consentFormText = ConfigurationAttributeKey.SNP_CONSENT_FORM_TEXT.get();
+                    model.addAttribute("consentFormText", consentFormText);
+                    final Optional<BalloonUserTracking> butOpt = balloonService
+                            .getBalloonUserTracking(request, response);
+                    if (butOpt.isPresent()) {
+                        model.addAttribute("balloonLink", butOpt.get().getBalloonLink());
+                        model.addAttribute("balloonText", butOpt.get().getBalloonText());
+                    }
                 }
+                model.addAttribute("pointsActive",
+                        ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
             }
-            model.addAttribute("pointsActive", ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
-            return SHOW_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {
             return ErrorPage.error("User profile not found").flashAndReturnView(request);
         }
+        return SHOW_PROFILE_VIEW;
     }
 
     private boolean shouldAllowIndexingForUser(UserProfileWrapper userProfileWrapper) {
