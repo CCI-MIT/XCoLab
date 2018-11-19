@@ -97,7 +97,7 @@ public class MessagingController {
 
         final SendMessageBean sendMessageBean = new SendMessageBean(messageBean);
         model.addAttribute("sendMessageBean", sendMessageBean);
-        model.addAttribute("messageBean", messageBean);
+        model.addAttribute("currentMessageBean", messageBean);
         model.addAttribute("_activePageLink", "community");
         return "/messaging/message";
     }
