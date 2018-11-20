@@ -513,6 +513,6 @@ public final class ConfigurationAttributeKey {
 
     public static final AttributeGetter<String> PINTEREST_ID =
             ConfigurationAttributes.newStringAttribute("PINTEREST_ID")
-                    .defaultValue("amr")
+                    .defaultValue("")
                     .build();
 }

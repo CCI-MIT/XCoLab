@@ -140,7 +140,9 @@
         <meta property="fb:app_id" content="${_themeContext.authenticationVariables.facebookId}"/>
     </c:if>
 
-    <meta name="p:domain_verify" content="${_themeContext.credentialVariables.pinterestId}"/>
+    <c:if test="${not empty _themeContext.credentialVariables.pinterestId}">
+        <meta name="p:domain_verify" content="${_themeContext.credentialVariables.pinterestId}"/>
+    </c:if>
 
     <!-- Shortcut icons generated via https://realfavicongenerator.net -->
     <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png"/>
