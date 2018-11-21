@@ -17,31 +17,21 @@ import java.util.List;
 
 public class ProposalRatings {
     private final List<ProposalRating> proposalRatings;
-    private final Member author;
     private String comment;
     private Boolean shouldAdvance;
     private ContestPhase contestPhase;
 
-
     private String contestPhaseTitle;
 
-    public ProposalRatings(long authorUserId, List<ProposalRating> proposalRatings,
-            Long roundFactor) throws MemberNotFoundException {
-        this(MembersClient.getMember(authorUserId), proposalRatings, roundFactor);
+    public ProposalRatings() {
+        this(Collections.emptyList());
     }
 
-    public ProposalRatings(long authorUserId) throws MemberNotFoundException {
-        this(MembersClient.getMember(authorUserId), Collections.emptyList());
-    }
-    public ProposalRatings(long authorUserId, List<ProposalRating> proposalRatings) {
-        this(MembersClient.getMemberUnchecked(authorUserId), proposalRatings);
+    public ProposalRatings(List<ProposalRating> proposalRatings) {
+        this(proposalRatings, 1L);
     }
 
-    public ProposalRatings(Member author, List<ProposalRating> proposalRatings) {
-        this(author, proposalRatings, 1L);
-    }
-
-    public ProposalRatings(Member author, List<ProposalRating> proposalRatings, Long roundFactor) {
+    public ProposalRatings(List<ProposalRating> proposalRatings, Long roundFactor) {
         List<ProposalRating> wrapped = new ArrayList<>();
         for (ProposalRating r : proposalRatings) {
             wrapped.add(new ProposalRating(r, roundFactor));
@@ -51,9 +41,7 @@ public class ProposalRatings {
         wrapped.sort(Comparator.comparing(ProposalRating::getRatingTypeId));
 
         this.proposalRatings = wrapped;
-        this.author = author;
     }
-
 
     public List<ProposalRating> getRatings() {
         return proposalRatings;
@@ -134,9 +122,5 @@ public class ProposalRatings {
         } else {
             return false;
         }
-    }
-
-    public Member getAuthor() {
-        return author;
     }
 }

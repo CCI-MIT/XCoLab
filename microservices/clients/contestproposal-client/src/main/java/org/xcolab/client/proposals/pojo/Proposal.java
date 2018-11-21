@@ -879,7 +879,7 @@ public class Proposal extends AbstractProposal {
                 List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                         .getProposalRatingsByProposalUserContestPhase(this.getId(),
                                 contestPhase.getId(),userId);
-                ProposalRatings wrapper = new ProposalRatings(userId, proposalRatings);
+                ProposalRatings wrapper = new ProposalRatings(proposalRatings);
                 if (!wrapper.isReviewComplete()) {
                     return false;
                 }
@@ -892,7 +892,7 @@ public class Proposal extends AbstractProposal {
         List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                 .getProposalRatingsByProposalUserContestPhase(
                         getId(), contestPhase.getId(), judgeId);
-        ProposalRatings wrapper = new ProposalRatings(judgeId, proposalRatings);
+        ProposalRatings wrapper = new ProposalRatings(proposalRatings);
         return wrapper.isReviewComplete();
     }
 

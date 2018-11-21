@@ -124,7 +124,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         List<ProposalRatings> wrappers = new ArrayList<>();
         for (Map.Entry<Long, List<ProposalRating>> entry : ratingsByUserId.entrySet()) {
             List<ProposalRating> userRatings = entry.getValue();
-            ProposalRatings wrapper = new ProposalRatings(entry.getKey(), userRatings);
+            ProposalRatings wrapper = new ProposalRatings(userRatings);
             wrappers.add(wrapper);
         }
         return wrappers;

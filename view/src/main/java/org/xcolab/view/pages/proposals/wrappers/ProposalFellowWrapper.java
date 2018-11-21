@@ -29,7 +29,7 @@ public class ProposalFellowWrapper extends Proposal {
                     proposal.getId(),
                     contestPhase.getId());
             Member m = MembersClient.getMemberUnchecked(currentMember.getId());
-            this.proposalRatings = new ProposalRatings(m, list);
+            this.proposalRatings = new ProposalRatings(list);
         } catch (ContestNotFoundException  e) {
             this.proposalRatings = null;
         }
