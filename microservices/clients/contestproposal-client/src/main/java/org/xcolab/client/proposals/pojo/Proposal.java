@@ -969,7 +969,7 @@ public class Proposal extends AbstractProposal {
         Clients(ServiceNamespace serviceNamespace) {
             if (serviceNamespace != null) {
                 contest = ContestClient.fromNamespace(serviceNamespace);
-                proposalTemplate = ProposalTemplateClient.fromNamespace(serviceNamespace);
+                proposalTemplate = ProposalTemplateClient.fromNamespace();
                 proposal = ProposalClient.fromNamespace(serviceNamespace);
                 proposalAttribute = ProposalAttributeClient.fromNamespace(serviceNamespace);
                 proposalPhase = ProposalPhaseClient.fromNamespace(serviceNamespace);

@@ -1,13 +1,18 @@
 package org.xcolab.client.contest.pojo.ontology;
 
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FocusArea extends AbstractFocusArea implements Serializable {
+
+    public static final TypeProvider<FocusArea> TYPES = new TypeProvider<>(FocusArea.class,
+            new ParameterizedTypeReference<List<FocusArea>>() {});
 
     private static final long serialVersionUID = 1L;
 

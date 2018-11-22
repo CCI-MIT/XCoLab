@@ -1,62 +1,49 @@
 package org.xcolab.client.contest;
 
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinitionDto;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateDto;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSection;
-import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDto;
+import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
 import org.xcolab.client.contest.resources.ContestResource;
 import org.xcolab.client.proposals.exceptions.ProposalTemplateNotFoundException;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ProposalTemplateClient {
 
-    private static final Map<ServiceNamespace, ProposalTemplateClient> instances = new HashMap<>();
+    private final static ProposalTemplateClient INSTANCE = new ProposalTemplateClient();
 
-    private final ServiceNamespace serviceNamespace;
+    private final RestResource1<ProposalTemplate, Long> proposalTemplateResource;
+    private final RestResource1<ProposalTemplateSectionDefinition, Long> proposalTemplateSectionDefinitionResource;
+    private final RestResource1<ProposalTemplateSection, Long> proposalTemplateSectionResource;
 
-    private final RestResource1<ProposalTemplateDto, Long> proposalTemplateResource;
-    private final RestResource1<ProposalTemplateSectionDefinitionDto, Long> proposalTemplateSectionDefinitionResource;
-    private final RestResource1<ProposalTemplateSectionDto, Long> proposalTemplateSectionResource;
-
-    private ProposalTemplateClient(ServiceNamespace serviceNamespace) {
-        this.serviceNamespace = serviceNamespace;
+    private ProposalTemplateClient() {
         proposalTemplateResource =
-                new RestResource1<>(ContestResource.PLAN_TEMPLATE, ProposalTemplateDto.TYPES,
-                        serviceNamespace);
+                new RestResource1<>(ContestResource.PLAN_TEMPLATE, ProposalTemplate.TYPES);
         proposalTemplateSectionDefinitionResource = new RestResource1<>(
-                ContestResource.PLAN_SECTION_DEFINITION, ProposalTemplateSectionDefinitionDto.TYPES,
-                serviceNamespace);
+                ContestResource.PLAN_SECTION_DEFINITION, ProposalTemplateSectionDefinition.TYPES);
         proposalTemplateSectionResource = new RestResource1<>(
-                ContestResource.PLAN_TEMPLATE_SECTION, ProposalTemplateSectionDto.TYPES,
-                serviceNamespace);
+                ContestResource.PLAN_TEMPLATE_SECTION, ProposalTemplateSection.TYPES);
     }
 
-    public static ProposalTemplateClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, ProposalTemplateClient::new);
+    public static ProposalTemplateClient fromNamespace() {
+        return INSTANCE;
     }
 
     public ProposalTemplate getProposalTemplate(long id) {
         try {
             return proposalTemplateResource.get(id)
-                    .executeChecked().toPojo(serviceNamespace);
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ProposalTemplateNotFoundException(id);
         }
     }
 
     public List<ProposalTemplate> getProposalTemplates() {
-        return DtoUtil.toPojos(proposalTemplateResource.list()
-                .execute(), serviceNamespace);
+        return proposalTemplateResource.list()
+                .execute();
     }
 
     public  Boolean deleteProposalTemplate(Long id) {
@@ -65,42 +52,42 @@ public class ProposalTemplateClient {
 
 
     public ProposalTemplate createProposalTemplate(ProposalTemplate proposalTemplate) {
-        return proposalTemplateResource.create(new ProposalTemplateDto(proposalTemplate))
-                .execute().toPojo(serviceNamespace);
+        return proposalTemplateResource.create(new ProposalTemplate(proposalTemplate))
+                .execute();
     }
 
     public boolean updateProposalTemplate(ProposalTemplate proposalTemplate) {
-        return proposalTemplateResource.update(new ProposalTemplateDto(proposalTemplate), proposalTemplate.getId())
+        return proposalTemplateResource.update(new ProposalTemplate(proposalTemplate), proposalTemplate.getId())
                 .execute();
     }
 
     public ProposalTemplateSectionDefinition getProposalTemplateSectionDefinition(long id) {
         return proposalTemplateSectionDefinitionResource.get(id)
                 .withCache(CacheName.MISC_REQUEST)
-                .execute().toPojo(serviceNamespace);
+                .execute();
     }
 
     public boolean updateProposalTemplateSectionDefinition(
             ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
         return proposalTemplateSectionDefinitionResource.update(
-                new ProposalTemplateSectionDefinitionDto(proposalTemplateSectionDefinition), proposalTemplateSectionDefinition.getId())
+                new ProposalTemplateSectionDefinition(proposalTemplateSectionDefinition), proposalTemplateSectionDefinition.getId())
                 .execute();
     }
 
     public ProposalTemplateSectionDefinition createProposalTemplateSectionDefinition(
             ProposalTemplateSectionDefinition proposalTemplateSectionDefinition) {
         return proposalTemplateSectionDefinitionResource
-                .create(new ProposalTemplateSectionDefinitionDto(proposalTemplateSectionDefinition))
-                .execute().toPojo(serviceNamespace);
+                .create(new ProposalTemplateSectionDefinition(proposalTemplateSectionDefinition))
+                .execute();
     }
 
     public List<ProposalTemplateSectionDefinition> getProposalTemplateSectionDefinitionByProposalTemplateId(Long proposalTemplateId,
             Boolean weight) {
 
-        return DtoUtil.toPojos(proposalTemplateSectionDefinitionResource.list()
+        return proposalTemplateSectionDefinitionResource.list()
                 .optionalQueryParam("proposalTemplateId", proposalTemplateId)
                 .optionalQueryParam("weight", ((weight == null) ? (false) : weight))
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public Boolean deleteProposalTemplateSectionDefinition(Long id) {
@@ -115,19 +102,19 @@ public class ProposalTemplateClient {
     }
 
     public List<ProposalTemplateSection> getProposalTemplateSectionByProposalTemplateId(Long proposalTemplateId) {
-        return DtoUtil.toPojos(proposalTemplateSectionResource.list()
+        return proposalTemplateSectionResource.list()
                 .optionalQueryParam("proposalTemplateId", proposalTemplateId)
-                .execute(), serviceNamespace);
+                .execute();
     }
     public ProposalTemplateSection createProposalTemplateSection(
             ProposalTemplateSection proposalTemplateSection) {
-        return proposalTemplateSectionResource.create(new ProposalTemplateSectionDto(proposalTemplateSection))
-                .execute().toPojo(serviceNamespace);
+        return proposalTemplateSectionResource.create(new ProposalTemplateSection(proposalTemplateSection))
+                .execute();
     }
 
     public boolean updateProposalTemplateSection(ProposalTemplateSection proposalTemplateSection) {
         return proposalTemplateSectionResource.collectionService("updateTemplateSection",Boolean.class)
-                .post(new ProposalTemplateSectionDto(proposalTemplateSection));
+                .post(new ProposalTemplateSection(proposalTemplateSection));
     }
 
 
@@ -140,17 +127,17 @@ public class ProposalTemplateClient {
     }
 
     private List<ProposalTemplateSection> getProposalTemplateSections(Long proposalTemplateId, Long sectionDefinitionId) {
-        return DtoUtil.toPojos(proposalTemplateSectionResource.list()
+        return proposalTemplateSectionResource.list()
                 .optionalQueryParam("proposalTemplateId", proposalTemplateId)
                 .optionalQueryParam("planSectionId", sectionDefinitionId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public ProposalTemplateSection getProposalTemplateSection(long proposalTemplateId, long sectionDefinitionId) {
-        return DtoUtil.toPojo(proposalTemplateSectionResource.list()
+        return proposalTemplateSectionResource.list()
                 .queryParam("proposalTemplateId", proposalTemplateId)
                 .queryParam("planSectionId", sectionDefinitionId)
                 .executeWithResult()
-                .getOneIfExists(), serviceNamespace);
+                .getOneIfExists();
     }
 }

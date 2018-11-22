@@ -3,14 +3,13 @@ package org.xcolab.client.contest;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSection;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class ProposalTemplateClientUtil {
 
     private static final ProposalTemplateClient client = ProposalTemplateClient.fromNamespace(
-            ServiceNamespace.instance());
+    );
 
     private ProposalTemplateClientUtil() {
     }

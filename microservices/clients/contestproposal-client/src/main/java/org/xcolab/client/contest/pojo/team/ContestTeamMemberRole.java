@@ -1,11 +1,19 @@
 package org.xcolab.client.contest.pojo.team;
 
+import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.client.contest.enums.ContestRole;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.util.List;
 
 public class ContestTeamMemberRole extends AbstractContestTeamMemberRole
         implements Comparable<ContestTeamMemberRole> {
+
+    public static final TypeProvider<ContestTeamMemberRole> TYPES =
+            new TypeProvider<>(ContestTeamMemberRole.class,
+                    new ParameterizedTypeReference<List<ContestTeamMemberRole>>() {});
 
     public ContestTeamMemberRole() {}
 

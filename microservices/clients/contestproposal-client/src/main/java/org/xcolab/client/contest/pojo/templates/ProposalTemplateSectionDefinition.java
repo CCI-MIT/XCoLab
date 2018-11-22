@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -26,6 +27,7 @@ import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -39,6 +41,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateSectionDefinition {
+
+    public static final TypeProvider<ProposalTemplateSectionDefinition> TYPES =
+            new TypeProvider<>(ProposalTemplateSectionDefinition.class,
+                    new ParameterizedTypeReference<List<ProposalTemplateSectionDefinition>>() {});
 
     private static final Logger log = LoggerFactory.getLogger(ProposalTemplateSectionDefinition.class);
 

@@ -1,11 +1,18 @@
 package org.xcolab.client.contest.pojo.ontology;
 
+import org.springframework.core.ParameterizedTypeReference;
+
+import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OntologySpace extends AbstractOntologySpace {
+
+    public static final TypeProvider<OntologySpace> TYPES = new TypeProvider<>(OntologySpace.class,
+            new ParameterizedTypeReference<List<OntologySpace>>() {});
 
     public OntologySpace() {}
 

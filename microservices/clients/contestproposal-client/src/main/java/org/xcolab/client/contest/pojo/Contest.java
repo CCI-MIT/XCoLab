@@ -1,6 +1,7 @@
 package org.xcolab.client.contest.pojo;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -39,6 +40,7 @@ import org.xcolab.commons.time.DateUtil;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.Serializable;
@@ -54,6 +56,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class Contest extends AbstractContest implements Serializable {
+
+    public static final TypeProvider<Contest> TYPES = new TypeProvider<>(Contest.class,
+            new ParameterizedTypeReference<List<Contest>>() {});
 
     private static final long serialVersionUID = 1L;
 
@@ -106,7 +111,7 @@ public class Contest extends AbstractContest implements Serializable {
             contestClient = ContestClient.fromNamespace(serviceNamespace);
             contestTeamMemberClient = ContestTeamMemberClient.fromService(serviceNamespace);
             ontologyClient = OntologyClient.fromService(serviceNamespace);
-            proposalTemplateClient = ProposalTemplateClient.fromNamespace(serviceNamespace);
+            proposalTemplateClient = ProposalTemplateClient.fromNamespace();
         } else {
             contestClient = ContestClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
