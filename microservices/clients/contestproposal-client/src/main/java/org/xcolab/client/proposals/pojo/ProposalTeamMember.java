@@ -1,9 +1,18 @@
 package org.xcolab.client.proposals.pojo;
 
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.http.client.types.TypeProvider;
+
+import java.util.List;
 
 public class ProposalTeamMember {
+
+    public static final TypeProvider<ProposalTeamMember> TYPES =
+            new TypeProvider<>(ProposalTeamMember.class,
+                    new ParameterizedTypeReference<List<ProposalTeamMember>>() {});
+
     private final Proposal proposal;
     private final Member member;
     private ProposalMemberType memberType;

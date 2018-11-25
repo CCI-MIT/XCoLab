@@ -1,12 +1,21 @@
 package org.xcolab.client.proposals.pojo.team;
 
+import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
+
+import java.util.List;
 
 public class ProposalTeamMembershipRequest extends AbstractProposalTeamMembershipRequest {
+
+    public static final TypeProvider<ProposalTeamMembershipRequest> TYPES =
+            new TypeProvider<>(ProposalTeamMembershipRequest.class,
+                    new ParameterizedTypeReference<List<ProposalTeamMembershipRequest>>() {});
 
     private Member requestUser;
 

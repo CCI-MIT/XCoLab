@@ -1,12 +1,20 @@
 package org.xcolab.client.proposals.pojo;
 
+import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class ProposalVersion extends AbstractProposalVersion {
+
+    public static final TypeProvider<ProposalVersion> TYPES =
+            new TypeProvider<>(ProposalVersion.class,
+                    new ParameterizedTypeReference<List<ProposalVersion>>() {});
 
     private final ProposalPhaseClient proposalPhaseClient;
 

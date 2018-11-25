@@ -1,9 +1,17 @@
 package org.xcolab.client.proposals.pojo.phases;
 
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
+
+import java.util.List;
 
 public class Proposal2Phase extends AbstractProposal2Phase {
+
+    public static final TypeProvider<Proposal2Phase> TYPES =
+            new TypeProvider<>(Proposal2Phase.class,
+                    new ParameterizedTypeReference<List<Proposal2Phase>>() {});
 
     public Proposal2Phase() {}
 

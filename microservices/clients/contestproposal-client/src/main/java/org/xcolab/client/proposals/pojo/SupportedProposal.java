@@ -1,10 +1,13 @@
 package org.xcolab.client.proposals.pojo;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 // TODO COLAB-2356: rethink inheritance structure
 // the inheritance structure between this SupportedProposal(Dto) and Proposal(Dto) is limited
@@ -12,13 +15,17 @@ import java.sql.Timestamp;
 
 public class SupportedProposal extends Proposal {
 
+    public static final TypeProvider<SupportedProposal> TYPES =
+            new TypeProvider<>(SupportedProposal.class,
+                    new ParameterizedTypeReference<List<SupportedProposal>>() {});
+
     private Timestamp supportDate;
     private Long supporterUserId;
 
     public SupportedProposal() {
     }
 
-    public SupportedProposal(SupportedProposalDto value, ServiceNamespace serviceNamespace) {
+    public SupportedProposal(SupportedProposal value, ServiceNamespace serviceNamespace) {
         super(value, serviceNamespace);
         this.supportDate = value.getSupportDate();
         this.supporterUserId = value.getSupporterUserId();

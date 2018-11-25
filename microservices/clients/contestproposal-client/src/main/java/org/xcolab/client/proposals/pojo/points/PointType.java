@@ -1,14 +1,21 @@
 package org.xcolab.client.proposals.pojo.points;
 
+import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PointType extends AbstractPointType {
+
+    public static final TypeProvider<PointType> TYPES =
+            new TypeProvider<>(PointType.class,
+                    new ParameterizedTypeReference<List<PointType>>() {});
 
     private List<PointType> children;
 

@@ -1,5 +1,7 @@
 package org.xcolab.client.proposals.pojo.phases;
 
+import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -11,10 +13,16 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class ProposalMoveHistory extends AbstractProposalMoveHistory {
+
+    public static final TypeProvider<ProposalMoveHistory> TYPES =
+            new TypeProvider<>(ProposalMoveHistory.class,
+                    new ParameterizedTypeReference<List<ProposalMoveHistory>>() {});
 
     public ProposalMoveHistory() {}
 

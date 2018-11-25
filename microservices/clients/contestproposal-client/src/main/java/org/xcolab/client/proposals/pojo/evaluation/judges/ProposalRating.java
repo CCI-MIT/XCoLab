@@ -1,14 +1,20 @@
 package org.xcolab.client.proposals.pojo.evaluation.judges;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class ProposalRating extends AbstractProposalRating {
 
+    public static final TypeProvider<ProposalRating> TYPES =
+            new TypeProvider<>(ProposalRating.class,
+                    new ParameterizedTypeReference<List<ProposalRating>>() {});
 
     private ProposalRatingType ratingType;
     private ProposalRatingValue ratingValue;

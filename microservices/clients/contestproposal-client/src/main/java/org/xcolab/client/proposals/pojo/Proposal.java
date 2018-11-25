@@ -3,6 +3,7 @@ package org.xcolab.client.proposals.pojo;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -61,6 +62,7 @@ import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,6 +75,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Proposal extends AbstractProposal {
+
+    public static final TypeProvider<Proposal> TYPES =
+            new TypeProvider<>(Proposal.class,
+                    new ParameterizedTypeReference<List<Proposal>>() {});
 
     private static final Long LONG_DEFAULT_VAL = -1L;
     private static final String STRING_DEFAULT_VAL = "";
@@ -971,7 +977,7 @@ public class Proposal extends AbstractProposal {
                 contest = ContestClient.fromNamespace(serviceNamespace);
                 proposalTemplate = ProposalTemplateClient.fromNamespace();
                 proposal = ProposalClient.fromNamespace(serviceNamespace);
-                proposalAttribute = ProposalAttributeClient.fromNamespace(serviceNamespace);
+                proposalAttribute = new ProposalAttributeClient();
                 proposalPhase = ProposalPhaseClient.fromNamespace(serviceNamespace);
                 contestTeamMember =  ContestTeamMemberClient.fromService(serviceNamespace);
                 proposalMemberRating = ProposalMemberRatingClient.fromNamespace(serviceNamespace);
