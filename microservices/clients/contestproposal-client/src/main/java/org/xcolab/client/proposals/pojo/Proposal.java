@@ -61,7 +61,6 @@ import org.xcolab.util.enums.promotion.AssessmentStatus;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.IOException;
@@ -84,8 +83,6 @@ public class Proposal extends AbstractProposal {
     private static final String STRING_DEFAULT_VAL = "";
 
     private final Clients clients;
-
-    private ServiceNamespace serviceNamespace;
 
     protected final Contest contest;
     protected final ContestPhase contestPhase;
@@ -112,18 +109,9 @@ public class Proposal extends AbstractProposal {
         this(proposal, version, null, null, null);
     }
 
-    public Proposal() {
-        this((ServiceNamespace) null);
-    }
-
     public Proposal(Proposal value) {
         super(value);
-        if (value.getServiceNamespace() != null) {
-            this.serviceNamespace = value.getServiceNamespace();
-            this.clients = new Clients(serviceNamespace);
-        } else {
-            this.clients = new Clients();
-        }
+        this.clients = new Clients();
 
         ContestAssociation contestAssociation = new ContestAssociation();
         this.contestPhase =  contestAssociation.getContestPhase();
@@ -150,13 +138,7 @@ public class Proposal extends AbstractProposal {
     public Proposal(Proposal proposal, Integer version, Contest contest,
             ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         super(proposal);
-
-        if (proposal.getServiceNamespace() != null) {
-            this.serviceNamespace = proposal.getServiceNamespace();
-            this.clients = new Clients(serviceNamespace);
-        } else {
-            this.clients = new Clients();
-        }
+        this.clients = new Clients();
         ContestAssociation contestAssociation =
                 new ContestAssociation(contest, contestPhase, proposal2Phase);
         this.contestPhase =  contestAssociation.getContestPhase();
@@ -172,14 +154,9 @@ public class Proposal extends AbstractProposal {
                 clients.proposalAttribute);
     }
 
-    public Proposal(ServiceNamespace serviceNamespace) {
+    public Proposal() {
         super();
-        if (serviceNamespace != null) {
-            this.serviceNamespace = serviceNamespace;
-            this.clients = new Clients(serviceNamespace);
-        } else {
-            this.clients = new Clients();
-        }
+        this.clients = new Clients();
         this.setId(0L);
 
         ContestAssociation contestAssociation = new ContestAssociation();
@@ -195,11 +172,10 @@ public class Proposal extends AbstractProposal {
                 clients.proposalAttribute);
     }
 
-    public Proposal(AbstractProposal abstractProposal, ServiceNamespace serviceNamespace) {
+    public Proposal(AbstractProposal abstractProposal) {
         super(abstractProposal);
-        this.serviceNamespace = serviceNamespace;
 
-        this.clients = new Clients(serviceNamespace);
+        this.clients = new Clients();
 
         ContestAssociation contestAssociation = new ContestAssociation();
         this.contestPhase =  contestAssociation.getContestPhase();
@@ -934,13 +910,9 @@ public class Proposal extends AbstractProposal {
         return this.proposalRatings.getShouldAdvance();
     }
 
-    public ServiceNamespace getServiceNamespace() {
-        return serviceNamespace;
-    }
-
     public ProposalRibbon getRibbonWrapper() {
         if (ribbonWrapper == null) {
-            ribbonWrapper = new ProposalRibbon(this, serviceNamespace);
+            ribbonWrapper = new ProposalRibbon(this);
         }
         return ribbonWrapper;
     }
@@ -969,31 +941,15 @@ public class Proposal extends AbstractProposal {
         final ProposalTemplateClient proposalTemplate;
 
         Clients() {
-            this(null);
-        }
-
-        Clients(ServiceNamespace serviceNamespace) {
-            if (serviceNamespace != null) {
-                contest = ContestClient.fromNamespace(serviceNamespace);
-                proposalTemplate = ProposalTemplateClient.fromNamespace();
-                proposal = ProposalClient.fromNamespace(serviceNamespace);
-                proposalAttribute = new ProposalAttributeClient();
-                proposalPhase = ProposalPhaseClient.fromNamespace(serviceNamespace);
-                contestTeamMember =  ContestTeamMemberClient.fromService(serviceNamespace);
-                proposalMemberRating = ProposalMemberRatingClient.fromNamespace(serviceNamespace);
-                proposalJudgeRating = ProposalJudgeRatingClient.fromNamespace(serviceNamespace);
-                membership = MembershipClient.fromNamespace(serviceNamespace);
-            } else {
-                contest = ContestClientUtil.getClient();
-                proposal = ProposalClientUtil.getClient();
-                proposalAttribute = ProposalAttributeClientUtil.getClient();
-                proposalPhase = ProposalPhaseClientUtil.getClient();
-                contestTeamMember = ContestTeamMemberClientUtil.getClient();
-                proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
-                membership = MembershipClientUtil.getClient();
-                proposalTemplate = ProposalTemplateClientUtil.getClient();
-                proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
-            }
+            contest = ContestClientUtil.getClient();
+            proposal = ProposalClientUtil.getClient();
+            proposalAttribute = ProposalAttributeClientUtil.getClient();
+            proposalPhase = ProposalPhaseClientUtil.getClient();
+            contestTeamMember = ContestTeamMemberClientUtil.getClient();
+            proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
+            membership = MembershipClientUtil.getClient();
+            proposalTemplate = ProposalTemplateClientUtil.getClient();
+            proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
         }
     }
 

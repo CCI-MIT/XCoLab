@@ -5,13 +5,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CommentClient {
 
@@ -19,7 +16,6 @@ public class CommentClient {
     private static final CommentClient INSTANCE = new CommentClient();
 
     private final CommentServiceWrapper commentServiceWrapper = new CommentServiceWrapper();
-    private static final Map<ServiceNamespace, CommentClient> instances = new HashMap<>();
 
     public static CommentClient instance() {
         return INSTANCE;
@@ -72,7 +68,4 @@ public class CommentClient {
         return commentServiceWrapper.deleteComment(commentId);
     }
 
-    public static CommentClient fromService(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, serviceNamespace1 -> new CommentClient());
-    }
 }

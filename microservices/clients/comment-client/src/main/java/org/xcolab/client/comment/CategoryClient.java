@@ -5,11 +5,8 @@ import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CategoryClient {
 
@@ -17,8 +14,6 @@ public class CategoryClient {
     private static final CategoryClient INSTANCE = new CategoryClient();
 
     private final CommentServiceWrapper commentServiceWrapper = new CommentServiceWrapper();
-
-    private static final Map<ServiceNamespace, CategoryClient> instances = new HashMap<>();
 
     public static CategoryClient instance() {
         return INSTANCE;
@@ -46,8 +41,4 @@ public class CategoryClient {
         return commentServiceWrapper.getCategoryGroup(groupId, CacheName.MISC_RUNTIME);
     }
 
-    public static CategoryClient fromService(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace,
-                serviceNamespace1 -> new CategoryClient());
-    }
 }

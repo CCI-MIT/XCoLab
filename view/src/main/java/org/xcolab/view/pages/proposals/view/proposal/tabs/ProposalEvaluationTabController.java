@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -19,7 +20,6 @@ import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
@@ -110,8 +110,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         boolean hasContestPassedScreeningPhaseAlready = false;
 
         Contest contest = proposalContext.getContest();
-        ServiceNamespace contestServiceNamespace = contest.getServiceNamespace();
-        final ContestClient contestClient = ContestClient.fromNamespace(contestServiceNamespace);
+        final ContestClient contestClient = ContestClientUtil.getClient();
         ContestPhase activeContestPhase = contestClient.getActivePhase(contest.getId());
         List<ContestPhase> allContestPhasesForCurrentContest = contestClient.getAllContestPhases(contest.getId());
 

@@ -2,7 +2,6 @@ package org.xcolab.client.proposals.pojo.attributes;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
@@ -38,8 +37,7 @@ public class ProposalUnversionedAttribute extends AbstractProposalUnversionedAtt
     }
 
     public ProposalUnversionedAttribute(AbstractProposalUnversionedAttribute
-            abstractProposalUnversionedAttribute,
-            ServiceNamespace serviceNamespace) {
+            abstractProposalUnversionedAttribute) {
         super(abstractProposalUnversionedAttribute);
     }
 }

@@ -6,28 +6,18 @@ import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class ProposalMoveClient {
 
-    private static final Map<ServiceNamespace, ProposalMoveClient> instances = new HashMap<>();
-
     private final RestResource1<ProposalMoveHistory, Long> proposalMoveHistoryResource;
 
-    private ProposalMoveClient() {
+    public ProposalMoveClient() {
         proposalMoveHistoryResource = new RestResource1<>(ProposalResource.PROPOSAL_MOVE_HISTORY,
                 ProposalMoveHistory.TYPES);
-    }
-
-    public static ProposalMoveClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace,
-                serviceNamespace1 -> new ProposalMoveClient());
     }
 
     public List<ProposalMoveHistory> getBySourceProposalIdContestId(Long sourceProposalId,

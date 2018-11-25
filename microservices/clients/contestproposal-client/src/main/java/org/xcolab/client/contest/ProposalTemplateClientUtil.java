@@ -8,8 +8,7 @@ import java.util.List;
 
 public final class ProposalTemplateClientUtil {
 
-    private static final ProposalTemplateClient client = ProposalTemplateClient.fromNamespace(
-    );
+    private static final ProposalTemplateClient client = new ProposalTemplateClient();
 
     private ProposalTemplateClientUtil() {
     }

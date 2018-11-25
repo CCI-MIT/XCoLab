@@ -2,7 +2,6 @@ package org.xcolab.client.contest.pojo.team;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class ContestTeamMember extends AbstractContestTeamMember {
         super(id, contestid, userid, roleid);
     }
 
-    public ContestTeamMember(AbstractContestTeamMember abstractContestTeamMember, ServiceNamespace serviceNamespace) {
+    public ContestTeamMember(AbstractContestTeamMember abstractContestTeamMember) {
         super(abstractContestTeamMember);
     }
 }

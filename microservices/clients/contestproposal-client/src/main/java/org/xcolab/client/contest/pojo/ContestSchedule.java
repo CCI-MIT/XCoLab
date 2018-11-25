@@ -4,7 +4,6 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -31,10 +30,9 @@ public class ContestSchedule extends AbstractContestSchedule {
         contestClient = ContestClientUtil.getClient();
     }
 
-    public ContestSchedule(AbstractContestSchedule abstractContestSchedule,
-            ServiceNamespace serviceNamespace) {
+    public ContestSchedule(AbstractContestSchedule abstractContestSchedule) {
         super(abstractContestSchedule);
-        this.contestClient = ContestClient.fromNamespace(serviceNamespace);
+        this.contestClient = ContestClientUtil.getClient();
     }
 
     public boolean isUsedInNonEmptyContest() {

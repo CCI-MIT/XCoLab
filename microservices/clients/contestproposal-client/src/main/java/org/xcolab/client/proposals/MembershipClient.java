@@ -15,20 +15,15 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.Http409ConflictException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MembershipClient {
-
-    private static final Map<ServiceNamespace, MembershipClient> instances = new HashMap<>();
 
     private final RestResource1<Proposal, Long> proposalResource;
 
@@ -37,18 +32,13 @@ public class MembershipClient {
 
     private final ProposalClient proposalClient;
 
-    private MembershipClient(ServiceNamespace serviceNamespace) {
+    public MembershipClient() {
         proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, Proposal.TYPES);
         membershipRequestResource = new RestResource1<>(ProposalResource.MEMBERSHIP_REQUEST,
                 ProposalTeamMembershipRequest.TYPES);
-        proposalClient = ProposalClient.fromNamespace(serviceNamespace);
+        proposalClient = ProposalClientUtil.getClient();
         proposalTeamMemberResource = proposalResource
                 .nestedResource("teamMembers", TypeProvider.LONG);
-    }
-
-    public static MembershipClient fromNamespace(ServiceNamespace proposalService) {
-        return instances
-                .computeIfAbsent(proposalService, MembershipClient::new);
     }
 
     public void denyMembershipRequest(Proposal proposal, long userId, long membershipRequestId,

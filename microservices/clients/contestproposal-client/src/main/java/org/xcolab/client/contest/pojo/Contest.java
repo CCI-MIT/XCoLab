@@ -31,15 +31,14 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalMemberRatingClient;
-import org.xcolab.client.proposals.ProposalPhaseClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.time.DateUtil;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
@@ -92,8 +91,6 @@ public class Contest extends AbstractContest implements Serializable {
 
     protected ContestPhase activePhase;
 
-    private ServiceNamespace serviceNamespace;
-
     public Contest() {
         contestClient = ContestClientUtil.getClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
@@ -101,24 +98,12 @@ public class Contest extends AbstractContest implements Serializable {
         proposalTemplateClient = ProposalTemplateClientUtil.getClient();
     }
 
-    public Contest(Contest value) {
-        this(value, value.getServiceNamespace());
-    }
-
-    public Contest(AbstractContest value, ServiceNamespace serviceNamespace) {
+    public Contest(AbstractContest value) {
         super(value);
-        if (serviceNamespace != null) {
-            contestClient = ContestClient.fromNamespace(serviceNamespace);
-            contestTeamMemberClient = ContestTeamMemberClient.fromService(serviceNamespace);
-            ontologyClient = OntologyClient.fromService(serviceNamespace);
-            proposalTemplateClient = ProposalTemplateClient.fromNamespace();
-        } else {
-            contestClient = ContestClientUtil.getClient();
-            contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
-            ontologyClient = OntologyClientUtil.getClient();
-            proposalTemplateClient = ProposalTemplateClientUtil.getClient();
-        }
-        this.serviceNamespace = serviceNamespace;
+        contestClient = ContestClientUtil.getClient();
+        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        ontologyClient = OntologyClientUtil.getClient();
+        proposalTemplateClient = ProposalTemplateClientUtil.getClient();
     }
 
     public String getContestDiscussionLinkUrl() {
@@ -237,7 +222,7 @@ public class Contest extends AbstractContest implements Serializable {
         try {
             ContestPhase cp = contestClient.getActivePhase(this.getId());
             if (cp != null) {
-                return ProposalPhaseClient.fromNamespace(serviceNamespace)
+                return ProposalPhaseClientUtil.getClient()
                         .getProposalCountForActiveContestPhase(cp.getId());
             }
         } catch (UncheckedEntityNotFoundException e) {
@@ -375,7 +360,7 @@ public class Contest extends AbstractContest implements Serializable {
 
         List<ContestPhase> contestPhases = contestClient.getAllContestPhases(this.getId());
         for (ContestPhase contestPhase : contestPhases) {
-            List<Proposal> proposals = ProposalClient.fromNamespace(serviceNamespace)
+            List<Proposal> proposals = ProposalClientUtil.getClient()
                     .getActiveProposalsInContestPhase(contestPhase.getId());
             proposalList.addAll(proposals);
 
@@ -421,7 +406,7 @@ public class Contest extends AbstractContest implements Serializable {
     public long getVotesCount() {
         ContestPhase phase = contestClient.getActivePhase(this.getId());
 
-        return ProposalMemberRatingClient.fromNamespace(serviceNamespace)
+        return ProposalMemberRatingClientUtil.getClient()
                 .countProposalVotesInContestPhase(phase.getId());
     }
 
@@ -444,11 +429,6 @@ public class Contest extends AbstractContest implements Serializable {
             }
         }
         return last;
-    }
-
-
-    public ServiceNamespace getServiceNamespace() {
-        return serviceNamespace;
     }
 
     public String getWhoName() {

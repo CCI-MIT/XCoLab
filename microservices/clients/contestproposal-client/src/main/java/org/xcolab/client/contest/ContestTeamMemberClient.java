@@ -8,35 +8,22 @@ import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class ContestTeamMemberClient {
 
-    private static final Map<ServiceNamespace, ContestTeamMemberClient> instances = new HashMap<>();
-
-    private final ServiceNamespace serviceNamespace;
-
     private final RestResource<ContestTeamMember, Long> contestTeamMemberResource;
     private final RestResource<ContestTeamMemberRole, Long> contestTeamMemberRoleResource;
 
-    private ContestTeamMemberClient(ServiceNamespace serviceNamespace) {
-        this.serviceNamespace = serviceNamespace;
+    public ContestTeamMemberClient() {
         contestTeamMemberResource = new RestResource1<>(ContestResource.CONTEST_TEAM_MEMBER,
-                ContestTeamMember.TYPES, serviceNamespace);
+                ContestTeamMember.TYPES);
         contestTeamMemberRoleResource = new RestResource1<>(
-                ContestResource.CONTEST_TEAM_MEMBER_ROLE, ContestTeamMemberRole.TYPES,
-                serviceNamespace);
-    }
-
-    public static ContestTeamMemberClient fromService(ServiceNamespace serviceNamespace) {
-        return instances
-                .computeIfAbsent(serviceNamespace, k -> new ContestTeamMemberClient(serviceNamespace));
+                ContestResource.CONTEST_TEAM_MEMBER_ROLE, ContestTeamMemberRole.TYPES);
     }
 
     public ContestTeamMember createContestTeamMember(ContestTeamMember contestTeamMember) {

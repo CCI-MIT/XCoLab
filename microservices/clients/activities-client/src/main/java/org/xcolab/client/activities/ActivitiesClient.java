@@ -1,39 +1,34 @@
 package org.xcolab.client.activities;
 
-import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class ActivitiesClient {
-
-    private static final Map<ServiceNamespace, ActivitiesClient> instances = new HashMap<>();
 
     private  final RestResource<ActivityEntry, Long> activityEntryResource;
 
     private  final RestResource<ActivitySubscription, Long> activitySubscriptionResource;
 
 
-    private ActivitiesClient(ServiceNamespace serviceNamespace) {
+    public ActivitiesClient() {
         activityEntryResource = new RestResource1<>(ActivityResource.ACTIVITY_ENTRY,
-                ActivityEntry.TYPES, serviceNamespace);
+                ActivityEntry.TYPES);
         activitySubscriptionResource = new RestResource1<>(ActivityResource.ACTIVITY_SUBSCRIPTION,
-                ActivitySubscription.TYPES, serviceNamespace);
+                ActivitySubscription.TYPES);
     }
 
     public ActivityEntry createActivityEntry(ActivityType activityType, long userId,
@@ -178,9 +173,5 @@ public final class ActivitiesClient {
 
     public List<ActivitySubscription> getActivitySubscriptionsForMember(Long userId) {
         return getActivitySubscriptions(null, null, userId);
-    }
-
-    public static ActivitiesClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, ActivitiesClient::new);
     }
 }

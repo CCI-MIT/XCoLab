@@ -2,7 +2,6 @@ package org.xcolab.client.contest.pojo;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -19,8 +18,7 @@ public class ContestCollectionCard extends AbstractContestCollectionCard {
         super(value);
     }
 
-    public ContestCollectionCard(AbstractContestCollectionCard abstractContestCollectionCard,
-            ServiceNamespace serviceNamespace) {
+    public ContestCollectionCard(AbstractContestCollectionCard abstractContestCollectionCard) {
         super(abstractContestCollectionCard);
     }
 }

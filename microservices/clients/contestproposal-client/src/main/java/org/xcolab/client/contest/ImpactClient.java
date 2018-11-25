@@ -8,17 +8,10 @@ import org.xcolab.client.contest.pojo.impact.ImpactTemplateSeries;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplate;
 import org.xcolab.client.contest.resources.ImpactResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ImpactClient {
-
-    private static final Map<ServiceNamespace, ImpactClient> instances = new HashMap<>();
-
-    private final ServiceNamespace serviceNamespace;
 
     private final RestResource1<ImpactTemplateSeries, Long> impactTemplateSeriesResource;
     private final RestResource1<ImpactIteration, Long> impactIterationResource;
@@ -27,22 +20,16 @@ public class ImpactClient {
     private final RestResource1<ImpactTemplateMaxFocusArea, Long>
             impactTemplateMaxFocusAreaResource;
 
-    private ImpactClient(ServiceNamespace serviceNamespace) {
-        this.serviceNamespace = serviceNamespace;
+    public ImpactClient() {
         impactTemplateSeriesResource = new RestResource1<>(ImpactResource.IMPACT_TEMPLATE_SERIES,
-                ImpactTemplateSeries.TYPES, serviceNamespace);
+                ImpactTemplateSeries.TYPES);
         impactIterationResource = new RestResource1<>(ImpactResource.IMPACT_ITERATION,
-                ImpactIteration.TYPES, serviceNamespace);
+                ImpactIteration.TYPES);
         impactTemplateFocusAreaListResource = new RestResource1<>(
                 ImpactResource.IMPACT_TEMPLATE_FOCUS_AREA_LIST,
-                ImpactTemplateFocusAreaList.TYPES, serviceNamespace);
+                ImpactTemplateFocusAreaList.TYPES);
         impactTemplateMaxFocusAreaResource = new RestResource1<>(
-                ImpactResource.IMPACT_TEMPLATE_MAX_FOCUS_AREA, ImpactTemplateMaxFocusArea.TYPES,
-                serviceNamespace);
-    }
-
-    public static ImpactClient fromService(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, ImpactClient::new);
+                ImpactResource.IMPACT_TEMPLATE_MAX_FOCUS_AREA, ImpactTemplateMaxFocusArea.TYPES);
     }
 
     public List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) {

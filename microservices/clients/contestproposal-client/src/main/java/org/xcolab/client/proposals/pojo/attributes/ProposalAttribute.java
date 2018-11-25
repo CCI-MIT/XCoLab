@@ -2,7 +2,6 @@ package org.xcolab.client.proposals.pojo.attributes;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -32,8 +31,7 @@ public class ProposalAttribute extends AbstractProposalAttribute {
         super(id, proposalid, version, name, additionalid, numericvalue, stringvalue, realvalue);
     }
 
-    public ProposalAttribute(AbstractProposalAttribute abstractProposalAttribute,
-            ServiceNamespace serviceNamespace) {
+    public ProposalAttribute(AbstractProposalAttribute abstractProposalAttribute) {
         super(abstractProposalAttribute);
     }
 }

@@ -2,7 +2,6 @@ package org.xcolab.client.proposals.pojo.phases;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class Proposal2Phase extends AbstractProposal2Phase {
         super(proposalid, contestphaseid, versionfrom, versionto, sortweight, autopromotecandidate);
     }
 
-    public Proposal2Phase(AbstractProposal2Phase abstractProposal2Phase, ServiceNamespace serviceNamespace) {
+    public Proposal2Phase(AbstractProposal2Phase abstractProposal2Phase) {
         super(abstractProposal2Phase);
     }
 }

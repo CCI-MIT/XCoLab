@@ -13,23 +13,17 @@ import java.util.List;
 
 public class ProposalTemplateClient {
 
-    private final static ProposalTemplateClient INSTANCE = new ProposalTemplateClient();
-
     private final RestResource1<ProposalTemplate, Long> proposalTemplateResource;
     private final RestResource1<ProposalTemplateSectionDefinition, Long> proposalTemplateSectionDefinitionResource;
     private final RestResource1<ProposalTemplateSection, Long> proposalTemplateSectionResource;
 
-    private ProposalTemplateClient() {
+    public ProposalTemplateClient() {
         proposalTemplateResource =
                 new RestResource1<>(ContestResource.PLAN_TEMPLATE, ProposalTemplate.TYPES);
         proposalTemplateSectionDefinitionResource = new RestResource1<>(
                 ContestResource.PLAN_SECTION_DEFINITION, ProposalTemplateSectionDefinition.TYPES);
         proposalTemplateSectionResource = new RestResource1<>(
                 ContestResource.PLAN_TEMPLATE_SECTION, ProposalTemplateSection.TYPES);
-    }
-
-    public static ProposalTemplateClient fromNamespace() {
-        return INSTANCE;
     }
 
     public ProposalTemplate getProposalTemplate(long id) {

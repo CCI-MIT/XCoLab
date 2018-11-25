@@ -2,7 +2,6 @@ package org.xcolab.client.contest.pojo.ontology;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -29,7 +28,7 @@ public class FocusArea extends AbstractFocusArea implements Serializable {
         super(id, name, order_);
     }
 
-    public FocusArea(AbstractFocusArea abstractFocusArea, ServiceNamespace serviceNamespace) {
+    public FocusArea(AbstractFocusArea abstractFocusArea) {
         super(abstractFocusArea);
     }
 

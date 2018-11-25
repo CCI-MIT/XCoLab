@@ -11,21 +11,16 @@ import org.xcolab.client.contest.resources.OntologyResource;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class OntologyClient {
-
-    private static final Map<ServiceNamespace, OntologyClient> instances = new HashMap<>();
 
     private final RestResource1<OntologySpace, Long> ontologySpaceResource;
 
@@ -39,7 +34,7 @@ public class OntologyClient {
 
     private final RestResource1<ImpactDefaultSeriesData, Long> impactDefaultSeriesDataResource;
 
-    private OntologyClient() {
+    public OntologyClient() {
         ontologySpaceResource = new RestResource1<>(OntologyResource.ONTOLOGY_SPACE,
                 OntologySpace.TYPES);
         ontologyTermResource = new RestResource1<>(OntologyResource.ONTOLOGY_TERM,
@@ -51,10 +46,6 @@ public class OntologyClient {
                 ImpactDefaultSeries.TYPES);
         impactDefaultSeriesDataResource = new RestResource1<>(
                 ImpactResource.IMPACT_DEFAULT_SERIES_DATA, ImpactDefaultSeriesData.TYPES);
-    }
-
-    public static OntologyClient fromService(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, k -> new OntologyClient());
     }
 
     public List<OntologySpace> getAllOntologySpaces() {

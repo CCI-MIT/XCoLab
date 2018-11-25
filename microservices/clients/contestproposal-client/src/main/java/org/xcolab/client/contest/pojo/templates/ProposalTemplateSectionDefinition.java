@@ -26,7 +26,6 @@ import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.net.URISyntaxException;
@@ -50,42 +49,23 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
 
     private final Proposal proposal;
 
-    private final ServiceNamespace serviceNamespace;
-
     public ProposalTemplateSectionDefinition() {
         proposal = null;
-        serviceNamespace = null;
     }
 
     public ProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition value) {
         super(value);
-        if(value.getServiceNamespace() != null){
-            serviceNamespace = value.getServiceNamespace();
-        }else{
-            serviceNamespace = null;
-        }
         proposal = null;
     }
 
     public ProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition value, Proposal proposal) {
         super(value);
-        if (value.getServiceNamespace() != null) {
-            serviceNamespace = value.getServiceNamespace();
-        } else {
-            if (proposal.getServiceNamespace() != null) {
-                serviceNamespace = proposal.getServiceNamespace();
-            } else {
-                serviceNamespace = null;
-            }
-        }
         this.proposal = proposal;
     }
     public ProposalTemplateSectionDefinition(
-            AbstractProposalTemplateSectionDefinition abstractProposalTemplateSectionDefinition,
-            ServiceNamespace serviceNamespace) {
+            AbstractProposalTemplateSectionDefinition abstractProposalTemplateSectionDefinition) {
         super(abstractProposalTemplateSectionDefinition);
         proposal = null;
-        this.serviceNamespace = serviceNamespace;
     }
 
     public List<Long> getAdditionalIdsAsList() {
@@ -350,10 +330,6 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
     public String getContestNamesPlural() {
         return ContestTypeClient
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "or");
-    }
-
-    public ServiceNamespace getServiceNamespace() {
-        return serviceNamespace;
     }
 
     private ProposalAttribute getSectionAttribute() {

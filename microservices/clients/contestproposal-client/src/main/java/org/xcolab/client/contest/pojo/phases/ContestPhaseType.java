@@ -4,7 +4,6 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -20,8 +19,7 @@ public class ContestPhaseType extends AbstractContestPhaseType {
         super(value);
     }
 
-    public ContestPhaseType(AbstractContestPhaseType abstractContestPhaseType,
-            ServiceNamespace serviceNamespace) {
+    public ContestPhaseType(AbstractContestPhaseType abstractContestPhaseType) {
         super(abstractContestPhaseType);
     }
 

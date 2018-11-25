@@ -2,7 +2,6 @@ package org.xcolab.client.proposals.pojo.evaluation.judges;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -29,8 +28,7 @@ public class ProposalRatingValue extends AbstractProposalRatingValue {
         super(id, ratingtypeid, value, name, description);
     }
 
-    public ProposalRatingValue(AbstractProposalRatingValue abstractProposalRatingValue,
-            ServiceNamespace serviceNamespace) {
+    public ProposalRatingValue(AbstractProposalRatingValue abstractProposalRatingValue) {
         super(abstractProposalRatingValue);
     }
 }

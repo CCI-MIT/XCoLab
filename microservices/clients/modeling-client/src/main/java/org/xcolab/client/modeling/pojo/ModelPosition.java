@@ -2,7 +2,6 @@ package org.xcolab.client.modeling.pojo;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -18,8 +17,7 @@ public class ModelPosition extends AbstractModelPosition {
         super(value);
     }
 
-    public ModelPosition(AbstractModelPosition modelPosition,
-            ServiceNamespace serviceNamespace) {
+    public ModelPosition(AbstractModelPosition modelPosition) {
         super(modelPosition);
     }
 }

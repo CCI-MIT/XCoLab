@@ -4,12 +4,9 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ThreadClient {
 
@@ -17,8 +14,6 @@ public class ThreadClient {
     private static final ThreadClient INSTANCE = new ThreadClient();
 
     private final CommentServiceWrapper commentServiceWrapper = new CommentServiceWrapper();
-
-    private static final Map<ServiceNamespace, ThreadClient> instances = new HashMap<>();
 
     public static ThreadClient instance() {
         return INSTANCE;
@@ -52,9 +47,5 @@ public class ThreadClient {
 
     public long getLastActivityauthorUserId(long threadId) {
         return commentServiceWrapper.getLastActivityauthorUserId(threadId, CacheName.MISC_REQUEST);
-    }
-
-    public static ThreadClient fromService(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, serviceNamespace1 -> new ThreadClient());
     }
 }

@@ -2,7 +2,6 @@ package org.xcolab.client.proposals.pojo.evaluation.members;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -19,8 +18,7 @@ public class ProposalVote extends AbstractProposalVote {
         super(value);
     }
 
-    public ProposalVote(AbstractProposalVote abstractProposalVote,
-            ServiceNamespace serviceNamespace) {
+    public ProposalVote(AbstractProposalVote abstractProposalVote) {
         super(abstractProposalVote);
     }
 }

@@ -3,7 +3,6 @@ package org.xcolab.client.proposals.pojo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
@@ -25,8 +24,8 @@ public class SupportedProposal extends Proposal {
     public SupportedProposal() {
     }
 
-    public SupportedProposal(SupportedProposal value, ServiceNamespace serviceNamespace) {
-        super(value, serviceNamespace);
+    public SupportedProposal(SupportedProposal value) {
+        super(value);
         this.supportDate = value.getSupportDate();
         this.supporterUserId = value.getSupporterUserId();
     }

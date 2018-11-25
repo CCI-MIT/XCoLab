@@ -29,7 +29,6 @@ import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
@@ -42,10 +41,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ContestClient {
-
-    private static final Map<ServiceNamespace, ContestClient> instances = new HashMap<>();
-
-    private final ServiceNamespace serviceNamespace;
 
     private final RestResource1<Contest, Long> contestResource;
     private final RestResource2<Contest, Long, Boolean, Long> tosAgreementResource;
@@ -62,30 +57,25 @@ public class ContestClient {
     private final RestResource1<ContestCollectionCard, Long> contestCollectionCardRestResource;
     private final RestResource<Long, Long> contestYearResource;
 
-    private ContestClient(ServiceNamespace serviceNamespace) {
-        this.serviceNamespace = serviceNamespace;
-        contestPhaseRibbonTypeResource = new RestResource1<>(ContestResource.CONTEST_PHASE_RIBBON_TYPE, ContestPhaseRibbonType.TYPES, serviceNamespace);
-        contestScheduleResource = new RestResource1<>(ContestResource.CONTEST_SCHEDULE, ContestSchedule.TYPES, serviceNamespace);
-        contestPhaseTypesResource = new RestResource1<>(ContestResource.CONTEST_PHASE_TYPE, ContestPhaseType.TYPES, serviceNamespace);
-        contestPhasesResource = new RestResource1<>(ContestResource.CONTEST_PHASE, ContestPhase.TYPES, serviceNamespace);
-        contestResource = new RestResource1<>(ContestResource.CONTEST, Contest.TYPES, serviceNamespace);
+    public ContestClient() {
+        contestPhaseRibbonTypeResource = new RestResource1<>(ContestResource.CONTEST_PHASE_RIBBON_TYPE, ContestPhaseRibbonType.TYPES);
+        contestScheduleResource = new RestResource1<>(ContestResource.CONTEST_SCHEDULE, ContestSchedule.TYPES);
+        contestPhaseTypesResource = new RestResource1<>(ContestResource.CONTEST_PHASE_TYPE, ContestPhaseType.TYPES);
+        contestPhasesResource = new RestResource1<>(ContestResource.CONTEST_PHASE, ContestPhase.TYPES);
+        contestResource = new RestResource1<>(ContestResource.CONTEST, Contest.TYPES);
         tosAgreementResource = contestResource.nestedResource("memberAgreedToTos", TypeProvider.BOOLEAN);
         visiblePhasesResource = new RestResource2L<>(
                 contestResource, "visiblePhases", ContestPhase.TYPES);
         contestCollectionCardRestResource =
-                new RestResource1<>(ContestResource.CONTEST_COLLECTION_CARDS, ContestCollectionCard.TYPES, serviceNamespace);
+                new RestResource1<>(ContestResource.CONTEST_COLLECTION_CARDS, ContestCollectionCard.TYPES);
         contestDiscussionResource =
-                new RestResource1<>(ContestResource.CONTEST_DISCUSSION, ContestDiscussion.TYPES, serviceNamespace);
+                new RestResource1<>(ContestResource.CONTEST_DISCUSSION, ContestDiscussion.TYPES);
 
-        contestYearResource = new RestResource1<>(ContestResource.CONTEST_YEAR, TypeProvider.LONG, serviceNamespace);
+        contestYearResource = new RestResource1<>(ContestResource.CONTEST_YEAR, TypeProvider.LONG);
         contestTranslationResource = new RestResource2<>(contestResource,
                 "translations", ContestTranslation.TYPES);
         proposalThreadsInPhaseResource = contestPhasesResource
                 .nestedResource("proposalDiscussionThreads", TypeProvider.LONG);
-    }
-
-    public static ContestClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, ContestClient::new);
     }
 
     public Contest getContest(long contestId) {
@@ -722,6 +712,6 @@ public class ContestClient {
 
     @Override
     public String toString() {
-        return "ContestClient[" + serviceNamespace + "]";
+        return "ContestClient[]";
     }
 }

@@ -12,25 +12,19 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class ProposalMemberRatingClient {
-
-    private static final Map<ServiceNamespace, ProposalMemberRatingClient> instances = new HashMap<>();
-
 
     private final RestResource1<ProposalSupporter, Long> proposalSupporterResource;
     private final RestResource<ProposalVote, Long> proposalVoteResource;
     private final RestResource<SupportedProposal, Long> supportedProposalsResource;
 
-    private ProposalMemberRatingClient() {
+    public ProposalMemberRatingClient() {
         proposalSupporterResource = new RestResource1<>(ProposalResource.PROPOSAL_SUPPORTER,
                 ProposalSupporter.TYPES);
         proposalVoteResource = new RestResource1<>(ProposalResource.PROPOSAL_VOTE,
@@ -38,11 +32,6 @@ public final class ProposalMemberRatingClient {
 
         supportedProposalsResource = new RestResource1<>(ProposalResource.SUPPORTED_PROPOSALS,
                  SupportedProposal.TYPES);
-    }
-
-    public static ProposalMemberRatingClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace,
-                serviceNamespace1 -> new ProposalMemberRatingClient());
     }
 
     public List<ProposalSupporter> getProposalSupporters(long proposalId) {

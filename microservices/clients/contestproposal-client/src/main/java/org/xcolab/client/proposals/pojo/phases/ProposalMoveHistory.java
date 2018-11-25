@@ -12,7 +12,6 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.proposal.MoveType;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
@@ -46,8 +45,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory {
                 targetcontestid, targetphaseid, movinguserid, movedate, movetype);
     }
 
-    public ProposalMoveHistory(AbstractProposalMoveHistory abstractProposalMoveHistory,
-            ServiceNamespace serviceNamespace) {
+    public ProposalMoveHistory(AbstractProposalMoveHistory abstractProposalMoveHistory) {
         super(abstractProposalMoveHistory);
     }
     public Proposal getSourceProposal() {

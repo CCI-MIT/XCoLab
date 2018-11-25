@@ -2,7 +2,6 @@ package org.xcolab.client.contest.pojo.impact;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -18,8 +17,7 @@ public class ImpactDefaultSeries extends AbstractImpactDefaultSeries {
         super(value);
     }
 
-    public ImpactDefaultSeries(AbstractImpactDefaultSeries abstractImpactDefaultSeries,
-            ServiceNamespace serviceNamespace) {
+    public ImpactDefaultSeries(AbstractImpactDefaultSeries abstractImpactDefaultSeries) {
         super(abstractImpactDefaultSeries);
     }
 }

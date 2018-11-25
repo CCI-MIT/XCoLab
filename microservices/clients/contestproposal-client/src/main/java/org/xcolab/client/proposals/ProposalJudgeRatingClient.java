@@ -6,33 +6,22 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class ProposalJudgeRatingClient {
-
-    private static final Map<ServiceNamespace, ProposalJudgeRatingClient> instances =
-            new HashMap<>();
 
     private final RestResource1<ProposalRating, Long> proposalRatingResource;
     private final RestResource1<ProposalRatingValue, Long> proposalRatingValueResource;
     private final RestResource1<ProposalRatingType, Long> proposalRatingTypeResource;
 
-    private ProposalJudgeRatingClient() {
+    public ProposalJudgeRatingClient() {
         proposalRatingResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING,
                 ProposalRating.TYPES);
         proposalRatingValueResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING_VALUE,
                 ProposalRatingValue.TYPES);
         proposalRatingTypeResource = new RestResource1<>(ProposalResource.PROPOSAL_RATING_TYPE,
                 ProposalRatingType.TYPES);
-    }
-
-    public static ProposalJudgeRatingClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace,
-                serviceNamespace1 -> new ProposalJudgeRatingClient());
     }
 
     public List<ProposalRating> getProposalRatingsByProposalUserContestPhase(Long proposalId,

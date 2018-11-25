@@ -2,7 +2,6 @@ package org.xcolab.client.contest.pojo.phases;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -19,8 +18,7 @@ public class ContestPhaseRibbonType extends AbstractContestPhaseRibbonType {
         super(value);
     }
 
-    public ContestPhaseRibbonType(AbstractContestPhaseRibbonType abstractContestPhaseRibbonType,
-            ServiceNamespace serviceNamespace) {
+    public ContestPhaseRibbonType(AbstractContestPhaseRibbonType abstractContestPhaseRibbonType) {
         super(abstractContestPhaseRibbonType);
     }
 }

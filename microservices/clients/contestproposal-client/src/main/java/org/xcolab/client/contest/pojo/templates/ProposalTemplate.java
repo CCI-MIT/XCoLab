@@ -2,7 +2,6 @@ package org.xcolab.client.contest.pojo.templates;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -18,8 +17,7 @@ public class ProposalTemplate extends AbstractProposalTemplate {
         super(value);
     }
 
-    public ProposalTemplate(AbstractProposalTemplate abstractProposalTemplate,
-            ServiceNamespace serviceNamespace) {
+    public ProposalTemplate(AbstractProposalTemplate abstractProposalTemplate) {
         super(abstractProposalTemplate);
     }
 }

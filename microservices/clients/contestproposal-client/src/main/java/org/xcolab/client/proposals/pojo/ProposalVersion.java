@@ -4,7 +4,6 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
@@ -33,10 +32,9 @@ public class ProposalVersion extends AbstractProposalVersion {
         proposalPhaseClient = ProposalPhaseClientUtil.getClient();
     }
 
-    public ProposalVersion(AbstractProposalVersion abstractProposalVersion,
-            ServiceNamespace serviceNamespace) {
+    public ProposalVersion(AbstractProposalVersion abstractProposalVersion) {
         super(abstractProposalVersion);
-        proposalPhaseClient = ProposalPhaseClient.fromNamespace(serviceNamespace);
+        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
     }
 
     public long getContestPhaseId() {

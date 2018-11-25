@@ -2,7 +2,6 @@ package org.xcolab.client.contest.pojo.ontology;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -23,8 +22,7 @@ public class FocusAreaOntologyTerm extends AbstractFocusAreaOntologyTerm {
         super(focusareaid, ontologytermid, order_);
     }
 
-    public FocusAreaOntologyTerm(AbstractFocusAreaOntologyTerm abstractFocusAreaOntologyTerm,
-            ServiceNamespace serviceNamespace) {
+    public FocusAreaOntologyTerm(AbstractFocusAreaOntologyTerm abstractFocusAreaOntologyTerm) {
         super(abstractFocusAreaOntologyTerm);
     }
 }

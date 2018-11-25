@@ -6,7 +6,6 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -27,8 +26,7 @@ public class ProposalTeamMembershipRequest extends AbstractProposalTeamMembershi
     }
 
     public ProposalTeamMembershipRequest(
-            AbstractProposalTeamMembershipRequest abstractMembershipRequest,
-            ServiceNamespace serviceNamespace) {
+            AbstractProposalTeamMembershipRequest abstractMembershipRequest) {
         super(abstractMembershipRequest);
 
     }

@@ -2,7 +2,6 @@ package org.xcolab.client.modeling.pojo;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class ModelCategory extends AbstractModelCategory {
         super(value);
     }
 
-    public ModelCategory(AbstractModelCategory modelCategory, ServiceNamespace serviceNamespace) {
+    public ModelCategory(AbstractModelCategory modelCategory) {
         super(modelCategory);
     }
 }

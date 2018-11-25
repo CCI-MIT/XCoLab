@@ -5,6 +5,7 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -22,18 +23,13 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class ProposalClient {
-
-    private static final Map<ServiceNamespace, ProposalClient> instances = new HashMap<>();
 
     private final RestResource<Proposal, Long> proposalResource;
     private final RestResource<Long, Long> proposalThreadIdResource;
@@ -46,11 +42,10 @@ public final class ProposalClient {
 
     private final ActivitiesClient activitiesClient;
 
-    private ProposalClient(ServiceNamespace serviceNamespace) {
+    public ProposalClient() {
 
         proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, Proposal.TYPES);
-        proposalIdResource = new RestResource1<>(ProposalResource.PROPOSAL_ID, TypeProvider.LONG,
-                serviceNamespace);
+        proposalIdResource = new RestResource1<>(ProposalResource.PROPOSAL_ID, TypeProvider.LONG);
         proposalThreadIdResource = new RestResource1<>(ProposalResource.PROPOSAL_THREAD_ID,
                 TypeProvider.LONG);
         proposalVersionResource = new RestResource1<>(ProposalResource.PROPOSAL_VERSION,
@@ -58,13 +53,8 @@ public final class ProposalClient {
         proposalReferenceResource = new RestResource1<>(ProposalResource.PROPOSAL_REFERENCE,
                 ProposalReference.TYPES);
 
-        contestClient = ContestClient.fromNamespace(serviceNamespace);
-        activitiesClient = ActivitiesClient.fromNamespace(serviceNamespace);
-    }
-
-    public static ProposalClient fromNamespace(ServiceNamespace proposalService) {
-        return instances
-                .computeIfAbsent(proposalService, k -> new ProposalClient(proposalService));
+        contestClient = ContestClientUtil.getClient();
+        activitiesClient = ActivitiesClientUtil.getClient();
     }
 
     public Proposal createProposal(Proposal proposal) {

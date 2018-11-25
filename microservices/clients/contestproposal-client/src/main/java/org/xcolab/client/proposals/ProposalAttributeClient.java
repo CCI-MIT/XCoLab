@@ -13,17 +13,12 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class ProposalAttributeClient {
-
-    private static final Map<ServiceNamespace, ProposalAttributeClient> instances = new HashMap<>();
 
     private final RestResource1<ProposalAttribute, Long> proposalAttributeResource;
     private final RestResource1<ProposalUnversionedAttribute, Long>
@@ -42,11 +37,6 @@ public final class ProposalAttributeClient {
         proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, Proposal.TYPES);
         this.proposalVersionResource = new RestResource2L<>(proposalResource,
                 "versions", ProposalVersion.TYPES);
-    }
-
-    public static ProposalAttributeClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace,
-                serviceNamespace1 -> new ProposalAttributeClient());
     }
 
     public ProposalAttribute createProposalAttribute(ProposalAttribute proposalAttribute) {

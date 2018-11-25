@@ -12,17 +12,12 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class ProposalPhaseClient {
-
-    private static final Map<ServiceNamespace, ProposalPhaseClient> instances = new HashMap<>();
 
     private final RestResource<Proposal2Phase, Long> proposal2PhaseResource;
     private final RestResource<ProposalContestPhaseAttribute, Long>
@@ -30,7 +25,7 @@ public final class ProposalPhaseClient {
     private final RestResource1<Proposal, Long> proposalResource;
     private final RestResource2L<Proposal, Long> proposalPhaseIdResource;
 
-    private ProposalPhaseClient() {
+    public ProposalPhaseClient() {
         proposal2PhaseResource = new RestResource1<>(ProposalResource.PROPOSAL_2_PHASE,
                 Proposal2Phase.TYPES);
         proposalContestPhaseAttributeResource = new RestResource1<>(
@@ -40,11 +35,6 @@ public final class ProposalPhaseClient {
 
         proposalPhaseIdResource = new RestResource2L<>(proposalResource, "phaseIds",
                 TypeProvider.LONG);
-    }
-
-    public static ProposalPhaseClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace,
-                serviceNamespace1 -> new ProposalPhaseClient());
     }
 
     public void invalidateProposal2PhaseCache(long proposalId, long contestPhaseId) {

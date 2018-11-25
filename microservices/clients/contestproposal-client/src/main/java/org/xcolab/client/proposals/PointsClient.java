@@ -6,16 +6,11 @@ import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class PointsClient {
-
-    private static final Map<ServiceNamespace, PointsClient> instances = new HashMap<>();
 
     private final RestResource1<PointsDistributionConfiguration, Long>
             pointsDistributionConfigurationResource;
@@ -26,10 +21,6 @@ public final class PointsClient {
                 ContestResource.POINTS_DISTRIBUTION_CONFIGURATION,
                 PointsDistributionConfiguration.TYPES);
         pointTypeResource = new RestResource1<>(ContestResource.POINT_TYPE, PointType.TYPES);
-    }
-
-    public static PointsClient fromNamespace(ServiceNamespace proposalService) {
-        return instances.computeIfAbsent(proposalService, serviceNamespace -> new PointsClient());
     }
 
     public PointsDistributionConfiguration createPointsDistributionConfiguration(

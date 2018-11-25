@@ -2,8 +2,6 @@ package org.xcolab.client.contest.pojo.ontology;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.ArrayList;
@@ -20,8 +18,7 @@ public class OntologySpace extends AbstractOntologySpace {
         super(value);
     }
 
-    public OntologySpace(AbstractOntologySpace abstractOntologySpace,
-            ServiceNamespace serviceNamespace) {
+    public OntologySpace(AbstractOntologySpace abstractOntologySpace) {
         super(abstractOntologySpace);
     }
 

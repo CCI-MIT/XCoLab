@@ -5,7 +5,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class PointType extends AbstractPointType {
         initChildren();
     }
 
-    public PointType(AbstractPointType abstractPointType, ServiceNamespace serviceNamespace) {
+    public PointType(AbstractPointType abstractPointType) {
         super(abstractPointType);
         initChildren();
     }

@@ -2,7 +2,6 @@ package org.xcolab.client.proposals.pojo.points;
 
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
@@ -36,8 +35,7 @@ public class PointsDistributionConfiguration extends AbstractPointsDistributionC
     }
 
     public PointsDistributionConfiguration(
-            AbstractPointsDistributionConfiguration abstractPointsDistributionConfiguration,
-            ServiceNamespace serviceNamespace) {
+            AbstractPointsDistributionConfiguration abstractPointsDistributionConfiguration) {
         super(abstractPointsDistributionConfiguration);
     }
 }
