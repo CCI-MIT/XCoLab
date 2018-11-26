@@ -1,6 +1,9 @@
 package org.xcolab.client.comment.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.comment.CategoryClient;
@@ -14,11 +17,14 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.time.DurationFormatter;
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-public class CommentThread extends AbstractCommentThread {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class CommentThread extends AbstractCommentThread implements Serializable {
 
     public static final TypeProvider<CommentThread> TYPES = new TypeProvider<>(CommentThread.class,
                     new ParameterizedTypeReference<List<CommentThread>>() {});

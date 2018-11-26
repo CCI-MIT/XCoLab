@@ -1,13 +1,19 @@
 package org.xcolab.client.proposals.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ProposalTeamMember {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ProposalTeamMember implements Serializable {
 
     public static final TypeProvider<ProposalTeamMember> TYPES =
             new TypeProvider<>(ProposalTeamMember.class,

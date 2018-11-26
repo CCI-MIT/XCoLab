@@ -1,6 +1,9 @@
 package org.xcolab.client.activities.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -13,6 +16,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class ActivityEntry implements Serializable {
 
     public static final TypeProvider<ActivityEntry> TYPES = new TypeProvider<>(ActivityEntry.class,

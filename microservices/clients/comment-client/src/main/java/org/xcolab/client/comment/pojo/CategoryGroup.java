@@ -1,6 +1,9 @@
 package org.xcolab.client.comment.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.comment.CategoryClient;
@@ -8,9 +11,12 @@ import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CategoryGroup extends AbstractCategoryGroup {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class CategoryGroup extends AbstractCategoryGroup implements Serializable {
 
     public static final TypeProvider<CategoryGroup> TYPES = new TypeProvider<>(CategoryGroup.class,
                     new ParameterizedTypeReference<List<CategoryGroup>>() {});

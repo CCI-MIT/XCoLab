@@ -1,5 +1,8 @@
 package org.xcolab.client.proposals.pojo.proposals;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.util.Assert;
 
 import org.xcolab.client.contest.ContestClient;
@@ -12,8 +15,11 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
+import java.io.Serializable;
 
-public class ProposalRibbon {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ProposalRibbon implements Serializable {
 
     private final ContestPhaseRibbonType contestPhaseRibbonType;
 

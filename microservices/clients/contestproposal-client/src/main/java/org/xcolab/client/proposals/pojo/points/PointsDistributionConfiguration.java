@@ -1,13 +1,20 @@
 package org.xcolab.client.proposals.pojo.points;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class PointsDistributionConfiguration extends AbstractPointsDistributionConfiguration {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class PointsDistributionConfiguration extends AbstractPointsDistributionConfiguration
+        implements Serializable {
 
     public static final TypeProvider<PointsDistributionConfiguration> TYPES =
             new TypeProvider<>(PointsDistributionConfiguration.class,

@@ -1,13 +1,19 @@
 package org.xcolab.client.contest.pojo.ontology;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OntologySpace extends AbstractOntologySpace {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class OntologySpace extends AbstractOntologySpace implements Serializable {
 
     public static final TypeProvider<OntologySpace> TYPES = new TypeProvider<>(OntologySpace.class,
             new ParameterizedTypeReference<List<OntologySpace>>() {});

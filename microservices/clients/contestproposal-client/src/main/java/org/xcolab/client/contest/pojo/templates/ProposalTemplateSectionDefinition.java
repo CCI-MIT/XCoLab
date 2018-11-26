@@ -1,5 +1,8 @@
 package org.xcolab.client.contest.pojo.templates;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -28,6 +31,7 @@ import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -39,7 +43,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateSectionDefinition {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateSectionDefinition
+        implements Serializable {
 
     public static final TypeProvider<ProposalTemplateSectionDefinition> TYPES =
             new TypeProvider<>(ProposalTemplateSectionDefinition.class,

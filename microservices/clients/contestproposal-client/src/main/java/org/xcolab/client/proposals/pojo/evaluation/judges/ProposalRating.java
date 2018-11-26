@@ -1,15 +1,21 @@
 package org.xcolab.client.proposals.pojo.evaluation.judges;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class ProposalRating extends AbstractProposalRating {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ProposalRating extends AbstractProposalRating implements Serializable {
 
     public static final TypeProvider<ProposalRating> TYPES =
             new TypeProvider<>(ProposalRating.class,
