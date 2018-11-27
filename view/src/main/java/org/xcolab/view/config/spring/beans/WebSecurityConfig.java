@@ -90,7 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             }
             if (guestAccessProperties.isAlwaysAllowContentPages()) {
                 httpSecurity.authorizeRequests()
-                        .antMatchers("/pages/**").permitAll();
+                        .antMatchers("/page/**").permitAll();
             }
             httpSecurity.authorizeRequests()
                     .antMatchers("/images/**").permitAll()
