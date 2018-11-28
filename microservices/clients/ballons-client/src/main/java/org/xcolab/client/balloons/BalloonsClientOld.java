@@ -12,7 +12,7 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
-public final class BalloonsClient {
+public final class BalloonsClientOld {
 
     private static final RestResource<BalloonLink, String> balloonLinkResource = new RestResource1<>(
             BalloonResource.BALLOON_LINK, BalloonLink.TYPES);

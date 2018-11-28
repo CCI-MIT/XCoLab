@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
@@ -31,6 +30,8 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreference;
+import org.xcolab.client.tracking.IBalloonClient;
+import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
@@ -74,15 +75,17 @@ public class UserProfileController {
     private final BalloonService balloonService;
 
     private final SmartValidator validator;
+    private final IBalloonClient balloonClient;
 
     @Autowired
     public UserProfileController(ActivityEntryHelper activityEntryHelper,
             AuthenticationService authenticationService, BalloonService balloonService,
-            SmartValidator validator) {
+            SmartValidator validator, IBalloonClient balloonClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.authenticationService = authenticationService;
         this.balloonService = balloonService;
         this.validator = validator;
+        this.balloonClient = balloonClient;
     }
 
     @InitBinder("userBean")
@@ -119,11 +122,11 @@ public class UserProfileController {
             if (isSnpActive && currentUserProfile.isViewingOwnProfile()) {
                 String consentFormText = ConfigurationAttributeKey.SNP_CONSENT_FORM_TEXT.get();
                 model.addAttribute("consentFormText", consentFormText);
-                final Optional<BalloonUserTracking> butOpt = balloonService
+                final Optional<IBalloonUserTracking> butOpt = balloonService
                         .getBalloonUserTracking(request, response);
                 if (butOpt.isPresent()) {
-                    model.addAttribute("balloonLink", butOpt.get().getBalloonLink());
-                    model.addAttribute("balloonText", butOpt.get().getBalloonText());
+                    model.addAttribute("balloonLink", balloonClient.getLinkByBalloonUserTrackingUuid(butOpt.get().getUuid()));
+                    model.addAttribute("balloonText", balloonClient.getBalloonText(butOpt.get().getBalloonTextId()));
                 }
             }
             model.addAttribute("pointsActive", ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());

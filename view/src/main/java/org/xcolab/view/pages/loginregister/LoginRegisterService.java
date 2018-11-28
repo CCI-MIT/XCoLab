@@ -9,13 +9,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.balloons.BalloonsClient;
-import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
-import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.tracking.IBalloonClient;
+import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
@@ -41,10 +40,12 @@ public class LoginRegisterService {
     private static final Logger _log = LoggerFactory.getLogger(LoginRegisterService.class);
 
     private final AuthenticationService authenticationService;
+    private final IBalloonClient balloonClient;
 
     @Autowired
-    public LoginRegisterService(AuthenticationService authenticationService) {
+    public LoginRegisterService(AuthenticationService authenticationService, IBalloonClient balloonClient) {
         this.authenticationService = authenticationService;
+        this.balloonClient = balloonClient;
     }
 
     /**
@@ -94,22 +95,28 @@ public class LoginRegisterService {
         Optional<BalloonCookie> balloonCookieOpt = BalloonCookie.from(request.getCookies());
         if (balloonCookieOpt.isPresent()) {
             BalloonCookie balloonCookie = balloonCookieOpt.get();
-            try {
-                BalloonUserTracking but =
-                        BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
+            IBalloonUserTracking but = balloonClient.getBalloonUserTracking(balloonCookie.getUuid());
+            if(but != null) {
                 if (but.getUserId() == null) {
                     but.setRegistrationDate(new Timestamp(new Date().getTime()));
                     but.setUserId(member.getId());
-                    BalloonsClient.updateBalloonUserTracking(but);
+                    //TODO: uuid not used
+                    balloonClient.updateBalloonUserTracking(but, member.getUuid());
                 }
-            } catch (BalloonUserTrackingNotFoundException e) {
+            } else {
                 _log.error("Can't find balloon user tracking for uuid: {}",
                         balloonCookie.getUuid());
             }
         }
         //update user association for all BUTs under this email address
-        BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress()).forEach(
-                b -> b.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress()));
+        balloonClient.listBalloonUserTrackings(member.getEmailAddress(), null).forEach(
+                but -> {
+                    but.setEmail(member.getEmailAddress());
+                    but.setUserId(member.getId());
+                    balloonClient.updateBalloonUserTracking(but, Long.toString(member.getId()));
+                    //TODO: check with Carlos/Johannes
+//                    b.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
+                });
     }
 
     public void recordRegistrationEvent(Member member) {
