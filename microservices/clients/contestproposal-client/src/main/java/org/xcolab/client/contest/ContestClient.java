@@ -11,6 +11,7 @@ import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ContestDiscussion;
+import org.xcolab.client.contest.pojo.ContestDto;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestTranslation;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -42,12 +43,12 @@ import java.util.Map;
 
 public class ContestClient {
 
-    private final RestResource1<Contest, Long> contestResource;
-    private final RestResource2<Contest, Long, Boolean, Long> tosAgreementResource;
-    private final RestResource2<Contest, Long, ContestTranslation, String> contestTranslationResource;
+    private final RestResource1<ContestDto, Long> contestResource;
+    private final RestResource2<ContestDto, Long, Boolean, Long> tosAgreementResource;
+    private final RestResource2<ContestDto, Long, ContestTranslation, String> contestTranslationResource;
     private final RestResource<ContestDiscussion, Long> contestDiscussionResource;
 
-    private final RestResource2L<Contest, ContestPhase> visiblePhasesResource;
+    private final RestResource2L<ContestDto, ContestPhase> visiblePhasesResource;
     private final RestResource2<ContestPhase, Long, Long, Void> proposalThreadsInPhaseResource;
     private final RestResource1<ContestPhase, Long> contestPhasesResource;
     private final RestResource<ContestPhaseType, Long> contestPhaseTypesResource;
@@ -62,7 +63,7 @@ public class ContestClient {
         contestScheduleResource = new RestResource1<>(ContestResource.CONTEST_SCHEDULE, ContestSchedule.TYPES);
         contestPhaseTypesResource = new RestResource1<>(ContestResource.CONTEST_PHASE_TYPE, ContestPhaseType.TYPES);
         contestPhasesResource = new RestResource1<>(ContestResource.CONTEST_PHASE, ContestPhase.TYPES);
-        contestResource = new RestResource1<>(ContestResource.CONTEST, Contest.TYPES);
+        contestResource = new RestResource1<>(ContestResource.CONTEST, ContestDto.TYPES);
         tosAgreementResource = contestResource.nestedResource("memberAgreedToTos", TypeProvider.BOOLEAN);
         visiblePhasesResource = new RestResource2L<>(
                 contestResource, "visiblePhases", ContestPhase.TYPES);
@@ -88,7 +89,7 @@ public class ContestClient {
             return contestResource.get(contestId)
                     .optionalQueryParam("lang", lang)
                     .withCache(CacheName.CONTEST_DETAILS)
-                    .executeChecked();
+                    .executeChecked().toContest();
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
         }
@@ -137,8 +138,8 @@ public class ContestClient {
     }
 
     public Contest createContest(Contest contest) {
-        final Contest result =
-                contestResource.create(new Contest(contest)).execute();
+        final Contest result = contestResource
+                .create(new ContestDto(contest)).execute().toContest();
         //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
         ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
@@ -155,14 +156,14 @@ public class ContestClient {
     }
 
     public List<Contest> getContestsMatchingTier(Long contestTier) {
-        return contestResource.list()
+        return ContestDto.toContests(contestResource.list()
                 .queryParam("contestTiers", contestTier)
-                .queryParam("limitRecord", Integer.MAX_VALUE).execute();
+                .queryParam("limitRecord", Integer.MAX_VALUE).execute());
     }
 
     public boolean updateContest(Contest contest) {
         final Boolean result =
-                contestResource.update(new Contest(contest), contest.getId())
+                contestResource.update(new ContestDto(contest), contest.getId())
                         .execute();
         //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
@@ -203,14 +204,14 @@ public class ContestClient {
 
     public Contest getContest(String contestUrlName, long contestYear, String lang)
             throws ContestNotFoundException {
-        List<Contest> list = contestResource.list()
+        List<ContestDto> list = contestResource.list()
                 .queryParam("contestUrlName", contestUrlName)
                 .queryParam("contestYear", contestYear)
                 .optionalQueryParam("lang", lang)
                 .withCache(CacheName.CONTEST_DETAILS)
                 .execute();
         if (list != null && !list.isEmpty()) {
-            return list.get(0);
+            return list.get(0).toContest();
         }
         throw new ContestNotFoundException(contestUrlName, contestYear);
     }
@@ -240,27 +241,27 @@ public class ContestClient {
     }
     public List<Contest> findContestsByActiveFeatured(Boolean active, Boolean featured) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource.list()
+        return ContestDto.toContests(contestResource.list()
                 .optionalQueryParam("active", active)
                 .optionalQueryParam("featured", featured)
                 .queryParam("lang", lang)
                 .withCache(CacheName.CONTEST_LIST)
-                .execute();
+                .execute());
     }
 
     public List<Contest> findContestsByActive(boolean active) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource.list()
+        return ContestDto.toContests(contestResource.list()
                 .queryParam("lang", lang)
                 .optionalQueryParam("active", active)
                 .withCache(CacheName.CONTEST_LIST)
-                .execute();
+                .execute());
     }
 
     public List<Contest> findPublicContests(String contestName,
             List<Long> ontologyTermIds, List<Long> contestTypeIds, List<Long> contestTiers) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource.list()
+        return ContestDto.toContests(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("lang", lang)
                 .optionalQueryParam("searchTerm", contestName)
@@ -269,26 +270,26 @@ public class ContestClient {
                 .optionalQueryParam("contestTiers",  contestTiers)
                 .queryParam("contestPrivate", false)
                 .withCache(CacheName.CONTEST_LIST)
-                .execute();
+                .execute());
     }
 
     public List<Contest> findContestsByTierAndOntologyTermIds(Long contestTier,
             List<Long> focusAreaOntologyTerms) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource.list()
+        return ContestDto.toContests(contestResource.list()
                 .queryParam("lang", lang)
                 .queryParam("contestTiers", contestTier)
                 .queryParam("focusAreaIds", focusAreaOntologyTerms.toArray())
                 .withCache(CacheName.CONTEST_LIST)
-                .execute();
+                .execute());
     }
 
     //TODO COLAB-2595: Confusing Variable naming
     public List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
-        return contestResource
-                .collectionService("getContestsByOntologyTerm", Contest.TYPES.getTypeReference())
+        return ContestDto.toContests(contestResource
+                .collectionService("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
                 .queryParam("focusAreaIds", ontologyTermIds.toArray())
-                .getList();
+                .getList());
     }
 
     public List<Long> getContestYears() {
@@ -354,11 +355,11 @@ public class ContestClient {
     }
 
     public List<Contest> getContestByOntologyTerm(Long ontologyTermId, Boolean getActive) {
-        return contestResource
-                .collectionService("getContestsByOntologyTerm", Contest.TYPES.getTypeReference())
+        return ContestDto.toContests(contestResource
+                .collectionService("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
                 .queryParam("focusAreaOntologyTerm", ontologyTermId)
                 .queryParam("getActive", getActive)
-                .getList();
+                .getList());
     }
 
     public int getNumberOfContestsByOntologyTerm(Long ontologyTermId) {
@@ -368,10 +369,10 @@ public class ContestClient {
     }
 
     public List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
-        return contestResource.elementService(contestId, "getSubContestsByOntologySpaceId",
-                Contest.TYPES.getTypeReference())
+        return ContestDto.toContests(contestResource.elementService(contestId, "getSubContestsByOntologySpaceId",
+                ContestDto.TYPES.getTypeReference())
                 .optionalQueryParam("ontologySpaceId", ontologySpaceId)
-                .getList();
+                .getList());
 
     }
 
@@ -389,23 +390,23 @@ public class ContestClient {
 
     public List<Contest> getAllContests() {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource.list()
+        return ContestDto.toContests(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("lang", lang)
                 .queryParam("sort", "weight")
                 .withCache(CacheName.CONTEST_LIST)
-                .execute();
+                .execute());
     }
 
     public List<Contest> getAllContestsInYear(Integer contestYear) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource.list()
+        return ContestDto.toContests(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("lang", lang)
                 .queryParam("contestYear",contestYear)
                 .queryParam("sort", "ContestShortName")
                 .withCache(CacheName.CONTEST_LIST)
-                .execute();
+                .execute());
     }
 
     public Map<Long, String> getModelIdsAndNames(long contestId) {
@@ -443,44 +444,44 @@ public class ContestClient {
 
     public List<Contest> getContestsByProposalTemplateId(Long proposalTemplateId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource
+        return ContestDto.toContests(contestResource
                 .list()
                 .queryParam("lang", lang)
                 .queryParam("proposalTemplateId", proposalTemplateId)
-                .execute();
+                .execute());
     }
 
     public List<Contest> getContestsByContestScheduleId(Long contestScheduleId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource
+        return ContestDto.toContests(contestResource
                 .list()
                 .queryParam("lang", lang)
                 .queryParam("contestScheduleId", contestScheduleId)
-                .execute();
+                .execute());
     }
 
     public List<Contest> getContestsByActivePrivate(boolean contestActive, boolean contestPrivate) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource
+        return ContestDto.toContests(contestResource
                 .list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("lang", lang)
                 .queryParam("active", contestActive)
                 .queryParam("contestPrivate", contestPrivate)
-                .execute();
+                .execute());
     }
 
 
     public List<Contest> getContests(Boolean contestActive,
             Boolean contestPrivate, Long contestTypeId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource.list()
+        return ContestDto.toContests(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("lang", lang)
                 .optionalQueryParam("active", contestActive)
                 .optionalQueryParam("contestPrivate", contestPrivate)
                 .optionalQueryParam("contestTypeIds", contestTypeId)
-                .execute();
+                .execute());
     }
 
     public int countContests(Boolean contestActive, Boolean contestPrivate, Long contestTypeId) {
@@ -494,12 +495,12 @@ public class ContestClient {
 
     public List<Contest> getContestsByContestTypeId(Long contestTypeId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource
+        return ContestDto.toContests(contestResource
                 .list()
                 .queryParam("lang", lang)
                 .queryParam("contestTypeIds", contestTypeId)
                 .queryParam("limitRecord", Integer.MAX_VALUE)
-                .execute();
+                .execute());
     }
 
     public ContestSchedule createContestSchedule(ContestSchedule contestSchedule) {
@@ -640,11 +641,11 @@ public class ContestClient {
 
     public List<Contest> getContestsByContestType(Long contestTypeId) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
-        return contestResource.list()
+        return ContestDto.toContests(contestResource.list()
                 .queryParam("contestTypeIds", contestTypeId)
                 .queryParam("lang", lang)
                 .withCache(CacheName.CONTEST_LIST)
-                .execute();
+                .execute());
     }
 
     public int countContestsByContestType(long contestTypeId) {

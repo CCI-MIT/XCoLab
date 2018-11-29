@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -43,7 +42,6 @@ import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.time.DateUtil;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.Serializable;
@@ -61,9 +59,6 @@ import java.util.TreeMap;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class Contest extends AbstractContest implements Serializable {
-
-    public static final TypeProvider<Contest> TYPES = new TypeProvider<>(Contest.class,
-            new ParameterizedTypeReference<List<Contest>>() {});
 
     private static final long serialVersionUID = 1L;
 
