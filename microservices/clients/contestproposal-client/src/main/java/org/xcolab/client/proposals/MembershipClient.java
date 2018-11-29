@@ -6,6 +6,7 @@ import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -25,15 +26,15 @@ import java.util.List;
 
 public class MembershipClient {
 
-    private final RestResource1<Proposal, Long> proposalResource;
+    private final RestResource1<ProposalDto, Long> proposalResource;
 
     private final RestResource1<ProposalTeamMembershipRequest, Long> membershipRequestResource;
-    private final RestResource2<Proposal, Long, Long, Long> proposalTeamMemberResource;
+    private final RestResource2<ProposalDto, Long, Long, Long> proposalTeamMemberResource;
 
     private final ProposalClient proposalClient;
 
     public MembershipClient() {
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, Proposal.TYPES);
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
         membershipRequestResource = new RestResource1<>(ProposalResource.MEMBERSHIP_REQUEST,
                 ProposalTeamMembershipRequest.TYPES);
         proposalClient = ProposalClientUtil.getClient();

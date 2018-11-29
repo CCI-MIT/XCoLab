@@ -3,6 +3,7 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeHelperDataDto;
@@ -24,8 +25,8 @@ public final class ProposalAttributeClient {
     private final RestResource1<ProposalUnversionedAttribute, Long>
             proposalUnversionedAttributeResource;
 
-    private final RestResource1<Proposal, Long> proposalResource;
-    private final RestResource2L<Proposal, ProposalVersion> proposalVersionResource;
+    private final RestResource1<ProposalDto, Long> proposalResource;
+    private final RestResource2L<ProposalDto, ProposalVersion> proposalVersionResource;
 
     public ProposalAttributeClient() {
         proposalAttributeResource = new RestResource1<>(ProposalResource.PROPOSAL_ATTRIBUTE,
@@ -34,7 +35,7 @@ public final class ProposalAttributeClient {
                 ProposalResource.PROPOSAL_UNVERSIONED_ATTRIBUTE,
                 ProposalUnversionedAttribute.TYPES);
 
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, Proposal.TYPES);
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
         this.proposalVersionResource = new RestResource2L<>(proposalResource,
                 "versions", ProposalVersion.TYPES);
     }
@@ -49,24 +50,25 @@ public final class ProposalAttributeClient {
                 proposalAttributeResource.list()
                         .queryParam("proposalId", proposalId)
                         .queryParam("name", name);
-        if (additionalId != null && additionalId != 0) {
-            listQ = listQ.queryParam("additionalId", additionalId);
-        }
-        final ProposalAttribute firstOrNull = listQ.executeWithResult().getFirstIfExists();
-        return firstOrNull != null ? firstOrNull : null;
+        return getProposalAttributeFromListQuery(listQ, additionalId);
     }
 
-    public ProposalAttribute getProposalAttribute(long proposalId, long version, String name, Long additionalId) {
-        ListQuery<ProposalAttribute> listQ =
+    public ProposalAttribute getProposalAttribute(long proposalId, long version, String name,
+            Long additionalId) {
+        ListQuery<ProposalAttribute> listQuery =
                 proposalAttributeResource.list()
                         .queryParam("proposalId", proposalId)
                         .queryParam("name", name)
                         .queryParam("version", version);
+        return getProposalAttributeFromListQuery(listQuery, additionalId);
+    }
+
+    private ProposalAttribute getProposalAttributeFromListQuery(
+            ListQuery<ProposalAttribute> listQuery, Long additionalId) {
         if (additionalId != null && additionalId != 0) {
-            listQ = listQ.queryParam("additionalId", additionalId);
+            listQuery = listQuery.queryParam("additionalId", additionalId);
         }
-        final ProposalAttribute firstOrNull = listQ.executeWithResult().getFirstIfExists();
-        return firstOrNull != null ? firstOrNull : null;
+        return listQuery.executeWithResult().getFirstIfExists();
     }
 
     public ProposalAttribute getProposalAttribute(long id)

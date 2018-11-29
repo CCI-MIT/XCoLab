@@ -13,6 +13,7 @@ import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
@@ -31,7 +32,7 @@ import java.util.List;
 
 public final class ProposalClient {
 
-    private final RestResource<Proposal, Long> proposalResource;
+    private final RestResource<ProposalDto, Long> proposalResource;
     private final RestResource<Long, Long> proposalThreadIdResource;
     private final RestResource<Long, Long> proposalIdResource;
     private final RestResource1<ProposalVersion, Long> proposalVersionResource;
@@ -44,7 +45,7 @@ public final class ProposalClient {
 
     public ProposalClient() {
 
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, Proposal.TYPES);
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
         proposalIdResource = new RestResource1<>(ProposalResource.PROPOSAL_ID, TypeProvider.LONG);
         proposalThreadIdResource = new RestResource1<>(ProposalResource.PROPOSAL_THREAD_ID,
                 TypeProvider.LONG);
@@ -59,8 +60,8 @@ public final class ProposalClient {
 
     public Proposal createProposal(Proposal proposal) {
         return proposalResource
-                .create(new Proposal(proposal))
-                .execute();
+                .create(new ProposalDto(proposal))
+                .execute().toProposal();
     }
 
     public List<Proposal> listProposals(long contestId) {
@@ -74,30 +75,30 @@ public final class ProposalClient {
     }
 
     public List<Proposal> listProposalsInActiveContests() {
-        return proposalResource.list()
+        return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("visible", true)
                 .queryParam("contestPrivate", false)
                 .queryParam("contestActive", true)
                 .withCache(CacheName.PROPOSAL_LIST)
-                .execute();
+                .execute());
     }
 
     public List<Proposal> listProposalsInCompletedContests(List<Integer> ribbons) {
-        return proposalResource.list()
+        return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("visible", true)
                 .queryParam("contestPrivate", false)
                 .queryParam("contestActive", false)
                 .optionalQueryParam("ribbon", ribbons)
                 .withCache(CacheName.PROPOSAL_LIST_CLOSED)
-                .execute();
+                .execute());
     }
 
     public List<Proposal> listProposals(int start, int limit, String filterText, Long contestId,
         List<Long> contestTypeIds, List<Long> contestTierIds, Boolean visible, Long contestPhaseId,
         Integer ribbon) {
-        return proposalResource.list()
+        return ProposalDto.toProposals(proposalResource.list()
                 .addRange(start, limit)
                 .optionalQueryParam("filterText", filterText)
                 .optionalQueryParam("contestIds", contestId)
@@ -106,13 +107,13 @@ public final class ProposalClient {
                 .optionalQueryParam("visible", visible)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("ribbon", ribbon)
-                .execute();
+                .execute());
     }
 
     public List<Proposal> getProposalsInPublicContests(List<Long> contestTypeIds,
             List<Long> contestTierIds, String filterText) {
 
-        return proposalResource.list()
+        return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .optionalQueryParam("filterText", filterText)
                 .optionalQueryParam("contestTypeIds", contestTypeIds)
@@ -120,7 +121,7 @@ public final class ProposalClient {
                 .queryParam("visible", true)
                 .queryParam("contestPrivate", false)
                 .withCache(CacheName.MISC_SHORT)
-                .execute();
+                .execute());
     }
 
     public List<Long> listProposalIds(int start, int limit, Long contestId,
@@ -187,13 +188,13 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId, CacheName cacheName) {
-        return proposalResource.list()
+        return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .optionalQueryParam("visible", true)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
-                .withCache(CacheKeys.withClass(Proposal.class)
+                .withCache(CacheKeys.withClass(ProposalDto.class)
                         .withParameter("contestPhaseId", contestPhaseId).asList(), cacheName)
-                .execute();
+                .execute());
     }
 
     public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId) {
@@ -209,8 +210,8 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getContestIntegrationRelevantSubproposals(Long proposalId) {
-        return proposalResource.elementService(proposalId, "contestIntegrationRelevantSubproposal",
-                Proposal.TYPES.getTypeReference()).getList();
+        return ProposalDto.toProposals(proposalResource.elementService(proposalId, "contestIntegrationRelevantSubproposal",
+                ProposalDto.TYPES.getTypeReference()).getList());
     }
 
     public List<Proposal> getLinkingProposalsForUser(long userId) {
@@ -223,9 +224,9 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getMemberProposals(Long userId) {
-        return proposalResource.collectionService("getMemberProposals", Proposal.TYPES.getTypeReference())
+        return ProposalDto.toProposals(proposalResource.collectionService("getMemberProposals", ProposalDto.TYPES.getTypeReference())
                 .queryParam("userId", userId)
-                .getList();
+                .getList());
     }
 
     public List<Proposal> getLinkingProposals(long proposalId) {
@@ -245,12 +246,12 @@ public final class ProposalClient {
     }
 
     public Proposal getProposalByThreadId(long threadId) {
-        final Proposal proposal = proposalResource.list()
+        final ProposalDto proposalDto = proposalResource.list()
                 .queryParam("threadId", threadId)
                 .executeWithResult()
                 .getOneIfExists();
-        if (proposal != null) {
-            return proposal;
+        if (proposalDto != null) {
+            return proposalDto.toProposal();
         }
         throw new ProposalNotFoundException("No proposal with threadId = " + threadId);
     }
@@ -270,11 +271,11 @@ public final class ProposalClient {
         try {
             return proposalResource.get(proposalId)
                     .queryParam("includeDeleted", includeDeleted)
-                    .withCache(CacheKeys.withClass(Proposal.class)
+                    .withCache(CacheKeys.withClass(ProposalDto.class)
                                     .withParameter("proposalId", proposalId)
                                     .withParameter("includeDeleted", includeDeleted).build(),
                             CacheName.MISC_REQUEST)
-                    .executeChecked();
+                    .executeChecked().toProposal();
         } catch (EntityNotFoundException e) {
             throw new ProposalNotFoundException(proposalId);
         }
@@ -288,16 +289,16 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getSubproposals(Long proposalId, Boolean includeProposalsInSameContest) {
-        return proposalResource
-                .elementService(proposalId, "getSubproposals", Proposal.TYPES.getTypeReference())
+        return ProposalDto.toProposals(proposalResource
+                .elementService(proposalId, "getSubproposals", ProposalDto.TYPES.getTypeReference())
                 .queryParam("includeProposalsInSameContest", includeProposalsInSameContest)
-                .getList();
+                .getList());
     }
 
 
     public List<Proposal> getLinkingProposalsForProposalId(Long proposalId) {
-        return proposalResource.elementService(proposalId, "listProposalLinks", Proposal.TYPES.getTypeReference())
-                .getList();
+        return ProposalDto.toProposals(proposalResource.elementService(proposalId, "listProposalLinks", ProposalDto.TYPES.getTypeReference())
+                .getList());
     }
 
     public Integer getProposalMaterializedPoints(Long proposalId) {
@@ -335,8 +336,8 @@ public final class ProposalClient {
 
     public boolean updateProposal(Proposal proposal) {
         return proposalResource
-                .update(new Proposal(proposal), proposal.getId())
-                .cacheKey(CacheKeys.withClass(Proposal.class)
+                .update(new ProposalDto(proposal), proposal.getId())
+                .cacheKey(CacheKeys.withClass(ProposalDto.class)
                                 .withParameter("proposalId", proposal.getId())
                                 .withParameter("includeDeleted", false).build())
                 .execute();

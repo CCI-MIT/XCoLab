@@ -2,7 +2,7 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -22,8 +22,8 @@ public final class ProposalPhaseClient {
     private final RestResource<Proposal2Phase, Long> proposal2PhaseResource;
     private final RestResource<ProposalContestPhaseAttribute, Long>
             proposalContestPhaseAttributeResource;
-    private final RestResource1<Proposal, Long> proposalResource;
-    private final RestResource2L<Proposal, Long> proposalPhaseIdResource;
+    private final RestResource1<ProposalDto, Long> proposalResource;
+    private final RestResource2L<ProposalDto, Long> proposalPhaseIdResource;
 
     public ProposalPhaseClient() {
         proposal2PhaseResource = new RestResource1<>(ProposalResource.PROPOSAL_2_PHASE,
@@ -31,7 +31,7 @@ public final class ProposalPhaseClient {
         proposalContestPhaseAttributeResource = new RestResource1<>(
                 ProposalResource.PROPOSAL_CONTEST_PHASE_ATTRIBUTE,
                 ProposalContestPhaseAttribute.TYPES);
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, Proposal.TYPES);
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
 
         proposalPhaseIdResource = new RestResource2L<>(proposalResource, "phaseIds",
                 TypeProvider.LONG);
