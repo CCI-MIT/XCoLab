@@ -14,6 +14,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.IBalloonClient;
+import org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundException;
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.entity.utils.LinkUtils;
@@ -95,15 +96,16 @@ public class LoginRegisterService {
         Optional<BalloonCookie> balloonCookieOpt = BalloonCookie.from(request.getCookies());
         if (balloonCookieOpt.isPresent()) {
             BalloonCookie balloonCookie = balloonCookieOpt.get();
-            IBalloonUserTracking but = balloonClient.getBalloonUserTracking(balloonCookie.getUuid());
-            if(but != null) {
+            try {
+                IBalloonUserTracking but =
+                        balloonClient.getBalloonUserTracking(balloonCookie.getUuid());
                 if (but.getUserId() == null) {
                     but.setRegistrationDate(new Timestamp(new Date().getTime()));
                     but.setUserId(member.getId());
                     //TODO: uuid not used
                     balloonClient.updateBalloonUserTracking(but, member.getUuid());
                 }
-            } else {
+            } catch (BalloonUserTrackingNotFoundException e) {
                 _log.error("Can't find balloon user tracking for uuid: {}",
                         balloonCookie.getUuid());
             }

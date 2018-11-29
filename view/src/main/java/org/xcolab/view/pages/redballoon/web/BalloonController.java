@@ -14,16 +14,16 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.tracking.exceptions.BalloonLinkNotFoundException;
-import org.xcolab.client.tracking.exceptions.BalloonTextNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.IBalloonClient;
+import org.xcolab.client.tracking.exceptions.BalloonLinkNotFoundException;
+import org.xcolab.client.tracking.exceptions.BalloonTextNotFoundException;
 import org.xcolab.client.tracking.pojo.IBalloonLink;
 import org.xcolab.client.tracking.pojo.IBalloonText;
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
 import org.xcolab.client.tracking.pojo.tables.pojos.BalloonLink;
-import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.pages.redballoon.utils.BalloonService;
 import org.xcolab.view.pages.redballoon.web.beans.UserEmailBean;
 
@@ -60,14 +60,22 @@ public class BalloonController {
 
         IBalloonUserTracking but =
                 balloonService.getOrCreateBalloonUserTracking(request, response, null, null);
-        IBalloonLink balloonLink =
-                balloonClient.getLinkByBalloonUserTrackingUuid(but.getUuid());
-        if (balloonLink != null) {
+        try {
+            IBalloonLink balloonLink = balloonClient.getBalloonLink(but.getUuid());
             return "redirect:" + balloonLink.getTargetUrl();
+        } catch (BalloonLinkNotFoundException e) {
+            // user has no link -> continue and show page
         }
 
         if (but.getBalloonTextId() != null && but.getBalloonTextId() > 0) {
-            IBalloonText text = balloonClient.getBalloonText(but.getBalloonTextId());
+            IBalloonText text;
+            try {
+                text = balloonClient.getBalloonText(but.getBalloonTextId());
+
+            } catch (BalloonTextNotFoundException e) {
+                text = null;
+            }
+
             model.addAttribute("balloonText", text);
         }
 
@@ -98,9 +106,11 @@ public class BalloonController {
         IBalloonUserTracking but =
                 balloonService.getOrCreateBalloonUserTracking(request, response, null, null);
 
-        IBalloonLink balloonLink = balloonClient.getLinkByBalloonUserTrackingUuid(but.getUuid());
-        if(balloonLink != null) {
+        try {
+            IBalloonLink balloonLink = balloonClient.getBalloonLink(but.getUuid());
             return "redirect:" + balloonLink.getTargetUrl();
+        } catch (BalloonLinkNotFoundException e) {
+            // user has no link -> continue and create one
         }
 
         but.setEmail(userEmailBean.getEmail());
@@ -133,14 +143,25 @@ public class BalloonController {
                         linkUuid);
 
         link.setVisits(link.getVisits() + 1);
-        balloonClient.updateBalloonLink(link, link.getUuid());
+        try {
+            balloonClient.updateBalloonLink(link, link.getUuid());
+        } catch (BalloonLinkNotFoundException e) {
+            // do nothing
+        }
 
         if (but == null) {
             // user wasn't following any link so we need to create new root of a reference tree
             but = balloonService.getOrCreateBalloonUserTracking(request, response, null, null);
         }
         if (but.getBalloonTextId() != null && but.getBalloonTextId() > 0) {
-            IBalloonText text = balloonClient.getBalloonText(but.getBalloonTextId());
+            IBalloonText text;
+            try {
+                text = balloonClient.getBalloonText(but.getBalloonTextId());
+
+            } catch (BalloonTextNotFoundException e) {
+                text = null;
+            }
+
             model.addAttribute("balloonText", text);
 
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
@@ -161,10 +182,14 @@ public class BalloonController {
         }
 
         if (StringUtils.isNotBlank(but.getEmail())) {
-            IBalloonLink bl = balloonClient.getLinkByBalloonUserTrackingUuid(but.getUuid());
-            model.addAttribute("shareLink", LinkUtils.getAbsoluteUrl(bl.getTargetUrl()));
-            model.addAttribute("balloonLink", bl);
-            return SHARE_VIEW;
+            try {
+                IBalloonLink bl = balloonClient.getBalloonLink(but.getUuid());
+                model.addAttribute("shareLink", LinkUtils.getAbsoluteUrl(bl.getTargetUrl()));
+                model.addAttribute("balloonLink", bl);
+                return SHARE_VIEW;
+            } catch (BalloonLinkNotFoundException e) {
+                //fall through
+            }
         }
 
         return showBalloon(request, response, model, member);

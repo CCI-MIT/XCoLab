@@ -14,7 +14,7 @@ import org.xcolab.client.tracking.pojo.tables.pojos.TrackedVisit;
 public interface ITrackingClient {
 
     @PostMapping("/trackedVisits")
-    ITrackedVisit addTrackedVisit(@RequestBody ITrackedVisit trackedVisit, @RequestParam(required = false, value = "userId") Long userId);
+    ITrackedVisit addTrackedVisit(@RequestBody ITrackedVisit trackedVisit, @RequestParam(value = "userId", required = false) Long userId);
 
     default ITrackedVisit addTrackedVisit(String uuid, String url, String ip,
             String browser, String referer, String headers, Long userId) {

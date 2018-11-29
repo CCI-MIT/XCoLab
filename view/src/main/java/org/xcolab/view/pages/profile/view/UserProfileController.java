@@ -37,6 +37,7 @@ import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.commons.servlet.flash.ErrorPage;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
+import org.xcolab.util.http.exceptions.ExceptionUtils;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.auth.AuthenticationService;
@@ -125,8 +126,10 @@ public class UserProfileController {
                 final Optional<IBalloonUserTracking> butOpt = balloonService
                         .getBalloonUserTracking(request, response);
                 if (butOpt.isPresent()) {
-                    model.addAttribute("balloonLink", balloonClient.getLinkByBalloonUserTrackingUuid(butOpt.get().getUuid()));
-                    model.addAttribute("balloonText", balloonClient.getBalloonText(butOpt.get().getBalloonTextId()));
+                    model.addAttribute("balloonLink", ExceptionUtils.getOrNull(
+                            () -> balloonClient.getBalloonLink(butOpt.get().getUuid())));
+                    model.addAttribute("balloonText", ExceptionUtils.getOrNull(
+                            () -> balloonClient.getBalloonText(butOpt.get().getBalloonTextId())));
                 }
             }
             model.addAttribute("pointsActive", ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());

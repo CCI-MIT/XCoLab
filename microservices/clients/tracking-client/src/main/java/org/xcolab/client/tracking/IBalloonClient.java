@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.tracking.exceptions.BalloonLinkNotFoundException;
@@ -27,34 +25,41 @@ public interface IBalloonClient {
     IBalloonLink createBalloonLink(@RequestBody IBalloonLink balloonLink);
 
     @PutMapping("/balloonLinks/{uuid}")
-    boolean updateBalloonLink(@RequestBody IBalloonLink balloonLink, @PathVariable("uuid") String uuid);
+    boolean updateBalloonLink(@RequestBody IBalloonLink balloonLink,
+            @PathVariable("uuid") String uuid) throws BalloonLinkNotFoundException;
 
     @GetMapping("/balloonLinks/{uuid}")
-    IBalloonLink getBalloonLink(@PathVariable("uuid") String uuid);
+    IBalloonLink getBalloonLink(@PathVariable("uuid") String uuid) throws BalloonLinkNotFoundException;
 
     @GetMapping("/balloonLinks")
-    List<IBalloonLink> listBalloonLinks(@RequestParam(required = false) String memberUuid);
+    List<IBalloonLink> listBalloonLinks(
+            @RequestParam(value = "memberUuid", required = false) String memberUuid);
 
     @PostMapping("/balloonUserTrackings")
-    IBalloonUserTracking createBalloonUserTracking(@RequestBody IBalloonUserTracking balloonUserTracking);
+    IBalloonUserTracking createBalloonUserTracking(
+            @RequestBody IBalloonUserTracking balloonUserTracking);
 
     @GetMapping("/balloonUserTrackings/{uuid}")
-    IBalloonUserTracking getBalloonUserTracking(@PathVariable String uuid);
+    IBalloonUserTracking getBalloonUserTracking(@PathVariable("uuid") String uuid)
+            throws BalloonUserTrackingNotFoundException;
 
     @GetMapping("/balloonUserTrackings")
-    List<IBalloonUserTracking> listBalloonUserTrackings(@RequestParam(required = false) String email, @RequestParam(required = false) String context);
+    List<IBalloonUserTracking> listBalloonUserTrackings(
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "context", required = false) String context);
 
     @PutMapping("/balloonUserTrackings/{uuid}")
-    boolean updateBalloonUserTracking(@RequestBody IBalloonUserTracking balloonUserTracking, @PathVariable String uuid);
+    boolean updateBalloonUserTracking(@RequestBody IBalloonUserTracking balloonUserTracking,
+            @PathVariable("uuid") String uuid);
 
     @DeleteMapping("/balloonUserTrackings/{uuid}")
-    boolean deleteBalloonUserTracking(@PathVariable String uuid);
+    boolean deleteBalloonUserTracking(@PathVariable("uuid") String uuid);
 
     @GetMapping("/balloonTexts/{id}")
-    IBalloonText getBalloonText(@PathVariable("id") Long id);
+    IBalloonText getBalloonText(@PathVariable("id") Long id) throws BalloonTextNotFoundException;
 
     @PutMapping("/balloonTexts/{id}")
-    boolean updateBalloonText(@RequestBody IBalloonText balloonText, @PathVariable Long id);
+    boolean updateBalloonText(@RequestBody IBalloonText balloonText, @PathVariable("id") Long id);
 
     @GetMapping("/balloonTexts")
     List<IBalloonText> getAllEnabledBalloonLinks();
@@ -63,8 +68,5 @@ public interface IBalloonClient {
     IBalloonText createBalloonText(@RequestBody IBalloonText balloonText);
 
     @DeleteMapping("/balloonTexts/{id}")
-    boolean deleteBalloonText(@PathVariable("id") Long id);
-
-    @GetMapping("/balloonLinks/{butUuid}")
-    IBalloonLink getLinkByBalloonUserTrackingUuid(@PathVariable("butUuid") String butUuid);
+    boolean deleteBalloonText(@PathVariable("id") Long id) throws BalloonTextNotFoundException;
 }

@@ -88,9 +88,4 @@ public class BalloonClientMockImpl implements IBalloonClient {
     public boolean deleteBalloonText(Long id) {
         return false;
     }
-
-    @Override
-    public IBalloonLink getLinkByBalloonUserTrackingUuid(String butUuid) {
-        return null;
-    }
 }

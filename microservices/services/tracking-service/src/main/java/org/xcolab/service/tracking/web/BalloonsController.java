@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.tracking.IBalloonClient;
 import org.xcolab.client.tracking.exceptions.BalloonLinkNotFoundException;
+import org.xcolab.client.tracking.exceptions.BalloonTextNotFoundException;
+import org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundException;
 import org.xcolab.client.tracking.pojo.IBalloonLink;
 import org.xcolab.client.tracking.pojo.IBalloonText;
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
@@ -41,34 +41,39 @@ public class BalloonsController implements IBalloonClient {
     }
 
     @Override
-    @RequestMapping(value = "/balloonLinks", method = RequestMethod.POST)
+    @PostMapping("/balloonLinks")
     public IBalloonLink createBalloonLink(@RequestBody IBalloonLink balloonLink) {
         return this.balloonLinkDao.create(balloonLink);
     }
 
     @Override
     @PutMapping("/balloonLinks/{uuid}")
-    public boolean updateBalloonLink(@RequestBody IBalloonLink balloonLink, @PathVariable("uuid") String uuid) throws NotFoundException {
-        if (balloonLinkDao.getBalloonLink(uuid) == null) {
-            throw new NotFoundException();
-        } else {
+    public boolean updateBalloonLink(@RequestBody IBalloonLink balloonLink,
+            @PathVariable String uuid) throws BalloonLinkNotFoundException {
+        try {
+            balloonLinkDao.getBalloonLink(uuid);
             return balloonLinkDao.update(balloonLink);
+        } catch (NotFoundException e) {
+            throw new BalloonLinkNotFoundException(
+                    "BalloonLink " + uuid + " does not exist");
         }
     }
 
     @Override
     @GetMapping("/balloonLinks/{uuid}")
-    public IBalloonLink getBalloonLink(@PathVariable("uuid") String uuid) throws NotFoundException {
-        if (uuid == null) {
-            throw new NotFoundException();
-        } else {
+    public IBalloonLink getBalloonLink(@PathVariable String uuid)
+            throws BalloonLinkNotFoundException {
+        try {
             return this.balloonLinkDao.getBalloonLink(uuid);
+        } catch (NotFoundException e) {
+            throw new BalloonLinkNotFoundException(
+                    "BalloonLink " + uuid + " does not exist");
         }
     }
 
     @Override
     @GetMapping("/balloonLinks")
-    public List<IBalloonLink> listBalloonLinks(@RequestParam(required = false) String memberUuid) {
+    public List<IBalloonLink> listBalloonLinks(@RequestParam String memberUuid) {
         return this.balloonLinkDao.findByGiven(PaginationHelper.EVERYTHING, memberUuid);
     }
 
@@ -83,23 +88,28 @@ public class BalloonsController implements IBalloonClient {
     @Override
     @GetMapping("/balloonUserTrackings/{uuid}")
     public IBalloonUserTracking getBalloonUserTracking(@PathVariable String uuid)
-            throws NotFoundException {
-        return this.balloonUserTrackingDao.getBalloonUserTrackingByUuid(uuid);
+            throws BalloonUserTrackingNotFoundException {
+        try {
+            return this.balloonUserTrackingDao.getBalloonUserTrackingByUuid(uuid);
+        } catch (NotFoundException e) {
+            throw new BalloonUserTrackingNotFoundException(
+                    "BalloonUserTracking " + uuid + " does not exist");
+        }
     }
 
     @Override
     @GetMapping("/balloonUserTrackings")
     public List<IBalloonUserTracking> listBalloonUserTrackings(
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String context) {
-        return this.balloonUserTrackingDao.list(email,context );
+            @RequestParam String email,
+            @RequestParam String context) {
+        return this.balloonUserTrackingDao.list(email, context);
     }
 
     @Override
-    @RequestMapping(value = "/balloonUserTrackings/{uuid}", method = RequestMethod.PUT)
+    @PutMapping("/balloonUserTrackings/{uuid}")
     public boolean updateBalloonUserTracking(@RequestBody IBalloonUserTracking balloonUserTracking,
             @PathVariable String uuid) {
-        //TODO: this is actually bullshit?! The string UUID is unnecessary
+        //TODO: this is actually bullshit?! The string UUID is not used although it would be necessary to make it work
         return balloonUserTrackingDao.update(balloonUserTracking);
     }
 
@@ -111,11 +121,11 @@ public class BalloonsController implements IBalloonClient {
 
     @Override
     @GetMapping("/balloonTexts/{id}")
-    public IBalloonText getBalloonText(@PathVariable("id") Long id) throws NotFoundException {
-        if (id == null) {
-            throw new NotFoundException();
-        } else {
+    public IBalloonText getBalloonText(@PathVariable Long id) throws BalloonTextNotFoundException {
+        try {
             return this.balloonTextDao.getBalloonText(id);
+        } catch (NotFoundException e) {
+            throw new BalloonTextNotFoundException(id);
         }
     }
 
@@ -139,22 +149,12 @@ public class BalloonsController implements IBalloonClient {
 
     @Override
     @DeleteMapping(value = "/balloonTexts/{id}")
-    public boolean deleteBalloonText(@PathVariable("id") Long id) throws NotFoundException {
-
-        if (balloonTextDao.getBalloonText(id) == null) {
-            throw new NotFoundException();
-        } else {
+    public boolean deleteBalloonText(@PathVariable Long id) throws BalloonTextNotFoundException {
+        try {
+            balloonTextDao.getBalloonText(id);
             return balloonTextDao.delete(id);
+        } catch (NotFoundException e) {
+            throw new BalloonTextNotFoundException(id);
         }
-    }
-
-    @Override
-    @GetMapping("/balloonLinks/{butUuid}")
-    public IBalloonLink getLinkByBalloonUserTrackingUuid(String butUuid) {
-        final List<IBalloonLink> balloonLinks = listBalloonLinks(butUuid);
-        if (balloonLinks.isEmpty()) {
-            return null;
-        }
-        return balloonLinks.get(0);
     }
 }

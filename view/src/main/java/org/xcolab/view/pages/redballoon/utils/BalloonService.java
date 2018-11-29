@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.redballoon.utils;
 
+import feign.FeignException;
 import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,8 @@ import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
 import org.xcolab.client.tracking.pojo.ILocation;
 import org.xcolab.client.tracking.pojo.tables.pojos.BalloonLink;
 import org.xcolab.client.tracking.pojo.tables.pojos.BalloonUserTracking;
-import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.auth.AuthenticationService;
 
 import java.sql.Timestamp;
@@ -64,7 +65,6 @@ public class BalloonService {
 
     public IBalloonLink createBalloonLink(String email, IBalloonUserTracking but)
             throws BalloonTextNotFoundException {
-
         IBalloonLink link = new BalloonLink();
         link.setUuid(UUID.randomUUID().toString());
         link.setBalloonUserUuid(but.getUuid());
@@ -76,11 +76,11 @@ public class BalloonService {
         String messageSubject = text.getEmailSubjectTemplate();
         String messageBody = text.getEmailTemplate()
                 .replaceAll(URL_PLACEHOLDER, LinkUtils.getAbsoluteUrl(link.getTargetUrl()));
-
         final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         final String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
         EmailClient.sendEmail(fromEmail, fromName, email, messageSubject, messageBody, true,
                 fromEmail, fromName, but.getBalloonTextId());
+
         return link;
     }
 
@@ -177,15 +177,17 @@ public class BalloonService {
         Optional<BalloonCookie> balloonCookieOpt = BalloonCookie.from(request.getCookies());
         if (balloonCookieOpt.isPresent()) {
             final BalloonCookie balloonCookie = balloonCookieOpt.get();
-            IBalloonUserTracking but =
-                    balloonClient.getBalloonUserTracking(balloonCookie.getUuid());
-            if (but != null) {
-                but.setEmail(member.getEmailAddress());
-                but.setUserId(member.getId());
-                balloonClient.updateBalloonUserTracking(but, Long.toString(member.getId()));
-                //TODO: check with Carlos/Johannes
-//                but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
-            } else {
+            try {
+                IBalloonUserTracking but =
+                        balloonClient.getBalloonUserTracking(balloonCookie.getUuid());
+                if (but != null) {
+                    but.setEmail(member.getEmailAddress());
+                    but.setUserId(member.getId());
+                    balloonClient.updateBalloonUserTracking(but, Long.toString(member.getId()));
+                    //TODO: check with Carlos/Johannes
+//                    but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
+                }
+            } catch (BalloonUserTrackingNotFoundException e) {
                 _log.error("Invalid UUID: {}", balloonCookie);
             }
         }
@@ -234,14 +236,12 @@ public class BalloonService {
     }
 
     private IBalloonUserTracking getBalloonUserTrackingForMember(Member member) {
-        IBalloonUserTracking balloonUserTracking =
-                balloonClient.getBalloonUserTracking(member.getOrGenerateUuid());
-        if (balloonUserTracking == null) {
+        try {
+            return balloonClient.getBalloonUserTracking(member.getOrGenerateUuid());
+        } catch (BalloonUserTrackingNotFoundException ignored) {
             List<IBalloonUserTracking> buts =
                     balloonClient.listBalloonUserTrackings(member.getEmailAddress(), null);
-
-            balloonUserTracking = buts.stream().findFirst().orElse(null);
+            return buts.stream().findFirst().orElse(null);
         }
-        return balloonUserTracking;
     }
 }
