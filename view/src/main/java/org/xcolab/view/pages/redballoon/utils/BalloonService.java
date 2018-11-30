@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.redballoon.utils;
 
-import feign.FeignException;
 import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

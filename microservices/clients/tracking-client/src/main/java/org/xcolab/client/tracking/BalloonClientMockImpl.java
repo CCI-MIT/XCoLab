@@ -6,9 +6,6 @@ import org.springframework.stereotype.Component;
 import org.xcolab.client.tracking.pojo.IBalloonLink;
 import org.xcolab.client.tracking.pojo.IBalloonText;
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
-import org.xcolab.client.tracking.pojo.ILocation;
-import org.xcolab.client.tracking.pojo.ITrackedVisit;
-import org.xcolab.client.tracking.pojo.tables.pojos.TrackedVisit;
 
 import java.util.Collections;
 import java.util.List;
