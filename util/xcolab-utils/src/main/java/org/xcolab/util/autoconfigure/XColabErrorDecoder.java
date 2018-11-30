@@ -1,4 +1,4 @@
-package org.xcolab.service.members.config;
+package org.xcolab.util.autoconfigure;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;

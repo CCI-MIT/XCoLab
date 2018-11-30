@@ -1,18 +1,13 @@
 package org.xcolab.view.config;
 
-import feign.codec.ErrorDecoder;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Component
-@EnableFeignClients(basePackages = {"org.xcolab.client"})
-@Profile("!test")
-public class FeignConfig {
+import org.xcolab.util.autoconfigure.AbstractFeignConfig;
 
-    @Bean
-    public ErrorDecoder getErrorDecoder() {
-        return new XColabErrorDecoder();
-    }
+@Component
+@Profile("!test")
+@EnableFeignClients(basePackages = {"org.xcolab.client"})
+public class FeignConfig extends AbstractFeignConfig {
 }
