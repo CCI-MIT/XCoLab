@@ -1,51 +1,35 @@
 package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
-import org.xcolab.client.contest.pojo.team.ContestTeamMemberDto;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
-import org.xcolab.client.contest.pojo.team.ContestTeamMemberRoleDto;
 import org.xcolab.client.contest.resources.ContestResource;
 import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class ContestTeamMemberClient {
 
-    private static final Map<ServiceNamespace, ContestTeamMemberClient> instances = new HashMap<>();
+    private final RestResource<ContestTeamMember, Long> contestTeamMemberResource;
+    private final RestResource<ContestTeamMemberRole, Long> contestTeamMemberRoleResource;
 
-    private final ServiceNamespace serviceNamespace;
-
-    private final RestResource<ContestTeamMemberDto, Long> contestTeamMemberResource;
-    private final RestResource<ContestTeamMemberRoleDto, Long> contestTeamMemberRoleResource;
-
-    private ContestTeamMemberClient(ServiceNamespace serviceNamespace) {
-        this.serviceNamespace = serviceNamespace;
+    public ContestTeamMemberClient() {
         contestTeamMemberResource = new RestResource1<>(ContestResource.CONTEST_TEAM_MEMBER,
-                ContestTeamMemberDto.TYPES, serviceNamespace);
+                ContestTeamMember.TYPES);
         contestTeamMemberRoleResource = new RestResource1<>(
-                ContestResource.CONTEST_TEAM_MEMBER_ROLE, ContestTeamMemberRoleDto.TYPES,
-                serviceNamespace);
-    }
-
-    public static ContestTeamMemberClient fromService(ServiceNamespace serviceNamespace) {
-        return instances
-                .computeIfAbsent(serviceNamespace, k -> new ContestTeamMemberClient(serviceNamespace));
+                ContestResource.CONTEST_TEAM_MEMBER_ROLE, ContestTeamMemberRole.TYPES);
     }
 
     public ContestTeamMember createContestTeamMember(ContestTeamMember contestTeamMember) {
         final ContestTeamMember result =
-                contestTeamMemberResource.create(new ContestTeamMemberDto(contestTeamMember))
-                        .execute().toPojo(serviceNamespace);
+                contestTeamMemberResource.create(new ContestTeamMember(contestTeamMember))
+                        .execute();
         //TODO COLAB-2589: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
         return result;
@@ -60,7 +44,7 @@ public class ContestTeamMemberClient {
     public ContestTeamMemberRole getContestTeamMemberRole(long id) {
         return contestTeamMemberRoleResource.get(id)
                 .withCache(CacheName.CONTEST_DETAILS)
-                .execute().toPojo(serviceNamespace);
+                .execute();
     }
 
     public List<Long> getAdvisorsForContest(Long contestId) {
@@ -105,18 +89,18 @@ public class ContestTeamMemberClient {
     }
 
     public List<ContestTeamMember> getTeamMembers(Long userId, Long contestId, Long roleId) {
-        return DtoUtil.toPojos(contestTeamMemberResource.list()
+        return contestTeamMemberResource.list()
                 .optionalQueryParam("userId", userId)
                 .optionalQueryParam("contestId", contestId)
                 .optionalQueryParam("roleId", roleId)
                 .withCache(CacheName.CONTEST_DETAILS)
-                .execute(), serviceNamespace);
+                .execute();
     }
     public List<ContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
-        return DtoUtil.toPojos(contestTeamMemberResource.collectionService("getByContestYear",ContestTeamMemberDto.TYPES.getTypeReference())
+        return contestTeamMemberResource.collectionService("getByContestYear",ContestTeamMember.TYPES.getTypeReference())
                 .optionalQueryParam("categoryId", categoryId)
                 .optionalQueryParam("contestYear", contestYear)
-                .getList(), serviceNamespace);
+                .getList();
     }
 
 

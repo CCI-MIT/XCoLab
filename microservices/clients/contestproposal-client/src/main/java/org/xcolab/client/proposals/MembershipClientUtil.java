@@ -3,14 +3,12 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public class MembershipClientUtil {
 
-    private static final MembershipClient client = MembershipClient.fromNamespace(
-            ServiceNamespace.instance());
+    private static final MembershipClient client = new MembershipClient();
 
     public static MembershipClient getClient() {
         return client;

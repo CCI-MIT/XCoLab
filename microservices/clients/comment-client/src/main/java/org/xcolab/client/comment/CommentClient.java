@@ -4,26 +4,21 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.pojo.CommentDto;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CommentClient {
 
-    private final CommentServiceWrapper commentServiceWrapper;
-    private final ServiceNamespace serviceNamespace;
-    private static final Map<ServiceNamespace, CommentClient> instances = new HashMap<>();
+    // Default instance when used statically
+    private static final CommentClient INSTANCE = new CommentClient();
 
-    public CommentClient(ServiceNamespace serviceNamespace) {
-        commentServiceWrapper = CommentServiceWrapper.fromService(serviceNamespace);
-        this.serviceNamespace = serviceNamespace;
+    private final CommentServiceWrapper commentServiceWrapper = new CommentServiceWrapper();
+
+    public static CommentClient instance() {
+        return INSTANCE;
     }
 
     public List<Comment> listComments(int start, int last) {
@@ -31,9 +26,7 @@ public class CommentClient {
     }
 
     public List<Comment> listComments(int start, int last, Long threadId) {
-        return DtoUtil.toPojos(
-                commentServiceWrapper.listComments(start, last, "createdAt", null, threadId, null),
-                serviceNamespace);
+        return commentServiceWrapper.listComments(start, last, "createdAt", null, threadId, null);
     }
 
     public int countComments(Long threadId) {
@@ -60,23 +53,19 @@ public class CommentClient {
 
     public Comment getComment(long commentId, boolean includeDeleted)
             throws CommentNotFoundException {
-        return commentServiceWrapper.getComment(commentId, includeDeleted, CacheName.MISC_REQUEST)
-                .toPojo(serviceNamespace);
+        return commentServiceWrapper.getComment(commentId, includeDeleted, CacheName.MISC_REQUEST);
     }
 
     public boolean updateComment(Comment comment) {
-        return commentServiceWrapper.updateComment(new CommentDto(comment));
+        return commentServiceWrapper.updateComment(new Comment(comment));
     }
 
     public Comment createComment(Comment comment) {
-        return commentServiceWrapper.createComment(new CommentDto(comment)).toPojo(serviceNamespace);
+        return commentServiceWrapper.createComment(new Comment(comment));
     }
 
     public boolean deleteComment(long commentId) {
         return commentServiceWrapper.deleteComment(commentId);
     }
 
-    public static CommentClient fromService(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, CommentClient::new);
-    }
 }

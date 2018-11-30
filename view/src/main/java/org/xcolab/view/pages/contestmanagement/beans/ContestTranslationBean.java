@@ -3,6 +3,7 @@ package org.xcolab.view.pages.contestmanagement.beans;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestTranslation;
 import org.xcolab.util.i18n.I18nUtils;
@@ -23,7 +24,7 @@ public class ContestTranslationBean implements Serializable {
     }
 
     public ContestTranslationBean(Contest contest) {
-        ContestClient contestClient = ContestClient.fromNamespace(contest.getServiceNamespace());
+        ContestClient contestClient = ContestClientUtil.getClient();
         final Map<String, ContestTranslation> translations =
                 contestClient.getTranslationsForContestId(contest.getId())
                 .stream()
@@ -49,7 +50,7 @@ public class ContestTranslationBean implements Serializable {
     }
 
     public void persist(Contest contest) {
-        ContestClient contestClient = ContestClient.fromNamespace(contest.getServiceNamespace());
+        ContestClient contestClient = ContestClientUtil.getClient();
         translations.stream()
                 .filter(translation -> !StringUtils.isAllEmpty(translation.getQuestion(),
                         translation.getTitle(), translation.getDescription()))

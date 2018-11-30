@@ -4,92 +4,78 @@ import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalDto;
-import org.xcolab.client.proposals.pojo.ProposalVersionDto;
+import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeDto;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeHelperDataDto;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttributeDto;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttributeHelperDataDto;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.queries.ListQuery;
-import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class ProposalAttributeClient {
 
-    private static final Map<ServiceNamespace, ProposalAttributeClient> instances = new HashMap<>();
-
-    private final ServiceNamespace serviceNamespace;
-    private final RestResource1<ProposalAttributeDto, Long> proposalAttributeResource;
-    private final RestResource1<ProposalUnversionedAttributeDto, Long>
+    private final RestResource1<ProposalAttribute, Long> proposalAttributeResource;
+    private final RestResource1<ProposalUnversionedAttribute, Long>
             proposalUnversionedAttributeResource;
 
     private final RestResource1<ProposalDto, Long> proposalResource;
-    private final RestResource2L<ProposalDto, ProposalVersionDto> proposalVersionResource;
+    private final RestResource2L<ProposalDto, ProposalVersion> proposalVersionResource;
 
-    private ProposalAttributeClient(ServiceNamespace serviceNamespace) {
+    public ProposalAttributeClient() {
         proposalAttributeResource = new RestResource1<>(ProposalResource.PROPOSAL_ATTRIBUTE,
-                ProposalAttributeDto.TYPES, serviceNamespace);
+                ProposalAttribute.TYPES);
         proposalUnversionedAttributeResource = new RestResource1<>(
                 ProposalResource.PROPOSAL_UNVERSIONED_ATTRIBUTE,
-                ProposalUnversionedAttributeDto.TYPES, serviceNamespace);
+                ProposalUnversionedAttribute.TYPES);
 
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES,
-                serviceNamespace);
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
         this.proposalVersionResource = new RestResource2L<>(proposalResource,
-                "versions", ProposalVersionDto.TYPES);
-        this.serviceNamespace = serviceNamespace;
-    }
-
-    public static ProposalAttributeClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, ProposalAttributeClient::new);
+                "versions", ProposalVersion.TYPES);
     }
 
     public ProposalAttribute createProposalAttribute(ProposalAttribute proposalAttribute) {
-        return proposalAttributeResource.create(new ProposalAttributeDto(proposalAttribute))
-                .execute().toPojo(serviceNamespace);
+        return proposalAttributeResource.create(new ProposalAttribute(proposalAttribute))
+                .execute();
     }
 
     public ProposalAttribute getProposalAttribute(Long proposalId, String name, Long additionalId) {
-        ListQuery<ProposalAttributeDto> listQ =
+        ListQuery<ProposalAttribute> listQ =
                 proposalAttributeResource.list()
                         .queryParam("proposalId", proposalId)
                         .queryParam("name", name);
-        if (additionalId != null && additionalId != 0) {
-            listQ = listQ.queryParam("additionalId", additionalId);
-        }
-        final ProposalAttributeDto firstOrNull = listQ.executeWithResult().getFirstIfExists();
-        return firstOrNull != null ? firstOrNull.toPojo(serviceNamespace) : null;
+        return getProposalAttributeFromListQuery(listQ, additionalId);
     }
 
-    public ProposalAttribute getProposalAttribute(long proposalId, long version, String name, Long additionalId) {
-        ListQuery<ProposalAttributeDto> listQ =
+    public ProposalAttribute getProposalAttribute(long proposalId, long version, String name,
+            Long additionalId) {
+        ListQuery<ProposalAttribute> listQuery =
                 proposalAttributeResource.list()
                         .queryParam("proposalId", proposalId)
                         .queryParam("name", name)
                         .queryParam("version", version);
+        return getProposalAttributeFromListQuery(listQuery, additionalId);
+    }
+
+    private ProposalAttribute getProposalAttributeFromListQuery(
+            ListQuery<ProposalAttribute> listQuery, Long additionalId) {
         if (additionalId != null && additionalId != 0) {
-            listQ = listQ.queryParam("additionalId", additionalId);
+            listQuery = listQuery.queryParam("additionalId", additionalId);
         }
-        final ProposalAttributeDto firstOrNull = listQ.executeWithResult().getFirstIfExists();
-        return firstOrNull != null ? firstOrNull.toPojo(serviceNamespace) : null;
+        return listQuery.executeWithResult().getFirstIfExists();
     }
 
     public ProposalAttribute getProposalAttribute(long id)
             throws ProposalAttributeNotFoundException {
         return proposalAttributeResource.get(id)
-                .withCache(CacheKeys.of(ProposalAttributeDto.class, id), CacheName.MISC_REQUEST)
-                .execute().toPojo(serviceNamespace);
+                .withCache(CacheKeys.of(ProposalAttribute.class, id), CacheName.MISC_REQUEST)
+                .execute();
     }
 
     public Boolean deleteProposalAttribute(Long id) {
@@ -97,46 +83,46 @@ public final class ProposalAttributeClient {
     }
 
     public List<ProposalAttribute> getImpactProposalAttributes(Proposal proposal) {
-        return DtoUtil.toPojos(proposalAttributeResource
-                .collectionService("getImpactProposalAttributes", ProposalAttributeDto.TYPES.getTypeReference())
+        return proposalAttributeResource
+                .collectionService("getImpactProposalAttributes", ProposalAttribute.TYPES.getTypeReference())
                 .queryParam("proposalId", proposal.getId())
                 .queryParam("currentVersion", proposal.getCurrentVersion())
-                .getList(), serviceNamespace);
+                .getList();
     }
 
     public boolean updateProposalAttribute(ProposalAttribute proposalAttribute) {
         return proposalAttributeResource
-                .update(new ProposalAttributeDto(proposalAttribute), proposalAttribute.getId())
-                .cacheKey(CacheKeys.of(ProposalAttributeDto.class, proposalAttribute.getId()))
+                .update(new ProposalAttribute(proposalAttribute), proposalAttribute.getId())
+                .cacheKey(CacheKeys.of(ProposalAttribute.class, proposalAttribute.getId()))
                 .execute();
     }
 
     public List<ProposalAttribute> getAllProposalAttributes(Long proposalId) {
-        return DtoUtil.toPojos(proposalAttributeResource.list()
+        return proposalAttributeResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .withCache(CacheName.MISC_REQUEST)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public List<ProposalAttribute> getAllProposalAttributes(Long proposalId, Integer version) {
-        return DtoUtil.toPojos(proposalAttributeResource.list()
+        return proposalAttributeResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("version", version)
-                //.withCache(CacheKeys.of(ProposalAttributeDto.class, proposalId),CacheName.PROPOSAL_DETAILS))
-                .withCache(CacheKeys.withClass(ProposalAttributeDto.class)
+                //.withCache(CacheKeys.of(ProposalAttribute.class, proposalId),CacheName.PROPOSAL_DETAILS))
+                .withCache(CacheKeys.withClass(ProposalAttribute.class)
                         .withParameter("proposalId", proposalId)
                         .withParameter("version",version)
                         .asList(), CacheName.PROPOSAL_DETAILS)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public List<ProposalAttribute> getAllProposalAttributes(long proposalId, String name,
             long additionalId) {
-        return DtoUtil.toPojos(proposalAttributeResource.list()
+        return proposalAttributeResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("name", name)
                 .optionalQueryParam("additionalId", additionalId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public ProposalAttributeHelperDataDto getProposalAttributeHelperData(long proposalId,
@@ -171,7 +157,7 @@ public final class ProposalAttributeClient {
 
 
     public void invalidateProposalAttibuteCache(Proposal proposal) {
-        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalDto.class)
+        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(Proposal.class)
                 .withParameter("proposalId", proposal.getId())
                 .withParameter("version", proposal.getVersion()).asList(), CacheName.PROPOSAL_DETAILS);
     }
@@ -183,10 +169,10 @@ public final class ProposalAttributeClient {
         //        .optionalQueryParam("version", version)
         //        .withCache(CacheName.PROPOSAL_DETAILS)
 
-        return proposalAttributeResource.collectionService("setProposalAttribute", ProposalAttributeDto.class)
+        return proposalAttributeResource.collectionService("setProposalAttribute", ProposalAttribute.class)
                 .queryParam("authorUserId", authorUserId)
                 .post(proposalAttribute)
-                .toPojo(serviceNamespace);
+                ;
     }
 
     public ProposalAttribute setProposalAttribute(Long userId, Long proposalId, String name,
@@ -219,9 +205,9 @@ public final class ProposalAttributeClient {
 
     public List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(
             Long proposalId) {
-        return DtoUtil.toPojos(proposalUnversionedAttributeResource.list()
+        return proposalUnversionedAttributeResource.list()
                 .optionalQueryParam("proposalId", proposalId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public void createOrUpdateUnversionedStringAttribute(Long proposalId, String attributeName,
@@ -269,24 +255,24 @@ public final class ProposalAttributeClient {
     public ProposalUnversionedAttribute createProposalUnversionedAttribute(
             ProposalUnversionedAttribute proposalUnversionedAttribute) {
         return proposalUnversionedAttributeResource
-                .create(new ProposalUnversionedAttributeDto(proposalUnversionedAttribute))
-                .execute().toPojo(serviceNamespace);
+                .create(new ProposalUnversionedAttribute(proposalUnversionedAttribute))
+                .execute();
     }
 
     public ProposalUnversionedAttribute getProposalUnversionedAttribute(Long proposalId,
             String name) throws EntityNotFoundException{
         return proposalUnversionedAttributeResource
-                .collectionService("getByProposalIdName", ProposalUnversionedAttributeDto.class)
+                .collectionService("getByProposalIdName", ProposalUnversionedAttribute.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("name", name)
                 .getChecked()
-                .toPojo(serviceNamespace);
+                ;
     }
 
     public boolean updateProposalUnversionedAttribute(
             ProposalUnversionedAttribute proposalUnversionedAttribute) {
         return proposalUnversionedAttributeResource
-                .update(new ProposalUnversionedAttributeDto(proposalUnversionedAttribute)
+                .update(new ProposalUnversionedAttribute(proposalUnversionedAttribute)
                         , proposalUnversionedAttribute.getId())
                 .execute();
     }

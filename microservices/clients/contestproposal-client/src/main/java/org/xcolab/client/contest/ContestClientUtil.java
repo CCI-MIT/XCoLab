@@ -9,15 +9,13 @@ import org.xcolab.client.contest.pojo.ContestTranslation;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 import java.util.Map;
 
 public final class ContestClientUtil {
 
-    private static final ContestClient contestClient = ContestClient.fromNamespace(
-            ServiceNamespace.instance());
+    private static final ContestClient contestClient = new ContestClient();
 
     private ContestClientUtil() {
     }
@@ -316,10 +314,6 @@ public final class ContestClientUtil {
 
     public static boolean isContestTitleYearUnique(String contestShortName, Long year,Long currentContestId) {
         return contestClient.isContestTitleYearUnique(contestShortName, year, currentContestId);
-    }
-
-    public static ContestClient fromService(ServiceNamespace serviceNamespace) {
-        return ContestClient.fromNamespace(serviceNamespace);
     }
 
     public static List<ContestCollectionCard> getSubContestCollectionCards(

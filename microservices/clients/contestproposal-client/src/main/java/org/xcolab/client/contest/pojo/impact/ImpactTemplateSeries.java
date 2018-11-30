@@ -1,8 +1,23 @@
 package org.xcolab.client.contest.pojo.impact;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.core.ParameterizedTypeReference;
 
-public class ImpactTemplateSeries extends AbstractImpactTemplateSeries {
+import org.xcolab.util.http.client.types.TypeProvider;
+
+import java.io.Serializable;
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ImpactTemplateSeries extends AbstractImpactTemplateSeries
+        implements Serializable {
+
+    public static final TypeProvider<ImpactTemplateSeries> TYPES =
+            new TypeProvider<>(ImpactTemplateSeries.class,
+                    new ParameterizedTypeReference<List<ImpactTemplateSeries>>() {});
 
     public ImpactTemplateSeries() {}
 
@@ -10,8 +25,7 @@ public class ImpactTemplateSeries extends AbstractImpactTemplateSeries {
         super(value);
     }
 
-    public ImpactTemplateSeries(AbstractImpactTemplateSeries abstractImpactTemplateSeries,
-            ServiceNamespace serviceNamespace) {
+    public ImpactTemplateSeries(AbstractImpactTemplateSeries abstractImpactTemplateSeries) {
         super(abstractImpactTemplateSeries);
     }
 }

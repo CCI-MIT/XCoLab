@@ -2,12 +2,6 @@ package org.xcolab.view.pages.proposals.utils.context;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.comment.CategoryClient;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
-import org.xcolab.client.comment.util.CategoryClientUtil;
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -53,11 +47,6 @@ public class ClientHelper {
     private final OntologyClient ontologyClient;
     private final ProposalTemplateClient proposalTemplateClient;
 
-    // Comment
-    private final CommentClient commentClient;
-    private final ThreadClient threadClient;
-    private final CategoryClient categoryClient;
-
     // Activity
     private final ActivitiesClient activitiesClient;
 
@@ -76,10 +65,6 @@ public class ClientHelper {
         impactClient = ImpactClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
         proposalTemplateClient = ProposalTemplateClientUtil.getClient();
-
-        commentClient = CommentClientUtil.getClient();
-        threadClient = ThreadClientUtil.getClient();
-        categoryClient = CategoryClientUtil.getClient();
 
         activitiesClient = ActivitiesClientUtil.getClient();
     }
@@ -140,15 +125,4 @@ public class ClientHelper {
         return proposalTemplateClient;
     }
 
-    public CommentClient getCommentClient() {
-        return commentClient;
-    }
-
-    public ThreadClient getThreadClient() {
-        return threadClient;
-    }
-
-    public CategoryClient getCategoryClient() {
-        return categoryClient;
-    }
 }

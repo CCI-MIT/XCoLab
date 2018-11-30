@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.modeling.ModelingClientUtil;
+import org.xcolab.client.modeling.ModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -45,18 +45,18 @@ public class UpdateModelDisplayFromJSONAction {
 
         final JSONObject conf = new JSONObject(bean.getJson());
 
-        for (ModelInputGroup group : ModelingClientUtil.getInputGroups(simulation)) {
-            ModelingClientUtil.deleteModelInputGroup(group.getId());
+        for (ModelInputGroup group : ModelingClient.instance().getInputGroups(simulation)) {
+            ModelingClient.instance().deleteModelInputGroup(group.getId());
         }
-        for (ModelInputItem item : ModelingClientUtil.getItemsForModel(simulation)) {
+        for (ModelInputItem item : ModelingClient.instance().getItemsForModel(simulation)) {
             item.setModelGroupId(0L);
-            ModelingClientUtil.updateModelInputItem(item);
+            ModelingClient.instance().updateModelInputItem(item);
         }
 
         for (ModelOutputDisplayItem modi : modelDisplay.getOutputs()) {
             ModelOutputChartOrder moco =
-                    ModelingClientUtil.getModelOutputChartOrder(simulation, modi.getName());
-            ModelingClientUtil.deleteModelOutputChartOrder(moco);
+                    ModelingClient.instance().getModelOutputChartOrder(simulation, modi.getName());
+            ModelingClient.instance().deleteModelOutputChartOrder(moco);
         }
 
         // iterate over inputs and create appropriate groups/inputs config
@@ -104,7 +104,7 @@ public class UpdateModelDisplayFromJSONAction {
             }
             group.setDisplayItemOrder(order);
             group.setParentGroupId(parentGroup);
-            group = ModelingClientUtil.createModelInputGroup(group);
+            group = ModelingClient.instance().createModelInputGroup(group);
 
             if (inputConf.has("children")) {
                 JSONArray children = (JSONArray) inputConf.get("children");

@@ -20,21 +20,14 @@ public class VirtualRestResource<ResourceT, IdT>
         implements IdentifiableHttpResource<ResourceT, IdT> {
 
     private final ResourceEnum resourceEnum;
-    private final ServiceNamespace serviceNamespace;
 
-    private VirtualRestResource(ResourceEnum resourceEnum, ServiceNamespace serviceNamespace) {
+    private VirtualRestResource(ResourceEnum resourceEnum) {
         this.resourceEnum = resourceEnum;
-        this.serviceNamespace = serviceNamespace;
     }
 
     public static <ResourceT, IdT> VirtualRestResource<ResourceT, IdT> of(
             ResourceEnum resourceEnum) {
-        return new VirtualRestResource<>(resourceEnum, ServiceNamespace.instance());
-    }
-
-    public static <ResourceT, IdT> VirtualRestResource<ResourceT, IdT> of(ResourceEnum resourceEnum,
-            ServiceNamespace serviceNamespace) {
-        return new VirtualRestResource<>(resourceEnum, serviceNamespace);
+        return new VirtualRestResource<>(resourceEnum);
     }
 
     @Override
@@ -54,6 +47,6 @@ public class VirtualRestResource<ResourceT, IdT>
 
     @Override
     public UriBuilder getBaseUrl() {
-        return resourceEnum.getCoLabService().getBaseUrl(serviceNamespace);
+        return resourceEnum.getCoLabService().getBaseUrl(ServiceNamespace.instance());
     }
 }

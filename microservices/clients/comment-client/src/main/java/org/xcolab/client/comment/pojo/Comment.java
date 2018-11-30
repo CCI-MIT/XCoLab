@@ -1,47 +1,45 @@
 package org.xcolab.client.comment.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.HtmlUtil;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class Comment extends AbstractComment {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class Comment extends AbstractComment implements Serializable {
 
-    public static final TypeProvider<CommentDto> TYPES = new TypeProvider<>(CommentDto.class,
-                    new ParameterizedTypeReference<List<CommentDto>>() {});
-
-    private final ThreadClient threadClient;
+    public static final TypeProvider<Comment> TYPES = new TypeProvider<>(Comment.class,
+                    new ParameterizedTypeReference<List<Comment>>() {});
 
     public Comment() {
         super();
-        threadClient = ThreadClientUtil.getClient();
     }
 
     public Comment(Long commentId, Long threadId, Long authorUserId, Timestamp createdAt,
             Timestamp updatedAt, Timestamp deletedAt, String content) {
         super(commentId, threadId, authorUserId, createdAt, updatedAt, deletedAt, content);
-        threadClient = ThreadClientUtil.getClient();
     }
 
     public Comment(Comment comment) {
         super(comment);
-        threadClient = comment.threadClient;
     }
 
-    Comment(AbstractComment abstractComment, ServiceNamespace serviceNamespace) {
+    Comment(AbstractComment abstractComment) {
         super(abstractComment);
-        this.threadClient = new ThreadClient(serviceNamespace);
     }
 
     public String getContentPlain() {
@@ -65,7 +63,7 @@ public class Comment extends AbstractComment {
         final Long threadId = getThreadId();
         if (threadId != null && threadId > 0) {
             try {
-                return threadClient.getThread(threadId);
+                return ThreadClient.instance().getThread(threadId);
             } catch (ThreadNotFoundException e) {
                 throw new KeyReferenceException(e);
             }

@@ -1,5 +1,9 @@
 package org.xcolab.client.proposals.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
@@ -11,8 +15,6 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -62,9 +64,9 @@ import org.xcolab.util.enums.promotion.AssessmentStatus;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -74,14 +76,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Proposal extends AbstractProposal {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class Proposal extends AbstractProposal implements Serializable {
 
     private static final Long LONG_DEFAULT_VAL = -1L;
     private static final String STRING_DEFAULT_VAL = "";
 
     private final Clients clients;
-
-    private ServiceNamespace serviceNamespace;
 
     protected final Contest contest;
     protected final ContestPhase contestPhase;
@@ -108,18 +110,9 @@ public class Proposal extends AbstractProposal {
         this(proposal, version, null, null, null);
     }
 
-    public Proposal() {
-        this((ServiceNamespace) null);
-    }
-
     public Proposal(Proposal value) {
         super(value);
-        if (value.getServiceNamespace() != null) {
-            this.serviceNamespace = value.getServiceNamespace();
-            this.clients = new Clients(serviceNamespace);
-        } else {
-            this.clients = new Clients();
-        }
+        this.clients = new Clients();
 
         ContestAssociation contestAssociation = new ContestAssociation();
         this.contestPhase =  contestAssociation.getContestPhase();
@@ -146,13 +139,7 @@ public class Proposal extends AbstractProposal {
     public Proposal(Proposal proposal, Integer version, Contest contest,
             ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         super(proposal);
-
-        if (proposal.getServiceNamespace() != null) {
-            this.serviceNamespace = proposal.getServiceNamespace();
-            this.clients = new Clients(serviceNamespace);
-        } else {
-            this.clients = new Clients();
-        }
+        this.clients = new Clients();
         ContestAssociation contestAssociation =
                 new ContestAssociation(contest, contestPhase, proposal2Phase);
         this.contestPhase =  contestAssociation.getContestPhase();
@@ -168,14 +155,9 @@ public class Proposal extends AbstractProposal {
                 clients.proposalAttribute);
     }
 
-    public Proposal(ServiceNamespace serviceNamespace) {
+    public Proposal() {
         super();
-        if (serviceNamespace != null) {
-            this.serviceNamespace = serviceNamespace;
-            this.clients = new Clients(serviceNamespace);
-        } else {
-            this.clients = new Clients();
-        }
+        this.clients = new Clients();
         this.setId(0L);
 
         ContestAssociation contestAssociation = new ContestAssociation();
@@ -191,11 +173,10 @@ public class Proposal extends AbstractProposal {
                 clients.proposalAttribute);
     }
 
-    public Proposal(AbstractProposal abstractProposal, ServiceNamespace serviceNamespace) {
+    public Proposal(AbstractProposal abstractProposal) {
         super(abstractProposal);
-        this.serviceNamespace = serviceNamespace;
 
-        this.clients = new Clients(serviceNamespace);
+        this.clients = new Clients();
 
         ContestAssociation contestAssociation = new ContestAssociation();
         this.contestPhase =  contestAssociation.getContestPhase();
@@ -210,10 +191,12 @@ public class Proposal extends AbstractProposal {
                 clients.proposalAttribute);
     }
 
+    @JsonIgnore
     public String getProposalLinkUrl(Contest contest) {
         return getProposalLinkUrl(contest, 0L);
     }
 
+    @JsonIgnore
     public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
         Long proposalId = this.getId();
         ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
@@ -240,6 +223,7 @@ public class Proposal extends AbstractProposal {
                 .format(link, contest.getContestYear(), contest.getContestUrlName(), proposalId);
     }
 
+    @JsonIgnore
     public boolean isDeleted() {
         if (this.getId() == 0) {
             return false;
@@ -260,22 +244,27 @@ public class Proposal extends AbstractProposal {
 
     }
 
+    @JsonIgnore
     public String getCleanPitch() {
         return HtmlUtil.cleanAll(getPitch());
     }
 
+    @JsonIgnore
     public String getPitch() {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.PITCH, "");
     }
 
+    @JsonIgnore
     public String getName() {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
     }
 
+    @JsonIgnore
     public String getDescription() {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
     }
 
+    @JsonIgnore
     public boolean isUserAmongFellows(long userId) {
         for (Long fellowId : clients.contestTeamMember.getFellowsForContest(contest.getId())) {
             if (fellowId == userId) {
@@ -285,6 +274,7 @@ public class Proposal extends AbstractProposal {
         return false;
     }
 
+    @JsonIgnore
     public boolean isUserAmongJudges(long userId) {
         for (Long judge : clients.contestTeamMember.getJudgesForContest(contest.getId())) {
             if (judge == userId) {
@@ -294,15 +284,18 @@ public class Proposal extends AbstractProposal {
         return false;
     }
 
+    @JsonIgnore
     public boolean isJudgingContestPhase() {
         return ContestPhasePromoteType.getPromoteType(contestPhase.getContestPhaseAutopromote())
                 == ContestPhasePromoteType.PROMOTE_JUDGED;
     }
 
+    @JsonIgnore
     public String getTeam() {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.TEAM, "");
     }
 
+    @JsonIgnore
     public Member getAuthor() {
         try {
             return MembersClient.getMember(this.getAuthorUserId());
@@ -312,34 +305,40 @@ public class Proposal extends AbstractProposal {
         }
     }
 
+    @JsonIgnore
     public long getSupportersCount() {
         return clients.proposalMemberRating.getProposalSupportersCount(this.getId());
     }
 
+    @JsonIgnore
     public long getSupportersCountCached() {
         return clients.proposalMemberRating.getProposalSupportersCountCached(this.getId());
     }
 
+    @JsonIgnore
     public long getCommentsCount() {
         if (this.getId() > 0) {
-            return clients.comment.countComments(this.getDiscussionId());
+            return CommentClient.instance().countComments(this.getDiscussionId());
         }
         return 0;
     }
 
+    @JsonIgnore
     public long getEvaluationCommentsCount() {
         return 0;
     }
 
+    @JsonIgnore
     private long createDiscussionThread(String threadTitleSuffix, boolean isQuiet) {
         final ContestType contestType = getContest().getContestType();
         CommentThread thread = new CommentThread();
         thread.setAuthorUserId(getAuthorUserId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return clients.thread.createThread(thread).getId();
+        return ThreadClient.instance().createThread(thread).getId();
     }
 
+    @JsonIgnore
     public long getDiscussionIdOrCreate() {
         Long discussionId = getDiscussionId();
         if (discussionId == null) {
@@ -350,6 +349,7 @@ public class Proposal extends AbstractProposal {
         return discussionId;
     }
 
+    @JsonIgnore
     public long getResultsDiscussionIdOrCreate() {
         Long discussionId = getDiscussionId();
         if (discussionId == null) {
@@ -360,10 +360,12 @@ public class Proposal extends AbstractProposal {
         return discussionId;
     }
 
+    @JsonIgnore
     public Date getLastupdatedAt() {
         return this.getUpdatedAt();
     }
 
+    @JsonIgnore
     public Date getLastupdatedAtForContestPhase() {
         if (proposal2Phase.getVersionTo() == -1) {
             return getLastupdatedAt();
@@ -373,7 +375,7 @@ public class Proposal extends AbstractProposal {
 
     }
 
-
+    @JsonIgnore
     public boolean isOpen() {
         if (this.getId() > 0) {
             ProposalAttribute attribute = clients.proposalAttribute
@@ -384,23 +386,28 @@ public class Proposal extends AbstractProposal {
         }
     }
 
+    @JsonIgnore
     public long getImageId() {
         return proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0L, 0);
     }
 
+    @JsonIgnore
     public String getLogoPath() {
         String imageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
         return imageDomain + "/image/proposal/" + getImageId();
     }
 
+    @JsonIgnore
     public String getProposalUrl() {
         return this.getProposalLinkUrl(contest);
     }
 
+    @JsonIgnore
     public String getAbsoluteProposalUrl() {
         return ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get() + getProposalUrl();
     }
 
+    @JsonIgnore
     public String getProposalDiscussionUrl() {
         boolean isSeparateTab = ConfigurationAttributeKey.PROPOSALS_COMMENTS_IN_SEPARATE_TAB.get();
         if (isSeparateTab) {
@@ -409,10 +416,12 @@ public class Proposal extends AbstractProposal {
         return getProposalUrl() + "#Comments";
     }
 
+    @JsonIgnore
     public String getProposalUrl(ContestPhase inPhase) {
         return this.getProposalLinkUrl(contest, inPhase.getId());
     }
 
+    @JsonIgnore
     public List<Member> getSupporters() {
         if (supporters == null) {
             supporters = clients.proposalMemberRating.getProposalSupporters(getId()).stream()
@@ -423,7 +432,7 @@ public class Proposal extends AbstractProposal {
         return supporters;
     }
 
-
+    @JsonIgnore
     public String getAuthorName() {
         String authorName = getTeam();
         if (StringUtils.isBlank(authorName)) {
@@ -432,10 +441,12 @@ public class Proposal extends AbstractProposal {
         return authorName;
     }
 
+    @JsonIgnore
     public Contest getContest() {
         return contest;
     }
 
+    @JsonIgnore
     public boolean isContestMatchesLatestContest() {
         final long contestId = getContest().getId();
         final Contest currentContestForProposal =
@@ -443,10 +454,12 @@ public class Proposal extends AbstractProposal {
         return contestId == currentContestForProposal.getId();
     }
 
+    @JsonIgnore
     public boolean getIsLatestVersion() {
         return getCurrentVersion() == this.getVersion();
     }
 
+    @JsonIgnore
     public Contest getWasMovedToContest() {
         try {
             Contest c = clients.proposal.getCurrentContestForProposal(this.getId());
@@ -463,6 +476,7 @@ public class Proposal extends AbstractProposal {
         }
     }
 
+    @JsonIgnore
     public ProposalVersion getSelectedVersion() {
         for (ProposalVersion pv : clients.proposal.getAllProposalVersions(this.getId())) {
             if (pv.getVersion() == this.getVersion()) {
@@ -472,26 +486,32 @@ public class Proposal extends AbstractProposal {
         return null;
     }
 
+    @JsonIgnore
     public ProposalAttributeHelper getProposalAttributeHelper() {
         return proposalAttributeHelper;
     }
 
+    @JsonIgnore
     public Integer getCurrentVersion() {
         return clients.proposal.getMaxVersion(getId());
     }
 
+    @JsonIgnore
     public int getVersion() {
         return this.getCurrentVersion() != null ? this.getCurrentVersion() : 0;
     }
 
+    @JsonIgnore
     public long getcontestId() {
         return contest.getId();
     }
 
+    @JsonIgnore
     public boolean isVisible() {
         return !this.isDeleted();
     }
 
+    @JsonIgnore
     public boolean isVisibleInContest(long contestId) {
         try {
             if (this.getId() == 0) {
@@ -505,10 +525,12 @@ public class Proposal extends AbstractProposal {
         }
     }
 
+    @JsonIgnore
     public ContestPhase getContestPhase() {
         return contestPhase;
     }
 
+    @JsonIgnore
     public List<ProposalTeamMember> getMembers() {
         if (members == null) {
             members = new ArrayList<>();
@@ -522,28 +544,34 @@ public class Proposal extends AbstractProposal {
         return members;
     }
 
+    @JsonIgnore
     public boolean isFeatured() {
         return getRibbonWrapper().getRibbon() > 0;
     }
 
+    @JsonIgnore
     public JudgingSystemActions.AdvanceDecision getJudgeDecision() {
         long judgingDecision = proposalContestPhaseAttributeHelper.getAttributeLongValue(ProposalContestPhaseAttributeKeys.JUDGE_DECISION, 0, LONG_DEFAULT_VAL);
         return JudgingSystemActions.AdvanceDecision.fromInt((int) judgingDecision);
     }
 
+    @JsonIgnore
     public JudgingSystemActions.FellowAction getFellowAction() {
         Long action = proposalContestPhaseAttributeHelper.getAttributeLongValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0, LONG_DEFAULT_VAL);
         return JudgingSystemActions.FellowAction.fromInt(action.intValue());
     }
 
+    @JsonIgnore
     public String getFellowActionComment() {
         return proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT, 0, STRING_DEFAULT_VAL);
     }
 
+    @JsonIgnore
     public String getProposalReview() {
         return proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, 0, STRING_DEFAULT_VAL);
     }
 
+    @JsonIgnore
     public List<Long> getSelectedJudges() {
         List<Long> selectedJudges = new ArrayList<>();
 
@@ -565,6 +593,7 @@ public class Proposal extends AbstractProposal {
         return selectedJudges;
     }
 
+    @JsonIgnore
     public List<Member> getSelectedJudgeUsers() {
         List<Member> selectedJudges = new ArrayList<>();
 
@@ -596,6 +625,7 @@ public class Proposal extends AbstractProposal {
         return selectedJudges;
     }
 
+    @JsonIgnore
     public boolean getIsUserAmongSelectedJudges(long judgeId) {
         if (!getFellowScreeningNecessary()) {
             return isUserAmongJudges(judgeId);
@@ -605,10 +635,12 @@ public class Proposal extends AbstractProposal {
                 .anyMatch(userId -> Objects.equals(userId, judgeId));
     }
 
+    @JsonIgnore
     public long getVotesCount() {
         return getVotesCountInternal(CacheName.NONE);
     }
 
+    @JsonIgnore
     public long getVotesCountFromCache() {
         return getVotesCountInternal(CacheName.MEMBER_RATING);
     }
@@ -623,6 +655,7 @@ public class Proposal extends AbstractProposal {
         return 0;
     }
 
+    @JsonIgnore
     public List<ProposalTemplateSectionDefinition> getSections() {
         if (sections == null) {
             sections = new ArrayList<>();
@@ -644,6 +677,7 @@ public class Proposal extends AbstractProposal {
         return contestPhase.getFellowScreeningActive();
     }
 
+    @JsonIgnore
     public List<ProposalTeamMembershipRequest> getMembershipRequests() {
         if (this.membershipRequests == null) {
             membershipRequests = new ArrayList<>();
@@ -656,6 +690,7 @@ public class Proposal extends AbstractProposal {
         return this.membershipRequests;
     }
 
+    @JsonIgnore
     public List<String[]> getAllModelRegions() {
         List<String[]> modelRegions = new ArrayList<>();
         for (ModelRegions modelRegion : ModelRegions.values()) {
@@ -664,6 +699,7 @@ public class Proposal extends AbstractProposal {
         return modelRegions;
     }
 
+    @JsonIgnore
     public String getModelRegion() {
         ProposalAttribute attr = proposalAttributeHelper.getAttributeOrNull(ProposalAttributeKeys.REGION);
         if (attr == null) {
@@ -672,9 +708,11 @@ public class Proposal extends AbstractProposal {
         return attr.getStringValue();
     }
 
+    @JsonIgnore
     public void setModelRegion(String region, Long userId) {
         ProposalAttributeClientUtil.setProposalAttribute(createProposalAttribute(this.getId(), ProposalAttributeKeys.REGION, region),userId);
     }
+
     private static ProposalAttribute createProposalAttribute(Long proposalId, String name, String stringValue){
         ProposalAttribute proposalAttribute = new ProposalAttribute();
         proposalAttribute.setProposalId(proposalId);
@@ -683,10 +721,12 @@ public class Proposal extends AbstractProposal {
         return proposalAttribute;
     }
 
+    @JsonIgnore
     public Long getModelId() {
         return contest.getDefaultModelId();
     }
 
+    @JsonIgnore
     public void setScenarioId(Long scenarioId, Long isConsolidatedScenario, Long userId) {
         ProposalAttribute proposalAttribute = new ProposalAttribute();
         proposalAttribute.setProposalId(this.getId());
@@ -696,6 +736,7 @@ public class Proposal extends AbstractProposal {
         ProposalAttributeClientUtil.setProposalAttribute(proposalAttribute,userId);
     }
 
+    @JsonIgnore
     public Long getScenarioId() {
         ProposalAttribute attr = proposalAttributeHelper.getAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
         if (attr == null) {
@@ -704,11 +745,13 @@ public class Proposal extends AbstractProposal {
         return attr.getNumericValue();
     }
 
+    @JsonIgnore
     public Boolean isConsolidatedScenario(Long scenarioId) {
         ProposalAttribute attr = proposalAttributeHelper.getAttributeOrNull(ProposalAttributeKeys.SCENARIO_ID);
         return attr != null && attr.getAdditionalId() == 1;
     }
 
+    @JsonIgnore
     public Map<Long, List<Proposal>> getSubProposalPerModel() {
         Map<Long, List<Proposal>> subProposalPerModel = new HashMap<>();
         List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getId());
@@ -724,10 +767,12 @@ public class Proposal extends AbstractProposal {
         return subProposalPerModel;
     }
 
+    @JsonIgnore
     public Scenario getScenario() throws IOException {
         return getScenarioByProposalId(this.getId());
     }
 
+    @JsonIgnore
     public Scenario getScenarioByProposalId(Long proposalId) throws IOException {
         return RomaClientUtil.client().getScenario(proposalId);
     }
@@ -746,6 +791,7 @@ public class Proposal extends AbstractProposal {
         return modelId;
     }
 
+    @JsonIgnore
     public List<Scenario> getSubProposalScenarios() throws IOException {
         List<Scenario> subProposalScenarios = new ArrayList<>();
         List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getId());
@@ -760,6 +806,7 @@ public class Proposal extends AbstractProposal {
         return getModelIdForScenarioId(this.getId());
     }
 
+    @JsonIgnore
     public List<Long> getSubProposalScenarioIds() {
         List<Long> subProposalScenarioIds = new ArrayList<>();
         Map<Long, List<Proposal>> subProposalPerModel = getSubProposalPerModel();
@@ -776,6 +823,7 @@ public class Proposal extends AbstractProposal {
         return subProposalScenarioIds;
     }
 
+    @JsonIgnore
     public String getImpactCommentAuthor() {
         ProposalUnversionedAttribute authorCommentAttribute = unversionedAttributeHelper
                 .getAttributeOrNull(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT
@@ -789,6 +837,7 @@ public class Proposal extends AbstractProposal {
         return "";
     }
 
+    @JsonIgnore
     public String getImpactCommentIaf() {
         ProposalUnversionedAttribute iafCommentAttribute = unversionedAttributeHelper
                 .getAttributeOrNull(ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT
@@ -805,6 +854,7 @@ public class Proposal extends AbstractProposal {
     /**
      * Determine if fellows are done with proposal
      */
+    @JsonIgnore
     public AssessmentStatus getScreeningStatus() {
         switch (getFellowAction()) {
             case INCOMPLETE:
@@ -821,6 +871,7 @@ public class Proposal extends AbstractProposal {
     /**
      * Determine if IA fellows are done with proposal
      */
+    @JsonIgnore
     public AssessmentStatus getImpactAssessmentStatus() {
         final String impactCommentIaf = getImpactCommentIaf();
         if (impactCommentIaf.startsWith("Done")) {
@@ -835,6 +886,7 @@ public class Proposal extends AbstractProposal {
     /**
      * Determine if judges are done with proposal
      */
+    @JsonIgnore
     public AssessmentStatus getJudgeStatus() {
         if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE
                 || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC
@@ -850,6 +902,7 @@ public class Proposal extends AbstractProposal {
     /**
      * Determines whether the screening/advance decision of the proposal is done
      */
+    @JsonIgnore
     public AssessmentStatus getOverallStatus() {
         if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON
                 && (getProposalReview()!=null)) {
@@ -864,6 +917,7 @@ public class Proposal extends AbstractProposal {
         return AssessmentStatus.UNKNOWN;
     }
 
+    @JsonIgnore
     public Member getUserForSelectedVersion() {
         try {
             return MembersClient.getMember(getSelectedVersion().getAuthorUserId());
@@ -872,6 +926,7 @@ public class Proposal extends AbstractProposal {
         }
     }
 
+    @JsonIgnore
     public boolean getAllJudgesReviewFinished() {
 
         if (!getSelectedJudges().isEmpty()) {
@@ -888,6 +943,7 @@ public class Proposal extends AbstractProposal {
         return true;
     }
 
+    @JsonIgnore
     public boolean getIsReviewFinishedForJudge(long judgeId) {
         List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                 .getProposalRatingsByProposalUserContestPhase(
@@ -896,6 +952,7 @@ public class Proposal extends AbstractProposal {
         return wrapper.isReviewComplete();
     }
 
+    @JsonIgnore
     public Proposal getBaseProposal() {
         long baseProposalId = proposalAttributeHelper
                 .getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_ID, 0);
@@ -909,6 +966,7 @@ public class Proposal extends AbstractProposal {
         return null;
     }
 
+    @JsonIgnore
     public List<ProposalRating> getRatings() {
         if (this.proposalRatings == null) {
             return new ArrayList<>();
@@ -916,6 +974,7 @@ public class Proposal extends AbstractProposal {
         return this.proposalRatings.getRatings();
     }
 
+    @JsonIgnore
     public String getRatingComment() {
         if (this.proposalRatings == null) {
             return "";
@@ -923,6 +982,7 @@ public class Proposal extends AbstractProposal {
         return this.proposalRatings.getComment();
     }
 
+    @JsonIgnore
     public Boolean getRatingShouldAdvance() {
         if (this.proposalRatings == null) {
             return null;
@@ -930,21 +990,20 @@ public class Proposal extends AbstractProposal {
         return this.proposalRatings.getShouldAdvance();
     }
 
-    public ServiceNamespace getServiceNamespace() {
-        return serviceNamespace;
-    }
-
+    @JsonIgnore
     public ProposalRibbon getRibbonWrapper() {
         if (ribbonWrapper == null) {
-            ribbonWrapper = new ProposalRibbon(this, serviceNamespace);
+            ribbonWrapper = new ProposalRibbon(this);
         }
         return ribbonWrapper;
     }
 
+    @JsonIgnore
     public boolean hasRibbon() {
         return getRibbonWrapper().getRibbon() > 0;
     }
 
+    @JsonIgnore
     public Long getImage() {
         return proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0);
     }
@@ -953,8 +1012,6 @@ public class Proposal extends AbstractProposal {
 
         final ContestClient contest;
         final ProposalClient proposal;
-        final CommentClient comment;
-        final ThreadClient thread;
 
         final ProposalMemberRatingClient proposalMemberRating;
         final ProposalJudgeRatingClient proposalJudgeRating;
@@ -967,35 +1024,15 @@ public class Proposal extends AbstractProposal {
         final ProposalTemplateClient proposalTemplate;
 
         Clients() {
-            this(null);
-        }
-
-        Clients(ServiceNamespace serviceNamespace) {
-            if (serviceNamespace != null) {
-                contest = ContestClient.fromNamespace(serviceNamespace);
-                proposalTemplate = ProposalTemplateClient.fromNamespace(serviceNamespace);
-                proposal = ProposalClient.fromNamespace(serviceNamespace);
-                proposalAttribute = ProposalAttributeClient.fromNamespace(serviceNamespace);
-                proposalPhase = ProposalPhaseClient.fromNamespace(serviceNamespace);
-                contestTeamMember =  ContestTeamMemberClient.fromService(serviceNamespace);
-                comment = CommentClient.fromService(serviceNamespace);
-                thread = ThreadClient.fromService(serviceNamespace);
-                proposalMemberRating = ProposalMemberRatingClient.fromNamespace(serviceNamespace);
-                proposalJudgeRating = ProposalJudgeRatingClient.fromNamespace(serviceNamespace);
-                membership = MembershipClient.fromNamespace(serviceNamespace);
-            } else {
-                contest = ContestClientUtil.getClient();
-                proposal = ProposalClientUtil.getClient();
-                proposalAttribute = ProposalAttributeClientUtil.getClient();
-                proposalPhase = ProposalPhaseClientUtil.getClient();
-                contestTeamMember = ContestTeamMemberClientUtil.getClient();
-                comment = CommentClientUtil.getClient();
-                thread = ThreadClientUtil.getClient();
-                proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
-                membership = MembershipClientUtil.getClient();
-                proposalTemplate = ProposalTemplateClientUtil.getClient();
-                proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
-            }
+            contest = ContestClientUtil.getClient();
+            proposal = ProposalClientUtil.getClient();
+            proposalAttribute = ProposalAttributeClientUtil.getClient();
+            proposalPhase = ProposalPhaseClientUtil.getClient();
+            contestTeamMember = ContestTeamMemberClientUtil.getClient();
+            proposalMemberRating = ProposalMemberRatingClientUtil.getClient();
+            membership = MembershipClientUtil.getClient();
+            proposalTemplate = ProposalTemplateClientUtil.getClient();
+            proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
         }
     }
 

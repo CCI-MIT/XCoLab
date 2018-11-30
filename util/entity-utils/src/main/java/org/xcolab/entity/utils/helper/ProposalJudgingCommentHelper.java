@@ -6,6 +6,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
@@ -28,7 +29,7 @@ public class ProposalJudgingCommentHelper {
 
     public ProposalJudgingCommentHelper(Proposal proposal, ContestPhase contestPhase) {
         this.proposal = proposal;
-        proposalPhaseClient = ProposalPhaseClient.fromNamespace(proposal.getServiceNamespace());
+        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
         this.contestPhase = contestPhase;
     }
 
