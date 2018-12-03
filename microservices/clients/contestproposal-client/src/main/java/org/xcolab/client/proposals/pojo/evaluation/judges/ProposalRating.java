@@ -9,7 +9,6 @@ import java.text.DecimalFormat;
 
 public class ProposalRating extends AbstractProposalRating {
 
-
     private ProposalRatingType ratingType;
     private ProposalRatingValue ratingValue;
     private Long roundFactor = 1L;
@@ -40,20 +39,16 @@ public class ProposalRating extends AbstractProposalRating {
         super(abstractProposalRating);
     }
 
-
-
     public boolean isRatingComplete() {
         final boolean commentComplete = !getCommentEnabled()
                 || !StringUtils.isEmpty(this.getComment());
         return getRatingValueId() > 0 && commentComplete;
     }
 
-
     public ProposalRating(ProposalRating proposalRating, Long roundFactor) {
         super(proposalRating);
         this.roundFactor = roundFactor;
     }
-
 
     public String getRatingValueName() {
         ProposalRatingValue ratingValue = this.getRatingValue();
@@ -137,9 +132,5 @@ public class ProposalRating extends AbstractProposalRating {
             ratingValueInPercent = proposalRatingValue / 5.0 * 100.0;
         }
         return ratingValueInPercent;
-    }
-
-    public ProposalRating unwrap() {
-        return this;
     }
 }
