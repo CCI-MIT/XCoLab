@@ -38,7 +38,7 @@ public class ProposalJudgeWrapper extends Proposal {
                             currentMember.getId(),
                             proposalId,
                             contestPhase.getId());
-            this.proposalRatings = new ProposalRatings(list);
+            this.proposalRatings = new ProposalRatings(currentMember, list);
         }
 
     }
