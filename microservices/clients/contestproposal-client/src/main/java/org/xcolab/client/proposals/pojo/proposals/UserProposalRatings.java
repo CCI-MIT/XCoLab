@@ -1,11 +1,9 @@
 package org.xcolab.client.proposals.pojo.proposals;
 
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 
-import java.util.Collections;
 import java.util.List;
 
 public class UserProposalRatings extends ProposalRatings {
