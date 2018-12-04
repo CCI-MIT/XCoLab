@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -150,6 +151,7 @@ public class PojoGenerator extends AbstractMojo {
             pojo.addAnnotation(JsonInclude.class).setEnumValue(Include.NON_NULL);
             pojo.addAnnotation(JsonIgnoreProperties.class).setLiteralValue("ignoreUnknown", "true");
             pojo.addInterface(srcEntry.getKey());
+            pojo.addInterface(Serializable.class);
 
             List<FieldSource<JavaClassSource>> fields = new ArrayList<>();
             for (MethodSource<JavaInterfaceSource> method : srcEntry.getKey().getMethods()) {
