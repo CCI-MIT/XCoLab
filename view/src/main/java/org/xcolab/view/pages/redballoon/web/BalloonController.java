@@ -44,14 +44,13 @@ public class BalloonController {
     private static final String HOME_VIEW = "redballoon/view";
     private static final String SHARE_VIEW = "redballoon/sharePage";
 
-    @Autowired
-    private IBalloonClient balloonClient;
-
+    private final IBalloonClient balloonClient;
     private final BalloonService balloonService;
 
     @Autowired
-    public BalloonController(BalloonService balloonService) {
+    public BalloonController(BalloonService balloonService, IBalloonClient balloonClient) {
         this.balloonService = balloonService;
+        this.balloonClient = balloonClient;
     }
 
     @GetMapping("/snp/socialnetworkprize")

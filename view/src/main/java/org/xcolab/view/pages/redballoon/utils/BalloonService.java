@@ -50,16 +50,15 @@ public class BalloonService {
             "org.xcolab.snp.newBalloonUserTracking";
 
     private final AuthenticationService authenticationService;
+    private final ITrackingClient trackingClient;
+    private final IBalloonClient balloonClient;
 
     @Autowired
-    private ITrackingClient trackingClient;
-
-    @Autowired
-    private IBalloonClient balloonClient;
-
-    @Autowired
-    public BalloonService(AuthenticationService authenticationService) {
+    public BalloonService(AuthenticationService authenticationService,
+            ITrackingClient trackingClient, IBalloonClient balloonClient) {
         this.authenticationService = authenticationService;
+        this.trackingClient = trackingClient;
+        this.balloonClient = balloonClient;
     }
 
     public IBalloonLink createBalloonLink(String email, IBalloonUserTracking but)
