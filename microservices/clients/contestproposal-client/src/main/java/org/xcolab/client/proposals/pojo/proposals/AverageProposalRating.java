@@ -15,9 +15,4 @@ public class AverageProposalRating extends ProposalRatings {
     public AverageProposalRating(List<ProposalRating> ratings, Long roundFactor) {
         super(ratings, roundFactor);
     }
-
-    @Override
-    public Member getAuthor() {
-        throw new IllegalStateException("Author does not exist for average ratings");
-    }
 }

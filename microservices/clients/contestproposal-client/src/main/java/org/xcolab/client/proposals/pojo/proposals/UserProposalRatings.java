@@ -23,7 +23,6 @@ public class UserProposalRatings extends ProposalRatings {
         this.author = author;
     }
 
-    @Override
     public Member getAuthor() {
         return author;
     }

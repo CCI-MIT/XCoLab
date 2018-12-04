@@ -114,6 +114,4 @@ public abstract class ProposalRatings {
             return false;
         }
     }
-
-    public abstract Member getAuthor();
 }
