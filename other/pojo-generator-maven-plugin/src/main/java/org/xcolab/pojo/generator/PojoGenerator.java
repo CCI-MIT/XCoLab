@@ -1,5 +1,8 @@
 package org.xcolab.pojo.generator;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -144,6 +147,8 @@ public class PojoGenerator extends AbstractMojo {
 
             pojo.setPackage(srcEntry.getKey().getPackage() + "." + suffix)
                     .setName(PojoGenerator.getClassName(srcEntry.getKey().getName()));
+            pojo.addAnnotation(JsonInclude.class).setEnumValue(Include.NON_NULL);
+            pojo.addAnnotation(JsonIgnoreProperties.class).setLiteralValue("ignoreUnknown", "true");
             pojo.addInterface(srcEntry.getKey());
 
             List<FieldSource<JavaClassSource>> fields = new ArrayList<>();
