@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.files.FilesClient;
-import org.xcolab.client.files.pojo.FileEntry;
+import org.xcolab.client.contents.FilesClient;
+import org.xcolab.client.contents.pojo.FileEntry;
 import org.xcolab.view.util.entity.upload.FileUploadUtil;
 
 import java.io.ByteArrayInputStream;

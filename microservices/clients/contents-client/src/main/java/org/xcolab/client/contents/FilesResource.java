@@ -1,4 +1,4 @@
-package org.xcolab.client.files;
+package org.xcolab.client.contents;
 
 import org.xcolab.util.http.client.CoLabService;
 import org.xcolab.util.http.client.enums.ResourceEnum;

@@ -1,8 +1,8 @@
-package org.xcolab.client.files;
+package org.xcolab.client.contents;
 
-import org.xcolab.client.files.pojo.FileEntry;
-import org.xcolab.client.files.providers.FileSystemPersistenceProvider;
-import org.xcolab.client.files.providers.PersistenceProvider;
+import org.xcolab.client.contents.pojo.FileEntry;
+import org.xcolab.client.contents.providers.FileSystemPersistenceProvider;
+import org.xcolab.client.contents.providers.PersistenceProvider;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;

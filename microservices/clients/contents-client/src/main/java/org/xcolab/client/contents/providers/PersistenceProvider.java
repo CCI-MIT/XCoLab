@@ -1,6 +1,6 @@
-package org.xcolab.client.files.providers;
+package org.xcolab.client.contents.providers;
 
-import org.xcolab.client.files.pojo.FileEntry;
+import org.xcolab.client.contents.pojo.FileEntry;
 
 public interface PersistenceProvider {
 

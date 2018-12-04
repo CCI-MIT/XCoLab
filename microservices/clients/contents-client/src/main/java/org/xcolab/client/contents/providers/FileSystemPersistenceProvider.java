@@ -1,8 +1,8 @@
-package org.xcolab.client.files.providers;
+package org.xcolab.client.contents.providers;
 
 import org.apache.commons.io.FileUtils;
 
-import org.xcolab.client.files.pojo.FileEntry;
+import org.xcolab.client.contents.pojo.FileEntry;
 import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.File;

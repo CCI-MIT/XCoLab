@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
-import org.xcolab.client.files.FilesClient;
-import org.xcolab.client.files.pojo.FileEntry;
+import org.xcolab.client.contents.FilesClient;
+import org.xcolab.client.contents.pojo.FileEntry;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.servlet.ServletFileUtil;
 

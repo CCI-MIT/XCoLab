@@ -22,8 +22,8 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.files.FilesClient;
-import org.xcolab.client.files.pojo.FileEntry;
+import org.xcolab.client.contents.FilesClient;
+import org.xcolab.client.contents.pojo.FileEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;

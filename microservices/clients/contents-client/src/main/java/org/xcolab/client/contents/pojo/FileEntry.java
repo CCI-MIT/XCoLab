@@ -1,10 +1,10 @@
-package org.xcolab.client.files.pojo;
+package org.xcolab.client.contents.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.files.FilesClient;
+import org.xcolab.client.contents.FilesClient;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.File;
