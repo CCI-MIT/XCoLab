@@ -1,12 +1,11 @@
 package org.xcolab.service.contents.domain.fileentry;
 
-import org.xcolab.model.tables.pojos.FileEntry;
+import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 
 public interface FileEntryDao {
 
-    FileEntry create(FileEntry fileEntry);
+    IFileEntry create(IFileEntry IFileEntry);
 
-    FileEntry get(Long fileEntryid) throws NotFoundException;
-
+    IFileEntry get(Long fileEntryid) throws NotFoundException;
 }

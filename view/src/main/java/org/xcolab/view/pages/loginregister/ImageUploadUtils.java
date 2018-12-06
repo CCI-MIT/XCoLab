@@ -4,8 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contents.FilesClient;
-import org.xcolab.client.contents.pojo.FileEntry;
+import org.xcolab.client.content.FilesClient;
+import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
+import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.util.entity.upload.FileUploadUtil;
@@ -28,19 +29,25 @@ public class ImageUploadUtils {
 
     private static final String UPLOAD_PATH = PlatformAttributeKey.FILES_UPLOAD_DIR.get();
 
+    private static FilesClient filesClient;
+
+    public static void setFilesClient(FilesClient filesClient) {
+        ImageUploadUtils.filesClient = filesClient;
+    }
+
     public static long uploadImage(URL url) {
         try {
             BufferedImage image = ImageIO.read(url);
             byte[] imgBArr = FileUploadUtil.resizeAndCropImage(image, IMAGE_RESIZE_WIDTH, IMAGE_RESIZE_HEIGHT);
 
 
-            FileEntry file = new FileEntry();
+            IFileEntry file = new FileEntry();
             file.setCreatedAt(new Timestamp(new Date().getTime()));
             file.setFileExtension("png");
             file.setFileSize(imgBArr.length);
             file.setFileName(url.toString());
 
-            file = FilesClient.createFileEntry(file, imgBArr, UPLOAD_PATH);
+            file = ImageUploadUtils.filesClient.createFileEntry(file, imgBArr, UPLOAD_PATH);
 
             return file.getId();
         } catch (IOException  e) {

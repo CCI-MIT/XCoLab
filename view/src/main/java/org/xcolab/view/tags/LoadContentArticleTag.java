@@ -1,11 +1,12 @@
 package org.xcolab.view.tags;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import org.xcolab.client.contents.ContentsClient;
-import org.xcolab.client.contents.exceptions.ContentNotFoundException;
-import org.xcolab.client.contents.pojo.ContentArticle;
-import org.xcolab.client.contents.pojo.ContentArticleVersion;
+import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.exceptions.ContentNotFoundException;
+import org.xcolab.client.content.pojo.IContentArticle;
+import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.util.i18n.I18nUtils;
 
 import java.util.Locale;
@@ -17,11 +18,14 @@ public class LoadContentArticleTag extends BodyTagSupport {
 
     private long articleId;
 
+    @Autowired
+    private ContentsClient contentsClient;
+
     @Override
     public int doStartTag() throws JspException {
         if (articleId > 0) {
             try {
-                final ContentArticle contentArticle = ContentsClient.getContentArticle(articleId);
+                final IContentArticle contentArticle = contentsClient.getContentArticle(articleId);
 
                 Locale locale = LocaleContextHolder.getLocale();
                 String localeString = "en";
@@ -29,11 +33,11 @@ public class LoadContentArticleTag extends BodyTagSupport {
                     localeString = locale.getLanguage();
                 }
 
-                ContentArticleVersion contentArticleVersion = ContentsClient
+                IContentArticleVersion contentArticleVersion = contentsClient
                         .getLatestVersionByArticleIdAndLanguage(
                                 contentArticle.getId(), localeString);
                 if (contentArticleVersion == null) {
-                    contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(
+                    contentArticleVersion = contentsClient.getLatestVersionByArticleIdAndLanguage(
                             contentArticle.getId(),
                             I18nUtils.DEFAULT_LOCALE.getLanguage());
                 }

@@ -12,7 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.ContentArticle;
+import org.xcolab.client.content.pojo.IContentArticle;
+import org.xcolab.model.tables.pojos.ContentArticleImpl;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 
 import java.util.List;
@@ -36,38 +37,34 @@ public class ContentArticleDaoTest {
 
     @Test
     public void shouldGetArticlesInFolder() throws Exception {
-
-        List<? extends ContentArticle> az = contentArticleDao.getArticlesInFolder(5L);
+        List<? extends IContentArticle> az = contentArticleDao.getArticlesInFolder(5L);
 
         assertEquals(2,az.size());
     }
 
     @Test
     public void shouldGetArticles() throws Exception {
-        List<? extends ContentArticle> az = contentArticleDao.getArticles();
+        List<? extends IContentArticle> az = contentArticleDao.getArticles();
         assertEquals(3,az.size());
     }
 
     @Test
     public void shouldCreateNewContentArticle() throws Exception {
-
-        ContentArticle ae = new ContentArticle();
+        IContentArticle ae = new ContentArticleImpl();
         ae = contentArticleDao.create(ae);
         assertNotNull(contentArticleDao.get(ae.getId()));
     }
 
     @Test
     public void shouldGetContentArticle() throws Exception {
-
-        ContentArticle ae = contentArticleDao.get(2L);
+        IContentArticle ae = contentArticleDao.get(2L);
 
         assertNotNull(contentArticleDao.get(ae.getId()));
     }
 
     @Test
     public void shouldDeleteContentArticle() throws Exception {
-
-        ContentArticle ae = new ContentArticle();
+        IContentArticle ae = new ContentArticleImpl();
         ae = contentArticleDao.create(ae);
         assertTrue(contentArticleDao.delete(ae.getId()) == 1);
         thrown.expect(NotFoundException.class);
@@ -76,12 +73,12 @@ public class ContentArticleDaoTest {
 
     @Test
     public void shouldUpdateContentArticle() throws Exception {
-        ContentArticle ae = new ContentArticle();
+        IContentArticle ae = new ContentArticleImpl();
         ae.setAuthorUserId(3L);
         ae = contentArticleDao.create(ae);
         ae.setAuthorUserId(1L);
         contentArticleDao.update(ae);
-        ContentArticle az = contentArticleDao.get(ae.getId());
+        IContentArticle az = contentArticleDao.get(ae.getId());
         assertEquals(az.getAuthorUserId(), ae.getAuthorUserId());
     }
 }

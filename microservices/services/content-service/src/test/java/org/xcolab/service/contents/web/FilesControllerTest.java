@@ -18,7 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.model.tables.pojos.FileEntry;
+import org.xcolab.client.content.pojo.IFileEntry;
+import org.xcolab.model.tables.pojos.FileEntryImpl;
 import org.xcolab.service.contents.domain.fileentry.FileEntryDao;
 
 import java.nio.charset.Charset;
@@ -54,18 +55,17 @@ public class FilesControllerTest {
 
     @Before
     public void before() throws Exception{
-
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     public void shouldCreateNewFileEntryDao() throws Exception {
-        FileEntry fileEntry = new FileEntry();
-        fileEntry.setId(12L);
+        IFileEntry IFileEntry = new FileEntryImpl();
+        IFileEntry.setId(12L);
         this.mockMvc.perform(
                 post("/fileEntries")
                         .contentType(contentType).accept(contentType)
-                        .content(objectMapper.writeValueAsString(fileEntry)))
+                        .content(objectMapper.writeValueAsString(IFileEntry)))
                 .andExpect(status().isOk());
 
         Mockito.verify(fileEntryDao,Mockito.times(1)).create(Mockito.anyObject());
@@ -73,12 +73,12 @@ public class FilesControllerTest {
 
     @Test
     public void shouldGetFileEntryDao() throws Exception {
-        FileEntry fileEntry = new FileEntry();
-        fileEntry.setId(12L);
+        IFileEntry IFileEntry = new FileEntryImpl();
+        IFileEntry.setId(12L);
         this.mockMvc.perform(
                 get("/fileEntries/123")
                         .contentType(contentType).accept(contentType)
-                        .content(objectMapper.writeValueAsString(fileEntry)))
+                        .content(objectMapper.writeValueAsString(IFileEntry)))
                 .andExpect(status().isOk());
 
         Mockito.verify(fileEntryDao,Mockito.times(1)).get(Mockito.anyLong());

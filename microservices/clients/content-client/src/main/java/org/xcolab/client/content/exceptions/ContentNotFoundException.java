@@ -1,4 +1,4 @@
-package org.xcolab.client.contents.exceptions;
+package org.xcolab.client.content.exceptions;
 
 public class ContentNotFoundException extends RuntimeException {
     public ContentNotFoundException(String msg) {

@@ -1,4 +1,4 @@
-package org.xcolab.client.contents.exceptions;
+package org.xcolab.client.content.exceptions;
 
 public class FileEntryNotFoundException extends Exception {
     public FileEntryNotFoundException(long fileEntryId) {

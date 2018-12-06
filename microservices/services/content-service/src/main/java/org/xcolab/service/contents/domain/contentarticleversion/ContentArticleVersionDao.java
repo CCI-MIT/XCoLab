@@ -1,6 +1,6 @@
 package org.xcolab.service.contents.domain.contentarticleversion;
 
-import org.xcolab.model.tables.pojos.ContentArticleVersion;
+import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -8,17 +8,20 @@ import java.util.List;
 
 public interface ContentArticleVersionDao {
 
-    ContentArticleVersion create(ContentArticleVersion contentArticleVersion);
+    IContentArticleVersion create(IContentArticleVersion contentArticleVersion);
+
     int deleteByArticleId(long contentArticleId);
 
-    boolean update(ContentArticleVersion contentArticleVersion);
+    boolean update(IContentArticleVersion contentArticleVersion);
 
-    ContentArticleVersion get(Long contentArticleId) throws NotFoundException;
+    IContentArticleVersion get(Long contentArticleId) throws NotFoundException;
 
-    List<ContentArticleVersion> findByGiven(PaginationHelper paginationHelper, Long contentArticleId, Long contentArticleVersion,
-        Long folderId, Long ancestorFolderId, String title, String lang);
+    List<IContentArticleVersion> findByGiven(PaginationHelper paginationHelper,
+            Long contentArticleId, Long contentArticleVersion,
+            Long folderId, Long ancestorFolderId, String title, String lang);
 
-    List<ContentArticleVersion> getByFolderId(Long contentFolderId);
+    List<IContentArticleVersion> getByFolderId(Long contentFolderId);
 
-    ContentArticleVersion getLatestVersionByArticleIdAndLanguage(Long articleId, String language) throws NotFoundException;
+    IContentArticleVersion getLatestVersionByArticleIdAndLanguage(Long articleId, String language)
+            throws NotFoundException;
 }

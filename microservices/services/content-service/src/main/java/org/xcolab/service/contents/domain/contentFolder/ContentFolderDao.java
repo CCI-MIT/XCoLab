@@ -1,18 +1,18 @@
 package org.xcolab.service.contents.domain.contentFolder;
 
-import org.xcolab.model.tables.pojos.ContentFolder;
+import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
 public interface ContentFolderDao {
-    ContentFolder create(ContentFolder contentFolder);
+    IContentFolder create(IContentFolder IContentFolder);
 
-    boolean update(ContentFolder contentFolder);
+    boolean update(IContentFolder IContentFolder);
 
-    ContentFolder get(Long contentFolderId);
+    IContentFolder get(Long contentFolderId);
 
-    List<ContentFolder> findByGiven(PaginationHelper paginationHelper, Long parentFolderId);
+    List<IContentFolder> findByGiven(PaginationHelper paginationHelper, Long parentFolderId);
 
-    List<ContentFolder> findByAncestorFolderId(long ancestorFolderId);
+    List<IContentFolder> findByAncestorFolderId(long ancestorFolderId);
 }

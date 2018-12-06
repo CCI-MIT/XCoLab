@@ -12,7 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.ContentFolder;
+import org.xcolab.client.content.pojo.IContentFolder;
+import org.xcolab.model.tables.pojos.ContentFolderImpl;
 import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -34,14 +35,12 @@ public class ContentFolderDaoTest {
 
     @Test
     public void shouldCreateNewContentFolder() throws Exception {
-
-        ContentFolder ae = new ContentFolder();
+        IContentFolder ae = new ContentFolderImpl();
         ae.setName("upper");
         ae.setDescription("");
         ae.setParentFolderId(0L);
         ae = contentFolderDao.create(ae);
         assertNotNull(contentFolderDao.get(ae.getId()));
-
     }
 
     @Test
@@ -56,14 +55,14 @@ public class ContentFolderDaoTest {
 
     @Test
     public void shouldUpdateContentFolder() throws Exception {
-        ContentFolder ae = new ContentFolder();
+        IContentFolder ae = new ContentFolderImpl();
         ae.setName("nuper");
         ae.setDescription("");
         ae.setParentFolderId(0L);
         ae = contentFolderDao.create(ae);
         ae.setName("super");
         contentFolderDao.update(ae);
-        ContentFolder az = contentFolderDao.get(ae.getId());
+        IContentFolder az = contentFolderDao.get(ae.getId());
         assertEquals(az.getName(), ae.getName());
     }
 

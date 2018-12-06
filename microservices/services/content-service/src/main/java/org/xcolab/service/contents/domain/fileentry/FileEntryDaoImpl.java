@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import org.xcolab.model.tables.pojos.FileEntry;
+import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.model.tables.records.FileEntryRecord;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 
@@ -24,18 +24,18 @@ public class FileEntryDaoImpl implements FileEntryDao {
     }
 
     @Override
-    public FileEntry create(FileEntry fileEntry) {
+    public IFileEntry create(IFileEntry IFileEntry) {
 
         FileEntryRecord ret = this.dslContext.insertInto(FILE_ENTRY)
-                .set(FILE_ENTRY.FILE_EXTENSION, fileEntry.getFileExtension())
-                .set(FILE_ENTRY.CREATED_AT, fileEntry.getCreatedAt())
-                .set(FILE_ENTRY.FILE_SIZE, fileEntry.getFileSize())
-                .set(FILE_ENTRY.FILE_NAME, fileEntry.getFileName())
+                .set(FILE_ENTRY.FILE_EXTENSION, IFileEntry.getFileExtension())
+                .set(FILE_ENTRY.CREATED_AT, IFileEntry.getCreatedAt())
+                .set(FILE_ENTRY.FILE_SIZE, IFileEntry.getFileSize())
+                .set(FILE_ENTRY.FILE_NAME, IFileEntry.getFileName())
                 .returning(FILE_ENTRY.ID)
                 .fetchOne();
         if (ret != null) {
-            fileEntry.setId(ret.getValue(FILE_ENTRY.ID));
-            return fileEntry;
+            IFileEntry.setId(ret.getValue(FILE_ENTRY.ID));
+            return IFileEntry;
         } else {
             return null;
         }
@@ -43,7 +43,7 @@ public class FileEntryDaoImpl implements FileEntryDao {
     }
 
     @Override
-    public FileEntry get(Long fileEntryid) throws NotFoundException {
+    public IFileEntry get(Long fileEntryid) throws NotFoundException {
         final Record record = this.dslContext.select()
                 .from(FILE_ENTRY)
                 .where(FILE_ENTRY.ID.eq(fileEntryid))
@@ -51,6 +51,6 @@ public class FileEntryDaoImpl implements FileEntryDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(FileEntry.class);
+        return record.into(IFileEntry.class);
     }
 }

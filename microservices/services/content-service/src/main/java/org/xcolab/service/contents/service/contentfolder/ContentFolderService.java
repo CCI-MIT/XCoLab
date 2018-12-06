@@ -7,11 +7,11 @@ import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 
 @Service
 public class ContentFolderService {
+
     private final ContentFolderDao contentFolderDao;
 
     @Autowired
     public ContentFolderService(ContentFolderDao contentFolderDao) {
         this.contentFolderDao = contentFolderDao;
     }
-
 }

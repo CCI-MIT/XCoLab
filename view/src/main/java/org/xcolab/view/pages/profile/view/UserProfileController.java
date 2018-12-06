@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
+import org.xcolab.client.content.FilesClient;
+import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.contents.FilesClient;
-import org.xcolab.client.contents.pojo.FileEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
@@ -72,17 +72,18 @@ public class UserProfileController {
     private final ActivityEntryHelper activityEntryHelper;
     private final AuthenticationService authenticationService;
     private final BalloonService balloonService;
-
     private final SmartValidator validator;
+    private final FilesClient filesClient;
 
     @Autowired
     public UserProfileController(ActivityEntryHelper activityEntryHelper,
             AuthenticationService authenticationService, BalloonService balloonService,
-            SmartValidator validator) {
+            SmartValidator validator, FilesClient filesClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.authenticationService = authenticationService;
         this.balloonService = balloonService;
         this.validator = validator;
+        this.filesClient = filesClient;
     }
 
     @InitBinder("userBean")
@@ -373,7 +374,7 @@ public class UserProfileController {
         if (newImageId != currentUserProfile.getUserBean().getImageId()) {
 
             if (newImageId > 0) {
-                FileEntry fe = FilesClient.getFileEntry(newImageId).orElseThrow(
+                IFileEntry fe = filesClient.getFileEntry(newImageId).orElseThrow(
                         () -> new IllegalStateException(
                                 "No file entry found for imageId " + newImageId + " for member " +
                                         updatedUserBean.getUserId()));

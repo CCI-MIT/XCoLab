@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import org.xcolab.model.tables.pojos.ContentFolder;
+import org.xcolab.client.content.pojo.IContentFolder;
+import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.records.ContentFolderRecord;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.SortColumn;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,16 +30,16 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
     }
 
     @Override
-    public ContentFolder create(ContentFolder contentFolder) {
+    public IContentFolder create(IContentFolder IContentFolder) {
         ContentFolderRecord ret = this.dslContext.insertInto(CONTENT_FOLDER)
-                .set(CONTENT_FOLDER.NAME, contentFolder.getName())
-                .set(CONTENT_FOLDER.DESCRIPTION, contentFolder.getDescription())
-                .set(CONTENT_FOLDER.PARENT_FOLDER_ID, contentFolder.getParentFolderId())
+                .set(CONTENT_FOLDER.NAME, IContentFolder.getName())
+                .set(CONTENT_FOLDER.DESCRIPTION, IContentFolder.getDescription())
+                .set(CONTENT_FOLDER.PARENT_FOLDER_ID, IContentFolder.getParentFolderId())
                 .returning(CONTENT_FOLDER.ID)
                 .fetchOne();
         if (ret != null) {
-            contentFolder.setId(ret.getValue(CONTENT_FOLDER.ID));
-            return contentFolder;
+            IContentFolder.setId(ret.getValue(CONTENT_FOLDER.ID));
+            return IContentFolder;
         } else {
             return null;
         }
@@ -47,25 +47,25 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
     }
 
     @Override
-    public boolean update(ContentFolder contentFolder) {
+    public boolean update(IContentFolder IContentFolder) {
          return dslContext.update(CONTENT_FOLDER)
-                .set(CONTENT_FOLDER.NAME, contentFolder.getName())
-                .set(CONTENT_FOLDER.DESCRIPTION, contentFolder.getDescription())
-                .set(CONTENT_FOLDER.PARENT_FOLDER_ID, contentFolder.getParentFolderId())
-                .where(CONTENT_FOLDER.ID.eq(contentFolder.getId()))
+                .set(CONTENT_FOLDER.NAME, IContentFolder.getName())
+                .set(CONTENT_FOLDER.DESCRIPTION, IContentFolder.getDescription())
+                .set(CONTENT_FOLDER.PARENT_FOLDER_ID, IContentFolder.getParentFolderId())
+                .where(CONTENT_FOLDER.ID.eq(IContentFolder.getId()))
                 .execute() > 0;
     }
 
     @Override
-    public ContentFolder get(Long contentFolderId) {
+    public IContentFolder get(Long contentFolderId) {
         return this.dslContext.select()
                 .from(CONTENT_FOLDER)
                 .where(CONTENT_FOLDER.ID.eq(contentFolderId))
-                .fetchOneInto(ContentFolder.class);
+                .fetchOneInto(IContentFolder.class);
     }
 
     @Override
-    public List<ContentFolder> findByGiven(PaginationHelper paginationHelper,
+    public List<IContentFolder> findByGiven(PaginationHelper paginationHelper,
             Long parentFolderId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTENT_FOLDER)
@@ -97,17 +97,17 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(ContentFolder.class);
+        return query.fetchInto(IContentFolder.class);
     }
 
     @Override
-    public List<ContentFolder> findByAncestorFolderId(long ancestorFolderId) {
-        final List<ContentFolder> children = findByGiven(PaginationHelper.EVERYTHING, ancestorFolderId);
+    public List<IContentFolder> findByAncestorFolderId(long ancestorFolderId) {
+        final List<IContentFolder> children = findByGiven(PaginationHelper.EVERYTHING, ancestorFolderId);
         if (children.isEmpty()) {
             return Collections.emptyList();
         }
-        List<ContentFolder> descendants = new ArrayList<>(children);
-        for (ContentFolder child : children) {
+        List<IContentFolder> descendants = new ArrayList<>(children);
+        for (IContentFolder child : children) {
             descendants.addAll(findByAncestorFolderId(child.getId()));
         }
         return descendants;

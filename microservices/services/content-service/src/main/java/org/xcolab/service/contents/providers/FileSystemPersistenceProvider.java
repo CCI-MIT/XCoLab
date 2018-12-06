@@ -1,8 +1,8 @@
-package org.xcolab.client.contents.providers;
+package org.xcolab.service.contents.providers;
 
 import org.apache.commons.io.FileUtils;
 
-import org.xcolab.client.contents.pojo.FileEntry;
+import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.File;
@@ -16,7 +16,7 @@ public class FileSystemPersistenceProvider implements PersistenceProvider {
     private static final int LOCAL_FOLDER_MAX_AMOUNT_OF_FILES = 300;
 
     @Override
-    public boolean saveFileToFinalDestination(byte[] imgBArr, FileEntry fileEntry, String path) {
+    public boolean saveFileToFinalDestination(byte[] imgBArr, IFileEntry fileEntry, String path) {
 
         int shardingFolder = (fileEntry.getId()).intValue() / LOCAL_FOLDER_MAX_AMOUNT_OF_FILES;
         String finalPath = path + "data/" + LOCAL_FOLDER_NAME + File.separator + shardingFolder + File.separator;
@@ -33,7 +33,7 @@ public class FileSystemPersistenceProvider implements PersistenceProvider {
     }
 
     @Override
-    public String getFilePathFromFinalDestination(FileEntry fileEntry, String path) {
+    public String getFilePathFromFinalDestination(IFileEntry fileEntry, String path) {
 
         int shardingFolder = (fileEntry.getId()).intValue() / LOCAL_FOLDER_MAX_AMOUNT_OF_FILES;
         String finalPath = path + "data/" + LOCAL_FOLDER_NAME + File.separator + shardingFolder + File.separator;

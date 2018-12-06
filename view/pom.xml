@@ -168,7 +168,7 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>contents-client</artifactId>
+            <artifactId>content-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 

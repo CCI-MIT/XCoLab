@@ -1,18 +1,21 @@
 package org.xcolab.service.contents.domain.contentarticle;
 
-import org.xcolab.model.tables.pojos.ContentArticle;
+import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface ContentArticleDao {
-    ContentArticle get(Long contentArticleId) throws NotFoundException;
 
-    List<? extends ContentArticle> getArticles();
-    List<? extends ContentArticle> getArticlesInFolder(long folderId);
+    IContentArticle get(Long contentArticleId) throws NotFoundException;
 
-    boolean update(ContentArticle contentArticle);
+    List<? extends IContentArticle> getArticles();
 
-    ContentArticle create(ContentArticle contentArticle);
+    List<? extends IContentArticle> getArticlesInFolder(long folderId);
+
+    boolean update(IContentArticle contentArticle);
+
+    IContentArticle create(IContentArticle contentArticle);
+
     int delete(long contentArticleId);
 }

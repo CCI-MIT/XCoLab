@@ -18,9 +18,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.model.tables.pojos.ContentArticle;
-import org.xcolab.model.tables.pojos.ContentFolder;
-import org.xcolab.model.tables.pojos.ContentPage;
+import org.xcolab.client.content.pojo.IContentArticle;
+import org.xcolab.client.content.pojo.IContentFolder;
+import org.xcolab.client.content.pojo.IContentPage;
+import org.xcolab.model.tables.pojos.ContentArticleImpl;
+import org.xcolab.model.tables.pojos.ContentFolderImpl;
+import org.xcolab.model.tables.pojos.ContentPageImpl;
 import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 import org.xcolab.service.contents.domain.contentarticle.ContentArticleDao;
 import org.xcolab.service.contents.domain.contentarticleversion.ContentArticleVersionDao;
@@ -54,7 +57,6 @@ public class ContentsControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-
     @InjectMocks
     private ContentsController controller;
 
@@ -79,18 +81,17 @@ public class ContentsControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         Mockito.when(contentArticleDao.get(anyLong()))
-                .thenAnswer(invocation -> new ContentArticle());
+                .thenAnswer(invocation -> new ContentArticleImpl());
         Mockito.when(contentFolderDao.get(anyLong()))
-                .thenAnswer(invocation -> new ContentFolder());
+                .thenAnswer(invocation -> new ContentArticleImpl());
 
         Mockito.when(contentPageDao.get(anyLong()))
-                .thenAnswer(invocation -> Optional.of(new ContentPage()));
-
+                .thenAnswer(invocation -> Optional.of(new ContentArticleImpl()));
     }
 
     @Test
     public void shouldCreateNewContentArticlesPost() throws Exception {
-        ContentArticle contentArticle = new ContentArticle();
+        IContentArticle contentArticle = new ContentArticleImpl();
         contentArticle.setAuthorUserId(1L);
         this.mockMvc.perform(
                 post("/contentArticles")
@@ -103,7 +104,6 @@ public class ContentsControllerTest {
 
     @Test
     public void shouldGetContentArticlesWithoutFolder() throws Exception {
-
         this.mockMvc.perform(
                 get("/contentArticles")
                         .contentType(contentType).accept(contentType))
@@ -114,7 +114,6 @@ public class ContentsControllerTest {
 
     @Test
     public void shouldGetContentArticlesWithFolder() throws Exception {
-
         this.mockMvc.perform(
                 get("/contentArticles")
                         .param("folderId","01")
@@ -126,7 +125,6 @@ public class ContentsControllerTest {
 
     @Test
     public void shouldGetContentArticleVersions() throws Exception {
-
         this.mockMvc.perform(
                 get("/contentArticleVersions")
                         .param("startRecord","1")
@@ -145,7 +143,6 @@ public class ContentsControllerTest {
 
     @Test
     public void shouldGetContentFolderVersions() throws Exception {
-
         this.mockMvc.perform(
                 get("/contentFolders")
                         .param("startRecord","1")
@@ -160,7 +157,6 @@ public class ContentsControllerTest {
 
     @Test
     public void shouldGetDescendantFolders() throws Exception {
-
         this.mockMvc.perform(
                 get("/contentFolders/1/descendantFolders")
                 .contentType(contentType).accept(contentType))
@@ -168,9 +164,9 @@ public class ContentsControllerTest {
 
         Mockito.verify(contentFolderDao,Mockito.times(1)).findByAncestorFolderId(Mockito.anyLong());
     }
+
     @Test
     public void shouldGetContentArticle() throws Exception {
-
         this.mockMvc.perform(
                 get("/contentArticles/1")
                         .contentType(contentType).accept(contentType))
@@ -181,8 +177,7 @@ public class ContentsControllerTest {
 
     @Test
     public void shouldUpdateContentArticle() throws Exception {
-
-        ContentArticle contentArticle = new ContentArticle();
+        IContentArticle contentArticle = new ContentArticleImpl();
         contentArticle.setAuthorUserId(1L);
         contentArticle.setId(12L);
         contentArticle.setFolderId(12L);
@@ -197,7 +192,7 @@ public class ContentsControllerTest {
 
     @Test
     public void shouldreateContentFolder() throws Exception {
-        ContentFolder contentFolder = new ContentFolder();
+        IContentFolder contentFolder = new ContentFolderImpl();
         contentFolder.setId(1L);
         contentFolder.setName("");
         contentFolder.setDescription("");
@@ -210,9 +205,9 @@ public class ContentsControllerTest {
 
         Mockito.verify(contentFolderDao,Mockito.times(1)).create(Mockito.anyObject());
     }
+
     @Test
     public void shouldGetContentFolder() throws Exception {
-
         this.mockMvc.perform(
                 get("/contentFolders/12")
                         .contentType(contentType).accept(contentType))
@@ -231,10 +226,10 @@ public class ContentsControllerTest {
 
         Mockito.verify(contentArticleVersionDao,Mockito.times(1)).getByFolderId(Mockito.anyLong());
     }
+
     @Test
     public void shouldUpdateContentFolderArticleVersion() throws Exception {
-
-        ContentFolder contentFolder = new ContentFolder();
+        IContentFolder contentFolder = new ContentFolderImpl();
         contentFolder.setId(1L);
         contentFolder.setName("");
         contentFolder.setDescription("");
@@ -247,6 +242,7 @@ public class ContentsControllerTest {
 
         Mockito.verify(contentFolderDao,Mockito.times(1)).update(Mockito.anyObject());
     }
+
     @Test
     public void shouldDeleteContentArticle() throws Exception {
         this.mockMvc.perform(
@@ -257,6 +253,7 @@ public class ContentsControllerTest {
         Mockito.verify(contentArticleService,Mockito.times(1))
                 .delete(Mockito.anyLong());
     }
+
     @Test
     public void shouldListContentPages() throws Exception {
         this.mockMvc.perform(
@@ -268,6 +265,7 @@ public class ContentsControllerTest {
         Mockito.verify(contentPageDao,Mockito.times(1))
                 .list(Mockito.anyString());
     }
+
     @Test
     public void shouldGetContentPage() throws Exception {
         this.mockMvc.perform(
@@ -281,7 +279,7 @@ public class ContentsControllerTest {
 
     @Test
     public void shouldCreateContentPage() throws Exception {
-        ContentPage cp = new ContentPage();
+        IContentPage cp = new ContentPageImpl();
         cp.setId(1L);
         this.mockMvc.perform(
                 post("/contentPages")
@@ -295,7 +293,7 @@ public class ContentsControllerTest {
 
     @Test
     public void shouldUpdateContentPage() throws Exception {
-        ContentPage cp = new ContentPage();
+        IContentPage cp = new ContentPageImpl();
         cp.setId(1L);
         this.mockMvc.perform(
                 put("/contentPages/1")
@@ -306,5 +304,4 @@ public class ContentsControllerTest {
         Mockito.verify(contentPageDao,Mockito.times(1))
                 .update(Mockito.anyObject());
     }
-
 }

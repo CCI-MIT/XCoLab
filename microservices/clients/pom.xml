@@ -17,7 +17,7 @@
         <module>activities-client</module>
         <module>admin-client</module>
         <module>ballons-client</module>
-        <module>contents-client</module>
+        <module>content-client</module>
         <module>contestproposal-client</module>
         <module>comment-client</module>
         <module>emails-client</module>

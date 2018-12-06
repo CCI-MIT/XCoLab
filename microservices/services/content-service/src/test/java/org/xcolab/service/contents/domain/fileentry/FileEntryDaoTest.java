@@ -12,7 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.FileEntry;
+import org.xcolab.client.content.pojo.IFileEntry;
+import org.xcolab.model.tables.pojos.FileEntryImpl;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -31,7 +32,7 @@ public class FileEntryDaoTest {
 
     @Test
     public void shouldCreateNewFileEntry() throws Exception {
-        FileEntry ae = new FileEntry();
+        IFileEntry ae = new FileEntryImpl();
         ae = fileEntryDao.create(ae);
         assertNotNull(fileEntryDao.get(ae.getId()));
     }

@@ -4,18 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import org.xcolab.model.tables.pojos.ContentArticle;
+import org.xcolab.model.tables.pojos.ContentArticleImpl;
 
 import java.sql.Timestamp;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class ContentArticleWrapper extends ContentArticle {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ContentArticleWrapper extends ContentArticleImpl {
 
     private static final long serialVersionUID = -2076774009;
 
     private String title;
-
 
     public ContentArticleWrapper() {
     }
@@ -37,10 +36,6 @@ public class ContentArticleWrapper extends ContentArticle {
     public void setTitle(String title) {
         this.title = title;
     }
-
-
-
-
 
     @Override
     public String toString() {

@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import org.xcolab.model.tables.pojos.ContentArticleVersion;
-import org.xcolab.model.tables.pojos.ContentFolder;
+import org.xcolab.client.content.pojo.IContentArticleVersion;
+import org.xcolab.client.content.pojo.IContentFolder;
+import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.records.ContentArticleVersionRecord;
 import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.SortColumn;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +39,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     @Override
-    public ContentArticleVersion create(ContentArticleVersion contentArticleVersion) {
+    public IContentArticleVersion create(IContentArticleVersion contentArticleVersion) {
         ContentArticleVersionRecord ret = this.dslContext.insertInto(CONTENT_ARTICLE_VERSION)
                 .set(CONTENT_ARTICLE_VERSION.AUTHOR_USER_ID, contentArticleVersion.getAuthorUserId())
                 .set(CONTENT_ARTICLE_VERSION.CREATED_AT, contentArticleVersion.getCreatedAt())
@@ -67,7 +67,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     @Override
-    public boolean update(ContentArticleVersion contentArticleVersion) {
+    public boolean update(IContentArticleVersion contentArticleVersion) {
         return dslContext.update(CONTENT_ARTICLE_VERSION)
                 .set(CONTENT_ARTICLE_VERSION.AUTHOR_USER_ID, contentArticleVersion.getAuthorUserId())
                 .set(CONTENT_ARTICLE_VERSION.CREATED_AT, contentArticleVersion.getCreatedAt())
@@ -80,7 +80,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     @Override
-    public ContentArticleVersion get(Long id) throws NotFoundException {
+    public IContentArticleVersion get(Long id) throws NotFoundException {
         final Record record = this.dslContext.select()
                 .from(CONTENT_ARTICLE_VERSION)
                 .where(CONTENT_ARTICLE_VERSION.ID.eq(id))
@@ -88,11 +88,11 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(ContentArticleVersion.class);
+        return record.into(IContentArticleVersion.class);
     }
 
     @Override
-    public List<ContentArticleVersion> getByFolderId(Long contentFolderId) {
+    public List<IContentArticleVersion> getByFolderId(Long contentFolderId) {
         if (contentFolderId == null) {
             return this.dslContext.select(CONTENT_ARTICLE_VERSION.fields())
                     .from(CONTENT_ARTICLE_VERSION)
@@ -100,7 +100,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                     .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.isNull())
                     .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.ARTICLE_ID))
                     .fetch()
-                    .into(ContentArticleVersion.class);
+                    .into(IContentArticleVersion.class);
         } else {
             return this.dslContext.select(CONTENT_ARTICLE_VERSION.fields())
                     .from(CONTENT_ARTICLE_VERSION)
@@ -108,12 +108,12 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                     .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(contentFolderId))
                     .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.ID))
                     .fetch()
-                    .into(ContentArticleVersion.class);
+                    .into(IContentArticleVersion.class);
         }
     }
 
     @Override
-    public ContentArticleVersion getLatestVersionByArticleIdAndLanguage(Long articleId, String language)
+    public IContentArticleVersion getLatestVersionByArticleIdAndLanguage(Long articleId, String language)
             throws NotFoundException {
 
         final Record record = this.dslContext.select()
@@ -126,11 +126,11 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(ContentArticleVersion.class);
+        return record.into(IContentArticleVersion.class);
     }
 
     @Override
-    public List<ContentArticleVersion> findByGiven(PaginationHelper paginationHelper,
+    public List<IContentArticleVersion> findByGiven(PaginationHelper paginationHelper,
         Long contentArticleId, Long contentArticleVersion, Long folderId, Long ancestorFolderId,
         String title, String lang) {
         final SelectQuery<Record> query = dslContext.select()
@@ -149,7 +149,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
         if (ancestorFolderId != null) {
             final List<Long> ancestorFolderIds =
                 contentFolderDao.findByAncestorFolderId(ancestorFolderId).stream()
-                    .map(ContentFolder::getId).collect(Collectors.toList());
+                    .map(IContentFolder::getId).collect(Collectors.toList());
             query.addConditions(CONTENT_ARTICLE_VERSION.FOLDER_ID.in(ancestorFolderIds));
         }
         if (title != null) {
@@ -191,6 +191,6 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(ContentArticleVersion.class);
+        return query.fetchInto(IContentArticleVersion.class);
     }
 }

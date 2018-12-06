@@ -7,7 +7,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ContentPage;
+import org.xcolab.client.content.pojo.IContentPage;
 import org.xcolab.model.tables.records.ContentPageRecord;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class ContentPageDaoImpl implements ContentPageDao {
     }
 
     @Override
-    public Optional<ContentPage> get(long pageId) {
+    public Optional<IContentPage> get(long pageId) {
         final Record record = dslContext.select()
                 .from(CONTENT_PAGE)
                 .where(CONTENT_PAGE.ID.eq(pageId))
@@ -34,11 +34,11 @@ public class ContentPageDaoImpl implements ContentPageDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ContentPage.class));
+        return Optional.of(record.into(IContentPage.class));
     }
 
     @Override
-    public Optional<ContentPage> getByContentArticleId(long contentArticleId) {
+    public Optional<IContentPage> getByContentArticleId(long contentArticleId) {
         final Record record = dslContext.select()
                 .from(CONTENT_PAGE)
                 .where(CONTENT_PAGE.CONTENT_ARTICLE_ID.eq(contentArticleId))
@@ -47,11 +47,11 @@ public class ContentPageDaoImpl implements ContentPageDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ContentPage.class));
+        return Optional.of(record.into(IContentPage.class));
     }
 
     @Override
-    public List<ContentPage> list(String title) {
+    public List<IContentPage> list(String title) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTENT_PAGE)
                 .getQuery();
@@ -60,11 +60,11 @@ public class ContentPageDaoImpl implements ContentPageDao {
             query.addConditions(CONTENT_PAGE.TITLE.eq(title));
         }
 
-        return query.fetch().into(ContentPage.class);
+        return query.fetch().into(IContentPage.class);
     }
 
     @Override
-    public boolean update(ContentPage page) {
+    public boolean update(IContentPage page) {
         return dslContext.update(CONTENT_PAGE)
                 .set(CONTENT_PAGE.TITLE, page.getTitle())
                 .set(CONTENT_PAGE.META_DESCRIPTION, page.getMetaDescription())
@@ -76,7 +76,7 @@ public class ContentPageDaoImpl implements ContentPageDao {
     }
 
     @Override
-    public ContentPage create(ContentPage page) {
+    public IContentPage create(IContentPage page) {
         final ContentPageRecord ret = this.dslContext.insertInto(CONTENT_PAGE)
                 .set(CONTENT_PAGE.TITLE, page.getTitle())
                 .set(CONTENT_PAGE.META_DESCRIPTION, page.getMetaDescription())

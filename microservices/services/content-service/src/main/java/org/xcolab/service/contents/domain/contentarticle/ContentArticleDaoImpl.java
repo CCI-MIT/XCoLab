@@ -7,7 +7,7 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ContentArticle;
+import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.model.tables.records.ContentArticleRecord;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.contents.wrappers.ContentArticleWrapper;
@@ -24,7 +24,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     private DSLContext dslContext;
 
     @Override
-    public ContentArticle create(ContentArticle contentArticle) {
+    public IContentArticle create(IContentArticle contentArticle) {
 
         ContentArticleRecord ret = this.dslContext.insertInto(CONTENT_ARTICLE)
                 .set(CONTENT_ARTICLE.AUTHOR_USER_ID, contentArticle.getAuthorUserId())
@@ -53,7 +53,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     }
 
     @Override
-    public boolean update(ContentArticle contentArticle) {
+    public boolean update(IContentArticle contentArticle) {
         return dslContext.update(CONTENT_ARTICLE)
                 .set(CONTENT_ARTICLE.AUTHOR_USER_ID, contentArticle.getAuthorUserId())
                 .set(CONTENT_ARTICLE.EDIT_ROLE_GROUP_ID, contentArticle.getEditRoleGroupId())
@@ -67,7 +67,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
     }
 
     @Override
-    public ContentArticle get(Long contentArticleId) throws NotFoundException {
+    public IContentArticle get(Long contentArticleId) throws NotFoundException {
         final Record record = this.dslContext.select()
                 .from(CONTENT_ARTICLE)
                 .where(CONTENT_ARTICLE.ID.eq(contentArticleId))
@@ -75,7 +75,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(ContentArticle.class);
+        return record.into(IContentArticle.class);
     }
 
     @Override

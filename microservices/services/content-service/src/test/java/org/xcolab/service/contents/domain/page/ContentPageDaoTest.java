@@ -12,7 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.ContentPage;
+import org.xcolab.client.content.pojo.IContentPage;
+import org.xcolab.model.tables.pojos.ContentPageImpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -33,7 +34,7 @@ public class ContentPageDaoTest {
     @Test
     public void shouldCreateNewContentPage() throws Exception {
 
-        ContentPage ae = new ContentPage();
+        IContentPage ae = new ContentPageImpl();
         ae.setTitle("pagetitle");
         ae.setContentArticleId(1L);
         ae = contentPageDao.create(ae);
@@ -48,7 +49,7 @@ public class ContentPageDaoTest {
     @Test
     public void shouldListContentPages() throws Exception {
 
-        ContentPage ae = new ContentPage();
+        IContentPage ae = new ContentPageImpl();
         ae.setTitle("pagetitlez");
         ae.setContentArticleId(1L);
         ae = contentPageDao.create(ae);
@@ -57,14 +58,14 @@ public class ContentPageDaoTest {
 
     @Test
     public void shouldUpdateContentPage() throws Exception {
-        ContentPage ae = new ContentPage();
+        IContentPage ae = new ContentPageImpl();
         ae.setTitle("aaa");
         ae.setContentArticleId(1L);
         ae = contentPageDao.create(ae);
         ae.setTitle("bbb");
         contentPageDao.update(ae);
 
-        ContentPage cp = contentPageDao.get(ae.getId()).get();
+        IContentPage cp = contentPageDao.get(ae.getId()).get();
         assertEquals(cp.getTitle(),ae.getTitle());
     }
 }

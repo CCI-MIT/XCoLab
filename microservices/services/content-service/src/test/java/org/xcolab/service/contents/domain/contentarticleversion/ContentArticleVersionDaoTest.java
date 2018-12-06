@@ -12,7 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.ContentArticleVersion;
+import org.xcolab.client.content.pojo.IContentArticleVersion;
+import org.xcolab.model.tables.pojos.ContentArticleVersionImpl;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 
 import static org.junit.Assert.assertEquals;
@@ -31,26 +32,21 @@ public class ContentArticleVersionDaoTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-
     @Test
     public void shouldCreateNewContentArticleVersion() throws Exception {
-
-        ContentArticleVersion ae = new ContentArticleVersion();
+        IContentArticleVersion ae = new ContentArticleVersionImpl();
         ae = contentArticleVersionDao.create(ae);
         assertNotNull(contentArticleVersionDao.get(ae.getId()));
-
     }
 
     @Test
     public void shouldGetContentArticleVersion() throws Exception {
-
         assertNotNull(contentArticleVersionDao.get(1567L));
     }
 
     @Test
     public void shouldGetByFolderId() throws Exception {
-
-        ContentArticleVersion ae = new ContentArticleVersion();
+        IContentArticleVersion ae = new ContentArticleVersionImpl();
         ae.setId(1000L);
         ae.setFolderId(200L);
         ae = contentArticleVersionDao.create(ae);
@@ -70,27 +66,24 @@ public class ContentArticleVersionDaoTest {
 
     @Test
     public void shouldDeleteContentArticleVersionByArticleId() throws Exception {
-
         final long articleId = 1000L;
-        ContentArticleVersion ae = new ContentArticleVersion();
+        IContentArticleVersion ae = new ContentArticleVersionImpl();
         ae.setArticleId(articleId);
         ae = contentArticleVersionDao.create(ae);
 
         assertEquals(1, contentArticleVersionDao.deleteByArticleId(articleId));
         thrown.expect(NotFoundException.class);
         assertNotNull(contentArticleVersionDao.get(ae.getId()));
-
     }
 
     @Test
     public void shouldUpdateContentArticle() throws Exception {
-        ContentArticleVersion ae = new ContentArticleVersion();
+        IContentArticleVersion ae = new ContentArticleVersionImpl();
         ae.setAuthorUserId(3L);
         ae = contentArticleVersionDao.create(ae);
         ae.setAuthorUserId(1L);
         contentArticleVersionDao.update(ae);
-        ContentArticleVersion az = contentArticleVersionDao.get(ae.getId());
+        IContentArticleVersion az = contentArticleVersionDao.get(ae.getId());
         assertEquals(az.getAuthorUserId(), ae.getAuthorUserId());
-
     }
 }

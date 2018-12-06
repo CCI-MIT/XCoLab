@@ -1,18 +1,18 @@
 package org.xcolab.service.contents.domain.page;
 
-import org.xcolab.model.tables.pojos.ContentPage;
+import org.xcolab.client.content.pojo.IContentPage;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ContentPageDao {
-    Optional<ContentPage> get(long pageId);
+    Optional<IContentPage> get(long pageId);
 
-    Optional<ContentPage> getByContentArticleId(long contentArticleId);
+    Optional<IContentPage> getByContentArticleId(long contentArticleId);
 
-    List<ContentPage> list(String title);
+    List<IContentPage> list(String title);
 
-    boolean update(ContentPage page);
+    boolean update(IContentPage page);
 
-    ContentPage create(ContentPage page);
+    IContentPage create(IContentPage page);
 }

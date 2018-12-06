@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.contenteditor;
 
 import org.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,10 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.xcolab.client.contents.ContentsClient;
-import org.xcolab.client.contents.pojo.ContentArticleVersion;
-import org.xcolab.client.contents.pojo.ContentFolder;
-import org.xcolab.client.contents.pojo.ContentPage;
+import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.pojo.IContentArticleVersion;
+import org.xcolab.client.content.pojo.IContentFolder;
+import org.xcolab.client.content.pojo.IContentPage;
+import org.xcolab.client.content.pojo.tables.pojos.ContentPage;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -26,6 +28,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class PageEditorController extends BaseContentEditor {
+
+    @Autowired
+    private ContentsClient contentsClient;
 
     @GetMapping("/content-editor/pageEditor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
@@ -73,9 +78,9 @@ public class PageEditorController extends BaseContentEditor {
             defaultOperationReturnMessage(false, "Not allowed to save page", "", response);
         }
 
-        ContentPage contentPage;
+        IContentPage contentPage;
         if (pageId != 0) {
-            contentPage = ContentsClient.getContentPage(pageId);
+            contentPage = contentsClient.getContentPage(pageId);
         } else {
             contentPage = new ContentPage();
         }
@@ -92,28 +97,28 @@ public class PageEditorController extends BaseContentEditor {
         }
 
         if (pageId == 0) {
-            ContentsClient.createContentPage(contentPage);
+            contentsClient.createContentPage(contentPage);
         } else {
-            ContentsClient.updateContentPage(contentPage);
+            contentsClient.updateContentPage(contentPage);
         }
 
         defaultOperationReturnMessage(true, "Content page created successfully", "", response);
     }
 
     private Map<String, String> getArticles(Long folderId, String path, Map<String, String> map) {
-        List<ContentFolder> contentFolders = ContentsClient.getContentFolders(folderId);
+        List<IContentFolder> contentFolders = contentsClient.getContentFolders(folderId);
         if (contentFolders != null) {
-            for (ContentFolder cf : contentFolders) {
-                if (cf.getId() != ContentFolder.RESOURCE_FOLDER_ID) {
+            for (IContentFolder cf : contentFolders) {
+                if (cf.getId() != IContentFolder.RESOURCE_FOLDER_ID) {
                     map = getArticles(cf.getId(),
                             path + "/" + cf.getName(), map);
                 }
             }
         }
-        List<ContentArticleVersion> contentArticles =
-                ContentsClient.getChildArticleVersions(folderId);
+        List<IContentArticleVersion> contentArticles =
+                contentsClient.getContentFolderArticleVersions(folderId);
         if (contentArticles != null) {
-            for (ContentArticleVersion ca : contentArticles) {
+            for (IContentArticleVersion ca : contentArticles) {
                 map.put(path + "/" + ca.getTitle(), ca.getArticleId().toString());
             }
         }
@@ -122,17 +127,17 @@ public class PageEditorController extends BaseContentEditor {
 
     @GetMapping("/content-editor/pageEditorGetPage")
     @ResponseBody
-    public ContentPage contentEditorListFolder(HttpServletRequest request,
+    public IContentPage contentEditorListFolder(HttpServletRequest request,
             @RequestParam Long pageId) {
-        return ContentsClient.getContentPage(pageId);
+        return contentsClient.getContentPage(pageId);
     }
 
     @GetMapping("/content-editor/pageEditorListFolder")
     public void contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String node) throws IOException {
-        List<ContentPage> pages = ContentsClient.getContentPages(null);
+        List<IContentPage> pages = contentsClient.getContentPages(null);
         JSONArray responseArray = new JSONArray();
-        for (ContentPage cp : pages) {
+        for (IContentPage cp : pages) {
             responseArray.put(articleNode(cp.getTitle(), cp.getId()));
         }
         response.getOutputStream().write(responseArray.toString().getBytes());
