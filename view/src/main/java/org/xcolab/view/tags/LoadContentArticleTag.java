@@ -18,14 +18,18 @@ public class LoadContentArticleTag extends BodyTagSupport {
 
     private long articleId;
 
-    @Autowired
-    private ContentsClient contentsClient;
+    private static ContentsClient contentsClient;
+
+    public static void setContentsClient(ContentsClient contentsClient) {
+        LoadContentArticleTag.contentsClient = contentsClient;
+    }
 
     @Override
     public int doStartTag() throws JspException {
         if (articleId > 0) {
             try {
-                final IContentArticle contentArticle = contentsClient.getContentArticle(articleId);
+                final IContentArticle contentArticle = LoadContentArticleTag.contentsClient
+                        .getContentArticle(articleId);
 
                 Locale locale = LocaleContextHolder.getLocale();
                 String localeString = "en";
@@ -33,12 +37,12 @@ public class LoadContentArticleTag extends BodyTagSupport {
                     localeString = locale.getLanguage();
                 }
 
-                IContentArticleVersion contentArticleVersion = contentsClient
+                IContentArticleVersion contentArticleVersion = LoadContentArticleTag.contentsClient
                         .getLatestVersionByArticleIdAndLanguage(
                                 contentArticle.getId(), localeString);
                 if (contentArticleVersion == null) {
-                    contentArticleVersion = contentsClient.getLatestVersionByArticleIdAndLanguage(
-                            contentArticle.getId(),
+                    contentArticleVersion = LoadContentArticleTag.contentsClient
+                            .getLatestVersionByArticleIdAndLanguage(contentArticle.getId(),
                             I18nUtils.DEFAULT_LOCALE.getLanguage());
                 }
 
