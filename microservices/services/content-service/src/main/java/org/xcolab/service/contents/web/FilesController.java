@@ -38,8 +38,9 @@ public class FilesController implements FilesClient {
     public IFileEntry createFileEntry(@RequestBody IFileEntry fileEntry,
             @RequestParam byte[] imgBArr,
             @RequestParam String path) {
-        persistenceProvider.saveFileToFinalDestination(imgBArr, fileEntry, path);
-        return this.fileEntryDao.create(fileEntry);
+        IFileEntry ret = this.fileEntryDao.create(fileEntry);
+        persistenceProvider.saveFileToFinalDestination(imgBArr, ret, path);
+        return ret;
     }
 
     @Override
@@ -59,8 +60,7 @@ public class FilesController implements FilesClient {
         if (fileEntryId != null && fileEntryId > 0) {
             try {
                 return Optional.of(this.fileEntryDao.get(fileEntryId));
-            } catch (NotFoundException e) {
-                return Optional.empty();
+            } catch (NotFoundException ignored) {
             }
         }
         return Optional.empty();
