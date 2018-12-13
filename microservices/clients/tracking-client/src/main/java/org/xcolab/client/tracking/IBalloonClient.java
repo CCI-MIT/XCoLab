@@ -1,5 +1,6 @@
 package org.xcolab.client.tracking;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +52,19 @@ public interface IBalloonClient {
     @PutMapping("/balloonUserTrackings/{uuid}")
     boolean updateBalloonUserTracking(@RequestBody IBalloonUserTracking balloonUserTracking,
             @PathVariable("uuid") String uuid);
+
+    default boolean updateUserIdAndEmailIfEmpty(IBalloonUserTracking balloonUserTracking,
+            Long userId, String email) {
+        final boolean isUserIdEmpty = balloonUserTracking.getUserId() == null;
+        if (isUserIdEmpty) {
+            balloonUserTracking.setUserId(userId);
+        }
+        final boolean isEmailBlank = StringUtils.isBlank(balloonUserTracking.getEmail());
+        if (isEmailBlank) {
+            balloonUserTracking.setEmail(email);
+        }
+        return updateBalloonUserTracking(balloonUserTracking, Long.toString(userId));
+    }
 
     @DeleteMapping("/balloonUserTrackings/{uuid}")
     boolean deleteBalloonUserTracking(@PathVariable("uuid") String uuid);

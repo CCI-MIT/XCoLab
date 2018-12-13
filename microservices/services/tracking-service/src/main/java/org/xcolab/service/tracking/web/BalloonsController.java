@@ -109,7 +109,6 @@ public class BalloonsController implements IBalloonClient {
     @PutMapping("/balloonUserTrackings/{uuid}")
     public boolean updateBalloonUserTracking(@RequestBody IBalloonUserTracking balloonUserTracking,
             @PathVariable String uuid) {
-        //TODO: this is actually bullshit?! The string UUID is not used although it would be necessary to make it work
         return balloonUserTrackingDao.update(balloonUserTracking);
     }
 

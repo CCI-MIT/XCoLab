@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.redballoon.utils;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,11 +116,8 @@ public class BalloonService {
                 final boolean butLinkedToOtherMember =
                         but.getUserId() != null && but.getUserId() != member.getId();
                 if (!butLinkedToOtherMember) {
-                    but.setEmail(member.getEmailAddress());
-                    but.setUserId(member.getId());
-                    balloonClient.updateBalloonUserTracking(but, Long.toString(member.getId()));
-                    //TODO: check with Carlos/Johannes
-//                    but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
+                    balloonClient.updateUserIdAndEmailIfEmpty(but, member.getId(),
+                            member.getEmailAddress());
                     return Optional.of(but);
                 }
             } catch (ReferenceResolutionException rre) {
@@ -130,11 +128,8 @@ public class BalloonService {
         if (member != null) {
             IBalloonUserTracking but = getBalloonUserTrackingForMember(member);
             if (but != null) {
-                but.setEmail(member.getEmailAddress());
-                but.setUserId(member.getId());
-                balloonClient.updateBalloonUserTracking(but, Long.toString(member.getId()));
-                //TODO: check with Carlos/Johannes
-//                but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
+                balloonClient.updateUserIdAndEmailIfEmpty(but, member.getId(),
+                        member.getEmailAddress());
                 BalloonCookie cookie = BalloonCookie.of(but.getUuid());
                 response.addCookie(cookie.getHttpCookie());
                 return Optional.of(but);
@@ -179,11 +174,8 @@ public class BalloonService {
                 IBalloonUserTracking but =
                         balloonClient.getBalloonUserTracking(balloonCookie.getUuid());
                 if (but != null) {
-                    but.setEmail(member.getEmailAddress());
-                    but.setUserId(member.getId());
-                    balloonClient.updateBalloonUserTracking(but, Long.toString(member.getId()));
-                    //TODO: check with Carlos/Johannes
-//                    but.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
+                    balloonClient.updateUserIdAndEmailIfEmpty(but, member.getId(),
+                            member.getEmailAddress());
                 }
             } catch (BalloonUserTrackingNotFoundException e) {
                 _log.error("Invalid UUID: {}", balloonCookie);

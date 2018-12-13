@@ -102,7 +102,6 @@ public class LoginRegisterService {
                 if (but.getUserId() == null) {
                     but.setRegistrationDate(new Timestamp(new Date().getTime()));
                     but.setUserId(member.getId());
-                    //TODO: uuid not used
                     balloonClient.updateBalloonUserTracking(but, member.getUuid());
                 }
             } catch (BalloonUserTrackingNotFoundException e) {
@@ -113,11 +112,8 @@ public class LoginRegisterService {
         //update user association for all BUTs under this email address
         balloonClient.listBalloonUserTrackings(member.getEmailAddress(), null).forEach(
                 but -> {
-                    but.setEmail(member.getEmailAddress());
-                    but.setUserId(member.getId());
-                    balloonClient.updateBalloonUserTracking(but, Long.toString(member.getId()));
-                    //TODO: check with Carlos/Johannes
-//                    b.updateUserIdAndEmailIfEmpty(member.getId(), member.getEmailAddress());
+                    balloonClient.updateUserIdAndEmailIfEmpty(but, member.getId(),
+                            member.getEmailAddress());
                 });
     }
 
