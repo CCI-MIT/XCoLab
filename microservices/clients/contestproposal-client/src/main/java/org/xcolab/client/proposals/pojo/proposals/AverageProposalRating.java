@@ -1,6 +1,5 @@
 package org.xcolab.client.proposals.pojo.proposals;
 
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 
 import java.util.ArrayList;
