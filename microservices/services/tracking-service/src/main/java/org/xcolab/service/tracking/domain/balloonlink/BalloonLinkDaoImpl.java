@@ -69,5 +69,4 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
                 .execute();
         return balloonLink;
     }
-
 }
