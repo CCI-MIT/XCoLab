@@ -394,6 +394,9 @@ public class Proposal extends AbstractProposal implements Serializable {
     @JsonIgnore
     public String getLogoPath() {
         String imageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
+        if (getImageId() == 0 && getContest().getDefaultProposalLogoId() != null) {
+            return imageDomain + "/image/proposal/" + getContest().getDefaultProposalLogoId();
+        }
         return imageDomain + "/image/proposal/" + getImageId();
     }
 
