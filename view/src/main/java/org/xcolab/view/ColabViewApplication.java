@@ -10,6 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 public class ColabViewApplication extends SpringBootServletInitializer {
 
+    // required to run view as .war (which is required to use jsps)
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(ColabViewApplication.class);
