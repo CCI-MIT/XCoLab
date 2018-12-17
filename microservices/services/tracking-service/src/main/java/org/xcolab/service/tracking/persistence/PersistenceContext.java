@@ -24,7 +24,7 @@ public class PersistenceContext {
     @Autowired
     private Environment env;
 
-    @Bean(destroyMethod = "shutdown")
+    @Bean(destroyMethod = "close")
     public HikariDataSource hikariDataSource() {
         return DataSourceUtil.getConfiguredDataSource(env, "db.tracking.schema");
     }
