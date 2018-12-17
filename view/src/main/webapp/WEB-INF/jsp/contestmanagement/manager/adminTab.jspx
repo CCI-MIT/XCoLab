@@ -36,7 +36,7 @@
         <div class="c-Box c-Box--colorTan">
             <div class="c-Box__body">
                 <h2>Voting</h2>
-                <form:form action="/admin/contest/manager/tab/ADMIN/votingReport" commandName="votingReportBean"
+                <form:form action="/admin/contest/manager/tab/ADMIN/votingReport" modelAttribute="votingReportBean"
                            id="votingReportForm" method="get">
                     <label for="votingPhaseIds">Please select the voting phase(s)
                         you wish to include in the voting report:</label>
@@ -54,7 +54,7 @@
         <div class="c-Box c-Box--colorTan">
             <div class="c-Box__body">
                 <h2>Proposal report</h2>
-                <form:form action="/admin/contest/manager/tab/ADMIN/proposalReport" commandName="proposalReportBean"
+                <form:form action="/admin/contest/manager/tab/ADMIN/proposalReport" modelAttribute="proposalReportBean"
                            id="proposalReportForm" method="get">
                     <label for="contestIds">Please select the contests
                         you wish to include in the proposal report:</label> <br/>
@@ -95,7 +95,7 @@
         <div class="c-Box c-Box--colorTan">
             <div class="c-Box__body">
                 <h2>Notifications</h2> <br/>
-                <form:form action="/admin/contest/manager/tab/ADMIN/notificationMessageCreate" commandName="votingReportBean"
+                <form:form action="/admin/contest/manager/tab/ADMIN/notificationMessageCreate" modelAttribute="votingReportBean"
                            id="votingReportForm" method="POST">
                     <label for="votingPhaseIds">Please use this form to add notifications in the system:</label>
                     <br/><br/>
@@ -194,7 +194,7 @@
         <div class="c-Box c-Box--colorTan">
             <div class="c-Box__body">
                 <h2>Batch register members</h2>
-                <form:form action="/admin/contest/manager/tab/ADMIN/batchRegister" commandName="batchRegisterBean"
+                <form:form action="/admin/contest/manager/tab/ADMIN/batchRegister" modelAttribute="batchRegisterBean"
                            id="batchRegisterForm" method="post">
                     <div class="alert alert-info" for="batchRegisterMembersList">
                         Each member will receive an email with a link that allows them to sign in.
