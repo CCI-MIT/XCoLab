@@ -9,21 +9,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipBean;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,7 +40,14 @@ public class ProposalTeamTabController extends BaseProposalTabController {
     private static final Logger _log = LoggerFactory.getLogger(ProposalTeamTabController.class);
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=TEAM")
-    public String show(HttpServletRequest request, Model model, ProposalContext proposalContext, Member loggedInMember) {
+    public String show(HttpServletRequest request, HttpServletResponse response, Model model,
+            ProposalContext proposalContext, Member loggedInMember) {
+
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
+        if (!permissions.getCanView()) {
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
+        }
+
         final ProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
 

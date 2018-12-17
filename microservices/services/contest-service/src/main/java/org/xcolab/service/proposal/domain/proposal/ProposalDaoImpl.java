@@ -119,7 +119,7 @@ public class ProposalDaoImpl implements ProposalDao {
         }
 
         if (addContest) {
-            query.addJoin(CONTEST, CONTEST.ID.eq(CONTEST_PHASE.ID));
+            query.addJoin(CONTEST, CONTEST.ID.eq(CONTEST_PHASE.CONTEST_ID));
         }
     }
 
@@ -180,7 +180,7 @@ public class ProposalDaoImpl implements ProposalDao {
         }
 
         if (contestId != null) {
-            query.addConditions(CONTEST_PHASE.ID.eq(contestId));
+            query.addConditions(CONTEST_PHASE.CONTEST_ID.eq(contestId));
         }
     }
 

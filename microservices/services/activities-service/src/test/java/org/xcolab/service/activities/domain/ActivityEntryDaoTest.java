@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -71,8 +71,8 @@ public class ActivityEntryDaoTest {
     @Test
     public void shouldFindByGivenuserId() throws Exception {
 
-        List<ActivityEntry> list = activityEntryDao.findByGiven(PaginationHelper.EVERYTHING,
-                2666739L,null);
+        List<ActivityEntry> list = activityEntryDao.findByGiven(PaginationHelper.EVERYTHING, null,
+                null, 2666739L, null);
         assertTrue(list.size() == 2);
     }
 }

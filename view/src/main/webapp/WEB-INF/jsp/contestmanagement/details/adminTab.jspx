@@ -27,7 +27,7 @@
 			team, or your content may be lost.</p>
 
 		<h1>Admin section</h1>
-        <form:form action="${updateContestAdminURL }" commandName="contestAdminBean"
+        <form:form action="${updateContestAdminURL }" modelAttribute="contestAdminBean"
                    cssClass="addpropform" id="editForm" method="post">
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">

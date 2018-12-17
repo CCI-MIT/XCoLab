@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.MetaKeys;
 
@@ -24,7 +25,14 @@ public class BaseProposalsController {
     }
 
     protected void setBasePageAttributes(ProposalContext proposalContext, Model model) {
+        final ContestType contestType = proposalContext.getContestType();
+        if (contestType != null) {
+            setActivePageLink(model, contestType);
+        }
+    }
+
+    protected void setActivePageLink(Model model, ContestType contestType) {
         model.addAttribute("_activePageLink",
-                proposalContext.getContestType().getIdentifier());
+                contestType.getIdentifier());
     }
 }

@@ -1,12 +1,12 @@
 package org.xcolab.view.pages.proposals.view.contest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -19,13 +19,15 @@ import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.commons.http.servlet.RequestUtil;
+import org.xcolab.view.errors.AccessDeniedPage;
+import org.xcolab.view.pages.proposals.permissions.ContestPermissions;
 import org.xcolab.view.pages.proposals.utils.ContestsColumn;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
 import org.xcolab.view.pages.proposals.wrappers.CollectionCardFilterBean;
 import org.xcolab.view.pages.proposals.wrappers.CollectionCardWrapper;
 import org.xcolab.view.pages.proposals.wrappers.ContestList;
-import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.ArrayList;
@@ -33,7 +35,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Predicate;
@@ -63,11 +64,32 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false) String viewType,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
             @RequestParam(required = false, defaultValue = "" + FEATURED_COLLECTION_CARD_ID) long currentCollectionCardId,
+            @RequestParam(required = false) Long contestTypeId,
+            Member loggedInMember,
             SortFilterPage sortFilterPage) {
 
-        Locale locale = LocaleContextHolder.getLocale();
-        ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(preferenceId,locale.getLanguage());
-        ContestType contestType = preferences.getContestType();
+        ContestType contestType;
+        if (contestTypeId != null) {
+            contestType = new ContestType(contestTypeId);
+        } else {
+            final ContestType defaultContestType = new ContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+            final String originalUri = RequestUtil.getOriginalUri(request);
+            if (!originalUri.startsWith(defaultContestType.getContestBaseUrl())) {
+                contestType =
+                        ContestTypeClient.getActiveContestTypes().stream()
+                                .filter(item -> originalUri
+                                        .startsWith(item.getContestBaseUrl()))
+                                //TODO: better exception --> 404
+                                .findFirst().orElseThrow(IllegalStateException::new);
+            } else {
+                contestType = defaultContestType;
+            }
+        }
+
+        if (contestType.isRestrictedAccess() && !new ContestPermissions(loggedInMember)
+                .getCanAccessContests(contestType)) {
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
+        }
 
         final int totalContestCount = ContestClientUtil
                 .countContests(null, false, contestType.getId());
@@ -260,7 +282,7 @@ public class ContestsIndexController extends BaseProposalsController {
                 + ConfigurationAttributeKey.META_PAGE_DESCRIPTION_CONTESTS.get();
         model.addAttribute("pageDescription", description);
 
-        setBasePageAttributes(proposalContext, model);
+        setActivePageLink(model, contestType);
         return "/proposals/contestsIndex";
     }
 

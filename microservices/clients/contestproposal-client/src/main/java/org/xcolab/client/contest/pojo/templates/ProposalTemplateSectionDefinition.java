@@ -1,5 +1,8 @@
 package org.xcolab.client.contest.pojo.templates;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -8,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -25,8 +29,9 @@ import org.xcolab.commons.IdListUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -38,48 +43,36 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateSectionDefinition {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateSectionDefinition
+        implements Serializable {
+
+    public static final TypeProvider<ProposalTemplateSectionDefinition> TYPES =
+            new TypeProvider<>(ProposalTemplateSectionDefinition.class,
+                    new ParameterizedTypeReference<List<ProposalTemplateSectionDefinition>>() {});
 
     private static final Logger log = LoggerFactory.getLogger(ProposalTemplateSectionDefinition.class);
 
     private final Proposal proposal;
 
-    private final ServiceNamespace serviceNamespace;
-
     public ProposalTemplateSectionDefinition() {
         proposal = null;
-        serviceNamespace = null;
     }
 
     public ProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition value) {
         super(value);
-        if(value.getServiceNamespace() != null){
-            serviceNamespace = value.getServiceNamespace();
-        }else{
-            serviceNamespace = null;
-        }
         proposal = null;
     }
 
     public ProposalTemplateSectionDefinition(ProposalTemplateSectionDefinition value, Proposal proposal) {
         super(value);
-        if (value.getServiceNamespace() != null) {
-            serviceNamespace = value.getServiceNamespace();
-        } else {
-            if (proposal.getServiceNamespace() != null) {
-                serviceNamespace = proposal.getServiceNamespace();
-            } else {
-                serviceNamespace = null;
-            }
-        }
         this.proposal = proposal;
     }
     public ProposalTemplateSectionDefinition(
-            AbstractProposalTemplateSectionDefinition abstractProposalTemplateSectionDefinition,
-            ServiceNamespace serviceNamespace) {
+            AbstractProposalTemplateSectionDefinition abstractProposalTemplateSectionDefinition) {
         super(abstractProposalTemplateSectionDefinition);
         proposal = null;
-        this.serviceNamespace = serviceNamespace;
     }
 
     public List<Long> getAdditionalIdsAsList() {
@@ -344,10 +337,6 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
     public String getContestNamesPlural() {
         return ContestTypeClient
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "or");
-    }
-
-    public ServiceNamespace getServiceNamespace() {
-        return serviceNamespace;
     }
 
     private ProposalAttribute getSectionAttribute() {

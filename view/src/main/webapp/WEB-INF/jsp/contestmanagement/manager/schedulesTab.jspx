@@ -45,7 +45,7 @@
     <div class="c-ContentBox l-BoxLayout__stacked">
         <form:errors cssClass="alert alert-danger" element="div" path="*"/>
 
-        <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
+        <form:form action="${changeElementUrl}" modelAttribute="elementSelectIdWrapper" id="selectForm"
                    method="post">
 
             <div class="c-Box c-Box--colorTan">
@@ -62,7 +62,7 @@
         </form:form>
         <c:if test="${not empty contestScheduleBean}">
             <form:form action="${updateContestScheduleUrl}?elementId=${contestScheduleBean.scheduleId}"
-                       commandName="contestScheduleBean" id="editForm" method="post" class="mt-3">
+                       modelAttribute="contestScheduleBean" id="editForm" method="post" class="mt-3">
                 <input type="hidden" name="action" value="UPDATE" />
                 <form:hidden path="scheduleId"/>
                 <form:hidden path="createNew" id="createNewFlag"/>

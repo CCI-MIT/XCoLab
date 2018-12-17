@@ -2,14 +2,12 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.util.enums.proposal.MoveType;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class ProposalMoveClientUtil {
 
-    private static final ProposalMoveClient client = ProposalMoveClient.fromNamespace(
-            ServiceNamespace.instance());
+    private static final ProposalMoveClient client = new ProposalMoveClient();
 
     public static ProposalMoveClient getClient() {
         return client;

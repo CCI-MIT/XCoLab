@@ -17,5 +17,6 @@ logging:
     org.springframework.boot.actuate: WARN
 
 # This service does not manage any entities
-flyway:
-  enabled: false
+spring:
+  flyway:
+    enabled: false

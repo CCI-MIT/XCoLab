@@ -3,7 +3,7 @@ package org.xcolab.view.widgets.staffmembers;
 import org.json.JSONObject;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.members.legacy.enums.CategoryRole;
+import org.xcolab.client.members.legacy.enums.StaffMemberCategoryRole;
 import org.xcolab.commons.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
@@ -34,18 +34,18 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
     static {
         categories = new HashMap<>();
 
-        categories.put(CategoryRole.ADVISOR.getCategoryId(), "Advisors");
-        categories.put(CategoryRole.JUDGE.getCategoryId(), "Judges");
-        categories.put(CategoryRole.FELLOW.getCategoryId(), "Fellows");
-        categories.put(CategoryRole.IMPACT_FELLOW.getCategoryId(), "Impact Fellows");
-        categories.put(CategoryRole.CATALYST.getCategoryId(), "Catalyst");
-        categories.put(CategoryRole.EXPERT_ADVISORY.getCategoryId(), "Expert Advisors");
-        categories.put(CategoryRole.EXPERT_COUNCIL.getCategoryId(), "Expert Council");
-        categories.put(CategoryRole.TEAM.getCategoryId(), "Project Staff: Team");
-        categories.put(CategoryRole.VENDORS.getCategoryId(), "Project Staff: Vendors");
-        categories.put(CategoryRole.ADVISORS_STAFF.getCategoryId(), "Project Staff: Advisors");
-        categories.put(CategoryRole.ALUMNI.getCategoryId(), "Project Staff: Alumni");
-        categories.put(CategoryRole.RESEARCH_COLAB.getCategoryId(), "Research Collaborator");
+        categories.put(StaffMemberCategoryRole.ADVISOR.getCategoryId(), "Advisors");
+        categories.put(StaffMemberCategoryRole.JUDGE.getCategoryId(), "Judges");
+        categories.put(StaffMemberCategoryRole.FELLOW.getCategoryId(), "Fellows");
+        categories.put(StaffMemberCategoryRole.IMPACT_FELLOW.getCategoryId(), "Impact Fellows");
+        categories.put(StaffMemberCategoryRole.CATALYST.getCategoryId(), "Catalyst");
+        categories.put(StaffMemberCategoryRole.EXPERT_ADVISORY.getCategoryId(), "Expert Advisors");
+        categories.put(StaffMemberCategoryRole.EXPERT_COUNCIL.getCategoryId(), "Expert Council");
+        categories.put(StaffMemberCategoryRole.TEAM.getCategoryId(), "Project Staff: Team");
+        categories.put(StaffMemberCategoryRole.VENDORS.getCategoryId(), "Project Staff: Vendors");
+        categories.put(StaffMemberCategoryRole.ADVISORS_STAFF.getCategoryId(), "Project Staff: Advisors");
+        categories.put(StaffMemberCategoryRole.ALUMNI.getCategoryId(), "Project Staff: Alumni");
+        categories.put(StaffMemberCategoryRole.RESEARCH_COLAB.getCategoryId(), "Research Collaborator");
     }
 
     private String title;

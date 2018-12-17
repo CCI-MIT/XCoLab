@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.activities.enums.DiscussionThreadActivityType;
@@ -39,7 +39,7 @@ public class ThreadController extends BaseDiscussionController {
             throws DiscussionAuthorizationException, ThreadNotFoundException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
-        CommentThread thread = ThreadClientUtil.getThread(threadId);
+        CommentThread thread = ThreadClient.instance().getThread(threadId);
 
         DiscussionPermissions permissions = new DiscussionPermissions(request);
         if (!getCanView(permissions, categoryGroup, threadId)) {
@@ -96,14 +96,14 @@ public class ThreadController extends BaseDiscussionController {
             thread.setTitle(HtmlUtil.cleanAll(title));
             thread.setAuthorUserId(userId);
             thread.setIsQuiet(false);
-            thread = ThreadClientUtil.createThread(thread);
+            thread = ThreadClient.instance().createThread(thread);
 
             Comment comment = new Comment();
             comment.setThreadId(thread.getId());
             final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             comment.setContent(HtmlUtil.cleanSome(body, baseUri));
             comment.setAuthorUserId(userId);
-            comment = CommentClientUtil.createComment(comment);
+            comment = CommentClient.instance().createComment(comment);
 
             if (!thread.getIsQuiet()) {
                 final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
@@ -120,7 +120,7 @@ public class ThreadController extends BaseDiscussionController {
     @Override
     public boolean getCanView(DiscussionPermissions permissions, CategoryGroup categoryGroup, long additionalId) {
         try {
-            CommentThread thread = ThreadClientUtil.getThread(additionalId);
+            CommentThread thread = ThreadClient.instance().getThread(additionalId);
             return thread.getCategory().getCategoryGroup().getId()
                     .equals(categoryGroup.getId());
         } catch (ThreadNotFoundException e) {

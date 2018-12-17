@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.commons.servlet.ManifestUtil;
-import org.xcolab.view.config.spring.filters.SentryUserInfoFilter;
+import org.xcolab.view.config.sentry.SentryUserInfoFilter;
 
 import java.util.Optional;
 

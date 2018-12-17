@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.modeling.ModelingClientUtil;
+import org.xcolab.client.modeling.ModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.pojo.ModelGlobalPreference;
 import org.xcolab.view.pages.modeling.admin.ModelsAdminController;
@@ -25,9 +25,9 @@ public class ToggleCustomModelInputWidgetAction {
             UpdateModelInputWidgetsBean updateModelWidgetsBean, @PathVariable long modelId)
             throws IllegalUIConfigurationException, IOException {
 
-        ModelGlobalPreference modelPreferences = ModelingClientUtil.getModelPreference(modelId);
+        ModelGlobalPreference modelPreferences = ModelingClient.instance().getModelPreference(modelId);
         modelPreferences.setUsesCustomInputs(!modelPreferences.getUsesCustomInputs());
-        ModelingClientUtil.updateModelPreference(modelPreferences);
+        ModelingClient.instance().updateModelPreference(modelPreferences);
         response.sendRedirect(ModelsAdminController.getTabMapping(modelId, "inputWidgets"));
     }
 }

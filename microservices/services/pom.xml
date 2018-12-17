@@ -72,7 +72,6 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>5.0.7</version>
         </dependency>
 
         <!-- testing dependencies -->
@@ -150,7 +149,9 @@
                 <plugin>
                     <groupId>org.flywaydb</groupId>
                     <artifactId>flyway-maven-plugin</artifactId>
-                    <version>5.0.7</version>
+                    <!-- TODO: use variable from spring BOM-->
+                    <!--<version>${flyway.version}</version>-->
+                    <version>5.2.3</version>
                     <executions>
                         <execution>
                             <phase>generate-sources</phase>
@@ -167,7 +168,7 @@
                         <!--suppress MavenModelInspection (read from ~/.xcolab.application.properties) -->
                         <password>${db.password}</password>
                         <!--suppress MavenModelInspection (read from application.yml) -->
-                        <table>${flyway.table}</table>
+                        <table>${spring.flyway.table}</table>
 
                         <!-- Allow migrations to be applied even if a higher version was already run -->
                         <outOfOrder>true</outOfOrder>

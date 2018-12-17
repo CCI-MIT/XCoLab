@@ -139,16 +139,20 @@
 
                 function saveSetting(status) {
                     if (typeof(Storage) !== "undefined") {
-                        localStorage.setItem("toggleAdminButton", status);
+                        if (localStorage !== null) {
+                            localStorage.setItem("toggleAdminButton", status);
+                        }
                     }
                 }
 
                 if (typeof(Storage) !== "undefined") {
-                    status = localStorage.getItem("toggleAdminButton");
-                    if (status == "hidden") {
-                        jQuery('.cb-btn-admin').hide();
-                    } else {
-                        jQuery('.cb-btn-admin').show();
+                    if (localStorage !== null) {
+                        status = localStorage.getItem("toggleAdminButton");
+                        if (status == "hidden") {
+                            jQuery('.cb-btn-admin').hide();
+                        } else {
+                            jQuery('.cb-btn-admin').show();
+                        }
                     }
                 }
             </script>

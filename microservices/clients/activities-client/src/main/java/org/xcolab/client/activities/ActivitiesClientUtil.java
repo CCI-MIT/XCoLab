@@ -1,20 +1,18 @@
 package org.xcolab.client.activities;
 
-import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.util.activities.enums.ActivityCategory;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.activities.enums.ActivityType;
 
 import java.util.Date;
 import java.util.List;
 
 public class ActivitiesClientUtil {
 
-    private static final ActivitiesClient activitiesClient = ActivitiesClient.fromNamespace(
-            ServiceNamespace.instance());
+    private static final ActivitiesClient activitiesClient = new ActivitiesClient();
 
     public static ActivitiesClient getClient() {
         return activitiesClient;
@@ -98,6 +96,10 @@ public class ActivitiesClientUtil {
             Long receiverId) {
         return activitiesClient.getActivitySubscriptions(activityCategory, categoryId,
                 receiverId);
+    }
+
+    public static List<ActivityEntry> getActivitiesByCategoryId(String activityCategory, Long categoryId) {
+        return activitiesClient.getActivitiesByCategoryId(activityCategory, categoryId);
     }
 
     public static List<ActivitySubscription> getActivitySubscriptionsForMember(Long userId) {

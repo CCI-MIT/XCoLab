@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -83,7 +83,7 @@ public class CategoryController extends BaseDiscussionController {
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
         List<Category> categories = categoryGroup.getCategories();
-        Category currentCategory = CategoryClientUtil.getCategory(categoryId);
+        Category currentCategory = CategoryClient.instance().getCategory(categoryId);
 
         model.addAttribute("categoryGroup", categoryGroup);
         model.addAttribute("currentCategory", currentCategory);
@@ -112,7 +112,7 @@ public class CategoryController extends BaseDiscussionController {
 
         final String baseUrl;
         if (categoryId != null && categoryId > 0) {
-            Category category = CategoryClientUtil.getCategory(categoryId);
+            Category category = CategoryClient.instance().getCategory(categoryId);
             baseUrl = category.getLinkUrl();
         } else {
             baseUrl = "/discussion/categories";

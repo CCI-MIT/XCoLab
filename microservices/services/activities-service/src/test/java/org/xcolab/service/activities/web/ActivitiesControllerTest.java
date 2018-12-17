@@ -32,6 +32,7 @@ import java.util.Optional;
 
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -107,7 +108,7 @@ public class ActivitiesControllerTest {
         .contentType(contentType).accept(contentType))
             .andExpect(status().isOk());
         Mockito.verify(activityEntryDao,Mockito.times(1))
-            .findByGiven(anyObject(),anyObject(),anyObject());
+            .findByGiven(anyObject(), anyString(), anyLong(), anyObject(), anyObject());
     }
 
     @Test

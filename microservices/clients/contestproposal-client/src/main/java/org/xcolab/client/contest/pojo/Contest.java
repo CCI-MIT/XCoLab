@@ -1,5 +1,9 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.ContestTypeClient;
@@ -8,8 +12,6 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -30,17 +32,16 @@ import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinitio
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalMemberRatingClient;
-import org.xcolab.client.proposals.ProposalPhaseClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.time.DateUtil;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.Serializable;
@@ -55,6 +56,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class Contest extends AbstractContest implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,8 +65,6 @@ public class Contest extends AbstractContest implements Serializable {
     private final ContestClient contestClient;
     private final ContestTeamMemberClient contestTeamMemberClient;
     private final OntologyClient ontologyClient;
-    private final CommentClient commentClient;
-    private final ThreadClient threadClient;
     private final ProposalTemplateClient proposalTemplateClient;
 
 
@@ -91,64 +92,39 @@ public class Contest extends AbstractContest implements Serializable {
 
     protected ContestPhase activePhase;
 
-    private ServiceNamespace serviceNamespace;
-
     public Contest() {
         contestClient = ContestClientUtil.getClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
         proposalTemplateClient = ProposalTemplateClientUtil.getClient();
-        commentClient = CommentClientUtil.getClient();
-        threadClient = ThreadClientUtil.getClient();
     }
 
-    public Contest(Contest value) {
-        this(value, value.getServiceNamespace());
-    }
-
-    public Contest(AbstractContest value, ServiceNamespace serviceNamespace) {
+    public Contest(AbstractContest value) {
         super(value);
-        if (serviceNamespace != null) {
-            contestClient = ContestClient.fromNamespace(serviceNamespace);
-            contestTeamMemberClient = ContestTeamMemberClient.fromService(serviceNamespace);
-            ontologyClient = OntologyClient.fromService(serviceNamespace);
-            proposalTemplateClient = ProposalTemplateClient.fromNamespace(serviceNamespace);
-            commentClient = CommentClient.fromService(serviceNamespace);
-            threadClient = ThreadClient.fromService(serviceNamespace);
-        } else {
-            contestClient = ContestClientUtil.getClient();
-            contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
-            ontologyClient = OntologyClientUtil.getClient();
-            proposalTemplateClient = ProposalTemplateClientUtil.getClient();
-            commentClient = CommentClientUtil.getClient();
-            threadClient = ThreadClientUtil.getClient();
-        }
-        this.serviceNamespace = serviceNamespace;
+        contestClient = ContestClientUtil.getClient();
+        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
+        ontologyClient = OntologyClientUtil.getClient();
+        proposalTemplateClient = ProposalTemplateClientUtil.getClient();
     }
 
+    @JsonIgnore
     public String getContestDiscussionLinkUrl() {
         return getContestLinkUrl() + "/discussion";
     }
 
+    @JsonIgnore
     public String getContestLinkUrl() {
-        String link = "/";
-
-        if (this.getContestTypeId() != null) {
-            link += ContestTypeClient.getContestType(this.getContestTypeId())
-                    .getFriendlyUrlStringContests();
-        } else {
-            System.out.println(" > ContestID(" + this.getId() + ")");
-            System.out.println(" > Contest: " + this.toString() + " - ");
-        }
-
+        String link = getContestType().getContestBaseUrl();
         link += "/%d/%s";
         return String.format(link, this.getContestYear(), this.getContestUrlName());
     }
 
+    @JsonIgnore
     public String getContestLinkUrl(long contestPhaseId) {
         return getContestLinkUrl() + "/phase/" + contestPhaseId;
     }
 
+    @JsonIgnore
     public String getSponsorLogoPath() {
         Long imgId = this.getSponsorLogoId();
         if (imgId != null) {
@@ -157,36 +133,44 @@ public class Contest extends AbstractContest implements Serializable {
         return "";
     }
 
+    @JsonIgnore
     public String getCleanContestDescription() {
         return HtmlUtil.cleanAll(this.getDescription());
     }
 
+    @JsonIgnore
     public String getLogoPath() {
         long imgId = this.getContestLogoId() != null ? this.getContestLogoId() : 0;
         return "/image/contest/" + imgId;
     }
 
+    @JsonIgnore
     public boolean isShowInTileView(){
         return this.getShowInTileView();
     }
 
+    @JsonIgnore
     public boolean isShowInListView(){
         return this.getShowInListView();
     }
 
+    @JsonIgnore
     public boolean isShowInOutlineView(){
         return this.getShowInOutlineView();
     }
 
+    @JsonIgnore
     public String generateContestUrlName() {
         String contestUrlName = this.getTitle().toLowerCase();
         return contestUrlName.replaceAll(" ", "-").replaceAll("[^a-z0-9-]", "");
     }
 
+    @JsonIgnore
     public void persist() {
         contestClient.updateContest(this);
     }
 
+    @JsonIgnore
     public String getTitleWithEndYear() {
         final String contestShortName = getTitle();
         if (ConfigurationAttributeKey.CONTESTS_SHOW_YEAR_WHEN_COMPLETED.get()) {
@@ -203,10 +187,12 @@ public class Contest extends AbstractContest implements Serializable {
         return contestShortName;
     }
 
+    @JsonIgnore
     public boolean isContestActive() {
         return this.getContestActive();
     }
 
+    @JsonIgnore
     public boolean getContestInVotingPhase() {
         ContestPhase phase = contestClient.getActivePhase(this.getId());
         if (phase == null) {
@@ -218,6 +204,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     }
 
+    @JsonIgnore
     public boolean isContestCompleted(){
         ContestPhase activePhase = getActivePhase();
         if (activePhase != null) {
@@ -226,6 +213,7 @@ public class Contest extends AbstractContest implements Serializable {
         return getLastPhase().isEnded();
     }
 
+    @JsonIgnore
     public boolean isShowColoredFlag() {
         if (getFlag() > 0) {
             return getFlag() == 1;
@@ -233,25 +221,27 @@ public class Contest extends AbstractContest implements Serializable {
         return getActivePhase().getStatus().isCanAnything();
     }
 
+    @JsonIgnore
     public boolean isFeatured() {
         return this.getFeatured();
     }
 
+    @JsonIgnore
     public boolean isPlansOpenByDefault() {
         return this.getPlansOpenByDefault();
     }
 
-
+    @JsonIgnore
     public boolean getSponsorLinkAvailable() {
         return !StringUtils.isEmpty(this.getSponsorLink());
     }
 
-
+    @JsonIgnore
     public long getProposalsCount() {
         try {
             ContestPhase cp = contestClient.getActivePhase(this.getId());
             if (cp != null) {
-                return ProposalPhaseClient.fromNamespace(serviceNamespace)
+                return ProposalPhaseClientUtil.getClient()
                         .getProposalCountForActiveContestPhase(cp.getId());
             }
         } catch (UncheckedEntityNotFoundException e) {
@@ -260,23 +250,27 @@ public class Contest extends AbstractContest implements Serializable {
         return 0L;
     }
 
+    @JsonIgnore
     public long getCommentsCount() {
-
-        return commentClient.countComments(this.getDiscussionGroupId());
+        return CommentClient.instance().countComments(this.getDiscussionGroupId());
     }
 
+    @JsonIgnore
     public List<OntologyTerm> getWho() {
         return getTermFromSpace(WHO);
     }
 
+    @JsonIgnore
     public List<OntologyTerm> getWhat() {
         return getTermFromSpace(WHAT);
     }
 
+    @JsonIgnore
     public List<OntologyTerm> getWhere() {
         return getTermFromSpace(WHERE);
     }
 
+    @JsonIgnore
     public List<OntologyTerm> getHow() {
         return getTermFromSpace(HOW);
     }
@@ -302,10 +296,12 @@ public class Contest extends AbstractContest implements Serializable {
 
     }
 
+    @JsonIgnore
     public long getFocusAreaIdOrZero() {
         return getFocusAreaId() != null ? getFocusAreaId() : 0;
     }
 
+    @JsonIgnore
     public List<ContestPhase> getPhases() {
         if (phases == null) {
             phases = new ArrayList<>();
@@ -314,6 +310,7 @@ public class Contest extends AbstractContest implements Serializable {
         return phases;
     }
 
+    @JsonIgnore
     public Map<ContestTeamMemberRole, List<Member>> getContestTeamMembersByRole() {
         if (contestTeamMembersByRole == null) {
             contestTeamMembersByRole = new TreeMap<>();
@@ -334,6 +331,7 @@ public class Contest extends AbstractContest implements Serializable {
         return contestTeamMembersByRole;
     }
 
+    @JsonIgnore
     public boolean getHasUserRoleInContest(long userId, long roleId) {
         for (Entry<ContestTeamMemberRole, List<Member>> entry
                 : getContestTeamMembersByRole().entrySet()) {
@@ -347,10 +345,12 @@ public class Contest extends AbstractContest implements Serializable {
         return false;
     }
 
+    @JsonIgnore
     public boolean getCanFellow(long userId) {
-        return getHasUserRoleInContest(userId, MemberRole.FELLOW.getRoleId());
+        return getHasUserRoleInContest(userId, SystemRole.FELLOW.getRoleId());
     }
 
+    @JsonIgnore
     public ContestPhase getActivePhase() {
         if (activePhase == null) {
             ContestPhase phase = contestClient.getActivePhase(this.getId());
@@ -362,18 +362,22 @@ public class Contest extends AbstractContest implements Serializable {
         return activePhase;
     }
 
+    @JsonIgnore
     public List<Member> getContestImpactAssessmentFellows() {
         return getMembersWithRole(ContestRole.IAF);
     }
 
+    @JsonIgnore
     public List<Member> getContestJudges() {
         return getMembersWithRole(ContestRole.JUDGE);
     }
 
+    @JsonIgnore
     public List<Member> getContestFellows() {
         return getMembersWithRole(ContestRole.FELLOW);
     }
 
+    @JsonIgnore
     public List<Member> getContestAdvisors() {
         return getMembersWithRole(ContestRole.ADVISOR);
     }
@@ -385,12 +389,13 @@ public class Contest extends AbstractContest implements Serializable {
                 .findAny().orElse(Collections.emptyList());
     }
 
+    @JsonIgnore
     public long getTotalProposalsCount() {
         Set<Proposal> proposalList = new HashSet<>();
 
         List<ContestPhase> contestPhases = contestClient.getAllContestPhases(this.getId());
         for (ContestPhase contestPhase : contestPhases) {
-            List<Proposal> proposals = ProposalClient.fromNamespace(serviceNamespace)
+            List<Proposal> proposals = ProposalClientUtil.getClient()
                     .getActiveProposalsInContestPhase(contestPhase.getId());
             proposalList.addAll(proposals);
 
@@ -399,6 +404,7 @@ public class Contest extends AbstractContest implements Serializable {
         return proposalList.size();
     }
 
+    @JsonIgnore
     public ContestType getContestType() {
         if (contestType == null) {
             contestType = ContestTypeClient.getContestType(this.getContestTypeId());
@@ -406,11 +412,12 @@ public class Contest extends AbstractContest implements Serializable {
         return contestType;
     }
 
+    @JsonIgnore
     public String getContestUrl() {
         return this.getContestLinkUrl();
     }
 
-
+    @JsonIgnore
     public String getResourceArticleUrl() {
         return "/resources/" + this.getContestYear() + "/" + this.getContestUrlName();
     }
@@ -423,23 +430,27 @@ public class Contest extends AbstractContest implements Serializable {
             return super.getEmailTemplateUrl();
         }
     }
+
+    @JsonIgnore
     public long getTotalCommentsCount() {
-        int contestComments = commentClient.countComments(this.getDiscussionGroupId());
+        int contestComments = CommentClient.instance().countComments(this.getDiscussionGroupId());
         ContestPhase phase = contestClient.getActivePhase(this.getId());
         final List<Long> proposalDiscussionThreads =
                 contestClient.getProposalDiscussionThreads(phase.getId());
-        contestComments += commentClient.countComments(proposalDiscussionThreads);
+        contestComments += CommentClient.instance().countComments(proposalDiscussionThreads);
 
         return contestComments;
     }
 
+    @JsonIgnore
     public long getVotesCount() {
         ContestPhase phase = contestClient.getActivePhase(this.getId());
 
-        return ProposalMemberRatingClient.fromNamespace(serviceNamespace)
+        return ProposalMemberRatingClientUtil.getClient()
                 .countProposalVotesInContestPhase(phase.getId());
     }
 
+    @JsonIgnore
     public long getCreatedTime(){
         if (this.getCreatedAt() != null) {
             return this.getCreatedAt().getTime();
@@ -450,6 +461,7 @@ public class Contest extends AbstractContest implements Serializable {
         return 0;
     }
 
+    @JsonIgnore
     public ContestPhase getLastPhase() {
         ContestPhase last = null;
         for (ContestPhase ph : getPhases()) {
@@ -461,27 +473,27 @@ public class Contest extends AbstractContest implements Serializable {
         return last;
     }
 
-
-    public ServiceNamespace getServiceNamespace() {
-        return serviceNamespace;
-    }
-
+    @JsonIgnore
     public String getWhoName() {
         return getTermNameFromSpace(WHO);
     }
 
+    @JsonIgnore
     public String getWhatName() {
         return getTermNameFromSpace(WHAT);
     }
 
+    @JsonIgnore
     public String getWhereName() {
         return getTermNameFromSpace(WHERE);
     }
 
+    @JsonIgnore
     public String getHowName() {
         return getTermNameFromSpace(HOW);
     }
 
+    @JsonIgnore
     private String getTermNameFromSpace(String space) {
         String ontologyJoinedName = ontologyJoinedNames.get(space);
         if (ontologyJoinedName == null) {
@@ -495,17 +507,20 @@ public class Contest extends AbstractContest implements Serializable {
         return ontologyJoinedName;
     }
 
+    @JsonIgnore
     public boolean getShowSubContests(){
         // Removed due to COLAB-518; keep the functionality in the code base for the case that we need it again.
         //        return contest.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS;
         return false;
     }
 
+    @JsonIgnore
     public boolean getShowParentContest(){
         return false;
         //        return this.getContestTier() == 3 - 1;
     }
 
+    @JsonIgnore
     public List<Contest> getSubContests() {
         List <Contest> subContests = contestClient
                 .getSubContestsByOntologySpaceId(this.getId(), ONTOLOGY_SPACE_ID_WHERE);
@@ -513,6 +528,7 @@ public class Contest extends AbstractContest implements Serializable {
         return subContests;
     }
 
+    @JsonIgnore
     public Contest getParentContest() {
         final Long focusAreaId = getFocusAreaId();
         if (!getHasFocusArea()) {
@@ -534,6 +550,7 @@ public class Contest extends AbstractContest implements Serializable {
         }
     }
 
+    @JsonIgnore
     public Long getVotingPhasePK() {
         ContestPhase lastVotingPhase = null;
         for (ContestPhase ph : getPhases()) {
@@ -546,6 +563,7 @@ public class Contest extends AbstractContest implements Serializable {
         return lastVotingPhase != null ? lastVotingPhase.getId() : 0;
     }
 
+    @JsonIgnore
     public List<ContestPhase> getVisiblePhases() {
         if (visiblePhases == null) {
             visiblePhases = new ArrayList<>();
@@ -555,10 +573,12 @@ public class Contest extends AbstractContest implements Serializable {
         return visiblePhases;
     }
 
+    @JsonIgnore
     public boolean getHasFocusArea() {
         return getFocusAreaId() != null;
     }
 
+    @JsonIgnore
     public boolean isUserAmongAdvisors(long userId) {
         for (Member judge : getContestAdvisors()) {
             if (judge.getId() == userId) {
@@ -577,21 +597,24 @@ public class Contest extends AbstractContest implements Serializable {
             thread.setAuthorUserId(getAuthorUserId());
             thread.setTitle(contestType.getContestName() + " discussion");
             thread.setIsQuiet(false);
-            thread = threadClient.createThread(thread);
+            thread = ThreadClient.instance().createThread(thread);
             discussionGroupId = thread.getId();
             setDiscussionGroupId(discussionGroupId);
         }
         return discussionGroupId;
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         return !isNotEmpty();
     }
 
+    @JsonIgnore
     public boolean isNotEmpty() {
         return getTotalProposalsCount() > 0;
     }
 
+    @JsonIgnore
     public boolean isCompatibleWithSchedule(long contestScheduleId) {
         if (isEmpty()) {
             return true;
@@ -601,6 +624,7 @@ public class Contest extends AbstractContest implements Serializable {
         return contestScheduleChangeHelper.isValidChange();
     }
 
+    @JsonIgnore
     public boolean isCompatibleWithSchedulePhases(List<ContestPhase> schedulePhases) {
         if (isEmpty()) {
             return true;
@@ -610,6 +634,7 @@ public class Contest extends AbstractContest implements Serializable {
         return contestScheduleChangeHelper.isValidChange();
     }
 
+    @JsonIgnore
     public void changeScheduleTo(long contestScheduleId) {
         final ContestScheduleChangeHelper contestScheduleChangeHelper =
                 new ContestScheduleChangeHelper(getId(), contestScheduleId);
@@ -628,6 +653,7 @@ public class Contest extends AbstractContest implements Serializable {
      *
      * @return 0 if judge action is incomplete, 1 judge actions completed
      */
+    @JsonIgnore
     public boolean getJudgeStatus() {
         //TODO COLAB-2421: this code does nothing - remove?
 //        try {
@@ -657,6 +683,7 @@ public class Contest extends AbstractContest implements Serializable {
      *
      * @return 0 if fellow action is incomplete, 1 fellow action completed
      */
+    @JsonIgnore
     public boolean getScreeningStatus() {
         //TODO COLAB-2421: this code does nothing - remove?
 //        try {
@@ -677,33 +704,40 @@ public class Contest extends AbstractContest implements Serializable {
         return true;
     }
 
+    @JsonIgnore
     public String getNewProposalLinkUrl() {
         final String portletUrl = getContestType().getContestBaseUrl();
         return String.format("%s/%s/%s/createProposal",
                 portletUrl, this.getContestYear(), this.getContestUrlName());
     }
 
+    @JsonIgnore
     public List<ProposalTemplateSectionDefinition> getSections() {
         return proposalTemplateClient.getProposalTemplateSectionDefinitionByProposalTemplateId(getProposalTemplateId(),
                         true);
     }
 
+    @JsonIgnore
     public int getMaxVotesPerContest() {
         return ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_CONTEST.get().intValue();
     }
 
+    @JsonIgnore
     public int getMaxVotesPerProposal() {
         return ConfigurationAttributeKey.PROPOSALS_MAX_VOTES_PER_PROPOSAL.get().intValue();
     }
 
+    @JsonIgnore
     public boolean getMemberAgreedToTos(Member member) {
         return contestClient.getMemberAgreedToTos(getId(), member);
     }
 
+    @JsonIgnore
     public void setMemberAgreedToTos(Member member, boolean agreed) {
         contestClient.setMemberAgreedToTos(getId(), member, agreed);
     }
 
+    @JsonIgnore
     public void deleteResourceArticle() {
         setResourceArticleId(0L);
         contestClient.updateContest(this);

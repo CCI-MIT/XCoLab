@@ -12,7 +12,7 @@
     <c:set var="saveJudgingFeedbackURL" value="${proposal.proposalUrl}/tab/ADVANCING/saveJudgingFeedback?contestId=${contest.id }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.id}"/>
 
 
-    <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalFeedbackBean">
+    <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" modelAttribute="judgeProposalFeedbackBean">
         <form:hidden path="contestPhaseId" />
         <form:hidden path="screeningUserId" id="judgeUserId"/>
 

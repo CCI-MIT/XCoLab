@@ -41,7 +41,7 @@ public enum ContestsColumn {
         return 0;
     }),
 
-    DEFAULT(Comparator.comparingInt(AbstractContest::getWeight));
+    DEFAULT(Comparator.comparingInt(Contest::getWeight).reversed());
     
     private final Comparator<Contest> columnComparator;
 

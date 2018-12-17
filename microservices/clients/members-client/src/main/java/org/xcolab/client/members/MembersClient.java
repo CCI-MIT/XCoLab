@@ -6,7 +6,6 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
-import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.LoginLog;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
@@ -153,12 +152,14 @@ public final class MembersClient {
     }
 
     public static MemberCategory getHighestCategory(List<Role> roles) {
-        MemberCategory category = MemberRole.MEMBER.getMemberCategory();
+        MemberCategory category = null;
 
-        for (Role r: roles) {
+        for (Role r : roles) {
             try {
                 MemberCategory currentCategory = MembersClient.getMemberCategory(r.getId());
-                if (currentCategory.getSortOrder() > category.getSortOrder()) {
+                if (category == null) {
+                    category = currentCategory;
+                } else if (currentCategory.getSortOrder() > category.getSortOrder()) {
                     category = currentCategory;
                 }
             } catch (MemberCategoryNotFoundException e) {

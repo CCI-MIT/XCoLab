@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationCategory;
 import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationImpactBean;
 import org.xcolab.view.pages.proposals.impact.adaptation.AdaptationService;
+import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.util.Arrays;
 
@@ -40,6 +41,11 @@ public class ProposalAdaptationImpactTabController extends BaseProposalTabContro
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADAPTATION_IMPACT")
     public String show(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member currentMember) {
+
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
+        if (!permissions.getCanView()) {
+            return new AccessDeniedPage(currentMember).toViewName(response);
+        }
 
         final ClientHelper clients = proposalContext.getClients();
         final ProposalAttributeClient attributeClient = clients.getProposalAttributeClient();

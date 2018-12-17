@@ -37,7 +37,7 @@
         <form:errors cssClass="alert alert-danger" element="div" path="*"/>
 
         <div class="c-Box c-Box--colorTan">
-            <form:form commandName="emailTemplateWrapper">
+            <form:form modelAttribute="emailTemplateWrapper">
                 <div class="c-Box__body">
                     <label for="changeEmailTemplateSelect">
                         <b>Email template:</b>
@@ -51,7 +51,7 @@
             </form:form>
         </div>
 
-        <form:form action="${updateEmailTemplateUrl }" commandName="emailTemplateWrapper"
+        <form:form action="${updateEmailTemplateUrl }" modelAttribute="emailTemplateWrapper"
                    id="editForm" method="post" class="mt-3">
 
             <form:hidden path="createNew" id="createNewFlag"/>

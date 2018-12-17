@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.modeling.admin.form;
 
-import org.xcolab.client.modeling.ModelingClientUtil;
+import org.xcolab.client.modeling.ModelingClient;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelInputIndividualDisplayItem;
@@ -27,7 +27,7 @@ public class UpdateModelInputWidgetsBean {
                     ((ModelInputIndividualDisplayItem) item).getGroupId());
         }
         customInputWidgets =
-                ModelingClientUtil.getModelPreference(modelId).getCustomInputsDefinition();
+                ModelingClient.instance().getModelPreference(modelId).getCustomInputsDefinition();
     }
 
     public Map<Long, ModelInputWidgetType> getWidgets() {

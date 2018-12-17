@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -17,12 +16,13 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 
@@ -34,14 +34,17 @@ import javax.servlet.http.HttpServletResponse;
 public class ProposalAdminTabController extends BaseProposalTabController {
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADMIN")
-    public String showProposalDetails(HttpServletRequest request, Model model,
-            ProposalContext proposalContext) {
+    public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member currentMember) {
+
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
+        if (!permissions.getCanAdminProposal()) {
+            return new AccessDeniedPage(currentMember).toViewName(response);
+        }
 
         ContestClient contestClient = proposalContext.getClients().getContestClient();
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.ADMIN);
         model.addAttribute("availableRibbons", contestClient.getAllContestPhaseRibbonType());
-        model.addAttribute("allowOpenProposals",
-            ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
         return "proposals/proposalAdmin";
     }
@@ -110,20 +113,21 @@ public class ProposalAdminTabController extends BaseProposalTabController {
     }
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADMIN/toggleProposalOpen")
-    public void toogleOpen(HttpServletRequest request, Model model, HttpServletResponse response,
+    public void toggleOpen(HttpServletRequest request, HttpServletResponse response, Model model,
             Member currentMember, ProposalContext proposalContext, @RequestParam boolean planOpen)
-            throws ProposalsAuthorizationException, IOException {
+            throws IOException {
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
 
-        if (permissions.getCanDelete()) {
+        if (permissions.getCanToggleOpen()) {
             final long proposalId = proposalContext.getProposal().getId();
             final long userId = currentMember.getId();
             proposalContext.getClients().getProposalAttributeClient().setProposalAttribute(userId, proposalId,
                     ProposalAttributeKeys.OPEN, 0L, planOpen ? 1L : 0L, null);
             response.sendRedirect(proposalContext.getProposal().getProposalLinkUrl(proposalContext.getContest()));
         } else {
-            throw new ProposalsAuthorizationException("User isn't allowed to change proposal open attribute");
+            AlertMessage.danger("You are not allowed to perform this action.").flash(request);
+            response.sendRedirect(proposalContext.getProposal().getProposalUrl());
         }
     }
 }

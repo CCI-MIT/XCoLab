@@ -5,11 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -64,7 +64,7 @@ public class ActivitySubscriptionNameGenerator {
 //        StringBuilder name = new StringBuilder();
 
         try {
-            CommentThread thread = ThreadClientUtil.getThread(categoryId);
+            CommentThread thread = ThreadClient.instance().getThread(categoryId);
             return String.format(HYPERLINK, thread.getLinkUrl(), thread.getTitle());
         } catch (ThreadNotFoundException e) {
             _log.warn("Could not resolve discussion subscription name for subscription {}",

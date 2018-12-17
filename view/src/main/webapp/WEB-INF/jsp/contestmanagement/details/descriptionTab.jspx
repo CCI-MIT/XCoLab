@@ -25,7 +25,7 @@
             team, or your content may be lost.</p>
 
         <h2>Homepage content</h2>
-        <form:form action="${updateUrl }" commandName="contestDescriptionBean" cssClass="addpropform"
+        <form:form action="${updateUrl }" modelAttribute="contestDescriptionBean" cssClass="addpropform"
                    id="editForm" method="post">
             <form:errors cssClass="alert alert-danger" element="div" path="*"/>
             <div class="c-Box c-Box--colorTan">

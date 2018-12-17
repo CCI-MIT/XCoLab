@@ -47,11 +47,11 @@ public class AuthenticationContext {
     private static Long getImpersonateduserId(HttpServletRequest request) {
         final Cookie cookie = WebUtils.getCookie(request, IMPERSONATE_MEMBER_ID_COOKIE_NAME);
 
-        Long impersonateduserId = null;
+        Long impersonatedUserId = null;
         if (cookie != null && StringUtils.isNumeric(cookie.getValue())) {
-            impersonateduserId = Long.parseLong(cookie.getValue());
+            impersonatedUserId = Long.parseLong(cookie.getValue());
         }
-        return impersonateduserId;
+        return impersonatedUserId;
     }
 
     public Member getRealMemberOrNull() {

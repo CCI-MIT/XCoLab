@@ -16,14 +16,11 @@ public class SendMessageBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final List<Member> recipientList;
-    private final int messageHoneypotPosition;
     private String userIdsRecipients;
     private String subject;
     private String messageContent;
     private MessagingBean messagingBean;
     private MessageBean replyMessage;
-    //honeypot is a field supposed to be left blank by humans, and to be filled in by bots, in order to protect from spam.
-    private String messageHoneypot;
     private int numberOfMessagesLeft = Integer.MAX_VALUE;
 
     public SendMessageBean(MessageBean replyMessage) {
@@ -43,20 +40,10 @@ public class SendMessageBean implements Serializable {
     }
 
     public SendMessageBean() {
-        this.messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
         this.recipientList = new ArrayList<>();
     }
 
     public void send(Member sender, String baseUri) throws MessageLimitExceededException {
-        //TODO COLAB-2620: do we need this?
-//        if (messageHoneypot != null && !messageHoneypot.isEmpty()) {
-//            _log.info("Message was not sent because honeypot was filled - text: " + messageContent + " honeypot: "
-//                    + messageHoneypot);
-//            //trick bot into thinking message was sent
-//            messagingBean.messageSent();
-//            return;
-//        }
-
         List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
 
         MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(subject),
@@ -102,18 +89,6 @@ public class SendMessageBean implements Serializable {
     // to force screen unblocking
     public int getUnblockScreen() {
         return new Random().nextInt();
-    }
-
-    public String getMessageHoneypot() {
-        return messageHoneypot;
-    }
-
-    public void setMessageHoneypot(String messageHoneypot) {
-        this.messageHoneypot = messageHoneypot;
-    }
-
-    public int getMessageHoneypotPosition() {
-        return messageHoneypotPosition;
     }
 
     public List<Member> getRecipientList() {

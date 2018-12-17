@@ -40,7 +40,7 @@
 
 		<h3>Proposal template details</h3>
 
-		<form:form action="${changeElementUrl }" commandName="elementSelectIdWrapper" id="selectForm" method="post">
+		<form:form action="${changeElementUrl }" modelAttribute="elementSelectIdWrapper" id="selectForm" method="post">
 			<div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
                     <strong>Selected template:</strong>
@@ -54,7 +54,7 @@
 
 		<c:if test="${not empty contestProposalTemplateWrapper}">
 			<div id="resourcesSections">
-				<form:form action="${updateElementFormURL }" commandName="contestProposalTemplateWrapper"
+				<form:form action="${updateElementFormURL }" modelAttribute="contestProposalTemplateWrapper"
 				 cssClass="addpropform mt-3" id="editForm" method="post">
 
 					<form:hidden path="createNew" id="createNew"/>

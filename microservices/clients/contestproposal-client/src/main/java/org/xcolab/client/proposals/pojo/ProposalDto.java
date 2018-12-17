@@ -5,32 +5,33 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
-import org.xcolab.util.http.dto.DataTransferObject;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class ProposalDto extends AbstractProposal
-        implements DataTransferObject<Proposal> {
+public class ProposalDto extends AbstractProposal implements Serializable {
 
-    private static final long serialVersionUID = 1;
+    public static final TypeProvider<ProposalDto> TYPES = new TypeProvider<>(ProposalDto.class,
+            new ParameterizedTypeReference<List<ProposalDto>>() {});
 
-    public static final TypeProvider<ProposalDto> TYPES =
-            new TypeProvider<>(ProposalDto.class,
-                    new ParameterizedTypeReference<List<ProposalDto>>() {
-                    });
-
-    public ProposalDto() {}
-
-    public ProposalDto(AbstractProposal value) {
-        super(value);
+    public ProposalDto() {
     }
 
-    @Override
-    public Proposal toPojo(ServiceNamespace serviceNamespace) {
-        return new Proposal(this, serviceNamespace);
+    public ProposalDto(AbstractProposal proposal) {
+        super(proposal);
+    }
+
+    public Proposal toProposal() {
+        return new Proposal(this);
+    }
+
+    public static List<Proposal> toProposals(List<ProposalDto> dtos) {
+        return dtos.stream()
+                .map(Proposal::new)
+                .collect(Collectors.toList());
     }
 }

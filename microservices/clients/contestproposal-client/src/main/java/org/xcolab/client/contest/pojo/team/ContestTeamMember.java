@@ -1,8 +1,21 @@
 package org.xcolab.client.contest.pojo.team;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.core.ParameterizedTypeReference;
 
-public class ContestTeamMember extends AbstractContestTeamMember {
+import org.xcolab.util.http.client.types.TypeProvider;
+
+import java.io.Serializable;
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ContestTeamMember extends AbstractContestTeamMember implements Serializable {
+
+    public static final TypeProvider<ContestTeamMember> TYPES = new TypeProvider<>(
+            ContestTeamMember.class, new ParameterizedTypeReference<List<ContestTeamMember>>() {});
 
     public ContestTeamMember() {}
 
@@ -14,7 +27,7 @@ public class ContestTeamMember extends AbstractContestTeamMember {
         super(id, contestid, userid, roleid);
     }
 
-    public ContestTeamMember(AbstractContestTeamMember abstractContestTeamMember, ServiceNamespace serviceNamespace) {
+    public ContestTeamMember(AbstractContestTeamMember abstractContestTeamMember) {
         super(abstractContestTeamMember);
     }
 }

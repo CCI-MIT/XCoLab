@@ -57,7 +57,7 @@
             <input id="collectionCardId" name="collectionCardId"  type="hidden" value=""/>
         </form:form>
 
-        <form:form action="${updateContestCollectionCardURL }" commandName="collectionCardWrapperWhat" id="editForm" method="post">
+        <form:form action="${updateContestCollectionCardURL }" modelAttribute="collectionCardWrapperWhat" id="editForm" method="post">
             <div class="collectionCard-edit-form">
                 <h2 id="title">
                     <!-- -->

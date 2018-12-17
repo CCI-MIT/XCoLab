@@ -1,8 +1,10 @@
 package org.xcolab.util.http.caching.provider.redis;
 
 import org.springframework.cache.Cache.ValueWrapper;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.cache.RedisCacheManager.RedisCacheManagerBuilder;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 
 import org.xcolab.util.http.caching.CacheCustomization;
 import org.xcolab.util.http.caching.CacheCustomization.DiskStorage;
@@ -15,22 +17,25 @@ import java.util.Map;
 
 public class RedisCacheProvider implements CacheProvider {
 
-    private final RedisCacheManager redisCacheManager;
+    private RedisCacheManager redisCacheManager;
+    private final RedisConnectionFactory redisConnectionFactory;
 
-    public RedisCacheProvider(RedisTemplate redisTemplate) {
-        redisCacheManager = new RedisCacheManager(redisTemplate);
-        redisCacheManager.setUsePrefix(true);
+    public RedisCacheProvider(RedisConnectionFactory redisConnectionFactory) {
+        this.redisConnectionFactory = redisConnectionFactory;
     }
 
     @Override
     public void init(Map<CacheName, CacheCustomization> customizations, DiskStorage diskStorage) {
-        final HashMap<String, Long> expires = new HashMap<>();
+        final HashMap<String, RedisCacheConfiguration> configurations = new HashMap<>();
         for (CacheName cacheName : CacheName.values()) {
             if (cacheName != CacheName.NONE) {
-                expires.put(cacheName.name(), cacheName.getDuration().toSeconds());
+                configurations.put(cacheName.name(), RedisCacheConfiguration.defaultCacheConfig()
+                        .entryTtl(cacheName.getDuration().getDuration()));
             }
         }
-        redisCacheManager.setExpires(expires);
+        redisCacheManager = RedisCacheManagerBuilder.fromConnectionFactory(redisConnectionFactory)
+                .withInitialCacheConfigurations(configurations)
+                .build();
     }
 
     @Override

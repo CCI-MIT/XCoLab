@@ -4,14 +4,12 @@ import org.xcolab.client.proposals.pojo.SupportedProposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class ProposalMemberRatingClientUtil {
 
-    private static final ProposalMemberRatingClient client =
-            ProposalMemberRatingClient.fromNamespace(ServiceNamespace.instance());
+    private static final ProposalMemberRatingClient client = new ProposalMemberRatingClient();
 
     public static ProposalMemberRatingClient getClient() {
         return client;

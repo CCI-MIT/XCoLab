@@ -28,7 +28,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreference;
 import org.xcolab.commons.CountryUtil;
@@ -65,9 +65,9 @@ public class UserProfileController {
     private static final String SHOW_PROFILE_VIEW = "profile/showUserProfile";
     private static final String EDIT_PROFILE_VIEW = "profile/editUserProfile";
 
-    private static final Set<MemberRole> SEO_INDEXABLE_MEMBER_ROLES = EnumSet.of(
-            MemberRole.STAFF, MemberRole.JUDGE, MemberRole.ADVISOR, MemberRole.FELLOW,
-            MemberRole.IMPACT_ASSESSMENT_FELLOW, MemberRole.EXPERT);
+    private static final Set<SystemRole> SEO_INDEXABLE_MEMBER_ROLES = EnumSet.of(
+            SystemRole.STAFF, SystemRole.JUDGE, SystemRole.ADVISOR, SystemRole.FELLOW,
+            SystemRole.IMPACT_ASSESSMENT_FELLOW, SystemRole.EXPERT);
 
     private final ActivityEntryHelper activityEntryHelper;
     private final AuthenticationService authenticationService;
@@ -105,37 +105,42 @@ public class UserProfileController {
             Model model, Member loggedInMember, @PathVariable long userId,
             @RequestParam(defaultValue = "false") boolean generateReferralLink) {
         try {
-            UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
-            model.addAttribute("permissions", permissions);
-            model.addAttribute("_activePageLink", "community");
+            Member member = MembersClient.getMember(userId);
+            model.addAttribute("isUserProfileActive", member.isActive());
+            if (member.isActive()) {
+                UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
+                model.addAttribute("permissions", permissions);
+                model.addAttribute("_activePageLink", "community");
 
-            final UserProfileWrapper currentUserProfile =
-                    new UserProfileWrapper(userId, loggedInMember, activityEntryHelper);
-            populateUserWrapper(currentUserProfile, model);
-            model.addAttribute("allowSearchEngineIndexing",
-                    shouldAllowIndexingForUser(currentUserProfile));
+                final UserProfileWrapper currentUserProfile =
+                        new UserProfileWrapper(userId, loggedInMember, activityEntryHelper);
+                populateUserWrapper(currentUserProfile, model);
+                model.addAttribute("allowSearchEngineIndexing",
+                        shouldAllowIndexingForUser(currentUserProfile));
 
-            final Boolean isSnpActive = ConfigurationAttributeKey.SNP_IS_ACTIVE.get();
-            model.addAttribute("isSnpActive", isSnpActive);
-            if (isSnpActive && currentUserProfile.isViewingOwnProfile()) {
-                String consentFormText = ConfigurationAttributeKey.SNP_CONSENT_FORM_TEXT.get();
-                model.addAttribute("consentFormText", consentFormText);
-                final Optional<BalloonUserTracking> butOpt = balloonService
-                        .getBalloonUserTracking(request, response);
-                if (butOpt.isPresent()) {
-                    model.addAttribute("balloonLink", butOpt.get().getBalloonLink());
-                    model.addAttribute("balloonText", butOpt.get().getBalloonText());
+                final Boolean isSnpActive = ConfigurationAttributeKey.SNP_IS_ACTIVE.get();
+                model.addAttribute("isSnpActive", isSnpActive);
+                if (isSnpActive && currentUserProfile.isViewingOwnProfile()) {
+                    String consentFormText = ConfigurationAttributeKey.SNP_CONSENT_FORM_TEXT.get();
+                    model.addAttribute("consentFormText", consentFormText);
+                    final Optional<BalloonUserTracking> butOpt = balloonService
+                            .getBalloonUserTracking(request, response);
+                    if (butOpt.isPresent()) {
+                        model.addAttribute("balloonLink", butOpt.get().getBalloonLink());
+                        model.addAttribute("balloonText", butOpt.get().getBalloonText());
+                    }
                 }
+                model.addAttribute("pointsActive",
+                        ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
             }
-            model.addAttribute("pointsActive", ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
-            return SHOW_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {
             return ErrorPage.error("User profile not found").flashAndReturnView(request);
         }
+        return SHOW_PROFILE_VIEW;
     }
 
     private boolean shouldAllowIndexingForUser(UserProfileWrapper userProfileWrapper) {
-        return PermissionsClient.memberHasAnyRole(userProfileWrapper.getUserId(),
+        return PermissionsClient.memberHasAnySystemRole(userProfileWrapper.getUserId(),
                 SEO_INDEXABLE_MEMBER_ROLES) || !userProfileWrapper.getBadges().isEmpty();
     }
 

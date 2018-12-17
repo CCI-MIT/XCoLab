@@ -1,13 +1,13 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
-import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequestDto;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ProposalActivityType;
@@ -16,44 +16,30 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
-import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.Http409ConflictException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MembershipClient {
 
-    private static final Map<ServiceNamespace, MembershipClient> instances = new HashMap<>();
-
-    private final ServiceNamespace serviceNamespace;
-
     private final RestResource1<ProposalDto, Long> proposalResource;
 
-    private final RestResource1<ProposalTeamMembershipRequestDto, Long> membershipRequestResource;
+    private final RestResource1<ProposalTeamMembershipRequest, Long> membershipRequestResource;
     private final RestResource2<ProposalDto, Long, Long, Long> proposalTeamMemberResource;
 
     private final ProposalClient proposalClient;
 
-    private MembershipClient(ServiceNamespace serviceNamespace) {
+    public MembershipClient() {
         proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
         membershipRequestResource = new RestResource1<>(ProposalResource.MEMBERSHIP_REQUEST,
-                ProposalTeamMembershipRequestDto.TYPES);
-        proposalClient = ProposalClient.fromNamespace(serviceNamespace);
-        this.serviceNamespace = serviceNamespace;
+                ProposalTeamMembershipRequest.TYPES);
+        proposalClient = ProposalClientUtil.getClient();
         proposalTeamMemberResource = proposalResource
                 .nestedResource("teamMembers", TypeProvider.LONG);
-    }
-
-    public static MembershipClient fromNamespace(ServiceNamespace proposalService) {
-        return instances
-                .computeIfAbsent(proposalService, MembershipClient::new);
     }
 
     public void denyMembershipRequest(Proposal proposal, long userId, long membershipRequestId,
@@ -74,7 +60,7 @@ public class MembershipClient {
 
     public boolean updateMembershipRequest(ProposalTeamMembershipRequest membershipRequest) {
         return membershipRequestResource
-                .update(new ProposalTeamMembershipRequestDto(membershipRequest),
+                .update(new ProposalTeamMembershipRequest(membershipRequest),
                         membershipRequest.getId())
                 .execute();
     }
@@ -92,16 +78,16 @@ public class MembershipClient {
     }
 
     public ProposalTeamMembershipRequest getActiveMembershipRequestByUser(Proposal proposal, Long userId) {
-        return DtoUtil.toPojo(membershipRequestResource.list()
+        return membershipRequestResource.list()
                 .optionalQueryParam("proposalId", proposal.getId())
                 .optionalQueryParam("userId", userId)
-                .executeWithResult().getOneIfExists(), serviceNamespace);
+                .executeWithResult().getOneIfExists();
     }
 
     public ProposalTeamMembershipRequest getMembershipRequest(long MembershipRequestId)
             throws MembershipRequestNotFoundException {
         return membershipRequestResource.get(MembershipRequestId)
-                .execute().toPojo(serviceNamespace);
+                .execute();
     }
 
     public void approveMembershipRequest(Proposal proposal, Long userId, ProposalTeamMembershipRequest request,
@@ -130,7 +116,7 @@ public class MembershipClient {
                     .create(userId)
                     .execute();
 
-            ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
+            ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
 
             activityClient.createActivityEntry(ProposalActivityType.MEMBER_ADDED, userId,
                     proposalId);
@@ -170,8 +156,8 @@ public class MembershipClient {
 
     public ProposalTeamMembershipRequest createMembershipRequest(
             ProposalTeamMembershipRequest membershipRequest) {
-        return membershipRequestResource.create(new ProposalTeamMembershipRequestDto(membershipRequest))
-                .execute().toPojo(serviceNamespace);
+        return membershipRequestResource.create(new ProposalTeamMembershipRequest(membershipRequest))
+                .execute();
     }
 
     public ProposalTeamMembershipRequest addRequestedMembershipRequest(Long proposalId, Long userId,
@@ -208,13 +194,13 @@ public class MembershipClient {
     }
 
     public List<ProposalTeamMembershipRequest> getMembershipRequestsByStatus(Long proposalId, Integer statusId) {
-        return DtoUtil.toPojos(membershipRequestResource.list()
-                .withCache(CacheKeys.withClass(ProposalTeamMembershipRequestDto.class)
+        return membershipRequestResource.list()
+                .withCache(CacheKeys.withClass(ProposalTeamMembershipRequest.class)
                         .withParameter("proposalId", proposalId)
                         .withParameter("statusId", statusId).asList(), CacheName.MISC_REQUEST)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("statusId", statusId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
 }
