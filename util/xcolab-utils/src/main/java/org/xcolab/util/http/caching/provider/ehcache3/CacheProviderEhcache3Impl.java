@@ -93,7 +93,7 @@ public class CacheProviderEhcache3Impl implements CacheProvider, DisposableBean 
             cacheDuration = cacheName.getDuration();
         }
         return getConfigBuilder(cacheName)
-                .withExpiry(Expirations.timeToLiveExpiration(cacheDuration.getDuration()))
+                .withExpiry(Expirations.timeToLiveExpiration(cacheDuration.getEhCacheDuration()))
                 .build();
     }
 

@@ -16,8 +16,9 @@ logging:
     org.springframework.boot.web: WARN
     org.springframework.boot.actuate: WARN
 
-flyway:
-  table: flyway_content_schema_version
-  baselineOnMigrate: true
-  baselineVersion: 0
-  outOfOrder: true
+spring:
+  flyway:
+    table: flyway_content_schema_version
+    baselineOnMigrate: true
+    baselineVersion: 0
+    outOfOrder: true

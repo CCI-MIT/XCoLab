@@ -5,11 +5,10 @@ import org.apache.catalina.webresources.StandardRoot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -170,24 +169,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public EmbeddedServletContainerCustomizer customizer() {
-        return container -> {
-            if (serverProperties.isUseForwardHeaders()) {
-                if (container instanceof TomcatEmbeddedServletContainerFactory) {
-                    ((TomcatEmbeddedServletContainerFactory) container)
-                            .addContextValves(new ForwardedHostValve());
-                } else {
-                    log.warn("Non-tomcat servlet container "
-                            + "- X-Forwarded-Host header not initialized.");
-                }
-            }
-        };
-    }
+    public ServletWebServerFactory servletContainer() {
 
-    @Bean
-    public EmbeddedServletContainerFactory servletContainer() {
-
-        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
             @Override
             protected void postProcessContext(Context context) {
 
@@ -212,6 +196,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             log.info("Configured AJP connector on port {}", tomcatProperties.getAjp().getPort());
         }
 
+        tomcat.addContextValves(new ForwardedHostValve());
         return tomcat;
     }
 
