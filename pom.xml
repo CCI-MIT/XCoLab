@@ -148,7 +148,7 @@
 
             <!-- Monitoring dependencies -->
 
-            <!--TODO: replace with defalts -->
+            <!--TODO: replace with defaults -->
             <dependency>
                 <groupId>io.dropwizard.metrics</groupId>
                 <artifactId>metrics-core</artifactId>
@@ -295,7 +295,7 @@
                 </plugin>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.7.0</version>
+					<version>3.8.0</version>
 				</plugin>
 
                 <plugin>
