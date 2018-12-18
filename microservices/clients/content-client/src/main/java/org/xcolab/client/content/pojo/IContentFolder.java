@@ -7,7 +7,7 @@ import org.xcolab.client.content.pojo.tables.pojos.ContentFolder;
 @JsonDeserialize(as = ContentFolder.class)
 public interface IContentFolder {
 
-    public static final long RESOURCE_FOLDER_ID = 4L;
+    long RESOURCE_FOLDER_ID = 4L;
 
     Long getId();
 

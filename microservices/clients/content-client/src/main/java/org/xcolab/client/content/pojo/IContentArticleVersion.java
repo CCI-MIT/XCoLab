@@ -40,4 +40,8 @@ public interface IContentArticleVersion {
     String getLang();
 
     void setLang(String lang);
+
+    default String getLinkUrl() {
+        return "/wiki/" + getTitle().replace(" ", "+");
+    }
 }
