@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
-import org.xcolab.client.content.FilesClient;
+import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.servlet.ServletFileUtil;
@@ -37,22 +37,22 @@ public class ImageDisplayService {
 
     private final boolean isProduction;
 
-    private final FilesClient filesClient;
+    private final IFileClient fileClient;
 
     @Autowired
-    public ImageDisplayService(FilesClient filesClient) {
+    public ImageDisplayService(IFileClient fileClient) {
         final ServerEnvironment serverEnvironment = PlatformAttributeKey.SERVER_ENVIRONMENT.get();
         isProduction = serverEnvironment == ServerEnvironment.PRODUCTION;
-        this.filesClient = filesClient;
+        this.fileClient = fileClient;
     }
 
     public void serveImage(HttpServletRequest request, HttpServletResponse response, long imageId,
             ImageType imageType) throws IOException {
 
-        final Optional<IFileEntry> fileEntryOpt = filesClient.getFileEntry(imageId);
+        final Optional<IFileEntry> fileEntryOpt = fileClient.getFileEntry(imageId);
         if (fileEntryOpt.isPresent()) {
             IFileEntry fileEntry = fileEntryOpt.get();
-            File imageFile = filesClient
+            File imageFile = fileClient
                     .getImageFile(fileEntry.getId(), BASE_PATH, fileEntry.getFileExtension());
             final boolean success = sendImageToResponse(request, response, imageFile);
             if (success) {

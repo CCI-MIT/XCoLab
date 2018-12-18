@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentPage;
@@ -28,18 +28,18 @@ import javax.servlet.http.HttpServletResponse;
 public class ContentController {
 
     @Autowired
-    private ContentsClient contentsClient;
+    private IContentClient contentClient;
 
     @GetMapping("/page/{pageTitle}")
     public String showContentPage(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @PathVariable String pageTitle) throws IOException {
 
         try {
-            final IContentPage contentPage = contentsClient.getContentPage(pageTitle);
+            final IContentPage contentPage = contentClient.getContentPage(pageTitle);
             model.addAttribute("contentPage", contentPage);
 
             final IContentArticle contentArticle =
-                    contentsClient.getContentArticle(contentPage.getContentArticleId());
+                    contentClient.getContentArticle(contentPage.getContentArticleId());
 
             if (!contentArticle.canView(member)) {
                 return new AccessDeniedPage(member).toViewName(response);

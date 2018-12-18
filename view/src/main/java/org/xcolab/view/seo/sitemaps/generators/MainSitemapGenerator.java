@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.pojo.IContentPage;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.ChangeFrequency;
@@ -19,7 +19,7 @@ import java.util.List;
 public class MainSitemapGenerator {
 
     @Autowired
-    private ContentsClient contentsClient;
+    private IContentClient contentClient;
 
     private final String siteUrl = PlatformAttributeKey.COLAB_URL.get();
 
@@ -52,7 +52,7 @@ public class MainSitemapGenerator {
     }
 
     private void addContentPages(XmlUrlSet xmlUrlSet) {
-        final List<IContentPage> contentPages = contentsClient.getContentPages(null);
+        final List<IContentPage> contentPages = contentClient.getContentPages(null);
         for (IContentPage contentPage : contentPages) {
             xmlUrlSet.addUrl(XmlUrl.Builder
                     .forLocation(siteUrl + "/page/" + contentPage.getTitle())

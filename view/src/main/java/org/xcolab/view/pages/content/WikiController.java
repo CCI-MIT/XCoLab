@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 public class WikiController {
 
     @Autowired
-    private ContentsClient contentsClient;
+    private IContentClient contentClient;
 
     @GetMapping("/wiki")
     public String home(HttpServletRequest request, HttpServletResponse response, Model model,
@@ -39,7 +39,7 @@ public class WikiController {
         final long folderId = ConfigurationAttributeKey.WIKI_CONTENT_FOLDER_ID.get();
 
         if (folderId > 0 && PermissionsClient.canAdminAll(member)) {
-            final List<IContentArticleVersion> contentArticleVersions = contentsClient
+            final List<IContentArticleVersion> contentArticleVersions = contentClient
                     .getContentArticleVersions(0, Integer.MAX_VALUE, folderId,
                             null, null, null, null);
             model.addAttribute("contentArticleVersions", contentArticleVersions);
@@ -54,9 +54,9 @@ public class WikiController {
 
         if (folderId > 0 && StringUtils.isNotBlank(pageTitle)) {
             try {
-                final IContentArticleVersion contentArticleVersion = contentsClient
+                final IContentArticleVersion contentArticleVersion = contentClient
                         .getLatestContentArticleVersion(folderId, pageTitle.replace('+', ' '));
-                final IContentArticle contentArticle = contentsClient
+                final IContentArticle contentArticle = contentClient
                         .getContentArticle(contentArticleVersion.getArticleId());
 
                 if (!contentArticle.canView(member)) {
@@ -85,9 +85,9 @@ public class WikiController {
         try {
             if (contest.getResourceArticleId() > 0) {
                 final IContentArticle contentArticle =
-                        contentsClient.getContentArticle(contest.getResourceArticleId());
+                        contentClient.getContentArticle(contest.getResourceArticleId());
                 IContentArticleVersion contentArticleVersion =
-                        contentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
+                        contentClient.getContentArticleVersion(contentArticle.getMaxVersionId());
                 model.addAttribute("contentArticleVersion", contentArticleVersion);
             }
         } catch (ContentNotFoundException e) {

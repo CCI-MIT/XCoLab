@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.content.FilesClient;
+import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.client.members.MembersClient;
@@ -29,10 +29,10 @@ public class ImageUploadUtils {
 
     private static final String UPLOAD_PATH = PlatformAttributeKey.FILES_UPLOAD_DIR.get();
 
-    private static FilesClient filesClient;
+    private static IFileClient fileClient;
 
-    public static void setFilesClient(FilesClient filesClient) {
-        ImageUploadUtils.filesClient = filesClient;
+    public static void setFileClient(IFileClient fileClient) {
+        ImageUploadUtils.fileClient = fileClient;
     }
 
     public static long uploadImage(URL url) {
@@ -47,7 +47,7 @@ public class ImageUploadUtils {
             file.setFileSize(imgBArr.length);
             file.setFileName(url.toString());
 
-            file = ImageUploadUtils.filesClient.createFileEntry(file, imgBArr, UPLOAD_PATH);
+            file = ImageUploadUtils.fileClient.createFileEntry(file, imgBArr, UPLOAD_PATH);
 
             return file.getId();
         } catch (IOException  e) {

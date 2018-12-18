@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
-import org.xcolab.client.content.FilesClient;
+import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
@@ -73,17 +73,17 @@ public class UserProfileController {
     private final AuthenticationService authenticationService;
     private final BalloonService balloonService;
     private final SmartValidator validator;
-    private final FilesClient filesClient;
+    private final IFileClient fileClient;
 
     @Autowired
     public UserProfileController(ActivityEntryHelper activityEntryHelper,
             AuthenticationService authenticationService, BalloonService balloonService,
-            SmartValidator validator, FilesClient filesClient) {
+            SmartValidator validator, IFileClient fileClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.authenticationService = authenticationService;
         this.balloonService = balloonService;
         this.validator = validator;
-        this.filesClient = filesClient;
+        this.fileClient = fileClient;
     }
 
     @InitBinder("userBean")
@@ -379,7 +379,7 @@ public class UserProfileController {
         if (newImageId != currentUserProfile.getUserBean().getImageId()) {
 
             if (newImageId > 0) {
-                IFileEntry fe = filesClient.getFileEntry(newImageId).orElseThrow(
+                IFileEntry fe = fileClient.getFileEntry(newImageId).orElseThrow(
                         () -> new IllegalStateException(
                                 "No file entry found for imageId " + newImageId + " for member " +
                                         updatedUserBean.getUserId()));

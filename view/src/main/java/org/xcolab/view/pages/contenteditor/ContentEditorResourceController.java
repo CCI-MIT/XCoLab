@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ContentEditorResourceController extends BaseContentEditor {
 
     @Autowired
-    private ContentsClient contentsClient;
+    private IContentClient contentClient;
 
     @GetMapping("/content-editor/resourcePagesEditor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
@@ -47,7 +47,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
             throws IOException {
 
         IContentArticleVersion contentArticleVersion =
-                contentsClient.getLatestContentArticleVersion(articleId);
+                contentClient.getLatestContentArticleVersion(articleId);
 
         Contest contest = ContestClientUtil.getContestByResourceArticleId(articleId);
 
@@ -64,7 +64,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
             String contestArticleUrl) {
 
         JSONArray versions = new JSONArray();
-        List<IContentArticleVersion> cavs = contentsClient
+        List<IContentArticleVersion> cavs = contentClient
                 .getContentArticleVersions(0, Integer.MAX_VALUE, null, articleId, null, null, null);
 
         JSONObject articleVersion;

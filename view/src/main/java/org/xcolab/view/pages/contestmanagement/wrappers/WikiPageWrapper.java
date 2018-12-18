@@ -2,7 +2,7 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
@@ -15,14 +15,14 @@ import java.text.ParseException;
 
 public class WikiPageWrapper {
 
-    private final ContentsClient contentsClient;
+    private final IContentClient contentClient;
     private final Contest contest;
     private final Long loggedInUserId;
     private final IContentArticle contentArticle;
     private final IContentArticleVersion contentArticleVersion;
 
-    public WikiPageWrapper(ContentsClient contentsClient, Contest contest, Long loggedInUserId) {
-        this.contentsClient = contentsClient;
+    public WikiPageWrapper(IContentClient contentClient, Contest contest, Long loggedInUserId) {
+        this.contentClient = contentClient;
         this.contest = contest;
         this.loggedInUserId = loggedInUserId;
 
@@ -32,8 +32,8 @@ public class WikiPageWrapper {
                     .fromObject(Contest.class, contest.getId());
         }
         try {
-            contentArticle = contentsClient.getContentArticle(contest.getResourceArticleId());
-            contentArticleVersion = contentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
+            contentArticle = contentClient.getContentArticle(contest.getResourceArticleId());
+            contentArticleVersion = contentClient.getContentArticleVersion(contentArticle.getMaxVersionId());
         } catch (ContentNotFoundException e) {
             throw ReferenceResolutionException
                     .toObject(IContentArticle.class, contest.getResourceArticleId())
@@ -41,13 +41,13 @@ public class WikiPageWrapper {
         }
     }
 
-    public static void updateContestWiki(ContentsClient contentsClient, Contest contest) {
+    public static void updateContestWiki(IContentClient contentClient, Contest contest) {
         try {
             if (contest.getResourceArticleId() != null) {
-                final IContentArticleVersion resourceArticleVersion = contentsClient
+                final IContentArticleVersion resourceArticleVersion = contentClient
                         .getLatestContentArticleVersion(contest.getResourceArticleId());
                 resourceArticleVersion.setTitle(contest.getTitle());
-                contentsClient.updateContentArticleVersion(resourceArticleVersion);
+                contentClient.updateContentArticleVersion(resourceArticleVersion);
             }
         } catch (ContentNotFoundException ignored) {
         }
@@ -70,7 +70,7 @@ public class WikiPageWrapper {
             contentArticleVersion.setContent(updatedResourcesContent);
             contentArticleVersion.setArticleId(contentArticle.getId());
             contentArticleVersion.setAuthorUserId(loggedInUserId);
-            contentsClient.updateContentArticleVersion(contentArticleVersion);
+            contentClient.updateContentArticleVersion(contentArticleVersion);
         }
     }
 }

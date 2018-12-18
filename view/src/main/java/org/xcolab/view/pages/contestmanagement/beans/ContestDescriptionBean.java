@@ -10,7 +10,7 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
@@ -28,7 +28,7 @@ public class ContestDescriptionBean implements Serializable {
     private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:.,;'’0-9äöüÄÖÜ?! ]*$";
 
     @Autowired
-    private ContentsClient contentsClient;
+    private IContentClient contentClient;
 
     private Long contestId;
     private Long contestLogoId;
@@ -100,7 +100,7 @@ public class ContestDescriptionBean implements Serializable {
             contest.setContestUrlName((contest).generateContestUrlName());
             ContestClientUtil.updateContest(contest);
         }
-        WikiPageWrapper.updateContestWiki(contentsClient, contest);
+        WikiPageWrapper.updateContestWiki(contentClient, contest);
         updateContestSchedule(contest, scheduleTemplateId);
     }
 

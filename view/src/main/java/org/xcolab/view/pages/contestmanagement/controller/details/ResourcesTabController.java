@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
@@ -44,7 +44,7 @@ public class ResourcesTabController extends AbstractTabController {
     private WikiPageWrapper wikiPageWrapper;
 
     @Autowired
-    private ContentsClient contentsClient;
+    private IContentClient contentClient;
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -65,7 +65,7 @@ public class ResourcesTabController extends AbstractTabController {
 
         if (enabled) {
             long userId = MemberAuthUtil.getuserId(request);
-            wikiPageWrapper = new WikiPageWrapper(contentsClient, contest, userId);
+            wikiPageWrapper = new WikiPageWrapper(contentClient, contest, userId);
             model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
         }
 
@@ -89,17 +89,17 @@ public class ResourcesTabController extends AbstractTabController {
             contentArticleVersion.setAuthorUserId(member.getId());
             contentArticleVersion.setTitle(contest.getTitle());
             contentArticleVersion.setContent("");
-            contentArticleVersion = contentsClient.createContentArticleVersion(contentArticleVersion);
+            contentArticleVersion = contentClient.createContentArticleVersion(contentArticleVersion);
 
             try {
-                IContentArticle contentArticle = contentsClient.getContentArticle(contentArticleVersion.getArticleId());
+                IContentArticle contentArticle = contentClient.getContentArticle(contentArticleVersion.getArticleId());
                 contest.setResourceArticleId(contentArticle.getId());
                 ContestClientUtil.updateContest(contest);
             } catch (ContentNotFoundException e) {
                 throw new IllegalStateException("Could not retrieve ContentArticle after creation");
             }
         } else {
-            contentsClient.deleteContentArticle(contest.getResourceArticleId());
+            contentClient.deleteContentArticle(contest.getResourceArticleId());
             contest.deleteResourceArticle();
         }
 

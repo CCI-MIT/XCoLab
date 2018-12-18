@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.content.FilesClient;
+import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.view.util.entity.upload.FileUploadUtil;
@@ -30,11 +30,11 @@ public class FileUploadController {
 
     private final String fileUploadPath = PlatformAttributeKey.FILES_UPLOAD_DIR.get();
 
-    private final FilesClient filesClient;
+    private final IFileClient fileClient;
 
     @Autowired
-    public FileUploadController(FilesClient filesClient) {
-        this.filesClient = filesClient;
+    public FileUploadController(IFileClient fileClient) {
+        this.fileClient = fileClient;
     }
 
     @PostMapping("/image/upload")
@@ -69,7 +69,7 @@ public class FileUploadController {
             fileEntry.setFileSize(bytes.length);
             fileEntry.setFileName(FilenameUtils.getName(nameExt));
 
-            fileEntry = filesClient.createFileEntry(fileEntry, bytes, path);
+            fileEntry = fileClient.createFileEntry(fileEntry, bytes, path);
 
             final String imageIdString = String.valueOf(fileEntry.getId());
             return new ImageResponse(imageIdString, fileEntry.getLinkUrl(), true, "");

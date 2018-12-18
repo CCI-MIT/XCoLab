@@ -1,9 +1,8 @@
 package org.xcolab.view.tags;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
@@ -18,17 +17,17 @@ public class LoadContentArticleTag extends BodyTagSupport {
 
     private long articleId;
 
-    private static ContentsClient contentsClient;
+    private static IContentClient contentClient;
 
-    public static void setContentsClient(ContentsClient contentsClient) {
-        LoadContentArticleTag.contentsClient = contentsClient;
+    public static void setContentClient(IContentClient contentClient) {
+        LoadContentArticleTag.contentClient = contentClient;
     }
 
     @Override
     public int doStartTag() throws JspException {
         if (articleId > 0) {
             try {
-                final IContentArticle contentArticle = LoadContentArticleTag.contentsClient
+                final IContentArticle contentArticle = LoadContentArticleTag.contentClient
                         .getContentArticle(articleId);
 
                 Locale locale = LocaleContextHolder.getLocale();
@@ -37,11 +36,11 @@ public class LoadContentArticleTag extends BodyTagSupport {
                     localeString = locale.getLanguage();
                 }
 
-                IContentArticleVersion contentArticleVersion = LoadContentArticleTag.contentsClient
+                IContentArticleVersion contentArticleVersion = LoadContentArticleTag.contentClient
                         .getLatestVersionByArticleIdAndLanguage(
                                 contentArticle.getId(), localeString);
                 if (contentArticleVersion == null) {
-                    contentArticleVersion = LoadContentArticleTag.contentsClient
+                    contentArticleVersion = LoadContentArticleTag.contentClient
                             .getLatestVersionByArticleIdAndLanguage(contentArticle.getId(),
                             I18nUtils.DEFAULT_LOCALE.getLanguage());
                 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.content.ContentsClient;
+import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentPage;
 import org.xcolab.client.emails.EmailClient;
@@ -37,11 +37,11 @@ public class ContactController {
     private static final String CONTACT_VIEW_NAME = "/feedback/contactForm";
 
     private final RecaptchaValidator recaptchaValidator;
-    private final ContentsClient contentsClient;
+    private final IContentClient contentClient;
 
     @Autowired
-    public ContactController(ContentsClient contentsClient) {
-        this.contentsClient = contentsClient;
+    public ContactController(IContentClient contentClient) {
+        this.contentClient = contentClient;
         final String recaptchaSecret = PlatformAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get();
         recaptchaValidator = new RecaptchaValidator(recaptchaSecret);
     }
@@ -50,7 +50,7 @@ public class ContactController {
     public String showContact(HttpServletRequest request, Model model) {
 
         try {
-            final IContentPage feedbackPage = contentsClient.getContentPage("feedback");
+            final IContentPage feedbackPage = contentClient.getContentPage("feedback");
             model.addAttribute("feedbackPage", feedbackPage);
             if (!model.containsAttribute("contactBean")) {
                 model.addAttribute("contactBean", new ContactBean());
