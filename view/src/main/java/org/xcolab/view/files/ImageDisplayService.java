@@ -52,7 +52,8 @@ public class ImageDisplayService {
         final Optional<IFileEntry> fileEntryOpt = filesClient.getFileEntry(imageId);
         if (fileEntryOpt.isPresent()) {
             IFileEntry fileEntry = fileEntryOpt.get();
-            File imageFile = filesClient.getImageFile(fileEntry, BASE_PATH);
+            File imageFile = filesClient
+                    .getImageFile(fileEntry.getId(), BASE_PATH, fileEntry.getFileExtension());
             final boolean success = sendImageToResponse(request, response, imageFile);
             if (success) {
                 setCacheControlHeader(response);

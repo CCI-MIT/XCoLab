@@ -14,7 +14,6 @@ import org.xcolab.client.content.pojo.IContentArticle;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.client.content.pojo.IContentPage;
-import org.xcolab.util.http.caching.CacheName;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public interface ContentsClient {
     List<? extends IContentArticle> getContentArticles(
             @RequestParam(value = "folderId", required = false) Long folderId);
 
-     default IContentArticleVersion getLatestContentArticleVersion(long folderId, String title)
+    default IContentArticleVersion getLatestContentArticleVersion(long folderId, String title)
             throws ContentNotFoundException {
         List<IContentArticleVersion> contentArticleVersions =
                 getContentArticleVersions(null, null, folderId, null, null, title, null);

@@ -21,7 +21,9 @@ public interface FilesClient {
             @RequestParam("path") String path);
 
     @GetMapping("/imageFile")
-    File getImageFile(@RequestBody IFileEntry fileEntry, @RequestParam("path") String path);
+    File getImageFile(@RequestParam("fileEntryId") Long fileEntryId,
+            @RequestParam("filePath") String filePath,
+            @RequestParam("fileExtension") String fileExtension);
 
     @GetMapping("/fileEntries/{fileEntryId}")
     Optional<IFileEntry> getFileEntry(@PathVariable("fileEntryId") Long fileEntryId);

@@ -63,7 +63,7 @@ public class ContentsController implements ContentsClient {
 
     @Override
     @GetMapping("/contentArticles")
-    public List<? extends IContentArticle> getContentArticles(@RequestParam Long folderId) {
+    public List<? extends IContentArticle> getContentArticles(@RequestParam(required = false) Long folderId) {
         if (folderId != null) {
             return contentArticleDao.getArticlesInFolder(folderId);
         }
@@ -72,9 +72,14 @@ public class ContentsController implements ContentsClient {
 
     @Override
     @GetMapping("/contentArticleVersions")
-    public List<IContentArticleVersion> getContentArticleVersions(Integer startRecord, Integer limitRecord,
-            Long folderId, Long contentArticleId, Long contentArticleVersion, String title,
-            String lang) {
+    public List<IContentArticleVersion> getContentArticleVersions(
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) Long folderId,
+            @RequestParam(required = false) Long contentArticleId,
+            @RequestParam(required = false) Long contentArticleVersion,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String lang) {
         //TODO: sort parameter:
         //                .optionalQueryParam("sort","-contentArticleVersion")
         PaginationHelper paginationHelper =
@@ -86,7 +91,7 @@ public class ContentsController implements ContentsClient {
     @Override
     @GetMapping("/contentFolders")
     public List<IContentFolder> getContentFolders() {
-        final PaginationHelper paginationHelper = new PaginationHelper(null, null,null);
+        final PaginationHelper paginationHelper = new PaginationHelper(null, null, null);
         return contentFolderDao.findByGiven(paginationHelper, null);
     }
 
@@ -113,13 +118,14 @@ public class ContentsController implements ContentsClient {
 
     @Override
     @PutMapping("/contentArticles")
-    public boolean updateContentArticle(@RequestBody IContentArticle contentArticle) throws ContentNotFoundException {
+    public boolean updateContentArticle(@RequestBody IContentArticle contentArticle)
+            throws ContentNotFoundException {
         Long articleId = contentArticle.getId();
         if (articleId == null || articleId == 0) {
             throw new ContentNotFoundException("No content article with id " + articleId);
         }
         try {
-            if(contentArticleDao.get(articleId) == null) {
+            if (contentArticleDao.get(articleId) == null) {
                 throw new ContentNotFoundException("No content article with id " + articleId);
             }
         } catch (NotFoundException e) {
@@ -213,14 +219,16 @@ public class ContentsController implements ContentsClient {
         return this.contentFolderDao.create(contentFolder);
 
         //TODO COLAB-2589: fine-grained cache control
-//        ServiceRequestUtils.clearCache(CacheName.CONTENT);
+        //        ServiceRequestUtils.clearCache(CacheName.CONTENT);
     }
 
     @Override
     @GetMapping("/contentFolders/{contentFolderId}")
-    public IContentFolder getContentFolder(@PathVariable Long contentFolderId) throws ContentNotFoundException {
+    public IContentFolder getContentFolder(@PathVariable Long contentFolderId)
+            throws ContentNotFoundException {
         if (contentFolderId == null || contentFolderId == 0) {
-            throw new ContentNotFoundException("No content folder with content folder id " + contentFolderId);
+            throw new ContentNotFoundException(
+                    "No content folder with content folder id " + contentFolderId);
         } else {
             return this.contentFolderDao.get(contentFolderId);
         }
@@ -241,7 +249,8 @@ public class ContentsController implements ContentsClient {
     public boolean updateContentFolder(@RequestBody IContentFolder contentFolder)
             throws ContentNotFoundException {
         if (contentFolderDao.get(contentFolder.getId()) == null) {
-            throw new ContentNotFoundException("No content folder with content folder id " + contentFolder.getId());
+            throw new ContentNotFoundException(
+                    "No content folder with content folder id " + contentFolder.getId());
         } else {
             return contentFolderDao.update(contentFolder);
         }
@@ -257,7 +266,7 @@ public class ContentsController implements ContentsClient {
 
     @Override
     @GetMapping("/contentPages")
-    public List<IContentPage> getContentPages(@RequestParam String title) {
+    public List<IContentPage> getContentPages(@RequestParam(required = false) String title) {
         return contentPageDao.list(title);
     }
 
@@ -271,10 +280,15 @@ public class ContentsController implements ContentsClient {
 
     @Override
     @GetMapping("/contentPages/getByContentArticleId")
-    public IContentPage getContentPageByContentArticleId(@RequestParam Long contentArticleId) throws ContentNotFoundException {
-        return contentPageDao.getByContentArticleId(contentArticleId).<ContentNotFoundException>orElseThrow(() -> {
-            throw new ContentNotFoundException("Content page does not exist for content article id " + contentArticleId);
-        });
+    public IContentPage getContentPageByContentArticleId(@RequestParam Long contentArticleId)
+            throws ContentNotFoundException {
+        return contentPageDao
+                .getByContentArticleId(contentArticleId).<ContentNotFoundException>orElseThrow(
+                        () -> {
+                            throw new ContentNotFoundException(
+                                    "Content page does not exist for content article id "
+                                            + contentArticleId);
+                        });
     }
 
     @Override

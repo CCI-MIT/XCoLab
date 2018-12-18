@@ -45,9 +45,11 @@ public class FilesController implements FilesClient {
 
     @Override
     @GetMapping("/imageFile")
-    public File getImageFile(@RequestBody IFileEntry fileEntry, @RequestParam String path) {
-        String filePath = persistenceProvider.getFilePathFromFinalDestination(fileEntry, path);
-        File file = new File(filePath);
+    public File getImageFile(@RequestParam Long fileEntryId, @RequestParam String filePath,
+            @RequestParam String fileExtension) {
+        String finalFilePath = persistenceProvider
+                .getFilePathFromFinalDestination(fileEntryId, filePath, fileExtension);
+        File file = new File(finalFilePath);
         if (file.exists() && !file.isDirectory()) {
             return file;
         }
