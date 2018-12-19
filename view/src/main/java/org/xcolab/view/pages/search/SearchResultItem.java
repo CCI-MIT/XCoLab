@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.search;
 
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.view.pages.search.items.AbstractSearchItem;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class SearchResultItem {
     private String url;
     private boolean odd;
 
-    public SearchResultItem(SearchPojo searchPojo, String query, boolean odd) {
+    public SearchResultItem(ISearchPojo searchPojo, String query, boolean odd) {
 
         for (SearchItemType type : SearchItemType.values()) {
             if (type.isOfGivenType(searchPojo)) {

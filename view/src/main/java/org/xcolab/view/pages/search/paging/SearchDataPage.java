@@ -3,7 +3,7 @@ package org.xcolab.view.pages.search.paging;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.search.SearchClient;
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.view.pages.search.SearchResultItem;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 public class SearchDataPage {
 
     private static final int PAGE_SIZE = 10;
-
+    private static SearchClient searchClient;
     private final int page;
     private final String searchPhrase;
     private final String searchLocation;
@@ -35,6 +35,10 @@ public class SearchDataPage {
         initializeItems();
     }
 
+    public static void setSearchClient(SearchClient searchClient) {
+        SearchDataPage.searchClient = searchClient;
+    }
+
     private void initializeItems() {
 
         if (StringUtils.isEmpty(searchPhrase)) {
@@ -50,13 +54,13 @@ public class SearchDataPage {
         final int endRow = page * PAGE_SIZE;
         final int startRow = endRow - PAGE_SIZE;
 
-        List<SearchPojo> searchPojoList =
-                SearchClient.search(startRow, endRow, searchLocation, queryStr);
-        totalResults = SearchClient.searchCount(searchLocation, queryStr);
+        List<ISearchPojo> searchPojoList =
+                SearchDataPage.searchClient.search(startRow, endRow, searchLocation, queryStr);
+        totalResults = SearchDataPage.searchClient.searchCount(searchLocation, queryStr);
 
         items = new ArrayList<>();
         int i = 0;
-        for (SearchPojo pojo : searchPojoList) {
+        for (ISearchPojo pojo : searchPojoList) {
             final SearchResultItem resultItem =
                     new SearchResultItem(pojo, queryStr, (i++ % 2) == 0);
             if (resultItem.isVisible()) {

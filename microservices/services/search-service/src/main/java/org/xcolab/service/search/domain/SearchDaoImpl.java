@@ -11,9 +11,9 @@ import org.jooq.impl.TableImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.model.tables.UserTable;
 import org.xcolab.service.search.enums.SearchType;
-import org.xcolab.service.search.pojo.SearchPojo;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.Collection;
@@ -37,9 +37,9 @@ public class SearchDaoImpl implements SearchDao {
     }
 
     @Override
-    public List<SearchPojo> findProposalAttribute(PaginationHelper paginationHelper,
+    public List<ISearchPojo> findProposalAttribute(PaginationHelper paginationHelper,
                                                   String query) {
-        return getProposalQueryForSearch(paginationHelper, query).fetchInto(SearchPojo.class);
+        return getProposalQueryForSearch(paginationHelper, query).fetchInto(ISearchPojo.class);
     }
     private SelectQuery<Record3<Long, Double, Long>> getProposalQueryForSearch(
             PaginationHelper paginationHelper, String query) {
@@ -71,11 +71,11 @@ public class SearchDaoImpl implements SearchDao {
     }
 
     @Override
-    public List<SearchPojo> findMember(PaginationHelper paginationHelper, String query) {
+    public List<ISearchPojo> findMember(PaginationHelper paginationHelper, String query) {
         return getQueryForSearch(paginationHelper, query, SearchType.USER.getId(), USER,
                 USER.ID, UserTable.USER.SHORT_BIO, USER.FIRST_NAME, USER.LAST_NAME,
                 USER.SCREEN_NAME)
-                .fetchInto(SearchPojo.class);
+                .fetchInto(ISearchPojo.class);
     }
 
     @Override
@@ -85,10 +85,10 @@ public class SearchDaoImpl implements SearchDao {
     }
 
     @Override
-    public List<SearchPojo> findComment(PaginationHelper paginationHelper, String query) {
+    public List<ISearchPojo> findComment(PaginationHelper paginationHelper, String query) {
         return getQueryForSearch(paginationHelper, query, SearchType.DISCUSSION.getId(), COMMENT,
                 COMMENT.ID, COMMENT.CONTENT)
-                .fetchInto(SearchPojo.class);
+                .fetchInto(ISearchPojo.class);
 
     }
 
@@ -98,10 +98,10 @@ public class SearchDaoImpl implements SearchDao {
     }
 
     @Override
-    public List<SearchPojo> findContest(PaginationHelper paginationHelper, String query) {
+    public List<ISearchPojo> findContest(PaginationHelper paginationHelper, String query) {
         return getQueryForSearch(paginationHelper, query, SearchType.CONTEST.getId(), CONTEST,
                 CONTEST.ID, getContestConditions(),CONTEST.DESCRIPTION)
-                .fetchInto(SearchPojo.class);
+                .fetchInto(ISearchPojo.class);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class SearchDaoImpl implements SearchDao {
     }
 
     @Override
-    public List<SearchPojo> findAllSite(PaginationHelper paginationHelper, String query) {
+    public List<ISearchPojo> findAllSite(PaginationHelper paginationHelper, String query) {
         PaginationHelper unlimitedPagination = new PaginationHelper(0, Integer.MAX_VALUE, "");
         return dslContext.select()
                 .from(getProposalQueryForSearch(unlimitedPagination, query)
@@ -126,7 +126,7 @@ public class SearchDaoImpl implements SearchDao {
                                 getContestConditions(), CONTEST.DESCRIPTION))
                 )
                 .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
-                .fetchInto(SearchPojo.class);
+                .fetchInto(ISearchPojo.class);
     }
 
     @Override

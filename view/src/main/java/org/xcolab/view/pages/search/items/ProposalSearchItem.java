@@ -11,7 +11,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.search.pojo.ISearchPojo;
 
 public class ProposalSearchItem extends AbstractSearchItem {
 
@@ -19,14 +19,14 @@ public class ProposalSearchItem extends AbstractSearchItem {
 
     private ProposalAttribute proposalAttribute;
 
-    private SearchPojo searchPojo;
+    private ISearchPojo searchPojo;
 
     private String searchQuery;
 
     private String proposalName;
 
     @Override
-    public void init(SearchPojo pojo, String searchQuery) {
+    public void init(ISearchPojo pojo, String searchQuery) {
         try {
             searchPojo = pojo;
             this.searchQuery = searchQuery;
