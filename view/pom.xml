@@ -160,11 +160,6 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>files-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xcolab</groupId>
             <artifactId>ballons-client</artifactId>
             <version>${project.version}</version>
         </dependency>
