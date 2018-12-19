@@ -12,6 +12,7 @@ import org.apache.maven.project.MavenProject;
 import org.jboss.forge.roaster.ParserException;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.FieldSource;
+import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
@@ -177,8 +178,11 @@ public class PojoGenerator extends AbstractMojo {
 
             PojoGenerator.createGettersAndSetters(pojo, fields);
 
+            PojoGenerator.duplicateDefaultMethods(pojo, srcEntry.getKey());
+
             Refactory.createHashCodeAndEquals(pojo, fields.toArray(new FieldSource[0]));
             Refactory.createToStringFromFields(pojo, fields);
+
 
             pojos.put(pojo, srcEntry.getValue());
         }
@@ -275,6 +279,24 @@ public class PojoGenerator extends AbstractMojo {
                     .setName("get" + capitalizedName)
                     .setBody(bodyGetter)
                     .addAnnotation(Override.class);
+        }
+    }
+
+    /*
+    Adding the default methods as normal methods is required due to following bug:
+    https://stackoverflow.com/questions/45422679/getter-in-an-interface-with-default-method-jsf
+     */
+    private static void duplicateDefaultMethods(JavaClassSource pojo, JavaInterfaceSource src) {
+        List<MethodSource<JavaInterfaceSource>> defaultMethods =
+                src.getMethods().stream().filter(m -> m.isDefault()).collect(Collectors.toList());
+        for (MethodSource<JavaInterfaceSource> defaultMethod : defaultMethods) {
+            defaultMethod.addAnnotation(Override.class);
+            defaultMethod.setDefault(false);
+            defaultMethod.setPublic();
+            pojo.addMethod(defaultMethod);
+        }
+        for (Import anImport : src.getImports()) {
+            pojo.addImport(anImport);
         }
     }
 }
