@@ -172,6 +172,10 @@
 
                         <!-- Allow migrations to be applied even if a higher version was already run -->
                         <outOfOrder>true</outOfOrder>
+
+                        <!-- Allow migration to be done on empty database -->
+                        <baselineOnMigrate>true</baselineOnMigrate>
+                        <baselineVersion>0</baselineVersion>
                     </configuration>
                 </plugin>
                 <plugin>
