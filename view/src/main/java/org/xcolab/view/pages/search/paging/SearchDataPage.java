@@ -2,7 +2,7 @@ package org.xcolab.view.pages.search.paging;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.search.SearchClient;
+import org.xcolab.client.search.ISearchClient;
 import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.view.pages.search.SearchResultItem;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class SearchDataPage {
 
     private static final int PAGE_SIZE = 10;
-    private static SearchClient searchClient;
+    private static ISearchClient searchClient;
     private final int page;
     private final String searchPhrase;
     private final String searchLocation;
@@ -35,7 +35,7 @@ public class SearchDataPage {
         initializeItems();
     }
 
-    public static void setSearchClient(SearchClient searchClient) {
+    public static void setSearchClient(ISearchClient searchClient) {
         SearchDataPage.searchClient = searchClient;
     }
 

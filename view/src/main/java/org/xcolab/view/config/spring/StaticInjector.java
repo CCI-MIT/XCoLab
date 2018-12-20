@@ -5,14 +5,14 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.search.SearchClient;
+import org.xcolab.client.search.ISearchClient;
 import org.xcolab.view.pages.search.paging.SearchDataPage;
 
 @Component
 public class StaticInjector implements ApplicationRunner {
 
     @Autowired
-    private SearchClient searchClient;
+    private ISearchClient searchClient;
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {

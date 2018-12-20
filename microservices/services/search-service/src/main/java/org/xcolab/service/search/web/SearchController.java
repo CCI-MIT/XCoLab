@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.search.SearchClient;
+import org.xcolab.client.search.ISearchClient;
 import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.service.search.domain.SearchDao;
 import org.xcolab.service.search.enums.SearchType;
@@ -14,7 +14,7 @@ import org.xcolab.service.utils.PaginationHelper;
 import java.util.List;
 
 @RestController
-public class SearchController implements SearchClient {
+public class SearchController implements ISearchClient {
 
     private final SearchDao searchDao;
 

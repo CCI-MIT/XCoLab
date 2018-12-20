@@ -43,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.i18n")
 @ComponentScan("org.xcolab.view.webhooks.sendgrid")
 @ComponentScan("org.xcolab.client.tracking")
+@ComponentScan("org.xcolab.client.search")
 
 @TestPropertySource(
         properties = {

@@ -9,7 +9,7 @@ import org.xcolab.client.search.pojo.ISearchPojo;
 import java.util.List;
 
 @FeignClient("xcolab-search-service")
-public interface SearchClient {
+public interface ISearchClient {
 
     @GetMapping("/search")
     List<ISearchPojo> search(
