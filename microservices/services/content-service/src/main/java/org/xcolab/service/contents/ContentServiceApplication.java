@@ -8,6 +8,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 public class ContentServiceApplication {
 
+    private ContentServiceApplication() {
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(ContentServiceApplication.class, args);
     }

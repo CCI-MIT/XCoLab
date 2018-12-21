@@ -8,6 +8,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 public class AdminServiceApplication {
 
+    private AdminServiceApplication() {
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(AdminServiceApplication.class, args);
     }

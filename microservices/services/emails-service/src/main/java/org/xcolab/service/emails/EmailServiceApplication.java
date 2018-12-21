@@ -8,6 +8,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 public class EmailServiceApplication {
 
+    private EmailServiceApplication() {
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(EmailServiceApplication.class, args);
     }
