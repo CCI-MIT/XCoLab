@@ -36,7 +36,6 @@ import org.xcolab.view.auth.tracking.UserTrackingService;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.spring.converters.CaseInsensitiveStringToEnumConverterFactory;
 import org.xcolab.view.config.spring.filters.CdnUrlEncodingFilter;
-import org.xcolab.view.config.spring.properties.ServerProperties;
 import org.xcolab.view.config.spring.properties.TomcatProperties;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.spring.properties.WebProperties.CacheSettings;
@@ -57,7 +56,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableConfigurationProperties(
-        {WebProperties.class, TomcatProperties.class, ServerProperties.class})
+        {WebProperties.class, TomcatProperties.class})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
@@ -66,7 +65,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     // Configuration properties
     private final TomcatProperties tomcatProperties;
-    private final ServerProperties serverProperties;
     private final WebProperties webProperties;
 
     // Interceptors
@@ -81,13 +79,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public WebConfig(ThemeVariableInterceptor themeVariableInterceptor,
             PopulateProposalModelInterceptor populateContextInterceptor,
             ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
-            TomcatProperties tomcatProperties, ServerProperties serverProperties,
+            TomcatProperties tomcatProperties,
             WebProperties webProperties, LocaleResolver localeResolver) {
         Assert.notNull(tomcatProperties, "TomcatProperties bean is required");
-        Assert.notNull(serverProperties, "ServerProperties bean is required");
         Assert.notNull(webProperties, "webProperties bean is required");
         this.tomcatProperties = tomcatProperties;
-        this.serverProperties = serverProperties;
         this.webProperties = webProperties;
 
         Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
