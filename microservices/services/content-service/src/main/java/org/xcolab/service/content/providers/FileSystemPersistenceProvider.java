@@ -1,6 +1,7 @@
 package org.xcolab.service.content.providers;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.commons.exceptions.InternalException;
@@ -8,6 +9,7 @@ import org.xcolab.commons.exceptions.InternalException;
 import java.io.File;
 import java.io.IOException;
 
+@Repository
 public class FileSystemPersistenceProvider implements PersistenceProvider {
 
     private static final String LOCAL_FOLDER_NAME = "fileEntriesDataFolder";

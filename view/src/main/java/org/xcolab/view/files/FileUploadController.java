@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.content.IFileClient;
+import org.xcolab.client.content.pojo.FileEntryWrapper;
 import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.view.util.entity.upload.FileUploadUtil;
@@ -69,7 +70,8 @@ public class FileUploadController {
             fileEntry.setFileSize(bytes.length);
             fileEntry.setFileName(FilenameUtils.getName(nameExt));
 
-            fileEntry = fileClient.createFileEntry(fileEntry, bytes, path);
+
+            fileEntry = fileClient.createFileEntry(new FileEntryWrapper(fileEntry, bytes, path));
 
             final String imageIdString = String.valueOf(fileEntry.getId());
             return new ImageResponse(imageIdString, fileEntry.getLinkUrl(), true, "");

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.content.pojo.FileEntryWrapper;
 import org.xcolab.client.content.pojo.IFileEntry;
 
 import java.io.File;
@@ -16,9 +17,7 @@ import java.util.Optional;
 public interface IFileClient {
 
     @PostMapping("/fileEntries")
-    IFileEntry createFileEntry(@RequestBody IFileEntry fileEntry,
-            @RequestParam("imgBArr") byte[] imgBArr,
-            @RequestParam("path") String path);
+    IFileEntry createFileEntry(@RequestBody FileEntryWrapper fileEntryWrapper);
 
     @GetMapping("/imageFile")
     File getImageFile(@RequestParam("fileEntryId") Long fileEntryId,

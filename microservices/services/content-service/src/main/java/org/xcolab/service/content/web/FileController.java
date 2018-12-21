@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.content.IFileClient;
+import org.xcolab.client.content.pojo.FileEntryWrapper;
 import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.service.content.domain.fileentry.FileEntryDao;
 import org.xcolab.service.content.exceptions.NotFoundException;
-import org.xcolab.service.content.providers.FileSystemPersistenceProvider;
 import org.xcolab.service.content.providers.PersistenceProvider;
 
 import java.io.File;
@@ -22,24 +22,22 @@ import java.util.Optional;
 @RestController
 public class FileController implements IFileClient {
 
-    private static final PersistenceProvider persistenceProvider =
-            new FileSystemPersistenceProvider();
-
+    private final PersistenceProvider persistenceProvider;
     private final FileEntryDao fileEntryDao;
 
     @Autowired
-    public FileController(FileEntryDao fileEntryDao) {
+    public FileController(FileEntryDao fileEntryDao, PersistenceProvider persistenceProvider) {
         Assert.notNull(fileEntryDao, "FileEntryDao is required");
         this.fileEntryDao = fileEntryDao;
+        this.persistenceProvider = persistenceProvider;
     }
 
     @Override
     @PostMapping("/fileEntries")
-    public IFileEntry createFileEntry(@RequestBody IFileEntry fileEntry,
-            @RequestParam byte[] imgBArr,
-            @RequestParam String path) {
-        IFileEntry ret = this.fileEntryDao.create(fileEntry);
-        persistenceProvider.saveFileToFinalDestination(imgBArr, ret, path);
+    public IFileEntry createFileEntry(@RequestBody FileEntryWrapper fileEntryWrapper) {
+        IFileEntry ret = this.fileEntryDao.create(fileEntryWrapper.getFileEntry());
+        persistenceProvider.saveFileToFinalDestination(fileEntryWrapper.getImgArr(), ret,
+                fileEntryWrapper.getPath());
         return ret;
     }
 
