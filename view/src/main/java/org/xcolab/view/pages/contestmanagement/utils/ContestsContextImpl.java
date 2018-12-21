@@ -60,10 +60,10 @@ public class ContestsContextImpl implements TabContext {
                 request.setAttribute(CONTEST_ATTRIBUTE, contest);
                 request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, (contest));
                 request.setAttribute(PERMISSIONS_ATTRIBUTE,
-                        new ContestPermissions(request, contest));
+                        new ContestPermissions(contest));
             }
         } else {
-            request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestManagementPermissions(request));
+            request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestManagementPermissions());
         }
 
         request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);

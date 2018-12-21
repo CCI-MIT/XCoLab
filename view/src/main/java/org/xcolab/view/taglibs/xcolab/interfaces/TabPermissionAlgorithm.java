@@ -105,7 +105,7 @@ public interface TabPermissionAlgorithm {
         public boolean canView(TabPermissions permissions, TabContext context,
                 HttpServletRequest request) {
             final Contest contest = context.getContest(request);
-            final long userId = MemberAuthUtil.getuserId(request);
+            final long userId = MemberAuthUtil.getuserId();
             return permissions.getCanAdmin() || contest.getCanFellow(userId);
         }
 

@@ -35,7 +35,7 @@ public class CategoryController extends BaseDiscussionController {
             Model model, @RequestParam(required = false) String sortColumn,
             @RequestParam(defaultValue = "false") boolean sortAscending) {
         model.addAttribute("_activePageLink", "community");
-        long userId = MemberAuthUtil.getuserId(request);
+        long userId = MemberAuthUtil.getuserId();
 
         ThreadSortColumn threadSortColumn;
         try {
@@ -57,7 +57,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(
                 userId, ActivityCategory.DISCUSSION, categoryGroup.getId(), ""));
 
-        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions();
         model.addAttribute("discussionPermissions", discussionPermissions);
 
         model.addAttribute("_activePageLink", "community");
@@ -71,7 +71,7 @@ public class CategoryController extends BaseDiscussionController {
             @RequestParam boolean sortAscending)
             throws DiscussionAuthorizationException, CategoryNotFoundException {
 
-        long userId = MemberAuthUtil.getuserId(request);
+        long userId = MemberAuthUtil.getuserId();
 
         ThreadSortColumn threadSortColumn;
         try {
@@ -96,7 +96,7 @@ public class CategoryController extends BaseDiscussionController {
                 ActivityCategory.DISCUSSION, currentCategory.getId()));
 
 
-        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions();
         model.addAttribute("discussionPermissions", discussionPermissions);
 
         model.addAttribute("_activePageLink", "community");
@@ -131,7 +131,7 @@ public class CategoryController extends BaseDiscussionController {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
-        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions();
         if (!getCanEdit(discussionPermissions, categoryGroup, 0L)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -147,7 +147,7 @@ public class CategoryController extends BaseDiscussionController {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
-        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions();
         if (!getCanEdit(discussionPermissions, categoryGroup, 0L)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -161,10 +161,10 @@ public class CategoryController extends BaseDiscussionController {
             Member member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
-        long userId = MemberAuthUtil.getuserId(request);
+        long userId = MemberAuthUtil.getuserId();
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
-        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions();
         if (!getCanView(discussionPermissions, categoryGroup, 0L)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -189,10 +189,10 @@ public class CategoryController extends BaseDiscussionController {
             Member member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
-        long userId = MemberAuthUtil.getuserId(request);
+        long userId = MemberAuthUtil.getuserId();
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
-        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions();
         if (!getCanView(discussionPermissions, categoryGroup, 0L)) {
             return new AccessDeniedPage(member).toViewName(response);
         }

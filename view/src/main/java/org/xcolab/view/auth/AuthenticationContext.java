@@ -33,16 +33,20 @@ public class AuthenticationContext {
 
     private Member getImpersonatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        List<? extends GrantedAuthority> prevAdmins = authentication.getAuthorities().stream()
-                .filter(authority -> authority.getAuthority().equals(
-                        SwitchUserFilter.ROLE_PREVIOUS_ADMINISTRATOR)).collect(Collectors.toList());
+        if (authentication != null) {
+            List<? extends GrantedAuthority> prevAdmins = authentication.getAuthorities().stream()
+                    .filter(authority -> authority.getAuthority().equals(
+                            SwitchUserFilter.ROLE_PREVIOUS_ADMINISTRATOR))
+                    .collect(Collectors.toList());
 
-        if (prevAdmins.size() == 1 && prevAdmins.get(0) instanceof SwitchUserGrantedAuthority) {
-            SwitchUserGrantedAuthority prevAdmin = (SwitchUserGrantedAuthority) prevAdmins.get(0);
-            if (prevAdmin.getSource().getPrincipal() instanceof MemberDetails) {
-                MemberDetails memberDetails = (MemberDetails) prevAdmin.getSource().getPrincipal();
-                return memberDetails.getMember();
-                //returns real user (admin)
+            if (prevAdmins.size() == 1 && prevAdmins.get(0) instanceof SwitchUserGrantedAuthority) {
+                SwitchUserGrantedAuthority prevAdmin =
+                        (SwitchUserGrantedAuthority) prevAdmins.get(0);
+                if (prevAdmin.getSource().getPrincipal() instanceof MemberDetails) {
+                    MemberDetails memberDetails =
+                            (MemberDetails) prevAdmin.getSource().getPrincipal();
+                    return memberDetails.getMember();
+                }
             }
         }
         return null;
@@ -55,7 +59,6 @@ public class AuthenticationContext {
                 .getPrincipal() instanceof MemberDetails) {
             MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
             return memberDetails.getMember();
-            // returns user which is logged in (impersonated)
         } else {
             return null;
         }

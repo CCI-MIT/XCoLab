@@ -28,12 +28,12 @@ public class MessageSettingsJSONController extends JSONHelper {
             @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
-        boolean result = updateSendEmailOnMessageSettings(request, messageSetting);
+        boolean result = updateSendEmailOnMessageSettings(messageSetting);
         this.writeSuccessResultResponseJSON(result, response);
     }
 
-    private boolean updateSendEmailOnMessageSettings(HttpServletRequest request, boolean messageSetting) {
-        long userId = MemberAuthUtil.getuserId(request);
+    private boolean updateSendEmailOnMessageSettings(boolean messageSetting) {
+        long userId = MemberAuthUtil.getuserId();
         updateUserSendEmailOnMessagePreferences(userId, messageSetting);
         return true;
     }
@@ -51,12 +51,12 @@ public class MessageSettingsJSONController extends JSONHelper {
             @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
-        boolean result = updateSendEmailOnActivitySettings(request, messageSetting);
+        boolean result = updateSendEmailOnActivitySettings(messageSetting);
         this.writeSuccessResultResponseJSON(result, response);
     }
 
-    private boolean updateSendEmailOnActivitySettings(HttpServletRequest request, boolean messageSetting) {
-        long userId = MemberAuthUtil.getuserId(request);
+    private boolean updateSendEmailOnActivitySettings(boolean messageSetting) {
+        long userId = MemberAuthUtil.getuserId();
         updateUserSendEmailOnActivityPreferences(userId, messageSetting);
         if (!messageSetting) {
             updateUserSendDailyEmailOnActivityPreferences(userId, false);
@@ -83,12 +83,12 @@ public class MessageSettingsJSONController extends JSONHelper {
             @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
-        boolean result = updateSendDailyEmailOnActivitySettings(request, messageSetting);
+        boolean result = updateSendDailyEmailOnActivitySettings(messageSetting);
         this.writeSuccessResultResponseJSON(result, response);
     }
 
-    private boolean updateSendDailyEmailOnActivitySettings(HttpServletRequest request, boolean messageSetting) {
-        long userId = MemberAuthUtil.getuserId(request);
+    private boolean updateSendDailyEmailOnActivitySettings(boolean messageSetting) {
+        long userId = MemberAuthUtil.getuserId();
         updateUserSendDailyEmailOnActivityPreferences(userId, messageSetting);
         return true;
     }

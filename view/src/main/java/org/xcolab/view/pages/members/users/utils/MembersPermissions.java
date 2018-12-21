@@ -9,8 +9,8 @@ public class MembersPermissions {
 
     private final long userId;
 
-    public MembersPermissions(HttpServletRequest request) {
-        userId = MemberAuthUtil.getuserId(request);
+    public MembersPermissions() {
+        userId = MemberAuthUtil.getuserId();
     }
 
     public boolean getCanDownloadMemberList() {

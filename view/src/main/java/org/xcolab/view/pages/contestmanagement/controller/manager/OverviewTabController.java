@@ -82,7 +82,7 @@ public class OverviewTabController extends AbstractTabController {
         }
 
         try {
-            executeMassAction(request, response, updateContestOverviewWrapper);
+            executeMassAction(response, updateContestOverviewWrapper);
             AlertMessage.CHANGES_SAVED.flash(request);
             return "redirect:/admin/contest/manager";
         } catch (MassActionRequiresConfirmationException e) {
@@ -112,7 +112,7 @@ public class OverviewTabController extends AbstractTabController {
             return;
         }
         try {
-            executeMassAction(request, response, updateContestOverviewWrapper);
+            executeMassAction(response, updateContestOverviewWrapper);
         } catch (MassActionRequiresConfirmationException | IOException ignored) {
         }
     }
@@ -127,10 +127,10 @@ public class OverviewTabController extends AbstractTabController {
         return CONFIRM_VIEW_PATH;
     }
 
-    private void executeMassAction(HttpServletRequest request, HttpServletResponse response,
+    private void executeMassAction(HttpServletResponse response,
             ContestOverviewWrapper contestOverviewWrapper)
             throws MassActionRequiresConfirmationException, IOException {
-        contestOverviewWrapper.setuserId(MemberAuthUtil.getuserId(request));
+        contestOverviewWrapper.setuserId(MemberAuthUtil.getuserId());
 
         ContestMassAction action = contestOverviewWrapper.getSelectedMassAction().getAction();
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();

@@ -22,8 +22,8 @@ public class DiscussionPermissions {
     private final boolean isGuest;
     protected boolean isLoggedIn;
 
-    public DiscussionPermissions(HttpServletRequest request) {
-        userId = MemberAuthUtil.getuserId(request);
+    public DiscussionPermissions() {
+        userId = MemberAuthUtil.getuserId();
         isLoggedIn = userId > 0;
         this.isGuest = PermissionsClient.isGuest(userId);
     }

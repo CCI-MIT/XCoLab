@@ -179,7 +179,7 @@ public class ContentEditorController extends BaseContentEditor {
             @RequestParam(required = false) Long articleId,
             @RequestParam(required = false) Long folderId)
             throws IOException, ContentNotFoundException {
-        long userId = MemberAuthUtil.getuserId(request);
+        long userId = MemberAuthUtil.getuserId();
 
         ContentArticleVersion contentArticleVersion =
                 ContentsClient.getLatestContentArticleVersion(articleId);

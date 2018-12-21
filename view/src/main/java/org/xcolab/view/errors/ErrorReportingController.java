@@ -76,7 +76,7 @@ public class ErrorReportingController {
 
         if (!stackTrace.equals("${exception.stackTrace}")) {
             String userScreenName = "no user was logged in";
-            final Member member = MemberAuthUtil.getMemberOrNull(request);
+            final Member member = MemberAuthUtil.getMemberOrNull();
             if (member != null) {
                 userScreenName = member.getScreenName();
 

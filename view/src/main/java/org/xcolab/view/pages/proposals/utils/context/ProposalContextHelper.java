@@ -111,7 +111,7 @@ public class ProposalContextHelper {
     }
 
     public Member getMember() {
-        return MemberAuthUtil.getMemberOrNull(request);
+        return MemberAuthUtil.getMemberOrNull();
     }
 
     public Contest getContest() throws InvalidContestUrlException {

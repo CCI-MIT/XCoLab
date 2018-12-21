@@ -14,7 +14,7 @@ public final class MemberAuthUtil {
     private MemberAuthUtil() {
     }
 
-    public static long getuserId(HttpServletRequest request) {
+    public static long getuserId() {
         final Member memberOrNull = authenticationContext.getMemberOrNull();
         if (memberOrNull == null) {
             return 0L;
@@ -22,9 +22,9 @@ public final class MemberAuthUtil {
         return memberOrNull.getId();
     }
 
-    public static Member getMemberOrNull(HttpServletRequest request) {
+    public static Member getMemberOrNull() {
         try {
-            return MembersClient.getMember(getuserId(request));
+            return MembersClient.getMember(getuserId());
         } catch (MemberNotFoundException e) {
             return null;
         }

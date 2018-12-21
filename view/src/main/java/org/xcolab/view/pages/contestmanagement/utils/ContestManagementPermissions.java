@@ -14,8 +14,8 @@ public class ContestManagementPermissions implements TabPermissions, Serializabl
     private final boolean isLoggedIn;
     private final long userId;
 
-    public ContestManagementPermissions(HttpServletRequest request) {
-        userId = MemberAuthUtil.getuserId(request);
+    public ContestManagementPermissions() {
+        userId = MemberAuthUtil.getuserId();
         isLoggedIn = userId > 0;
     }
 
