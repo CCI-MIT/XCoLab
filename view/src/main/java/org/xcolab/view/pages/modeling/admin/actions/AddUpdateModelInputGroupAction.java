@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.modeling.ModelingClientUtil;
+import org.xcolab.client.modeling.ModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -39,11 +39,11 @@ public class AddUpdateModelInputGroupAction {
             modelInputGroup = new ModelInputGroup();
             modelInputGroup.setModelId(modelId);
         } else {
-            modelInputGroup = ModelingClientUtil.getModelInputGroup(updateModelInputGroup.getId());
+            modelInputGroup = ModelingClient.instance().getModelInputGroup(updateModelInputGroup.getId());
         }
         if (updateModelInputGroup.getId() > 0 && "delete"
                 .equals(updateModelInputGroup.getInputAction())) {
-            ModelingClientUtil.deleteModelInputGroup(updateModelInputGroup.getId());
+            ModelingClient.instance().deleteModelInputGroup(updateModelInputGroup.getId());
             return;
         }
 
@@ -65,9 +65,9 @@ public class AddUpdateModelInputGroupAction {
         modelInputGroup.setParentGroupId(updateModelInputGroup.getParentGroupPK());
 
         if (updateModelInputGroup.getId() == 0) {
-            ModelingClientUtil.createModelInputGroup(modelInputGroup);
+            ModelingClient.instance().createModelInputGroup(modelInputGroup);
         } else {
-            ModelingClientUtil.updateModelInputGroup(modelInputGroup);
+            ModelingClient.instance().updateModelInputGroup(modelInputGroup);
         }
         response.sendRedirect(ModelsAdminController.getTabMapping(modelId, "inputTabs"));
     }

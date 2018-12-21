@@ -1,9 +1,8 @@
 package org.xcolab.view.activityentry.discussion;
 
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.view.activityentry.ActivityInitializationException;
 import org.xcolab.view.activityentry.provider.AbstractActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
@@ -22,7 +21,7 @@ public abstract class DiscussionBaseActivityEntry extends AbstractActivityEntryC
     public void initializeInternal() throws ActivityInitializationException {
 
         try {
-            thread = ThreadClientUtil.getThread(getActivityEntry().getCategoryId());
+            thread = ThreadClient.instance().getThread(getActivityEntry().getCategoryId());
         } catch (ThreadNotFoundException e) {
             throw new ActivityInitializationException(getActivityEntry().getId(), e);
         }

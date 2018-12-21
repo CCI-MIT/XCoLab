@@ -79,7 +79,7 @@ public class ContestControllerTest {
     private ContestCollectionCardDao contestCollectionCardDao;
 
     @Mock
-    private ContestService serviceNamespace;
+    private ContestService contestService;
 
     @Mock
     private CollectionCardService collectionCardService;

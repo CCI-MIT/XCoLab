@@ -1,9 +1,11 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -13,9 +15,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
-import org.xcolab.client.proposals.pojo.ProposalVersionDto;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
-import org.xcolab.client.proposals.pojo.tiers.ProposalReferenceDto;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ProposalActivityType;
@@ -24,60 +24,44 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
-import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class ProposalClient {
-
-    private static final Map<ServiceNamespace, ProposalClient> instances = new HashMap<>();
-
-    private final ServiceNamespace serviceNamespace;
 
     private final RestResource<ProposalDto, Long> proposalResource;
     private final RestResource<Long, Long> proposalThreadIdResource;
     private final RestResource<Long, Long> proposalIdResource;
-    private final RestResource1<ProposalVersionDto, Long> proposalVersionResource;
-    private final RestResource1<ProposalReferenceDto, Long> proposalReferenceResource;
+    private final RestResource1<ProposalVersion, Long> proposalVersionResource;
+    private final RestResource1<ProposalReference, Long> proposalReferenceResource;
 
     //TODO COLAB-2600: methods that use this should be in the service!
     private final ContestClient contestClient;
 
     private final ActivitiesClient activitiesClient;
 
-    private ProposalClient(ServiceNamespace serviceNamespace) {
-        this.serviceNamespace = serviceNamespace;
+    public ProposalClient() {
 
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES,
-                serviceNamespace);
-        proposalIdResource = new RestResource1<>(ProposalResource.PROPOSAL_ID, TypeProvider.LONG,
-                serviceNamespace);
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
+        proposalIdResource = new RestResource1<>(ProposalResource.PROPOSAL_ID, TypeProvider.LONG);
         proposalThreadIdResource = new RestResource1<>(ProposalResource.PROPOSAL_THREAD_ID,
-                TypeProvider.LONG, serviceNamespace);
+                TypeProvider.LONG);
         proposalVersionResource = new RestResource1<>(ProposalResource.PROPOSAL_VERSION,
-                ProposalVersionDto.TYPES, serviceNamespace);
+                ProposalVersion.TYPES);
         proposalReferenceResource = new RestResource1<>(ProposalResource.PROPOSAL_REFERENCE,
-                ProposalReferenceDto.TYPES, serviceNamespace);
+                ProposalReference.TYPES);
 
-        contestClient = ContestClient.fromNamespace(serviceNamespace);
-        activitiesClient = ActivitiesClient.fromNamespace(serviceNamespace);
-    }
-
-    public static ProposalClient fromNamespace(ServiceNamespace proposalService) {
-        return instances
-                .computeIfAbsent(proposalService, k -> new ProposalClient(proposalService));
+        contestClient = ContestClientUtil.getClient();
+        activitiesClient = ActivitiesClientUtil.getClient();
     }
 
     public Proposal createProposal(Proposal proposal) {
         return proposalResource
                 .create(new ProposalDto(proposal))
-                .execute().toPojo(serviceNamespace);
+                .execute().toProposal();
     }
 
     public List<Proposal> listProposals(long contestId) {
@@ -91,30 +75,30 @@ public final class ProposalClient {
     }
 
     public List<Proposal> listProposalsInActiveContests() {
-        return DtoUtil.toPojos(proposalResource.list()
+        return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("visible", true)
                 .queryParam("contestPrivate", false)
                 .queryParam("contestActive", true)
                 .withCache(CacheName.PROPOSAL_LIST)
-                .execute(), serviceNamespace);
+                .execute());
     }
 
     public List<Proposal> listProposalsInCompletedContests(List<Integer> ribbons) {
-        return DtoUtil.toPojos(proposalResource.list()
+        return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("visible", true)
                 .queryParam("contestPrivate", false)
                 .queryParam("contestActive", false)
                 .optionalQueryParam("ribbon", ribbons)
                 .withCache(CacheName.PROPOSAL_LIST_CLOSED)
-                .execute(), serviceNamespace);
+                .execute());
     }
 
     public List<Proposal> listProposals(int start, int limit, String filterText, Long contestId,
         List<Long> contestTypeIds, List<Long> contestTierIds, Boolean visible, Long contestPhaseId,
         Integer ribbon) {
-        return DtoUtil.toPojos(proposalResource.list()
+        return ProposalDto.toProposals(proposalResource.list()
                 .addRange(start, limit)
                 .optionalQueryParam("filterText", filterText)
                 .optionalQueryParam("contestIds", contestId)
@@ -123,13 +107,13 @@ public final class ProposalClient {
                 .optionalQueryParam("visible", visible)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("ribbon", ribbon)
-                .execute(), serviceNamespace);
+                .execute());
     }
 
     public List<Proposal> getProposalsInPublicContests(List<Long> contestTypeIds,
             List<Long> contestTierIds, String filterText) {
 
-        return DtoUtil.toPojos(proposalResource.list()
+        return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .optionalQueryParam("filterText", filterText)
                 .optionalQueryParam("contestTypeIds", contestTypeIds)
@@ -137,7 +121,7 @@ public final class ProposalClient {
                 .queryParam("visible", true)
                 .queryParam("contestPrivate", false)
                 .withCache(CacheName.MISC_SHORT)
-                .execute(), serviceNamespace);
+                .execute());
     }
 
     public List<Long> listProposalIds(int start, int limit, Long contestId,
@@ -187,7 +171,7 @@ public final class ProposalClient {
                 .queryParam("userId", userId)
                 .delete();
 
-        ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
+        ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
         activityClient.createActivityEntry(ProposalActivityType.MEMBER_REMOVED, userId, proposalId);
     }
 
@@ -204,13 +188,13 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId, CacheName cacheName) {
-        return DtoUtil.toPojos(proposalResource.list()
+        return ProposalDto.toProposals(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .optionalQueryParam("visible", true)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .withCache(CacheKeys.withClass(ProposalDto.class)
                         .withParameter("contestPhaseId", contestPhaseId).asList(), cacheName)
-                .execute(), serviceNamespace);
+                .execute());
     }
 
     public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId) {
@@ -218,16 +202,16 @@ public final class ProposalClient {
     }
 
     public Proposal createProposal(long authorUserId, long contestPhaseId, boolean publishActivity) {
-        return proposalResource.collectionService("createProposal", ProposalDto.class)
+        return proposalResource.collectionService("createProposal", Proposal.class)
                 .queryParam("authorUserId", authorUserId)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .queryParam("publishActivity", publishActivity)
-                .post().toPojo(serviceNamespace);
+                .post();
     }
 
     public List<Proposal> getContestIntegrationRelevantSubproposals(Long proposalId) {
-        return DtoUtil.toPojos(proposalResource.elementService(proposalId, "contestIntegrationRelevantSubproposal",
-                ProposalDto.TYPES.getTypeReference()).getList(), serviceNamespace);
+        return ProposalDto.toProposals(proposalResource.elementService(proposalId, "contestIntegrationRelevantSubproposal",
+                ProposalDto.TYPES.getTypeReference()).getList());
     }
 
     public List<Proposal> getLinkingProposalsForUser(long userId) {
@@ -240,9 +224,9 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getMemberProposals(Long userId) {
-        return DtoUtil.toPojos(proposalResource.collectionService("getMemberProposals", ProposalDto.TYPES.getTypeReference())
+        return ProposalDto.toProposals(proposalResource.collectionService("getMemberProposals", ProposalDto.TYPES.getTypeReference())
                 .queryParam("userId", userId)
-                .getList(), serviceNamespace);
+                .getList());
     }
 
     public List<Proposal> getLinkingProposals(long proposalId) {
@@ -262,12 +246,12 @@ public final class ProposalClient {
     }
 
     public Proposal getProposalByThreadId(long threadId) {
-        final ProposalDto proposal = proposalResource.list()
+        final ProposalDto proposalDto = proposalResource.list()
                 .queryParam("threadId", threadId)
                 .executeWithResult()
                 .getOneIfExists();
-        if (proposal != null) {
-            return proposal.toPojo(serviceNamespace);
+        if (proposalDto != null) {
+            return proposalDto.toProposal();
         }
         throw new ProposalNotFoundException("No proposal with threadId = " + threadId);
     }
@@ -277,7 +261,7 @@ public final class ProposalClient {
     }
 
     public void invalidateProposalCache(long proposalId) {
-        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalDto.class)
+        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(Proposal.class)
                 .withParameter("proposalId", proposalId)
                 .withParameter("includeDeleted", false).build(), CacheName.MISC_REQUEST);
     }
@@ -291,30 +275,30 @@ public final class ProposalClient {
                                     .withParameter("proposalId", proposalId)
                                     .withParameter("includeDeleted", includeDeleted).build(),
                             CacheName.MISC_REQUEST)
-                    .executeChecked().toPojo(serviceNamespace);
+                    .executeChecked().toProposal();
         } catch (EntityNotFoundException e) {
             throw new ProposalNotFoundException(proposalId);
         }
     }
 
     public List<ProposalReference> getProposalReference(Long proposalId, Long subProposalId) {
-        return DtoUtil.toPojos(proposalReferenceResource.list()
+        return proposalReferenceResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("subProposalId", subProposalId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public List<Proposal> getSubproposals(Long proposalId, Boolean includeProposalsInSameContest) {
-        return DtoUtil.toPojos(proposalResource
+        return ProposalDto.toProposals(proposalResource
                 .elementService(proposalId, "getSubproposals", ProposalDto.TYPES.getTypeReference())
                 .queryParam("includeProposalsInSameContest", includeProposalsInSameContest)
-                .getList(), serviceNamespace);
+                .getList());
     }
 
 
     public List<Proposal> getLinkingProposalsForProposalId(Long proposalId) {
-        return DtoUtil.toPojos(proposalResource.elementService(proposalId, "listProposalLinks", ProposalDto.TYPES.getTypeReference())
-                .getList(), serviceNamespace);
+        return ProposalDto.toProposals(proposalResource.elementService(proposalId, "listProposalLinks", ProposalDto.TYPES.getTypeReference())
+                .getList());
     }
 
     public Integer getProposalMaterializedPoints(Long proposalId) {
@@ -339,10 +323,10 @@ public final class ProposalClient {
 
     public ProposalReference getProposalReferenceByProposalIdSubProposalId(Long proposalId,
             Long subProposalId) {
-        List<ProposalReference> list = DtoUtil.toPojos(proposalReferenceResource.list()
+        List<ProposalReference> list = proposalReferenceResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("subProposalId", subProposalId)
-                .execute(), serviceNamespace);
+                .execute();
         if (list != null && !list.isEmpty()) {
             return list.get(0);
         } else {
@@ -364,19 +348,19 @@ public final class ProposalClient {
     }
 
     public ProposalVersion getProposalVersionByProposalIdVersion(Long proposalId, Integer version) {
-        return proposalVersionResource.collectionService("getByProposalIdVersion", ProposalVersionDto.class)
+        return proposalVersionResource.collectionService("getByProposalIdVersion", ProposalVersion.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("version", version)
                 .get()
-                .toPojo(serviceNamespace);
+                ;
     }
     public List<ProposalVersion> getProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId, int start, int end) {
-        return DtoUtil.toPojos(proposalVersionResource.collectionService("getGroupedVersionsByContest", ProposalVersionDto.TYPES.getTypeReference())
+        return proposalVersionResource.collectionService("getGroupedVersionsByContest", ProposalVersion.TYPES.getTypeReference())
                 .queryParam("proposalId", proposalId)
                 .queryParam("contestId", contestId)
                 .queryParam("start", start)
                 .queryParam("end", end)
-                .getList(), serviceNamespace);
+                .getList();
 
     }
     public Integer getMaxVersion(long proposalId) {
@@ -396,16 +380,16 @@ public final class ProposalClient {
     }
 
     public ProposalVersion getProposalVersionByProposal(Long proposalId) {
-        return proposalVersionResource.collectionService("getByProposalIdVersion", ProposalVersionDto.class)
+        return proposalVersionResource.collectionService("getByProposalIdVersion", ProposalVersion.class)
                 .queryParam("proposalId", proposalId)
                 .get()
-                .toPojo(serviceNamespace);
+                ;
     }
 
     public List<ProposalVersion> getAllProposalVersions(Long proposalId) {
-        return DtoUtil.toPojos(proposalVersionResource.list()
+        return proposalVersionResource.list()
                 .optionalQueryParam("proposalId", proposalId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public ContestType getContestTypeFromProposalId(Long proposalId) {

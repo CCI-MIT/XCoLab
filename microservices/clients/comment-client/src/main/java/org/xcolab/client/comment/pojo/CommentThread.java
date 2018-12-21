@@ -1,6 +1,9 @@
 package org.xcolab.client.comment.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.comment.CategoryClient;
@@ -8,64 +11,45 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.KeyReferenceException;
-import org.xcolab.client.comment.util.CategoryClientUtil;
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.commons.time.DurationFormatter;
+import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-public class CommentThread extends AbstractCommentThread {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class CommentThread extends AbstractCommentThread implements Serializable {
 
-    public static final TypeProvider<CommentThreadDto> TYPES = new TypeProvider<>(CommentThreadDto.class,
-                    new ParameterizedTypeReference<List<CommentThreadDto>>() {});
-
-    private final CommentClient commentClient;
-    private final ThreadClient threadClient;
-    private final CategoryClient categoryClient;
+    public static final TypeProvider<CommentThread> TYPES = new TypeProvider<>(CommentThread.class,
+                    new ParameterizedTypeReference<List<CommentThread>>() {});
 
     public CommentThread() {
-        commentClient = CommentClientUtil.getClient();
-        threadClient = ThreadClientUtil.getClient();
-        categoryClient = CategoryClientUtil.getClient();
     }
 
     public CommentThread(Long threadId, Long categoryId, Long authorUserId, String title,
             Timestamp createdAt, Timestamp deletedAt, Boolean isQuiet) {
         super(threadId, categoryId, authorUserId, title, createdAt, deletedAt, isQuiet);
-        commentClient = CommentClientUtil.getClient();
-        threadClient = ThreadClientUtil.getClient();
-        categoryClient = CategoryClientUtil.getClient();
-    }
-
-    public CommentThread(AbstractCommentThread abstractCommentThread, ServiceNamespace serviceNamespace) {
-        super(abstractCommentThread);
-
-        commentClient = CommentClient.fromService(serviceNamespace);
-        threadClient =  ThreadClient.fromService(serviceNamespace);
-        categoryClient =  CategoryClient.fromService(serviceNamespace);
     }
 
     @JsonIgnore
     public int getCommentsCount() {
-        return commentClient.countComments(getId());
+        return CommentClient.instance().countComments(getId());
     }
 
     @JsonIgnore
     public List<Comment> getComments() {
-        return commentClient.listComments(0, Integer.MAX_VALUE, getId());
+        return CommentClient.instance().listComments(0, Integer.MAX_VALUE, getId());
     }
 
     @JsonIgnore
     public long getLastActivityauthorUserId() {
-        return threadClient.getLastActivityauthorUserId(getId());
+        return ThreadClient.instance().getLastActivityauthorUserId(getId());
     }
 
     @JsonIgnore
@@ -79,7 +63,7 @@ public class CommentThread extends AbstractCommentThread {
 
     @JsonIgnore
     public Date getLastActivityDate() {
-        return threadClient.getLastActivityDate(getId());
+        return ThreadClient.instance().getLastActivityDate(getId());
     }
 
     @JsonIgnore
@@ -101,7 +85,7 @@ public class CommentThread extends AbstractCommentThread {
         final Long categoryId = getCategoryId();
         if (categoryId != null && categoryId > 0) {
             try {
-                return categoryClient.getCategory(categoryId);
+                return CategoryClient.instance().getCategory(categoryId);
             } catch (CategoryNotFoundException ignored) {
                 //throw new KeyReferenceException(e);
             }

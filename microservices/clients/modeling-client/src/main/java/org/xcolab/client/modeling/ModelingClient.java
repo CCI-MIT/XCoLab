@@ -4,25 +4,17 @@ import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
 
 import org.xcolab.client.modeling.pojo.Model;
-import org.xcolab.client.modeling.pojo.ModelCategoryDto;
-import org.xcolab.client.modeling.pojo.ModelDiscussionDto;
+import org.xcolab.client.modeling.pojo.ModelCategory;
+import org.xcolab.client.modeling.pojo.ModelDiscussion;
 import org.xcolab.client.modeling.pojo.ModelGlobalPreference;
-import org.xcolab.client.modeling.pojo.ModelGlobalPreferenceDto;
 import org.xcolab.client.modeling.pojo.ModelInputGroup;
-import org.xcolab.client.modeling.pojo.ModelInputGroupDto;
 import org.xcolab.client.modeling.pojo.ModelInputItem;
-import org.xcolab.client.modeling.pojo.ModelInputItemDto;
 import org.xcolab.client.modeling.pojo.ModelOutputChartOrder;
-import org.xcolab.client.modeling.pojo.ModelOutputChartOrderDto;
 import org.xcolab.client.modeling.pojo.ModelOutputItem;
-import org.xcolab.client.modeling.pojo.ModelOutputItemDto;
 import org.xcolab.client.modeling.pojo.ModelPosition;
-import org.xcolab.client.modeling.pojo.ModelPositionDto;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -32,81 +24,80 @@ import java.util.Map;
 
 public class ModelingClient {
 
-    private final ServiceNamespace namespace;
+    // Default instance when used statically
+    private static final ModelingClient INSTANCE = new ModelingClient();
 
     private final RestResource1<Model, Long> modelResource;
-    private final RestResource1<ModelCategoryDto, Long> modelCategoryResource;
-    private final RestResource1<ModelDiscussionDto, Long> modelDiscussionResource;
-    private final RestResource2L<Model, ModelGlobalPreferenceDto> modelPreferenceResource;
-    private final RestResource1<ModelInputGroupDto, Long> modelInputGroupResource;
-    private final RestResource1<ModelInputItemDto, Long> modelInputItemResource;
-    private final RestResource1<ModelOutputChartOrderDto, Long> modelOutputChartOrderResource;
-    private final RestResource1<ModelOutputItemDto, Long> modelOutputItemResource;
-    private final RestResource1<ModelPositionDto, Long> modelPositionResource;
+    private final RestResource1<ModelCategory, Long> modelCategoryResource;
+    private final RestResource1<ModelDiscussion, Long> modelDiscussionResource;
+    private final RestResource2L<Model, ModelGlobalPreference> modelPreferenceResource;
+    private final RestResource1<ModelInputGroup, Long> modelInputGroupResource;
+    private final RestResource1<ModelInputItem, Long> modelInputItemResource;
+    private final RestResource1<ModelOutputChartOrder, Long> modelOutputChartOrderResource;
+    private final RestResource1<ModelOutputItem, Long> modelOutputItemResource;
+    private final RestResource1<ModelPosition, Long> modelPositionResource;
 
-    private ModelingClient(ServiceNamespace namespace) {
-        this.namespace = namespace;
-
-        modelResource = new RestResource1<>(ModelingResource.MODELS, Model.TYPES, namespace);
+    public ModelingClient() {
+        modelResource = new RestResource1<>(ModelingResource.MODELS, Model.TYPES);
         modelPreferenceResource = new RestResource2L<>(modelResource, "preferences",
-                ModelGlobalPreferenceDto.TYPES);
+                ModelGlobalPreference.TYPES);
 
         modelCategoryResource = new RestResource1<>(ModelingResource.MODEL_CATEGORIES,
-                ModelCategoryDto.TYPES, namespace);
+                ModelCategory.TYPES);
         modelDiscussionResource = new RestResource1<>(ModelingResource.MODEL_DISCUSSIONS,
-                ModelDiscussionDto.TYPES, namespace);
+                ModelDiscussion.TYPES);
         modelInputGroupResource = new RestResource1<>(ModelingResource.MODEL_INPUT_GROUPS,
-                ModelInputGroupDto.TYPES, namespace);
+                ModelInputGroup.TYPES);
         modelInputItemResource = new RestResource1<>(ModelingResource.MODEL_INPUT_ITEMS,
-                ModelInputItemDto.TYPES, namespace);
+                ModelInputItem.TYPES);
         modelOutputChartOrderResource =
                 new RestResource1<>(ModelingResource.MODEL_OUTPUT_CHART_ORDERS,
-                        ModelOutputChartOrderDto.TYPES, namespace);
+                        ModelOutputChartOrder.TYPES);
         modelOutputItemResource = new RestResource1<>(ModelingResource.MODEL_OUTPUT_ITEMS,
-                ModelOutputItemDto.TYPES, namespace);
+                ModelOutputItem.TYPES);
         modelPositionResource = new RestResource1<>(ModelingResource.MODEL_POSITIONS,
-                ModelPositionDto.TYPES, namespace);
+                ModelPosition.TYPES);
     }
 
-    public static ModelingClient fromNamespace(ServiceNamespace namespace) {
-        return new ModelingClient(namespace);
+    public static ModelingClient instance() {
+        return INSTANCE;
     }
 
     public ModelGlobalPreference getModelPreference(long modelId) {
         return modelPreferenceResource.resolveParentId(modelResource.id(modelId))
                 .list()
                 .executeWithResult()
-                .getOneIfExists().toPojo(namespace);
+                .getOneIfExists();
     }
 
     public boolean updateModelPreference(ModelGlobalPreference pojo) {
         return modelPreferenceResource.resolveParentId(modelResource.id(pojo.getModelId()))
-                .update(new ModelGlobalPreferenceDto(pojo), pojo.getModelId())
+                .update(new ModelGlobalPreference(pojo), pojo.getModelId())
                 .execute();
     }
 
     public List<ModelInputGroup> getInputGroups(Simulation sim) {
-        return DtoUtil.toPojos(modelInputGroupResource.list()
+        return modelInputGroupResource.list()
                 .queryParam("modelId", sim.getId())
-                .execute(), namespace);
+                .execute();
     }
 
     public List<ModelInputGroup> getChildGroups(ModelInputGroup group) {
-        return DtoUtil.toPojos(modelInputGroupResource.list()
+        return modelInputGroupResource.list()
                 .queryParam("parentGroupPk", group.getId())
-                .execute(), namespace);
+                .execute();
     }
 
     public List<ModelInputItem> getInputItems(ModelInputGroup group) {
-        return DtoUtil.toPojos(modelInputItemResource.list()
+        return modelInputItemResource.list()
                 .queryParam("modelInputGroupPk", group.getId())
-                .execute(), namespace);
+                .execute();
     }
 
     public ModelInputGroup getParentGroup(ModelInputGroup group) {
         final Long parentGroupPK = group.getParentGroupId();
         return modelInputGroupResource.get(parentGroupPK)
-                .execute().toPojo(namespace);
+                .execute();
     }
 
     public Simulation getModel(ModelInputGroup group) throws IOException {
@@ -121,18 +112,18 @@ public class ModelingClient {
     }
 
     public ModelInputGroup createModelInputGroup(ModelInputGroup group) {
-        return modelInputGroupResource.create(new ModelInputGroupDto(group))
-                .execute().toPojo(namespace);
+        return modelInputGroupResource.create(new ModelInputGroup(group))
+                .execute();
     }
 
     public void updateModelInputGroup(ModelInputGroup group) {
-        modelInputGroupResource.update(new ModelInputGroupDto(group), group.getId())
+        modelInputGroupResource.update(new ModelInputGroup(group), group.getId())
                 .execute();
     }
 
     public ModelInputGroup getModelInputGroup(Long groupId) {
         return modelInputGroupResource.get(groupId)
-                .execute().toPojo(namespace);
+                .execute();
     }
 
     public void deleteModelInputGroup(Long modelInputGroupPK) {
@@ -141,9 +132,9 @@ public class ModelingClient {
     }
 
     public List<ModelInputItem> getItemsForModel(Simulation sim) {
-        return DtoUtil.toPojos(modelInputItemResource.list()
+        return modelInputItemResource.list()
                 .queryParam("modelId", sim.getId())
-                .execute(), namespace);
+                .execute();
     }
 
     public ModelInputItem getItemForMetaData(Long modelId, MetaData md) {
@@ -151,15 +142,15 @@ public class ModelingClient {
                 .queryParam("modelId", modelId)
                 .queryParam("modelInputId", md.getId())
                 .executeWithResult()
-                .getOneIfExists().toPojo(namespace);
+                .getOneIfExists();
     }
 
 
 
     public List<ModelInputItem> getItemForGroupId(Long groupid) {
-        return DtoUtil.toPojos(modelInputItemResource.list()
+        return modelInputItemResource.list()
                 .queryParam("modelInputGroupPk", groupid)
-                .execute(), namespace);
+                .execute();
     }
 
     public MetaData getMetaData(ModelInputItem item) throws IOException {
@@ -205,9 +196,9 @@ public class ModelingClient {
 
     public void store(ModelInputItem item) {
         if (item.getId() == null) {
-            modelInputItemResource.create(new ModelInputItemDto(item));
+            modelInputItemResource.create(new ModelInputItem(item));
         } else {
-            modelInputItemResource.update(new ModelInputItemDto(item), item.getId());
+            modelInputItemResource.update(new ModelInputItem(item), item.getId());
         }
     }
 
@@ -217,13 +208,13 @@ public class ModelingClient {
     }
 
     public void updateModelInputItem(ModelInputItem item) {
-        modelInputItemResource.update(new ModelInputItemDto(item), item.getId())
+        modelInputItemResource.update(new ModelInputItem(item), item.getId())
                 .execute();
     }
 
     public ModelInputItem createModelInputItem(ModelInputItem item) {
-        return modelInputItemResource.create(new ModelInputItemDto(item))
-                .execute().toPojo(namespace);
+        return modelInputItemResource.create(new ModelInputItem(item))
+                .execute();
     }
 
     public ModelOutputChartOrder getModelOutputChartOrder(Simulation sim, String label) {
@@ -231,17 +222,17 @@ public class ModelingClient {
                 .queryParam("modelId", sim.getId())
                 .queryParam("label", label)
                 .executeWithResult()
-                .getFirstIfExists().toPojo(namespace);
+                .getFirstIfExists();
     }
 
     public ModelOutputChartOrder createModelOutputChartOrder(ModelOutputChartOrder pojo) {
-        return modelOutputChartOrderResource.create(new ModelOutputChartOrderDto(pojo))
-                .execute().toPojo(namespace);
+        return modelOutputChartOrderResource.create(new ModelOutputChartOrder(pojo))
+                .execute();
     }
 
     public void updateModelOutputChartOrder(ModelOutputChartOrder pojo) {
         modelOutputChartOrderResource
-                .update(new ModelOutputChartOrderDto(pojo), pojo.getId())
+                .update(new ModelOutputChartOrder(pojo), pojo.getId())
                 .execute();
     }
 
@@ -252,13 +243,13 @@ public class ModelingClient {
     }
 
     public ModelOutputItem createModelOutputItem(ModelOutputItem pojo) {
-        return modelOutputItemResource.create(new ModelOutputItemDto(pojo))
-                .execute().toPojo(namespace);
+        return modelOutputItemResource.create(new ModelOutputItem(pojo))
+                .execute();
     }
 
     public void updateModelOutputItem(ModelOutputItem pojo) {
         modelOutputItemResource
-                .update(new ModelOutputItemDto(pojo), pojo.getModelOutputItemId())
+                .update(new ModelOutputItem(pojo), pojo.getModelOutputItemId())
                 .execute();
     }
 
@@ -270,17 +261,17 @@ public class ModelingClient {
 
     public ModelOutputItem getOutputItem(MetaData md) {
         return modelOutputItemResource.get(md.getId())
-                .execute().toPojo(namespace);
+                .execute();
     }
 
     public ModelPosition createModelPosition(ModelPosition pojo) {
-        return modelPositionResource.create(new ModelPositionDto(pojo))
-                .execute().toPojo(namespace);
+        return modelPositionResource.create(new ModelPosition(pojo))
+                .execute();
     }
 
     public void updateModelPosition(ModelPosition pojo) {
         modelPositionResource
-                .update(new ModelPositionDto(pojo), pojo.getPositionId())
+                .update(new ModelPosition(pojo), pojo.getPositionId())
                 .execute();
     }
 
@@ -291,9 +282,9 @@ public class ModelingClient {
     }
 
     public List<ModelPosition> getModelPositionsByModelId(Long modelId) {
-        return DtoUtil.toPojos(modelPositionResource.list()
+        return modelPositionResource.list()
                 .queryParam("modelId", modelId)
-                .execute(), namespace);
+                .execute();
     }
 
     public void setModelPositions(Long modelId, List<Long> positionIds) {

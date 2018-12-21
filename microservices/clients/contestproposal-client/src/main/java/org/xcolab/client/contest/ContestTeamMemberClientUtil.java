@@ -2,15 +2,13 @@ package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 import java.util.Map;
 
 public final class ContestTeamMemberClientUtil {
 
-    private static final ContestTeamMemberClient client =
-            ContestTeamMemberClient.fromService(ServiceNamespace.instance());
+    private static final ContestTeamMemberClient client = new ContestTeamMemberClient();
 
     private ContestTeamMemberClientUtil() {
     }

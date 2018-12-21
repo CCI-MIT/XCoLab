@@ -1,9 +1,22 @@
 package org.xcolab.client.contest.pojo.phases;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
-public class ContestPhaseRibbonType extends AbstractContestPhaseRibbonType {
+import java.io.Serializable;
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ContestPhaseRibbonType extends AbstractContestPhaseRibbonType implements Serializable {
+
+    public static final TypeProvider<ContestPhaseRibbonType> TYPES =
+            new TypeProvider<>(ContestPhaseRibbonType.class,
+                    new ParameterizedTypeReference<List<ContestPhaseRibbonType>>() {});
 
     public ContestPhaseRibbonType() {}
 
@@ -11,8 +24,7 @@ public class ContestPhaseRibbonType extends AbstractContestPhaseRibbonType {
         super(value);
     }
 
-    public ContestPhaseRibbonType(AbstractContestPhaseRibbonType abstractContestPhaseRibbonType,
-            ServiceNamespace serviceNamespace) {
+    public ContestPhaseRibbonType(AbstractContestPhaseRibbonType abstractContestPhaseRibbonType) {
         super(abstractContestPhaseRibbonType);
     }
 }

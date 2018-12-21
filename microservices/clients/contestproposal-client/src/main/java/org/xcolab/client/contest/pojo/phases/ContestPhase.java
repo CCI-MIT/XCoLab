@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo.phases;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -13,8 +17,9 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.commons.time.DurationFormatter;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Calendar;
@@ -22,13 +27,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class ContestPhase extends AbstractContestPhase {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ContestPhase extends AbstractContestPhase implements Serializable {
+
+    public static final TypeProvider<ContestPhase> TYPES = new TypeProvider<>(ContestPhase.class,
+            new ParameterizedTypeReference<List<ContestPhase>>() {});
 
     public static final long SCHEDULE_TEMPLATE_PHASE_CONTEST_ID = 0L;
 
     private final ContestClient contestClient;
-
-    private ServiceNamespace serviceNamespace;
 
     protected ContestStatus status;
 
@@ -41,9 +49,9 @@ public class ContestPhase extends AbstractContestPhase {
         contestClient = value.contestClient;
     }
 
-    public ContestPhase(AbstractContestPhase abstractContestPhase, ServiceNamespace serviceNamespace) {
+    public ContestPhase(AbstractContestPhase abstractContestPhase) {
         super(abstractContestPhase);
-        contestClient = ContestClient.fromNamespace(serviceNamespace);
+        contestClient = ContestClientUtil.getClient();
     }
 
     public static ContestPhase clone(ContestPhase originalPhase) {
@@ -179,12 +187,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public Boolean getProposalVisibility(long proposalId) {
-        ProposalPhaseClient proposalPhaseClient;
-        if (serviceNamespace != null) {
-            proposalPhaseClient = ProposalPhaseClient.fromNamespace(serviceNamespace);
-        } else {
-            proposalPhaseClient = ProposalPhaseClientUtil.getClient();
-        }
+        ProposalPhaseClient proposalPhaseClient = ProposalPhaseClientUtil.getClient();
         ProposalContestPhaseAttribute attr = proposalPhaseClient
                 .getProposalContestPhaseAttribute(proposalId, this.getId(),
                         ProposalContestPhaseAttributeKeys.VISIBLE);
@@ -193,7 +196,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public boolean setProposalVisibility(long proposalId, boolean visible) {
-        ProposalPhaseClient.fromNamespace(serviceNamespace)
+        ProposalPhaseClientUtil.getClient()
                 .setProposalContestPhaseAttribute(proposalId, this.getId(),
                         ProposalContestPhaseAttributeKeys.VISIBLE, 0L, visible ? 1L : 0L, "");
         return true;

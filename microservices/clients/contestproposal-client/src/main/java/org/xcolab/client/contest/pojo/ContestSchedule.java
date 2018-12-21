@@ -1,11 +1,23 @@
 package org.xcolab.client.contest.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
+import java.util.List;
 
-public class ContestSchedule extends AbstractContestSchedule {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ContestSchedule extends AbstractContestSchedule implements Serializable {
+
+    public static final TypeProvider<ContestSchedule> TYPES = new TypeProvider<>(
+            ContestSchedule.class, new ParameterizedTypeReference<List<ContestSchedule>>() {});
 
     private final ContestClient contestClient;
 
@@ -24,10 +36,9 @@ public class ContestSchedule extends AbstractContestSchedule {
         contestClient = ContestClientUtil.getClient();
     }
 
-    public ContestSchedule(AbstractContestSchedule abstractContestSchedule,
-            ServiceNamespace serviceNamespace) {
+    public ContestSchedule(AbstractContestSchedule abstractContestSchedule) {
         super(abstractContestSchedule);
-        this.contestClient = ContestClient.fromNamespace(serviceNamespace);
+        this.contestClient = ContestClientUtil.getClient();
     }
 
     public boolean isUsedInNonEmptyContest() {

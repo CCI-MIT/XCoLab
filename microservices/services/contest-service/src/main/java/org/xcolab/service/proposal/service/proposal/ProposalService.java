@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -130,7 +130,7 @@ public class ProposalService {
         commentThread.setCategoryId(null);
         commentThread.setTitle(title);
         commentThread.setIsQuiet(isQuiet);
-        commentThread = ThreadClientUtil.createThread(commentThread);
+        commentThread = ThreadClient.instance().createThread(commentThread);
         return commentThread;
     }
 

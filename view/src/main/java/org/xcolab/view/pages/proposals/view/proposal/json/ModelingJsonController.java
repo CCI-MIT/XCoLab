@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.modeling.ModelingClientUtil;
+import org.xcolab.client.modeling.ModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -109,7 +109,7 @@ public class ModelingJsonController {
 
         JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 
-        ModelGlobalPreference modelPreference = ModelingClientUtil
+        ModelGlobalPreference modelPreference = ModelingClient.instance()
                 .getModelPreference(scenario.getSimulation().getId());
         ModelDisplay display = ModelUIFactory.getInstance().getDisplay(scenario);
 
@@ -143,7 +143,7 @@ public class ModelingJsonController {
 
     private JsonObject convertModel(Simulation simulation)
             throws IllegalUIConfigurationException, IOException {
-        ModelGlobalPreference modelPreference = ModelingClientUtil.getModelPreference(simulation.getId());
+        ModelGlobalPreference modelPreference = ModelingClient.instance().getModelPreference(simulation.getId());
         ModelDisplay display = ModelUIFactory.getInstance().getDisplay(simulation);
         JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 
