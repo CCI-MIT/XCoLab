@@ -1,5 +1,6 @@
 package org.xcolab.client.content.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.client.content.pojo.tables.pojos.ContentArticleVersion;
@@ -41,6 +42,7 @@ public interface IContentArticleVersion {
 
     void setLang(String lang);
 
+    @JsonIgnore
     default String getLinkUrl() {
         return "/wiki/" + getTitle().replace(" ", "+");
     }

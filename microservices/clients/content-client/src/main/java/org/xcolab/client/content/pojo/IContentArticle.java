@@ -1,5 +1,6 @@
 package org.xcolab.client.content.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.client.content.pojo.tables.pojos.ContentArticle;
@@ -43,6 +44,7 @@ public interface IContentArticle {
 
     void setVisible(Boolean visible);
 
+    @JsonIgnore
     default boolean canView(Member member) {
         return getViewRoleGroupId() == null || (member != null && PermissionsClient
                 .hasRoleGroup(member.getId(), getViewRoleGroupId()));

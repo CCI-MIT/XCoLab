@@ -1,5 +1,6 @@
 package org.xcolab.client.content.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.apache.commons.text.WordUtils;
 
@@ -38,6 +39,7 @@ public interface IContentPage {
 
     void setUpdatedAt(Timestamp updatedAt);
 
+    @JsonIgnore
     default String getFormattedTitle() {
         return WordUtils.capitalize(getTitle().replace('-', ' '));
     }

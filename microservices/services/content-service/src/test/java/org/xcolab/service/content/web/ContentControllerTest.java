@@ -1,6 +1,7 @@
 package org.xcolab.service.content.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,12 +85,12 @@ public class ContentControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         Mockito.when(contentArticleDao.get(anyLong()))
-                .thenAnswer(invocation -> new ContentArticleImpl());
+                .thenAnswer(invocation -> Mockito.mock(IContentArticle.class));
         Mockito.when(contentFolderDao.get(anyLong()))
-                .thenAnswer(invocation -> new ContentArticleImpl());
+                .thenAnswer(invocation -> Mockito.mock(IContentFolder.class));
 
         Mockito.when(contentPageDao.get(anyLong()))
-                .thenAnswer(invocation -> Optional.of(new ContentArticleImpl()));
+                .thenAnswer(invocation -> Optional.of(Mockito.mock(IContentPage.class)));
     }
 
     @Test
@@ -102,7 +103,7 @@ public class ContentControllerTest {
                         .content(objectMapper.writeValueAsString(contentArticle)))
                 .andExpect(status().isOk());
 
-        Mockito.verify(contentArticleDao,Mockito.times(1)).create(Mockito.any(ContentArticle.class));
+        Mockito.verify(contentArticleDao,Mockito.times(1)).create(Mockito.any(IContentArticle.class));
     }
 
     @Test
@@ -149,14 +150,10 @@ public class ContentControllerTest {
     public void shouldGetContentFolderVersions() throws Exception {
         this.mockMvc.perform(
                 get("/contentFolders")
-                        .param("startRecord","1")
-                        .param("limitRecord","2")
-                        .param("parentFolderId","1")
-                        .param("sort","")
                         .contentType(contentType).accept(contentType))
                 .andExpect(status().isOk());
 
-        Mockito.verify(contentFolderDao,Mockito.times(1)).findByGiven(Mockito.anyObject(),Mockito.anyLong());
+        Mockito.verify(contentFolderDao, Mockito.times(1)).findByGiven(Mockito.anyObject(), isNull());
     }
 
     @Test
@@ -186,7 +183,7 @@ public class ContentControllerTest {
         contentArticle.setId(12L);
         contentArticle.setFolderId(12L);
         this.mockMvc.perform(
-                put("/contentArticles/1")
+                put("/contentArticles")
                         .contentType(contentType).accept(contentType)
                 .content(objectMapper.writeValueAsString(contentArticle)))
                 .andExpect(status().isOk());
@@ -300,7 +297,7 @@ public class ContentControllerTest {
         IContentPage cp = new ContentPageImpl();
         cp.setId(1L);
         this.mockMvc.perform(
-                put("/contentPages/1")
+                put("/contentPages")
                         .content(objectMapper.writeValueAsString(cp))
                         .contentType(contentType).accept(contentType))
                 .andExpect(status().isOk());

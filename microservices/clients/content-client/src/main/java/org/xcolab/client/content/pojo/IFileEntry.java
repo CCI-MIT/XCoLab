@@ -1,5 +1,6 @@
 package org.xcolab.client.content.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
@@ -29,6 +30,7 @@ public interface IFileEntry {
 
     void setFileSize(Integer fileSize);
 
+    @JsonIgnore
     default String getLinkUrl() {
         return "/image?img_id=" + getId();
     }
