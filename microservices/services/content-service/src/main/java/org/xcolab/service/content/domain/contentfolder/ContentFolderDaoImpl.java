@@ -1,4 +1,4 @@
-package org.xcolab.service.content.domain.contentFolder;
+package org.xcolab.service.content.domain.contentfolder;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;

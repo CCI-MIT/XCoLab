@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.model.tables.pojos.ContentFolderImpl;
-import org.xcolab.service.content.domain.contentFolder.ContentFolderDao;
 import org.xcolab.service.utils.PaginationHelper;
 
 import static org.junit.Assert.assertEquals;

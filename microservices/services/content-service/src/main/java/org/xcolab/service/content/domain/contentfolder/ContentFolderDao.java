@@ -1,4 +1,4 @@
-package org.xcolab.service.content.domain.contentFolder;
+package org.xcolab.service.content.domain.contentfolder;
 
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.service.utils.PaginationHelper;

@@ -17,7 +17,7 @@ import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.client.content.pojo.IContentPage;
 import org.xcolab.model.tables.pojos.ContentArticleImpl;
-import org.xcolab.service.content.domain.contentFolder.ContentFolderDao;
+import org.xcolab.service.content.domain.contentfolder.ContentFolderDao;
 import org.xcolab.service.content.domain.contentarticle.ContentArticleDao;
 import org.xcolab.service.content.domain.contentarticleversion.ContentArticleVersionDao;
 import org.xcolab.service.content.domain.page.ContentPageDao;
@@ -50,7 +50,7 @@ public class ContentController implements IContentClient {
     @Override
     @PostMapping("/contentArticles")
     public IContentArticle createContentArticle(@RequestBody IContentArticle contentArticle) {
-        java.util.Date date = new java.util.Date();
+        Date date = new Date();
         contentArticle.setCreatedAt(new Timestamp(date.getTime()));
 
         //TODO: is this still relevant?

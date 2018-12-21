@@ -12,7 +12,7 @@ import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.records.ContentArticleVersionRecord;
-import org.xcolab.service.content.domain.contentFolder.ContentFolderDao;
+import org.xcolab.service.content.domain.contentfolder.ContentFolderDao;
 import org.xcolab.service.content.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 

@@ -24,7 +24,7 @@ import org.xcolab.client.content.pojo.IContentPage;
 import org.xcolab.model.tables.pojos.ContentArticleImpl;
 import org.xcolab.model.tables.pojos.ContentFolderImpl;
 import org.xcolab.model.tables.pojos.ContentPageImpl;
-import org.xcolab.service.content.domain.contentFolder.ContentFolderDao;
+import org.xcolab.service.content.domain.contentfolder.ContentFolderDao;
 import org.xcolab.service.content.domain.contentarticle.ContentArticleDao;
 import org.xcolab.service.content.domain.contentarticleversion.ContentArticleVersionDao;
 import org.xcolab.service.content.domain.page.ContentPageDao;
