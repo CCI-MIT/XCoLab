@@ -155,7 +155,7 @@ public class MembersController {
             final JSONObject jsonMember = new JSONObject();
             if (member != null) {
                 /*jsonMember.put("userId", member.getId());
-                jsonMember.put("screenName", member.getScreenName());
+                jsonMember.put("screenName", member.getDisplayName());
 
                 jsonMember.put("firstName", member.getFirstName());
                 jsonMember.put("lastName", member.getLastName());*/

@@ -15,16 +15,11 @@ public final class MemberAuthUtil {
     }
 
     public static long getuserId(HttpServletRequest request) {
-        final Member memberOrNull = authenticationContext.getMemberOrNull(request);
+        final Member memberOrNull = authenticationContext.getMemberOrNull();
         if (memberOrNull == null) {
             return 0L;
         }
         return memberOrNull.getId();
-    }
-
-    public static Member getMemberOrThrow(HttpServletRequest request)
-            throws UncheckedMemberNotFoundException {
-        return authenticationContext.getMemberOrThrow(request);
     }
 
     public static Member getMemberOrNull(HttpServletRequest request) {

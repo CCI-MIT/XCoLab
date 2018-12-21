@@ -231,11 +231,9 @@
                 <div class="c-TitleBar__element pl-0">
                     Impersonating member ${_themeContext.authenticationVariables.member.screenName} (Logged in as ${_themeContext.authenticationVariables.realMember.screenName})
                 </div>
-
-                <button type="button" class="c-TitleBar__actionButton js-EnhancedLink"
-                        data-method="post" data-url="/impersonate/logout">
-                    Stop impersonating
-                </button>
+                <form method="GET" action="/impersonate/logout" class="form">
+                    <input type="submit" value="Stop impersonating" class="c-TitleBar__actionButton js-EnhancedLink" />
+                </form>
             </div>
         </div>
     </c:if>

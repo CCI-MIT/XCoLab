@@ -119,7 +119,7 @@ public class ProposalContextImpl implements ProposalContext {
     //            String userAgent) {
     //        String userScreenName = "(not logged in)";
     //        if (Validator.isNotNull(currentUser)) {
-    //            userScreenName = currentUser.getScreenName();
+    //            userScreenName = currentUser.getDisplayName();
     //        }
 
     //        String emailMessage =

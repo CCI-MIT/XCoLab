@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
@@ -66,7 +67,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
                 .antMatchers("/admin/management/**").hasRole("ADMIN")
-                .antMatchers("/oauth/authorize").authenticated();
+                .antMatchers("/oauth/authorize").authenticated()
+                .antMatchers("/impersonate").hasAnyRole("ADMIN", "ROLE_PREVIOUS_ADMINISTRATOR");
 
         final GuestAccess guestAccessProperties = webProperties.getGuestAccess();
 
@@ -163,5 +165,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             log.warn("No SessionRepositoryFilter found - defaulting to regular session.");
             return null;
         }
+    }
+
+    @Bean
+    public SwitchUserFilter switchUserFilter() {
+        SwitchUserFilter filter = new SwitchUserFilter();
+        filter.setUserDetailsService(memberDetailsService);
+        filter.setSwitchUserUrl("/impersonate");
+        filter.setExitUserUrl("/impersonate/logout");
+        filter.setTargetUrl("/");
+        return filter;
     }
 }
