@@ -25,7 +25,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 
@@ -57,7 +57,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableConfigurationProperties(
         {WebProperties.class, TomcatProperties.class})
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig implements WebMvcConfigurer {
 
     private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
 
@@ -207,7 +207,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new MemberArgumentResolver(new AuthenticationContext()));
         argumentResolvers.add(new ProposalContextArgumentResolver(localeResolver));
-        super.addArgumentResolvers(argumentResolvers);
     }
 
     @Override
