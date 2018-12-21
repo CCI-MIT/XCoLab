@@ -8,9 +8,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 public class FlaggingServiceApplication {
 
-    private FlaggingServiceApplication() {
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(FlaggingServiceApplication.class, args);
     }
