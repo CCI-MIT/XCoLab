@@ -5,11 +5,10 @@ import org.apache.catalina.webresources.StandardRoot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +25,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 
@@ -37,7 +36,6 @@ import org.xcolab.view.auth.tracking.UserTrackingService;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.spring.converters.CaseInsensitiveStringToEnumConverterFactory;
 import org.xcolab.view.config.spring.filters.CdnUrlEncodingFilter;
-import org.xcolab.view.config.spring.properties.ServerProperties;
 import org.xcolab.view.config.spring.properties.TomcatProperties;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.spring.properties.WebProperties.CacheSettings;
@@ -58,8 +56,8 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableConfigurationProperties(
-        {WebProperties.class, TomcatProperties.class, ServerProperties.class})
-public class WebConfig extends WebMvcConfigurerAdapter {
+        {WebProperties.class, TomcatProperties.class})
+public class WebConfig implements WebMvcConfigurer {
 
     private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
 
@@ -67,7 +65,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     // Configuration properties
     private final TomcatProperties tomcatProperties;
-    private final ServerProperties serverProperties;
     private final WebProperties webProperties;
 
     // Interceptors
@@ -82,13 +79,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public WebConfig(ThemeVariableInterceptor themeVariableInterceptor,
             PopulateProposalModelInterceptor populateContextInterceptor,
             ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
-            TomcatProperties tomcatProperties, ServerProperties serverProperties,
+            TomcatProperties tomcatProperties,
             WebProperties webProperties, LocaleResolver localeResolver) {
         Assert.notNull(tomcatProperties, "TomcatProperties bean is required");
-        Assert.notNull(serverProperties, "ServerProperties bean is required");
         Assert.notNull(webProperties, "webProperties bean is required");
         this.tomcatProperties = tomcatProperties;
-        this.serverProperties = serverProperties;
         this.webProperties = webProperties;
 
         Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
@@ -170,24 +165,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public EmbeddedServletContainerCustomizer customizer() {
-        return container -> {
-            if (serverProperties.isUseForwardHeaders()) {
-                if (container instanceof TomcatEmbeddedServletContainerFactory) {
-                    ((TomcatEmbeddedServletContainerFactory) container)
-                            .addContextValves(new ForwardedHostValve());
-                } else {
-                    log.warn("Non-tomcat servlet container "
-                            + "- X-Forwarded-Host header not initialized.");
-                }
-            }
-        };
-    }
+    public ServletWebServerFactory servletContainer() {
 
-    @Bean
-    public EmbeddedServletContainerFactory servletContainer() {
-
-        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
             @Override
             protected void postProcessContext(Context context) {
 
@@ -212,6 +192,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             log.info("Configured AJP connector on port {}", tomcatProperties.getAjp().getPort());
         }
 
+        tomcat.addContextValves(new ForwardedHostValve());
         return tomcat;
     }
 
@@ -226,7 +207,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new MemberArgumentResolver(new AuthenticationContext()));
         argumentResolvers.add(new ProposalContextArgumentResolver(localeResolver));
-        super.addArgumentResolvers(argumentResolvers);
     }
 
     @Override

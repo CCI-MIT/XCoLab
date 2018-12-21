@@ -8,7 +8,7 @@
     <jsp:directive.include file="header.jspx"/>
 	
 	<h1>Input widgets</h1>
-	<form:form commandName="updateWidgetsBean" action="/admin/modeling/model/${model.id}/updateOutputs">
+	<form:form modelAttribute="updateWidgetsBean" action="/admin/modeling/model/${model.id}/updateOutputs">
 		
 		<table class='table table-striped'>
 			<tr>

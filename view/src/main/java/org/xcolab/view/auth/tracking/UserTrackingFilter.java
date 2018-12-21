@@ -71,11 +71,15 @@ public class UserTrackingFilter extends OncePerRequestFilter {
             // that is being generated
             try {
                 final TrackedVisit trackedVisit = trackedVisitFuture.get();
-                setSentryUser(trackedVisit.getVisitorUuid());
-                userTrackingCookie =  new Cookie(COOKIE_NAME, trackedVisit.getVisitorUuid());
-                userTrackingCookie.setHttpOnly(true);
-                userTrackingCookie.setMaxAge((int) COOKIE_MAX_AGE);
-                response.addCookie(userTrackingCookie);
+                if (trackedVisit != null) {
+                    setSentryUser(trackedVisit.getVisitorUuid());
+                    userTrackingCookie = new Cookie(COOKIE_NAME, trackedVisit.getVisitorUuid());
+                    userTrackingCookie.setHttpOnly(true);
+                    userTrackingCookie.setMaxAge((int) COOKIE_MAX_AGE);
+                    response.addCookie(userTrackingCookie);
+                } else {
+                    log.warn("Tracked visit could not be created");
+                }
             } catch (InterruptedException | ExecutionException e) {
                 log.error("Error while retrieving new TrackedVisit: ", e);
             }

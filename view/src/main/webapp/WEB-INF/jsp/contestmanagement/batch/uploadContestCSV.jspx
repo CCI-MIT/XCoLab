@@ -25,7 +25,7 @@
 
         <h2>Contest data</h2>
 
-        <form:form action="${createBatchContestsURL }" commandName="contestBatchBean" cssClass="addpropform"
+        <form:form action="${createBatchContestsURL }" modelAttribute="contestBatchBean" cssClass="addpropform"
                    id="batchForm" method="post">
             <form:errors cssClass="alert alert-error" path="*"/>
 

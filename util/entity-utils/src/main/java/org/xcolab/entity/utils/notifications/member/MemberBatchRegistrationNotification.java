@@ -74,7 +74,7 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
                 case LOGIN_LINK_EXPIRATION_PLACEHOLDER:
                     final String expirationDate = DATE_TIME_FORMATTER
                             .format(loginToken.getTokenExpirationDate());
-                    return new TextNode(expirationDate, "");
+                    return new TextNode(expirationDate);
                 default:
             }
             return null;

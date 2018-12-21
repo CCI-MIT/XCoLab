@@ -68,7 +68,7 @@
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeRequestMembershipButton}">
                                     <form:form id="requestMembershipForm" action="${proposal.proposalUrl}/tab/TEAM/requestMembership"
-                                               method="post" commandName="requestMembershipBean">
+                                               method="post" modelAttribute="requestMembershipBean">
                                         <form:textarea id="requestComment" cssClass="form-control form-control-sm"
                                                        path="requestComment" placeholder="Optional comment"/>
                                         <form:errors cssClass="invalid-feedback" path="requestComment"/>
@@ -77,7 +77,7 @@
                                 </c:when>
                                 <c:when test="${proposalsPermissions.isTeamMember}">
                                     <form:form id="requestInviteForm" action="${proposal.proposalUrl}/tab/TEAM/inviteMember"
-                                               method="post" commandName="requestMembershipInviteBean">
+                                               method="post" modelAttribute="requestMembershipInviteBean">
                                         <form:input id="invite-recipient" cssClass="form-control form-control-sm"
                                                     path="inviteRecipient" placeholder="Screen or last name"/>
                                         <form:errors cssClass="invalid-feedback" path="inviteRecipient"/>

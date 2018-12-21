@@ -46,7 +46,7 @@
                 <spring:message code="subscription.activities.subscribedactivities.count"/>
             </div>
 
-            <form:form commandName="userSubscriptions" id="removeSubscriptionsForm" method="post"
+            <form:form modelAttribute="userSubscriptions" id="removeSubscriptionsForm" method="post"
                        action="${removeSubscriptionURL}">
                 <table id="activitiesTable" class="colab mt-0">
                     <tr>

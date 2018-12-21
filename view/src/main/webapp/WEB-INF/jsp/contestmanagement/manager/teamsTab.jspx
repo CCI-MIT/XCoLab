@@ -26,7 +26,7 @@
         <form:errors cssClass="alert alert-danger" element="div" path="*"/>
 
         <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
-        <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
+        <form:form action="${changeElementUrl}" modelAttribute="elementSelectIdWrapper" id="selectForm"
                    method="post">
             <div class="c-Box c-Box--colorTan">
                 <div class="c-Box__body">
@@ -43,7 +43,7 @@
         <c:if test="${teamId != -1}">
             <!--@elvariable id="teamBean" type="org.xcolab.view.pages.contestmanagement.wrappers.PlatformTeamBean"-->
             <form:form action="${updateTeamUrl}?elementId=${teamBean.teamId}"
-                       commandName="teamBean" id="editForm" method="post" class="mt-3">
+                       modelAttribute="teamBean" id="editForm" method="post" class="mt-3">
                 <input type="hidden" name="action" value="UPDATE" />
                 <form:hidden path="teamId"/>
 

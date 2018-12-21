@@ -66,11 +66,11 @@ public class MemberForgotPasswordNotification extends MemberNotification {
 
             switch (tag.nodeName()) {
                 case SENDER_IP_PLACEHOLDER:
-                    return new TextNode(memberIp, "");
+                    return new TextNode(memberIp);
                 case PASSWORD_RESET_LINK_PLACEHOLDER:
                     return parseXmlNode(getPasswordLink());
                 case SYSTEM_LINK_PLACEHOLDER:
-                    return new TextNode(PlatformAttributeKey.COLAB_URL.get(), "");
+                    return new TextNode(PlatformAttributeKey.COLAB_URL.get());
                 default:
             }
             return null;

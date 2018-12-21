@@ -64,7 +64,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
 
             switch (tag.nodeName()) {
                 case SENDER_NAME_PLACEHOLDER:
-                    return new TextNode(sender.getFullName(), "");
+                    return new TextNode(sender.getFullName());
                 default:
             }
             return null;

@@ -3,11 +3,10 @@ package org.xcolab.view.config.spring.beans;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,7 +34,6 @@ import javax.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @SuppressWarnings("ProhibitedExceptionDeclared")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -65,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/admin/management/**").hasRole("ADMIN")
+                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
                 .antMatchers("/oauth/authorize").authenticated();
 
         final GuestAccess guestAccessProperties = webProperties.getGuestAccess();
@@ -148,7 +146,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public FilterRegistrationBean sessionFilterErrorDispatch(
+    public Optional<FilterRegistrationBean> sessionFilterErrorDispatch(
             Optional<SessionRepositoryFilter> sessionRepositoryFilter) {
         if (sessionRepositoryFilter.isPresent()) {
 
@@ -158,10 +156,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             registrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ASYNC,
                     DispatcherType.ERROR);
             registrationBean.setOrder(SessionRepositoryFilter.DEFAULT_ORDER);
-            return registrationBean;
+            return Optional.of(registrationBean);
         } else {
             log.warn("No SessionRepositoryFilter found - defaulting to regular session.");
-            return null;
+            return Optional.empty() ;
         }
     }
 }
