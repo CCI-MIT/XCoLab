@@ -15,7 +15,7 @@
     <!--@elvariable id="showPublicRatingForm" type="java.lang.Boolean"-->
     <!--@elvariable id="showEvaluation" type="java.lang.Boolean"-->
     <!--@elvariable id="proposalRevisionPhaseActive" type="java.lang.Boolean"-->
-        <!--@elvariable id="averageRatingsPerPhase" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.ProposalRatings>"-->
+    <!--@elvariable id="averageRatingsPerPhase" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.AverageProposalRatings>"-->
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
