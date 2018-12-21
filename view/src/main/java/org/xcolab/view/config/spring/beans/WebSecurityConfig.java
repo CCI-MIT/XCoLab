@@ -146,7 +146,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public FilterRegistrationBean sessionFilterErrorDispatch(
+    public Optional<FilterRegistrationBean> sessionFilterErrorDispatch(
             Optional<SessionRepositoryFilter> sessionRepositoryFilter) {
         if (sessionRepositoryFilter.isPresent()) {
 
@@ -156,10 +156,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             registrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ASYNC,
                     DispatcherType.ERROR);
             registrationBean.setOrder(SessionRepositoryFilter.DEFAULT_ORDER);
-            return registrationBean;
+            return Optional.of(registrationBean);
         } else {
             log.warn("No SessionRepositoryFilter found - defaulting to regular session.");
-            return null;
+            return Optional.empty() ;
         }
     }
 }

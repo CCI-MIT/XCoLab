@@ -4,17 +4,19 @@ server:
     whitelabel:
       enabled: false
     include-stacktrace: always
-  session:
-    persistent: true
-    timeout: 7200
+  servlet:
+    session:
+      persistent: true
+      timeout: 7200
 
 tomcat:
   ajp:
     enabled: true
 
 management:
-  add-application-context-header: false
-  context-path: /admin/management
+  server:
+    add-application-context-header: false
+    context-path: /admin/management
 
 cache:
   enabled: false
@@ -26,7 +28,7 @@ spring:
       suffix: .jspx
     favicon:
       enabled: false
-  http:
+  servlet:
     multipart:
       max-file-size: 2MB
 

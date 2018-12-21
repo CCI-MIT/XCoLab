@@ -30,9 +30,10 @@ import org.xcolab.util.activities.enums.ActivityCategory;
 import java.nio.charset.Charset;
 import java.util.Optional;
 
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -72,7 +73,7 @@ public class ActivitiesControllerTest {
 
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
-        Mockito.when(activityEntryDao.create(anyObject()))
+        Mockito.when(activityEntryDao.create(any(ActivityEntry.class)))
             .thenAnswer(invocation -> new ActivityEntry());
 
         Mockito.when(activitySubscriptionDao.get(anyLong()))
@@ -108,7 +109,7 @@ public class ActivitiesControllerTest {
         .contentType(contentType).accept(contentType))
             .andExpect(status().isOk());
         Mockito.verify(activityEntryDao,Mockito.times(1))
-            .findByGiven(anyObject(), anyString(), anyLong(), anyObject(), anyObject());
+            .findByGiven(any(PaginationHelper.class), isNull(), isNull(), isNull(), isNull());
     }
 
     @Test
@@ -118,7 +119,7 @@ public class ActivitiesControllerTest {
                 .contentType(contentType).accept(contentType))
             .andExpect(status().isOk());
         Mockito.verify(activityEntryDao,Mockito.times(1))
-            .countByGiven(anyObject(),anyObject());
+            .countByGiven(isNull(), isNull());
     }
 
     @Test
@@ -132,7 +133,7 @@ public class ActivitiesControllerTest {
             .andExpect(status().isOk());
 
         Mockito.verify(activitySubscriptionDao,Mockito.times(1))
-            .create(anyObject());
+            .create(any(ActivitySubscription.class));
     }
 
     @Test
@@ -147,7 +148,7 @@ public class ActivitiesControllerTest {
                 .andExpect(status().isOk());
 
         Mockito.verify(activitiesService,Mockito.times(1))
-            .subscribe(anyLong(), anyObject(), anyLong());
+            .subscribe(eq(8L), eq(ActivityCategory.CONTEST), eq(89L));
     }
     @Test
     public void shouldGetActivitySubscription() throws Exception {
@@ -159,7 +160,7 @@ public class ActivitiesControllerTest {
             .andExpect(status().isOk());
 
         Mockito.verify(activitySubscriptionDao,Mockito.times(1))
-            .get(anyLong());
+            .get(2343L);
     }
     @Test
     public void shouldDeleteActivitySubscription() throws Exception {
@@ -171,7 +172,7 @@ public class ActivitiesControllerTest {
             .andExpect(status().isOk());
 
         Mockito.verify(activitySubscriptionDao,Mockito.times(1))
-            .delete(anyLong());
+            .delete(2343L);
     }
 
     @Test
@@ -187,7 +188,7 @@ public class ActivitiesControllerTest {
             .andExpect(status().isOk());
 
         Mockito.verify(activitiesService,Mockito.times(1))
-            .unsubscribe(anyLong(),anyObject(),anyLong());
+            .unsubscribe(eq(8L), eq(ActivityCategory.CONTEST), eq(89L));
     }
 
     @Test
@@ -203,7 +204,7 @@ public class ActivitiesControllerTest {
             .andExpect(status().isOk());
 
         Mockito.verify(activitySubscriptionDao, Mockito.times(1))
-            .isSubscribed(anyObject(), anyLong(), anyLong());
+            .isSubscribed(eq(ActivityCategory.CONTEST), eq(8L), eq(89L));
     }
 
     @Test
@@ -217,6 +218,6 @@ public class ActivitiesControllerTest {
             .andExpect(status().isOk());
 
         Mockito.verify(activitySubscriptionDao,Mockito.times(1))
-            .getActivitySubscribers(anyObject(), anyLong(), anyLong());
+            .getActivitySubscribers(eq(ActivityCategory.CONTEST), isNull(), eq(8L));
     }
 }

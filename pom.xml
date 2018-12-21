@@ -68,7 +68,7 @@
         <metrics-datadog.version>1.1.13</metrics-datadog.version>
 
         <!-- Test dependencies -->
-        <powermock.version>1.7.3</powermock.version>
+        <powermock.version>2.0.0-RC.4</powermock.version>
         <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
 
         <!-- Error monitoring -->
@@ -184,7 +184,7 @@
             <!-- Test dependencies -->
             <dependency>
                 <groupId>org.powermock</groupId>
-                <artifactId>powermock-api-mockito</artifactId>
+                <artifactId>powermock-api-mockito2</artifactId>
                 <version>${powermock.version}</version>
             </dependency>
             <dependency>
