@@ -57,7 +57,6 @@ public class FilesControllerTest {
     @InjectMocks
     private FileController controller;
 
-
     @Before
     public void before() throws Exception {
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -84,12 +83,12 @@ public class FilesControllerTest {
     public void shouldGetFileEntryDao() throws Exception {
         IFileEntry fileEntry = new FileEntryImpl();
         fileEntry.setId(12L);
+        Mockito.when(fileEntryDao.get(Mockito.anyLong())).thenReturn(fileEntry);
         this.mockMvc.perform(
                 get("/fileEntries/123")
-                        .contentType(contentType).accept(contentType)
-                        .content(objectMapper.writeValueAsString(fileEntry)))
+                        .contentType(contentType).accept(contentType))
                 .andExpect(status().isOk());
 
-        Mockito.verify(fileEntryDao, Mockito.times(1)).get(Mockito.anyLong());
+        Mockito.verify(fileEntryDao, Mockito.times(1)).get(123L);
     }
 }
