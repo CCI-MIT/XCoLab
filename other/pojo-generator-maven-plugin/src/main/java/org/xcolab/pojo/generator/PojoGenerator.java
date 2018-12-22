@@ -15,10 +15,14 @@ import org.jboss.forge.roaster.model.source.FieldSource;
 import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.JavaSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.jboss.forge.roaster.model.util.Refactory;
 import org.jboss.forge.roaster.model.util.Strings;
 import org.jboss.forge.roaster.model.util.Types;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,6 +42,8 @@ import java.util.stream.Collectors;
 
 @Mojo(name = "generatePojos", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class PojoGenerator extends AbstractMojo {
+
+    private static final Logger _log = LoggerFactory.getLogger(PojoGenerator.class);
 
     private static final Pattern PACKAGE_PATTERN =
             Pattern.compile("^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+[0-9a-z_]");
@@ -117,12 +123,16 @@ public class PojoGenerator extends AbstractMojo {
 
             for (File interfaceFile : interfaceFiles) {
                 try {
-                    JavaInterfaceSource interfaceSrc =
-                            Roaster.parse(JavaInterfaceSource.class, interfaceFile);
-                    Path path = Paths.get(interfaceFile.toURI());
-                    path = Paths.get(interfaceDirectory.toURI()).relativize(path);
-                    String subdir = path.toString().replace(path.getFileName().toString(), "");
-                    interfaces.put(interfaceSrc, subdir);
+                    JavaSource javaSrc = Roaster.parse(JavaSource.class, interfaceFile);
+                    if(javaSrc instanceof  JavaInterfaceSource) {
+                        JavaInterfaceSource interfaceSrc = (JavaInterfaceSource) javaSrc;
+                        Path path = Paths.get(interfaceFile.toURI());
+                        path = Paths.get(interfaceDirectory.toURI()).relativize(path);
+                        String subdir = path.toString().replace(path.getFileName().toString(), "");
+                        interfaces.put(interfaceSrc, subdir);
+                    } else {
+                        _log.warn("File {} is not an java interface", interfaceFile);
+                    }
                 } catch (FileNotFoundException e) {
                     throw new IllegalArgumentException(
                             "File " + interfaceFile.getAbsolutePath() + " does not exist.", e);
