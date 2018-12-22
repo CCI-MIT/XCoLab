@@ -5,7 +5,7 @@ import org.xcolab.service.content.exceptions.NotFoundException;
 
 public interface FileEntryDao {
 
-    IFileEntry create(IFileEntry IFileEntry);
+    IFileEntry create(IFileEntry fileEntry);
 
-    IFileEntry get(Long fileEntryid) throws NotFoundException;
+    IFileEntry get(Long fileEntryId) throws NotFoundException;
 }

@@ -18,9 +18,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import org.xcolab.client.content.pojo.FileEntryWrapper;
 import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.model.tables.pojos.FileEntryImpl;
 import org.xcolab.service.content.domain.fileentry.FileEntryDao;
+import org.xcolab.service.content.providers.PersistenceProvider;
 
 import java.nio.charset.Charset;
 
@@ -40,6 +42,9 @@ public class FilesControllerTest {
     @Mock
     private FileEntryDao fileEntryDao;
 
+    @Mock
+    private PersistenceProvider persistenceProvider;
+
     private MockMvc mockMvc;
 
     private final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -49,38 +54,42 @@ public class FilesControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-
     @InjectMocks
     private FileController controller;
 
+
     @Before
-    public void before() throws Exception{
+    public void before() throws Exception {
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     public void shouldCreateNewFileEntryDao() throws Exception {
-        IFileEntry IFileEntry = new FileEntryImpl();
-        IFileEntry.setId(12L);
+        IFileEntry fileEntry = new FileEntryImpl();
+        fileEntry.setId(12L);
+        FileEntryWrapper wrapper = new FileEntryWrapper(fileEntry, new byte[0], "");
+
         this.mockMvc.perform(
                 post("/fileEntries")
                         .contentType(contentType).accept(contentType)
-                        .content(objectMapper.writeValueAsString(IFileEntry)))
+                        .content(objectMapper.writeValueAsString(wrapper)))
                 .andExpect(status().isOk());
 
-        Mockito.verify(fileEntryDao,Mockito.times(1)).create(Mockito.anyObject());
+        Mockito.verify(fileEntryDao, Mockito.times(1)).create(Mockito.any(IFileEntry.class));
+        Mockito.verify(persistenceProvider, Mockito.times(1))
+                .saveFileToFinalDestination(new byte[0], null, "");
     }
 
     @Test
     public void shouldGetFileEntryDao() throws Exception {
-        IFileEntry IFileEntry = new FileEntryImpl();
-        IFileEntry.setId(12L);
+        IFileEntry fileEntry = new FileEntryImpl();
+        fileEntry.setId(12L);
         this.mockMvc.perform(
                 get("/fileEntries/123")
                         .contentType(contentType).accept(contentType)
-                        .content(objectMapper.writeValueAsString(IFileEntry)))
+                        .content(objectMapper.writeValueAsString(fileEntry)))
                 .andExpect(status().isOk());
 
-        Mockito.verify(fileEntryDao,Mockito.times(1)).get(Mockito.anyLong());
+        Mockito.verify(fileEntryDao, Mockito.times(1)).get(Mockito.anyLong());
     }
 }
