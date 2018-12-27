@@ -35,7 +35,7 @@ public class CategoryController extends BaseDiscussionController {
             Model model, @RequestParam(required = false) String sortColumn,
             @RequestParam(defaultValue = "false") boolean sortAscending) {
         model.addAttribute("_activePageLink", "community");
-        long userId = MemberAuthUtil.getuserId();
+        long userId = MemberAuthUtil.getUserId();
 
         ThreadSortColumn threadSortColumn;
         try {
@@ -71,7 +71,7 @@ public class CategoryController extends BaseDiscussionController {
             @RequestParam boolean sortAscending)
             throws DiscussionAuthorizationException, CategoryNotFoundException {
 
-        long userId = MemberAuthUtil.getuserId();
+        long userId = MemberAuthUtil.getUserId();
 
         ThreadSortColumn threadSortColumn;
         try {
@@ -161,7 +161,7 @@ public class CategoryController extends BaseDiscussionController {
             Member member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
-        long userId = MemberAuthUtil.getuserId();
+        long userId = MemberAuthUtil.getUserId();
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions();
@@ -189,7 +189,7 @@ public class CategoryController extends BaseDiscussionController {
             Member member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
-        long userId = MemberAuthUtil.getuserId();
+        long userId = MemberAuthUtil.getUserId();
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions();

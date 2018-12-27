@@ -130,7 +130,7 @@ public class OverviewTabController extends AbstractTabController {
     private void executeMassAction(HttpServletResponse response,
             ContestOverviewWrapper contestOverviewWrapper)
             throws MassActionRequiresConfirmationException, IOException {
-        contestOverviewWrapper.setuserId(MemberAuthUtil.getuserId());
+        contestOverviewWrapper.setuserId(MemberAuthUtil.getUserId());
 
         ContestMassAction action = contestOverviewWrapper.getSelectedMassAction().getAction();
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();

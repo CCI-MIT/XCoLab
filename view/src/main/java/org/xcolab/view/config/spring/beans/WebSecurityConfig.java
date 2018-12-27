@@ -68,7 +68,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.authorizeRequests()
                 .antMatchers("/admin/management/**").hasRole("ADMIN")
                 .antMatchers("/oauth/authorize").authenticated()
-                .antMatchers("/impersonate").hasAnyRole("ADMIN", "ROLE_PREVIOUS_ADMINISTRATOR");
+                .antMatchers("/impersonate")
+                    .hasAnyRole("ADMIN", SwitchUserFilter.ROLE_PREVIOUS_ADMINISTRATOR);
 
         final GuestAccess guestAccessProperties = webProperties.getGuestAccess();
 

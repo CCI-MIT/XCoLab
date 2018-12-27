@@ -33,7 +33,7 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private boolean updateSendEmailOnMessageSettings(boolean messageSetting) {
-        long userId = MemberAuthUtil.getuserId();
+        long userId = MemberAuthUtil.getUserId();
         updateUserSendEmailOnMessagePreferences(userId, messageSetting);
         return true;
     }
@@ -56,7 +56,7 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private boolean updateSendEmailOnActivitySettings(boolean messageSetting) {
-        long userId = MemberAuthUtil.getuserId();
+        long userId = MemberAuthUtil.getUserId();
         updateUserSendEmailOnActivityPreferences(userId, messageSetting);
         if (!messageSetting) {
             updateUserSendDailyEmailOnActivityPreferences(userId, false);
@@ -88,7 +88,7 @@ public class MessageSettingsJSONController extends JSONHelper {
     }
 
     private boolean updateSendDailyEmailOnActivitySettings(boolean messageSetting) {
-        long userId = MemberAuthUtil.getuserId();
+        long userId = MemberAuthUtil.getUserId();
         updateUserSendDailyEmailOnActivityPreferences(userId, messageSetting);
         return true;
     }

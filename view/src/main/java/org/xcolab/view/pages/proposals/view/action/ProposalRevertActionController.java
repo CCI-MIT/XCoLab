@@ -40,7 +40,7 @@ public class ProposalRevertActionController {
                             + ", proposal: " + proposalContext.getProposal().getId());
         }
 
-        long userId = MemberAuthUtil.getuserId();
+        long userId = MemberAuthUtil.getUserId();
 
         if (proposalContext.getProposal() != null) {
             Proposal oldProposalVersionToBeBecomeCurrent = proposalContext.getProposal();

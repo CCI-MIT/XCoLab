@@ -88,7 +88,7 @@ public class ThreadController extends BaseDiscussionController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        long userId = MemberAuthUtil.getuserId();
+        long userId = MemberAuthUtil.getUserId();
 
         if (!title.isEmpty() && !body.isEmpty()) {
             CommentThread thread = new CommentThread();

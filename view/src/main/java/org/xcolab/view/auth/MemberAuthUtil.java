@@ -2,10 +2,7 @@ package org.xcolab.view.auth;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-
-import javax.servlet.http.HttpServletRequest;
 
 public final class MemberAuthUtil {
 
@@ -14,7 +11,7 @@ public final class MemberAuthUtil {
     private MemberAuthUtil() {
     }
 
-    public static long getuserId() {
+    public static long getUserId() {
         final Member memberOrNull = authenticationContext.getMemberOrNull();
         if (memberOrNull == null) {
             return 0L;
@@ -24,7 +21,7 @@ public final class MemberAuthUtil {
 
     public static Member getMemberOrNull() {
         try {
-            return MembersClient.getMember(getuserId());
+            return MembersClient.getMember(getUserId());
         } catch (MemberNotFoundException e) {
             return null;
         }

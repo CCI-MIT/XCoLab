@@ -41,7 +41,7 @@ public final class AddUpdateProposalControllerUtil {
     public static String createOrUpdateProposal(HttpServletRequest request,
             UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
             ProposalContext proposalContext) {
-        long userId = MemberAuthUtil.getuserId();
+        long userId = MemberAuthUtil.getUserId();
         final Contest contest = proposalContext.getContest();
 
         final ClientHelper clients = proposalContext.getClients();

@@ -7,15 +7,13 @@ import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
 
 import java.io.Serializable;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class ContestManagementPermissions implements TabPermissions, Serializable {
 
     private final boolean isLoggedIn;
     private final long userId;
 
     public ContestManagementPermissions() {
-        userId = MemberAuthUtil.getuserId();
+        userId = MemberAuthUtil.getUserId();
         isLoggedIn = userId > 0;
     }
 

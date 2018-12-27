@@ -11,8 +11,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.AuthenticationContext;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final AuthenticationContext authenticationContext;
