@@ -17,6 +17,7 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class ProposalMemberRatingClient {
 
@@ -51,7 +52,10 @@ public final class ProposalMemberRatingClient {
         return supportedProposalsResource
                 .list()
                 .queryParam("userId", userId)
-                .execute();
+                .execute()
+                .stream()
+                    .map(sr -> new SupportedProposal(sr))
+                    .collect(Collectors.toList());
     }
 
     public Integer getProposalSupportersCount(Long proposalId) {
