@@ -510,4 +510,9 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("ALLOW_SELF_REGISTRATION")
                     .defaultValue(true)
                     .build();
+
+    public static final AttributeGetter<String> PINTEREST_ID =
+            ConfigurationAttributes.newStringAttribute("PINTEREST_ID")
+                    .defaultValue("")
+                    .build();
 }
