@@ -66,7 +66,6 @@ public class SearchController implements ISearchClient {
             if (sort.equals(SearchType.DISCUSSION.getStringType())) {
                 return searchDao.findCommentCount(query);
             }
-
         }
 
         return searchDao.findAllSiteCount(query);

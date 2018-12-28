@@ -19,5 +19,4 @@ public interface ISearchPojo extends Serializable {
     Long getSearchTypeId();
 
     void setSearchTypeId(Long searchTypeId);
-
 }
