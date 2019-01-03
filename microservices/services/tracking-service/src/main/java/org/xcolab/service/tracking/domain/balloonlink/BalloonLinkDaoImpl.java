@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.tracking.pojo.IBalloonLink;
+import org.xcolab.client.tracking.pojo.tables.pojos.BalloonLink;
 import org.xcolab.service.tracking.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -29,7 +30,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(IBalloonLink.class);
+        return record.into(BalloonLink.class);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class BalloonLinkDaoImpl implements BalloonLinkDao {
         }
 
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(IBalloonLink.class);
+        return query.fetchInto(BalloonLink.class);
     }
 
     @Override

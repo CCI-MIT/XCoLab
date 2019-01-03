@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
+import org.xcolab.client.tracking.pojo.tables.pojos.BalloonUserTracking;
 import org.xcolab.service.tracking.exceptions.NotFoundException;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(IBalloonUserTracking.class);
+        return record.into(BalloonUserTracking.class);
 
     }
 
@@ -49,7 +50,7 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
             query.addConditions(BALLOON_USER_TRACKING.BALLOON_LINK_CONTEXT.eq(context));
         }
 
-        return query.fetchInto(IBalloonUserTracking.class);
+        return query.fetchInto(BalloonUserTracking.class);
 
     }
 

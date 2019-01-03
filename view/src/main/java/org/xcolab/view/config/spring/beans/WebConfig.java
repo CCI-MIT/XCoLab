@@ -45,8 +45,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-@EnableConfigurationProperties(
-        {WebProperties.class, TomcatProperties.class})
+@EnableConfigurationProperties({WebProperties.class, TomcatProperties.class})
 public class WebConfig implements WebMvcConfigurer {
 
     private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
