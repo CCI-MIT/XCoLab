@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.records.ContestRecord;
@@ -31,7 +31,6 @@ import static org.xcolab.model.Tables.CONTEST_DISCUSSION;
 import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.CONTEST_TEAM_MEMBER;
 import static org.xcolab.model.Tables.CONTEST_TRANSLATION;
-import static org.xcolab.model.Tables.PROPOSAL_TEAM_MEMBERSHIP_REQUEST;
 import static org.xcolab.model.Tables.POINTS;
 import static org.xcolab.model.Tables.POINTS_DISTRIBUTION_CONFIGURATION;
 import static org.xcolab.model.Tables.PROPOSAL;
@@ -42,6 +41,7 @@ import static org.xcolab.model.Tables.PROPOSAL_MOVE_HISTORY;
 import static org.xcolab.model.Tables.PROPOSAL_RATING;
 import static org.xcolab.model.Tables.PROPOSAL_REFERENCE;
 import static org.xcolab.model.Tables.PROPOSAL_SUPPORTER;
+import static org.xcolab.model.Tables.PROPOSAL_TEAM_MEMBERSHIP_REQUEST;
 import static org.xcolab.model.Tables.PROPOSAL_UNVERSIONED_ATTRIBUTE;
 import static org.xcolab.model.Tables.PROPOSAL_VERSION;
 import static org.xcolab.model.Tables.PROPOSAL_VOTE;
@@ -372,7 +372,7 @@ public class ContestDaoImpl implements ContestDao {
                 .fetchOne()
                 .into(Long.class);
         // Delete contest thread and comments.
-        ThreadClientUtil.deleteThread(threadId);
+        ThreadClient.instance().deleteThread(threadId);
         // Delete contest subscriptions and activity entries.
         ActivitiesClientUtil.batchDelete(ActivityCategory.CONTEST, Collections.singletonList(contestId));
     }
@@ -470,7 +470,7 @@ public class ContestDaoImpl implements ContestDao {
                 .where(PROPOSAL.ID.in(proposalIds)).fetch().into(Long.class));
 
         for (long threadId : threadIdsToDelete) {
-            ThreadClientUtil.deleteThread(threadId);
+            ThreadClient.instance().deleteThread(threadId);
         }
     }
 }

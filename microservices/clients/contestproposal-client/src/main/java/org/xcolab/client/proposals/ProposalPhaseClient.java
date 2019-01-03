@@ -4,9 +4,7 @@ import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.client.proposals.pojo.phases.Proposal2PhaseDto;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttributeDto;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -14,58 +12,43 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 import org.xcolab.util.http.client.types.TypeProvider;
-import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class ProposalPhaseClient {
 
-    private static final Map<ServiceNamespace, ProposalPhaseClient> instances = new HashMap<>();
-
-    private final ServiceNamespace serviceNamespace;
-
-    private final RestResource<Proposal2PhaseDto, Long> proposal2PhaseResource;
-    private final RestResource<ProposalContestPhaseAttributeDto, Long>
+    private final RestResource<Proposal2Phase, Long> proposal2PhaseResource;
+    private final RestResource<ProposalContestPhaseAttribute, Long>
             proposalContestPhaseAttributeResource;
     private final RestResource1<ProposalDto, Long> proposalResource;
     private final RestResource2L<ProposalDto, Long> proposalPhaseIdResource;
 
-
-    private ProposalPhaseClient(ServiceNamespace serviceNamespace) {
-        this.serviceNamespace = serviceNamespace;
+    public ProposalPhaseClient() {
         proposal2PhaseResource = new RestResource1<>(ProposalResource.PROPOSAL_2_PHASE,
-                Proposal2PhaseDto.TYPES, serviceNamespace);
+                Proposal2Phase.TYPES);
         proposalContestPhaseAttributeResource = new RestResource1<>(
                 ProposalResource.PROPOSAL_CONTEST_PHASE_ATTRIBUTE,
-                ProposalContestPhaseAttributeDto.TYPES, serviceNamespace);
-        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES,
-                serviceNamespace);
+                ProposalContestPhaseAttribute.TYPES);
+        proposalResource = new RestResource1<>(ProposalResource.PROPOSAL, ProposalDto.TYPES);
 
         proposalPhaseIdResource = new RestResource2L<>(proposalResource, "phaseIds",
                 TypeProvider.LONG);
     }
 
-    public static ProposalPhaseClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, ProposalPhaseClient::new);
-    }
-
     public void invalidateProposal2PhaseCache(long proposalId, long contestPhaseId) {
-        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(Proposal2PhaseDto.class)
+        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(Proposal2Phase.class)
                 .withParameter("proposalId", proposalId)
                 .withParameter("contestPhaseId", contestPhaseId)
                 .asList(), CacheName.PROPOSAL_PHASE);
     }
     public Proposal2Phase getProposal2PhaseByProposalIdContestPhaseId(Long proposalId,
             Long contestPhaseId) throws Proposal2PhaseNotFoundException {
-        final Proposal2PhaseDto dto = proposal2PhaseResource.list()
+        final Proposal2Phase dto = proposal2PhaseResource.list()
                 .queryParam("proposalId", proposalId)
                 .queryParam("contestPhaseId", contestPhaseId)
-                .withCache(CacheKeys.withClass(Proposal2PhaseDto.class)
+                .withCache(CacheKeys.withClass(Proposal2Phase.class)
                         .withParameter("proposalId", proposalId)
                         .withParameter("contestPhaseId",contestPhaseId)
                         .asList(), CacheName.PROPOSAL_PHASE)
@@ -74,13 +57,13 @@ public final class ProposalPhaseClient {
         if (dto == null) {
             throw new Proposal2PhaseNotFoundException(proposalId, contestPhaseId);
         }
-        return dto.toPojo(serviceNamespace);
+        return dto;
     }
 
     public List<Proposal2Phase> getProposal2PhaseByProposalId(Long proposalId) {
-        return DtoUtil.toPojos(proposal2PhaseResource.list()
+        return proposal2PhaseResource.list()
                 .optionalQueryParam("proposalId", proposalId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public Proposal2Phase getProposal2PhaseByProposalIdVersion(long proposalId, int version) {
@@ -89,17 +72,17 @@ public final class ProposalPhaseClient {
                  .queryParam("version", version)
                  .withCache(CacheName.PROPOSAL_PHASE)
                  .executeWithResult()
-                 .getFirst().toPojo(serviceNamespace);
+                 .getFirst();
     }
 
     public List<Proposal2Phase> getProposal2PhaseByContestPhaseId(Long contestPhaseId) {
-        return DtoUtil.toPojos(proposal2PhaseResource.list()
+        return proposal2PhaseResource.list()
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public void createProposal2Phase(Proposal2Phase proposal2Phase) {
-        proposal2PhaseResource.create(new Proposal2PhaseDto(proposal2Phase))
+        proposal2PhaseResource.create(new Proposal2Phase(proposal2Phase))
                 .execute();
     }
 
@@ -133,14 +116,14 @@ public final class ProposalPhaseClient {
 
     public List<ProposalContestPhaseAttribute> getAllProposalContestPhaseProposalAttributes(
             Long contestPhaseId, Long proposalId) {
-        return DtoUtil.toPojos(proposalContestPhaseAttributeResource.list()
-//                .withCache(CacheKeys.withClass(ProposalContestPhaseAttributeDto.class)
+        return proposalContestPhaseAttributeResource.list()
+//                .withCache(CacheKeys.withClass(ProposalContestPhaseAttribute.class)
 //                                .withParameter("proposalId", proposalId)
 //                                .withParameter("contestPhaseId", contestPhaseId).asList(),
 //                        CacheRetention.MISC_MEDIUM)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("proposalId", proposalId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public Boolean isProposalContestPhaseAttributeSetAndTrue(Long proposalId, long contestPhaseId,
@@ -155,12 +138,12 @@ public final class ProposalPhaseClient {
             Long contestPhaseId, String name) {
         try {
             return proposalContestPhaseAttributeResource
-                    .collectionService("getByContestPhaseProposalIdName", ProposalContestPhaseAttributeDto.class)
+                    .collectionService("getByContestPhaseProposalIdName", ProposalContestPhaseAttribute.class)
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
                     .optionalQueryParam("proposalId", proposalId)
                     .optionalQueryParam("name", name)
                     .getChecked()
-                    .toPojo(serviceNamespace);
+                    ;
         } catch (EntityNotFoundException ignored) {
             return null;
         }
@@ -170,7 +153,7 @@ public final class ProposalPhaseClient {
     public  boolean persistSelectedJudgesAttribute(Long proposalId, Long contestPhaseId, List<Long> selectedJudges) {
         ProposalContestPhaseAttribute judges = getOrCreateProposalContestPhaseAttribute(proposalId, contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, null,null,null);
 
-        StringBuilder attributeValue = new StringBuilder("");
+        StringBuilder attributeValue = new StringBuilder();
         if (selectedJudges != null) {
             for (Long userId : selectedJudges) {
                 attributeValue.append(userId).append(";");
@@ -220,7 +203,7 @@ public final class ProposalPhaseClient {
     public boolean updateProposalContestPhaseAttribute(
             ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return proposalContestPhaseAttributeResource
-                .update(new ProposalContestPhaseAttributeDto(proposalContestPhaseAttribute),
+                .update(new ProposalContestPhaseAttribute(proposalContestPhaseAttribute),
                         proposalContestPhaseAttribute.getId())
                 .execute();
     }
@@ -253,8 +236,8 @@ public final class ProposalPhaseClient {
     public ProposalContestPhaseAttribute createProposalContestPhaseAttribute(
             ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         return proposalContestPhaseAttributeResource
-                .create(new ProposalContestPhaseAttributeDto(proposalContestPhaseAttribute))
-                .execute().toPojo(serviceNamespace);
+                .create(new ProposalContestPhaseAttribute(proposalContestPhaseAttribute))
+                .execute();
     }
 
     public Boolean deleteProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId,

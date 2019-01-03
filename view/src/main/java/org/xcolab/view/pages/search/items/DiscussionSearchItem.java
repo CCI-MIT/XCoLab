@@ -4,10 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -29,7 +29,7 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     public void init(ISearchPojo pojo, String searchQuery) {
         this.searchQuery = searchQuery;
         try {
-            comment = CommentClientUtil.getComment(pojo.getClassPrimaryKey());
+            comment = CommentClient.instance().getComment(pojo.getClassPrimaryKey());
             thread = comment.getThread();
         } catch (CommentNotFoundException e) {
             throw ReferenceResolutionException.toObject(Comment.class, pojo.getClassPrimaryKey())

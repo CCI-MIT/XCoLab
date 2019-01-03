@@ -7,10 +7,10 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTeamBean;
-import org.xcolab.view.util.entity.enums.MemberRole;
 
 import java.util.List;
 
@@ -28,34 +28,34 @@ public class ContestTeamWrapper {
 
     public void updateContestTeamMembers() {
         removeAllContestTeamMembersForContest();
-        assignMemberToContest(MemberRole.JUDGE, contestTeamBean.getUserIdsJudges());
-        assignMemberToContest(MemberRole.ADVISOR, contestTeamBean.getUserIdsAdvisors());
-        assignMemberToContest(MemberRole.FELLOW, contestTeamBean.getUserIdsFellows());
-        assignMemberToContest(MemberRole.CONTEST_MANAGER,
+        assignMemberToContest(SystemRole.JUDGE, contestTeamBean.getUserIdsJudges());
+        assignMemberToContest(SystemRole.ADVISOR, contestTeamBean.getUserIdsAdvisors());
+        assignMemberToContest(SystemRole.FELLOW, contestTeamBean.getUserIdsFellows());
+        assignMemberToContest(SystemRole.CONTEST_MANAGER,
                 contestTeamBean.getUserIdsContestManagers());
-        assignMemberToContest(MemberRole.IMPACT_ASSESSMENT_FELLOW,
+        assignMemberToContest(SystemRole.IMPACT_ASSESSMENT_FELLOW,
                 contestTeamBean.getUserIdsIAFellows());
     }
 
-    private void assignMemberToContest(MemberRole memberRole, List<Long> userIds) {
-        assignMembersToContestWithRole(userIds, memberRole);
-        assignMemberRoleToUser(memberRole, userIds);
+    private void assignMemberToContest(SystemRole systemRole, List<Long> userIds) {
+        assignMembersToContestWithRole(userIds, systemRole);
+        assignMemberRoleToUser(systemRole, userIds);
         subscribeUsersToContest(userIds);
     }
 
-    private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds) {
-        Long roleId = memberRole.getRoleId();
+    private void assignMemberRoleToUser(SystemRole systemRole, List<Long> userIds) {
+        long roleId = systemRole.getRoleId();
         for (Long userId : userIds) {
             MembersClient.assignMemberRole(userId, roleId);
         }
     }
 
-    private void assignMembersToContestWithRole(List<Long> userIds, MemberRole memberRole) {
+    private void assignMembersToContestWithRole(List<Long> userIds, SystemRole systemRole) {
         for (Long userId : userIds) {
             ContestTeamMember contestTeamMember = new ContestTeamMember();
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
-            contestTeamMember.setRoleId(memberRole.getRoleId());
+            contestTeamMember.setRoleId(systemRole.getRoleId());
             ContestTeamMemberClientUtil.createContestTeamMember(contestTeamMember);
         }
     }

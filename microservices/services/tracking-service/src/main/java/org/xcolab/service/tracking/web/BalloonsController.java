@@ -17,6 +17,7 @@ import org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundExceptio
 import org.xcolab.client.tracking.pojo.IBalloonLink;
 import org.xcolab.client.tracking.pojo.IBalloonText;
 import org.xcolab.client.tracking.pojo.IBalloonUserTracking;
+import org.xcolab.client.tracking.pojo.tables.pojos.BalloonLink;
 import org.xcolab.service.tracking.domain.balloonlink.BalloonLinkDao;
 import org.xcolab.service.tracking.domain.balloontext.BalloonTextDao;
 import org.xcolab.service.tracking.domain.balloonusertracking.BalloonUserTrackingDao;
@@ -66,8 +67,9 @@ public class BalloonsController implements IBalloonClient {
         try {
             return this.balloonLinkDao.getBalloonLink(uuid);
         } catch (NotFoundException e) {
-            throw new BalloonLinkNotFoundException(
-                    "BalloonLink " + uuid + " does not exist");
+            return new BalloonLink();
+//            throw new BalloonLinkNotFoundException(
+//                    "BalloonLink " + uuid + " does not exist");
         }
     }
 

@@ -9,7 +9,6 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -28,8 +27,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
             @RequestParam(value = "contestId", required = false) Long contestId)
             throws IOException, CommentNotFoundException {
 
-        final CommentClient commentClient = CommentClientUtil.getClient();
-        Comment comment = commentClient.getComment(commentId);
+        Comment comment = CommentClient.instance().getComment(commentId);
 
         DiscussionPermissions discussionPermissions = getDiscussionPermissions(request,
                 comment.getThread());
@@ -43,7 +41,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
 
         final String baseUri = PlatformAttributeKey.COLAB_URL.get();
         comment.setContent(HtmlUtil.cleanSome(content, baseUri));
-        commentClient.updateComment(comment);
+        CommentClient.instance().updateComment(comment);
 
         String redirectUrl = request.getHeader(HttpHeaders.REFERER);
         response.sendRedirect(redirectUrl);

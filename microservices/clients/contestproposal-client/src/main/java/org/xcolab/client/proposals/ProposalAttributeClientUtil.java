@@ -4,14 +4,12 @@ import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class ProposalAttributeClientUtil {
 
-    private static final ProposalAttributeClient client =
-            ProposalAttributeClient.fromNamespace(ServiceNamespace.instance());
+    private static final ProposalAttributeClient client = new ProposalAttributeClient();
 
     public static ProposalAttributeClient getClient() {
         return client;

@@ -109,7 +109,7 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
         query.addConditions(PROPOSAL2_PHASE.PROPOSAL_ID.eq(proposalId));
 
 
-        query.addConditions(CONTEST_PHASE.ID.eq(contestId));
+        query.addConditions(CONTEST_PHASE.CONTEST_ID.eq(contestId));
 
         Result<Record> records = query.fetch();
         if (records != null && !records.isEmpty()) {

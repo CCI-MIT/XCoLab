@@ -2,18 +2,20 @@ package org.xcolab.service.tracking.domain.trackedvisitor;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Result;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.tracking.pojo.ITrackedVisitor;
+import org.xcolab.client.tracking.pojo.tables.pojos.TrackedVisitor;
 
 import java.util.Optional;
 
 import static org.xcolab.model.tables.TrackedVisitorTable.TRACKED_VISITOR;
 
 @Repository
-public class TrackedVisitorDaoImpl implements org.xcolab.service.tracking.domain.trackedvisitor.TrackedVisitorDao {
+public class TrackedVisitorDaoImpl implements TrackedVisitorDao {
 
     private final DSLContext dslContext;
 
@@ -31,19 +33,20 @@ public class TrackedVisitorDaoImpl implements org.xcolab.service.tracking.domain
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ITrackedVisitor.class));
+        return Optional.of(record.into(TrackedVisitor.class));
     }
 
     @Override
     public Optional<ITrackedVisitor> getByUserId(long userId) {
-        final Record record = dslContext.select()
+        final Result<Record> result = dslContext.select()
                 .from(TRACKED_VISITOR)
                 .where(TRACKED_VISITOR.USER_ID.eq(userId))
-                .fetchOne();
-        if (record == null) {
+                .fetch()
+                .sortDesc(TRACKED_VISITOR.CREATED_AT);
+        if (result.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ITrackedVisitor.class));
+        return Optional.of(result.get(0).into(TrackedVisitor.class));
     }
 
     @Override

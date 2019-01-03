@@ -11,7 +11,6 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +19,7 @@ import java.util.regex.Pattern;
 
 public final class ProposalClientUtil {
 
-    private static final ProposalClient client = ProposalClient.fromNamespace(
-            ServiceNamespace.instance());
+    private static final ProposalClient client = new ProposalClient();
 
     public static ProposalClient getClient() {
         return client;

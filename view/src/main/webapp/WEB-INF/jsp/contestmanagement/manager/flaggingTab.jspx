@@ -43,7 +43,7 @@
 
         <div class="c-Box c-Box--colorTan">
             <div class="c-Box__body">
-                <form:form commandName="reportTargetWrapper">
+                <form:form modelAttribute="reportTargetWrapper">
                     <strong>Report target:</strong>
 
                     <form:select path="reportTargetId" id="changeReportTargetSelect" cssClass="form-control">
@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <form:form action="${updateReportTargetUrl }" commandName="reportTargetWrapper"
+        <form:form action="${updateReportTargetUrl }" modelAttribute="reportTargetWrapper"
                    id="editForm" method="post" class="mt-3">
 
             <form:hidden path="createNew" id="createNewFlag"/>

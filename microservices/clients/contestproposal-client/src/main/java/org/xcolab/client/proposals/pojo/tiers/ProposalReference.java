@@ -1,8 +1,22 @@
 package org.xcolab.client.proposals.pojo.tiers;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.core.ParameterizedTypeReference;
 
-public class ProposalReference extends AbstractProposalReference {
+import org.xcolab.util.http.client.types.TypeProvider;
+
+import java.io.Serializable;
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ProposalReference extends AbstractProposalReference implements Serializable {
+
+    public static final TypeProvider<ProposalReference> TYPES =
+            new TypeProvider<>(ProposalReference.class,
+                    new ParameterizedTypeReference<List<ProposalReference>>() {});
 
     public ProposalReference() {}
 
@@ -18,8 +32,7 @@ public class ProposalReference extends AbstractProposalReference {
         super(proposalid, subproposalid, sectionattributeid);
     }
 
-    public ProposalReference(AbstractProposalReference abstractProposalReference,
-            ServiceNamespace serviceNamespace) {
+    public ProposalReference(AbstractProposalReference abstractProposalReference) {
         super(abstractProposalReference);
     }
 }

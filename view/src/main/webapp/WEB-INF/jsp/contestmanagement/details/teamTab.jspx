@@ -25,7 +25,7 @@
 				<i>(Click SAVE and reload this page to find newly registered members.)</i>
 			</p>
 			<h2>Contest team</h2>
-            <form:form action="${updateContestTeamURL }" commandName="contestTeamBean" id="editForm" method="post">
+            <form:form action="${updateContestTeamURL }" modelAttribute="contestTeamBean" id="editForm" method="post">
                 <div class="l-BoxLayout__columns">
                     <xcolab:teamBox title="IAFellows" list="${contestWrapper.contestImpactAssessmentFellows}"/>
                     <xcolab:teamBox title="Advisors" list="${contestWrapper.contestAdvisors}"/>

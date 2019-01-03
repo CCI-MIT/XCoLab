@@ -8,7 +8,7 @@
 
 	<h1>Input widgets</h1>
 
-	<form:form commandName="updateWidgetsBean"
+	<form:form modelAttribute="updateWidgetsBean"
 		action="/admin/modeling/model/${model.id}/toggleCustomInputs">
 
 		<c:choose>
@@ -26,7 +26,7 @@
 
 	<c:choose>
 		<c:when test="${not modelPreferences.usesCustomInputs }">
-			<form:form commandName="updateWidgetsBean"
+			<form:form modelAttribute="updateWidgetsBean"
 				action="/admin/modeling/model/${model.id}/updateInputs">
 
 				<table class='table table-striped'>
@@ -58,7 +58,7 @@
 			</form:form>
 		</c:when>
 		<c:otherwise>
-			<form:form commandName="updateWidgetsBean"
+			<form:form modelAttribute="updateWidgetsBean"
 				action="${updateInputsUrl }">
 				<form:textarea path="customInputWidgets"
 					style="width: 100%; height: 50%;" rows="20" />

@@ -4,11 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Response;
 import feign.codec.ErrorDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Constructor;
+import java.util.Date;
 
 public class XColabErrorDecoder implements ErrorDecoder {
+
+    private static final Logger _log = LoggerFactory.getLogger(XColabErrorDecoder.class);
 
     @Override
     public Exception decode(String methodKey, Response response) {
@@ -16,14 +25,31 @@ public class XColabErrorDecoder implements ErrorDecoder {
             if (response.body() != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 Reader reader = response.body().asReader();
-                MessageBody body = mapper.readValue(reader, MessageBody.class);
+                String s = getStringFromInputStream(response.body().asInputStream());
+                s = s.replace( "\"{", "{");
+                s = s.replace( "}\"", "}");
+                s = s.replace("\\", "");
+                MessageBody body = mapper.readValue(s, MessageBody.class);
                 return body.toException();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            _log.error("Error while decoding error message.", e);
         }
 
         return new Default().decode(methodKey, response);
+    }
+
+    private static String getStringFromInputStream(InputStream is) {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            _log.error("Error reading Response.body()", e);
+        }
+        return sb.toString();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,35 +59,56 @@ public class XColabErrorDecoder implements ErrorDecoder {
         This JSON object is contained by Response#body():
 
         {
-            "timestamp":1543531725279,
+            "timestamp":2018-12-28T17:01:11.856+0000,
             "status":500,
             "error":"Internal Server Error",
-            "exception":"org.xcolab.client.tracking.exceptions
-            .BalloonUserTrackingNotFoundException",
-            "message":"BalloonUserTracking f5f33575-47ac-440e-8d1c-c3498065dd20 does not exist",
+            "message":"{
+                \"exception\":\"org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundException\",
+                \"message\":\"BalloonUserTracking f5f33575-47ac-440e-8d1c-c3498065dd20 does not exist\"
+            },
             "path":"/balloonUserTrackings/f5f33575-47ac-440e-8d1c-c3498065dd20"
         }
         */
 
-        private long timestamp;
+        private static class Message {
+            private String exception;
+            private String message;
+
+            public String getException() {
+                return exception;
+            }
+
+            public void setException(String exception) {
+                this.exception = exception;
+            }
+
+            public String getMessage() {
+                return message;
+            }
+
+            public void setMessage(String message) {
+                this.message = message;
+            }
+        }
+
+        private Date timestamp;
         private int status;
         private String error;
-        private String exception;
-        private String message;
+        private Message message;
         private String path;
 
         public Exception toException() throws Exception {
-            Class<?> clazz = Class.forName(exception);
+            Class<?> clazz = Class.forName(message.exception);
             Constructor<?> constructor = clazz.getConstructor(String.class);
-            Object instance = constructor.newInstance(message);
+            Object instance = constructor.newInstance(message.message);
             return (Exception) instance;
         }
 
-        public long getTimestamp() {
+        public Date getTimestamp() {
             return timestamp;
         }
 
-        public void setTimestamp(long timestamp) {
+        public void setTimestamp(Date timestamp) {
             this.timestamp = timestamp;
         }
 
@@ -81,19 +128,11 @@ public class XColabErrorDecoder implements ErrorDecoder {
             this.error = error;
         }
 
-        public String getException() {
-            return exception;
-        }
-
-        public void setException(String exception) {
-            this.exception = exception;
-        }
-
-        public String getMessage() {
+        public Message getMessage() {
             return message;
         }
 
-        public void setMessage(String message) {
+        public void setMessage(Message message) {
             this.message = message;
         }
 

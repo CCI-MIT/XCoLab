@@ -18,7 +18,9 @@ import org.xcolab.client.proposals.enums.points.PointsTarget;
 import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.AssignPointsBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -37,7 +39,12 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=POINTS")
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext) {
+            Model model, ProposalContext proposalContext, Member currentMember) {
+
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
+        if (!permissions.getCanView()) {
+            return new AccessDeniedPage(currentMember).toViewName(response);
+        }
 
         final ClientHelper clients = proposalContext.getClients();
         final PointsClient pointsClient = clients.getPointsClient();

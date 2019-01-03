@@ -51,9 +51,9 @@ public class EmailTemplateWrapper {
     protected Node resolvePlaceholderTag(Element tag) {
         switch (tag.nodeName()) {
             case PROPOSAL_TITLE_PLACEHOLDER:
-                return new TextNode(this.proposalName, "");
+                return new TextNode(this.proposalName);
             case CONTEST_TITLE_PLACEHOLDER:
-                return new TextNode(this.contestName, "");
+                return new TextNode(this.contestName);
         }
         return null;
     }

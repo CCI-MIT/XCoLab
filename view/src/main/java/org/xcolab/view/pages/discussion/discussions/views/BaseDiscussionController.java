@@ -4,9 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.discussion.discussions.DiscussionPreferences;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -20,7 +20,7 @@ public abstract class BaseDiscussionController {
         DiscussionPreferences preferences = new DiscussionPreferences();
 
         try {
-            return CategoryClientUtil.getCategoryGroup(preferences.getCategoryGroupId());
+            return CategoryClient.instance().getCategoryGroup(preferences.getCategoryGroupId());
         } catch (CategoryGroupNotFoundException e) {
             throw ReferenceResolutionException
                     .toObject(CategoryGroup.class, preferences.getCategoryGroupId()).build();

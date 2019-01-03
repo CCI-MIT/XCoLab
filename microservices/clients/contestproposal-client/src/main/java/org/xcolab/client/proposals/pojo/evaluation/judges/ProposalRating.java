@@ -1,14 +1,25 @@
 package org.xcolab.client.proposals.pojo.evaluation.judges;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.List;
 
-public class ProposalRating extends AbstractProposalRating {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ProposalRating extends AbstractProposalRating implements Serializable {
 
+    public static final TypeProvider<ProposalRating> TYPES =
+            new TypeProvider<>(ProposalRating.class,
+                    new ParameterizedTypeReference<List<ProposalRating>>() {});
 
     private ProposalRatingType ratingType;
     private ProposalRatingValue ratingValue;
@@ -35,12 +46,9 @@ public class ProposalRating extends AbstractProposalRating {
                 otherdatastring, onlyforinternalusage);
     }
 
-    public ProposalRating(AbstractProposalRating abstractProposalRating,
-            ServiceNamespace serviceNamespace) {
+    public ProposalRating(AbstractProposalRating abstractProposalRating) {
         super(abstractProposalRating);
     }
-
-
 
     public boolean isRatingComplete() {
         final boolean commentComplete = !getCommentEnabled()
@@ -48,12 +56,10 @@ public class ProposalRating extends AbstractProposalRating {
         return getRatingValueId() > 0 && commentComplete;
     }
 
-
     public ProposalRating(ProposalRating proposalRating, Long roundFactor) {
         super(proposalRating);
         this.roundFactor = roundFactor;
     }
-
 
     public String getRatingValueName() {
         ProposalRatingValue ratingValue = this.getRatingValue();
@@ -137,9 +143,5 @@ public class ProposalRating extends AbstractProposalRating {
             ratingValueInPercent = proposalRatingValue / 5.0 * 100.0;
         }
         return ratingValueInPercent;
-    }
-
-    public ProposalRating unwrap() {
-        return this;
     }
 }

@@ -22,14 +22,11 @@ public class MessageBean implements Serializable {
     private String messageSubject;
     @NotBlank
     private String messageText;
-    private String messageHoneypot;
-    private int messageHoneypotPosition;
     private Message message;
     private boolean selected;
 
 
     public MessageBean() {
-        messageHoneypotPosition = ((new Random()).nextInt(10)) % 2;
     }
 
     public MessageBean(Message message) {
@@ -51,18 +48,6 @@ public class MessageBean implements Serializable {
 
     public void setMessageText(String messageText) {
         this.messageText = messageText;
-    }
-
-    public String getMessageHoneypot() {
-        return messageHoneypot;
-    }
-
-    public void setMessageHoneypot(String messageHoneypot) {
-        this.messageHoneypot = messageHoneypot;
-    }
-
-    public int getMessageHoneypotPosition() {
-        return messageHoneypotPosition;
     }
 
     public String getSubject() {

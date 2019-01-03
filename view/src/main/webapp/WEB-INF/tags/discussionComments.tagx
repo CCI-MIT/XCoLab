@@ -85,8 +85,8 @@
 				<table class="c-Comment__list" id="commentsTable" >
 					<c:forEach var="message" items="${thread.comments }" varStatus="status">
                         <!-- TODO COLAB-1387: replace client calls -->
-						<discussions:getRoleName userId="${message.author.id}" proposalId="${proposalId}">
-                            <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
+						<discussions:getRoleCategory userId="${message.author.id}" proposalId="${proposalId}">
+                            <!--@elvariable id="roleCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
 									<a id="_message_${message.id}"><!-- empty --></a>
@@ -102,10 +102,10 @@
 									<br />
 									<div class="role-indicator">
 										<div style="width: 16px">
-                                            <collab:image src="/images/${role.imageUrl}.png"
+                                            <collab:image src="/images/${roleCategory.imageName}.png"
                                                           width="16" height="16" />
 										</div>
-										${role.printName}
+										${roleCategory.displayName}
 									</div>
 
 									<br /><br />
@@ -165,7 +165,7 @@
 									</div>
 								</td>
 							</tr>
-						</discussions:getRoleName>
+						</discussions:getRoleCategory>
 					</c:forEach>
 				</table>
 

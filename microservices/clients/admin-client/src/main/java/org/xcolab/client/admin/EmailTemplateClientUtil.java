@@ -1,14 +1,12 @@
 package org.xcolab.client.admin;
 
 import org.xcolab.client.admin.pojo.EmailTemplate;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public class EmailTemplateClientUtil {
 
-    private static final EmailTemplateClient emailTemplateClient = EmailTemplateClient.fromNamespace(
-            ServiceNamespace.instance());
+    private static final EmailTemplateClient emailTemplateClient = new EmailTemplateClient();
 
     public static List<EmailTemplate> listAllContestEmailTemplates() {
         return emailTemplateClient.listAllContestEmailTemplates();

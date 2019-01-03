@@ -1,10 +1,24 @@
 package org.xcolab.client.proposals.pojo.attributes;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.util.http.client.types.TypeProvider;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
-public class ProposalUnversionedAttribute extends AbstractProposalUnversionedAttribute {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ProposalUnversionedAttribute extends AbstractProposalUnversionedAttribute
+        implements Serializable {
+
+    public static final TypeProvider<ProposalUnversionedAttribute> TYPES =
+            new TypeProvider<>(ProposalUnversionedAttribute.class,
+                    new ParameterizedTypeReference<List<ProposalUnversionedAttribute>>() {});
 
     public ProposalUnversionedAttribute() {}
 
@@ -30,8 +44,7 @@ public class ProposalUnversionedAttribute extends AbstractProposalUnversionedAtt
     }
 
     public ProposalUnversionedAttribute(AbstractProposalUnversionedAttribute
-            abstractProposalUnversionedAttribute,
-            ServiceNamespace serviceNamespace) {
+            abstractProposalUnversionedAttribute) {
         super(abstractProposalUnversionedAttribute);
     }
 }

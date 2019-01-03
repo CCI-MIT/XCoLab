@@ -183,7 +183,7 @@ public class VoteOnProposalActionController {
             Model model, ProposalContext proposalContext, Member currentMember,
             @PathVariable Long contestYear,
             @PathVariable String contestUrlName, @PathVariable Long proposalId) {
-        return proposalDescriptionTabController.showProposalDetails(request, model,
+        return proposalDescriptionTabController.showProposalDetails(request, response, model,
                 proposalContext, currentMember, true, false, null, null);
     }
 

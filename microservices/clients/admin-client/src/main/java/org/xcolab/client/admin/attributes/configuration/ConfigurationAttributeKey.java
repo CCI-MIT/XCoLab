@@ -106,11 +106,6 @@ public final class ConfigurationAttributeKey {
                     .defaultValue("")
                     .build();
 
-    public static final AttributeGetter<String> TYPEKIT_KIT_ID_LOCALHOST =
-            ConfigurationAttributes.newStringAttribute("TYPEKIT_KIT_ID_LOCALHOST")
-                    .defaultValue(TYPEKIT_KIT_ID)
-                    .build();
-
     public static final AttributeGetter<String> PINGDOM_RUM_ID =
             ConfigurationAttributes.newStringAttribute("PINGDOM_RUM_ID")
                     .defaultValue("")
@@ -514,5 +509,10 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Boolean> ALLOW_SELF_REGISTRATION =
             ConfigurationAttributes.newBooleanAttribute("ALLOW_SELF_REGISTRATION")
                     .defaultValue(true)
+                    .build();
+
+    public static final AttributeGetter<String> PINTEREST_ID =
+            ConfigurationAttributes.newStringAttribute("PINTEREST_ID")
+                    .defaultValue("")
                     .build();
 }

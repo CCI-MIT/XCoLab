@@ -1,11 +1,22 @@
 package org.xcolab.client.contest.pojo.ontology;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.util.http.client.types.TypeProvider;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OntologyTerm extends AbstractOntologyTerm {
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class OntologyTerm extends AbstractOntologyTerm implements Serializable {
+
+    public static final TypeProvider<OntologyTerm> TYPES = new TypeProvider<>(OntologyTerm.class,
+            new ParameterizedTypeReference<List<OntologyTerm>>() {});
 
     private final List<OntologyTerm> children = new ArrayList<>();
     private OntologyTerm parent;
@@ -21,7 +32,7 @@ public class OntologyTerm extends AbstractOntologyTerm {
         super(id, parentid, ontologyspaceid, name, descriptionurl, order_);
     }
 
-    public OntologyTerm(AbstractOntologyTerm abstractOntologyTerm, ServiceNamespace serviceNamespace) {
+    public OntologyTerm(AbstractOntologyTerm abstractOntologyTerm) {
         super(abstractOntologyTerm);
     }
 

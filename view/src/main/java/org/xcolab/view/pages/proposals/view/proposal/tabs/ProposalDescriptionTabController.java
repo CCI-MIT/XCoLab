@@ -74,13 +74,19 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             @RequestParam(required = false) String moveType,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult bindingResult) {
-        return showProposalDetails(request, model, proposalContext, currentMember, false,
+        return showProposalDetails(request, response, model, proposalContext, currentMember, false,
                 edit, moveFromContestPhaseId, moveType);
     }
 
-    public String showProposalDetails(HttpServletRequest request, Model model,
-            ProposalContext proposalContext, Member currentMember,
+    public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member currentMember,
             boolean voted, boolean edit, Long moveFromContestPhaseId, String moveType) {
+
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
+        if (!permissions.getCanView()) {
+            return new AccessDeniedPage(currentMember).toViewName(response);
+        }
+
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.DESCRIPTION);
 
         boolean editValidated = false;
@@ -307,7 +313,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             AlertMessage.danger(
                     "Changes NOT saved. Please fix the errors before saving.")
                     .flash(request);
-            return showProposalDetails(request, model, proposalContext, currentMember,
+            return showProposalDetails(request, response, model, proposalContext, currentMember,
                     false, true, null, null);
         }
 

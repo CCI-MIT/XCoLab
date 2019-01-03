@@ -2,14 +2,12 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class PointsClientUtil {
 
-    private static final PointsClient client = PointsClient.fromNamespace(
-            ServiceNamespace.instance());
+    private static final PointsClient client = new PointsClient();
 
     public static PointsClient getClient() {
         return client;

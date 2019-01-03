@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.stubbing.Answer;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeast;
@@ -70,29 +72,28 @@ public class AdminControllerTest {
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
     @Before
-    public void before(){
+    public void before() {
 
        this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
 
+        final Answer<Object> answer = invocation -> {
+            if ("ACTIVE_THEMEZ".equals(invocation.getArguments()[0])) {
+                return Optional.of(getConfigAttribute());
+            } else {
+                return Optional.empty();
+            }
+
+        };
         Mockito.when(configurationAttributeDao.getConfigurationAttribute(anyString(), anyString()))
-            .thenAnswer(invocation -> {
-                if("ACTIVE_THEMEZ".equals(invocation.getArguments()[0])){
-                    return Optional.of(getConfigAttribute());
-                }else{
-                    return Optional.empty();
-                }
-
-
-            });
-
-        //.thenAnswer( Optional.of(getConfigAttribute()));
+            .thenAnswer(answer);
+        Mockito.when(configurationAttributeDao.getConfigurationAttribute(anyString(), isNull()))
+                .thenAnswer(answer);
 
         Mockito.when(configurationAttributeDao.create(anyObject()))
             .thenAnswer(invocationOnMock -> getConfigAttribute());
-
-
     }
+
     private ConfigurationAttribute getConfigAttribute(){
         ConfigurationAttribute ca = AdminTestUtils.getConfigurationAttribute("a");
         ca.setStringValue("CLIMATE_COLAB");

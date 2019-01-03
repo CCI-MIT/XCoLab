@@ -17,8 +17,9 @@ logging:
     org.springframework.boot.actuate: WARN
     org.xcolab.service.tracking.service.iptranslation: INFO
 
-flyway:
-  table: flyway_tracking_schema_version
-  baselineOnMigrate: true
-  baselineVersion: 0
-  outOfOrder: true
+spring:
+  flyway:
+    table: flyway_tracking_schema_version
+    baselineOnMigrate: true
+    baselineVersion: 0
+    outOfOrder: true
