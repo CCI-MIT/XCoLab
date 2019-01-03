@@ -22,13 +22,12 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.spring.converters.CaseInsensitiveStringToEnumConverterFactory;
-import org.xcolab.view.config.spring.properties.ServerProperties;
 import org.xcolab.view.config.spring.properties.TomcatProperties;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.spring.properties.WebProperties.CacheSettings;
@@ -46,9 +45,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-@EnableConfigurationProperties(
-        {WebProperties.class, TomcatProperties.class, ServerProperties.class})
-public class WebConfig extends WebMvcConfigurerAdapter {
+@EnableConfigurationProperties({WebProperties.class, TomcatProperties.class})
+public class WebConfig implements WebMvcConfigurer {
 
     private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
 
@@ -56,7 +54,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     // Configuration properties
     private final TomcatProperties tomcatProperties;
-    private final ServerProperties serverProperties;
     private final WebProperties webProperties;
 
     // Interceptors
@@ -71,13 +68,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public WebConfig(PopulateLayoutVariablesFilter populateLayoutVariablesFilter,
             PopulateProposalModelInterceptor populateContextInterceptor,
             ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
-            TomcatProperties tomcatProperties, ServerProperties serverProperties,
+            TomcatProperties tomcatProperties,
             WebProperties webProperties, LocaleResolver localeResolver) {
         Assert.notNull(tomcatProperties, "TomcatProperties bean is required");
-        Assert.notNull(serverProperties, "ServerProperties bean is required");
         Assert.notNull(webProperties, "webProperties bean is required");
         this.tomcatProperties = tomcatProperties;
-        this.serverProperties = serverProperties;
         this.webProperties = webProperties;
 
         Assert.notNull(populateLayoutVariablesFilter, "ThemeVariableInterceptor bean is required");
@@ -166,7 +161,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new MemberArgumentResolver(new AuthenticationContext()));
         argumentResolvers.add(new ProposalContextArgumentResolver(localeResolver));
-        super.addArgumentResolvers(argumentResolvers);
     }
 
     @Override

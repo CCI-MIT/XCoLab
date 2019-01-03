@@ -9,8 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    @SuppressWarnings("ProhibitedExceptionDeclared")
+    protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .anyRequest().permitAll()
             .and()
@@ -18,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
+    protected void configure(AuthenticationManagerBuilder auth) {
+        // intentionally empty to prevent basic auth from being auto configured
     }
 }

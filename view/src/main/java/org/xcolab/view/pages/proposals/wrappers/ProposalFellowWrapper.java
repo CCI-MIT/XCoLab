@@ -9,7 +9,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
-import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
+import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class ProposalFellowWrapper extends Proposal {
                     proposal.getId(),
                     contestPhase.getId());
             Member m = MembersClient.getMemberUnchecked(currentMember.getId());
-            this.proposalRatings = new ProposalRatings(m, list);
+            this.proposalRatings = new UserProposalRatings(m, list);
         } catch (ContestNotFoundException  e) {
             this.proposalRatings = null;
         }

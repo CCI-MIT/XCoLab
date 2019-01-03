@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.tracking.pojo.ITrackedVisit;
 import org.xcolab.client.tracking.pojo.ITrackedVisitor;
-import org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao;
+import org.xcolab.service.tracking.domain.trackedvisitor.TrackedVisitorDao;
 import org.xcolab.service.tracking.domain.trackedvisit.TrackedVisitDao;
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService;
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService.IpFormatException;

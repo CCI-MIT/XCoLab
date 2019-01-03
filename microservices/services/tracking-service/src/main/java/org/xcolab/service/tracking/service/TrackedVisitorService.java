@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.tracking.pojo.ITrackedVisit;
 import org.xcolab.client.tracking.pojo.ITrackedVisitor;
 import org.xcolab.model.tables.pojos.TrackedVisitorImpl;
-import org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao;
+import org.xcolab.service.tracking.domain.trackedvisitor.TrackedVisitorDao;
 
 import java.util.UUID;
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.tracking.pojo.IBalloonText;
+import org.xcolab.client.tracking.pojo.tables.pojos.BalloonText;
 import org.xcolab.model.tables.records.BalloonTextRecord;
 import org.xcolab.service.tracking.exceptions.NotFoundException;
 
@@ -31,7 +32,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(IBalloonText.class);
+        return record.into(BalloonText.class);
 
     }
 
@@ -40,7 +41,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
         return dslContext.select()
                 .from(BALLOON_TEXT)
                 .where(BALLOON_TEXT.ENABLED.eq(true))
-                .fetchInto(IBalloonText.class);
+                .fetchInto(BalloonText.class);
     }
 
     @Override

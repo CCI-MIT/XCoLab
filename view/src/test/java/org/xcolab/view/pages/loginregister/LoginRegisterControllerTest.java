@@ -23,7 +23,6 @@ import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.MockContestType;
-import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
@@ -75,8 +74,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         MembersClient.class,
         EmailTemplateClientUtil.class,
         EmailClient.class,
-        MessagingClient.class,
-        BalloonsClient.class
+        MessagingClient.class
 })
 
 @ActiveProfiles("test")
@@ -97,7 +95,6 @@ public class LoginRegisterControllerTest {
         PowerMockito.mockStatic(EmailClient.class);
 
         PowerMockito.mockStatic(MessagingClient.class);
-        PowerMockito.mockStatic(BalloonsClient.class);
 
         MembersClientMockerHelper.mockMembersClient();
         AdminClientMockerHelper.mockAdminClient();

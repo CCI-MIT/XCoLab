@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.tracking.pojo.ITrackedVisitor;
+import org.xcolab.client.tracking.pojo.tables.pojos.TrackedVisitor;
 
 import java.util.Optional;
 
 import static org.xcolab.model.tables.TrackedVisitorTable.TRACKED_VISITOR;
 
 @Repository
-public class TrackedVisitorDaoImpl implements org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao {
+public class TrackedVisitorDaoImpl implements TrackedVisitorDao {
 
     private final DSLContext dslContext;
 
@@ -32,7 +33,7 @@ public class TrackedVisitorDaoImpl implements org.xcolab.service.tracking.domain
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ITrackedVisitor.class));
+        return Optional.of(record.into(TrackedVisitor.class));
     }
 
     @Override
@@ -45,7 +46,7 @@ public class TrackedVisitorDaoImpl implements org.xcolab.service.tracking.domain
         if (result.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(result.get(0).into(ITrackedVisitor.class));
+        return Optional.of(result.get(0).into(TrackedVisitor.class));
     }
 
     @Override

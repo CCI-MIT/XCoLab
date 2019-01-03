@@ -50,20 +50,16 @@ public class ProposalRating extends AbstractProposalRating implements Serializab
         super(abstractProposalRating);
     }
 
-
-
     public boolean isRatingComplete() {
         final boolean commentComplete = !getCommentEnabled()
                 || !StringUtils.isEmpty(this.getComment());
         return getRatingValueId() > 0 && commentComplete;
     }
 
-
     public ProposalRating(ProposalRating proposalRating, Long roundFactor) {
         super(proposalRating);
         this.roundFactor = roundFactor;
     }
-
 
     public String getRatingValueName() {
         ProposalRatingValue ratingValue = this.getRatingValue();
@@ -147,9 +143,5 @@ public class ProposalRating extends AbstractProposalRating implements Serializab
             ratingValueInPercent = proposalRatingValue / 5.0 * 100.0;
         }
         return ratingValueInPercent;
-    }
-
-    public ProposalRating unwrap() {
-        return this;
     }
 }

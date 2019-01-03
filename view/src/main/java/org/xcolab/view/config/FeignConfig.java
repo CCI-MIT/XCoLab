@@ -4,9 +4,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Component
-@EnableFeignClients(basePackages = {"org.xcolab.client"})
-@Profile("!test")
-public class FeignConfig {
+import org.xcolab.util.autoconfigure.AbstractFeignConfig;
 
+@Component
+@Profile("!test")
+@EnableFeignClients(basePackages = {"org.xcolab.client"})
+public class FeignConfig extends AbstractFeignConfig {
 }
