@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.content.pojo.IContentPage;
+import org.xcolab.client.content.pojo.tables.pojos.ContentPage;
 import org.xcolab.model.tables.records.ContentPageRecord;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class ContentPageDaoImpl implements ContentPageDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(IContentPage.class));
+        return Optional.of(record.into(ContentPage.class));
     }
 
     @Override
@@ -47,7 +48,7 @@ public class ContentPageDaoImpl implements ContentPageDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(IContentPage.class));
+        return Optional.of(record.into(ContentPage.class));
     }
 
     @Override
@@ -60,7 +61,7 @@ public class ContentPageDaoImpl implements ContentPageDao {
             query.addConditions(CONTENT_PAGE.TITLE.eq(title));
         }
 
-        return query.fetch().into(IContentPage.class);
+        return query.fetch().into(ContentPage.class);
     }
 
     @Override

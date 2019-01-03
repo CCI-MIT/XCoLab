@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 
 import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.content.pojo.IContentFolder;
+import org.xcolab.client.content.pojo.tables.pojos.ContentArticleVersion;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.records.ContentArticleVersionRecord;
 import org.xcolab.service.content.domain.contentfolder.ContentFolderDao;
@@ -88,7 +89,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(IContentArticleVersion.class);
+        return record.into(ContentArticleVersion.class);
     }
 
     @Override
@@ -100,7 +101,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                     .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.isNull())
                     .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.ARTICLE_ID))
                     .fetch()
-                    .into(IContentArticleVersion.class);
+                    .into(ContentArticleVersion.class);
         } else {
             return this.dslContext.select(CONTENT_ARTICLE_VERSION.fields())
                     .from(CONTENT_ARTICLE_VERSION)
@@ -108,7 +109,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                     .where(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(contentFolderId))
                     .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.ID))
                     .fetch()
-                    .into(IContentArticleVersion.class);
+                    .into(ContentArticleVersion.class);
         }
     }
 
@@ -126,7 +127,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(IContentArticleVersion.class);
+        return record.into(ContentArticleVersion.class);
     }
 
     @Override
@@ -191,6 +192,6 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(IContentArticleVersion.class);
+        return query.fetchInto(ContentArticleVersion.class);
     }
 }

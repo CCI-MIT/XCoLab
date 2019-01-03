@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import org.xcolab.client.content.pojo.IContentFolder;
+import org.xcolab.client.content.pojo.tables.pojos.ContentFolder;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.records.ContentFolderRecord;
 import org.xcolab.service.utils.PaginationHelper;
@@ -30,16 +31,16 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
     }
 
     @Override
-    public IContentFolder create(IContentFolder IContentFolder) {
+    public IContentFolder create(IContentFolder contentFolder) {
         ContentFolderRecord ret = this.dslContext.insertInto(CONTENT_FOLDER)
-                .set(CONTENT_FOLDER.NAME, IContentFolder.getName())
-                .set(CONTENT_FOLDER.DESCRIPTION, IContentFolder.getDescription())
-                .set(CONTENT_FOLDER.PARENT_FOLDER_ID, IContentFolder.getParentFolderId())
+                .set(CONTENT_FOLDER.NAME, contentFolder.getName())
+                .set(CONTENT_FOLDER.DESCRIPTION, contentFolder.getDescription())
+                .set(CONTENT_FOLDER.PARENT_FOLDER_ID, contentFolder.getParentFolderId())
                 .returning(CONTENT_FOLDER.ID)
                 .fetchOne();
         if (ret != null) {
-            IContentFolder.setId(ret.getValue(CONTENT_FOLDER.ID));
-            return IContentFolder;
+            contentFolder.setId(ret.getValue(CONTENT_FOLDER.ID));
+            return contentFolder;
         } else {
             return null;
         }
@@ -47,12 +48,12 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
     }
 
     @Override
-    public boolean update(IContentFolder IContentFolder) {
+    public boolean update(IContentFolder contentFolder) {
          return dslContext.update(CONTENT_FOLDER)
-                .set(CONTENT_FOLDER.NAME, IContentFolder.getName())
-                .set(CONTENT_FOLDER.DESCRIPTION, IContentFolder.getDescription())
-                .set(CONTENT_FOLDER.PARENT_FOLDER_ID, IContentFolder.getParentFolderId())
-                .where(CONTENT_FOLDER.ID.eq(IContentFolder.getId()))
+                .set(CONTENT_FOLDER.NAME, contentFolder.getName())
+                .set(CONTENT_FOLDER.DESCRIPTION, contentFolder.getDescription())
+                .set(CONTENT_FOLDER.PARENT_FOLDER_ID, contentFolder.getParentFolderId())
+                .where(CONTENT_FOLDER.ID.eq(contentFolder.getId()))
                 .execute() > 0;
     }
 
@@ -61,7 +62,7 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
         return this.dslContext.select()
                 .from(CONTENT_FOLDER)
                 .where(CONTENT_FOLDER.ID.eq(contentFolderId))
-                .fetchOneInto(IContentFolder.class);
+                .fetchOneInto(ContentFolder.class);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(IContentFolder.class);
+        return query.fetchInto(ContentFolder.class);
     }
 
     @Override

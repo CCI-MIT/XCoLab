@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import org.xcolab.client.content.pojo.IFileEntry;
+import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
 import org.xcolab.model.tables.records.FileEntryRecord;
 import org.xcolab.service.content.exceptions.NotFoundException;
 
@@ -50,6 +51,6 @@ public class FileEntryDaoImpl implements FileEntryDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(IFileEntry.class);
+        return record.into(FileEntry.class);
     }
 }

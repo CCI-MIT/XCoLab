@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.content.pojo.IContentArticle;
+import org.xcolab.client.content.pojo.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.records.ContentArticleRecord;
 import org.xcolab.service.content.exceptions.NotFoundException;
 import org.xcolab.service.content.wrappers.ContentArticleWrapper;
@@ -75,7 +76,7 @@ public class ContentArticleDaoImpl implements ContentArticleDao {
         if (record == null) {
             throw new NotFoundException();
         }
-        return record.into(IContentArticle.class);
+        return record.into(ContentArticle.class);
     }
 
     @Override
