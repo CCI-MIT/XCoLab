@@ -1,16 +1,16 @@
 package org.xcolab.view.caching;
 
-import org.xcolab.client.contest.pojo.ContestDto;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.util.http.caching.validation.AbstractCacheValidator;
 
-public class ContestCacheValidator extends AbstractCacheValidator<ContestDto> {
+public class ContestCacheValidator extends AbstractCacheValidator<Contest> {
 
     public ContestCacheValidator() {
-        super(ContestDto.class);
+        super(Contest.class);
     }
 
     @Override
-    public boolean isValid(ContestDto entity) {
+    public boolean isValid(Contest entity) {
         return entity.getId() != null;
     }
 }

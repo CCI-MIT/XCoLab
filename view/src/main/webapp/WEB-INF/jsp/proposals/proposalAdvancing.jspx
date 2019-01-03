@@ -8,8 +8,8 @@
     <!--@elvariable id="isFinalistPhase" type="java.lang.Boolean"-->
     <!--@elvariable id="hasAlreadyBeenPromoted" type="java.lang.Boolean"-->
     <!--@elvariable id="emailTemplates" type="java.util.Map<String, org.xcolab.view.pages.proposals.wrappers.ContestEmailTemplateWrapper>"-->
-    <!--@elvariable id="judgeRatings" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.ProposalRatings>"-->
-    <!--@elvariable id="fellowRatings" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.ProposalRatings>"-->
+    <!--@elvariable id="judgeRatings" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.UserProposalRatings>"-->
+    <!--@elvariable id="fellowRatings" type="java.util.List<org.xcolab.client.proposals.pojo.proposals.UserProposalRatings>"-->
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Advancing">
@@ -41,7 +41,7 @@
                         </c:when>
                         <c:otherwise>
                             <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL}" method="post"
-                                       commandName="proposalAdvancingBean">
+                                       modelAttribute="proposalAdvancingBean">
                                 <div class="c-Box c-Box--colorTan">
                                     <div class="c-Box__body">
                                         <h3>Advance ${contestType.proposalName} to Next Round?</h3>

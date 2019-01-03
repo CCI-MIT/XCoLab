@@ -8,8 +8,8 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.util.TestUtil;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 
 public class MembersClientMockerHelper {
@@ -32,7 +32,7 @@ public class MembersClientMockerHelper {
         Mockito.when(MembersClient.findMemberByEmailAddress(anyString()))
                 .thenAnswer(invocation -> getDefaultMember());
 
-        Mockito.when(MembersClient.register(anyObject()))
+        Mockito.when(MembersClient.register(any(Member.class)))
                 .thenAnswer(invocation -> getDefaultMember());
 
         Mockito.when(MembersClient.findMemberByScreenName(anyString()))

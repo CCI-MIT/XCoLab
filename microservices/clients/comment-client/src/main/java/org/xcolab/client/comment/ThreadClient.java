@@ -2,47 +2,39 @@ package org.xcolab.client.comment;
 
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.pojo.CommentThreadDto;
 import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ThreadClient {
 
-    private final CommentServiceWrapper commentServiceWrapper;
-    private final ServiceNamespace serviceNamespace;
+    // Default instance when used statically
+    private static final ThreadClient INSTANCE = new ThreadClient();
 
-    private static final Map<ServiceNamespace, ThreadClient> instances = new HashMap<>();
+    private final CommentServiceWrapper commentServiceWrapper = new CommentServiceWrapper();
 
-    public ThreadClient(ServiceNamespace serviceNamespace) {
-        commentServiceWrapper = CommentServiceWrapper.fromService(serviceNamespace);
-        this.serviceNamespace = serviceNamespace;
+    public static ThreadClient instance() {
+        return INSTANCE;
     }
 
     public List<CommentThread> listThreads(int start, int last, Long categoryId,
             Long groupId, ThreadSortColumn sortColumn, boolean ascending) {
-        return DtoUtil.toPojos(commentServiceWrapper.listThreads(start, last, sortColumn.getIdentifier(ascending),
-                null, categoryId, groupId), serviceNamespace);
+        return commentServiceWrapper.listThreads(start, last, sortColumn.getIdentifier(ascending),
+                null, categoryId, groupId);
     }
 
     public CommentThread getThread(long threadId) throws ThreadNotFoundException {
-        return commentServiceWrapper.getThread(threadId, CacheName.MISC_MEDIUM)
-                .toPojo(serviceNamespace);
+        return commentServiceWrapper.getThread(threadId, CacheName.MISC_MEDIUM);
     }
 
     public boolean updateThread(CommentThread thread) {
-        return commentServiceWrapper.updateThread(new CommentThreadDto(thread));
+        return commentServiceWrapper.updateThread(thread);
     }
 
     public CommentThread createThread(CommentThread thread) {
-        return commentServiceWrapper.createThread(new CommentThreadDto(thread))
-                .toPojo(serviceNamespace);
+        return commentServiceWrapper.createThread(thread);
     }
 
     public void deleteThread(long threadId) {
@@ -55,9 +47,5 @@ public class ThreadClient {
 
     public long getLastActivityauthorUserId(long threadId) {
         return commentServiceWrapper.getLastActivityauthorUserId(threadId, CacheName.MISC_REQUEST);
-    }
-
-    public static ThreadClient fromService(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, ThreadClient::new);
     }
 }

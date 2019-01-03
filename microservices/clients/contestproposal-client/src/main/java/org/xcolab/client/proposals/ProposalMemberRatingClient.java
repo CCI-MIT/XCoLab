@@ -1,88 +1,76 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.util.activities.enums.ProposalActivityType;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.SupportedProposal;
-import org.xcolab.client.proposals.pojo.SupportedProposalDto;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
-import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporterDto;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
-import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVoteDto;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
-import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class ProposalMemberRatingClient {
 
-    private static final Map<ServiceNamespace, ProposalMemberRatingClient> instances = new HashMap<>();
+    private final RestResource1<ProposalSupporter, Long> proposalSupporterResource;
+    private final RestResource<ProposalVote, Long> proposalVoteResource;
+    private final RestResource<SupportedProposal, Long> supportedProposalsResource;
 
-    private final ServiceNamespace serviceNamespace;
-
-    private final RestResource1<ProposalSupporterDto, Long> proposalSupporterResource;
-    private final RestResource<ProposalVoteDto, Long> proposalVoteResource;
-    private final RestResource<SupportedProposalDto, Long> supportedProposalsResource;
-
-    private ProposalMemberRatingClient(ServiceNamespace serviceNamespace) {
+    public ProposalMemberRatingClient() {
         proposalSupporterResource = new RestResource1<>(ProposalResource.PROPOSAL_SUPPORTER,
-                ProposalSupporterDto.TYPES, serviceNamespace);
+                ProposalSupporter.TYPES);
         proposalVoteResource = new RestResource1<>(ProposalResource.PROPOSAL_VOTE,
-                ProposalVoteDto.TYPES, serviceNamespace);
+                ProposalVote.TYPES);
 
         supportedProposalsResource = new RestResource1<>(ProposalResource.SUPPORTED_PROPOSALS,
-                 SupportedProposalDto.TYPES, serviceNamespace);
-
-        this.serviceNamespace = serviceNamespace;
-    }
-
-    public static ProposalMemberRatingClient fromNamespace(ServiceNamespace serviceNamespace) {
-        return instances.computeIfAbsent(serviceNamespace, ProposalMemberRatingClient::new);
+                 SupportedProposal.TYPES);
     }
 
     public List<ProposalSupporter> getProposalSupporters(long proposalId) {
-        return DtoUtil.toPojos(proposalSupporterResource.list()
+        return proposalSupporterResource.list()
             .withCache(CacheName.MISC_REQUEST)
             .queryParam("proposalId", proposalId)
-            .execute(), serviceNamespace);
+            .execute();
     }
 
     public List<ProposalSupporter> getProposalSupportersByUserId(Long userId) {
-        return DtoUtil.toPojos(proposalSupporterResource.list()
+        return proposalSupporterResource.list()
                 .optionalQueryParam("userId", userId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public List<SupportedProposal> getSupportedProposals(long userId) {
-        return DtoUtil.toPojos(supportedProposalsResource
+        return supportedProposalsResource
                 .list()
                 .queryParam("userId", userId)
-                .execute(), serviceNamespace);
+                .execute()
+                .stream()
+                    .map(sr -> new SupportedProposal(sr))
+                    .collect(Collectors.toList());
     }
 
     public Integer getProposalSupportersCount(Long proposalId) {
-        return proposalSupporterResource.<ProposalSupporterDto, Integer>collectionService("count", Integer.class)
+        return proposalSupporterResource.<ProposalSupporter, Integer>collectionService("count", Integer.class)
                 .optionalQueryParam("proposalId", proposalId)
-                .withCache(CacheKeys.withClass(ProposalSupporterDto.class)
+                .withCache(CacheKeys.withClass(ProposalSupporter.class)
                         .withParameter("proposalId", proposalId)
                         .asCount(), CacheName.MISC_REQUEST)
                 .get();
     }
 
     public Integer getProposalSupportersCountCached(Long proposalId) {
-        return proposalSupporterResource.<ProposalSupporterDto, Integer>collectionService("count", Integer.class)
+        return proposalSupporterResource.<ProposalSupporter, Integer>collectionService("count", Integer.class)
             .optionalQueryParam("proposalId", proposalId)
-            .withCache(CacheKeys.withClass(ProposalSupporterDto.class)
+            .withCache(CacheKeys.withClass(ProposalSupporter.class)
                 .withParameter("proposalId", proposalId)
                 .asCount(), CacheName.PROPOSAL_DETAILS)
             .get();
@@ -106,7 +94,7 @@ public final class ProposalMemberRatingClient {
         supporter.setCreatedAt(new Timestamp(new Date().getTime()));
         createProposalSupporter(supporter);
 
-        ActivitiesClient activityClient = ActivitiesClient.fromNamespace(serviceNamespace);
+        ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
 
         if (publishActivity) {
             activityClient.createActivityEntry(ProposalActivityType.SUPPORT_ADDED, userId,
@@ -116,8 +104,8 @@ public final class ProposalMemberRatingClient {
 
     public ProposalSupporter createProposalSupporter(ProposalSupporter proposalSupporter) {
         return proposalSupporterResource
-                .create(new ProposalSupporterDto(proposalSupporter))
-                .execute().toPojo(serviceNamespace);
+                .create(new ProposalSupporter(proposalSupporter))
+                .execute();
     }
 
     public Boolean deleteProposalSupporter(Long proposalId, Long userId) {
@@ -142,7 +130,7 @@ public final class ProposalMemberRatingClient {
     }
 
     public int countVotesByUserInPhase(long userId, long phaseId) {
-        return proposalVoteResource.<ProposalVoteDto, Integer>collectionService("count", Integer.class)
+        return proposalVoteResource.<ProposalVote, Integer>collectionService("count", Integer.class)
                 .queryParam("userId", userId)
                 .queryParam("contestPhaseId", phaseId)
                 .get();
@@ -150,11 +138,11 @@ public final class ProposalMemberRatingClient {
 
     public Integer countProposalVotesInContestPhaseProposalId(long contestPhaseId, long proposalId,
             CacheName cacheName) {
-        return proposalVoteResource.<ProposalVoteDto, Integer>collectionService("count", Integer.class)
+        return proposalVoteResource.<ProposalVote, Integer>collectionService("count", Integer.class)
                 .queryParam("contestPhaseId", contestPhaseId)
                 .queryParam("proposalId", proposalId)
                 .queryParam("isValidOverride", true)
-                .withCache(CacheKeys.withClass(ProposalVoteDto.class)
+                .withCache(CacheKeys.withClass(ProposalVote.class)
                         .withParameter("contestPhaseId", contestPhaseId)
                         .withParameter("proposalId", proposalId)
                         .asCount(), cacheName)
@@ -180,9 +168,9 @@ public final class ProposalMemberRatingClient {
     }
 
     public List<ProposalVote> getVotesByMember(long userId) {
-        return DtoUtil.toPojos(proposalVoteResource.list()
+        return proposalVoteResource.list()
                 .queryParam("userId", userId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public void invalidateVotesForMember(long userId, String reason) {
@@ -197,11 +185,11 @@ public final class ProposalMemberRatingClient {
     }
 
     public List<ProposalVote> getProposalVotes(Long contestPhaseId, Long proposalId, Long userId) {
-        return DtoUtil.toPojos(proposalVoteResource.list()
+        return proposalVoteResource.list()
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("userId", userId)
-                .execute(), serviceNamespace);
+                .execute();
     }
 
     public List<ProposalVote> getProposalVotesByUserInPhase(long userId, long contestPhaseId) {
@@ -232,18 +220,18 @@ public final class ProposalMemberRatingClient {
         return createProposalVote(pv);
     }
     public ProposalVote createProposalVote(ProposalVote proposalVote) {
-        return proposalVoteResource.create(new ProposalVoteDto(proposalVote)).execute()
-                .toPojo(serviceNamespace);
+        return proposalVoteResource.create(new ProposalVote(proposalVote)).execute()
+                ;
     }
 
     public ProposalVote getProposalVoteByProposalIdUserId(Long proposalId, Long userId) {
         try {
             return proposalVoteResource
-                    .collectionService("getProposalVoteByProposalIdUserId", ProposalVoteDto.class)
+                    .collectionService("getProposalVoteByProposalIdUserId", ProposalVote.class)
                     .optionalQueryParam("proposalId", proposalId)
                     .optionalQueryParam("userId", userId)
                     .getChecked()
-                    .toPojo(serviceNamespace);
+                    ;
         } catch (EntityNotFoundException ig) {
             return null;
         }

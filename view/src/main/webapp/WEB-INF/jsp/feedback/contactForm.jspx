@@ -32,7 +32,7 @@
 			</c:if>
 			<div id="contactForm" style="${not hasError ? 'display:none;' : ''};">
 
-				<form:form action="/feedback" method="post" commandName="contactBean" id="contactFormForm">
+				<form:form action="/feedback" method="post" modelAttribute="contactBean" id="contactFormForm">
 					<form:errors cssClass="alert alert-danger" element="div" />
 
 					<table class="reg">

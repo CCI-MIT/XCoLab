@@ -35,7 +35,7 @@
             </c:if>
             <c:set var="savePointsAssignmentsURL" value="${proposalUrl}/savePointAssignments"/>
 
-            <form:form id="assignPointsForm" action="${savePointsAssignmentsURL}" method="post" commandName="assignPointsBean">
+            <form:form id="assignPointsForm" action="${savePointsAssignmentsURL}" method="post" modelAttribute="assignPointsBean">
                 <jsp:include page="./proposalDetails/proposalPointTypes.jspx"/>
 
                 <c:if test="${currentTabWrapped.canEdit}">

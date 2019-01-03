@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
@@ -20,7 +21,9 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
+import org.xcolab.view.pages.proposals.permissions.ContestPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
@@ -46,7 +49,7 @@ public class ContestProposalsController extends BaseProposalsController {
             @PathVariable String contestUrlName, @PathVariable String phaseId,
             final SortFilterPage sortFilterPage) {
         setBasePageAttributes(proposalContext, model);
-        return showContestProposalsPage(model, proposalContext,
+        return showContestProposalsPage(response, model, proposalContext,
                 sortFilterPage, loggedInMember);
     }
 
@@ -58,7 +61,7 @@ public class ContestProposalsController extends BaseProposalsController {
             final SortFilterPage sortFilterPage) {
         model.addAttribute("judgeId", judgeId);
         setBasePageAttributes(proposalContext, model);
-        return showContestProposalsPage(model, proposalContext,
+        return showContestProposalsPage(response, model, proposalContext,
                 sortFilterPage, loggedInMember);
     }
 
@@ -68,7 +71,8 @@ public class ContestProposalsController extends BaseProposalsController {
             @PathVariable String contestYear, @PathVariable String contestUrlName,
             final SortFilterPage sortFilterPage) {
         setBasePageAttributes(proposalContext, model);
-        return showContestProposalsPage(model, proposalContext, sortFilterPage, loggedInMember);
+        return showContestProposalsPage(response, model, proposalContext, sortFilterPage,
+                loggedInMember);
     }
 
     private List<Proposal> getProposals(ProposalContext proposalContext, Member loggedInMember) {
@@ -114,10 +118,17 @@ public class ContestProposalsController extends BaseProposalsController {
         return proposals;
     }
 
-    private String showContestProposalsPage(Model model, ProposalContext proposalContext,
+    private String showContestProposalsPage(HttpServletResponse response, Model model, ProposalContext proposalContext,
             final SortFilterPage sortFilterPage, Member loggedInMember) {
 
+        Contest contest = proposalContext.getContest();
         ContestPhase contestPhase = proposalContext.getContestPhase();
+
+        final ContestType contestType = contest.getContestType();
+        if (contestType.isRestrictedAccess() && !new ContestPermissions(loggedInMember)
+                .getCanAccessContest(contest)) {
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
+        }
 
         List<Proposal> proposals = getProposals(proposalContext, loggedInMember);
 

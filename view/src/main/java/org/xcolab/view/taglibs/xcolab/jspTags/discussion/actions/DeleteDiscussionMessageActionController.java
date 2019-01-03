@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 
@@ -26,8 +25,7 @@ public class DeleteDiscussionMessageActionController extends BaseDiscussionsActi
             @RequestParam(value = "contestId", required = false) Long contestId)
             throws IOException, CommentNotFoundException {
 
-        final CommentClient commentClient = CommentClientUtil.getClient();
-        Comment comment = commentClient.getComment(commentId);
+        Comment comment = CommentClient.instance().getComment(commentId);
 
         DiscussionPermissions discussionPermissions = getDiscussionPermissions(request,
                 comment.getThread());
@@ -39,7 +37,7 @@ public class DeleteDiscussionMessageActionController extends BaseDiscussionsActi
             return;
         }
 
-        commentClient.deleteComment(commentId);
+        CommentClient.instance().deleteComment(commentId);
         String redirectUrl = request.getHeader(HttpHeaders.REFERER);
         response.sendRedirect(redirectUrl);
     }

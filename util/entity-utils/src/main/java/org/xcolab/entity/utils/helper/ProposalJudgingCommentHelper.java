@@ -6,6 +6,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
@@ -28,7 +29,7 @@ public class ProposalJudgingCommentHelper {
 
     public ProposalJudgingCommentHelper(Proposal proposal, ContestPhase contestPhase) {
         this.proposal = proposal;
-        proposalPhaseClient = ProposalPhaseClient.fromNamespace(proposal.getServiceNamespace());
+        proposalPhaseClient = ProposalPhaseClientUtil.getClient();
         this.contestPhase = contestPhase;
     }
 
@@ -79,21 +80,22 @@ public class ProposalJudgingCommentHelper {
     }
 
     public String getAdvancingComment() {
-            ProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient.
-                    getProposalContestPhaseAttribute(proposal.getId(),
-                            contestPhase.getId(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION );
-            AdvanceDecision advanceDecision =
-                    AdvanceDecision.fromInt(
-                            advanceDecisionAttribute.getNumericValue().intValue());
+        ProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient.
+                getProposalContestPhaseAttribute(proposal.getId(), contestPhase.getId(),
+                        ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
+
+        if (advanceDecisionAttribute != null) {
+            AdvanceDecision advanceDecision = AdvanceDecision.fromInt(
+                    advanceDecisionAttribute.getNumericValue().intValue());
 
             if (advanceDecision != AdvanceDecision.NO_DECISION) {
-
-                return proposalPhaseClient.
-                        getProposalContestPhaseAttribute(proposal.getId(),
-                                contestPhase.getId(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW).getStringValue();
+                return proposalPhaseClient.getProposalContestPhaseAttribute(proposal.getId(),
+                        contestPhase.getId(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW)
+                        .getStringValue();
             }
+        }
 
-        return null;
+        return "";
     }
 
     public void setAdvancingComment(String comment) {

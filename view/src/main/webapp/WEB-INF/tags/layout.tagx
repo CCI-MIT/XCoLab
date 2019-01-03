@@ -75,6 +75,15 @@
                 parser.href = el.src;
                 el.src = parser.pathname;
             }
+            if (Sentry) {
+                Sentry.addBreadcrumb({
+                    category: 'retry',
+                    message: parser.href,
+                    level: 'info'
+                });
+            } else {
+                console.log('Retrying resource' + parser.href)
+            }
         }
     </script>
 
@@ -82,7 +91,7 @@
     <!-- ============ Fonts ============ -->
 
     <c:if test="${not empty _themeContext.credentialVariables.typekitId}">
-        <c:set var="typekitId" value="${_themeContext.serverEnvironment eq 'LOCAL' ? _themeContext.credentialVariables.typekitIdLocal :_themeContext.credentialVariables.typekitId}" />
+        <c:set var="typekitId" value="${_themeContext.credentialVariables.typekitId}" />
         <link rel="stylesheet" href="https://use.typekit.com/${typekitId}.css"/>
     </c:if>
 
@@ -98,7 +107,7 @@
     <meta content="${_themeContext.metaVariables.metaPageKeywords}" lang="en-US" name="keywords" />
 
     <c:choose>
-        <c:when test="${!_themeContext.serverEnvironment.isProduction}">
+        <c:when test="${!_themeContext.serverVariables.environment.isProduction}">
             <!-- Prevent indexing of non-production sites -->
             <meta name="robots" content="noindex, nofollow" />
             <script>
@@ -151,7 +160,7 @@
         <link rel="canonical" href="${_themeContext.colabUrl}${canonicalUrlRelative}" />
     </c:if>
 
-    <c:if test="${_themeContext.serverEnvironment.isProduction}">
+    <c:if test="${_themeContext.serverVariables.environment.isProduction}">
         <xcolab-scripts:analyticsScripts googleAnalyticsKey="${_themeContext.credentialVariables.googleAnalyticsKey}"
                                          pingdomRumId="${_themeContext.credentialVariables.pingdomRumId}"
                                          analyticsAttribute="${_themeContext.messageVariables.analyticsAttribute}"
@@ -160,6 +169,35 @@
 
     <c:if test="${not empty _themeContext.credentialVariables.sentryDsn}">
         <script src="https://js.sentry-cdn.com/${_themeContext.credentialVariables.sentryDsn}.min.js" crossorigin="anonymous"><!-- --></script>
+        <script>
+            document.addEventListener('readystatechange', function() {
+                Sentry.addBreadcrumb({
+                    category: 'readystatechange',
+                    message: document.readyState,
+                    level: 'info'
+                });
+                Sentry.configureScope(function(scope) {
+                    scope.setTag("readystate", document.readyState);
+                });
+            });
+            Sentry.onLoad(function() {
+                var options = {
+                    environment: '${_themeContext.serverVariables.environment.name().toLowerCase()}'
+                };
+                var release = '${_themeContext.serverVariables.buildCommit}';
+                if (release != 'unknown') {
+                    options.release = release;
+                }
+                Sentry.init(options);
+
+                Sentry.configureScope(function(scope) {
+                    scope.setTag("language", "${_themeContext.i18NVariables.language}");
+                    if (_isLoggedIn) {
+                        scope.setUser({"id": "${_themeContext.authenticationVariables.member.id}"});
+                    }
+                });
+            });
+        </script>
     </c:if>
 </head>
 
@@ -170,7 +208,7 @@
         </div>
     </c:if>
 
-    <c:if test="${!_themeContext.serverEnvironment.isProduction}">
+    <c:if test="${!_themeContext.serverVariables.environment.isProduction}">
         <div class="c-TitleBar__container">
             <div class="c-TitleBar c-TitleBar--warning c-TitleBar--fixed">
                 <div class="container c-TitleBar__content">
@@ -302,7 +340,10 @@
 
     <!-- ============ Scripts ============ -->
 
+    <xcolab-scripts:loadTooltips />
+
     <c:if test="${_librariesToLoad['widgets']}">
+        <!-- Note: requires loadTooltips -->
         <xcolab-scripts:loadWidgets />
     </c:if>
 
@@ -317,8 +358,6 @@
     <!-- Needs to be included before other scripts that bind on 'click' (e.g. bootstrap.js) -->
     <collab:script src="/js/enhancedLinkHandler.js"/>
 
-    <xcolab-scripts:loadTooltips />
-
     <c:if test="${_librariesToLoad['moment.js']}">
         <xcolab-scripts:loadMoment locale="${_themeContext.i18NVariables.language}"/>
     </c:if>
@@ -326,7 +365,7 @@
     <!-- Bootstrap -->
     <collab:script src="/vendor/popper.js/dist/umd/popper.min.js" />
     <c:choose>
-        <c:when test="${_themeContext.serverEnvironment.isProductionOrStaging}">
+        <c:when test="${_themeContext.serverVariables.environment.isProductionOrStaging}">
             <collab:script src="/vendor/bootstrap/dist/js/bootstrap.min.js" />
         </c:when>
         <c:otherwise>
@@ -411,24 +450,6 @@
 
     <!-- Show update notification to outdated browsers -->
     <xcolab-scripts:browserUpdate />
-
-    <c:if test="${not empty _themeContext.credentialVariables.sentryDsn}">
-        <script>
-            Sentry.onLoad(function() {
-                Sentry.init({
-                    environment: '${_themeContext.serverEnvironment.name().toLowerCase()}',
-                    // release: ''
-                });
-
-                Sentry.configureScope(function(scope) {
-                    scope.setTag("language", "${_themeContext.i18NVariables.language}");
-                    if (_isLoggedIn) {
-                        scope.setUser({"id": "${_themeContext.authenticationVariables.member.id}"});
-                    }
-                });
-            });
-        </script>
-    </c:if>
 
 
     <!-- ============ Structured data (schema.org) ============ -->

@@ -19,7 +19,7 @@
 
             <c:set var="checkForMissingTeamMembersURL" value="/proposals/checkForMissingTeamMembers" />
 
-            <form:form commandName="preferences" action="${checkForMissingTeamMembersURL}">
+            <form:form modelAttribute="preferences" action="${checkForMissingTeamMembersURL}">
                 <div class="form-group">
                     <button type="submit" class="btn btn-gray btn-sm">
                         Check for missing team members
@@ -28,7 +28,7 @@
             </form:form>
 
             <c:set var="runRibbonDistributionURL" value="/proposals/runRibbonDistribution"/>
-            <form:form commandName="preferences" action="${runRibbonDistributionURL}">
+            <form:form modelAttribute="preferences" action="${runRibbonDistributionURL}">
                 <div class="form-group">
                     <button type="submit" class="btn btn-gray btn-sm"
                             onclick="return confirm('Are you sure? This action cannot be undone.');">

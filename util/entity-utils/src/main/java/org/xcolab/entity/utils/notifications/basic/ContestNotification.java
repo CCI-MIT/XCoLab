@@ -96,23 +96,23 @@ public class ContestNotification extends EmailNotification {
             switch (tag.nodeName()) {
                 case YEAR_PLACEHOLDER:
                     if (contest.getCreatedAt() == null) {
-                        return new TextNode(Long.toString(contest.getContestYear()), "");
+                        return new TextNode(Long.toString(contest.getContestYear()));
                     } else {
                         DateFormat yearFormat = new SimpleDateFormat("yyyy");
-                        return new TextNode(yearFormat.format(contest.getCreatedAt()), "");
+                        return new TextNode(yearFormat.format(contest.getCreatedAt()));
                     }
                 case DEADLINE_PLACEHOLDER:
                     final Date phaseDeadline = getActivePhaseDeadline();
                     if (phaseDeadline == null) {
-                        return new TextNode("", "");
+                        return new TextNode("");
                     } else {
                         final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMATTER.withZone(
                                 DateTimeZone.forID(ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get()));
-                        return new TextNode(new DateTime(phaseDeadline).toString(dateTimeFormatterWithTimeZone), "");
+                        return new TextNode(new DateTime(phaseDeadline).toString(dateTimeFormatterWithTimeZone));
                     }
                 case CONTEST_DEADLINE_SECTION_PLACEHOLDER:
                     if (getActivePhaseDeadline() == null) {
-                        return new TextNode("", "");
+                        return new TextNode("");
                     } else {
                         //need to call another layer of replace variables to replace placeholders inside the tag
                         return parseXmlNode(replaceVariables(tag.html()));

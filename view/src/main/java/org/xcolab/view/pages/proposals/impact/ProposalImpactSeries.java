@@ -13,7 +13,6 @@ import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ImpactSeriesType;
@@ -285,12 +284,7 @@ public class ProposalImpactSeries {
             JSONObject authorObject = new JSONObject();
             returnObject.put("author", authorObject);
             authorObject.put("userId", getSeriesAuthor().getId());
-            MemberRoleChoiceAlgorithm impactRoleChoiceAlgorithm =
-                    MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
-            final String authorDescription =
-                    impactRoleChoiceAlgorithm.getUserRoleDescription(this.getSeriesAuthor()) + " "
-                            + this.getSeriesAuthor().getFullName();
-            authorObject.put("name", authorDescription);
+            authorObject.put("name",  this.getSeriesAuthor().getFullName());
 
             // update date
             DateFormat dateFormatter = new SimpleDateFormat("MMMMMM d, yyyy, KK:mm a zzzz");

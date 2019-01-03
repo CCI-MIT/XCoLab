@@ -61,7 +61,7 @@
             </div>
         </c:if>
 
-        <form:form action="/register" method="post" commandName="createUserBean" id="registrationForm">
+        <form:form action="/register" method="post" modelAttribute="createUserBean" id="registrationForm">
             <c:if test="${not empty redirect}">
                 <input type="hidden" name="redirect" value="${redirect}" />
             </c:if>
@@ -236,30 +236,39 @@
             }
         </script>
 
-        <c:if test="${generateScreenName}">
-            <script>
-                function generateScreenName() {
-                    var submitUrl = '/api/register/generateScreenName';
-                    jQuery.ajax({
-                        type: "POST",
-                        url: submitUrl,
-                        dataType: 'json',
-                        async: false,
-                        data: {
-                            firstName : jQuery('#firstName').val(),
-                            lastName: jQuery('#lastName').val()
-                        },
-                        success: function (data) {
-                            if (data.success == false) {
-                                console.log(data.error);
-                            } else {
-                                jQuery('#screenName').val(data.screenName);
+        <c:choose>
+            <c:when  test="${generateScreenName}">
+                <script>
+                    function generateScreenName() {
+                        var submitUrl = '/api/register/generateScreenName';
+                        jQuery.ajax({
+                            type: "POST",
+                            url: submitUrl,
+                            dataType: 'json',
+                            async: false,
+                            data: {
+                                firstName : jQuery('#firstName').val(),
+                                lastName: jQuery('#lastName').val()
+                            },
+                            success: function (data) {
+                                if (data.success == false) {
+                                    console.log(data.error);
+                                } else {
+                                    jQuery('#screenName').val(data.screenName);
+                                }
                             }
-                        }
-                    });
-                }
-            </script>
-        </c:if>
+                        });
+                    }
+                </script>
+            </c:when>
+            <c:otherwise>
+                <script>
+                    function generateScreenName() {
+                        //do nothing - generate screen name is turned off
+                    }
+                </script>
+            </c:otherwise>
+        </c:choose>
 
 
     </div>

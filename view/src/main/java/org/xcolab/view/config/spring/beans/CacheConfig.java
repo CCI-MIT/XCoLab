@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.util.Assert;
 
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -28,7 +28,8 @@ public class CacheConfig {
 
     @SuppressWarnings("SpringAutowiredFieldsWarningInspection")
     @Autowired(required = false)
-    private RedisTemplate redisTemplate;
+    private RedisConnectionFactory redisConnectionFactory;
+
 
     private final CacheProperties cacheProperties;
 
@@ -46,9 +47,9 @@ public class CacheConfig {
             Assert.notNull(provider, "No CacheProvider configured.");
             try {
                 if (provider == RedisCacheProvider.class) {
-                    Assert.notNull(redisTemplate,
-                            "RedisTemplate is required when redis caching is enabled");
-                    cacheProvider = new RedisCacheProvider(redisTemplate);
+                    Assert.notNull(redisConnectionFactory,
+                            "RedisConnectionFactory is required when redis caching is enabled");
+                    cacheProvider = new RedisCacheProvider(redisConnectionFactory);
                 } else {
                     cacheProvider = provider.getConstructor().newInstance();
                 }

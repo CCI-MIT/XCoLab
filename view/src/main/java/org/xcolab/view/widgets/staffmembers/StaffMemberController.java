@@ -14,8 +14,8 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.StaffMemberClient;
-import org.xcolab.client.members.legacy.enums.CategoryRole;
-import org.xcolab.client.members.legacy.enums.CategoryRole.NoSuchCategoryRoleException;
+import org.xcolab.client.members.legacy.enums.StaffMemberCategoryRole;
+import org.xcolab.client.members.legacy.enums.StaffMemberCategoryRole.NoSuchCategoryRoleException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.StaffMember;
 import org.xcolab.view.widgets.AbstractWidgetController;
@@ -79,9 +79,9 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                 ((displayPhoto != null) ? (displayPhoto) : (preferences.isDisplayPhoto())));
         model.addAttribute("displayUrl",
                 ((displayUrl != null) ? (displayUrl) : (preferences.isDisplayUrl())));
-        CategoryRole categoryRole;
+        StaffMemberCategoryRole categoryRole;
         try {
-            categoryRole = CategoryRole.fromCategoryId(categoryId);
+            categoryRole = StaffMemberCategoryRole.fromCategoryId(categoryId);
         } catch (NoSuchCategoryRoleException e) {
             categoryRole = null;
         }
@@ -90,7 +90,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
 
         if (categoryRole == null || categoryRole.getRole() == null) {
 
-            if (categoryId == CategoryRole.ALUMNI.getCategoryId().longValue()) {
+            if (categoryId == StaffMemberCategoryRole.ALUMNI.getCategoryId().longValue()) {
                 staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getLastName));
             } else {
                 staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getSort));
@@ -169,7 +169,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
 
     }
 
-    private StaffMemberWrapper getNewStaffMember(Member member, CategoryRole categoryRole) {
+    private StaffMemberWrapper getNewStaffMember(Member member, StaffMemberCategoryRole categoryRole) {
         StaffMember sm = new StaffMember();
         sm.setUserId(member.getId());
         sm.setCategoryId(categoryRole.getCategoryId());

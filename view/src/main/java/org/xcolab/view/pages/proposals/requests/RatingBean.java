@@ -47,7 +47,7 @@ public class RatingBean implements Serializable {
             //get the existing ratings from the wrapper
             for (ProposalRating ratingWrapper : wrapper.getRatings()) {
                 ratingValues.put(ratingWrapper.getRatingTypeId(),
-                        String.valueOf(ratingWrapper.unwrap().getRatingValueId()));
+                        String.valueOf(ratingWrapper.getRatingValueId()));
             }
             comment = wrapper.getRatingComment();
             shouldAdvanceProposal = wrapper.getRatingShouldAdvance();

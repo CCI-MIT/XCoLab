@@ -42,7 +42,7 @@
                 </c:when>
                 <c:otherwise>
                     <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0;">
-                        <form:form id="signInForm_form" method="post" action="/reportError">
+                        <form:form method="post" action="/reportError">
                             <input name="url" type="hidden" value="${_themeContext.requestUri}" />
                             <input name="status" type="hidden" value="${status}"/>
                             <input name="error" type="hidden" value="${error}"/>
@@ -67,7 +67,7 @@
                 </c:otherwise>
             </c:choose>
 
-            <c:if test="${_themeContext.authenticationVariables.isAdmin or !_themeContext.serverEnvironment.isProduction}">
+            <c:if test="${_themeContext.authenticationVariables.isAdmin or !_themeContext.serverVariables.environment.isProduction}">
                 <div class="alert alert-info mt-3" role="alert">
                     <h2>Admin Error Details:</h2>
                     <div>Status: ${status}</div>

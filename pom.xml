@@ -27,8 +27,8 @@
         <maven.version>3.5.0</maven.version>
 
         <!-- Spring versions -->
-        <spring-boot.version>1.5.12.RELEASE</spring-boot.version>
-        <spring-cloud.release-train>Edgware.SR3</spring-cloud.release-train>
+        <spring-boot.version>2.0.7.RELEASE</spring-boot.version>
+        <spring-cloud.release-train>Finchley.SR2</spring-cloud.release-train>
 
         <!-- Database -->
         <jooq.version>3.9.2</jooq.version>
@@ -67,7 +67,7 @@
         <metrics-datadog.version>1.1.13</metrics-datadog.version>
 
         <!-- Test dependencies -->
-        <powermock.version>1.7.3</powermock.version>
+        <powermock.version>2.0.0-RC.4</powermock.version>
         <maven-surefire-plugin.version>2.20.1</maven-surefire-plugin.version>
 
         <!-- Error monitoring -->
@@ -105,6 +105,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>2.0.2.RELEASE</version>
+            </dependency>
 
             <!-- Database dependencies -->
             <dependency>
@@ -115,6 +120,11 @@
             <dependency>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-meta</artifactId>
                 <version>${jooq.version}</version>
             </dependency>
 
@@ -151,7 +161,7 @@
 
             <!-- Monitoring dependencies -->
 
-            <!--TODO: replace with defalts -->
+            <!--TODO: replace with defaults -->
             <dependency>
                 <groupId>io.dropwizard.metrics</groupId>
                 <artifactId>metrics-core</artifactId>
@@ -178,7 +188,7 @@
             <!-- Test dependencies -->
             <dependency>
                 <groupId>org.powermock</groupId>
-                <artifactId>powermock-api-mockito</artifactId>
+                <artifactId>powermock-api-mockito2</artifactId>
                 <version>${powermock.version}</version>
             </dependency>
             <dependency>
@@ -298,7 +308,7 @@
                 </plugin>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.7.0</version>
+					<version>3.8.0</version>
 				</plugin>
 
                 <plugin>
@@ -445,6 +455,22 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security.oauth.boot</groupId>
+            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+            <version>2.1.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.threeten</groupId>
+            <artifactId>threeten-extra</artifactId>
+            <version>1.4</version>
         </dependency>
     </dependencies>
 

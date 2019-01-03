@@ -9,6 +9,6 @@ public class BalloonTextNotFoundException extends EntityNotFoundException {
     }
 
     public BalloonTextNotFoundException(String msg) {
-        super(msg);
+        super(msg, BalloonTextNotFoundException.class);
     }
 }

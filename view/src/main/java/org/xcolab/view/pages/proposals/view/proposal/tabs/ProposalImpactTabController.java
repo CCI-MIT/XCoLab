@@ -25,8 +25,9 @@ import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.proposals.helpers.ProposalUnversionedAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.commons.html.HtmlUtil;
+import org.xcolab.commons.servlet.flash.AlertMessage;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.impact.IntegratedProposalImpactSeries;
@@ -34,10 +35,10 @@ import org.xcolab.view.pages.proposals.impact.ProposalImpactScenarioCombinationW
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeries;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactUtil;
+import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
-import org.xcolab.commons.servlet.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,11 +59,16 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private static final Logger _log = LoggerFactory.getLogger(ProposalImpactTabController.class);
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=IMPACT")
-    public String showImpactTab(HttpServletRequest request, Model model,
-            ProposalContext proposalContext,
+    public String showImpactTab(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member currentMember,
             @PathVariable Long contestYear, @PathVariable String contestUrlName,
             @PathVariable Long proposalId, @RequestParam(defaultValue = "false") boolean edit)
             throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
+
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
+        if (!permissions.getCanView()) {
+            return new AccessDeniedPage(currentMember).toViewName(response);
+        }
 
         Contest contest = proposalContext.getContest();
         Proposal proposal = proposalContext.getProposal();
@@ -366,7 +372,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             }
         }
         AlertMessage.CHANGES_SAVED.flash(request);
-        return showImpactTab(request, model, proposalContext, contestYear,
+        return showImpactTab(request, response, model, proposalContext, currentMember, contestYear,
                 contestUrlName, proposalId, false);
     }
 

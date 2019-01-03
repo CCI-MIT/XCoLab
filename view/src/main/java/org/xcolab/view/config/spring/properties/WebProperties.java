@@ -36,6 +36,11 @@ public class WebProperties {
         private boolean alwaysAllowHomepage = true;
 
         /**
+         * Override to allow access to the about pages page even if guest access is disabled.
+         */
+        private boolean alwaysAllowContentPages = false;
+
+        /**
          * If false, the platform does not allow registering new members. Existing members will
          * still be able to log in.
          */
@@ -89,6 +94,14 @@ public class WebProperties {
 
         public void setAllowSso(boolean allowSso) {
             this.allowSso = allowSso;
+        }
+
+        public boolean isAlwaysAllowContentPages() {
+            return alwaysAllowContentPages;
+        }
+
+        public void setAlwaysAllowContentPages(boolean alwaysAllowContentPages) {
+            this.alwaysAllowContentPages = alwaysAllowContentPages;
         }
     }
 

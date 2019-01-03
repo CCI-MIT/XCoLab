@@ -1,36 +1,43 @@
 package org.xcolab.client.proposals.pojo.phases;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class ProposalContestPhaseAttribute  extends AbstractProposalContestPhaseAttribute{
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class ProposalContestPhaseAttribute  extends AbstractProposalContestPhaseAttribute
+        implements Serializable {
 
-    private final ServiceNamespace serviceNamespace;
+    public static final TypeProvider<ProposalContestPhaseAttribute> TYPES =
+            new TypeProvider<>(ProposalContestPhaseAttribute.class,
+                    new ParameterizedTypeReference<List<ProposalContestPhaseAttribute>>() {});
+
 
     public ProposalContestPhaseAttribute() {
-        serviceNamespace = ServiceNamespace.instance();
     }
 
     public ProposalContestPhaseAttribute(ProposalContestPhaseAttribute value) {
         super(value);
-        serviceNamespace = ServiceNamespace.instance();
     }
 
     public ProposalContestPhaseAttribute(
-            AbstractProposalContestPhaseAttribute abstractProposalContestPhaseAttribute,
-            ServiceNamespace serviceNamespace) {
+            AbstractProposalContestPhaseAttribute abstractProposalContestPhaseAttribute) {
         super(abstractProposalContestPhaseAttribute);
-        this.serviceNamespace = serviceNamespace;
     }
 
     @JsonIgnore
     public Date getStartDate() {
-        return ContestClient.fromNamespace(serviceNamespace)
+        return ContestClientUtil.getClient()
                 .getContestPhase(getContestPhaseId()).getPhaseStartDateDt();
     }
 }

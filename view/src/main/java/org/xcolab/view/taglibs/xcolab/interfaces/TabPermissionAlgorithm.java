@@ -1,8 +1,8 @@
 package org.xcolab.view.taglibs.xcolab.interfaces;
 
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.util.entity.enums.MemberRole;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -83,8 +83,8 @@ public interface TabPermissionAlgorithm {
         @Override
         public boolean canView(TabPermissions permissions, TabContext context,
                 HttpServletRequest request) {
-            return permissions.getCanRole(MemberRole.CONTEST_MANAGER) || permissions
-                    .getCanRole(MemberRole.FELLOW) || permissions.getCanAdmin();
+            return permissions.getCanRole(SystemRole.CONTEST_MANAGER) || permissions
+                    .getCanRole(SystemRole.FELLOW) || permissions.getCanAdmin();
         }
 
         @Override

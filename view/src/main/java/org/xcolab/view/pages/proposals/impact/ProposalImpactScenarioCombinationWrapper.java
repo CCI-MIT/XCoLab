@@ -7,7 +7,8 @@ import edu.mit.cci.roma.client.Variable;
 import edu.mit.cci.roma.client.comm.ClientRepository;
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -25,7 +26,7 @@ import java.util.Set;
 public class ProposalImpactScenarioCombinationWrapper {
 
     private static final Map<String, Double> REGION_AVG_FACTOR;
-    private static final Logger _log = Logger.getLogger(ProposalImpactScenarioCombinationWrapper.class);
+    private static final Logger _log = LoggerFactory.getLogger(ProposalImpactScenarioCombinationWrapper.class);
 
     static {
         Map<String, Double> avgFactor = new HashMap<>();

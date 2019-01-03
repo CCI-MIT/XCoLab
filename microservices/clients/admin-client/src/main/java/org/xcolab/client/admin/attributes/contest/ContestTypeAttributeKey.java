@@ -31,11 +31,6 @@ public final class ContestTypeAttributeKey {
                             s -> "/" + s.toLowerCase()))
                     .build();
 
-    public static final AttributeGetter<String> FRIENDLY_URL_STRING_CONTESTS =
-            ContestTypeAttributes.newStringAttribute("FRIENDLY_URL_STRING_CONTESTS")
-                    .defaultValue(TransformedAttribute.of(CONTEST_NAME_PLURAL, String::toLowerCase))
-                    .build();
-
     public static final AttributeGetter<String> FRIENDLY_URL_STRING_PROPOSAL =
             ContestTypeAttributes.newStringAttribute("FRIENDLY_URL_STRING_PROPOSAL")
                     .defaultValue(TransformedAttribute.of(PROPOSAL_NAME, String::toLowerCase))
@@ -101,4 +96,7 @@ public final class ContestTypeAttributeKey {
                     .defaultValue(true)
                     .build();
 
+    public static final AttributeGetter<Long> PERMISSIONS_ACCESSIBLE_BY_ROLE_GROUP =
+            ContestTypeAttributes.newLongAttribute("PERMISSIONS_ACCESSIBLE_BY_ROLE_GROUP")
+                    .build();
 }

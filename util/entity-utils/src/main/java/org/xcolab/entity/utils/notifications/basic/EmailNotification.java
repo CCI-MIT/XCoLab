@@ -283,15 +283,15 @@ public abstract class EmailNotification {
 
             switch (tag.nodeName()) {
                 case COLAB_NAME_PLACEHOLDER:
-                    return new TextNode(ConfigurationAttributeKey.COLAB_NAME.get(), "");
+                    return new TextNode(ConfigurationAttributeKey.COLAB_NAME.get());
                 case COLAB_URL_PLACEHOLDER:
-                    return new TextNode(PlatformAttributeKey.COLAB_URL.get(), "");
+                    return new TextNode(PlatformAttributeKey.COLAB_URL.get());
                 case COLAB_ADMIN_EMAIL_PLACEHOLDER:
-                    return new TextNode(ConfigurationAttributeKey.ADMIN_EMAIL.get(), "");
+                    return new TextNode(ConfigurationAttributeKey.ADMIN_EMAIL.get());
                 case FIRSTNAME_PLACEHOLDER:
-                    return new TextNode(getRecipient().getFirstName(), "");
+                    return new TextNode(getRecipient().getFirstName());
                 case FULL_NAME_PLACEHOLDER:
-                    return new TextNode(getRecipient().getFullName(), "");
+                    return new TextNode(getRecipient().getFullName());
                 case CONTEST_LINK_PLACEHOLDER:
                     if (contest != null) {
                         return parseXmlNode(getContestLink(contest));
@@ -313,22 +313,22 @@ public abstract class EmailNotification {
                     break;
                 case PROPOSAL_STRING_PLACEHOLDER:
                     if (contest != null && contestType != null) {
-                        return new TextNode(contestType.getProposalName(), "");
+                        return new TextNode(contestType.getProposalName());
                     }
                     break;
                 case PROPOSALS_STRING_PLACEHOLDER:
                     if (contest != null && contestType != null) {
-                        return new TextNode(contestType.getProposalNamePlural(), "");
+                        return new TextNode(contestType.getProposalNamePlural());
                     }
                     break;
                 case CONTEST_STRING_PLACEHOLDER:
                     if (contest != null && contestType != null) {
-                        return new TextNode(contestType.getContestName(), "");
+                        return new TextNode(contestType.getContestName());
                     }
                     break;
                 case CONTESTS_STRING_PLACEHOLDER:
                     if (contest != null && contestType != null) {
-                        return new TextNode(contestType.getContestNamePlural(), "");
+                        return new TextNode(contestType.getContestNamePlural());
                     }
                     break;
                 case TWITTER_PLACEHOLDER:

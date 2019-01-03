@@ -1,7 +1,9 @@
 package org.xcolab.util.http.caching;
 
-import org.ehcache.expiry.Duration;
+import org.threeten.extra.Temporals;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 public enum CacheDuration {
@@ -20,11 +22,18 @@ public enum CacheDuration {
         this.unit = unit;
     }
 
+    public org.ehcache.expiry.Duration getEhCacheDuration() {
+        if (value == 0) {
+            return org.ehcache.expiry.Duration.INFINITE;
+        }
+        return org.ehcache.expiry.Duration.of(value, unit);
+    }
+
     public Duration getDuration() {
         if (value == 0) {
-            return Duration.INFINITE;
+            return Duration.of(365, ChronoUnit.DAYS);
         }
-        return Duration.of(value, unit);
+        return Duration.of(value, Temporals.chronoUnit(unit));
     }
 
     public long toSeconds() {

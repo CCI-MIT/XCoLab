@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public abstract class MessageMassAction extends AbstractContestMassAction {
 
-    private static final Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
+    private static final long ADMINISTRATOR_USER_ID = 10144L;
 
     public MessageMassAction(String displayName) {
         super(displayName);
@@ -59,8 +59,8 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
             List<Contest> contestList, StringBuilder contestNames) {
         final String messageSubject = massMessageBean.getSubject();
         final String messageBody = massMessageBean.getBody();
-        MessagingClient.sendMessage(messageSubject, messageBody, CLIMATE_COLAB_TEAM_USER_ID,
-                    null, new ArrayList<>(recipientIds));
+        MessagingClient.sendMessage(messageSubject, messageBody, ADMINISTRATOR_USER_ID,
+                null, new ArrayList<>(recipientIds));
         final String emailSubject = "Mass message: " + messageSubject;
         final String emailBody = String.format(
                 "The following message was sent to %d users in %d contests (%s): <br /><br /><br />",

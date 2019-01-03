@@ -12,14 +12,20 @@
         var proposalUrl = "${proposal.proposalUrl}"; var phaseUrl = "${contestPhase.contestPhaseUrl}";
         var proposalUrlInPhase = "${proposal.getProposalUrl(contestPhase)}";
     </script>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/contests">${contestType.contestNamePlural}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <xcolab:contestLink contest="${contest}"/>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">${contestType.proposalName}: ${proposal.name}</li>
+        </ol>
+    </nav>
+
 	<div class="proposal-head">
-        <div class="cb-text-lg">
-            <collab:message code="contests.proposal.header.caption" contestType="${contestType}">
-                <spring:argument>
-                    <xcolab:contestLink contest="${contest}"/>
-                </spring:argument>
-            </collab:message>
-        </div>
         <div class="c-Headline flex-column flex-sm-row align-items-center">
             <collab:image src="${proposal.logoPath}" width="75" height="75"
                           alt="${contestType.proposalName} image" title="${proposal.name}"/>

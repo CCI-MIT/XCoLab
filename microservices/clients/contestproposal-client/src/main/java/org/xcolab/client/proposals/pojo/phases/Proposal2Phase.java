@@ -1,9 +1,22 @@
 package org.xcolab.client.proposals.pojo.phases;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.util.http.client.enums.ServiceNamespace;
+import org.xcolab.util.http.client.types.TypeProvider;
 
-public class Proposal2Phase extends AbstractProposal2Phase {
+import java.io.Serializable;
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
+public class Proposal2Phase extends AbstractProposal2Phase implements Serializable {
+
+    public static final TypeProvider<Proposal2Phase> TYPES =
+            new TypeProvider<>(Proposal2Phase.class,
+                    new ParameterizedTypeReference<List<Proposal2Phase>>() {});
 
     public Proposal2Phase() {}
 
@@ -22,7 +35,7 @@ public class Proposal2Phase extends AbstractProposal2Phase {
         super(proposalid, contestphaseid, versionfrom, versionto, sortweight, autopromotecandidate);
     }
 
-    public Proposal2Phase(AbstractProposal2Phase abstractProposal2Phase, ServiceNamespace serviceNamespace) {
+    public Proposal2Phase(AbstractProposal2Phase abstractProposal2Phase) {
         super(abstractProposal2Phase);
     }
 }

@@ -3,14 +3,12 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
-import org.xcolab.util.http.client.enums.ServiceNamespace;
 
 import java.util.List;
 
 public final class ProposalJudgeRatingClientUtil {
 
-    private static final ProposalJudgeRatingClient client =
-            ProposalJudgeRatingClient.fromNamespace(ServiceNamespace.instance());
+    private static final ProposalJudgeRatingClient client = new ProposalJudgeRatingClient();
 
     public static ProposalJudgeRatingClient getClient() {
         return client;
