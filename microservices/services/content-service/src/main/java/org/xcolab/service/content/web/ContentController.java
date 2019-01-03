@@ -62,7 +62,8 @@ public class ContentController implements IContentClient {
 
     @Override
     @GetMapping("/contentArticles")
-    public List<? extends IContentArticle> getContentArticles(@RequestParam(required = false) Long folderId) {
+    public List<? extends IContentArticle> getContentArticles(
+            @RequestParam(required = false) Long folderId) {
         if (folderId != null) {
             return contentArticleDao.getArticlesInFolder(folderId);
         }
@@ -102,7 +103,7 @@ public class ContentController implements IContentClient {
 
     @Override
     @GetMapping("/contentArticles/{articleId}")
-    public IContentArticle getContentArticle(@PathVariable("articleId") Long articleId)
+    public IContentArticle getContentArticle(@PathVariable Long articleId)
             throws ContentNotFoundException {
         if (articleId == null || articleId == 0) {
             throw new ContentNotFoundException("No content article with id " + articleId);
@@ -236,7 +237,7 @@ public class ContentController implements IContentClient {
     @Override
     @GetMapping("/contentFolders/{contentFolderId}/contentArticleVersions")
     public List<IContentArticleVersion> getContentFolderArticleVersions(
-            @PathVariable("contentFolderId") Long contentFolderId) throws ContentNotFoundException {
+            @PathVariable Long contentFolderId) {
         if (contentFolderId == 0) {
             contentFolderId = null;
         }
@@ -272,22 +273,17 @@ public class ContentController implements IContentClient {
     @Override
     @GetMapping("/contentPages/{pageId}")
     public IContentPage getContentPage(@PathVariable Long pageId) throws ContentNotFoundException {
-        return contentPageDao.get(pageId).<ContentNotFoundException>orElseThrow(() -> {
-            throw new ContentNotFoundException("Content page does not exist: " + pageId);
-        });
+        return contentPageDao.get(pageId).orElseThrow(
+                () -> new ContentNotFoundException("Content page does not exist: " + pageId));
     }
 
     @Override
     @GetMapping("/contentPages/getByContentArticleId")
     public IContentPage getContentPageByContentArticleId(@RequestParam Long contentArticleId)
             throws ContentNotFoundException {
-        return contentPageDao
-                .getByContentArticleId(contentArticleId).<ContentNotFoundException>orElseThrow(
-                        () -> {
-                            throw new ContentNotFoundException(
-                                    "Content page does not exist for content article id "
-                                            + contentArticleId);
-                        });
+        return contentPageDao.getByContentArticleId(contentArticleId).orElseThrow(
+                () -> new ContentNotFoundException(
+                        "Content page does not exist for content article id " + contentArticleId));
     }
 
     @Override

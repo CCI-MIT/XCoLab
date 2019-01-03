@@ -1,7 +1,10 @@
 package org.xcolab.client.content.exceptions;
 
-public class ContentNotFoundException extends RuntimeException {
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
+
+public class ContentNotFoundException extends EntityNotFoundException {
+
     public ContentNotFoundException(String msg) {
-        super(msg);
+        super(msg, ContentNotFoundException.class);
     }
 }

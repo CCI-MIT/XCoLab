@@ -73,16 +73,19 @@ public class ContentEditorController extends BaseContentEditor {
                 contentClient.getContentFolderArticleVersions(folderId);
         if (contentArticles != null) {
             for (IContentArticleVersion ca : contentArticles) {
-                IContentArticle contentArticle =
-                        contentClient.getContentArticle(ca.getArticleId());
-                if (contentArticle.getVisible()) {
-                    responseArray.put(articleNode(ca.getTitle(), ca.getArticleId()));
+                IContentArticle contentArticle = null;
+                try {
+                    contentArticle = contentClient.getContentArticle(ca.getArticleId());
+                    if (contentArticle.getVisible()) {
+                        responseArray.put(articleNode(ca.getTitle(), ca.getArticleId()));
+                    }
+                } catch (ContentNotFoundException e) {
+                    // continue
                 }
             }
         }
 
         response.getOutputStream().write(responseArray.toString().getBytes());
-
     }
 
 
@@ -141,12 +144,11 @@ public class ContentEditorController extends BaseContentEditor {
             versions.put(articleVersion);
         }
         articleVersion = new JSONObject();
-        IContentPage cp = contentClient
-                .getContentPageByContentArticleId(contentArticleVersion.getArticleId());
-
-        if (cp != null) {
+        try {
+            IContentPage cp = contentClient
+                    .getContentPageByContentArticleId(contentArticleVersion.getArticleId());
             articleVersion.put("contentUrl", cp.getTitle());
-        }
+        } catch (ContentNotFoundException e) {}
         articleVersion.put("title", contentArticleVersion.getTitle());
         articleVersion.put("folderId", contentArticleVersion.getFolderId());
         articleVersion.put("articleId", contentArticleVersion.getArticleId());
@@ -161,10 +163,14 @@ public class ContentEditorController extends BaseContentEditor {
     @PostMapping("/content-editor/archiveContentArticle")
     public void archiveContentArticle(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) Long articleId) throws IOException {
-        IContentArticle ca = contentClient.getContentArticle(articleId);
-        ca.setVisible(false);
-        contentClient.updateContentArticle(ca);
-        defaultOperationReturnMessage(true, "Article archived successfully", "", response);
+        try {
+            IContentArticle ca = contentClient.getContentArticle(articleId);
+            ca.setVisible(false);
+            contentClient.updateContentArticle(ca);
+            defaultOperationReturnMessage(true, "Article archived successfully", "", response);
+        } catch (ContentNotFoundException e){
+            defaultOperationReturnMessage(false, "Article could not be found with id " + articleId, "", response);
+        }
     }
 
     @PostMapping("/content-editor/createArticleFolder")

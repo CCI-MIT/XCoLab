@@ -52,7 +52,7 @@ public class FilesControllerTest {
             Charset.forName("utf8"));
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @InjectMocks
     private FileController controller;

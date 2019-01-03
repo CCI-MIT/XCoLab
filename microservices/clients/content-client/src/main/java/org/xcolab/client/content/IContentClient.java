@@ -111,9 +111,9 @@ public interface IContentClient {
 
     @GetMapping("/contentFolders/{contentFolderId}/contentArticleVersions")
     List<IContentArticleVersion> getContentFolderArticleVersions(
-            @PathVariable("contentFolderId") Long contentFolderId) throws ContentNotFoundException;
+            @PathVariable("contentFolderId") Long contentFolderId);
 
-    default IContentPage getContentPage(String title) {
+    default IContentPage getContentPage(String title) throws ContentNotFoundException {
         List<IContentPage> contentPages = getContentPages(title);
         if (contentPages.isEmpty()) {
             throw new ContentNotFoundException("Content page does not exist: " + title);
@@ -131,7 +131,7 @@ public interface IContentClient {
             throws ContentNotFoundException;
 
     default IContentArticleVersion getLatestVersionByArticleIdAndLanguage(long contentArticleId,
-            String language) {
+            String language) throws ContentNotFoundException {
         List<IContentArticleVersion> contentArticleVersions =
                 getContentArticleVersions(null, null, null, contentArticleId, null, null, language);
 
@@ -144,6 +144,5 @@ public interface IContentClient {
 
     @GetMapping("/contentPages")
     List<IContentPage> getContentPages(
-            @RequestParam(value = "title", required = false) String title)
-            throws ContentNotFoundException;
+            @RequestParam(value = "title", required = false) String title);
 }

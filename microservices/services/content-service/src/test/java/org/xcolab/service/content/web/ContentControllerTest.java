@@ -1,7 +1,6 @@
 package org.xcolab.service.content.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +24,9 @@ import org.xcolab.client.content.pojo.IContentPage;
 import org.xcolab.model.tables.pojos.ContentArticleImpl;
 import org.xcolab.model.tables.pojos.ContentFolderImpl;
 import org.xcolab.model.tables.pojos.ContentPageImpl;
-import org.xcolab.service.content.domain.contentfolder.ContentFolderDao;
 import org.xcolab.service.content.domain.contentarticle.ContentArticleDao;
 import org.xcolab.service.content.domain.contentarticleversion.ContentArticleVersionDao;
+import org.xcolab.service.content.domain.contentfolder.ContentFolderDao;
 import org.xcolab.service.content.domain.page.ContentPageDao;
 import org.xcolab.service.content.service.contentarticle.ContentArticleService;
 import org.xcolab.service.utils.PaginationHelper;
@@ -59,7 +58,7 @@ public class ContentControllerTest {
             Charset.forName("utf8"));
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @InjectMocks
     private ContentController controller;

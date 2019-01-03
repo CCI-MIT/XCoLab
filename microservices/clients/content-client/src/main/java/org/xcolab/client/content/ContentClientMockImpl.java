@@ -50,7 +50,7 @@ public class ContentClientMockImpl implements IContentClient {
 
     @Override
     public void deleteContentArticle(Long contentArticleId) {
-
+        // Do nothing
     }
 
     @Override
@@ -104,8 +104,7 @@ public class ContentClientMockImpl implements IContentClient {
     }
 
     @Override
-    public List<IContentArticleVersion> getContentFolderArticleVersions(Long contentFolderId)
-            throws ContentNotFoundException {
+    public List<IContentArticleVersion> getContentFolderArticleVersions(Long contentFolderId) {
         return Collections.emptyList();
     }
 
@@ -121,7 +120,7 @@ public class ContentClientMockImpl implements IContentClient {
     }
 
     @Override
-    public List<IContentPage> getContentPages(String title) throws ContentNotFoundException {
+    public List<IContentPage> getContentPages(String title) {
         return Collections.emptyList();
     }
 }

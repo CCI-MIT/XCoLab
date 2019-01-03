@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.xcolab.client.content.IContentClient;
+import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.content.pojo.IContentFolder;
 import org.xcolab.client.content.pojo.IContentPage;
@@ -80,7 +81,11 @@ public class PageEditorController extends BaseContentEditor {
 
         IContentPage contentPage;
         if (pageId != 0) {
-            contentPage = contentClient.getContentPage(pageId);
+            try {
+                contentPage = contentClient.getContentPage(pageId);
+            } catch (ContentNotFoundException e) {
+                contentPage = new ContentPage();
+            }
         } else {
             contentPage = new ContentPage();
         }
@@ -128,7 +133,7 @@ public class PageEditorController extends BaseContentEditor {
     @GetMapping("/content-editor/pageEditorGetPage")
     @ResponseBody
     public IContentPage contentEditorListFolder(HttpServletRequest request,
-            @RequestParam Long pageId) {
+            @RequestParam Long pageId) throws ContentNotFoundException {
         return contentClient.getContentPage(pageId);
     }
 

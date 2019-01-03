@@ -62,7 +62,7 @@ public class WikiPageWrapper {
     }
 
     public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean)
-            throws UnsupportedEncodingException, ParseException {
+            throws ContentNotFoundException {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
         if (!contentArticleVersion.getContent().equals(updatedResourcesContent)) {

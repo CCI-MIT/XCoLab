@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.content.IContentClient;
+import org.xcolab.client.content.exceptions.ContentNotFoundException;
 import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -46,8 +47,12 @@ public class ContentEditorResourceController extends BaseContentEditor {
             HttpServletResponse response, @RequestParam(required = false) Long articleId)
             throws IOException {
 
-        IContentArticleVersion contentArticleVersion =
-                contentClient.getLatestContentArticleVersion(articleId);
+        IContentArticleVersion contentArticleVersion;
+        try {
+            contentArticleVersion = contentClient.getLatestContentArticleVersion(articleId);
+        } catch (ContentNotFoundException e) {
+            contentArticleVersion = null;
+        }
 
         Contest contest = ContestClientUtil.getContestByResourceArticleId(articleId);
 

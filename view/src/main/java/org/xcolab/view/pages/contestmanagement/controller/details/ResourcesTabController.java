@@ -113,7 +113,7 @@ public class ResourcesTabController extends AbstractTabController {
             HttpServletResponse response, Model model, Member member,
             @PathVariable long contestId,
             @ModelAttribute ContestResourcesBean updatedContestResourcesBean,
-            BindingResult result) throws UnsupportedEncodingException, ParseException {
+            BindingResult result) {
 
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -124,8 +124,13 @@ public class ResourcesTabController extends AbstractTabController {
             return tab.getTabUrl(contestId);
         }
 
-        wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
-        AlertMessage.CHANGES_SAVED.flash(request);
-        return "redirect:" + tab.getTabUrl(contestId);
+        try {
+            wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
+            AlertMessage.CHANGES_SAVED.flash(request);
+            return "redirect:" + tab.getTabUrl(contestId);
+        } catch (ContentNotFoundException e) {
+        }
+        AlertMessage.danger("An error occurred while updating").flash(request);
+        return tab.getTabUrl(contestId);
     }
 }

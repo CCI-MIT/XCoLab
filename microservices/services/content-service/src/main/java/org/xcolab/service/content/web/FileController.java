@@ -59,7 +59,8 @@ public class FileController implements IFileClient {
     public Optional<IFileEntry> getFileEntry(@PathVariable Long fileEntryId) {
         if (fileEntryId != null && fileEntryId > 0) {
             try {
-                return Optional.of(this.fileEntryDao.get(fileEntryId));
+                IFileEntry fileEntry = this.fileEntryDao.get(fileEntryId);
+                return Optional.of(fileEntry);
             } catch (NotFoundException ignored) {
             }
         }

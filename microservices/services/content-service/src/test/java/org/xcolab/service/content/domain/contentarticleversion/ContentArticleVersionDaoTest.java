@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
 public class ContentArticleVersionDaoTest {
 
     @Autowired
-    ContentArticleVersionDao contentArticleVersionDao;
+    private ContentArticleVersionDao contentArticleVersionDao;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
