@@ -1,14 +1,17 @@
 package org.xcolab.view.files;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.files.FilesClient;
-import org.xcolab.client.files.pojo.FileEntry;
+import org.xcolab.client.content.IFileClient;
+import org.xcolab.client.content.pojo.FileEntryWrapper;
+import org.xcolab.client.content.pojo.tables.pojos.FileEntry;
+import org.xcolab.client.content.pojo.IFileEntry;
 import org.xcolab.view.util.entity.upload.FileUploadUtil;
 
 import java.io.ByteArrayInputStream;
@@ -27,6 +30,13 @@ public class FileUploadController {
     private static final int IMAGE_CROP_HEIGHT_PIXELS = 300;
 
     private final String fileUploadPath = PlatformAttributeKey.FILES_UPLOAD_DIR.get();
+
+    private final IFileClient fileClient;
+
+    @Autowired
+    public FileUploadController(IFileClient fileClient) {
+        this.fileClient = fileClient;
+    }
 
     @PostMapping("/image/upload")
     public ImageResponse singleFileUpload(HttpServletRequest request, HttpServletResponse response,
@@ -53,14 +63,15 @@ public class FileUploadController {
                                 IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
             }
 
-            FileEntry fileEntry = new FileEntry();
+            IFileEntry fileEntry = new FileEntry();
             fileEntry.setCreatedAt(new Timestamp(new Date().getTime()));
             String nameExt = file.getOriginalFilename();
             fileEntry.setFileExtension((FilenameUtils.getExtension(nameExt)).toLowerCase());
             fileEntry.setFileSize(bytes.length);
             fileEntry.setFileName(FilenameUtils.getName(nameExt));
 
-            fileEntry = FilesClient.createFileEntry(fileEntry, bytes, path);
+
+            fileEntry = fileClient.createFileEntry(new FileEntryWrapper(fileEntry, bytes, path));
 
             final String imageIdString = String.valueOf(fileEntry.getId());
             return new ImageResponse(imageIdString, fileEntry.getLinkUrl(), true, "");

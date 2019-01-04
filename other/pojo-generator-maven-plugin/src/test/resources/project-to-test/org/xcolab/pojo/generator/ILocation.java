@@ -17,4 +17,12 @@ public interface ILocation extends Serializable {
     Timestamp getCreatedAt();
 
     void setCreatedAt(Timestamp createdAt);
+
+    default String getTestDefaultMethod() {
+        return "value";
+    }
+
+    default void setTestDefaultMethod(String s) {
+        // do something here
+    }
 }
