@@ -5,7 +5,8 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.BalloonText;
+import org.xcolab.client.tracking.pojo.IBalloonText;
+import org.xcolab.client.tracking.pojo.tables.pojos.BalloonText;
 import org.xcolab.model.tables.records.BalloonTextRecord;
 import org.xcolab.service.tracking.exceptions.NotFoundException;
 
@@ -24,7 +25,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
     }
 
     @Override
-    public BalloonText getBalloonText(Long id) throws NotFoundException {
+    public IBalloonText getBalloonText(Long id) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(BALLOON_TEXT)
                 .where(BALLOON_TEXT.ID.eq(id)).fetchOne();
@@ -36,7 +37,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
     }
 
     @Override
-    public List<BalloonText> getEnabledBalloonTexts() {
+    public List<IBalloonText> getEnabledBalloonTexts() {
         return dslContext.select()
                 .from(BALLOON_TEXT)
                 .where(BALLOON_TEXT.ENABLED.eq(true))
@@ -44,7 +45,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
     }
 
     @Override
-    public boolean update(BalloonText balloonText) {
+    public boolean update(IBalloonText balloonText) {
         return dslContext.update(BALLOON_TEXT)
                 .set(BALLOON_TEXT.ID, balloonText.getId())
                 .set(BALLOON_TEXT.NAME, balloonText.getName())
@@ -60,7 +61,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
     }
 
     @Override
-    public BalloonText create(BalloonText balloonText) {
+    public IBalloonText create(IBalloonText balloonText) {
         BalloonTextRecord ret = this.dslContext.insertInto(BALLOON_TEXT)
                 .set(BALLOON_TEXT.NAME, balloonText.getName())
                 .set(BALLOON_TEXT.TEXT_BEFORE_FORM, balloonText.getTextBeforeForm())
@@ -85,6 +86,5 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
         return this.dslContext.delete(BALLOON_TEXT)
                 .where(BALLOON_TEXT.ID.eq(id))
                 .execute() > 0;
-
     }
 }

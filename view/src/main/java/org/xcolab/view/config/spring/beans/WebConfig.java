@@ -7,35 +7,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.CacheControl;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 
-import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.view.auth.AuthenticationContext;
-import org.xcolab.view.auth.tracking.UserTrackingFilter;
-import org.xcolab.view.auth.tracking.UserTrackingService;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.spring.converters.CaseInsensitiveStringToEnumConverterFactory;
-import org.xcolab.view.config.spring.filters.CdnUrlEncodingFilter;
 import org.xcolab.view.config.spring.properties.TomcatProperties;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.spring.properties.WebProperties.CacheSettings;
@@ -45,18 +37,15 @@ import org.xcolab.view.config.tomcat.AjpConnector;
 import org.xcolab.view.config.tomcat.ForwardedHostValve;
 import org.xcolab.view.pages.proposals.interceptors.PopulateProposalModelInterceptor;
 import org.xcolab.view.pages.proposals.interceptors.ValidateTabPermissionsInterceptor;
+import org.xcolab.view.theme.PopulateLayoutVariablesFilter;
 import org.xcolab.view.theme.ThemeResourceResolver;
-import org.xcolab.view.theme.ThemeVariableInterceptor;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-@EnableConfigurationProperties(
-        {WebProperties.class, TomcatProperties.class})
+@EnableConfigurationProperties({WebProperties.class, TomcatProperties.class})
 public class WebConfig implements WebMvcConfigurer {
 
     private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
@@ -68,7 +57,7 @@ public class WebConfig implements WebMvcConfigurer {
     private final WebProperties webProperties;
 
     // Interceptors
-    private final ThemeVariableInterceptor themeVariableInterceptor;
+    private final PopulateLayoutVariablesFilter populateLayoutVariablesFilter;
     private final PopulateProposalModelInterceptor populateContextInterceptor;
     private final ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor;
 
@@ -76,7 +65,7 @@ public class WebConfig implements WebMvcConfigurer {
     private final LocaleResolver localeResolver;
 
     @Autowired
-    public WebConfig(ThemeVariableInterceptor themeVariableInterceptor,
+    public WebConfig(PopulateLayoutVariablesFilter populateLayoutVariablesFilter,
             PopulateProposalModelInterceptor populateContextInterceptor,
             ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
             TomcatProperties tomcatProperties,
@@ -86,11 +75,11 @@ public class WebConfig implements WebMvcConfigurer {
         this.tomcatProperties = tomcatProperties;
         this.webProperties = webProperties;
 
-        Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
+        Assert.notNull(populateLayoutVariablesFilter, "ThemeVariableInterceptor bean is required");
         Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
         Assert.notNull(validateTabPermissionsInterceptor,
                 "ValidateTabPermissionsInterceptor bean is required");
-        this.themeVariableInterceptor = themeVariableInterceptor;
+        this.populateLayoutVariablesFilter = populateLayoutVariablesFilter;
         this.populateContextInterceptor = populateContextInterceptor;
         this.validateTabPermissionsInterceptor = validateTabPermissionsInterceptor;
 
@@ -100,7 +89,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(themeVariableInterceptor);
+        registry.addInterceptor(populateLayoutVariablesFilter);
 
         registry.addInterceptor(populateContextInterceptor).addPathPatterns("/contests/**");
         registry.addInterceptor(validateTabPermissionsInterceptor).addPathPatterns("/contests/**");
@@ -116,41 +105,6 @@ public class WebConfig implements WebMvcConfigurer {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         return localeChangeInterceptor;
-    }
-
-    @Bean
-    public FilterRegistrationBean resourceEncodingFilter() {
-        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        registrationBean.setFilter(new ResourceUrlEncodingFilter());
-        return registrationBean;
-    }
-
-    @Bean
-    public FilterRegistrationBean cdnUrlEncodingFilter() {
-        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        Map<String, String> cdnUrlMappings = new HashMap<>();
-        cdnUrlMappings.put("/css/**", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
-        cdnUrlMappings.put("/js/**", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
-        cdnUrlMappings.put("/vendor/**", PlatformAttributeKey.CDN_URL_SCRIPTS.get());
-        cdnUrlMappings.put("/images/**", PlatformAttributeKey.CDN_URL_IMAGES_STATIC.get());
-        cdnUrlMappings.put("/image/**", PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get());
-        registrationBean.setFilter(new CdnUrlEncodingFilter(cdnUrlMappings));
-        registrationBean.setOrder(Ordered.LOWEST_PRECEDENCE);
-        return registrationBean;
-    }
-
-    @Bean
-    public FilterRegistrationBean etagFilter() {
-        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        registrationBean.setFilter(new ShallowEtagHeaderFilter());
-        return registrationBean;
-    }
-
-    @Bean
-    public FilterRegistrationBean trackingFilter(UserTrackingService userTrackingService) {
-        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        registrationBean.setFilter(new UserTrackingFilter(userTrackingService));
-        return registrationBean;
     }
 
     @LoadBalanced

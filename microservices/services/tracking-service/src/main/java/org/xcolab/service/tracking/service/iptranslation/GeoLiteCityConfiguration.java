@@ -10,6 +10,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.tracking.pojo.ILocation;
+import org.xcolab.client.tracking.pojo.tables.pojos.Location;
 import org.xcolab.service.tracking.exceptions.GeoLiteCityConfigurationException;
 
 import java.io.BufferedReader;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Component
@@ -31,7 +34,7 @@ public class GeoLiteCityConfiguration {
     private static final String GEO_LITE_CITY_BLOCKS_PROPERTY = "geolite.blocks.path";
     private static final String GEO_LITE_CITY_LOCATION_PROPERTY = "geolite.location.path";
 
-    private Map<Integer, Location> locations;
+    private Map<Integer, ILocation> locations;
     private List<IpBlock> blocks;
 
     private long initializationStartTime;
@@ -91,12 +94,12 @@ public class GeoLiteCityConfiguration {
                     CSVParser.DEFAULT_SEPARATOR, CSVParser.DEFAULT_QUOTE_CHARACTER,
                     CSVParser.DEFAULT_ESCAPE_CHARACTER, 2);
 
-            Map<Integer, Location> locations = new HashMap<>(510000);
+            Map<Integer, ILocation> locations = new HashMap<>(510000);
             while ((line = csvLocationsReader.readNext()) != null) {
                 int locId = Integer.parseInt(line[0]);
-                locations.put(locId, new Location(locId, line[1], line[2], line[3], line[4],
-                        Double.parseDouble(line[5]), Double.parseDouble(line[6]), line[7],
-                        line[8]));
+                String countryName = new Locale("", line[1]).getDisplayCountry();
+                locations.put(locId, new Location(locId, line[1], countryName, line[2], line[3], line[4],
+                        Double.parseDouble(line[5]), Double.parseDouble(line[6]), line[7], line[8]));
             }
 
             Collections.sort(blocks);
@@ -113,7 +116,7 @@ public class GeoLiteCityConfiguration {
         }
     }
 
-    public Map<Integer, Location> getLocations() {
+    public Map<Integer, ILocation> getLocations() {
         return locations;
     }
 

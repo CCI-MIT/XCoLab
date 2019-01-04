@@ -4,7 +4,7 @@ import org.xcolab.commons.jooq.JooqGeneratorStrategy;
 
 public class XColabGeneratorStrategy extends JooqGeneratorStrategy {
 
-    private static final String PREFIX_SEPARATOR = "__";
+    protected static final String PREFIX_SEPARATOR = "__";
 
     @Override
     protected String customizeJavaClassName(String originalName) {
@@ -20,7 +20,7 @@ public class XColabGeneratorStrategy extends JooqGeneratorStrategy {
 
     private String cleanUpSchemeAndPrefix(String val) {
         final int prefixIndex = val.indexOf(PREFIX_SEPARATOR);
-        if (prefixIndex != -1 ) {
+        if (prefixIndex != -1) {
             return val.substring(prefixIndex + PREFIX_SEPARATOR.length());
         }
         return val;

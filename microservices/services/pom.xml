@@ -246,7 +246,7 @@
                                 <directory>target/generated-sources/jooq</directory>
                             </target>
                             <strategy>
-                                <name>org.xcolab.service.utils.db.jooq.generator.XColabGeneratorStrategy</name>
+                                <name>org.xcolab.service.utils.db.jooq.generator.XColabServiceGeneratorStrategy</name>
                             </strategy>
                         </generator>
                     </configuration>
