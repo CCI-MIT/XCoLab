@@ -2,7 +2,6 @@ package org.xcolab.view.pages.contenteditor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,14 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.content.IContentClient;
-import org.xcolab.client.content.exceptions.ContentNotFoundException;
-import org.xcolab.client.content.pojo.IContentArticle;
-import org.xcolab.client.content.pojo.IContentArticleVersion;
-import org.xcolab.client.content.pojo.IContentFolder;
-import org.xcolab.client.content.pojo.IContentPage;
-import org.xcolab.client.content.pojo.tables.pojos.ContentArticleVersion;
-import org.xcolab.client.content.pojo.tables.pojos.ContentFolder;
+import org.xcolab.client.contents.ContentsClient;
+import org.xcolab.client.contents.exceptions.ContentNotFoundException;
+import org.xcolab.client.contents.pojo.ContentArticle;
+import org.xcolab.client.contents.pojo.ContentArticleVersion;
+import org.xcolab.client.contents.pojo.ContentFolder;
+import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.i18n.I18nUtils;
@@ -32,9 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ContentEditorController extends BaseContentEditor {
-
-    @Autowired
-    private IContentClient contentClient;
 
     @GetMapping("/content-editor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
@@ -59,33 +53,30 @@ public class ContentEditorController extends BaseContentEditor {
         if (node != null && !node.isEmpty()) {
             folderId = Long.parseLong(node);
         }
-        List<IContentFolder> contentFolders = contentClient.getContentFolders(folderId);
+        List<ContentFolder> contentFolders = ContentsClient.getContentFolders(folderId);
 
         if (contentFolders != null) {
-            for (IContentFolder cf : contentFolders) {
-                if (cf.getId() != IContentFolder.RESOURCE_FOLDER_ID) {
+            for (ContentFolder cf : contentFolders) {
+                if (cf.getId() != ContentFolder.RESOURCE_FOLDER_ID) {
                     responseArray.put(folderNode(cf.getName(),
                             cf.getId().toString()));
                 }
             }
         }
-        List<IContentArticleVersion> contentArticles =
-                contentClient.getContentFolderArticleVersions(folderId);
+        List<ContentArticleVersion> contentArticles =
+                ContentsClient.getChildArticleVersions(folderId);
         if (contentArticles != null) {
-            for (IContentArticleVersion ca : contentArticles) {
-                IContentArticle contentArticle = null;
-                try {
-                    contentArticle = contentClient.getContentArticle(ca.getArticleId());
-                    if (contentArticle.getVisible()) {
-                        responseArray.put(articleNode(ca.getTitle(), ca.getArticleId()));
-                    }
-                } catch (ContentNotFoundException e) {
-                    // continue
+            for (ContentArticleVersion ca : contentArticles) {
+                ContentArticle contentArticle =
+                        ContentsClient.getContentArticle(ca.getArticleId());
+                if (contentArticle.getVisible()) {
+                    responseArray.put(articleNode(ca.getTitle(), ca.getArticleId()));
                 }
             }
         }
 
         response.getOutputStream().write(responseArray.toString().getBytes());
+
     }
 
 
@@ -98,11 +89,11 @@ public class ContentEditorController extends BaseContentEditor {
         if (encoding == null || encoding.isEmpty()) {
             encoding = defaultEncoding;
         }
-        IContentArticleVersion contentArticleVersion =
-                contentClient.getLatestVersionByArticleIdAndLanguage(articleId, encoding);
+        ContentArticleVersion contentArticleVersion =
+                ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId, encoding);
         if (contentArticleVersion == null) {
             //if there is no content for the encoding passed, get the default from the database
-            contentArticleVersion = contentClient
+            contentArticleVersion = ContentsClient
                     .getLatestVersionByArticleIdAndLanguage(articleId, defaultEncoding);
             contentArticleVersion.setId(0L);
             contentArticleVersion.setLang(encoding);
@@ -118,8 +109,8 @@ public class ContentEditorController extends BaseContentEditor {
             HttpServletResponse response, @RequestParam(required = false) Long articleVersionId)
             throws IOException, ContentNotFoundException {
 
-        IContentArticleVersion contentArticleVersion =
-                contentClient.getContentArticleVersion(articleVersionId);
+        ContentArticleVersion contentArticleVersion =
+                ContentsClient.getContentArticleVersion(articleVersionId);
 
         JSONObject articleVersion =
                 getContentArticleVersion(contentArticleVersion.getArticleId(),
@@ -129,26 +120,27 @@ public class ContentEditorController extends BaseContentEditor {
     }
 
     private JSONObject getContentArticleVersion(@RequestParam(required = false) Long articleId,
-            IContentArticleVersion contentArticleVersion) {
+            ContentArticleVersion contentArticleVersion) {
 
         JSONArray versions = new JSONArray();
-        List<IContentArticleVersion> cavs = contentClient
+        List<ContentArticleVersion> cavs = ContentsClient
                 .getContentArticleVersions(0, Integer.MAX_VALUE, null, articleId, null, null,
                         contentArticleVersion.getLang());
 
         JSONObject articleVersion;
-        for (IContentArticleVersion cav : cavs) {
+        for (ContentArticleVersion cav : cavs) {
             articleVersion = new JSONObject();
             articleVersion.put("createdAt", cav.getCreatedAt());
             articleVersion.put("contentArticleVersionId", cav.getId());
             versions.put(articleVersion);
         }
         articleVersion = new JSONObject();
-        try {
-            IContentPage cp = contentClient
-                    .getContentPageByContentArticleId(contentArticleVersion.getArticleId());
+        ContentPage cp = ContentsClient
+                .getContentPageByContentArticleId(contentArticleVersion.getArticleId());
+
+        if (cp != null) {
             articleVersion.put("contentUrl", cp.getTitle());
-        } catch (ContentNotFoundException e) {}
+        }
         articleVersion.put("title", contentArticleVersion.getTitle());
         articleVersion.put("folderId", contentArticleVersion.getFolderId());
         articleVersion.put("articleId", contentArticleVersion.getArticleId());
@@ -163,25 +155,21 @@ public class ContentEditorController extends BaseContentEditor {
     @PostMapping("/content-editor/archiveContentArticle")
     public void archiveContentArticle(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) Long articleId) throws IOException {
-        try {
-            IContentArticle ca = contentClient.getContentArticle(articleId);
-            ca.setVisible(false);
-            contentClient.updateContentArticle(ca);
-            defaultOperationReturnMessage(true, "Article archived successfully", "", response);
-        } catch (ContentNotFoundException e){
-            defaultOperationReturnMessage(false, "Article could not be found with id " + articleId, "", response);
-        }
+        ContentArticle ca = ContentsClient.getContentArticle(articleId);
+        ca.setVisible(false);
+        ContentsClient.updateContentArticle(ca);
+        defaultOperationReturnMessage(true, "Article archived successfully", "", response);
     }
 
     @PostMapping("/content-editor/createArticleFolder")
     public void createArticleFolder(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String folderName,
             @RequestParam(required = false) Long parentFolderId) throws IOException {
-        IContentFolder contentFolder = new ContentFolder();
+        ContentFolder contentFolder = new ContentFolder();
         contentFolder.setName(folderName);
         contentFolder.setParentFolderId(parentFolderId);
 
-        contentClient.createContentFolder(contentFolder);
+        ContentsClient.createContentFolder(contentFolder);
 
         defaultOperationReturnMessage(true, "Folder created successfully", "", response);
     }
@@ -193,16 +181,16 @@ public class ContentEditorController extends BaseContentEditor {
             throws IOException, ContentNotFoundException {
         long userId = MemberAuthUtil.getuserId(request);
 
-        IContentArticleVersion contentArticleVersion =
-                contentClient.getLatestContentArticleVersion(articleId);
-        IContentArticleVersion newContentArticleVersion = new ContentArticleVersion();
+        ContentArticleVersion contentArticleVersion =
+                ContentsClient.getLatestContentArticleVersion(articleId);
+        ContentArticleVersion newContentArticleVersion = new ContentArticleVersion();
         newContentArticleVersion.setTitle(contentArticleVersion.getTitle());
         newContentArticleVersion.setContent(contentArticleVersion.getContent());
         newContentArticleVersion.setArticleId(contentArticleVersion.getArticleId());
 
         newContentArticleVersion.setAuthorUserId(userId);
         newContentArticleVersion.setFolderId(folderId);
-        contentClient.createContentArticleVersion(newContentArticleVersion);
+        ContentsClient.createContentArticleVersion(newContentArticleVersion);
 
         defaultOperationReturnMessage(true, "Article moved successfully", "", response);
     }
@@ -229,10 +217,11 @@ public class ContentEditorController extends BaseContentEditor {
             defaultOperationReturnMessage(false, "Not allowed to save article", "", response);
         }
 
+
         if (lang == null) {
             lang = I18nUtils.DEFAULT_LOCALE.getLanguage();
         }
-        IContentArticleVersion contentArticleVersion = new ContentArticleVersion();
+        ContentArticleVersion contentArticleVersion = new ContentArticleVersion();
 
         contentArticleVersion.setArticleId(articleId);
         contentArticleVersion.setLang(lang);
@@ -241,7 +230,8 @@ public class ContentEditorController extends BaseContentEditor {
         contentArticleVersion.setFolderId((folderId));
         contentArticleVersion.setTitle(title);
         contentArticleVersion.setContent(content);
-        contentArticleVersion = contentClient.createContentArticleVersion(contentArticleVersion);
+        contentArticleVersion = ContentsClient.createContentArticleVersion(contentArticleVersion);
+
 
         defaultOperationReturnMessage(true, "Article version created successfully",
                 contentArticleVersion.getArticleId().toString(), response);

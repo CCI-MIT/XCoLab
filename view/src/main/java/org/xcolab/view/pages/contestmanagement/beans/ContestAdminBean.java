@@ -1,8 +1,5 @@
 package org.xcolab.view.pages.contestmanagement.beans;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
@@ -14,9 +11,6 @@ import javax.validation.constraints.NotNull;
 public class ContestAdminBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Autowired
-    private IContentClient contentClient;
 
     private String emailTemplateUrl;
     private ContestModelSettingsBean contestModelSettings;
@@ -36,6 +30,7 @@ public class ContestAdminBean implements Serializable {
     @NotNull(message = "A contest type must be selected.")
     private Long contestType;
 
+
     public ContestAdminBean() { }
 
     public ContestAdminBean(Contest contest) {
@@ -54,7 +49,7 @@ public class ContestAdminBean implements Serializable {
     public void persist(Contest contest) {
 
         updateContest(contest);
-        WikiPageWrapper.updateContestWiki(contentClient, contest);
+        WikiPageWrapper.updateContestWiki(contest);
     }
 
     private void updateContest(Contest contest) {

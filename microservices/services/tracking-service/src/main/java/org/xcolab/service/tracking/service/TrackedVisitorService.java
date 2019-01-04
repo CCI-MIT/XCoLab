@@ -3,10 +3,9 @@ package org.xcolab.service.tracking.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.tracking.pojo.ITrackedVisit;
-import org.xcolab.client.tracking.pojo.ITrackedVisitor;
-import org.xcolab.model.tables.pojos.TrackedVisitorImpl;
-import org.xcolab.service.tracking.domain.trackedvisitor.TrackedVisitorDao;
+import org.xcolab.model.tables.pojos.TrackedVisit;
+import org.xcolab.model.tables.pojos.TrackedVisitor;
+import org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao;
 
 import java.util.UUID;
 
@@ -22,8 +21,8 @@ public class TrackedVisitorService {
         this.trackedVisitorDao = trackedVisitorDao;
     }
 
-    public void getOrCreateTrackedVisitor(ITrackedVisit trackedVisit, Long userId) {
-        ITrackedVisitor trackedVisitor;
+    public void getOrCreateTrackedVisitor(TrackedVisit trackedVisit, Long userId) {
+        TrackedVisitor trackedVisitor;
         if (userId != null) {
             trackedVisitor = getOrCreate(userId);
         } else {
@@ -32,16 +31,16 @@ public class TrackedVisitorService {
         trackedVisit.setVisitorUuid(trackedVisitor.getUuid());
     }
 
-    public ITrackedVisitor getOrCreate(long userId) {
+    public TrackedVisitor getOrCreate(long userId) {
         return trackedVisitorDao.getByUserId(userId).orElse(create(userId));
     }
 
-    public ITrackedVisitor createUnknownVisitor() {
+    public TrackedVisitor createUnknownVisitor() {
         return create(null);
     }
 
-    private ITrackedVisitor create(Long userId) {
-        ITrackedVisitor trackedVisitor = new TrackedVisitorImpl();
+    private TrackedVisitor create(Long userId) {
+        TrackedVisitor trackedVisitor = new TrackedVisitor();
         trackedVisitor.setUserId(userId);
         trackedVisitor.setUuid(generateUniqueUUID());
         return trackedVisitorDao.create(trackedVisitor);

@@ -1,13 +1,12 @@
 package org.xcolab.view.seo.sitemaps.generators;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.content.IContentClient;
-import org.xcolab.client.content.pojo.IContentPage;
+import org.xcolab.client.contents.ContentsClient;
+import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.ChangeFrequency;
 import org.xcolab.view.seo.sitemaps.xml.XmlUrl.Priority;
@@ -17,9 +16,6 @@ import java.util.List;
 
 @Service
 public class MainSitemapGenerator {
-
-    @Autowired
-    private IContentClient contentClient;
 
     private final String siteUrl = PlatformAttributeKey.COLAB_URL.get();
 
@@ -52,8 +48,8 @@ public class MainSitemapGenerator {
     }
 
     private void addContentPages(XmlUrlSet xmlUrlSet) {
-        final List<IContentPage> contentPages = contentClient.getContentPages(null);
-        for (IContentPage contentPage : contentPages) {
+        final List<ContentPage> contentPages = ContentsClient.getContentPages(null);
+        for (ContentPage contentPage : contentPages) {
             xmlUrlSet.addUrl(XmlUrl.Builder
                     .forLocation(siteUrl + "/page/" + contentPage.getTitle())
                     .changeFrequency(ChangeFrequency.DAILY)

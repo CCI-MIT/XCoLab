@@ -12,25 +12,23 @@ import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.MockContestType;
+import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.TrackingClientMockerHelper;
 
 import java.util.ArrayList;
 
@@ -57,27 +55,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.pages.redballoon")
 @ComponentScan("org.xcolab.view.config")
 @ComponentScan("org.xcolab.view.i18n")
-@ComponentScan("org.xcolab.client")
 
-@TestPropertySource(
-        properties = {
-                "cache.enabled=false"
-        }
-)
+@TestPropertySource(properties = {"cache.enabled=false"})
 
 @PrepareForTest({
-        AdminClient.class,
-        ActivitiesClient.class,
-        ActivitiesClientUtil.class,
-        ContestTypeClient.class,
-        ContestClientUtil.class,
-        MembersClient.class,
-        EmailTemplateClientUtil.class,
-        EmailClient.class,
-        MessagingClient.class
+        org.xcolab.client.admin.AdminClient.class,
+        org.xcolab.client.activities.ActivitiesClient.class,
+        org.xcolab.client.activities.ActivitiesClientUtil.class,
+        org.xcolab.client.admin.ContestTypeClient.class,
+        org.xcolab.client.contest.ContestClientUtil.class,
+        org.xcolab.client.members.MembersClient.class,
+        org.xcolab.client.admin.EmailTemplateClientUtil.class,
+        org.xcolab.client.emails.EmailClient.class,
+        org.xcolab.client.members.MessagingClient.class,
+        org.xcolab.client.balloons.BalloonsClient.class,
+        org.xcolab.client.tracking.TrackingClient.class
 })
 
-@ActiveProfiles("test")
 public class LoginRegisterControllerTest {
 
     @Autowired
@@ -95,10 +89,12 @@ public class LoginRegisterControllerTest {
         PowerMockito.mockStatic(EmailClient.class);
 
         PowerMockito.mockStatic(MessagingClient.class);
+        PowerMockito.mockStatic(BalloonsClient.class);
 
         MembersClientMockerHelper.mockMembersClient();
         AdminClientMockerHelper.mockAdminClient();
         EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        TrackingClientMockerHelper.mockTrackingClient();
 
         Mockito.when(ContestTypeClient.getAllContestTypes())
                 .thenReturn(new ArrayList<>());
@@ -132,6 +128,7 @@ public class LoginRegisterControllerTest {
                 .param("shortBio", ""))
                 .andExpect(forwardedUrl("/WEB-INF/jsp/loginregister/register.jspx"))
                 .andExpect(model().hasErrors());
+
     }
 
     @Test

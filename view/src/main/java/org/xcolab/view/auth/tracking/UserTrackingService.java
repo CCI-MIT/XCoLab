@@ -2,15 +2,14 @@ package org.xcolab.view.auth.tracking;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.tracking.ITrackingClient;
-import org.xcolab.client.tracking.pojo.ITrackedVisit;
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.TrackedVisit;
 
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -22,9 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class UserTrackingService {
 
-    @Autowired
-    private ITrackingClient trackingClient;
-
     private static final String[] IGNORED_HEADERS = {HttpHeaders.USER_AGENT, HttpHeaders.REFERER,
             HttpHeaders.HOST, HttpHeaders.ORIGIN, HttpHeaders.CONNECTION,
             HttpHeaders.CONTENT_LENGTH, "X-CSRF-TOKEN"};
@@ -33,7 +29,7 @@ public class UserTrackingService {
 
 
     @Async
-    public Future<ITrackedVisit> trackVisitor(HttpServletRequest request, String uuid, Member loggedInMember,
+    public Future<TrackedVisit> trackVisitor(HttpServletRequest request, String uuid, Member loggedInMember,
             String url, String referer) {
 
         String browser = request.getHeader(HttpHeaders.USER_AGENT);
@@ -41,8 +37,8 @@ public class UserTrackingService {
         String headers = getHeadersAsString(request);
 
         final Long userId = loggedInMember != null ? loggedInMember.getId() : null;
-        final ITrackedVisit trackedVisit =
-                trackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, userId);
+        final TrackedVisit trackedVisit =
+                TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers, userId);
         return new AsyncResult<>(trackedVisit);
     }
 
@@ -118,4 +114,5 @@ public class UserTrackingService {
             return uuid;
         }
     }
+
 }

@@ -16,8 +16,8 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
-import org.xcolab.client.tracking.ITrackingClient;
-import org.xcolab.client.tracking.pojo.ILocation;
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
@@ -65,11 +65,8 @@ public class VoteCsvWriter extends CsvResponseWriter {
             "Vote is valid (manual override)",
             "manualValidationResult");
 
-    private ITrackingClient trackingClient;
-
-    public VoteCsvWriter(HttpServletResponse response, ITrackingClient trackingClient) throws IOException {
+    public VoteCsvWriter(HttpServletResponse response) throws IOException {
         super("votingReport", COLUMN_NAMES, response);
-        this.trackingClient = trackingClient;
     }
 
     public void writeVotes(List<ProposalVote> proposalVotes) {
@@ -130,9 +127,9 @@ public class VoteCsvWriter extends CsvResponseWriter {
     }
 
     private void addLocationForIp(List<String> row, String ipAddress) {
-        ILocation loginLocation = null;
+        Location loginLocation = null;
         if (StringUtils.isNotEmpty(ipAddress)) {
-            loginLocation = trackingClient.getLocationForIp(ipAddress);
+            loginLocation = TrackingClient.getLocationForIp(ipAddress);
         }
         if (loginLocation != null) {
             addValue(row, loginLocation.getCountryNameInEnglish());

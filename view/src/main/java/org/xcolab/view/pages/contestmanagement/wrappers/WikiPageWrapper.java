@@ -2,10 +2,12 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.content.IContentClient;
-import org.xcolab.client.content.exceptions.ContentNotFoundException;
-import org.xcolab.client.content.pojo.IContentArticle;
-import org.xcolab.client.content.pojo.IContentArticleVersion;
+import org.xcolab.client.contents.ContentsClient;
+import org.xcolab.client.contents.exceptions.ContentNotFoundException;
+import org.xcolab.client.contents.pojo.ContentArticle;
+import org.xcolab.client.contents.pojo.ContentArticleVersion;
+import org.xcolab.client.contents.pojo.ContentFolder;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
@@ -15,39 +17,37 @@ import java.text.ParseException;
 
 public class WikiPageWrapper {
 
-    private final IContentClient contentClient;
     private final Contest contest;
     private final Long loggedInUserId;
-    private final IContentArticle contentArticle;
-    private final IContentArticleVersion contentArticleVersion;
+    private final ContentArticle contentArticle;
+    private final ContentArticleVersion contentArticleVersion;
 
-    public WikiPageWrapper(IContentClient contentClient, Contest contest, Long loggedInUserId) {
-        this.contentClient = contentClient;
+    public WikiPageWrapper(Contest contest, Long loggedInUserId) {
         this.contest = contest;
         this.loggedInUserId = loggedInUserId;
 
         if (contest.getResourceArticleId() == null || contest.getResourceArticleId() <= 0) {
             throw ReferenceResolutionException
-                    .toObject(IContentArticle.class, contest.getResourceArticleId())
+                    .toObject(ContentArticle.class, contest.getResourceArticleId())
                     .fromObject(Contest.class, contest.getId());
         }
         try {
-            contentArticle = contentClient.getContentArticle(contest.getResourceArticleId());
-            contentArticleVersion = contentClient.getContentArticleVersion(contentArticle.getMaxVersionId());
+            contentArticle = ContentsClient.getContentArticle(contest.getResourceArticleId());
+            contentArticleVersion = ContentsClient.getContentArticleVersion(contentArticle.getMaxVersionId());
         } catch (ContentNotFoundException e) {
             throw ReferenceResolutionException
-                    .toObject(IContentArticle.class, contest.getResourceArticleId())
+                    .toObject(ContentArticle.class, contest.getResourceArticleId())
                     .fromObject(Contest.class, contest.getId());
         }
     }
 
-    public static void updateContestWiki(IContentClient contentClient, Contest contest) {
+    public static void updateContestWiki(Contest contest) {
         try {
             if (contest.getResourceArticleId() != null) {
-                final IContentArticleVersion resourceArticleVersion = contentClient
+                final ContentArticleVersion resourceArticleVersion = ContentsClient
                         .getLatestContentArticleVersion(contest.getResourceArticleId());
                 resourceArticleVersion.setTitle(contest.getTitle());
-                contentClient.updateContentArticleVersion(resourceArticleVersion);
+                ContentsClient.updateContentArticleVersion(resourceArticleVersion);
             }
         } catch (ContentNotFoundException ignored) {
         }
@@ -62,7 +62,7 @@ public class WikiPageWrapper {
     }
 
     public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean)
-            throws ContentNotFoundException {
+            throws UnsupportedEncodingException, ParseException {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
         if (!contentArticleVersion.getContent().equals(updatedResourcesContent)) {
@@ -70,7 +70,7 @@ public class WikiPageWrapper {
             contentArticleVersion.setContent(updatedResourcesContent);
             contentArticleVersion.setArticleId(contentArticle.getId());
             contentArticleVersion.setAuthorUserId(loggedInUserId);
-            contentClient.updateContentArticleVersion(contentArticleVersion);
+            ContentsClient.updateContentArticleVersion(contentArticleVersion);
         }
     }
 }

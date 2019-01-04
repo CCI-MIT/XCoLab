@@ -1,19 +1,19 @@
 package org.xcolab.service.tracking.domain.balloontext;
 
-import org.xcolab.client.tracking.pojo.IBalloonText;
+import org.xcolab.model.tables.pojos.BalloonText;
 import org.xcolab.service.tracking.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface BalloonTextDao {
 
-    IBalloonText getBalloonText(Long id) throws NotFoundException;
+    BalloonText getBalloonText(Long id) throws NotFoundException;
 
-    IBalloonText create(IBalloonText balloonText);
+    BalloonText create(BalloonText balloonText);
 
-    boolean update(IBalloonText balloonText);
+    boolean update(BalloonText balloonText);
 
     boolean delete(Long id) ;
 
-    List<IBalloonText> getEnabledBalloonTexts();
+    List<BalloonText> getEnabledBalloonTexts();
 }

@@ -2,7 +2,6 @@ package org.xcolab.view.files;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
-import org.xcolab.client.content.IFileClient;
-import org.xcolab.client.content.pojo.IFileEntry;
+import org.xcolab.client.files.FilesClient;
+import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.commons.servlet.ServletFileUtil;
 
@@ -37,23 +36,18 @@ public class ImageDisplayService {
 
     private final boolean isProduction;
 
-    private final IFileClient fileClient;
-
-    @Autowired
-    public ImageDisplayService(IFileClient fileClient) {
+    public ImageDisplayService() {
         final ServerEnvironment serverEnvironment = PlatformAttributeKey.SERVER_ENVIRONMENT.get();
         isProduction = serverEnvironment == ServerEnvironment.PRODUCTION;
-        this.fileClient = fileClient;
     }
 
     public void serveImage(HttpServletRequest request, HttpServletResponse response, long imageId,
             ImageType imageType) throws IOException {
 
-        final Optional<IFileEntry> fileEntryOpt = fileClient.getFileEntry(imageId);
+        final Optional<FileEntry> fileEntryOpt = FilesClient.getFileEntry(imageId);
         if (fileEntryOpt.isPresent()) {
-            IFileEntry fileEntry = fileEntryOpt.get();
-            File imageFile = fileClient
-                    .getImageFile(fileEntry.getId(), BASE_PATH, fileEntry.getFileExtension());
+            FileEntry fileEntry = fileEntryOpt.get();
+            File imageFile = fileEntry.getImageFile(BASE_PATH);
             final boolean success = sendImageToResponse(request, response, imageFile);
             if (success) {
                 setCacheControlHeader(response);

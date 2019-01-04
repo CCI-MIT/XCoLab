@@ -20,8 +20,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.tracking.ITrackingClient;
-import org.xcolab.client.tracking.pojo.ILocation;
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.commons.CountryUtil;
 import org.xcolab.commons.recaptcha.RecaptchaValidator;
 import org.xcolab.commons.servlet.RequestParamUtil;
@@ -47,9 +47,6 @@ public class LoginRegisterController {
 
     private final ResourceMessageResolver resourceMessageResolver;
     private final RecaptchaValidator recaptchaValidator;
-
-    @Autowired
-    private ITrackingClient trackingClient;
 
     @Autowired
     public LoginRegisterController(LoginRegisterService loginRegisterService,
@@ -116,7 +113,7 @@ public class LoginRegisterController {
 
     private String getCountryCodeFromRemoteAddress(String ipAddr) throws UserLocationNotResolvableException {
         try {
-            ILocation location = trackingClient.getLocationForIp(ipAddr);
+            Location location = TrackingClient.getLocationForIp(ipAddr);
             if (location != null) {
                 return location.getCountry();
             }

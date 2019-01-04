@@ -3,14 +3,12 @@ package org.xcolab.view.pages.contestmanagement.beans;
 import org.hibernate.validator.constraints.Length;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
@@ -26,9 +24,6 @@ public class ContestDescriptionBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:.,;'’0-9äöüÄÖÜ?! ]*$";
-
-    @Autowired
-    private IContentClient contentClient;
 
     private Long contestId;
     private Long contestLogoId;
@@ -100,7 +95,7 @@ public class ContestDescriptionBean implements Serializable {
             contest.setContestUrlName((contest).generateContestUrlName());
             ContestClientUtil.updateContest(contest);
         }
-        WikiPageWrapper.updateContestWiki(contentClient, contest);
+        WikiPageWrapper.updateContestWiki(contest);
         updateContestSchedule(contest, scheduleTemplateId);
     }
 

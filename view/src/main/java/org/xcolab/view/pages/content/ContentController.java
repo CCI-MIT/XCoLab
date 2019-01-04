@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.content;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,10 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.content.IContentClient;
-import org.xcolab.client.content.exceptions.ContentNotFoundException;
-import org.xcolab.client.content.pojo.IContentArticle;
-import org.xcolab.client.content.pojo.IContentPage;
+import org.xcolab.client.contents.ContentsClient;
+import org.xcolab.client.contents.exceptions.ContentNotFoundException;
+import org.xcolab.client.contents.pojo.ContentArticle;
+import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
@@ -27,19 +26,16 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ContentController {
 
-    @Autowired
-    private IContentClient contentClient;
-
     @GetMapping("/page/{pageTitle}")
     public String showContentPage(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @PathVariable String pageTitle) throws IOException {
 
         try {
-            final IContentPage contentPage = contentClient.getContentPage(pageTitle);
+            final ContentPage contentPage = ContentsClient.getContentPage(pageTitle);
             model.addAttribute("contentPage", contentPage);
 
-            final IContentArticle contentArticle =
-                    contentClient.getContentArticle(contentPage.getContentArticleId());
+            final ContentArticle contentArticle =
+                    ContentsClient.getContentArticle(contentPage.getContentArticleId());
 
             if (!contentArticle.canView(member)) {
                 return new AccessDeniedPage(member).toViewName(response);

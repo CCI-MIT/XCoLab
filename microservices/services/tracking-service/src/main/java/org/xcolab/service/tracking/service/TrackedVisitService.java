@@ -5,17 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.tracking.pojo.ITrackedVisit;
-import org.xcolab.client.tracking.pojo.ITrackedVisitor;
-import org.xcolab.service.tracking.domain.trackedvisitor.TrackedVisitorDao;
+import org.xcolab.model.tables.pojos.TrackedVisit;
+import org.xcolab.model.tables.pojos.TrackedVisitor;
 import org.xcolab.service.tracking.domain.trackedvisit.TrackedVisitDao;
+import org.xcolab.service.tracking.domain.trackedVisitor.TrackedVisitorDao;
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService;
 import org.xcolab.service.tracking.service.iptranslation.IpTranslationService.IpFormatException;
 
 @Service
-@RestController
 public class TrackedVisitService {
 
     private static final Logger log = LoggerFactory.getLogger(TrackedVisitService.class);
@@ -35,7 +33,7 @@ public class TrackedVisitService {
         this.trackedVisitorDao = trackedVisitorDao;
     }
 
-    public ITrackedVisit createTrackedVisit(ITrackedVisit trackedVisit, Long userId) {
+    public TrackedVisit createTrackedVisit(TrackedVisit trackedVisit, Long userId) {
         final String remoteIp = trackedVisit.getIp();
         try {
             ipTranslationService.getLocationForIp(remoteIp).ifPresent(location -> {
@@ -48,7 +46,7 @@ public class TrackedVisitService {
             }
         }
 
-        ITrackedVisitor trackedVisitor = null;
+        TrackedVisitor trackedVisitor = null;
         if (StringUtils.isNotBlank(trackedVisit.getVisitorUuid())) {
             trackedVisitor = trackedVisitorDao.getByUuid(trackedVisit.getVisitorUuid())
                     .orElse(null);
