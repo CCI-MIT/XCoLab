@@ -2,7 +2,9 @@ package org.xcolab.client.modeling.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(as = org.xcolab.client.modeling.pojo.tables.pojos.ModelCategory.class)
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelCategory;
+
+@JsonDeserialize(as = ModelCategory.class)
 public interface IModelCategory {
 
     Long getId();

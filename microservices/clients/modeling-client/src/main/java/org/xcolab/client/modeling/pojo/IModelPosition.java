@@ -2,7 +2,9 @@ package org.xcolab.client.modeling.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(as = org.xcolab.client.modeling.pojo.tables.pojos.ModelPosition.class)
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelPosition;
+
+@JsonDeserialize(as = ModelPosition.class)
 public interface IModelPosition {
 
     Long getId();

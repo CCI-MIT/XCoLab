@@ -2,7 +2,9 @@ package org.xcolab.client.modeling.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(as = org.xcolab.client.modeling.pojo.tables.pojos.ModelGlobalPreference.class)
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelGlobalPreference;
+
+@JsonDeserialize(as = ModelGlobalPreference.class)
 public interface IModelGlobalPreference {
 
     Long getId();

@@ -2,7 +2,9 @@ package org.xcolab.client.modeling.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(as = org.xcolab.client.modeling.pojo.tables.pojos.ModelOutputChartOrder.class)
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelOutputChartOrder;
+
+@JsonDeserialize(as = ModelOutputChartOrder.class)
 public interface IModelOutputChartOrder {
 
     Long getId();

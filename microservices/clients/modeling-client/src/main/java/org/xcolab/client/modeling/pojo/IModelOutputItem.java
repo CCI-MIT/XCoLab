@@ -2,7 +2,9 @@ package org.xcolab.client.modeling.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(as = org.xcolab.client.modeling.pojo.tables.pojos.ModelOutputItem.class)
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelOutputItem;
+
+@JsonDeserialize(as = ModelOutputItem.class)
 public interface IModelOutputItem {
 
     Long getModelOutputItemModifierPk();
