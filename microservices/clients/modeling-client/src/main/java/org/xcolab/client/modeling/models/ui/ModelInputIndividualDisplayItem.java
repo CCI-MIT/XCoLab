@@ -3,9 +3,10 @@ package org.xcolab.client.modeling.models.ui;
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.Variable;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelInputItem;
 
 import org.xcolab.client.modeling.ModelingClient;
-import org.xcolab.client.modeling.pojo.ModelInputItem;
+import org.xcolab.client.modeling.pojo.IModelInputItem;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,10 +19,10 @@ import javax.json.JsonObjectBuilder;
 public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    ModelInputItem item;
+    IModelInputItem item;
 
 
-    public ModelInputIndividualDisplayItem(ModelInputItem item) throws IOException {
+    public ModelInputIndividualDisplayItem(IModelInputItem item) throws IOException {
         super(ModelingClient.instance().getModel(item),
                 ModelingClient.instance().getMetaData(item));
         this.item = item;
@@ -34,9 +35,9 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
      */
     public static ModelInputIndividualDisplayItem create(Simulation sim, MetaData md,
             ModelInputWidgetType type) throws IOException {
-        ModelInputItem item = new ModelInputItem();
+        IModelInputItem item = new ModelInputItem();
         item.setModelId(sim.getId());
-        item.setModelInputItemID(md.getId());
+        item.setModelInputItemId(md.getId());
         item.setType(type.name());
         ModelingClient.instance().createModelInputItem(item);
         return new ModelInputIndividualDisplayItem(item);
@@ -144,5 +145,4 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     public String getProperty(ModelWidgetProperty prop) {
         return ModelingClient.instance().getPropertyMap(item).get(prop.toString());
     }
-
 }

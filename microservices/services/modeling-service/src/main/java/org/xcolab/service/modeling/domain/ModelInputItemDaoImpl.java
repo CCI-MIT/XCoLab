@@ -6,7 +6,8 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ModelInputItem;
+import org.xcolab.client.modeling.pojo.IModelInputItem;
+import org.xcolab.model.tables.pojos.ModelInputItemImpl;
 import org.xcolab.model.tables.records.ModelInputItemRecord;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class ModelInputItemDaoImpl implements ModelInputItemDao {
     }
 
     @Override
-    public Optional<ModelInputItem> get(long id) {
+    public Optional<IModelInputItem> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_INPUT_ITEM)
                 .where(MODEL_INPUT_ITEM.ID.eq(id))
@@ -33,18 +34,18 @@ public class ModelInputItemDaoImpl implements ModelInputItemDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ModelInputItem.class));
+        return Optional.of(record.into(ModelInputItemImpl.class));
     }
 
     @Override
-    public List<ModelInputItem> list() {
+    public List<IModelInputItem> list() {
         return dslContext.select()
                 .from(MODEL_INPUT_ITEM)
-                .fetch().into(ModelInputItem.class);
+                .fetch().into(ModelInputItemImpl.class);
     }
 
     @Override
-    public List<ModelInputItem> findByGiven(Long modelInputGroupPk,
+    public List<IModelInputItem> findByGiven(Long modelInputGroupPk,
             Long modelId, Long modelInputId) {
         final SelectQuery<Record> query = dslContext.select().from(MODEL_INPUT_ITEM)
                 .getQuery();
@@ -61,11 +62,11 @@ public class ModelInputItemDaoImpl implements ModelInputItemDao {
             query.addConditions(MODEL_INPUT_ITEM.MODEL_INPUT_ITEM_ID.eq(modelInputId));
         }
 
-        return query.fetch().into(ModelInputItem.class);
+        return query.fetch().into(ModelInputItemImpl.class);
     }
 
     @Override
-    public ModelInputItem create(ModelInputItem pojo) {
+    public IModelInputItem create(IModelInputItem pojo) {
         final ModelInputItemRecord record = dslContext.insertInto(MODEL_INPUT_ITEM)
                 .set(MODEL_INPUT_ITEM.MODEL_GROUP_ID, pojo.getModelGroupId())
                 .set(MODEL_INPUT_ITEM.MODEL_ID, pojo.getModelId())
@@ -82,7 +83,7 @@ public class ModelInputItemDaoImpl implements ModelInputItemDao {
     }
 
     @Override
-    public boolean update(ModelInputItem pojo) {
+    public boolean update(IModelInputItem pojo) {
         return dslContext.update(MODEL_INPUT_ITEM)
                 .set(MODEL_INPUT_ITEM.MODEL_GROUP_ID, pojo.getModelGroupId())
                 .set(MODEL_INPUT_ITEM.MODEL_ID, pojo.getModelId())

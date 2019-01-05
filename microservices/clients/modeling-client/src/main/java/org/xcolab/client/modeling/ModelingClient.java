@@ -2,19 +2,22 @@ package org.xcolab.client.modeling;
 
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.modeling.pojo.Model;
-import org.xcolab.client.modeling.pojo.ModelCategory;
-import org.xcolab.client.modeling.pojo.ModelDiscussion;
-import org.xcolab.client.modeling.pojo.ModelGlobalPreference;
-import org.xcolab.client.modeling.pojo.ModelInputGroup;
-import org.xcolab.client.modeling.pojo.ModelInputItem;
-import org.xcolab.client.modeling.pojo.ModelOutputChartOrder;
-import org.xcolab.client.modeling.pojo.ModelOutputItem;
-import org.xcolab.client.modeling.pojo.ModelPosition;
+import org.xcolab.client.modeling.pojo.IModelGlobalPreference;
+import org.xcolab.client.modeling.pojo.IModelInputGroup;
+import org.xcolab.client.modeling.pojo.IModelInputItem;
+import org.xcolab.client.modeling.pojo.IModelOutputChartOrder;
+import org.xcolab.client.modeling.pojo.IModelOutputItem;
+import org.xcolab.client.modeling.pojo.IModelPosition;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
-import org.xcolab.util.http.client.RestResource1;
-import org.xcolab.util.http.client.RestResource2L;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -22,285 +25,182 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ModelingClient {
+@FeignClient("xcolab-modeling-service")
+public interface ModelingClient {
 
-    // Default instance when used statically
-    private static final ModelingClient INSTANCE = new ModelingClient();
-
-    private final RestResource1<Model, Long> modelResource;
-    private final RestResource1<ModelCategory, Long> modelCategoryResource;
-    private final RestResource1<ModelDiscussion, Long> modelDiscussionResource;
-    private final RestResource2L<Model, ModelGlobalPreference> modelPreferenceResource;
-    private final RestResource1<ModelInputGroup, Long> modelInputGroupResource;
-    private final RestResource1<ModelInputItem, Long> modelInputItemResource;
-    private final RestResource1<ModelOutputChartOrder, Long> modelOutputChartOrderResource;
-    private final RestResource1<ModelOutputItem, Long> modelOutputItemResource;
-    private final RestResource1<ModelPosition, Long> modelPositionResource;
-
-    public ModelingClient() {
-        modelResource = new RestResource1<>(ModelingResource.MODELS, Model.TYPES);
-        modelPreferenceResource = new RestResource2L<>(modelResource, "preferences",
-                ModelGlobalPreference.TYPES);
-
-        modelCategoryResource = new RestResource1<>(ModelingResource.MODEL_CATEGORIES,
-                ModelCategory.TYPES);
-        modelDiscussionResource = new RestResource1<>(ModelingResource.MODEL_DISCUSSIONS,
-                ModelDiscussion.TYPES);
-        modelInputGroupResource = new RestResource1<>(ModelingResource.MODEL_INPUT_GROUPS,
-                ModelInputGroup.TYPES);
-        modelInputItemResource = new RestResource1<>(ModelingResource.MODEL_INPUT_ITEMS,
-                ModelInputItem.TYPES);
-        modelOutputChartOrderResource =
-                new RestResource1<>(ModelingResource.MODEL_OUTPUT_CHART_ORDERS,
-                        ModelOutputChartOrder.TYPES);
-        modelOutputItemResource = new RestResource1<>(ModelingResource.MODEL_OUTPUT_ITEMS,
-                ModelOutputItem.TYPES);
-        modelPositionResource = new RestResource1<>(ModelingResource.MODEL_POSITIONS,
-                ModelPosition.TYPES);
+    static ModelingClient instance() {
+        return null;
     }
 
-    public static ModelingClient instance() {
-        return INSTANCE;
+    @GetMapping("/models/{modelId}/preferences")
+    IModelGlobalPreference getModelPreference(@PathVariable("modelId") Long modelId);
+
+    @PutMapping("/models/preferences")
+    boolean updatePreferences(@RequestBody IModelGlobalPreference modelGlobalPreference);
+
+    default List<IModelInputGroup> getInputGroups(Simulation sim) {
+        return getInputGroups(sim.getId(), null);
     }
 
-    public ModelGlobalPreference getModelPreference(long modelId) {
-        return modelPreferenceResource.resolveParentId(modelResource.id(modelId))
-                .list()
-                .executeWithResult()
-                .getOneIfExists();
+    default List<IModelInputGroup> getChildGroups(IModelInputGroup group) {
+        return getInputGroups(null, group.getId());
     }
 
-    public boolean updateModelPreference(ModelGlobalPreference pojo) {
-        return modelPreferenceResource.resolveParentId(modelResource.id(pojo.getModelId()))
-                .update(new ModelGlobalPreference(pojo), pojo.getModelId())
-                .execute();
-    }
+    @GetMapping("/modelInputGroups")
+    List<IModelInputGroup> getInputGroups(
+            @RequestParam(value = "modelId", required = false) Long modelId,
+            @RequestParam(value = "parentGroupPk", required = false) Long parentGroupPk);
 
-    public List<ModelInputGroup> getInputGroups(Simulation sim) {
-        return modelInputGroupResource.list()
-                .queryParam("modelId", sim.getId())
-                .execute();
-    }
-
-    public List<ModelInputGroup> getChildGroups(ModelInputGroup group) {
-        return modelInputGroupResource.list()
-                .queryParam("parentGroupPk", group.getId())
-                .execute();
-    }
-
-    public List<ModelInputItem> getInputItems(ModelInputGroup group) {
-        return modelInputItemResource.list()
-                .queryParam("modelInputGroupPk", group.getId())
-                .execute();
-    }
-
-    public ModelInputGroup getParentGroup(ModelInputGroup group) {
-        final Long parentGroupPK = group.getParentGroupId();
-        return modelInputGroupResource.get(parentGroupPK)
-                .execute();
-    }
-
-    public Simulation getModel(ModelInputGroup group) throws IOException {
+    default Simulation getModel(IModelInputGroup group) throws IOException {
         return RomaClientUtil.client().getSimulation(group.getModelId());
     }
 
-    public MetaData getMetaData(ModelInputGroup group) throws IOException {
+    default MetaData getMetaData(IModelInputGroup group) throws IOException {
         if (group.getNameAndDescriptionMetaDataId() > 0) {
             return RomaClientUtil.client().getMetaData(group.getNameAndDescriptionMetaDataId());
         }
         return null;
     }
 
-    public ModelInputGroup createModelInputGroup(ModelInputGroup group) {
-        return modelInputGroupResource.create(new ModelInputGroup(group))
-                .execute();
+    @PostMapping("/modelInputGroups")
+    IModelInputGroup createModelInputGroup(@RequestBody IModelInputGroup modelInputGroup);
+
+    @PutMapping("/modelInputGroups")
+    boolean updateModelInputGroup(@RequestBody IModelInputGroup modelInputGroup);
+
+    @GetMapping("/modelInputGroups/{parentGroupId}")
+    IModelInputGroup getModelInputGroup(@PathVariable("parentGroupId") Long parentGroupId);
+
+    @DeleteMapping("/modelInputGroups/{groupId}")
+    boolean deleteModelInputGroup(@PathVariable(value = "groupId") Long groupId);
+
+    @GetMapping("/modelInputItems")
+    public List<IModelInputItem> getModelInputItems(
+            @RequestParam(value = "modelInputGroupPk", required = false) Long modelInputGroupPk,
+            @RequestParam(value = "modelId", required = false) Long modelId,
+            @RequestParam(value = "modelInputId", required = false) Long modelInputId);
+
+    default List<IModelInputItem> getInputItems(IModelInputGroup group) {
+        return getModelInputItems(group.getId(), null, null);
     }
 
-    public void updateModelInputGroup(ModelInputGroup group) {
-        modelInputGroupResource.update(new ModelInputGroup(group), group.getId())
-                .execute();
+    default List<IModelInputItem> getItemsForModel(Simulation sim) {
+        return getModelInputItems(null, sim.getId(), null);
     }
 
-    public ModelInputGroup getModelInputGroup(Long groupId) {
-        return modelInputGroupResource.get(groupId)
-                .execute();
+    default IModelInputItem getItemForMetaData(Long modelId, MetaData metaData) {
+        return getModelInputItems(null, modelId, metaData.getId()).stream().findFirst()
+                .orElse(null);
     }
 
-    public void deleteModelInputGroup(Long modelInputGroupPK) {
-        modelInputGroupResource.delete(modelInputGroupPK)
-                .execute();
+    default List<IModelInputItem> getItemForGroupId(Long groupId) {
+        return getModelInputItems(groupId, null, null);
     }
 
-    public List<ModelInputItem> getItemsForModel(Simulation sim) {
-        return modelInputItemResource.list()
-                .queryParam("modelId", sim.getId())
-                .execute();
+    default MetaData getMetaData(IModelInputItem item) throws IOException {
+        return RomaClientUtil.client().getMetaData(item.getModelInputItemId());
     }
 
-    public ModelInputItem getItemForMetaData(Long modelId, MetaData md) {
-        return modelInputItemResource.list()
-                .queryParam("modelId", modelId)
-                .queryParam("modelInputId", md.getId())
-                .executeWithResult()
-                .getOneIfExists();
-    }
-
-
-
-    public List<ModelInputItem> getItemForGroupId(Long groupid) {
-        return modelInputItemResource.list()
-                .queryParam("modelInputGroupPk", groupid)
-                .execute();
-    }
-
-    public MetaData getMetaData(ModelInputItem item) throws IOException {
-        return RomaClientUtil.client().getMetaData(item.getModelInputItemID());
-    }
-
-    public Simulation getModel(ModelInputItem item) throws IOException {
+    default Simulation getModel(IModelInputItem item) throws IOException {
         return RomaClientUtil.client().getSimulation(item.getModelId());
     }
 
-    public Map<String,String> getPropertyMap(ModelInputItem item) {
-        return parseTypes(item.getProperties());
-    }
-
-    private static Map<String,String> parseTypes(String props) {
-        if (props == null) {
+    default Map<String, String> getPropertyMap(IModelInputItem item) {
+        String properties = item.getProperties();
+        if (properties == null) {
             return Collections.emptyMap();
         }
-        Map<String,String> result = new HashMap<>();
-        for (String type:props.split(";")) {
+        Map<String, String> result = new HashMap<>();
+        for (String type : properties.split(";")) {
             String[] kv = type.split("=");
-            if (kv.length>1) {
-                result.put(kv[0],kv[1]);
+            if (kv.length > 1) {
+                result.put(kv[0], kv[1]);
             }
         }
         return result;
     }
 
-    public void saveProperties(ModelInputItem item, Map<String, String> props) {
+    default void saveProperties(IModelInputItem item, Map<String, String> props) {
         StringBuilder sb = new StringBuilder();
-
-        for (String key: props.keySet()) {
+        for (String key : props.keySet()) {
             sb.append(key);
             sb.append("=");
             sb.append(props.get(key));
             sb.append(";");
         }
-
         item.setProperties(sb.toString());
         store(item);
-
     }
 
-    public void store(ModelInputItem item) {
+    default void store(IModelInputItem item) {
         if (item.getId() == null) {
-            modelInputItemResource.create(new ModelInputItem(item));
+            createModelInputItem(item);
         } else {
-            modelInputItemResource.update(new ModelInputItem(item), item.getId());
+            updateModelInputItem(item);
         }
     }
 
-    public void deleteModelInputItem(ModelInputItem item) {
-        modelInputItemResource.delete(item.getId())
-                .execute();
-    }
+    @DeleteMapping("/modelInputItems/{id}")
+    boolean deleteModelInputItem(@PathVariable("id") Long id);
 
-    public void updateModelInputItem(ModelInputItem item) {
-        modelInputItemResource.update(new ModelInputItem(item), item.getId())
-                .execute();
-    }
+    @PutMapping("/modelInputItems")
+    boolean updateModelInputItem(@RequestBody IModelInputItem modelInputItem);
 
-    public ModelInputItem createModelInputItem(ModelInputItem item) {
-        return modelInputItemResource.create(new ModelInputItem(item))
-                .execute();
-    }
+    @PostMapping("/modelInputItems")
+    IModelInputItem createModelInputItem(@RequestBody IModelInputItem modelInputItem);
 
-    public ModelOutputChartOrder getModelOutputChartOrder(Simulation sim, String label) {
-        return modelOutputChartOrderResource.list()
-                .queryParam("modelId", sim.getId())
-                .queryParam("label", label)
-                .executeWithResult()
-                .getFirstIfExists();
-    }
+    @GetMapping("/modelOutputChartOrders")
+    IModelOutputChartOrder getModelOutputChartOrder(
+            @RequestParam(value = "modelId", required = false) Long modelId,
+            @RequestParam(value = "label", required = false) String label);
 
-    public ModelOutputChartOrder createModelOutputChartOrder(ModelOutputChartOrder pojo) {
-        return modelOutputChartOrderResource.create(new ModelOutputChartOrder(pojo))
-                .execute();
-    }
+    @PostMapping("/modelOutputChartOrders")
+    IModelOutputChartOrder createModelOutputChartOrder(
+            @RequestBody IModelOutputChartOrder modelOutputChartOrder);
 
-    public void updateModelOutputChartOrder(ModelOutputChartOrder pojo) {
-        modelOutputChartOrderResource
-                .update(new ModelOutputChartOrder(pojo), pojo.getId())
-                .execute();
-    }
+    @PutMapping("/modelOutputChartOrders")
+    boolean updateModelOutputChartOrder(@RequestBody IModelOutputChartOrder modelOutputChartOrder);
 
-    public void deleteModelOutputChartOrder(ModelOutputChartOrder pojo) {
-        modelOutputChartOrderResource
-                .delete(pojo.getId())
-                .execute();
-    }
+    @DeleteMapping("/modelOutputChartOrders/{id}")
+    boolean deleteModelOutputChartOrder(@PathVariable("id") Long id);
 
-    public ModelOutputItem createModelOutputItem(ModelOutputItem pojo) {
-        return modelOutputItemResource.create(new ModelOutputItem(pojo))
-                .execute();
-    }
+    @PostMapping("/modelOutputItems")
+    IModelOutputItem createModelOutputItem(@RequestBody IModelOutputItem modelOutputItem);
 
-    public void updateModelOutputItem(ModelOutputItem pojo) {
-        modelOutputItemResource
-                .update(new ModelOutputItem(pojo), pojo.getModelOutputItemId())
-                .execute();
-    }
+    @PutMapping("/modelOutputItems")
+    boolean updateModelOutputItem(@RequestBody IModelOutputItem modelOutputItem);
 
-    public void deleteModelOutputItem(ModelOutputItem pojo) {
-        modelOutputItemResource
-                .delete(pojo.getModelOutputItemId())
-                .execute();
-    }
+    @DeleteMapping("/modelOutputItems")
+    boolean deleteModelOutputItem(@RequestBody IModelOutputItem modelOutputItem);
 
-    public ModelOutputItem getOutputItem(MetaData md) {
-        return modelOutputItemResource.get(md.getId())
-                .execute();
-    }
+    @GetMapping("/modelOutputItems/{id}")
+    IModelOutputItem getOutputItem(@PathVariable("id") Long id);
 
-    public ModelPosition createModelPosition(ModelPosition pojo) {
-        return modelPositionResource.create(new ModelPosition(pojo))
-                .execute();
-    }
+    @PostMapping("/modelPositions")
+    IModelPosition createModelPosition(@RequestBody IModelPosition modelPosition);
 
-    public void updateModelPosition(ModelPosition pojo) {
-        modelPositionResource
-                .update(new ModelPosition(pojo), pojo.getPositionId())
-                .execute();
-    }
+    @PutMapping("/modelPositions")
+    boolean updateModelPosition(@RequestBody IModelPosition modelPosition);
 
-    public void deleteModelPosition(ModelPosition pojo) {
-        modelPositionResource
-                .delete(pojo.getPositionId())
-                .execute();
-    }
+    @DeleteMapping("/modelPositions")
+    boolean deleteModelPosition(@RequestBody IModelPosition modelPosition);
 
-    public List<ModelPosition> getModelPositionsByModelId(Long modelId) {
-        return modelPositionResource.list()
-                .queryParam("modelId", modelId)
-                .execute();
-    }
+    @GetMapping("/modelPositions")
+    List<IModelPosition> getModelPositionsByModelId(
+            @RequestParam(value = "modelId", required = false) Long modelId);
 
-    public void setModelPositions(Long modelId, List<Long> positionIds) {
+    default void setModelPositions(Long modelId, List<Long> positionIds) {
         //TODO COLAB-2581: implement
         throw new UnsupportedOperationException();
-//        modelPositionPersistence.removeByModelId(modelId);
-//
-//        for (Long positionId: positionIds) {
-//            Long id = CounterLocalServiceUtil.increment(ModelPosition.class.getName());
-//            ModelPosition modelPosition = createModelPosition(id);
-//            modelPosition.setModelId(modelId);
-//            modelPosition.setPositionId(positionId);
-//
-//            addModelPosition(modelPosition);
-//        }
+        //        modelPositionPersistence.removeByModelId(modelId);
+        //
+        //        for (Long positionId: positionIds) {
+        //            Long id = CounterLocalServiceUtil.increment(ModelPosition.class.getName());
+        //            ModelPosition modelPosition = createModelPosition(id);
+        //            modelPosition.setModelId(modelId);
+        //            modelPosition.setPositionId(positionId);
+        //
+        //            addModelPosition(modelPosition);
+        //        }
     }
-
-
 }

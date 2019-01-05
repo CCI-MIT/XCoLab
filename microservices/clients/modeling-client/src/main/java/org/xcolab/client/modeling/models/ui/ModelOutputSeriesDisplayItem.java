@@ -6,7 +6,8 @@ import edu.mit.cci.roma.client.TupleStatus;
 import edu.mit.cci.roma.client.Variable;
 
 import org.xcolab.client.modeling.ModelingClient;
-import org.xcolab.client.modeling.pojo.ModelOutputItem;
+import org.xcolab.client.modeling.pojo.IModelOutputItem;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelOutputItem;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
 
     private final MetaData metaData;
     private final Map<TupleStatus, ModelOutputErrorBehavior> errorBehaviors = new HashMap<>();
-    private ModelOutputItem item;
+    private IModelOutputItem item;
 
     /**
      * Clients should not need to call this method directly.  Instead, {@link
@@ -32,7 +33,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
         super(s);
         this.metaData = metaData;
         try {
-            item = ModelingClient.instance().getOutputItem(metaData);
+            item = ModelingClient.instance().getOutputItem(metaData.getId());
         } catch (UncheckedEntityNotFoundException e) {
             createPersistence();
         }

@@ -11,7 +11,8 @@ import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
-import org.xcolab.client.modeling.pojo.ModelInputGroup;
+import org.xcolab.client.modeling.pojo.IModelInputGroup;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelInputGroup;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.view.pages.modeling.admin.ModelsAdminController;
 import org.xcolab.view.pages.modeling.admin.form.UpdateModelInputGroupBean;
@@ -33,7 +34,7 @@ public class AddUpdateModelInputGroupAction {
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 
 
-        ModelInputGroup modelInputGroup;
+        IModelInputGroup modelInputGroup;
         if (updateModelInputGroup.getId() == 0) {
             // create new one
             modelInputGroup = new ModelInputGroup();
@@ -71,5 +72,4 @@ public class AddUpdateModelInputGroupAction {
         }
         response.sendRedirect(ModelsAdminController.getTabMapping(modelId, "inputTabs"));
     }
-
 }

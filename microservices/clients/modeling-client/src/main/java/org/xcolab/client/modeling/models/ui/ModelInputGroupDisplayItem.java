@@ -8,8 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.modeling.ModelingClient;
 import org.xcolab.client.modeling.models.ModelInputGroupType;
-import org.xcolab.client.modeling.pojo.ModelInputGroup;
-import org.xcolab.client.modeling.pojo.ModelInputItem;
+import org.xcolab.client.modeling.pojo.IModelInputGroup;
+import org.xcolab.client.modeling.pojo.IModelInputItem;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelInputGroup;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -25,7 +26,7 @@ import javax.json.JsonObjectBuilder;
 
 /**
  * Encapsulates a "group" of input elements to be displayed together.  This
- * element is backed by an {@link ModelInputGroup}
+ * element is backed by an {@link IModelInputGroup}
  */
 public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements Serializable {
 
@@ -33,7 +34,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
 
     private static final Logger _log = LoggerFactory.getLogger(ModelInputGroupDisplayItem.class);
 
-    private final ModelInputGroup group;
+    private final IModelInputGroup group;
 
     private ModelInputGroupDisplayItem parent;
     private List<ModelInputDisplayItem> items = new ArrayList<>();
@@ -45,7 +46,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      * will not call this directly, and the factory will take care of instantiating groups
      * or the static factory method on this class is called.
      */
-    public ModelInputGroupDisplayItem(Simulation simulation, ModelInputGroup group) throws IOException {
+    public ModelInputGroupDisplayItem(Simulation simulation, IModelInputGroup group) throws IOException {
         super(simulation, ModelingClient.instance().getMetaData(group));
         this.group = group;
         populateChildren();
@@ -54,13 +55,13 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     private void populateChildren() throws IOException {
         knownMetaData = new HashSet<>();
         items = new ArrayList<>();
-        for (ModelInputItem item : ModelingClient.instance().getInputItems(group)) {
+        for (IModelInputItem item : ModelingClient.instance().getInputItems(group)) {
             knownMetaData.add(ModelingClient.instance().getMetaData(item));
             items.add(ModelUIFactory.getInstance().getInputItem(item));
         }
 
         groups = new ArrayList<>();
-        for (ModelInputGroup child : ModelingClient.instance().getChildGroups(group)) {
+        for (IModelInputGroup child : ModelingClient.instance().getChildGroups(group)) {
             groups.add(ModelUIFactory.getInstance().getGroupItem(getSimulation(), child));
         }
         //why is this here?
@@ -72,7 +73,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      */
     public static ModelInputGroupDisplayItem create(Simulation s, String name, String description,
             ModelInputGroupType type, Long parentGroupPK) throws IOException {
-        ModelInputGroup group = new ModelInputGroup();
+        IModelInputGroup group = new ModelInputGroup();
         group.setName(name);
         group.setDescription(description);
         group.setModelId(s.getId());
@@ -93,7 +94,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      */
     public static ModelInputGroupDisplayItem create(Simulation s, MetaData md,
             ModelInputGroupType type, Long parentGroupPK) throws IOException {
-        ModelInputGroup group = new ModelInputGroup();
+        IModelInputGroup group = new ModelInputGroup();
         group.setModelId(s.getId());
         group.setNameAndDescriptionMetaDataId(md.getId());
         group.setGroupType(type.name());
@@ -203,7 +204,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
         }
         if (toRemove != null) {
             knownMetaData.remove(toRemove.getMetaData());
-            ModelingClient.instance().deleteModelInputItem(toRemove.item);
+            ModelingClient.instance().deleteModelInputItem(toRemove.item.getId());
 
         }
         populateChildren();
@@ -353,5 +354,4 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     public Long getParentGroupId() {
         return group.getParentGroupId();
     }
-
 }

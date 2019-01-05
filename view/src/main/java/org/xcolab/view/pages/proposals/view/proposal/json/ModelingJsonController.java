@@ -21,7 +21,7 @@ import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelOutputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
-import org.xcolab.client.modeling.pojo.ModelGlobalPreference;
+import org.xcolab.client.modeling.pojo.IModelGlobalPreference;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.commons.exceptions.InternalException;
 
@@ -109,7 +109,7 @@ public class ModelingJsonController {
 
         JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 
-        ModelGlobalPreference modelPreference = ModelingClient.instance()
+        IModelGlobalPreference modelPreference = ModelingClient.instance()
                 .getModelPreference(scenario.getSimulation().getId());
         ModelDisplay display = ModelUIFactory.getInstance().getDisplay(scenario);
 
@@ -143,7 +143,7 @@ public class ModelingJsonController {
 
     private JsonObject convertModel(Simulation simulation)
             throws IllegalUIConfigurationException, IOException {
-        ModelGlobalPreference modelPreference = ModelingClient.instance().getModelPreference(simulation.getId());
+        IModelGlobalPreference modelPreference = ModelingClient.instance().getModelPreference(simulation.getId());
         ModelDisplay display = ModelUIFactory.getInstance().getDisplay(simulation);
         JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 

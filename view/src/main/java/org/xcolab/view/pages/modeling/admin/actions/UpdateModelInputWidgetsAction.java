@@ -12,7 +12,7 @@ import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelInputIndividualDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
-import org.xcolab.client.modeling.pojo.ModelGlobalPreference;
+import org.xcolab.client.modeling.pojo.IModelGlobalPreference;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.view.pages.modeling.admin.ModelsAdminController;
 import org.xcolab.view.pages.modeling.admin.form.UpdateModelInputWidgetsBean;
@@ -31,11 +31,11 @@ public class UpdateModelInputWidgetsAction {
             UpdateModelInputWidgetsBean updateModelWidgetsBean, @PathVariable long modelId)
             throws IllegalUIConfigurationException, IOException {
 
-        ModelGlobalPreference modelPreferences = ModelingClient.instance().getModelPreference(modelId);
+        IModelGlobalPreference modelPreferences = ModelingClient.instance().getModelPreference(modelId);
         if (modelPreferences.getUsesCustomInputs()) {
             modelPreferences
                     .setCustomInputsDefinition(updateModelWidgetsBean.getCustomInputWidgets());
-            ModelingClient.instance().updateModelPreference(modelPreferences);
+            ModelingClient.instance().updatePreferences(modelPreferences);
         } else {
             Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
             ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);

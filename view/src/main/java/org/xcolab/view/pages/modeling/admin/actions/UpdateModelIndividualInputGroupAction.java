@@ -11,7 +11,7 @@ import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
-import org.xcolab.client.modeling.pojo.ModelInputItem;
+import org.xcolab.client.modeling.pojo.IModelInputItem;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.view.pages.modeling.admin.ModelsAdminController;
 import org.xcolab.view.pages.modeling.admin.form.UpdateIndividualInputGroupBean;
@@ -44,7 +44,7 @@ public class UpdateModelIndividualInputGroupAction {
             return;
         }
 
-        ModelInputItem inputItem =
+        IModelInputItem inputItem =
                 ModelingClient.instance().getItemForMetaData(modelId, displayItem.getMetaData());
         inputItem.setDisplayItemOrder(updateModelInputGroup.getOrder());
         inputItem.setModelGroupId(updateModelInputGroup.getGroupId());

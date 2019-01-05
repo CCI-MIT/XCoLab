@@ -9,9 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.modeling.ModelingClient;
-import org.xcolab.client.modeling.pojo.ModelOutputChartOrder;
+import org.xcolab.client.modeling.pojo.IModelOutputChartOrder;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.util.json.JsonUtil;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelOutputChartOrder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
     private Simulation sim;
     private MetaData index;
     private ModelOutputChartType type = ModelOutputChartType.TIME_SERIES;
-    private ModelOutputChartOrder chartModel;
+    private IModelOutputChartOrder chartModel;
 
     /**
      * A model output group is uniquely identified by a name in a simulation.  Currently this may be
@@ -58,7 +59,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
         this.name = name;
 
         try {
-            chartModel = ModelingClient.instance().getModelOutputChartOrder(s, name);
+            chartModel = ModelingClient.instance().getModelOutputChartOrder(s.getId(), name);
         } catch (UncheckedEntityNotFoundException e) {
             createPersistence();
         }
@@ -259,5 +260,4 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
         errorBehaviors.remove(status);
         ModelingClient.instance().updateModelOutputChartOrder(chartModel);
     }
-
 }

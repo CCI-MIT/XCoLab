@@ -1,21 +1,21 @@
 package org.xcolab.service.modeling.domain;
 
-import org.xcolab.model.tables.pojos.ModelInputItem;
+import org.xcolab.client.modeling.pojo.IModelInputItem;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ModelInputItemDao {
 
-    Optional<ModelInputItem> get(long id);
+    Optional<IModelInputItem> get(long id);
 
-    List<ModelInputItem> list();
+    List<IModelInputItem> list();
 
-    List<ModelInputItem> findByGiven(Long modelInputGroupPk, Long modelId, Long modelInputId);
+    List<IModelInputItem> findByGiven(Long modelInputGroupPk, Long modelId, Long modelInputId);
 
-    ModelInputItem create(ModelInputItem pojo);
+    IModelInputItem create(IModelInputItem pojo);
 
-    boolean update(ModelInputItem pojo);
+    boolean update(IModelInputItem pojo);
 
     boolean delete(long id);
 }
