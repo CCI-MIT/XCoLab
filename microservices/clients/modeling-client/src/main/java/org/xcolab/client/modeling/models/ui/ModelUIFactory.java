@@ -8,7 +8,7 @@ import edu.mit.cci.roma.client.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.pojo.IModelInputGroup;
 import org.xcolab.client.modeling.pojo.IModelInputItem;
 import org.xcolab.util.json.JsonUtil;
@@ -160,8 +160,8 @@ public class ModelUIFactory {
     private ModelInputGroupDisplayItem processGroup(IModelInputGroup group,
             Set<MetaData> bareMetaData, Simulation simulation)
             throws IllegalUIConfigurationException, IOException {
-        for (IModelInputItem item : ModelingClient.instance().getInputItems(group)) {
-            final MetaData metaData = ModelingClient.instance().getMetaData(item);
+        for (IModelInputItem item : IModelingClient.instance().getInputItems(group)) {
+            final MetaData metaData = IModelingClient.instance().getMetaData(item);
             bareMetaData.remove(metaData);
         }
         ModelInputGroupDisplayItem result;
@@ -171,7 +171,7 @@ public class ModelUIFactory {
             _log.error("", e);
             return null;
         }
-        for (IModelInputGroup g : ModelingClient.instance().getChildGroups(group)) {
+        for (IModelInputGroup g : IModelingClient.instance().getChildGroups(group)) {
             result.addChildGroup(processGroup(g, bareMetaData, simulation));
         }
         return result;
@@ -185,7 +185,7 @@ public class ModelUIFactory {
         List<ModelInputDisplayItem> result = new ArrayList<>();
         Set<MetaData> inputs = new HashSet<>(s.getInputs());
 
-        for (IModelInputGroup group : ModelingClient.instance().getInputGroups(s)) {
+        for (IModelInputGroup group : IModelingClient.instance().getInputGroups(s)) {
             if (group.getParentGroupId() <= 0) {
                 result.add(processGroup(group, inputs, s));
             }
@@ -195,10 +195,10 @@ public class ModelUIFactory {
         for (MetaData md : inputs) {
             try {
                 IModelInputItem item =
-                        ModelingClient.instance().getItemForMetaData(s.getId(), md);
-                ModelInputDisplayItem toadd = item == null ? ModelInputIndividualDisplayItem
+                        IModelingClient.instance().getItemForMetaData(s.getId(), md);
+                ModelInputDisplayItem toAdd = item == null ? ModelInputIndividualDisplayItem
                         .create(s, md, ModelInputWidgetType.TEXT_FIELD) : getInputItem(item);
-                result.add(toadd);
+                result.add(toAdd);
 
             } catch (IOException e) {
                 _log.error("", e);

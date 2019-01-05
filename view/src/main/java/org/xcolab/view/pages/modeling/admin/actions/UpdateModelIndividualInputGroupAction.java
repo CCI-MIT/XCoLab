@@ -1,12 +1,13 @@
 package org.xcolab.view.pages.modeling.admin.actions;
 
 import edu.mit.cci.roma.client.Simulation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -24,6 +25,13 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/admin/modeling")
 public class UpdateModelIndividualInputGroupAction {
+
+    private final IModelingClient modelingClient;
+
+    @Autowired
+    public UpdateModelIndividualInputGroupAction(IModelingClient modelingClient) {
+        this.modelingClient = modelingClient;
+    }
 
     @PostMapping("model/{modelId}/updateIndividualInputGroup")
     public void update(HttpServletRequest request, HttpServletResponse response,
@@ -45,13 +53,12 @@ public class UpdateModelIndividualInputGroupAction {
         }
 
         IModelInputItem inputItem =
-                ModelingClient.instance().getItemForMetaData(modelId, displayItem.getMetaData());
+                modelingClient.getItemForMetaData(modelId, displayItem.getMetaData());
         inputItem.setDisplayItemOrder(updateModelInputGroup.getOrder());
         inputItem.setModelGroupId(updateModelInputGroup.getGroupId());
 
 
-        ModelingClient.instance().updateModelInputItem(inputItem);
+        modelingClient.updateModelInputItem(inputItem);
         response.sendRedirect(ModelsAdminController.getTabMapping(modelId, "inputTabs"));
     }
-
 }

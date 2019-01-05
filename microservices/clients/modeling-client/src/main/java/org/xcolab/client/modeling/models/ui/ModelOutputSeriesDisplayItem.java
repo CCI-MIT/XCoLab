@@ -5,7 +5,7 @@ import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.TupleStatus;
 import edu.mit.cci.roma.client.Variable;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.pojo.IModelOutputItem;
 import org.xcolab.client.modeling.pojo.tables.pojos.ModelOutputItem;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
@@ -33,7 +33,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
         super(s);
         this.metaData = metaData;
         try {
-            item = ModelingClient.instance().getOutputItem(metaData.getId());
+            item = IModelingClient.instance().getOutputItem(metaData.getId());
         } catch (UncheckedEntityNotFoundException e) {
             createPersistence();
         }
@@ -44,7 +44,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
         item.setModelId(getSimulation().getId());
         item.setModelOutputItemId(metaData.getId());
         item.setModelItemIsVisible(true);
-        item = ModelingClient.instance().createModelOutputItem(item);
+        item = IModelingClient.instance().createModelOutputItem(item);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
     @Override
     public void setOrder(int i) {
         item.setModelOutputItemOrder(i);
-        ModelingClient.instance().updateModelOutputItem(item);
+        IModelingClient.instance().updateModelOutputItem(item);
     }
 
     @Override
@@ -83,13 +83,13 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
     public void setSeriesType(ModelOutputSeriesType type) {
         if (item != null) {
             item.setItemType(type.name());
-            ModelingClient.instance().updateModelOutputItem(item);
+            IModelingClient.instance().updateModelOutputItem(item);
         }
     }
 
     public void setAssociatedMetaData(MetaData md) {
         item.setRelatedOutputItem(md.getId());
-        ModelingClient.instance().updateModelOutputItem(item);
+        IModelingClient.instance().updateModelOutputItem(item);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
 
     public void setVisible(boolean b) {
         item.setModelItemIsVisible(b);
-        ModelingClient.instance().updateModelOutputItem(item);
+        IModelingClient.instance().updateModelOutputItem(item);
 
     }
 
@@ -173,7 +173,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
 
     public void setAssociatedMetaDataId(Long id) {
         item.setRelatedOutputItem(id);
-        ModelingClient.instance().updateModelOutputItem(item);
+        IModelingClient.instance().updateModelOutputItem(item);
     }
 
     private String getLabelFormatString() {

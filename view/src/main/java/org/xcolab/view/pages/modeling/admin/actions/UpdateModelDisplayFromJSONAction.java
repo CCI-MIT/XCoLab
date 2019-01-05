@@ -3,12 +3,13 @@ package org.xcolab.view.pages.modeling.admin.actions;
 import edu.mit.cci.roma.client.Simulation;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -36,6 +37,13 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin/modeling")
 public class UpdateModelDisplayFromJSONAction {
 
+    private final IModelingClient modelingClient;
+
+    @Autowired
+    public UpdateModelDisplayFromJSONAction(IModelingClient modelingClient) {
+        this.modelingClient = modelingClient;
+    }
+
     @PostMapping("model/{modelId}/updateModelDisplayFromJson")
     public void update(HttpServletRequest request, HttpServletResponse response,
             UpdateModelDisplayFromJSONBean bean, @PathVariable long modelId)
@@ -46,18 +54,18 @@ public class UpdateModelDisplayFromJSONAction {
 
         final JSONObject conf = new JSONObject(bean.getJson());
 
-        for (IModelInputGroup group : ModelingClient.instance().getInputGroups(simulation)) {
-            ModelingClient.instance().deleteModelInputGroup(group.getId());
+        for (IModelInputGroup group : modelingClient.getInputGroups(simulation)) {
+            modelingClient.deleteModelInputGroup(group.getId());
         }
-        for (IModelInputItem item : ModelingClient.instance().getItemsForModel(simulation)) {
+        for (IModelInputItem item : modelingClient.getItemsForModel(simulation)) {
             item.setModelGroupId(0L);
-            ModelingClient.instance().updateModelInputItem(item);
+            modelingClient.updateModelInputItem(item);
         }
 
         for (ModelOutputDisplayItem modi : modelDisplay.getOutputs()) {
             IModelOutputChartOrder moco =
-                    ModelingClient.instance().getModelOutputChartOrder(simulation.getId(), modi.getName());
-            ModelingClient.instance().deleteModelOutputChartOrder(moco.getId());
+                    modelingClient.getModelOutputChartOrder(simulation.getId(), modi.getName());
+            modelingClient.deleteModelOutputChartOrder(moco.getId());
         }
 
         // iterate over inputs and create appropriate groups/inputs config
@@ -105,7 +113,7 @@ public class UpdateModelDisplayFromJSONAction {
             }
             group.setDisplayItemOrder(order);
             group.setParentGroupId(parentGroup);
-            group = ModelingClient.instance().createModelInputGroup(group);
+            group = modelingClient.createModelInputGroup(group);
 
             if (inputConf.has("children")) {
                 JSONArray children = (JSONArray) inputConf.get("children");

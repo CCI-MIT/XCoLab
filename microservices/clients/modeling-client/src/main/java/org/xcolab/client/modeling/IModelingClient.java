@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 @FeignClient("xcolab-modeling-service")
-public interface ModelingClient {
+public interface IModelingClient {
 
-    static ModelingClient instance() {
+    static IModelingClient instance() {
         return null;
     }
 

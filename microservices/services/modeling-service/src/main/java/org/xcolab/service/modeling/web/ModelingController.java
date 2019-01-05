@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.pojo.IModelCategory;
 import org.xcolab.client.modeling.pojo.IModelDiscussion;
 import org.xcolab.client.modeling.pojo.IModelGlobalPreference;
@@ -33,7 +33,7 @@ import org.xcolab.service.modeling.exceptions.NotFoundException;
 import java.util.List;
 
 @RestController
-public class ModelingController implements ModelingClient {
+public class ModelingController implements IModelingClient {
 
     private final ModelCategoryDao modelCategoryDao;
     private final ModelDiscussionDao modelDiscussionDao;

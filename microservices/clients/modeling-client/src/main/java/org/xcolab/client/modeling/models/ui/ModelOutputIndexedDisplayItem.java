@@ -8,7 +8,7 @@ import edu.mit.cci.roma.client.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.pojo.IModelOutputChartOrder;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.util.json.JsonUtil;
@@ -59,7 +59,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
         this.name = name;
 
         try {
-            chartModel = ModelingClient.instance().getModelOutputChartOrder(s.getId(), name);
+            chartModel = IModelingClient.instance().getModelOutputChartOrder(s.getId(), name);
         } catch (UncheckedEntityNotFoundException e) {
             createPersistence();
         }
@@ -70,7 +70,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
         chartModel.setModelId(getSimulation().getId());
         chartModel.setModelOutputLabel(name);
         chartModel.setModelChartIsVisible(true);
-        chartModel = ModelingClient.instance().createModelOutputChartOrder(chartModel);
+        chartModel = IModelingClient.instance().createModelOutputChartOrder(chartModel);
     }
 
     /**
@@ -131,7 +131,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
     public void setOrder(int o) {
         if (null != chartModel) {
             chartModel.setModelOutputChartOrder(o);
-            ModelingClient.instance().updateModelOutputChartOrder(chartModel);
+            IModelingClient.instance().updateModelOutputChartOrder(chartModel);
         }
     }
 
@@ -245,7 +245,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
 
     public void setVisible(boolean b) {
         chartModel.setModelChartIsVisible(b);
-        ModelingClient.instance().updateModelOutputChartOrder(chartModel);
+        IModelingClient.instance().updateModelOutputChartOrder(chartModel);
     }
 
     public void setErrorBehavior(TupleStatus status, ErrorPolicy policy, String msg) {
@@ -258,6 +258,6 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
 
         }
         errorBehaviors.remove(status);
-        ModelingClient.instance().updateModelOutputChartOrder(chartModel);
+        IModelingClient.instance().updateModelOutputChartOrder(chartModel);
     }
 }
