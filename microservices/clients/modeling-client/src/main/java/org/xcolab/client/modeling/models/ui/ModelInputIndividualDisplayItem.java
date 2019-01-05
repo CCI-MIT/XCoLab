@@ -23,8 +23,8 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
 
 
     public ModelInputIndividualDisplayItem(IModelInputItem item) throws IOException {
-        super(IModelingClient.instance().getModel(item),
-                IModelingClient.instance().getMetaData(item));
+        super(ModelUIFactory.getModelingClient().getModel(item),
+                ModelUIFactory.getModelingClient().getMetaData(item));
         this.item = item;
     }
 
@@ -39,7 +39,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
         item.setModelId(sim.getId());
         item.setModelInputItemId(md.getId());
         item.setType(type.name());
-        IModelingClient.instance().createModelInputItem(item);
+        ModelUIFactory.getModelingClient().createModelInputItem(item);
         return new ModelInputIndividualDisplayItem(item);
     }
 
@@ -58,7 +58,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     @Override
     public void setOrder(int order) {
         item.setDisplayItemOrder(order);
-        IModelingClient.instance().updateModelInputItem(item);
+        ModelUIFactory.getModelingClient().updateModelInputItem(item);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
     @Override
     public void setType(ModelInputWidgetType type) {
         item.setType(type.name());
-        IModelingClient.instance().updateModelInputItem(item);
+        ModelUIFactory.getModelingClient().updateModelInputItem(item);
     }
 
     /**
@@ -139,10 +139,10 @@ public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem imple
             modelGroupId = 0L;
         }
         item.setModelGroupId(modelGroupId);
-        IModelingClient.instance().updateModelInputItem(item);
+        ModelUIFactory.getModelingClient().updateModelInputItem(item);
     }
 
     public String getProperty(ModelWidgetProperty prop) {
-        return IModelingClient.instance().getPropertyMap(item).get(prop.toString());
+        return ModelUIFactory.getModelingClient().getPropertyMap(item).get(prop.toString());
     }
 }

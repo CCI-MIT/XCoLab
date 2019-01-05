@@ -32,6 +32,19 @@ public class ModelUIFactory {
 
     private static final Logger _log = LoggerFactory.getLogger(ModelUIFactory.class);
 
+    private static IModelingClient modelingClient;
+
+    public static void setModelingClient(IModelingClient modelingClient) {
+        if(ModelUIFactory.modelingClient != null) {
+            throw new IllegalStateException("IModelingClient already set!");
+        }
+        ModelUIFactory.modelingClient = modelingClient;
+    }
+
+    public static IModelingClient getModelingClient(){
+        return ModelUIFactory.modelingClient;
+    }
+
     private ModelUIFactory() {
     }
 
@@ -160,8 +173,8 @@ public class ModelUIFactory {
     private ModelInputGroupDisplayItem processGroup(IModelInputGroup group,
             Set<MetaData> bareMetaData, Simulation simulation)
             throws IllegalUIConfigurationException, IOException {
-        for (IModelInputItem item : IModelingClient.instance().getInputItems(group)) {
-            final MetaData metaData = IModelingClient.instance().getMetaData(item);
+        for (IModelInputItem item : modelingClient.getInputItems(group)) {
+            final MetaData metaData = modelingClient.getMetaData(item);
             bareMetaData.remove(metaData);
         }
         ModelInputGroupDisplayItem result;
@@ -171,7 +184,7 @@ public class ModelUIFactory {
             _log.error("", e);
             return null;
         }
-        for (IModelInputGroup g : IModelingClient.instance().getChildGroups(group)) {
+        for (IModelInputGroup g : modelingClient.getChildGroups(group)) {
             result.addChildGroup(processGroup(g, bareMetaData, simulation));
         }
         return result;
@@ -185,7 +198,7 @@ public class ModelUIFactory {
         List<ModelInputDisplayItem> result = new ArrayList<>();
         Set<MetaData> inputs = new HashSet<>(s.getInputs());
 
-        for (IModelInputGroup group : IModelingClient.instance().getInputGroups(s)) {
+        for (IModelInputGroup group : modelingClient.getInputGroups(s)) {
             if (group.getParentGroupId() <= 0) {
                 result.add(processGroup(group, inputs, s));
             }
@@ -194,8 +207,7 @@ public class ModelUIFactory {
         //any left overs
         for (MetaData md : inputs) {
             try {
-                IModelInputItem item =
-                        IModelingClient.instance().getItemForMetaData(s.getId(), md);
+                IModelInputItem item = modelingClient.getItemForMetaData(s.getId(), md);
                 ModelInputDisplayItem toAdd = item == null ? ModelInputIndividualDisplayItem
                         .create(s, md, ModelInputWidgetType.TEXT_FIELD) : getInputItem(item);
                 result.add(toAdd);

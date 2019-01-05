@@ -28,10 +28,6 @@ import java.util.Map;
 @FeignClient("xcolab-modeling-service")
 public interface IModelingClient {
 
-    static IModelingClient instance() {
-        return null;
-    }
-
     @GetMapping("/models/{modelId}/preferences")
     IModelGlobalPreference getModelPreference(@PathVariable("modelId") Long modelId);
 

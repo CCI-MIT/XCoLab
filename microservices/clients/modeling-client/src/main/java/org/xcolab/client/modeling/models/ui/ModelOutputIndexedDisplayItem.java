@@ -59,7 +59,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
         this.name = name;
 
         try {
-            chartModel = IModelingClient.instance().getModelOutputChartOrder(s.getId(), name);
+            chartModel = ModelUIFactory.getModelingClient().getModelOutputChartOrder(s.getId(), name);
         } catch (UncheckedEntityNotFoundException e) {
             createPersistence();
         }
@@ -70,7 +70,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
         chartModel.setModelId(getSimulation().getId());
         chartModel.setModelOutputLabel(name);
         chartModel.setModelChartIsVisible(true);
-        chartModel = IModelingClient.instance().createModelOutputChartOrder(chartModel);
+        chartModel = ModelUIFactory.getModelingClient().createModelOutputChartOrder(chartModel);
     }
 
     /**
@@ -131,7 +131,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
     public void setOrder(int o) {
         if (null != chartModel) {
             chartModel.setModelOutputChartOrder(o);
-            IModelingClient.instance().updateModelOutputChartOrder(chartModel);
+            ModelUIFactory.getModelingClient().updateModelOutputChartOrder(chartModel);
         }
     }
 
@@ -245,7 +245,7 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
 
     public void setVisible(boolean b) {
         chartModel.setModelChartIsVisible(b);
-        IModelingClient.instance().updateModelOutputChartOrder(chartModel);
+        ModelUIFactory.getModelingClient().updateModelOutputChartOrder(chartModel);
     }
 
     public void setErrorBehavior(TupleStatus status, ErrorPolicy policy, String msg) {
@@ -258,6 +258,6 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
 
         }
         errorBehaviors.remove(status);
-        IModelingClient.instance().updateModelOutputChartOrder(chartModel);
+        ModelUIFactory.getModelingClient().updateModelOutputChartOrder(chartModel);
     }
 }

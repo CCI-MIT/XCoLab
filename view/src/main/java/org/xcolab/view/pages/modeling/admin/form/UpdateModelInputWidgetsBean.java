@@ -11,6 +11,12 @@ import java.util.Map;
 
 public class UpdateModelInputWidgetsBean {
 
+    private static IModelingClient modelingClient;
+
+    public static void setModelingClient(IModelingClient modelingClient) {
+        UpdateModelInputWidgetsBean.modelingClient = modelingClient;
+    }
+
     private Map<Long, ModelInputWidgetType> widgets = new HashMap<>();
     private Map<Long, Long> groups = new HashMap<>();
     private Map<Long, Integer> orders = new HashMap<>();
@@ -26,8 +32,7 @@ public class UpdateModelInputWidgetsBean {
             groups.put(item.getMetaData().getId(),
                     ((ModelInputIndividualDisplayItem) item).getGroupId());
         }
-        customInputWidgets =
-                IModelingClient.instance().getModelPreference(modelId).getCustomInputsDefinition();
+        customInputWidgets = modelingClient.getModelPreference(modelId).getCustomInputsDefinition();
     }
 
     public Map<Long, ModelInputWidgetType> getWidgets() {
@@ -61,5 +66,4 @@ public class UpdateModelInputWidgetsBean {
     public void setCustomInputWidgets(String customInputWidgets) {
         this.customInputWidgets = customInputWidgets;
     }
-
 }

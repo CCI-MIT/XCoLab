@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.modeling.IModelingClient;
-import org.xcolab.client.modeling.models.ModelInputGroupType;
 import org.xcolab.client.modeling.pojo.IModelInputGroup;
 import org.xcolab.client.modeling.pojo.IModelInputItem;
 import org.xcolab.client.modeling.pojo.tables.pojos.ModelInputGroup;
@@ -47,7 +46,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      * or the static factory method on this class is called.
      */
     public ModelInputGroupDisplayItem(Simulation simulation, IModelInputGroup group) throws IOException {
-        super(simulation, IModelingClient.instance().getMetaData(group));
+        super(simulation, ModelUIFactory.getModelingClient().getMetaData(group));
         this.group = group;
         populateChildren();
     }
@@ -55,17 +54,17 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     private void populateChildren() throws IOException {
         knownMetaData = new HashSet<>();
         items = new ArrayList<>();
-        for (IModelInputItem item : IModelingClient.instance().getInputItems(group)) {
-            knownMetaData.add(IModelingClient.instance().getMetaData(item));
+        for (IModelInputItem item : ModelUIFactory.getModelingClient().getInputItems(group)) {
+            knownMetaData.add(ModelUIFactory.getModelingClient().getMetaData(item));
             items.add(ModelUIFactory.getInstance().getInputItem(item));
         }
 
         groups = new ArrayList<>();
-        for (IModelInputGroup child : IModelingClient.instance().getChildGroups(group)) {
+        for (IModelInputGroup child : ModelUIFactory.getModelingClient().getChildGroups(group)) {
             groups.add(ModelUIFactory.getInstance().getGroupItem(getSimulation(), child));
         }
         //why is this here?
-        IModelingClient.instance().updateModelInputGroup(group);
+        ModelUIFactory.getModelingClient().updateModelInputGroup(group);
     }
 
     /**
@@ -83,7 +82,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
             group.setParentGroupId(parentGroupPK);
         }
 
-        IModelingClient.instance().createModelInputGroup(group);
+        ModelUIFactory.getModelingClient().createModelInputGroup(group);
 
         return new ModelInputGroupDisplayItem(s, group);
     }
@@ -101,7 +100,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
         if (parentGroupPK != null && parentGroupPK > 0) {
             group.setParentGroupId(parentGroupPK);
         }
-        IModelingClient.instance().createModelInputGroup(group);
+        ModelUIFactory.getModelingClient().createModelInputGroup(group);
 
         return new ModelInputGroupDisplayItem(s, group);
     }
@@ -129,7 +128,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     @Override
     public void setOrder(int o) {
         group.setDisplayItemOrder(o);
-        IModelingClient.instance().updateModelInputGroup(group);
+        ModelUIFactory.getModelingClient().updateModelInputGroup(group);
     }
 
     public List<ModelInputDisplayItem> getAllItems() {
@@ -151,7 +150,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
                     ModelInputIndividualDisplayItem
                             .create(getSimulation(), d, type);
             item.item.setModelGroupId(group.getId());
-            IModelingClient.instance().updateModelInputItem(item.item);
+            ModelUIFactory.getModelingClient().updateModelInputItem(item.item);
             items.add(item);
             return item;
         }
@@ -181,7 +180,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     public void setParent(ModelInputGroupDisplayItem parent) throws IOException {
         ModelInputGroupDisplayItem old = this.parent;
         group.setParentGroupId(parent == null ? null : parent.group.getId());
-        IModelingClient.instance().updateModelInputGroup(group);
+        ModelUIFactory.getModelingClient().updateModelInputGroup(group);
         this.parent = parent;
         if (old != null) {
             old.populateChildren();
@@ -204,7 +203,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
         }
         if (toRemove != null) {
             knownMetaData.remove(toRemove.getMetaData());
-            IModelingClient.instance().deleteModelInputItem(toRemove.item.getId());
+            ModelUIFactory.getModelingClient().deleteModelInputItem(toRemove.item.getId());
 
         }
         populateChildren();
@@ -232,7 +231,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
             ((ModelInputIndividualDisplayItem) item).setGroupId(null);
         }
         populateChildren();
-        IModelingClient.instance().deleteModelInputGroup(group.getId());
+        ModelUIFactory.getModelingClient().deleteModelInputGroup(group.getId());
     }
 
     public List<ModelInputGroupDisplayItem> getChildGroups() {
@@ -261,7 +260,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      */
     public void setMetaData(MetaData md) {
         group.setNameAndDescriptionMetaDataId(md == null ? null : md.getId());
-        IModelingClient.instance().updateModelInputGroup(group);
+        ModelUIFactory.getModelingClient().updateModelInputGroup(group);
     }
 
     @Override
@@ -289,8 +288,8 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     public String getName() {
         try {
             return group.getName() == null || group.getName().trim().equals("") ?
-                    IModelingClient.instance().getMetaData(group) == null ?
-                            null : IModelingClient.instance().getMetaData(group).getName()
+                    ModelUIFactory.getModelingClient().getMetaData(group) == null ?
+                            null : ModelUIFactory.getModelingClient().getMetaData(group).getName()
                     : group.getName();
         } catch (IOException e) {
             _log.error("Could not retrieve group description", e);
@@ -304,7 +303,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      */
     public void setName(String name) {
         group.setName(name);
-        IModelingClient.instance().updateModelInputGroup(group);
+        ModelUIFactory.getModelingClient().updateModelInputGroup(group);
     }
 
     /**
@@ -317,9 +316,9 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     public String getDescription() {
         try {
             return group.getDescription() == null || group.getDescription().trim().equals("") ?
-                    IModelingClient.instance().getMetaData(group) == null ?
+                    ModelUIFactory.getModelingClient().getMetaData(group) == null ?
                             null
-                            : IModelingClient.instance().getMetaData(group).getDescription()
+                            : ModelUIFactory.getModelingClient().getMetaData(group).getDescription()
                     : group.getDescription();
         } catch (IOException e) {
             _log.error("Could not retrieve group description", e);
@@ -333,7 +332,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      */
     public void setDescription(String desc) {
         group.setDescription(desc);
-        IModelingClient.instance().updateModelInputGroup(group);
+        ModelUIFactory.getModelingClient().updateModelInputGroup(group);
     }
 
     /**

@@ -33,7 +33,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
         super(s);
         this.metaData = metaData;
         try {
-            item = IModelingClient.instance().getOutputItem(metaData.getId());
+            item = ModelUIFactory.getModelingClient().getOutputItem(metaData.getId());
         } catch (UncheckedEntityNotFoundException e) {
             createPersistence();
         }
@@ -44,7 +44,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
         item.setModelId(getSimulation().getId());
         item.setModelOutputItemId(metaData.getId());
         item.setModelItemIsVisible(true);
-        item = IModelingClient.instance().createModelOutputItem(item);
+        item = ModelUIFactory.getModelingClient().createModelOutputItem(item);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
     @Override
     public void setOrder(int i) {
         item.setModelOutputItemOrder(i);
-        IModelingClient.instance().updateModelOutputItem(item);
+        ModelUIFactory.getModelingClient().updateModelOutputItem(item);
     }
 
     @Override
@@ -83,13 +83,13 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
     public void setSeriesType(ModelOutputSeriesType type) {
         if (item != null) {
             item.setItemType(type.name());
-            IModelingClient.instance().updateModelOutputItem(item);
+            ModelUIFactory.getModelingClient().updateModelOutputItem(item);
         }
     }
 
     public void setAssociatedMetaData(MetaData md) {
         item.setRelatedOutputItem(md.getId());
-        IModelingClient.instance().updateModelOutputItem(item);
+        ModelUIFactory.getModelingClient().updateModelOutputItem(item);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
 
     public void setVisible(boolean b) {
         item.setModelItemIsVisible(b);
-        IModelingClient.instance().updateModelOutputItem(item);
+        ModelUIFactory.getModelingClient().updateModelOutputItem(item);
 
     }
 
@@ -173,7 +173,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
 
     public void setAssociatedMetaDataId(Long id) {
         item.setRelatedOutputItem(id);
-        IModelingClient.instance().updateModelOutputItem(item);
+        ModelUIFactory.getModelingClient().updateModelOutputItem(item);
     }
 
     private String getLabelFormatString() {
