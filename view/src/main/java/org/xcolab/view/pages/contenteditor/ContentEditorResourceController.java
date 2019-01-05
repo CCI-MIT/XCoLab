@@ -2,13 +2,15 @@ package org.xcolab.view.pages.contenteditor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contents.ContentsClient;
-import org.xcolab.client.contents.pojo.ContentArticleVersion;
+import org.xcolab.client.content.IContentClient;
+import org.xcolab.client.content.exceptions.ContentNotFoundException;
+import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
@@ -28,6 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ContentEditorResourceController extends BaseContentEditor {
 
+    @Autowired
+    private IContentClient contentClient;
+
     @GetMapping("/content-editor/resourcePagesEditor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member) {
@@ -42,8 +47,12 @@ public class ContentEditorResourceController extends BaseContentEditor {
             HttpServletResponse response, @RequestParam(required = false) Long articleId)
             throws IOException {
 
-        ContentArticleVersion contentArticleVersion =
-                ContentsClient.getLatestContentArticleVersion(articleId);
+        IContentArticleVersion contentArticleVersion;
+        try {
+            contentArticleVersion = contentClient.getLatestContentArticleVersion(articleId);
+        } catch (ContentNotFoundException e) {
+            contentArticleVersion = null;
+        }
 
         Contest contest = ContestClientUtil.getContestByResourceArticleId(articleId);
 
@@ -56,15 +65,15 @@ public class ContentEditorResourceController extends BaseContentEditor {
     }
 
     private JSONObject getContentArticleVersion(Long articleId,
-            ContentArticleVersion contentArticleVersion, String contestURL,
+            IContentArticleVersion contentArticleVersion, String contestURL,
             String contestArticleUrl) {
 
         JSONArray versions = new JSONArray();
-        List<ContentArticleVersion> cavs = ContentsClient
+        List<IContentArticleVersion> cavs = contentClient
                 .getContentArticleVersions(0, Integer.MAX_VALUE, null, articleId, null, null, null);
 
         JSONObject articleVersion;
-        for (ContentArticleVersion cav : cavs) {
+        for (IContentArticleVersion cav : cavs) {
             articleVersion = new JSONObject();
             articleVersion.put("createdAt", cav.getCreatedAt());
             articleVersion.put("contentArticleVersionId", cav.getId());

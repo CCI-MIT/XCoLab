@@ -2,7 +2,7 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-<!--@elvariable id="contentPage" type="org.xcolab.client.contents.pojo.ContentPage"-->
+<!--@elvariable id="contentPage" type="org.xcolab.client.content.pojo.IContentPage"-->
 <!--@elvariable id="contentArticleId" type="java.lang.Long"-->
 <!--@elvariable id="menuArticleId" type="java.lang.Long"-->
 <xcolab:layout title="${contentPage.formattedTitle}" description="${contentPage.metaDescription}">
