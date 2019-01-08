@@ -8,10 +8,10 @@ import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 
 @Component
-public class StaticClientInjector {
+public class StaticInjectorProposal {
 
     @Autowired
-    public StaticClientInjector(ThreadClient threadClient, CommentClient commentClient) {
+    public StaticInjectorProposal(ThreadClient threadClient, CommentClient commentClient) {
         Proposal.setThreadClient(threadClient);
         Proposal.setCommentClient(commentClient);
     }
