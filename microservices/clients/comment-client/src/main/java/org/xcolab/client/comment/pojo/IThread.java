@@ -3,9 +3,7 @@ package org.xcolab.client.comment.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.comment.CategoryClient;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.StaticInjectorComment;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.comment.pojo.tables.pojos.Thread;
@@ -50,17 +48,17 @@ public interface IThread {
     void setIsQuiet(Boolean isQuiet);
 
     default int getCommentsCount() {
-        return CommentClient.instance().countComments(getId());
+        return StaticInjectorComment.getCommentClient().countComments(getId());
     }
 
     @JsonIgnore
     default List<IComment> getComments() {
-        return CommentClient.instance().listComments(0, Integer.MAX_VALUE, getId());
+        return StaticInjectorComment.getCommentClient().listComments(0, Integer.MAX_VALUE, getId());
     }
 
     @JsonIgnore
     default long getLastActivityAuthorUserId() {
-        return ThreadClient.instance().getLastActivityAuthorUserId(getId());
+        return StaticInjectorComment.getThreadClient().getLastActivityAuthorUserId(getId());
     }
 
     @JsonIgnore
@@ -74,7 +72,7 @@ public interface IThread {
 
     @JsonIgnore
     default Date getLastActivityDate() {
-        return ThreadClient.instance().getLastActivityDate(getId());
+        return StaticInjectorComment.getThreadClient().getLastActivityDate(getId());
     }
 
     @JsonIgnore
@@ -96,7 +94,7 @@ public interface IThread {
         final Long categoryId = getCategoryId();
         if (categoryId != null && categoryId > 0) {
             try {
-                return CategoryClient.instance().getCategory(categoryId);
+                return StaticInjectorComment.getCategoryClient().getCategory(categoryId);
             } catch (CategoryNotFoundException ignored) {
                 //throw new KeyReferenceException(e);
             }

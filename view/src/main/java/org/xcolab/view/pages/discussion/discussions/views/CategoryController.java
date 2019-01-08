@@ -121,7 +121,7 @@ public class CategoryController extends BaseDiscussionController {
 
         String baseUrl = "";
         if (categoryId != null && categoryId > 0) {
-            ICategory category = CategoryClient.instance().getCategory(categoryId);
+            ICategory category = categoryClient.getCategory(categoryId);
             baseUrl = category.getLinkUrl();
         } else {
             baseUrl = "/discussion/categories";

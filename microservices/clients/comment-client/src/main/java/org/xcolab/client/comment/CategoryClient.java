@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
@@ -20,11 +18,7 @@ import java.util.List;
 @FeignClient("xcolab-comment-service")
 public interface CategoryClient {
 
-    static CategoryClient instance() {
-        return null;
-    }
-
-    @RequestMapping(value = "/categories", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/categories")
     List<ICategory> listCategories(
             @RequestParam(value = "startRecord", required = false) Integer startRecord,
             @RequestParam(value = "limitRecord", required = false) Integer limitRecord,

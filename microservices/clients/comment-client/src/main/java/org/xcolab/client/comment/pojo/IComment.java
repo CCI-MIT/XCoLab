@@ -3,7 +3,7 @@ package org.xcolab.client.comment.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.StaticInjectorComment;
 import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.tables.pojos.Comment;
@@ -70,7 +70,7 @@ public interface IComment {
         final Long threadId = getThreadId();
         if (threadId != null && threadId > 0) {
             try {
-                return ThreadClient.instance().getThread(threadId);
+                return StaticInjectorComment.getThreadClient().getThread(threadId);
             } catch (ThreadNotFoundException e) {
                 throw new KeyReferenceException(e);
             }

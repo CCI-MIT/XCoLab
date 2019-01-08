@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
@@ -23,11 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @FeignClient("xcolab-comment-service")
 public interface CommentClient {
 
-    static CommentClient instance() {
-        return null;
-    }
-
-    @RequestMapping(value = "/comments", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/comments")
     List<IComment> listComments(HttpServletResponse response,
             @RequestParam(value = "startRecord", required = false) Integer startRecord,
             @RequestParam(value = "limitRecord", required = false) Integer limitRecord,

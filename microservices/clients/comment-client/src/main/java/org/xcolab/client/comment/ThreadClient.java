@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
@@ -21,11 +19,7 @@ import java.util.List;
 @FeignClient("xcolab-comment-service")
 public interface ThreadClient {
 
-    static ThreadClient instance() {
-        return null;
-    }
-
-    @RequestMapping(value = "/threads", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/threads")
     List<IThread> listThreads(
             @RequestParam(value = "startRecord", required = false) Integer startRecord,
             @RequestParam(value = "limitRecord", required = false) Integer limitRecord,
