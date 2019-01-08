@@ -1,71 +1,85 @@
 package org.xcolab.client.comment;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.client.comment.pojo.IComment;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class CommentClient {
+import javax.servlet.http.HttpServletResponse;
 
-    // Default instance when used statically
-    private static final CommentClient INSTANCE = new CommentClient();
+@FeignClient("xcolab-comment-service")
+public interface CommentClient {
 
-    private final CommentServiceWrapper commentServiceWrapper = new CommentServiceWrapper();
-
-    public static CommentClient instance() {
-        return INSTANCE;
+    static CommentClient instance() {
+        return null;
     }
 
-    public List<Comment> listComments(int start, int last) {
-        return listComments(start, last, null);
+    @RequestMapping(value = "/comments", method = {RequestMethod.GET, RequestMethod.HEAD})
+    List<IComment> listComments(HttpServletResponse response,
+            @RequestParam(value = "startRecord", required = false) Integer startRecord,
+            @RequestParam(value = "limitRecord", required = false) Integer limitRecord,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "authorUserId", required = false) Long authorUserId,
+            @RequestParam(value = "threadIds", required = false) List<Long> threadIds,
+            @RequestParam(value = "includeDeleted", required = false, defaultValue = "false")
+                    Boolean includeDeleted);
+
+    default List<IComment> listComments(Integer startRecord, Integer limitRecord, Long threadId) {
+        return listComments(null, startRecord, limitRecord, "createdAt", null,
+                Collections.singletonList(threadId), null);
     }
 
-    public List<Comment> listComments(int start, int last, Long threadId) {
-        return commentServiceWrapper.listComments(start, last, "createdAt", null, threadId, null);
-    }
-
-    public int countComments(Long threadId) {
+    default int countComments(Long threadId) {
         if (threadId == null) {
             return 0;
         }
-        return commentServiceWrapper.countComments(null, Collections.singleton(threadId));
+        return countComments(null, Collections.singletonList(threadId));
     }
 
-    public int countComments(Collection<Long> threadIds) {
+    default int countComments(List<Long> threadIds) {
         if (CollectionUtils.isEmpty(threadIds)) {
             return 0;
         }
-        return commentServiceWrapper.countComments(null, threadIds);
+        return countComments(null, threadIds);
     }
 
-    public int countCommentsByAuthor(long authorUserId) {
-        return commentServiceWrapper.countComments(authorUserId, null);
+    default int countCommentsByAuthor(long authorUserId) {
+        return countComments(authorUserId, null);
     }
 
-    public Comment getComment(long commentId) throws CommentNotFoundException {
+    default int countComments(Long authorUserId, List<Long> threadIds) {
+        return listComments(null, null, null, null, authorUserId, threadIds, null).size();
+    }
+
+    default IComment getComment(long commentId) throws CommentNotFoundException {
         return getComment(commentId, false);
     }
 
-    public Comment getComment(long commentId, boolean includeDeleted)
-            throws CommentNotFoundException {
-        return commentServiceWrapper.getComment(commentId, includeDeleted, CacheName.MISC_REQUEST);
-    }
+    @GetMapping("/comments/{commentId}")
+    IComment getComment(@PathVariable Long commentId,
+            @RequestParam(value = "includeDeleted", required = false, defaultValue = "false")
+                    Boolean includeDeleted)
+            throws CommentNotFoundException;
 
-    public boolean updateComment(Comment comment) {
-        return commentServiceWrapper.updateComment(new Comment(comment));
-    }
+    @PutMapping("/comments")
+    boolean updateComment(IComment comment);
 
-    public Comment createComment(Comment comment) {
-        return commentServiceWrapper.createComment(new Comment(comment));
-    }
+    @PostMapping("/comments")
+    IComment createComment(@RequestBody IComment comment);
 
-    public boolean deleteComment(long commentId) {
-        return commentServiceWrapper.deleteComment(commentId);
-    }
-
+    @DeleteMapping("/comments/{commentId}")
+    boolean deleteComment(@PathVariable("commentId") Long commentId);
 }

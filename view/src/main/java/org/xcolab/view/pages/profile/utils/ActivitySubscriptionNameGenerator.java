@@ -5,11 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
-import org.xcolab.client.comment.pojo.Category;
-import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.ICategory;
+import org.xcolab.client.comment.pojo.ICategoryGroup;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -22,6 +24,18 @@ import org.xcolab.client.proposals.pojo.Proposal;
 public class ActivitySubscriptionNameGenerator {
     private static final Logger _log = LoggerFactory.getLogger(ActivitySubscriptionNameGenerator.class);
     private static final String HYPERLINK = "<a href=\"%s\">%s</a>";
+
+    private static ThreadClient threadClient;
+
+    public static void setThreadClient(ThreadClient threadClient) {
+        ActivitySubscriptionNameGenerator.threadClient = threadClient;
+    }
+
+    private static CategoryClient categoryClient;
+
+    public static void setCategoryClient(CategoryClient categoryClient) {
+        ActivitySubscriptionNameGenerator.categoryClient = categoryClient;
+    }
 
     public static String getName(ActivitySubscription subscription) {
         switch (subscription.getActivityCategoryEnum()) {
@@ -64,7 +78,7 @@ public class ActivitySubscriptionNameGenerator {
 //        StringBuilder name = new StringBuilder();
 
         try {
-            CommentThread thread = ThreadClient.instance().getThread(categoryId);
+            IThread thread = threadClient.getThread(categoryId);
             return String.format(HYPERLINK, thread.getLinkUrl(), thread.getTitle());
         } catch (ThreadNotFoundException e) {
             _log.warn("Could not resolve discussion subscription name for subscription {}",
@@ -74,15 +88,15 @@ public class ActivitySubscriptionNameGenerator {
         return "[No title]";
     }
 
-    private static  String getCategoryHyperlink(Category category) {
+    private static  String getCategoryHyperlink(ICategory category) {
         return String.format(HYPERLINK, category.getLinkUrl(), category.getName());
     }
 
-    private static String getDiscussion(CommentThread thread) {
+    private static String getDiscussion(IThread thread) {
         return String.format(HYPERLINK, thread.getLinkUrl(), thread.getTitle());
     }
 
-    private static String getCategoryGroupHyperlink(CategoryGroup categoryGroup) {
+    private static String getCategoryGroupHyperlink(ICategoryGroup categoryGroup) {
         return String.format(HYPERLINK, categoryGroup.getLinkUrl(), categoryGroup.getDescription());
     }
 }

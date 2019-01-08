@@ -1,7 +1,10 @@
 package org.xcolab.client.comment.exceptions;
 
-public class ThreadNotFoundException extends Exception {
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
+
+public class ThreadNotFoundException extends EntityNotFoundException {
+
     public ThreadNotFoundException(long threadId) {
-        super("Thread with id " + threadId + " not found.");
+        super("Thread with id " + threadId + " not found.", ThreadNotFoundException.class);
     }
 }

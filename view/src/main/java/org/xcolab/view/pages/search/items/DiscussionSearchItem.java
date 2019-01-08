@@ -5,9 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.pojo.IComment;
+import org.xcolab.client.comment.pojo.IThread;
+import org.xcolab.client.comment.pojo.tables.pojos.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -20,8 +23,20 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private static final Logger _log = LoggerFactory.getLogger(DiscussionSearchItem.class);
 
-    private CommentThread thread;
-    private Comment comment;
+    private static CommentClient commentClient;
+
+    public static void setCommentClient(CommentClient commentClient) {
+        DiscussionSearchItem.commentClient = commentClient;
+    }
+
+    private static ThreadClient threadClient;
+
+    public static void setThreadClient(ThreadClient threadClient) {
+        DiscussionSearchItem.threadClient = threadClient;
+    }
+
+    private IThread thread;
+    private IComment comment;
 
     private String searchQuery;
 
@@ -29,9 +44,9 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     public void init(SearchPojo pojo, String searchQuery) {
         this.searchQuery = searchQuery;
         try {
-            comment = CommentClient.instance().getComment(pojo.getClassPrimaryKey());
-            thread = comment.getThread();
-        } catch (CommentNotFoundException e) {
+            comment = commentClient.getComment(pojo.getClassPrimaryKey());
+            thread = threadClient.getThread(comment.getThreadId());
+        } catch (CommentNotFoundException | ThreadNotFoundException e) {
             throw ReferenceResolutionException.toObject(Comment.class, pojo.getClassPrimaryKey())
                     .build();
         }

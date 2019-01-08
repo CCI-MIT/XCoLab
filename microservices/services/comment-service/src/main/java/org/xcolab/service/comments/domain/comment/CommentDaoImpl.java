@@ -8,8 +8,9 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.commons.SortColumn;
-import org.xcolab.model.tables.pojos.Comment;
+import org.xcolab.model.tables.pojos.CommentImpl;
 import org.xcolab.model.tables.records.CommentRecord;
 import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -45,7 +46,7 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public List<Comment> findByGiven(PaginationHelper paginationHelper,
+    public List<IComment> findByGiven(PaginationHelper paginationHelper,
             Long authorUserId, Collection<Long> threadIds, boolean includeDeleted) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(COMMENT)
@@ -70,11 +71,11 @@ public class CommentDaoImpl implements CommentDao {
             query.addConditions(COMMENT.DELETED_AT.isNull());
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(Comment.class);
+        return query.fetchInto(CommentImpl.class);
     }
 
     @Override
-    public Comment get(long commentId) throws NotFoundException {
+    public IComment get(long commentId) throws NotFoundException {
         final Record commentRecord = dslContext.select()
                 .from(COMMENT)
                 .where(COMMENT.ID.eq(commentId))
@@ -82,7 +83,7 @@ public class CommentDaoImpl implements CommentDao {
         if (commentRecord == null) {
             throw new NotFoundException("Comment with id " + commentId + " does not exist");
         }
-        return commentRecord.into(Comment.class);
+        return commentRecord.into(CommentImpl.class);
     }
 
     @Override
@@ -93,7 +94,7 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public boolean update(Comment comment) {
+    public boolean update(IComment comment) {
 
         return dslContext.update(COMMENT)
                 .set(COMMENT.THREAD_ID, comment.getThreadId())
@@ -107,7 +108,7 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public Comment create(Comment comment) {
+    public IComment create(IComment comment) {
         final CommentRecord commentRecord = dslContext.insertInto(COMMENT)
                 .set(COMMENT.THREAD_ID, comment.getThreadId())
                 .set(COMMENT.CREATED_AT, comment.getCreatedAt())

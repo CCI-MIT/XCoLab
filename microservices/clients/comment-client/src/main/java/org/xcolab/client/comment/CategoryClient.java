@@ -1,44 +1,52 @@
 package org.xcolab.client.comment;
 
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
-import org.xcolab.client.comment.pojo.Category;
-import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.client.comment.pojo.ICategory;
+import org.xcolab.client.comment.pojo.ICategoryGroup;
 
 import java.util.List;
 
-public class CategoryClient {
+@FeignClient("xcolab-comment-service")
+public interface CategoryClient {
 
-    // Default instance when used statically
-    private static final CategoryClient INSTANCE = new CategoryClient();
-
-    private final CommentServiceWrapper commentServiceWrapper = new CommentServiceWrapper();
-
-    public static CategoryClient instance() {
-        return INSTANCE;
+    static CategoryClient instance() {
+        return null;
     }
 
-    public List<Category> listCategories(int start, int last, long groupId) {
-        return commentServiceWrapper
-                .listCategories(start, last, "sort", null, groupId, CacheName.MISC_LONG);
+    @RequestMapping(value = "/categories", method = {RequestMethod.GET, RequestMethod.HEAD})
+    List<ICategory> listCategories(
+            @RequestParam(value = "startRecord", required = false) Integer startRecord,
+            @RequestParam(value = "limitRecord", required = false) Integer limitRecord,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "authorUserId", required = false) Long authorUserId,
+            @RequestParam(value = "groupId", required = false) Long groupId);
+
+    default List<ICategory> listCategories(int startRecord, int limitRecord, long groupId) {
+        return listCategories(startRecord, limitRecord, "sort", null, groupId);
     }
 
-    public Category getCategory(long categoryId) throws CategoryNotFoundException {
-        return commentServiceWrapper.getCategory(categoryId, CacheName.MISC_RUNTIME);
-    }
+    @GetMapping("/categories/{categoryId}")
+    ICategory getCategory(@PathVariable("categoryId") Long categoryId)
+            throws CategoryNotFoundException;
 
-    public boolean updateCategory(Category category) {
-        return commentServiceWrapper.updateCategory(category);
-    }
+    @PutMapping("/categories")
+    boolean updateCategory(@RequestBody ICategory category);
 
-    public Category createCategory(Category category) {
-        return commentServiceWrapper.createCategory(category);
-    }
+    @PostMapping("/categories")
+    ICategory createCategory(@RequestBody ICategory category);
 
-    public CategoryGroup getCategoryGroup(long groupId)
-            throws CategoryGroupNotFoundException {
-        return commentServiceWrapper.getCategoryGroup(groupId, CacheName.MISC_RUNTIME);
-    }
-
+    @GetMapping("/groups/{groupId}")
+    ICategoryGroup getCategoryGroup(@PathVariable("groupId") Long groupId)
+            throws CategoryGroupNotFoundException;
 }

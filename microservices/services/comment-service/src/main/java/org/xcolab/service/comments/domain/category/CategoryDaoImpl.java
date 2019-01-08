@@ -6,11 +6,12 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.Category;
+import org.xcolab.client.comment.pojo.ICategory;
+import org.xcolab.commons.SortColumn;
+import org.xcolab.model.tables.pojos.CategoryImpl;
 import org.xcolab.model.tables.records.CategoryRecord;
 import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
-import org.xcolab.commons.SortColumn;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class CategoryDaoImpl implements CategoryDao {
     private DSLContext dslContext;
 
     @Override
-    public List<Category> findByGiven(PaginationHelper paginationHelper,
+    public List<ICategory> findByGiven(PaginationHelper paginationHelper,
             Long groupId, Long authorUserId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CATEGORY)
@@ -46,11 +47,11 @@ public class CategoryDaoImpl implements CategoryDao {
         }
         query.addConditions(CATEGORY.DELETED_AT.isNull());
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(Category.class);
+        return query.fetchInto(CategoryImpl.class);
     }
 
     @Override
-    public Category get(long categoryId) throws NotFoundException {
+    public ICategory get(long categoryId) throws NotFoundException {
         final Record categoryRecord = dslContext.select()
                 .from(CATEGORY)
                 .where(CATEGORY.ID.eq(categoryId))
@@ -58,11 +59,11 @@ public class CategoryDaoImpl implements CategoryDao {
         if (categoryRecord == null) {
             throw new NotFoundException("Category with id " + categoryId + " does not exist");
         }
-        return categoryRecord.into(Category.class);
+        return categoryRecord.into(CategoryImpl.class);
     }
 
     @Override
-    public boolean update(Category category) {
+    public boolean update(ICategory category) {
         return dslContext.update(CATEGORY)
                 .set(CATEGORY.GROUP_ID, category.getId())
                 .set(CATEGORY.CREATED_AT, category.getCreatedAt())
@@ -77,7 +78,7 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public Category create(Category category) {
+    public ICategory create(ICategory category) {
         final CategoryRecord categoryRecord = dslContext.insertInto(CATEGORY)
                 .set(CATEGORY.ID, category.getId())
                 .set(CATEGORY.CREATED_AT, category.getCreatedAt())

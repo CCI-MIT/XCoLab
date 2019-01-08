@@ -10,7 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
-
 import org.xcolab.service.utils.db.DataSourceUtil;
 import org.xcolab.service.utils.db.jooq.config.JooqConfiguration;
 

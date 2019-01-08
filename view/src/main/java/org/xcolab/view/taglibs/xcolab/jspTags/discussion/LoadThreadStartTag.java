@@ -4,17 +4,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.comment.CategoryClient;
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
-import org.xcolab.client.comment.pojo.Category;
-import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.ICategory;
+import org.xcolab.client.comment.pojo.ICategoryGroup;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
+import org.xcolab.view.pages.search.items.DiscussionSearchItem;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 
 import java.util.List;
@@ -25,6 +28,18 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 public class LoadThreadStartTag extends BodyTagSupport {
 
     private static final Logger _log = LoggerFactory.getLogger(LoadThreadStartTag.class);
+
+    private static ThreadClient threadClient;
+
+    public static void setThreadClient(ThreadClient threadClient) {
+        LoadThreadStartTag.threadClient = threadClient;
+    }
+
+    private static CategoryClient categoryClient;
+
+    public static void setCategoryClient(CategoryClient categoryClient) {
+        LoadThreadStartTag.categoryClient = categoryClient;
+    }
 
     private long threadId;
     private long categoryId;
@@ -40,28 +55,28 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
             if (categoryId > 0) {
                 try {
-                    Category category = CategoryClient.instance().getCategory(categoryId);
+                    ICategory category = categoryClient.getCategory(categoryId);
                     shareTitle = category.getName();
                 } catch (CategoryNotFoundException e) {
-                    throw ReferenceResolutionException.toObject(Category.class, categoryId)
+                    throw ReferenceResolutionException.toObject(ICategory.class, categoryId)
                             .fromObject(LoadThreadStartTag.class, "for thread " + threadId);
                 }
             }
 
             if (categoryGroupId > 0) {
                 try {
-                    CategoryGroup categoryGroup = CategoryClient.instance().getCategoryGroup(categoryGroupId);
+                    ICategoryGroup categoryGroup = categoryClient.getCategoryGroup(categoryGroupId);
                     if (shareTitle == null) {
                         shareTitle = categoryGroup.getDescription();
                     }
                 } catch (CategoryGroupNotFoundException e) {
                     throw ReferenceResolutionException
-                            .toObject(CategoryGroup.class, categoryGroupId)
+                            .toObject(org.xcolab.client.comment.pojo.tables.pojos.CategoryGroup.class, categoryGroupId)
                             .fromObject(LoadThreadStartTag.class, "for thread " + threadId);
                 }
             }
 
-            CommentThread thread = ThreadClient.instance().getThread(threadId);
+            IThread thread = threadClient.getThread(threadId);
 
             DiscussionPermissions discussionPermissions = (DiscussionPermissions) request
                     .getAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);

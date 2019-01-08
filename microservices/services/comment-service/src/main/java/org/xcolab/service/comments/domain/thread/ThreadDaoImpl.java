@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import org.xcolab.client.comment.pojo.IComment;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.CommentTable;
-import org.xcolab.model.tables.pojos.Comment;
-import org.xcolab.model.tables.pojos.Thread;
+import org.xcolab.model.tables.pojos.CommentImpl;
+import org.xcolab.model.tables.pojos.ThreadImpl;
 import org.xcolab.model.tables.records.ThreadRecord;
 import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -37,7 +39,7 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorUserId,
+    public List<IThread> findByGiven(PaginationHelper paginationHelper, Long authorUserId,
             Long categoryId, Long groupId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(THREAD)
@@ -102,11 +104,11 @@ public class ThreadDaoImpl implements ThreadDao {
         }
         query.addConditions(THREAD.DELETED_AT.isNull());
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(Thread.class);
+        return query.fetchInto(ThreadImpl.class);
     }
 
     @Override
-    public Thread get(long id) throws NotFoundException {
+    public IThread get(long id) throws NotFoundException {
         final Record commentRecord = dslContext.select()
                 .from(THREAD)
                 .where(THREAD.ID.eq(id))
@@ -114,7 +116,7 @@ public class ThreadDaoImpl implements ThreadDao {
         if (commentRecord == null) {
             throw new NotFoundException("Comment with id " + id + " does not exist");
         }
-        return commentRecord.into(Thread.class);
+        return commentRecord.into(ThreadImpl.class);
     }
 
     @Override
@@ -125,7 +127,7 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public boolean update(Thread thread) {
+    public boolean update(IThread thread) {
         return dslContext.update(THREAD)
                 .set(THREAD.CREATED_AT, thread.getCreatedAt())
                 .set(THREAD.AUTHOR_USER_ID, thread.getAuthorUserId())
@@ -138,7 +140,7 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public Thread create(Thread thread) {
+    public IThread create(IThread thread) {
         final ThreadRecord threadRecord = dslContext.insertInto(THREAD)
                 .set(THREAD.CREATED_AT, thread.getCreatedAt())
                 .set(THREAD.AUTHOR_USER_ID, thread.getAuthorUserId())
@@ -156,7 +158,7 @@ public class ThreadDaoImpl implements ThreadDao {
     }
 
     @Override
-    public Optional<Comment> getLastComment(long threadId) {
+    public Optional<IComment> getLastComment(long threadId) {
         final Record record = dslContext.select()
                 .from(COMMENT)
                 .where(COMMENT.THREAD_ID.eq(threadId)
@@ -167,7 +169,7 @@ public class ThreadDaoImpl implements ThreadDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(Comment.class));
+        return Optional.of(record.into(CommentImpl.class));
     }
 
     @Override

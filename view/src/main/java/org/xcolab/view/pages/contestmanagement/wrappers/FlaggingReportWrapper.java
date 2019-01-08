@@ -5,9 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
+import org.xcolab.client.comment.pojo.IComment;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -21,6 +23,18 @@ import java.util.Date;
 public class FlaggingReportWrapper {
 
     private static final Logger _log = LoggerFactory.getLogger(FlaggingReportWrapper.class);
+
+    private static CommentClient commentClient;
+
+    public static void setCommentClient(CommentClient commentClient) {
+        FlaggingReportWrapper.commentClient = commentClient;
+    }
+
+    private static ThreadClient threadClient;
+
+    public static void setThreadClient(ThreadClient threadClient) {
+        FlaggingReportWrapper.threadClient = threadClient;
+    }
 
     private final AggregatedReport report;
     private ManagerAction managerAction = ManagerAction.PENDING;
@@ -39,9 +53,14 @@ public class FlaggingReportWrapper {
                 final Proposal proposal = getTargetProposal();
                 return proposal != null ? proposal.getName() : "unknown proposal";
             case COMMENT:
-                final Comment commentTarget = getTargetComment();
+                final IComment commentTarget = getTargetComment();
                 if (commentTarget != null) {
-                    final CommentThread thread = commentTarget.getThread();
+                    final IThread thread;
+                    try {
+                        thread = threadClient.getThread(commentTarget.getThreadId());
+                    } catch (ThreadNotFoundException e) {
+                        return "unknown thread";
+                    }
                     return "Comment on " + thread.getTitle();
                 } else {
                     return "unknown comment";
@@ -59,9 +78,9 @@ public class FlaggingReportWrapper {
         }
     }
 
-    private Comment getTargetComment() {
+    private IComment getTargetComment() {
         try {
-            return CommentClient.instance().getComment(report.getTargetId(), true);
+            return commentClient.getComment(report.getTargetId(), true);
         } catch (CommentNotFoundException e) {
             return null;
         }
@@ -76,7 +95,7 @@ public class FlaggingReportWrapper {
                 }
                 break;
             case COMMENT:
-                final Comment commentTarget = getTargetComment();
+                final IComment commentTarget = getTargetComment();
                 if (commentTarget != null) {
                     return commentTarget.getLinkUrl();
                 }

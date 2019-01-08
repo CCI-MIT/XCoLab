@@ -14,7 +14,7 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -54,8 +54,8 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
-import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
+import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -83,6 +83,18 @@ public class Proposal extends AbstractProposal implements Serializable {
 
     private static final Long LONG_DEFAULT_VAL = -1L;
     private static final String STRING_DEFAULT_VAL = "";
+
+    private static ThreadClient threadClient;
+
+    public static void setThreadClient(ThreadClient threadClient) {
+        Proposal.threadClient = threadClient;
+    }
+
+    private static CommentClient commentClient;
+
+    public static void setCommentClient(CommentClient commentClient) {
+        Proposal.commentClient = commentClient;
+    }
 
     private final Clients clients;
 
@@ -319,7 +331,7 @@ public class Proposal extends AbstractProposal implements Serializable {
     @JsonIgnore
     public long getCommentsCount() {
         if (this.getId() > 0) {
-            return CommentClient.instance().countComments(this.getDiscussionId());
+            return commentClient.countComments(this.getDiscussionId());
         }
         return 0;
     }
@@ -332,11 +344,11 @@ public class Proposal extends AbstractProposal implements Serializable {
     @JsonIgnore
     private long createDiscussionThread(String threadTitleSuffix, boolean isQuiet) {
         final ContestType contestType = getContest().getContestType();
-        CommentThread thread = new CommentThread();
+        IThread thread = new org.xcolab.client.comment.pojo.tables.pojos.Thread();
         thread.setAuthorUserId(getAuthorUserId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return ThreadClient.instance().createThread(thread).getId();
+        return Proposal.threadClient.createThread(thread).getId();
     }
 
     @JsonIgnore

@@ -1,8 +1,10 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
+import com.netflix.discovery.converters.Auto;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +17,9 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.IComment;
+import org.xcolab.client.comment.pojo.IThread;
+import org.xcolab.client.comment.pojo.tables.pojos.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -52,6 +55,11 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     private static final String COMMENT_ANALYTICS_ACTION = "Comment on contest entry";
     private static final String COMMENT_ANALYTICS_LABEL = "";
 
+    @Autowired
+    private ThreadClient threadClient;
+
+    @Autowired
+    private CommentClient commentClient;
 
     @PostMapping("/discussions/addDiscussionMessage")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,
@@ -73,7 +81,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
 
             long threadId = Long.parseLong(newMessage.getThreadId());
-            CommentThread commentThread = ThreadClient.instance().getThread(threadId);
+            IThread commentThread = threadClient.getThread(threadId);
 
             DiscussionPermissions discussionPermissions = getDiscussionPermissions(request, commentThread);
 
@@ -84,11 +92,11 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             final String body = HtmlUtil.cleanSome(newMessage.getDescription(), baseUri);
 
-            Comment comment = new Comment();
+            IComment comment = new Comment();
             comment.setContent(body);
             comment.setAuthorUserId(userId);
             comment.setThreadId(threadId);
-            comment = CommentClient.instance().createComment(comment);
+            comment = commentClient.createComment(comment);
 
             updateAnalyticsAndActivities(commentThread, comment, userId, request);
 
@@ -149,7 +157,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         return "redirect:/discussions";
     }
 
-    private Contest getContest(CommentThread commentThread) {
+    private Contest getContest(IThread commentThread) {
         try {
             return ContestClientUtil.getContestByThreadId(commentThread.getId());
         } catch (ContestNotFoundException e) {
@@ -157,9 +165,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         }
     }
 
-    public void updateAnalyticsAndActivities(CommentThread thread, Comment comment, long userId,
+    public void updateAnalyticsAndActivities(IThread thread, IComment comment, long userId,
             HttpServletRequest request) {
-        int commentCount = CommentClient.instance().countCommentsByAuthor(userId);
+        int commentCount = commentClient.countCommentsByAuthor(userId);
         if (commentCount > 0) {
             int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(commentCount);
             AnalyticsUtil.publishEvent(request, userId, COMMENT_ANALYTICS_KEY + analyticsValue,

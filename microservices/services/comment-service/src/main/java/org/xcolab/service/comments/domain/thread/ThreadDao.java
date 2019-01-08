@@ -1,7 +1,7 @@
 package org.xcolab.service.comments.domain.thread;
 
-import org.xcolab.model.tables.pojos.Comment;
-import org.xcolab.model.tables.pojos.Thread;
+import org.xcolab.client.comment.pojo.IComment;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -10,18 +10,18 @@ import java.util.Optional;
 
 public interface ThreadDao {
 
-    List<Thread> findByGiven(PaginationHelper paginationHelper, Long authorUserId, Long categoryId,
+    List<IThread> findByGiven(PaginationHelper paginationHelper, Long authorUserId, Long categoryId,
             Long groupId);
 
-    Thread get(long threadId) throws NotFoundException;
+    IThread get(long threadId) throws NotFoundException;
 
     boolean exists(long threadId);
 
-    boolean update(Thread thread);
+    boolean update(IThread thread);
 
-    Thread create(Thread thread);
+    IThread create(IThread thread);
 
-    Optional<Comment> getLastComment(long threadId);
+    Optional<IComment> getLastComment(long threadId);
 
     boolean delete(Long threadId);
 }

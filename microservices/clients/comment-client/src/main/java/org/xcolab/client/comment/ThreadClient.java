@@ -1,51 +1,60 @@
 package org.xcolab.client.comment;
 
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.comment.util.ThreadSortColumn;
-import org.xcolab.util.http.caching.CacheName;
 
 import java.util.Date;
 import java.util.List;
 
-public class ThreadClient {
+@FeignClient("xcolab-comment-service")
+public interface ThreadClient {
 
-    // Default instance when used statically
-    private static final ThreadClient INSTANCE = new ThreadClient();
-
-    private final CommentServiceWrapper commentServiceWrapper = new CommentServiceWrapper();
-
-    public static ThreadClient instance() {
-        return INSTANCE;
+    static ThreadClient instance() {
+        return null;
     }
 
-    public List<CommentThread> listThreads(int start, int last, Long categoryId,
-            Long groupId, ThreadSortColumn sortColumn, boolean ascending) {
-        return commentServiceWrapper.listThreads(start, last, sortColumn.getIdentifier(ascending),
-                null, categoryId, groupId);
+    @RequestMapping(value = "/threads", method = {RequestMethod.GET, RequestMethod.HEAD})
+    List<IThread> listThreads(
+            @RequestParam(value = "startRecord", required = false) Integer startRecord,
+            @RequestParam(value = "limitRecord", required = false) Integer limitRecord,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "authorUserId", required = false) Long authorUserId,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "groupId", required = false) Long groupId);
+
+    default List<IThread> listThreads(Integer startRecord, Integer limitRecord, Long categoryId,
+            Long groupId, ThreadSortColumn sortColumn, Boolean ascending) {
+        return listThreads(startRecord, limitRecord, sortColumn.getIdentifier(ascending), null,
+                categoryId, groupId);
     }
 
-    public CommentThread getThread(long threadId) throws ThreadNotFoundException {
-        return commentServiceWrapper.getThread(threadId, CacheName.MISC_MEDIUM);
-    }
+    @GetMapping("/threads/{threadId}")
+    IThread getThread(@PathVariable("threadId") Long threadId) throws ThreadNotFoundException;
 
-    public boolean updateThread(CommentThread thread) {
-        return commentServiceWrapper.updateThread(thread);
-    }
+    @PutMapping("/threads")
+    boolean updateThread(@RequestBody IThread thread);
 
-    public CommentThread createThread(CommentThread thread) {
-        return commentServiceWrapper.createThread(thread);
-    }
+    @PostMapping("/threads")
+    IThread createThread(@RequestBody IThread thread);
 
-    public void deleteThread(long threadId) {
-        commentServiceWrapper.deleteThread(threadId);
-    }
+    @DeleteMapping("/threads/{threadId}")
+    boolean deleteThread(@PathVariable("threadId") Long threadId);
 
-    public Date getLastActivityDate(long threadId) {
-        return commentServiceWrapper.getLastActivityDate(threadId, CacheName.MISC_REQUEST);
-    }
+    @GetMapping("/threads/{threadId}/lastActivityDate")
+    Date getLastActivityDate(@PathVariable("threadId") Long threadId);
 
-    public long getLastActivityauthorUserId(long threadId) {
-        return commentServiceWrapper.getLastActivityauthorUserId(threadId, CacheName.MISC_REQUEST);
-    }
+    @GetMapping("/threads/{threadId}/lastActivityAuthorUserId")
+    Long getLastActivityAuthorUserId(@PathVariable("threadId") Long threadId);
 }

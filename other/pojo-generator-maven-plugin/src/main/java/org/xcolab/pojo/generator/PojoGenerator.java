@@ -1,5 +1,6 @@
 package org.xcolab.pojo.generator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -11,16 +12,16 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.jboss.forge.roaster.ParserException;
 import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.Type;
 import org.jboss.forge.roaster.model.source.FieldSource;
-import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 import org.jboss.forge.roaster.model.source.JavaSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
+import org.jboss.forge.roaster.model.source.ParameterSource;
 import org.jboss.forge.roaster.model.util.Refactory;
 import org.jboss.forge.roaster.model.util.Strings;
 import org.jboss.forge.roaster.model.util.Types;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,7 +125,7 @@ public class PojoGenerator extends AbstractMojo {
             for (File interfaceFile : interfaceFiles) {
                 try {
                     JavaSource javaSrc = Roaster.parse(JavaSource.class, interfaceFile);
-                    if(javaSrc instanceof  JavaInterfaceSource) {
+                    if (javaSrc instanceof JavaInterfaceSource) {
                         JavaInterfaceSource interfaceSrc = (JavaInterfaceSource) javaSrc;
                         Path path = Paths.get(interfaceFile.toURI());
                         path = Paths.get(interfaceDirectory.toURI()).relativize(path);
@@ -175,10 +176,7 @@ public class PojoGenerator extends AbstractMojo {
                             .setPrivate();
 
                     fields.add(field);
-                    if (!Types.isJavaLang(parameter.getType().getQualifiedName())
-                            && !Types.isBasicType(parameter.getType().getQualifiedName())) {
-                        pojo.addImport(parameter.getType().getQualifiedName());
-                    }
+                    addImports(pojo, parameter.getType());
                 }
             }
 
@@ -301,12 +299,48 @@ public class PojoGenerator extends AbstractMojo {
                 src.getMethods().stream().filter(m -> m.isDefault()).collect(Collectors.toList());
         for (MethodSource<JavaInterfaceSource> defaultMethod : defaultMethods) {
             defaultMethod.addAnnotation(Override.class);
+            if (!defaultMethod.hasAnnotation(JsonIgnore.class)) {
+                defaultMethod.addAnnotation(JsonIgnore.class);
+            }
+            if (!pojo.hasImport(JsonIgnore.class)) {
+                pojo.addImport(JsonIgnore.class);
+            }
             defaultMethod.setDefault(false);
             defaultMethod.setPublic();
+            createDefaultMethodBody(pojo, defaultMethod, src.getName());
             pojo.addMethod(defaultMethod);
         }
-        for (Import anImport : src.getImports()) {
-            pojo.addImport(anImport);
+    }
+
+    /*
+    1.: return ILocation.super.testDefaultGetter();
+    2.: ILocation.super.testDefaultSetter(List<String> strings);
+     */
+    private static void createDefaultMethodBody(JavaClassSource pojo,
+            MethodSource<JavaInterfaceSource> defaultMethod, String interfaceName) {
+        String body = "";
+        if (!defaultMethod.isReturnTypeVoid()) {
+            body += "return ";
+            addImports(pojo, defaultMethod.getReturnType());
         }
+        body += interfaceName + ".super." + defaultMethod.getName() + "(";
+
+        body += defaultMethod.getParameters().stream().map(parameter -> {
+            addImports(pojo, parameter.getType());
+            return parameter.getName();
+        }).collect(Collectors.joining(", "));
+
+        body += ");";
+        defaultMethod.setBody(body);
+    }
+
+    private static void addImports(JavaClassSource pojo, Type<JavaInterfaceSource> type) {
+        if (!Types.isJavaLang(type.getQualifiedName()) && !Types
+                .isBasicType(type.getQualifiedName())) {
+            pojo.addImport(type.getQualifiedName());
+        }
+        type.getTypeArguments().stream().forEach(genericType -> {
+            pojo.addImport(genericType);
+        });
     }
 }

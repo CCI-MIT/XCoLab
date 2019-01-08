@@ -11,7 +11,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
-import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -62,11 +62,22 @@ public class Contest extends AbstractContest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private static ThreadClient threadClient;
+
+    public static void setThreadClient(ThreadClient threadClient) {
+        Contest.threadClient = threadClient;
+    }
+
+    private static CommentClient commentClient;
+
+    public static void setCommentClient(CommentClient commentClient) {
+        Contest.commentClient = commentClient;
+    }
+
     private final ContestClient contestClient;
     private final ContestTeamMemberClient contestTeamMemberClient;
     private final OntologyClient ontologyClient;
     private final ProposalTemplateClient proposalTemplateClient;
-
 
     private static final Map<Long, FocusArea> faCache = new HashMap<>();
     private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
@@ -84,7 +95,6 @@ public class Contest extends AbstractContest implements Serializable {
 
     private final Map<String, String> ontologyJoinedNames = new HashMap<>();
     private List<ContestPhase> visiblePhases;
-
 
     protected List<ContestPhase> phases;
     protected ContestType contestType;
@@ -252,7 +262,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     @JsonIgnore
     public long getCommentsCount() {
-        return CommentClient.instance().countComments(this.getDiscussionGroupId());
+        return commentClient.countComments(this.getDiscussionGroupId());
     }
 
     @JsonIgnore
@@ -433,11 +443,11 @@ public class Contest extends AbstractContest implements Serializable {
 
     @JsonIgnore
     public long getTotalCommentsCount() {
-        int contestComments = CommentClient.instance().countComments(this.getDiscussionGroupId());
+        int contestComments = commentClient.countComments(this.getDiscussionGroupId());
         ContestPhase phase = contestClient.getActivePhase(this.getId());
         final List<Long> proposalDiscussionThreads =
                 contestClient.getProposalDiscussionThreads(phase.getId());
-        contestComments += CommentClient.instance().countComments(proposalDiscussionThreads);
+        contestComments += commentClient.countComments(proposalDiscussionThreads);
 
         return contestComments;
     }
@@ -593,11 +603,11 @@ public class Contest extends AbstractContest implements Serializable {
         Long discussionGroupId = super.getDiscussionGroupId();
         if (discussionGroupId == null) {
             ContestType contestType = getContestType();
-            CommentThread thread = new CommentThread();
+            IThread thread = new org.xcolab.client.comment.pojo.tables.pojos.Thread();
             thread.setAuthorUserId(getAuthorUserId());
             thread.setTitle(contestType.getContestName() + " discussion");
             thread.setIsQuiet(false);
-            thread = ThreadClient.instance().createThread(thread);
+            thread = Contest.threadClient.createThread(thread);
             discussionGroupId = thread.getId();
             setDiscussionGroupId(discussionGroupId);
         }

@@ -1,6 +1,6 @@
 package org.xcolab.service.comments.domain.comment;
 
-import org.xcolab.model.tables.pojos.Comment;
+import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
@@ -11,13 +11,14 @@ public interface CommentDao {
 
     int countByGiven(Long authorUserId, Collection<Long> threadIds);
 
-    List<Comment> findByGiven(PaginationHelper paginationHelper, Long authorUserId, Collection<Long> threadIds,boolean includeDeleted);
+    List<IComment> findByGiven(PaginationHelper paginationHelper, Long authorUserId,
+            Collection<Long> threadIds, boolean includeDeleted);
 
-    Comment get(long commentId) throws NotFoundException;
+    IComment get(long commentId) throws NotFoundException;
 
     boolean exists(long commentId);
 
-    boolean update(Comment comment);
+    boolean update(IComment comment);
 
-    Comment create(Comment comment);
+    IComment create(IComment comment);
 }

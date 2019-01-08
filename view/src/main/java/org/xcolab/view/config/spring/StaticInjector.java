@@ -5,10 +5,19 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.comment.CategoryClient;
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
+import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
+import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
+import org.xcolab.view.pages.profile.utils.ActivitySubscriptionNameGenerator;
+import org.xcolab.view.pages.search.items.DiscussionSearchItem;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.LoadThreadStartTag;
 import org.xcolab.view.tags.LoadContentArticleTag;
+import org.xcolab.view.util.entity.activityEntry.ActivitySubscriptionEmailHelper;
 
 @Component
 public class StaticInjector implements ApplicationRunner {
@@ -19,9 +28,28 @@ public class StaticInjector implements ApplicationRunner {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private ThreadClient threadClient;
+
+    @Autowired
+    private CommentClient commentClient;
+
+    @Autowired
+    private CategoryClient categoryClient;
+
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
+        ActivitySubscriptionNameGenerator.setThreadClient(threadClient);
+        ActivitySubscriptionNameGenerator.setCategoryClient(categoryClient);
+        DiscussionBaseActivityEntry.setThreadClient(threadClient);
+        LoadThreadStartTag.setThreadClient(threadClient);
+        FlaggingReportWrapper.setThreadClient(threadClient);
+        FlaggingReportWrapper.setCommentClient(commentClient);
+        ActivitySubscriptionEmailHelper.setCommentClient(commentClient);
+        DiscussionSearchItem.setThreadClient(threadClient);
+        DiscussionSearchItem.setCommentClient(commentClient);
+        LoadThreadStartTag.setCategoryClient(categoryClient);
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.Comment;
+import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
@@ -37,21 +37,21 @@ public class CommentDaoTest {
 
     @Test
     public void testFindByGiven__shouldReturnCorrectNumber() throws Exception {
-        final List<Comment> comments =
+        final List<IComment> comments =
                 commentDao.findByGiven(PaginationHelper.EVERYTHING, null, null, false);
         assertThat("Total comment count incorrect", comments, hasSize(2));
     }
 
     @Test
     public void testFindByGiven__includeDeleted__shouldReturnCorrectNumber() throws Exception {
-        final List<Comment> comments =
+        final List<IComment> comments =
                 commentDao.findByGiven(PaginationHelper.EVERYTHING, null, null, true);
         assertThat("Total comment count incorrect", comments, hasSize(3));
     }
 
     @Test
     public void testFindByGiven__pagination__shouldReturnCorrectNumber() throws Exception {
-        final List<Comment> comments =
+        final List<IComment> comments =
                 commentDao.findByGiven(new PaginationHelper(1, 1, null),
                         null, null, true);
         assertThat("Total comment count incorrect", comments, hasSize(1));

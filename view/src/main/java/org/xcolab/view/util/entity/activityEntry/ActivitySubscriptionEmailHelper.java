@@ -14,7 +14,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -50,6 +50,12 @@ public class ActivitySubscriptionEmailHelper {
 
     private static final Logger _log =
             LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
+
+    private static CommentClient commentClient;
+
+    public static void setCommentClient(CommentClient commentClient) {
+        ActivitySubscriptionEmailHelper.commentClient = commentClient;
+    }
 
     private static final Object mutex = new Object();
 
@@ -220,7 +226,7 @@ public class ActivitySubscriptionEmailHelper {
                         bodyWithComment.append("<br><br><div style='margin-left:20px;>");
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
                         Long commentId = activityEntry.getAdditionalId();
-                        Comment comment = CommentClient.instance().getComment(commentId, true);
+                        IComment comment = commentClient.getComment(commentId, true);
                         if (comment.getDeletedAt() != null) {
                             bodyWithComment.append("<b>COMMENT ALREADY DELETED</b>");
                         }
