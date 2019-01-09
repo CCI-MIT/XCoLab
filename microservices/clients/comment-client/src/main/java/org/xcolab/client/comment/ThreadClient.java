@@ -29,7 +29,7 @@ public interface ThreadClient {
             @RequestParam(value = "groupId", required = false) Long groupId);
 
     default List<IThread> listThreads(Integer startRecord, Integer limitRecord, Long categoryId,
-            Long groupId, ThreadSortColumn sortColumn, Boolean ascending) {
+            Long groupId, ThreadSortColumn sortColumn, boolean ascending) {
         return listThreads(startRecord, limitRecord, sortColumn.getIdentifier(ascending), null,
                 categoryId, groupId);
     }

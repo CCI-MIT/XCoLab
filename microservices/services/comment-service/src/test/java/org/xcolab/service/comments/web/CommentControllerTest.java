@@ -2,8 +2,11 @@ package org.xcolab.service.comments.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.time.DateUtils;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
@@ -19,6 +22,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import org.xcolab.client.comment.StaticInjectorComment;
+import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
+import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
+import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.service.utils.ControllerUtils;
 
 import java.nio.charset.Charset;
@@ -42,10 +49,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class CommentControllerTest {
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     private MockMvc mockMvc;
 
     @Autowired
-    private CommentController controller;
+    private CommentController commentController;
+
+    @Autowired
+    private CategoryController categoryController;
+
+    @Autowired
+    private ThreadController threadController;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -56,12 +72,15 @@ public class CommentControllerTest {
 
     @Before
     public void before() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        //TODO: is there a better (spring) way to inject the controllers?
+        new StaticInjectorComment(categoryController, commentController, threadController);
+        this.mockMvc = MockMvcBuilders
+                .standaloneSetup(commentController, categoryController, threadController)
+                .build();
     }
 
     @Test
     public void testListComments__shouldReturnAll() throws Exception {
-
         mockMvc.perform(get("/comments").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -70,7 +89,6 @@ public class CommentControllerTest {
 
     @Test
     public void testListComments__shouldContainCorrectCount() throws Exception {
-
         mockMvc.perform(get("/comments").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(header().string(ControllerUtils.COUNT_HEADER_NAME, "2"));
@@ -78,7 +96,6 @@ public class CommentControllerTest {
 
     @Test
     public void testListComments__shouldFilterByAuthor() throws Exception {
-
         mockMvc.perform(get("/comments")
                     .param("authorUserId", "12345")
                     .contentType(contentType).accept(contentType))
@@ -89,7 +106,6 @@ public class CommentControllerTest {
 
     @Test
     public void testGetComment__shouldReturnInstance() throws Exception {
-
         mockMvc.perform(get("/comments/301").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -98,7 +114,6 @@ public class CommentControllerTest {
 
     @Test
     public void testGetComment__deleted__shouldReturnInstance() throws Exception {
-
         mockMvc.perform(get("/comments/351")
                 .param("includeDeleted", "true")
                 .contentType(contentType).accept(contentType))
@@ -109,7 +124,7 @@ public class CommentControllerTest {
 
     @Test
     public void testGetComment__deleted__shouldReturn404() throws Exception {
-
+        expectedException.expectCause(IsInstanceOf.instanceOf(CommentNotFoundException.class));
         mockMvc.perform(get("/comments/351")
                 .contentType(contentType).accept(contentType))
                 .andExpect(status().isNotFound());
@@ -117,14 +132,13 @@ public class CommentControllerTest {
 
     @Test
     public void testGetComment__shouldReturn404() throws Exception {
-
+        expectedException.expectCause(IsInstanceOf.instanceOf(CommentNotFoundException.class));
         mockMvc.perform(get("/comments/399").contentType(contentType).accept(contentType))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void testListThreads__shouldReturnAll() throws Exception {
-
         mockMvc.perform(get("/threads").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -133,7 +147,6 @@ public class CommentControllerTest {
 
     @Test
     public void testGetLastActivityDate__shouldReturnCorrectDate() throws Exception {
-
         mockMvc.perform(get("/threads/201/lastActivityDate").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().string(Long.toString(
@@ -142,16 +155,14 @@ public class CommentControllerTest {
     }
 
     @Test
-    public void testGetLastActivityauthorUserId__shouldReturnCorrectId() throws Exception {
-
-        mockMvc.perform(get("/threads/201/lastActivityauthorUserId").contentType(contentType).accept(contentType))
+    public void testGetLastActivityAuthorUserId__shouldReturnCorrectId() throws Exception {
+        mockMvc.perform(get("/threads/201/lastActivityAuthorUserId").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().string("12345"));
     }
 
     @Test
     public void testListCategories__shouldReturnAll() throws Exception {
-
         mockMvc.perform(get("/categories").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -160,7 +171,6 @@ public class CommentControllerTest {
 
     @Test
     public void testGetCategory__shouldReturnInstance() throws Exception {
-
         mockMvc.perform(get("/categories/101").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -169,14 +179,13 @@ public class CommentControllerTest {
 
     @Test
     public void testGetCategory__shouldReturn404() throws Exception {
-
+        expectedException.expectCause(IsInstanceOf.instanceOf(CategoryNotFoundException.class));
         mockMvc.perform(get("/categories/199").contentType(contentType).accept(contentType))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void testListGroups__shouldReturnAll() throws Exception {
-
         mockMvc.perform(get("/groups").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -185,7 +194,6 @@ public class CommentControllerTest {
 
     @Test
     public void testGetGroup__shouldReturnInstance() throws Exception {
-
         mockMvc.perform(get("/groups/701").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -194,7 +202,7 @@ public class CommentControllerTest {
 
     @Test
     public void testGetCroup__shouldReturn404() throws Exception {
-
+        expectedException.expectCause(IsInstanceOf.instanceOf(CategoryGroupNotFoundException.class));
         mockMvc.perform(get("/groups/799").contentType(contentType).accept(contentType))
                 .andExpect(status().isNotFound());
     }

@@ -47,14 +47,14 @@ public class CommentController implements CommentClient {
 
     //TODO COLAB-2594: move /comments endpoint to "/threads/{threadId}/comments"
     @Override
-    @RequestMapping(value = "/comments", method = {RequestMethod.GET, RequestMethod.HEAD})
+    @GetMapping("/comments")
     public List<IComment> listComments(HttpServletResponse response,
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) Long authorUserId,
             @RequestParam(required = false) List<Long> threadIds,
-            @RequestParam(required = false, defaultValue = "false") Boolean includeDeleted) {
+            @RequestParam(required = false, defaultValue = "false") boolean includeDeleted) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         if (response != null) {
@@ -68,7 +68,7 @@ public class CommentController implements CommentClient {
     @Override
     @GetMapping("/comments/{commentId}")
     public IComment getComment(@PathVariable Long commentId,
-            @RequestParam(required = false, defaultValue = "false") Boolean includeDeleted)
+            @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
             throws CommentNotFoundException {
         IComment comment = null;
         try {

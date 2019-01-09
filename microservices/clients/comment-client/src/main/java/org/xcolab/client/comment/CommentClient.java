@@ -29,11 +29,11 @@ public interface CommentClient {
             @RequestParam(value = "authorUserId", required = false) Long authorUserId,
             @RequestParam(value = "threadIds", required = false) List<Long> threadIds,
             @RequestParam(value = "includeDeleted", required = false, defaultValue = "false")
-                    Boolean includeDeleted);
+                    boolean includeDeleted);
 
     default List<IComment> listComments(Integer startRecord, Integer limitRecord, Long threadId) {
         return listComments(null, startRecord, limitRecord, "createdAt", null,
-                Collections.singletonList(threadId), null);
+                Collections.singletonList(threadId), false);
     }
 
     default int countComments(Long threadId) {
@@ -55,7 +55,7 @@ public interface CommentClient {
     }
 
     default int countComments(Long authorUserId, List<Long> threadIds) {
-        return listComments(null, null, null, null, authorUserId, threadIds, null).size();
+        return listComments(null, null, null, null, authorUserId, threadIds, false).size();
     }
 
     default IComment getComment(long commentId) throws CommentNotFoundException {
@@ -65,7 +65,7 @@ public interface CommentClient {
     @GetMapping("/comments/{commentId}")
     IComment getComment(@PathVariable Long commentId,
             @RequestParam(value = "includeDeleted", required = false, defaultValue = "false")
-                    Boolean includeDeleted)
+                    boolean includeDeleted)
             throws CommentNotFoundException;
 
     @PutMapping("/comments")

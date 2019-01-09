@@ -18,12 +18,12 @@ public class CommentClientMockImpl implements CommentClient {
     @Override
     public List<IComment> listComments(HttpServletResponse response, Integer startRecord,
             Integer limitRecord, String sort, Long authorUserId, List<Long> threadIds,
-            Boolean includeDeleted) {
+            boolean includeDeleted) {
         return Collections.emptyList();
     }
 
     @Override
-    public IComment getComment(Long commentId, Boolean includeDeleted)
+    public IComment getComment(Long commentId, boolean includeDeleted)
             throws CommentNotFoundException {
         return null;
     }
