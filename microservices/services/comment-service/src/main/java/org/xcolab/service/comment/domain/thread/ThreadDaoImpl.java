@@ -1,4 +1,4 @@
-package org.xcolab.service.comments.domain.thread;
+package org.xcolab.service.comment.domain.thread;
 
 import org.jooq.DSLContext;
 import org.jooq.JoinType;
@@ -17,7 +17,7 @@ import org.xcolab.model.tables.CommentTable;
 import org.xcolab.model.tables.pojos.CommentImpl;
 import org.xcolab.model.tables.pojos.ThreadImpl;
 import org.xcolab.model.tables.records.ThreadRecord;
-import org.xcolab.service.comments.exceptions.NotFoundException;
+import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;

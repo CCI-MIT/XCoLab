@@ -1,4 +1,4 @@
-package org.xcolab.service.comments.exceptions;
+package org.xcolab.service.comment.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,4 +1,4 @@
-package org.xcolab.service.comments.domain.categorygroup;
+package org.xcolab.service.comment.domain.categorygroup;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.client.comment.pojo.ICategoryGroup;
 import org.xcolab.model.tables.pojos.CategoryGroupImpl;
 import org.xcolab.model.tables.records.CategoryGroupRecord;
-import org.xcolab.service.comments.exceptions.NotFoundException;
+import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;

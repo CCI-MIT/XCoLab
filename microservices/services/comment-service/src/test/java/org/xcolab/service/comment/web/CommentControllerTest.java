@@ -1,4 +1,4 @@
-package org.xcolab.service.comments.web;
+package org.xcolab.service.comment.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.time.DateUtils;
@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 
 @WebMvcTest(CommentController.class)
-@ComponentScan("org.xcolab.service.comments")
+@ComponentScan("org.xcolab.service.comment")
 @ComponentScan("com.netflix.discovery")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ActiveProfiles("test")

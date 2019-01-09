@@ -1,8 +1,8 @@
-package org.xcolab.service.comments.domain.thread;
+package org.xcolab.service.comment.domain.thread;
 
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.service.comments.exceptions.NotFoundException;
+import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;

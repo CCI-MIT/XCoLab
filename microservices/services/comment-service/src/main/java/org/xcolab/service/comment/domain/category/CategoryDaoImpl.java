@@ -1,4 +1,4 @@
-package org.xcolab.service.comments.domain.category;
+package org.xcolab.service.comment.domain.category;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -10,7 +10,7 @@ import org.xcolab.client.comment.pojo.ICategory;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.pojos.CategoryImpl;
 import org.xcolab.model.tables.records.CategoryRecord;
-import org.xcolab.service.comments.exceptions.NotFoundException;
+import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;

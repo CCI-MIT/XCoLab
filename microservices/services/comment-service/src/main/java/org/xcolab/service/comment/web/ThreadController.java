@@ -1,4 +1,4 @@
-package org.xcolab.service.comments.web;
+package org.xcolab.service.comment.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -18,8 +18,8 @@ import org.xcolab.client.comment.exceptions.LastActivityNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.service.comments.domain.thread.ThreadDao;
-import org.xcolab.service.comments.exceptions.NotFoundException;
+import org.xcolab.service.comment.domain.thread.ThreadDao;
+import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
 

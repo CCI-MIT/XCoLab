@@ -1,4 +1,4 @@
-package org.xcolab.service.comments.domain.comment;
+package org.xcolab.service.comment.domain.comment;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.hasSize;
 @RunWith(SpringJUnit4ClassRunner.class)
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@ComponentScan("org.xcolab.service.comments")
+@ComponentScan("org.xcolab.service.comment")
 @ActiveProfiles("test")
 public class CommentDaoTest {
 

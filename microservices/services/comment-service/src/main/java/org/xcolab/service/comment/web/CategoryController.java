@@ -1,4 +1,4 @@
-package org.xcolab.service.comments.web;
+package org.xcolab.service.comment.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -17,9 +17,9 @@ import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.ICategory;
 import org.xcolab.client.comment.pojo.ICategoryGroup;
-import org.xcolab.service.comments.domain.category.CategoryDao;
-import org.xcolab.service.comments.domain.categorygroup.CategoryGroupDao;
-import org.xcolab.service.comments.exceptions.NotFoundException;
+import org.xcolab.service.comment.domain.category.CategoryDao;
+import org.xcolab.service.comment.domain.categorygroup.CategoryGroupDao;
+import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
 

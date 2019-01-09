@@ -1,4 +1,4 @@
-package org.xcolab.service.comments.web;
+package org.xcolab.service.comment.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,9 +15,9 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
-import org.xcolab.service.comments.domain.comment.CommentDao;
-import org.xcolab.service.comments.domain.thread.ThreadDao;
-import org.xcolab.service.comments.exceptions.NotFoundException;
+import org.xcolab.service.comment.domain.comment.CommentDao;
+import org.xcolab.service.comment.domain.thread.ThreadDao;
+import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;

@@ -1,4 +1,4 @@
-package org.xcolab.service.comments.persistence;
+package org.xcolab.service.comment.persistence;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.jooq.impl.DataSourceConnectionProvider;

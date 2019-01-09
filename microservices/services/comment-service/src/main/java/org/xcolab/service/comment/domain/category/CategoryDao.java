@@ -1,7 +1,7 @@
-package org.xcolab.service.comments.domain.category;
+package org.xcolab.service.comment.domain.category;
 
 import org.xcolab.client.comment.pojo.ICategory;
-import org.xcolab.service.comments.exceptions.NotFoundException;
+import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.xcolab.service.comments;
+package org.xcolab.service.comment;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
