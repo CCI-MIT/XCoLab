@@ -1,6 +1,6 @@
 package org.xcolab.view.activityentry.discussion;
 
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.view.activityentry.ActivityInitializationException;
@@ -9,9 +9,9 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 
 public abstract class DiscussionBaseActivityEntry extends AbstractActivityEntryContentProvider {
 
-    private static ThreadClient threadClient;
+    private static IThreadClient threadClient;
 
-    public static void setThreadClient(ThreadClient threadClient) {
+    public static void setThreadClient(IThreadClient threadClient) {
         DiscussionBaseActivityEntry.threadClient = threadClient;
     }
 

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.ICommentClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
@@ -26,10 +26,10 @@ import javax.servlet.http.HttpServletResponse;
 public class EditDiscussionMessageActionController extends BaseDiscussionsActionController {
 
     @Autowired
-    private CommentClient commentClient;
+    private ICommentClient commentClient;
 
     @Autowired
-    private ThreadClient threadClient;
+    private IThreadClient threadClient;
 
     @PostMapping("/discussions/editComment")
     public void handleAction(HttpServletRequest request, HttpServletResponse response,

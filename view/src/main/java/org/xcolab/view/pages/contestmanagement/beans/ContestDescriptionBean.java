@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.content.IContentClient;
@@ -31,7 +31,7 @@ public class ContestDescriptionBean implements Serializable {
     private IContentClient contentClient;
 
     @Autowired
-    private ThreadClient threadClient;
+    private IThreadClient threadClient;
 
     private Long contestId;
     private Long contestLogoId;

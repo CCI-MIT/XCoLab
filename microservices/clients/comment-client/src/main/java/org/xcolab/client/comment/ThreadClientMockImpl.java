@@ -3,20 +3,16 @@ package org.xcolab.client.comment;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
-import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Component
 @Profile("test")
-public class ThreadClientMockImpl implements ThreadClient {
+public class ThreadClientMockImpl implements IThreadClient {
 
     @Override
     public List<IThread> listThreads(Integer startRecord, Integer limitRecord, String sort,

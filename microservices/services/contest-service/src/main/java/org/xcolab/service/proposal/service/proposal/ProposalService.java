@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ProposalTemplateClientUtil;
@@ -53,13 +53,13 @@ public class ProposalService {
 
     private final ProposalTeamMemberDao proposalTeamMemberDao;
 
-    private final ThreadClient threadClient;
+    private final IThreadClient threadClient;
 
     @Autowired
     public ProposalService(ProposalDao proposalDao, ProposalReferenceDao proposalReferenceDao,
             ProposalAttributeDao proposalAttributeDao, Proposal2PhaseDao proposal2PhaseDao,
             ProposalVersionDao proposalVersionDao, ProposalTeamMemberDao proposalTeamMemberDao,
-            ThreadClient threadClient) {
+            IThreadClient threadClient) {
         this.proposalDao = proposalDao;
         this.proposalReferenceDao = proposalReferenceDao;
         this.proposalAttributeDao = proposalAttributeDao;

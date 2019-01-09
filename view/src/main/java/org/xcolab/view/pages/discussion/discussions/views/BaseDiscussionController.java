@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.comment.CategoryClient;
+import org.xcolab.client.comment.ICategoryClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.pojo.ICategoryGroup;
 import org.xcolab.client.comment.pojo.tables.pojos.CategoryGroup;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 public abstract class BaseDiscussionController {
 
     @Autowired
-    private CategoryClient categoryClient;
+    private ICategoryClient categoryClient;
 
     protected ICategoryGroup getCategoryGroup(HttpServletRequest request) {
         DiscussionPreferences preferences = new DiscussionPreferences();

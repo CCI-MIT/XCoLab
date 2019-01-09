@@ -3,7 +3,7 @@ package org.xcolab.service.proposal.service.proposalattribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.model.tables.pojos.Proposal;
@@ -31,13 +31,13 @@ public class ProposalAttributeService {
 
     private final ProposalVersionDao proposalVersionDao;
 
-    private final ThreadClient threadClient;
+    private final IThreadClient threadClient;
 
     @Autowired
     public ProposalAttributeService(ProposalDao proposalDao,
             ProposalAttributeDao proposalAttributeDao,
             ProposalUnversionedAttributeDao proposalUnversionedAttributeDao,
-            ProposalVersionDao proposalVersionDao, ThreadClient threadClient) {
+            ProposalVersionDao proposalVersionDao, IThreadClient threadClient) {
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposalDao = proposalDao;
         this.proposalUnversionedAttributeDao = proposalUnversionedAttributeDao;

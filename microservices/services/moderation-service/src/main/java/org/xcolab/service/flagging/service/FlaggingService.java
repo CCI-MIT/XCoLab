@@ -3,7 +3,7 @@ package org.xcolab.service.flagging.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -26,11 +26,11 @@ public class FlaggingService {
 
     private final ReportDao reportDao;
     private final ReportTargetDao reportTargetDao;
-    private final CommentClient commentClient;
+    private final ICommentClient commentClient;
 
     @Autowired
     public FlaggingService(ReportDao reportDao, ReportTargetDao reportTargetDao,
-            CommentClient commentClient) {
+            ICommentClient commentClient) {
         this.reportDao = reportDao;
         this.reportTargetDao = reportTargetDao;
         this.commentClient = commentClient;

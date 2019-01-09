@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.comment.CategoryClient;
+import org.xcolab.client.comment.ICategoryClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.ICategory;
@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-public class CategoryController implements CategoryClient {
+public class CategoryController implements ICategoryClient {
 
     private final CategoryGroupDao groupDao;
     private final CategoryDao categoryDao;

@@ -16,7 +16,7 @@ import org.xcolab.client.comment.pojo.ICategoryGroup;
 import java.util.List;
 
 @FeignClient("xcolab-comment-service")
-public interface CategoryClient {
+public interface ICategoryClient {
 
     @GetMapping("/categories")
     List<ICategory> listCategories(

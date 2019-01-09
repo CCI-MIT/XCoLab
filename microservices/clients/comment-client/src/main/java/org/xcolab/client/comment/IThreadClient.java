@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @FeignClient("xcolab-comment-service")
-public interface ThreadClient {
+public interface IThreadClient {
 
     @GetMapping("/threads")
     List<IThread> listThreads(

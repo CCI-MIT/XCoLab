@@ -5,9 +5,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.comment.CategoryClient;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.ICategoryClient;
+import org.xcolab.client.comment.ICommentClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
 import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
@@ -29,13 +29,13 @@ public class StaticInjector implements ApplicationRunner {
     private IContentClient contentClient;
 
     @Autowired
-    private ThreadClient threadClient;
+    private IThreadClient threadClient;
 
     @Autowired
-    private CommentClient commentClient;
+    private ICommentClient commentClient;
 
     @Autowired
-    private CategoryClient categoryClient;
+    private ICategoryClient categoryClient;
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {

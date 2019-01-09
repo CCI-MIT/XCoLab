@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 @Profile("test")
-public class CommentClientMockImpl implements CommentClient {
+public class CommentClientMockImpl implements ICommentClient {
 
     @Override
     public List<IComment> listComments(HttpServletResponse response, Integer startRecord,

@@ -1,6 +1,5 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
-import com.netflix.discovery.converters.Auto;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.ICommentClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
@@ -56,10 +55,10 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     private static final String COMMENT_ANALYTICS_LABEL = "";
 
     @Autowired
-    private ThreadClient threadClient;
+    private IThreadClient threadClient;
 
     @Autowired
-    private CommentClient commentClient;
+    private ICommentClient commentClient;
 
     @PostMapping("/discussions/addDiscussionMessage")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,

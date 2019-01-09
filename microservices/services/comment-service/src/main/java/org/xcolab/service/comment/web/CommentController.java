@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
@@ -30,7 +30,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-public class CommentController implements CommentClient {
+public class CommentController implements ICommentClient {
 
     private final CommentDao commentDao;
     private final ThreadDao threadDao;

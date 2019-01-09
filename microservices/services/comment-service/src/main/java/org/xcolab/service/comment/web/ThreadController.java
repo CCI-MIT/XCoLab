@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.LastActivityNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-public class ThreadController implements ThreadClient {
+public class ThreadController implements IThreadClient {
 
     private final ThreadDao threadDao;
 

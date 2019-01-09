@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.ICommentClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
@@ -24,10 +24,10 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteDiscussionMessageActionController extends BaseDiscussionsActionController {
 
     @Autowired
-    private CommentClient commentClient;
+    private ICommentClient commentClient;
 
     @Autowired
-    private ThreadClient threadClient;
+    private IThreadClient threadClient;
 
     @PostMapping("/discussions/deleteDiscussionMessageFlag")
     public void deleteMessage(HttpServletRequest request, HttpServletResponse response,

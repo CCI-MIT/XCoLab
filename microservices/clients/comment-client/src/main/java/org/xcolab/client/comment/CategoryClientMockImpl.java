@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @Profile("test")
-public class CategoryClientMockImpl implements CategoryClient {
+public class CategoryClientMockImpl implements ICategoryClient {
 
     @Override
     public List<ICategory> listCategories(Integer startRecord, Integer limitRecord, String sort,

@@ -5,9 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.comment.CategoryClient;
-import org.xcolab.client.comment.ThreadClient;
-import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
+import org.xcolab.client.comment.ICategoryClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.ICategory;
 import org.xcolab.client.comment.pojo.ICategoryGroup;
@@ -25,15 +24,15 @@ public class ActivitySubscriptionNameGenerator {
     private static final Logger _log = LoggerFactory.getLogger(ActivitySubscriptionNameGenerator.class);
     private static final String HYPERLINK = "<a href=\"%s\">%s</a>";
 
-    private static ThreadClient threadClient;
+    private static IThreadClient threadClient;
 
-    public static void setThreadClient(ThreadClient threadClient) {
+    public static void setThreadClient(IThreadClient threadClient) {
         ActivitySubscriptionNameGenerator.threadClient = threadClient;
     }
 
-    private static CategoryClient categoryClient;
+    private static ICategoryClient categoryClient;
 
-    public static void setCategoryClient(CategoryClient categoryClient) {
+    public static void setCategoryClient(ICategoryClient categoryClient) {
         ActivitySubscriptionNameGenerator.categoryClient = categoryClient;
     }
 

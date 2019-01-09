@@ -9,8 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.ICommentClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -62,15 +62,15 @@ public class Contest extends AbstractContest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static ThreadClient threadClient;
+    private static IThreadClient threadClient;
 
-    public static void setThreadClient(ThreadClient threadClient) {
+    public static void setThreadClient(IThreadClient threadClient) {
         Contest.threadClient = threadClient;
     }
 
-    private static CommentClient commentClient;
+    private static ICommentClient commentClient;
 
-    public static void setCommentClient(CommentClient commentClient) {
+    public static void setCommentClient(ICommentClient commentClient) {
         Contest.commentClient = commentClient;
     }
 

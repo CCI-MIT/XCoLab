@@ -12,7 +12,7 @@ import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.emails.EmailClient;
@@ -51,9 +51,9 @@ public class ActivitySubscriptionEmailHelper {
     private static final Logger _log =
             LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
 
-    private static CommentClient commentClient;
+    private static ICommentClient commentClient;
 
-    public static void setCommentClient(CommentClient commentClient) {
+    public static void setCommentClient(ICommentClient commentClient) {
         ActivitySubscriptionEmailHelper.commentClient = commentClient;
     }
 

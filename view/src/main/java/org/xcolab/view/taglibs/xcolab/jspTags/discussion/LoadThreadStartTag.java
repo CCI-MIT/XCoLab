@@ -3,9 +3,8 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.comment.CategoryClient;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.ICategoryClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
@@ -16,8 +15,6 @@ import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.enums.flagging.TargetType;
-import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
-import org.xcolab.view.pages.search.items.DiscussionSearchItem;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 
 import java.util.List;
@@ -29,15 +26,15 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
     private static final Logger _log = LoggerFactory.getLogger(LoadThreadStartTag.class);
 
-    private static ThreadClient threadClient;
+    private static IThreadClient threadClient;
 
-    public static void setThreadClient(ThreadClient threadClient) {
+    public static void setThreadClient(IThreadClient threadClient) {
         LoadThreadStartTag.threadClient = threadClient;
     }
 
-    private static CategoryClient categoryClient;
+    private static ICategoryClient categoryClient;
 
-    public static void setCategoryClient(CategoryClient categoryClient) {
+    public static void setCategoryClient(ICategoryClient categoryClient) {
         LoadThreadStartTag.categoryClient = categoryClient;
     }
 

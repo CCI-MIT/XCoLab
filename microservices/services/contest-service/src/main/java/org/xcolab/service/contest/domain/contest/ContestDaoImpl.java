@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.records.ContestRecord;
@@ -50,12 +50,12 @@ import static org.xcolab.model.Tables.PROPOSAL_VOTE;
 public class ContestDaoImpl implements ContestDao {
 
     private final DSLContext dslContext;
-    private final ThreadClient threadClient;
+    private final IThreadClient threadClient;
 
     @Autowired
-    public ContestDaoImpl(DSLContext dslContext, ThreadClient threadClient) {
+    public ContestDaoImpl(DSLContext dslContext, IThreadClient threadClient) {
         Assert.notNull(dslContext, "DSLContext bean is required");
-        Assert.notNull(threadClient, "ThreadClient bean is required");
+        Assert.notNull(threadClient, "IThreadClient bean is required");
         this.dslContext = dslContext;
         this.threadClient = threadClient;
     }

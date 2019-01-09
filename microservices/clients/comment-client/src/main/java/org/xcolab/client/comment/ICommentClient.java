@@ -19,7 +19,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 @FeignClient("xcolab-comment-service")
-public interface CommentClient {
+public interface ICommentClient {
 
     @GetMapping("/comments")
     List<IComment> listComments(HttpServletResponse response,

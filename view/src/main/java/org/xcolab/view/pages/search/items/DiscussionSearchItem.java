@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.ICommentClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.IComment;
@@ -23,15 +23,15 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     private static final Logger _log = LoggerFactory.getLogger(DiscussionSearchItem.class);
 
-    private static CommentClient commentClient;
+    private static ICommentClient commentClient;
 
-    public static void setCommentClient(CommentClient commentClient) {
+    public static void setCommentClient(ICommentClient commentClient) {
         DiscussionSearchItem.commentClient = commentClient;
     }
 
-    private static ThreadClient threadClient;
+    private static IThreadClient threadClient;
 
-    public static void setThreadClient(ThreadClient threadClient) {
+    public static void setThreadClient(IThreadClient threadClient) {
         DiscussionSearchItem.threadClient = threadClient;
     }
 

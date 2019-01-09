@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.discussion.discussions.views;
 
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.comment.CategoryClient;
-import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.ICategoryClient;
+import org.xcolab.client.comment.ICommentClient;
+import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.ICategory;
@@ -39,13 +38,13 @@ import javax.servlet.http.HttpServletResponse;
 public class ThreadController extends BaseDiscussionController {
 
     @Autowired
-    private ThreadClient threadClient;
+    private IThreadClient threadClient;
 
     @Autowired
-    private CommentClient commentClient;
+    private ICommentClient commentClient;
 
     @Autowired
-    private CategoryClient categoryClient;
+    private ICategoryClient categoryClient;
 
     @GetMapping("/discussion/thread/{threadId}")
     public String showThread(HttpServletRequest request, HttpServletResponse response, Model model,
