@@ -24,13 +24,11 @@ public class XColabErrorDecoder implements ErrorDecoder {
         try {
             if (response.body() != null) {
                 ObjectMapper mapper = new ObjectMapper();
-                Reader reader = response.body().asReader();
                 String s = getStringFromInputStream(response.body().asInputStream());
-                s = s.replace( "\"{", "{");
-                s = s.replace( "}\"", "}");
-                s = s.replace("\\", "");
-                MessageBody body = mapper.readValue(s, MessageBody.class);
-                return body.toException();
+                if (s.contains("\"exception\":")) {
+                    MessageBody body = mapper.readValue(s, MessageBody.class);
+                    return body.toException();
+                }
             }
         } catch (Exception e) {
             _log.error("Error while decoding error message.", e);
@@ -40,56 +38,64 @@ public class XColabErrorDecoder implements ErrorDecoder {
     }
 
     private static String getStringFromInputStream(InputStream is) {
-        StringBuilder sb = new StringBuilder();
+        String s = "";
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+            StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
+            s = sb.toString();
+            s = s.replace("\"{", "{");
+            s = s.replace("}\"", "}");
+            s = s.replace("\\", "");
         } catch (IOException e) {
             _log.error("Error reading Response.body()", e);
         }
-        return sb.toString();
+        return s;
+    }
+
+    /*
+    This JSON object is contained by Response#body():
+
+    {
+        "timestamp":2018-12-28T17:01:11.856+0000,
+        "status":500,
+        "error":"Internal Server Error",
+        "message":"{
+            \"exception\":\"org.xcolab.client.tracking.exceptions
+            .BalloonUserTrackingNotFoundException\",
+            \"message\":\"BalloonUserTracking f5f33575-47ac-440e-8d1c-c3498065dd20 does not exist\"
+        },
+        "path":"/balloonUserTrackings/f5f33575-47ac-440e-8d1c-c3498065dd20"
+    }
+    */
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private static class Message {
+
+        private String exception;
+        private String message;
+
+        public String getException() {
+            return exception;
+        }
+
+        public void setException(String exception) {
+            this.exception = exception;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static class MessageBody {
-
-        /*
-        This JSON object is contained by Response#body():
-
-        {
-            "timestamp":2018-12-28T17:01:11.856+0000,
-            "status":500,
-            "error":"Internal Server Error",
-            "message":"{
-                \"exception\":\"org.xcolab.client.tracking.exceptions.BalloonUserTrackingNotFoundException\",
-                \"message\":\"BalloonUserTracking f5f33575-47ac-440e-8d1c-c3498065dd20 does not exist\"
-            },
-            "path":"/balloonUserTrackings/f5f33575-47ac-440e-8d1c-c3498065dd20"
-        }
-        */
-
-        private static class Message {
-            private String exception;
-            private String message;
-
-            public String getException() {
-                return exception;
-            }
-
-            public void setException(String exception) {
-                this.exception = exception;
-            }
-
-            public String getMessage() {
-                return message;
-            }
-
-            public void setMessage(String message) {
-                this.message = message;
-            }
-        }
 
         private Date timestamp;
         private int status;

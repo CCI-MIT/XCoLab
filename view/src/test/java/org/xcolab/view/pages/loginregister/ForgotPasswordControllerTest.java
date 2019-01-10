@@ -46,8 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.view.pages.redballoon")
 @ComponentScan("org.xcolab.view.config")
 @ComponentScan("org.xcolab.view.i18n")
-@ComponentScan("org.xcolab.client.tracking")
-@ComponentScan("org.xcolab.client.search")
+@ComponentScan("org.xcolab.client")
 
 @TestPropertySource(
         properties = {

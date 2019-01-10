@@ -29,6 +29,7 @@
         <!-- Spring versions -->
         <spring-boot.version>2.0.7.RELEASE</spring-boot.version>
         <spring-cloud.release-train>Finchley.SR2</spring-cloud.release-train>
+        <spring-cloud.feign>1.4.6.RELEASE</spring-cloud.feign>
 
         <!-- Database -->
         <jooq.version>3.9.2</jooq.version>
@@ -74,7 +75,7 @@
         <sentry.version>1.7.10</sentry.version>
 
         <!-- Code generation -->
-        <roaster.version>2.20.1.Final</roaster.version>
+        <roaster.version>2.20.4.Final</roaster.version>
     </properties>
 
 	<repositories>
