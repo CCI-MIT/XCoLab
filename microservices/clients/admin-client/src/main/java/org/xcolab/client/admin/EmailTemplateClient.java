@@ -1,34 +1,28 @@
 package org.xcolab.client.admin;
 
-import org.xcolab.client.admin.exceptions.EmailTemplateNotFoundException;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import org.xcolab.client.admin.pojo.IEmailTemplate;
-import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
-public final class EmailTemplateClient {
+@FeignClient("xcolab-admin-service")
+public interface EmailTemplateClient {
 
-    private final RestResource<IEmailTemplate, String> emailTemplatesResource = null; //EMAIL_TEMPLATE("emailTemplates")
+    @GetMapping("/emailTemplates")
+    List<IEmailTemplate> listEmailTemplates();
 
-    public  List<IEmailTemplate> listAllContestEmailTemplates() {
-        return emailTemplatesResource.list().execute();
-    }
+    @GetMapping("/emailTemplates/{emailTemplateType}")
+    IEmailTemplate getEmailTemplates(@PathVariable("emailTemplateType") String emailTemplateType);
 
-    public IEmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
-        try {
-            return emailTemplatesResource.get(emailTemplateType).executeChecked();
-        } catch (EntityNotFoundException e) {
-            throw new EmailTemplateNotFoundException(emailTemplateType);
-        }
-    }
+    @PutMapping("/emailTemplates")
+    boolean updateEmailTemplates(@RequestBody IEmailTemplate emailTemplate);
 
-    public  void updateContestEmailTemplate(IEmailTemplate contestEmailTemplate) {
-        emailTemplatesResource.update(contestEmailTemplate, contestEmailTemplate.getName())
-                .execute();
-    }
-
-    public IEmailTemplate createEmailTemplate(IEmailTemplate template) {
-        return emailTemplatesResource.create(template).execute();
-    }
+    @PostMapping("/emailTemplates")
+    IEmailTemplate createEmailTemplates(@RequestBody IEmailTemplate emailTemplate);
 }

@@ -1,7 +1,12 @@
 package org.xcolab.client.admin.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.xcolab.client.admin.pojo.tables.pojos.Notification;
+
 import java.util.Date;
 
+@JsonDeserialize(as = Notification.class)
 public interface INotification {
 
     Date getBeginTime();

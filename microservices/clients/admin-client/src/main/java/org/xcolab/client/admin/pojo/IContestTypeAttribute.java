@@ -1,7 +1,11 @@
 package org.xcolab.client.admin.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.xcolab.commons.attributes.Attribute;
 
+import org.xcolab.client.admin.pojo.tables.pojos.ContestTypeAttribute;
+@JsonDeserialize(as = ContestTypeAttribute.class)
 public interface IContestTypeAttribute extends Attribute {
 
     String getName();

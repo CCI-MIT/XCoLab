@@ -1,7 +1,11 @@
 package org.xcolab.client.admin.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.xcolab.client.admin.pojo.tables.pojos.ConfigurationAttribute;
 import org.xcolab.commons.attributes.Attribute;
 
+@JsonDeserialize(as = ConfigurationAttribute.class)
 public interface IConfigurationAttribute extends Attribute {
 
     //TODO: default value was:
@@ -9,7 +13,6 @@ public interface IConfigurationAttribute extends Attribute {
     //        setAdditionalId(0L);
     //        setLocale("");
     //    }
-
 
     String getName();
 
