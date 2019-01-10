@@ -26,7 +26,7 @@ public class EmailService {
         this.env = env;
     }
 
-    public void sendEmailToRecipient(org.xcolab.service.emails.pojo.Email emailPojo) {
+    public void sendEmailToRecipient(org.xcolab.client.email.pojo.Email emailPojo) {
         final Email email = new Email();
 
         try {

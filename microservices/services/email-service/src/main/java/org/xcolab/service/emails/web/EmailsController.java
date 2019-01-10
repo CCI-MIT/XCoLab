@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.email.IEmailClient;
+import org.xcolab.client.email.pojo.Email;
 import org.xcolab.model.tables.pojos.OutgoingEmail;
 import org.xcolab.service.emails.domain.OutgoingEmailDao;
-import org.xcolab.service.emails.pojo.Email;
 import org.xcolab.service.emails.util.EmailService;
 
 import java.sql.Timestamp;
@@ -16,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-public class EmailsController {
+public class EmailsController implements IEmailClient {
 
     private final EmailService emailService;
 
@@ -29,7 +30,7 @@ public class EmailsController {
     }
 
     @PostMapping("/emails/send")
-    public String sendEmail(@RequestBody Email email) {
+    public void sendEmail(@RequestBody Email email) {
 
         boolean shouldSendEmail = true;
         if (email.getTo().size() == 1) {
@@ -43,7 +44,7 @@ public class EmailsController {
         if (shouldSendEmail) {
             emailService.sendEmailToRecipient(email);
         }
-        return "Email sent successfully";
+
     }
     private void createColabEmailFromEmail(Email email, boolean sentStatus){
         for(String recipient: email.getTo()) {

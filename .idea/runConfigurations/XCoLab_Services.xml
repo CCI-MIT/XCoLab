@@ -3,7 +3,6 @@
     <toRun type="SpringBootApplicationConfigurationType" name="ActivitiesServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="AdminServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="CommentServiceApplication" />
-    <toRun type="SpringBootApplicationConfigurationType" name="ContentsServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="ContestServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="EmailServiceApplication" />
     <toRun type="SpringBootApplicationConfigurationType" name="FlaggingServiceApplication" />

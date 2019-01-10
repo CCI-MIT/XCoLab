@@ -1,8 +1,13 @@
-package org.xcolab.service.emails.pojo;
+package org.xcolab.client.email.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Email {
+
+public class Email  implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String from;
     private String fromName;
 
@@ -94,4 +99,3 @@ public class Email {
         this.replyToName = replyToName;
     }
 }
-

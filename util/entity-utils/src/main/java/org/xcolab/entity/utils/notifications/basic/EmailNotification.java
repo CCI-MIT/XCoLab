@@ -10,19 +10,19 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.admin.pojo.EmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.email.EmailUtils;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.commons.exceptions.InternalException;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
-import org.xcolab.commons.exceptions.InternalException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -70,6 +70,7 @@ public abstract class EmailNotification {
     protected String baseUrl;
 
     protected Logger _log;
+
 
     public EmailNotification() {
         this.baseUrl = PlatformAttributeKey.COLAB_URL.get();
@@ -238,9 +239,11 @@ public abstract class EmailNotification {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
-            EmailClient.sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
+
+              EmailUtils.getEmailClient().sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
                     toEmail.getAddress(), subject,body, true, fromEmail.getAddress(),
                     ConfigurationAttributeKey.COLAB_NAME.get(),getReferenceId());
+
 
         } catch (UnsupportedEncodingException e) {
             throw new InternalException(e);

@@ -10,8 +10,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>emails-service</artifactId>
-    <name>emails-service</name>
+    <artifactId>email-service</artifactId>
+    <name>email-service</name>
     <description>The emails service for XColab platform</description>
     <packaging>jar</packaging>
 
@@ -19,6 +19,11 @@
         <dependency>
             <groupId>org.codemonkey.simplejavamail</groupId>
             <artifactId>simple-java-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>email-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

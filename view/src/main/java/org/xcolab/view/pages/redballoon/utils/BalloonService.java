@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.email.IEmailClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.IBalloonClient;
 import org.xcolab.client.tracking.ITrackingClient;
@@ -52,13 +52,15 @@ public class BalloonService {
     private final AuthenticationService authenticationService;
     private final ITrackingClient trackingClient;
     private final IBalloonClient balloonClient;
+    private final IEmailClient emailClient;
 
     @Autowired
     public BalloonService(AuthenticationService authenticationService,
-            ITrackingClient trackingClient, IBalloonClient balloonClient) {
+            ITrackingClient trackingClient, IBalloonClient balloonClient, IEmailClient emailClient) {
         this.authenticationService = authenticationService;
         this.trackingClient = trackingClient;
         this.balloonClient = balloonClient;
+        this.emailClient = emailClient;
     }
 
     public IBalloonLink createBalloonLink(String email, IBalloonUserTracking but)
@@ -76,7 +78,7 @@ public class BalloonService {
                 .replaceAll(URL_PLACEHOLDER, LinkUtils.getAbsoluteUrl(link.getTargetUrl()));
         final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         final String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
-        EmailClient.sendEmail(fromEmail, fromName, email, messageSubject, messageBody, true,
+        emailClient.sendEmail(fromEmail, fromName, email, messageSubject, messageBody, true,
                 fromEmail, fromName, but.getBalloonTextId());
 
         return link;

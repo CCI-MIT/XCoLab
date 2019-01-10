@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
+import org.xcolab.client.email.EmailUtils;
+import org.xcolab.client.email.IEmailClient;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.tags.LoadContentArticleTag;
 
@@ -19,9 +21,14 @@ public class StaticInjector implements ApplicationRunner {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private IEmailClient emailClient;
+
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
+        EmailUtils.setEmailClient(emailClient);
+
     }
 }
