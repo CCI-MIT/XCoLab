@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public interface ICommentClient {
 
     @GetMapping("/comments")
-    List<IComment> listComments(HttpServletResponse response,
+    List<IComment> listComments(
             @RequestParam(value = "startRecord", required = false) Integer startRecord,
             @RequestParam(value = "limitRecord", required = false) Integer limitRecord,
             @RequestParam(value = "sort", required = false) String sort,
@@ -32,7 +32,7 @@ public interface ICommentClient {
                     boolean includeDeleted);
 
     default List<IComment> listComments(Integer startRecord, Integer limitRecord, Long threadId) {
-        return listComments(null, startRecord, limitRecord, "createdAt", null,
+        return listComments(startRecord, limitRecord, "createdAt", null,
                 Collections.singletonList(threadId), false);
     }
 
@@ -55,7 +55,7 @@ public interface ICommentClient {
     }
 
     default int countComments(Long authorUserId, List<Long> threadIds) {
-        return listComments(null, null, null, null, authorUserId, threadIds, false).size();
+        return listComments(null, null, null, authorUserId, threadIds, false).size();
     }
 
     default IComment getComment(long commentId) throws CommentNotFoundException {
@@ -63,7 +63,7 @@ public interface ICommentClient {
     }
 
     @GetMapping("/comments/{commentId}")
-    IComment getComment(@PathVariable Long commentId,
+    IComment getComment(@PathVariable("commentId") Long commentId,
             @RequestParam(value = "includeDeleted", required = false, defaultValue = "false")
                     boolean includeDeleted)
             throws CommentNotFoundException;

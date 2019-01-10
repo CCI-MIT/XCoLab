@@ -12,10 +12,10 @@ import org.springframework.util.Assert;
 
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.comment.pojo.IThread;
+import org.xcolab.client.comment.pojo.tables.pojos.Comment;
+import org.xcolab.client.comment.pojo.tables.pojos.Thread;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.CommentTable;
-import org.xcolab.model.tables.pojos.CommentImpl;
-import org.xcolab.model.tables.pojos.ThreadImpl;
 import org.xcolab.model.tables.records.ThreadRecord;
 import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -104,7 +104,7 @@ public class ThreadDaoImpl implements ThreadDao {
         }
         query.addConditions(THREAD.DELETED_AT.isNull());
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(ThreadImpl.class);
+        return query.fetchInto(Thread.class);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class ThreadDaoImpl implements ThreadDao {
         if (commentRecord == null) {
             throw new NotFoundException("Comment with id " + id + " does not exist");
         }
-        return commentRecord.into(ThreadImpl.class);
+        return commentRecord.into(Thread.class);
     }
 
     @Override
@@ -169,7 +169,7 @@ public class ThreadDaoImpl implements ThreadDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(CommentImpl.class));
+        return Optional.of(record.into(Comment.class));
     }
 
     @Override

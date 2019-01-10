@@ -3,7 +3,7 @@ package org.xcolab.client.comment.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.comment.StaticInjectorComment;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.pojo.tables.pojos.CategoryGroup;
 import org.xcolab.client.comment.util.ThreadSortColumn;
 
@@ -30,13 +30,13 @@ public interface ICategoryGroup {
 
     @JsonIgnore
     default List<IThread> getThreads(ThreadSortColumn sortColumn, boolean ascending) {
-        return StaticInjectorComment.getThreadClient().listThreads(0, Integer.MAX_VALUE,
+        return StaticCommentContext.getThreadClient().listThreads(0, Integer.MAX_VALUE,
                 null, getId(), sortColumn, ascending);
     }
 
     @JsonIgnore
     default List<ICategory> getCategories() {
-        return StaticInjectorComment.getCategoryClient()
+        return StaticCommentContext.getCategoryClient()
                 .listCategories(0, Integer.MAX_VALUE, getId());
     }
 

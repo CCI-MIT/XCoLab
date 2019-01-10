@@ -18,7 +18,6 @@ import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.service.comment.domain.comment.CommentDao;
 import org.xcolab.service.comment.domain.thread.ThreadDao;
 import org.xcolab.service.comment.exceptions.NotFoundException;
-import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.http.exceptions.RuntimeEntityNotFoundException;
 
@@ -26,8 +25,6 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class CommentController implements ICommentClient {
@@ -46,7 +43,7 @@ public class CommentController implements ICommentClient {
     //TODO COLAB-2594: move /comments endpoint to "/threads/{threadId}/comments"
     @Override
     @GetMapping("/comments")
-    public List<IComment> listComments(HttpServletResponse response,
+    public List<IComment> listComments(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
@@ -55,10 +52,11 @@ public class CommentController implements ICommentClient {
             @RequestParam(required = false, defaultValue = "false") boolean includeDeleted) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
-        if (response != null) {
-            response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                    Integer.toString(commentDao.countByGiven(authorUserId, threadIds)));
-        }
+        //TODO: what to do with this:?
+        //        if (response != null) {
+        //            response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
+        //                    Integer.toString(commentDao.countByGiven(authorUserId, threadIds)));
+        //        }
 
         return commentDao.findByGiven(paginationHelper, authorUserId, threadIds, includeDeleted);
     }

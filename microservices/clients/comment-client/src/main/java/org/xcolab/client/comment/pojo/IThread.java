@@ -3,7 +3,7 @@ package org.xcolab.client.comment.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.comment.StaticInjectorComment;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.comment.pojo.tables.pojos.Thread;
@@ -48,17 +48,17 @@ public interface IThread {
     void setIsQuiet(Boolean isQuiet);
 
     default int getCommentsCount() {
-        return StaticInjectorComment.getCommentClient().countComments(getId());
+        return StaticCommentContext.getCommentClient().countComments(getId());
     }
 
     @JsonIgnore
     default List<IComment> getComments() {
-        return StaticInjectorComment.getCommentClient().listComments(0, Integer.MAX_VALUE, getId());
+        return StaticCommentContext.getCommentClient().listComments(0, Integer.MAX_VALUE, getId());
     }
 
     @JsonIgnore
     default long getLastActivityAuthorUserId() {
-        return StaticInjectorComment.getThreadClient().getLastActivityAuthorUserId(getId());
+        return StaticCommentContext.getThreadClient().getLastActivityAuthorUserId(getId());
     }
 
     @JsonIgnore
@@ -72,7 +72,7 @@ public interface IThread {
 
     @JsonIgnore
     default Date getLastActivityDate() {
-        return StaticInjectorComment.getThreadClient().getLastActivityDate(getId());
+        return StaticCommentContext.getThreadClient().getLastActivityDate(getId());
     }
 
     @JsonIgnore
@@ -94,7 +94,7 @@ public interface IThread {
         final Long categoryId = getCategoryId();
         if (categoryId != null && categoryId > 0) {
             try {
-                return StaticInjectorComment.getCategoryClient().getCategory(categoryId);
+                return StaticCommentContext.getCategoryClient().getCategory(categoryId);
             } catch (CategoryNotFoundException ignored) {
                 //throw new KeyReferenceException(e);
             }

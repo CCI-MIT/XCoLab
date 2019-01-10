@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.commons.SortColumn;
-import org.xcolab.model.tables.pojos.CommentImpl;
+import org.xcolab.client.comment.pojo.tables.pojos.Comment;
 import org.xcolab.model.tables.records.CommentRecord;
 import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -71,7 +71,7 @@ public class CommentDaoImpl implements CommentDao {
             query.addConditions(COMMENT.DELETED_AT.isNull());
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(CommentImpl.class);
+        return query.fetchInto(Comment.class);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class CommentDaoImpl implements CommentDao {
         if (commentRecord == null) {
             throw new NotFoundException("Comment with id " + commentId + " does not exist");
         }
-        return commentRecord.into(CommentImpl.class);
+        return commentRecord.into(Comment.class);
     }
 
     @Override

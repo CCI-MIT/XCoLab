@@ -22,7 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.client.comment.StaticInjectorComment;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
@@ -72,8 +72,7 @@ public class CommentControllerTest {
 
     @Before
     public void before() {
-        //TODO: is there a better (spring) way to inject the controllers?
-        new StaticInjectorComment(categoryController, commentController, threadController);
+        StaticCommentContext.setClients(commentController, categoryController, threadController);
         this.mockMvc = MockMvcBuilders
                 .standaloneSetup(commentController, categoryController, threadController)
                 .build();

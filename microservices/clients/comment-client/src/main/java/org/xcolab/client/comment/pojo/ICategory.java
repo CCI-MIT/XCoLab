@@ -1,9 +1,9 @@
 package org.xcolab.client.comment.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.xcolab.client.comment.StaticInjectorComment;
+import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.KeyReferenceException;
 import org.xcolab.client.comment.pojo.tables.pojos.Category;
@@ -53,7 +53,7 @@ public interface ICategory {
 
     @JsonIgnore
     default List<IThread> getThreads(ThreadSortColumn sortColumn, boolean ascending) {
-        return StaticInjectorComment.getThreadClient().listThreads(0, Integer.MAX_VALUE,
+        return StaticCommentContext.getThreadClient().listThreads(0, Integer.MAX_VALUE,
                 getId(), null, sortColumn, ascending);
     }
 
@@ -62,7 +62,7 @@ public interface ICategory {
         final Long groupId = getGroupId();
         if (groupId != null && groupId > 0) {
             try {
-                return StaticInjectorComment.getCategoryClient().getCategoryGroup(groupId);
+                return StaticCommentContext.getCategoryClient().getCategoryGroup(groupId);
             } catch (CategoryGroupNotFoundException e) {
                 throw new KeyReferenceException(e);
             }

@@ -9,16 +9,13 @@ import org.xcolab.client.comment.pojo.IComment;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Component
 @Profile("test")
 public class CommentClientMockImpl implements ICommentClient {
 
     @Override
-    public List<IComment> listComments(HttpServletResponse response, Integer startRecord,
-            Integer limitRecord, String sort, Long authorUserId, List<Long> threadIds,
-            boolean includeDeleted) {
+    public List<IComment> listComments(Integer startRecord, Integer limitRecord, String sort,
+            Long authorUserId, List<Long> threadIds, boolean includeDeleted) {
         return Collections.emptyList();
     }
 

@@ -6,11 +6,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.StaticContestProposalContext;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.comment.ICommentClient;
-import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.pojo.IThread;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -61,18 +60,6 @@ import java.util.TreeMap;
 public class Contest extends AbstractContest implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private static IThreadClient threadClient;
-
-    public static void setThreadClient(IThreadClient threadClient) {
-        Contest.threadClient = threadClient;
-    }
-
-    private static ICommentClient commentClient;
-
-    public static void setCommentClient(ICommentClient commentClient) {
-        Contest.commentClient = commentClient;
-    }
 
     private final ContestClient contestClient;
     private final ContestTeamMemberClient contestTeamMemberClient;
@@ -262,7 +249,8 @@ public class Contest extends AbstractContest implements Serializable {
 
     @JsonIgnore
     public long getCommentsCount() {
-        return commentClient.countComments(this.getDiscussionGroupId());
+        return StaticContestProposalContext.getCommentClient()
+                .countComments(this.getDiscussionGroupId());
     }
 
     @JsonIgnore
@@ -443,11 +431,13 @@ public class Contest extends AbstractContest implements Serializable {
 
     @JsonIgnore
     public long getTotalCommentsCount() {
-        int contestComments = commentClient.countComments(this.getDiscussionGroupId());
+        int contestComments = StaticContestProposalContext.getCommentClient()
+                .countComments(this.getDiscussionGroupId());
         ContestPhase phase = contestClient.getActivePhase(this.getId());
         final List<Long> proposalDiscussionThreads =
                 contestClient.getProposalDiscussionThreads(phase.getId());
-        contestComments += commentClient.countComments(proposalDiscussionThreads);
+        contestComments += StaticContestProposalContext.getCommentClient()
+                .countComments(proposalDiscussionThreads);
 
         return contestComments;
     }
@@ -607,7 +597,7 @@ public class Contest extends AbstractContest implements Serializable {
             thread.setAuthorUserId(getAuthorUserId());
             thread.setTitle(contestType.getContestName() + " discussion");
             thread.setIsQuiet(false);
-            thread = Contest.threadClient.createThread(thread);
+            thread = StaticContestProposalContext.getThreadClient().createThread(thread);
             discussionGroupId = thread.getId();
             setDiscussionGroupId(discussionGroupId);
         }

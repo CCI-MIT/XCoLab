@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.comment.pojo.ICategory;
+import org.xcolab.client.comment.pojo.tables.pojos.Category;
 import org.xcolab.commons.SortColumn;
-import org.xcolab.model.tables.pojos.CategoryImpl;
 import org.xcolab.model.tables.records.CategoryRecord;
 import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -47,7 +47,7 @@ public class CategoryDaoImpl implements CategoryDao {
         }
         query.addConditions(CATEGORY.DELETED_AT.isNull());
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(CategoryImpl.class);
+        return query.fetchInto(Category.class);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CategoryDaoImpl implements CategoryDao {
         if (categoryRecord == null) {
             throw new NotFoundException("Category with id " + categoryId + " does not exist");
         }
-        return categoryRecord.into(CategoryImpl.class);
+        return categoryRecord.into(Category.class);
     }
 
     @Override

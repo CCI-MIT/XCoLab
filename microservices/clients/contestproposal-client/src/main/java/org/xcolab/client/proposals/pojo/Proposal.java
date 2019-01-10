@@ -8,6 +8,7 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.StaticContestProposalContext;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -83,18 +84,6 @@ public class Proposal extends AbstractProposal implements Serializable {
 
     private static final Long LONG_DEFAULT_VAL = -1L;
     private static final String STRING_DEFAULT_VAL = "";
-
-    private static IThreadClient threadClient;
-
-    public static void setThreadClient(IThreadClient threadClient) {
-        Proposal.threadClient = threadClient;
-    }
-
-    private static ICommentClient commentClient;
-
-    public static void setCommentClient(ICommentClient commentClient) {
-        Proposal.commentClient = commentClient;
-    }
 
     private final Clients clients;
 
@@ -331,7 +320,8 @@ public class Proposal extends AbstractProposal implements Serializable {
     @JsonIgnore
     public long getCommentsCount() {
         if (this.getId() > 0) {
-            return commentClient.countComments(this.getDiscussionId());
+            return StaticContestProposalContext.getCommentClient()
+                    .countComments(this.getDiscussionId());
         }
         return 0;
     }
@@ -348,7 +338,7 @@ public class Proposal extends AbstractProposal implements Serializable {
         thread.setAuthorUserId(getAuthorUserId());
         thread.setTitle(contestType.getProposalName() + getName() + threadTitleSuffix);
         thread.setIsQuiet(isQuiet);
-        return Proposal.threadClient.createThread(thread).getId();
+        return StaticContestProposalContext.getThreadClient().createThread(thread).getId();
     }
 
     @JsonIgnore

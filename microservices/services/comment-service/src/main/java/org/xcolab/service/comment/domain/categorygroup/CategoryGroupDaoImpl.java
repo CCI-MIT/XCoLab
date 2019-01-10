@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.client.comment.pojo.ICategoryGroup;
-import org.xcolab.model.tables.pojos.CategoryGroupImpl;
+import org.xcolab.client.comment.pojo.tables.pojos.CategoryGroup;
 import org.xcolab.model.tables.records.CategoryGroupRecord;
 import org.xcolab.service.comment.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -28,7 +28,7 @@ public class CategoryGroupDaoImpl implements CategoryGroupDao {
                 .from(CATEGORY_GROUP)
                 .getQuery();
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
-        return query.fetchInto(CategoryGroupImpl.class);
+        return query.fetchInto(CategoryGroup.class);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class CategoryGroupDaoImpl implements CategoryGroupDao {
         if (groupRecord == null) {
             throw new NotFoundException("CategoryGroup with id " + groupId + " does not exist");
         }
-        return groupRecord.into(CategoryGroupImpl.class);
+        return groupRecord.into(CategoryGroup.class);
     }
 
     @Override
