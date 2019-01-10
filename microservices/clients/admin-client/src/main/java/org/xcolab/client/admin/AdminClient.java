@@ -1,36 +1,33 @@
 package org.xcolab.client.admin;
 
 import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
-import org.xcolab.client.admin.pojo.Notification;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
+import org.xcolab.client.admin.pojo.INotification;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public class AdminClient {
 
-    private static final RestResource<ConfigurationAttribute, String>
-            configurationAttributeResource = new RestResource1<>(
-                    AdminResource.CONFIGURATION_ATTRIBUTE, ConfigurationAttribute.TYPES);
+    private static final RestResource<IConfigurationAttribute, String>
+            configurationAttributeResource = null; //CONFIGURATION_ATTRIBUTE("attributes")
 
-    private static final RestResource<Notification, String> notificationResource =
-            new RestResource1<> (AdminResource.NOTIFICATIONS, Notification.TYPES);
+    private static final RestResource<INotification, String> notificationResource = null; //NOTIFICATIONS("notifications")
 
-    public static List<Notification> getNotifications() {
+    public static List<INotification> getNotifications() {
         return notificationResource.list().execute();
     }
 
-    public static Notification getFirstNotification() {
+    public static INotification getFirstNotification() {
         return notificationResource.list()
                 .executeWithResult()
                 .getFirstIfExists();
     }
 
-    public static void setNotifications(Notification notification) {
+    public static void setNotifications(INotification notification) {
         notificationResource.create(notification)
                 .execute();
     }
@@ -40,8 +37,7 @@ public class AdminClient {
                 .execute();
     }
 
-    public static ConfigurationAttribute getConfigurationAttribute(String name, String locale) {
-
+    public static IConfigurationAttribute getConfigurationAttribute(String name, String locale) {
         try {
             return configurationAttributeResource.get(name)
                     .optionalQueryParam("locale", locale)
@@ -52,13 +48,13 @@ public class AdminClient {
         }
     }
 
-    public static ConfigurationAttribute createConfigurationAttribute(
-            ConfigurationAttribute configurationAttribute) {
+    public static IConfigurationAttribute createConfigurationAttribute(
+            IConfigurationAttribute configurationAttribute) {
         return configurationAttributeResource.create(configurationAttribute).execute();
     }
 
     public static boolean updateConfigurationAttribute(
-            ConfigurationAttribute configurationAttribute) {
+            IConfigurationAttribute configurationAttribute) {
         final Boolean result = configurationAttributeResource
                 .update(configurationAttribute, configurationAttribute.getName())
                 .cacheName(CacheName.CONFIGURATION).execute();

@@ -3,11 +3,11 @@ package org.xcolab.client.admin.attributes.configuration;
 import org.springframework.util.Assert;
 
 import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.commons.attributes.i18n.LocalizableAttributeProvider;
 
 class ConfigurationAttributeProvider
-        implements LocalizableAttributeProvider<ConfigurationAttribute> {
+        implements LocalizableAttributeProvider<IConfigurationAttribute> {
 
     private final String name;
 
@@ -22,22 +22,22 @@ class ConfigurationAttributeProvider
     }
 
     @Override
-    public ConfigurationAttribute get() {
+    public IConfigurationAttribute get() {
         return AdminClient.getConfigurationAttribute(name, null);
     }
 
     @Override
-    public ConfigurationAttribute get(long additionalId) {
+    public IConfigurationAttribute get(long additionalId) {
         throw new UnsupportedOperationException("Configuration Attributes don't support additional ids");
     }
 
     @Override
-    public ConfigurationAttribute get(String locale) {
+    public IConfigurationAttribute get(String locale) {
         return AdminClient.getConfigurationAttribute(name, locale);
     }
 
     @Override
-    public ConfigurationAttribute get(String locale, long additionalId) {
+    public IConfigurationAttribute get(String locale, long additionalId) {
         throw new UnsupportedOperationException("Configuration Attributes don't support additional ids");
     }
 

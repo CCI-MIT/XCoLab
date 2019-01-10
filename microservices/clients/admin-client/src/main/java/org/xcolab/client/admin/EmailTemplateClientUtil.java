@@ -1,6 +1,6 @@
 package org.xcolab.client.admin;
 
-import org.xcolab.client.admin.pojo.EmailTemplate;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 
 import java.util.List;
 
@@ -8,19 +8,19 @@ public class EmailTemplateClientUtil {
 
     private static final EmailTemplateClient emailTemplateClient = new EmailTemplateClient();
 
-    public static List<EmailTemplate> listAllContestEmailTemplates() {
+    public static List<IEmailTemplate> listAllContestEmailTemplates() {
         return emailTemplateClient.listAllContestEmailTemplates();
     }
 
-    public static EmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
+    public static IEmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
         return emailTemplateClient.getContestEmailTemplateByType(emailTemplateType);
     }
 
-    public static void updateContestEmailTemplate(EmailTemplate contestEmailTemplate) {
+    public static void updateContestEmailTemplate(IEmailTemplate contestEmailTemplate) {
         emailTemplateClient.updateContestEmailTemplate(contestEmailTemplate);
     }
 
-    public static EmailTemplate createEmailTemplate(EmailTemplate template) {
+    public static IEmailTemplate createEmailTemplate(IEmailTemplate template) {
         return emailTemplateClient.createEmailTemplate(template);
 
     }

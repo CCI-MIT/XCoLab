@@ -1,16 +1,16 @@
 package org.xcolab.service.admin.domain.emailtemplate;
 
-import org.xcolab.model.tables.pojos.EmailTemplate;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 
 import java.util.List;
 
 public interface EmailTemplateDao {
 
-    List<EmailTemplate> listAllEmailTemplates();
+    List<IEmailTemplate> listAllEmailTemplates();
 
-    EmailTemplate getEmailTemplate(String emailTemplateId);
+    IEmailTemplate getEmailTemplate(String emailTemplateId);
 
-    boolean updateEmailTemplate(EmailTemplate contestEmailTemplate);
+    boolean updateEmailTemplate(IEmailTemplate contestEmailTemplate);
 
-    void createEmailTemplate(EmailTemplate contestEmailTemplate);
+    void createEmailTemplate(IEmailTemplate contestEmailTemplate);
 }

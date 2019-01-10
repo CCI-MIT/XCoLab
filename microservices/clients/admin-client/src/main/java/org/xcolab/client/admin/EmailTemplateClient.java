@@ -1,27 +1,21 @@
 package org.xcolab.client.admin;
 
 import org.xcolab.client.admin.exceptions.EmailTemplateNotFoundException;
-import org.xcolab.client.admin.pojo.EmailTemplate;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
 import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
 public final class EmailTemplateClient {
 
-    private final RestResource<EmailTemplate, String> emailTemplatesResource;
+    private final RestResource<IEmailTemplate, String> emailTemplatesResource = null; //EMAIL_TEMPLATE("emailTemplates")
 
-    public EmailTemplateClient() {
-        emailTemplatesResource = new RestResource1<>(
-                AdminResource.EMAIL_TEMPLATE, EmailTemplate.TYPES);
-    }
-
-    public  List<EmailTemplate> listAllContestEmailTemplates() {
+    public  List<IEmailTemplate> listAllContestEmailTemplates() {
         return emailTemplatesResource.list().execute();
     }
 
-    public EmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
+    public IEmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
         try {
             return emailTemplatesResource.get(emailTemplateType).executeChecked();
         } catch (EntityNotFoundException e) {
@@ -29,12 +23,12 @@ public final class EmailTemplateClient {
         }
     }
 
-    public  void updateContestEmailTemplate(EmailTemplate contestEmailTemplate) {
+    public  void updateContestEmailTemplate(IEmailTemplate contestEmailTemplate) {
         emailTemplatesResource.update(contestEmailTemplate, contestEmailTemplate.getName())
                 .execute();
     }
 
-    public EmailTemplate createEmailTemplate(EmailTemplate template) {
+    public IEmailTemplate createEmailTemplate(IEmailTemplate template) {
         return emailTemplatesResource.create(template).execute();
     }
 }

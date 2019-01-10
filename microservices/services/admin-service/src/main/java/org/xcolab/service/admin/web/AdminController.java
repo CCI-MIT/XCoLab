@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.ConfigurationAttribute;
-import org.xcolab.model.tables.pojos.ContestTypeAttribute;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
+import org.xcolab.client.admin.pojo.IContestTypeAttribute;
+import org.xcolab.client.admin.pojo.INotification;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
 import org.xcolab.service.admin.domain.contesttypeattribute.ContestTypeAttributeDao;
 import org.xcolab.service.admin.exceptions.NotFoundException;
-import org.xcolab.service.admin.pojo.Notification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class AdminController {
     private final ContestTypeAttributeDao contestTypeAttributeDao;
 
     //TODO COLAB-2046: this should be in the database
-    private final ArrayList<Notification> notificationsList = new ArrayList<>();
+    private final ArrayList<INotification> notificationsList = new ArrayList<>();
 
     //TODO COLAB-2046: moved from the view, remove when moving list to database
     private long notificationCounter;
@@ -46,13 +46,13 @@ public class AdminController {
     }
 
     @GetMapping("/notifications")
-    public ArrayList<Notification> getNotifications() {
-        notificationsList.removeIf(Notification::isExpired);
+    public ArrayList<INotification> getNotifications() {
+        notificationsList.removeIf(INotification::isExpired);
         return notificationsList;
     }
 
     @PostMapping("/notifications")
-    public void createNotification(@RequestBody Notification message) {
+    public void createNotification(@RequestBody INotification message) {
         if (message.getEndTime().before(message.getBeginTime())) {
             throw new IllegalArgumentException("Begin time cannot be after end time.");
         } else {
@@ -62,7 +62,7 @@ public class AdminController {
     }
 
     @GetMapping("/attributes/{attributeName}")
-    public ConfigurationAttribute getConfigurationAttribute(@PathVariable String attributeName,
+    public IConfigurationAttribute getConfigurationAttribute(@PathVariable String attributeName,
             @RequestParam(required = false) String locale)
             throws NotFoundException {
         return configurationAttributeDao.getConfigurationAttribute(attributeName, locale)
@@ -70,16 +70,16 @@ public class AdminController {
     }
 
     @PostMapping("/attributes")
-    public ConfigurationAttribute createConfigurationAttribute(
-            @RequestBody ConfigurationAttribute pojo) {
+    public IConfigurationAttribute createConfigurationAttribute(
+            @RequestBody IConfigurationAttribute pojo) {
         return configurationAttributeDao.create(pojo);
     }
 
     @PutMapping("/attributes/{attributeName}")
-    public boolean updateConfigurationAttribute(@RequestBody ConfigurationAttribute pojo,
+    public boolean updateConfigurationAttribute(@RequestBody IConfigurationAttribute pojo,
             @PathVariable String attributeName)
             throws NotFoundException {
-        Optional<ConfigurationAttribute> configurationAttribute =
+        Optional<IConfigurationAttribute> configurationAttribute =
                 configurationAttributeDao.getConfigurationAttribute(attributeName, null);
         if (!configurationAttribute.isPresent()) {
             configurationAttributeDao.create(pojo);
@@ -88,12 +88,12 @@ public class AdminController {
     }
 
     @GetMapping("/contestTypeAttributes")
-    public List<ContestTypeAttribute> listContestTypeAttributes() {
+    public List<IContestTypeAttribute> listContestTypeAttributes() {
         return contestTypeAttributeDao.list();
     }
 
     @GetMapping("/contestTypeAttributes/{attributeName}")
-    public ContestTypeAttribute getContestTypeAttribute(@PathVariable String attributeName,
+    public IContestTypeAttribute getContestTypeAttribute(@PathVariable String attributeName,
             @RequestParam long additionalId,
             @RequestParam(required = false) String locale)
             throws NotFoundException {
@@ -102,16 +102,15 @@ public class AdminController {
     }
 
     @PostMapping("/contestTypeAttributes")
-    public ContestTypeAttribute createContestTypeAttribute(
-            @RequestBody ContestTypeAttribute pojo) {
+    public IContestTypeAttribute createContestTypeAttribute(
+            @RequestBody IContestTypeAttribute pojo) {
         return contestTypeAttributeDao.create(pojo);
     }
 
     @PutMapping("/contestTypeAttributes/{attributeName}")
-    public boolean updateContestTypeAttribute(@RequestBody ConfigurationAttribute pojo,
+    public boolean updateContestTypeAttribute(@RequestBody IConfigurationAttribute pojo,
             @PathVariable String attributeName)
             throws NotFoundException {
         return configurationAttributeDao.update(pojo);
     }
-
 }

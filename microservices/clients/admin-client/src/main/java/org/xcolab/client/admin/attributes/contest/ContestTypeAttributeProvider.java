@@ -3,11 +3,11 @@ package org.xcolab.client.admin.attributes.contest;
 import org.springframework.util.Assert;
 
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.pojo.ContestTypeAttribute;
+import org.xcolab.client.admin.pojo.IContestTypeAttribute;
 import org.xcolab.commons.attributes.i18n.LocalizableAttributeProvider;
 
 class ContestTypeAttributeProvider
-        implements LocalizableAttributeProvider<ContestTypeAttribute> {
+        implements LocalizableAttributeProvider<IContestTypeAttribute> {
 
     private final String name;
 
@@ -22,22 +22,22 @@ class ContestTypeAttributeProvider
     }
 
     @Override
-    public ContestTypeAttribute get() {
+    public IContestTypeAttribute get() {
         throw new UnsupportedOperationException("ContestTypeAttributes require an id");
     }
 
     @Override
-    public ContestTypeAttribute get(long additionalId) {
+    public IContestTypeAttribute get(long additionalId) {
         return ContestTypeClient.getContestTypeAttribute(name, additionalId, null);
     }
 
     @Override
-    public ContestTypeAttribute get(String locale) {
+    public IContestTypeAttribute get(String locale) {
         throw new UnsupportedOperationException("ContestTypeAttributes require an id");
     }
 
     @Override
-    public ContestTypeAttribute get(String locale, long additionalId) {
+    public IContestTypeAttribute get(String locale, long additionalId) {
         return ContestTypeClient.getContestTypeAttribute(name, additionalId, locale);
     }
 

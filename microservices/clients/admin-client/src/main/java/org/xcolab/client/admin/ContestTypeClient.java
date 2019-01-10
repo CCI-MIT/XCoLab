@@ -2,12 +2,10 @@ package org.xcolab.client.admin;
 
 import org.xcolab.client.admin.exceptions.ContestTypeAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.client.admin.pojo.ContestTypeAttribute;
+import org.xcolab.client.admin.pojo.IContestTypeAttribute;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
-
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.Iterator;
@@ -16,13 +14,9 @@ import java.util.stream.Collectors;
 
 public final class ContestTypeClient {
 
-    private static final RestResource<ContestTypeAttribute, String> contestTypeAttributeResource =
-            new RestResource1<>(AdminResource.CONTEST_TYPE_ATTRIBUTE, ContestTypeAttribute.TYPES);
+    private static final RestResource<IContestTypeAttribute, String> contestTypeAttributeResource = null; //CONTEST_TYPE_ATTRIBUTE("contestTypeAttributes")
 
-    private ContestTypeClient() {
-    }
-
-    public static ContestTypeAttribute getContestTypeAttribute(String name,
+    public static IContestTypeAttribute getContestTypeAttribute(String name,
             long contestTypeId, String locale) {
 
         try {
@@ -36,13 +30,13 @@ public final class ContestTypeClient {
         }
     }
 
-    public static ContestTypeAttribute createContestTypeAttribute(
-            ContestTypeAttribute contestTypeAttribute) {
+    public static IContestTypeAttribute createContestTypeAttribute(
+            IContestTypeAttribute contestTypeAttribute) {
         return contestTypeAttributeResource.create(contestTypeAttribute).execute();
     }
 
     public static boolean updateContestTypeAttribute(
-            ContestTypeAttribute contestTypeAttribute) {
+            IContestTypeAttribute contestTypeAttribute) {
         return contestTypeAttributeResource.update(contestTypeAttribute,
                 contestTypeAttribute.getName())
                 .cacheName(CacheName.CONFIGURATION)
@@ -58,13 +52,13 @@ public final class ContestTypeClient {
 
     public static List<ContestType> getAllContestTypes() {
         return listContestTypeAttributes().stream()
-                .map(ContestTypeAttribute::getAdditionalId)
+                .map(IContestTypeAttribute::getAdditionalId)
                 .distinct()
                 .map(ContestType::new)
                 .collect(Collectors.toList());
     }
 
-    public static List<ContestTypeAttribute> listContestTypeAttributes() {
+    public static List<IContestTypeAttribute> listContestTypeAttributes() {
         return contestTypeAttributeResource.list()
                 .withCache(CacheName.CONFIGURATION)
                 .execute();
