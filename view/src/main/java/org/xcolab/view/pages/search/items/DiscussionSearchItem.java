@@ -16,7 +16,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
@@ -24,14 +24,10 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     private static final Logger _log = LoggerFactory.getLogger(DiscussionSearchItem.class);
 
     private static ICommentClient commentClient;
-
-    public static void setCommentClient(ICommentClient commentClient) {
-        DiscussionSearchItem.commentClient = commentClient;
-    }
-
     private static IThreadClient threadClient;
 
-    public static void setThreadClient(IThreadClient threadClient) {
+    public static void setClients(ICommentClient commentClient, IThreadClient threadClient) {
+        DiscussionSearchItem.commentClient = commentClient;
         DiscussionSearchItem.threadClient = threadClient;
     }
 
@@ -41,7 +37,7 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     private String searchQuery;
 
     @Override
-    public void init(SearchPojo pojo, String searchQuery) {
+    public void init(ISearchPojo pojo, String searchQuery) {
         this.searchQuery = searchQuery;
         try {
             comment = commentClient.getComment(pojo.getClassPrimaryKey());

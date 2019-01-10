@@ -25,15 +25,11 @@ public class ActivitySubscriptionNameGenerator {
     private static final String HYPERLINK = "<a href=\"%s\">%s</a>";
 
     private static IThreadClient threadClient;
-
-    public static void setThreadClient(IThreadClient threadClient) {
-        ActivitySubscriptionNameGenerator.threadClient = threadClient;
-    }
-
     private static ICategoryClient categoryClient;
 
-    public static void setCategoryClient(ICategoryClient categoryClient) {
+    public static void setClients(ICategoryClient categoryClient, IThreadClient threadClient) {
         ActivitySubscriptionNameGenerator.categoryClient = categoryClient;
+        ActivitySubscriptionNameGenerator.threadClient = threadClient;
     }
 
     public static String getName(ActivitySubscription subscription) {

@@ -33,8 +33,7 @@ public class SearchBean implements Serializable {
             }
         }
 
-        this.dataPage = new SearchDataPage(pageNumber != null ? pageNumber : 1, searchPhrase,
-                searchLocation);
+        this.dataPage = new SearchDataPage(this.pageNumber, this.searchPhrase, this.searchLocation);
     }
 
     public String getSearchPhrase() {

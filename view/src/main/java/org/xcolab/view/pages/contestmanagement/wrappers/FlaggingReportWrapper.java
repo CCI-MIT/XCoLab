@@ -25,14 +25,10 @@ public class FlaggingReportWrapper {
     private static final Logger _log = LoggerFactory.getLogger(FlaggingReportWrapper.class);
 
     private static ICommentClient commentClient;
-
-    public static void setCommentClient(ICommentClient commentClient) {
-        FlaggingReportWrapper.commentClient = commentClient;
-    }
-
     private static IThreadClient threadClient;
 
-    public static void setThreadClient(IThreadClient threadClient) {
+    public static void setClients(ICommentClient commentClient, IThreadClient threadClient) {
+        FlaggingReportWrapper.commentClient = commentClient;
         FlaggingReportWrapper.threadClient = threadClient;
     }
 
