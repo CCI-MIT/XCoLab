@@ -8,7 +8,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
+import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
@@ -38,7 +38,7 @@ public class ProposalJudgeWrapper extends Proposal {
                             currentMember.getId(),
                             proposalId,
                             contestPhase.getId());
-            this.proposalRatings = new ProposalRatings(currentMember, list);
+            this.proposalRatings = new UserProposalRatings(currentMember, list);
         }
 
     }

@@ -8,7 +8,7 @@
     <jsp:directive.include file="header.jspx"/>
     <h2>Groups:</h2>
 	<h1>${modelDisplay.groups }</h1>
-	<form:form commandName="updateModelInputGroupBean" role="form" action="/admin/modeling/model/${model.id}/addUpdateInputGroup">
+	<form:form modelAttribute="updateModelInputGroupBean" role="form" action="/admin/modeling/model/${model.id}/addUpdateInputGroup">
 		<form:hidden path="inputAction" id="addUpdateGroupAction" />
     <table class="table table-striped">
     	<thead>
@@ -100,7 +100,7 @@
     		</tr>
     	</thead>
     	<c:forEach var="input" items="${modelDisplay.allIndividualInputs}">
-    		<form:form action="/admin/modeling/model/${model.id}/udateIndividualInputGroup" commandName="udateIndividualInputGroupBean">
+    		<form:form action="/admin/modeling/model/${model.id}/udateIndividualInputGroup" modelAttribute="udateIndividualInputGroupBean">
     			<form:hidden path="modelInputItemId" value="${input.metaData.id }"/>
     			<tr>
     				<td>${input.name }</td>

@@ -26,10 +26,13 @@ import org.xcolab.service.contents.domain.contentarticle.ContentArticleDao;
 import org.xcolab.service.contents.domain.contentarticleversion.ContentArticleVersionDao;
 import org.xcolab.service.contents.domain.page.ContentPageDao;
 import org.xcolab.service.contents.service.contentarticle.ContentArticleService;
+import org.xcolab.service.utils.PaginationHelper;
 
 import java.nio.charset.Charset;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Matchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -98,7 +101,7 @@ public class ContentsControllerTest {
                         .content(objectMapper.writeValueAsString(contentArticle)))
                 .andExpect(status().isOk());
 
-        Mockito.verify(contentArticleDao,Mockito.times(1)).create(Mockito.anyObject());
+        Mockito.verify(contentArticleDao,Mockito.times(1)).create(Mockito.any(ContentArticle.class));
     }
 
     @Test
@@ -131,16 +134,17 @@ public class ContentsControllerTest {
                 get("/contentArticleVersions")
                         .param("startRecord","1")
                         .param("limitRecord","2")
-                        .param("folderId","")
-                        .param("contentArticleId","")
-                        .param("contentArticleVersion","")
-                        .param("title","")
+                        .param("folderId","10")
+                        .param("contentArticleId","11")
+                        .param("contentArticleVersion","12")
+                        .param("title","test title")
                         .param("sort","")
                         .contentType(contentType).accept(contentType))
                 .andExpect(status().isOk());
 
-        Mockito.verify(contentArticleVersionDao,Mockito.times(1)).findByGiven(Mockito.anyObject()
-        ,Mockito.anyLong(),Mockito.anyLong(),Mockito.anyLong(),Mockito.anyLong(),Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(contentArticleVersionDao,Mockito.times(1)).findByGiven(Mockito.any(
+                PaginationHelper.class), eq(11L), eq(12L), eq(10L), isNull(),
+                eq("test title"), isNull());
     }
 
     @Test

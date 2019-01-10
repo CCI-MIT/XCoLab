@@ -61,7 +61,7 @@
             </div>
         </c:if>
 
-        <form:form action="/register" method="post" commandName="createUserBean" id="registrationForm">
+        <form:form action="/register" method="post" modelAttribute="createUserBean" id="registrationForm">
             <c:if test="${not empty redirect}">
                 <input type="hidden" name="redirect" value="${redirect}" />
             </c:if>

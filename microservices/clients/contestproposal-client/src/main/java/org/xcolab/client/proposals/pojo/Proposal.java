@@ -54,6 +54,7 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
+import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 import org.xcolab.commons.html.HtmlUtil;
@@ -394,6 +395,9 @@ public class Proposal extends AbstractProposal implements Serializable {
     @JsonIgnore
     public String getLogoPath() {
         String imageDomain = PlatformAttributeKey.CDN_URL_IMAGES_UPLOADED.get();
+        if (getImageId() == 0 && getContest().getDefaultProposalLogoId() != null) {
+            return imageDomain + "/image/proposal/" + getContest().getDefaultProposalLogoId();
+        }
         return imageDomain + "/image/proposal/" + getImageId();
     }
 
@@ -934,7 +938,7 @@ public class Proposal extends AbstractProposal implements Serializable {
                 List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                         .getProposalRatingsByProposalUserContestPhase(this.getId(),
                                 contestPhase.getId(),userId);
-                ProposalRatings wrapper = new ProposalRatings(userId, proposalRatings);
+                ProposalRatings wrapper = new UserProposalRatings(userId, proposalRatings);
                 if (!wrapper.isReviewComplete()) {
                     return false;
                 }
@@ -948,7 +952,7 @@ public class Proposal extends AbstractProposal implements Serializable {
         List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                 .getProposalRatingsByProposalUserContestPhase(
                         getId(), contestPhase.getId(), judgeId);
-        ProposalRatings wrapper = new ProposalRatings(judgeId, proposalRatings);
+        ProposalRatings wrapper = new UserProposalRatings(judgeId, proposalRatings);
         return wrapper.isReviewComplete();
     }
 

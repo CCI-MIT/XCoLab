@@ -4,16 +4,17 @@ server:
     whitelabel:
       enabled: false
     include-stacktrace: always
-  session:
-    timeout: 7200
+  servlet:
+    session:
+      timeout: 7200
   compression:
     enabled: true
 
 management:
-  add-application-context-header: false
-  context-path: /admin/management
-  security:
-    roles: ACTUATOR,ADMIN
+  server:
+    add-application-context-header: false
+    servlet:
+      context-path: /admin/management
 
 cache:
   enabled: true
@@ -23,17 +24,20 @@ cache:
     max-megabytes: 1000
 
 spring:
+  security:
+    filter:
+      dispatcher-types: ASYNC,REQUEST,ERROR
+  servlet:
+    multipart:
+      max-file-size: 2MB
   mvc:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jspx
     favicon:
       enabled: false
-  http:
-    multipart:
-      max-file-size: 2MB
   session:
-    store-type: hash_map
+    store-type: REDIS
   resources:
     chain:
       strategy:
@@ -44,11 +48,16 @@ spring:
             - "/css/**"     # /static/css - our CSS files
             - "/vendor/**"  # /dist/vendor - external dependencies (from yarn)
       cache: false
-    cache-period: 31536000 # 365 days
+    cache:
+      period: 31536000 # 365 days
     # use comma-separated list to override default value
     static-locations: >
       classpath:/dist/,
       classpath:/static/
+
+
+  aop:
+    proxy-target-class: false
 
 eureka:
   client:
@@ -71,8 +80,8 @@ logging:
     org.springframework.context.annotation: WARN
     org.springframework.beans.factory.annotation: WARN
 
+
 security:
-  filter-dispatcher-types: ASYNC,REQUEST,ERROR
   oauth2:
     client:
       scope: openid,email,profile

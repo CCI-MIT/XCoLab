@@ -21,6 +21,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
+import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -124,7 +125,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         List<ProposalRatings> wrappers = new ArrayList<>();
         for (Map.Entry<Long, List<ProposalRating>> entry : ratingsByUserId.entrySet()) {
             List<ProposalRating> userRatings = entry.getValue();
-            ProposalRatings wrapper = new ProposalRatings(entry.getKey(), userRatings);
+            ProposalRatings wrapper = new UserProposalRatings(entry.getKey(), userRatings);
             wrappers.add(wrapper);
         }
         return wrappers;

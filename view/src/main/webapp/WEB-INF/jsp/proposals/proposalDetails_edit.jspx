@@ -83,7 +83,7 @@
     </div>
 
 
-    <form:form action="${saveUrl}" commandName="updateProposalDetailsBean"
+    <form:form action="${saveUrl}" modelAttribute="updateProposalDetailsBean"
                id="editForm" cssClass="addpropform" >
         <form:hidden path="baseProposalId" />
         <form:hidden path="baseProposalContestId" />
