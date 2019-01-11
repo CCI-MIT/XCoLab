@@ -1,8 +1,11 @@
 package org.xcolab.service.admin.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,6 +25,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.service.admin.AdminTestUtils;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
@@ -52,6 +56,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @WebAppConfiguration
 public class AdminControllerTest {
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private MockMvc mockMvc;
 
@@ -86,7 +93,6 @@ public class AdminControllerTest {
                 .thenAnswer(answer);
         Mockito.when(configurationAttributeDao.getConfigurationAttribute(anyString(), isNull()))
                 .thenAnswer(answer);
-
         Mockito.when(configurationAttributeDao.create(anyObject()))
                 .thenAnswer(invocationOnMock -> getConfigAttribute());
     }
@@ -119,9 +125,9 @@ public class AdminControllerTest {
 
     @Test
     public void shouldReturn404ForNotFoundConfigurationAttributeInGet() throws Exception {
+        exception.expectCause(IsInstanceOf.instanceOf(ConfigurationAttributeNotFoundException.class));
         this.mockMvc.perform(get("/attributes/ACTIVE_THEME")
-                .contentType(contentType).accept(contentType))
-                .andExpect(status().isNotFound());
+                .contentType(contentType).accept(contentType));
     }
 
     @Test
@@ -140,7 +146,7 @@ public class AdminControllerTest {
     public void shouldUpdateConfigurationAttributeInPut() throws Exception {
         IConfigurationAttribute ca = getConfigAttribute();
         this.mockMvc.perform(
-                put("/attributes/" + ca.getName())
+                put("/attributes/")
                         .contentType(contentType).accept(contentType)
                         .content(objectMapper.writeValueAsString(ca)))
                 .andExpect(status().isOk())

@@ -101,7 +101,7 @@ public class EmailTemplateControllerTest {
     public void shouldUpdateEmailTemplatesInPost() throws Exception {
         IEmailTemplate contestEmailTemplate = AdminTestUtils.getContestEmailTemplate();
         this.mockMvc.perform(
-                put("/emailTemplates/" + contestEmailTemplate.getName())
+                put("/emailTemplates")
                         .contentType(contentType).accept(contentType)
                         .content(objectMapper.writeValueAsString(contestEmailTemplate)))
                 .andExpect(status().isOk());
