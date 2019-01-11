@@ -1,17 +1,19 @@
 package org.xcolab.view.pages.modeling.admin.actions;
 
 import edu.mit.cci.roma.client.Simulation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
-import org.xcolab.client.modeling.pojo.ModelInputGroup;
+import org.xcolab.client.modeling.pojo.IModelInputGroup;
+import org.xcolab.client.modeling.pojo.tables.pojos.ModelInputGroup;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.view.pages.modeling.admin.ModelsAdminController;
 import org.xcolab.view.pages.modeling.admin.form.UpdateModelInputGroupBean;
@@ -25,6 +27,13 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin/modeling")
 public class AddUpdateModelInputGroupAction {
 
+    private final IModelingClient modelingClient;
+
+    @Autowired
+    public AddUpdateModelInputGroupAction(IModelingClient modelingClient) {
+        this.modelingClient = modelingClient;
+    }
+
     @PostMapping("model/{modelId}/addUpdateInputGroup")
     public void update(HttpServletRequest request, HttpServletResponse response,
             UpdateModelInputGroupBean updateModelInputGroup, @PathVariable long modelId)
@@ -33,17 +42,17 @@ public class AddUpdateModelInputGroupAction {
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 
 
-        ModelInputGroup modelInputGroup;
+        IModelInputGroup modelInputGroup;
         if (updateModelInputGroup.getId() == 0) {
             // create new one
             modelInputGroup = new ModelInputGroup();
             modelInputGroup.setModelId(modelId);
         } else {
-            modelInputGroup = ModelingClient.instance().getModelInputGroup(updateModelInputGroup.getId());
+            modelInputGroup = modelingClient.getModelInputGroup(updateModelInputGroup.getId());
         }
         if (updateModelInputGroup.getId() > 0 && "delete"
                 .equals(updateModelInputGroup.getInputAction())) {
-            ModelingClient.instance().deleteModelInputGroup(updateModelInputGroup.getId());
+            modelingClient.deleteModelInputGroup(updateModelInputGroup.getId());
             return;
         }
 
@@ -65,11 +74,10 @@ public class AddUpdateModelInputGroupAction {
         modelInputGroup.setParentGroupId(updateModelInputGroup.getParentGroupPK());
 
         if (updateModelInputGroup.getId() == 0) {
-            ModelingClient.instance().createModelInputGroup(modelInputGroup);
+            modelingClient.createModelInputGroup(modelInputGroup);
         } else {
-            ModelingClient.instance().updateModelInputGroup(modelInputGroup);
+            modelingClient.updateModelInputGroup(modelInputGroup);
         }
         response.sendRedirect(ModelsAdminController.getTabMapping(modelId, "inputTabs"));
     }
-
 }

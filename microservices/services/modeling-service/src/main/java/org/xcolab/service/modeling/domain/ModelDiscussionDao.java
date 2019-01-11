@@ -1,19 +1,19 @@
 package org.xcolab.service.modeling.domain;
 
-import org.xcolab.model.tables.pojos.ModelDiscussion;
+import org.xcolab.client.modeling.pojo.IModelDiscussion;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ModelDiscussionDao {
 
-    Optional<ModelDiscussion> get(long id);
+    Optional<IModelDiscussion> get(long id);
 
-    List<ModelDiscussion> list();
+    List<IModelDiscussion> list();
 
-    ModelDiscussion create(ModelDiscussion pojo);
+    IModelDiscussion create(IModelDiscussion pojo);
 
-    boolean update(ModelDiscussion pojo);
+    boolean update(IModelDiscussion pojo);
 
     boolean delete(long id);
 }
