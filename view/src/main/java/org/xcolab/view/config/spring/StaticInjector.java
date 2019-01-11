@@ -11,9 +11,11 @@ import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.search.ISearchClient;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.pages.search.paging.SearchDataPage;
+import org.xcolab.view.pages.modeling.admin.form.UpdateModelInputWidgetsBean;
 import org.xcolab.view.tags.LoadContentArticleTag;
 
 @Component
@@ -29,6 +31,9 @@ public class StaticInjector implements ApplicationRunner {
     private IContentClient contentClient;
 
     @Autowired
+    private IModelingClient modelingClient;
+
+    @Autowired
     private AdminClient adminClient;
 
     @Autowired
@@ -42,6 +47,7 @@ public class StaticInjector implements ApplicationRunner {
         SearchDataPage.setSearchClient(searchClient);
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
+        UpdateModelInputWidgetsBean.setModelingClient(modelingClient);
 
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
     }
