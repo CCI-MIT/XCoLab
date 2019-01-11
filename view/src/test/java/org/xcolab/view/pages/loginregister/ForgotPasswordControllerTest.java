@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
@@ -26,6 +27,7 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.ContestTypeClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 
@@ -58,7 +60,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         ContestClientUtil.class,
         MembersClient.class,
         AlertMessage.class,
-        MessagingClient.class
+        MessagingClient.class,
+        EmailClient.class
 })
 
 @ActiveProfiles("test")
@@ -67,24 +70,21 @@ public class ForgotPasswordControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private AdminClient adminClient;
-
-    @Autowired
-    private EmailTemplateClient emailTemplateClient;
-
     @Before
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
         PowerMockito.mockStatic(ContestClientUtil.class);
-        PowerMockito.mockStatic(ContestTypeClient.class);
         PowerMockito.mockStatic(EmailClient.class);
         PowerMockito.mockStatic(MessagingClient.class);
 
         MembersClientMockerHelper.mockMembersClient();
-        AdminClientMockerHelper.mockAdminClient(adminClient);
-        EmailTemplateClientMockerHelper.mockEmailTemplateClient(adminClient, emailTemplateClient);
+        AdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
+        EmailTemplateClient emailTemplateClient =
+                EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        ContestTypeClient contestTypeClient = ContestTypeClientMockerHelper.mockContestTypeClient();
+
+        StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
     }
 
     @Test

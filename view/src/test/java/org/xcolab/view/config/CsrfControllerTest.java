@@ -20,9 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.pages.loginregister.ForgotPasswordController;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.ContestTypeClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,6 +54,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 "cache.enabled=false"
         }
 )
+//
+//@PrepareForTest({
+//        AdminClient.class,
+//        ContestTypeClient.class
+//})
 
 @ActiveProfiles("test")
 public class CsrfControllerTest {
@@ -56,13 +66,16 @@ public class CsrfControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private AdminClient adminClient;
-
     @Before
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
-        AdminClientMockerHelper.mockAdminClient(adminClient);
+
+        AdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
+        EmailTemplateClient emailTemplateClient =
+                EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        ContestTypeClient contestTypeClient = ContestTypeClientMockerHelper.mockContestTypeClient();
+
+        StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
     }
 
     @Test
