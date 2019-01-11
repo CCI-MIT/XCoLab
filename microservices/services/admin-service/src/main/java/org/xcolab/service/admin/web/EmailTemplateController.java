@@ -28,7 +28,7 @@ public class EmailTemplateController implements EmailTemplateClient {
     }
 
     @GetMapping("/emailTemplates/{emailTemplateType}")
-    public IEmailTemplate getEmailTemplates(@PathVariable String emailTemplateType) {
+    public IEmailTemplate getEmailTemplate(@PathVariable String emailTemplateType) {
         IEmailTemplate emailTemplate = emailTemplateDao.getEmailTemplate(emailTemplateType);
         if (emailTemplate == null) {
             throw new EmailTemplateNotFoundException(emailTemplateType);
@@ -38,14 +38,14 @@ public class EmailTemplateController implements EmailTemplateClient {
 
     @Override
     @PutMapping("/emailTemplates")
-    public boolean updateEmailTemplates(@RequestBody IEmailTemplate emailTemplate) {
+    public boolean updateEmailTemplate(@RequestBody IEmailTemplate emailTemplate) {
         return this.emailTemplateDao.getEmailTemplate(emailTemplate.getName()) != null
                 && emailTemplateDao.updateEmailTemplate(emailTemplate);
     }
 
     @Override
     @PostMapping("/emailTemplates")
-    public IEmailTemplate createEmailTemplates(@RequestBody IEmailTemplate emailTemplate) {
+    public IEmailTemplate createEmailTemplate(@RequestBody IEmailTemplate emailTemplate) {
         emailTemplateDao.createEmailTemplate(emailTemplate);
         return emailTemplateDao.getEmailTemplate(emailTemplate.getName());
     }

@@ -18,11 +18,11 @@ public interface EmailTemplateClient {
     List<IEmailTemplate> listEmailTemplates();
 
     @GetMapping("/emailTemplates/{emailTemplateType}")
-    IEmailTemplate getEmailTemplates(@PathVariable("emailTemplateType") String emailTemplateType);
+    IEmailTemplate getEmailTemplate(@PathVariable("emailTemplateType") String emailTemplateType);
 
     @PutMapping("/emailTemplates")
-    boolean updateEmailTemplates(@RequestBody IEmailTemplate emailTemplate);
+    boolean updateEmailTemplate(@RequestBody IEmailTemplate emailTemplate);
 
     @PostMapping("/emailTemplates")
-    IEmailTemplate createEmailTemplates(@RequestBody IEmailTemplate emailTemplate);
+    IEmailTemplate createEmailTemplate(@RequestBody IEmailTemplate emailTemplate);
 }

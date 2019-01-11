@@ -6,18 +6,18 @@ import java.util.List;
 
 public class EmailTemplateClientUtil {
 
-    private static final EmailTemplateClient emailTemplateClient = new EmailTemplateClient();
+    private static final EmailTemplateClient emailTemplateClient = null;
 
     public static List<IEmailTemplate> listAllContestEmailTemplates() {
-        return emailTemplateClient.listAllContestEmailTemplates();
+        return emailTemplateClient.listEmailTemplates();
     }
 
     public static IEmailTemplate getContestEmailTemplateByType(String emailTemplateType) {
-        return emailTemplateClient.getContestEmailTemplateByType(emailTemplateType);
+        return emailTemplateClient.getEmailTemplate(emailTemplateType);
     }
 
     public static void updateContestEmailTemplate(IEmailTemplate contestEmailTemplate) {
-        emailTemplateClient.updateContestEmailTemplate(contestEmailTemplate);
+        emailTemplateClient.updateEmailTemplate(contestEmailTemplate);
     }
 
     public static IEmailTemplate createEmailTemplate(IEmailTemplate template) {
