@@ -21,10 +21,9 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.MockContestType;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -66,14 +65,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @PrepareForTest({
-        AdminClient.class,
         ActivitiesClient.class,
         ActivitiesClientUtil.class,
-        ContestTypeClient.class,
         ContestClientUtil.class,
         MembersClient.class,
-        EmailTemplateClientUtil.class,
-        EmailClient.class,
         MessagingClient.class
 })
 
@@ -83,6 +78,15 @@ public class LoginRegisterControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ContestTypeClient contestTypeClient;
+
+    @Autowired
+    private AdminClient adminClient;
+
+    @Autowired
+    private EmailTemplateClient emailTemplateClient;
+
     @Before
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
@@ -90,22 +94,18 @@ public class LoginRegisterControllerTest {
         PowerMockito.mockStatic(ActivitiesClient.class);
         PowerMockito.mockStatic(ActivitiesClientUtil.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
-        PowerMockito.mockStatic(ContestTypeClient.class);
-
-        PowerMockito.mockStatic(EmailClient.class);
-
         PowerMockito.mockStatic(MessagingClient.class);
 
         MembersClientMockerHelper.mockMembersClient();
-        AdminClientMockerHelper.mockAdminClient();
-        EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        AdminClientMockerHelper.mockAdminClient(adminClient);
+        EmailTemplateClientMockerHelper.mockEmailTemplateClient(adminClient, emailTemplateClient);
 
-        Mockito.when(ContestTypeClient.getAllContestTypes())
+        Mockito.when(contestTypeClient.getAllContestTypes())
                 .thenReturn(new ArrayList<>());
 
-        Mockito.when(ContestTypeClient.getContestType(anyLong()))
+        Mockito.when(contestTypeClient.getContestType(anyLong()))
                 .thenReturn(new MockContestType(0));
-        Mockito.when(ContestTypeClient.getContestType(anyLong(), anyString()))
+        Mockito.when(contestTypeClient.getContestType(anyLong(), anyString()))
                 .thenReturn(new MockContestType(0, "en"));
     }
 

@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +16,9 @@ import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinitio
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.pojo.points.PointType;
-import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.commons.html.LabelStringValue;
 import org.xcolab.commons.html.LabelValue;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.view.pages.contestmanagement.entities.SectionTypes;
 import org.xcolab.view.pages.contestmanagement.wrappers.SectionDefinitionWrapper;
 import org.xcolab.view.taglibs.xcolab.controller.BaseTabController;
@@ -35,6 +36,9 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class AbstractProposalTemplateTabController extends BaseTabController {
 
     public static final String TAB_VIEW = "contestmanagement/manager/proposalTemplateTab";
+
+    @Autowired
+    private ContestTypeClient contestTypeClient;
 
     protected TabWrapper tabWrapper;
 
@@ -72,7 +76,7 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
 
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
+        for (ContestType contestType : contestTypeClient.getActiveContestTypes()) {
             selectItems.add(new LabelValue(contestType.getId(),
                     contestType.getLabelName()));
         }

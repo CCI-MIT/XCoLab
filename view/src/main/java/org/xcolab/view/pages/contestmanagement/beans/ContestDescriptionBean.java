@@ -30,6 +30,9 @@ public class ContestDescriptionBean implements Serializable {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private ContestTypeClient contestTypeClient;
+
     private Long contestId;
     private Long contestLogoId;
     private Long sponsorLogoId;
@@ -87,7 +90,7 @@ public class ContestDescriptionBean implements Serializable {
         try {
             final CommentThread thread = ThreadClient.instance().getThread(contest.getDiscussionGroupId());
             ContestType contestType =
-                    ContestTypeClient.getContestType(contest.getContestTypeId());
+                    contestTypeClient.getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
                     contestType.getContestName(), contest.getTitle()));
             ThreadClient.instance().updateThread(thread);

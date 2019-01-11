@@ -3,6 +3,7 @@ package org.xcolab.view.pages.contestmanagement.controller.manager;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,6 +50,9 @@ import javax.validation.Valid;
 public class BatchCreationController {
 
     private final Map<Long, Map<Long, Integer>> reusableFocusArea = new HashMap<>();
+
+    @Autowired
+    private ContestTypeClient contestTypeClient;
 
     @ModelAttribute("proposalTemplateSelectionItems")
     public List<LabelValue> populateProposalTemplateSelectionItems() {
@@ -100,8 +104,7 @@ public class BatchCreationController {
 
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestType contestType : ContestTypeClient
-                .getAllContestTypes()) {
+        for (ContestType contestType : contestTypeClient.getAllContestTypes()) {
             selectItems.add(new LabelValue(contestType.getId(),
                     String.format("%d - %s with %s", contestType.getId(),
                             contestType.getContestName(), contestType.getProposalNamePlural())));

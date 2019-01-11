@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -74,7 +74,8 @@ public class ProposalService {
 
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             final Contest contest = ContestClientUtil.getContest(contestPhase.getContestId());
-            ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
+            ContestType contestType = StaticAdminContext.getContestTypeClient()
+                    .getContestType(contest.getContestTypeId());
 
             proposal = proposalDao.create(proposal);
             Long proposalId = proposal.getId();

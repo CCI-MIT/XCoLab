@@ -1,6 +1,6 @@
 package org.xcolab.view.theme;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -57,7 +57,7 @@ public class ThemeContext {
 
         final Long defaultContestTypeId =
                 ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
-        this.defaultContestType = ContestTypeClient
+        this.defaultContestType = StaticAdminContext.getContestTypeClient()
                 .getContestType(defaultContestTypeId, this.getI18NVariables().getLanguage());
 
         this.requestUri = RequestUtil.getOriginalUri(request);

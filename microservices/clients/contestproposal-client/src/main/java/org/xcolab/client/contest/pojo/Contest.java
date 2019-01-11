@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
@@ -407,7 +407,7 @@ public class Contest extends AbstractContest implements Serializable {
     @JsonIgnore
     public ContestType getContestType() {
         if (contestType == null) {
-            contestType = ContestTypeClient.getContestType(this.getContestTypeId());
+            contestType = StaticAdminContext.getContestTypeClient().getContestType(this.getContestTypeId());
         }
         return contestType;
     }

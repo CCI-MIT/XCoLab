@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.controller.details;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -35,6 +35,9 @@ public class ContestAdminTabController extends AbstractTabController {
     static final private ContestDetailsTabs tab = ContestDetailsTabs.ADMIN;
     static final private String TAB_VIEW = "contestmanagement/details/adminTab";
 
+    @Autowired
+    private ContestTypeClient contestTypeClient;
+
     @ModelAttribute("contestLevelSelectionItems")
     public List<LabelValue> populateContestLevelSelectionItems() {
         return getContestLevelSelectionItems();
@@ -56,7 +59,7 @@ public class ContestAdminTabController extends AbstractTabController {
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
 
-        for (ContestType contestType : ContestTypeClient.getAllContestTypes()) {
+        for (ContestType contestType : contestTypeClient.getAllContestTypes()) {
             selectItems.add(new LabelValue(contestType.getId(),
                     String.format("%d - %s with %s", contestType.getId(),
                             contestType.getContestName(), contestType.getProposalNamePlural())));

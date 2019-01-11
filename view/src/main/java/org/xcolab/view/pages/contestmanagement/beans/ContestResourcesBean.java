@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -119,7 +120,7 @@ public class ContestResourcesBean implements Serializable {
 
     @SuppressWarnings("unused")
     public ContestResourcesBean() {
-        this(ContestTypeClient.getContestType(
+        this(StaticAdminContext.getContestTypeClient().getContestType(
                 ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
     }
 

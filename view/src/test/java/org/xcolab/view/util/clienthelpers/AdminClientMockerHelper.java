@@ -11,10 +11,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Matchers.anyString;
 
 public class AdminClientMockerHelper {
-
-    public static void mockAdminClient() {
-
-        PowerMockito.mockStatic(AdminClient.class);
+    public static void mockAdminClient(AdminClient adminClient) {
         //generic mock for ConfigAttribute
         final Answer<Object> answer = invocation -> {
             Object[] arguments = invocation.getArguments();
@@ -23,9 +20,9 @@ public class AdminClientMockerHelper {
             // throw not found exception so the default value is used
             throw new ConfigurationAttributeNotFoundException(key);
         };
-        Mockito.when(AdminClient.getConfigurationAttribute(anyString(), anyString()))
+        Mockito.when(adminClient.getConfigurationAttribute(anyString(), anyString()))
                 .thenAnswer(answer);
-        Mockito.when(AdminClient.getConfigurationAttribute(anyString(), isNull()))
+        Mockito.when(adminClient.getConfigurationAttribute(anyString(), isNull()))
                 .thenAnswer(answer);
     }
 }

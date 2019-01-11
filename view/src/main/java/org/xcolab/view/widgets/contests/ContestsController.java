@@ -2,6 +2,7 @@ package org.xcolab.view.widgets.contests;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -35,6 +37,9 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
     private static final String VIEW_BASE_PATH = "/widgets/contests";
 
     public static final String BASE_URL = "/widgets/contests";
+
+    @Autowired
+    private ContestTypeClient contestTypeClient;
 
     protected ContestsController() {
         super(BASE_URL, ContestPreferences::new);
@@ -95,7 +100,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
 
         model.addAttribute("contests", contestWrappers);
         model.addAttribute("contestPreferences", contestPreferences);
-        model.addAttribute("contestType", ContestTypeClient
+        model.addAttribute("contestType", contestTypeClient
                 .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
         return VIEW_BASE_PATH + "/showContests";
     }

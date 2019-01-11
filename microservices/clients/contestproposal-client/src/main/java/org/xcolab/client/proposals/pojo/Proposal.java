@@ -8,7 +8,7 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -54,8 +54,8 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
-import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
+import org.xcolab.client.proposals.pojo.proposals.UserProposalRatings;
 import org.xcolab.client.proposals.pojo.team.ProposalTeamMembershipRequest;
 import org.xcolab.commons.html.HtmlUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -200,7 +200,8 @@ public class Proposal extends AbstractProposal implements Serializable {
     @JsonIgnore
     public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
         Long proposalId = this.getId();
-        ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
+        ContestType contestType = StaticAdminContext.getContestTypeClient()
+                .getContestType(contest.getContestTypeId());
         String link = contestType.getContestBaseUrl();
 
         String friendlyUrlStringProposal = contestType.getFriendlyUrlStringProposal();

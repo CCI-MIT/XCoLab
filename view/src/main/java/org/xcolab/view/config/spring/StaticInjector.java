@@ -5,6 +5,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.search.ISearchClient;
@@ -24,10 +28,21 @@ public class StaticInjector implements ApplicationRunner {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private AdminClient adminClient;
+
+    @Autowired
+    private ContestTypeClient contestTypeClient;
+
+    @Autowired
+    private EmailTemplateClient emailTemplateClient;
+
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
         SearchDataPage.setSearchClient(searchClient);
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
+
+        StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
     }
 }

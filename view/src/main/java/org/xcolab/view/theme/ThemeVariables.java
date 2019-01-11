@@ -1,6 +1,6 @@
 package org.xcolab.view.theme;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
@@ -42,7 +42,8 @@ public class ThemeVariables {
         this.isHomePage = request.getRequestURI().equals("/");
 
         final Member loggedInMember = new AuthenticationContext().getMemberOrNull(request);
-        this.contestPages = ContestTypeClient.getActiveContestTypes().stream()
+        this.contestPages = StaticAdminContext.getContestTypeClient().getActiveContestTypes()
+                .stream()
                 .filter(contestType -> {
                     if (!contestType.isRestrictedAccess()) {
                         return true;

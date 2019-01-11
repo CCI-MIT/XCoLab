@@ -21,12 +21,15 @@ public class MainSitemapGenerator {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private ContestTypeClient contestTypeClient;
+
     private final String siteUrl = PlatformAttributeKey.COLAB_URL.get();
 
     public XmlUrlSet generate() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
         addLandingPageUrl(xmlUrlSet);
-        for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
+        for (ContestType contestType : contestTypeClient.getActiveContestTypes()) {
             addContestType(xmlUrlSet, contestType.getId());
         }
         addContentPages(xmlUrlSet);

@@ -2,6 +2,7 @@ package org.xcolab.view.pages.proposals.view;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +48,9 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
     private static final Logger _log = LoggerFactory.getLogger(ProposalsPreferencesController.class);
 
     public static final String BASE_URL = "/proposals";
+
+    @Autowired
+    private ContestTypeClient contestTypeClient;
 
     protected ProposalsPreferencesController() {
         super(BASE_URL, ProposalsPreferencesWrapper::new);
@@ -97,7 +101,7 @@ public class ProposalsPreferencesController extends AbstractWidgetController<Pro
         model.addAttribute("contestPhaseType", contestPhaseTypeMap);
         model.addAttribute("contestPhases", contestPhasesMap);
         model.addAttribute("proposals", proposalsMap);
-        model.addAttribute("contestTypes", ContestTypeClient.getAllContestTypes());
+        model.addAttribute("contestTypes", contestTypeClient.getAllContestTypes());
 
         return showPreferencesInternal(response, model, member, preferenceId, language,
                 "proposals/editPreferences");

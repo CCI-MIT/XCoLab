@@ -50,24 +50,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
 )
 
-@PrepareForTest({
-        AdminClient.class,
-        ContestTypeClient.class
-})
-
 @ActiveProfiles("test")
 public class CsrfControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private AdminClient adminClient;
+
     @Before
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
-
-        PowerMockito.mockStatic(ContestTypeClient.class);
-
-        AdminClientMockerHelper.mockAdminClient();
+        AdminClientMockerHelper.mockAdminClient(adminClient);
     }
 
     @Test

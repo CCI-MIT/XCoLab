@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -62,6 +63,9 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalDescriptionTabController extends BaseProposalTabController {
+
+    @Autowired
+    private ContestTypeClient contestTypeClient;
 
     @GetMapping("c/{proposalUrlString}/{proposalId}")
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
@@ -225,8 +229,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
-        for (ContestType contestType : ContestTypeClient
-                .getActiveContestTypes()) {
+        for (ContestType contestType : contestTypeClient.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId(),
                     new ContestTypeProposal(contestType));
             final Set<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
