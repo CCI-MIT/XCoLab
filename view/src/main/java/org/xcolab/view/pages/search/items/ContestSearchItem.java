@@ -5,17 +5,17 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.search.pojo.ISearchPojo;
 
 public class ContestSearchItem extends AbstractSearchItem {
 
-    private SearchPojo searchPojo;
+    private ISearchPojo searchPojo;
     private String searchQuery;
 
     private Contest contest;
 
     @Override
-    public void init(SearchPojo pojo, String searchQuery) {
+    public void init(ISearchPojo pojo, String searchQuery) {
         this.searchPojo = pojo;
         this.searchQuery = searchQuery;
         contest = ContestClientUtil.getContest(searchPojo.getClassPrimaryKey());

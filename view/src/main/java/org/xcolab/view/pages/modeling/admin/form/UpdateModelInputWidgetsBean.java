@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.modeling.admin.form;
 
-import org.xcolab.client.modeling.ModelingClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelInputIndividualDisplayItem;
@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateModelInputWidgetsBean {
+
+    private static IModelingClient modelingClient;
+
+    public static void setModelingClient(IModelingClient modelingClient) {
+        UpdateModelInputWidgetsBean.modelingClient = modelingClient;
+    }
 
     private Map<Long, ModelInputWidgetType> widgets = new HashMap<>();
     private Map<Long, Long> groups = new HashMap<>();
@@ -26,8 +32,7 @@ public class UpdateModelInputWidgetsBean {
             groups.put(item.getMetaData().getId(),
                     ((ModelInputIndividualDisplayItem) item).getGroupId());
         }
-        customInputWidgets =
-                ModelingClient.instance().getModelPreference(modelId).getCustomInputsDefinition();
+        customInputWidgets = modelingClient.getModelPreference(modelId).getCustomInputsDefinition();
     }
 
     public Map<Long, ModelInputWidgetType> getWidgets() {
@@ -61,5 +66,4 @@ public class UpdateModelInputWidgetsBean {
     public void setCustomInputWidgets(String customInputWidgets) {
         this.customInputWidgets = customInputWidgets;
     }
-
 }

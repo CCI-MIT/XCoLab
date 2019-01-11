@@ -1,5 +1,5 @@
 spring:
   application:
-    name: ${xcolab.namespace:xcolab}-emails-service
+    name: ${xcolab.namespace:xcolab}-email-service
   jmx:
     default-domain: ${spring.application.name}

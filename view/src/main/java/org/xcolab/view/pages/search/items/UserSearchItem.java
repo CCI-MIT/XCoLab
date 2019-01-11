@@ -3,17 +3,17 @@ package org.xcolab.view.pages.search.items;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.search.pojo.ISearchPojo;
 
 public class UserSearchItem extends AbstractSearchItem {
 
-    private SearchPojo searchPojo;
+    private ISearchPojo searchPojo;
     private String searchQuery;
 
     private Member member;
 
     @Override
-    public void init(SearchPojo pojo, String searchQuery) {
+    public void init(ISearchPojo pojo, String searchQuery) {
         this.searchPojo = pojo;
         this.searchQuery = searchQuery;
         try {

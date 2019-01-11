@@ -6,7 +6,8 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ModelOutputChartOrder;
+import org.xcolab.client.modeling.pojo.IModelOutputChartOrder;
+import org.xcolab.model.tables.pojos.ModelOutputChartOrderImpl;
 import org.xcolab.model.tables.records.ModelOutputChartOrderRecord;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class ModelOutputChartOrderDaoImpl implements ModelOutputChartOrderDao {
     }
 
     @Override
-    public Optional<ModelOutputChartOrder> get(long id) {
+    public Optional<IModelOutputChartOrder> get(long id) {
         final Record record = dslContext.select()
                 .from(MODEL_OUTPUT_CHART_ORDER)
                 .where(MODEL_OUTPUT_CHART_ORDER.ID.eq(id))
@@ -33,18 +34,18 @@ public class ModelOutputChartOrderDaoImpl implements ModelOutputChartOrderDao {
         if (record == null) {
             return Optional.empty();
         }
-        return Optional.of(record.into(ModelOutputChartOrder.class));
+        return Optional.of(record.into(ModelOutputChartOrderImpl.class));
     }
 
     @Override
-    public List<ModelOutputChartOrder> list() {
+    public List<IModelOutputChartOrder> list() {
         return dslContext.select()
                 .from(MODEL_OUTPUT_CHART_ORDER)
-                .fetch().into(ModelOutputChartOrder.class);
+                .fetch().into(ModelOutputChartOrderImpl.class);
     }
 
     @Override
-    public List<ModelOutputChartOrder> findByGiven(Long modelId, String label) {
+    public List<IModelOutputChartOrder> findByGiven(Long modelId, String label) {
         final SelectQuery<Record> query = dslContext.select().from(MODEL_OUTPUT_CHART_ORDER)
                 .getQuery();
 
@@ -56,11 +57,11 @@ public class ModelOutputChartOrderDaoImpl implements ModelOutputChartOrderDao {
             query.addConditions(MODEL_OUTPUT_CHART_ORDER.MODEL_OUTPUT_LABEL.eq(label));
         }
 
-        return query.fetch().into(ModelOutputChartOrder.class);
+        return query.fetch().into(ModelOutputChartOrderImpl.class);
     }
 
     @Override
-    public ModelOutputChartOrder create(ModelOutputChartOrder pojo) {
+    public IModelOutputChartOrder create(IModelOutputChartOrder pojo) {
         final ModelOutputChartOrderRecord record = dslContext.insertInto(MODEL_OUTPUT_CHART_ORDER)
                 .set(MODEL_OUTPUT_CHART_ORDER.MODEL_ID, pojo.getModelId())
                 .set(MODEL_OUTPUT_CHART_ORDER.MODEL_OUTPUT_CHART_ORDER_, pojo.getModelOutputChartOrder())
@@ -81,7 +82,7 @@ public class ModelOutputChartOrderDaoImpl implements ModelOutputChartOrderDao {
     }
 
     @Override
-    public boolean update(ModelOutputChartOrder pojo) {
+    public boolean update(IModelOutputChartOrder pojo) {
         return dslContext.update(MODEL_OUTPUT_CHART_ORDER)
                 .set(MODEL_OUTPUT_CHART_ORDER.MODEL_ID, pojo.getModelId())
                 .set(MODEL_OUTPUT_CHART_ORDER.MODEL_OUTPUT_CHART_ORDER_, pojo.getModelOutputChartOrder())

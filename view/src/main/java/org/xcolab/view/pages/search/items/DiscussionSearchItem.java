@@ -13,7 +13,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.client.search.pojo.ISearchPojo;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
@@ -26,7 +26,7 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     private String searchQuery;
 
     @Override
-    public void init(SearchPojo pojo, String searchQuery) {
+    public void init(ISearchPojo pojo, String searchQuery) {
         this.searchQuery = searchQuery;
         try {
             comment = CommentClient.instance().getComment(pojo.getClassPrimaryKey());

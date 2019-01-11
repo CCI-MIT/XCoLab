@@ -32,7 +32,6 @@ public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
                     .getVariableForMetaData(getScenario(), getMetaData(), false);
         }
         return null;
-
     }
 
     public MetaData getMetaData() {
