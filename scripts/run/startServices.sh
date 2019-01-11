@@ -52,7 +52,7 @@ else
         startService content 18087
         sleep 2
         startService contest 18088
-        startService emails 18089
+        startService email 18089
         sleep 2
         startService members 18090
         startService modeling 18091

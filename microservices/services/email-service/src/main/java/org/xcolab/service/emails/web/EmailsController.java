@@ -29,6 +29,7 @@ public class EmailsController implements IEmailClient {
         this.emailService = emailService;
     }
 
+    @Override
     @PostMapping("/emails/send")
     public void sendEmail(@RequestBody Email email) {
 
