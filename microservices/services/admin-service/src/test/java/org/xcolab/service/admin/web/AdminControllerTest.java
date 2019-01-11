@@ -22,7 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.model.tables.pojos.ConfigurationAttribute;
+import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.service.admin.AdminTestUtils;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
 
@@ -53,12 +53,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class AdminControllerTest {
 
-
     private MockMvc mockMvc;
 
     private final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-        MediaType.APPLICATION_JSON.getSubtype(),
-        Charset.forName("utf8"));
+            MediaType.APPLICATION_JSON.getSubtype(),
+            Charset.forName("utf8"));
 
     @Mock
     private ConfigurationAttributeDao configurationAttributeDao;
@@ -73,9 +72,7 @@ public class AdminControllerTest {
 
     @Before
     public void before() {
-
-       this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-
+        this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         final Answer<Object> answer = invocation -> {
             if ("ACTIVE_THEMEZ".equals(invocation.getArguments()[0])) {
@@ -86,74 +83,68 @@ public class AdminControllerTest {
 
         };
         Mockito.when(configurationAttributeDao.getConfigurationAttribute(anyString(), anyString()))
-            .thenAnswer(answer);
+                .thenAnswer(answer);
         Mockito.when(configurationAttributeDao.getConfigurationAttribute(anyString(), isNull()))
                 .thenAnswer(answer);
 
         Mockito.when(configurationAttributeDao.create(anyObject()))
-            .thenAnswer(invocationOnMock -> getConfigAttribute());
+                .thenAnswer(invocationOnMock -> getConfigAttribute());
     }
 
-    private ConfigurationAttribute getConfigAttribute(){
-        ConfigurationAttribute ca = AdminTestUtils.getConfigurationAttribute("a");
+    private IConfigurationAttribute getConfigAttribute() {
+        IConfigurationAttribute ca = AdminTestUtils.getConfigurationAttribute("a");
         ca.setStringValue("CLIMATE_COLAB");
         return ca;
     }
 
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {
-
         this.mappingJackson2HttpMessageConverter = Arrays.stream(converters)
-            .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-            .findAny()
-            .orElse(null);
+                .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
+                .findAny()
+                .orElse(null);
 
         assertNotNull("the JSON message converter must not be null",
-            this.mappingJackson2HttpMessageConverter);
+                this.mappingJackson2HttpMessageConverter);
     }
-
 
     @Test
     public void shouldReturnConfigurationAttributeInGet() throws Exception {
-
-        this.mockMvc.perform(get("/attributes/ACTIVE_THEMEZ").contentType(contentType).accept(contentType))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(contentType))
-            .andExpect(jsonPath("$.stringValue", is("CLIMATE_COLAB")));
+        this.mockMvc.perform(
+                get("/attributes/ACTIVE_THEMEZ").contentType(contentType).accept(contentType))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.stringValue", is("CLIMATE_COLAB")));
     }
 
     @Test
     public void shouldReturn404ForNotFoundConfigurationAttributeInGet() throws Exception {
-
         this.mockMvc.perform(get("/attributes/ACTIVE_THEME")
-            .contentType(contentType).accept(contentType))
-            .andExpect(status().isNotFound());
+                .contentType(contentType).accept(contentType))
+                .andExpect(status().isNotFound());
     }
-
 
     @Test
     public void shouldCreateNewConfigurationAttributeInPost() throws Exception {
-
-        ConfigurationAttribute ca = getConfigAttribute();
+        IConfigurationAttribute ca = getConfigAttribute();
         this.mockMvc.perform(
                 post("/attributes")
-                    .contentType(contentType).accept(contentType)
-                    .content(objectMapper.writeValueAsString(ca)))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(contentType));
-        Mockito.verify(configurationAttributeDao,atLeast(1)).create(anyObject());
+                        .contentType(contentType).accept(contentType)
+                        .content(objectMapper.writeValueAsString(ca)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType));
+        Mockito.verify(configurationAttributeDao, atLeast(1)).create(anyObject());
     }
 
     @Test
     public void shouldUpdateConfigurationAttributeInPut() throws Exception {
-
-        ConfigurationAttribute ca = getConfigAttribute();
+        IConfigurationAttribute ca = getConfigAttribute();
         this.mockMvc.perform(
-            put("/attributes/"+ca.getName())
-                .contentType(contentType).accept(contentType)
-                .content(objectMapper.writeValueAsString(ca)))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(contentType));
-        Mockito.verify(configurationAttributeDao,atLeast(1)).update(anyObject());
+                put("/attributes/" + ca.getName())
+                        .contentType(contentType).accept(contentType)
+                        .content(objectMapper.writeValueAsString(ca)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType));
+        Mockito.verify(configurationAttributeDao, atLeast(1)).update(anyObject());
     }
 }

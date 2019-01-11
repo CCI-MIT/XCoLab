@@ -2,7 +2,7 @@ package org.xcolab.client.admin.attributes.contest;
 
 import org.springframework.util.Assert;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IContestTypeAttribute;
 import org.xcolab.commons.attributes.i18n.LocalizableAttributeProvider;
 
@@ -28,7 +28,8 @@ class ContestTypeAttributeProvider
 
     @Override
     public IContestTypeAttribute get(long additionalId) {
-        return ContestTypeClient.getContestTypeAttribute(name, additionalId, null);
+        return StaticAdminContext.getContestTypeClient()
+                .getContestTypeAttribute(name, additionalId, null);
     }
 
     @Override
@@ -38,7 +39,8 @@ class ContestTypeAttributeProvider
 
     @Override
     public IContestTypeAttribute get(String locale, long additionalId) {
-        return ContestTypeClient.getContestTypeAttribute(name, additionalId, locale);
+        return StaticAdminContext.getContestTypeClient()
+                .getContestTypeAttribute(name, additionalId, locale);
     }
 
     @Override

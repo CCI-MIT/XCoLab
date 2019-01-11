@@ -1,56 +1,47 @@
 package org.xcolab.client.admin;
 
-import org.xcolab.client.admin.exceptions.ContestTypeAttributeNotFoundException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.admin.pojo.IContestTypeAttribute;
 import org.xcolab.util.enums.Plurality;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class ContestTypeClient {
+@FeignClient("xcolab-admin-service")
+public interface ContestTypeClient {
 
-    private static final RestResource<IContestTypeAttribute, String> contestTypeAttributeResource = null; //CONTEST_TYPE_ATTRIBUTE("contestTypeAttributes")
+    @GetMapping("/contestTypeAttributes")
+    List<IContestTypeAttribute> listContestTypeAttributes();
 
-    public static IContestTypeAttribute getContestTypeAttribute(String name,
-            long contestTypeId, String locale) {
+    @GetMapping("/contestTypeAttributes/{attributeName}")
+    IContestTypeAttribute getContestTypeAttribute(
+            @PathVariable("attributeName") String attributeName,
+            @RequestParam("additionalId") Long additionalId,
+            @RequestParam(value = "locale", required = false) String locale);
 
-        try {
-            return contestTypeAttributeResource.get(name)
-                    .optionalQueryParam("additionalId", contestTypeId)
-                    .optionalQueryParam("locale", locale)
-                    .withCache(CacheName.CONFIGURATION)
-                    .executeChecked();
-        } catch (EntityNotFoundException e) {
-            throw new ContestTypeAttributeNotFoundException(name, contestTypeId, locale);
-        }
-    }
+    @PostMapping("/contestTypeAttributes")
+    IContestTypeAttribute createContestTypeAttribute(
+            @RequestBody IContestTypeAttribute contestTypeAttribute);
 
-    public static IContestTypeAttribute createContestTypeAttribute(
-            IContestTypeAttribute contestTypeAttribute) {
-        return contestTypeAttributeResource.create(contestTypeAttribute).execute();
-    }
+    @PutMapping("/contestTypeAttributes")
+    boolean updateContestTypeAttribute(@RequestBody IContestTypeAttribute contestTypeAttribute);
 
-    public static boolean updateContestTypeAttribute(
-            IContestTypeAttribute contestTypeAttribute) {
-        return contestTypeAttributeResource.update(contestTypeAttribute,
-                contestTypeAttribute.getName())
-                .cacheName(CacheName.CONFIGURATION)
-                .execute();
-    }
-
-    public static List<ContestType> getActiveContestTypes() {
+    default List<ContestType> getActiveContestTypes() {
         final List<ContestType> contestTypes = getAllContestTypes();
         return contestTypes.stream()
                 .filter(ContestType::isActive)
                 .collect(Collectors.toList());
     }
 
-    public static List<ContestType> getAllContestTypes() {
+    default List<ContestType> getAllContestTypes() {
         return listContestTypeAttributes().stream()
                 .map(IContestTypeAttribute::getAdditionalId)
                 .distinct()
@@ -58,31 +49,25 @@ public final class ContestTypeClient {
                 .collect(Collectors.toList());
     }
 
-    public static List<IContestTypeAttribute> listContestTypeAttributes() {
-        return contestTypeAttributeResource.list()
-                .withCache(CacheName.CONFIGURATION)
-                .execute();
-    }
-
-    public static ContestType getContestType(long id) {
+    default ContestType getContestType(long id) {
         return new ContestType(id);
     }
 
-    public static ContestType getContestType(long id, String language) {
+    default ContestType getContestType(long id, String language) {
         return new ContestType(id, language);
     }
 
-    public static String getProposalNames(List<Long> contestTypeIds, String plurality,
+    default String getProposalNames(List<Long> contestTypeIds, String plurality,
             String conjunction) {
         return getJoinedNameString(contestTypeIds, true, plurality, conjunction);
     }
 
-    public static String getContestNames(List<Long> contestTypeIds,
+    default String getContestNames(List<Long> contestTypeIds,
             String plurality, String conjunction) {
         return getJoinedNameString(contestTypeIds, false, plurality, conjunction);
     }
 
-    private static String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal,
+    default String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal,
             String plurality, String conjuction) {
         StringBuilder stringBuilder = new StringBuilder();
         Iterator<Long> iterator = contestTypeIds.iterator();

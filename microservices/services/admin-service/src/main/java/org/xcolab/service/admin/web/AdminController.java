@@ -10,19 +10,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
+import org.xcolab.client.admin.exceptions.ContestTypeAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.admin.pojo.IContestTypeAttribute;
 import org.xcolab.client.admin.pojo.INotification;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
 import org.xcolab.service.admin.domain.contesttypeattribute.ContestTypeAttributeDao;
-import org.xcolab.service.admin.exceptions.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class AdminController {
+public class AdminController implements ContestTypeClient, AdminClient {
 
     private final ConfigurationAttributeDao configurationAttributeDao;
     private final ContestTypeAttributeDao contestTypeAttributeDao;
@@ -40,77 +43,89 @@ public class AdminController {
         this.contestTypeAttributeDao = contestTypeAttributeDao;
     }
 
+    @Override
     @DeleteMapping("/notifications/{notificationId}")
-    public boolean deleteNotifications(@PathVariable long notificationId) throws NotFoundException {
-        return notificationsList.removeIf(notification -> notification.getNotificationId() == notificationId);
+    public boolean deleteNotifications(@PathVariable Long notificationId) {
+        return notificationsList
+                .removeIf(notification -> notification.getNotificationId() == notificationId);
     }
 
+    @Override
     @GetMapping("/notifications")
     public ArrayList<INotification> getNotifications() {
         notificationsList.removeIf(INotification::isExpired);
         return notificationsList;
     }
 
+    @Override
     @PostMapping("/notifications")
-    public void createNotification(@RequestBody INotification message) {
-        if (message.getEndTime().before(message.getBeginTime())) {
+    public void createNotification(@RequestBody INotification notification) {
+        if (notification.getEndTime().before(notification.getBeginTime())) {
             throw new IllegalArgumentException("Begin time cannot be after end time.");
         } else {
-            message.setNotificationId(++notificationCounter);
-            notificationsList.add(message);
+            notification.setNotificationId(++notificationCounter);
+            notificationsList.add(notification);
         }
     }
 
-    @GetMapping("/attributes/{attributeName}")
-    public IConfigurationAttribute getConfigurationAttribute(@PathVariable String attributeName,
-            @RequestParam(required = false) String locale)
-            throws NotFoundException {
-        return configurationAttributeDao.getConfigurationAttribute(attributeName, locale)
-                .orElseThrow(NotFoundException::new);
+    @Override
+    @GetMapping("/attributes/{name}")
+    public IConfigurationAttribute getConfigurationAttribute(@PathVariable String name,
+            @RequestParam(required = false) String locale) {
+        return configurationAttributeDao.getConfigurationAttribute(name, locale)
+                .<ConfigurationAttributeNotFoundException>orElseThrow(() -> {
+                    throw new ConfigurationAttributeNotFoundException(name);
+                });
     }
 
+    @Override
     @PostMapping("/attributes")
     public IConfigurationAttribute createConfigurationAttribute(
-            @RequestBody IConfigurationAttribute pojo) {
-        return configurationAttributeDao.create(pojo);
+            @RequestBody IConfigurationAttribute configurationAttribute) {
+        return configurationAttributeDao.create(configurationAttribute);
     }
 
-    @PutMapping("/attributes/{attributeName}")
-    public boolean updateConfigurationAttribute(@RequestBody IConfigurationAttribute pojo,
-            @PathVariable String attributeName)
-            throws NotFoundException {
-        Optional<IConfigurationAttribute> configurationAttribute =
-                configurationAttributeDao.getConfigurationAttribute(attributeName, null);
-        if (!configurationAttribute.isPresent()) {
-            configurationAttributeDao.create(pojo);
+    @Override
+    @PutMapping("/attributes")
+    public boolean updateConfigurationAttribute(
+            @RequestBody IConfigurationAttribute configurationAttribute) {
+        Optional<IConfigurationAttribute> result =
+                configurationAttributeDao
+                        .getConfigurationAttribute(configurationAttribute.getName(), null);
+        if (!result.isPresent()) {
+            configurationAttributeDao.create(configurationAttribute);
         }
-        return configurationAttributeDao.update(pojo);
+        return configurationAttributeDao.update(configurationAttribute);
     }
 
+    @Override
     @GetMapping("/contestTypeAttributes")
     public List<IContestTypeAttribute> listContestTypeAttributes() {
         return contestTypeAttributeDao.list();
     }
 
+    @Override
     @GetMapping("/contestTypeAttributes/{attributeName}")
     public IContestTypeAttribute getContestTypeAttribute(@PathVariable String attributeName,
-            @RequestParam long additionalId,
-            @RequestParam(required = false) String locale)
-            throws NotFoundException {
+            @RequestParam Long additionalId, @RequestParam(required = false) String locale) {
         return contestTypeAttributeDao.get(attributeName, additionalId, locale)
-                .orElseThrow(NotFoundException::new);
+                .<ContestTypeAttributeNotFoundException>orElseThrow(() -> {
+                    throw new ContestTypeAttributeNotFoundException(attributeName, additionalId,
+                            locale);
+                });
     }
 
+    @Override
     @PostMapping("/contestTypeAttributes")
     public IContestTypeAttribute createContestTypeAttribute(
-            @RequestBody IContestTypeAttribute pojo) {
-        return contestTypeAttributeDao.create(pojo);
+            @RequestBody IContestTypeAttribute contestTypeAttribute) {
+        return contestTypeAttributeDao.create(contestTypeAttribute);
     }
 
-    @PutMapping("/contestTypeAttributes/{attributeName}")
-    public boolean updateContestTypeAttribute(@RequestBody IConfigurationAttribute pojo,
-            @PathVariable String attributeName)
-            throws NotFoundException {
-        return configurationAttributeDao.update(pojo);
+    @Override
+    @PutMapping("/contestTypeAttributes")
+    public boolean updateContestTypeAttribute(
+            @RequestBody IContestTypeAttribute contestTypeAttribute) {
+        return contestTypeAttributeDao.update(contestTypeAttribute);
     }
 }

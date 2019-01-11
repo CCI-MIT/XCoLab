@@ -2,7 +2,7 @@ package org.xcolab.client.admin.attributes.configuration;
 
 import org.springframework.util.Assert;
 
-import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.commons.attributes.i18n.LocalizableAttributeProvider;
 
@@ -23,22 +23,24 @@ class ConfigurationAttributeProvider
 
     @Override
     public IConfigurationAttribute get() {
-        return AdminClient.getConfigurationAttribute(name, null);
+        return StaticAdminContext.getAdminClient().getConfigurationAttribute(name, null);
     }
 
     @Override
     public IConfigurationAttribute get(long additionalId) {
-        throw new UnsupportedOperationException("Configuration Attributes don't support additional ids");
+        throw new UnsupportedOperationException(
+                "Configuration Attributes don't support additional ids");
     }
 
     @Override
     public IConfigurationAttribute get(String locale) {
-        return AdminClient.getConfigurationAttribute(name, locale);
+        return StaticAdminContext.getAdminClient().getConfigurationAttribute(name, locale);
     }
 
     @Override
     public IConfigurationAttribute get(String locale, long additionalId) {
-        throw new UnsupportedOperationException("Configuration Attributes don't support additional ids");
+        throw new UnsupportedOperationException(
+                "Configuration Attributes don't support additional ids");
     }
 
     @Override

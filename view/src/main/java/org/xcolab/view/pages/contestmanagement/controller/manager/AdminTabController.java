@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.pojo.Notification;
+import org.xcolab.client.admin.pojo.INotification;
+import org.xcolab.client.admin.pojo.tables.pojos.Notification;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -146,7 +147,7 @@ public class AdminTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        List<Notification> list = AdminClient.getNotifications();
+        List<INotification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
 
         model.addAttribute("buildCommit", ManifestUtil.getBuildCommit(servletContext)
@@ -332,11 +333,11 @@ public class AdminTabController extends AbstractTabController {
             return "redirect:" + tab.getTabUrl();
         }
 
-        Notification newNotification = new Notification();
+        INotification newNotification = new org.xcolab.client.admin.pojo.tables.pojos.Notification();
         newNotification.setNotificationText(notificationText);
         newNotification.setEndTime(endDate);
 
-        AdminClient.setNotifications(newNotification);
+        AdminClient.createNotification(newNotification);
 
         AlertMessage.CREATED.flash(request);
         return "redirect:" + tab.getTabUrl();

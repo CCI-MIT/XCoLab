@@ -1,65 +1,43 @@
 package org.xcolab.client.admin;
 
-import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.admin.pojo.INotification;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheName;
-import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
-public class AdminClient {
+@FeignClient("xcolab-admin-service")
+public interface AdminClient {
 
-    private static final RestResource<IConfigurationAttribute, String>
-            configurationAttributeResource = null; //CONFIGURATION_ATTRIBUTE("attributes")
+    @GetMapping("/notifications")
+    List<INotification> getNotifications();
 
-    private static final RestResource<INotification, String> notificationResource = null; //NOTIFICATIONS("notifications")
-
-    public static List<INotification> getNotifications() {
-        return notificationResource.list().execute();
+    default INotification getFirstNotification() {
+        return getNotifications().stream().findFirst().orElse(null);
     }
 
-    public static INotification getFirstNotification() {
-        return notificationResource.list()
-                .executeWithResult()
-                .getFirstIfExists();
-    }
+    @PostMapping("/notifications")
+    void createNotification(@RequestBody INotification notification);
 
-    public static void setNotifications(INotification notification) {
-        notificationResource.create(notification)
-                .execute();
-    }
+    @DeleteMapping("/notifications/{notificationId}")
+    boolean deleteNotifications(@PathVariable("notificationId") Long notificationId);
 
-    public static void deleteNotifications(String notificationId) {
-        notificationResource.delete(notificationId)
-                .execute();
-    }
+    @GetMapping("/attributes/{name}")
+    IConfigurationAttribute getConfigurationAttribute(@PathVariable("name") String name,
+            @RequestParam(value = "locale", required = false) String locale);
 
-    public static IConfigurationAttribute getConfigurationAttribute(String name, String locale) {
-        try {
-            return configurationAttributeResource.get(name)
-                    .optionalQueryParam("locale", locale)
-                    .withCache(CacheName.CONFIGURATION)
-                    .executeChecked();
-        } catch (EntityNotFoundException e) {
-            throw new ConfigurationAttributeNotFoundException(name);
-        }
-    }
+    @PostMapping("/attributes")
+    IConfigurationAttribute createConfigurationAttribute(
+            @RequestBody IConfigurationAttribute configurationAttribute);
 
-    public static IConfigurationAttribute createConfigurationAttribute(
-            IConfigurationAttribute configurationAttribute) {
-        return configurationAttributeResource.create(configurationAttribute).execute();
-    }
-
-    public static boolean updateConfigurationAttribute(
-            IConfigurationAttribute configurationAttribute) {
-        final Boolean result = configurationAttributeResource
-                .update(configurationAttribute, configurationAttribute.getName())
-                .cacheName(CacheName.CONFIGURATION).execute();
-        //TODO COLAB-2589: more fine grained cache control
-        ServiceRequestUtils.clearCache(CacheName.CONFIGURATION);
-        return result;
-    }
+    @PutMapping("/attributes")
+    boolean updateConfigurationAttribute(
+            @RequestBody IConfigurationAttribute configurationAttribute);
 }
