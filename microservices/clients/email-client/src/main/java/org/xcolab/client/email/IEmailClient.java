@@ -33,6 +33,7 @@ public interface IEmailClient {
         email.setReplyTo(((replyTo == null ? ("") : (replyTo))));
         email.setReplyToName(((replyToName == null ? ("") : (replyToName))));
         email.setReferenceId(referenceId);
+        sendEmail(email);
     }
 
 }

@@ -26,5 +26,5 @@ feign:
   client:
     config:
       feignName:
-        connectTimeout: 5000
-        readTimeout: 5000
+        connectTimeout: 160000000
+        readTimeout: 160000000
