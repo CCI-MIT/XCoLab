@@ -2,7 +2,7 @@ package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.email.EmailUtils;
+import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -70,7 +70,7 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
 
         final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
 
-        EmailUtils.getEmailClient().sendEmail(adminEmail,ConfigurationAttributeKey.COLAB_NAME.get(), adminEmail, emailSubject,
+        StaticEmailContext.getEmailClient().sendEmail(adminEmail,ConfigurationAttributeKey.COLAB_NAME.get(), adminEmail, emailSubject,
                 emailBody, true, null,null,null);
     }
 }

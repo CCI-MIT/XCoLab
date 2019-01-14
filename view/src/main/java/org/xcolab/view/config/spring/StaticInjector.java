@@ -9,7 +9,7 @@ import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.search.ISearchClient;
-import org.xcolab.client.email.EmailUtils;
+import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.email.IEmailClient;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.pages.search.paging.SearchDataPage;
@@ -40,6 +40,6 @@ public class StaticInjector implements ApplicationRunner {
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
         UpdateModelInputWidgetsBean.setModelingClient(modelingClient);
-        EmailUtils.setEmailClient(emailClient);
+        StaticEmailContext.setEmailClient(emailClient);
     }
 }

@@ -15,7 +15,7 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.email.EmailUtils;
+import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -358,7 +358,7 @@ public class ActivitySubscriptionEmailHelper {
             message += "<br /><br />" + unregisterFooter;
 
 
-            EmailUtils.getEmailClient()
+            StaticEmailContext.getEmailClient()
                     .sendEmail(fromEmail.getAddress(), ConfigurationAttributeKey.COLAB_NAME.get(),
                             toEmail.getAddress(),
                             TemplateReplacementUtil.replacePlatformConstants(subject),

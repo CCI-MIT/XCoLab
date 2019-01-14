@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.email.IEmailClient;
-import org.xcolab.client.email.pojo.Email;
+import org.xcolab.client.email.pojo.IEmail;
 import org.xcolab.model.tables.pojos.OutgoingEmail;
 import org.xcolab.service.emails.domain.OutgoingEmailDao;
 import org.xcolab.service.emails.util.EmailService;
@@ -20,7 +20,6 @@ import java.util.List;
 public class EmailsController implements IEmailClient {
 
     private final EmailService emailService;
-
     private final OutgoingEmailDao colabEmailDao;
 
     @Autowired
@@ -31,8 +30,7 @@ public class EmailsController implements IEmailClient {
 
     @Override
     @PostMapping("/emails/send")
-    public void sendEmail(@RequestBody Email email) {
-
+    public void sendEmail(@RequestBody IEmail email) {
         boolean shouldSendEmail = true;
         if (email.getTo().size() == 1) {
             List<OutgoingEmail> colabEmails = colabEmailDao
@@ -41,14 +39,14 @@ public class EmailsController implements IEmailClient {
             shouldSendEmail = colabEmails.isEmpty();
         }
 
-        createColabEmailFromEmail(email,shouldSendEmail);
+        createColabEmailFromEmail(email, shouldSendEmail);
         if (shouldSendEmail) {
             emailService.sendEmailToRecipient(email);
         }
-
     }
-    private void createColabEmailFromEmail(Email email, boolean sentStatus){
-        for(String recipient: email.getTo()) {
+
+    private void createColabEmailFromEmail(IEmail email, boolean sentStatus) {
+        for (String recipient : email.getTo()) {
             OutgoingEmail ce = new OutgoingEmail();
             ce.setSentAt(new Timestamp(new Date().getTime()));
             ce.setEmailBody(email.getEmailBody());

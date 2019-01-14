@@ -4,7 +4,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import org.xcolab.client.email.pojo.Email;
+import org.xcolab.client.email.pojo.IEmail;
+import org.xcolab.client.email.pojo.tables.pojos.Email;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +14,22 @@ import java.util.List;
 public interface IEmailClient {
 
     @PostMapping("/emails/send")
-    void sendEmail(@RequestBody Email email);
+    void sendEmail(@RequestBody IEmail email);
 
 
-    default void sendEmail(String from,String fromName, String to, String subject, String emailBody, Boolean isHtml, String replyTo, String replyToName, Long referenceId) {
+    default void sendEmail(String from, String fromName, String to, String subject,
+            String emailBody, Boolean isHtml, String replyTo, String replyToName,
+            Long referenceId) {
         List<String> toAdd = new ArrayList<>();
         toAdd.add(to);
-        sendEmail(from, fromName, toAdd, subject, emailBody, isHtml, replyTo, replyToName, referenceId);
+        sendEmail(from, fromName, toAdd, subject, emailBody, isHtml, replyTo, replyToName,
+                referenceId);
     }
 
-    default void sendEmail(String from, String fromName, List<String> to, String subject, String emailBody, Boolean isHtml, String replyTo, String replyToName, Long referenceId) {
-        Email email = new Email();
+    default void sendEmail(String from, String fromName, List<String> to, String subject,
+            String emailBody, Boolean isHtml, String replyTo, String replyToName,
+            Long referenceId) {
+        IEmail email = new Email();
         email.setFrom(from);
         email.setFromName(fromName);
         email.setTo(to);
