@@ -4,6 +4,7 @@ import org.springframework.util.Assert;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
+import org.xcolab.commons.attributes.exceptions.AttributeNotFoundException;
 import org.xcolab.commons.attributes.i18n.LocalizableAttributeProvider;
 
 class ConfigurationAttributeProvider
@@ -23,7 +24,12 @@ class ConfigurationAttributeProvider
 
     @Override
     public IConfigurationAttribute get() {
-        return StaticAdminContext.getAdminClient().getConfigurationAttribute(name, null);
+        return StaticAdminContext.getAdminClient()
+                .getConfigurationAttribute(name, null).<AttributeNotFoundException>orElseThrow(
+                        () -> {
+                            throw new AttributeNotFoundException(
+                                    "Attribute not found with name " + name);
+                        });
     }
 
     @Override
@@ -34,7 +40,13 @@ class ConfigurationAttributeProvider
 
     @Override
     public IConfigurationAttribute get(String locale) {
-        return StaticAdminContext.getAdminClient().getConfigurationAttribute(name, locale);
+        return StaticAdminContext.getAdminClient()
+                .getConfigurationAttribute(name, locale).<AttributeNotFoundException>orElseThrow(
+                        () -> {
+                            throw new AttributeNotFoundException(
+                                    "Attribute not found with name " + name + " and locale "
+                                            + locale);
+                        });
     }
 
     @Override

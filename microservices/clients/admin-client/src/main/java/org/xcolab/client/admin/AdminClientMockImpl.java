@@ -8,6 +8,7 @@ import org.xcolab.client.admin.pojo.INotification;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Profile("test")
@@ -29,7 +30,7 @@ public class AdminClientMockImpl implements AdminClient {
     }
 
     @Override
-    public IConfigurationAttribute getConfigurationAttribute(String name, String locale) {
+    public Optional<IConfigurationAttribute> getConfigurationAttribute(String name, String locale) {
         return null;
     }
 

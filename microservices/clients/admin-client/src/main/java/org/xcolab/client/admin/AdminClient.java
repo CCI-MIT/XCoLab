@@ -13,6 +13,7 @@ import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.admin.pojo.INotification;
 
 import java.util.List;
+import java.util.Optional;
 
 @FeignClient("xcolab-admin-service")
 public interface AdminClient {
@@ -31,7 +32,7 @@ public interface AdminClient {
     boolean deleteNotifications(@PathVariable("notificationId") Long notificationId);
 
     @GetMapping("/attributes/{name}")
-    IConfigurationAttribute getConfigurationAttribute(@PathVariable("name") String name,
+    Optional<IConfigurationAttribute> getConfigurationAttribute(@PathVariable("name") String name,
             @RequestParam(value = "locale", required = false) String locale);
 
     @PostMapping("/attributes")

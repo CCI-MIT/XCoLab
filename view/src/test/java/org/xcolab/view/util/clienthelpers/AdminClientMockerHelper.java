@@ -4,7 +4,8 @@ import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 
 import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
+
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Matchers.anyString;
@@ -17,8 +18,8 @@ public class AdminClientMockerHelper {
             Object[] arguments = invocation.getArguments();
             String key = (String) arguments[0];
 
-            // throw not found exception so the default value is used
-            throw new ConfigurationAttributeNotFoundException(key);
+            // return empty Optional so the default value is used
+            return Optional.empty();
         };
         Mockito.when(adminClient.getConfigurationAttribute(anyString(), anyString()))
                 .thenAnswer(answer);

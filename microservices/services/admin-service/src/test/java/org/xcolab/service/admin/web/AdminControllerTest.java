@@ -1,7 +1,6 @@
 package org.xcolab.service.admin.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,7 +24,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.service.admin.AdminTestUtils;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
@@ -124,10 +122,10 @@ public class AdminControllerTest {
     }
 
     @Test
-    public void shouldReturn404ForNotFoundConfigurationAttributeInGet() throws Exception {
-        exception.expectCause(IsInstanceOf.instanceOf(ConfigurationAttributeNotFoundException.class));
+    public void shouldReturnEmptyConfigurationAttributeInGet() throws Exception {
         this.mockMvc.perform(get("/attributes/ACTIVE_THEME")
-                .contentType(contentType).accept(contentType));
+                .contentType(contentType).accept(contentType))
+                .andExpect(status().isOk());
     }
 
     @Test

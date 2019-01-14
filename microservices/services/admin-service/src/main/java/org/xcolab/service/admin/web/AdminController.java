@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
-import org.xcolab.client.admin.exceptions.ContestTypeAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.IConfigurationAttribute;
 import org.xcolab.client.admin.pojo.IContestTypeAttribute;
 import org.xcolab.client.admin.pojo.INotification;
@@ -70,12 +68,9 @@ public class AdminController implements ContestTypeClient, AdminClient {
 
     @Override
     @GetMapping("/attributes/{name}")
-    public IConfigurationAttribute getConfigurationAttribute(@PathVariable String name,
+    public Optional<IConfigurationAttribute> getConfigurationAttribute(@PathVariable String name,
             @RequestParam(required = false) String locale) {
-        return configurationAttributeDao.getConfigurationAttribute(name, locale)
-                .<ConfigurationAttributeNotFoundException>orElseThrow(() -> {
-                    throw new ConfigurationAttributeNotFoundException(name);
-                });
+        return configurationAttributeDao.getConfigurationAttribute(name, locale);
     }
 
     @Override
@@ -106,13 +101,9 @@ public class AdminController implements ContestTypeClient, AdminClient {
 
     @Override
     @GetMapping("/contestTypeAttributes/{attributeName}")
-    public IContestTypeAttribute getContestTypeAttribute(@PathVariable String attributeName,
+    public Optional<IContestTypeAttribute> getContestTypeAttribute(@PathVariable String attributeName,
             @RequestParam Long additionalId, @RequestParam(required = false) String locale) {
-        return contestTypeAttributeDao.get(attributeName, additionalId, locale)
-                .<ContestTypeAttributeNotFoundException>orElseThrow(() -> {
-                    throw new ContestTypeAttributeNotFoundException(attributeName, additionalId,
-                            locale);
-                });
+        return contestTypeAttributeDao.get(attributeName, additionalId, locale);
     }
 
     @Override

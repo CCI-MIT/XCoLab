@@ -14,6 +14,7 @@ import org.xcolab.util.enums.Plurality;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @FeignClient("xcolab-admin-service")
@@ -23,7 +24,7 @@ public interface ContestTypeClient {
     List<IContestTypeAttribute> listContestTypeAttributes();
 
     @GetMapping("/contestTypeAttributes/{attributeName}")
-    IContestTypeAttribute getContestTypeAttribute(
+    Optional<IContestTypeAttribute> getContestTypeAttribute(
             @PathVariable("attributeName") String attributeName,
             @RequestParam("additionalId") Long additionalId,
             @RequestParam(value = "locale", required = false) String locale);

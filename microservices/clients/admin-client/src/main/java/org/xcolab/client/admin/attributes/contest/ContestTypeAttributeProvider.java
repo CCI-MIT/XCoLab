@@ -4,6 +4,7 @@ import org.springframework.util.Assert;
 
 import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.IContestTypeAttribute;
+import org.xcolab.commons.attributes.exceptions.AttributeNotFoundException;
 import org.xcolab.commons.attributes.i18n.LocalizableAttributeProvider;
 
 class ContestTypeAttributeProvider
@@ -29,7 +30,11 @@ class ContestTypeAttributeProvider
     @Override
     public IContestTypeAttribute get(long additionalId) {
         return StaticAdminContext.getContestTypeClient()
-                .getContestTypeAttribute(name, additionalId, null);
+                .getContestTypeAttribute(name, additionalId, null)
+                .<AttributeNotFoundException>orElseThrow(() -> {
+                    throw new AttributeNotFoundException(
+                            "ContestTypeAttribute not found with additionalId " + additionalId);
+                });
     }
 
     @Override
@@ -40,7 +45,12 @@ class ContestTypeAttributeProvider
     @Override
     public IContestTypeAttribute get(String locale, long additionalId) {
         return StaticAdminContext.getContestTypeClient()
-                .getContestTypeAttribute(name, additionalId, locale);
+                .getContestTypeAttribute(name, additionalId, locale)
+                .<AttributeNotFoundException>orElseThrow(() -> {
+                    throw new AttributeNotFoundException(
+                            "ContestTypeAttribute not found with locale  " + locale
+                                    + " and additionalId " + additionalId);
+                });
     }
 
     @Override

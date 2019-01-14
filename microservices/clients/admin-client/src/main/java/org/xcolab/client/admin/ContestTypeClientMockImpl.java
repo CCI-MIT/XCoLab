@@ -7,6 +7,7 @@ import org.xcolab.client.admin.pojo.IContestTypeAttribute;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Profile("test")
@@ -18,7 +19,7 @@ public class ContestTypeClientMockImpl implements ContestTypeClient {
     }
 
     @Override
-    public IContestTypeAttribute getContestTypeAttribute(String attributeName, Long additionalId,
+    public Optional<IContestTypeAttribute> getContestTypeAttribute(String attributeName, Long additionalId,
             String locale) {
         return null;
     }
