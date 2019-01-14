@@ -14,7 +14,6 @@
     <packaging>jar</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>edu.mit.cci.roma</groupId>
             <artifactId>client</artifactId>
@@ -31,9 +30,42 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>${spring-cloud.feign}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>xcolab-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>pojo-generator-maven-plugin</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.xcolab</groupId>
+                <artifactId>pojo-generator-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generatePojos</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <interfaceDirectory>src/main/java/org/xcolab/client/modeling/pojo</interfaceDirectory>
+                    <implementationPackageSuffix>tables.pojos</implementationPackageSuffix>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

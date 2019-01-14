@@ -10,10 +10,12 @@ import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.search.ISearchClient;
 import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
+import org.xcolab.view.pages.modeling.admin.form.UpdateModelInputWidgetsBean;
 import org.xcolab.view.pages.profile.utils.ActivitySubscriptionNameGenerator;
 import org.xcolab.view.pages.search.items.DiscussionSearchItem;
 import org.xcolab.view.pages.search.paging.SearchDataPage;
@@ -27,10 +29,12 @@ public class StaticInjector {
     @Autowired
     public StaticInjector(IFileClient fileClient, IContentClient contentClient,
             IThreadClient threadClient, ICommentClient commentClient,
-            ICategoryClient categoryClient, ISearchClient searchClient) {
+            ICategoryClient categoryClient, ISearchClient searchClient,
+            IModelingClient modelingClient) {
         // Module Internal
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
+        UpdateModelInputWidgetsBean.setModelingClient(modelingClient);
         ActivitySubscriptionNameGenerator.setClients(categoryClient, threadClient);
         DiscussionBaseActivityEntry.setThreadClient(threadClient);
         LoadThreadStartTag.setThreadClient(threadClient);
