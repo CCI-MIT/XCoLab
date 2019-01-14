@@ -1,7 +1,7 @@
-package org.xcolab.service.emails.domain;
+package org.xcolab.service.email.domain;
 
 import org.xcolab.model.tables.pojos.OutgoingEmail;
-import org.xcolab.service.emails.exceptions.NotFoundException;
+import org.xcolab.service.email.exceptions.NotFoundException;
 
 import java.util.List;
 

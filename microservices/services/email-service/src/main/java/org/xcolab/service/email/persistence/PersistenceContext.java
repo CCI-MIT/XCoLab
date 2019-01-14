@@ -1,4 +1,4 @@
-package org.xcolab.service.emails.persistence;
+package org.xcolab.service.email.persistence;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.jooq.impl.DataSourceConnectionProvider;

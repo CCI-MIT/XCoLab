@@ -1,4 +1,4 @@
-package org.xcolab.service.emails;
+package org.xcolab.service.email;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

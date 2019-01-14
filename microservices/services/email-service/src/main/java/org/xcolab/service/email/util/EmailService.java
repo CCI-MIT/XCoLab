@@ -1,4 +1,4 @@
-package org.xcolab.service.emails.util;
+package org.xcolab.service.email.util;
 
 import org.codemonkey.simplejavamail.MailException;
 import org.codemonkey.simplejavamail.Mailer;

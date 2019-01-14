@@ -1,4 +1,4 @@
-package org.xcolab.service.emails.domain;
+package org.xcolab.service.email.domain;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 
 import org.xcolab.model.tables.pojos.OutgoingEmail;
 import org.xcolab.model.tables.records.OutgoingEmailRecord;
-import org.xcolab.service.emails.exceptions.NotFoundException;
+import org.xcolab.service.email.exceptions.NotFoundException;
 
 import java.util.List;
 
