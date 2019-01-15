@@ -3,7 +3,7 @@ package org.xcolab.view.pages.contestmanagement.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;

@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activity.ActivitiesClient;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;

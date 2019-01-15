@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
-import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.exceptions.ActivitySubscriptionNotFoundException;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;

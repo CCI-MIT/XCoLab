@@ -2,8 +2,8 @@ package org.xcolab.view.pages.profile.wrappers;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;

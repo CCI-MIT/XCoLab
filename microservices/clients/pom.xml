@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>activities-client</module>
+        <module>activity-client</module>
         <module>admin-client</module>
         <module>content-client</module>
         <module>contestproposal-client</module>

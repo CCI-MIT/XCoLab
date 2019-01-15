@@ -2,7 +2,7 @@ package org.xcolab.view.util.entity;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.pojo.Member;
 

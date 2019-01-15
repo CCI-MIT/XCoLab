@@ -4,7 +4,7 @@ import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestPhaseNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;

@@ -1,6 +1,6 @@
 package org.xcolab.view.widgets.feeds.wrappers;
 
-import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.commons.time.DurationFormatter;
 import org.xcolab.util.activities.enums.ContestActivityType;

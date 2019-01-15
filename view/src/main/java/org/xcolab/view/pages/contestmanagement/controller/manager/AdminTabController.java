@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivitiesClientUtil;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.pojo.Notification;
 import org.xcolab.client.contest.ContestClientUtil;

@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.utils.context;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivitiesClient;
+import org.xcolab.client.activity.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;

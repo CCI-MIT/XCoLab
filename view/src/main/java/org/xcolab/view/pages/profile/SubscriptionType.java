@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.profile;
 
-import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;

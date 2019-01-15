@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.utils.picker;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;

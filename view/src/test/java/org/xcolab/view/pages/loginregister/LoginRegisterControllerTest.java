@@ -17,8 +17,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivitiesClient;
+import org.xcolab.client.activity.ActivitiesClientUtil;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;

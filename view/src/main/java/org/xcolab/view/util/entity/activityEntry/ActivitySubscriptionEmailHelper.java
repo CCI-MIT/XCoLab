@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.IActivityEntry;
-import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.pojo.IActivityEntry;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;

@@ -1,7 +1,7 @@
 package org.xcolab.view.util.entity;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.commons.GroupingHelper;
 
 import java.time.Duration;

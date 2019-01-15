@@ -1,6 +1,6 @@
 package org.xcolab.view.util.entity.activityEntry;
 
-import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.util.Arrays;

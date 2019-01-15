@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivitiesClientUtil;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.pojos.Contest;

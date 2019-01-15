@@ -37,7 +37,7 @@
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
-            <artifactId>activities-client</artifactId>
+            <artifactId>activity-client</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

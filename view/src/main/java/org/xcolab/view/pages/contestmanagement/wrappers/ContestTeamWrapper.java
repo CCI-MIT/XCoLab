@@ -3,7 +3,7 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;

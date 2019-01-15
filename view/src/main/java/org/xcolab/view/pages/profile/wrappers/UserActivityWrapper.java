@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.profile.wrappers;
 
-import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 
 import java.io.Serializable;

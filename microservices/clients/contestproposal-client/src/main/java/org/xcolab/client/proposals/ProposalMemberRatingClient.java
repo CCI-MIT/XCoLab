@@ -1,7 +1,7 @@
 package org.xcolab.client.proposals;
 
-import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivitiesClient;
+import org.xcolab.client.activity.ActivitiesClientUtil;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.SupportedProposal;

@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.profile.wrappers;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.profile.SubscriptionType;
 

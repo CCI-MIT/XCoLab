@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.permissions.SystemRole;
 import org.xcolab.client.members.pojo.Member;

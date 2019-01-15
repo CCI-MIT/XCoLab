@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.profile.wrappers;
 
-import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.view.pages.profile.SubscriptionType;
 import org.xcolab.view.pages.profile.utils.ActivitySubscriptionNameGenerator;
 
