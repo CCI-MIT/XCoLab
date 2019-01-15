@@ -1,181 +1,137 @@
 package org.xcolab.client.activity;
 
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.xcolab.client.activity.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activity.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.activity.pojo.tables.pojos.ActivityEntry;
-import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ActivityType;
-import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public final class ActivitiesClient {
+@FeignClient("xcolab-activity-service")
+public interface ActivitiesClient {
 
-    private final RestResource<IActivityEntry, Long> activityEntryResource = null;
-            // activityEntries
-    private final RestResource<IActivitySubscription, Long> activitySubscriptionResource = null;
-            // activitySubscriptions
+    RestResource<IActivitySubscription, Long> activitySubscriptionResource = null;
+    // activitySubscriptions
 
-    public IActivityEntry createActivityEntry(ActivityType activityType, long userId,
+    default IActivityEntry createActivityEntry(ActivityType activityType, Long userId,
             long categoryId) {
         return createActivityEntry(activityType, userId, categoryId, null);
     }
 
-    public IActivityEntry createActivityEntry(ActivityType activityType, long userId,
-            long categoryId, Long additionalId) {
+    default IActivityEntry createActivityEntry(ActivityType activityType, Long userId,
+            Long categoryId, Long additionalId) {
         IActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setActivityCategory(activityType.getCategory().name());
         activityEntry.setActivityType(activityType.name());
         activityEntry.setUserId(userId);
         activityEntry.setCategoryId(categoryId);
         activityEntry.setAdditionalId(additionalId);
-        return activityEntryResource.create(activityEntry).execute();
+        return createActivityEntry(activityEntry);
     }
 
-    public IActivityEntry getActivityEntry(Long activityEntryId)
-            throws ActivityEntryNotFoundException {
-        try {
-            return activityEntryResource.get(activityEntryId)
-                    .withCache(CacheKeys.of(IActivityEntry.class, activityEntryId),
-                            CacheName.MISC_REQUEST)
-                    .executeChecked();
-        } catch (EntityNotFoundException e) {
-            throw new ActivityEntryNotFoundException(
-                    "ActivityEntry with id " + activityEntryId + " not found.");
-        }
-    }
+    @PostMapping("/activityEntries")
+    IActivityEntry createActivityEntry(@RequestBody IActivityEntry activityEntry);
 
-    public List<IActivityEntry> getActivityEntries(Integer startRecord,
+    @GetMapping("/activityEntries/{activityEntryId}")
+    IActivityEntry getActivityEntry(@PathVariable("activityEntryId") Long activityEntryId)
+            throws ActivityEntryNotFoundException;
+
+    default List<IActivityEntry> getActivityEntries(Integer startRecord,
             Integer limitRecord, Long userId, List<Long> userIdsToExclude) {
-        return activityEntryResource.list()
-                .optionalQueryParam("startRecord", startRecord)
-                .optionalQueryParam("limitRecord", limitRecord)
-                .optionalQueryParam("userId", userId)
-                .optionalQueryParam("userIdsToExclude",
-                        IdListUtil.getStringFromIds(userIdsToExclude))
-                .execute();
+        return getActivities(startRecord, limitRecord, null, null, userId, userIdsToExclude, null,
+                null);
     }
 
-    public List<IActivityEntry> getActivityEntriesAfter(Date afterDate) {
+    default List<IActivityEntry> getActivityEntriesAfter(Date afterDate) {
         if (afterDate == null) {
             return null;
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        return activityEntryResource.list()
-                .queryParam("activitiesAfter", sdf.format(afterDate))
-                .execute();
+        return getActivities(null, null, null, null, null, null, null, sdf.format(afterDate));
     }
 
-    public int countActivities(Long userId, List<Long> userIdsToExclude) {
-        try {
-            return activityEntryResource.<IActivityEntry, Integer>collectionService("count",
-                    Integer.class)
-                    .optionalQueryParam("userId", userId)
-                    .optionalQueryParam("userIdsToExclude", userIdsToExclude)
-                    .withCache(CacheKeys.withClass(IActivityEntry.class)
-                                    .withParameter("userId", userId)
-                                    .withParameter("userIdsToExclude", userIdsToExclude)
-                                    .asCount(),
-                            CacheName.MISC_MEDIUM)
-                    .getChecked();
-        } catch (EntityNotFoundException e) {
-            return 0;
-        }
-    }
+    @GetMapping("/activityEntries")
+    List<IActivityEntry> getActivities(
+            @RequestParam(value = "startRecord", required = false) Integer startRecord,
+            @RequestParam(value = "limitRecord", required = false) Integer limitRecord,
+            @RequestParam(value = "activityCategory", required = false) String activityCategory,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "userId", required = false) Long userId,
+            @RequestParam(value = "userIdsToExclude", required = false) List<Long> userIdsToExclude,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "activitiesAfter", required = false) String activitiesAfter);
 
-    public IActivitySubscription getActivitySubscription(long activitySubscriptionId)
-            throws ActivitySubscriptionNotFoundException {
-        try {
-            return activitySubscriptionResource
-                    .get(activitySubscriptionId)
-                    .withCache(CacheKeys.of(IActivitySubscription.class, activitySubscriptionId),
-                            CacheName.MISC_REQUEST)
-                    .executeChecked();
-        } catch (EntityNotFoundException e) {
-            throw new ActivitySubscriptionNotFoundException(
-                    "ActivitySubscription with id " + activitySubscriptionId + " not found.");
-        }
-    }
+    @GetMapping("/count/activityEntries")
+    Integer countActivities(@RequestParam(value = "userId", required = false) Long userId,
+            @RequestParam(value = "userIdsToExclude", required = false)
+                    List<Long> userIdsToExclude);
 
-    public IActivitySubscription createActivitySubscription(
-            IActivitySubscription activitySubscription) {
-        return activitySubscriptionResource.create(activitySubscription).execute();
-    }
+    @GetMapping("/activitySubscriptions/{activitySubscriptionId}")
+    IActivitySubscription getActivitySubscription(
+            @PathVariable("activitySubscriptionId") Long activitySubscriptionId)
+            throws ActivitySubscriptionNotFoundException;
 
-    public boolean deleteSubscription(Long pk) {
-        return activitySubscriptionResource.delete(pk).execute();
-    }
+    @PostMapping("/activitySubscriptions")
+    IActivitySubscription createActivitySubscription(
+            @RequestBody IActivitySubscription activitySubscription);
 
-    public IActivitySubscription addSubscription(long userId, ActivityCategory activityCategory,
-            long categoryId, String extraInfo) {
+    default IActivitySubscription addSubscription(Long userId, ActivityCategory activityCategory,
+            Long categoryId, String extraInfo) {
         return addSubscription(userId, activityCategory, categoryId);
     }
 
-    public IActivitySubscription addSubscription(long userId, ActivityCategory activityCategory,
-            long categoryId) {
-        return activitySubscriptionResource
-                .collectionService("subscribe", IActivitySubscription.class)
-                .queryParam("receiverId", userId)
-                .queryParam("activityCategory", activityCategory)
-                .queryParam("categoryId", categoryId)
-                .post();
-    }
+    @PostMapping("/activitySubscriptions/subscribe")
+    IActivitySubscription addSubscription(@RequestParam("receiverId") Long receiverId,
+            @RequestParam("activityCategory") ActivityCategory activityCategory,
+            @RequestParam("categoryId") Long categoryId);
 
-    public boolean deleteSubscription(Long receiverId, ActivityCategory activityCategory,
-            Long categoryId) {
-        return activitySubscriptionResource.collectionService("deleteIfSubscribed", Boolean.class)
-                .queryParam("receiverId", receiverId)
-                .queryParam("activityCategory", activityCategory)
-                .queryParam("categoryId", categoryId)
-                .delete();
-    }
+    @DeleteMapping("/activitySubscriptions/deleteIfSubscribed")
+    public boolean deleteSubscription(
+            @RequestParam(value = "receiverId", required = false) Long receiverId,
+            @RequestParam(value = "activityCategory", required = false)
+                    ActivityCategory activityCategory,
+            @RequestParam(value = "categoryId", required = false) Long categoryId);
 
-    public boolean deleteSubscriptionById(Long subscriptionId) {
-        return activitySubscriptionResource.delete(subscriptionId).execute();
-    }
+    @DeleteMapping("/activitySubscriptions/{subscriptionId}")
+    boolean deleteActivitySubscription(@PathVariable("subscriptionId") Long subscriptionId);
 
-    public boolean batchDelete(ActivityCategory activityCategory, List<Long> categoryIds) {
-        return activitySubscriptionResource.collectionService("batchDelete", Boolean.class)
-                .queryParam("activityCategory", activityCategory)
-                .post(categoryIds);
-    }
+    @PostMapping("/activitySubscriptions/batchDelete")
+    boolean batchDelete(@RequestParam("activityCategory") ActivityCategory activityCategory,
+            @RequestBody List<Long> categoryIds);
 
-    public boolean isSubscribedToActivity(Long receiverId, ActivityCategory activityCategory,
-            Long categoryId) {
-        return activitySubscriptionResource.collectionService("isSubscribed", Boolean.class)
-                .queryParam("receiverId", receiverId)
-                .queryParam("activityCategory", activityCategory)
-                .queryParam("categoryId", categoryId)
-                .get();
-    }
+    @GetMapping("/activitySubscriptions/isSubscribed")
+    boolean isSubscribed(@RequestParam("") Long receiverId,
+            @RequestParam("activityCategory") ActivityCategory activityCategory,
+            @RequestParam("categoryId") Long categoryId);
 
-    public List<IActivitySubscription> getActivitySubscriptions(ActivityCategory activityCategory,
-            Long categoryId, Long receiverId) {
-        return activitySubscriptionResource.list()
-                .optionalQueryParam("activityCategory", activityCategory)
-                .optionalQueryParam("categoryId", categoryId)
-                .optionalQueryParam("receiverId", receiverId)
-                .execute();
-    }
+    @GetMapping("/activitySubscriptions")
+    List<IActivitySubscription> getActivitySubscriptions(
+            @RequestParam(value = "activityCategory", required = false)
+                    ActivityCategory activityCategory,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "receiverId", required = false) Long receiverId);
 
-    public List<IActivitySubscription> getActivitySubscriptionsForMember(Long userId) {
+    default List<IActivitySubscription> getActivitySubscriptionsForMember(Long userId) {
         return getActivitySubscriptions(null, null, userId);
     }
 
-    public List<IActivityEntry> getActivitiesByCategoryId(String activityCategory,
+    default List<IActivityEntry> getActivitiesByCategoryId(String activityCategory,
             Long categoryId) {
-        return activityEntryResource.list()
-                .queryParam("activityCategory", activityCategory)
-                .queryParam("categoryId", categoryId)
-                .execute();
+        return getActivities(null, null, activityCategory, categoryId, null, null, null, null);
     }
 }

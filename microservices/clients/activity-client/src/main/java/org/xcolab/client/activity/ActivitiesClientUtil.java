@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ActivitiesClientUtil {
 
-    private static final ActivitiesClient activitiesClient = new ActivitiesClient();
+    private static final ActivitiesClient activitiesClient = null;
 
     public static ActivitiesClient getClient() {
         return activitiesClient;
@@ -60,7 +60,7 @@ public class ActivitiesClientUtil {
     }
 
     public static boolean deleteSubscription(Long pk) {
-        return activitiesClient.deleteSubscription(pk);
+        return activitiesClient.deleteActivitySubscription(pk);
     }
 
     public static IActivitySubscription addSubscription(long userId,
@@ -78,8 +78,8 @@ public class ActivitiesClientUtil {
         return activitiesClient.batchDelete(activityCategory, categoryIds);
     }
 
-    public static boolean deleteSubscriptionById(Long subscriptionId) {
-        return activitiesClient.deleteSubscriptionById(subscriptionId);
+    public static boolean deleteActivitySubscription(Long subscriptionId) {
+        return activitiesClient.deleteActivitySubscription(subscriptionId);
     }
 
     public static boolean isSubscribedToActivity(Long receiverId,
@@ -89,7 +89,7 @@ public class ActivitiesClientUtil {
 
     public static boolean isSubscribedToActivity(Long receiverId, ActivityCategory activityCategory,
             Long categoryId) {
-        return activitiesClient.isSubscribedToActivity(receiverId, activityCategory, categoryId);
+        return activitiesClient.isSubscribed(receiverId, activityCategory, categoryId);
     }
 
     public static List<IActivitySubscription> getActivitySubscriptions(ActivityCategory

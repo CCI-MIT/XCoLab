@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.activity.ActivitiesClient;
+import org.xcolab.client.activity.exceptions.ActivityEntryNotFoundException;
+import org.xcolab.client.activity.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.service.activity.domain.activityEntry.ActivityEntryDao;
@@ -22,7 +25,7 @@ import org.xcolab.util.activities.enums.ActivityCategory;
 import java.util.List;
 
 @RestController
-public class ActivitiesController {
+public class ActivitiesController implements ActivitiesClient {
 
     @Autowired
     private ActivityEntryDao activityEntryDao;
@@ -33,17 +36,25 @@ public class ActivitiesController {
     @Autowired
     private ActivitiesService activitiesService;
 
+    @Override
     @PostMapping("/activityEntries")
     public IActivityEntry createActivityEntry(@RequestBody IActivityEntry activityEntry) {
         return this.activityEntryDao.create(activityEntry);
     }
 
+    @Override
     @GetMapping("/activityEntries/{activityEntryId}")
-    public IActivityEntry getActivityEntry(@PathVariable long activityEntryId)
-            throws NotFoundException {
-        return activityEntryDao.get(activityEntryId);
+    public IActivityEntry getActivityEntry(@PathVariable Long activityEntryId)
+            throws ActivityEntryNotFoundException {
+        try {
+            return activityEntryDao.get(activityEntryId);
+        } catch (NotFoundException e) {
+            throw new ActivityEntryNotFoundException(
+                    "ActivityEntry with id " + activityEntryId + " not found.");
+        }
     }
 
+    @Override
     @GetMapping("/activityEntries")
     public List<IActivityEntry> getActivities(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
@@ -65,45 +76,54 @@ public class ActivitiesController {
         }
     }
 
-    @GetMapping("/activityEntries/count")
-    public Integer getActivitiesCount(@RequestParam(required = false) Long userId,
+    @Override
+    @GetMapping("/count/activityEntries")
+    public Integer countActivities(@RequestParam(required = false) Long userId,
             @RequestParam(required = false) List<Long> userIdsToExclude) {
         return this.activityEntryDao.countByGiven(userId, userIdsToExclude);
     }
 
+    @Override
     @PostMapping("/activitySubscriptions")
     public IActivitySubscription createActivitySubscription(
             @RequestBody IActivitySubscription activitySubscription) {
         return this.activitySubscriptionDao.create(activitySubscription);
     }
 
+    @Override
     @PostMapping("/activitySubscriptions/subscribe")
-    public IActivitySubscription subscribe(@RequestParam long receiverId,
-            @RequestParam ActivityCategory activityCategory, @RequestParam long categoryId) {
+    public IActivitySubscription addSubscription(@RequestParam Long receiverId,
+            @RequestParam ActivityCategory activityCategory, @RequestParam Long categoryId) {
         return activitiesService.subscribe(receiverId, activityCategory, categoryId);
     }
 
+    @Override
     @GetMapping("/activitySubscriptions/{activitySubscriptionId}")
-    public IActivitySubscription getActivitySubscription(@PathVariable long activitySubscriptionId)
-            throws NotFoundException {
-        return activitySubscriptionDao.get(activitySubscriptionId)
-                .orElseThrow(NotFoundException::new);
+    public IActivitySubscription getActivitySubscription(@PathVariable Long activitySubscriptionId)
+            throws ActivitySubscriptionNotFoundException {
+        return activitySubscriptionDao
+                .get(activitySubscriptionId).orElseThrow(
+                        () -> new ActivitySubscriptionNotFoundException(
+                                "ActivitySubscription with id " + activitySubscriptionId
+                                        + " not found."));
     }
 
-    @DeleteMapping("/activitySubscriptions/{pk}")
-    public boolean deleteActivitySubscription(@PathVariable long pk) {
-        this.activitySubscriptionDao.delete(pk);
+    @Override
+    @DeleteMapping("/activitySubscriptions/{subscriptionId}")
+    public boolean deleteActivitySubscription(@PathVariable Long subscriptionId) {
+        this.activitySubscriptionDao.delete(subscriptionId);
         return true;
     }
 
+    @Override
     @DeleteMapping("/activitySubscriptions/deleteIfSubscribed")
-    public boolean deleteIfSubscribed(@RequestParam(required = false) Long receiverId,
+    public boolean deleteSubscription(@RequestParam(required = false) Long receiverId,
             @RequestParam(required = false) ActivityCategory activityCategory,
-            @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) Integer type) {
+            @RequestParam(required = false) Long categoryId) {
         return activitiesService.unsubscribe(receiverId, activityCategory, categoryId);
     }
 
+    @Override
     @PostMapping("/activitySubscriptions/batchDelete")
     public boolean batchDelete(@RequestParam ActivityCategory activityCategory,
             @RequestBody List<Long> categoryIds) {
@@ -111,15 +131,16 @@ public class ActivitiesController {
                 && activityEntryDao.delete(activityCategory, categoryIds);
     }
 
+    @Override
     @GetMapping("/activitySubscriptions/isSubscribed")
-    public boolean isSubscribed(@RequestParam ActivityCategory activityCategory,
-            @RequestParam long receiverId, @RequestParam long categoryId) {
-        return this.activitySubscriptionDao
-                .isSubscribed(activityCategory, receiverId, categoryId);
+    public boolean isSubscribed(@RequestParam Long receiverId,
+            @RequestParam ActivityCategory activityCategory, @RequestParam Long categoryId) {
+        return this.activitySubscriptionDao.isSubscribed(activityCategory, receiverId, categoryId);
     }
 
+    @Override
     @GetMapping("/activitySubscriptions")
-    public List<IActivitySubscription> getActivitySubscribers(
+    public List<IActivitySubscription> getActivitySubscriptions(
             @RequestParam(required = false) ActivityCategory activityCategory,
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long receiverId) {

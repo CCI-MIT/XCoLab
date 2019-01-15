@@ -82,7 +82,7 @@ public class ProposalsDisplayPermissions {
 
     private boolean isSubscribedToContest() {
         return contestPhase != null
-                && clientHelper.getActivitiesClient().isSubscribedToActivity(userId,
+                && clientHelper.getActivitiesClient().isSubscribed(userId,
                         ActivityCategory.CONTEST, contestPhase.getContestId());
     }
 

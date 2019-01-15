@@ -116,7 +116,6 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
 
     @Override
     public Integer countByGiven(Long userId, List<Long> userIdsToExclude) {
-
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(ACTIVITY_ENTRY)
                 .getQuery();

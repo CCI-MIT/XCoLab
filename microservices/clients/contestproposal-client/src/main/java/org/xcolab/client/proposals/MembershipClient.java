@@ -121,7 +121,7 @@ public class MembershipClient {
             activityClient.createActivityEntry(ProposalActivityType.MEMBER_ADDED, userId,
                     proposalId);
 
-            if (!activityClient.isSubscribedToActivity(userId, ActivityCategory.PROPOSAL,
+            if (!activityClient.isSubscribed(userId, ActivityCategory.PROPOSAL,
                     proposalId)) {
                 activityClient
                         .addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);

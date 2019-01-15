@@ -434,7 +434,7 @@ public final class ProposalClient {
     }
 
     public boolean isMemberSubscribedToProposal(long proposalId, long userId) {
-        return activitiesClient.isSubscribedToActivity(userId,
+        return activitiesClient.isSubscribed(userId,
                 ActivityCategory.PROPOSAL, proposalId);
     }
 
