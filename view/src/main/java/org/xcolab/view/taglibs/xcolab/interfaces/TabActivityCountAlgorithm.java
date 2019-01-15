@@ -1,7 +1,5 @@
 package org.xcolab.view.taglibs.xcolab.interfaces;
 
-import org.xcolab.client.flagging.FlaggingClient;
-
 import javax.servlet.http.HttpServletRequest;
 
 public interface TabActivityCountAlgorithm {
@@ -16,6 +14,7 @@ public interface TabActivityCountAlgorithm {
 
     TabActivityCountAlgorithm membersCount = (context, request) -> 0;
 
-    TabActivityCountAlgorithm flagCount =
-            (context, request) -> FlaggingClient.countReports(null, null, null, null, null);
+    // TODO: How to handle former static client functions in interface
+    // TabActivityCountAlgorithm flagCount =
+    //         (context, request) -> flaggingClient.countReports(null, null, null, null, null);
 }

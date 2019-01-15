@@ -1,13 +1,13 @@
 package org.xcolab.service.flagging.domain.report;
 
-import org.xcolab.model.tables.pojos.Report;
-import org.xcolab.service.flagging.wrappers.AggregatedReport;
+import org.xcolab.client.flagging.pojo.AggregatedReport;
+import org.xcolab.client.flagging.pojo.IReport;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
 
 public interface ReportDao {
-    List<Report> findByGiven(PaginationHelper paginationHelper, Long reporteruserId,
+    List<IReport> findByGiven(PaginationHelper paginationHelper, Long reporteruserId,
             Long manageruserId, String targetType, Long targetId, Long targetAdditionalId,
             String managerAction);
     List<AggregatedReport> findAggregatedByGiven(
@@ -15,9 +15,9 @@ public interface ReportDao {
             Long manageruserId, String targetType, Long targetId, Long targetAdditionalId,
             String managerAction);
 
-    Report get(long reportId);
-    boolean update(Report report);
-    Report create(Report report);
+    IReport get(long reportId);
+    boolean update(IReport report);
+    IReport create(IReport report);
 
     int getTotalWeight(String targetType, long targetId, long targetAdditionalId);
 

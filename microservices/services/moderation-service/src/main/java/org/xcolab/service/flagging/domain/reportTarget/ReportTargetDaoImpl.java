@@ -6,10 +6,12 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ReportTarget;
+import org.xcolab.client.flagging.pojo.IReportTarget;
 import org.xcolab.model.tables.records.ReportTargetRecord;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.flagging.TargetType;
+
+import org.xcolab.client.flagging.pojo.tables.pojos.ReportTarget;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
     private DSLContext dslContext;
 
     @Override
-    public List<ReportTarget> findByGiven(PaginationHelper paginationHelper, TargetType type) {
+    public List<IReportTarget> findByGiven(PaginationHelper paginationHelper, TargetType type) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(REPORT_TARGET)
                 .getQuery();
@@ -35,7 +37,7 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
     }
 
     @Override
-    public ReportTarget get(long reportTargetId) {
+    public IReportTarget get(long reportTargetId) {
         final Record record = dslContext.select()
                 .from(REPORT_TARGET)
                 .where(REPORT_TARGET.ID.eq(reportTargetId))
@@ -47,7 +49,7 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
     }
 
     @Override
-    public ReportTarget get(String type, String reason) {
+    public IReportTarget get(String type, String reason) {
         final Record record = dslContext.select()
                 .from(REPORT_TARGET)
                 .where(REPORT_TARGET.TYPE.eq(type).and(REPORT_TARGET.REASON.eq(reason)))
@@ -59,7 +61,7 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
     }
 
     @Override
-    public boolean update(ReportTarget reportTarget) {
+    public boolean update(IReportTarget reportTarget) {
         return dslContext
                 .update(REPORT_TARGET)
                 .set(REPORT_TARGET.TYPE, reportTarget.getType())
@@ -71,7 +73,7 @@ public class ReportTargetDaoImpl implements ReportTargetDao {
     }
 
     @Override
-    public ReportTarget create(ReportTarget reportTarget) {
+    public IReportTarget create(IReportTarget reportTarget) {
         final ReportTargetRecord record = dslContext.insertInto(REPORT_TARGET)
                 .set(REPORT_TARGET.TYPE, reportTarget.getType())
                 .set(REPORT_TARGET.REASON, reportTarget.getReason())

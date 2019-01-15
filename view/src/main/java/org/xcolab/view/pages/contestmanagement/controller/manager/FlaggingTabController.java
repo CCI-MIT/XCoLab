@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.flagging.IFlaggingClient;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
-import org.xcolab.client.flagging.pojo.ReportTarget;
+import org.xcolab.client.flagging.pojo.IReportTarget;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.commons.html.LabelValue;
@@ -42,6 +42,11 @@ public class FlaggingTabController extends AbstractTabController {
             LoggerFactory.getLogger(FlaggingTabController.class);
     static final private ContestManagerTabs tab = ContestManagerTabs.FLAGGING;
     static final private String TAB_VIEW = "contestmanagement/manager/flaggingTab";
+    private static IFlaggingClient flaggingClient;
+
+    public static void setFlaggingClient(IFlaggingClient flaggingClient) {
+        FlaggingTabController.flaggingClient = flaggingClient;
+    }
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -66,17 +71,17 @@ public class FlaggingTabController extends AbstractTabController {
         } else {
             model.addAttribute("reportTargetWrapper", new FlaggingReportTargetWrapper());
         }
-        final List<ReportTarget> reportTargets =
-                FlaggingClient.listReportTargets(0, Integer.MAX_VALUE);
+        final List<IReportTarget> reportTargets =
+                flaggingClient.listReportTargets(0, Integer.MAX_VALUE);
         List<LabelValue> selectionItems = new ArrayList<>();
-        for (ReportTarget reportTarget : reportTargets) {
-            selectionItems.add(new LabelValue(reportTarget.getReportTargetId(),
+        for (IReportTarget reportTarget : reportTargets) {
+            selectionItems.add(new LabelValue(reportTarget.getId(),
                     reportTarget.getType() + " - " + reportTarget.getReason()));
         }
         model.addAttribute("selectionItems", selectionItems);
 
         final List<AggregatedReport> reports =
-                FlaggingClient.listAggregatedReports(0, Integer.MAX_VALUE);
+                flaggingClient.listAggregatedReports(0, Integer.MAX_VALUE);
         final List<FlaggingReportWrapper> reportWrappers = new ArrayList<>();
         for (AggregatedReport report : reports) {
             reportWrappers.add(new FlaggingReportWrapper(report));
@@ -87,10 +92,10 @@ public class FlaggingTabController extends AbstractTabController {
     }
 
     private long getFirstReportTargetId() {
-        final List<ReportTarget> reportTargets =
-                FlaggingClient.listReportTargets(0, 1);
+        final List<IReportTarget> reportTargets =
+                flaggingClient.listReportTargets(0, 1);
         if (!reportTargets.isEmpty()) {
-            return reportTargets.get(0).getReportTargetId();
+            return reportTargets.get(0).getId();
         }
         return 0L;
     }
@@ -104,7 +109,7 @@ public class FlaggingTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
         long userId = MemberAuthUtil.getuserId(request);
-        FlaggingClient.handleReport(userId, managerAction, reportId);
+        flaggingClient.handleReport(userId, managerAction, reportId);
         AlertMessage.success("Report " + managerAction.name() + "D").flash(request);
         return "redirect:" + tab.getTabUrl();
     }
@@ -112,7 +117,7 @@ public class FlaggingTabController extends AbstractTabController {
     @PostMapping("tab/FLAGGING/update")
     public String updateEmailTemplateTabController(HttpServletRequest request, Model model,
             Member member, @ModelAttribute FlaggingReportTargetWrapper reportTargetWrapper,
-            BindingResult result, HttpServletResponse response) {
+            BindingResult result, HttpServletResponse response) throws ReportTargetNotFoundException {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -130,11 +135,11 @@ public class FlaggingTabController extends AbstractTabController {
     @PostMapping("tab/FLAGGING/delete/{reportTargetId}")
     public String deleteEmailTemplateTabController(HttpServletRequest request,
             HttpServletResponse response, Model model, Member member,
-            @PathVariable long reportTargetId) throws IOException {
+            @PathVariable long reportTargetId) throws IOException, ReportTargetNotFoundException {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        final boolean success = FlaggingClient.deleteReportTarget(reportTargetId);
+        final boolean success = flaggingClient.deleteReportTarget(reportTargetId);
         if (success) {
             return "redirect:" + tab.getTabUrl();
         } else {

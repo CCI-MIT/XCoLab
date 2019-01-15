@@ -11,10 +11,11 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.flagging.pojo.ReportTarget;
+import org.xcolab.client.flagging.IFlaggingClient;
+import org.xcolab.client.flagging.pojo.IReportTarget;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.view.pages.contestmanagement.controller.manager.FlaggingTabController;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 
 import java.util.List;
@@ -26,6 +27,11 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
     private static final Logger _log = LoggerFactory.getLogger(LoadThreadStartTag.class);
 
+    private static IFlaggingClient flaggingClient;
+
+    public static void setFlaggingClient(IFlaggingClient flaggingClient) {
+        LoadThreadStartTag.flaggingClient = flaggingClient;
+    }
     private long threadId;
     private long categoryId;
     private long categoryGroupId;
@@ -76,8 +82,8 @@ public class LoadThreadStartTag extends BodyTagSupport {
             pageContext.setAttribute("shareTitle", shareTitle);
             pageContext.setAttribute("newMessage", new NewMessageWrapper());
             pageContext.setAttribute("discussionPermissions", discussionPermissions);
-            final List<ReportTarget> reportTargets =
-                    FlaggingClient.listReportTargets(TargetType.COMMENT);
+            final List<IReportTarget> reportTargets =
+                    flaggingClient.listReportTargets(TargetType.COMMENT);
             pageContext.setAttribute("reportTargets", reportTargets);
 
         } catch (ThreadNotFoundException e) {

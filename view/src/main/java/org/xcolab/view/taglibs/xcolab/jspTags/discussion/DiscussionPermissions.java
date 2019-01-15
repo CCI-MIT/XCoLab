@@ -2,7 +2,7 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.flagging.IFlaggingClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -17,6 +17,12 @@ public class DiscussionPermissions {
     private static final int EDIT_GRACE_PERIOD_IN_MINUTES = 15;
 
     public static final String REQUEST_ATTRIBUTE_NAME = "DISCUSSION_PERMISSIONS";
+
+    private static IFlaggingClient flaggingClient;
+
+    public static void setFlaggingClient(IFlaggingClient flaggingClient) {
+        DiscussionPermissions.flaggingClient = flaggingClient;
+    }
 
     protected final long userId;
     private final boolean isGuest;
@@ -38,7 +44,7 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanReportMessage(Comment comment) {
-        return getCanReport() && comment.getAuthorUserId() != userId && FlaggingClient
+        return getCanReport() && comment.getAuthorUserId() != userId && flaggingClient
                 .countReports(userId, TargetType.COMMENT, comment.getId(), null, null)
                 == 0;
     }

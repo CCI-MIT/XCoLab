@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.flagging.pojo.IReport;
+import org.xcolab.client.flagging.pojo.IReportTarget;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -33,12 +35,12 @@ public class FlaggingService {
         this.reportTargetDao = reportTargetDao;
     }
 
-    public Report createReport(Report report) {
+    public IReport createReport(IReport report) {
         report.setCreatedAt(new Timestamp(new Date().getTime()));
         report = reportDao.create(report);
         int totalWeight = reportDao.getTotalWeight(report.getTargetType(), report.getTargetId(),
                 report.getTargetAdditionalId());
-        ReportTarget reportTarget = reportTargetDao.get(report.getTargetType(), report.getReason());
+        IReportTarget reportTarget = reportTargetDao.get(report.getTargetType(), report.getReason());
 
         if (reportTarget.getScreeningThreshold() != -1
                 && totalWeight >= reportTarget.getScreeningThreshold()) {
@@ -54,10 +56,10 @@ public class FlaggingService {
     }
 
     public boolean handleReport(long reportId, long manageruserId, ManagerAction managerAction) {
-        Report report = reportDao.get(reportId);
+        IReport report = reportDao.get(reportId);
         final TargetType targetType = TargetType.valueOf(report.getTargetType());
 
-        List<Report> equivalentReports = reportDao.findByGiven(PaginationHelper.EVERYTHING, null,
+        List<IReport> equivalentReports = reportDao.findByGiven(PaginationHelper.EVERYTHING, null,
                 null, targetType.name(), report.getTargetId(), report.getTargetAdditionalId(),
                 ManagerAction.PENDING.name());
 
@@ -92,7 +94,7 @@ public class FlaggingService {
             return false;
         }
 
-        for (Report singleReport : equivalentReports) {
+        for (IReport singleReport : equivalentReports) {
             singleReport.setManagerAction(managerAction.name());
             singleReport.setManagerUserId(manageruserId);
             singleReport.setManagerActionDate(actionDate);

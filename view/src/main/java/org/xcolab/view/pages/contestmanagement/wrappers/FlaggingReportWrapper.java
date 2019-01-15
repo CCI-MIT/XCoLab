@@ -8,7 +8,7 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.flagging.FlaggingClient;
+import org.xcolab.client.flagging.IFlaggingClient;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -25,6 +25,11 @@ public class FlaggingReportWrapper {
     private final AggregatedReport report;
     private ManagerAction managerAction = ManagerAction.PENDING;
 
+    private static IFlaggingClient flaggingClient;
+
+    public static void setFlaggingClient(IFlaggingClient flaggingClient) {
+        FlaggingReportWrapper.flaggingClient = flaggingClient;
+    }
     public FlaggingReportWrapper() {
         report = new AggregatedReport();
     }
@@ -87,11 +92,11 @@ public class FlaggingReportWrapper {
     }
 
     public void approveContent(long userId) {
-        FlaggingClient.handleReport(userId, ManagerAction.APPROVE, report.getFirstReportId());
+        flaggingClient.handleReport(userId, ManagerAction.APPROVE, report.getFirstReportId());
     }
 
     public void removeContent(long userId) {
-        FlaggingClient.handleReport(userId, ManagerAction.REMOVE, report.getFirstReportId());
+        flaggingClient.handleReport(userId, ManagerAction.REMOVE, report.getFirstReportId());
     }
 
     public long getFirstReportId() {

@@ -9,7 +9,7 @@ public class XColabServiceGeneratorStrategy extends XColabGeneratorStrategy {
 
     private static final String INTERFACE_PATH_FORMAT = "org.xcolab.client.%s.pojo.%s";
     //TODO: COLAB-2918: remove when new client/server architecture is used for all services
-    private static final List<String> clients = Arrays.asList("tracking", "content");
+    private static final List<String> clients = Arrays.asList("tracking", "content", "flagging");
 
     @Override
     public List<String> getJavaClassImplements(Definition definition, Mode mode) {

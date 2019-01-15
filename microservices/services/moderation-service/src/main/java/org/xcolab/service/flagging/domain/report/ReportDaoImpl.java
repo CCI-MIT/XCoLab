@@ -10,11 +10,15 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.Report;
+import org.xcolab.client.flagging.pojo.AggregatedReport;
+import org.xcolab.client.flagging.pojo.IReport;
+
+import org.xcolab.client.flagging.pojo.tables.pojos.Report;
+
 import org.xcolab.model.tables.records.ReportRecord;
-import org.xcolab.service.flagging.wrappers.AggregatedReport;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.commons.SortColumn;
+
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -29,7 +33,7 @@ public class ReportDaoImpl implements ReportDao {
     private DSLContext dslContext;
 
     @Override
-    public List<Report> findByGiven(PaginationHelper paginationHelper, Long reporteruserId,
+    public List<IReport> findByGiven(PaginationHelper paginationHelper, Long reporteruserId,
             Long manageruserId, String targetType, Long targetId, Long targetAdditionalId,
             String managerAction) {
         final SelectQuery<Record> query = dslContext.select()
@@ -178,7 +182,7 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
-    public Report get(long reportId) {
+    public IReport get(long reportId) {
         final Record record = dslContext.select()
                 .from(REPORT)
                 .where(REPORT.ID.eq(reportId))
@@ -190,7 +194,7 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
-    public boolean update(Report report) {
+    public boolean update(IReport report) {
         return dslContext
                 .update(REPORT)
                 .set(REPORT.REPORTER_USER_ID, report.getReporterUserId())
@@ -208,7 +212,7 @@ public class ReportDaoImpl implements ReportDao {
     }
 
     @Override
-    public Report create(Report report) {
+    public IReport create(IReport report) {
         final ReportRecord record = dslContext.insertInto(REPORT)
                 .set(REPORT.REPORTER_USER_ID, report.getReporterUserId())
                 .set(REPORT.TARGET_TYPE, report.getTargetType())
