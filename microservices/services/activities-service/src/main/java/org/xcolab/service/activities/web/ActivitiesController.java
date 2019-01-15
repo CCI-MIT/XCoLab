@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.model.tables.pojos.ActivitySubscription;
+import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activities.pojo.IActivitySubscription;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.service.activities.exceptions.NotFoundException;
@@ -34,18 +34,18 @@ public class ActivitiesController {
     private ActivitiesService activitiesService;
 
     @PostMapping("/activityEntries")
-    public ActivityEntry createActivityEntry(@RequestBody ActivityEntry activityEntry) {
+    public IActivityEntry createActivityEntry(@RequestBody IActivityEntry activityEntry) {
         return this.activityEntryDao.create(activityEntry);
     }
 
     @GetMapping("/activityEntries/{activityEntryId}")
-    public ActivityEntry getActivityEntry(@PathVariable long activityEntryId)
+    public IActivityEntry getActivityEntry(@PathVariable long activityEntryId)
             throws NotFoundException {
         return activityEntryDao.get(activityEntryId);
     }
 
     @GetMapping("/activityEntries")
-    public List<ActivityEntry> getActivities(@RequestParam(required = false) Integer startRecord,
+    public List<IActivityEntry> getActivities(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String activityCategory,
             @RequestParam(required = false) Long categoryId,
@@ -72,19 +72,19 @@ public class ActivitiesController {
     }
 
     @PostMapping("/activitySubscriptions")
-    public ActivitySubscription createActivitySubscription(
-            @RequestBody ActivitySubscription activitySubscription) {
+    public IActivitySubscription createActivitySubscription(
+            @RequestBody IActivitySubscription activitySubscription) {
         return this.activitySubscriptionDao.create(activitySubscription);
     }
 
     @PostMapping("/activitySubscriptions/subscribe")
-    public ActivitySubscription subscribe(@RequestParam long receiverId,
+    public IActivitySubscription subscribe(@RequestParam long receiverId,
             @RequestParam ActivityCategory activityCategory, @RequestParam long categoryId) {
         return activitiesService.subscribe(receiverId, activityCategory, categoryId);
     }
 
     @GetMapping("/activitySubscriptions/{activitySubscriptionId}")
-    public ActivitySubscription getActivitySubscription(@PathVariable long activitySubscriptionId)
+    public IActivitySubscription getActivitySubscription(@PathVariable long activitySubscriptionId)
             throws NotFoundException {
         return activitySubscriptionDao.get(activitySubscriptionId)
                 .orElseThrow(NotFoundException::new);
@@ -119,7 +119,7 @@ public class ActivitiesController {
     }
 
     @GetMapping("/activitySubscriptions")
-    public List<ActivitySubscription> getActivitySubscribers(
+    public List<IActivitySubscription> getActivitySubscribers(
             @RequestParam(required = false) ActivityCategory activityCategory,
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long receiverId) {

@@ -2,15 +2,15 @@ package org.xcolab.client.activities;
 
 import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
-import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activities.pojo.tables.pojos.ActivityEntry;
 import org.xcolab.commons.IdListUtil;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
-import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.text.SimpleDateFormat;
@@ -19,26 +19,19 @@ import java.util.List;
 
 public final class ActivitiesClient {
 
-    private  final RestResource<ActivityEntry, Long> activityEntryResource;
+    private final RestResource<IActivityEntry, Long> activityEntryResource = null;
+            // activityEntries
+    private final RestResource<IActivitySubscription, Long> activitySubscriptionResource = null;
+            // activitySubscriptions
 
-    private  final RestResource<ActivitySubscription, Long> activitySubscriptionResource;
-
-
-    public ActivitiesClient() {
-        activityEntryResource = new RestResource1<>(ActivityResource.ACTIVITY_ENTRY,
-                ActivityEntry.TYPES);
-        activitySubscriptionResource = new RestResource1<>(ActivityResource.ACTIVITY_SUBSCRIPTION,
-                ActivitySubscription.TYPES);
-    }
-
-    public ActivityEntry createActivityEntry(ActivityType activityType, long userId,
+    public IActivityEntry createActivityEntry(ActivityType activityType, long userId,
             long categoryId) {
         return createActivityEntry(activityType, userId, categoryId, null);
     }
 
-    public ActivityEntry createActivityEntry(ActivityType activityType, long userId,
+    public IActivityEntry createActivityEntry(ActivityType activityType, long userId,
             long categoryId, Long additionalId) {
-        ActivityEntry activityEntry = new ActivityEntry();
+        IActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setActivityCategory(activityType.getCategory().name());
         activityEntry.setActivityType(activityType.name());
         activityEntry.setUserId(userId);
@@ -47,11 +40,11 @@ public final class ActivitiesClient {
         return activityEntryResource.create(activityEntry).execute();
     }
 
-    public  ActivityEntry getActivityEntry(Long activityEntryId)
+    public IActivityEntry getActivityEntry(Long activityEntryId)
             throws ActivityEntryNotFoundException {
         try {
             return activityEntryResource.get(activityEntryId)
-                    .withCache(CacheKeys.of(ActivityEntry.class, activityEntryId),
+                    .withCache(CacheKeys.of(IActivityEntry.class, activityEntryId),
                             CacheName.MISC_REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
@@ -60,17 +53,18 @@ public final class ActivitiesClient {
         }
     }
 
-    public  List<ActivityEntry> getActivityEntries(Integer startRecord,
+    public List<IActivityEntry> getActivityEntries(Integer startRecord,
             Integer limitRecord, Long userId, List<Long> userIdsToExclude) {
         return activityEntryResource.list()
                 .optionalQueryParam("startRecord", startRecord)
                 .optionalQueryParam("limitRecord", limitRecord)
                 .optionalQueryParam("userId", userId)
-                .optionalQueryParam("userIdsToExclude", IdListUtil.getStringFromIds(userIdsToExclude))
+                .optionalQueryParam("userIdsToExclude",
+                        IdListUtil.getStringFromIds(userIdsToExclude))
                 .execute();
     }
 
-    public  List<ActivityEntry> getActivityEntriesAfter(Date afterDate) {
+    public List<IActivityEntry> getActivityEntriesAfter(Date afterDate) {
         if (afterDate == null) {
             return null;
         }
@@ -83,10 +77,11 @@ public final class ActivitiesClient {
 
     public int countActivities(Long userId, List<Long> userIdsToExclude) {
         try {
-            return activityEntryResource.<ActivityEntry, Integer>collectionService("count", Integer.class)
+            return activityEntryResource.<IActivityEntry, Integer>collectionService("count",
+                    Integer.class)
                     .optionalQueryParam("userId", userId)
                     .optionalQueryParam("userIdsToExclude", userIdsToExclude)
-                    .withCache(CacheKeys.withClass(ActivityEntry.class)
+                    .withCache(CacheKeys.withClass(IActivityEntry.class)
                                     .withParameter("userId", userId)
                                     .withParameter("userIdsToExclude", userIdsToExclude)
                                     .asCount(),
@@ -97,13 +92,12 @@ public final class ActivitiesClient {
         }
     }
 
-    public  ActivitySubscription getActivitySubscription(long activitySubscriptionId)
+    public IActivitySubscription getActivitySubscription(long activitySubscriptionId)
             throws ActivitySubscriptionNotFoundException {
-
         try {
             return activitySubscriptionResource
                     .get(activitySubscriptionId)
-                    .withCache(CacheKeys.of(ActivitySubscription.class, activitySubscriptionId),
+                    .withCache(CacheKeys.of(IActivitySubscription.class, activitySubscriptionId),
                             CacheName.MISC_REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
@@ -112,22 +106,24 @@ public final class ActivitiesClient {
         }
     }
 
-    public  ActivitySubscription createActivitySubscription(
-            ActivitySubscription activitySubscription) {
+    public IActivitySubscription createActivitySubscription(
+            IActivitySubscription activitySubscription) {
         return activitySubscriptionResource.create(activitySubscription).execute();
     }
 
-    public  boolean deleteSubscription(Long pk) {
+    public boolean deleteSubscription(Long pk) {
         return activitySubscriptionResource.delete(pk).execute();
     }
 
-    public ActivitySubscription addSubscription(long userId, ActivityCategory activityCategory,
+    public IActivitySubscription addSubscription(long userId, ActivityCategory activityCategory,
             long categoryId, String extraInfo) {
         return addSubscription(userId, activityCategory, categoryId);
     }
 
-    public ActivitySubscription addSubscription(long userId, ActivityCategory activityCategory, long categoryId) {
-        return activitySubscriptionResource.collectionService("subscribe", ActivitySubscription.class)
+    public IActivitySubscription addSubscription(long userId, ActivityCategory activityCategory,
+            long categoryId) {
+        return activitySubscriptionResource
+                .collectionService("subscribe", IActivitySubscription.class)
                 .queryParam("receiverId", userId)
                 .queryParam("activityCategory", activityCategory)
                 .queryParam("categoryId", categoryId)
@@ -162,7 +158,7 @@ public final class ActivitiesClient {
                 .get();
     }
 
-    public List<ActivitySubscription> getActivitySubscriptions(ActivityCategory activityCategory,
+    public List<IActivitySubscription> getActivitySubscriptions(ActivityCategory activityCategory,
             Long categoryId, Long receiverId) {
         return activitySubscriptionResource.list()
                 .optionalQueryParam("activityCategory", activityCategory)
@@ -171,11 +167,12 @@ public final class ActivitiesClient {
                 .execute();
     }
 
-    public List<ActivitySubscription> getActivitySubscriptionsForMember(Long userId) {
+    public List<IActivitySubscription> getActivitySubscriptionsForMember(Long userId) {
         return getActivitySubscriptions(null, null, userId);
     }
 
-    public List<ActivityEntry> getActivitiesByCategoryId(String activityCategory, Long categoryId) {
+    public List<IActivityEntry> getActivitiesByCategoryId(String activityCategory,
+            Long categoryId) {
         return activityEntryResource.list()
                 .queryParam("activityCategory", activityCategory)
                 .queryParam("categoryId", categoryId)

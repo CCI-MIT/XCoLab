@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import org.xcolab.client.activities.pojo.IActivityEntry;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activities.exceptions.NotFoundException;
@@ -43,7 +44,7 @@ public class ActivityEntryDaoTest {
 
     @Test
     public void shouldCreateNewActivityEntry() throws Exception {
-        ActivityEntry ae = new ActivityEntry();
+        IActivityEntry ae = new ActivityEntry();
         ae.setUserId(2057710L);
         ae.setActivityType(ActivityCategory.MEMBER.name());
         ae.setActivityType(MemberActivityType.REGISTERED.name());
@@ -57,7 +58,7 @@ public class ActivityEntryDaoTest {
     public void shouldGetActivitiesAfterDate() throws Exception {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date dt = dateFormat.parse("2017-12-15 01:15:00");
-        final List<ActivityEntry> result = activityEntryDao.getActivitiesAfter(dt);
+        final List<IActivityEntry> result = activityEntryDao.getActivitiesAfter(dt);
         assertTrue(result.size() == 4);
     }
 
@@ -71,7 +72,7 @@ public class ActivityEntryDaoTest {
     @Test
     public void shouldFindByGivenuserId() throws Exception {
 
-        List<ActivityEntry> list = activityEntryDao.findByGiven(PaginationHelper.EVERYTHING, null,
+        List<IActivityEntry> list = activityEntryDao.findByGiven(PaginationHelper.EVERYTHING, null,
                 null, 2666739L, null);
         assertTrue(list.size() == 2);
     }

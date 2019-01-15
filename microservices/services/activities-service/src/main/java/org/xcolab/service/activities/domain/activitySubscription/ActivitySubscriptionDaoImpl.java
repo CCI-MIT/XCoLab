@@ -10,7 +10,8 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ActivitySubscription;
+import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activities.pojo.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
 import org.xcolab.util.activities.enums.ActivityCategory;
 
@@ -26,11 +27,12 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     private DSLContext dslContext;
 
     @Override
-    public ActivitySubscription create(ActivitySubscription activitySubscription) {
+    public IActivitySubscription create(IActivitySubscription activitySubscription) {
 
         ActivitySubscriptionRecord ret = this.dslContext.insertInto(ACTIVITY_SUBSCRIPTION)
                 .set(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID, activitySubscription.getClassNameId())
-                .set(ACTIVITY_SUBSCRIPTION.RECEIVER_USER_ID, activitySubscription.getReceiverUserId())
+                .set(ACTIVITY_SUBSCRIPTION.RECEIVER_USER_ID,
+                        activitySubscription.getReceiverUserId())
                 .set(ACTIVITY_SUBSCRIPTION.ACTIVITY_CATEGORY,
                         activitySubscription.getActivityCategory())
                 .set(ACTIVITY_SUBSCRIPTION.CATEGORY_ID, activitySubscription.getCategoryId())
@@ -45,11 +47,10 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
         } else {
             return null;
         }
-
     }
 
     @Override
-    public Optional<ActivitySubscription> get(Long activitySubscriptionId) {
+    public Optional<IActivitySubscription> get(Long activitySubscriptionId) {
         final Record record = this.dslContext.selectFrom(ACTIVITY_SUBSCRIPTION)
                 .where(ACTIVITY_SUBSCRIPTION.ID.eq(activitySubscriptionId)).fetchOne();
         if (record == null) {
@@ -59,14 +60,14 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     }
 
     @Override
-    public Optional<ActivitySubscription> get(ActivityCategory activityCategory, Long receiverId,
+    public Optional<IActivitySubscription> get(ActivityCategory activityCategory, Long receiverId,
             Long categoryId) {
         SelectQuery<Record> subscriptionsQuery = dslContext.select().from(ACTIVITY_SUBSCRIPTION)
                 .where(ACTIVITY_SUBSCRIPTION.RECEIVER_USER_ID.eq(receiverId))
                 .and(ACTIVITY_SUBSCRIPTION.ACTIVITY_CATEGORY.eq(activityCategory.name()))
                 .and(ACTIVITY_SUBSCRIPTION.CATEGORY_ID.eq(categoryId)).getQuery();
 
-        final List<ActivitySubscription> subscriptions =
+        final List<IActivitySubscription> subscriptions =
                 subscriptionsQuery.fetch().into(ActivitySubscription.class);
 
         if (subscriptions.isEmpty()) {
@@ -81,10 +82,11 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     }
 
     @Override
-    public boolean update(ActivitySubscription activitySubscription) {
+    public boolean update(IActivitySubscription activitySubscription) {
         return dslContext.update(ACTIVITY_SUBSCRIPTION)
                 .set(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID, activitySubscription.getClassNameId())
-                .set(ACTIVITY_SUBSCRIPTION.RECEIVER_USER_ID, activitySubscription.getReceiverUserId())
+                .set(ACTIVITY_SUBSCRIPTION.RECEIVER_USER_ID,
+                        activitySubscription.getReceiverUserId())
                 .set(ACTIVITY_SUBSCRIPTION.ACTIVITY_CATEGORY,
                         activitySubscription.getActivityCategory())
                 .set(ACTIVITY_SUBSCRIPTION.CATEGORY_ID, activitySubscription.getCategoryId())
@@ -115,7 +117,8 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     }
 
     @Override
-    public boolean delete(ActivityCategory activityCategory, List<Long> categoryIds) {// Delete proposal subscriptions
+    public boolean delete(ActivityCategory activityCategory,
+            List<Long> categoryIds) {// Delete proposal subscriptions
         return dslContext.deleteFrom(ACTIVITY_SUBSCRIPTION)
                 .where(ACTIVITY_SUBSCRIPTION.ACTIVITY_CATEGORY.eq(activityCategory.name()))
                 .and(ACTIVITY_SUBSCRIPTION.CATEGORY_ID.in(categoryIds))
@@ -132,17 +135,20 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     }
 
     @Override
-    public boolean isSubscribed(ActivityCategory activityCategory, long receiverId, Long categoryId) {
+    public boolean isSubscribed(ActivityCategory activityCategory, long receiverId,
+            Long categoryId) {
         final SelectQuery<Record1<Integer>> query =
                 dslContext.selectCount().from(ACTIVITY_SUBSCRIPTION)
                         .where(ACTIVITY_SUBSCRIPTION.RECEIVER_USER_ID.eq(receiverId)
-                                .and(ACTIVITY_SUBSCRIPTION.ACTIVITY_CATEGORY.eq(activityCategory.name()))
+                                .and(ACTIVITY_SUBSCRIPTION.ACTIVITY_CATEGORY
+                                        .eq(activityCategory.name()))
                                 .and(ACTIVITY_SUBSCRIPTION.CATEGORY_ID.eq(categoryId))).getQuery();
         return query.fetchOne(0, Integer.class) > 0;
     }
 
     @Override
-    public List<ActivitySubscription> getActivitySubscribers(ActivityCategory activityCategory, Long categoryId,
+    public List<IActivitySubscription> getActivitySubscribers(ActivityCategory activityCategory,
+            Long categoryId,
             Long receiverId) {
         if (receiverId == null || receiverId == 0) {
             return this.dslContext.select().from(ACTIVITY_SUBSCRIPTION)
@@ -154,6 +160,5 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
                     .where(ACTIVITY_SUBSCRIPTION.RECEIVER_USER_ID.eq(receiverId))
                     .fetchInto(ActivitySubscription.class);
         }
-
     }
 }

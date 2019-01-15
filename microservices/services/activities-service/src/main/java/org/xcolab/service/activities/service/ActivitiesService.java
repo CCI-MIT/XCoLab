@@ -6,12 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.activities.pojo.IActivitySubscription;
+import org.xcolab.client.activities.pojo.tables.pojos.ActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -34,7 +35,7 @@ public class ActivitiesService {
         this.activitySubscriptionDao = activitySubscriptionDao;
     }
 
-    public ActivitySubscription subscribe(long userId,
+    public IActivitySubscription subscribe(long userId,
             ActivityCategory activityCategory, long categoryId) {
         if (activitySubscriptionDao.isSubscribed(activityCategory, userId, categoryId)) {
             return activitySubscriptionDao
@@ -56,10 +57,10 @@ public class ActivitiesService {
         }
     }
 
-    private ActivitySubscription createSubscription(long receiverId,
+    private IActivitySubscription createSubscription(long receiverId,
             ActivityCategory activityCategory, long categoryId,
             int automaticSubscriptionCounter) {
-        ActivitySubscription activitySubscription = new ActivitySubscription();
+        IActivitySubscription activitySubscription = new ActivitySubscription();
         activitySubscription.setReceiverUserId(receiverId);
         activitySubscription.setActivityCategory(activityCategory.name());
         activitySubscription.setCategoryId(categoryId);
@@ -67,13 +68,13 @@ public class ActivitiesService {
         return activitySubscriptionDao.create(activitySubscription);
     }
 
-    private ActivitySubscription subscribeContest(long userId, long contestId) {
-        final ActivitySubscription contestSubscription = createSubscription(userId,
+    private IActivitySubscription subscribeContest(long userId, long contestId) {
+        final IActivitySubscription contestSubscription = createSubscription(userId,
                 ActivityCategory.CONTEST, contestId, 0);
 
         Contest contest = ContestClientUtil.getContest(contestId);
 
-        subscribeDiscussion(userId,contest.getDiscussionGroupId(), true);
+        subscribeDiscussion(userId, contest.getDiscussionGroupId(), true);
 
         final List<Proposal> proposals = ProposalClientUtil
                 .listProposals(contestId);
@@ -87,17 +88,17 @@ public class ActivitiesService {
         return contestSubscription;
     }
 
-    private ActivitySubscription subscribeProposal(long userId, long proposalId,
+    private IActivitySubscription subscribeProposal(long userId, long proposalId,
             boolean automatic) {
-        ActivitySubscription proposalSubscription;
+        IActivitySubscription proposalSubscription;
         if (automatic) {
-            final Optional<ActivitySubscription> automaticSubscription = activitySubscriptionDao
+            final Optional<IActivitySubscription> automaticSubscription = activitySubscriptionDao
                     .get(ActivityCategory.PROPOSAL, userId, proposalId);
             automaticSubscription.ifPresent(activitySubscription -> {
-                        final Integer counter = activitySubscription.getAutomaticSubscriptionCounter();
-                        activitySubscription.setAutomaticSubscriptionCounter(counter - 1);
-                        activitySubscriptionDao.update(activitySubscription);
-                    });
+                final Integer counter = activitySubscription.getAutomaticSubscriptionCounter();
+                activitySubscription.setAutomaticSubscriptionCounter(counter - 1);
+                activitySubscriptionDao.update(activitySubscription);
+            });
             proposalSubscription = automaticSubscription.orElseGet(() -> createSubscription(
                     userId, ActivityCategory.PROPOSAL, proposalId, 0));
 
@@ -116,11 +117,11 @@ public class ActivitiesService {
         return proposalSubscription;
     }
 
-    private ActivitySubscription subscribeDiscussion(long userId,
+    private IActivitySubscription subscribeDiscussion(long userId,
             long threadId, boolean automatic) {
-        ActivitySubscription discussionSubscription;
+        IActivitySubscription discussionSubscription;
         if (automatic) {
-            Optional<ActivitySubscription> automaticSubscription = activitySubscriptionDao.get(
+            Optional<IActivitySubscription> automaticSubscription = activitySubscriptionDao.get(
                     ActivityCategory.DISCUSSION, userId, threadId);
             automaticSubscription.ifPresent(activitySubscription -> {
                 final Integer counter = activitySubscription.getAutomaticSubscriptionCounter();
@@ -189,8 +190,9 @@ public class ActivitiesService {
         if (automatic) {
             activitySubscriptionDao.get(ActivityCategory.PROPOSAL, userId,
                     threadId)
-                    .ifPresent(activitySubscription ->  {
-                        final Integer counter = activitySubscription.getAutomaticSubscriptionCounter();
+                    .ifPresent(activitySubscription -> {
+                        final Integer counter =
+                                activitySubscription.getAutomaticSubscriptionCounter();
 
                         if (counter == 1) {
                             queries.add(activitySubscriptionDao.getDeleteQuery(
@@ -215,8 +217,9 @@ public class ActivitiesService {
         if (automatic) {
             activitySubscriptionDao
                     .get(ActivityCategory.PROPOSAL, userId, proposalId)
-                    .ifPresent(activitySubscription ->  {
-                        final Integer counter = activitySubscription.getAutomaticSubscriptionCounter();
+                    .ifPresent(activitySubscription -> {
+                        final Integer counter =
+                                activitySubscription.getAutomaticSubscriptionCounter();
 
                         if (counter == 1) {
                             queries.addAll(getProposalDeleteQueries(userId, proposalId));
@@ -233,7 +236,7 @@ public class ActivitiesService {
     }
 
     private List<DeleteFinalStep<ActivitySubscriptionRecord>> getProposalDeleteQueries(
-            long userId, long proposalId)  {
+            long userId, long proposalId) {
         final List<DeleteFinalStep<ActivitySubscriptionRecord>> queries = new ArrayList<>();
         queries.add(activitySubscriptionDao
                 .getDeleteQuery(ActivityCategory.PROPOSAL, userId, proposalId));

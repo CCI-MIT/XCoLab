@@ -15,12 +15,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import org.xcolab.client.activities.pojo.IActivitySubscription;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -87,7 +87,7 @@ public class ActivitiesServiceTest {
     @Test
     public void shouldSubscribeOnlyOnceForDiscussion() throws Exception {
 
-        ActivitySubscription as1 =
+        IActivitySubscription as1 =
             activitiesService.subscribe(1111, ActivityCategory.DISCUSSION, 222);
 
         assertTrue(ActivitySubscriptionDao
@@ -96,18 +96,18 @@ public class ActivitiesServiceTest {
     }
     @Test
     public void shouldSubscribeOnlyOnceForProposal() throws Exception {
-        ActivitySubscription asp1 =
+        IActivitySubscription asp1 =
             activitiesService.subscribe(11112, ActivityCategory.PROPOSAL, 2221);
-        ActivitySubscription asp2 =
+        IActivitySubscription asp2 =
             activitiesService.subscribe(11112, ActivityCategory.PROPOSAL, 2221);
         assertEquals(asp1.getId(), asp2.getId());
     }
 
     @Test
     public void shouldSubscribeOnlyOnceForContest() throws Exception {
-        ActivitySubscription asp3 =
+        IActivitySubscription asp3 =
             activitiesService.subscribe(111132, ActivityCategory.CONTEST,22241);
-        ActivitySubscription asp4 =
+        IActivitySubscription asp4 =
             activitiesService.subscribe(111132, ActivityCategory.CONTEST,22241);
         assertEquals(asp3.getId(),asp4.getId());
 
@@ -115,7 +115,7 @@ public class ActivitiesServiceTest {
     @Test
     public void shouldUnsubscribeDiscussion() throws Exception {
 
-        ActivitySubscription as1 =
+        IActivitySubscription as1 =
             activitiesService.subscribe(1111, ActivityCategory.DISCUSSION, 222);
             activitiesService.unsubscribe(1111, ActivityCategory.DISCUSSION, 222);
 
@@ -127,7 +127,7 @@ public class ActivitiesServiceTest {
     @Test
     public void shouldUnsubscribeProposal() throws Exception {
 
-        ActivitySubscription as1 =
+        IActivitySubscription as1 =
             activitiesService.subscribe(1111, ActivityCategory.PROPOSAL, 222);
 
         activitiesService.unsubscribe(1111, ActivityCategory.PROPOSAL, 222);
@@ -139,7 +139,7 @@ public class ActivitiesServiceTest {
     @Test
     public void shouldUnsubscribeContest() throws Exception {
 
-        ActivitySubscription as1 =
+        IActivitySubscription as1 =
             activitiesService.subscribe(1111, ActivityCategory.CONTEST, 222);
 
         activitiesService.unsubscribe(1111, ActivityCategory.CONTEST, 222);

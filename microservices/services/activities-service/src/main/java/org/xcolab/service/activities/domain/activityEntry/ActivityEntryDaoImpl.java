@@ -8,7 +8,8 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.ActivityEntry;
+import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activities.pojo.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.records.ActivityEntryRecord;
 import org.xcolab.service.activities.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -29,7 +30,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     public ActivityEntryDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
 
     @Override
-    public ActivityEntry create(ActivityEntry activityEntry) {
+    public IActivityEntry create(IActivityEntry activityEntry) {
         ActivityEntryRecord ret = this.dslContext.insertInto(ACTIVITY_ENTRY)
                 .set(ACTIVITY_ENTRY.USER_ID, activityEntry.getUserId())
                 .set(ACTIVITY_ENTRY.CREATED_AT, DSL.currentTimestamp())
@@ -48,7 +49,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     }
 
     @Override
-    public ActivityEntry get(Long activityEntryId) throws NotFoundException {
+    public IActivityEntry get(Long activityEntryId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(ACTIVITY_ENTRY)
                 .where(ACTIVITY_ENTRY.ID.eq(activityEntryId)).fetchOne();
@@ -62,7 +63,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     }
 
     @Override
-    public List<ActivityEntry> getActivitiesAfter(Date date) {
+    public List<IActivityEntry> getActivitiesAfter(Date date) {
         if (date == null) {
             return null;
         }
@@ -84,7 +85,7 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
     }
 
     @Override
-    public List<ActivityEntry> findByGiven(PaginationHelper paginationHelper,
+    public List<IActivityEntry> findByGiven(PaginationHelper paginationHelper,
             String activityCategory, Long categoryId, Long userId,
             List<Long> userIdsToExclude) {
         final SelectQuery<Record> query = dslContext.select()

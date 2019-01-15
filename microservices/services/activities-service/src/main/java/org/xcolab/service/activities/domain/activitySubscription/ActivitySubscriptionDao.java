@@ -3,7 +3,7 @@ package org.xcolab.service.activities.domain.activitySubscription;
 import org.jooq.DeleteFinalStep;
 import org.jooq.Query;
 
-import org.xcolab.model.tables.pojos.ActivitySubscription;
+import org.xcolab.client.activities.pojo.IActivitySubscription;
 import org.xcolab.model.tables.records.ActivitySubscriptionRecord;
 import org.xcolab.util.activities.enums.ActivityCategory;
 
@@ -12,14 +12,14 @@ import java.util.Optional;
 
 public interface ActivitySubscriptionDao {
 
-    ActivitySubscription create(ActivitySubscription activitySubscription);
+    IActivitySubscription create(IActivitySubscription activitySubscription);
 
-    Optional<ActivitySubscription> get(Long pk);
+    Optional<IActivitySubscription> get(Long pk);
 
-    Optional<ActivitySubscription> get(ActivityCategory activityCategory, Long receiverId,
+    Optional<IActivitySubscription> get(ActivityCategory activityCategory, Long receiverId,
             Long categoryId);
 
-    boolean update(ActivitySubscription activitySubscription);
+    boolean update(IActivitySubscription activitySubscription);
 
     void batch(List<? extends Query> queries);
 
@@ -36,6 +36,6 @@ public interface ActivitySubscriptionDao {
 
     boolean isSubscribed(ActivityCategory activityCategory, long receiverId, Long categoryId);
 
-    List<ActivitySubscription> getActivitySubscribers(ActivityCategory activityCategory,
+    List<IActivitySubscription> getActivitySubscribers(ActivityCategory activityCategory,
             Long categoryId, Long receiverId);
 }

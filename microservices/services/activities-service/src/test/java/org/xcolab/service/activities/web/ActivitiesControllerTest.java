@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import org.xcolab.client.activities.pojo.IActivitySubscription;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
@@ -125,7 +126,7 @@ public class ActivitiesControllerTest {
     @Test
     public void shouldCreateActivitySubscription() throws Exception {
 
-        ActivitySubscription activitySubscription = new ActivitySubscription();
+        IActivitySubscription activitySubscription = new ActivitySubscription();
         this.mockMvc.perform(
             post("/activitySubscriptions")
                 .contentType(contentType).accept(contentType)
@@ -153,7 +154,7 @@ public class ActivitiesControllerTest {
     @Test
     public void shouldGetActivitySubscription() throws Exception {
 
-        ActivitySubscription activitySubscription = new ActivitySubscription();
+        IActivitySubscription activitySubscription = new ActivitySubscription();
         this.mockMvc.perform(
             get("/activitySubscriptions/2343")
                 .contentType(contentType).accept(contentType))
@@ -165,7 +166,7 @@ public class ActivitiesControllerTest {
     @Test
     public void shouldDeleteActivitySubscription() throws Exception {
 
-        ActivitySubscription activitySubscription = new ActivitySubscription();
+        IActivitySubscription activitySubscription = new ActivitySubscription();
         this.mockMvc.perform(
             delete("/activitySubscriptions/2343")
                 .contentType(contentType).accept(contentType))
