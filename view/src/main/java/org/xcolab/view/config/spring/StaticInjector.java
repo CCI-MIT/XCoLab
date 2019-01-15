@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
 import org.xcolab.client.moderation.IModerationClient;
+import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.search.ISearchClient;
 import org.xcolab.view.moderation.ModerationController;
 import org.xcolab.view.pages.contestmanagement.controller.manager.FlaggingTabController;
@@ -17,6 +18,7 @@ import org.xcolab.view.pages.proposals.view.proposal.tabs.ProposalDescriptionTab
 import org.xcolab.view.pages.search.paging.SearchDataPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.LoadThreadStartTag;
+import org.xcolab.view.pages.modeling.admin.form.UpdateModelInputWidgetsBean;
 import org.xcolab.view.tags.LoadContentArticleTag;
 
 @Component
@@ -34,17 +36,20 @@ public class StaticInjector implements ApplicationRunner {
     @Autowired
     private IModerationClient moderationClient;
 
+    @Autowired
+    private IModelingClient modelingClient;
+
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
         SearchDataPage.setSearchClient(searchClient);
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
-
         FlaggingTabController.setmoderationClient(moderationClient);
         ModerationController.setmoderationClient(moderationClient);
         LoadThreadStartTag.setmoderationClient(moderationClient);
         ModerationReportWrapper.setmoderationClient(moderationClient);
         ProposalDescriptionTabController.setmoderationClient(moderationClient);
         DiscussionPermissions.setmoderationClient(moderationClient);
+        UpdateModelInputWidgetsBean.setModelingClient(modelingClient);
     }
 }
