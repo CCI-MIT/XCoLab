@@ -3,7 +3,7 @@ package org.xcolab.view.pages.profile.wrappers;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.activities.pojo.IActivityEntry;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
@@ -105,7 +105,7 @@ public class UserProfileWrapper implements Serializable {
         userActivities.clear();
         supportedProposals.addAll(ProposalMemberRatingClientUtil.getSupportedProposals(member.getId()));
 
-        for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
+        for (IActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
                 .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId(), null))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
@@ -257,8 +257,8 @@ public class UserProfileWrapper implements Serializable {
             for (ActivitySubscriptionWrapper subscription: userSubscriptions.getSubscriptions()) {
                 Long categoryId = subscription.getSubscription().getCategoryId();
                 String activityCategory = subscription.getSubscription().getActivityCategory();
-                List<ActivityEntry> activities = ActivitiesClientUtil.getActivitiesByCategoryId(activityCategory, categoryId);
-                for (ActivityEntry activity: activities) {
+                List<IActivityEntry> activities = ActivitiesClientUtil.getActivitiesByCategoryId(activityCategory, categoryId);
+                for (IActivityEntry activity: activities) {
                     UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
                     if (StringUtils.isNotBlank(a.getBody())) {
                         subscribedActivities.add(a);

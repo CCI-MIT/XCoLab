@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.activities.pojo.IActivityEntry;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
 
@@ -29,7 +29,7 @@ public class FeedsDumpGeneratingController {
     public void showFeed(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        final List<ActivityEntry> activityEntries = ActivitiesClientUtil
+        final List<IActivityEntry> activityEntries = ActivitiesClientUtil
                 .getActivityEntries(0, Integer.MAX_VALUE, null, null);
 
         try (ActivityCsvWriter csvWriter = new ActivityCsvWriter(response, activityEntryHelper)) {

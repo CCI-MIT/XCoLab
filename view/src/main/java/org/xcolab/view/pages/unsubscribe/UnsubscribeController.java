@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activities.pojo.IActivitySubscription;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.util.entity.NotificationUnregisterUtils;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.commons.servlet.flash.ErrorPage;
+import org.xcolab.view.util.entity.NotificationUnregisterUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,7 +50,7 @@ public class UnsubscribeController {
                         .flashAndReturnView(request);
             }
         }
-        ActivitySubscription subscription = null;
+        IActivitySubscription subscription = null;
         if (subscriptionId > 0) {
             try {
                 subscription = ActivitiesClientUtil.getActivitySubscription(subscriptionId);

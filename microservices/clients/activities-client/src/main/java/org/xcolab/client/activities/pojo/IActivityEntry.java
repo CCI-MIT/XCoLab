@@ -1,5 +1,10 @@
 package org.xcolab.client.activities.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.xcolab.util.activities.enums.ActivityCategory;
+import org.xcolab.util.activities.enums.ActivityType;
+
 import java.sql.Timestamp;
 
 public interface IActivityEntry {
@@ -47,4 +52,23 @@ public interface IActivityEntry {
     String getExtraData();
 
     void setExtraData(String extraData);
+
+    @JsonIgnore
+    default ActivityCategory getActivityCategoryEnum() {
+        //TODO COLAB-2486: once fixed, this can't be UNKNOWN
+        String activityCategory = getActivityCategory();
+        return activityCategory != null ? ActivityCategory.valueOf(activityCategory)
+                : ActivityCategory.UNKNOWN;
+    }
+
+    @JsonIgnore
+    default ActivityType getActivityTypeEnum() {
+        //TODO COLAB-2486: neither can be null once fixed
+        String activityCategory = getActivityCategory();
+        String activityType = getActivityType();
+        if (activityCategory != null && activityType != null) {
+            return getActivityCategoryEnum().getActivityType(activityType);
+        }
+        return null;
+    }
 }

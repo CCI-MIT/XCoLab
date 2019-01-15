@@ -1,6 +1,6 @@
 package org.xcolab.view.activityentry.provider;
 
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.activities.pojo.IActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -10,11 +10,11 @@ public abstract class AbstractActivityEntryContentProvider implements ActivityEn
 
     protected static final String HYPERLINK_FORMAT = "<a href=\"%s\">%s</a>";
 
-    private ActivityEntry activityEntry;
+    private IActivityEntry activityEntry;
     private Member user;
 
     @Override
-    public void initialize(ActivityEntry activityEntry) throws ActivityInitializationException {
+    public void initialize(IActivityEntry activityEntry) throws ActivityInitializationException {
         this.activityEntry = activityEntry;
         try {
             user = MembersClient.getMember(activityEntry.getUserId());
@@ -26,7 +26,7 @@ public abstract class AbstractActivityEntryContentProvider implements ActivityEn
 
     protected abstract void initializeInternal() throws ActivityInitializationException;
 
-    protected ActivityEntry getActivityEntry() {
+    protected IActivityEntry getActivityEntry() {
         return activityEntry;
     }
 

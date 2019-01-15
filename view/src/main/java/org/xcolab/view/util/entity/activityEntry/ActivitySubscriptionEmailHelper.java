@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activities.pojo.IActivityEntry;
+import org.xcolab.client.activities.pojo.IActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
@@ -129,11 +129,11 @@ public class ActivitySubscriptionEmailHelper {
     }
 
     private void sendInstantNotifications() {
-        List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
+        List<IActivityEntry> res = getActivitiesAfter(lastEmailNotification);
         if (!res.isEmpty()) {
             _log.info("Sending instant notifications for {} activities", res.size());
         }
-        for (ActivityEntry activity : res) {
+        for (IActivityEntry activity : res) {
             try {
                 sendInstantNotifications(activity);
             } catch (Throwable e) {
@@ -152,24 +152,24 @@ public class ActivitySubscriptionEmailHelper {
         // Send the daily digest at the predefined hour only
         if (now.minus(1, ChronoUnit.HOURS).isAfter(lastDailyEmailNotification)
                 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == dailyDigestTriggerHour) {
-            List<ActivityEntry> res = getActivitiesAfter(lastDailyEmailNotification);
+            List<IActivityEntry> res = getActivitiesAfter(lastDailyEmailNotification);
             sendDailyDigestNotifications(res);
             lastDailyEmailNotification = now;
         }
     }
 
-    private void sendDailyDigestNotifications(List<ActivityEntry> activities) {
-        Map<Long, List<ActivityEntry>> userActivitiesDigestMap =
+    private void sendDailyDigestNotifications(List<IActivityEntry> activities) {
+        Map<Long, List<IActivityEntry>> userActivitiesDigestMap =
                 getUserToActivityDigestMap(activities);
 
         String subject = StringUtils.replace(DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE,
                 DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER,
                 instantToFormattedString(lastDailyEmailNotification));
         // Send the digest to each user which is included in the set of subscriptions
-        for (Map.Entry<Long, List<ActivityEntry>> entry : userActivitiesDigestMap.entrySet()) {
+        for (Map.Entry<Long, List<IActivityEntry>> entry : userActivitiesDigestMap.entrySet()) {
             try {
                 final Member recipient = MembersClient.getMember(entry.getKey());
-                final List<ActivityEntry> userDigestActivities = entry.getValue();
+                final List<IActivityEntry> userDigestActivities = entry.getValue();
                 String body = getDigestMessageBody(userDigestActivities);
                 String unsubscribeFooter = getUnsubscribeDailyDigestFooter(
                         NotificationUnregisterUtils.getActivityUnregisterLink(recipient));
@@ -190,10 +190,10 @@ public class ActivitySubscriptionEmailHelper {
                 UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
     }
 
-    private String getDigestMessageBody(List<ActivityEntry> userDigestActivities) {
-        Comparator<ActivityEntry> activityCategoryComparator =
-                Comparator.comparing(ActivityEntry::getActivityCategory);
-        Comparator<ActivityEntry> socialActivityCreatedAtComparator =
+    private String getDigestMessageBody(List<IActivityEntry> userDigestActivities) {
+        Comparator<IActivityEntry> activityCategoryComparator =
+                Comparator.comparing(IActivityEntry::getActivityCategory);
+        Comparator<IActivityEntry> socialActivityCreatedAtComparator =
                 (o1, o2) -> (int) (o1.getCreatedAt().getTime() - o2.getCreatedAt().getTime());
 
         ComparatorChain comparatorChain = new ComparatorChain();
@@ -208,7 +208,7 @@ public class ActivitySubscriptionEmailHelper {
                     instantToFormattedString(lastDailyEmailNotification)));
             body.append("<br/><br/>");
 
-            for (ActivityEntry activityEntry : userDigestActivities) {
+            for (IActivityEntry activityEntry : userDigestActivities) {
                 //prevent null pointer exceptions which might happen at this point
                 if (activityEntry == null) {
                     continue;
@@ -246,14 +246,14 @@ public class ActivitySubscriptionEmailHelper {
         return body.toString();
     }
 
-    private Map<Long, List<ActivityEntry>> getUserToActivityDigestMap(
-            List<ActivityEntry> activities) {
-        Map<Long, List<ActivityEntry>> userDigestActivitiesMap = new HashMap<>();
+    private Map<Long, List<IActivityEntry>> getUserToActivityDigestMap(
+            List<IActivityEntry> activities) {
+        Map<Long, List<IActivityEntry>> userDigestActivitiesMap = new HashMap<>();
 
 
-        for (ActivityEntry activity : activities) {
+        for (IActivityEntry activity : activities) {
             // Aggregate all activities for all users
-            for (ActivitySubscription subscriptionObj : getActivitySubscribers(activity)) {
+            for (IActivitySubscription subscriptionObj : getActivitySubscribers(activity)) {
 
                 Long recipientId = subscriptionObj.getReceiverUserId();
 
@@ -266,7 +266,7 @@ public class ActivitySubscriptionEmailHelper {
                 if (messagingPreferences.getEmailOnActivity() && messagingPreferences
                         .getEmailActivityDailyDigest()) {
 
-                    List<ActivityEntry> userDigestActivities = userDigestActivitiesMap
+                    List<IActivityEntry> userDigestActivities = userDigestActivitiesMap
                             .computeIfAbsent(recipientId, k -> new ArrayList<>());
                     userDigestActivities.add(activity);
                 }
@@ -276,9 +276,9 @@ public class ActivitySubscriptionEmailHelper {
         return userDigestActivitiesMap;
     }
 
-    private List<ActivityEntry> getActivitiesAfter(Instant minDate) {
+    private List<IActivityEntry> getActivitiesAfter(Instant minDate) {
 
-        List<ActivityEntry> activityObjects =
+        List<IActivityEntry> activityObjects =
                 ActivitiesClientUtil.getActivityEntriesAfter(Date.from(minDate));
 
         // clean list of activities first in order not to send out activities concerning the same
@@ -289,16 +289,16 @@ public class ActivitySubscriptionEmailHelper {
         return h.process(activityObjects);
     }
 
-    private void sendInstantNotifications(ActivityEntry activity) {
+    private void sendInstantNotifications(IActivityEntry activity) {
 
         String subject = clearLinksInSubject(activityEntryHelper.getActivityTitle(activity)) + " ";
         String messageTemplate = activityEntryHelper.getActivityBody(activity);
 
         Set<Member> recipients = new HashSet<>();
-        Map<Long, ActivitySubscription> subscriptionsPerUser = new HashMap<>();
+        Map<Long, IActivitySubscription> subscriptionsPerUser = new HashMap<>();
 
         for (Object subscriptionObj : getActivitySubscribers(activity)) {
-            ActivitySubscription subscription = (ActivitySubscription) subscriptionObj;
+            IActivitySubscription subscription = (IActivitySubscription) subscriptionObj;
 
             if (subscription.getReceiverUserId() == activity.getUserId().longValue()) {
                 continue;
@@ -373,11 +373,11 @@ public class ActivitySubscriptionEmailHelper {
     }
 
 
-    private List<ActivitySubscription> getActivitySubscribers(ActivityEntry activity) {
+    private List<IActivitySubscription> getActivitySubscribers(IActivityEntry activity) {
 
-        List<ActivitySubscription> filteredResults = new ArrayList<>();
+        List<IActivitySubscription> filteredResults = new ArrayList<>();
 
-        List<ActivitySubscription> ret = ActivitiesClientUtil
+        List<IActivitySubscription> ret = ActivitiesClientUtil
                 .getActivitySubscriptions(activity.getActivityCategoryEnum(),
                         activity.getCategoryId(),null);
 
@@ -386,7 +386,7 @@ public class ActivitySubscriptionEmailHelper {
                 new ActivitySubscriptionConstraint(activity.getActivityTypeEnum());
         if (subscriptionConstraint.areSubscribersConstrained()) {
             for (Long userId : subscriptionConstraint.getWhitelist(activity.getCategoryId())) {
-                for (ActivitySubscription as : ret) {
+                for (IActivitySubscription as : ret) {
                     if (as.getReceiverUserId() == userId.longValue()) {
                         filteredResults.add(as);
                     }

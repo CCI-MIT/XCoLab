@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.xcolab.client.activities.ActivitiesClient;
-import org.xcolab.client.activities.pojo.ActivitySubscription;
+import org.xcolab.client.activities.pojo.IActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
@@ -73,10 +73,10 @@ public final class AddUpdateProposalControllerUtil {
                 ServiceRequestUtils.clearCache(CacheName.PROPOSAL_LIST_CLOSED);
             }
 
-            final List<ActivitySubscription> activitySubscriptions = activitiesClient
+            final List<IActivitySubscription> activitySubscriptions = activitiesClient
                     .getActivitySubscriptions(ActivityCategory.CONTEST,
                             contest.getId(), null);
-            for (ActivitySubscription activitySubscription : activitySubscriptions) {
+            for (IActivitySubscription activitySubscription : activitySubscriptions) {
                 final Long receiverId = activitySubscription.getReceiverUserId();
                 activitiesClient.addSubscription(receiverId, ActivityCategory.PROPOSAL,
                         proposal.getId(), "");

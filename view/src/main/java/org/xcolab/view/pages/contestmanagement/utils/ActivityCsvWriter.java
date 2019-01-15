@@ -3,13 +3,13 @@ package org.xcolab.view.pages.contestmanagement.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.activities.pojo.IActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.commons.CsvResponseWriter;
 import org.xcolab.util.activities.enums.ActivityType;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
-import org.xcolab.commons.CsvResponseWriter;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -48,11 +48,11 @@ public class ActivityCsvWriter extends CsvResponseWriter {
         this.activityEntryHelper = activityEntryHelper;
     }
 
-    public void writeActivities(Collection<ActivityEntry> activityEntries) {
+    public void writeActivities(Collection<IActivityEntry> activityEntries) {
         activityEntries.forEach(this::writeActivity);
     }
 
-    public void writeActivity(ActivityEntry activityEntry) {
+    public void writeActivity(IActivityEntry activityEntry) {
 
         final ActivityType activityType = activityEntry.getActivityTypeEnum();
         if (activityType != null) {
@@ -75,7 +75,7 @@ public class ActivityCsvWriter extends CsvResponseWriter {
         }
     }
 
-    private Member getMemberOrNull(ActivityEntry activityEntry) {
+    private Member getMemberOrNull(IActivityEntry activityEntry) {
         try {
             return MembersClient.getMember(activityEntry.getUserId());
         } catch (MemberNotFoundException e) {

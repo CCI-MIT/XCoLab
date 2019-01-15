@@ -1,5 +1,9 @@
 package org.xcolab.client.activities.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.xcolab.util.activities.enums.ActivityCategory;
+
 import java.sql.Timestamp;
 
 public interface IActivitySubscription {
@@ -43,4 +47,13 @@ public interface IActivitySubscription {
     Timestamp getUpdatedAt();
 
     void setUpdatedAt(Timestamp updatedAt);
+
+    @JsonIgnore
+    default ActivityCategory getActivityCategoryEnum() {
+        //TODO COLAB-2486: once fixed, this can't be UNKNOWN
+        String activityCategory = getActivityCategory();
+        return activityCategory != null ? ActivityCategory.valueOf(activityCategory)
+                : ActivityCategory.UNKNOWN;
+    }
+
 }
