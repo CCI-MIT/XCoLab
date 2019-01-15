@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.discussion.discussions.views;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,8 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activity.ActivitiesClient;
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivityClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
@@ -32,6 +32,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ThreadController extends BaseDiscussionController {
+
+    @Autowired
+    private ActivityClient activityClient;
 
     @GetMapping("/discussion/thread/{threadId}")
     public String showThread(HttpServletRequest request, HttpServletResponse response, Model model,
@@ -106,7 +109,6 @@ public class ThreadController extends BaseDiscussionController {
             comment = CommentClient.instance().createComment(comment);
 
             if (!thread.getIsQuiet()) {
-                final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
                 activityClient.createActivityEntry(DiscussionThreadActivityType.CREATED, userId,
                         thread.getId());
             }

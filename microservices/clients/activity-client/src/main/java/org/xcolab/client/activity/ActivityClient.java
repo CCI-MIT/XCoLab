@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @FeignClient("xcolab-activity-service")
-public interface ActivitiesClient {
+public interface ActivityClient {
 
     RestResource<IActivitySubscription, Long> activitySubscriptionResource = null;
     // activitySubscriptions

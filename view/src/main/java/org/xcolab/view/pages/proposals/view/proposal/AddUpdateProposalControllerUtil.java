@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
-import org.xcolab.client.activity.ActivitiesClient;
+import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
@@ -65,7 +66,7 @@ public final class AddUpdateProposalControllerUtil {
                 proposalContext, updateProposalSectionsBean, proposal, p2p, userId);
         proposalUpdateHelper.updateProposal();
 
-        final ActivitiesClient activitiesClient = clients.getActivitiesClient();
+        final ActivityClient activityClient = StaticActivityContext.getActivityClient();
         if (createNew) {
             boolean isAdmin = PermissionsClient.canAdminAll(userId);
             boolean isClosed = isProposalListClosed(contestPhase);
@@ -73,23 +74,23 @@ public final class AddUpdateProposalControllerUtil {
                 ServiceRequestUtils.clearCache(CacheName.PROPOSAL_LIST_CLOSED);
             }
 
-            final List<IActivitySubscription> activitySubscriptions = activitiesClient
+            final List<IActivitySubscription> activitySubscriptions = activityClient
                     .getActivitySubscriptions(ActivityCategory.CONTEST,
                             contest.getId(), null);
             for (IActivitySubscription activitySubscription : activitySubscriptions) {
                 final Long receiverId = activitySubscription.getReceiverUserId();
-                activitiesClient.addSubscription(receiverId, ActivityCategory.PROPOSAL,
-                        proposal.getId(), "");
+                activityClient.addSubscription(receiverId, ActivityCategory.PROPOSAL,
+                        proposal.getId());
 
             }
 
-            activitiesClient.createActivityEntry(ContestActivityType.PROPOSAL_CREATED, userId,
+            activityClient.createActivityEntry(ContestActivityType.PROPOSAL_CREATED, userId,
                     contest.getId(), proposal.getId());
 
             GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_CREATION);
 
         } else {
-            activitiesClient.createActivityEntry(ProposalActivityType.UPDATED, userId,
+            activityClient.createActivityEntry(ProposalActivityType.UPDATED, userId,
                     proposal.getId());
         }
 

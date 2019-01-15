@@ -1,6 +1,6 @@
 package org.xcolab.view.util.entity;
 
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.commons.GroupingHelper;
 
@@ -18,7 +18,7 @@ public class ActivityUtil {
     private static final long AGGREGATION_TIME_WINDOW = Duration.ofHours(1).getSeconds() * 1000;
 
     public static List<IActivityEntry> retrieveAllActivities(int pagestart, int next) {
-        return ActivitiesClientUtil.getActivityEntries(pagestart, next, null, null);
+        return StaticActivityContext.getActivityClient().getActivityEntries(pagestart, next, null, null);
     }
 
     public static List<IActivityEntry> groupActivities(List<IActivityEntry> activities) {
@@ -28,11 +28,11 @@ public class ActivityUtil {
     }
 
     public static int getAllActivitiesCount() {
-        return ActivitiesClientUtil.countActivities(null, null);
+        return StaticActivityContext.getActivityClient().countActivities(null, null);
     }
 
     public static int getActivitiesCount(long userId) {
-        return ActivitiesClientUtil.countActivities(userId, null);
+        return StaticActivityContext.getActivityClient().countActivities(userId, null);
     }
 
     private static List<IActivityEntry> clusterActivities(

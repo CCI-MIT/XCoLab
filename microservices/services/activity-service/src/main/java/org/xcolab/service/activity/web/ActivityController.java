@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.activity.ActivitiesClient;
+import org.xcolab.client.activity.ActivityClient;
 import org.xcolab.client.activity.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activity.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activity.pojo.IActivityEntry;
@@ -25,7 +25,7 @@ import org.xcolab.util.activities.enums.ActivityCategory;
 import java.util.List;
 
 @RestController
-public class ActivitiesController implements ActivitiesClient {
+public class ActivityController implements ActivityClient {
 
     @Autowired
     private ActivityEntryDao activityEntryDao;

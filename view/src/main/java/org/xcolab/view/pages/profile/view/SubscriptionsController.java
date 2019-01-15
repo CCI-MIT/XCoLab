@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivityClient;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -36,10 +36,13 @@ import javax.servlet.http.HttpServletResponse;
 public class SubscriptionsController {
 
     private final ActivityEntryHelper activityEntryHelper;
+    private final ActivityClient activityClient;
 
     @Autowired
-    public SubscriptionsController(ActivityEntryHelper activityEntryHelper) {
+    public SubscriptionsController(ActivityEntryHelper activityEntryHelper,
+            ActivityClient activityClient) {
         this.activityEntryHelper = activityEntryHelper;
+        this.activityClient = activityClient;
     }
 
     @GetMapping
@@ -100,7 +103,7 @@ public class SubscriptionsController {
 
         for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
             if (subscription.getSelected()) {
-                ActivitiesClientUtil.deleteSubscription(subscription.getSubscriptionPk());
+                activityClient.deleteActivitySubscription(subscription.getSubscriptionPk());
             }
         }
         response.sendRedirect("/members/profile/" + userId + "/subscriptions/manage");

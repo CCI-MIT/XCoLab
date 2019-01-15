@@ -2,7 +2,7 @@ package org.xcolab.view.pages.profile.wrappers;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -105,8 +105,9 @@ public class UserProfileWrapper implements Serializable {
         userActivities.clear();
         supportedProposals.addAll(ProposalMemberRatingClientUtil.getSupportedProposals(member.getId()));
 
-        for (IActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
-                .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId(), null))) {
+        for (IActivityEntry activity : ActivityUtil
+                .groupActivities(StaticActivityContext.getActivityClient()
+                        .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId(), null))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
             if (StringUtils.isNotBlank(a.getBody())) {
@@ -254,11 +255,12 @@ public class UserProfileWrapper implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
 
-            for (ActivitySubscriptionWrapper subscription: userSubscriptions.getSubscriptions()) {
+            for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
                 Long categoryId = subscription.getSubscription().getCategoryId();
                 String activityCategory = subscription.getSubscription().getActivityCategory();
-                List<IActivityEntry> activities = ActivitiesClientUtil.getActivitiesByCategoryId(activityCategory, categoryId);
-                for (IActivityEntry activity: activities) {
+                List<IActivityEntry> activities = StaticActivityContext.getActivityClient()
+                        .getActivitiesByCategoryId(activityCategory, categoryId);
+                for (IActivityEntry activity : activities) {
                     UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
                     if (StringUtils.isNotBlank(a.getBody())) {
                         subscribedActivities.add(a);
@@ -290,7 +292,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getUserActivityCount() {
-            return ActivitiesClientUtil.countActivities(getUserId(),null);
+            return StaticActivityContext.getActivityClient().countActivities(getUserId(),null);
     }
 
     public Long getUserId() {

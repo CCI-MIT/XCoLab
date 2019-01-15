@@ -35,11 +35,11 @@ import static org.mockito.Matchers.anyLong;
 @OverrideAutoConfiguration(enabled = false)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @PrepareForTest({
-    org.xcolab.client.proposals.ProposalClientUtil.class,
-    org.xcolab.client.contest.ContestClientUtil.class,
-    org.xcolab.client.contest.ContestClient.class,
-    org.xcolab.client.proposals.pojo.Proposal.class,
-    org.xcolab.client.contest.pojo.Contest.class
+        org.xcolab.client.proposals.ProposalClientUtil.class,
+        org.xcolab.client.contest.ContestClientUtil.class,
+        org.xcolab.client.contest.ContestClient.class,
+        org.xcolab.client.proposals.pojo.Proposal.class,
+        org.xcolab.client.contest.pojo.Contest.class
 })
 @ComponentScan("org.xcolab.service.activity")
 @ComponentScan("org.xcolab.client")
@@ -54,7 +54,6 @@ public class ActivitiesServiceTest {
 
     @Before
     public void setup() throws Exception {
-
         ServiceRequestUtils.setInitialized(true);
 
         PowerMockito.mockStatic(ProposalClientUtil.class);
@@ -63,89 +62,79 @@ public class ActivitiesServiceTest {
 
         PowerMockito.mockStatic(ContestClientUtil.class);
 
-
-
         Mockito.mock(Proposal.class);
 
         Mockito.when(ProposalClientUtil.getProposal(anyLong()))
-            .thenAnswer(invocation -> {
-                Proposal proposal = Mockito.mock(Proposal.class);
-                proposal.setDiscussionId(123456L);
-                return proposal;
-
-            });
+                .thenAnswer(invocation -> {
+                    Proposal proposal = Mockito.mock(Proposal.class);
+                    proposal.setDiscussionId(123456L);
+                    return proposal;
+                });
 
         Mockito.when(ContestClientUtil.getContest(anyLong()))
-            .thenAnswer(invocation -> {
-                Contest contest = Mockito.mock(Contest.class);
-                contest.setDiscussionGroupId(123123L);
-                return contest;
-
-            });
+                .thenAnswer(invocation -> {
+                    Contest contest = Mockito.mock(Contest.class);
+                    contest.setDiscussionGroupId(123123L);
+                    return contest;
+                });
     }
 
     @Test
     public void shouldSubscribeOnlyOnceForDiscussion() throws Exception {
-
         IActivitySubscription as1 =
-            activitiesService.subscribe(1111, ActivityCategory.DISCUSSION, 222);
+                activitiesService.subscribe(1111, ActivityCategory.DISCUSSION, 222);
 
         assertTrue(ActivitySubscriptionDao
-            .isSubscribed(ActivityCategory.DISCUSSION, 1111, 222L));
-
+                .isSubscribed(ActivityCategory.DISCUSSION, 1111, 222L));
     }
+
     @Test
     public void shouldSubscribeOnlyOnceForProposal() throws Exception {
         IActivitySubscription asp1 =
-            activitiesService.subscribe(11112, ActivityCategory.PROPOSAL, 2221);
+                activitiesService.subscribe(11112, ActivityCategory.PROPOSAL, 2221);
         IActivitySubscription asp2 =
-            activitiesService.subscribe(11112, ActivityCategory.PROPOSAL, 2221);
+                activitiesService.subscribe(11112, ActivityCategory.PROPOSAL, 2221);
         assertEquals(asp1.getId(), asp2.getId());
     }
 
     @Test
     public void shouldSubscribeOnlyOnceForContest() throws Exception {
         IActivitySubscription asp3 =
-            activitiesService.subscribe(111132, ActivityCategory.CONTEST,22241);
+                activitiesService.subscribe(111132, ActivityCategory.CONTEST, 22241);
         IActivitySubscription asp4 =
-            activitiesService.subscribe(111132, ActivityCategory.CONTEST,22241);
-        assertEquals(asp3.getId(),asp4.getId());
-
+                activitiesService.subscribe(111132, ActivityCategory.CONTEST, 22241);
+        assertEquals(asp3.getId(), asp4.getId());
     }
+
     @Test
     public void shouldUnsubscribeDiscussion() throws Exception {
-
         IActivitySubscription as1 =
-            activitiesService.subscribe(1111, ActivityCategory.DISCUSSION, 222);
-            activitiesService.unsubscribe(1111, ActivityCategory.DISCUSSION, 222);
+                activitiesService.subscribe(1111, ActivityCategory.DISCUSSION, 222);
+        activitiesService.unsubscribe(1111, ActivityCategory.DISCUSSION, 222);
 
         assertFalse(ActivitySubscriptionDao
-            .isSubscribed(ActivityCategory.DISCUSSION, 1111, 222L));
-
+                .isSubscribed(ActivityCategory.DISCUSSION, 1111, 222L));
     }
 
     @Test
     public void shouldUnsubscribeProposal() throws Exception {
-
         IActivitySubscription as1 =
-            activitiesService.subscribe(1111, ActivityCategory.PROPOSAL, 222);
+                activitiesService.subscribe(1111, ActivityCategory.PROPOSAL, 222);
 
         activitiesService.unsubscribe(1111, ActivityCategory.PROPOSAL, 222);
 
         assertFalse(ActivitySubscriptionDao
-            .isSubscribed(ActivityCategory.PROPOSAL, 1111, 222L));
-
+                .isSubscribed(ActivityCategory.PROPOSAL, 1111, 222L));
     }
+
     @Test
     public void shouldUnsubscribeContest() throws Exception {
-
         IActivitySubscription as1 =
-            activitiesService.subscribe(1111, ActivityCategory.CONTEST, 222);
+                activitiesService.subscribe(1111, ActivityCategory.CONTEST, 222);
 
         activitiesService.unsubscribe(1111, ActivityCategory.CONTEST, 222);
 
         assertFalse(ActivitySubscriptionDao
-            .isSubscribed(ActivityCategory.CONTEST, 1111, 222L));
-
+                .isSubscribed(ActivityCategory.CONTEST, 1111, 222L));
     }
 }

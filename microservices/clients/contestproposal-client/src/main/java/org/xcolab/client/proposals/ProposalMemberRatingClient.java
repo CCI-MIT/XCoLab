@@ -1,7 +1,6 @@
 package org.xcolab.client.proposals;
 
-import org.xcolab.client.activity.ActivitiesClient;
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.SupportedProposal;
@@ -94,11 +93,9 @@ public final class ProposalMemberRatingClient {
         supporter.setCreatedAt(new Timestamp(new Date().getTime()));
         createProposalSupporter(supporter);
 
-        ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
-
         if (publishActivity) {
-            activityClient.createActivityEntry(ProposalActivityType.SUPPORT_ADDED, userId,
-                    proposalId);
+            StaticActivityContext.getActivityClient()
+                    .createActivityEntry(ProposalActivityType.SUPPORT_ADDED, userId, proposalId);
         }
     }
 

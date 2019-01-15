@@ -3,14 +3,14 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activity.ActivitiesClient;
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivityClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
@@ -52,6 +52,8 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     private static final String COMMENT_ANALYTICS_ACTION = "Comment on contest entry";
     private static final String COMMENT_ANALYTICS_LABEL = "";
 
+    @Autowired
+    private ActivityClient activityClient;
 
     @PostMapping("/discussions/addDiscussionMessage")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,
@@ -70,8 +72,6 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         long userId = MemberAuthUtil.getuserId(request);
 
         try {
-            final ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
-
             long threadId = Long.parseLong(newMessage.getThreadId());
             CommentThread commentThread = ThreadClient.instance().getThread(threadId);
 

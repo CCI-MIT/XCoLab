@@ -1,7 +1,7 @@
 package org.xcolab.client.proposals;
 
-import org.xcolab.client.activity.ActivitiesClient;
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -116,7 +116,7 @@ public class MembershipClient {
                     .create(userId)
                     .execute();
 
-            ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
+            ActivityClient activityClient = StaticActivityContext.getActivityClient();
 
             activityClient.createActivityEntry(ProposalActivityType.MEMBER_ADDED, userId,
                     proposalId);
@@ -124,7 +124,7 @@ public class MembershipClient {
             if (!activityClient.isSubscribed(userId, ActivityCategory.PROPOSAL,
                     proposalId)) {
                 activityClient
-                        .addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
+                        .addSubscription(userId, ActivityCategory.PROPOSAL, proposalId);
 
             }
         } catch (Http409ConflictException ignored) {

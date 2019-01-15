@@ -17,8 +17,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.xcolab.client.activity.ActivitiesClient;
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
@@ -67,8 +67,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @PrepareForTest({
         AdminClient.class,
-        ActivitiesClient.class,
-        ActivitiesClientUtil.class,
+        ActivityClient.class,
         ContestTypeClient.class,
         ContestClientUtil.class,
         MembersClient.class,
@@ -87,14 +86,13 @@ public class LoginRegisterControllerTest {
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
-        PowerMockito.mockStatic(ActivitiesClient.class);
-        PowerMockito.mockStatic(ActivitiesClientUtil.class);
+        PowerMockito.mockStatic(ActivityClient.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
         PowerMockito.mockStatic(ContestTypeClient.class);
-
         PowerMockito.mockStatic(EmailClient.class);
-
         PowerMockito.mockStatic(MessagingClient.class);
+
+        StaticActivityContext.setActivityClient(Mockito.mock(ActivityClient.class));
 
         MembersClientMockerHelper.mockMembersClient();
         AdminClientMockerHelper.mockAdminClient();
@@ -102,7 +100,6 @@ public class LoginRegisterControllerTest {
 
         Mockito.when(ContestTypeClient.getAllContestTypes())
                 .thenReturn(new ArrayList<>());
-
         Mockito.when(ContestTypeClient.getContestType(anyLong()))
                 .thenReturn(new MockContestType(0));
         Mockito.when(ContestTypeClient.getContestType(anyLong(), anyString()))
@@ -117,7 +114,6 @@ public class LoginRegisterControllerTest {
 
     @Test
     public void registrationFailsWhenInvalidDataPostedAndSendsUserBackToForm() throws Exception {
-
         this.mockMvc.perform(post("/register")
                 .with(csrf())
                 .param("screenName", "")
@@ -136,7 +132,6 @@ public class LoginRegisterControllerTest {
 
     @Test
     public void registrationWorksAndDoLoginAndUserRedirectedToHome() throws Exception {
-
         this.mockMvc.perform(post("/register")
                 .with(csrf())
                 .param("screenName", "username")

@@ -1,7 +1,5 @@
 package org.xcolab.view.pages.proposals.utils.context;
 
-import org.xcolab.client.activity.ActivitiesClient;
-import org.xcolab.client.activity.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -47,9 +45,6 @@ public class ClientHelper {
     private final OntologyClient ontologyClient;
     private final ProposalTemplateClient proposalTemplateClient;
 
-    // Activity
-    private final ActivitiesClient activitiesClient;
-
     public ClientHelper() {
         proposalClient = ProposalClientUtil.getClient();
         membershipClient = MembershipClientUtil.getClient();
@@ -65,12 +60,6 @@ public class ClientHelper {
         impactClient = ImpactClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
         proposalTemplateClient = ProposalTemplateClientUtil.getClient();
-
-        activitiesClient = ActivitiesClientUtil.getClient();
-    }
-
-    public ActivitiesClient getActivitiesClient() {
-        return activitiesClient;
     }
 
     public ProposalClient getProposalClient() {
@@ -124,5 +113,4 @@ public class ClientHelper {
     public ProposalTemplateClient getProposalTemplateClient() {
         return proposalTemplateClient;
     }
-
 }

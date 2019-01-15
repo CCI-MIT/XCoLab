@@ -4,7 +4,7 @@ package org.xcolab.service.proposal.service.proposal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.ThreadClient;
@@ -121,7 +121,8 @@ public class ProposalService {
     }
 
     public void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
-        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
+        StaticActivityContext.getActivityClient()
+                .addSubscription(userId, ActivityCategory.PROPOSAL, proposalId);
     }
 
     private CommentThread createCommentThreadForProposal(String title, Long authorUserId, boolean isQuiet) {

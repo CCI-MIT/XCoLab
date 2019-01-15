@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.commons.SortColumn;
 import org.xcolab.model.tables.pojos.Contest;
@@ -374,7 +374,8 @@ public class ContestDaoImpl implements ContestDao {
         // Delete contest thread and comments.
         ThreadClient.instance().deleteThread(threadId);
         // Delete contest subscriptions and activity entries.
-        ActivitiesClientUtil.batchDelete(ActivityCategory.CONTEST, Collections.singletonList(contestId));
+        StaticActivityContext.getActivityClient()
+                .batchDelete(ActivityCategory.CONTEST, Collections.singletonList(contestId));
     }
 
     private static void deleteContestPhases(DSLContext ctx, long contestId) {
@@ -419,7 +420,8 @@ public class ContestDaoImpl implements ContestDao {
                 .where(PROPOSAL_VERSION.PROPOSAL_ID.in(proposalIds))
                 .execute();
         // Delete proposal subscriptions and activity entries.
-        ActivitiesClientUtil.batchDelete(ActivityCategory.PROPOSAL, proposalIds);
+        StaticActivityContext.getActivityClient()
+                .batchDelete(ActivityCategory.PROPOSAL, proposalIds);
         // Delete membership requests
         ctx.deleteFrom(PROPOSAL_TEAM_MEMBERSHIP_REQUEST)
                 .where(PROPOSAL_TEAM_MEMBERSHIP_REQUEST.PROPOSAL_ID.in(proposalIds))

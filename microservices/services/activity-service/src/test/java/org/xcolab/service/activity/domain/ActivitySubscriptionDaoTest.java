@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.activity.pojo.IActivitySubscription;
-import org.xcolab.model.tables.pojos.ActivitySubscription;
+import org.xcolab.client.activity.pojo.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activity.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.util.activities.enums.ActivityCategory;
 
@@ -65,7 +65,6 @@ public class ActivitySubscriptionDaoTest {
                 .getActivitySubscribers(ActivityCategory.PROPOSAL, 1003L, null);
         assertEquals(2, subscribers.size());
     }
-
 
     @Test
     public void shouldCheckIfIsSubscriber() {

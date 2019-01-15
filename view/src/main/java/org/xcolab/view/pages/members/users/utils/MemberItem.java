@@ -2,7 +2,7 @@ package org.xcolab.view.pages.members.users.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
@@ -22,9 +22,9 @@ public class MemberItem implements Serializable {
     private final MemberCategory memberCategory;
 
     public MemberItem(Member member, String memberCategoryParam) {
-
         userId = member.getId();
-        activityCount = ActivitiesClientUtil.countActivities(member.getId(), null);
+        activityCount = StaticActivityContext
+                .getActivityClient().countActivities(member.getId(), null);
         screenName = member.getDisplayName();
         joinDate = member.getCreatedAt();
         points = MembersClient.getMemberMaterializedPoints(userId);

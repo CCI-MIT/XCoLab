@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.permissions;
 
 
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -82,7 +83,7 @@ public class ProposalsDisplayPermissions {
 
     private boolean isSubscribedToContest() {
         return contestPhase != null
-                && clientHelper.getActivitiesClient().isSubscribed(userId,
+                && StaticActivityContext.getActivityClient().isSubscribed(userId,
                         ActivityCategory.CONTEST, contestPhase.getContestId());
     }
 

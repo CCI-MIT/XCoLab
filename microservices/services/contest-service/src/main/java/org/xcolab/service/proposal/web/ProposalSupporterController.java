@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.activity.ActivitiesClient;
-import org.xcolab.client.activity.ActivitiesClientUtil;
-import org.xcolab.util.activities.enums.ProposalActivityType;
+import org.xcolab.client.activity.ActivityClient;
 import org.xcolab.model.tables.pojos.ProposalSupporter;
 import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
 import org.xcolab.service.proposal.service.ProposalSupportService;
 import org.xcolab.service.proposal.service.ProposalSupportService.SupportedProposal;
+import org.xcolab.util.activities.enums.ProposalActivityType;
 
 import java.util.List;
 
@@ -22,12 +21,14 @@ public class ProposalSupporterController {
 
     private final ProposalSupporterDao proposalSupporterDao;
     private final ProposalSupportService proposalSupportService;
+    private final ActivityClient activityClient;
 
     @Autowired
     private ProposalSupporterController(ProposalSupporterDao proposalSupporterDao,
-            ProposalSupportService proposalSupportService) {
+            ProposalSupportService proposalSupportService, ActivityClient activityClient) {
         this.proposalSupporterDao = proposalSupporterDao;
         this.proposalSupportService = proposalSupportService;
+        this.activityClient = activityClient;
     }
 
     @RequestMapping(value = "/proposalSupporters", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -79,8 +80,7 @@ public class ProposalSupporterController {
     public Boolean deleteProposalSupporter(@RequestParam("proposalId") Long proposalId,
                                            @RequestParam("userId") Long userId) {
         this.proposalSupporterDao.delete(proposalId, userId);
-        final ActivitiesClient activitiesClient = ActivitiesClientUtil.getClient();
-        activitiesClient.createActivityEntry(ProposalActivityType.SUPPORT_REMOVED, userId,
+        activityClient.createActivityEntry(ProposalActivityType.SUPPORT_REMOVED, userId,
                 proposalId);
         return true;
     }

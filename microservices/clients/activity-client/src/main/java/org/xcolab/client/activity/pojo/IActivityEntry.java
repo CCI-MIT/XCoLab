@@ -1,12 +1,15 @@
 package org.xcolab.client.activity.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import org.xcolab.client.activity.pojo.tables.pojos.ActivityEntry;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ActivityType;
 
 import java.sql.Timestamp;
 
+@JsonDeserialize(as = ActivityEntry.class)
 public interface IActivityEntry {
 
     Long getId();

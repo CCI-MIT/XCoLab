@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivityClient;
 import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.permissions.SystemRole;
@@ -30,10 +30,12 @@ import javax.servlet.http.HttpServletResponse;
 public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
     private final ActivityEntryHelper activityEntryHelper;
+    private final ActivityClient activityClient;
 
     @Autowired
-    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper) {
+    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper, ActivityClient activityClient) {
         this.activityEntryHelper = activityEntryHelper;
+        this.activityClient = activityClient;
     }
 
     @Override
@@ -85,7 +87,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
         int startRetrievalAt = sortFilterPage.getPage() * pageSize;
         int endRetrievalAt = (sortFilterPage.getPage() + 1) * pageSize;
-        List<IActivityEntry> windowedActivities = ActivitiesClientUtil.getActivityEntries(
+        List<IActivityEntry> windowedActivities = activityClient.getActivityEntries(
                 startRetrievalAt, endRetrievalAt, filterUserId > 0 ? filterUserId : null,
                 new ArrayList<>(idsToExclude.keySet()));
 

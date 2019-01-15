@@ -4,7 +4,7 @@ import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestPhaseNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
@@ -670,16 +670,18 @@ public class ContestClient {
     }
 
     public boolean isMemberSubscribedToContest(long contestId, long userId) {
-        return ActivitiesClientUtil.isSubscribedToActivity(userId,
-                ActivityCategory.CONTEST, contestId, "");
+        return StaticActivityContext.getActivityClient().isSubscribed(userId,
+                ActivityCategory.CONTEST, contestId);
     }
 
     public void subscribeMemberToContest(long contestId, long userId) {
-        ActivitiesClientUtil.addSubscription(userId, ActivityCategory.CONTEST, contestId, "");
+        StaticActivityContext.getActivityClient()
+                .addSubscription(userId, ActivityCategory.CONTEST, contestId);
     }
 
     public void unsubscribeMemberFromContest(long contestId, long userId) {
-        ActivitiesClientUtil.deleteSubscription(userId, ActivityCategory.CONTEST, contestId);
+        StaticActivityContext.getActivityClient()
+                .deleteSubscription(userId, ActivityCategory.CONTEST, contestId);
     }
 
     public List<ContestCollectionCard> getSubContestCollectionCards(long parentCollectionCardId) {

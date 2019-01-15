@@ -7,7 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -100,10 +101,13 @@ public class ActivitySubscriptionEmailHelper {
                     + "<a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
     private final ActivityEntryHelper activityEntryHelper;
+    private final ActivityClient activityClient;
 
     @Autowired
-    public ActivitySubscriptionEmailHelper(ActivityEntryHelper activityEntryHelper) {
+    public ActivitySubscriptionEmailHelper(ActivityEntryHelper activityEntryHelper,
+            ActivityClient activityClient) {
         this.activityEntryHelper = activityEntryHelper;
+        this.activityClient = activityClient;
     }
 
     public void sendEmailNotifications() {
@@ -279,7 +283,7 @@ public class ActivitySubscriptionEmailHelper {
     private List<IActivityEntry> getActivitiesAfter(Instant minDate) {
 
         List<IActivityEntry> activityObjects =
-                ActivitiesClientUtil.getActivityEntriesAfter(Date.from(minDate));
+                activityClient.getActivityEntriesAfter(Date.from(minDate));
 
         // clean list of activities first in order not to send out activities concerning the same
         // proposal multiple times
@@ -377,7 +381,7 @@ public class ActivitySubscriptionEmailHelper {
 
         List<IActivitySubscription> filteredResults = new ArrayList<>();
 
-        List<IActivitySubscription> ret = ActivitiesClientUtil
+        List<IActivitySubscription> ret = StaticActivityContext.getActivityClient()
                 .getActivitySubscriptions(activity.getActivityCategoryEnum(),
                         activity.getCategoryId(),null);
 

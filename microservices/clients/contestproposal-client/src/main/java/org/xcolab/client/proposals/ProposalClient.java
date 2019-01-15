@@ -1,7 +1,7 @@
 package org.xcolab.client.proposals;
 
-import org.xcolab.client.activity.ActivitiesClient;
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClient;
@@ -41,7 +41,7 @@ public final class ProposalClient {
     //TODO COLAB-2600: methods that use this should be in the service!
     private final ContestClient contestClient;
 
-    private final ActivitiesClient activitiesClient;
+    private final ActivityClient activityClient;
 
     public ProposalClient() {
 
@@ -55,7 +55,7 @@ public final class ProposalClient {
                 ProposalReference.TYPES);
 
         contestClient = ContestClientUtil.getClient();
-        activitiesClient = ActivitiesClientUtil.getClient();
+        activityClient = StaticActivityContext.getActivityClient();
     }
 
     public Proposal createProposal(Proposal proposal) {
@@ -171,7 +171,6 @@ public final class ProposalClient {
                 .queryParam("userId", userId)
                 .delete();
 
-        ActivitiesClient activityClient = ActivitiesClientUtil.getClient();
         activityClient.createActivityEntry(ProposalActivityType.MEMBER_REMOVED, userId, proposalId);
     }
 
@@ -434,7 +433,7 @@ public final class ProposalClient {
     }
 
     public boolean isMemberSubscribedToProposal(long proposalId, long userId) {
-        return activitiesClient.isSubscribed(userId,
+        return activityClient.isSubscribed(userId,
                 ActivityCategory.PROPOSAL, proposalId);
     }
 
@@ -444,7 +443,7 @@ public final class ProposalClient {
     }
 
     private void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
-        activitiesClient.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId, null);
+        activityClient.addSubscription(userId, ActivityCategory.PROPOSAL, proposalId);
     }
 
     public void unsubscribeMemberFromProposal(long proposalId, long userId) {
@@ -453,7 +452,7 @@ public final class ProposalClient {
     }
 
     private void unsubscribeMemberFromProposal(long proposalId, long userId, boolean automatic) {
-        activitiesClient.deleteSubscription(userId, ActivityCategory.PROPOSAL, proposalId);
+        activityClient.deleteSubscription(userId, ActivityCategory.PROPOSAL, proposalId);
     }
 
     private static String convertListToGetParameter(List<Long> list, String parameterName) {

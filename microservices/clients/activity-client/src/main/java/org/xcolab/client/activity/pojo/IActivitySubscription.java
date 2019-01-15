@@ -1,11 +1,14 @@
 package org.xcolab.client.activity.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import org.xcolab.client.activity.pojo.tables.pojos.ActivitySubscription;
 import org.xcolab.util.activities.enums.ActivityCategory;
 
 import java.sql.Timestamp;
 
+@JsonDeserialize(as = ActivitySubscription.class)
 public interface IActivitySubscription {
 
     Long getId();
@@ -55,5 +58,4 @@ public interface IActivitySubscription {
         return activityCategory != null ? ActivityCategory.valueOf(activityCategory)
                 : ActivityCategory.UNKNOWN;
     }
-
 }

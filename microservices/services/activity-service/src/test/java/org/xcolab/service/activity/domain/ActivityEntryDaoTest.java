@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.activity.pojo.IActivityEntry;
-import org.xcolab.model.tables.pojos.ActivityEntry;
+import org.xcolab.client.activity.pojo.tables.pojos.ActivityEntry;
 import org.xcolab.service.activity.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activity.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
@@ -41,7 +41,6 @@ public class ActivityEntryDaoTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-
     @Test
     public void shouldCreateNewActivityEntry() throws Exception {
         IActivityEntry ae = new ActivityEntry();
@@ -64,14 +63,12 @@ public class ActivityEntryDaoTest {
 
     @Test
     public void shouldThrowExceptionOnGetActivityEntryNotFound() throws Exception {
-
         thrown.expect(NotFoundException.class);
         activityEntryDao.get(-1L);
     }
 
     @Test
     public void shouldFindByGivenuserId() throws Exception {
-
         List<IActivityEntry> list = activityEntryDao.findByGiven(PaginationHelper.EVERYTHING, null,
                 null, 2666739L, null);
         assertTrue(list.size() == 2);

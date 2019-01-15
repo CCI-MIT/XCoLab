@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import org.xcolab.client.activity.ActivitiesClientUtil;
+import org.xcolab.client.activity.ActivityClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -42,11 +42,14 @@ public class LoginRegisterService {
 
     private final AuthenticationService authenticationService;
     private final IBalloonClient balloonClient;
+    private final ActivityClient activityClient;
 
     @Autowired
-    public LoginRegisterService(AuthenticationService authenticationService, IBalloonClient balloonClient) {
+    public LoginRegisterService(AuthenticationService authenticationService,
+            IBalloonClient balloonClient, ActivityClient activityClient) {
         this.authenticationService = authenticationService;
         this.balloonClient = balloonClient;
+        this.activityClient = activityClient;
     }
 
     /**
@@ -118,7 +121,7 @@ public class LoginRegisterService {
     }
 
     public void recordRegistrationEvent(Member member) {
-        ActivitiesClientUtil.createActivityEntry(MemberActivityType.REGISTERED, member.getId(),
+        activityClient.createActivityEntry(MemberActivityType.REGISTERED, member.getId(),
                 member.getId());
 
         if (member.getFacebookId() != null) {
