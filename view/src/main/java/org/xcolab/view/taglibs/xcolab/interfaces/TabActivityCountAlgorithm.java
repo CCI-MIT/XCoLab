@@ -16,5 +16,5 @@ public interface TabActivityCountAlgorithm {
 
     // TODO: How to handle former static client functions in interface
     // TabActivityCountAlgorithm flagCount =
-    //         (context, request) -> flaggingClient.countReports(null, null, null, null, null);
+    //         (context, request) -> moderationClient.countReports(null, null, null, null, null);
 }

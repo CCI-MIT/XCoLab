@@ -17,7 +17,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.ProposalTemplateSectionDefinition;
-import org.xcolab.client.flagging.IFlaggingClient;
+import org.xcolab.client.moderation.IModerationClient;
 import org.xcolab.client.members.PlatformTeamsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
@@ -27,7 +27,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.commons.servlet.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.enums.moderation.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.enums.proposal.ProposalTemplateSectionType;
 import org.xcolab.view.errors.AccessDeniedPage;
@@ -63,10 +63,10 @@ import javax.validation.Valid;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalDescriptionTabController extends BaseProposalTabController {
 
-    private static IFlaggingClient flaggingClient;
+    private static IModerationClient moderationClient;
 
-    public static void setFlaggingClient(IFlaggingClient flaggingClient) {
-        ProposalDescriptionTabController.flaggingClient = flaggingClient;
+    public static void setmoderationClient(IModerationClient moderationClient) {
+        ProposalDescriptionTabController.moderationClient = moderationClient;
     }
     @GetMapping("c/{proposalUrlString}/{proposalId}")
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
@@ -101,7 +101,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
         model.addAttribute("edit", editValidated);
         model.addAttribute("voted", voted);
-        model.addAttribute("reportTargets", flaggingClient.listReportTargets(TargetType.PROPOSAL));
+        model.addAttribute("reportTargets", moderationClient.listReportTargets(TargetType.PROPOSAL));
         model.addAttribute("showOpennessStatus",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 

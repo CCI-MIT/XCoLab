@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="FlaggingServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="Services">
-    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.flagging.FlaggingServiceApplication" />
+    <module name="moderation-service" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.moderation.ModerationServiceApplication" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <additionalParameters>
       <param>
@@ -15,8 +15,8 @@
         <option name="value" value="18090" />
       </param>
     </additionalParameters>
-    <module name="moderation-service" />
-    <envs />
-    <method />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
   </configuration>
 </component>

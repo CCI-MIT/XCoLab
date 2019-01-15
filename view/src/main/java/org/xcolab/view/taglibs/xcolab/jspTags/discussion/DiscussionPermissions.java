@@ -2,9 +2,9 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.flagging.IFlaggingClient;
+import org.xcolab.client.moderation.IModerationClient;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.enums.moderation.TargetType;
 import org.xcolab.view.auth.MemberAuthUtil;
 
 import java.time.Instant;
@@ -18,10 +18,10 @@ public class DiscussionPermissions {
 
     public static final String REQUEST_ATTRIBUTE_NAME = "DISCUSSION_PERMISSIONS";
 
-    private static IFlaggingClient flaggingClient;
+    private static IModerationClient moderationClient;
 
-    public static void setFlaggingClient(IFlaggingClient flaggingClient) {
-        DiscussionPermissions.flaggingClient = flaggingClient;
+    public static void setmoderationClient(IModerationClient moderationClient) {
+        DiscussionPermissions.moderationClient = moderationClient;
     }
 
     protected final long userId;
@@ -44,7 +44,7 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanReportMessage(Comment comment) {
-        return getCanReport() && comment.getAuthorUserId() != userId && flaggingClient
+        return getCanReport() && comment.getAuthorUserId() != userId && moderationClient
                 .countReports(userId, TargetType.COMMENT, comment.getId(), null, null)
                 == 0;
     }
