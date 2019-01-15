@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -36,11 +36,11 @@ import javax.servlet.http.HttpServletResponse;
 public class SubscriptionsController {
 
     private final ActivityEntryHelper activityEntryHelper;
-    private final ActivityClient activityClient;
+    private final IActivityClient activityClient;
 
     @Autowired
     public SubscriptionsController(ActivityEntryHelper activityEntryHelper,
-            ActivityClient activityClient) {
+            IActivityClient activityClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.activityClient = activityClient;
     }

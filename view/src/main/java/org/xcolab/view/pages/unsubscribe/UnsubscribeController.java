@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.members.MembersClient;
@@ -33,7 +33,7 @@ public class UnsubscribeController {
                     + "button underneath “Subscribed Activity” on the right-hand side.";
 
     @Autowired
-    private ActivityClient activityClient;
+    private IActivityClient activityClient;
 
     @GetMapping("member/{userId}/subscription/{subscriptionId}/token/{token}/type/{typeId}")
     public String unsubscribe(HttpServletRequest request, HttpServletResponse response, Model model,

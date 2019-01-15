@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.pojo.Notification;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -78,12 +78,12 @@ public class AdminTabController extends AbstractTabController {
     private final ActivityEntryHelper activityEntryHelper;
     private final Validator validator;
     private final ITrackingClient trackingClient;
-    private final ActivityClient activityClient;
+    private final IActivityClient activityClient;
 
     @Autowired
     public AdminTabController(LoginRegisterService loginRegisterService,
             ServletContext servletContext, ActivityEntryHelper activityEntryHelper,
-            Validator validator, ITrackingClient trackingClient, ActivityClient activityClient) {
+            Validator validator, ITrackingClient trackingClient, IActivityClient activityClient) {
         this.loginRegisterService = loginRegisterService;
         this.servletContext = servletContext;
         this.activityEntryHelper = activityEntryHelper;

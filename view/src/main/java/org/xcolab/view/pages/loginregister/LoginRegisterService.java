@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -42,11 +42,11 @@ public class LoginRegisterService {
 
     private final AuthenticationService authenticationService;
     private final IBalloonClient balloonClient;
-    private final ActivityClient activityClient;
+    private final IActivityClient activityClient;
 
     @Autowired
     public LoginRegisterService(AuthenticationService authenticationService,
-            IBalloonClient balloonClient, ActivityClient activityClient) {
+            IBalloonClient balloonClient, IActivityClient activityClient) {
         this.authenticationService = authenticationService;
         this.balloonClient = balloonClient;
         this.activityClient = activityClient;

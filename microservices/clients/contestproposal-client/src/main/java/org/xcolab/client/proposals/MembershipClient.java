@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.contest.resources.ProposalResource;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
@@ -116,7 +116,7 @@ public class MembershipClient {
                     .create(userId)
                     .execute();
 
-            ActivityClient activityClient = StaticActivityContext.getActivityClient();
+            IActivityClient activityClient = StaticActivityContext.getActivityClient();
 
             activityClient.createActivityEntry(ProposalActivityType.MEMBER_ADDED, userId,
                     proposalId);

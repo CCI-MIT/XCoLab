@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvWriter;
@@ -19,11 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 public class FeedsDumpGeneratingController {
 
     private final ActivityEntryHelper activityEntryHelper;
-    private final ActivityClient activityClient;
+    private final IActivityClient activityClient;
 
     @Autowired
     public FeedsDumpGeneratingController(ActivityEntryHelper activityEntryHelper,
-            ActivityClient activityClient) {
+            IActivityClient activityClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.activityClient = activityClient;
     }

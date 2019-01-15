@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.Contest;
@@ -47,12 +47,12 @@ public class VoteOnProposalActionController {
     private static final String VOTE_ANALYTICS_LABEL = "";
 
     private final ProposalDescriptionTabController proposalDescriptionTabController;
-    private final ActivityClient activityClient;
+    private final IActivityClient activityClient;
 
     @Autowired
     public VoteOnProposalActionController(
             ProposalDescriptionTabController proposalDescriptionTabController,
-            ActivityClient activityClient) {
+            IActivityClient activityClient) {
         this.proposalDescriptionTabController = proposalDescriptionTabController;
         this.activityClient = activityClient;
     }

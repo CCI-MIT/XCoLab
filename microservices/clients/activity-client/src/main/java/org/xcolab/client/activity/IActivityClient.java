@@ -15,17 +15,13 @@ import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.activity.pojo.tables.pojos.ActivityEntry;
 import org.xcolab.util.activities.enums.ActivityCategory;
 import org.xcolab.util.activities.enums.ActivityType;
-import org.xcolab.util.http.client.RestResource;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @FeignClient("xcolab-activity-service")
-public interface ActivityClient {
-
-    RestResource<IActivitySubscription, Long> activitySubscriptionResource = null;
-    // activitySubscriptions
+public interface IActivityClient {
 
     default IActivityEntry createActivityEntry(ActivityType activityType, Long userId,
             long categoryId) {

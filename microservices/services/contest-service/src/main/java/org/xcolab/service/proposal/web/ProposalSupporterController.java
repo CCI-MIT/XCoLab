@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.model.tables.pojos.ProposalSupporter;
 import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
 import org.xcolab.service.proposal.service.ProposalSupportService;
@@ -21,11 +21,11 @@ public class ProposalSupporterController {
 
     private final ProposalSupporterDao proposalSupporterDao;
     private final ProposalSupportService proposalSupportService;
-    private final ActivityClient activityClient;
+    private final IActivityClient activityClient;
 
     @Autowired
     private ProposalSupporterController(ProposalSupporterDao proposalSupporterDao,
-            ProposalSupportService proposalSupportService, ActivityClient activityClient) {
+            ProposalSupportService proposalSupportService, IActivityClient activityClient) {
         this.proposalSupporterDao = proposalSupporterDao;
         this.proposalSupportService = proposalSupportService;
         this.activityClient = activityClient;

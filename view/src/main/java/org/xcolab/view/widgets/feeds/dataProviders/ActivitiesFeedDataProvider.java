@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.pojo.IActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.permissions.SystemRole;
@@ -30,10 +30,10 @@ import javax.servlet.http.HttpServletResponse;
 public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
     private final ActivityEntryHelper activityEntryHelper;
-    private final ActivityClient activityClient;
+    private final IActivityClient activityClient;
 
     @Autowired
-    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper, ActivityClient activityClient) {
+    public ActivitiesFeedDataProvider(ActivityEntryHelper activityEntryHelper, IActivityClient activityClient) {
         this.activityEntryHelper = activityEntryHelper;
         this.activityClient = activityClient;
     }

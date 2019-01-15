@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
@@ -41,7 +41,7 @@ public final class ProposalClient {
     //TODO COLAB-2600: methods that use this should be in the service!
     private final ContestClient contestClient;
 
-    private final ActivityClient activityClient;
+    private final IActivityClient activityClient;
 
     public ProposalClient() {
 

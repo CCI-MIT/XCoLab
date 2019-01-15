@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CategoryController extends BaseDiscussionController {
 
     @Autowired
-    private ActivityClient activityClient;
+    private IActivityClient activityClient;
 
     @GetMapping("/discussion")
     public String showCategories(HttpServletRequest request, HttpServletResponse response,

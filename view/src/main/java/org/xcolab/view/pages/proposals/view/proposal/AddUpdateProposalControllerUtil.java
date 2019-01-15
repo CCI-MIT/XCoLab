@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.activity.pojo.IActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -66,7 +66,7 @@ public final class AddUpdateProposalControllerUtil {
                 proposalContext, updateProposalSectionsBean, proposal, p2p, userId);
         proposalUpdateHelper.updateProposal();
 
-        final ActivityClient activityClient = StaticActivityContext.getActivityClient();
+        final IActivityClient activityClient = StaticActivityContext.getActivityClient();
         if (createNew) {
             boolean isAdmin = PermissionsClient.canAdminAll(userId);
             boolean isClosed = isProposalListClosed(contestPhase);

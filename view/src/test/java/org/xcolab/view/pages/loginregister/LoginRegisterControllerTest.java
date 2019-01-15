@@ -17,7 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.xcolab.client.activity.ActivityClient;
+import org.xcolab.client.activity.IActivityClient;
 import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.ContestTypeClient;
@@ -67,7 +67,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @PrepareForTest({
         AdminClient.class,
-        ActivityClient.class,
+        IActivityClient.class,
         ContestTypeClient.class,
         ContestClientUtil.class,
         MembersClient.class,
@@ -86,13 +86,13 @@ public class LoginRegisterControllerTest {
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
-        PowerMockito.mockStatic(ActivityClient.class);
+        PowerMockito.mockStatic(IActivityClient.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
         PowerMockito.mockStatic(ContestTypeClient.class);
         PowerMockito.mockStatic(EmailClient.class);
         PowerMockito.mockStatic(MessagingClient.class);
 
-        StaticActivityContext.setActivityClient(Mockito.mock(ActivityClient.class));
+        StaticActivityContext.setActivityClient(Mockito.mock(IActivityClient.class));
 
         MembersClientMockerHelper.mockMembersClient();
         AdminClientMockerHelper.mockAdminClient();
