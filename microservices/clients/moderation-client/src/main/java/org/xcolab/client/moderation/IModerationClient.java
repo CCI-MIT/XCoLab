@@ -38,11 +38,12 @@ public interface IModerationClient {
         return listReports(start, last, null, null, null, null, null);
     }
 
-    default int countReports(Long reporteruserId, TargetType targetType, Long targetId,
-            Long targetAdditionalId, Long manageruserId) {
-        return listReports(null, null, reporteruserId, targetType, targetId, targetAdditionalId,
-                manageruserId).size();
-    }
+    @GetMapping(value = "/count/reports")
+    int countReports(@RequestParam(value = "reporterUserId", required = false) Long reporterUserId,
+            @RequestParam(value = "targetType", required = false) TargetType targetType,
+            @RequestParam(value = "targetId", required = false) Long targetId,
+            @RequestParam(value = "targetAdditionalId", required = false) Long targetAdditionalId,
+            @RequestParam(value = "managerUserId", required = false) Long managerUserId);
 
     @GetMapping("/reports/{reportId}")
     IReport getReport(@PathVariable(value = "reportId") Long reportId)

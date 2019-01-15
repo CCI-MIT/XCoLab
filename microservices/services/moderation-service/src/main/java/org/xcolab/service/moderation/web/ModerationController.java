@@ -65,6 +65,12 @@ public class ModerationController implements IModerationClient {
                 targetId, targetAdditionalId, null);
     }
 
+    @GetMapping(value = "/count/reports")
+    public int countReports(Long reporterUserId, TargetType targetType, Long targetId,
+            Long targetAdditionalId, Long managerUserId) {
+        return reportDao.countByGiven(reporterUserId, managerUserId, targetType.toString(), targetId, targetAdditionalId, "");
+    }
+
     @GetMapping("/reports/{reportId}")
     public IReport getReport(@PathVariable Long reportId) throws ReportNotFoundException {
         final IReport report = reportDao.get(reportId);

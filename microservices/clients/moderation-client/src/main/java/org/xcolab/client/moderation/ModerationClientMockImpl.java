@@ -31,6 +31,14 @@ public class ModerationClientMockImpl implements IModerationClient {
         return null;
     }
 
+    public int countReports(@RequestParam(value = "reporterUserId", required = false) Long reporterUserId,
+            @RequestParam(value = "targetType", required = false) TargetType targetType,
+            @RequestParam(value = "targetId", required = false) Long targetId,
+            @RequestParam(value = "targetAdditionalId", required = false) Long targetAdditionalId,
+            @RequestParam(value = "managerUserId", required = false) Long managerUserId) {
+        return 0;
+    }
+
     public IReport getReport(@PathVariable(value = "reportId") Long reportId)
             throws ReportNotFoundException {
         return null;
