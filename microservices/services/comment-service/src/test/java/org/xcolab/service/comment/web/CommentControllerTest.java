@@ -88,8 +88,12 @@ public class CommentControllerTest {
 
     @Test
     public void testListComments__shouldContainCorrectCount() throws Exception {
-        mockMvc.perform(get("/comments").contentType(contentType).accept(contentType))
-                .andExpect(status().isOk());
+        mockMvc.perform(get("/count/comments")
+                    .param("authorUserId", "123456789")
+                    .contentType(contentType).accept(contentType))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(content().string("0"));
     }
 
     @Test

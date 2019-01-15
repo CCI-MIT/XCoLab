@@ -36,6 +36,10 @@ public interface ICommentClient {
                 Collections.singletonList(threadId), false);
     }
 
+    @GetMapping("/count/comments")
+    int countComments(@RequestParam(value = "authorUserId", required = false) Long authorUserId,
+            @RequestParam(value = "threadIds", required = false) List<Long> threadIds);
+
     default int countComments(Long threadId) {
         if (threadId == null) {
             return 0;
@@ -52,10 +56,6 @@ public interface ICommentClient {
 
     default int countCommentsByAuthor(long authorUserId) {
         return countComments(authorUserId, null);
-    }
-
-    default int countComments(Long authorUserId, List<Long> threadIds) {
-        return listComments(null, null, null, authorUserId, threadIds, false).size();
     }
 
     default IComment getComment(long commentId) throws CommentNotFoundException {

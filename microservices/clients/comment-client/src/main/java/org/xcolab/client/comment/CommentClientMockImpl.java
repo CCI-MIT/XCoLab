@@ -20,6 +20,11 @@ public class CommentClientMockImpl implements ICommentClient {
     }
 
     @Override
+    public int countComments(Long authorUserId, List<Long> threadIds) {
+        return 0;
+    }
+
+    @Override
     public IComment getComment(Long commentId, boolean includeDeleted)
             throws CommentNotFoundException {
         return null;

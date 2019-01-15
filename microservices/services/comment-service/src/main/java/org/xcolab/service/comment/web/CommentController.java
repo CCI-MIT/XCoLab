@@ -62,6 +62,13 @@ public class CommentController implements ICommentClient {
     }
 
     @Override
+    @GetMapping("/count/comments")
+    public int countComments(@RequestParam(required = false) Long authorUserId,
+            @RequestParam(required = false) List<Long> threadIds) {
+        return commentDao.countByGiven(authorUserId, threadIds);
+    }
+
+    @Override
     @GetMapping("/comments/{commentId}")
     public IComment getComment(@PathVariable Long commentId,
             @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
