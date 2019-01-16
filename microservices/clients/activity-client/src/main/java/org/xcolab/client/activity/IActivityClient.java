@@ -111,7 +111,7 @@ public interface IActivityClient {
             @RequestBody List<Long> categoryIds);
 
     @GetMapping("/activitySubscriptions/isSubscribed")
-    boolean isSubscribed(@RequestParam("") Long receiverId,
+    boolean isSubscribed(@RequestParam("receiverId") Long receiverId,
             @RequestParam("activityCategory") ActivityCategory activityCategory,
             @RequestParam("categoryId") Long categoryId);
 

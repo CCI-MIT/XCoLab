@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.StaticContestProposalContext;
+import org.xcolab.client.activity.IActivityClient;
+import org.xcolab.client.activity.StaticActivityContext;
 import org.xcolab.client.admin.IAdminClient;
 import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.IEmailTemplateClient;
@@ -14,10 +16,10 @@ import org.xcolab.client.comment.IThreadClient;
 import org.xcolab.client.comment.StaticCommentContext;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.IFileClient;
+import org.xcolab.client.email.IEmailClient;
+import org.xcolab.client.email.StaticEmailContext;
 import org.xcolab.client.modeling.IModelingClient;
 import org.xcolab.client.search.ISearchClient;
-import org.xcolab.client.email.StaticEmailContext;
-import org.xcolab.client.email.IEmailClient;
 import org.xcolab.view.activityentry.discussion.DiscussionBaseActivityEntry;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
@@ -28,7 +30,6 @@ import org.xcolab.view.pages.search.paging.SearchDataPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.LoadThreadStartTag;
 import org.xcolab.view.tags.LoadContentArticleTag;
 import org.xcolab.view.util.entity.activityEntry.ActivitySubscriptionEmailHelper;
-import org.xcolab.client.email.StaticEmailContext;
 
 @Component
 public class StaticInjector {
@@ -38,7 +39,8 @@ public class StaticInjector {
             IThreadClient threadClient, ICommentClient commentClient,
             ICategoryClient categoryClient, ISearchClient searchClient,
             IModelingClient modelingClient, IAdminClient adminClient,
-            IContestTypeClient contestTypeClient, IEmailTemplateClient emailTemplateClient, IEmailClient emailClient) {
+            IContestTypeClient contestTypeClient, IEmailTemplateClient emailTemplateClient,
+            IEmailClient emailClient, IActivityClient activityClient) {
         // Module Internal
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
@@ -57,5 +59,6 @@ public class StaticInjector {
         StaticContestProposalContext.setClients(commentClient, categoryClient, threadClient);
         StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
         StaticEmailContext.setEmailClient(emailClient);
+        StaticActivityContext.setActivityClient(activityClient);
     }
 }
