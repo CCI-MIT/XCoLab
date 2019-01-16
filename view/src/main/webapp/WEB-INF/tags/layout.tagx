@@ -232,11 +232,7 @@
                 <div class="c-TitleBar__element pl-0">
                     Impersonating member ${_themeContext.authenticationVariables.member.screenName} (Logged in as ${_themeContext.authenticationVariables.realMember.screenName})
                 </div>
-
-                <button type="button" class="c-TitleBar__actionButton js-EnhancedLink"
-                        data-method="post" data-url="/impersonate/logout">
-                    Stop impersonating
-                </button>
+                <a href="/impersonate/logout" class="c-TitleBar__actionButton">Stop impersonating</a>
             </div>
         </div>
     </c:if>

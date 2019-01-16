@@ -56,7 +56,7 @@ public class ThreadController extends BaseDiscussionController {
         ICategoryGroup categoryGroup = getCategoryGroup(request);
         IThread thread = threadClient.getThread(threadId);
 
-        DiscussionPermissions permissions = new DiscussionPermissions(request);
+        DiscussionPermissions permissions = new DiscussionPermissions();
         if (!getCanView(permissions, categoryGroup, threadId)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -76,7 +76,7 @@ public class ThreadController extends BaseDiscussionController {
 
         ICategoryGroup categoryGroup = getCategoryGroup(request);
 
-        DiscussionPermissions permissions = new DiscussionPermissions(request);
+        DiscussionPermissions permissions = new DiscussionPermissions();
         if (!getCanEdit(permissions, categoryGroup, 0L)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -98,12 +98,12 @@ public class ThreadController extends BaseDiscussionController {
 
         ICategoryGroup categoryGroup = getCategoryGroup(request);
 
-        DiscussionPermissions permissions = new DiscussionPermissions(request);
+        DiscussionPermissions permissions = new DiscussionPermissions();
         if (!getCanEdit(permissions, categoryGroup, 0L)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        long userId = MemberAuthUtil.getuserId(request);
+        long userId = MemberAuthUtil.getUserId();
 
         if (!title.isEmpty() && !body.isEmpty()) {
             IThread thread = new org.xcolab.client.comment.pojo.tables.pojos.Thread();

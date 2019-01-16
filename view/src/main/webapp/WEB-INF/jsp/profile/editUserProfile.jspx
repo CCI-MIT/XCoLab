@@ -203,10 +203,7 @@
             </c:choose>
 
             <c:if test="${permissions.canAdmin}">
-                <button type="button" class="btn btn-link js-EnhancedLink" data-method="post"
-                        data-url="/impersonate?userId=${currentUserProfile.userId}">
-                    Impersonate ${userBean.firstName}
-                </button>
+                <a class="btn btn-link" href="/impersonate?username=${currentUserProfile.user.screenName}">Impersonate ${userBean.firstName}</a>
             </c:if>
 
             <div class="profile_about-head"><spring:message code="profile.form.fields.shortbio"/></div>

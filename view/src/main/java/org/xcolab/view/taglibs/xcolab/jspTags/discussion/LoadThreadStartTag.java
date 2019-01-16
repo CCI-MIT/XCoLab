@@ -78,7 +78,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
             DiscussionPermissions discussionPermissions = (DiscussionPermissions) request
                     .getAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);
             if (discussionPermissions == null) {
-                discussionPermissions = new DiscussionPermissions(request);
+                discussionPermissions = new DiscussionPermissions();
             } else {
                 _log.debug("Using custom DiscussionPermissions of type {}",
                         discussionPermissions.getClass().getName());

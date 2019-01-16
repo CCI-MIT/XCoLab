@@ -22,7 +22,7 @@ public abstract class BaseDiscussionsActionController {
                 return new ProposalDiscussionPermissions(request, proposal);
             }
         }
-        return new DiscussionPermissions(request);
+        return new DiscussionPermissions();
     }
 
     protected Proposal getProposal(ProposalClient proposalClient, IThread commentThread) {

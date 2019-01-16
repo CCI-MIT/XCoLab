@@ -76,7 +76,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             return "redirect:" + redirectUri + "#addCommentForm";
         }
 
-        long userId = MemberAuthUtil.getuserId(request);
+        long userId = MemberAuthUtil.getUserId();
 
         try {
             long threadId = Long.parseLong(newMessage.getThreadId());
