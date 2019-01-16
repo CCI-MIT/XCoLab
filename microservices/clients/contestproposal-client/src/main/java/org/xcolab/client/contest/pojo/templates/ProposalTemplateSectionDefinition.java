@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -319,23 +319,23 @@ public class ProposalTemplateSectionDefinition extends AbstractProposalTemplateS
     }
 
     public String getProposalNames() {
-        return ContestTypeClient
+        return StaticAdminContext.getContestTypeClient()
                 .getProposalNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
     }
 
 
     public String getProposalNamesPlural() {
-        return ContestTypeClient
+        return StaticAdminContext.getContestTypeClient()
                 .getProposalNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "and");
     }
 
     public String getContestNames() {
-        return ContestTypeClient
+        return StaticAdminContext.getContestTypeClient()
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
     }
 
     public String getContestNamesPlural() {
-        return ContestTypeClient
+        return StaticAdminContext.getContestTypeClient()
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "or");
     }
 

@@ -12,9 +12,9 @@ import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.comment.pojo.IComment;
 import org.xcolab.client.email.EmailUtils;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -100,6 +100,12 @@ public class ActivitySubscriptionEmailHelper {
                     + "<a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
     private final ActivityEntryHelper activityEntryHelper;
+
+    private static ICommentClient commentClient;
+
+    public static void setCommentClient(ICommentClient commentClient) {
+        ActivitySubscriptionEmailHelper.commentClient = commentClient;
+    }
 
     @Autowired
     public ActivitySubscriptionEmailHelper(ActivityEntryHelper activityEntryHelper) {
@@ -220,7 +226,7 @@ public class ActivitySubscriptionEmailHelper {
                         bodyWithComment.append("<br><br><div style='margin-left:20px;>");
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
                         Long commentId = activityEntry.getAdditionalId();
-                        Comment comment = CommentClient.instance().getComment(commentId, true);
+                        IComment comment = commentClient.getComment(commentId, true);
                         if (comment.getDeletedAt() != null) {
                             bodyWithComment.append("<b>COMMENT ALREADY DELETED</b>");
                         }

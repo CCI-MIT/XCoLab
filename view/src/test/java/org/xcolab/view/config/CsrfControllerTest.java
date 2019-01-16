@@ -3,9 +3,7 @@ package org.xcolab.view.config;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +16,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.pages.loginregister.ForgotPasswordController;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.ContestTypeClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,11 +51,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 "cache.enabled=false"
         }
 )
-
-@PrepareForTest({
-        AdminClient.class,
-        ContestTypeClient.class
-})
+//
+//@PrepareForTest({
+//        AdminClient.class,
+//        ContestTypeClient.class
+//})
 
 @ActiveProfiles("test")
 public class CsrfControllerTest {
@@ -65,9 +67,12 @@ public class CsrfControllerTest {
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
-        PowerMockito.mockStatic(ContestTypeClient.class);
+        IAdminClient adminClient = AdminClientMockerHelper.mockAdminClient();
+        IEmailTemplateClient emailTemplateClient =
+                EmailTemplateClientMockerHelper.mockEmailTemplateClient();
+        IContestTypeClient contestTypeClient = ContestTypeClientMockerHelper.mockContestTypeClient();
 
-        AdminClientMockerHelper.mockAdminClient();
+        StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
     }
 
     @Test

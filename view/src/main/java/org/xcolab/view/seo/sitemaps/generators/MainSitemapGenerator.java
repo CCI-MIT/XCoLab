@@ -3,7 +3,7 @@ package org.xcolab.view.seo.sitemaps.generators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.IContestTypeClient;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.content.IContentClient;
@@ -21,12 +21,15 @@ public class MainSitemapGenerator {
     @Autowired
     private IContentClient contentClient;
 
+    @Autowired
+    private IContestTypeClient contestTypeClient;
+
     private final String siteUrl = PlatformAttributeKey.COLAB_URL.get();
 
     public XmlUrlSet generate() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
         addLandingPageUrl(xmlUrlSet);
-        for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
+        for (ContestType contestType : contestTypeClient.getActiveContestTypes()) {
             addContestType(xmlUrlSet, contestType.getId());
         }
         addContentPages(xmlUrlSet);

@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.content.IContentClient;
 import org.xcolab.client.content.exceptions.ContentNotFoundException;
@@ -9,9 +9,6 @@ import org.xcolab.client.content.pojo.IContentArticleVersion;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
-
-import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 
 public class WikiPageWrapper {
 
@@ -54,7 +51,8 @@ public class WikiPageWrapper {
     }
 
     public ContestResourcesBean getContestResourcesBean() {
-        final ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
+        final ContestType contestType = StaticAdminContext.getContestTypeClient()
+                .getContestType(contest.getContestTypeId());
         ContestResourcesBean contestResourcesBean = new ContestResourcesBean(contestType);
         String resourcesContent = contentArticleVersion.getContent();
         contestResourcesBean.fillSectionsWithContent(resourcesContent);

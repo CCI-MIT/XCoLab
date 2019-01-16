@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.profile;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.util.activities.enums.ActivityCategory;
@@ -32,7 +32,8 @@ public enum SubscriptionType {
         } else {
             final long contestTypeId = ConfigurationAttributeKey
                     .DEFAULT_CONTEST_TYPE_ID.get();
-            ContestType contestType = ContestTypeClient.getContestType(contestTypeId);
+            ContestType contestType =
+                    StaticAdminContext.getContestTypeClient().getContestType(contestTypeId);
 
             if (this == SubscriptionType.PROPOSAL) {
                 return contestType.getProposalName();
