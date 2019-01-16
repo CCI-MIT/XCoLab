@@ -16,6 +16,7 @@ import org.xcolab.client.moderation.pojo.IReportTarget;
 import org.xcolab.commons.exceptions.ReferenceResolutionException;
 import org.xcolab.util.enums.moderation.TargetType;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
+import org.xcolab.client.comment.pojo.tables.pojos.CategoryGroup;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
 
     private static IModerationClient moderationClient;
 
-    public static void setmoderationClient(IModerationClient moderationClient) {
+    public static void setModerationClient(IModerationClient moderationClient) {
         LoadThreadStartTag.moderationClient = moderationClient;
     }
 
@@ -74,7 +75,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
                     }
                 } catch (CategoryGroupNotFoundException e) {
                     throw ReferenceResolutionException
-                            .toObject(org.xcolab.client.comment.pojo.tables.pojos.CategoryGroup.class, categoryGroupId)
+                            .toObject(CategoryGroup.class, categoryGroupId)
                             .fromObject(LoadThreadStartTag.class, "for thread " + threadId);
                 }
             }

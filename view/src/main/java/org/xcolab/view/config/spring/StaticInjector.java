@@ -51,12 +51,12 @@ public class StaticInjector {
         // Module Internal
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
-        FlaggingTabController.setmoderationClient(moderationClient);
-        ModerationController.setmoderationClient(moderationClient);
-        LoadThreadStartTag.setmoderationClient(moderationClient);
-        ModerationReportWrapper.setmoderationClient(moderationClient);
-        ProposalDescriptionTabController.setmoderationClient(moderationClient);
-        DiscussionPermissions.setmoderationClient(moderationClient);
+        FlaggingTabController.setModerationClient(moderationClient);
+        ModerationController.setModerationClient(moderationClient);
+        LoadThreadStartTag.setModerationClient(moderationClient);
+        ModerationReportWrapper.setModerationClient(moderationClient);
+        ProposalDescriptionTabController.setModerationClient(moderationClient);
+        DiscussionPermissions.setModerationClient(moderationClient);
         UpdateModelInputWidgetsBean.setModelingClient(modelingClient);
         ActivitySubscriptionNameGenerator.setThreadClient(threadClient);
         DiscussionBaseActivityEntry.setThreadClient(threadClient);

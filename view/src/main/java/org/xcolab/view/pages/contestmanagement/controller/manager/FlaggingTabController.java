@@ -44,7 +44,7 @@ public class FlaggingTabController extends AbstractTabController {
     static final private String TAB_VIEW = "contestmanagement/manager/flaggingTab";
     private static IModerationClient moderationClient;
 
-    public static void setmoderationClient(IModerationClient moderationClient) {
+    public static void setModerationClient(IModerationClient moderationClient) {
         FlaggingTabController.moderationClient = moderationClient;
     }
 

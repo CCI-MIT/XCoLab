@@ -18,7 +18,7 @@ public class ModerationController {
 
     private static IModerationClient moderationClient;
 
-    public static void setmoderationClient(IModerationClient moderationClient) {
+    public static void setModerationClient(IModerationClient moderationClient) {
         ModerationController.moderationClient = moderationClient;
     }
 

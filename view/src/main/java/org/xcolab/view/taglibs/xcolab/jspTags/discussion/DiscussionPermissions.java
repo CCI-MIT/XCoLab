@@ -20,7 +20,7 @@ public class DiscussionPermissions {
 
     private static IModerationClient moderationClient;
 
-    public static void setmoderationClient(IModerationClient moderationClient) {
+    public static void setModerationClient(IModerationClient moderationClient) {
         DiscussionPermissions.moderationClient = moderationClient;
     }
 

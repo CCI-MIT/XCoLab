@@ -32,7 +32,7 @@ public class ModerationReportWrapper {
     private static ICommentClient commentClient;
     private static IThreadClient threadClient;
 
-    public static void setmoderationClient(IModerationClient moderationClient) {
+    public static void setModerationClient(IModerationClient moderationClient) {
         ModerationReportWrapper.moderationClient = moderationClient;
     }
 

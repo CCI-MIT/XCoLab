@@ -16,7 +16,7 @@ public class ModerationReportTargetWrapper {
     private Boolean createNew = false;
     private static IModerationClient moderationClient;
 
-    public static void setmoderationClient(IModerationClient moderationClient) {
+    public static void setModerationClient(IModerationClient moderationClient) {
         ModerationReportTargetWrapper.moderationClient = moderationClient;
     }
     public ModerationReportTargetWrapper() {
