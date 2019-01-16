@@ -5,7 +5,8 @@ import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import org.xcolab.model.tables.pojos.EmailTemplate;
+import org.xcolab.client.admin.pojo.IEmailTemplate;
+import org.xcolab.client.admin.pojo.tables.pojos.EmailTemplate;
 
 import java.util.List;
 
@@ -17,14 +18,14 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
     private DSLContext dslContext;
 
     @Override
-    public List<EmailTemplate> listAllEmailTemplates() {
+    public List<IEmailTemplate> listAllEmailTemplates() {
         return this.dslContext.select()
                 .from(EMAIL_TEMPLATE)
-                .fetchInto(EmailTemplate.class);
+                .fetchInto(IEmailTemplate.class);
     }
 
     @Override
-    public EmailTemplate getEmailTemplate(String emailTemplateId) {
+    public IEmailTemplate getEmailTemplate(String emailTemplateId) {
         final Record record = this.dslContext.select()
                 .from(EMAIL_TEMPLATE)
                 .where(EMAIL_TEMPLATE.NAME.equal(emailTemplateId))
@@ -35,7 +36,7 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
         return record.into(EmailTemplate.class);
     }
     @Override
-    public boolean updateEmailTemplate(EmailTemplate contestEmailTemplate) {
+    public boolean updateEmailTemplate(IEmailTemplate contestEmailTemplate) {
          return dslContext.update(EMAIL_TEMPLATE)
                 .set(EMAIL_TEMPLATE.NAME, contestEmailTemplate.getName())
                 .set(EMAIL_TEMPLATE.SUBJECT, contestEmailTemplate.getSubject())
@@ -45,7 +46,7 @@ public class EmailTemplateDaoImpl implements EmailTemplateDao {
                 .execute() > 0;
     }
     @Override
-    public void createEmailTemplate(EmailTemplate contestEmailTemplate) {
+    public void createEmailTemplate(IEmailTemplate contestEmailTemplate) {
         this.dslContext.insertInto(EMAIL_TEMPLATE)
                 .set(EMAIL_TEMPLATE.NAME, contestEmailTemplate.getName())
                 .set(EMAIL_TEMPLATE.SUBJECT, contestEmailTemplate.getSubject())

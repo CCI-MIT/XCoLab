@@ -4,6 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.StaticContestProposalContext;
+import org.xcolab.client.admin.IAdminClient;
+import org.xcolab.client.admin.IContestTypeClient;
+import org.xcolab.client.admin.IEmailTemplateClient;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.client.comment.ICategoryClient;
 import org.xcolab.client.comment.ICommentClient;
 import org.xcolab.client.comment.IThreadClient;
@@ -30,7 +34,8 @@ public class StaticInjector {
     public StaticInjector(IFileClient fileClient, IContentClient contentClient,
             IThreadClient threadClient, ICommentClient commentClient,
             ICategoryClient categoryClient, ISearchClient searchClient,
-            IModelingClient modelingClient) {
+            IModelingClient modelingClient, IAdminClient adminClient,
+            IContestTypeClient contestTypeClient, IEmailTemplateClient emailTemplateClient) {
         // Module Internal
         ImageUploadUtils.setFileClient(fileClient);
         LoadContentArticleTag.setContentClient(contentClient);
@@ -47,5 +52,6 @@ public class StaticInjector {
         // Module External
         StaticCommentContext.setClients(commentClient, categoryClient, threadClient);
         StaticContestProposalContext.setClients(commentClient, categoryClient, threadClient);
+        StaticAdminContext.setClients(adminClient, contestTypeClient, emailTemplateClient);
     }
 }

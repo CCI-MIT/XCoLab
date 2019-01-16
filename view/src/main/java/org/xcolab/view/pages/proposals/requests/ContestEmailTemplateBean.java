@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.requests;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.StaticAdminContext;
 import org.xcolab.view.pages.proposals.wrappers.ContestEmailTemplateWrapper;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class ContestEmailTemplateBean {
         this.emailTemplates = new HashMap<>();
         for (String templateToLoad : templateNames) {
             emailTemplates.put(templateToLoad, new ContestEmailTemplateWrapper(
-                            EmailTemplateClientUtil.getContestEmailTemplateByType(templateToLoad),
+                    StaticAdminContext.getEmailTemplateClient().getEmailTemplate(templateToLoad),
                     proposalName, contestName
             ));
         }
